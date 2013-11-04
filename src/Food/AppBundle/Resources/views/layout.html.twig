@@ -6,9 +6,6 @@
 
 
 
-    {% javascripts '@FoodAppBundle/Resources/public/js_main/*' %}
-    <script srcc="{{ asset_url }}"></script>
-    {% endjavascripts %}
 
     {% block javascripts1 %}
         {% javascripts '@bootstrap_js' filter='?yui_js' combine=true %}
