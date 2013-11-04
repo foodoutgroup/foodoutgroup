@@ -1,0 +1,25 @@
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block content_header '' %}
+
+{% block body %}
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{% trans %}admin.clients.list.title{% endtrans %}</h3>
+            </div>
+            <div class="panel-body">
+                <table>
+                    {% for item in list %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>[actions here to come]</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>admin.kitchens.list.title</source>
+                <target>Virtuvės</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>admin.kitchens.list.name</source>
+                <target>Trumpas pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>admin.kitchens.list.names</source>
+                <target>Pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>admin.kitchens.list.logo</source>
+                <target>Logotipas</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>admin.kitchens.list.actions</source>
+                <target>Veiksmai</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>admin.kitchens.list.actions.edit</source>
+                <target>Redaguoti</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>admin.kitchens.list.actions.hide</source>
+                <target>Paslėpti</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>admin.kitchens.list.actions.unhide</source>
+                <target>Rodyti</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>admin.kitchens.list.visible</source>
+                <target>Rodomas</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>admin.kitchens.list.count</source>
+                <target>Kiekis</target>
+            </trans-unit>
+
+
+        </body>
+    </file>
+</xliff>

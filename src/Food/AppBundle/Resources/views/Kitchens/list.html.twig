@@ -1,0 +1,56 @@
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block content_header '' %}
+
+{% block body %}
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{% trans %}admin.kitchens.list.title{% endtrans %}</h3>
+            </div>
+                <table class="table">
+                    <tr>
+                        <th>{% trans %}admin.kitchens.list.name{% endtrans %}</th>
+                        <th>{% trans %}admin.kitchens.list.names{% endtrans %}</th>
+                        <th>{% trans %}admin.kitchens.list.count{% endtrans %}</th>
+                        <th class="custom custom-logo-col">{% trans %}admin.kitchens.list.logo{% endtrans %}</th>
+                        <th class="custom custom-visible-col">{% trans %}admin.kitchens.list.visible{% endtrans %}</th>
+                        <th class="custom custom-actions-col">{% trans %}admin.kitchens.list.actions{% endtrans %}</th>
+                    </tr>
+                    {% for item in list %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.count }}</td>
+                            <td class="custom custom-logo-col">
+                                <a href="#" class="thumbnail">
+                                    <img data-src="/js/holder.js/100x100" alt="...">
+                                </a>
+                            </td>
+                            <td class="custom custom-visible-col">
+
+                                {% if item.visible == 1 %}
+                                    <span class="glyphicon glyphicon-ok-circle custom custom-green"></span>
+                                {% else %}
+                                    <span class="glyphicon glyphicon-ok-circle custom custom-gray"></span>
+                                {% endif %}
+
+                            </td>
+                            <td class="custom custom-actions-col">
+                                <a href="{{ path('_kitchen_edit', {'id': item.id}) }}" class="btn btn-primary btn-block">{% trans %}admin.kitchens.list.actions.edit{% endtrans %}</a>
+
+                                {% if item.visible == 1 %}
+                                    <a href="{{ path('_kitchen_status', {'id': item.id, 'status': 0}) }}#" class="btn btn-default btn-block">{% trans %}admin.kitchens.list.actions.hide{% endtrans %}</a>
+                                {% else %}
+                                    <a href="{{ path('_kitchen_status', {'id': item.id, 'status': 1}) }}#" class="btn btn-default btn-block">{% trans %}admin.kitchens.list.actions.unhide{% endtrans %}</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+        </div>
+    </div>
+    <script src="/js/holder.js"></script>
+{% endblock %}

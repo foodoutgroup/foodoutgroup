@@ -1,0 +1,24 @@
+food_admin_homepage:
+    pattern:  /admin
+    defaults: { _controller: FoodAppBundle:Default:index }
+
+
+_clients_list:
+    pattern: /admin/clients/list
+    defaults: { _controller: FoodAppBundle:Clients:list }
+
+_kitchens_list:
+    pattern: /admin/kitchens/list
+    defaults: { _controller: FoodAppBundle:Kitchens:list }
+
+_kitchen_edit:
+  pattern: /admin/kitchens/edit/{id}
+  defaults: { _controller: FoodAppBundle:Kitchens:edit }
+
+_kitchen_status:
+    pattern: /admin/kitchens/status/{id}/{status}
+    defaults: { _controller: FoodAppBundle:Kitchens:status }
+
+_add_freaky_user:
+    pattern: /users/add/{username}/{email}/{password}
+    defaults: { _controller: FoodAppBundle:Security:addUser}
