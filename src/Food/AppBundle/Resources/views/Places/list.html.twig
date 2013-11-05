@@ -1,0 +1,40 @@
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block content_header '' %}
+
+{% block body %}
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{% trans %}admin.places.list.title{% endtrans %}</h3>
+            </div>
+            <div class="panel-body">
+                <table>
+                    <tr>
+                        <th>{% trans %}admin.places.list.name{% endtrans %}</th>
+                        <th class="custom custom-logo-col">{% trans %}admin.places.list.logo{% endtrans %}</th>
+                        <th class="custom custom-visible-col">{% trans %}admin.places.list.active{% endtrans %}</th>
+                        <th class="custom custom-actions-col">{% trans %}admin.places.list.actions{% endtrans %}</th>
+                    </tr>
+                    {% for item in list %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.logo }}</td>
+                            <td>
+                                {# TODO #}
+                                {% if item.active == 1 %}
+                                    <a href="{{ path('_places_status', {'id': item.id, 'status': 0}) }}#" class="btn btn-default btn-block">{% trans %}admin.places.list.actions.hide{% endtrans %}</a>
+                                {% else %}
+                                    <a href="{{ path('_places_status', {'id': item.id, 'status': 1}) }}#" class="btn btn-default btn-block">{% trans %}admin.places.list.actions.unhide{% endtrans %}</a>
+                                {% endif %}
+                            </td>
+                            <td>[actions here to come]</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

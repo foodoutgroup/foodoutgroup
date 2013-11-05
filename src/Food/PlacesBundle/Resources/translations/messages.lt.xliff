@@ -3,24 +3,24 @@
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
             <trans-unit id="1">
-                <source>admin.menu.places</source>
+                <source>admin.places.list.title</source>
                 <target>Vietos</target>
             </trans-unit>
             <trans-unit id="2">
-                <source>admin.menu.places.list</source>
-                <target>Vietų sąrašas</target>
+                <source>admin.places.list.name</source>
+                <target>Vietos pavadinimas</target>
             </trans-unit>
             <trans-unit id="3">
-                <source>admin.menu.places.reports</source>
-                <target>Vietų ataskaitos</target>
+                <source>admin.places.list.logo</source>
+                <target>Logotipas</target>
             </trans-unit>
             <trans-unit id="4">
-                <source>admin.menu.kitchens</source>
-                <target>Virtuvės</target>
+                <source>admin.places.list.active</source>
+                <target>Aktyvus</target>
             </trans-unit>
             <trans-unit id="5">
-                <source>admin.menu.kitchens.list</source>
-                <target>Virtuvių sąrašas</target>
+                <source>admin.places.list.actions</source>
+                <target>Veiksmai</target>
             </trans-unit>
         </body>
     </file>

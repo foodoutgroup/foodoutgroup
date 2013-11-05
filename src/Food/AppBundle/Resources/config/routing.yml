@@ -3,9 +3,13 @@ food_admin_homepage:
     defaults: { _controller: FoodAppBundle:Default:index }
 
 
-_clients_list:
-    pattern: /admin/clients/list
-    defaults: { _controller: FoodAppBundle:Clients:list }
+_places_list:
+    pattern: /admin/places/list
+    defaults: { _controller: FoodAppBundle:Places:list }
+
+_places_status:
+    pattern: /admin/places/status/{id}/{status}
+    defaults: { _controller: FoodAppBundle:Places:status }
 
 _kitchens_list:
     pattern: /admin/kitchens/list

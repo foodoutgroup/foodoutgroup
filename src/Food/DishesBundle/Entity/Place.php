@@ -44,7 +44,7 @@ class Place
     private $active;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Kitchen", inversedBy="clients")
+     * @ORM\ManyToMany(targetEntity="Kitchen", inversedBy="places")
      */
     private $kitchens;
 

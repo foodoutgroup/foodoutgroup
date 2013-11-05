@@ -174,9 +174,9 @@ class Kitchen
     {
 
         //return 123;
-        //var_dump(empty($this->clients) ? 'emp': );
-        return sizeof($this->clients);
-        //eturn sizeof($this->getClients());
+        //var_dump(empty($this->places) ? 'emp': );
+        return sizeof($this->places);
+        //return sizeof($this->getPlaces());
     }
 
 
