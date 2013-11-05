@@ -23,10 +23,9 @@ class OrderDetails
     private $order_id;
 
     /**
-     * @todo Po ML pakeitimu pratesti.
-     *
-     * @ORM\Column(name="dish_id", type="integer")
-     * //@ORM\Id
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish", inversedBy="dish_id")
+     * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
+     * @ORM\Id
      */
     private $dish_id;
 

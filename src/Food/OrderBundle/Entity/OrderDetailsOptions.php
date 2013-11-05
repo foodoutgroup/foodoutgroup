@@ -23,18 +23,16 @@ class OrderDetailsOptions
     private $order_id;
 
     /**
-     * @todo Po ML pakeitimu pratesti.
-     *
-     * --@-ORM\Id
-     * @ORM\Column(name="dish_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish", inversedBy="dish_id")
+     * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
+     * @ORM\Id
      */
     private $dish_id;
 
     /**
-     * @todo Po ML pakeitimu pratesti.
-     *
-     * --@-ORM\Id
-     * @ORM\Column(name="dish_option_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishOption", inversedBy="dish_option_id")
+     * @ORM\JoinColumn(name="dish_option_id", referencedColumnName="id")
+     * @ORM\Id
      */
     private $dish_option_id;
 
@@ -167,5 +165,28 @@ class OrderDetailsOptions
     public function getDishOptionId()
     {
         return $this->dish_option_id;
+    }
+
+    /**
+     * Set dish_id
+     *
+     * @param \Food\DishesBundle\Entity\Dish $dishId
+     * @return OrderDetailsOptions
+     */
+    public function setDishId(\Food\DishesBundle\Entity\Dish $dishId)
+    {
+        $this->dish_id = $dishId;
+    
+        return $this;
+    }
+
+    /**
+     * Get dish_id
+     *
+     * @return \Food\DishesBundle\Entity\Dish 
+     */
+    public function getDishId()
+    {
+        return $this->dish_id;
     }
 }
