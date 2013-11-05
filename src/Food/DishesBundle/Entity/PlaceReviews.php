@@ -23,15 +23,15 @@ class PlaceReviews
     private $id;
 
     /**
-     * @var object TODO - not really.. :)
+     * @var \Food\DishesBundle\Entity\Place
      *
      * @ORM\ManyToOne(targetEntity="Place", inversedBy="place")
      * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
      */
-    private $client;
+    private $place;
 
     /**
-     * @var object TODO - not really.. :)
+     * @var \Food\UserBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
@@ -53,11 +53,11 @@ class PlaceReviews
     private $review;
 
     /**
-     * @var integer
+     * @var string|null
      *
-     * @ORM\Column(name="deleted", type="integer")
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
-    private $deleted;
+    private $deletedAt;
 
 
     /**
@@ -117,49 +117,49 @@ class PlaceReviews
     }
 
     /**
-     * Set deleted
+     * Set deletedAt
      *
-     * @param integer $deleted
+     * @param \DateTime $deletedAt
      * @return PlaceReviews
      */
-    public function setDeleted($deleted)
+    public function setDeletedAt($deletedAt)
     {
-        $this->deleted = $deleted;
+        $this->deletedAt = $deletedAt;
     
         return $this;
     }
 
     /**
-     * Get deleted
+     * Get deletedAt
      *
-     * @return integer 
+     * @return \DateTime 
      */
-    public function getDeleted()
+    public function getDeletedAt()
     {
-        return $this->deleted;
+        return $this->deletedAt;
     }
 
     /**
-     * Set client
+     * Set place
      *
-     * @param \Food\DishesBundle\Entity\Place $client
+     * @param \Food\DishesBundle\Entity\Place $place
      * @return PlaceReviews
      */
-    public function setClient(\Food\DishesBundle\Entity\Place $client = null)
+    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
     {
-        $this->client = $client;
+        $this->place = $place;
     
         return $this;
     }
 
     /**
-     * Get client
+     * Get place
      *
      * @return \Food\DishesBundle\Entity\Place 
      */
-    public function getClient()
+    public function getPlace()
     {
-        return $this->client;
+        return $this->place;
     }
 
     /**
