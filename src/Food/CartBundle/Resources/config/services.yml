@@ -1,4 +1,4 @@
 services:
     food.cart:
-        class: Food\CartBundle\Service\Cart
+        class: Food\CartBundle\Service\CartService
         arguments: [@service_container, user_id]
