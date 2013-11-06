@@ -28,7 +28,6 @@ class PlaceAdmin extends Admin
             ->add('name')
 
 //            ->add('place')
-            ->add('createdAt')
         ;
     }
 

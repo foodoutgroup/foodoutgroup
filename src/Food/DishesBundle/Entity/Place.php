@@ -37,9 +37,9 @@ class Place
     private $logo;
 
     /**
-     * @var integer
+     * @var bool
      *
-     * @ORM\Column(name="active", type="integer")
+     * @ORM\Column(name="active", type="boolean")
      */
     private $active;
 
@@ -52,6 +52,12 @@ class Place
      * @ORM\OneToMany(targetEntity="PlaceLocalized", mappedBy="id")
      **/
     private $localized;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="PlacePoint", mappedBy="id")
+     **/
+    private $points;
 
 
     /**
@@ -242,5 +248,38 @@ class Place
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Add points
+     *
+     * @param \Food\DishesBundle\Entity\PlacePoint $points
+     * @return Place
+     */
+    public function addPoint(\Food\DishesBundle\Entity\PlacePoint $points)
+    {
+        $this->points[] = $points;
+    
+        return $this;
+    }
+
+    /**
+     * Remove points
+     *
+     * @param \Food\DishesBundle\Entity\PlacePoint $points
+     */
+    public function removePoint(\Food\DishesBundle\Entity\PlacePoint $points)
+    {
+        $this->points->removeElement($points);
+    }
+
+    /**
+     * Get points
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPoints()
+    {
+        return $this->points;
     }
 }
