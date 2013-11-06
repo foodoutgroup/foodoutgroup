@@ -184,7 +184,7 @@ class Place
      * @param \Food\DishesBundle\Entity\ClientLocalized $localized
      * @return Client
      */
-    public function addLocalized(\Food\DishesBundle\Entity\ClientLocalized $localized)
+    public function addLocalized(\Food\DishesBundle\Entity\PlaceLocalized $localized)
     {
         $this->localized[] = $localized;
     
@@ -196,7 +196,7 @@ class Place
      *
      * @param \Food\DishesBundle\Entity\ClientLocalized $localized
      */
-    public function removeLocalized(\Food\DishesBundle\Entity\ClientLocalized $localized)
+    public function removeLocalized(\Food\DishesBundle\Entity\PlaceLocalized $localized)
     {
         $this->localized->removeElement($localized);
     }

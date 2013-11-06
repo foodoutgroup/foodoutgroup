@@ -1,0 +1,11 @@
+services:
+    sonata.admin.dish:
+        class: Food\DishesBundle\Admin\DishAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Dish" }
+        arguments:
+            - ~
+            - Food\DishesBundle\Entity\Dish
+            - ~
+        calls:
+            - [ setTranslationDomain, [FoodDishBundle]]
