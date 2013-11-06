@@ -9,3 +9,14 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [FoodDishBundle]]
+
+    sonata.admin.place:
+        class: Food\DishesBundle\Admin\PlaceAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Place" }
+        arguments:
+            - ~
+            - Food\DishesBundle\Entity\Place
+            - ~
+        calls:
+            - [ setTranslationDomain, [FoodDishBundle]]

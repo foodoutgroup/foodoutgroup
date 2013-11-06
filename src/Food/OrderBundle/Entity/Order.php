@@ -43,6 +43,12 @@ class Order
      **/
     private $order_status;
 
+    /**
+     * @var integer
+     * @ORM\Column(name="vat", type="integer")
+     */
+    private $vat;
+
 
 
     /**
@@ -145,5 +151,28 @@ class Order
     public function getOrderStatus()
     {
         return $this->order_status;
+    }
+
+    /**
+     * Set vat
+     *
+     * @param integer $vat
+     * @return Order
+     */
+    public function setVat($vat)
+    {
+        $this->vat = $vat;
+    
+        return $this;
+    }
+
+    /**
+     * Get vat
+     *
+     * @return integer 
+     */
+    public function getVat()
+    {
+        return $this->vat;
     }
 }
