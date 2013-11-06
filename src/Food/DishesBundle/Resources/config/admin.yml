@@ -6,6 +6,17 @@ services:
         arguments:
             - ~
             - Food\DishesBundle\Entity\Dish
+            - FoodDishesBundle:DishAdmin
+        calls:
+            - [ setTranslationDomain, [FoodDishBundle]]
+
+    sonata.admin.food.category:
+        class: Food\DishesBundle\Admin\FoodCategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Food category" }
+        arguments:
+            - ~
+            - Food\DishesBundle\Entity\FoodCategory
             - ~
         calls:
             - [ setTranslationDomain, [FoodDishBundle]]

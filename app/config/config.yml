@@ -124,4 +124,27 @@ sonata_block:
         # Enable the SonataAdminBundle block
         sonata.admin.block.admin_list:
             contexts:   [admin]
-        # Your other blocks
+        # Your other blocks - neaisku dar ar reikia
+
+# Sonata admin bloku konfigas
+sonata_admin:
+    title: Skanu
+    dashboard:
+          groups:
+              acme.admin.group.places:
+                  label: acme.admin.group.places
+                  label_catalogue: FoodDishBundle
+                  items:
+                      - sonata.admin.place
+                      - sonata.admin.food.category
+              acme.admin.group.formanagers:
+                  label: acme.admin.group.formanagers
+                  label_catalogue: FoodDishBundle
+                  items:
+                      - sonata.admin.dish
+#              acme.admin.group.users:
+#                  items: ~
+#                  item_adds:
+#                      - sonata.admin.users
+#                  roles: [ ROLE_ADMIN ]
+              acme.admin.group.misc: ~

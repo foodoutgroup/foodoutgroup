@@ -30,9 +30,16 @@ class DishOption
     private $price;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="hidden", type="integer", length=1)
+     * @ORM\Column(name="name", type="string", length=45)
+     */
+    private $name;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="hidden", type="boolean")
      */
     private $hidden;
 
@@ -87,29 +94,6 @@ class DishOption
     public function getPrice()
     {
         return $this->price;
-    }
-
-    /**
-     * Set hidden
-     *
-     * @param integer $hidden
-     * @return DishOption
-     */
-    public function setHidden($hidden)
-    {
-        $this->hidden = $hidden;
-    
-        return $this;
-    }
-
-    /**
-     * Get hidden
-     *
-     * @return integer 
-     */
-    public function getHidden()
-    {
-        return $this->hidden;
     }
 
     /**
@@ -176,5 +160,60 @@ class DishOption
     public function getDishes()
     {
         return $this->dishes;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return DishOption
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set hidden
+     *
+     * @param boolean $hidden
+     * @return DishOption
+     */
+    public function setHidden($hidden)
+    {
+        $this->hidden = $hidden;
+    
+        return $this;
+    }
+
+    /**
+     * Get hidden
+     *
+     * @return boolean 
+     */
+    public function getHidden()
+    {
+        return $this->hidden;
+    }
+
+    /**
+     * TODO
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
     }
 }

@@ -106,4 +106,14 @@ class DishUnit
     {
         return $this->dishes;
     }
+
+    /**
+     * TODO
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }

@@ -38,18 +38,25 @@ class FoodCategory
     private $place;
 
     /**
-     * @var string
+     * @var bool
      *
-     * @ORM\Column(name="date", type="datetime")
-     */
-    private $date;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="active", type="integer", length=1)
+     * @ORM\Column(name="active", type="boolean")
      */
     private $active;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     */
+    private $createdAt;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="edited_at", type="datetime", nullable=true)
+     */
+    private $editedAt;
 
     /**
      * @var string|null
@@ -110,52 +117,6 @@ class FoodCategory
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set date
-     *
-     * @param \DateTime $date
-     * @return FoodCategory
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
-    
-        return $this;
-    }
-
-    /**
-     * Get date
-     *
-     * @return \DateTime 
-     */
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    /**
-     * Set active
-     *
-     * @param integer $active
-     * @return FoodCategory
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
-    
-        return $this;
-    }
-
-    /**
-     * Get active
-     *
-     * @return integer 
-     */
-    public function getActive()
-    {
-        return $this->active;
     }
 
     /**
@@ -268,5 +229,79 @@ class FoodCategory
     public function getDishes()
     {
         return $this->dishes;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return FoodCategory
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set editedAt
+     *
+     * @param \DateTime $editedAt
+     * @return FoodCategory
+     */
+    public function setEditedAt($editedAt)
+    {
+        $this->editedAt = $editedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get editedAt
+     *
+     * @return \DateTime 
+     */
+    public function getEditedAt()
+    {
+        return $this->editedAt;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     * @return FoodCategory
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }

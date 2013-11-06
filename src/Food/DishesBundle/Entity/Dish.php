@@ -91,12 +91,23 @@ class Dish
     private $options;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="deleted", type="boolean")
+     */
+    private $deleted = 0;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
+        // This is just the beginning
+        $this->setCreatedAt(date("Y-m-d H:i:s"));
+
         $this->localized = new \Doctrine\Common\Collections\ArrayCollection();
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->place = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -377,5 +388,28 @@ class Dish
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Dish
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+    
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 }
