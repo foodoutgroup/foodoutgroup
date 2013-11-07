@@ -47,7 +47,7 @@ class PlacePoint
      * @var bool
      * @ORM\Column(name="active", type="boolean")
      */
-    private $active;
+    private $active =1;
 
     /**
      * @ORM\ManyToOne(targetEntity="Place", inversedBy="points")
@@ -99,7 +99,6 @@ class PlacePoint
      * @ORM\Column(name="deleted_by", type="integer", nullable=true)
      */
     private $deletedBy;
-
 
     /**
      * Get id
@@ -201,5 +200,166 @@ class PlacePoint
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return PlacePoint
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set editedAt
+     *
+     * @param \DateTime $editedAt
+     * @return PlacePoint
+     */
+    public function setEditedAt($editedAt)
+    {
+        $this->editedAt = $editedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get editedAt
+     *
+     * @return \DateTime 
+     */
+    public function getEditedAt()
+    {
+        return $this->editedAt;
+    }
+
+    /**
+     * Set deletedAt
+     *
+     * @param \DateTime $deletedAt
+     * @return PlacePoint
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deletedAt = $deletedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get deletedAt
+     *
+     * @return \DateTime 
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * Set createdBy
+     *
+     * @param integer $createdBy
+     * @return PlacePoint
+     */
+    public function setCreatedBy($createdBy)
+    {
+        $this->createdBy = $createdBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdBy
+     *
+     * @return integer 
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * Set editedBy
+     *
+     * @param integer $editedBy
+     * @return PlacePoint
+     */
+    public function setEditedBy($editedBy)
+    {
+        $this->editedBy = $editedBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get editedBy
+     *
+     * @return integer 
+     */
+    public function getEditedBy()
+    {
+        return $this->editedBy;
+    }
+
+    /**
+     * Set deletedBy
+     *
+     * @param integer $deletedBy
+     * @return PlacePoint
+     */
+    public function setDeletedBy($deletedBy)
+    {
+        $this->deletedBy = $deletedBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get deletedBy
+     *
+     * @return integer 
+     */
+    public function getDeletedBy()
+    {
+        return $this->deletedBy;
+    }
+
+    /**
+     * Set place
+     *
+     * @param \Food\DishesBundle\Entity\Place $place
+     * @return PlacePoint
+     */
+    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
+    {
+        $this->place = $place;
+    
+        return $this;
+    }
+
+    /**
+     * Get place
+     *
+     * @return \Food\DishesBundle\Entity\Place 
+     */
+    public function getPlace()
+    {
+        return $this->place;
     }
 }

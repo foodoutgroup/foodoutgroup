@@ -1,31 +1,22 @@
 <?php
 namespace Food\DishesBundle\Admin;
 
-use Food\UserBundle\Entity\User;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-class PlaceAdmin extends Admin
+class PlacePointAdmin extends Admin
 {
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('name', 'text', array('label' => 'Place name'))
-            ->add('kitchens', 'entity', array('multiple'=>true, 'class' => 'Food\DishesBundle\Entity\Kitchen'))
-            ->add('active', 'checkbox', array('label' => 'I are active?'))
-            //->add('logo', 'file', array('required' => false))
-            ->add('points', 'sonata_type_collection',
-                array(
-                    //'by_reference' => false,
-                ),
-                array(
-                    'edit' => 'inline',
-                    'inline' => 'table'
-                )
-            );
+            ->add('address', 'text', array('label' => 'Adresas'))
+            ->add('city', 'text', array('label' => 'Miestas'))
+            ->add('coords', 'text', array('label' => 'Koordinates'))
+
+        ;
     }
 
     // Fields to be shown on filter forms
@@ -33,8 +24,6 @@ class PlaceAdmin extends Admin
     {
         $datagridMapper
             ->add('name')
-
-//            ->add('place')
         ;
     }
 
@@ -43,8 +32,6 @@ class PlaceAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('name')
-//            ->add('place')
-            ->add('logo');
         ;
     }
 
@@ -59,36 +46,28 @@ class PlaceAdmin extends Admin
      */
     public function prePersist($object)
     {
-        // The magic container is here
         $object->setCreatedAt(new \DateTime("now"));
         $container = $this->getConfigurationPool()->getContainer();
         $securityContext = $container->get('security.context');
         $user = $securityContext->getToken()->getUser();
         $object->setCreatedBy($user);
-        $this->_fixPoints($object, $user);
     }
 
     /**
+     * Set editing time before inserting to database
+     * @inheritdoc
+     *
      * @param \Food\DishesBundle\Entity\Place $object
+     * @return mixed|void
      */
     public function preUpdate($object)
     {
         $container = $this->getConfigurationPool()->getContainer();
         $securityContext = $container->get('security.context');
-        $this->_fixPoints($object, $securityContext->getToken()->getUser());
-    }
+        $user = $securityContext->getToken()->getUser();
 
-    /**
-     * @param \Food\DishesBundle\Entity\Place $object
-     * @param \Food\UserBundle\Entity\User $user
-     */
-    private function _fixPoints($object, $user)
-    {
-        foreach ($object->getPoints() as $point) {
-            $point->setPlace($object);
-            if (empty($point->getCreatedBy())) {
-                $point->setCreatedBy($user);
-            }
-        }
+        // Log this troll, so we could burn him later
+        $object->setEditedAt(new \DateTime());
+        $object->setEditedBy($user->getId());
     }
 }
