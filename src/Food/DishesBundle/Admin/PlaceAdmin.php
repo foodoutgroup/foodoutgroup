@@ -12,13 +12,19 @@ class PlaceAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('name', 'text', array('label' => 'Dish name'))
+            ->add('name', 'text', array('label' => 'Place name'))
             ->add('kitchens', 'entity', array('multiple'=>true, 'class' => 'Food\DishesBundle\Entity\Kitchen'))
-            ->add('active', 'checkbox', array('label' => 'Dish name2'))
-            ->add('logo', 'file', array('required' => false))
-          //  ->add('categories', 'entity', array('class' => 'Food\DishesBundle\Entity\FoodCategory'))
-          //  ->add('price') //if no type is specified, SonataAdminBundle tries to guess it
-        ;
+            ->add('active', 'checkbox', array('label' => 'I are active?'))
+            //->add('logo', 'file', array('required' => false))
+            ->add('points', 'sonata_type_collection',
+                array(
+                    'by_reference' => false,
+                ),
+                array(
+                    'edit' => 'inline',
+                    'inline' => 'table'
+                )
+            );
     }
 
     // Fields to be shown on filter forms
