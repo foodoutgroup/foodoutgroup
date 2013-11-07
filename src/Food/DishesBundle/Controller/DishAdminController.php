@@ -17,9 +17,6 @@ class DishAdminController extends Controller
      */
     public function deleteAction($id)
     {
-        $logger = $this->get('logger');
-        $logger->info('I just got the logger');
-
         $id     = $this->get('request')->get($this->admin->getIdParameter());
         /**
          * @var \Food\DishesBundle\Entity\Dish
@@ -39,8 +36,12 @@ class DishAdminController extends Controller
             $this->validateCsrfToken('sonata.delete');
 
             try {
+                $securityContext = $this->get('security.context');
+                $user = $securityContext->getToken()->getUser();
+
                 $object->setDeletedAt(new \DateTime());
-                $object->setDeleted(1);
+                $object->setDeleted(true);
+                $object->setDeletedBy($user->getId());
                 $this->admin->update($object);
 
                 if ($this->isXmlHttpRequest()) {

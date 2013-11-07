@@ -14,7 +14,7 @@ class DishAdmin extends Admin
      * @var array
      */
     protected $datagridValues = array (
-//        'deleted' => array ('value' => 0), // type 2 : > TODO neveikia solutionas, kad nerodytu istrintu
+//        'deleted' => array ('value' => false), // type 2 : > TODO neveikia solutionas, kad nerodytu istrintu
         '_page' => 1, // Display the first page (default = 1)
         '_sort_order' => 'ASC', // Descendant ordering (default = 'ASC')
         '_sort_by' => 'id' // name of the ordered field (default = the model id field, if any)
@@ -42,8 +42,8 @@ class DishAdmin extends Admin
             ->add('categories')
             ->add('units')
             ->add('options')
+            ->add('createdBy')
             ->add('createdAt')
-            ->add('deleted')
         ;
     }
 
@@ -57,9 +57,9 @@ class DishAdmin extends Admin
             ->add('units')
             ->add('options')
             ->add('price')
+            ->add('createdBy')
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
-            ->add('deletedAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
         ;
     }
 
@@ -73,8 +73,14 @@ class DishAdmin extends Admin
      */
     public function prePersist($object)
     {
+        // The magic container is here
+        $container = $this->getConfigurationPool()->getContainer();
+        $securityContext = $container->get('security.context');
+        $user = $securityContext->getToken()->getUser();
+
         $object->setCreatedAt(new \DateTime());
         $object->setDeleted(0);
+        $object->setCreatedBy($user->getId());
     }
 
     /**
@@ -86,6 +92,30 @@ class DishAdmin extends Admin
      */
     public function preUpdate($object)
     {
+        $container = $this->getConfigurationPool()->getContainer();
+        $securityContext = $container->get('security.context');
+        $user = $securityContext->getToken()->getUser();
+
+        // Log this troll, so we could burn him later
         $object->setEditedAt(new \DateTime());
+        $object->setEditedBy($user->getId());
+    }
+
+
+    /**
+     * @inheritdoc
+     * @param string $context
+     * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
+     */
+    public function createQuery($context = 'list')
+    {
+        // Filter out deleted entries
+        // TODO OMG HACK - this is not the proper way. Need a good working solution, but for now..
+        $query = parent::createQuery($context);
+        if ($context == 'list') {
+            $query->where('o.deleted != 1');
+        }
+
+        return $query;
     }
 }
