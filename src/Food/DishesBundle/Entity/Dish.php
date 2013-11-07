@@ -66,6 +66,27 @@ class Dish
     private $deletedAt;
 
     /**
+     * @var integer TODO User Entity!
+     *
+     * @ORM\Column(name="created_by", type="integer")
+     */
+    private $createdBy;
+
+    /**
+     * @var integer TODO User Entity!
+     *
+     * @ORM\Column(name="edited_by", type="integer", nullable=true)
+     */
+    private $editedBy;
+
+    /**
+     * @var integer TODO User Entity!
+     *
+     * @ORM\Column(name="deleted_by", type="integer", nullable=true)
+     */
+    private $deletedBy;
+
+    /**
      * @var \Food\DishesBundle\Entity\DishLocalized
      *
      * @ORM\OneToMany(targetEntity="DishLocalized", mappedBy="id")
@@ -109,7 +130,17 @@ class Dish
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
         $this->place = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
+    /**
+     * TODO
+     * @return string
+     */
+    public function __toString()
+    {
+        // TODO return localized
+        return $this->getName();
+    }
+
     /**
      * Get id
      *
@@ -233,6 +264,98 @@ class Dish
     public function getDeletedAt()
     {
         return $this->deletedAt;
+    }
+
+    /**
+     * Set createdBy
+     *
+     * @param integer $createdBy
+     * @return Dish
+     */
+    public function setCreatedBy($createdBy)
+    {
+        $this->createdBy = $createdBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdBy
+     *
+     * @return integer 
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * Set editedBy
+     *
+     * @param integer $editedBy
+     * @return Dish
+     */
+    public function setEditedBy($editedBy)
+    {
+        $this->editedBy = $editedBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get editedBy
+     *
+     * @return integer 
+     */
+    public function getEditedBy()
+    {
+        return $this->editedBy;
+    }
+
+    /**
+     * Set deletedBy
+     *
+     * @param integer $deletedBy
+     * @return Dish
+     */
+    public function setDeletedBy($deletedBy)
+    {
+        $this->deletedBy = $deletedBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get deletedBy
+     *
+     * @return integer 
+     */
+    public function getDeletedBy()
+    {
+        return $this->deletedBy;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Dish
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+    
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 
     /**
@@ -388,28 +511,5 @@ class Dish
     public function getOptions()
     {
         return $this->options;
-    }
-
-    /**
-     * Set deleted
-     *
-     * @param boolean $deleted
-     * @return Dish
-     */
-    public function setDeleted($deleted)
-    {
-        $this->deleted = $deleted;
-    
-        return $this;
-    }
-
-    /**
-     * Get deleted
-     *
-     * @return boolean 
-     */
-    public function getDeleted()
-    {
-        return $this->deleted;
     }
 }
