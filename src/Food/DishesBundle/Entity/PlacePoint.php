@@ -47,7 +47,7 @@ class PlacePoint
      * @var bool
      * @ORM\Column(name="active", type="boolean")
      */
-    private $active = 1;
+    private $active;
 
     /**
      * @ORM\ManyToOne(targetEntity="Place", inversedBy="points")
@@ -56,6 +56,49 @@ class PlacePoint
      * @var Place
      */
     private $place;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="edited_at", type="datetime", nullable=true)
+     */
+    private $editedAt;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     */
+    private $deletedAt;
+
+    /**
+     * @var integer TODO User Entity!
+     *
+     * @ORM\Column(name="created_by", type="integer")
+     */
+    private $createdBy;
+
+    /**
+     * @var integer TODO User Entity!
+     *
+     * @ORM\Column(name="edited_by", type="integer", nullable=true)
+     */
+    private $editedBy;
+
+    /**
+     * @var integer TODO User Entity!
+     *
+     * @ORM\Column(name="deleted_by", type="integer", nullable=true)
+     */
+    private $deletedBy;
 
 
     /**
@@ -158,28 +201,5 @@ class PlacePoint
     public function getActive()
     {
         return $this->active;
-    }
-
-    /**
-     * Set place
-     *
-     * @param \Food\DishesBundle\Entity\Place $place
-     * @return PlacePoint
-     */
-    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
-    {
-        $this->place = $place;
-    
-        return $this;
-    }
-
-    /**
-     * Get place
-     *
-     * @return \Food\DishesBundle\Entity\Place 
-     */
-    public function getPlace()
-    {
-        return $this->place;
     }
 }

@@ -41,16 +41,23 @@ class PlaceReviews
     /**
      * @var string
      *
-     * @ORM\Column(name="date", type="datetime")
+     * @ORM\Column(name="review", type="text")
      */
-    private $date;
+    private $review;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="review", type="text")
+     * @ORM\Column(name="created_at", type="datetime")
      */
-    private $review;
+    private $createdAt;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="edited_at", type="datetime", nullable=true)
+     */
+    private $editedAt;
 
     /**
      * @var string|null
@@ -58,6 +65,21 @@ class PlaceReviews
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
     private $deletedAt;
+
+    /**
+     * @var integer TODO User Entity!
+     *
+     * @ORM\Column(name="edited_by", type="integer", nullable=true)
+     */
+    private $editedBy;
+
+    /**
+     * @var integer TODO User Entity!
+     *
+     * @ORM\Column(name="deleted_by", type="integer", nullable=true)
+     */
+    private $deletedBy;
+
 
 
     /**
@@ -68,29 +90,6 @@ class PlaceReviews
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set date
-     *
-     * @param \DateTime $date
-     * @return PlaceReviews
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
-    
-        return $this;
-    }
-
-    /**
-     * Get date
-     *
-     * @return \DateTime 
-     */
-    public function getDate()
-    {
-        return $this->date;
     }
 
     /**
@@ -117,6 +116,52 @@ class PlaceReviews
     }
 
     /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return PlaceReviews
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set editedAt
+     *
+     * @param \DateTime $editedAt
+     * @return PlaceReviews
+     */
+    public function setEditedAt($editedAt)
+    {
+        $this->editedAt = $editedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get editedAt
+     *
+     * @return \DateTime 
+     */
+    public function getEditedAt()
+    {
+        return $this->editedAt;
+    }
+
+    /**
      * Set deletedAt
      *
      * @param \DateTime $deletedAt
@@ -137,6 +182,52 @@ class PlaceReviews
     public function getDeletedAt()
     {
         return $this->deletedAt;
+    }
+
+    /**
+     * Set editedBy
+     *
+     * @param integer $editedBy
+     * @return PlaceReviews
+     */
+    public function setEditedBy($editedBy)
+    {
+        $this->editedBy = $editedBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get editedBy
+     *
+     * @return integer 
+     */
+    public function getEditedBy()
+    {
+        return $this->editedBy;
+    }
+
+    /**
+     * Set deletedBy
+     *
+     * @param integer $deletedBy
+     * @return PlaceReviews
+     */
+    public function setDeletedBy($deletedBy)
+    {
+        $this->deletedBy = $deletedBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get deletedBy
+     *
+     * @return integer 
+     */
+    public function getDeletedBy()
+    {
+        return $this->deletedBy;
     }
 
     /**

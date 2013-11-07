@@ -68,6 +68,70 @@ class Place
     private $users;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="edited_at", type="datetime", nullable=true)
+     */
+    private $editedAt;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     */
+    private $deletedAt;
+
+    /**
+     * @var integer TODO User Entity!
+     *
+     * @ORM\Column(name="created_by", type="integer")
+     */
+    private $createdBy;
+
+    /**
+     * @var integer TODO User Entity!
+     *
+     * @ORM\Column(name="edited_by", type="integer", nullable=true)
+     */
+    private $editedBy;
+
+    /**
+     * @var integer TODO User Entity!
+     *
+     * @ORM\Column(name="deleted_by", type="integer", nullable=true)
+     */
+    private $deletedBy;
+
+    /**
+     * TODO
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        // TODO return localized
+        return $this->getName();
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->kitchens = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->localized = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->points = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
      * Get id
      *
      * @return integer 
@@ -81,7 +145,7 @@ class Place
      * Set name
      *
      * @param string $name
-     * @return Client
+     * @return Place
      */
     public function setName($name)
     {
@@ -104,7 +168,7 @@ class Place
      * Set logo
      *
      * @param string $logo
-     * @return Client
+     * @return Place
      */
     public function setLogo($logo)
     {
@@ -126,8 +190,8 @@ class Place
     /**
      * Set active
      *
-     * @param integer $active
-     * @return Client
+     * @param boolean $active
+     * @return Place
      */
     public function setActive($active)
     {
@@ -139,25 +203,156 @@ class Place
     /**
      * Get active
      *
-     * @return integer 
+     * @return boolean 
      */
     public function getActive()
     {
         return $this->active;
     }
+
     /**
-     * Constructor
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Place
      */
-    public function __construct()
+    public function setCreatedAt($createdAt)
     {
-        $this->kitchens = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+        $this->createdAt = $createdAt;
     
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set editedAt
+     *
+     * @param \DateTime $editedAt
+     * @return Place
+     */
+    public function setEditedAt($editedAt)
+    {
+        $this->editedAt = $editedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get editedAt
+     *
+     * @return \DateTime 
+     */
+    public function getEditedAt()
+    {
+        return $this->editedAt;
+    }
+
+    /**
+     * Set deletedAt
+     *
+     * @param \DateTime $deletedAt
+     * @return Place
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deletedAt = $deletedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get deletedAt
+     *
+     * @return \DateTime 
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * Set createdBy
+     *
+     * @param integer $createdBy
+     * @return Place
+     */
+    public function setCreatedBy($createdBy)
+    {
+        $this->createdBy = $createdBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdBy
+     *
+     * @return integer 
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * Set editedBy
+     *
+     * @param integer $editedBy
+     * @return Place
+     */
+    public function setEditedBy($editedBy)
+    {
+        $this->editedBy = $editedBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get editedBy
+     *
+     * @return integer 
+     */
+    public function getEditedBy()
+    {
+        return $this->editedBy;
+    }
+
+    /**
+     * Set deletedBy
+     *
+     * @param integer $deletedBy
+     * @return Place
+     */
+    public function setDeletedBy($deletedBy)
+    {
+        $this->deletedBy = $deletedBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get deletedBy
+     *
+     * @return integer 
+     */
+    public function getDeletedBy()
+    {
+        return $this->deletedBy;
+    }
+
     /**
      * Add kitchens
      *
      * @param \Food\DishesBundle\Entity\Kitchen $kitchens
-     * @return Client
+     * @return Place
      */
     public function addKitchen(\Food\DishesBundle\Entity\Kitchen $kitchens)
     {
@@ -189,8 +384,8 @@ class Place
     /**
      * Add localized
      *
-     * @param \Food\DishesBundle\Entity\ClientLocalized $localized
-     * @return Client
+     * @param \Food\DishesBundle\Entity\PlaceLocalized $localized
+     * @return Place
      */
     public function addLocalized(\Food\DishesBundle\Entity\PlaceLocalized $localized)
     {
@@ -202,7 +397,7 @@ class Place
     /**
      * Remove localized
      *
-     * @param \Food\DishesBundle\Entity\ClientLocalized $localized
+     * @param \Food\DishesBundle\Entity\PlaceLocalized $localized
      */
     public function removeLocalized(\Food\DishesBundle\Entity\PlaceLocalized $localized)
     {
@@ -217,39 +412,6 @@ class Place
     public function getLocalized()
     {
         return $this->localized;
-    }
-
-    /**
-     * Add users
-     *
-     * @param \Food\UserBundle\Entity\User $users
-     * @return Place
-     */
-    public function addUser(\Food\UserBundle\Entity\User $users)
-    {
-        $this->users[] = $users;
-    
-        return $this;
-    }
-
-    /**
-     * Remove users
-     *
-     * @param \Food\UserBundle\Entity\User $users
-     */
-    public function removeUser(\Food\UserBundle\Entity\User $users)
-    {
-        $this->users->removeElement($users);
-    }
-
-    /**
-     * Get users
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getUsers()
-    {
-        return $this->users;
     }
 
     /**
@@ -283,5 +445,38 @@ class Place
     public function getPoints()
     {
         return $this->points;
+    }
+
+    /**
+     * Add users
+     *
+     * @param \Food\UserBundle\Entity\User $users
+     * @return Place
+     */
+    public function addUser(\Food\UserBundle\Entity\User $users)
+    {
+        $this->users[] = $users;
+    
+        return $this;
+    }
+
+    /**
+     * Remove users
+     *
+     * @param \Food\UserBundle\Entity\User $users
+     */
+    public function removeUser(\Food\UserBundle\Entity\User $users)
+    {
+        $this->users->removeElement($users);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 }
