@@ -6,7 +6,7 @@ services:
         arguments:
             - ~
             - Food\DishesBundle\Entity\Dish
-            - FoodDishesBundle:DishAdmin
+            - ~
         calls:
             - [ setTranslationDomain, [FoodDishBundle]]
 
@@ -17,7 +17,7 @@ services:
         arguments:
             - ~
             - Food\DishesBundle\Entity\DishUnit
-            - FoodDishesBundle:DishUnitAdmin
+            - ~
         calls:
             - [ setTranslationDomain, [FoodDishBundle]]
 
@@ -28,7 +28,7 @@ services:
         arguments:
             - ~
             - Food\DishesBundle\Entity\FoodCategory
-            - FoodDishesBundle:FoodCategoryAdmin
+            - ~
         calls:
             - [ setTranslationDomain, [FoodDishBundle]]
 
@@ -39,7 +39,7 @@ services:
         arguments:
             - ~
             - Food\DishesBundle\Entity\Kitchen
-            - FoodDishesBundle:KitchenAdmin
+            - ~
         calls:
             - [ setTranslationDomain, [FoodDishBundle]]
 

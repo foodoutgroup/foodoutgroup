@@ -2,12 +2,12 @@
 namespace Food\DishesBundle\Admin;
 
 use Food\UserBundle\Entity\User;
-use Sonata\AdminBundle\Admin\Admin;
+use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-class PlaceAdmin extends Admin
+class PlaceAdmin extends FoodAdmin
 {
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
@@ -60,12 +60,11 @@ class PlaceAdmin extends Admin
     public function prePersist($object)
     {
         // The magic container is here
-        $object->setCreatedAt(new \DateTime("now"));
-        $container = $this->getConfigurationPool()->getContainer();
-        $securityContext = $container->get('security.context');
+        $securityContext = $this->getContainer()->get('security.context');
         $user = $securityContext->getToken()->getUser();
-        $object->setCreatedBy($user);
         $this->_fixPoints($object, $user);
+
+        parent::prePersist($object);
     }
 
     /**
@@ -76,6 +75,8 @@ class PlaceAdmin extends Admin
         $container = $this->getConfigurationPool()->getContainer();
         $securityContext = $container->get('security.context');
         $this->_fixPoints($object, $securityContext->getToken()->getUser());
+
+        parent::preUpdate($object);
     }
 
     /**
