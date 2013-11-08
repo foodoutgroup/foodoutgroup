@@ -99,6 +99,10 @@ doctrine:
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
+        filters:
+            softdeleteable:
+                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+                enabled: true
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -118,6 +122,14 @@ fos_user:
     firewall_name: main
     user_class: Food\UserBundle\Entity\User
 
+services:
+  gedmo.listener.softdeleteable:
+    class: Gedmo\SoftDeleteable\SoftDeleteableListener
+    tags:
+        - { name: doctrine.event_subscriber, connection: default }
+    calls:
+        - [ setAnnotationReader, [ @annotation_reader ] ]
+
 sonata_block:
     default_contexts: [cms]
     blocks:
@@ -135,7 +147,9 @@ sonata_admin:
                   label: acme.admin.group.places
                   label_catalogue: FoodDishBundle
                   items:
+                      - sonata.admin.kitchen
                       - sonata.admin.place
+                      - sonata.admin.dish.unit
                       - sonata.admin.food.category
               acme.admin.group.formanagers:
                   label: acme.admin.group.formanagers

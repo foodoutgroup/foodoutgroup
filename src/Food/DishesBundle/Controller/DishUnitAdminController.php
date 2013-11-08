@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 
-class DishAdminController extends Controller
+class DishUnitAdminController extends Controller
 {
 
     /**
@@ -17,9 +17,8 @@ class DishAdminController extends Controller
      */
     public function deleteAction($id)
     {
-        $id     = $this->get('request')->get($this->admin->getIdParameter());
         /**
-         * @var \Food\DishesBundle\Entity\Dish
+         * @var \Food\DishesBundle\Entity\DishUnit
          */
         $object = $this->admin->getObject($id);
 

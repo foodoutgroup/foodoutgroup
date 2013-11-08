@@ -2,6 +2,7 @@
 
 namespace Food\DishesBundle\Entity;
 
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,6 +14,7 @@ use Doctrine\ORM\EntityManager;
  *
  * @ORM\Table()
  * @ORM\Entity
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class Kitchen
 {
@@ -44,7 +46,7 @@ class Kitchen
      *
      * @ORM\Column(name="visible", type="boolean")
      */
-    private $visible = 1;
+    private $visible = true;
 
     /**
      * @ORM\OneToMany(targetEntity="KitchenLocalized", mappedBy="id")

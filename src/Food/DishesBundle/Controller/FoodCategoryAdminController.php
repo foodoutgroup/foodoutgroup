@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 
-class DishAdminController extends Controller
+class FoodCategoryAdminController extends Controller
 {
 
     /**
@@ -19,7 +19,7 @@ class DishAdminController extends Controller
     {
         $id     = $this->get('request')->get($this->admin->getIdParameter());
         /**
-         * @var \Food\DishesBundle\Entity\Dish
+         * @var \Food\DishesBundle\Entity\FoodCategory
          */
         $object = $this->admin->getObject($id);
 

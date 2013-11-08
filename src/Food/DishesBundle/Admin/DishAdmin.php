@@ -14,7 +14,6 @@ class DishAdmin extends Admin
      * @var array
      */
     protected $datagridValues = array (
-//        'deleted' => array ('value' => false), // type 2 : > TODO neveikia solutionas, kad nerodytu istrintu
         '_page' => 1, // Display the first page (default = 1)
         '_sort_order' => 'ASC', // Descendant ordering (default = 'ASC')
         '_sort_by' => 'id' // name of the ordered field (default = the model id field, if any)
@@ -68,7 +67,7 @@ class DishAdmin extends Admin
      *
      * @inheritdoc
      *
-     * @param \Food\DishesBundle\Entity\Dish
+     * @param \Food\DishesBundle\Entity\Dish $object
      * @return mixed|void
      */
     public function prePersist($object)
@@ -79,7 +78,6 @@ class DishAdmin extends Admin
         $user = $securityContext->getToken()->getUser();
 
         $object->setCreatedAt(new \DateTime());
-        $object->setDeleted(0);
         $object->setCreatedBy($user->getId());
     }
 
@@ -99,23 +97,5 @@ class DishAdmin extends Admin
         // Log this troll, so we could burn him later
         $object->setEditedAt(new \DateTime());
         $object->setEditedBy($user->getId());
-    }
-
-
-    /**
-     * @inheritdoc
-     * @param string $context
-     * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
-     */
-    public function createQuery($context = 'list')
-    {
-        // Filter out deleted entries
-        // TODO OMG HACK - this is not the proper way. Need a good working solution, but for now..
-        $query = parent::createQuery($context);
-        if ($context == 'list') {
-            $query->where('o.deleted != 1');
-        }
-
-        return $query;
     }
 }

@@ -10,6 +10,17 @@ services:
         calls:
             - [ setTranslationDomain, [FoodDishBundle]]
 
+    sonata.admin.dish.unit:
+        class: Food\DishesBundle\Admin\DishUnitAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Dish units" }
+        arguments:
+            - ~
+            - Food\DishesBundle\Entity\DishUnit
+            - FoodDishesBundle:DishUnitAdmin
+        calls:
+            - [ setTranslationDomain, [FoodDishBundle]]
+
     sonata.admin.food.category:
         class: Food\DishesBundle\Admin\FoodCategoryAdmin
         tags:
@@ -17,7 +28,18 @@ services:
         arguments:
             - ~
             - Food\DishesBundle\Entity\FoodCategory
+            - FoodDishesBundle:FoodCategoryAdmin
+        calls:
+            - [ setTranslationDomain, [FoodDishBundle]]
+
+    sonata.admin.kitchen:
+        class: Food\DishesBundle\Admin\KitchenAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Kitchen type" }
+        arguments:
             - ~
+            - Food\DishesBundle\Entity\Kitchen
+            - FoodDishesBundle:KitchenAdmin
         calls:
             - [ setTranslationDomain, [FoodDishBundle]]
 

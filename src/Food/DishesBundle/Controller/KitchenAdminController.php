@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 
-class DishAdminController extends Controller
+class KitchenAdminController extends Controller
 {
 
     /**
