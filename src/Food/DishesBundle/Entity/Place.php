@@ -36,7 +36,7 @@ class Place
      *
      * @ORM\Column(name="logo", type="string", length=255)
      */
-    private $logo;
+    private $logo = "";
 
     /**
      * @var bool
@@ -57,8 +57,10 @@ class Place
 
 
     /**
-     * @ORM\OneToMany(targetEntity="PlacePoint", mappedBy="id")
-     **/
+     * @ORM\OneToMany(targetEntity="PlacePoint", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @var ArrayCollection
+     */
     private $points;
 
 

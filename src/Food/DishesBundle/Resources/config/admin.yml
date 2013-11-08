@@ -53,3 +53,14 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [FoodDishBundle]]
+
+    sonata.admin.place.point:
+        class: Food\DishesBundle\Admin\PlacePointAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Place point" }
+        arguments:
+            - ~
+            - Food\DishesBundle\Entity\PlacePoint
+            - ~
+        calls:
+            - [ setTranslationDomain, [FoodDishBundle]]

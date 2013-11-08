@@ -49,7 +49,16 @@ class PlacePoint
      * @var bool
      * @ORM\Column(name="active", type="boolean")
      */
-    private $active;
+    private $active =1;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Place", inversedBy="points")
+     * @ORM\JoinColumn(name="place", referencedColumnName="id")
+     *
+     * @var Place
+     */
+    private $place;
+
 
     /**
      * @var string
@@ -92,7 +101,6 @@ class PlacePoint
      * @ORM\Column(name="deleted_by", type="integer", nullable=true)
      */
     private $deletedBy;
-
 
     /**
      * Get id
@@ -332,5 +340,28 @@ class PlacePoint
     public function getDeletedBy()
     {
         return $this->deletedBy;
+    }
+
+    /**
+     * Set place
+     *
+     * @param \Food\DishesBundle\Entity\Place $place
+     * @return PlacePoint
+     */
+    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
+    {
+        $this->place = $place;
+    
+        return $this;
+    }
+
+    /**
+     * Get place
+     *
+     * @return \Food\DishesBundle\Entity\Place 
+     */
+    public function getPlace()
+    {
+        return $this->place;
     }
 }
