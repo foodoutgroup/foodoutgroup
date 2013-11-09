@@ -5,6 +5,7 @@ namespace Food\DishesBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Client
@@ -35,8 +36,14 @@ class Place
      * @var string
      *
      * @ORM\Column(name="logo", type="string", length=255)
+     * aaaaaa@aaaAssert\NotBlank
      */
     private $logo = "";
+
+    /**
+     * @var object
+     */
+    public $file;
 
     /**
      * @var bool
@@ -110,6 +117,65 @@ class Place
      * @ORM\Column(name="deleted_by", type="integer", nullable=true)
      */
     private $deletedBy;
+
+
+    /**
+     * @return null|string
+     */
+    public function getAbsolutePath()
+    {
+        return null === $this->logo ? null : $this->getUploadRootDir().'/'.$this->logo;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getWebPath()
+    {
+        return null === $this->logo ? null : $this->getUploadDir().'/'.$this->logo;
+    }
+
+    /**
+     * @param $basepath
+     * @return string
+     */
+    protected function getUploadRootDir($basepath)
+    {
+        return $basepath.$this->getUploadDir();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getUploadDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw when displaying uploaded doc/image in the view.
+        return 'uploads/products';
+    }
+
+    /**
+     * @todo Sukurti unikalaus filename generavimo funkcionaluma.
+     *
+     * @param $basepath
+     */
+    public function upload($basepath)
+    {
+        if (null === $this->file) {
+            return;
+        }
+
+        if (null === $basepath) {
+            return;
+        }
+
+        $this->file->move($this->getUploadRootDir($basepath), $this->file->getClientOriginalName());
+
+        $this->setLogo($this->file->getClientOriginalName());
+
+        $this->file = null;
+    }
+
+
 
     /**
      * TODO
@@ -480,5 +546,51 @@ class Place
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Set path
+     *
+     * @param string $path
+     * @return Place
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+    
+        return $this;
+    }
+
+    /**
+     * Get path
+     *
+     * @return string 
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * Set file
+     *
+     * @param string $file
+     * @return Place
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+    
+        return $this;
+    }
+
+    /**
+     * Get file
+     *
+     * @return string 
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 }

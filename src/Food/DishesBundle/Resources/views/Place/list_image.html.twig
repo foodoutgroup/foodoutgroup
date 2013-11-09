@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field%}
+    {%  if object.getLogo !=null %}
+        <img src="/{{object.getWebPath}}" style="height: 200px">
+    {% endif %}
+{% endblock %}
