@@ -75,3 +75,5 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [FoodDishBundle]]
+            - [ setTemplate, [edit, FoodDishesBundle:Places:place_point_admin.html.twig]]
+            - [ setTemplate, [edit, FoodDishesBundle:Places:place_point_admin.html.twig]]
