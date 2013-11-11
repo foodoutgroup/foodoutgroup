@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "ea519a034a8f7046b1d0b5df3691edac",
+    "hash": "1dd9f66e4203ea2b35d3ada03732b5f2",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -175,7 +175,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan H. Wage",
+                    "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/",
                     "role": "Creator"
@@ -194,7 +194,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -738,16 +738,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.3.7",
+            "version": "v2.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/l3pp4rd/DoctrineExtensions.git",
-                "reference": "0aa660ffea298b630b8ded7bd2a7eae0d8619fdb"
+                "reference": "d2bef940268e4dc5f0f050e80458169a7267813a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/0aa660ffea298b630b8ded7bd2a7eae0d8619fdb",
-                "reference": "0aa660ffea298b630b8ded7bd2a7eae0d8619fdb",
+                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/d2bef940268e4dc5f0f050e80458169a7267813a",
+                "reference": "d2bef940268e4dc5f0f050e80458169a7267813a",
                 "shasum": ""
             },
             "require": {
@@ -814,7 +814,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2013-08-18 07:18:44"
+            "time": "2013-11-09 21:23:13"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -1026,7 +1026,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {

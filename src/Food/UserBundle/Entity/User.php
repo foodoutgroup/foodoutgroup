@@ -20,15 +20,14 @@ class User extends BaseUser
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="Food\DishesBundle\Entity\Place", inversedBy="places")
-     * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="Food\DishesBundle\Entity\Place", mappedBy="id")
      **/
-    private $places;
+    private $places = array();
 
     public function __construct()
     {
         parent::__construct();
-        $this->places =  new \Doctrine\Common\Collections\ArrayCollection();
+        //$this->places =  new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

@@ -69,7 +69,7 @@
     },
     "config": {
         "bin-dir": "bin"
-    },
+
     "minimum-stability": "stable",
     "extra": {
         "symfony-app-dir": "app",
