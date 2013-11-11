@@ -15,7 +15,6 @@ class PlacePointAdmin extends FoodAdmin
             ->add('address', 'text', array('label' => 'Adresas'))
             ->add('city', 'text', array('label' => 'Miestas'))
             ->add('coords', 'text', array('label' => 'Koordinates'))
-
         ;
     }
 
@@ -23,7 +22,7 @@ class PlacePointAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
+            ->add('city')
         ;
     }
 
@@ -31,7 +30,11 @@ class PlacePointAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
+            ->addIdentifier('address')
+            ->addIdentifier('city')
+            ->addIdentifier('coords')
         ;
     }
+
+
 }

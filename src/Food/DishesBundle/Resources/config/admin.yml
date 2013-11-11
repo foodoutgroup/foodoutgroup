@@ -64,3 +64,14 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [FoodDishBundle]]
+
+    sonata.admin.place.pointfull:
+        class: Food\DishesBundle\Admin\PlacePointFullAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Place point full" }
+        arguments:
+            - ~
+            - Food\DishesBundle\Entity\PlacePoint
+            - ~
+        calls:
+            - [ setTranslationDomain, [FoodDishBundle]]
