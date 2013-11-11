@@ -30,6 +30,7 @@ class AppKernel extends Kernel
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

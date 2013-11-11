@@ -3,8 +3,70 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "1dd9f66e4203ea2b35d3ada03732b5f2",
+    "hash": "f3202ef18547c19760b90cde1b41f3bd",
     "packages": [
+        {
+            "name": "a2lix/translation-form-bundle",
+            "version": "1.x-dev",
+            "target-dir": "A2lix/TranslationFormBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/a2lix/TranslationFormBundle.git",
+                "reference": "6388ad72a88c3c15e2eaee6c56ba046a60b47556"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/6388ad72a88c3c15e2eaee6c56ba046a60b47556",
+                "reference": "6388ad72a88c3c15e2eaee6c56ba046a60b47556",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/symfony": "2.3.*"
+            },
+            "suggest": {
+                "a2lix/i18n-doctrine-bundle": "For A2lix strategy",
+                "knplabs/doctrine-behaviors": "For Knp strategy",
+                "stof/doctrine-extensions-bundle": "For Gedmo strategy"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "A2lix\\TranslationFormBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "A2lix",
+                    "homepage": "http://a2lix.fr"
+                },
+                {
+                    "name": "David ALLIX"
+                }
+            ],
+            "description": "Translate your doctrine objects easily with a custom form field",
+            "homepage": "https://github.com/a2lix/TranslationFormBundle",
+            "keywords": [
+                "Symfony2",
+                "doctrine2",
+                "form",
+                "gedmo",
+                "i18n",
+                "internationalization",
+                "knplabs",
+                "translatable",
+                "translation"
+            ],
+            "time": "2013-11-07 19:20:01"
+        },
         {
             "name": "braincrafted/bootstrap-bundle",
             "version": "dev-master",
@@ -103,7 +165,8 @@
                 {
                     "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
-                    "homepage": "http://www.jwage.com/"
+                    "homepage": "http://www.jwage.com/",
+                    "role": "Creator"
                 },
                 {
                     "name": "Guilherme Blanco",
@@ -175,7 +238,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan Wage",
+                    "name": "Jonathan H. Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/",
                     "role": "Creator"
@@ -194,7 +257,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -242,9 +305,10 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan Wage",
+                    "name": "Jonathan H. Wage",
                     "email": "jonwage@gmail.com",
-                    "homepage": "http://www.jwage.com/"
+                    "homepage": "http://www.jwage.com/",
+                    "role": "Creator"
                 },
                 {
                     "name": "Guilherme Blanco",
@@ -260,7 +324,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -314,9 +378,10 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan Wage",
+                    "name": "Jonathan H. Wage",
                     "email": "jonwage@gmail.com",
-                    "homepage": "http://www.jwage.com/"
+                    "homepage": "http://www.jwage.com/",
+                    "role": "Creator"
                 },
                 {
                     "name": "Guilherme Blanco",
@@ -332,7 +397,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -386,7 +451,8 @@
                 {
                     "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
-                    "homepage": "http://www.jwage.com/"
+                    "homepage": "http://www.jwage.com/",
+                    "role": "Creator"
                 },
                 {
                     "name": "Guilherme Blanco",
@@ -511,9 +577,10 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan Wage",
+                    "name": "Jonathan H. Wage",
                     "email": "jonwage@gmail.com",
-                    "homepage": "http://www.jwage.com/"
+                    "homepage": "http://www.jwage.com/",
+                    "role": "Creator"
                 },
                 {
                     "name": "Guilherme Blanco",
@@ -531,7 +598,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -583,7 +650,7 @@
                     "email": "roman@code-factory.org"
                 },
                 {
-                    "name": "Johannes Schmitt",
+                    "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -643,7 +710,8 @@
                 {
                     "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
-                    "homepage": "http://www.jwage.com/"
+                    "homepage": "http://www.jwage.com/",
+                    "role": "Creator"
                 },
                 {
                     "name": "Guilherme Blanco",
@@ -2401,7 +2469,8 @@
         "sonata-project/admin-bundle": 20,
         "sonata-project/doctrine-orm-admin-bundle": 20,
         "stof/doctrine-extensions-bundle": 20,
-        "jdorn/sql-formatter": 20
+        "jdorn/sql-formatter": 20,
+        "a2lix/translation-form-bundle": 20
     },
     "platform": {
         "php": ">=5.3.3"

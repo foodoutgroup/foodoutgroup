@@ -4,7 +4,7 @@ namespace Food\DishesBundle\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Translatable\Translatable;
 
 /**
  * Dish unit
@@ -12,8 +12,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="dish_unit")
  * @ORM\Entity
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\DishUnitsLocalized")
  */
-class DishUnit
+class DishUnit implements Translatable
 {
     /**
      * @var integer
@@ -27,6 +28,7 @@ class DishUnit
     /**
      * @var string
      *
+     * @Gedmo\Translatable
      * @ORM\Column(name="name", type="string", length=45)
      */
     private $name;
@@ -79,6 +81,21 @@ class DishUnit
     private $deletedBy;
 
     /**
+     * @var \Food\DishesBundle\Entity\DishUnitsLocalized
+     *
+     * @ORM\OneToMany(targetEntity="DishUnitsLocalized", mappedBy="object", cascade={"persist", "remove"})
+     **/
+    private $translations;
+
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
+
+
+    /**
      * TODO
      *
      * @return string
@@ -93,6 +110,7 @@ class DishUnit
     public function __construct()
     {
         $this->dishes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -297,5 +315,47 @@ class DishUnit
     public function getDishes()
     {
         return $this->dishes;
+    }
+
+    /**
+     * @param $locale
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * Add translations
+     *
+     * @param \Food\DishesBundle\Entity\DishUnitsLocalized $t
+     * @return Dish
+     */
+    public function addTranslation(\Food\DishesBundle\Entity\DishUnitsLocalized $t)
+    {
+        if (!$this->translations->contains($t)) {
+            $this->translations[] = $t;
+            $t->setObject($this);
+        }
+    }
+
+    /**
+     * Remove translations
+     *
+     * @param \Food\DishesBundle\Entity\DishUnitsLocalized $translations
+     */
+    public function removeTranslation(\Food\DishesBundle\Entity\DishUnitsLocalized $translations)
+    {
+        $this->translations->removeElement($translations);
+    }
+
+    /**
+     * Get translations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
     }
 }

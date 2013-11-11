@@ -62,4 +62,27 @@ class User extends BaseUser
     {
         return $this->places;
     }
+
+    /**
+     * Add places
+     *
+     * @param \Food\DishesBundle\Entity\Place $places
+     * @return User
+     */
+    public function addPlace(\Food\DishesBundle\Entity\Place $places)
+    {
+        $this->places[] = $places;
+    
+        return $this;
+    }
+
+    /**
+     * Remove places
+     *
+     * @param \Food\DishesBundle\Entity\Place $places
+     */
+    public function removePlace(\Food\DishesBundle\Entity\Place $places)
+    {
+        $this->places->removeElement($places);
+    }
 }

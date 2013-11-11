@@ -4,7 +4,7 @@ namespace Food\DishesBundle\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Translatable\Translatable;
 
 /**
  * Food category
@@ -12,8 +12,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="food_category")
  * @ORM\Entity
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\FoodCategoryLocalized")
  */
-class FoodCategory
+class FoodCategory implements Translatable
 {
     /**
      * @var integer
@@ -27,6 +28,7 @@ class FoodCategory
     /**
      * @var string
      *
+     * @Gedmo\Translatable
      * @ORM\Column(name="name", type="string", length=45)
      */
     private $name;
@@ -91,14 +93,21 @@ class FoodCategory
     /**
      * @var \Food\DishesBundle\Entity\FoodCategoryLocalized
      *
-     * @ORM\OneToMany(targetEntity="FoodCategoryLocalized", mappedBy="id")
+     * @ORM\OneToMany(targetEntity="FoodCategoryLocalized", mappedBy="object", cascade={"persist", "remove"})
      **/
-    private $localized;
+    private $translations;
 
     /**
      * @ORM\ManyToMany(targetEntity="Dish", mappedBy="foodcategories")
      */
     private $dishes;
+
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
 
     public function __toString()
     {
@@ -111,6 +120,7 @@ class FoodCategory
     {
         $this->localized = new \Doctrine\Common\Collections\ArrayCollection();
         $this->dishes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -331,36 +341,45 @@ class FoodCategory
     }
 
     /**
-     * Add localized
-     *
-     * @param \Food\DishesBundle\Entity\FoodCategoryLocalized $localized
-     * @return FoodCategory
+     * @param $locale
      */
-    public function addLocalized(\Food\DishesBundle\Entity\FoodCategoryLocalized $localized)
+    public function setTranslatableLocale($locale)
     {
-        $this->localized[] = $localized;
-    
-        return $this;
+        $this->locale = $locale;
     }
 
     /**
-     * Remove localized
+     * Add translations
      *
-     * @param \Food\DishesBundle\Entity\FoodCategoryLocalized $localized
+     * @param \Food\DishesBundle\Entity\FoodCategoryLocalized $t
+     * @return Dish
      */
-    public function removeLocalized(\Food\DishesBundle\Entity\FoodCategoryLocalized $localized)
+    public function addTranslation(\Food\DishesBundle\Entity\FoodCategoryLocalized $t)
     {
-        $this->localized->removeElement($localized);
+        if (!$this->translations->contains($t)) {
+            $this->translations[] = $t;
+            $t->setObject($this);
+        }
     }
 
     /**
-     * Get localized
+     * Remove translations
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @param \Food\DishesBundle\Entity\FoodCategoryLocalized $translations
      */
-    public function getLocalized()
+    public function removeTranslation(\Food\DishesBundle\Entity\FoodCategoryLocalized $translations)
     {
-        return $this->localized;
+        $this->translations->removeElement($translations);
+    }
+
+    /**
+     * Get translations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
     }
 
     /**

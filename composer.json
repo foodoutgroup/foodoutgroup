@@ -48,7 +48,8 @@
         "sonata-project/doctrine-orm-admin-bundle" : "dev-master",
         "stof/doctrine-extensions-bundle": "1.1.*@dev",
         "gedmo/doctrine-extensions": "~2.3.1",
-        "jdorn/sql-formatter": "dev-master"
+        "jdorn/sql-formatter": "dev-master",
+        "a2lix/translation-form-bundle": "1.*@dev"
 
     },
     "scripts": {

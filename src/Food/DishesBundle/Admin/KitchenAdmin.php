@@ -22,10 +22,25 @@ class KitchenAdmin extends FoodAdmin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper
-            ->add('name', 'text', array('label' => 'Kitchen name. Translate?'))
-            ->add('logo', 'text')
-            ->add('visible', 'checkbox', array('label' => 'Kitchen visible. Where is translation?'))
+        $options = array('required' => false);
+        if (($pl = $this->getSubject()) && $pl->getLogo()) {
+            $options['help'] = '<img src="/' . $pl->getWebPath() . '" />';
+        }
+
+        $formMapper->add(
+            'translations',
+            'a2lix_translations_gedmo',
+            array(
+                'translatable_class' => 'Food\DishesBundle\Entity\Kitchen',
+                'fields' => array(
+                    'name' => array('label' => 'Kitchen name. Translate?'),
+                )
+            ))
+            ->add('file', 'file', $options)
+            ->add('visible', 'checkbox', array(
+                'required' => false,
+                'label' => 'Kitchen visible. Where is translation?'
+            ))
         ;
     }
 
@@ -45,11 +60,43 @@ class KitchenAdmin extends FoodAdmin
     {
         $listMapper
             ->addIdentifier('name')
-            ->add('logo')
+            ->add('logo', 'string', array('template' => 'FoodDishesBundle:Default:list_image.html.twig'))
             ->add('visible')
             ->add('createdBy')
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
         ;
+    }
+
+    /**
+     * Save file before saving to db
+     *
+     * @inheritdoc
+     *
+     * @param \Food\DishesBundle\Entity\Kitchen
+     * @return mixed|void
+     */
+    public function prePersist($object)
+    {
+        $this->saveFile($object);
+        parent::prePersist($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Kitchen $object
+     * @return mixed|void
+     */
+    public function preUpdate($object)
+    {
+        $this->saveFile($object);
+        parent::preUpdate($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Kitchen $object
+     */
+    public function saveFile($object) {
+        $basepath = $this->getRequest()->getBasePath();
+        $object->upload($basepath);
     }
 }

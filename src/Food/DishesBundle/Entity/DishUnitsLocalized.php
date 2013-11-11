@@ -3,107 +3,36 @@
 namespace Food\DishesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
 
 /**
  * Dish units localized
  *
- * @ORM\Table(name="dish_units_localized")
+ * @ORM\Table(name="dish_units_localized",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="lookup_unique_idx", columns={
+ *         "locale", "object_id", "field"
+ *     })})
  * @ORM\Entity
  */
-class DishUnitsLocalized
+class DishUnitsLocalized extends AbstractPersonalTranslation
 {
     /**
-     * @var \Food\DishesBundle\Entity\DishUnit
+     * Convenient constructor
      *
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="DishUnit", inversedBy="dishunit")
-     * @ORM\JoinColumn(name="dish_unit_id", referencedColumnName="id")
+     * @param string $locale
+     * @param string $field
+     * @param string $value
      */
-    private $dishUnit;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Id
-     * @ORM\Column(name="lang", type="integer", length=1)
-     */
-    private $language;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100)
-     */
-    private $name;
-
-
-    /**
-     * Set language
-     *
-     * @param integer $language
-     * @return DishUnitsLocalized
-     */
-    public function setLanguage($language)
+    public function __construct($locale=null, $field=null, $value=null)
     {
-        $this->language = $language;
-    
-        return $this;
+        $this->setLocale($locale);
+        $this->setField($field);
+        $this->setContent($value);
     }
 
     /**
-     * Get language
-     *
-     * @return integer 
+     * @ORM\ManyToOne(targetEntity="DishUnit", inversedBy="translations")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    public function getLanguage()
-    {
-        return $this->language;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return DishUnitsLocalized
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set dishUnit
-     *
-     * @param \Food\DishesBundle\Entity\DishUnit $dishUnit
-     * @return DishUnitsLocalized
-     */
-    public function setDishUnit(\Food\DishesBundle\Entity\DishUnit $dishUnit)
-    {
-        $this->dishUnit = $dishUnit;
-    
-        return $this;
-    }
-
-    /**
-     * Get dishUnit
-     *
-     * @return \Food\DishesBundle\Entity\DishUnit 
-     */
-    public function getDishUnit()
-    {
-        return $this->dishUnit;
-    }
+    protected $object;
 }

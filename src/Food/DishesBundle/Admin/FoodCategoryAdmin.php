@@ -11,10 +11,17 @@ class FoodCategoryAdmin extends FoodAdmin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper
-            ->add('name', 'text', array('label' => 'Dish name. Translation?'))
+        $formMapper->add(
+            'translations',
+            'a2lix_translations_gedmo',
+            array(
+                'translatable_class' => 'Food\DishesBundle\Entity\FoodCategory',
+                'fields' => array(
+                    'name' => array('label' => 'Dish name. Translation?'),
+                )
+            ))
             ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'))
-            ->add('active', 'checkbox', array('label' => 'Dish active. Where is translation?'))
+            ->add('active', 'checkbox', array('required' => false, 'label' => 'Dish active. Where is translation?'))
         ;
     }
 

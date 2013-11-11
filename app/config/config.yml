@@ -162,3 +162,9 @@ sonata_admin:
 #                      - sonata.admin.users
 #                  roles: [ ROLE_ADMIN ]
               acme.admin.group.misc: ~
+# Multilingual entity items
+a2lix_translation_form:
+    locales: [lt, en, ru]
+    default_required: true
+    manager_registry: doctrine
+    templating: "A2lixTranslationFormBundle::default.html.twig"

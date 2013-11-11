@@ -22,9 +22,17 @@ class DishUnitAdmin extends FoodAdmin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper
-            ->add('name', 'text', array('label' => 'Dish name'))
-        ;
+        $formMapper->add(
+            'translations',
+            'a2lix_translations_gedmo',
+            array(
+                'translatable_class' => 'Food\DishesBundle\Entity\DishUnit',
+                'fields' => array(
+                    'name' => array(
+                    ),
+                ),
+                'label' => 'Unit name (transl)'
+            ));
     }
 
     // Fields to be shown on filter forms

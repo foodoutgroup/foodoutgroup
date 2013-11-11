@@ -55,7 +55,7 @@ class PlaceAdmin extends FoodAdmin
     {
         $listMapper
             ->addIdentifier('name')
-            ->add('image', 'string', array('template' => 'FoodDishesBundle:Place:list_image.html.twig'))
+            ->add('image', 'string', array('template' => 'FoodDishesBundle:Default:list_image.html.twig'))
         ;
     }
 
@@ -110,7 +110,8 @@ class PlaceAdmin extends FoodAdmin
             if (empty($cAt)) {
                 $point->setCreatedAt(new \DateTime('now'));
             }
-            if (empty($point->getCreatedBy())) {
+            $createdBy = $point->getCreatedBy();
+            if (empty($createdBy)) {
                 $point->setCreatedBy($user);
             }
         }
