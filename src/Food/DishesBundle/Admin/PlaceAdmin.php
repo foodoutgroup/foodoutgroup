@@ -28,6 +28,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('points', 'sonata_type_collection',
                 array(
                     //'by_reference' => false,
+                    'max_length' => 2
                 ),
                 array(
                     'edit' => 'inline',

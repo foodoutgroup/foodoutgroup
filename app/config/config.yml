@@ -129,6 +129,10 @@ services:
         - { name: doctrine.event_subscriber, connection: default }
     calls:
         - [ setAnnotationReader, [ @annotation_reader ] ]
+  food.dishes.form.type.worktime:
+      class: Food\DishesBundle\Form\Type\worktimeType
+      tags:
+          - { name: form.type, alias: worktime }
 
 sonata_block:
     default_contexts: [cms]
@@ -156,6 +160,7 @@ sonata_admin:
                   label_catalogue: FoodDishBundle
                   items:
                       - sonata.admin.dish
+                      - sonata.admin.place.pointfull
 #              acme.admin.group.users:
 #                  items: ~
 #                  item_adds:
