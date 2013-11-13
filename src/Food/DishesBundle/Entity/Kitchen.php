@@ -6,6 +6,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
+use Food\AppBundle\Entity\Uploadable;
 
 use Doctrine\ORM\EntityManager;
 
@@ -17,7 +18,7 @@ use Doctrine\ORM\EntityManager;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\KitchenLocalized")
  */
-class Kitchen implements Translatable
+class Kitchen extends Uploadable implements Translatable
 {
     /**
      * @var integer
@@ -115,66 +116,15 @@ class Kitchen implements Translatable
     private $locale;
 
     /**
-     * Duplicated kodo pradzia
-     * TODO - iskelti tiek is cia, tek is Place entity. Padaryti uploadable interface ir pakurti is jo ImageUpload (arba tiesiai upload klase, nes kolkas neaisku, keik skirtingu tipu bus)
+     * @var string
      */
-    /**
-     * @return null|string
-     */
-    public function getAbsolutePath()
-    {
-        return null === $this->logo ? null : $this->getUploadRootDir().'/'.$this->logo;
-    }
+    public $uploadableField = 'logo';
 
     /**
-     * @return null|string
-     */
-    public function getWebPath()
-    {
-        return null === $this->logo ? null : $this->getUploadDir().'/'.$this->logo;
-    }
-
-    /**
-     * @param $basepath
-     * @return string
-     */
-    protected function getUploadRootDir($basepath ='')
-    {
-        return $basepath.$this->getUploadDir();
-    }
-
-    /**
-     * @return string
-     */
-    protected function getUploadDir()
-    {
-        // get rid of the __DIR__ so it doesn't screw when displaying uploaded doc/image in the view.
-        return 'uploads/products';
-    }
-
-    /**
-     * @todo Sukurti unikalaus filename generavimo funkcionaluma.
+     * Convert object to string
      *
-     * @param $basepath
+     * @return string
      */
-    public function upload($basepath)
-    {
-        if (null === $this->file) {
-            return;
-        }
-
-        if (null === $basepath) {
-            return;
-        }
-
-        $this->file->move($this->getUploadRootDir($basepath), $this->file->getClientOriginalName());
-
-        $this->setLogo($this->file->getClientOriginalName());
-
-        $this->file = null;
-    }
-    /** the end of duplikated crap */
-
     public function __toString()
     {
         return $this->getName();

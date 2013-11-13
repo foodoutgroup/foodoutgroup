@@ -2,6 +2,7 @@
 namespace Food\AppBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin as SonataAdmin;
+use Food\AppBundle\Service\UploadService;
 
 
 /**
@@ -14,6 +15,11 @@ class Admin extends SonataAdmin
      * @var null|\Symfony\Component\DependencyInjection\ContainerInterface
      */
     private $_container = null;
+
+    /**
+     * @var UploadService
+     */
+    protected $uploadService = null;
 
     /**
      * Set create date before inserting to database
@@ -85,5 +91,35 @@ class Admin extends SonataAdmin
             $this->_container = $this->getConfigurationPool()->getContainer();
         }
         return $this->_container;
+    }
+
+    /**
+     * @param \Food\AppBundle\Service\UploadService $uploadService
+     */
+    public function setUploadService($uploadService)
+    {
+        $this->uploadService = $uploadService;
+    }
+
+    /**
+     * @return \Food\AppBundle\Service\UploadService
+     */
+    public function getUploadService()
+    {
+        if (empty($this->uploadService)) {
+            $this->uploadService = $this->getContainer()->get('food.upload');
+        }
+        return $this->uploadService;
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Place $object
+     */
+    public function saveFile($object) {
+        $uploadService = $this->getUploadService();
+        $basepath = $this->getRequest()->getBasePath();
+
+        $uploadService->setObject($object);
+        $uploadService->upload($basepath);
     }
 }
