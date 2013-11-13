@@ -6,6 +6,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Food\AppBundle\Entity\Uploadable;
 
 /**
  * Client
@@ -14,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
-class Place
+class Place extends Uploadable
 {
     /**
      * @var integer
@@ -118,64 +119,10 @@ class Place
      */
     private $deletedBy;
 
-
     /**
-     * @return null|string
+     * @var string
      */
-    public function getAbsolutePath()
-    {
-        return null === $this->logo ? null : $this->getUploadRootDir().'/'.$this->logo;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getWebPath()
-    {
-        return null === $this->logo ? null : $this->getUploadDir().'/'.$this->logo;
-    }
-
-    /**
-     * @param $basepath
-     * @return string
-     */
-    protected function getUploadRootDir($basepath)
-    {
-        return $basepath.$this->getUploadDir();
-    }
-
-    /**
-     * @return string
-     */
-    protected function getUploadDir()
-    {
-        // get rid of the __DIR__ so it doesn't screw when displaying uploaded doc/image in the view.
-        return 'uploads/products';
-    }
-
-    /**
-     * @todo Sukurti unikalaus filename generavimo funkcionaluma.
-     *
-     * @param $basepath
-     */
-    public function upload($basepath)
-    {
-        if (null === $this->file) {
-            return;
-        }
-
-        if (null === $basepath) {
-            return;
-        }
-
-        $this->file->move($this->getUploadRootDir($basepath), $this->file->getClientOriginalName());
-
-        $this->setLogo($this->file->getClientOriginalName());
-
-        $this->file = null;
-    }
-
-
+    public $uploadableField = 'logo';
 
     /**
      * TODO

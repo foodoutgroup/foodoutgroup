@@ -23,7 +23,9 @@ class KitchenAdmin extends FoodAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $options = array('required' => false);
+
         if (($pl = $this->getSubject()) && $pl->getLogo()) {
+            $this->getUploadService()->setObject($pl);
             $options['help'] = '<img src="/' . $pl->getWebPath() . '" />';
         }
 
@@ -90,13 +92,5 @@ class KitchenAdmin extends FoodAdmin
     {
         $this->saveFile($object);
         parent::preUpdate($object);
-    }
-
-    /**
-     * @param \Food\DishesBundle\Entity\Kitchen $object
-     */
-    public function saveFile($object) {
-        $basepath = $this->getRequest()->getBasePath();
-        $object->upload($basepath);
     }
 }

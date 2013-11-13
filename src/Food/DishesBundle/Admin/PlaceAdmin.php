@@ -23,7 +23,7 @@ class PlaceAdmin extends FoodAdmin
         $formMapper
             ->add('name', 'text', array('label' => 'Place name'))
             ->add('kitchens', 'entity', array('multiple'=>true, 'class' => 'Food\DishesBundle\Entity\Kitchen'))
-            ->add('active', 'checkbox', array('label' => 'I are active?'))
+            ->add('active', 'checkbox', array('label' => 'I are active?', 'required' => false,))
             ->add('file', 'file', $options)
             ->add('points', 'sonata_type_collection',
                 array(
@@ -89,14 +89,6 @@ class PlaceAdmin extends FoodAdmin
         $this->_fixPoints($object, $securityContext->getToken()->getUser());
         $this->saveFile($object);
         parent::preUpdate($object);
-    }
-
-    /**
-     * @param \Food\DishesBundle\Entity\Place $object
-     */
-    public function saveFile($object) {
-        $basepath = $this->getRequest()->getBasePath();
-        $object->upload($basepath);
     }
 
     /**

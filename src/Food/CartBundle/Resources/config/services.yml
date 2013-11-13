@@ -2,3 +2,6 @@ services:
     food.cart:
         class: Food\CartBundle\Service\CartService
         arguments: [@service_container, user_id]
+    food.upload:
+        class: Food\AppBundle\Service\UploadService
+        arguments: [@service_container, user_id]
