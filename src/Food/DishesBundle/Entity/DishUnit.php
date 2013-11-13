@@ -34,7 +34,7 @@ class DishUnit implements Translatable
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Dish", mappedBy="dishunit")
+     * @ORM\OneToMany(targetEntity="Dish", mappedBy="dishunit")
      */
     private $dishes;
 

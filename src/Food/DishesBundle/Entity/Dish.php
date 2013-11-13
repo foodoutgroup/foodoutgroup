@@ -107,10 +107,9 @@ class Dish implements Translatable
     private $categories;
 
     /**
-     * @ORM\ManyToMany(targetEntity="DishUnit", inversedBy="dishunit")
-     * @ORM\JoinTable(name="dish_unit_map")
+     * @ORM\ManyToOne(targetEntity="DishUnit", inversedBy="dishunit")
      */
-    private $units;
+    private $unit;
 
     /**
      * @ORM\ManyToMany(targetEntity="DishOption", inversedBy="dishoption")
@@ -330,39 +329,6 @@ class Dish implements Translatable
     }
 
     /**
-     * Add units
-     *
-     * @param \Food\DishesBundle\Entity\DishUnit $units
-     * @return Dish
-     */
-    public function addUnit(\Food\DishesBundle\Entity\DishUnit $units)
-    {
-        $this->units[] = $units;
-    
-        return $this;
-    }
-
-    /**
-     * Remove units
-     *
-     * @param \Food\DishesBundle\Entity\DishUnit $units
-     */
-    public function removeUnit(\Food\DishesBundle\Entity\DishUnit $units)
-    {
-        $this->units->removeElement($units);
-    }
-
-    /**
-     * Get units
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getUnits()
-    {
-        return $this->units;
-    }
-
-    /**
      * Add options
      *
      * @param \Food\DishesBundle\Entity\DishOption $options
@@ -435,6 +401,29 @@ class Dish implements Translatable
     public function getTranslations()
     {
         return $this->translations;
+    }
+
+    /**
+     * Set unit
+     *
+     * @param \Food\DishesBundle\Entity\DishUnit $unit
+     * @return Dish
+     */
+    public function setUnit(\Food\DishesBundle\Entity\DishUnit $unit = null)
+    {
+        $this->unit = $unit;
+    
+        return $this;
+    }
+
+    /**
+     * Get unit
+     *
+     * @return \Food\DishesBundle\Entity\DishUnit 
+     */
+    public function getUnit()
+    {
+        return $this->unit;
     }
 
     /**
