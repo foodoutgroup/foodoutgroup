@@ -6,8 +6,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: %locale% }
-    translator:      { fallback: lt }
+    translator:      { fallback: %locale% }
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -18,8 +17,7 @@ framework:
     templating:
         engines: ['twig']
         #assets_version:less SomeVersionScheme
-    #default_locale:  "%locale%"
-    default_locale:  "lt"
+    default_locale:  "%locale%"
     trusted_proxies: ~
     session:         ~
     fragments:       ~
@@ -145,6 +143,7 @@ sonata_block:
 # Sonata admin bloku konfigas
 sonata_admin:
     title: Skanu
+    title_logo: /bundles/foodapp/images/admin_icon.png
     dashboard:
           groups:
               acme.admin.group.places:
@@ -155,12 +154,15 @@ sonata_admin:
                       - sonata.admin.place
                       - sonata.admin.dish.unit
                       - sonata.admin.food.category
+                  roles: [ ROLE_ADMIN ]
               acme.admin.group.formanagers:
                   label: acme.admin.group.formanagers
                   label_catalogue: FoodDishBundle
                   items:
                       - sonata.admin.dish
                       - sonata.admin.place.pointfull
+                      - sonata.admin.dish.option
+                  roles: [ ROLE_MODERATOR ]
 #              acme.admin.group.users:
 #                  items: ~
 #                  item_adds:
@@ -168,8 +170,15 @@ sonata_admin:
 #                  roles: [ ROLE_ADMIN ]
               acme.admin.group.misc: ~
 # Multilingual entity items
+
+stof_doctrine_extensions:
+    default_locale: %locale%
+    orm:
+        default:
+            translatable: true
+
 a2lix_translation_form:
-    locales: [lt, en, ru]
+    locales: %available_locales%
     default_required: true
     manager_registry: doctrine
     templating: "A2lixTranslationFormBundle::default.html.twig"
