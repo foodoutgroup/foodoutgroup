@@ -4,7 +4,7 @@ namespace Food\DishesBundle\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Translatable\Translatable;
 
 /**
  * Dish option
@@ -12,8 +12,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="dish_option")
  * @ORM\Entity
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\DishOptionLocalized")
  */
-class DishOption
+class DishOption implements Translatable
 {
     /**
      * @var integer
@@ -39,18 +40,26 @@ class DishOption
     private $name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text")
+     */
+    private $description;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="hidden", type="boolean")
      */
-    private $hidden;
+    private $hidden = false;
 
     /**
      * @var \Food\DishesBundle\Entity\DishOptionLocalized
      *
-     * @ORM\OneToMany(targetEntity="DishOptionLocalized", mappedBy="id")
+     * @ORM\OneToMany(targetEntity="DishOptionLocalized", mappedBy="object", cascade={"persist", "remove"})
      **/
-    private $localized;
+    private $translations;
+
 
     /**
      * @ORM\ManyToMany(targetEntity="Dish", mappedBy="dishoption")
@@ -334,38 +343,6 @@ class DishOption
         return $this->deletedBy;
     }
 
-    /**
-     * Add localized
-     *
-     * @param \Food\DishesBundle\Entity\DishOptionLocalized $localized
-     * @return DishOption
-     */
-    public function addLocalized(\Food\DishesBundle\Entity\DishOptionLocalized $localized)
-    {
-        $this->localized[] = $localized;
-    
-        return $this;
-    }
-
-    /**
-     * Remove localized
-     *
-     * @param \Food\DishesBundle\Entity\DishOptionLocalized $localized
-     */
-    public function removeLocalized(\Food\DishesBundle\Entity\DishOptionLocalized $localized)
-    {
-        $this->localized->removeElement($localized);
-    }
-
-    /**
-     * Get localized
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getLocalized()
-    {
-        return $this->localized;
-    }
 
     /**
      * Add dishes
@@ -398,5 +375,61 @@ class DishOption
     public function getDishes()
     {
         return $this->dishes;
+    }
+
+    /**
+     * Add translations
+     *
+     * @param \Food\DishesBundle\Entity\DishOptionLocalized $translations
+     * @return DishOption
+     */
+    public function addTranslation(\Food\DishesBundle\Entity\DishOptionLocalized $translations)
+    {
+        $this->translations[] = $translations;
+    
+        return $this;
+    }
+
+    /**
+     * Remove translations
+     *
+     * @param \Food\DishesBundle\Entity\DishOptionLocalized $translations
+     */
+    public function removeTranslation(\Food\DishesBundle\Entity\DishOptionLocalized $translations)
+    {
+        $this->translations->removeElement($translations);
+    }
+
+    /**
+     * Get translations
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return DishOption
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }
