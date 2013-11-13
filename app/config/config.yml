@@ -132,6 +132,10 @@ services:
       tags:
           - { name: form.type, alias: worktime }
 
+sonata_doctrine_orm_admin:
+    templates:
+        form: [ FoodDishesBundle:Forms:form_admin_fields.html.twig ]
+
 sonata_block:
     default_contexts: [cms]
     blocks:

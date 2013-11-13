@@ -34,8 +34,8 @@ class DishAdmin extends FoodAdmin
             ))
             ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'))
             ->add('categories', 'entity', array('class' => 'Food\DishesBundle\Entity\FoodCategory', 'multiple' => true))
-            ->add('units', 'entity', array('class' => 'Food\DishesBundle\Entity\DishUnit', 'multiple' => true))
-            ->add('options', 'entity', array('class' => 'Food\DishesBundle\Entity\DishOption', 'multiple' => true))
+            ->add('unit', 'entity', array('class' => 'Food\DishesBundle\Entity\DishUnit', 'multiple' => false))
+            ->add('options', 'entity', array('class' => 'Food\DishesBundle\Entity\DishOption','expanded' => true, 'multiple' => true))
             ->add('price') // TODO type to be decimal
         ;
     }

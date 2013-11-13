@@ -32,6 +32,7 @@ services:
         calls:
             - [ setTranslationDomain, [FoodDishBundle]]
 
+
     sonata.admin.food.category:
         class: Food\DishesBundle\Admin\FoodCategoryAdmin
         tags:
