@@ -152,6 +152,7 @@ sonata_admin:
                   items:
                       - sonata.admin.kitchen
                       - sonata.admin.place
+                      - sonata.admin.place.reviews
                       - sonata.admin.dish.unit
                       - sonata.admin.food.category
                   roles: [ ROLE_ADMIN ]
@@ -161,6 +162,7 @@ sonata_admin:
                   items:
                       - sonata.admin.dish
                       - sonata.admin.place.pointfull
+                      - sonata.admin.place.reviews
                       - sonata.admin.dish.option
                   roles: [ ROLE_MODERATOR ]
 #              acme.admin.group.users:

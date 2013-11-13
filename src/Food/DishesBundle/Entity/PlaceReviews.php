@@ -25,6 +25,13 @@ class PlaceReviews
     private $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="review", type="text")
+     */
+    private $review;
+
+    /**
      * @var \Food\DishesBundle\Entity\Place
      *
      * @ORM\ManyToOne(targetEntity="Place", inversedBy="place")
@@ -36,16 +43,9 @@ class PlaceReviews
      * @var \Food\UserBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      **/
-    private $user;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="review", type="text")
-     */
-    private $review;
+    private $createdBy;
 
     /**
      * @var string
@@ -69,20 +69,20 @@ class PlaceReviews
     private $deletedAt;
 
     /**
-     * @var integer TODO User Entity!
+     * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\Column(name="edited_by", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\JoinColumn(name="edited_by", referencedColumnName="id")
      */
     private $editedBy;
 
     /**
-     * @var integer TODO User Entity!
+     * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\Column(name="deleted_by", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;
-
-
 
     /**
      * Get id
@@ -187,52 +187,6 @@ class PlaceReviews
     }
 
     /**
-     * Set editedBy
-     *
-     * @param integer $editedBy
-     * @return PlaceReviews
-     */
-    public function setEditedBy($editedBy)
-    {
-        $this->editedBy = $editedBy;
-    
-        return $this;
-    }
-
-    /**
-     * Get editedBy
-     *
-     * @return integer 
-     */
-    public function getEditedBy()
-    {
-        return $this->editedBy;
-    }
-
-    /**
-     * Set deletedBy
-     *
-     * @param integer $deletedBy
-     * @return PlaceReviews
-     */
-    public function setDeletedBy($deletedBy)
-    {
-        $this->deletedBy = $deletedBy;
-    
-        return $this;
-    }
-
-    /**
-     * Get deletedBy
-     *
-     * @return integer 
-     */
-    public function getDeletedBy()
-    {
-        return $this->deletedBy;
-    }
-
-    /**
      * Set place
      *
      * @param \Food\DishesBundle\Entity\Place $place
@@ -256,25 +210,71 @@ class PlaceReviews
     }
 
     /**
-     * Set user
+     * Set createdBy
      *
-     * @param \Food\UserBundle\Entity\User $user
+     * @param \Food\UserBundle\Entity\User $createdBy
      * @return PlaceReviews
      */
-    public function setUser(\Food\UserBundle\Entity\User $user = null)
+    public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
     {
-        $this->user = $user;
+        $this->createdBy = $createdBy;
     
         return $this;
     }
 
     /**
-     * Get user
+     * Get createdBy
      *
      * @return \Food\UserBundle\Entity\User 
      */
-    public function getUser()
+    public function getCreatedBy()
     {
-        return $this->user;
+        return $this->createdBy;
+    }
+
+    /**
+     * Set editedBy
+     *
+     * @param \Food\UserBundle\Entity\User $editedBy
+     * @return PlaceReviews
+     */
+    public function setEditedBy(\Food\UserBundle\Entity\User $editedBy = null)
+    {
+        $this->editedBy = $editedBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get editedBy
+     *
+     * @return \Food\UserBundle\Entity\User 
+     */
+    public function getEditedBy()
+    {
+        return $this->editedBy;
+    }
+
+    /**
+     * Set deletedBy
+     *
+     * @param \Food\UserBundle\Entity\User $deletedBy
+     * @return PlaceReviews
+     */
+    public function setDeletedBy(\Food\UserBundle\Entity\User $deletedBy = null)
+    {
+        $this->deletedBy = $deletedBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get deletedBy
+     *
+     * @return \Food\UserBundle\Entity\User 
+     */
+    public function getDeletedBy()
+    {
+        return $this->deletedBy;
     }
 }

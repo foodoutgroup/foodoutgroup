@@ -22,6 +22,17 @@ class DishAdmin extends FoodAdmin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $em = $this->modelManager->getEntityManager('Food\DishesBundle\Entity\FoodCategory');
+
+        /**
+         * @var QueryBuilder
+         */
+        $categoryQuery = $em->createQueryBuilder('c')
+            ->select('c')
+            ->from('Food\DishesBundle\Entity\FoodCategory', 'c')
+            ->where('c.active = 1')
+        ;
+
         $formMapper->add(
             'translations',
             'a2lix_translations_gedmo',
@@ -33,9 +44,13 @@ class DishAdmin extends FoodAdmin
                 )
             ))
             ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'))
-            ->add('categories', 'entity', array('class' => 'Food\DishesBundle\Entity\FoodCategory', 'multiple' => true))
+            ->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
             ->add('units', 'entity', array('class' => 'Food\DishesBundle\Entity\DishUnit', 'multiple' => true))
-            ->add('options', 'entity', array('class' => 'Food\DishesBundle\Entity\DishOption', 'multiple' => true))
+            ->add('options', 'entity', array(
+                'class' => 'Food\DishesBundle\Entity\DishOption',
+                'multiple' => true,
+                'required' => false
+            ))
             ->add('price') // TODO type to be decimal
         ;
     }

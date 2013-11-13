@@ -36,7 +36,7 @@ class Admin extends SonataAdmin
         $user = $securityContext->getToken()->getUser();
 
         $object->setCreatedAt(new \DateTime("now"));
-        $object->setCreatedBy($user->getId());
+        $object->setCreatedBy($user);
     }
 
     /**
@@ -55,7 +55,7 @@ class Admin extends SonataAdmin
         if (empty($deleted)) {
             // Log this troll, so we could burn him later
             $object->setEditedAt(new \DateTime("now"));
-            $object->setEditedBy($user->getId());
+            $object->setEditedBy($user);
         }
     }
 
@@ -69,8 +69,7 @@ class Admin extends SonataAdmin
         $user = $securityContext->getToken()->getUser();
 
         // Log this troll, so we could burn him later
-        // TODO - tures buti userio entitis, kai susitvarkysime useriu teises!
-        $object->setDeletedBy($user->getId());
+        $object->setDeletedBy($user);
         $this->update($object);
     }
 

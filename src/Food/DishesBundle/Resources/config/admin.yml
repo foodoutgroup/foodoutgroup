@@ -88,3 +88,14 @@ services:
             - [ setTranslationDomain, [FoodDishBundle]]
             - [ setTemplate, [edit, FoodDishesBundle:Places:place_point_admin.html.twig]]
             - [ setTemplate, [edit, FoodDishesBundle:Places:place_point_admin.html.twig]]
+
+    sonata.admin.place.reviews:
+        class: Food\DishesBundle\Admin\PlaceReviewsAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Place reviews" }
+        arguments:
+            - ~
+            - Food\DishesBundle\Entity\PlaceReviews
+            - ~
+        calls:
+            - [ setTranslationDomain, [FoodDishBundle]]
