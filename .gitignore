@@ -1,0 +1,19 @@
+/web/bundles/
+/app/bootstrap*
+/app/cache/*
+/app/logs/*
+/vendor/
+/app/config/parameters.yml
+
+# ignore Assetic generated css/js files
+/web/css/*
+/web/js/*
+
+# ignore MacOS files
+.DS_Store
+
+# ignore uploaded files
+/web/images/**/*
+
+# ignore phpStorm crap
+.idea
