@@ -18,9 +18,9 @@ class User extends BaseUser
      */
     protected $id;
 
-
     /**
-     * @ORM\OneToMany(targetEntity="Food\DishesBundle\Entity\Place", mappedBy="id")
+     * @ORM\ManyToOne(targetEntity="Food\DishesBundle\Entity\Place", inversedBy="places")
+     * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
      **/
     private $places = array();
 
@@ -84,5 +84,19 @@ class User extends BaseUser
     public function removePlace(\Food\DishesBundle\Entity\Place $places)
     {
         $this->places->removeElement($places);
+    }
+
+    /**
+     *  TODO laikinas crap debuginimui. Po to pasidarykime normalu castinima
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'groupNames' => $this->getGroupNames(),
+            'roles' => $this->getRoles(),
+        );
     }
 }

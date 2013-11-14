@@ -5,6 +5,7 @@ use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Food\DishesBundle\Entity\Place;
 
 class DishAdmin extends FoodAdmin
 {
@@ -42,8 +43,14 @@ class DishAdmin extends FoodAdmin
                     'name' => array(
                     ),
                 )
-            ))
-            ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'))
+            ));
+
+        // If user is admin - he can screw Your place. But if user is a moderator - we will set the place ir prePersist!
+        if ($this->getContainer()->get('security.context')->isGranted('ROLE_ADMIN')) {
+            $formMapper->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
+        }
+
+        $formMapper
             ->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
             ->add('unit', 'entity', array('class' => 'Food\DishesBundle\Entity\DishUnit', 'multiple' => false))
             ->add('options', 'entity', array('class' => 'Food\DishesBundle\Entity\DishOption','expanded' => true, 'multiple' => true, 'required' => false))
@@ -80,4 +87,20 @@ class DishAdmin extends FoodAdmin
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
         ;
     }
+
+    /*
+     * TODO sarasui filtruoti place
+     */
+    public function prePersist($object)
+    {
+        $securityContext = $this->getContainer()->get('security.context');
+        if (!$securityContext->isGranted('ROLE_ADMIN') && $securityContext->isGranted('ROLE_MODERATOR')) {
+//            $place = new Place();
+            $place = $this->modelManager->find('Place', $this->getUser()->getPlaces()->getId());
+
+            $object->setPlace($place);
+        }
+        parent::prePersist($object);
+    }
+
 }

@@ -22,6 +22,31 @@ class Admin extends SonataAdmin
     protected $uploadService = null;
 
     /**
+     * @var mixed
+     */
+    protected $user = null;
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        if (empty($this->user)) {
+            $securityContext = $this->getContainer()->get('security.context');
+            $this->user = $securityContext->getToken()->getUser();
+        }
+        return $this->user;
+    }
+
+    /**
      * Set create date before inserting to database
      *
      * @inheritdoc
@@ -31,12 +56,8 @@ class Admin extends SonataAdmin
      */
     public function prePersist($object)
     {
-        // The magic container is here
-        $securityContext = $this->getContainer()->get('security.context');
-        $user = $securityContext->getToken()->getUser();
-
         $object->setCreatedAt(new \DateTime("now"));
-        $object->setCreatedBy($user);
+        $object->setCreatedBy($this->getUser());
     }
 
     /**
@@ -48,14 +69,11 @@ class Admin extends SonataAdmin
      */
     public function preUpdate($object)
     {
-        $securityContext = $this->getContainer()->get('security.context');
-        $user = $securityContext->getToken()->getUser();
-
         $deleted = $object->getDeletedAt();
         if (empty($deleted)) {
             // Log this troll, so we could burn him later
             $object->setEditedAt(new \DateTime("now"));
-            $object->setEditedBy($user);
+            $object->setEditedBy($this->getUser());
         }
     }
 
@@ -65,11 +83,8 @@ class Admin extends SonataAdmin
      */
     public function postRemove($object)
     {
-        $securityContext = $this->getContainer()->get('security.context');
-        $user = $securityContext->getToken()->getUser();
-
         // Log this troll, so we could burn him later
-        $object->setDeletedBy($user);
+        $object->setDeletedBy($this->getUser());
         $this->update($object);
     }
 
