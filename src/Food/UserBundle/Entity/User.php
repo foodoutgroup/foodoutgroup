@@ -18,7 +18,6 @@ class User extends BaseUser
      */
     protected $id;
 
-
     /**
      * @ORM\OneToMany(targetEntity="Food\DishesBundle\Entity\Place", mappedBy="id")
      **/
