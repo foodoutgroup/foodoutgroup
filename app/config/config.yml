@@ -4,6 +4,9 @@ imports:
     - { resource: "@FoodCartBundle/Resources/config/services.yml" }
     - { resource: "@FoodDishesBundle/Resources/config/admin.yml" }
 
+parameters:
+    available_locales: [lt, ru]
+
 framework:
     #esi:             ~
     translator:      { fallback: %locale% }

@@ -11,5 +11,4 @@ parameters:
     mailer_user: null
     mailer_password: null
     locale: lt
-    available_locales: [lt, ru]
     secret: f6180a0fb30e99a1da1e364412f96c3f98cbaa1f
