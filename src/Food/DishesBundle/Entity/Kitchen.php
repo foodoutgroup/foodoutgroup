@@ -40,7 +40,7 @@ class Kitchen extends Uploadable implements Translatable
     /**
      * @var string
      *
-     * @ORM\Column(name="logo", type="string", length=100)
+     * @ORM\Column(name="logo", type="string", length=100, nullable=true)
      */
     private $logo;
 
