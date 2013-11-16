@@ -100,3 +100,14 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [FoodDishBundle]]
+
+#    sonata.admin.users:
+#        class: Food\DishesBundle\Admin\PlaceReviewsAdmin
+#        tags:
+#            - { name: sonata.admin, manager_type: orm, group: "Users", label: "Users" }
+#        arguments:
+#            - ~
+#            - Food\UserBundle\Entity\User
+#            - ~
+#        calls:
+#            - [ setTranslationDomain, [FoodDishBundle]]

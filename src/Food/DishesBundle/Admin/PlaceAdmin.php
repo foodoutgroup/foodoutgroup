@@ -14,6 +14,18 @@ class PlaceAdmin extends FoodAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        /**
+         * @var EntityManager $em
+         */
+        $em = $this->modelManager->getEntityManager('Food\DishesBundle\Entity\Kitchen');
+        /**
+         * @var QueryBuilder
+         */
+        $kitchenQuery = $em->createQueryBuilder('k')
+            ->select('k')
+            ->from('Food\DishesBundle\Entity\Kitchen', 'k')
+            ->where('k.visible = 1')
+        ;
 
         $options = array('required' => false);
         if (($pl = $this->getSubject()) && $pl->getLogo()) {
@@ -22,7 +34,7 @@ class PlaceAdmin extends FoodAdmin
 
         $formMapper
             ->add('name', 'text', array('label' => 'Place name'))
-            ->add('kitchens', 'entity', array('multiple'=>true, 'class' => 'Food\DishesBundle\Entity\Kitchen'))
+            ->add('kitchens', null, array('query_builder' => $kitchenQuery, 'multiple'=>true,))
             ->add('active', 'checkbox', array('label' => 'I are active?', 'required' => false,))
             ->add('file', 'file', $options)
             ->add('points', 'sonata_type_collection',

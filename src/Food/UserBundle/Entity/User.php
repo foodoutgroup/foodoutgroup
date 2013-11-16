@@ -22,12 +22,11 @@ class User extends BaseUser
      * @ORM\ManyToOne(targetEntity="Food\DishesBundle\Entity\Place", inversedBy="places")
      * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
      **/
-    private $places = array();
+    private $place;
 
     public function __construct()
     {
         parent::__construct();
-        //$this->places =  new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -38,42 +37,6 @@ class User extends BaseUser
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set places
-     *
-     * @param \Food\DishesBundle\Entity\Place $places
-     * @return User
-     */
-    public function setPlaces(\Food\DishesBundle\Entity\Place $places = null)
-    {
-        $this->places = $places;
-    
-        return $this;
-    }
-
-    /**
-     * Get places
-     *
-     * @return \Food\DishesBundle\Entity\Place 
-     */
-    public function getPlaces()
-    {
-        return $this->places;
-    }
-
-    /**
-     * Add places
-     *
-     * @param \Food\DishesBundle\Entity\Place $places
-     * @return User
-     */
-    public function addPlace(\Food\DishesBundle\Entity\Place $places)
-    {
-        $this->places[] = $places;
-    
-        return $this;
     }
 
     /**
@@ -98,5 +61,28 @@ class User extends BaseUser
             'groupNames' => $this->getGroupNames(),
             'roles' => $this->getRoles(),
         );
+    }
+
+    /**
+     * Set place
+     *
+     * @param \Food\DishesBundle\Entity\Place $place
+     * @return User
+     */
+    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
+    {
+        $this->place = $place;
+    
+        return $this;
+    }
+
+    /**
+     * Get place
+     *
+     * @return \Food\DishesBundle\Entity\Place 
+     */
+    public function getPlace()
+    {
+        return $this->place;
     }
 }

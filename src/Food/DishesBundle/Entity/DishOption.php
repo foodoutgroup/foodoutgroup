@@ -67,6 +67,14 @@ class DishOption implements Translatable
     private $dishes;
 
     /**
+     * @var \Food\DishesBundle\Entity\Place
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="place")
+     * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
+     */
+    private $place;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -433,5 +441,28 @@ class DishOption implements Translatable
     public function getDeletedBy()
     {
         return $this->deletedBy;
+    }
+
+    /**
+     * Set place
+     *
+     * @param \Food\DishesBundle\Entity\Place $place
+     * @return DishOption
+     */
+    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
+    {
+        $this->place = $place;
+    
+        return $this;
+    }
+
+    /**
+     * Get place
+     *
+     * @return \Food\DishesBundle\Entity\Place 
+     */
+    public function getPlace()
+    {
+        return $this->place;
     }
 }

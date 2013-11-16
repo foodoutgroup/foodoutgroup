@@ -1,6 +1,7 @@
 <?php
 namespace Food\DishesBundle\Admin;
 
+use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -23,15 +24,24 @@ class DishAdmin extends FoodAdmin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
+        /**
+         * @var EntityManager $em
+         */
         $em = $this->modelManager->getEntityManager('Food\DishesBundle\Entity\FoodCategory');
-
         /**
          * @var QueryBuilder
          */
         $categoryQuery = $em->createQueryBuilder('c')
             ->select('c')
             ->from('Food\DishesBundle\Entity\FoodCategory', 'c')
-            ->where('c.active = 1')
+        ;
+
+        /**
+         * @var QueryBuilder
+         */
+        $optionsQuery = $em->createQueryBuilder('o')
+            ->select('o')
+            ->from('Food\DishesBundle\Entity\DishOption', 'o')
         ;
 
         $formMapper->add(
@@ -46,15 +56,29 @@ class DishAdmin extends FoodAdmin
             ));
 
         // If user is admin - he can screw Your place. But if user is a moderator - we will set the place ir prePersist!
-        if ($this->getContainer()->get('security.context')->isGranted('ROLE_ADMIN')) {
+        if ($this->isAdmin()) {
             $formMapper->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
+
+            // Filter out inactive, hidden field options
+            $categoryQuery->where('c.active = 1');
+            $optionsQuery->where('o.hidden = 0');
+        } else {
+            // If user is a moderator - he is assigned to a place (unless he is Chuck or Cekuolis)
+            $userPlaceId = $this->getUser()->getPlace()->getId();
+
+            // Filter out inactive, hidden field options
+            $categoryQuery->where('c.active = 1 AND c.place = :place')
+                ->setParameter('place', $userPlaceId);
+
+            $optionsQuery->where('o.hidden = 0 AND o.place = :place')
+                ->setParameter('place', $userPlaceId);
         }
 
         $formMapper
             ->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
             ->add('unit', 'entity', array('class' => 'Food\DishesBundle\Entity\DishUnit', 'multiple' => false))
-            ->add('options', 'entity', array('class' => 'Food\DishesBundle\Entity\DishOption','expanded' => true, 'multiple' => true, 'required' => false))
-            ->add('price') // TODO type to be decimal
+            ->add('options', null, array('query_builder' => $optionsQuery,'expanded' => true, 'multiple' => true, 'required' => false))
+            ->add('price')
         ;
     }
 
@@ -65,7 +89,7 @@ class DishAdmin extends FoodAdmin
             ->add('name')
             ->add('place')
             ->add('categories')
-            ->add('units')
+            ->add('unit')
             ->add('options')
             ->add('createdBy')
             ->add('createdAt')
@@ -79,7 +103,7 @@ class DishAdmin extends FoodAdmin
             ->addIdentifier('name')
             ->add('place')
             ->add('categories')
-            ->add('units')
+            ->add('unit')
             ->add('options')
             ->add('price')
             ->add('createdBy')
@@ -89,14 +113,15 @@ class DishAdmin extends FoodAdmin
     }
 
     /*
-     * TODO sarasui filtruoti place
+     * If user is a moderator - set place, as he can not choose it. Chuck Norris protection is active
      */
     public function prePersist($object)
     {
-        $securityContext = $this->getContainer()->get('security.context');
-        if (!$securityContext->isGranted('ROLE_ADMIN') && $securityContext->isGranted('ROLE_MODERATOR')) {
-//            $place = new Place();
-            $place = $this->modelManager->find('Place', $this->getUser()->getPlaces()->getId());
+        if ($this->isModerator()) {
+            /**
+             * @var Place $place
+             */
+            $place = $this->modelManager->find('Food\DishesBundle\Entity\Place', $this->getUser()->getPlace()->getId());
 
             $object->setPlace($place);
         }

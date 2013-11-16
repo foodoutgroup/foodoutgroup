@@ -96,6 +96,8 @@ doctrine:
         # if using pdo_sqlite as your database driver, add the path in parameters.yml
         # e.g. database_path: %kernel.root_dir%/data/data.db3
         # path:     %database_path%
+        types:
+          json: Sonata\Doctrine\Types\JsonType
 
     orm:
         auto_generate_proxy_classes: %kernel.debug%
@@ -149,14 +151,22 @@ sonata_block:
 
 # Sonata admin bloku konfigas
 sonata_admin:
-    title: Skanu
+    title: Skanu.lt
     title_logo: /bundles/foodapp/images/admin_icon.png
+    templates:
+      layout: SonataAdminBundle::standard_layout.html.twig
+      ajax:   SonataAdminBundle::ajax_layout.html.twig
+
+      list: SonataAdminBundle:CRUD:list.html.twig
+      show: SonataAdminBundle:CRUD:show.html.twig
+      edit: SonataAdminBundle:CRUD:edit.html.twig
     dashboard:
           groups:
               acme.admin.group.places:
                   label: acme.admin.group.places
                   label_catalogue: FoodDishBundle
                   items:
+#                      - sonata.admin.user
                       - sonata.admin.kitchen
                       - sonata.admin.place
                       - sonata.admin.place.reviews
@@ -167,10 +177,11 @@ sonata_admin:
                   label: acme.admin.group.formanagers
                   label_catalogue: FoodDishBundle
                   items:
+                      - sonata.admin.food.category
                       - sonata.admin.dish
+                      - sonata.admin.dish.option
                       - sonata.admin.place.pointfull
                       - sonata.admin.place.reviews
-                      - sonata.admin.dish.option
                   roles: [ ROLE_MODERATOR ]
 #              acme.admin.group.users:
 #                  items: ~

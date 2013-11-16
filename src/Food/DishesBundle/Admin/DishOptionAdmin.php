@@ -23,8 +23,13 @@ class DishOptionAdmin extends FoodAdmin
                 ),
                 'label' => 'Unit name (transl)'
             )
-        )
-        ->add('price')
+        );
+
+        if ($this->isAdmin()) {
+            $formMapper->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
+        }
+
+        $formMapper->add('price')
         ;
     }
 
@@ -48,5 +53,18 @@ class DishOptionAdmin extends FoodAdmin
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
         ;
+    }
+
+    /*
+     * If user is a moderator - set place, as he can not choose it. Chuck Norris protection is active
+     */
+    public function prePersist($object)
+    {
+        if ($this->isModerator()) {
+            $place = $this->modelManager->find('Food\DishesBundle\Entity\Place', $this->getUser()->getPlace()->getId());
+
+            $object->setPlace($place);
+        }
+        parent::prePersist($object);
     }
 }

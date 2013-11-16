@@ -19,8 +19,12 @@ class FoodCategoryAdmin extends FoodAdmin
                 'fields' => array(
                     'name' => array('label' => 'Dish name. Translation?'),
                 )
-            ))
-            ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'))
+            ));
+        if ($this->isAdmin()) {
+            $formMapper
+                ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place', 'disabled' => true));
+        }
+        $formMapper
             ->add('active', 'checkbox', array('required' => false, 'label' => 'Dish active. Where is translation?'))
         ;
     }
@@ -51,4 +55,21 @@ class FoodCategoryAdmin extends FoodAdmin
             ->add('deletedAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
         ;
     }
+
+    /*
+     * If user is a moderator - set place, as he can not choose it. Chuck Norris protection is active
+     */
+    public function prePersist($object)
+    {
+        if ($this->isModerator()) {
+            /**
+             * @var Place $place
+             */
+            $place = $this->modelManager->find('Food\DishesBundle\Entity\Place', $this->getUser()->getPlace()->getId());
+
+            $object->setPlace($place);
+        }
+        parent::prePersist($object);
+    }
+
 }

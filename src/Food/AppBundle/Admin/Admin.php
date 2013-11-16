@@ -3,6 +3,7 @@ namespace Food\AppBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin as SonataAdmin;
 use Food\AppBundle\Service\UploadService;
+use Symfony\Component\Security\Core\SecurityContext;
 
 
 /**
@@ -27,6 +28,11 @@ class Admin extends SonataAdmin
     protected $user = null;
 
     /**
+     * @var SecurityContext
+     */
+    protected $securityContext = null;
+
+    /**
      * @param mixed $user
      */
     public function setUser($user)
@@ -40,8 +46,7 @@ class Admin extends SonataAdmin
     public function getUser()
     {
         if (empty($this->user)) {
-            $securityContext = $this->getContainer()->get('security.context');
-            $this->user = $securityContext->getToken()->getUser();
+            $this->user = $this->getSecurityContext()->getToken()->getUser();
         }
         return $this->user;
     }
@@ -129,11 +134,54 @@ class Admin extends SonataAdmin
     /**
      * @param \Food\DishesBundle\Entity\Place $object
      */
-    public function saveFile($object) {
+    public function saveFile($object)
+    {
         $uploadService = $this->getUploadService();
         $basepath = $this->getRequest()->getBasePath();
 
         $uploadService->setObject($object);
         $uploadService->upload($basepath);
+    }
+
+    /**
+     * @param \Symfony\Component\Security\Core\SecurityContext $securityContext
+     */
+    public function setSecurityContext($securityContext)
+    {
+        $this->securityContext = $securityContext;
+    }
+
+    /**
+     * @return \Symfony\Component\Security\Core\SecurityContext
+     */
+    public function getSecurityContext()
+    {
+        if (empty($this->securityContext)) {
+            $this->securityContext = $this->getContainer()->get('security.context');
+        }
+        return $this->securityContext;
+    }
+
+    /**
+     * Is user just a place moderator?
+     *
+     * @return bool
+     */
+    public function isModerator()
+    {
+        return (
+            !$this->getSecurityContext()->isGranted('ROLE_ADMIN')
+            && $this->getSecurityContext()->isGranted('ROLE_MODERATOR')
+        );
+    }
+
+    /**
+     * Is user as powerfull as Terminator? Is he Mister Administrator?
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->getSecurityContext()->isGranted('ROLE_ADMIN');
     }
 }
