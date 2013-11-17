@@ -42,7 +42,14 @@
                 <source>admin.kitchens.list.count</source>
                 <target>Kiekis</target>
             </trans-unit>
-
+            <trans-unit id="11">
+                <source>label.name</source>
+                <target>Pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="default">
+                <source>Default</source>
+                <target>Pagr.</target>
+            </trans-unit>
 
         </body>
     </file>

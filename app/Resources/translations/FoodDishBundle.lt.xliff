@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="price">
+                <source>Price</source>
+                <target>Kaina</target>
+            </trans-unit>
+            <trans-unit id="options">
+                <source>Options</source>
+                <target>Priedai</target>
+            </trans-unit>
+            <trans-unit id="unit">
+                <source>Unit</source>
+                <target>Matas</target>
+            </trans-unit>
+            <trans-unit id="categories">
+                <source>Categories</source>
+                <target>Kategorijos</target>
+            </trans-unit>
+            <trans-unit id="place">
+                <source>Place</source>
+                <target>Vieta</target>
+            </trans-unit>
+            <trans-unit id="translations">
+                <source>Translations</source>
+                <target>Kalbos</target>
+            </trans-unit>
+            <trans-unit id="dish">
+                <source>Dish</source>
+                <target>Patiekalas</target>
+            </trans-unit>
+
+        </body>
+    </file>
+</xliff>
