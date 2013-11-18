@@ -1,24 +1,28 @@
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
-{% block title %}Symfony - Welcome{% endblock %}
-
-{% block content_header '' %}
 
 {% block body %}
-    <div class="row">
-        Ze test {{ name }}
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">{% trans %}admin.places.newclient.title{% endtrans %}</h3>
-            </div>
-            <div class="panel-body">
-
-                <div class="input-group input-group-lg">
-                    <span class="input-group-addon">@</span>
-                    <input type="text" class="form-control input-lg" placeholder="{% trans %}admin.places.newclient.client_name{% endtrans %}">
-                </div>
-            </div>
+    <div class="col-xs-12 col-sm-10">
+        <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+        </p>
+        <div class="jumbotron">
+            <h1>Jami. Skanu</h1>
+            <p>Galima uzsisakyti maista :)</p>
         </div>
-    </div>
+        <div class="row">
+            {% for i in 0..10 %}
+            <div class="col-6 col-sm-6 col-lg-4">
+                <h2>Patiekalas</h2>
+                <p>
+                    {% image '@FoodAppBundle/Resources/public/images/test_img.jpg' output='/images/test_img.jpg' %}
+                    <img src="{{ asset_url }}" alt="" style="width: 200px; border-radius: 30px;"/>
+                    {% endimage %}
+                <li>Mesyte</li><li>Suris</li><li>Petrushka</li> </p>
+                <p><a class="btn btn-default" href="#" role="button">Placiau &raquo;</a></p>
+            </div>
+            {% endfor %}
+
+        </div><!--/row-->
+    </div><!--/span-->
 {% endblock %}
