@@ -2,25 +2,13 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
-            <trans-unit id="1">
-                <source>admin.places.list.title</source>
-                <target>Vietos</target>
+            <trans-unit id="label.name">
+                <source>label.name</source>
+                <target>Pavadinimas</target>
             </trans-unit>
-            <trans-unit id="2">
-                <source>admin.places.list.name</source>
-                <target>Vietos pavadinimas</target>
-            </trans-unit>
-            <trans-unit id="3">
-                <source>admin.places.list.logo</source>
-                <target>Logotipas</target>
-            </trans-unit>
-            <trans-unit id="4">
-                <source>admin.places.list.active</source>
-                <target>Aktyvus</target>
-            </trans-unit>
-            <trans-unit id="5">
-                <source>admin.places.list.actions</source>
-                <target>Veiksmai</target>
+            <trans-unit id="default">
+                <source>Default</source>
+                <target>Pagr.</target>
             </trans-unit>
         </body>
     </file>

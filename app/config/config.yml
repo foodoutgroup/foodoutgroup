@@ -163,10 +163,9 @@ sonata_admin:
     dashboard:
           groups:
               acme.admin.group.places:
-                  label: acme.admin.group.places
-                  label_catalogue: FoodDishBundle
+                  label: admin.group.places
+                  label_catalogue: SonataAdminBundle
                   items:
-#                      - sonata.admin.user
                       - sonata.admin.kitchen
                       - sonata.admin.place
                       - sonata.admin.place.reviews
@@ -174,8 +173,8 @@ sonata_admin:
                       - sonata.admin.food.category
                   roles: [ ROLE_ADMIN ]
               acme.admin.group.formanagers:
-                  label: acme.admin.group.formanagers
-                  label_catalogue: FoodDishBundle
+                  label: admin.group.formanagers
+                  label_catalogue: SonataAdminBundle
                   items:
                       - sonata.admin.food.category
                       - sonata.admin.dish

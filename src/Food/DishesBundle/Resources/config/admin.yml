@@ -8,7 +8,7 @@ services:
             - Food\DishesBundle\Entity\Dish
             - ~
         calls:
-            - [ setTranslationDomain, [FoodDishBundle]]
+            - [ setTranslationDomain, [SonataAdminBundle]]
 
     sonata.admin.dish.unit:
         class: Food\DishesBundle\Admin\DishUnitAdmin
@@ -19,7 +19,7 @@ services:
             - Food\DishesBundle\Entity\DishUnit
             - ~
         calls:
-            - [ setTranslationDomain, [FoodDishBundle]]
+            - [ setTranslationDomain, [SonataAdminBundle]]
 
     sonata.admin.dish.option:
         class: Food\DishesBundle\Admin\DishOptionAdmin
@@ -30,30 +30,30 @@ services:
             - Food\DishesBundle\Entity\DishOption
             - ~
         calls:
-            - [ setTranslationDomain, [FoodDishBundle]]
+            - [ setTranslationDomain, [SonataAdminBundle]]
 
 
     sonata.admin.food.category:
         class: Food\DishesBundle\Admin\FoodCategoryAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Food category" }
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "food.category" }
         arguments:
             - ~
             - Food\DishesBundle\Entity\FoodCategory
             - ~
         calls:
-            - [ setTranslationDomain, [FoodDishBundle]]
+            - [ setTranslationDomain, [SonataAdminBundle]]
 
     sonata.admin.kitchen:
         class: Food\DishesBundle\Admin\KitchenAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Kitchen type" }
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.kitchen.type" }
         arguments:
             - ~
             - Food\DishesBundle\Entity\Kitchen
             - ~
         calls:
-            - [ setTranslationDomain, [FoodDishBundle]]
+            - [ setTranslationDomain, [SonataAdminBundle]]
 
     sonata.admin.place:
         class: Food\DishesBundle\Admin\PlaceAdmin
@@ -64,7 +64,7 @@ services:
             - Food\DishesBundle\Entity\Place
             - ~
         calls:
-            - [ setTranslationDomain, [FoodDishBundle]]
+            - [ setTranslationDomain, [SonataAdminBundle]]
 
     sonata.admin.place.point:
         class: Food\DishesBundle\Admin\PlacePointAdmin
@@ -75,7 +75,7 @@ services:
             - Food\DishesBundle\Entity\PlacePoint
             - ~
         calls:
-            - [ setTranslationDomain, [FoodDishBundle]]
+            - [ setTranslationDomain, [SonataAdminBundle]]
 
     sonata.admin.place.pointfull:
         class: Food\DishesBundle\Admin\PlacePointFullAdmin
@@ -86,8 +86,7 @@ services:
             - Food\DishesBundle\Entity\PlacePoint
             - ~
         calls:
-            - [ setTranslationDomain, [FoodDishBundle]]
-            - [ setTemplate, [edit, FoodDishesBundle:Places:place_point_admin.html.twig]]
+            - [ setTranslationDomain, [SonataAdminBundle]]
             - [ setTemplate, [edit, FoodDishesBundle:Places:place_point_admin.html.twig]]
 
     sonata.admin.place.reviews:
@@ -99,7 +98,7 @@ services:
             - Food\DishesBundle\Entity\PlaceReviews
             - ~
         calls:
-            - [ setTranslationDomain, [FoodDishBundle]]
+            - [ setTranslationDomain, [SonataAdminBundle]]
 
 #    sonata.admin.users:
 #        class: Food\DishesBundle\Admin\PlaceReviewsAdmin
@@ -110,4 +109,4 @@ services:
 #            - Food\UserBundle\Entity\User
 #            - ~
 #        calls:
-#            - [ setTranslationDomain, [FoodDishBundle]]
+#            - [ setTranslationDomain, [SonataAdminBundle]]
