@@ -22,7 +22,7 @@ class KitchenAdmin extends FoodAdmin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $options = array('required' => false);
+        $options = array('required' => false, 'label' => 'admin.kitchen.logo');
 
         if (($pl = $this->getSubject()) && $pl->getLogo()) {
             $this->getUploadService()->setObject($pl);
@@ -35,13 +35,13 @@ class KitchenAdmin extends FoodAdmin
             array(
                 'translatable_class' => 'Food\DishesBundle\Entity\Kitchen',
                 'fields' => array(
-                    'name' => array('label' => 'Kitchen name. Translate?'),
+                    'name' => array('label' => 'label.name'),
                 )
             ))
             ->add('file', 'file', $options)
             ->add('visible', 'checkbox', array(
                 'required' => false,
-                'label' => 'Kitchen visible. Where is translation?'
+                'label' => 'admin.visible'
             ))
         ;
     }
@@ -61,12 +61,15 @@ class KitchenAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
-            ->add('logo', 'string', array('template' => 'FoodDishesBundle:Default:list_image.html.twig'))
-            ->add('visible')
-            ->add('createdBy')
-            ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
-            ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
+            ->addIdentifier('name', 'string', array('label' => 'admin.kitchen.name'))
+            ->add('logo', 'string', array(
+                'template' => 'FoodDishesBundle:Default:list_image.html.twig',
+                'label' => 'admin.kitchen.logo')
+            )
+            ->add('visible', null, array('label' => 'admin.visible'))
+            ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
+            ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
+            ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
         ;
     }
 

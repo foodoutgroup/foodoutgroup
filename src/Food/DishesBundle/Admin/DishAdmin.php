@@ -101,15 +101,15 @@ class DishAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
+            ->addIdentifier('name', 'string', array('label' => 'admin.dish.name'))
             ->add('place')
             ->add('categories')
             ->add('unit')
             ->add('options')
             ->add('price')
-            ->add('createdBy')
-            ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
-            ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
+            ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
+            ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
+            ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
         ;
     }
 

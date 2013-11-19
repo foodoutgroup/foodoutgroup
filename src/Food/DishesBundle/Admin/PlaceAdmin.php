@@ -27,20 +27,25 @@ class PlaceAdmin extends FoodAdmin
             ->where('k.visible = 1')
         ;
 
-        $options = array('required' => false);
+        $options = array('required' => false, 'label' => 'admin.place.logo');
         if (($pl = $this->getSubject()) && $pl->getLogo()) {
             $options['help'] = '<img src="/' . $pl->getWebPath() . '" />';
         }
 
         $formMapper
-            ->add('name', 'text', array('label' => 'Place name'))
-            ->add('kitchens', null, array('query_builder' => $kitchenQuery, 'multiple'=>true,))
-            ->add('active', 'checkbox', array('label' => 'I are active?', 'required' => false,))
+            ->add('name', 'text', array('label' => 'admin.place.name'))
+            ->add('kitchens', null, array(
+                'query_builder' => $kitchenQuery,
+                'multiple' => true,
+                'label' => 'admin.place.kitchens')
+            )
+            ->add('active', 'checkbox', array('label' => 'admin.active', 'required' => false,))
             ->add('file', 'file', $options)
             ->add('points', 'sonata_type_collection',
                 array(
                     //'by_reference' => false,
-                    'max_length' => 2
+                    'max_length' => 2,
+                    'label' => 'admin.place.points',
                 ),
                 array(
                     'edit' => 'inline',
@@ -55,7 +60,7 @@ class PlaceAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
+            ->add('name', null, array(), null, array('label' => 'admin.place.name'))
 
 //            ->add('place')
         ;
@@ -67,8 +72,11 @@ class PlaceAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
-            ->add('image', 'string', array('template' => 'FoodDishesBundle:Default:list_image.html.twig'))
+            ->addIdentifier('name', 'string', array('label' => 'admin.place.name'))
+            ->add('image', 'string', array(
+                'template' => 'FoodDishesBundle:Default:list_image.html.twig',
+                'label' => 'admin.place.logo'
+            ))
         ;
     }
 

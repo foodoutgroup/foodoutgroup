@@ -12,23 +12,25 @@ class PlacePointFullAdmin extends FoodAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('address', 'text', array('label' => 'Adresas'))
-            ->add('city', 'text', array('label' => 'Miestas'))
-            ->add('coords', 'text', array('label' => 'Koordinates'))
-            ->add('wd1_start', 'text', array('label' => 'wd1_start'))
-            ->add('wd1_end', 'text', array('label' => 'wd1_end'))
-            ->add('wd2_start', 'text', array('label' => 'wd2_start'))
-            ->add('wd2_end', 'text', array('label' => 'wd2_end'))
-            ->add('wd3_start', 'text', array('label' => 'wd3_start'))
-            ->add('wd3_end', 'text', array('label' => 'wd3_end'))
-            ->add('wd4_start', 'text', array('label' => 'wd4_start'))
-            ->add('wd4_end', 'text', array('label' => 'wd4_end'))
-            ->add('wd5_start', 'text', array('label' => 'wd5_start'))
-            ->add('wd5_end', 'text', array('label' => 'wd5_end'))
-            ->add('wd6_start', 'text', array('label' => 'wd6_start'))
-            ->add('wd6_end', 'text', array('label' => 'wd6_end'))
-            ->add('wd7_start', 'text', array('label' => 'wd7_start'))
-            ->add('wd7_end', 'text', array('label' => 'wd7_end'))
+            ->add('address', 'text', array('label' => 'admin.point.address'))
+            ->add('city', 'text', array('label' => 'admin.point.city'))
+            ->add('coords', 'text', array('label' => 'admin.point.coords'))
+            ->with('admin.point.work_time')
+            ->add('wd1_start', 'text', array('label' => 'admin.point.wd1_start'))
+            ->add('wd1_end', 'text', array('label' => 'admin.point.wd_end'))
+            ->add('wd2_start', 'text', array('label' => 'admin.point.wd2_start'))
+            ->add('wd2_end', 'text', array('label' => 'admin.point.wd_end'))
+            ->add('wd3_start', 'text', array('label' => 'admin.point.wd3_start'))
+            ->add('wd3_end', 'text', array('label' => 'admin.point.wd_end'))
+            ->add('wd4_start', 'text', array('label' => 'admin.point.wd4_start'))
+            ->add('wd4_end', 'text', array('label' => 'admin.point.wd_end'))
+            ->add('wd5_start', 'text', array('label' => 'admin.point.wd5_start'))
+            ->add('wd5_end', 'text', array('label' => 'admin.point.wd_end'))
+            ->add('wd6_start', 'text', array('label' => 'admin.point.wd6_start'))
+            ->add('wd6_end', 'text', array('label' => 'admin.point.wd_end'))
+            ->add('wd7_start', 'text', array('label' => 'admin.point.wd7_start'))
+            ->add('wd7_end', 'text', array('label' => 'admin.point.wd_end'))
+            ->end()
         ;
     }
 
@@ -42,9 +44,9 @@ class PlacePointFullAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('address')
-            ->addIdentifier('city')
-            ->addIdentifier('coords')
+            ->addIdentifier('address', 'string', array('label' => 'admin.point.address'))
+            ->addIdentifier('city', 'string', array('label' => 'admin.point.city'))
+            ->addIdentifier('coords', 'string', array('label' => 'admin.point.coords'))
         ;
     }
 }

@@ -17,8 +17,12 @@ class PlaceReviewsAdmin extends FoodAdmin
                 ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place', 'disabled' => true));
         }
         $formMapper
-            ->add('createdBy', 'entity', array('class' => 'Food\UserBundle\Entity\User'))
-            ->add('review')
+            ->add('createdBy', 'entity', array(
+                'class' => 'Food\UserBundle\Entity\User',
+                'label' => 'admin.created_by',
+                'disabled' => true
+            ))
+            ->add('review', 'textarea', array('label' => 'admin.place.review'))
         ;
     }
 
@@ -39,16 +43,16 @@ class PlaceReviewsAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('review')
-            ->add('createdBy');
+            ->addIdentifier('review', 'string', array('label' => 'admin.place.review'))
+            ->add('createdBy', 'entity', array('label' => 'admin.created_by'));
         if ($this->isAdmin()) {
             $listMapper
-                ->add('place');
+                ->add('place', 'entity');
         }
         $listMapper
-            ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
-            ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
-            ->add('editedBy')
+            ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
+            ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
+            ->add('editedBy', 'entity', array('label' => 'admin.edited_by'))
         ;
     }
 }

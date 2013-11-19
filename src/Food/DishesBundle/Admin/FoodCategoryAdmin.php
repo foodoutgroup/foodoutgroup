@@ -17,7 +17,7 @@ class FoodCategoryAdmin extends FoodAdmin
             array(
                 'translatable_class' => 'Food\DishesBundle\Entity\FoodCategory',
                 'fields' => array(
-                    'name' => array('label' => 'Dish name. Translation?'),
+                    'name' => array('label' => 'label.name'),
                 )
             ));
         if ($this->isAdmin()) {
@@ -25,7 +25,7 @@ class FoodCategoryAdmin extends FoodAdmin
                 ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place', 'disabled' => true));
         }
         $formMapper
-            ->add('active', 'checkbox', array('required' => false, 'label' => 'Dish active. Where is translation?'))
+            ->add('active', 'checkbox', array('required' => false, 'label' => 'admin.active'))
         ;
     }
 
@@ -46,13 +46,12 @@ class FoodCategoryAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
+            ->addIdentifier('name', 'string', array('admin.food_category.name'))
             ->add('place')
-            ->add('date', 'datetime')
-            ->add('active', 'checkbox')
-            ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
-            ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
-            ->add('deletedAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
+            ->add('active', null, array('label' => 'admin.places.list.active'))
+            ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
+            ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
+            ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
         ;
     }
 

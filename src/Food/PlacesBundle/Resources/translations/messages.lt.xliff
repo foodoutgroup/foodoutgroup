@@ -10,6 +10,19 @@
                 <source>Default</source>
                 <target>Pagr.</target>
             </trans-unit>
+            <trans-unit id="admin.active">
+                <source>admin.active</source>
+                <target>Aktyvus</target>
+            </trans-unit>
+            <trans-unit id="admin.hidden">
+                <source>admin.hidden</source>
+                <target>Slepiamas</target>
+            </trans-unit>
+            <trans-unit id="admin.visible">
+                <source>admin.visible</source>
+                <target>Rodoma</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

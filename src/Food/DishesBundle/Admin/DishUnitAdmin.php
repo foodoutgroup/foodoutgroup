@@ -28,10 +28,8 @@ class DishUnitAdmin extends FoodAdmin
             array(
                 'translatable_class' => 'Food\DishesBundle\Entity\DishUnit',
                 'fields' => array(
-                    'name' => array(
-                    ),
-                ),
-                'label' => 'Unit name (transl)'
+                    'name' => array('label' => 'label.name'),
+                )
             ));
     }
 
@@ -49,10 +47,11 @@ class DishUnitAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
-            ->add('createdBy')
-            ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
-            ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
+            ->addIdentifier('name', 'string', array('label' => 'admin.unit.name'))
+            ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
+            ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
+            ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
+        ;
         ;
     }
 }

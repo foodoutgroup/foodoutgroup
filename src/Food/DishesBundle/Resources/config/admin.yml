@@ -14,7 +14,7 @@ services:
     sonata.admin.dish.unit:
         class: Food\DishesBundle\Admin\DishUnitAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Dish units" }
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.dish_units" }
         arguments:
             - ~
             - Food\DishesBundle\Entity\DishUnit
@@ -25,7 +25,7 @@ services:
     sonata.admin.dish.option:
         class: Food\DishesBundle\Admin\DishOptionAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Dish options" }
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.dish_options" }
         arguments:
             - ~
             - Food\DishesBundle\Entity\DishOption
@@ -70,7 +70,7 @@ services:
     sonata.admin.place.point:
         class: Food\DishesBundle\Admin\PlacePointAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Place point" }
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.place_points" }
         arguments:
             - ~
             - Food\DishesBundle\Entity\PlacePoint
@@ -81,7 +81,7 @@ services:
     sonata.admin.place.pointfull:
         class: Food\DishesBundle\Admin\PlacePointFullAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Place point full" }
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.place_points" }
         arguments:
             - ~
             - Food\DishesBundle\Entity\PlacePoint
@@ -93,7 +93,7 @@ services:
     sonata.admin.place.reviews:
         class: Food\DishesBundle\Admin\PlaceReviewsAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Place reviews" }
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.place_reviews" }
         arguments:
             - ~
             - Food\DishesBundle\Entity\PlaceReviews

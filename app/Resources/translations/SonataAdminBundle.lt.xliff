@@ -222,7 +222,158 @@
                 <source>admin.kitchen.type</source>
                 <target>Virtuvė</target>
             </trans-unit>
-
+            <trans-unit id="admin.kitchen.logo">
+                <source>admin.kitchen.logo</source>
+                <target>Virtuvės logotipas</target>
+            </trans-unit>
+            <trans-unit id="admin.kitchen.name">
+                <source>admin.kitchen.name</source>
+                <target>Pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.visible">
+                <source>admin.visible</source>
+                <target>Rodoma</target>
+            </trans-unit>
+            <trans-unit id="admin.created_by">
+                <source>admin.created_by</source>
+                <target>Sukūrė</target>
+            </trans-unit>
+            <trans-unit id="admin.created_at">
+                <source>admin.created_at</source>
+                <target>Sukūrimo data</target>
+            </trans-unit>
+            <trans-unit id="admin.edited_at">
+                <source>admin.edited_at</source>
+                <target>Paskutinis redagavimas</target>
+            </trans-unit>
+            <trans-unit id="label_type_yes">
+                <source>label_type_yes</source>
+                <target>Taip</target>
+            </trans-unit>
+            <trans-unit id="label_type_no">
+                <source>label_type_no</source>
+                <target>Ne</target>
+            </trans-unit>
+            <trans-unit id="dashboard">
+                <source>Dashboard</source>
+                <target>Titulinis</target>
+            </trans-unit>
+            <trans-unit id="all_elements">
+                <source>all_elements</source>
+                <target>Visus</target>
+            </trans-unit>
+            <trans-unit id="label_export_download">
+                <source>label_export_download</source>
+                <target>Eksportuoti:</target>
+            </trans-unit>
+            <trans-unit id="list_results_count">
+                <source>list_results_count</source>
+                <target>Rezultatų</target>
+            </trans-unit>
+            <trans-unit id="label_per_page">
+                <source>label_per_page</source>
+                <target>per psl.</target>
+            </trans-unit>
+            <trans-unit id="admin.place.name">
+                <source>admin.place.name</source>
+                <target>Vietos pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.place.kitchens">
+                <source>admin.place.kitchens</source>
+                <target>Virtuvės</target>
+            </trans-unit>
+            <trans-unit id="admin.place.logo">
+                <source>admin.place.logo</source>
+                <target>Vietos logotipas</target>
+            </trans-unit>
+            <trans-unit id="admin.place.points">
+                <source>admin.place.points</source>
+                <target>Gamybos taškai</target>
+            </trans-unit>
+            <trans-unit id="admin.place.review">
+                <source>admin.place.review</source>
+                <target>Atsiliepimas</target>
+            </trans-unit>
+            <trans-unit id="admin.edited_by">
+                <source>admin.edited_by</source>
+                <target>Paskutinis redagavo</target>
+            </trans-unit>
+            <trans-unit id="admin.place_reviews">
+                <source>admin.place_reviews</source>
+                <target>Vietų atsiliepimai</target>
+            </trans-unit>
+            <trans-unit id="admin.dish_units">
+                <source>admin.dish_units</source>
+                <target>Matavimo vienetai</target>
+            </trans-unit>
+            <trans-unit id="admin.unit.name">
+                <source>admin.unit.name</source>
+                <target>Matavimo vienetas</target>
+            </trans-unit>
+            <trans-unit id="admin.food_category.name">
+                <source>admin.food_category.name</source>
+                <target>Kategorija</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.name">
+                <source>admin.dish.name</source>
+                <target>Patiekalas</target>
+            </trans-unit>
+            <trans-unit id="admin.dish_options">
+                <source>admin.dish_options</source>
+                <target>Patiekalų priedai</target>
+            </trans-unit>
+            <trans-unit id="admin.place_points">
+                <source>admin.place_points</source>
+                <target>Gamybos taškai</target>
+            </trans-unit>
+            <trans-unit id="admin.point.work_time">
+                <source>admin.point.work_time</source>
+                <target>Darbo laikas</target>
+            </trans-unit>
+            <trans-unit id="admin.point.wd1_start">
+                <source>admin.point.wd1_start</source>
+                <target>Pirm. pradžia</target>
+            </trans-unit>
+            <trans-unit id="admin.point.wd_end">
+                <source>admin.point.wd_end</source>
+                <target>Pabaiga</target>
+            </trans-unit>
+            <trans-unit id="admin.point.wd2_start">
+                <source>admin.point.wd2_start</source>
+                <target>Antrad. pradžia</target>
+            </trans-unit>
+            <trans-unit id="admin.point.wd3_start">
+                <source>admin.point.wd3_start</source>
+                <target>Treč. pradžia</target>
+            </trans-unit>
+            <trans-unit id="admin.point.wd4_start">
+                <source>admin.point.wd4_start</source>
+                <target>Ketv. pradžia</target>
+            </trans-unit>
+            <trans-unit id="admin.point.wd5_start">
+                <source>admin.point.wd5_start</source>
+                <target>Penkt. pradžia</target>
+            </trans-unit>
+            <trans-unit id="admin.point.wd6_start">
+                <source>admin.point.wd6_start</source>
+                <target>Šešt. pradžia</target>
+            </trans-unit>
+            <trans-unit id="admin.point.wd7_start">
+                <source>admin.point.wd7_start</source>
+                <target>Sekm. pradžia</target>
+            </trans-unit>
+            <trans-unit id="admin.point.address">
+                <source>admin.point.address</source>
+                <target>Adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.point.city">
+                <source>admin.point.city</source>
+                <target>Miestas</target>
+            </trans-unit>
+            <trans-unit id="admin.point.coord">
+                <source>admin.point.coords</source>
+                <target>Koordinatės</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -12,9 +12,9 @@ class PlacePointAdmin extends FoodAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('address', 'text', array('label' => 'Adresas'))
-            ->add('city', 'text', array('label' => 'Miestas'))
-            ->add('coords', 'text', array('label' => 'Koordinates'))
+            ->add('address', 'text', array('label' => 'admin.point.address'))
+            ->add('city', 'text', array('label' => 'admin.point.city'))
+            ->add('coords', 'text', array('label' => 'admin.point.coords'))
         ;
     }
 
@@ -30,9 +30,9 @@ class PlacePointAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('address')
-            ->addIdentifier('city')
-            ->addIdentifier('coords')
+            ->addIdentifier('address', 'string', array('label' => 'admin.point.address'))
+            ->addIdentifier('city', 'string', array('label' => 'admin.point.city'))
+            ->addIdentifier('coords', 'string', array('label' => 'admin.point.coords'))
         ;
     }
 
