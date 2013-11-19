@@ -1,6 +1,6 @@
-#food_admin_homepage:
-#    pattern:  /admin
-#    defaults: { _controller: FoodAppBundle:Default:index }
+food_homepage:
+    pattern:  /
+    defaults: { _controller: FoodAppBundle:Default:index }
 
 admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'

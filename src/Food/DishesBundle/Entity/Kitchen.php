@@ -141,7 +141,12 @@ class Kitchen extends Uploadable implements Translatable
         $this->places = new \Doctrine\Common\Collections\ArrayCollection();
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
+    public function getCount()
+    {
+        return sizeof($this->getPlaces());
+    }
+
     /**
      * Get id
      *
