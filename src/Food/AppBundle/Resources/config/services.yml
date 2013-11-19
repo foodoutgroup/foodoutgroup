@@ -1,0 +1,9 @@
+services:
+    food.app.utils.language:
+        class: Food\AppBundle\Utils\Language
+        calls:
+            - [container, [@service_container]]
+    food.app.utils.route:
+        class: Food\AppBundle\Utils\Route
+        calls:
+            - [container, [@service_container]]

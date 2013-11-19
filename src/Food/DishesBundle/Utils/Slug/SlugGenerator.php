@@ -1,8 +1,8 @@
 <?php
 
-namespace Fish\ParadoBundle\Utils\Slug;
+namespace Food\DishesBundle\Utils\Slug;
 
-use Fish\ParadoBundle\Utils\Slug\AbstractStrategy;
+use Food\DishesBundle\Utils\Slug\AbstractStrategy;
 
 class SlugGenerator
 {

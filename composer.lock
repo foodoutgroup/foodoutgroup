@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "b2cf90dbe1e7eacf137d3b0d3ce3d49f",
+    "hash": "64ee235875575f1d9cfb3568540104c7",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -66,6 +66,47 @@
                 "translation"
             ],
             "time": "2013-11-07 19:20:01"
+        },
+        {
+            "name": "axelarge/array-tools",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/axelarge/php-array-tools.git",
+                "reference": "60978ce30020693417f18432aa33b996c92144ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/axelarge/php-array-tools/zipball/60978ce30020693417f18432aa33b996c92144ff",
+                "reference": "60978ce30020693417f18432aa33b996c92144ff",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Axelarge\\ArrayTools": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Miķelis Vindavs",
+                    "email": "mikelis.vindavs@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Array tools for PHP 5.3",
+            "homepage": "https://github.com/axelarge/php-array-tools",
+            "keywords": [
+                "array"
+            ],
+            "time": "2012-09-22 17:37:39"
         },
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -2590,7 +2631,8 @@
         "stof/doctrine-extensions-bundle": 20,
         "jdorn/sql-formatter": 20,
         "a2lix/translation-form-bundle": 20,
-        "doctrine/doctrine-fixtures-bundle": 20
+        "doctrine/doctrine-fixtures-bundle": 20,
+        "axelarge/array-tools": 20
     },
     "platform": {
         "php": ">=5.3.3"

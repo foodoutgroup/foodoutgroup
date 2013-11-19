@@ -3,9 +3,9 @@
 namespace Food\DishesBundle\Utils\Slug;
 
 use Food\DishesBundle\Utils\Slug\AbstractStrategy;
-// use Fish\CommonBundle\Traits;
-// use Fish\CommonBundle\Entity\Slug;
-// use Axelarge\ArrayTools\Arr;
+use Food\AppBundle\Traits;
+use Food\AppBundle\Entity\Slug;
+use Axelarge\ArrayTools\Arr;
 
 class PlaceStrategy extends AbstractStrategy
 {
