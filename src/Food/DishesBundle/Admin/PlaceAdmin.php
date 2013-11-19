@@ -2,24 +2,50 @@
 namespace Food\DishesBundle\Admin;
 
 use Food\UserBundle\Entity\User;
-use Sonata\AdminBundle\Admin\Admin;
+use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-class PlaceAdmin extends Admin
+class PlaceAdmin extends FoodAdmin
 {
-    // Fields to be shown on create/edit forms
+    /**
+     * @param FormMapper $formMapper
+     */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        /**
+         * @var EntityManager $em
+         */
+        $em = $this->modelManager->getEntityManager('Food\DishesBundle\Entity\Kitchen');
+        /**
+         * @var QueryBuilder
+         */
+        $kitchenQuery = $em->createQueryBuilder('k')
+            ->select('k')
+            ->from('Food\DishesBundle\Entity\Kitchen', 'k')
+            ->where('k.visible = 1')
+        ;
+
+        $options = array('required' => false, 'label' => 'admin.place.logo');
+        if (($pl = $this->getSubject()) && $pl->getLogo()) {
+            $options['help'] = '<img src="/' . $pl->getWebPath() . '" />';
+        }
+
         $formMapper
-            ->add('name', 'text', array('label' => 'Place name'))
-            ->add('kitchens', 'entity', array('multiple'=>true, 'class' => 'Food\DishesBundle\Entity\Kitchen'))
-            ->add('active', 'checkbox', array('label' => 'I are active?'))
-            //->add('logo', 'file', array('required' => false))
+            ->add('name', 'text', array('label' => 'admin.place.name'))
+            ->add('kitchens', null, array(
+                'query_builder' => $kitchenQuery,
+                'multiple' => true,
+                'label' => 'admin.place.kitchens')
+            )
+            ->add('active', 'checkbox', array('label' => 'admin.active', 'required' => false,))
+            ->add('file', 'file', $options)
             ->add('points', 'sonata_type_collection',
                 array(
                     //'by_reference' => false,
+                    'max_length' => 2,
+                    'label' => 'admin.place.points',
                 ),
                 array(
                     'edit' => 'inline',
@@ -28,23 +54,29 @@ class PlaceAdmin extends Admin
             );
     }
 
-    // Fields to be shown on filter forms
+    /**
+     * @param DatagridMapper $datagridMapper
+     */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
+            ->add('name', null, array(), null, array('label' => 'admin.place.name'))
 
 //            ->add('place')
         ;
     }
 
-    // Fields to be shown on lists
+    /**
+     * @param ListMapper $listMapper
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
-//            ->add('place')
-            ->add('logo');
+            ->addIdentifier('name', 'string', array('label' => 'admin.place.name'))
+            ->add('image', 'string', array(
+                'template' => 'FoodDishesBundle:Default:list_image.html.twig',
+                'label' => 'admin.place.logo'
+            ))
         ;
     }
 
@@ -60,12 +92,11 @@ class PlaceAdmin extends Admin
     public function prePersist($object)
     {
         // The magic container is here
-        $object->setCreatedAt(new \DateTime("now"));
-        $container = $this->getConfigurationPool()->getContainer();
-        $securityContext = $container->get('security.context');
+        $securityContext = $this->getContainer()->get('security.context');
         $user = $securityContext->getToken()->getUser();
-        $object->setCreatedBy($user);
         $this->_fixPoints($object, $user);
+        $this->saveFile($object);
+        parent::prePersist($object);
     }
 
     /**
@@ -76,6 +107,8 @@ class PlaceAdmin extends Admin
         $container = $this->getConfigurationPool()->getContainer();
         $securityContext = $container->get('security.context');
         $this->_fixPoints($object, $securityContext->getToken()->getUser());
+        $this->saveFile($object);
+        parent::preUpdate($object);
     }
 
     /**
@@ -86,7 +119,12 @@ class PlaceAdmin extends Admin
     {
         foreach ($object->getPoints() as $point) {
             $point->setPlace($object);
-            if (empty($point->getCreatedBy())) {
+            $cAt = $point->getCreatedAt();
+            if (empty($cAt)) {
+                $point->setCreatedAt(new \DateTime('now'));
+            }
+            $createdBy = $point->getCreatedBy();
+            if (empty($createdBy)) {
                 $point->setCreatedBy($user);
             }
         }

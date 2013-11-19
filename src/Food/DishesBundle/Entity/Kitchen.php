@@ -2,9 +2,11 @@
 
 namespace Food\DishesBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Translatable\Translatable;
+use Food\AppBundle\Entity\Uploadable;
 
 use Doctrine\ORM\EntityManager;
 
@@ -13,8 +15,10 @@ use Doctrine\ORM\EntityManager;
  *
  * @ORM\Table()
  * @ORM\Entity
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\KitchenLocalized")
  */
-class Kitchen
+class Kitchen extends Uploadable implements Translatable
 {
     /**
      * @var integer
@@ -28,6 +32,7 @@ class Kitchen
     /**
      * @var string
      *
+     * @Gedmo\Translatable
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
@@ -35,21 +40,26 @@ class Kitchen
     /**
      * @var string
      *
-     * @ORM\Column(name="logo", type="string", length=100)
+     * @ORM\Column(name="logo", type="string", length=100, nullable=true)
      */
     private $logo;
+
+    /**
+     * @var object
+     */
+    public $file;
 
     /**
      * @var bool
      *
      * @ORM\Column(name="visible", type="boolean")
      */
-    private $visible = 1;
+    private $visible = true;
 
     /**
-     * @ORM\OneToMany(targetEntity="KitchenLocalized", mappedBy="id")
+     * @ORM\OneToMany(targetEntity="KitchenLocalized", mappedBy="object", cascade={"persist", "remove"})
      **/
-    private $localized;
+    private $translations;
 
     /**
      * @ORM\ManyToMany(targetEntity="Place", mappedBy="kitchens")
@@ -78,26 +88,46 @@ class Kitchen
     private $deletedAt;
 
     /**
-     * @var integer TODO User Entity!
+     * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\Column(name="created_by", type="integer")
-     */
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     **/
     private $createdBy;
 
     /**
-     * @var integer TODO User Entity!
+     * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\Column(name="edited_by", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\JoinColumn(name="edited_by", referencedColumnName="id")
      */
     private $editedBy;
 
     /**
-     * @var integer TODO User Entity!
+     * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\Column(name="deleted_by", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;
 
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
+
+    /**
+     * @var string
+     */
+    public $uploadableField = 'logo';
+
+    /**
+     * Convert object to string
+     *
+     * @return string
+     */
     public function __toString()
     {
         return $this->getName();
@@ -109,8 +139,14 @@ class Kitchen
     {
         $this->localized = new \Doctrine\Common\Collections\ArrayCollection();
         $this->places = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
+    public function getCount()
+    {
+        return sizeof($this->getPlaces());
+    }
+
     /**
      * Get id
      *
@@ -260,108 +296,6 @@ class Kitchen
     }
 
     /**
-     * Set createdBy
-     *
-     * @param integer $createdBy
-     * @return Kitchen
-     */
-    public function setCreatedBy($createdBy)
-    {
-        $this->createdBy = $createdBy;
-    
-        return $this;
-    }
-
-    /**
-     * Get createdBy
-     *
-     * @return integer 
-     */
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    /**
-     * Set editedBy
-     *
-     * @param integer $editedBy
-     * @return Kitchen
-     */
-    public function setEditedBy($editedBy)
-    {
-        $this->editedBy = $editedBy;
-    
-        return $this;
-    }
-
-    /**
-     * Get editedBy
-     *
-     * @return integer 
-     */
-    public function getEditedBy()
-    {
-        return $this->editedBy;
-    }
-
-    /**
-     * Set deletedBy
-     *
-     * @param integer $deletedBy
-     * @return Kitchen
-     */
-    public function setDeletedBy($deletedBy)
-    {
-        $this->deletedBy = $deletedBy;
-    
-        return $this;
-    }
-
-    /**
-     * Get deletedBy
-     *
-     * @return integer 
-     */
-    public function getDeletedBy()
-    {
-        return $this->deletedBy;
-    }
-
-    /**
-     * Add localized
-     *
-     * @param \Food\DishesBundle\Entity\KitchenLocalized $localized
-     * @return Kitchen
-     */
-    public function addLocalized(\Food\DishesBundle\Entity\KitchenLocalized $localized)
-    {
-        $this->localized[] = $localized;
-    
-        return $this;
-    }
-
-    /**
-     * Remove localized
-     *
-     * @param \Food\DishesBundle\Entity\KitchenLocalized $localized
-     */
-    public function removeLocalized(\Food\DishesBundle\Entity\KitchenLocalized $localized)
-    {
-        $this->localized->removeElement($localized);
-    }
-
-    /**
-     * Get localized
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getLocalized()
-    {
-        return $this->localized;
-    }
-
-    /**
      * Add places
      *
      * @param \Food\DishesBundle\Entity\Place $places
@@ -392,5 +326,139 @@ class Kitchen
     public function getPlaces()
     {
         return $this->places;
+    }
+
+    /**
+     * @param $locale
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * Add translations
+     *
+     * @param \Food\DishesBundle\Entity\KitchenLocalized $t
+     * @return Dish
+     */
+    public function addTranslation(\Food\DishesBundle\Entity\KitchenLocalized $t)
+    {
+        if (!$this->translations->contains($t)) {
+            $this->translations[] = $t;
+            $t->setObject($this);
+        }
+    }
+
+    /**
+     * Remove translations
+     *
+     * @param \Food\DishesBundle\Entity\KitchenLocalized $translations
+     */
+    public function removeTranslation(\Food\DishesBundle\Entity\KitchenLocalized $translations)
+    {
+        $this->translations->removeElement($translations);
+    }
+
+    /**
+     * Get translations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * Set file
+     *
+     * @param string $file
+     * @return Place
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get file
+     *
+     * @return string
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * Set createdBy
+     *
+     * @param \Food\UserBundle\Entity\User $createdBy
+     * @return Kitchen
+     */
+    public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
+    {
+        $this->createdBy = $createdBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdBy
+     *
+     * @return \Food\UserBundle\Entity\User 
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * Set editedBy
+     *
+     * @param \Food\UserBundle\Entity\User $editedBy
+     * @return Kitchen
+     */
+    public function setEditedBy(\Food\UserBundle\Entity\User $editedBy = null)
+    {
+        $this->editedBy = $editedBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get editedBy
+     *
+     * @return \Food\UserBundle\Entity\User 
+     */
+    public function getEditedBy()
+    {
+        return $this->editedBy;
+    }
+
+    /**
+     * Set deletedBy
+     *
+     * @param \Food\UserBundle\Entity\User $deletedBy
+     * @return Kitchen
+     */
+    public function setDeletedBy(\Food\UserBundle\Entity\User $deletedBy = null)
+    {
+        $this->deletedBy = $deletedBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get deletedBy
+     *
+     * @return \Food\UserBundle\Entity\User 
+     */
+    public function getDeletedBy()
+    {
+        return $this->deletedBy;
     }
 }

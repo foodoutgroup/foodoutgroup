@@ -6,20 +6,55 @@ services:
         arguments:
             - ~
             - Food\DishesBundle\Entity\Dish
-            - FoodDishesBundle:DishAdmin
+            - ~
         calls:
-            - [ setTranslationDomain, [FoodDishBundle]]
+            - [ setTranslationDomain, [SonataAdminBundle]]
+           # - [ setTemplate, [edit, FoodDishesBundle:Dish:dish_admin.html.twig]]
+
+    sonata.admin.dish.unit:
+        class: Food\DishesBundle\Admin\DishUnitAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.dish_units" }
+        arguments:
+            - ~
+            - Food\DishesBundle\Entity\DishUnit
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.dish.option:
+        class: Food\DishesBundle\Admin\DishOptionAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.dish_options" }
+        arguments:
+            - ~
+            - Food\DishesBundle\Entity\DishOption
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
 
     sonata.admin.food.category:
         class: Food\DishesBundle\Admin\FoodCategoryAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Food category" }
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "food.category" }
         arguments:
             - ~
             - Food\DishesBundle\Entity\FoodCategory
             - ~
         calls:
-            - [ setTranslationDomain, [FoodDishBundle]]
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.kitchen:
+        class: Food\DishesBundle\Admin\KitchenAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.kitchen.type" }
+        arguments:
+            - ~
+            - Food\DishesBundle\Entity\Kitchen
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
 
     sonata.admin.place:
         class: Food\DishesBundle\Admin\PlaceAdmin
@@ -30,15 +65,49 @@ services:
             - Food\DishesBundle\Entity\Place
             - ~
         calls:
-            - [ setTranslationDomain, [FoodDishBundle]]
+            - [ setTranslationDomain, [SonataAdminBundle]]
 
     sonata.admin.place.point:
         class: Food\DishesBundle\Admin\PlacePointAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Place point" }
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.place_points" }
         arguments:
             - ~
             - Food\DishesBundle\Entity\PlacePoint
             - ~
         calls:
-            - [ setTranslationDomain, [FoodDishBundle]]
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.place.pointfull:
+        class: Food\DishesBundle\Admin\PlacePointFullAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.place_points" }
+        arguments:
+            - ~
+            - Food\DishesBundle\Entity\PlacePoint
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+            - [ setTemplate, [edit, FoodDishesBundle:Places:place_point_admin.html.twig]]
+
+    sonata.admin.place.reviews:
+        class: Food\DishesBundle\Admin\PlaceReviewsAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.place_reviews" }
+        arguments:
+            - ~
+            - Food\DishesBundle\Entity\PlaceReviews
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
+#    sonata.admin.users:
+#        class: Food\DishesBundle\Admin\PlaceReviewsAdmin
+#        tags:
+#            - { name: sonata.admin, manager_type: orm, group: "Users", label: "Users" }
+#        arguments:
+#            - ~
+#            - Food\UserBundle\Entity\User
+#            - ~
+#        calls:
+#            - [ setTranslationDomain, [SonataAdminBundle]]

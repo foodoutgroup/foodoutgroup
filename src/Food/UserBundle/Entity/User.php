@@ -18,17 +18,15 @@ class User extends BaseUser
      */
     protected $id;
 
-
     /**
      * @ORM\ManyToOne(targetEntity="Food\DishesBundle\Entity\Place", inversedBy="places")
      * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
      **/
-    private $places;
+    private $place;
 
     public function __construct()
     {
         parent::__construct();
-        $this->places =  new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -42,25 +40,49 @@ class User extends BaseUser
     }
 
     /**
-     * Set places
+     * Remove places
      *
      * @param \Food\DishesBundle\Entity\Place $places
+     */
+    public function removePlace(\Food\DishesBundle\Entity\Place $places)
+    {
+        $this->places->removeElement($places);
+    }
+
+    /**
+     *  TODO laikinas crap debuginimui. Po to pasidarykime normalu castinima
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'groupNames' => $this->getGroupNames(),
+            'roles' => $this->getRoles(),
+        );
+    }
+
+    /**
+     * Set place
+     *
+     * @param \Food\DishesBundle\Entity\Place $place
      * @return User
      */
-    public function setPlaces(\Food\DishesBundle\Entity\Place $places = null)
+    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
     {
-        $this->places = $places;
+        $this->place = $place;
     
         return $this;
     }
 
     /**
-     * Get places
+     * Get place
      *
      * @return \Food\DishesBundle\Entity\Place 
      */
-    public function getPlaces()
+    public function getPlace()
     {
-        return $this->places;
+        return $this->place;
     }
 }

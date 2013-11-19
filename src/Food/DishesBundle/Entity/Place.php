@@ -2,16 +2,20 @@
 
 namespace Food\DishesBundle\Entity;
 
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Food\AppBundle\Entity\Uploadable;
 
 /**
  * Client
  *
  * @ORM\Table()
  * @ORM\Entity
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
-class Place
+class Place extends Uploadable
 {
     /**
      * @var integer
@@ -33,8 +37,14 @@ class Place
      * @var string
      *
      * @ORM\Column(name="logo", type="string", length=255)
+     * aaaaaa@aaaAssert\NotBlank
      */
     private $logo = "";
+
+    /**
+     * @var object
+     */
+    public $file;
 
     /**
      * @var bool
@@ -89,25 +99,33 @@ class Place
     private $deletedAt;
 
     /**
-     * @var integer TODO User Entity!
+     * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\Column(name="created_by", type="integer")
-     */
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     **/
     private $createdBy;
 
     /**
-     * @var integer TODO User Entity!
+     * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\Column(name="edited_by", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\JoinColumn(name="edited_by", referencedColumnName="id")
      */
     private $editedBy;
 
     /**
-     * @var integer TODO User Entity!
+     * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\Column(name="deleted_by", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;
+
+    /**
+     * @var string
+     */
+    public $uploadableField = 'logo';
 
     /**
      * TODO
@@ -280,75 +298,6 @@ class Place
     }
 
     /**
-     * Set createdBy
-     *
-     * @param integer $createdBy
-     * @return Place
-     */
-    public function setCreatedBy($createdBy)
-    {
-        $this->createdBy = $createdBy;
-    
-        return $this;
-    }
-
-    /**
-     * Get createdBy
-     *
-     * @return integer 
-     */
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    /**
-     * Set editedBy
-     *
-     * @param integer $editedBy
-     * @return Place
-     */
-    public function setEditedBy($editedBy)
-    {
-        $this->editedBy = $editedBy;
-    
-        return $this;
-    }
-
-    /**
-     * Get editedBy
-     *
-     * @return integer 
-     */
-    public function getEditedBy()
-    {
-        return $this->editedBy;
-    }
-
-    /**
-     * Set deletedBy
-     *
-     * @param integer $deletedBy
-     * @return Place
-     */
-    public function setDeletedBy($deletedBy)
-    {
-        $this->deletedBy = $deletedBy;
-    
-        return $this;
-    }
-
-    /**
-     * Get deletedBy
-     *
-     * @return integer 
-     */
-    public function getDeletedBy()
-    {
-        return $this->deletedBy;
-    }
-
-    /**
      * Add kitchens
      *
      * @param \Food\DishesBundle\Entity\Kitchen $kitchens
@@ -478,5 +427,120 @@ class Place
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Set path
+     *
+     * @param string $path
+     * @return Place
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+    
+        return $this;
+    }
+
+    /**
+     * Get path
+     *
+     * @return string 
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * Set file
+     *
+     * @param string $file
+     * @return Place
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+    
+        return $this;
+    }
+
+    /**
+     * Get file
+     *
+     * @return string 
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * Set createdBy
+     *
+     * @param \Food\UserBundle\Entity\User $createdBy
+     * @return Place
+     */
+    public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
+    {
+        $this->createdBy = $createdBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdBy
+     *
+     * @return \Food\UserBundle\Entity\User 
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * Set editedBy
+     *
+     * @param \Food\UserBundle\Entity\User $editedBy
+     * @return Place
+     */
+    public function setEditedBy(\Food\UserBundle\Entity\User $editedBy = null)
+    {
+        $this->editedBy = $editedBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get editedBy
+     *
+     * @return \Food\UserBundle\Entity\User 
+     */
+    public function getEditedBy()
+    {
+        return $this->editedBy;
+    }
+
+    /**
+     * Set deletedBy
+     *
+     * @param \Food\UserBundle\Entity\User $deletedBy
+     * @return Place
+     */
+    public function setDeletedBy(\Food\UserBundle\Entity\User $deletedBy = null)
+    {
+        $this->deletedBy = $deletedBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get deletedBy
+     *
+     * @return \Food\UserBundle\Entity\User 
+     */
+    public function getDeletedBy()
+    {
+        return $this->deletedBy;
     }
 }

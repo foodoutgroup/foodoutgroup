@@ -4,10 +4,12 @@ imports:
     - { resource: "@FoodCartBundle/Resources/config/services.yml" }
     - { resource: "@FoodDishesBundle/Resources/config/admin.yml" }
 
+parameters:
+    available_locales: [lt, ru]
+
 framework:
     #esi:             ~
-    #translator:      { fallback: %locale% }
-    translator:      { fallback: lt }
+    translator:      { fallback: %locale% }
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -18,8 +20,7 @@ framework:
     templating:
         engines: ['twig']
         #assets_version:less SomeVersionScheme
-    #default_locale:  "%locale%"
-    default_locale:  "lt"
+    default_locale:  "%locale%"
     trusted_proxies: ~
     session:         ~
     fragments:       ~
@@ -34,7 +35,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ FoodAppBundle ]
+    bundles:        [ FoodAppBundle, FoodDishesBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -95,10 +96,16 @@ doctrine:
         # if using pdo_sqlite as your database driver, add the path in parameters.yml
         # e.g. database_path: %kernel.root_dir%/data/data.db3
         # path:     %database_path%
+        types:
+          #json: Sonata\Doctrine\Types\JsonType
 
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
+        filters:
+            softdeleteable:
+                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+                enabled: true
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -118,6 +125,22 @@ fos_user:
     firewall_name: main
     user_class: Food\UserBundle\Entity\User
 
+services:
+  gedmo.listener.softdeleteable:
+    class: Gedmo\SoftDeleteable\SoftDeleteableListener
+    tags:
+        - { name: doctrine.event_subscriber, connection: default }
+    calls:
+        - [ setAnnotationReader, [ @annotation_reader ] ]
+  food.dishes.form.type.worktime:
+      class: Food\DishesBundle\Form\Type\worktimeType
+      tags:
+          - { name: form.type, alias: worktime }
+
+sonata_doctrine_orm_admin:
+    templates:
+        form: [ FoodDishesBundle:Forms:form_admin_fields.html.twig ]
+
 sonata_block:
     default_contexts: [cms]
     blocks:
@@ -128,23 +151,53 @@ sonata_block:
 
 # Sonata admin bloku konfigas
 sonata_admin:
-    title: Skanu
+    title: Skanu.lt
+    title_logo: /bundles/foodapp/images/admin_icon.png
+    templates:
+      layout: SonataAdminBundle::standard_layout.html.twig
+      ajax:   SonataAdminBundle::ajax_layout.html.twig
+
+      list: SonataAdminBundle:CRUD:list.html.twig
+      show: SonataAdminBundle:CRUD:show.html.twig
+      edit: SonataAdminBundle:CRUD:edit.html.twig
     dashboard:
           groups:
               acme.admin.group.places:
-                  label: acme.admin.group.places
-                  label_catalogue: FoodDishBundle
+                  label: admin.group.places
+                  label_catalogue: SonataAdminBundle
                   items:
+                      - sonata.admin.kitchen
                       - sonata.admin.place
+                      - sonata.admin.place.reviews
+                      - sonata.admin.dish.unit
                       - sonata.admin.food.category
+                  roles: [ ROLE_ADMIN ]
               acme.admin.group.formanagers:
-                  label: acme.admin.group.formanagers
-                  label_catalogue: FoodDishBundle
+                  label: admin.group.formanagers
+                  label_catalogue: SonataAdminBundle
                   items:
+                      - sonata.admin.food.category
                       - sonata.admin.dish
+                      - sonata.admin.dish.option
+                      - sonata.admin.place.pointfull
+                      - sonata.admin.place.reviews
+                  roles: [ ROLE_MODERATOR ]
 #              acme.admin.group.users:
 #                  items: ~
 #                  item_adds:
 #                      - sonata.admin.users
 #                  roles: [ ROLE_ADMIN ]
               acme.admin.group.misc: ~
+# Multilingual entity items
+
+stof_doctrine_extensions:
+    default_locale: %locale%
+    orm:
+        default:
+            translatable: true
+
+a2lix_translation_form:
+    locales: %available_locales%
+    default_required: true
+    manager_registry: doctrine
+    templating: "A2lixTranslationFormBundle::default.html.twig"

@@ -3,44 +3,68 @@
 namespace Food\DishesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
 
 /**
  * KitchenLocalized
  *
- * @ORM\Table(name="kitchen_localized")
+ * @ORM\Table(name="kitchen_localized",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="lookup_unique_idx", columns={
+ *         "locale", "object_id", "field"
+ *     })})
  * @ORM\Entity
  */
-class KitchenLocalized
+class KitchenLocalized extends AbstractPersonalTranslation
 {
     /**
-     * @var integer
+     * @ORM\ManyToOne(targetEntity="Kitchen", inversedBy="translations")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $object;
+
+    /**
+     * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue
      */
-    private $id;
+    protected $id;
 
     /**
-     * @var string
+     * @var string $locale
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(type="string", length=8)
      */
-    private $name;
+    protected $locale;
 
     /**
-     * @var integer
+     * @var string $field
      *
-     * @ORM\Column(name="lang", type="integer")
+     * @ORM\Column(type="string", length=32)
      */
-    private $lang;
-
+    protected $field;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Kitchen", inversedBy="kitchen")
-     * @ORM\JoinColumn(name="kitchen_id", referencedColumnName="id")
-     **/
-    private $kitchen;
+     * @var string $content
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $content;
+
+    /**
+     * Convenient constructor
+     *
+     * @param string $locale
+     * @param string $field
+     * @param string $value
+     */
+    public function __construct($locale=null, $field=null, $value=null)
+    {
+        $this->setLocale($locale);
+        $this->setField($field);
+        $this->setContent($value);
+    }
 
     /**
      * Get id
@@ -53,71 +77,94 @@ class KitchenLocalized
     }
 
     /**
-     * Set name
+     * Set locale
      *
-     * @param string $name
+     * @param string $locale
      * @return KitchenLocalized
      */
-    public function setName($name)
+    public function setLocale($locale)
     {
-        $this->name = $name;
+        $this->locale = $locale;
     
         return $this;
     }
 
     /**
-     * Get name
+     * Get locale
      *
      * @return string 
      */
-    public function getName()
+    public function getLocale()
     {
-        return $this->name;
+        return $this->locale;
     }
 
     /**
-     * Set lang
+     * Set field
      *
-     * @param integer $lang
+     * @param string $field
      * @return KitchenLocalized
      */
-    public function setLang($lang)
+    public function setField($field)
     {
-        $this->lang = $lang;
+        $this->field = $field;
     
         return $this;
     }
 
     /**
-     * Get lang
+     * Get field
      *
-     * @return integer 
+     * @return string 
      */
-    public function getLang()
+    public function getField()
     {
-        return $this->lang;
+        return $this->field;
     }
 
     /**
-     * Set kitchen
+     * Set content
      *
-     * @param \Food\DishesBundle\Entity\Kitchen $kitchen
+     * @param string $content
      * @return KitchenLocalized
      */
-    public function setKitchen(\Food\DishesBundle\Entity\Kitchen $kitchen = null)
+    public function setContent($content)
     {
-        $this->kitchen = $kitchen;
+        $this->content = $content;
     
         return $this;
     }
 
     /**
-     * Get kitchen
+     * Get content
+     *
+     * @return string 
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Set object
+     *
+     * @param $object
+     * @return KitchenLocalized
+     */
+    public function setObject($object)
+    {
+        $this->object = $object;
+    
+        return $this;
+    }
+
+    /**
+     * Get object
      *
      * @return \Food\DishesBundle\Entity\Kitchen 
      */
-    public function getKitchen()
+    public function getObject()
     {
-        return $this->kitchen;
+        return $this->object;
     }
 }

@@ -3,136 +3,168 @@
 namespace Food\DishesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
 
 /**
  * Dishes localized
  *
- * @ORM\Table(name="dish_localized")
+ * @ORM\Table(name="dish_localized",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="lookup_unique_idx", columns={
+ *         "locale", "object_id", "field"
+ *     })})
  * @ORM\Entity
  */
-class DishLocalized
+class DishLocalized extends AbstractPersonalTranslation
 {
     /**
-     * @var \Food\DishesBundle\Entity\Dish
+     * @ORM\ManyToOne(targetEntity="Dish", inversedBy="translations")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $object;
+
+    /**
+     * @var integer $id
      *
+     * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Dish", inversedBy="dish")
-     * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
+     * @ORM\GeneratedValue
      */
-    private $dish;
+    protected $id;
 
     /**
-     * @var integer
+     * @var string $locale
      *
-     * @ORM\Id
-     * @ORM\Column(name="lang", type="integer", length=1)
+     * @ORM\Column(type="string", length=8)
      */
-    private $language;
+    protected $locale;
 
     /**
-     * @var string
+     * @var string $field
      *
-     * @ORM\Column(name="name", type="string", length=100)
+     * @ORM\Column(type="string", length=32)
      */
-    private $name;
+    protected $field;
 
     /**
-     * @var string
+     * @var string $content
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    protected $content;
 
     /**
-     * Set language
+     * Convenient constructor
      *
-     * @param integer $language
-     * @return DishLocalized
+     * @param string $locale
+     * @param string $field
+     * @param string $value
      */
-    public function setLanguage($language)
+    public function __construct($locale=null, $field=null, $value=null)
     {
-        $this->language = $language;
-    
-        return $this;
+        $this->setLocale($locale);
+        $this->setField($field);
+        $this->setContent($value);
     }
 
     /**
-     * Get language
+     * Get id
      *
      * @return integer 
      */
-    public function getLanguage()
+    public function getId()
     {
-        return $this->language;
+        return $this->id;
     }
 
     /**
-     * Set name
+     * Set locale
      *
-     * @param string $name
+     * @param string $locale
      * @return DishLocalized
      */
-    public function setName($name)
+    public function setLocale($locale)
     {
-        $this->name = $name;
+        $this->locale = $locale;
     
         return $this;
     }
 
     /**
-     * Get name
+     * Get locale
      *
      * @return string 
      */
-    public function getName()
+    public function getLocale()
     {
-        return $this->name;
+        return $this->locale;
     }
 
     /**
-     * Set description
+     * Set field
      *
-     * @param string $description
+     * @param string $field
      * @return DishLocalized
      */
-    public function setDescription($description)
+    public function setField($field)
     {
-        $this->description = $description;
+        $this->field = $field;
     
         return $this;
     }
 
     /**
-     * Get description
+     * Get field
      *
      * @return string 
      */
-    public function getDescription()
+    public function getField()
     {
-        return $this->description;
+        return $this->field;
     }
 
     /**
-     * Set dish
+     * Set content
      *
-     * @param \Food\DishesBundle\Entity\Dish $dish
+     * @param string $content
      * @return DishLocalized
      */
-    public function setDish(\Food\DishesBundle\Entity\Dish $dish)
+    public function setContent($content)
     {
-        $this->dish = $dish;
+        $this->content = $content;
     
         return $this;
     }
 
     /**
-     * Get dish
+     * Get content
+     *
+     * @return string 
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Set object
+     *
+     * @param $object
+     * @return DishLocalized
+     */
+    public function setObject($object)
+    {
+        $this->object = $object;
+    
+        return $this;
+    }
+
+    /**
+     * Get object
      *
      * @return \Food\DishesBundle\Entity\Dish 
      */
-    public function getDish()
+    public function getObject()
     {
-        return $this->dish;
+        return $this->object;
     }
 }

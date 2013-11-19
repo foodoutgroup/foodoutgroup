@@ -1,12 +1,14 @@
 <?php
 namespace Food\DishesBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Doctrine\ORM\EntityManager;
+use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Food\DishesBundle\Entity\Place;
 
-class DishAdmin extends Admin
+class DishAdmin extends FoodAdmin
 {
     /**
      * Default Datagrid values
@@ -14,7 +16,6 @@ class DishAdmin extends Admin
      * @var array
      */
     protected $datagridValues = array (
-//        'deleted' => array ('value' => false), // type 2 : > TODO neveikia solutionas, kad nerodytu istrintu
         '_page' => 1, // Display the first page (default = 1)
         '_sort_order' => 'ASC', // Descendant ordering (default = 'ASC')
         '_sort_by' => 'id' // name of the ordered field (default = the model id field, if any)
@@ -23,13 +24,62 @@ class DishAdmin extends Admin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
+        /**
+         * @var EntityManager $em
+         */
+        $em = $this->modelManager->getEntityManager('Food\DishesBundle\Entity\FoodCategory');
+        /**
+         * @var QueryBuilder
+         */
+        $categoryQuery = $em->createQueryBuilder('c')
+            ->select('c')
+            ->from('Food\DishesBundle\Entity\FoodCategory', 'c')
+        ;
+
+        /**
+         * @var QueryBuilder
+         */
+        $optionsQuery = $em->createQueryBuilder('o')
+            ->select('o')
+            ->from('Food\DishesBundle\Entity\DishOption', 'o')
+        ;
+
+        $formMapper->add(
+            'translations',
+            'a2lix_translations_gedmo',
+            array(
+                'translatable_class' => 'Food\DishesBundle\Entity\Dish',
+                'fields' => array(
+                    'name' => array(
+                        'label' => 'label.name'
+                    ),
+                )
+            ));
+
+        // If user is admin - he can screw Your place. But if user is a moderator - we will set the place ir prePersist!
+        if ($this->isAdmin()) {
+            $formMapper->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
+
+            // Filter out inactive, hidden field options
+            $categoryQuery->where('c.active = 1');
+            $optionsQuery->where('o.hidden = 0');
+        } else {
+            // If user is a moderator - he is assigned to a place (unless he is Chuck or Cekuolis)
+            $userPlaceId = $this->getUser()->getPlace()->getId();
+
+            // Filter out inactive, hidden field options
+            $categoryQuery->where('c.active = 1 AND c.place = :place')
+                ->setParameter('place', $userPlaceId);
+
+            $optionsQuery->where('o.hidden = 0 AND o.place = :place')
+                ->setParameter('place', $userPlaceId);
+        }
+
         $formMapper
-            ->add('name', 'text', array('label' => 'Dish name'))
-            ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'))
-            ->add('categories', 'entity', array('class' => 'Food\DishesBundle\Entity\FoodCategory', 'multiple' => true))
-            ->add('units', 'entity', array('class' => 'Food\DishesBundle\Entity\DishUnit', 'multiple' => true))
-            ->add('options', 'entity', array('class' => 'Food\DishesBundle\Entity\DishOption', 'multiple' => true))
-            ->add('price') // TODO type to be decimal
+            ->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
+            ->add('unit', 'entity', array('class' => 'Food\DishesBundle\Entity\DishUnit', 'multiple' => false))
+            ->add('options', null, array('query_builder' => $optionsQuery,'expanded' => true, 'multiple' => true, 'required' => false))
+            ->add('price')
         ;
     }
 
@@ -40,7 +90,7 @@ class DishAdmin extends Admin
             ->add('name')
             ->add('place')
             ->add('categories')
-            ->add('units')
+            ->add('unit')
             ->add('options')
             ->add('createdBy')
             ->add('createdAt')
@@ -51,71 +101,32 @@ class DishAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
+            ->addIdentifier('name', 'string', array('label' => 'admin.dish.name'))
             ->add('place')
             ->add('categories')
-            ->add('units')
+            ->add('unit')
             ->add('options')
             ->add('price')
-            ->add('createdBy')
-            ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
-            ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
+            ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
+            ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
+            ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
         ;
     }
 
-    /**
-     * Set create date before inserting to database
-     *
-     * @inheritdoc
-     *
-     * @param \Food\DishesBundle\Entity\Dish
-     * @return mixed|void
+    /*
+     * If user is a moderator - set place, as he can not choose it. Chuck Norris protection is active
      */
     public function prePersist($object)
     {
-        // The magic container is here
-        $container = $this->getConfigurationPool()->getContainer();
-        $securityContext = $container->get('security.context');
-        $user = $securityContext->getToken()->getUser();
+        if ($this->isModerator()) {
+            /**
+             * @var Place $place
+             */
+            $place = $this->modelManager->find('Food\DishesBundle\Entity\Place', $this->getUser()->getPlace()->getId());
 
-        $object->setCreatedAt(new \DateTime());
-        $object->setDeleted(0);
-        $object->setCreatedBy($user->getId());
-    }
-
-    /**
-     * Set editing time before inserting to database
-     * @inheritdoc
-     *
-     * @param \Food\DishesBundle\Entity\Dish $object
-     * @return mixed|void
-     */
-    public function preUpdate($object)
-    {
-        $container = $this->getConfigurationPool()->getContainer();
-        $securityContext = $container->get('security.context');
-        $user = $securityContext->getToken()->getUser();
-
-        // Log this troll, so we could burn him later
-        $object->setEditedAt(new \DateTime());
-        $object->setEditedBy($user->getId());
-    }
-
-
-    /**
-     * @inheritdoc
-     * @param string $context
-     * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
-     */
-    public function createQuery($context = 'list')
-    {
-        // Filter out deleted entries
-        // TODO OMG HACK - this is not the proper way. Need a good working solution, but for now..
-        $query = parent::createQuery($context);
-        if ($context == 'list') {
-            $query->where('o.deleted != 1');
+            $object->setPlace($place);
         }
-
-        return $query;
+        parent::prePersist($object);
     }
+
 }
