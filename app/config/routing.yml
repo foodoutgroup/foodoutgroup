@@ -30,7 +30,7 @@ food_dishes:
 
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /{_locale}
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
