@@ -374,6 +374,30 @@
                 <source>admin.point.coords</source>
                 <target>Koordinatės</target>
             </trans-unit>
+            <trans-unit id="admin.users">
+                <source>admin.users</source>
+                <target>Vartotojai</target>
+            </trans-unit>
+            <trans-unit id="admin.users.username">
+                <source>admin.users.username</source>
+                <target>Vartotojas</target>
+            </trans-unit>
+            <trans-unit id="admin.users.email">
+                <source>admin.users.email</source>
+                <target>El.paštas</target>
+            </trans-unit>
+            <trans-unit id="admin.users.enabled">
+                <source>admin.users.enabled</source>
+                <target>Aktyvus</target>
+            </trans-unit>
+            <trans-unit id="admin.users.locked">
+                <source>admin.users.locked</source>
+                <target>Blokuotas</target>
+            </trans-unit>
+            <trans-unit id="admin.users.plainPassword">
+                <source>admin.users.plainPassword</source>
+                <target>Naujas slaptažodis</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

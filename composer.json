@@ -7,6 +7,11 @@
         "psr-0": { "": "src/" }
     },
     "repositories": [
+
+        {
+            "type": "git",
+            "url": "https://github.com/drawgas/SonataUserBundle.git"
+        },
         {
             "type": "package",
             "package": {
@@ -50,7 +55,8 @@
         "gedmo/doctrine-extensions": "~2.3.1",
         "jdorn/sql-formatter": "dev-master",
         "a2lix/translation-form-bundle": "1.*@dev",
-        "doctrine/doctrine-fixtures-bundle": "2.2.*@dev"
+        "doctrine/doctrine-fixtures-bundle": "2.2.*@dev",
+        "sonata-project/user-bundle": "dev-master as v2.2.0"
 
     },
     "scripts": {
