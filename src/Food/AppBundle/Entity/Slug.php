@@ -37,7 +37,7 @@ class Slug
     /**
      * @var integer $lang_id
      *
-     * @ORM\Column(name="lang_id", type="integer")
+     * @ORM\Column(name="lang_id", type="string", length=3)
      */
     private $lang_id;
 

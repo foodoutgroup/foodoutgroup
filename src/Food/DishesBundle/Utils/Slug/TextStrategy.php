@@ -23,8 +23,8 @@ class TextStrategy extends AbstractStrategy
         // services
         $em = $this->em();
         $con = $em->getConnection();
-        $slugUtil = $this->service('fish.parado.utils.slug');
-        $languageUtil = $this->service('fish.common.utils.language');
+        $slugUtil = $this->service('food.dishes.utils.slug');
+        $languageUtil = $this->service('food.app.utils.language');
         $logger = $this->service('logger');
 
         // init vars
@@ -75,14 +75,14 @@ class TextStrategy extends AbstractStrategy
 
     private function getSlugs($langId)
     {
-        $languageUtil = $this->service('fish.common.utils.language');
+        $languageUtil = $this->service('food.app.utils.language');
 
         $language = $languageUtil->getById($langId);
 
         return $this->em()
             ->createQueryBuilder()
             ->select('c_s')
-            ->from('FishCommonBundle:Slug', 'c_s')
+            ->from('FoodAppBundle:Slug', 'c_s')
             ->where('c_s.type = :type')
             ->andWhere('c_s.lang_id = :language')
             ->setParameters(['type' => 'text', 'language' => $language->getId()])
@@ -92,7 +92,7 @@ class TextStrategy extends AbstractStrategy
 
     private function getTexts($langId)
     {
-        $languageUtil = $this->service('fish.common.utils.language');
+        $languageUtil = $this->service('food.app.utils.language');
 
         $language = $languageUtil->getById($langId);
 
@@ -109,7 +109,7 @@ class TextStrategy extends AbstractStrategy
 
     private function makeSlug($product)
     {
-        $slugUtil = $this->service('fish.parado.utils.slug');
+        $slugUtil = $this->service('food.dishes.utils.slug');
 
         return $slugUtil->stringToSlug(
             iconv(

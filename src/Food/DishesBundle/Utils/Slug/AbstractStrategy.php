@@ -1,6 +1,6 @@
 <?php
 
-namespace Fish\ParadoBundle\Utils\Slug;
+namespace Food\DishesBundle\Utils\Slug;
 
 abstract class AbstractStrategy
 {

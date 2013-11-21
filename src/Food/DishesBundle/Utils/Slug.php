@@ -9,9 +9,11 @@ use Food\DishesBundle\Utils\Slug\CategoryStrategy;
 use Food\DishesBundle\Utils\Slug\DishStrategy;
 use Food\DishesBundle\Utils\Slug\TextStrategy;
 use Food\AppBundle\Entity;
+use Food\AppBundle\Traits;
 
 class Slug
 {
+    //use Traits\Service;
     use Traits\Service;
 
     private $slug;

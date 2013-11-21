@@ -1,0 +1,5 @@
+services:
+    food.dishes.utils.slug:
+        class: Food\DishesBundle\Utils\Slug
+        calls:
+            - [container, [@service_container]]
