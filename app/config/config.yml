@@ -97,7 +97,7 @@ doctrine:
         # e.g. database_path: %kernel.root_dir%/data/data.db3
         # path:     %database_path%
         types:
-          #json: Sonata\Doctrine\Types\JsonType
+            json: Sonata\Doctrine\Types\JsonType
 
     orm:
         auto_generate_proxy_classes: %kernel.debug%
@@ -182,13 +182,12 @@ sonata_admin:
                       - sonata.admin.place.pointfull
                       - sonata.admin.place.reviews
                   roles: [ ROLE_MODERATOR ]
-#              acme.admin.group.users:
-#                  items: ~
-#                  item_adds:
-#                      - sonata.admin.users
-#                  roles: [ ROLE_ADMIN ]
+              admin.users:
+                  items: ~
+                  item_adds:
+                      - sonata.admin.users
+                  roles: [ ROLE_ADMIN ]
               acme.admin.group.misc: ~
-# Multilingual entity items
 
 stof_doctrine_extensions:
     default_locale: %locale%
