@@ -85,6 +85,17 @@ class PlaceReviews
     private $deletedBy;
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        if (!$this->getId()) {
+            return '';
+        }
+        return $this->getReview();
+    }
+
+    /**
      * Get id
      *
      * @return integer 

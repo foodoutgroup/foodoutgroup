@@ -711,8 +711,14 @@ class PlacePoint
         return $this->wd7_end;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
+        if (!$this->getId()) {
+            return '';
+        }
         return $this->getAddress().', '.$this->getCity();
     }
 

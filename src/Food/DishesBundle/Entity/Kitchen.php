@@ -130,6 +130,9 @@ class Kitchen extends Uploadable implements Translatable
      */
     public function __toString()
     {
+        if (!$this->getId()) {
+            return '';
+        }
         return $this->getName();
     }
     /**

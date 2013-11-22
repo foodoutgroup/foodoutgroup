@@ -214,6 +214,10 @@
                 <source>label_filters</source>
                 <target>Filtrai</target>
             </trans-unit>
+            <trans-unit id="flash_edit_success">
+                <source>flash_edit_success</source>
+                <target>Sėkmingai išsaugota</target>
+            </trans-unit>
             <trans-unit id="admin.group.places">
                 <source>admin.group.places</source>
                 <target>Vietos</target>
@@ -265,6 +269,42 @@
             <trans-unit id="dashboard">
                 <source>Dashboard</source>
                 <target>Titulinis</target>
+            </trans-unit>
+            <trans-unit id="user-list">
+                <source>User List</source>
+                <target>Vartotojai</target>
+            </trans-unit>
+            <trans-unit id="kitchen-list">
+                <source>Kitchen List</source>
+                <target>Virtuvės</target>
+            </trans-unit>
+            <trans-unit id="place-list">
+                <source>Place List</source>
+                <target>Vietos</target>
+            </trans-unit>
+            <trans-unit id="place-point-list">
+                <source>Place Point List</source>
+                <target>Gamybos taškai</target>
+            </trans-unit>
+            <trans-unit id="place-reviews-list">
+                <source>Place Reviews List</source>
+                <target>Vietų atsiliepimai</target>
+            </trans-unit>
+            <trans-unit id="dish-list">
+                <source>Dish List</source>
+                <target>Patiekalai</target>
+            </trans-unit>
+            <trans-unit id="dish-unit-list">
+                <source>Dish Unit List</source>
+                <target>Matvimo vieneteai</target>
+            </trans-unit>
+            <trans-unit id="food-category-list">
+                <source>Food Category List</source>
+                <target>Kategorijos</target>
+            </trans-unit>
+            <trans-unit id="dish-option-list">
+                <source>Dish Option List</source>
+                <target>Patiekalų priedai</target>
             </trans-unit>
             <trans-unit id="all_elements">
                 <source>all_elements</source>

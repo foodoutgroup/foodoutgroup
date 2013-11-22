@@ -128,13 +128,15 @@ class Place extends Uploadable
     public $uploadableField = 'logo';
 
     /**
-     * TODO
+     * Returns place name
      *
      * @return string
      */
     public function __toString()
     {
-        // TODO return localized
+        if (!$this->getId()) {
+            return '';
+        }
         return $this->getName();
     }
 

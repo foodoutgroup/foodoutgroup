@@ -112,8 +112,14 @@ class FoodCategory implements Translatable
      */
     private $locale;
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
+        if (!$this->getId()) {
+            return '';
+        }
         return $this->getName();
     }
     /**
