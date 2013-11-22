@@ -406,6 +406,10 @@
                 <source>admin.users.plainPassword</source>
                 <target>Naujas slaptažodis</target>
             </trans-unit>
+            <trans-unit id="link_action_show">
+                <source>link_action_show</source>
+                <target>Peržiūrėti</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
