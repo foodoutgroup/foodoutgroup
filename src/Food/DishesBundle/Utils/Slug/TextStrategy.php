@@ -2,10 +2,9 @@
 
 namespace Food\DishesBundle\Utils\Slug;
 
-use Food\DishesBundle\Utils\Slug\AbstractStrategy;
 use Food\AppBundle\Traits;
 use Food\AppBundle\Entity\Slug;
-use Axelarge\ArrayTools\Arr;
+
 
 class TextStrategy extends AbstractStrategy
 {
@@ -18,105 +17,123 @@ class TextStrategy extends AbstractStrategy
         $this->container($container);
     }
 
-    public function generate($langId)
+    /**
+     * @param $langId
+     * @param $textId
+     * @param $text
+     */
+    public function generate($langId, $textId, $text)
     {
         // services
         $em = $this->em();
         $con = $em->getConnection();
         $slugUtil = $this->service('food.dishes.utils.slug');
-        $languageUtil = $this->service('food.app.utils.language');
+
         $logger = $this->service('logger');
 
-        // init vars
-        $i = 0;
-        $language = $languageUtil->getById($langId);
-        $existing = [];
-        $pool = [];
-
-        // we will use these lists later
-        $slugs = $this->getSlugs($language->getId());
-        $texts = $this->getTexts($language->getId());
-
-        foreach ($slugs as $row) {
-            $existing[$row[0]->getItemId()] = true;
-        }
-
-        // create new slugs
-        $con->beginTransaction();
-
-        try {
-            foreach ($texts as $id => $text) {
-                if (!empty($existing[$id])) continue;
-
-                $slug = $this->makeSlug($text['m_td_title']);
-                $newSlug = $slugUtil->getFinalSlugName($pool, $slug);
-
-                $item = new Slug();
-                $item
-                    ->setItemId($id)
-                    ->setLangId($language->getId())
-                    ->setType('text')
-                    ->setName($newSlug)
-                    ->setIsActive(1);
-                $em->persist($item);
-
-                $pool[] = $newSlug;
-
-                if ((++$i % static::BATCH_SIZE) == 0) $em->flush();
+        $slugs = $this->getSlugs($langId);
+        $slug = $this->makeSlug($langId, $text);
+        $origSlug = $slug;
+        if ($this->existsInOrigs($slugs, $slug, $textId)) {
+            $cnt = 0;
+            while ($this->existsIn($slugs, $slug, $textId)) {
+                if ($cnt != 0) {
+                    $slug = $origSlug.'-'.$cnt;
+                }
+                $cnt++;
             }
-
-            $em->flush();
-            $con->commit();
-        } catch (\Exception $e) {
-            $con->rollback();
-            $logger->err('Cannot generate slugs for text pages.', ['exception' => $e]);
         }
+
+        if ($this->idExistsIn($slugs, $textId)) {
+            $item = $em->getRepository('FoodAppBundle:Slug')
+                ->find($this->idExistsIn($slugs, $textId));
+        } else {
+            $item = new Slug();
+        }
+
+
+        $item
+            ->setItemId($textId)
+            ->setLangId($langId)
+            ->setType('text')
+            ->setName($slug)
+            ->setOrigName($origSlug)
+            ->setIsActive(1);
+
+
+        $em->persist($item);
+        $em->flush();
+
     }
 
+
+    private function idExistsIn($slugs, $id)
+    {
+        foreach ($slugs as $slRow) {
+            if ($slRow['item_id'] == $id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param $slugs
+     * @param $slug
+     * @return bool
+     */
+    private function existsInOrigs($slugs, $slug)
+    {
+        foreach ($slugs as $slRow) {
+            if ($slRow['orig_name'] == $slug) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param $slugs
+     * @param $slug
+     */
+    private function existsIn($slugs, $slug)
+    {
+        foreach ($slugs as $slRow) {
+            if ($slRow['name'] == $slug) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param $langId
+     * @return mixed
+     */
     private function getSlugs($langId)
     {
-        $languageUtil = $this->service('food.app.utils.language');
-
-        $language = $languageUtil->getById($langId);
-
         return $this->em()
             ->createQueryBuilder()
             ->select('c_s')
             ->from('FoodAppBundle:Slug', 'c_s')
             ->where('c_s.type = :type')
             ->andWhere('c_s.lang_id = :language')
-            ->setParameters(['type' => 'text', 'language' => $language->getId()])
+            ->setParameters(['type' => 'text', 'language' => $langId])
             ->getQuery()
-            ->iterate();
+            ->getArrayResult();
     }
 
-    private function getTexts($langId)
-    {
-        $languageUtil = $this->service('food.app.utils.language');
-
-        $language = $languageUtil->getById($langId);
-
-        return Arr::pluck(Arr::groupBy($this->em()
-            ->createQueryBuilder()
-            ->select('m_t, m_td')
-            ->from('ManageBundle:Text', 'm_t')
-            ->innerJoin('ManageBundle:TextDescription', 'm_td', 'WITH', 'm_td.text_id = m_t.id AND m_td.lang_id = :language')
-            ->groupBy('m_td.id')
-            ->setParameters(['language' => $language->getId()])
-            ->getQuery()
-            ->getScalarResult(), 'm_t_id'), 0);
-    }
-
-    private function makeSlug($product)
+    /**
+     * @param $lang
+     * @param $text
+     * @return mixed
+     */
+    private function makeSlug($lang, $text)
     {
         $slugUtil = $this->service('food.dishes.utils.slug');
-
+        $languageUtil = $this->service('food.app.utils.language');
         return $slugUtil->stringToSlug(
-            iconv(
-                'utf-8',
-                'us-ascii//TRANSLIT',
-                mb_strtolower($product, 'utf-8')
-            )
+            $languageUtil->removeChars($lang, $text)
         );
     }
 }

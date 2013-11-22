@@ -56,6 +56,13 @@ class Slug
     private $name;
 
     /**
+     * @var string $name
+     *
+     * @ORM\Column(name="orig_name", type="string", length=255)
+     */
+    private $orig_name;
+
+    /**
      * @var integer $is_active
      *
      * @ORM\Column(name="is_active", type="smallint")
@@ -197,5 +204,28 @@ class Slug
     public function getIsActive()
     {
         return $this->is_active;
+    }
+
+    /**
+     * Set orig_name
+     *
+     * @param string $origName
+     * @return Slug
+     */
+    public function setOrigName($origName)
+    {
+        $this->orig_name = $origName;
+    
+        return $this;
+    }
+
+    /**
+     * Get orig_name
+     *
+     * @return string 
+     */
+    public function getOrigName()
+    {
+        return $this->orig_name;
     }
 }

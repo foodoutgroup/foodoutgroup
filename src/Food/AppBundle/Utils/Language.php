@@ -39,6 +39,77 @@ class Language
     }
 
 
+    /**
+     * @param $lang
+     * @param $text
+     */
+    public function removeChars($lang, $text)
+    {
+        switch($lang) {
+            case 'lt':
+                return $this->_removeLtChars($text);
+                break;
+            case 'ru':
+                return $this->_removeRuChars($text);
+                break;
+            case 'en':
+                return $this->_removeEnChars($text);
+                break;
+        }
+        throw new \Exception('Undefined language');
+    }
+
+    /**
+     * @param $text
+     */
+    private function _removeLtChars($text)
+    {
+        $chars = array(
+            'ą' => 'a',
+            'č' => 'c',
+            'ę' => 'e',
+            'ė' => 'e',
+            'į' => 'i',
+            'š' => 's',
+            'ų' => 'u',
+            'ū' => 'u',
+            'ž' => 'z',
+            '#' => '-',
+            '&' => 'and'
+        );
+        return strtr(mb_strtolower($text, 'utf-8'), $chars);
+    }
+
+
+    /**
+     * @param $text
+     * @return string
+     */
+    private function _removeRuChars($text)
+    {
+        $chars = array(
+            'ґ'=>'g','ё'=>'e','є'=>'e','ї'=>'i','і'=>'i',
+            'а'=>'a', 'б'=>'b', 'в'=>'v',
+            'г'=>'g', 'д'=>'d', 'е'=>'e', 'ё'=>'e',
+            'ж'=>'zh', 'з'=>'z', 'и'=>'i', 'й'=>'i',
+            'к'=>'k', 'л'=>'l', 'м'=>'m', 'н'=>'n',
+            'о'=>'o', 'п'=>'p', 'р'=>'r', 'с'=>'s',
+            'т'=>'t', 'у'=>'u', 'ф'=>'f', 'х'=>'h',
+            'ц'=>'c', 'ч'=>'ch', 'ш'=>'sh', 'щ'=>'sch',
+            'ы'=>'y', 'э'=>'e', 'ю'=>'u', 'я'=>'ya', 'é'=>'e', '&'=>'and',
+            'ь'=>'', 'ъ' => '', '#' => '-'
+        );
+        return strtr(mb_strtolower($text, 'utf-8'), $chars);
+    }
+
+    private function _removeEnChars($text)
+    {
+        $chars = array(
+            '#' => '-',
+            '&' => 'and'
+        );
+        return strtr(mb_strtolower($text, 'utf-8'), $chars);
+    }
 
     /**
      * Get current language.
@@ -77,12 +148,6 @@ class Language
         return $this->getContainer()->getParameter('available_locales');
     }
 
-    public function getById($id)
-    {
-        $repo = $this->repo('FoodAppBundle:Language');
-
-        return $repo->findOneBy(['id' => $id, 'is_active' => true]);
-    }
 
     /**
      * Switch language

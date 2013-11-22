@@ -3,6 +3,8 @@
 namespace Food\AppBundle\Controller;
 
 
+
+use Doctrine\Common\Inflector\Inflector;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,7 +18,13 @@ class TestController extends Controller
         $languages = $this->get('food.app.utils.language')->getAll();
         $omg = $this->get('food.dishes.utils.slug');
         //$omg->generateForTexts('lt');
-        $newSlug = $omg->generateForTexts('lt');
+       //$newSlug = $omg->generateForTexts('lt', 1, 'Piciška šėtoniška piciutė');
+        $newSlug = $omg->generateForTexts('lt', 1, 'pirmas');
+
+
+        //$newSlug = $omg->generateForTexts('ru', 1, 'холодильник');
+
+        //$newSlug->
 
         /**
          * @todo

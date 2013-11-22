@@ -13,8 +13,8 @@ class SlugGenerator
         $this->strategy = $strategy;
     }
 
-    public function generate($langId)
+    public function generate($langId, $textId, $text)
     {
-        $this->strategy->generate($langId);
+        $this->strategy->generate($langId, $textId, $text);
     }
 }

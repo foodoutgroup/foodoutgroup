@@ -158,8 +158,6 @@ class Slug
     public function stringToSlug($text)
     {
         $text = preg_replace('#\s+#u', '-', $text);
-        $text = preg_replace('#[^a-zą-žA-ZĄ-Ž0-9\-\\\\/]+#u', '', $text);
-
         return $text;
     }
 
@@ -204,10 +202,10 @@ class Slug
         $context->generate($langId);
     }
 
-    public function generateForTexts($langId)
+    public function generateForTexts($langId, $itemId, $itemText)
     {
         $context = new SlugGenerator(new TextStrategy($this->container()));
-        $context->generate($langId);
+        $context->generate($langId, $itemId, $itemText);
     }
 
     public function fixUppercaseSlugs()
