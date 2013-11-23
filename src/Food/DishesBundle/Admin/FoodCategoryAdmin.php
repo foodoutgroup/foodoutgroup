@@ -33,12 +33,12 @@ class FoodCategoryAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
-            ->add('createdAt')
-            ->add('editedAt')
-            ->add('deletedAt')
+            ->add('name', null, array('label' => 'admin.food_category.name'))
+            ->add('createdAt', null, array('label' => 'admin.places.list.active'))
+            ->add('editedAt', null, array('label' => 'admin.edited_at'))
+            ->add('deletedAt', null, array('label' => 'admin.deleted_at'))
             ->add('place')
-            ->add('active')
+            ->add('active', null, array('label' => 'admin.places.list.active'))
         ;
     }
 

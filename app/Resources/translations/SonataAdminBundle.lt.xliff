@@ -262,6 +262,10 @@
                 <source>admin.edited_at</source>
                 <target>Paskutinis redagavimas</target>
             </trans-unit>
+            <trans-unit id="admin.deleted_at">
+                <source>admin.deleted_at</source>
+                <target>Ištrintas</target>
+            </trans-unit>
             <trans-unit id="label_type_yes">
                 <source>label_type_yes</source>
                 <target>Taip</target>
