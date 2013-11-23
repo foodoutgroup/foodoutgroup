@@ -21,9 +21,7 @@ class PlacePointAdmin extends FoodAdmin
     // Fields to be shown on filter forms
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper
-            ->add('city')
-        ;
+        $datagridMapper->add('city', null, array('label' => 'admin.point.city'));
     }
 
     // Fields to be shown on lists
