@@ -214,6 +214,10 @@
                 <source>label_filters</source>
                 <target>Filtrai</target>
             </trans-unit>
+            <trans-unit id="flash_create_success">
+                <source>flash_create_success</source>
+                <target>Sėkmingai sukurta</target>
+            </trans-unit>
             <trans-unit id="flash_edit_success">
                 <source>flash_edit_success</source>
                 <target>Sėkmingai išsaugota</target>
@@ -449,6 +453,10 @@
             <trans-unit id="link_action_show">
                 <source>link_action_show</source>
                 <target>Peržiūrėti</target>
+            </trans-unit>
+            <trans-unit id="admin.users.place">
+                <source>admin.users.place</source>
+                <target>Vieta</target>
             </trans-unit>
         </body>
     </file>

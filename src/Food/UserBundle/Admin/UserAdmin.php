@@ -13,6 +13,7 @@ class UserAdmin extends SonataUserAdmin {
         $listMapper
             ->addIdentifier('username', 'text', array('label' => 'admin.users.username'))
             ->add('email', 'text', array('label' => 'admin.users.email'))
+            ->add('place', 'text', array('label' => 'admin.users.place'))
             ->add('enabled', null, array('editable' => true, 'label' => 'admin.users.enabled'))
             ->add('locked', null, array('editable' => true, 'label' => 'admin.users.locked'))
         ;
@@ -28,6 +29,7 @@ class UserAdmin extends SonataUserAdmin {
             ->add('username')
             ->add('locked')
             ->add('email')
+            ->add('place')
         ;
     }
 
@@ -66,6 +68,12 @@ class UserAdmin extends SonataUserAdmin {
         $formMapper
             ->add('username', 'text', array('label' => 'admin.users.username'))
             ->add('email', 'text', array('label' => 'admin.users.email'))
+            ->add('place', 'entity', array(
+                'class' => 'Food\DishesBundle\Entity\Place',
+                'multiple' => false,
+                'required' => false,
+                'label' => 'admin.users.place'
+            ))
             ->add('plainPassword', 'text', array('required' => false, 'label' => 'admin.users.plainPassword'))
         ;
 
