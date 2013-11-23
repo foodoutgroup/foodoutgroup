@@ -2,106 +2,61 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="lt" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
-            <trans-unit id="action_delete">
-                <source>action_delete</source>
-                <target>Pašalinti</target>
+            <!-- General -->
+            <trans-unit id="admin.visible">
+                <source>admin.visible</source>
+                <target>Rodoma</target>
             </trans-unit>
-            <trans-unit id="btn_batch">
-                <source>btn_batch</source>
-                <target>Vykdyti</target>
+            <trans-unit id="admin.active">
+                <source>admin.active</source>
+                <target>Aktyvus</target>
             </trans-unit>
-            <trans-unit id="btn_create">
-                <source>btn_create</source>
-                <target>Sukuti</target>
+            <trans-unit id="admin.created_by">
+                <source>admin.created_by</source>
+                <target>Sukūrė</target>
             </trans-unit>
-            <trans-unit id="btn_create_and_edit_again">
-                <source>btn_create_and_edit_again</source>
-                <target>Sukurti ir redaguoti</target>
+            <trans-unit id="admin.edited_by">
+                <source>admin.edited_by</source>
+                <target>Paskutinis redagavo</target>
             </trans-unit>
-            <trans-unit id="btn_create_and_create_a_new_one">
-                <source>btn_create_and_create_a_new_one</source>
-                <target>Sukurti ir sukurti naują</target>
+            <trans-unit id="admin.created_at">
+                <source>admin.created_at</source>
+                <target>Sukūrimo data</target>
             </trans-unit>
-            <trans-unit id="btn_create_and_return_to_list">
-                <source>btn_create_and_return_to_list</source>
-                <target>Sukurti ir eiti į sąrašą</target>
+            <trans-unit id="admin.edited_at">
+                <source>admin.edited_at</source>
+                <target>Paskutinis redagavimas</target>
             </trans-unit>
-            <trans-unit id="btn_filter">
-                <source>btn_filter</source>
-                <target>Filtrai</target>
+            <trans-unit id="admin.deleted_at">
+                <source>admin.deleted_at</source>
+                <target>Ištrintas</target>
             </trans-unit>
-            <trans-unit id="btn_update_and_edit_again">
-                <source>btn_update_and_edit_again</source>
-                <target>Saugoti ir redaguoti</target>
+            <trans-unit id="dashboard">
+                <source>Dashboard</source>
+                <target>Titulinis</target>
             </trans-unit>
-            <trans-unit id="btn_update_and_return_to_list">
-                <source>btn_update_and_return_to_list</source>
-                <target>Saugoti ir eiti į sąrašą</target>
+            <trans-unit id="price">
+                <source>Price</source>
+                <target>Kaina</target>
             </trans-unit>
-            <trans-unit id="link_action_create">
-                <source>link_action_create</source>
-                <target>Sukurti naują</target>
+            <trans-unit id="options">
+                <source>Options</source>
+                <target>Priedai</target>
             </trans-unit>
-            <trans-unit id="link_action_list">
-                <source>link_action_list</source>
-                <target>Eiti į sąrašą</target>
+            <trans-unit id="categories">
+                <source>Categories</source>
+                <target>Kategorijos</target>
             </trans-unit>
-            <trans-unit id="link_add">
-                <source>link_add</source>
-                <target>Pridėti</target>
+            <trans-unit id="translations">
+                <source>Translations</source>
+                <target>Kalbos</target>
             </trans-unit>
-            <trans-unit id="delete_or">
-                <source>delete_or</source>
-                <target>arba</target>
+            <trans-unit id="admin.group.formanagers">
+                <source>admin.group.formanagers</source>
+                <target>Patiekalai</target>
             </trans-unit>
-            <trans-unit id="link_delete">
-                <source>link_delete</source>
-                <target>Ištrinti</target>
-            </trans-unit>
-            <trans-unit id="link_list">
-                <source>link_list</source>
-                <target>Sąrašas</target>
-            </trans-unit>
-            <trans-unit id="link_reset_filter">
-                <source>link_reset_filter</source>
-                <target>Atšaukti</target>
-            </trans-unit>
-            <trans-unit id="title_create">
-                <source>title_create</source>
-                <target>Sukurti</target>
-            </trans-unit>
-            <trans-unit id="title_dashboard">
-                <source>title_dashboard</source>
-                <target>Valdymas</target>
-            </trans-unit>
-            <trans-unit id="title_edit">
-                <source>title_edit</source>
-                <target>Redaguoti</target>
-            </trans-unit>
-            <trans-unit id="title_list">
-                <source>title_list</source>
-                <target>Sąrašas</target>
-            </trans-unit>
-            <trans-unit id="link_next_pager">
-                <source>link_next_pager</source>
-                <target>Kitas</target>
-            </trans-unit>
-            <trans-unit id="link_previous_pager">
-                <source>link_previous_pager</source>
-                <target>Buvęs</target>
-            </trans-unit>
-            <trans-unit id="Admin">
-                <source>Admin</source>
-                <target>Administratorius</target>
-            </trans-unit>
-            <trans-unit id="link_expand">
-                <source>link_expand</source>
-                <target>Išskleisti/suskleisti</target>
-            </trans-unit>
-            <trans-unit id="food.category">
-                <source>food.category</source>
-                <target>Kategorija</target>
-            </trans-unit>
+
+            <!-- Kitchen -->
             <trans-unit id="admin.kitchens.list.title">
                 <source>admin.kitchens.list.title</source>
                 <target>Virtuvės</target>
@@ -142,18 +97,6 @@
                 <source>admin.kitchens.list.count</source>
                 <target>Kiekis</target>
             </trans-unit>
-            <trans-unit id="admin.menu.places">
-                <source>admin.menu.places</source>
-                <target>Vietos</target>
-            </trans-unit>
-            <trans-unit id="admin.menu.places.list">
-                <source>admin.menu.places.list</source>
-                <target>Vietų sąrašas</target>
-            </trans-unit>
-            <trans-unit id="admin.menu.places.reports">
-                <source>admin.menu.places.reports</source>
-                <target>Vietų ataskaitos</target>
-            </trans-unit>
             <trans-unit id="admin.menu.kitchens">
                 <source>admin.menu.kitchens</source>
                 <target>Virtuvės</target>
@@ -161,6 +104,101 @@
             <trans-unit id="admin.menu.kitchens.list">
                 <source>admin.menu.kitchens.list</source>
                 <target>Virtuvių sąrašas</target>
+            </trans-unit>
+            <trans-unit id="kitchen-list">
+                <source>Kitchen List</source>
+                <target>Virtuvės</target>
+            </trans-unit>
+            <trans-unit id="admin.kitchen.type">
+                <source>admin.kitchen.type</source>
+                <target>Virtuvė</target>
+            </trans-unit>
+            <trans-unit id="admin.kitchen.logo">
+                <source>admin.kitchen.logo</source>
+                <target>Virtuvės logotipas</target>
+            </trans-unit>
+            <trans-unit id="admin.kitchen.name">
+                <source>admin.kitchen.name</source>
+                <target>Pavadinimas</target>
+            </trans-unit>
+
+
+            <!-- Food category-->
+            <trans-unit id="admin.food_category.name">
+                <source>admin.food_category.name</source>
+                <target>Kategorija</target>
+            </trans-unit>
+            <trans-unit id="food.category">
+                <source>food.category</source>
+                <target>Kategorija</target>
+            </trans-unit>
+            <trans-unit id="food-category-list">
+                <source>Food Category List</source>
+                <target>Kategorijos</target>
+            </trans-unit>
+
+            <!-- Dish -->
+            <trans-unit id="dish">
+                <source>Dish</source>
+                <target>Patiekalas</target>
+            </trans-unit>
+            <trans-unit id="dish-list">
+                <source>Dish List</source>
+                <target>Patiekalai</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.name">
+                <source>admin.dish.name</source>
+                <target>Patiekalas</target>
+            </trans-unit>
+
+            <!-- Dish options -->
+            <trans-unit id="admin.dish_options">
+                <source>admin.dish_options</source>
+                <target>Patiekalų priedai</target>
+            </trans-unit>
+            <trans-unit id="admin.dish_option.name">
+                <source>admin.dish_option.name</source>
+                <target>Priedas</target>
+            </trans-unit>
+            <trans-unit id="admin.dish_option.price">
+                <source>admin.dish_option.price</source>
+                <target>Kaina</target>
+            </trans-unit>
+            <trans-unit id="admin.dish_option.description">
+                <source>admin.dish_option.description</source>
+                <target>Aprašymas</target>
+            </trans-unit>
+            <trans-unit id="dish-option-list">
+                <source>Dish Option List</source>
+                <target>Patiekalų priedai</target>
+            </trans-unit>
+
+            <!-- Dish units -->
+            <trans-unit id="dish-unit-list">
+                <source>Dish Unit List</source>
+                <target>Matvimo vieneteai</target>
+            </trans-unit>
+            <trans-unit id="admin.dish_units">
+                <source>admin.dish_units</source>
+                <target>Matavimo vienetai</target>
+            </trans-unit>
+            <trans-unit id="admin.unit.name">
+                <source>admin.unit.name</source>
+                <target>Matavimo vienetas</target>
+            </trans-unit>
+            <trans-unit id="unit">
+                <source>Unit</source>
+                <target>Matas</target>
+            </trans-unit>
+
+            <!-- Place -->
+            <trans-unit id="admin.menu.places">
+                <source>admin.menu.places</source>
+                <target>Vietos</target>
+            </trans-unit>
+            <trans-unit id="admin.menu.places.list">
+                <source>admin.menu.places.list</source>
+                <target>Vietų sąrašas</target>
             </trans-unit>
             <trans-unit id="admin.places.list.title">
                 <source>admin.places.list.title</source>
@@ -182,149 +220,17 @@
                 <source>admin.places.list.actions</source>
                 <target>Veiksmai</target>
             </trans-unit>
-            <trans-unit id="price">
-                <source>Price</source>
-                <target>Kaina</target>
-            </trans-unit>
-            <trans-unit id="options">
-                <source>Options</source>
-                <target>Priedai</target>
-            </trans-unit>
-            <trans-unit id="unit">
-                <source>Unit</source>
-                <target>Matas</target>
-            </trans-unit>
-            <trans-unit id="categories">
-                <source>Categories</source>
-                <target>Kategorijos</target>
-            </trans-unit>
             <trans-unit id="place">
                 <source>Place</source>
                 <target>Vieta</target>
-            </trans-unit>
-            <trans-unit id="translations">
-                <source>Translations</source>
-                <target>Kalbos</target>
-            </trans-unit>
-            <trans-unit id="dish">
-                <source>Dish</source>
-                <target>Patiekalas</target>
-            </trans-unit>
-            <trans-unit id="label_filters">
-                <source>label_filters</source>
-                <target>Filtrai</target>
-            </trans-unit>
-            <trans-unit id="flash_create_success">
-                <source>flash_create_success</source>
-                <target>Sėkmingai sukurta</target>
-            </trans-unit>
-            <trans-unit id="flash_edit_success">
-                <source>flash_edit_success</source>
-                <target>Sėkmingai išsaugota</target>
             </trans-unit>
             <trans-unit id="admin.group.places">
                 <source>admin.group.places</source>
                 <target>Vietos</target>
             </trans-unit>
-            <trans-unit id="admin.group.formanagers">
-                <source>admin.group.formanagers</source>
-                <target>Patiekalai</target>
-            </trans-unit>
-            <trans-unit id="search_placeholder">
-                <source>search_placeholder</source>
-                <target>Paieška</target>
-            </trans-unit>
-            <trans-unit id="admin.kitchen.type">
-                <source>admin.kitchen.type</source>
-                <target>Virtuvė</target>
-            </trans-unit>
-            <trans-unit id="admin.kitchen.logo">
-                <source>admin.kitchen.logo</source>
-                <target>Virtuvės logotipas</target>
-            </trans-unit>
-            <trans-unit id="admin.kitchen.name">
-                <source>admin.kitchen.name</source>
-                <target>Pavadinimas</target>
-            </trans-unit>
-            <trans-unit id="admin.visible">
-                <source>admin.visible</source>
-                <target>Rodoma</target>
-            </trans-unit>
-            <trans-unit id="admin.created_by">
-                <source>admin.created_by</source>
-                <target>Sukūrė</target>
-            </trans-unit>
-            <trans-unit id="admin.created_at">
-                <source>admin.created_at</source>
-                <target>Sukūrimo data</target>
-            </trans-unit>
-            <trans-unit id="admin.edited_at">
-                <source>admin.edited_at</source>
-                <target>Paskutinis redagavimas</target>
-            </trans-unit>
-            <trans-unit id="label_type_yes">
-                <source>label_type_yes</source>
-                <target>Taip</target>
-            </trans-unit>
-            <trans-unit id="label_type_no">
-                <source>label_type_no</source>
-                <target>Ne</target>
-            </trans-unit>
-            <trans-unit id="dashboard">
-                <source>Dashboard</source>
-                <target>Titulinis</target>
-            </trans-unit>
-            <trans-unit id="user-list">
-                <source>User List</source>
-                <target>Vartotojai</target>
-            </trans-unit>
-            <trans-unit id="kitchen-list">
-                <source>Kitchen List</source>
-                <target>Virtuvės</target>
-            </trans-unit>
             <trans-unit id="place-list">
                 <source>Place List</source>
                 <target>Vietos</target>
-            </trans-unit>
-            <trans-unit id="place-point-list">
-                <source>Place Point List</source>
-                <target>Gamybos taškai</target>
-            </trans-unit>
-            <trans-unit id="place-reviews-list">
-                <source>Place Reviews List</source>
-                <target>Vietų atsiliepimai</target>
-            </trans-unit>
-            <trans-unit id="dish-list">
-                <source>Dish List</source>
-                <target>Patiekalai</target>
-            </trans-unit>
-            <trans-unit id="dish-unit-list">
-                <source>Dish Unit List</source>
-                <target>Matvimo vieneteai</target>
-            </trans-unit>
-            <trans-unit id="food-category-list">
-                <source>Food Category List</source>
-                <target>Kategorijos</target>
-            </trans-unit>
-            <trans-unit id="dish-option-list">
-                <source>Dish Option List</source>
-                <target>Patiekalų priedai</target>
-            </trans-unit>
-            <trans-unit id="all_elements">
-                <source>all_elements</source>
-                <target>Visus</target>
-            </trans-unit>
-            <trans-unit id="label_export_download">
-                <source>label_export_download</source>
-                <target>Eksportuoti:</target>
-            </trans-unit>
-            <trans-unit id="list_results_count">
-                <source>list_results_count</source>
-                <target>Rezultatų</target>
-            </trans-unit>
-            <trans-unit id="label_per_page">
-                <source>label_per_page</source>
-                <target>per psl.</target>
             </trans-unit>
             <trans-unit id="admin.place.name">
                 <source>admin.place.name</source>
@@ -338,41 +244,15 @@
                 <source>admin.place.logo</source>
                 <target>Vietos logotipas</target>
             </trans-unit>
-            <trans-unit id="admin.place.points">
-                <source>admin.place.points</source>
-                <target>Gamybos taškai</target>
-            </trans-unit>
             <trans-unit id="admin.place.review">
                 <source>admin.place.review</source>
                 <target>Atsiliepimas</target>
             </trans-unit>
-            <trans-unit id="admin.edited_by">
-                <source>admin.edited_by</source>
-                <target>Paskutinis redagavo</target>
-            </trans-unit>
-            <trans-unit id="admin.place_reviews">
-                <source>admin.place_reviews</source>
-                <target>Vietų atsiliepimai</target>
-            </trans-unit>
-            <trans-unit id="admin.dish_units">
-                <source>admin.dish_units</source>
-                <target>Matavimo vienetai</target>
-            </trans-unit>
-            <trans-unit id="admin.unit.name">
-                <source>admin.unit.name</source>
-                <target>Matavimo vienetas</target>
-            </trans-unit>
-            <trans-unit id="admin.food_category.name">
-                <source>admin.food_category.name</source>
-                <target>Kategorija</target>
-            </trans-unit>
-            <trans-unit id="admin.dish.name">
-                <source>admin.dish.name</source>
-                <target>Patiekalas</target>
-            </trans-unit>
-            <trans-unit id="admin.dish_options">
-                <source>admin.dish_options</source>
-                <target>Patiekalų priedai</target>
+
+            <!-- Place points -->
+            <trans-unit id="place-point-list">
+                <source>Place Point List</source>
+                <target>Gamybos taškai</target>
             </trans-unit>
             <trans-unit id="admin.place_points">
                 <source>admin.place_points</source>
@@ -426,6 +306,26 @@
                 <source>admin.point.coords</source>
                 <target>Koordinatės</target>
             </trans-unit>
+
+            <!-- Place reviews -->
+            <trans-unit id="place-reviews-list">
+                <source>Place Reviews List</source>
+                <target>Vietų atsiliepimai</target>
+            </trans-unit>
+            <trans-unit id="admin.place_reviews">
+                <source>admin.place_reviews</source>
+                <target>Vietų atsiliepimai</target>
+            </trans-unit>
+            <trans-unit id="admin.menu.places.reports">
+                <source>admin.menu.places.reports</source>
+                <target>Vietų ataskaitos</target>
+            </trans-unit>
+
+            <!-- Users -->
+            <trans-unit id="user-list">
+                <source>User List</source>
+                <target>Vartotojai</target>
+            </trans-unit>
             <trans-unit id="admin.users">
                 <source>admin.users</source>
                 <target>Vartotojai</target>
@@ -450,13 +350,13 @@
                 <source>admin.users.plainPassword</source>
                 <target>Naujas slaptažodis</target>
             </trans-unit>
-            <trans-unit id="link_action_show">
-                <source>link_action_show</source>
-                <target>Peržiūrėti</target>
-            </trans-unit>
             <trans-unit id="admin.users.place">
                 <source>admin.users.place</source>
                 <target>Vieta</target>
+            </trans-unit>
+            <trans-unit id="admin.users.last_login">
+                <source>admin.users.last_login</source>
+                <target>Paskutinį kartą prisijungė</target>
             </trans-unit>
         </body>
     </file>

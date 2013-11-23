@@ -45,7 +45,7 @@ class PlaceAdmin extends FoodAdmin
                 array(
                     //'by_reference' => false,
                     'max_length' => 2,
-                    'label' => 'admin.place.points',
+                    'label' => 'admin.place_points',
                 ),
                 array(
                     'edit' => 'inline',
@@ -60,8 +60,8 @@ class PlaceAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name', null, array(), null, array('label' => 'admin.place.name'))
-
+            ->add('name', null, array('label' => 'admin.place.name'))
+            ->add('active', null, array('label' => 'admin.active'))
 //            ->add('place')
         ;
     }
@@ -77,6 +77,7 @@ class PlaceAdmin extends FoodAdmin
                 'template' => 'FoodDishesBundle:Default:list_image.html.twig',
                 'label' => 'admin.place.logo'
             ))
+            ->add('active', null, array('label' => 'admin.active', 'editable' => true))
         ;
     }
 

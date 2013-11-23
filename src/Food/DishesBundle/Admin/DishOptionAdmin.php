@@ -18,10 +18,10 @@ class DishOptionAdmin extends FoodAdmin
             array(
                 'translatable_class' => 'Food\DishesBundle\Entity\DishOption',
                 'fields' => array(
-                    'name' => array(),
-                    'description' => array(),
+                    'name' => array('label' => 'label.name'),
+                    'description' => array('label' => 'label.description'),
                 ),
-                'label' => 'Unit name (transl)'
+//                'label' => 'Unit name (transl)'
             )
         );
 
@@ -37,10 +37,11 @@ class DishOptionAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
-            ->add('price')
-            ->add('createdBy')
-            ->add('createdAt')
+            ->add('name', null, array('label' => 'admin.dish_option.name'))
+            ->add('price', null, array('label' => 'admin.dish_option.price'))
+            ->add('createdBy', null, array('label' => 'admin.created_by'))
+            ->add('createdAt', null, array('label' => 'admin.created_at'))
+            ->add('deletedAt', null, array('label' => 'admin.deleted_at'))
         ;
     }
 
@@ -48,10 +49,11 @@ class DishOptionAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
-            ->add('createdBy')
-            ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
-            ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
+            ->addIdentifier('name', null, array('label' => 'admin.dish_option.name'))
+            ->add('price', null, array('label' => 'admin.dish_option.price'))
+            ->add('createdBy', null, array('label' => 'admin.created_by'))
+            ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
+            ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
         ;
     }
 

@@ -6,6 +6,10 @@
                 <source>label.name</source>
                 <target>Pavadinimas</target>
             </trans-unit>
+            <trans-unit id="label.description">
+                <source>label.description</source>
+                <target>Aprašymas</target>
+            </trans-unit>
             <trans-unit id="default">
                 <source>Default</source>
                 <target>Pagr.</target>
