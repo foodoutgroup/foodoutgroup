@@ -16,6 +16,7 @@ class UserAdmin extends SonataUserAdmin {
             ->add('place', 'text', array('label' => 'admin.users.place'))
             ->add('enabled', null, array('editable' => true, 'label' => 'admin.users.enabled'))
             ->add('locked', null, array('editable' => true, 'label' => 'admin.users.locked'))
+            ->add('lastLogin', null, array('format' => 'Y-m-d H:i:s', 'label' => 'admin.users.last_login'))
         ;
     }
 

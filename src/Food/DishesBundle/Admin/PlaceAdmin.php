@@ -45,7 +45,7 @@ class PlaceAdmin extends FoodAdmin
                 array(
                     //'by_reference' => false,
                     'max_length' => 2,
-                    'label' => 'admin.place.points',
+                    'label' => 'admin.place_points',
                 ),
                 array(
                     'edit' => 'inline',
