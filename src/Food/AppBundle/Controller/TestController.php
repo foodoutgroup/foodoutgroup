@@ -19,7 +19,7 @@ class TestController extends Controller
         $omg = $this->get('food.dishes.utils.slug');
         //$omg->generateForTexts('lt');
        //$newSlug = $omg->generateForTexts('lt', 1, 'Piciška šėtoniška piciutė');
-        $newSlug = $omg->generateForTexts('lt', 1, 'pirmas');
+        $newSlug = $omg->generateForTexts('lt', 2, 'ketvirtas jo');
 
 
         //$newSlug = $omg->generateForTexts('ru', 1, 'холодильник');

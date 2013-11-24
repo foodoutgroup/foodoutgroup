@@ -43,10 +43,10 @@ class TextStrategy extends AbstractStrategy
                 $cnt++;
             }
         }
-
-        if ($this->idExistsIn($slugs, $textId)) {
+        $id = $this->idExistsIn($slugs, $textId);
+        if ($id && $id > 0) {
             $item = $em->getRepository('FoodAppBundle:Slug')
-                ->find($this->idExistsIn($slugs, $textId));
+                ->find($id);
         } else {
             $item = new Slug();
         }
@@ -71,7 +71,7 @@ class TextStrategy extends AbstractStrategy
     {
         foreach ($slugs as $slRow) {
             if ($slRow['item_id'] == $id) {
-                return true;
+                return $slRow['id'];
             }
         }
         return false;
@@ -82,10 +82,10 @@ class TextStrategy extends AbstractStrategy
      * @param $slug
      * @return bool
      */
-    private function existsInOrigs($slugs, $slug)
+    private function existsInOrigs($slugs, $slug, $textId)
     {
         foreach ($slugs as $slRow) {
-            if ($slRow['orig_name'] == $slug) {
+            if ($slRow['orig_name'] == $slug && $slRow['item_id'] != $textId) {
                 return true;
             }
         }
@@ -96,10 +96,10 @@ class TextStrategy extends AbstractStrategy
      * @param $slugs
      * @param $slug
      */
-    private function existsIn($slugs, $slug)
+    private function existsIn($slugs, $slug, $textId)
     {
         foreach ($slugs as $slRow) {
-            if ($slRow['name'] == $slug) {
+            if ($slRow['name'] == $slug  && $slRow['item_id'] != $textId) {
                 return true;
             }
         }

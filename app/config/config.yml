@@ -5,7 +5,7 @@ imports:
     - { resource: "@FoodDishesBundle/Resources/config/admin.yml" }
 
 parameters:
-    available_locales: [lt, ru]
+    available_locales: [lt, en, ru]
 
 framework:
     #esi:             ~
