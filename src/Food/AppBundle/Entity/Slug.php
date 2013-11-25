@@ -12,9 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Slug
 {
-    const TYPE_CATEGORY = 'category';
-    const TYPE_DISH = 'dish';
+    const TYPE_KITCHEN = 'kitchen';
     const TYPE_PLACE = 'place';
+    const TYPE_FOOD_CATEGORY = 'food_category';
     const TYPE_TEXT = 'text';
 
 
@@ -135,8 +135,8 @@ class Slug
     public function setType($type)
     {
         $allowedTypes = [
-            self::TYPE_CATEGORY,
-            self::TYPE_DISH,
+            self::TYPE_KITCHEN,
+            self::TYPE_FOOD_CATEGORY,
             self::TYPE_PLACE,
             self::TYPE_TEXT
         ];

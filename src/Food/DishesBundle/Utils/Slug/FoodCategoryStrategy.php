@@ -6,13 +6,13 @@ use Food\AppBundle\Traits;
 use Food\AppBundle\Entity\Slug;
 
 
-class TextStrategy extends AbstractStrategy
+class FoodCategoryStrategy extends AbstractStrategy
 {
     use Traits\Service;
 
     const BATCH_SIZE = 1000;
 
-    private $type = Slug::TYPE_TEXT;
+    private $type = Slug::TYPE_FOOD_CATEGORY;
 
     public function __construct(\Symfony\Component\DependencyInjection\ContainerInterface $container)
     {
@@ -51,6 +51,9 @@ class TextStrategy extends AbstractStrategy
 
         $slugs = $this->getSlugs($langId);
         $slug = $this->makeSlug($langId, $text);
+
+        $slugPart = $this->getPlaceSlug($textId);
+
         $origSlug = $slug;
         if ($this->existsInOrigs($slugs, $slug, $textId)) {
             $cnt = 0;
@@ -84,6 +87,16 @@ class TextStrategy extends AbstractStrategy
 
     }
 
+
+    /**
+     * @param $categoryId
+     */
+    private function getPlaceSlug($categoryId)
+    {
+        $em = $this->em();
+        $repo = $em->getRepository('FoodDishesBundle:FoodCategory');
+        // @todo blemba - nedomina gedmo gi cia, uzteks is slugu rinktis. va ir kiaushu sukt nereikia.
+    }
 
     private function idExistsIn($slugs, $id)
     {
