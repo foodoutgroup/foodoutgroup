@@ -55,6 +55,10 @@
                 <source>admin.group.formanagers</source>
                 <target>Patiekalai</target>
             </trans-unit>
+            <trans-unit id="admin.actions">
+                <source>admin.actions</source>
+                <target>Veiksmai</target>
+            </trans-unit>
 
             <!-- Kitchen -->
             <trans-unit id="admin.kitchens.list.title">
@@ -358,6 +362,25 @@
                 <source>admin.users.last_login</source>
                 <target>Paskutinį kartą prisijungė</target>
             </trans-unit>
+
+            <!-- Static content -->
+            <trans-unit id="admin.static">
+                <source>admin.static</source>
+                <target>Statiniai puslapiai</target>
+            </trans-unit>
+            <trans-unit id="Static Content List">
+                <source>Static Content List</source>
+                <target>Puslapiai</target>
+            </trans-unit>
+            <trans-unit id="admin.static.title">
+                <source>admin.static.title</source>
+                <target>Pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.static.content">
+                <source>admin.static.content</source>
+                <target>Turinys</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

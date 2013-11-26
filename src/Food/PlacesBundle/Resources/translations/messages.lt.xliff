@@ -26,6 +26,14 @@
                 <source>admin.visible</source>
                 <target>Rodoma</target>
             </trans-unit>
+            <trans-unit id="admin.static.title">
+                <source>admin.static.title</source>
+                <target>Pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.static.content">
+                <source>admin.static.content</source>
+                <target>Turinys</target>
+            </trans-unit>
 
         </body>
     </file>
