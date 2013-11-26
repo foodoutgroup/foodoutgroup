@@ -50,10 +50,11 @@ class KitchenAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
-            ->add('visible')
-            ->add('createdBy')
-            ->add('createdAt')
+            ->add('name', null, array('label' => 'admin.kitchen.name'))
+            ->add('visible', null, array('label' => 'admin.visible'))
+            ->add('createdBy', null, array('label' => 'admin.created_by'))
+            ->add('createdAt', null, array('label' => 'admin.created_at'))
+            ->add('deletedAt', null, array('label' => 'admin.deleted_at'))
         ;
     }
 
@@ -66,7 +67,7 @@ class KitchenAdmin extends FoodAdmin
                 'template' => 'FoodDishesBundle:Default:list_image.html.twig',
                 'label' => 'admin.kitchen.logo')
             )
-            ->add('visible', null, array('label' => 'admin.visible'))
+            ->add('visible', null, array('label' => 'admin.visible', 'editable' => true))
             ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))

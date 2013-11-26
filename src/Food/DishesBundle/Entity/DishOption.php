@@ -120,12 +120,15 @@ class DishOption implements Translatable
     private $deletedBy;
 
     /**
-     * TODO
+     * Returns the name
+     *
      * @return string
      */
     public function __toString()
     {
-        // TODO return localized
+        if (!$this->getId()) {
+            return '';
+        }
         return $this->getName();
     }
     /**

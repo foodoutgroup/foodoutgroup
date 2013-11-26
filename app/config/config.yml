@@ -97,7 +97,7 @@ doctrine:
         # e.g. database_path: %kernel.root_dir%/data/data.db3
         # path:     %database_path%
         types:
-          #json: Sonata\Doctrine\Types\JsonType
+            json: Sonata\Doctrine\Types\JsonType
 
     orm:
         auto_generate_proxy_classes: %kernel.debug%
@@ -152,7 +152,8 @@ sonata_block:
 # Sonata admin bloku konfigas
 sonata_admin:
     title: Skanu.lt
-    title_logo: /bundles/foodapp/images/admin_icon.png
+#    title_logo: /bundles/foodapp/images/admin_icon.png
+    title_logo: /bundles/foodapp/images/admin_fun_icon.png
     templates:
       layout: SonataAdminBundle::standard_layout.html.twig
       ajax:   SonataAdminBundle::ajax_layout.html.twig
@@ -182,13 +183,12 @@ sonata_admin:
                       - sonata.admin.place.pointfull
                       - sonata.admin.place.reviews
                   roles: [ ROLE_MODERATOR ]
-#              acme.admin.group.users:
-#                  items: ~
-#                  item_adds:
-#                      - sonata.admin.users
-#                  roles: [ ROLE_ADMIN ]
+              admin.users:
+                  items: ~
+                  item_adds:
+                      - sonata.admin.users
+                  roles: [ ROLE_ADMIN ]
               acme.admin.group.misc: ~
-# Multilingual entity items
 
 stof_doctrine_extensions:
     default_locale: %locale%

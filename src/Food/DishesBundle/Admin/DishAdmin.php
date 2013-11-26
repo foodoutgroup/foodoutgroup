@@ -87,13 +87,14 @@ class DishAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
+            ->add('name', null, array('label' => 'admin.dish.name'))
             ->add('place')
             ->add('categories')
             ->add('unit')
             ->add('options')
-            ->add('createdBy')
-            ->add('createdAt')
+            ->add('createdBy', null, array('label' => 'admin.created_by'))
+            ->add('createdAt', null, array('label' => 'admin.created_at'))
+            ->add('deletedAt', null, array('label' => 'admin.deleted_at'))
         ;
     }
 

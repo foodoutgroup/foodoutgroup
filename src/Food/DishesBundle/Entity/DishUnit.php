@@ -99,12 +99,15 @@ class DishUnit implements Translatable
 
 
     /**
-     * TODO
+     * Returns the name
      *
      * @return string
      */
     public function __toString()
     {
+        if (!$this->getId()) {
+            return '';
+        }
         return $this->getName();
     }
     /**

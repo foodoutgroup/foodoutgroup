@@ -33,12 +33,12 @@ class FoodCategoryAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
-            ->add('createdAt')
-            ->add('editedAt')
-            ->add('deletedAt')
+            ->add('name', null, array('label' => 'admin.food_category.name'))
+            ->add('createdAt', null, array('label' => 'admin.places.list.active'))
+            ->add('editedAt', null, array('label' => 'admin.edited_at'))
+            ->add('deletedAt', null, array('label' => 'admin.deleted_at'))
             ->add('place')
-            ->add('active')
+            ->add('active', null, array('label' => 'admin.places.list.active'))
         ;
     }
 
@@ -46,9 +46,9 @@ class FoodCategoryAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name', 'string', array('admin.food_category.name'))
+            ->addIdentifier('name', 'string', array('label' => 'admin.food_category.name'))
             ->add('place')
-            ->add('active', null, array('label' => 'admin.places.list.active'))
+            ->add('active', null, array('label' => 'admin.places.list.active', 'editable' => true))
             ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
