@@ -172,6 +172,7 @@ sonata_admin:
                       - sonata.admin.place.reviews
                       - sonata.admin.dish.unit
                       - sonata.admin.food.category
+                      - sonata.admin.static
                   roles: [ ROLE_ADMIN ]
               acme.admin.group.formanagers:
                   label: admin.group.formanagers

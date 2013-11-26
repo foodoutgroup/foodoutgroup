@@ -856,12 +856,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "e543600e49216765315610b6281349ee86dfe87e"
+                "reference": "eb459d55bca10b51e7d44143ca6757fd999fce62"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/e543600e49216765315610b6281349ee86dfe87e",
-                "reference": "e543600e49216765315610b6281349ee86dfe87e",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/eb459d55bca10b51e7d44143ca6757fd999fce62",
+                "reference": "eb459d55bca10b51e7d44143ca6757fd999fce62",
                 "shasum": ""
             },
             "require": {
@@ -916,7 +916,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2013-11-07 03:54:10"
+            "time": "2013-11-25 12:39:19"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -1587,12 +1587,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "3d6e4d4e395055c76f0062f2792b3547b291bfd1"
+                "reference": "d02b7e0b5246556c338ba004050db4f456f06690"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/3d6e4d4e395055c76f0062f2792b3547b291bfd1",
-                "reference": "3d6e4d4e395055c76f0062f2792b3547b291bfd1",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/d02b7e0b5246556c338ba004050db4f456f06690",
+                "reference": "d02b7e0b5246556c338ba004050db4f456f06690",
                 "shasum": ""
             },
             "require": {
@@ -1657,7 +1657,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2013-11-23 14:04:58"
+            "time": "2013-11-25 11:47:35"
         },
         {
             "name": "sonata-project/block-bundle",

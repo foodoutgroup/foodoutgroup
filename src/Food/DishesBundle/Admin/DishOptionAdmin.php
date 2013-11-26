@@ -54,6 +54,13 @@ class DishOptionAdmin extends FoodAdmin
             ->add('createdBy', null, array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
+            ->add('_action', 'actions', array(
+                'actions' => array(
+                    'edit' => array(),
+                    'delete' => array(),
+                ),
+                'label' => 'admin.actions'
+            ))
         ;
     }
 
