@@ -129,4 +129,46 @@ class PlaceAdmin extends FoodAdmin
             }
         }
     }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Place $object
+     */
+    public function postPersist($object)
+    {
+        $this->fixSlugs($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Place $object
+     */
+    public function postUpdate($object)
+    {
+        $this->fixSlugs($object);
+    }
+
+    /**
+     * Lets fix da stufffff.... Slugs for Place :)
+     *
+     * @param \Food\DishesBundle\Entity\Place $object
+     */
+    private function fixSlugs($object)
+    {
+        $origName = $object->getOrigName($this->modelManager->getEntityManager('FoodDishesBundle:Place'));
+        $locales = $this->getContainer()->getParameter('available_locales');
+        $textsForSlugs = array();
+        foreach($object->getTranslations()->getValues() as $row) {
+            $textsForSlugs[$row->getLocale()] = $row->getContent();
+        }
+        foreach ($locales as $loc) {
+            if (!isset($textsForSlugs[$loc])) {
+                $textsForSlugs[$loc] = $origName;
+            }
+        }
+
+        $languages = $this->getContainer()->get('food.app.utils.language')->getAll();
+        $slugUtelyte = $this->getContainer()->get('food.dishes.utils.slug');
+        foreach ($languages as $loc) {
+            $slugUtelyte->generateEntityForPlace($loc, $object->getId(), $textsForSlugs[$loc]);
+        }
+    }
 }

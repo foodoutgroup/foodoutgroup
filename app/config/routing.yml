@@ -31,9 +31,11 @@ food_dishes:
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
+
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
-    prefix:   /{_locale}
+    #prefix:   /{_locale}
+    prefix:   /
 
 
 fos_user_profile:

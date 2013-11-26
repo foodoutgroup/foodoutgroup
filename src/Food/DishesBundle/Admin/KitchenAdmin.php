@@ -96,4 +96,46 @@ class KitchenAdmin extends FoodAdmin
         $this->saveFile($object);
         parent::preUpdate($object);
     }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Kitchen $object
+     */
+    public function postPersist($object)
+    {
+        $this->fixSlugs($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Kitchen $object
+     */
+    public function postUpdate($object)
+    {
+        $this->fixSlugs($object);
+    }
+
+    /**
+     * Lets fix da stufffff.... Slugs for Kichen :)
+     *
+     * @param \Food\DishesBundle\Entity\Kitchen $object
+     */
+    private function fixSlugs($object)
+    {
+        $origName = $object->getOrigName($this->modelManager->getEntityManager('FoodDishesBundle:Kitchen'));
+        $locales = $this->getContainer()->getParameter('available_locales');
+        $textsForSlugs = array();
+        foreach($object->getTranslations()->getValues() as $row) {
+            $textsForSlugs[$row->getLocale()] = $row->getContent();
+        }
+        foreach ($locales as $loc) {
+            if (!isset($textsForSlugs[$loc])) {
+                $textsForSlugs[$loc] = $origName;
+            }
+        }
+
+        $languages = $this->getContainer()->get('food.app.utils.language')->getAll();
+        $slugUtelyte = $this->getContainer()->get('food.dishes.utils.slug');
+        foreach ($languages as $loc) {
+            $slugUtelyte->generateForKitchens($loc, $object->getId(), $textsForSlugs[$loc]);
+        }
+    }
 }

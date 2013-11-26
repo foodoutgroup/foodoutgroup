@@ -148,6 +148,18 @@ class Place extends Uploadable
         $this->points = new \Doctrine\Common\Collections\ArrayCollection();
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $em
+     * @return string
+     */
+    public function getOrigName(\Doctrine\ORM\EntityManager $em)
+    {
+        $query = $em->createQuery("SELECT o.name FROM FoodDishesBundle:Place as o WHERE o.id=:id")
+            ->setParameter('id', $this->getId());
+        $res = ($query->getSingleResult());
+        return $res['name'];
+    }
     
     /**
      * Get id
