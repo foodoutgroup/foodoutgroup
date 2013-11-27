@@ -1,0 +1,3 @@
+food.upload:
+        class: Food\AppBundle\Service\UploadService
+        arguments: [@service_container, user_id]

@@ -34,3 +34,9 @@ _kitchen_status:
 _add_freaky_user:
     pattern: /users/add/{username}/{email}/{password}
     defaults: { _controller: FoodAppBundle:Security:addUser}
+
+# Front-end routes
+# TODO temp - kai bus slugai isimti
+static:
+    path:     /static/{id}
+    defaults: { _controller: FoodAppBundle:Static:index }
