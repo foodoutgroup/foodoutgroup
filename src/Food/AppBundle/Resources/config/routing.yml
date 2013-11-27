@@ -1,9 +1,9 @@
-food_homepage:
-    defaults: { _controller: FoodAppBundle:Default:index }
+
+
 
 food_homepage2:
-    pattern:  /
-    defaults: { _controller: FoodAppBundle:Default:index }
+    pattern:  /{slug}/
+    defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
 
 food_homepage:
     pattern:  /test

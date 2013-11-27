@@ -34,8 +34,8 @@ fos_user_security:
 
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
-    #prefix:   /{_locale}
-    prefix:   /
+    prefix:   /{_locale}
+
 
 
 fos_user_profile:
