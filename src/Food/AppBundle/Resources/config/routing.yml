@@ -4,6 +4,8 @@
 food_homepage2:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
+    requirements:
+        slug : ".+"
 
 food_homepage:
     pattern:  /test

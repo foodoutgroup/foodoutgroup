@@ -11,18 +11,19 @@ class SlugController extends Controller
 {
     public function processAction(Request $request, $slug)
     {
-        die("MOJO");
+        var_dump($slug);
+
         // if we have uppercase letters - permanently redirect to lowercase version
         if (preg_match('#[A-Z]#', $slug)) {
+            // @todo - Reik sutvarkyt
             $queryString = $request->getQueryString();
-            $url = $this->generateUrl('fish_parado_slug', ['slug' => mb_strtolower($slug, 'utf-8')], true);
-
+            $url = $this->generateUrl('food_app_slug', ['slug' => mb_strtolower($slug, 'utf-8')], true);
             return new RedirectResponse(sprintf('%s%s', $url, !empty($queryString) ? '?' . $queryString : ''), 301);
         }
 
-        $slugUtil = $this->get('fish.parado.utils.slug');
-        $slugRepo = $this->getDoctrine()->getRepository('FishCommonBundle:Slug');
-        $repo = $this->getDoctrine()->getRepository('FishParadoBundle:Category');
+        $slugUtil = $this->get('food.dishes.utils.slug');
+        $slugRepo = $this->getDoctrine()->getRepository('FoodAppBundle:Slug');
+
         $slugRow = $slugUtil->getOneByName($slug);
 
         // check if slug is active. If not - redirect to next slug with 301
@@ -34,22 +35,23 @@ class SlugController extends Controller
                 'is_active' => true,
             ]);
 
-            if (empty($slugRow)) return $this->forward('FishParadoBundle:Error404:render');
+            if (empty($slugRow)) return $this->forward('FoodAppBundle:Error404:render');
 
-            return $this->redirect($this->generateUrl('fish_parado_slug', ['slug' => $slugRow->getName()]), 301);
+            return $this->redirect($this->generateUrl('food_dishes_slug', ['slug' => $slugRow->getName()]), 301);
         }
 
         if ($slugRow == null) {
-            if ($slug != null) return $this->forward('FishParadoBundle:Error404:render');
+            if ($slug != null) return $this->forward('FoodAppBundle:Error404:render');
             else {
-                $slug = $slugUtil->getFirstMainSlug();
+                $slug = $slugUtil->getFirstMainSlug(); // @todo clean
                 $slugRow = $slugUtil->getOneByName($slug);
             }
         }
 
         $slugUtil->set($slug);
-        $slugUtil->setMain($slugUtil->getTopCategorySlug($slug));
+        $slugUtil->setMain($slugUtil->getTopCategorySlug($slug)); // @todo clean
 
+        // @todo - sukurti clean puslapius kurie suvirshkintu ir apdorotu viska
         if ($slugRow->getType() == Slug::TYPE_CATEGORY) {
             // since categories can have attached custom action and/or template, we select this category first
             $category = $repo->findOneById($slugRow->getItemId());
