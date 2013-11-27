@@ -3,6 +3,7 @@
 namespace Food\DishesBundle\Utils;
 
 
+use Food\DishesBundle\Utils\Slug\FoodCategoryStrategy;
 use Food\DishesBundle\Utils\Slug\SlugGenerator;
 use Food\DishesBundle\Utils\Slug\TextStrategy;
 use Food\AppBundle\Entity;
@@ -50,7 +51,7 @@ class Slug
         $context->generate($langId, $itemId, $itemText);
     }
 
-    public function generateEntityForPlace($langId)
+    public function generateEntityForPlace($langId, $itemId, $itemText)
     {
         $strategy = new TextStrategy($this->container());
         $strategy->setType(SlugEntity::TYPE_PLACE);

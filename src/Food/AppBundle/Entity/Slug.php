@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Food\AppBundle\Entity\Slug
  *
- * @ORM\Table(name="common_slug", indexes={@ORM\Index(name="item_id_idx", columns={"item_id"}), @ORM\Index(name="item_id_type_idx", columns={"item_id", "type"})}, uniqueConstraints={@ORM\UniqueConstraint(name="type_name_unq", columns={"type", "name"})})
+ * @ORM\Table(name="common_slug", indexes={@ORM\Index(name="item_id_idx", columns={"item_id"}), @ORM\Index(name="item_id_type_idx", columns={"item_id", "type", "lang_id"})}, uniqueConstraints={@ORM\UniqueConstraint(name="type_name_unq", columns={"type", "name", "lang_id"})})
  * @ORM\Entity(repositoryClass="Food\AppBundle\Entity\SlugRepository")
  */
 class Slug

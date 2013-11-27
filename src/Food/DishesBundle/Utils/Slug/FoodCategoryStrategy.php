@@ -52,8 +52,8 @@ class FoodCategoryStrategy extends AbstractStrategy
         $slugs = $this->getSlugs($langId);
         $slug = $this->makeSlug($langId, $text);
 
-        $slugPart = $this->getPlaceSlug($textId);
-
+        $slugPart = $this->getPlaceSlug($textId, $langId);
+        $slug = $slugPart.'/'.$slug;
         $origSlug = $slug;
         if ($this->existsInOrigs($slugs, $slug, $textId)) {
             $cnt = 0;
@@ -90,12 +90,14 @@ class FoodCategoryStrategy extends AbstractStrategy
 
     /**
      * @param $categoryId
+     * @param $langId
      */
-    private function getPlaceSlug($categoryId)
+    private function getPlaceSlug($categoryId, $langId)
     {
         $em = $this->em();
-        $repo = $em->getRepository('FoodDishesBundle:FoodCategory');
-        // @todo blemba - nedomina gedmo gi cia, uzteks is slugu rinktis. va ir kiaushu sukt nereikia.
+        $row = $em->getRepository('FoodDishesBundle:FoodCategory')->findOneById($categoryId);
+        $placeRow = $em->getRepository('FoodAppBundle:Slug')->findOneBy(array('item_id' => $row->getPlace()->getId(), 'type' => 'place', 'lang_id' => $langId));
+        return $placeRow->getName();
     }
 
     private function idExistsIn($slugs, $id)

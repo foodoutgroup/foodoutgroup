@@ -154,12 +154,9 @@ class PlaceAdmin extends FoodAdmin
      */
     private function fixSlugs($object)
     {
-        $origName = $object->getOrigName($this->modelManager->getEntityManager('FoodDishesBundle:Place'));
+        $origName = $object->getName();
         $locales = $this->getContainer()->getParameter('available_locales');
         $textsForSlugs = array();
-        foreach($object->getTranslations()->getValues() as $row) {
-            $textsForSlugs[$row->getLocale()] = $row->getContent();
-        }
         foreach ($locales as $loc) {
             if (!isset($textsForSlugs[$loc])) {
                 $textsForSlugs[$loc] = $origName;
