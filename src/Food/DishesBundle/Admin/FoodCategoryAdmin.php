@@ -22,7 +22,7 @@ class FoodCategoryAdmin extends FoodAdmin
             ));
         if ($this->isAdmin()) {
             $formMapper
-                ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place', 'disabled' => true));
+                ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place',));
         }
         $formMapper
             ->add('active', 'checkbox', array('required' => false, 'label' => 'admin.active'))

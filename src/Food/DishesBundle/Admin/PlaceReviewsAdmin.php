@@ -12,15 +12,24 @@ class PlaceReviewsAdmin extends FoodAdmin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
+        // Is it edit?
+        if ($this->id($this->getSubject())) {
+            $fieldDisabled = true;
+        }
+        // Or is it create?
+        else {
+            $fieldDisabled = false;
+        }
+
         if ($this->isAdmin()) {
             $formMapper
-                ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place', 'disabled' => true));
+                ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
         }
         $formMapper
             ->add('createdBy', 'entity', array(
                 'class' => 'Food\UserBundle\Entity\User',
                 'label' => 'admin.created_by',
-                'disabled' => true
+                'disabled' => $fieldDisabled
             ))
             ->add('review', 'textarea', array('label' => 'admin.place.review'))
         ;
