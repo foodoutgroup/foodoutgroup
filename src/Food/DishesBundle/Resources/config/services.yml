@@ -1,5 +1,6 @@
 services:
     food.dishes.utils.slug:
         class: Food\DishesBundle\Utils\Slug
+        arguments: ["%locale%"]
         calls:
             - [container, [@service_container]]

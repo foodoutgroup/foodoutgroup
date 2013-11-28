@@ -12,12 +12,37 @@ use Food\AppBundle\Traits;
 
 class Slug
 {
-    //use Traits\Service;
     use Traits\Service;
 
     private $slug;
-    private $mainSlug;
+    private $mainSlug; // @todo - check if it is needed :D
 
+    /**
+     * Crazy magic :)
+     * @var string
+     */
+    private $locale;
+
+    public function __construct($locale)
+    {
+        $this->setLocale($locale);
+    }
+
+    /**
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
 
 
     public function set($slug)
@@ -34,7 +59,7 @@ class Slug
     public function getSlugByItem($itemId, $type)
     {
         $item = $this->repo('FoodAppBundle:Slug')->findOneBy(
-            array('item_id' => $itemId, 'type' => $type, 'lang_id' => $this->service('food.app.utils.locale')->getLocale())
+            array('item_id' => $itemId, 'type' => $type, 'lang_id' => $this->getLocale())
         );
 
         if ($item) {
