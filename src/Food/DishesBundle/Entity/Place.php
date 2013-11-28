@@ -73,6 +73,13 @@ class Place extends Uploadable
 
 
     /**
+     * @ORM\OneToMany(targetEntity="FoodCategory", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @var ArrayCollection
+     */
+    private $categories;
+
+    /**
      * @ORM\OneToMany(targetEntity="\Food\UserBundle\Entity\User", mappedBy="id")
      **/
     private $users;
@@ -556,5 +563,38 @@ class Place extends Uploadable
     public function getDeletedBy()
     {
         return $this->deletedBy;
+    }
+
+    /**
+     * Add categories
+     *
+     * @param \Food\DishesBundle\Entity\FoodCategory $categories
+     * @return Place
+     */
+    public function addCategorie(\Food\DishesBundle\Entity\FoodCategory $categories)
+    {
+        $this->categories[] = $categories;
+    
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \Food\DishesBundle\Entity\FoodCategory $categories
+     */
+    public function removeCategorie(\Food\DishesBundle\Entity\FoodCategory $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategories()
+    {
+        return $this->categories;
     }
 }

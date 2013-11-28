@@ -18,6 +18,8 @@ class Slug
     private $slug;
     private $mainSlug;
 
+
+
     public function set($slug)
     {
         $this->slug = $slug;
@@ -29,12 +31,38 @@ class Slug
     }
 
 
+    public function getSlugByItem($itemId, $type)
+    {
+        $item = $this->repo('FoodAppBundle:Slug')->findOneBy(
+            array('item_id' => $itemId, 'type' => $type, 'lang_id' => $this->service('food.app.utils.locale')->getLocale())
+        );
+
+        if ($item) {
+            return $item->getName();
+        } else {
+            return "error";
+        }
+    }
+
+    public function getOneByName($slug)
+    {
+        // @todo - Kaip su keshu? Fisho kodas
+        // $memcache = $this->service('beryllium_cache');
+
+        //if (($item = $memcache->get('slug_' . $slug)) != null) return $item;
+
+        $item = $this->repo('FoodAppBundle:Slug')->findOneByName($slug);
+        // $memcache->set('slug_' . $slug, $item);
+
+        return $item;
+    }
+
+
     /**
      * Convert string to slug.
-     * 
+     *
      * @param   string  $text
-     * @param   boolean $skipUCWords
-     * 
+     *
      * @return  string
      */
     public function stringToSlug($text)

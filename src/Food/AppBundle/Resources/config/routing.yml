@@ -1,15 +1,17 @@
+food_homepage:
+    pattern: /
+    defaults: { _controller: FoodAppBundle:Default:index }
+
+food_test:
+    pattern:  /test/
+    defaults: { _controller: FoodAppBundle:Test:index }
 
 
-
-food_homepage2:
+food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
         slug : ".+"
-
-food_homepage:
-    pattern:  /test
-    defaults: { _controller: FoodAppBundle:Test:index }
 
 admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
@@ -20,4 +22,6 @@ _sonata_admin:
     resource: .
     type: sonata_admin
     prefix: /admin
+
+
 

@@ -143,6 +143,11 @@ class FoodCategory implements Translatable
         $res = ($query->getSingleResult());
         return $res['name'];
     }
+
+    public function getSlug()
+    {
+        return "Zebra";
+    }
     
     /**
      * Get id

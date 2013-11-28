@@ -9,3 +9,7 @@ services:
         class: Food\AppBundle\Utils\Route
         calls:
             - [container, [@service_container]]
+
+    food.app.utils.locale:
+        class: Food\AppBundle\Utils\Locale
+        arguments: ["%locale%" ]
