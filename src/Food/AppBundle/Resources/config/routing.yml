@@ -8,20 +8,7 @@ food_test:
 
 
 food_slug:
-    pattern:  /{slug}/
+    pattern:  /azaaaa/{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
         slug : ".+"
-
-admin:
-    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
-    prefix: /admin
-
-
-_sonata_admin:
-    resource: .
-    type: sonata_admin
-    prefix: /admin
-
-
-
