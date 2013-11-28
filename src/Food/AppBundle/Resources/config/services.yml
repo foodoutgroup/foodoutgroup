@@ -1,3 +1,4 @@
-food.upload:
-        class: Food\AppBundle\Service\UploadService
-        arguments: [@service_container, user_id]
+services:
+  food.static:
+      class: Food\AppBundle\Service\StaticService
+      arguments: [@service_container, user_id]
