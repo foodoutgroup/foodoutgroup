@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: "@FoodCartBundle/Resources/config/services.yml" }
     - { resource: "@FoodDishesBundle/Resources/config/admin.yml" }
+    - { resource: "@FoodSmsBundle/Resources/config/admin.yml" }
 
 parameters:
     available_locales: [lt, ru]
@@ -176,6 +177,7 @@ sonata_admin:
                       - sonata.admin.dish.unit
                       - sonata.admin.food.category
                       - sonata.admin.static
+                      - sonata.admin.sms
                   roles: [ ROLE_ADMIN ]
               acme.admin.group.formanagers:
                   label: admin.group.formanagers
