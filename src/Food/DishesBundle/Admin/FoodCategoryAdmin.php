@@ -22,19 +22,24 @@ class FoodCategoryAdmin extends FoodAdmin
             ));
         if ($this->isAdmin()) {
             $formMapper
-                ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place', 'disabled' => true));
+                ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place', 'disabled' => false));
         }
         $formMapper
             ->add('active', 'checkbox', array('required' => false, 'label' => 'admin.active'))
         ;
     }
 
-    // Fields to be shown on filter forms
+    /**
+     *  Fields to be shown on filter forms
+     * @param DatagridMapper $datagridMapper
+     *
+     * @todo - Mantai ar cia tikrai Active prie createdAt turi but?
+     */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
             ->add('name', null, array('label' => 'admin.food_category.name'))
-            ->add('createdAt', null, array('label' => 'admin.places.list.active'))
+            ->add('createdAt', 'doctrine_orm_datetime_range', array('label' => 'admin.places.list.active'), null, array('widget' => 'single_text', 'required' => false, 'attr' => array('class' => 'datepicker')))
             ->add('editedAt', null, array('label' => 'admin.edited_at'))
             ->add('deletedAt', null, array('label' => 'admin.deleted_at'))
             ->add('place')
@@ -70,6 +75,8 @@ class FoodCategoryAdmin extends FoodAdmin
         }
         parent::prePersist($object);
     }
+
+
 
     /**
      * @param \Food\DishesBundle\Entity\FoodCategory $object

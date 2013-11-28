@@ -158,7 +158,8 @@ sonata_admin:
 #    title_logo: /bundles/foodapp/images/admin_icon.png
     title_logo: /bundles/foodapp/images/admin_fun_icon.png
     templates:
-      layout: SonataAdminBundle::standard_layout.html.twig
+      #layout: SonataAdminBundle::standard_layout.html.twig
+      layout: FoodAppBundle::admin_layout.html.twig
       ajax:   SonataAdminBundle::ajax_layout.html.twig
 
       list: SonataAdminBundle:CRUD:list.html.twig
