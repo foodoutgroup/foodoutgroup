@@ -1,8 +1,6 @@
 <?php
 namespace Food\AppBundle\Service;
 
-use Doctrine\Tests\Common\Annotations\Ticket\Doctrine\ORM\Mapping\Entity;
-
 class StaticService {
 
     /**
@@ -42,13 +40,28 @@ class StaticService {
     }
 
     /**
-     * TODO
+     * Get static page by id
+     *
      * @param $id
+     *
+     * @return bool
+     *
      * @throws \InvalidArgumentException
      */
     public function getPage($id)
     {
-        throw new \InvalidArgumentException('Sorry, no ID - no information. Get lucky!');
+        if (empty($id)) {
+            throw new \InvalidArgumentException('Sorry, no ID - no information. Get lucky!');
+        }
+
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $staticPage = $em->getRepository('Food\AppBundle\Entity\StaticContent')->find($id);
+
+        if (!$staticPage) {
+            return false;
+        }
+
+        return $staticPage;
     }
 
     /**
