@@ -151,6 +151,9 @@ sonata_block:
         # Enable the SonataAdminBundle block
         sonata.admin.block.admin_list:
             contexts:   [admin]
+        sonata.admin.block.search_result:
+            contexts:   [admin]
+
         # Your other blocks - neaisku dar ar reikia
 
 # Sonata admin bloku konfigas
@@ -177,6 +180,7 @@ sonata_admin:
                       - sonata.admin.place.reviews
                       - sonata.admin.dish.unit
                       - sonata.admin.food.category
+                      - sonata.admin.static
                   roles: [ ROLE_ADMIN ]
               acme.admin.group.formanagers:
                   label: admin.group.formanagers

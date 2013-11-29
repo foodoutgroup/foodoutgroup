@@ -31,6 +31,13 @@ class PlacePointAdmin extends FoodAdmin
             ->addIdentifier('address', 'string', array('label' => 'admin.point.address'))
             ->addIdentifier('city', 'string', array('label' => 'admin.point.city'))
             ->addIdentifier('coords', 'string', array('label' => 'admin.point.coords'))
+            ->add('_action', 'actions', array(
+                'actions' => array(
+                    'edit' => array(),
+                    'delete' => array(),
+                ),
+                'label' => 'admin.actions'
+            ))
         ;
     }
 

@@ -22,58 +22,21 @@ class FoodCategoryAdmin extends FoodAdmin
             ));
         if ($this->isAdmin()) {
             $formMapper
-                ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place', 'disabled' => false));
+                ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place',));
         }
         $formMapper
             ->add('active', 'checkbox', array('required' => false, 'label' => 'admin.active'))
         ;
     }
 
-    /**
-     *  Fields to be shown on filter forms
-     * @param DatagridMapper $datagridMapper
-     *
-     */
+    // Fields to be shown on filter forms
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
             ->add('name', null, array('label' => 'admin.food_category.name'))
-            ->add(
-                'createdAt',
-                'doctrine_orm_datetime_range',
-                array('label' => 'admin.created_at', 'format' => 'Y-m-d',),
-                null,
-                array(
-                    'widget' => 'single_text',
-                    'required' => false,
-                    'format' => 'Y-m-d',
-                    'attr' => array('class' => 'datepicker')
-                )
-            )
-            ->add(
-                'editedAt',
-                'doctrine_orm_datetime_range',
-                array('label' => 'admin.edited_at', 'format' => 'Y-m-d',),
-                null,
-                array(
-                    'widget' => 'single_text',
-                    'required' => false,
-                    'format' => 'Y-m-d',
-                    'attr' => array('class' => 'datepicker')
-                )
-            )
-            ->add(
-                'deletedAt',
-                'doctrine_orm_datetime_range',
-                array('label' => 'admin.deleted_at', 'format' => 'Y-m-d',),
-                null,
-                array(
-                    'widget' => 'single_text',
-                    'required' => false,
-                    'format' => 'Y-m-d',
-                    'attr' => array('class' => 'datepicker')
-                )
-            )
+            ->add('createdAt', null, array('label' => 'admin.places.list.active'))
+            ->add('editedAt', null, array('label' => 'admin.edited_at'))
+            ->add('deletedAt', null, array('label' => 'admin.deleted_at'))
             ->add('place')
             ->add('active', null, array('label' => 'admin.places.list.active'))
         ;
@@ -89,6 +52,13 @@ class FoodCategoryAdmin extends FoodAdmin
             ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
+            ->add('_action', 'actions', array(
+                'actions' => array(
+                    'edit' => array(),
+                    'delete' => array(),
+                ),
+                'label' => 'admin.actions'
+            ))
         ;
     }
 
@@ -106,48 +76,6 @@ class FoodCategoryAdmin extends FoodAdmin
             $object->setPlace($place);
         }
         parent::prePersist($object);
-    }
-
-
-
-    /**
-     * @param \Food\DishesBundle\Entity\FoodCategory $object
-     */
-    public function postPersist($object)
-    {
-        $this->fixSlugs($object);
-    }
-
-    /**
-     * @param \Food\DishesBundle\Entity\FoodCategory $object
-     */
-    public function postUpdate($object)
-    {
-        $this->fixSlugs($object);
-    }
-
-    /**
-     * @param \Food\DishesBundle\Entity\FoodCategory $object
-     */
-    private function fixSlugs($object)
-    {
-        $origName = $object->getOrigName($this->modelManager->getEntityManager('FoodDishesBundle:FoodCategory'));
-        $locales = $this->getContainer()->getParameter('available_locales');
-        $textsForSlugs = array();
-        foreach($object->getTranslations()->getValues() as $row) {
-            $textsForSlugs[$row->getLocale()] = $row->getContent();
-        }
-        foreach ($locales as $loc) {
-            if (!isset($textsForSlugs[$loc])) {
-                $textsForSlugs[$loc] = $origName;
-            }
-        }
-
-        $languages = $this->getContainer()->get('food.app.utils.language')->getAll();
-        $slugUtelyte = $this->getContainer()->get('food.dishes.utils.slug');
-        foreach ($languages as $loc) {
-            $slugUtelyte->generateForFoodCategory($loc, $object->getId(), $textsForSlugs[$loc]);
-        }
     }
 
 }

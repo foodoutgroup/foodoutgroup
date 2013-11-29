@@ -4,6 +4,8 @@ namespace Food\DishesBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Food\AppBundle\Entity\StaticContent;
+use Food\AppBundle\Entity\StaticContentLocalized;
 use Food\DishesBundle\Entity\Kitchen;
 use Food\DishesBundle\Entity\Place;
 use Food\UserBundle\Entity\User;
@@ -76,6 +78,35 @@ class LoadFirstData implements FixtureInterface
         $user1->setRoles( array('ROLE_MODERATOR') ) ;
 
         $manager->persist($user1);
+        $manager->flush();
+
+        /* Initiate Static content */
+        $staticFaq = new StaticContent();
+        $staticFaq->setTitle('D.U.K')
+            ->setContent('Dažniausiai užduodami klausimai. Gerai pagalvok, ko klausi!')
+            ->addTranslation(new StaticContentLocalized('en', 'title', 'FAQ'))
+            ->addTranslation(new StaticContentLocalized('ru', 'title', 'ЧЗВ'))
+            ->addTranslation(new StaticContentLocalized('en', 'content', 'Frequently asked questions. Think what are You asking!'))
+            ->addTranslation(new StaticContentLocalized('ru', 'content', 'часто задаваемые вопросы. Думайте, какие вопросы спрашиваете!'))
+            ->setCreatedAt(new \DateTime('now'))
+            ->setCreatedBy($admin)
+        ;
+
+        $manager->persist($staticFaq);
+        $manager->flush();
+
+        $staticFaq = new StaticContent();
+        $staticFaq->setTitle('Kontaktai')
+            ->setContent('Pagalbos telefonas: 3706666666666, Administracija: 36000000000')
+            ->addTranslation(new StaticContentLocalized('en', 'title', 'Contact'))
+            ->addTranslation(new StaticContentLocalized('ru', 'title', 'Cвязи'))
+            ->addTranslation(new StaticContentLocalized('en', 'content', 'Support phone: 3706666666666, Administration: 3706000000000'))
+            ->addTranslation(new StaticContentLocalized('ru', 'content', 'Номер телефона экстренной связи: 3706666666666, Администрация: 36000000000'))
+            ->setCreatedAt(new \DateTime('now'))
+            ->setCreatedBy($admin)
+        ;
+
+        $manager->persist($staticFaq);
         $manager->flush();
     }
 

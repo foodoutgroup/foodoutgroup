@@ -1,0 +1,12 @@
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+{% block title %}{{ staticPage.title }}{% endblock %}
+
+    {% block body %}
+        <div class="col-xs-12 col-sm-10">
+            <div class="row">
+                <h3>{{ staticPage.title }}</h3>
+                {{ staticPage.content }}
+            </div><!--/row-->
+        </div><!--/span-->
+    {% endblock %}

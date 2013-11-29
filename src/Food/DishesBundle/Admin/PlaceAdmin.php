@@ -62,7 +62,6 @@ class PlaceAdmin extends FoodAdmin
         $datagridMapper
             ->add('name', null, array('label' => 'admin.place.name'))
             ->add('active', null, array('label' => 'admin.active'))
-//            ->add('place')
         ;
     }
 
@@ -78,6 +77,13 @@ class PlaceAdmin extends FoodAdmin
                 'label' => 'admin.place.logo'
             ))
             ->add('active', null, array('label' => 'admin.active', 'editable' => true))
+            ->add('_action', 'actions', array(
+                'actions' => array(
+                    'edit' => array(),
+                    'delete' => array(),
+                ),
+                'label' => 'admin.actions'
+            ))
         ;
     }
 

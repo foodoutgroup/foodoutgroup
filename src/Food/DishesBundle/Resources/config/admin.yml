@@ -111,3 +111,14 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.static:
+        class: Food\AppBundle\Admin\StaticContentAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.static" }
+        arguments:
+            - ~
+            - Food\AppBundle\Entity\StaticContent
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]

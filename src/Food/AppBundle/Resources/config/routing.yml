@@ -12,3 +12,7 @@ food_slug:
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
         slug : "[^admin].+"
+
+static:
+    path:     /static/{id}
+    defaults: { _controller: FoodAppBundle:Static:index }
