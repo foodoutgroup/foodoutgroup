@@ -93,8 +93,30 @@ class DishAdmin extends FoodAdmin
             ->add('unit')
             ->add('options')
             ->add('createdBy', null, array('label' => 'admin.created_by'))
-            ->add('createdAt', null, array('label' => 'admin.created_at'))
-            ->add('deletedAt', null, array('label' => 'admin.deleted_at'))
+            ->add(
+                'createdAt',
+                'doctrine_orm_datetime_range',
+                array('label' => 'admin.created_at', 'format' => 'Y-m-d',),
+                null,
+                array(
+                    'widget' => 'single_text',
+                    'required' => false,
+                    'format' => 'Y-m-d',
+                    'attr' => array('class' => 'datepicker')
+                )
+            )
+            ->add(
+                'deletedAt',
+                'doctrine_orm_datetime_range',
+                array('label' => 'admin.deleted_at', 'format' => 'Y-m-d',),
+                null,
+                array(
+                    'widget' => 'single_text',
+                    'required' => false,
+                    'format' => 'Y-m-d',
+                    'attr' => array('class' => 'datepicker')
+                )
+            )
         ;
     }
 

@@ -31,7 +31,8 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
-        slug_util: "@food.dishes.utils.slug"
+        slug_util:    "@food.dishes.utils.slug"
+        locale:       "%locale%"
 
 
 # Assetic Configuration
