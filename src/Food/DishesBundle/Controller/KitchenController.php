@@ -9,6 +9,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class KitchenController extends Controller
 {
 
+    public function indexAction($id, $slug)
+    {
+        $kitchen = $this->getDoctrine()->getRepository('FoodDishesBundle:Kitchen')->find($id);
+        return $this->render('FoodDishesBundle:Kitchen:index.html.twig', array('kitchen' => $kitchen));
+    }
+
     public function kitchenlistAction()
     {
         $list = $this->getKitchens();

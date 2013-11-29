@@ -1,0 +1,20 @@
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+
+{% block body %}
+    <div class="col-xs-12 col-sm-10">
+        <div class="jumbotron">
+            <h1>{{ place.name }}</h1>
+            <ul class="list-inline">
+                {% for category in place.categories %}
+                    <li class="active"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(category.id, 'food_category') }) }}">{{ category.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="row">
+
+            ERM JO
+
+        </div><!--/row-->
+    </div><!--/span-->
+{% endblock %}
