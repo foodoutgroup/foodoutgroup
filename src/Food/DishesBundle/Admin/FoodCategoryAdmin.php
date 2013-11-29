@@ -33,15 +33,47 @@ class FoodCategoryAdmin extends FoodAdmin
      *  Fields to be shown on filter forms
      * @param DatagridMapper $datagridMapper
      *
-     * @todo - Mantai ar cia tikrai Active prie createdAt turi but?
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
             ->add('name', null, array('label' => 'admin.food_category.name'))
-            ->add('createdAt', 'doctrine_orm_datetime_range', array('label' => 'admin.places.list.active'), null, array('widget' => 'single_text', 'required' => false, 'attr' => array('class' => 'datepicker')))
-            ->add('editedAt', null, array('label' => 'admin.edited_at'))
-            ->add('deletedAt', null, array('label' => 'admin.deleted_at'))
+            ->add(
+                'createdAt',
+                'doctrine_orm_datetime_range',
+                array('label' => 'admin.created_at', 'format' => 'Y-m-d',),
+                null,
+                array(
+                    'widget' => 'single_text',
+                    'required' => false,
+                    'format' => 'Y-m-d',
+                    'attr' => array('class' => 'datepicker')
+                )
+            )
+            ->add(
+                'editedAt',
+                'doctrine_orm_datetime_range',
+                array('label' => 'admin.edited_at', 'format' => 'Y-m-d',),
+                null,
+                array(
+                    'widget' => 'single_text',
+                    'required' => false,
+                    'format' => 'Y-m-d',
+                    'attr' => array('class' => 'datepicker')
+                )
+            )
+            ->add(
+                'deletedAt',
+                'doctrine_orm_datetime_range',
+                array('label' => 'admin.deleted_at', 'format' => 'Y-m-d',),
+                null,
+                array(
+                    'widget' => 'single_text',
+                    'required' => false,
+                    'format' => 'Y-m-d',
+                    'attr' => array('class' => 'datepicker')
+                )
+            )
             ->add('place')
             ->add('active', null, array('label' => 'admin.places.list.active'))
         ;
