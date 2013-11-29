@@ -118,6 +118,13 @@ class Dish implements Translatable
     private $options;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="recomended", type="boolean")
+     */
+    private $recomended = false;
+
+    /**
      * @Gedmo\Locale
      * Used locale to override Translation listener`s locale
      * this is not a mapped field of entity metadata, just a simple property
@@ -495,5 +502,28 @@ class Dish implements Translatable
     public function getDeletedBy()
     {
         return $this->deletedBy;
+    }
+
+    /**
+     * Set recomended
+     *
+     * @param boolean $recomended
+     * @return Dish
+     */
+    public function setRecomended($recomended)
+    {
+        $this->recomended = $recomended;
+    
+        return $this;
+    }
+
+    /**
+     * Get recomended
+     *
+     * @return boolean 
+     */
+    public function getRecomended()
+    {
+        return $this->recomended;
     }
 }

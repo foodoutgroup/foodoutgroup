@@ -154,6 +154,10 @@
                 <source>admin.dish.name</source>
                 <target>Patiekalas</target>
             </trans-unit>
+            <trans-unit id="admin.dish.recomended">
+                <source>admin.dish.recomended</source>
+                <target>Rekomenduojamas</target>
+            </trans-unit>
 
             <!-- Dish options -->
             <trans-unit id="admin.dish_options">
