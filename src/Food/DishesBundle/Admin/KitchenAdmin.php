@@ -53,8 +53,30 @@ class KitchenAdmin extends FoodAdmin
             ->add('name', null, array('label' => 'admin.kitchen.name'))
             ->add('visible', null, array('label' => 'admin.visible'))
             ->add('createdBy', null, array('label' => 'admin.created_by'))
-            ->add('createdAt', null, array('label' => 'admin.created_at'))
-            ->add('deletedAt', null, array('label' => 'admin.deleted_at'))
+            ->add(
+                'createdAt',
+                'doctrine_orm_datetime_range',
+                array('label' => 'admin.created_at', 'format' => 'Y-m-d',),
+                null,
+                array(
+                    'widget' => 'single_text',
+                    'required' => false,
+                    'format' => 'Y-m-d',
+                    'attr' => array('class' => 'datepicker')
+                )
+            )
+            ->add(
+                'deletedAt',
+                'doctrine_orm_datetime_range',
+                array('label' => 'admin.deleted_at', 'format' => 'Y-m-d',),
+                null,
+                array(
+                    'widget' => 'single_text',
+                    'required' => false,
+                    'format' => 'Y-m-d',
+                    'attr' => array('class' => 'datepicker')
+                )
+            )
         ;
     }
 
@@ -103,5 +125,47 @@ class KitchenAdmin extends FoodAdmin
     {
         $this->saveFile($object);
         parent::preUpdate($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Kitchen $object
+     */
+    public function postPersist($object)
+    {
+        $this->fixSlugs($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Kitchen $object
+     */
+    public function postUpdate($object)
+    {
+        $this->fixSlugs($object);
+    }
+
+    /**
+     * Lets fix da stufffff.... Slugs for Kichen :)
+     *
+     * @param \Food\DishesBundle\Entity\Kitchen $object
+     */
+    private function fixSlugs($object)
+    {
+        $origName = $object->getOrigName($this->modelManager->getEntityManager('FoodDishesBundle:Kitchen'));
+        $locales = $this->getContainer()->getParameter('available_locales');
+        $textsForSlugs = array();
+        foreach($object->getTranslations()->getValues() as $row) {
+            $textsForSlugs[$row->getLocale()] = $row->getContent();
+        }
+        foreach ($locales as $loc) {
+            if (!isset($textsForSlugs[$loc])) {
+                $textsForSlugs[$loc] = $origName;
+            }
+        }
+
+        $languages = $this->getContainer()->get('food.app.utils.language')->getAll();
+        $slugUtelyte = $this->getContainer()->get('food.dishes.utils.slug');
+        foreach ($languages as $loc) {
+            $slugUtelyte->generateForKitchens($loc, $object->getId(), $textsForSlugs[$loc]);
+        }
     }
 }

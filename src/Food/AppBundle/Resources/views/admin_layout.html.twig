@@ -1,0 +1,10 @@
+{# File src/Acme/Bundle/DemoBundle/Resources/views/standard_layout.html.twig #}
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="application/javascript">
+        var systemLocale = "{{ locale }}";
+    </script>
+    <script src="{{ asset('bundles/foodapp/js_admin/jquery_admin.js') }}" type="text/javascript"></script>
+{% endblock %}

@@ -1,4 +1,16 @@
 services:
-  food.static:
-      class: Food\AppBundle\Service\StaticService
-      arguments: [@service_container, user_id]
+    food.app.utils.language:
+        class: Food\AppBundle\Utils\Language
+        calls:
+            - [container, [@service_container]]
+        arguments: [@service_container]
+
+    food.app.utils.route:
+        class: Food\AppBundle\Utils\Route
+        calls:
+            - [container, [@service_container]]
+
+    food.static:
+        class: Food\AppBundle\Service\StaticService
+        arguments: [@service_container, user_id]
+

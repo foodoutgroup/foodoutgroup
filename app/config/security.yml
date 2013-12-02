@@ -19,12 +19,12 @@ security:
           pattern:      /admin(.*)
           form_login:
               provider:       fos_userbundle
-              login_path:     /admin/login
+              login_path:     /%locale%/admin/login
               use_forward:    false
-              check_path:     /admin/login_check
+              check_path:     /%locale%/admin/login_check
               failure_path:   null
           logout:
-              path:           /admin/logout
+              path:           /%locale%/admin/logout
           anonymous:    true
       # -> end custom configuration
 
@@ -59,9 +59,9 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
         # -> custom access control for the admin area of the URL
-        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/[a-z][a-z]/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/[a-z][a-z]/admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/[a-z][a-z]/admin/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         # -> end
 
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -70,7 +70,7 @@ security:
         # Secured part of the site
         # This config requires being logged for the whole site and having the admin role for the admin part.
         # Change these rules to adapt them to your needs
-        - { path: ^/admin, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN] }
+        - { path: ^/[a-z][a-z]/admin, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN] }
         - { path: ^/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }

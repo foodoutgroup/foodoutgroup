@@ -131,6 +131,23 @@ class FoodCategory implements Translatable
         $this->dishes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $em
+     * @return string
+     */
+    public function getOrigName(\Doctrine\ORM\EntityManager $em)
+    {
+        $query = $em->createQuery("SELECT o.name FROM FoodDishesBundle:FoodCategory as o WHERE o.id=:id")
+            ->setParameter('id', $this->getId());
+        $res = ($query->getSingleResult());
+        return $res['name'];
+    }
+
+    public function getSlug()
+    {
+        return "Zebra";
+    }
     
     /**
      * Get id

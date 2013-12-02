@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManager;
 /**
  * Kitchen
  *
- * @ORM\Table()
+ * @ORM\Table(name="kitchen")
  * @ORM\Entity
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\KitchenLocalized")
@@ -150,6 +150,19 @@ class Kitchen extends Uploadable implements Translatable
         return sizeof($this->getPlaces());
     }
 
+
+    /**
+     * @param EntityManager $em
+     * @return string
+     */
+    public function getOrigName(\Doctrine\ORM\EntityManager $em)
+    {
+        $query = $em->createQuery("SELECT o.name FROM FoodDishesBundle:Kitchen as o WHERE o.id=:id")
+            ->setParameter('id', $this->getId());
+        $res = ($query->getSingleResult());
+        return $res['name'];
+    }
+
     /**
      * Get id
      *
@@ -169,7 +182,6 @@ class Kitchen extends Uploadable implements Translatable
     public function setName($name)
     {
         $this->name = $name;
-    
         return $this;
     }
 

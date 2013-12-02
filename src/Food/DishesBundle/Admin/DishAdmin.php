@@ -80,6 +80,7 @@ class DishAdmin extends FoodAdmin
             ->add('unit', 'entity', array('class' => 'Food\DishesBundle\Entity\DishUnit', 'multiple' => false))
             ->add('options', null, array('query_builder' => $optionsQuery,'expanded' => true, 'multiple' => true, 'required' => false))
             ->add('price')
+            ->add('recomended', 'checkbox', array('label' => 'admin.dish.recomended', 'required' => false,))
         ;
     }
 
@@ -92,9 +93,32 @@ class DishAdmin extends FoodAdmin
             ->add('categories')
             ->add('unit')
             ->add('options')
+            ->add('recomended', null, array('label' => 'admin.dish.recomended'))
             ->add('createdBy', null, array('label' => 'admin.created_by'))
-            ->add('createdAt', null, array('label' => 'admin.created_at'))
-            ->add('deletedAt', null, array('label' => 'admin.deleted_at'))
+            ->add(
+                'createdAt',
+                'doctrine_orm_datetime_range',
+                array('label' => 'admin.created_at', 'format' => 'Y-m-d',),
+                null,
+                array(
+                    'widget' => 'single_text',
+                    'required' => false,
+                    'format' => 'Y-m-d',
+                    'attr' => array('class' => 'datepicker')
+                )
+            )
+            ->add(
+                'deletedAt',
+                'doctrine_orm_datetime_range',
+                array('label' => 'admin.deleted_at', 'format' => 'Y-m-d',),
+                null,
+                array(
+                    'widget' => 'single_text',
+                    'required' => false,
+                    'format' => 'Y-m-d',
+                    'attr' => array('class' => 'datepicker')
+                )
+            )
         ;
     }
 
@@ -108,6 +132,7 @@ class DishAdmin extends FoodAdmin
             ->add('unit')
             ->add('options')
             ->add('price')
+            ->add('recomended', null, array('label' => 'admin.dish.recomended', 'editable' => true))
             ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
