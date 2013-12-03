@@ -65,4 +65,20 @@ class StaticContentAdmin extends FoodAdmin
             ->add('content', null, array('label' => 'admin.static.content'))
         ;
     }
+
+    /**
+     * @param \Food\AppBundle\Entity\Static $object
+     */
+    public function postPersist($object)
+    {
+        $this->fixSlugs($object);
+    }
+
+    /**
+     * @param \Food\AppBundle\Entity\Static $object
+     */
+    public function postUpdate($object)
+    {
+        $this->fixSlugs($object);
+    }
 }
