@@ -8,7 +8,7 @@ food_test:
 
 
 food_slug:
-    pattern:  /{slug}/
+    pattern:  /aaaa{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
         slug : "[^admin].+"

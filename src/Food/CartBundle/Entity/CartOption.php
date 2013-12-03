@@ -6,16 +6,15 @@ use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="cart_option")
+ * @ORM\Table(name="cart_option", uniqueConstraints={@ORM\UniqueConstraint(name="unique_id", columns={"session", "dish_id", "dish_option_id"})})
  * @ORM\Entity
  */
 class CartOption
 {
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     **/
-    private $user;
+     * @ORM\Column(name="session", type="string", length=255)
+     */
+    private $sesion_id;
 
     /**
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish", inversedBy="dish_id")
@@ -126,5 +125,28 @@ class CartOption
     public function getDishOptionId()
     {
         return $this->dish_option_id;
+    }
+
+    /**
+     * Set sesion_id
+     *
+     * @param string $sesionId
+     * @return CartOption
+     */
+    public function setSesionId($sesionId)
+    {
+        $this->sesion_id = $sesionId;
+    
+        return $this;
+    }
+
+    /**
+     * Get sesion_id
+     *
+     * @return string 
+     */
+    public function getSesionId()
+    {
+        return $this->sesion_id;
     }
 }
