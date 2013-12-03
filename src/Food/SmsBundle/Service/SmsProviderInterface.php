@@ -4,14 +4,14 @@ namespace Food\SmsBundle\Service;
 
 interface SmsProviderInterface {
 
-    public function authenticate();
+    public function authenticate($username, $password);
 
-    public function sendMessage();
+    public function sendMessage($sender, $recipient, $message);
 
-    function parseResponse();
-
-    public function getMessageStatus();
+    public function getMessageStatus($message);
 
     public function getAccountBalance();
+
+    public function setApiUrl($url);
 
 }

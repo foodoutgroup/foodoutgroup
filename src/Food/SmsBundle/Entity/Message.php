@@ -71,6 +71,13 @@ class Message
     private $dlrId;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="last_sending_error", type="string", nullable=true)
+     */
+    private $lastSendingError = null;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="sent", type="boolean")
@@ -83,6 +90,13 @@ class Message
      * @ORM\Column(name="delivered", type="boolean")
      */
     private $delivered = false;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ext_id", type="string", length=45, nullable=true)
+     */
+    private $extId = null;
 
     /**
      * @return string
@@ -310,5 +324,51 @@ class Message
     public function getReceivedAt()
     {
         return $this->receivedAt;
+    }
+
+    /**
+     * Set lastSendingError
+     *
+     * @param string $lastSendingError
+     * @return Message
+     */
+    public function setLastSendingError($lastSendingError)
+    {
+        $this->lastSendingError = $lastSendingError;
+    
+        return $this;
+    }
+
+    /**
+     * Get lastSendingError
+     *
+     * @return string 
+     */
+    public function getLastSendingError()
+    {
+        return $this->lastSendingError;
+    }
+
+    /**
+     * Set extId
+     *
+     * @param string $extId
+     * @return Message
+     */
+    public function setExtId($extId)
+    {
+        $this->extId = $extId;
+    
+        return $this;
+    }
+
+    /**
+     * Get extId
+     *
+     * @return string 
+     */
+    public function getExtId()
+    {
+        return $this->extId;
     }
 }
