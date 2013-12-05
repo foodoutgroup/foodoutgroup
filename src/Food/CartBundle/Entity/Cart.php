@@ -16,7 +16,7 @@ class Cart
     /**
      * @ORM\Column(name="session", type="string", length=255)
      */
-    private $sesion_id;
+    private $session;
 
     /**
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish", inversedBy="dish_id")
@@ -82,25 +82,22 @@ class Cart
     }
 
     /**
-     * Set sesion_id
-     *
-     * @param string $sesionId
-     * @return Cart
+     * @param mixed $session
+     * @return $this
      */
-    public function setSesionId($sesionId)
+    public function setSession($session)
     {
-        $this->sesion_id = $sesionId;
-    
+        $this->session = $session;
         return $this;
     }
 
     /**
-     * Get sesion_id
-     *
-     * @return string 
+     * @return mixed
      */
-    public function getSesionId()
+    public function getSession()
     {
-        return $this->sesion_id;
+        return $this->session;
     }
+
+
 }

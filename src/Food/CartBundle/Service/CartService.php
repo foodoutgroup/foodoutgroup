@@ -158,18 +158,17 @@ class CartService {
     public function addDish(Dish $dish, $quantity, $options = array()) {
         $cartItem = new Cart();
         $cartItem->setDishId($dish);
-        $cartItem->setSesionId($this->getSessionId());
+        $cartItem->setSession($this->getSessionId());
         $cartItem->setQuantity($quantity);
-
 
         $this->getEm()->persist($cartItem);
         $this->getEm()->flush();
 
 
-        if (empty($options)) {
+        if (!empty($options)) {
             foreach ($options as $opt) {
                 $cartOptionItem = new CartOption();
-                $cartOptionItem->setSesionId($this->getSessionId());
+                $cartOptionItem->setSession($this->getSessionId());
                 $cartOptionItem->setDishId($dish);
                 $cartOptionItem->setDishOptionId($opt['option']);
                 $cartOptionItem->setQuantity($opt['quantity']);
