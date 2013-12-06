@@ -81,4 +81,27 @@ class StaticContentAdmin extends FoodAdmin
     {
         $this->fixSlugs($object);
     }
+
+    /**
+     * Lets fix da stufffff.... Slugs for Place :)
+     *
+     * @param \Food\DishesBundle\Entity\Place $object
+     */
+    private function fixSlugs($object)
+    {
+        $origName = $object->getTitle();
+        $locales = $this->getContainer()->getParameter('available_locales');
+        $textsForSlugs = array();
+        foreach ($locales as $loc) {
+            if (!isset($textsForSlugs[$loc])) {
+                $textsForSlugs[$loc] = $origName;
+            }
+        }
+
+        $languages = $this->getContainer()->get('food.app.utils.language')->getAll();
+        $slugUtelyte = $this->getContainer()->get('food.dishes.utils.slug');
+        foreach ($languages as $loc) {
+            $slugUtelyte->generateEntityForPlace($loc, $object->getId(), $textsForSlugs[$loc]);
+        }
+    }
 }
