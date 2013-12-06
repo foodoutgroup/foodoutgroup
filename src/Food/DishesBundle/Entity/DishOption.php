@@ -41,6 +41,12 @@ class DishOption implements Translatable
 
     /**
      * @var string
+     * @ORM\Column(name="code", type="string", length=45)
+     */
+    private $code;
+
+    /**
+     * @var string
      *
      * @ORM\Column(name="description", type="text")
      */
@@ -467,5 +473,28 @@ class DishOption implements Translatable
     public function getPlace()
     {
         return $this->place;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     * @return DishOption
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+    
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string 
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 }

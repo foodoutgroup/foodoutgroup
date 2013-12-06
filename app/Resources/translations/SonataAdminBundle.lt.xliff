@@ -164,6 +164,10 @@
                 <source>admin.dish_options</source>
                 <target>Patiekalų priedai</target>
             </trans-unit>
+            <trans-unit id="admin.dish_option.code">
+                <source>admin.dish_option.code</source>
+                <target>Sis. kodas</target>
+            </trans-unit>
             <trans-unit id="admin.dish_option.name">
                 <source>admin.dish_option.name</source>
                 <target>Priedas</target>
