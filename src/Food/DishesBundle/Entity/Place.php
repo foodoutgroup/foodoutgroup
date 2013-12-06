@@ -135,6 +135,11 @@ class Place extends Uploadable
     public $uploadableField = 'logo';
 
     /**
+     * @var string
+     */
+    public $uploadDir = 'uploads/places';
+
+    /**
      * Returns place name
      *
      * @return string

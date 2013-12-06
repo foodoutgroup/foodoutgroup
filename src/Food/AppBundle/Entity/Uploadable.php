@@ -14,6 +14,11 @@ class Uploadable {
     public $uploadableField = 'file';
 
     /**
+     * @var string
+     */
+    public $uploadDir = 'uploads/products';
+
+    /**
      * @return null|string
      */
     public function getWebPath()
@@ -27,8 +32,15 @@ class Uploadable {
      */
     public function getUploadDir()
     {
-        // get rid of the __DIR__ so it doesn't screw when displaying uploaded doc/image in the view.
-        return 'uploads/products';
+        return $this->uploadDir;
+    }
+
+    /**
+     * @param $uploadDir
+     */
+    public function setUploadDir($uploadDir)
+    {
+        $this->uploadDir = $uploadDir;
     }
 
     /**
