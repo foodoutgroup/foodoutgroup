@@ -124,6 +124,11 @@ class Kitchen extends Uploadable implements Translatable
     public $uploadableField = 'logo';
 
     /**
+     * @var string
+     */
+    public $uploadDir = 'uploads/kitchens';
+
+    /**
      * Convert object to string
      *
      * @return string
