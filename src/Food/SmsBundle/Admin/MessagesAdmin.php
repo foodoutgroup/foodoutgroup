@@ -12,7 +12,8 @@ class MessagesAdmin extends FoodAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('sender', 'text', array('label' => 'admin.sms.recipient', 'required' => true))
+            ->add('recipient', 'text', array('label' => 'admin.sms.recipient', 'required' => true))
+            ->add('sender', 'text', array('label' => 'admin.sms.sender', 'required' => true))
             ->add('message', null, array('label' => 'admin.sms.message', 'required' => true))
             ->add('sent', 'checkbox', array('required' => false, 'label' => 'admin.sms.sent'))
         ;
@@ -71,6 +72,8 @@ class MessagesAdmin extends FoodAdmin
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('submittedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.sms.submitted_at'))
             ->add('receivedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.sms.received_at'))
+            ->add('lastSendingError', 'string', array('label' => 'admin.sms.last_sending_error'))
+            ->add('extId', 'string', array('label' => 'admin.sms.ext_id'))
         ;
     }
 
