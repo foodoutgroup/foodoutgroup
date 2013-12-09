@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="lt" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
+        <body>
+            <!-- SMS messaging-->
+            <trans-unit id="admin.messages">
+                <source>admin.messages</source>
+                <target>SMS pranešimai</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.recipient">
+                <source>admin.sms.recipient</source>
+                <target>Gavėjas</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.sender">
+                <source>admin.sms.sender</source>
+                <target>Siuntėjas</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.message">
+                <source>admin.sms.message</source>
+                <target>Pranešimas</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.sent">
+                <source>admin.sms.sent</source>
+                <target>Išsiųstas</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.delivered">
+                <source>admin.sms.delivered</source>
+                <target>Pristatytas</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.dlr_id">
+                <source>admin.sms.dlr_id</source>
+                <target>DLR ID</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.submitted_at">
+                <source>admin.sms.submitted_at</source>
+                <target>Į SMSC perduotas</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.received_at">
+                <source>admin.sms.received_at</source>
+                <target>Gautas</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.last_sending_error">
+                <source>admin.sms.last_sending_error</source>
+                <target>Paskutinė siuntimo klaida</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.ext_id">
+                <source>admin.sms.ext_id</source>
+                <target>Išorinės sistemos ID</target>
+            </trans-unit>
+
+        </body>
+    </file>
+</xliff>
