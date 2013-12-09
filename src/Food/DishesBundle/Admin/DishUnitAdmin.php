@@ -31,6 +31,11 @@ class DishUnitAdmin extends FoodAdmin
                     'name' => array('label' => 'label.name'),
                 )
             ));
+
+        // If user is admin - he can screw Your place. But if user is a moderator - we will set the place ir prePersist!
+        if ($this->isAdmin()) {
+            $formMapper->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
+        }
     }
 
     // Fields to be shown on filter forms

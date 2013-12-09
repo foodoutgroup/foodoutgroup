@@ -33,6 +33,15 @@ class DishUnit implements Translatable
      */
     private $name;
 
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Place", inversedBy="dishUnits")
+     * @ORM\JoinColumn(name="place", referencedColumnName="id")
+     *
+     * @var Place
+     */
+    private $place;
+
     /**
      * @ORM\OneToMany(targetEntity="Dish", mappedBy="dishunit")
      */
@@ -363,5 +372,28 @@ class DishUnit implements Translatable
     public function getDeletedBy()
     {
         return $this->deletedBy;
+    }
+
+    /**
+     * Set place
+     *
+     * @param \Food\DishesBundle\Entity\Place $place
+     * @return DishUnit
+     */
+    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
+    {
+        $this->place = $place;
+    
+        return $this;
+    }
+
+    /**
+     * Get place
+     *
+     * @return \Food\DishesBundle\Entity\Place 
+     */
+    public function getPlace()
+    {
+        return $this->place;
     }
 }

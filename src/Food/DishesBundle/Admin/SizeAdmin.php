@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Food\DishesBundle\Entity\Place;
 
-class DishAdmin extends FoodAdmin
+class SizeAdmin extends FoodAdmin
 {
     /**
      * Default Datagrid values
@@ -48,7 +48,7 @@ class DishAdmin extends FoodAdmin
             'translations',
             'a2lix_translations_gedmo',
             array(
-                'translatable_class' => 'Food\DishesBundle\Entity\Dish',
+                'translatable_class' => 'Food\DishesBundle\Entity\Size',
                 'fields' => array(
                     'name' => array(
                         'label' => 'label.name'
@@ -75,25 +75,15 @@ class DishAdmin extends FoodAdmin
                 ->setParameter('place', $userPlaceId);
         }
 
-        $formMapper
-            ->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
-            ->add('units', 'sonata_type_model', array('class' => 'Food\DishesBundle\Entity\DishSize', 'multiple' => true), array('inline'=> 'table', 'edit'=> 'inline'))
-            ->add('options', null, array('query_builder' => $optionsQuery,'expanded' => true, 'multiple' => true, 'required' => false))
-            ->add('price')
-            ->add('recomended', 'checkbox', array('label' => 'admin.dish.recomended', 'required' => false,))
-        ;
+
     }
 
     // Fields to be shown on filter forms
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name', null, array('label' => 'admin.dish.name'))
+            ->add('name', null, array('label' => 'admin.size.name'))
             ->add('place')
-            ->add('categories')
-            ->add('unit')
-            ->add('options')
-            ->add('recomended', null, array('label' => 'admin.dish.recomended'))
             ->add('createdBy', null, array('label' => 'admin.created_by'))
             ->add(
                 'createdAt',
@@ -126,13 +116,7 @@ class DishAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name', 'string', array('label' => 'admin.dish.name'))
-            ->add('place')
-            ->add('categories')
-            ->add('unit')
-            ->add('options')
-            ->add('price')
-            ->add('recomended', null, array('label' => 'admin.dish.recomended', 'editable' => true))
+            ->addIdentifier('name', 'string', array('label' => 'admin.size.name'))
             ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))

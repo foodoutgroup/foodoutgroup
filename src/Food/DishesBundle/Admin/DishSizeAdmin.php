@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Food\DishesBundle\Entity\Place;
 
-class DishAdmin extends FoodAdmin
+class DishSizeAdmin extends FoodAdmin
 {
     /**
      * Default Datagrid values
@@ -24,63 +24,10 @@ class DishAdmin extends FoodAdmin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
-        /**
-         * @var EntityManager $em
-         */
-        $em = $this->modelManager->getEntityManager('Food\DishesBundle\Entity\FoodCategory');
-        /**
-         * @var QueryBuilder
-         */
-        $categoryQuery = $em->createQueryBuilder('c')
-            ->select('c')
-            ->from('Food\DishesBundle\Entity\FoodCategory', 'c')
-        ;
-
-        /**
-         * @var QueryBuilder
-         */
-        $optionsQuery = $em->createQueryBuilder('o')
-            ->select('o')
-            ->from('Food\DishesBundle\Entity\DishOption', 'o')
-        ;
-
-        $formMapper->add(
-            'translations',
-            'a2lix_translations_gedmo',
-            array(
-                'translatable_class' => 'Food\DishesBundle\Entity\Dish',
-                'fields' => array(
-                    'name' => array(
-                        'label' => 'label.name'
-                    ),
-                )
-            ));
-
-        // If user is admin - he can screw Your place. But if user is a moderator - we will set the place ir prePersist!
-        if ($this->isAdmin()) {
-            $formMapper->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
-
-            // Filter out inactive, hidden field options
-            $categoryQuery->where('c.active = 1');
-            $optionsQuery->where('o.hidden = 0');
-        } else {
-            // If user is a moderator - he is assigned to a place (unless he is Chuck or Cekuolis)
-            $userPlaceId = $this->getUser()->getPlace()->getId();
-
-            // Filter out inactive, hidden field options
-            $categoryQuery->where('c.active = 1 AND c.place = :place')
-                ->setParameter('place', $userPlaceId);
-
-            $optionsQuery->where('o.hidden = 0 AND o.place = :place')
-                ->setParameter('place', $userPlaceId);
-        }
-
         $formMapper
-            ->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
-            ->add('units', 'sonata_type_model', array('class' => 'Food\DishesBundle\Entity\DishSize', 'multiple' => true), array('inline'=> 'table', 'edit'=> 'inline'))
-            ->add('options', null, array('query_builder' => $optionsQuery,'expanded' => true, 'multiple' => true, 'required' => false))
+            ->add('unit', 'entity', array('class' => 'Food\DishesBundle\Entity\DishUnit', 'multiple' => true))
+            ->add('code')
             ->add('price')
-            ->add('recomended', 'checkbox', array('label' => 'admin.dish.recomended', 'required' => false,))
         ;
     }
 
@@ -145,21 +92,4 @@ class DishAdmin extends FoodAdmin
             ))
         ;
     }
-
-    /*
-     * If user is a moderator - set place, as he can not choose it. Chuck Norris protection is active
-     */
-    public function prePersist($object)
-    {
-        if ($this->isModerator()) {
-            /**
-             * @var Place $place
-             */
-            $place = $this->modelManager->find('Food\DishesBundle\Entity\Place', $this->getUser()->getPlace()->getId());
-
-            $object->setPlace($place);
-        }
-        parent::prePersist($object);
-    }
-
 }

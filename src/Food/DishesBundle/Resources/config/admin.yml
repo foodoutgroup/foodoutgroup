@@ -22,6 +22,17 @@ services:
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.dish.size:
+        class: Food\DishesBundle\Admin\DishSizeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.dish_sizes" }
+        arguments:
+            - ~
+            - Food\DishesBundle\Entity\DishSize
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
     sonata.admin.dish.option:
         class: Food\DishesBundle\Admin\DishOptionAdmin
         tags:

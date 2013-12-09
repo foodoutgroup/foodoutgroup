@@ -188,7 +188,7 @@
             <!-- Dish units -->
             <trans-unit id="dish-unit-list">
                 <source>Dish Unit List</source>
-                <target>Matvimo vieneteai</target>
+                <target>Matavimo vieneteai</target>
             </trans-unit>
             <trans-unit id="admin.dish_units">
                 <source>admin.dish_units</source>
