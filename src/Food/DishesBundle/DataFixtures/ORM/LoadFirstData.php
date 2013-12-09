@@ -37,76 +37,65 @@ class LoadFirstData implements FixtureInterface
             ->setCreatedBy($admin)
             ;
 
-        $manager->persist($kitchen1);
-        $manager->flush();
-
-        $kitchen2 = new Kitchen();
-        $kitchen2->setName('Itališka')
-            ->setVisible(true)
-            ->setCreatedAt(new \DateTime('now'))
-            ->setCreatedBy($admin)
-        ;
-
-        $manager->persist($kitchen2);
-        $manager->flush();
-
-        $kitchen3 = new Kitchen();
-        $kitchen3->setName('Japoniška')
-            ->setVisible(true)
-            ->setCreatedAt(new \DateTime('now'))
-            ->setCreatedBy($admin)
-        ;
-
-        $manager->persist($kitchen3);
-        $manager->flush();
-
-        $kitchen4 = new Kitchen();
-        $kitchen4->setName('Kiniška')
-            ->setVisible(true)
-            ->setCreatedAt(new \DateTime('now'))
-            ->setCreatedBy($admin)
-        ;
-        $manager->persist($kitchen4);
-        $manager->flush();
-
-
-        $user1 = new User() ;
-        $user1->setEmail("moderator@skanu.lt") ;
-        $user1->setUsername("moderator") ;
-        $user1->setPlainPassword("moderator") ;
-        $user1->setEnabled(true) ;
-        $user1->setRoles( array('ROLE_MODERATOR') ) ;
-
-        $manager->persist($user1);
-        $manager->flush();
-
         /* Initiate Static content */
         $staticFaq = new StaticContent();
         $staticFaq->setTitle('D.U.K')
             ->setContent('Dažniausiai užduodami klausimai. Gerai pagalvok, ko klausi!')
-            ->addTranslation(new StaticContentLocalized('en', 'title', 'FAQ'))
-            ->addTranslation(new StaticContentLocalized('ru', 'title', 'ЧЗВ'))
-            ->addTranslation(new StaticContentLocalized('en', 'content', 'Frequently asked questions. Think what are You asking!'))
-            ->addTranslation(new StaticContentLocalized('ru', 'content', 'часто задаваемые вопросы. Думайте, какие вопросы спрашиваете!'))
             ->setCreatedAt(new \DateTime('now'))
             ->setCreatedBy($admin)
         ;
-
         $manager->persist($staticFaq);
         $manager->flush();
 
-        $staticFaq = new StaticContent();
-        $staticFaq->setTitle('Kontaktai')
+        // Save static translations
+        $staticEnTitle = new StaticContentLocalized('en', 'title', 'FAQ');
+        $staticEnTitle->setObject($staticFaq);
+
+        $staticRuTitle = new StaticContentLocalized('ru', 'title', 'ЧЗВ');
+        $staticRuTitle->setObject($staticFaq);
+
+        $staticEnContent = new StaticContentLocalized('en', 'content', 'Frequently asked questions. Think what are You asking!');
+        $staticEnContent->setObject($staticFaq);
+
+        $staticRuContent = new StaticContentLocalized('ru', 'content', 'часто задаваемые вопросы. Думайте, какие вопросы спрашиваете!');
+        $staticRuContent->setObject($staticFaq);
+
+        $staticFaq->addTranslation($staticEnTitle)
+            ->addTranslation($staticRuTitle)
+            ->addTranslation($staticEnContent)
+            ->addTranslation($staticRuContent);
+        $manager->persist($staticFaq);
+        $manager->flush();
+
+        // Create static page for contacts
+        $staticContact = new StaticContent();
+        $staticContact->setTitle('Kontaktai')
             ->setContent('Pagalbos telefonas: 3706666666666, Administracija: 36000000000')
-            ->addTranslation(new StaticContentLocalized('en', 'title', 'Contact'))
-            ->addTranslation(new StaticContentLocalized('ru', 'title', 'Cвязи'))
-            ->addTranslation(new StaticContentLocalized('en', 'content', 'Support phone: 3706666666666, Administration: 3706000000000'))
-            ->addTranslation(new StaticContentLocalized('ru', 'content', 'Номер телефона экстренной связи: 3706666666666, Администрация: 36000000000'))
             ->setCreatedAt(new \DateTime('now'))
             ->setCreatedBy($admin)
         ;
 
-        $manager->persist($staticFaq);
+        $manager->persist($staticContact);
+        $manager->flush();
+
+        // Save static translations
+        $staticEnTitle = new StaticContentLocalized('en', 'title', 'Contact');
+        $staticEnTitle->setObject($staticContact);
+
+        $staticRuTitle = new StaticContentLocalized('ru', 'title', 'Cвязи');
+        $staticRuTitle->setObject($staticContact);
+
+        $staticEnContent = new StaticContentLocalized('en', 'content', 'Support phone: 3706666666666, Administration: 3706000000000');
+        $staticEnContent->setObject($staticContact);
+
+        $staticRuContent = new StaticContentLocalized('ru', 'content', 'Номер телефона экстренной связи: 3706666666666, Администрация: 36000000000');
+        $staticRuContent->setObject($staticContact);
+
+        $staticContact->addTranslation($staticEnTitle)
+            ->addTranslation($staticRuTitle)
+            ->addTranslation($staticEnContent)
+            ->addTranslation($staticRuContent);
+        $manager->persist($staticContact);
         $manager->flush();
     }
 
