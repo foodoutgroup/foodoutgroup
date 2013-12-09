@@ -45,6 +45,22 @@
                 <source>404 Not Found</source>
                 <target>Atsiprašome, puslapis nerastas.</target>
             </trans-unit>
+            <trans-unit id="global.page_not_found">
+                <source>global.page_not_found</source>
+                <target>Puslapis nerastas</target>
+            </trans-unit>
+            <trans-unit id="global.page_not_found.description">
+                <source>global.page_not_found.description</source>
+                <target>Pasitikrinkite, ar teisingai surinkote adresą.</target>
+            </trans-unit>
+            <trans-unit id="general.error_happened">
+                <source>general.error_happened</source>
+                <target>Atsiprašome, įvyko klaida</target>
+            </trans-unit>
+            <trans-unit id="general.error_happened.description">
+                <source>general.error_happened.description</source>
+                <target>Prašome pabandyti iš naujo po keletos minučių</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

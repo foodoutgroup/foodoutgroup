@@ -83,15 +83,24 @@ class StaticContentAdmin extends FoodAdmin
     }
 
     /**
-     * Lets fix da stufffff.... Slugs for Place :)
+     * Lets fix da stufffff.... Slugs for Static :)
      *
-     * @param \Food\DishesBundle\Entity\Place $object
+     * @param \Food\AppBundle\Entity\StaticContent $object
      */
     private function fixSlugs($object)
     {
+        $this->log('-+ pasileido fixSlugs staticke');
         $origName = $object->getTitle();
         $locales = $this->getContainer()->getParameter('available_locales');
         $textsForSlugs = array();
+        // Neprognozuojamas veikimas.. ima content fielda, o ne title... nenurodom pagal ka generuoti..
+        $translations = $object->getTranslations();
+
+        foreach($translations->getValues() as $row) {
+            if ($row->getField() == 'title') {
+                $textsForSlugs[$row->getLocale()] = $row->getContent();
+            }
+        }
         foreach ($locales as $loc) {
             if (!isset($textsForSlugs[$loc])) {
                 $textsForSlugs[$loc] = $origName;
@@ -101,7 +110,12 @@ class StaticContentAdmin extends FoodAdmin
         $languages = $this->getContainer()->get('food.app.utils.language')->getAll();
         $slugUtelyte = $this->getContainer()->get('food.dishes.utils.slug');
         foreach ($languages as $loc) {
-            $slugUtelyte->generateEntityForPlace($loc, $object->getId(), $textsForSlugs[$loc]);
+            $slugUtelyte->generateForTexts($loc, $object->getId(), $textsForSlugs[$loc]);
         }
+    }
+
+    public function log($message)
+    {
+        $this->getContainer()->get('logger')->error($message);
     }
 }

@@ -115,7 +115,7 @@ class StaticContent implements Translatable
      */
     public function __construct()
     {
-        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
+//        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
