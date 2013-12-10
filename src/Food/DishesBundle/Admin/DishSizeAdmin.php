@@ -25,7 +25,7 @@ class DishSizeAdmin extends FoodAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('unit', 'entity', array('class' => 'Food\DishesBundle\Entity\DishUnit', 'multiple' => true))
+            ->add('unit', 'entity', array('group_by' => 'group', 'class' => 'Food\DishesBundle\Entity\DishUnit', 'multiple' => false))
             ->add('code')
             ->add('price')
         ;

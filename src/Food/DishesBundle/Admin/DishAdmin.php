@@ -94,7 +94,7 @@ class DishAdmin extends FoodAdmin
             ->add('sizes', 'sonata_type_collection', array(
                     'required' => false,
                     'by_reference' => false,
-                    'label' => 'Media items'
+                    'label' => 'admin.dishes.sizes'
                 ), array(
                     'edit' => 'inline',
                     'inline' => 'table'

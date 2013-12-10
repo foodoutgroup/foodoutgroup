@@ -33,6 +33,7 @@ class DishUnitAdmin extends FoodAdmin
             ));
 
         // If user is admin - he can screw Your place. But if user is a moderator - we will set the place ir prePersist!
+        $formMapper->add('unitCategory');
         if ($this->isAdmin()) {
             $formMapper->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
         }
