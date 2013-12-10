@@ -1,5 +1,5 @@
 set :domain,      "amazingsales-parado.data.lt"
-set :deploy_to,   "/home/labai.skanu.lt/current"
+set :deploy_to,   "/home/labai.skanu.lt/"
 
 set :scm,         :git
 set :model_manager, "doctrine"

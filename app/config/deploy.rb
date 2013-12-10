@@ -1,5 +1,5 @@
 set :application, "skanu"
-set :deploy_to,   "/home/labai.skanu.lt/current"
+set :deploy_to,   "/home/labai.skanu.lt/"
 set :app_path,    "app"
 
 set :repository,  "git@github.com:mid/skanu.lt.git"
