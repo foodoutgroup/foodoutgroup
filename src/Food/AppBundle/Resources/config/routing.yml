@@ -1,4 +1,4 @@
-food_homepage:
+food_lang_homepage:
     pattern: /
     defaults: { _controller: FoodAppBundle:Default:index }
 

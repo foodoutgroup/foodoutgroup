@@ -14,7 +14,6 @@ class SlugController extends Controller
     public function processAction(Request $request, $slug)
     {
 
-
         // if we have uppercase letters - permanently redirect to lowercase version
         if (preg_match('#[A-Z]#', $slug)) {
             // @todo - Reik sutvarkyt
@@ -42,11 +41,11 @@ class SlugController extends Controller
             if (empty($slugRow)) {
                 throw new NotFoundHttpException('Sorry page does not exist!');
             }
-
             return $this->redirect($this->generateUrl('food_slug', ['slug' => $slugRow->getName()]), 301);
         }
 
         if ($slugRow == null) {
+            $logger->info("-+ Slugo irasas DB nerastas");
             if ($slug != null) {
                 throw new NotFoundHttpException('Sorry page does not exist');
             }
@@ -55,7 +54,6 @@ class SlugController extends Controller
                 // $slugRow = $slugUtil->getOneByName($slug);
             }
         }
-
 
         switch($slugRow->getType()) {
             case Slug::TYPE_TEXT:
