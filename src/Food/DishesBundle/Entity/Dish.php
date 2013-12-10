@@ -49,6 +49,13 @@ class Dish implements Translatable
     private $place;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="DishSize", mappedBy="dish", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $sizes;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -558,5 +565,38 @@ class Dish implements Translatable
     public function getUnits()
     {
         return $this->units;
+    }
+
+    /**
+     * Add sizes
+     *
+     * @param \Food\DishesBundle\Entity\DishSize $sizes
+     * @return Dish
+     */
+    public function addSize(\Food\DishesBundle\Entity\DishSize $sizes)
+    {
+        $this->sizes[] = $sizes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove sizes
+     *
+     * @param \Food\DishesBundle\Entity\DishSize $sizes
+     */
+    public function removeSize(\Food\DishesBundle\Entity\DishSize $sizes)
+    {
+        $this->sizes->removeElement($sizes);
+    }
+
+    /**
+     * Get sizes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSizes()
+    {
+        return $this->sizes;
     }
 }

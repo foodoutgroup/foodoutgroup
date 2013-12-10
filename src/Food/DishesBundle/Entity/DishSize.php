@@ -10,25 +10,32 @@ use Gedmo\Translatable\Translatable;
 /**
  * Dish
  *
- * @ORM\Table(name="dish_size", uniqueConstraints={@ORM\UniqueConstraint(name="unique_id", columns={"dish", "unit"})})
+ * @ORM\Table(name="dish_size")
  * @ORM\Entity
  */
 class DishSize
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish", inversedBy="dish")
-     * @ORM\JoinColumn(name="dish", referencedColumnName="id")
+     * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \Food\DishesBundle\Entity\Dish
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish", inversedBy="sizes")
      */
     private $dish;
 
     /**
      * @var \Food\DishesBundle\Entity\DishUnit
      *
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishUnit", inversedBy="unit")
-     * @ORM\JoinColumn(name="unit", referencedColumnName="id")
-     * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishUnit")
      */
     private $unit;
 
@@ -319,5 +326,15 @@ class DishSize
     public function getUnit()
     {
         return $this->unit;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

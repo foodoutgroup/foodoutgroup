@@ -77,7 +77,29 @@ class DishAdmin extends FoodAdmin
 
         $formMapper
             ->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
-            ->add('units', 'sonata_type_model', array('class' => 'Food\DishesBundle\Entity\DishSize', 'multiple' => true), array('inline'=> 'table', 'edit'=> 'inline'))
+        /*
+            ->add(
+                'units',
+                'sonata_type_model',
+                array(
+                    'class' => 'Food\DishesBundle\Entity\DishSize',
+                    'multiple' => true
+                ),
+                array(
+                    'inline'=> 'table',
+                    'edit'=> 'inline'
+                )
+            )
+        */
+            ->add('sizes', 'sonata_type_collection', array(
+                    'required' => false,
+                    'by_reference' => false,
+                    'label' => 'Media items'
+                ), array(
+                    'edit' => 'inline',
+                    'inline' => 'table'
+                )
+            )
             ->add('options', null, array('query_builder' => $optionsQuery,'expanded' => true, 'multiple' => true, 'required' => false))
             ->add('price')
             ->add('recomended', 'checkbox', array('label' => 'admin.dish.recomended', 'required' => false,))
