@@ -38,7 +38,8 @@ default_run_options[:pty] = true
 set :shared_files,      ["app/config/parameters.yml"]
 set :shared_children,     ["bin", app_path + "/logs", web_path + "/uploads", web_path + "/images", "web/images"]
 set :writable_dirs,     ["bin", app_path + "/cache", app_path + "/logs", web_path + "/images", app_path + "/cache/dev", app_path + "/cache/prod", web_path + "/images/cache"]
-set :composer_options, "--verbose"
+#set :composer_options, "--verbose"
+set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader --no-progress"
 
 set :keep_releases, 5
 
