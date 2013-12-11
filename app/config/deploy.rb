@@ -38,8 +38,7 @@ default_run_options[:pty] = true
 set :shared_files,      ["app/config/parameters.yml"]
 set :shared_children,     ["bin", app_path + "/logs", web_path + "/uploads", web_path + "/images", "web/images"]
 set :writable_dirs,     ["bin", app_path + "/cache", app_path + "/logs", web_path + "/images", app_path + "/cache/dev", app_path + "/cache/prod", web_path + "/images/cache"]
-#set :composer_options, "--verbose"
-#set :composer_options, "--verbose"
+set :composer_options, "--verbose"
 # Testing purpose
 #set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader --no-progress"
 
@@ -60,9 +59,8 @@ after "deploy", "deploy:chmod_things"
 after "deploy:rollback", "symfony:cache:clear"
 
 # Be more verbose by uncommenting the following line
- logger.level = Logger::MAX_LEVEL
-# Uncomment this after debuging
-# logger.level = 0
+# logger.level = Logger::MAX_LEVEL
+logger.level = 0
 
 # copy parameters.yml to specific env
 set :parameters_dir, "app/config/parameters"
