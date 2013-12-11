@@ -136,6 +136,14 @@ class DishUnit implements Translatable
     }
 
     /**
+     * @return string
+     */
+    public function getGroupAndCompany()
+    {
+        return $this->getPlace()->getName() . " - " . $this->getUnitCategory()->getName();
+    }
+
+    /**
      * Get units group name
      * @return string
      */

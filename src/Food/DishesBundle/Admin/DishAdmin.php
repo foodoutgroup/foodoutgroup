@@ -77,20 +77,6 @@ class DishAdmin extends FoodAdmin
 
         $formMapper
             ->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
-        /*
-            ->add(
-                'units',
-                'sonata_type_model',
-                array(
-                    'class' => 'Food\DishesBundle\Entity\DishSize',
-                    'multiple' => true
-                ),
-                array(
-                    'inline'=> 'table',
-                    'edit'=> 'inline'
-                )
-            )
-        */
             ->add('sizes', 'sonata_type_collection', array(
                     'required' => false,
                     'by_reference' => false,
@@ -113,7 +99,6 @@ class DishAdmin extends FoodAdmin
             ->add('name', null, array('label' => 'admin.dish.name'))
             ->add('place')
             ->add('categories')
-            ->add('unit')
             ->add('options')
             ->add('recomended', null, array('label' => 'admin.dish.recomended'))
             ->add('createdBy', null, array('label' => 'admin.created_by'))
@@ -151,9 +136,8 @@ class DishAdmin extends FoodAdmin
             ->addIdentifier('name', 'string', array('label' => 'admin.dish.name'))
             ->add('place')
             ->add('categories')
-            ->add('unit')
             ->add('options')
-            ->add('price')
+            ->add('sizes', 'string', array('template' => 'FoodDishesBundle:Default:list_admin_list_sizes.html.twig'))
             ->add('recomended', null, array('label' => 'admin.dish.recomended', 'editable' => true))
             ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
@@ -168,8 +152,11 @@ class DishAdmin extends FoodAdmin
         ;
     }
 
-    /*
+    /**
      * If user is a moderator - set place, as he can not choose it. Chuck Norris protection is active
+     *
+     * @param \Food\DishesBundle\Entity\Dish $object
+     * @return void
      */
     public function prePersist($object)
     {
@@ -182,6 +169,31 @@ class DishAdmin extends FoodAdmin
             $object->setPlace($place);
         }
         parent::prePersist($object);
+        $this->fixRelations($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Dish $object
+     * @return void
+     */
+    public function preUpdate($object)
+    {
+        $this->fixRelations($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Dish $object
+     */
+    private function fixRelations($object, $setCreatedAt = null)
+    {
+        foreach ($object->getSizes() as $size)
+        {
+            $cAt = $size->getCreatedAt();
+            if (!$cAt) {
+                $size->setCreatedAt(new \DateTime('now'));
+            }
+            $size->setDish($object);
+        }
     }
 
 }

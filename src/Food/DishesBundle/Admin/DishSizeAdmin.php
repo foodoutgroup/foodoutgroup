@@ -6,7 +6,6 @@ use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Food\DishesBundle\Entity\Place;
 
 class DishSizeAdmin extends FoodAdmin
 {
@@ -24,9 +23,27 @@ class DishSizeAdmin extends FoodAdmin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper
-            ->add('unit', 'entity', array('group_by' => 'group', 'class' => 'Food\DishesBundle\Entity\DishUnit', 'multiple' => false))
-            ->add('code')
+        if ($this->isAdmin()) {
+            $formMapper->add('unit', 'entity', array('group_by' => 'group', 'class' => 'Food\DishesBundle\Entity\DishUnit', 'multiple' => false));
+        } else {
+            $formMapper->add(
+                'unit',
+                'entity',
+                array(
+                    'group_by' => 'group',
+                    'class' => 'Food\DishesBundle\Entity\DishUnit',
+                    'multiple' => false,
+                    'query_builder' => function ($repository)
+                        {
+                            return $repository->createQueryBuilder('s')
+                                ->where('s.place = ?1')
+                                ->setParameter(1, $this->getUser()->getPlace()->getId());
+                        }
+                )
+            );
+        }
+
+        $formMapper->add('code')
             ->add('price')
         ;
     }
