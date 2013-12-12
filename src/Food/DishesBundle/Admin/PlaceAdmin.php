@@ -45,13 +45,23 @@ class PlaceAdmin extends FoodAdmin
                 array(
                     //'by_reference' => false,
                     'max_length' => 2,
-                    'label' => 'admin.place_points',
+                    'label' => 'admin.place_points'
                 ),
                 array(
                     'edit' => 'inline',
-                    'inline' => 'table'
+                    'inline' => 'table',
+                    'template' => 'FoodDishesBundle:Default:point_inline_edit.html.twig'
                 )
             );
+    }
+
+
+    public function getFormTheme()
+    {
+        return array_merge(
+            parent::getFormTheme(),
+            array('FoodDishesBundle:Default:place_form_theme.html.twig')
+        );
     }
 
     /**
