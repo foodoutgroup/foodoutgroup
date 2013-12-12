@@ -43,7 +43,7 @@ class Dish implements Translatable
     /**
      * @var \Food\DishesBundle\Entity\Place
      *
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="place")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="dishes")
      * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
      */
     private $place;
@@ -65,7 +65,7 @@ class Dish implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      **/
     private $createdBy;
@@ -80,7 +80,7 @@ class Dish implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="edited_by", referencedColumnName="id")
      */
     private $editedBy;
@@ -88,7 +88,7 @@ class Dish implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;
@@ -101,18 +101,18 @@ class Dish implements Translatable
     private $translations;
 
     /**
-     * @ORM\ManyToMany(targetEntity="FoodCategory", inversedBy="foodcategory")
+     * @ORM\ManyToMany(targetEntity="FoodCategory", inversedBy="dishes")
      * @ORM\JoinTable(name="food_category_dish_map")
      */
     private $categories;
 
     /**
-     * @ORM\ManyToOne(targetEntity="DishUnit", inversedBy="dishunit")
+     * @ORM\ManyToOne(targetEntity="DishUnit", inversedBy="dishes")
      */
     private $unit;
 
     /**
-     * @ORM\ManyToMany(targetEntity="DishOption", inversedBy="dishoption")
+     * @ORM\ManyToMany(targetEntity="DishOption", inversedBy="dishes")
      * @ORM\JoinTable(name="dish_option_map")
      */
     private $options;

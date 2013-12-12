@@ -13,13 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Cart
 {
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish", inversedBy="dish_id")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish")
      * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
      * @ORM\Id
      */

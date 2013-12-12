@@ -36,7 +36,7 @@ class FoodCategory implements Translatable
     /**
      * @var \Food\DishesBundle\Entity\Place
      *
-     * @ORM\ManyToOne(targetEntity="Place", inversedBy="place")
+     * @ORM\ManyToOne(targetEntity="Place", inversedBy="categories")
      * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
      */
     private $place;
@@ -72,7 +72,7 @@ class FoodCategory implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      **/
     private $createdBy;
@@ -80,7 +80,7 @@ class FoodCategory implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="edited_by", referencedColumnName="id")
      */
     private $editedBy;
@@ -88,7 +88,7 @@ class FoodCategory implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;
@@ -101,7 +101,7 @@ class FoodCategory implements Translatable
     private $translations;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Dish", mappedBy="foodcategories")
+     * @ORM\ManyToMany(targetEntity="Dish", mappedBy="categories")
      */
     private $dishes;
 

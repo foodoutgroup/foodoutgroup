@@ -11,19 +11,19 @@ class Uploadable {
      *
      * @var string
      */
-    public $uploadableField = 'file';
+    protected $uploadableField = null;
 
     /**
      * @var string
      */
-    public $uploadDir = 'uploads/products';
+    protected $uploadDir = null;
 
     /**
      * @return null|string
      */
     public function getWebPath()
     {
-        $getter = 'get'.ucfirst($this->uploadableField);
+        $getter = 'get'.ucfirst($this->getUploadableField());
         return null === $this->$getter() ? null : $this->getUploadDir().'/'.$this->$getter();
     }
 

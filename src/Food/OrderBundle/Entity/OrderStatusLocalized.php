@@ -36,7 +36,7 @@ class OrderStatusLocalized
     private $lang;
 
     /**
-     * @ORM\ManyToOne(targetEntity="OrderStatus", inversedBy="order_status_id")
+     * @ORM\ManyToOne(targetEntity="OrderStatus")
      * @ORM\JoinColumn(name="order_status_id", referencedColumnName="id")
      **/
     private $order_status_id;

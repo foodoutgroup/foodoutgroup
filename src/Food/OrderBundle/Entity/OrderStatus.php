@@ -28,19 +28,6 @@ class OrderStatus
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
-
-
-    /**
-     * @ORM\OneToMany(targetEntity="OrderStatusLocalized", mappedBy="id")
-     **/
-    private $localized;
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->localized = new \Doctrine\Common\Collections\ArrayCollection();
-    }
     
     /**
      * Get id
@@ -73,38 +60,5 @@ class OrderStatus
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Add localized
-     *
-     * @param \Food\OrderBundle\Entity\OrderStatusLocalized $localized
-     * @return OrderStatus
-     */
-    public function addLocalized(\Food\OrderBundle\Entity\OrderStatusLocalized $localized)
-    {
-        $this->localized[] = $localized;
-    
-        return $this;
-    }
-
-    /**
-     * Remove localized
-     *
-     * @param \Food\OrderBundle\Entity\OrderStatusLocalized $localized
-     */
-    public function removeLocalized(\Food\OrderBundle\Entity\OrderStatusLocalized $localized)
-    {
-        $this->localized->removeElement($localized);
-    }
-
-    /**
-     * Get localized
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getLocalized()
-    {
-        return $this->localized;
     }
 }

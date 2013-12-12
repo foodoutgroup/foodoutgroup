@@ -182,10 +182,10 @@ class UploadService
         $rootPath = $this->container->get('kernel')->getRootDir();
 
         // Seno failo sutvarkymo flow
-        $oldFile = $this->object->$getter();
-        $oldFile = $rootPath.'/../web/'.$uploadDir.'/'.$oldFile;
+        $oldFileName = $this->object->$getter();
+        $oldFile = $rootPath.'/../web/'.$uploadDir.'/'.$oldFileName;
 
-        if (!empty($oldFile) && file_exists($oldFile)) {
+        if (!empty($oldFileName) && file_exists($oldFile)) {
             unlink($oldFile);
         }
 

@@ -12,13 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
 class CartOption
 {
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish", inversedBy="dish_id")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish")
      * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
      * @ORM\Id
      */
@@ -30,7 +30,7 @@ class CartOption
     private $quantity;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishOption", inversedBy="dish_option_id")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishOption")
      * @ORM\JoinColumn(name="dish_option_id", referencedColumnName="id")
      * @ORM\Id
      */
