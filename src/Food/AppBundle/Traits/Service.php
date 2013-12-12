@@ -3,7 +3,6 @@
 namespace Food\AppBundle\Traits;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Axelarge\ArrayTools\Arr;
 
 trait Service
 {

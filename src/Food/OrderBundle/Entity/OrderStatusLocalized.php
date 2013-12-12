@@ -2,10 +2,8 @@
 
 namespace Food\OrderBundle\Entity;
 
-use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 
-use Doctrine\ORM\EntityManager;
 
 /**
  * @ORM\Table(name="order_status_localized")

@@ -137,10 +137,6 @@ services:
         - { name: doctrine.event_subscriber, connection: default }
     calls:
         - [ setAnnotationReader, [ @annotation_reader ] ]
-  food.dishes.form.type.worktime:
-      class: Food\DishesBundle\Form\Type\worktimeType
-      tags:
-          - { name: form.type, alias: worktime }
 
 sonata_doctrine_orm_admin:
     templates:
