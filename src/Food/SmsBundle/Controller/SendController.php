@@ -4,14 +4,12 @@ namespace Food\SmsBundle\Controller;
 
 use Food\SmsBundle\Service\InfobipProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 
 class SendController extends Controller
 {
     public function sendAction($messageId) // Kodel nepareina??
     {
-//        return $this->render('FoodSmsBundle:Default:index.html.twig', array('name' => $name));
         // TODO laikinai. Veliau reikes crono
 
         $messagingService = $this->container->get('food.messages');

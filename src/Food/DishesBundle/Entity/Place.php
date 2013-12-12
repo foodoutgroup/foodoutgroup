@@ -5,7 +5,6 @@ namespace Food\DishesBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
 use Food\AppBundle\Entity\Uploadable;
 
 /**
@@ -37,8 +36,6 @@ class Place extends Uploadable
      * @var string
      *
      * @ORM\Column(name="logo", type="string", length=255)
-     * aaaaaa@aaaAssert\NotBlank
-     * TODO - WTF Pavel? :D
      */
     private $logo = "";
 

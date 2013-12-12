@@ -16,3 +16,4 @@ food_slug:
 static:
     path:     /static/{id}
     defaults: { _controller: FoodAppBundle:Static:index }
+    methods:  [GET]

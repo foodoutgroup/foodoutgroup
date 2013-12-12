@@ -4,3 +4,7 @@ services:
         arguments: ["%locale%"]
         calls:
             - [container, [@service_container]]
+    food.dishes.form.type.worktime:
+        class: Food\DishesBundle\Form\Type\worktimeType
+        tags:
+            - { name: form.type, alias: worktime }

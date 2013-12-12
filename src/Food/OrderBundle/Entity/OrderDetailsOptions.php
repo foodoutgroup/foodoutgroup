@@ -2,11 +2,7 @@
 
 namespace Food\OrderBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
-
-use Doctrine\ORM\EntityManager;
 
 /**
  * @ORM\Table(name="order_details_options")

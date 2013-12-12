@@ -2,10 +2,7 @@
 
 namespace Food\UserBundle\Entity;
 
-use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
-
-use Doctrine\ORM\EntityManager;
 
 /**
  * @ORM\Table(name="user_address")

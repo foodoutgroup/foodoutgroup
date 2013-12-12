@@ -2,9 +2,7 @@
 
 namespace Food\AppBundle\Utils;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Food\AppBundle\Traits;
-// use Fish\CommonBundle\Entity\Language as LanguageEntity;
 use Axelarge\ArrayTools\Arr;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -42,6 +40,8 @@ class Language
     /**
      * @param $lang
      * @param $text
+     * @throws \Exception
+     * @return string
      */
     public function removeChars($lang, $text)
     {
@@ -61,6 +61,7 @@ class Language
 
     /**
      * @param $text
+     * @return string
      */
     private function _removeLtChars($text)
     {
@@ -151,10 +152,10 @@ class Language
 
     /**
      * Switch language
-     * @param  int|string $language Might be ID or identifier.
+     * @param  \LanguageEntity $language Might be ID or identifier.
      * @return void
      */
-    public function switchLanguage(LanguageEntity $language)
+    public function switchLanguage(\LanguageEntity $language)
     {
         $request = $this->service('request');
         $request->setLocale($language->getName());

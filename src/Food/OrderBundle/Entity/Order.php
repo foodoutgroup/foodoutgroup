@@ -2,7 +2,6 @@
 
 namespace Food\OrderBundle\Entity;
 
-use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

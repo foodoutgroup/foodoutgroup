@@ -2,9 +2,6 @@
 
 namespace Food\AppBundle\Controller;
 
-
-
-use Doctrine\Common\Inflector\Inflector;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 

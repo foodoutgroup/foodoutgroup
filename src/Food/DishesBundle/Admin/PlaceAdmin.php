@@ -1,7 +1,6 @@
 <?php
 namespace Food\DishesBundle\Admin;
 
-use Food\UserBundle\Entity\User;
 use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

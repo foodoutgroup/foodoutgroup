@@ -3,7 +3,6 @@
 namespace Food\DishesBundle\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
 use Food\AppBundle\Entity\Uploadable;
