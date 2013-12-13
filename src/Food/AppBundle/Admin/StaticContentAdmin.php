@@ -8,7 +8,13 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class StaticContentAdmin extends FoodAdmin
 {
-    // Fields to be shown on create/edit forms
+    /**
+     * Fields to be shown on create/edit forms
+     *
+     * @inheritdoc
+     *
+     * @codeCoverageIgnore
+     */
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper->add(
@@ -24,7 +30,13 @@ class StaticContentAdmin extends FoodAdmin
         ;
     }
 
-    // Fields to be shown on filter forms
+    /**
+     * Fields to be shown on filter forms
+     *
+     * @inheritdoc
+     *
+     * @codeCoverageIgnore
+     */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
@@ -33,7 +45,13 @@ class StaticContentAdmin extends FoodAdmin
         ;
     }
 
-    // Fields to be shown on lists
+    /**
+     * Fields to be shown on lists
+     *
+     * @inheritdoc
+     *
+     * @codeCoverageIgnore
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -50,6 +68,11 @@ class StaticContentAdmin extends FoodAdmin
         ;
     }
 
+    /**
+     * @inheritdoc
+     *
+     * @codeCoverageIgnore
+     */
     public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
     {
         $collection->clearExcept(array('list', 'edit', 'show'));
@@ -57,6 +80,8 @@ class StaticContentAdmin extends FoodAdmin
 
     /**
      * {@inheritdoc}
+     *
+     * @codeCoverageIgnore
      */
     protected function configureShowFields(\Sonata\AdminBundle\Show\ShowMapper $showMapper)
     {
@@ -68,6 +93,9 @@ class StaticContentAdmin extends FoodAdmin
 
     /**
      * @param \Food\AppBundle\Entity\Static $object
+     *
+     * @return mixed|void
+     * @codeCoverageIgnore
      */
     public function postPersist($object)
     {
@@ -76,6 +104,8 @@ class StaticContentAdmin extends FoodAdmin
 
     /**
      * @param \Food\AppBundle\Entity\Static $object
+     *
+     * @return mixed|void
      */
     public function postUpdate($object)
     {
