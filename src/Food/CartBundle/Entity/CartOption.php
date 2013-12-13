@@ -17,7 +17,7 @@ class CartOption
     private $session;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish", inversedBy="dish_id")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish")
      * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
      * @ORM\Id
      */
@@ -29,7 +29,7 @@ class CartOption
     private $quantity;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishOption", inversedBy="dish_option_id")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishOption")
      * @ORM\JoinColumn(name="dish_option_id", referencedColumnName="id")
      * @ORM\Id
      */

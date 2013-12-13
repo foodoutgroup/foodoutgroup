@@ -77,7 +77,7 @@ class DishSize
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      **/
     private $createdBy;
@@ -85,7 +85,7 @@ class DishSize
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="edited_by", referencedColumnName="id")
      */
     private $editedBy;
@@ -93,7 +93,7 @@ class DishSize
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;

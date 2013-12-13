@@ -44,7 +44,7 @@ class Size implements Translatable
     /**
      * @var \Food\DishesBundle\Entity\Place
      *
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="place")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place")
      * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
      */
     private $place;
@@ -73,7 +73,7 @@ class Size implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      **/
     private $createdBy;
@@ -81,7 +81,7 @@ class Size implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="edited_by", referencedColumnName="id")
      */
     private $editedBy;
@@ -89,7 +89,7 @@ class Size implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;

@@ -20,16 +20,11 @@ class Cart
     private $session;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish", inversedBy="dish_id")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish")
      * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
      * @ORM\Id
      */
     private $dish_id;
-
-    /**
-     * @var
-     */
-    private $options;
 
     /**
      * @ORM\Column(name="quantity", type="integer", length=3)

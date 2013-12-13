@@ -114,11 +114,6 @@ class Dish implements Translatable
     private $categories;
 
     /**
-     * @ORM\ManyToMany(targetEntity="DishSize", mappedBy="dish", inversedBy="dish")
-     */
-    private $units;
-
-    /**
      * @ORM\ManyToMany(targetEntity="DishOption", inversedBy="dishes")
      * @ORM\JoinTable(name="dish_option_map")
      */
@@ -532,39 +527,6 @@ class Dish implements Translatable
     public function getRecomended()
     {
         return $this->recomended;
-    }
-
-    /**
-     * Add unit
-     *
-     * @param \Food\DishesBundle\Entity\DishSize $unit
-     * @return Dish
-     */
-    public function addUnit(\Food\DishesBundle\Entity\DishSize $unit)
-    {
-        $this->unit[] = $unit;
-    
-        return $this;
-    }
-
-    /**
-     * Remove unit
-     *
-     * @param \Food\DishesBundle\Entity\DishSize $unit
-     */
-    public function removeUnit(\Food\DishesBundle\Entity\DishSize $unit)
-    {
-        $this->unit->removeElement($unit);
-    }
-
-    /**
-     * Get units
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getUnits()
-    {
-        return $this->units;
     }
 
     /**

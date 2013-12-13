@@ -33,7 +33,7 @@ class DishUnitCategory
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="Place", inversedBy="unitsGroups")
+     * @ORM\ManyToOne(targetEntity="Place")
      * @ORM\JoinColumn(name="place", referencedColumnName="id")
      *
      * @var Place

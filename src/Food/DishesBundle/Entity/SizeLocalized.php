@@ -17,7 +17,7 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
 class SizeLocalized extends AbstractPersonalTranslation
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Size", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="Size")
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $object;

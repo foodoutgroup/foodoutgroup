@@ -35,7 +35,7 @@ class DishUnit implements Translatable
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="Place", inversedBy="dishUnits")
+     * @ORM\ManyToOne(targetEntity="Place")
      * @ORM\JoinColumn(name="place", referencedColumnName="id")
      *
      * @var Place
@@ -44,15 +44,10 @@ class DishUnit implements Translatable
 
     /**
      * @var DishUnitCategory
-     * @ORM\ManyToOne(targetEntity="DishUnitCategory", inversedBy="dishUnitsCategories")
+     * @ORM\ManyToOne(targetEntity="DishUnitCategory")
      * @ORM\JoinColumn(name="unitCategory", referencedColumnName="id")
      */
     private $unitCategory;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Dish", mappedBy="unit")
-     */
-    private $dishes;
 
     /**
      * @var string
@@ -252,39 +247,6 @@ class DishUnit implements Translatable
     public function getDeletedAt()
     {
         return $this->deletedAt;
-    }
-
-    /**
-     * Add dishes
-     *
-     * @param \Food\DishesBundle\Entity\Dish $dishes
-     * @return DishUnit
-     */
-    public function addDishe(\Food\DishesBundle\Entity\Dish $dishes)
-    {
-        $this->dishes[] = $dishes;
-    
-        return $this;
-    }
-
-    /**
-     * Remove dishes
-     *
-     * @param \Food\DishesBundle\Entity\Dish $dishes
-     */
-    public function removeDishe(\Food\DishesBundle\Entity\Dish $dishes)
-    {
-        $this->dishes->removeElement($dishes);
-    }
-
-    /**
-     * Get dishes
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getDishes()
-    {
-        return $this->dishes;
     }
 
     /**
