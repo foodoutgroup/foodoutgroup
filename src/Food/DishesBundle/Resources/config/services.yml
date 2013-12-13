@@ -1,7 +1,7 @@
 services:
     food.dishes.utils.slug:
         class: Food\DishesBundle\Utils\Slug
-        arguments: ["%locale%"]
+        arguments: [@request=, locale%"]
         calls:
             - [container, [@service_container]]
     food.dishes.form.type.worktime:

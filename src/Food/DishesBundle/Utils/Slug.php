@@ -23,9 +23,10 @@ class Slug
      */
     private $locale;
 
-    public function __construct($locale)
+    public function __construct($request, $defLocale)
     {
-        $this->setLocale($locale);
+        $loc = $request->getLocale();
+        $this->setLocale(!empty($loc) ? $loc : $defLocale);
     }
 
     /**
