@@ -89,7 +89,6 @@ class StaticContentAdmin extends FoodAdmin
      */
     private function fixSlugs($object)
     {
-        $this->log('-+ pasileido fixSlugs staticke');
         $origName = $object->getTitle();
         $locales = $this->getContainer()->getParameter('available_locales');
         $textsForSlugs = array();
@@ -112,10 +111,5 @@ class StaticContentAdmin extends FoodAdmin
         foreach ($languages as $loc) {
             $slugUtelyte->generateForTexts($loc, $object->getId(), $textsForSlugs[$loc]);
         }
-    }
-
-    public function log($message)
-    {
-        $this->getContainer()->get('logger')->error($message);
     }
 }

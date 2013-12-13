@@ -3,7 +3,6 @@ namespace Food\SmsBundle\Tests\Service;
 
 require_once dirname(__DIR__).'/../../../../app/AppKernel.php';
 
-//use \Food\SmsBundle\Service\InfobipProvider;
 use \Food\SmsBundle\Service\MessagesService;
 use \Food\SmsBundle\Entity\Message;
 
