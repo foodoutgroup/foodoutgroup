@@ -2,11 +2,7 @@
 
 namespace Food\OrderBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
-
-use Doctrine\ORM\EntityManager;
 
 /**
  * @ORM\Table(name="order_details_options")
@@ -16,21 +12,21 @@ class OrderDetailsOptions
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity="Order", inversedBy="order_id")
+     * @ORM\ManyToOne(targetEntity="Order")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      * @ORM\Id
      */
     private $order_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish", inversedBy="dish_id")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish")
      * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
      * @ORM\Id
      */
     private $dish_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishOption", inversedBy="dish_option_id")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishOption")
      * @ORM\JoinColumn(name="dish_option_id", referencedColumnName="id")
      * @ORM\Id
      */

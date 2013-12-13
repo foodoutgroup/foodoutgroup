@@ -2,7 +2,6 @@
 
 namespace Food\OrderBundle\Entity;
 
-use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 
 
@@ -14,14 +13,14 @@ class OrderDetails
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity="Order", inversedBy="order_id")
+     * @ORM\ManyToOne(targetEntity="Order")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      * @ORM\Id
      */
     private $order_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish", inversedBy="dish_id")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish")
      * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
      * @ORM\Id
      */

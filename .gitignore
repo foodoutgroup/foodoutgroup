@@ -17,3 +17,6 @@
 
 # ignore phpStorm crap
 .idea
+
+# Entity backups
+*.php~

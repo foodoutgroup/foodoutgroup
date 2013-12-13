@@ -1,3 +1,7 @@
+food_sms:
+    resource: "@FoodSmsBundle/Resources/config/routing.yml"
+    prefix:   /
+
 food_places:
     resource: "@FoodPlacesBundle/Controller/"
     type:     annotation
@@ -45,7 +49,9 @@ _sonata_admin:
     type: sonata_admin
     prefix: /{_locale}/admin
 
-
+food_homepage:
+    pattern: /
+    defaults: { _controller: FoodAppBundle:Default:index }
 
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
@@ -68,7 +74,4 @@ fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /change-password
 
-# error-prevention
-homepage:
-   pattern: /
 

@@ -38,7 +38,7 @@
                             <fieldset>
                                 <div class="sonata-ba-collapsed-fields">
                                     {% if form_group.description != false %}
-                                        <p>{{ form_group.description|raw }}</p>
+                                        <p>{{ form_group.description }}</p>
                                     {% endif %}
                                     {% for field_name in form_group.fields %}
                                         {% if field_name|slice(0,2) !="wd" %}

@@ -1,0 +1,11 @@
+services:
+    sonata.admin.sms:
+        class: Food\SmsBundle\Admin\MessagesAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.messages" }
+        arguments:
+            - ~
+            - Food\SmsBundle\Entity\Message
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]

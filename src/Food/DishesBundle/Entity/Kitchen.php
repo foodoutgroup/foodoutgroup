@@ -3,7 +3,6 @@
 namespace Food\DishesBundle\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
 use Food\AppBundle\Entity\Uploadable;
@@ -47,7 +46,7 @@ class Kitchen extends Uploadable implements Translatable
     /**
      * @var object
      */
-    public $file;
+    protected $file;
 
     /**
      * @var bool
@@ -90,7 +89,7 @@ class Kitchen extends Uploadable implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      **/
     private $createdBy;
@@ -98,7 +97,7 @@ class Kitchen extends Uploadable implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="edited_by", referencedColumnName="id")
      */
     private $editedBy;
@@ -106,7 +105,7 @@ class Kitchen extends Uploadable implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;
@@ -117,11 +116,6 @@ class Kitchen extends Uploadable implements Translatable
      * this is not a mapped field of entity metadata, just a simple property
      */
     private $locale;
-
-    /**
-     * @var string
-     */
-    public $uploadableField = 'logo';
 
     /**
      * Convert object to string
@@ -143,6 +137,30 @@ class Kitchen extends Uploadable implements Translatable
         $this->localized = new \Doctrine\Common\Collections\ArrayCollection();
         $this->places = new \Doctrine\Common\Collections\ArrayCollection();
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * @inheritdoc
+     * @return string
+     */
+    public function getUploadDir()
+    {
+        if (empty($this->uploadDir)) {
+            $this->uploadDir = 'uploads/kitchens';
+        }
+        return $this->uploadDir;
+    }
+
+    /**
+     * @inheritdoc
+     * @return string
+     */
+    public function getUploadableField()
+    {
+        if (empty($this->uploadableField)) {
+            $this->uploadableField = 'logo';
+        }
+        return $this->uploadableField;
     }
 
     public function getCount()

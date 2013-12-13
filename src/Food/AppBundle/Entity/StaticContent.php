@@ -65,7 +65,7 @@ class StaticContent implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      **/
     private $createdBy;
@@ -73,7 +73,7 @@ class StaticContent implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="edited_by", referencedColumnName="id")
      */
     private $editedBy;
@@ -81,7 +81,7 @@ class StaticContent implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;
@@ -110,14 +110,23 @@ class StaticContent implements Translatable
         }
         return $this->getTitle();
     }
+
     /**
-     * Constructor
+     * @param mixed $locale
      */
-    public function __construct()
+    public function setLocale($locale)
     {
-        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->locale = $locale;
     }
-    
+
+    /**
+     * @return mixed
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
     /**
      * Get id
      *
@@ -344,4 +353,12 @@ class StaticContent implements Translatable
     {
         return $this->translations;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
 }

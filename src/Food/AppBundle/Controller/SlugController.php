@@ -5,6 +5,7 @@ namespace Food\AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Food\AppBundle\Entity\Slug;
 
 
@@ -12,7 +13,6 @@ class SlugController extends Controller
 {
     public function processAction(Request $request, $slug)
     {
-
 
         // if we have uppercase letters - permanently redirect to lowercase version
         if (preg_match('#[A-Z]#', $slug)) {
@@ -38,19 +38,22 @@ class SlugController extends Controller
                 'type' => $slugRow->getType(),
                 'is_active' => true,
             ]);
-            if (empty($slugRow)) return $this->forward('FoodAppBundle:Error404:render');
-
+            if (empty($slugRow)) {
+                throw new NotFoundHttpException('Sorry page does not exist!');
+            }
             return $this->redirect($this->generateUrl('food_slug', ['slug' => $slugRow->getName()]), 301);
         }
 
         if ($slugRow == null) {
-            if ($slug != null) return $this->forward('FoodAppBundle:Error404:render');
+            $logger->info("-+ Slugo irasas DB nerastas");
+            if ($slug != null) {
+                throw new NotFoundHttpException('Sorry page does not exist');
+            }
             else {
                 // $slug = $slugUtil->getFirstMainSlug(); // @todo clean
                 // $slugRow = $slugUtil->getOneByName($slug);
             }
         }
-
 
         switch($slugRow->getType()) {
             case Slug::TYPE_TEXT:

@@ -2,10 +2,7 @@
 
 namespace Food\UserBundle\Entity;
 
-use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
-
-use Doctrine\ORM\EntityManager;
 
 /**
  * @ORM\Table(name="user_address")
@@ -51,7 +48,7 @@ class UserAddress
     private $default;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
     private $user;

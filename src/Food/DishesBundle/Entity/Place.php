@@ -5,7 +5,6 @@ namespace Food\DishesBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
 use Food\AppBundle\Entity\Uploadable;
 
 /**
@@ -37,14 +36,13 @@ class Place extends Uploadable
      * @var string
      *
      * @ORM\Column(name="logo", type="string", length=255)
-     * aaaaaa@aaaAssert\NotBlank
      */
     private $logo = "";
 
     /**
      * @var object
      */
-    public $file;
+    protected $file;
 
     /**
      * @var bool
@@ -59,10 +57,9 @@ class Place extends Uploadable
     private $kitchens;
 
     /**
-     * @ORM\OneToMany(targetEntity="PlaceLocalized", mappedBy="id")
-     **/
-    private $localized;
-
+     * @ORM\OneToMany(targetEntity="Dish", mappedBy="place")
+     */
+    private $dishes;
 
     /**
      * @ORM\OneToMany(targetEntity="PlacePoint", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
@@ -80,7 +77,7 @@ class Place extends Uploadable
     private $categories;
 
     /**
-     * @ORM\OneToMany(targetEntity="\Food\UserBundle\Entity\User", mappedBy="id")
+     * @ORM\OneToMany(targetEntity="\Food\UserBundle\Entity\User", mappedBy="place")
      **/
     private $users;
 
@@ -108,7 +105,7 @@ class Place extends Uploadable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      **/
     private $createdBy;
@@ -116,7 +113,7 @@ class Place extends Uploadable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="edited_by", referencedColumnName="id")
      */
     private $editedBy;
@@ -124,15 +121,10 @@ class Place extends Uploadable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;
-
-    /**
-     * @var string
-     */
-    public $uploadableField = 'logo';
 
     /**
      * Returns place name
@@ -152,10 +144,35 @@ class Place extends Uploadable
      */
     public function __construct()
     {
+        $this->uploadDir = 'uploads/places';
         $this->kitchens = new \Doctrine\Common\Collections\ArrayCollection();
         $this->localized = new \Doctrine\Common\Collections\ArrayCollection();
         $this->points = new \Doctrine\Common\Collections\ArrayCollection();
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * @inheritdoc
+     * @return string
+     */
+    public function getUploadDir()
+    {
+        if (empty($this->uploadDir)) {
+            $this->uploadDir = 'uploads/places';
+        }
+        return $this->uploadDir;
+    }
+
+    /**
+     * @inheritdoc
+     * @return string
+     */
+    public function getUploadableField()
+    {
+        if (empty($this->uploadableField)) {
+            $this->uploadableField = 'logo';
+        }
+        return $this->uploadableField;
     }
 
     /**
@@ -349,39 +366,6 @@ class Place extends Uploadable
     public function getKitchens()
     {
         return $this->kitchens;
-    }
-
-    /**
-     * Add localized
-     *
-     * @param \Food\DishesBundle\Entity\PlaceLocalized $localized
-     * @return Place
-     */
-    public function addLocalized(\Food\DishesBundle\Entity\PlaceLocalized $localized)
-    {
-        $this->localized[] = $localized;
-    
-        return $this;
-    }
-
-    /**
-     * Remove localized
-     *
-     * @param \Food\DishesBundle\Entity\PlaceLocalized $localized
-     */
-    public function removeLocalized(\Food\DishesBundle\Entity\PlaceLocalized $localized)
-    {
-        $this->localized->removeElement($localized);
-    }
-
-    /**
-     * Get localized
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getLocalized()
-    {
-        return $this->localized;
     }
 
     /**
@@ -596,5 +580,38 @@ class Place extends Uploadable
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    /**
+     * Add dishes
+     *
+     * @param \Food\DishesBundle\Entity\Dish $dishes
+     * @return Place
+     */
+    public function addDishe(\Food\DishesBundle\Entity\Dish $dishes)
+    {
+        $this->dishes[] = $dishes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove dishes
+     *
+     * @param \Food\DishesBundle\Entity\Dish $dishes
+     */
+    public function removeDishe(\Food\DishesBundle\Entity\Dish $dishes)
+    {
+        $this->dishes->removeElement($dishes);
+    }
+
+    /**
+     * Get dishes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDishes()
+    {
+        return $this->dishes;
     }
 }

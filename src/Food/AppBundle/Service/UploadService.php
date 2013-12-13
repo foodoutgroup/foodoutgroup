@@ -165,6 +165,7 @@ class UploadService
     public function upload($basepath)
     {
         $setter = $this->getUploadableFieldSetter();
+        $getter = $this->getUploadableFieldGetter();
 
         if (null === $this->object->getFile()) {
             return;
@@ -174,10 +175,36 @@ class UploadService
             return;
         }
 
-        $this->object->getFile()->move($this->getUploadRootDir($basepath), $this->object->getFile()->getClientOriginalName());
+        // TODO jei yra senas failas - ji trinam
+        $filename = $this->generateFileName();
+        $uploadDir = $this->getUploadRootDir($basepath);
 
-        $this->object->$setter($this->object->getFile()->getClientOriginalName());
+        $rootPath = $this->container->get('kernel')->getRootDir();
 
+        // Seno failo sutvarkymo flow
+        $oldFileName = $this->object->$getter();
+        $oldFile = $rootPath.'/../web/'.$uploadDir.'/'.$oldFileName;
+
+        if (!empty($oldFileName) && file_exists($oldFile)) {
+            unlink($oldFile);
+        }
+
+        // Naujo failo sutvarkymo flow
+        $this->object->getFile()->move($uploadDir, $filename);
+        $this->object->$setter($filename);
         $this->object->setFile(null);
+    }
+
+    /**
+     * @return string
+     */
+    public function generateFileName()
+    {
+        return sprintf(
+            '%d_%s.%s',
+            $this->object->getId(),
+            md5($this->object->getFile()->getClientOriginalName()),
+            $this->object->getFile()->guessClientExtension()
+        );
     }
 }
