@@ -164,6 +164,10 @@
                 <source>admin.dish_options</source>
                 <target>Patiekalų priedai</target>
             </trans-unit>
+            <trans-unit id="admin.dish_option.code">
+                <source>admin.dish_option.code</source>
+                <target>Sis. kodas</target>
+            </trans-unit>
             <trans-unit id="admin.dish_option.name">
                 <source>admin.dish_option.name</source>
                 <target>Priedas</target>
@@ -184,7 +188,7 @@
             <!-- Dish units -->
             <trans-unit id="dish-unit-list">
                 <source>Dish Unit List</source>
-                <target>Matvimo vieneteai</target>
+                <target>Matavimo vieneteai</target>
             </trans-unit>
             <trans-unit id="admin.dish_units">
                 <source>admin.dish_units</source>
@@ -384,7 +388,6 @@
                 <source>admin.static.content</source>
                 <target>Turinys</target>
             </trans-unit>
-
         </body>
     </file>
 </xliff>

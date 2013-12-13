@@ -33,6 +33,22 @@ class DishUnit implements Translatable
      */
     private $name;
 
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Place", inversedBy="dishUnits")
+     * @ORM\JoinColumn(name="place", referencedColumnName="id")
+     *
+     * @var Place
+     */
+    private $place;
+
+    /**
+     * @var DishUnitCategory
+     * @ORM\ManyToOne(targetEntity="DishUnitCategory", inversedBy="dishUnitsCategories")
+     * @ORM\JoinColumn(name="unitCategory", referencedColumnName="id")
+     */
+    private $unitCategory;
+
     /**
      * @ORM\OneToMany(targetEntity="Dish", mappedBy="unit")
      */
@@ -118,7 +134,24 @@ class DishUnit implements Translatable
         $this->dishes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
+    /**
+     * @return string
+     */
+    public function getGroupAndCompany()
+    {
+        return $this->getPlace()->getName() . " - " . $this->getUnitCategory()->getName();
+    }
+
+    /**
+     * Get units group name
+     * @return string
+     */
+    public function getGroup()
+    {
+        return $this->getUnitCategory()->getName();
+    }
+
     /**
      * Get id
      *
@@ -363,5 +396,51 @@ class DishUnit implements Translatable
     public function getDeletedBy()
     {
         return $this->deletedBy;
+    }
+
+    /**
+     * Set place
+     *
+     * @param \Food\DishesBundle\Entity\Place $place
+     * @return DishUnit
+     */
+    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
+    {
+        $this->place = $place;
+    
+        return $this;
+    }
+
+    /**
+     * Get place
+     *
+     * @return \Food\DishesBundle\Entity\Place 
+     */
+    public function getPlace()
+    {
+        return $this->place;
+    }
+
+    /**
+     * Set unitCategory
+     *
+     * @param \Food\DishesBundle\Entity\DishUnitCategory $unitCategory
+     * @return DishUnit
+     */
+    public function setUnitCategory(\Food\DishesBundle\Entity\DishUnitCategory $unitCategory = null)
+    {
+        $this->unitCategory = $unitCategory;
+    
+        return $this;
+    }
+
+    /**
+     * Get unitCategory
+     *
+     * @return \Food\DishesBundle\Entity\DishUnitCategory 
+     */
+    public function getUnitCategory()
+    {
+        return $this->unitCategory;
     }
 }

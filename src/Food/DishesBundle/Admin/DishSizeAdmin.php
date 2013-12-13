@@ -1,12 +1,13 @@
 <?php
 namespace Food\DishesBundle\Admin;
 
+use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-class DishUnitAdmin extends FoodAdmin
+class DishSizeAdmin extends FoodAdmin
 {
     /**
      * Default Datagrid values
@@ -22,28 +23,41 @@ class DishUnitAdmin extends FoodAdmin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->add(
-            'translations',
-            'a2lix_translations_gedmo',
-            array(
-                'translatable_class' => 'Food\DishesBundle\Entity\DishUnit',
-                'fields' => array(
-                    'name' => array('label' => 'label.name'),
-                )
-            ));
-
-        // If user is admin - he can screw Your place. But if user is a moderator - we will set the place ir prePersist!
-        $formMapper->add('unitCategory');
         if ($this->isAdmin()) {
-            $formMapper->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
+            $formMapper->add('unit', 'entity', array('group_by' => 'group', 'class' => 'Food\DishesBundle\Entity\DishUnit', 'multiple' => false));
+        } else {
+            $formMapper->add(
+                'unit',
+                'entity',
+                array(
+                    'group_by' => 'group',
+                    'class' => 'Food\DishesBundle\Entity\DishUnit',
+                    'multiple' => false,
+                    'query_builder' => function ($repository)
+                        {
+                            return $repository->createQueryBuilder('s')
+                                ->where('s.place = ?1')
+                                ->setParameter(1, $this->getUser()->getPlace()->getId());
+                        }
+                )
+            );
         }
+
+        $formMapper->add('code')
+            ->add('price')
+        ;
     }
 
     // Fields to be shown on filter forms
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name', null, array('label' => 'admin.unit.name'))
+            ->add('name', null, array('label' => 'admin.dish.name'))
+            ->add('place')
+            ->add('categories')
+            ->add('unit')
+            ->add('options')
+            ->add('recomended', null, array('label' => 'admin.dish.recomended'))
             ->add('createdBy', null, array('label' => 'admin.created_by'))
             ->add(
                 'createdAt',
@@ -76,7 +90,13 @@ class DishUnitAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name', 'string', array('label' => 'admin.unit.name'))
+            ->addIdentifier('name', 'string', array('label' => 'admin.dish.name'))
+            ->add('place')
+            ->add('categories')
+            ->add('unit')
+            ->add('options')
+            ->add('price')
+            ->add('recomended', null, array('label' => 'admin.dish.recomended', 'editable' => true))
             ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))

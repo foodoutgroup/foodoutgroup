@@ -6,16 +6,18 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
 
+
 /**
- * Dish option
+ * Dish
  *
- * @ORM\Table(name="dish_option")
+ * @ORM\Table()
  * @ORM\Entity
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\DishOptionLocalized")
+ * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\SizeLocalized")
  */
-class DishOption implements Translatable
+class Size implements Translatable
 {
+
     /**
      * @var integer
      *
@@ -26,31 +28,11 @@ class DishOption implements Translatable
     private $id;
 
     /**
-     * @var double
-     *
-     * @ORM\Column(name="price", type="decimal", scale=2)
-     */
-    private $price;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=45)
      */
     private $name;
-
-    /**
-     * @var string
-     * @ORM\Column(name="code", type="string", length=45)
-     */
-    private $code;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text")
-     */
-    private $description;
 
     /**
      * @var bool
@@ -60,22 +42,9 @@ class DishOption implements Translatable
     private $hidden = false;
 
     /**
-     * @var \Food\DishesBundle\Entity\DishOptionLocalized
-     *
-     * @ORM\OneToMany(targetEntity="DishOptionLocalized", mappedBy="object", cascade={"persist", "remove"})
-     **/
-    private $translations;
-
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Dish", mappedBy="options")
-     */
-    private $dishes;
-
-    /**
      * @var \Food\DishesBundle\Entity\Place
      *
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="place")
      * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
      */
     private $place;
@@ -104,7 +73,7 @@ class DishOption implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      **/
     private $createdBy;
@@ -112,7 +81,7 @@ class DishOption implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
      * @ORM\JoinColumn(name="edited_by", referencedColumnName="id")
      */
     private $editedBy;
@@ -120,7 +89,7 @@ class DishOption implements Translatable
     /**
      * @var \Food\UserBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="user")
      * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;
@@ -137,15 +106,7 @@ class DishOption implements Translatable
         }
         return $this->getName();
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->localized = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->dishes = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
+
     /**
      * Get id
      *
@@ -157,33 +118,10 @@ class DishOption implements Translatable
     }
 
     /**
-     * Set price
-     *
-     * @param float $price
-     * @return DishOption
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
-    
-        return $this;
-    }
-
-    /**
-     * Get price
-     *
-     * @return float 
-     */
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    /**
      * Set name
      *
      * @param string $name
-     * @return DishOption
+     * @return Size
      */
     public function setName($name)
     {
@@ -206,7 +144,7 @@ class DishOption implements Translatable
      * Set hidden
      *
      * @param boolean $hidden
-     * @return DishOption
+     * @return Size
      */
     public function setHidden($hidden)
     {
@@ -229,7 +167,7 @@ class DishOption implements Translatable
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return DishOption
+     * @return Size
      */
     public function setCreatedAt($createdAt)
     {
@@ -252,7 +190,7 @@ class DishOption implements Translatable
      * Set editedAt
      *
      * @param \DateTime $editedAt
-     * @return DishOption
+     * @return Size
      */
     public function setEditedAt($editedAt)
     {
@@ -275,7 +213,7 @@ class DishOption implements Translatable
      * Set deletedAt
      *
      * @param \DateTime $deletedAt
-     * @return DishOption
+     * @return Size
      */
     public function setDeletedAt($deletedAt)
     {
@@ -295,99 +233,33 @@ class DishOption implements Translatable
     }
 
     /**
-     * Add dishes
+     * Set place
      *
-     * @param \Food\DishesBundle\Entity\Dish $dishes
-     * @return DishOption
+     * @param \Food\DishesBundle\Entity\Place $place
+     * @return Size
      */
-    public function addDishe(\Food\DishesBundle\Entity\Dish $dishes)
+    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
     {
-        $this->dishes[] = $dishes;
+        $this->place = $place;
     
         return $this;
     }
 
     /**
-     * Remove dishes
+     * Get place
      *
-     * @param \Food\DishesBundle\Entity\Dish $dishes
+     * @return \Food\DishesBundle\Entity\Place 
      */
-    public function removeDishe(\Food\DishesBundle\Entity\Dish $dishes)
+    public function getPlace()
     {
-        $this->dishes->removeElement($dishes);
-    }
-
-    /**
-     * Get dishes
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getDishes()
-    {
-        return $this->dishes;
-    }
-
-    /**
-     * Add translations
-     *
-     * @param \Food\DishesBundle\Entity\DishOptionLocalized $translations
-     * @return DishOption
-     */
-    public function addTranslation(\Food\DishesBundle\Entity\DishOptionLocalized $translations)
-    {
-        $this->translations[] = $translations;
-    
-        return $this;
-    }
-
-    /**
-     * Remove translations
-     *
-     * @param \Food\DishesBundle\Entity\DishOptionLocalized $translations
-     */
-    public function removeTranslation(\Food\DishesBundle\Entity\DishOptionLocalized $translations)
-    {
-        $this->translations->removeElement($translations);
-    }
-
-    /**
-     * Get translations
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return DishOption
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-    
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
+        return $this->place;
     }
 
     /**
      * Set createdBy
      *
      * @param \Food\UserBundle\Entity\User $createdBy
-     * @return DishOption
+     * @return Size
      */
     public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
     {
@@ -410,7 +282,7 @@ class DishOption implements Translatable
      * Set editedBy
      *
      * @param \Food\UserBundle\Entity\User $editedBy
-     * @return DishOption
+     * @return Size
      */
     public function setEditedBy(\Food\UserBundle\Entity\User $editedBy = null)
     {
@@ -433,7 +305,7 @@ class DishOption implements Translatable
      * Set deletedBy
      *
      * @param \Food\UserBundle\Entity\User $deletedBy
-     * @return DishOption
+     * @return Size
      */
     public function setDeletedBy(\Food\UserBundle\Entity\User $deletedBy = null)
     {
@@ -450,51 +322,5 @@ class DishOption implements Translatable
     public function getDeletedBy()
     {
         return $this->deletedBy;
-    }
-
-    /**
-     * Set place
-     *
-     * @param \Food\DishesBundle\Entity\Place $place
-     * @return DishOption
-     */
-    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
-    {
-        $this->place = $place;
-    
-        return $this;
-    }
-
-    /**
-     * Get place
-     *
-     * @return \Food\DishesBundle\Entity\Place 
-     */
-    public function getPlace()
-    {
-        return $this->place;
-    }
-
-    /**
-     * Set code
-     *
-     * @param string $code
-     * @return DishOption
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
-    
-        return $this;
-    }
-
-    /**
-     * Get code
-     *
-     * @return string 
-     */
-    public function getCode()
-    {
-        return $this->code;
     }
 }

@@ -176,6 +176,7 @@ sonata_admin:
                       - sonata.admin.place
                       - sonata.admin.place.reviews
                       - sonata.admin.dish.unit
+                      - sonata.admin.dish.size
                       - sonata.admin.food.category
                       - sonata.admin.static
                       - sonata.admin.sms

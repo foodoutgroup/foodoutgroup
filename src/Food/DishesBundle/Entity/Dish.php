@@ -49,6 +49,13 @@ class Dish implements Translatable
     private $place;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="DishSize", mappedBy="dish", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $sizes;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -107,9 +114,9 @@ class Dish implements Translatable
     private $categories;
 
     /**
-     * @ORM\ManyToOne(targetEntity="DishUnit", inversedBy="dishes")
+     * @ORM\ManyToMany(targetEntity="DishSize", mappedBy="dish", inversedBy="dish")
      */
-    private $unit;
+    private $units;
 
     /**
      * @ORM\ManyToMany(targetEntity="DishOption", inversedBy="dishes")
@@ -525,5 +532,71 @@ class Dish implements Translatable
     public function getRecomended()
     {
         return $this->recomended;
+    }
+
+    /**
+     * Add unit
+     *
+     * @param \Food\DishesBundle\Entity\DishSize $unit
+     * @return Dish
+     */
+    public function addUnit(\Food\DishesBundle\Entity\DishSize $unit)
+    {
+        $this->unit[] = $unit;
+    
+        return $this;
+    }
+
+    /**
+     * Remove unit
+     *
+     * @param \Food\DishesBundle\Entity\DishSize $unit
+     */
+    public function removeUnit(\Food\DishesBundle\Entity\DishSize $unit)
+    {
+        $this->unit->removeElement($unit);
+    }
+
+    /**
+     * Get units
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUnits()
+    {
+        return $this->units;
+    }
+
+    /**
+     * Add sizes
+     *
+     * @param \Food\DishesBundle\Entity\DishSize $sizes
+     * @return Dish
+     */
+    public function addSize(\Food\DishesBundle\Entity\DishSize $sizes)
+    {
+        $this->sizes[] = $sizes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove sizes
+     *
+     * @param \Food\DishesBundle\Entity\DishSize $sizes
+     */
+    public function removeSize(\Food\DishesBundle\Entity\DishSize $sizes)
+    {
+        $this->sizes->removeElement($sizes);
+    }
+
+    /**
+     * Get sizes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSizes()
+    {
+        return $this->sizes;
     }
 }

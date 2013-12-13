@@ -1,0 +1,12 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field%}
+    <table>
+        {% for child in object.sizes %}
+            <tr>
+                <td>{{ child.unit.name }}</td>
+                <td>{{ child.price }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

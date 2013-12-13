@@ -23,7 +23,7 @@ class DishOptionAdmin extends FoodAdmin
                 ),
 //                'label' => 'Unit name (transl)'
             )
-        );
+        )->add('code', null, array('label' => 'admin.dish_option.code'));
 
         if ($this->isAdmin()) {
             $formMapper->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
@@ -38,6 +38,7 @@ class DishOptionAdmin extends FoodAdmin
     {
         $datagridMapper
             ->add('name', null, array('label' => 'admin.dish_option.name'))
+            ->add('code', null, array('label' => 'admin.dish_option.code'))
             ->add('price', null, array('label' => 'admin.dish_option.price'))
             ->add('createdBy', null, array('label' => 'admin.created_by'))
             ->add(

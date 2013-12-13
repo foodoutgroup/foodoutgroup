@@ -2,22 +2,22 @@
 
 namespace Food\CartBundle\Entity;
 
+use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="cart_option")
+ * @ORM\Table(name="cart_option", uniqueConstraints={@ORM\UniqueConstraint(name="unique_id", columns={"session", "dish_id", "dish_option_id"})})
  * @ORM\Entity
  */
 class CartOption
 {
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     **/
-    private $user;
+     * @ORM\Column(name="session", type="string", length=255)
+     */
+    private $session;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish", inversedBy="dish_id")
      * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
      * @ORM\Id
      */
@@ -29,7 +29,7 @@ class CartOption
     private $quantity;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishOption")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishOption", inversedBy="dish_option_id")
      * @ORM\JoinColumn(name="dish_option_id", referencedColumnName="id")
      * @ORM\Id
      */
@@ -125,5 +125,23 @@ class CartOption
     public function getDishOptionId()
     {
         return $this->dish_option_id;
+    }
+
+    /**
+     * @param mixed $session
+     * @return $this
+     */
+    public function setSession($session)
+    {
+        $this->session = $session;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSession()
+    {
+        return $this->session;
     }
 }

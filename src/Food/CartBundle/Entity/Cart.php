@@ -2,27 +2,34 @@
 
 namespace Food\CartBundle\Entity;
 
+use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 
 
 /**
- * @ORM\Table(name="cart")
+ * @ORM\Table(name="cart", uniqueConstraints={@ORM\UniqueConstraint(name="unique_id", columns={"session", "dish_id"})})
  * @ORM\Entity
  */
 class Cart
 {
-    /**
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     **/
-    private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish")
+     * @ORM\Column(name="session", type="string", length=255)
+     * @ORM\Id
+     */
+    private $session;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish", inversedBy="dish_id")
      * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
      * @ORM\Id
      */
     private $dish_id;
+
+    /**
+     * @var
+     */
+    private $options;
 
     /**
      * @ORM\Column(name="quantity", type="integer", length=3)
@@ -53,29 +60,6 @@ class Cart
     }
 
     /**
-     * Set user
-     *
-     * @param \Food\UserBundle\Entity\User $user
-     * @return Cart
-     */
-    public function setUser(\Food\UserBundle\Entity\User $user = null)
-    {
-        $this->user = $user;
-    
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \Food\UserBundle\Entity\User 
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
      * Set dish_id
      *
      * @param \Food\DishesBundle\Entity\Dish $dishId
@@ -97,4 +81,24 @@ class Cart
     {
         return $this->dish_id;
     }
+
+    /**
+     * @param mixed $session
+     * @return $this
+     */
+    public function setSession($session)
+    {
+        $this->session = $session;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSession()
+    {
+        return $this->session;
+    }
+
+
 }
