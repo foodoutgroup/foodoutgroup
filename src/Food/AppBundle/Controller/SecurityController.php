@@ -3,18 +3,19 @@
 namespace Food\AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Response;
 
 class SecurityController extends Controller
 {
     public function indexAction()
     {
-        die("THIS IS DIE");
+        // TODO Cia dar reikalingas kodas?
+//        die("THIS IS DIE");
     }
 
     public function addUserAction($username, $email, $password)
     {
-        $userManager = $this->get('fos_user.user_manager');
+        // TODO Cia dar reikalingas kodas?
+//        $userManager = $this->get('fos_user.user_manager');
         //$user = $userManager->createUser();
         //$user = $userManager->findUserBy(array('id' => 1));
         //$user->setUsername($username);
@@ -26,6 +27,6 @@ class SecurityController extends Controller
 
         //$userManager->updateUser($user);
 
-        die("THIS IS THE END");
+//        die("THIS IS THE END");
     }
 }

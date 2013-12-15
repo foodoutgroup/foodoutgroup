@@ -76,7 +76,6 @@ class SlugController extends Controller
                 break;
         }
 
-        die();
         /*
         $slugUtil->set($slug);
         $slugUtil->setMain($slugUtil->getTopCategorySlug($slug)); // @todo clean

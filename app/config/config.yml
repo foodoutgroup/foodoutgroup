@@ -23,7 +23,8 @@ framework:
         #assets_version:less SomeVersionScheme
     default_locale:  "%locale%"
     trusted_proxies: ~
-    session:         ~
+    session:
+        name: skaniSesija2014PerkamPicasUrmu
     fragments:       ~
     http_method_override: true
 
