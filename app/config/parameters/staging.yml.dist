@@ -3,8 +3,8 @@ parameters:
     locales: [lt, en, ru]
 
     database_driver: pdo_mysql
-    database_host: 127.0.0.1
-    database_port: null
+    database_host: localhost
+    database_port: 3306
     database_name: skanu_lt
     database_user: skanu_lt
     database_password: Z7Uz7VqCWwJP4C2mDJscAFH
