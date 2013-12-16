@@ -50,6 +50,29 @@ class PlacePoint
      */
     private $active =1;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="delivery_time", type="string", length=255)
+     */
+    private $deliveryTime;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="pick_up", type="boolean")
+     */
+    private $pickUp;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="delivery", type="boolean")
+     */
+    private $delivery;
+
+
     /**
      * @ORM\ManyToOne(targetEntity="Place", inversedBy="points")
      * @ORM\JoinColumn(name="place", referencedColumnName="id")
@@ -788,5 +811,74 @@ class PlacePoint
     public function getDeletedBy()
     {
         return $this->deletedBy;
+    }
+
+    /**
+     * Set deliveryTime
+     *
+     * @param string $deliveryTime
+     * @return PlacePoint
+     */
+    public function setDeliveryTime($deliveryTime)
+    {
+        $this->deliveryTime = $deliveryTime;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryTime
+     *
+     * @return string 
+     */
+    public function getDeliveryTime()
+    {
+        return $this->deliveryTime;
+    }
+
+    /**
+     * Set pickUp
+     *
+     * @param boolean $pickUp
+     * @return PlacePoint
+     */
+    public function setPickUp($pickUp)
+    {
+        $this->pickUp = $pickUp;
+    
+        return $this;
+    }
+
+    /**
+     * Get pickUp
+     *
+     * @return boolean 
+     */
+    public function getPickUp()
+    {
+        return $this->pickUp;
+    }
+
+    /**
+     * Set delivery
+     *
+     * @param boolean $delivery
+     * @return PlacePoint
+     */
+    public function setDelivery($delivery)
+    {
+        $this->delivery = $delivery;
+    
+        return $this;
+    }
+
+    /**
+     * Get delivery
+     *
+     * @return boolean 
+     */
+    public function getDelivery()
+    {
+        return $this->delivery;
     }
 }

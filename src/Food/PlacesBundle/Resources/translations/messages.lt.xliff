@@ -71,7 +71,18 @@
                 <source>admin.place.point.weekday_trans7</source>
                 <target>Sekmadienis</target>
             </trans-unit>
-
+            <trans-unit id="admin.point.pickup">
+                <source>admin.point.pickup</source>
+                <target>Atsiimti vietoje</target>
+            </trans-unit>
+            <trans-unit id="admin.point.delivery">
+                <source>admin.point.delivery</source>
+                <target>Pristatymas</target>
+            </trans-unit>
+            <trans-unit id="admin.point.active">
+                <source>admin.point.active</source>
+                <target>Aktyvus</target>
+            </trans-unit>
             <!-- Bendri puslapio -->
             <trans-unit id="404 Not Found">
                 <source>404 Not Found</source>

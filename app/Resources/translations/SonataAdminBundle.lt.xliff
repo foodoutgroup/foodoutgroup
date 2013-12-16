@@ -388,6 +388,14 @@
                 <source>admin.static.content</source>
                 <target>Turinys</target>
             </trans-unit>
+            <trans-unit id="admin.dish_sizes">
+                <source>admin.dish_sizes</source>
+                <target>Dydžiai/Vienetai</target>
+            </trans-unit>
+            <trans-unit id="admin.point.devtime">
+                <source>admin.point.devtime</source>
+                <target>Pristatymo trukmė</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
