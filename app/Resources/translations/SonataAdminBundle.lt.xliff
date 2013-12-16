@@ -388,6 +388,27 @@
                 <source>admin.static.content</source>
                 <target>Turinys</target>
             </trans-unit>
+            <trans-unit id="admin.dish_sizes">
+                <source>admin.dish_sizes</source>
+                <target>Dydžiai/Vienetai</target>
+            </trans-unit>
+            <trans-unit id="admin.point.devtime">
+                <source>admin.point.devtime</source>
+                <target>Pristatymo trukmė</target>
+            </trans-unit>
+
+            <trans-unit id="admin.point.pickup">
+                <source>admin.point.pickup</source>
+                <target>Atsiimti vietoje</target>
+            </trans-unit>
+            <trans-unit id="admin.point.delivery">
+                <source>admin.point.delivery</source>
+                <target>Pristatymas</target>
+            </trans-unit>
+            <trans-unit id="admin.point.active">
+                <source>admin.point.active</source>
+                <target>Aktyvus</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

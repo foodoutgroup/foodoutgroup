@@ -28,7 +28,7 @@ class SlugController extends Controller
             $slug = substr($slug, 0, -1);
         }
 
-        $slugRow = $slugUtil->getOneByName($slug);
+        $slugRow = $slugUtil->getOneByName($slug, $request->getLocale());
 
         // check if slug is active. If not - redirect to next slug with 301
         if (!empty($slugRow) && !$slugRow->getIsActive()) {
@@ -45,13 +45,8 @@ class SlugController extends Controller
         }
 
         if ($slugRow == null) {
-            $logger->info("-+ Slugo irasas DB nerastas");
             if ($slug != null) {
                 throw new NotFoundHttpException('Sorry page does not exist');
-            }
-            else {
-                // $slug = $slugUtil->getFirstMainSlug(); // @todo clean
-                // $slugRow = $slugUtil->getOneByName($slug);
             }
         }
 

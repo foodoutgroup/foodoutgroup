@@ -154,7 +154,9 @@ class KitchenAdmin extends FoodAdmin
         $locales = $this->getContainer()->getParameter('available_locales');
         $textsForSlugs = array();
         foreach($object->getTranslations()->getValues() as $row) {
-            $textsForSlugs[$row->getLocale()] = $row->getContent();
+            if ($row->getField() == "name") {
+                $textsForSlugs[$row->getLocale()] = $row->getContent();
+            }
         }
         foreach ($locales as $loc) {
             if (!isset($textsForSlugs[$loc])) {

@@ -23,9 +23,10 @@ class Slug
      */
     private $locale;
 
-    public function __construct($locale)
+    public function __construct($request, $defLocale)
     {
-        $this->setLocale($locale);
+        $loc = $request->getLocale();
+        $this->setLocale(!empty($loc) ? $loc : $defLocale);
     }
 
     /**
@@ -69,14 +70,14 @@ class Slug
         }
     }
 
-    public function getOneByName($slug)
+    public function getOneByName($slug, $lang)
     {
         // @todo - Kaip su keshu? Fisho kodas
         // $memcache = $this->service('beryllium_cache');
 
         //if (($item = $memcache->get('slug_' . $slug)) != null) return $item;
 
-        $item = $this->repo('FoodAppBundle:Slug')->findOneByName($slug);
+        $item = $this->repo('FoodAppBundle:Slug')->findOneBy(['name' => $slug, 'lang_id' => $lang ]);
         // $memcache->set('slug_' . $slug, $item);
 
         return $item;
