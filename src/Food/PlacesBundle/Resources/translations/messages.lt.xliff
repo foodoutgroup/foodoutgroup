@@ -83,6 +83,7 @@
                 <source>admin.point.active</source>
                 <target>Aktyvus</target>
             </trans-unit>
+
             <!-- Bendri puslapio -->
             <trans-unit id="404 Not Found">
                 <source>404 Not Found</source>

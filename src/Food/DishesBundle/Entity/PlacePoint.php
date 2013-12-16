@@ -48,7 +48,7 @@ class PlacePoint
      * @var bool
      * @ORM\Column(name="active", type="boolean")
      */
-    private $active =1;
+    private $active = true;
 
 
     /**
@@ -63,14 +63,14 @@ class PlacePoint
      *
      * @ORM\Column(name="pick_up", type="boolean")
      */
-    private $pickUp;
+    private $pickUp = true;
 
     /**
      * @var bool
      *
      * @ORM\Column(name="delivery", type="boolean")
      */
-    private $delivery;
+    private $delivery = true;
 
 
     /**
