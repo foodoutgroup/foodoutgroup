@@ -17,7 +17,6 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Food\DishesBundle\FoodDishesBundle(),
-            new \Bc\Bundle\BootstrapBundle\BcBootstrapBundle(),
             new Food\AppBundle\FoodAppBundle(),
             new Food\CartBundle\FoodCartBundle(),
             new Food\OrderBundle\FoodOrderBundle(),
