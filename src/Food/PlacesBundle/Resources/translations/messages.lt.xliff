@@ -105,6 +105,20 @@
                 <source>general.error_happened.description</source>
                 <target>Prašome pabandyti iš naujo po keletos minučių</target>
             </trans-unit>
+
+            <!-- Vartotojai -->
+            <trans-unit id="ROLE_ADMIN: ROLE_MODERATOR">
+                <source>ROLE_ADMIN: ROLE_MODERATOR</source>
+                <target>Svetainės administratorius</target>
+            </trans-unit>
+            <trans-unit id="ROLE_MODERATOR">
+                <source>ROLE_MODERATOR</source>
+                <target>Restorano atstovas</target>
+            </trans-unit>
+            <trans-unit id="ROLE_USER">
+                <source>ROLE_USER</source>
+                <target>Lankytojas</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

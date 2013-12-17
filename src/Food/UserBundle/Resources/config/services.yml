@@ -1,0 +1,6 @@
+services:
+    food.user.form.type.security_roles:
+        class: G\UserBundle\Form\Type\SecurityRolesType
+        tags:
+            - { name: form.type, alias: sonata_security_roles}
+        arguments: [Sonata\AdminBundle\Admin\Pool]

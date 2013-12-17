@@ -798,12 +798,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "945eebb625073c51072b721ec528f12199b34915"
+                "reference": "6596b9d754b6cb094e10470967ed7b51e2aa9e12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/945eebb625073c51072b721ec528f12199b34915",
-                "reference": "945eebb625073c51072b721ec528f12199b34915",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/6596b9d754b6cb094e10470967ed7b51e2aa9e12",
+                "reference": "6596b9d754b6cb094e10470967ed7b51e2aa9e12",
                 "shasum": ""
             },
             "require": {
@@ -858,7 +858,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2013-12-10 16:13:14"
+            "time": "2013-12-16 16:36:36"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -1531,12 +1531,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "9d8133d699e0166ddce79acba9de452d1bcf2eee"
+                "reference": "a4d971f8dd7874589fd5e2c1719095432bc6884f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/9d8133d699e0166ddce79acba9de452d1bcf2eee",
-                "reference": "9d8133d699e0166ddce79acba9de452d1bcf2eee",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/a4d971f8dd7874589fd5e2c1719095432bc6884f",
+                "reference": "a4d971f8dd7874589fd5e2c1719095432bc6884f",
                 "shasum": ""
             },
             "require": {
@@ -1602,7 +1602,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2013-12-15 15:07:27"
+            "time": "2013-12-16 19:28:35"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -1675,12 +1675,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCacheBundle.git",
-                "reference": "cd9730f0727b8413918d56d61c302756ea897372"
+                "reference": "997540492d7955659ad1768daba1089906871511"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCacheBundle/zipball/cd9730f0727b8413918d56d61c302756ea897372",
-                "reference": "cd9730f0727b8413918d56d61c302756ea897372",
+                "url": "https://api.github.com/repos/sonata-project/SonataCacheBundle/zipball/997540492d7955659ad1768daba1089906871511",
+                "reference": "997540492d7955659ad1768daba1089906871511",
                 "shasum": ""
             },
             "require": {
@@ -1731,7 +1731,7 @@
             "keywords": [
                 "cache block"
             ],
-            "time": "2013-12-16 11:46:35"
+            "time": "2013-12-16 12:46:22"
         },
         {
             "name": "sonata-project/core-bundle",
@@ -2563,16 +2563,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.3.7",
+            "version": "v2.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "2829b471871c2564228fe9f0832a0f928a8ffaa1"
+                "reference": "b0b421908d569e5024372ded65857707c409e0f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/2829b471871c2564228fe9f0832a0f928a8ffaa1",
-                "reference": "2829b471871c2564228fe9f0832a0f928a8ffaa1",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/b0b421908d569e5024372ded65857707c409e0f7",
+                "reference": "b0b421908d569e5024372ded65857707c409e0f7",
                 "shasum": ""
             },
             "require": {
@@ -2667,7 +2667,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-11-14 07:58:51"
+            "time": "2013-12-16 14:36:05"
         },
         {
             "name": "twig/extensions",
