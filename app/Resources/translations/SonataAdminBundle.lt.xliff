@@ -370,6 +370,26 @@
                 <source>admin.users.last_login</source>
                 <target>Paskutinį kartą prisijungė</target>
             </trans-unit>
+            <trans-unit id="admin.users.management">
+                <source>admin.users.management</source>
+                <target>Teisės</target>
+            </trans-unit>
+            <trans-unit id="admin.users.roles">
+                <source>admin.users.roles</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="ROLE_ADMIN: ROLE_MODERATOR">
+                <source>ROLE_ADMIN: ROLE_MODERATOR</source>
+                <target>Svetainės administratorius</target>
+            </trans-unit>
+            <trans-unit id="ROLE_MODERATOR">
+                <source>ROLE_MODERATOR</source>
+                <target>Restorano atstovas</target>
+            </trans-unit>
+            <trans-unit id="ROLE_USER">
+                <source>ROLE_USER</source>
+                <target>Lankytojas</target>
+            </trans-unit>
 
             <!-- Static content -->
             <trans-unit id="admin.static">

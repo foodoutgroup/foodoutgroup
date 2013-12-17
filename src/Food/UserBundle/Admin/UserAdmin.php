@@ -4,6 +4,7 @@ namespace Food\UserBundle\Admin;
 use FOS\UserBundle\Model\UserManagerInterface;
 use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
 
+
 class UserAdmin extends SonataUserAdmin {
     /**
      * {@inheritdoc}
@@ -86,22 +87,27 @@ class UserAdmin extends SonataUserAdmin {
             ->add('plainPassword', 'text', array('required' => false, 'label' => 'admin.users.plainPassword'))
         ;
 
-        // TODO ???? Darom - nedarom, kaip darom?
-//        if ($this->getSubject() && !$this->getSubject()->hasRole('ROLE_SUPER_ADMIN')) {
-//            $formMapper
-//                ->with('Management')
-//                ->add('realRoles', 'sonata_security_roles', array(
-//                    'expanded' => true,
-//                    'multiple' => true,
-//                    'required' => false
-//                ))
-//                ->add('locked', null, array('required' => false))
-//                ->add('expired', null, array('required' => false))
-//                ->add('enabled', null, array('required' => false))
-//                ->add('credentialsExpired', null, array('required' => false))
-//                ->end()
-//            ;
-//        }
+        if ($this->getSubject() && !$this->getSubject()->hasRole('ROLE_SUPER_ADMIN')) {
+            $formMapper
+                ->with('admin.users.management')
+                ->add(
+                    'roles',
+                    'sonata_security_roles',
+                    array(
+                        'expanded' => true,
+                        'multiple' => true,
+                        'required' => false,
+                        'label' => 'admin.users.roles',
+                        'choices' => array(
+                            'ROLE_ADMIN: ROLE_MODERATOR', 'ROLE_MODERATOR', 'ROLE_USER',
+                        )
+                    )
+                )
+                ->add('locked', null, array('required' => false, 'label' => 'admin.users.locked'))
+                ->add('enabled', null, array('required' => false, 'label' => 'admin.users.enabled'))
+                ->end()
+            ;
+        }
     }
 
     /**

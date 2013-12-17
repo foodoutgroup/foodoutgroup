@@ -9,27 +9,43 @@ use Food\DishesBundle\Utils\Slug\TextStrategy;
 use Food\AppBundle\Entity;
 use Food\AppBundle\Entity\Slug as SlugEntity;
 use Food\AppBundle\Traits;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\Security\Acl\Exception\Exception;
+//use Symfony\Component\HttpFoundation\RequestStack;
+
 
 class Slug
 {
     use Traits\Service;
 
     private $slug;
-    private $mainSlug; // @todo - check if it is needed :D
 
     /**
      * Crazy magic :)
+     *
      * @var string
      */
     private $locale;
 
-    public function __construct($request, $defLocale = "en")
+    /**
+     * The epic magic
+     *
+     * @var string
+     */
+    private $defLocale;
+
+    public function __construct($defLocale = "en")
     {
-        $loc = null;
-        if (is_object($request)) {
-            $loc = $request->getLocale();
-        }
-        $this->setLocale(!empty($loc) ? $loc : $defLocale);
+        $this->defLocale = $defLocale;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->container()->get('request');
     }
 
     /**
@@ -40,11 +56,21 @@ class Slug
         $this->locale = $locale;
     }
 
+
     /**
      * @return string
      */
     public function getLocale()
     {
+        if (empty($this->locale))
+        {
+            $loc = $this->getRequest()->getLocale();
+            if (empty($loc)) {
+                $loc = $this->defLocale;
+            }
+            $this->setLocale($loc);
+        }
+
         return $this->locale;
     }
 

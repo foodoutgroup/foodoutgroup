@@ -11,7 +11,8 @@ food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "[^admin].+"
+        #slug : "[^admin].+"
+        slug : "^(?!admin).+"
 
 static:
     path:     /static/{id}
