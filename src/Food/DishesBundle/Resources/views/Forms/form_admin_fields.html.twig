@@ -18,24 +18,16 @@
             </ul>
         {% else %}
             <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
-                {% if empty_value is not none %}
-                    <option value="">
-                        {% if not sonata_admin.admin %}
-                            {{- empty_value|trans({}, translation_domain) -}}
-                        {% else %}
-                            {{- empty_value|trans({}, sonata_admin.field_description.translationDomain) -}}
-                        {% endif%}
-                    </option>
-                {% endif %}
-                {% if preferred_choices|length > 0 %}
-                    {% set options = preferred_choices %}
-                    {{ block('choice_widget_options') }}
-                    {% if choices|length > 0 %}
-                        <option disabled="disabled">{{ separator }}</option>
-                    {% endif %}
-                {% endif %}
-                {% set options = choices %}
-                {{ block('choice_widget_options') }}
+                {{ include('FoodDishesBundle:Forms:form_choice_widget_select.html.twig',
+                    {
+                    'label': label,
+                    'form': form,
+                    'empty_value': empty_value,
+                    'sonata_admin': sonata_admin,
+                    'preferred_choices': preferred_choices,
+                    'separator': separator
+                    }
+                ) }}
             </select>
         {% endif %}
     {% endspaceless %}
