@@ -133,3 +133,14 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.dish.unit.category:
+            class: Food\DishesBundle\Admin\DishUnitCategoryAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.dish.unit.category" }
+            arguments:
+                - ~
+                - Food\DishesBundle\Entity\DishUnitCategory
+                - ~
+            calls:
+                - [ setTranslationDomain, [SonataAdminBundle]]

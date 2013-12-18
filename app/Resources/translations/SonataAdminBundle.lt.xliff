@@ -429,6 +429,19 @@
                 <source>admin.point.active</source>
                 <target>Aktyvus</target>
             </trans-unit>
+            <trans-unit id="admin.dish.unit.category.name">
+                <source>admin.dish.unit.category.name</source>
+                <target>Pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.unit.category.place">
+                <source>admin.dish.unit.category.place</source>
+                <target>Vieta</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.unit.category">
+                <source>admin.dish.unit.category</source>
+                <target>Vienetų kategorijos</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

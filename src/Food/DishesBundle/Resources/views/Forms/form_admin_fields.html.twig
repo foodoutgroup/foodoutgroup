@@ -9,14 +9,25 @@
     {% spaceless %}
         {% if compound %}
             <ul {{ block('widget_container_attributes_choice_widget') }}>
-                {% for child in form %}
+                {%  if label == "admin.users.roles" %}
+                    {% for child in form %}
+                        <li>
+                            {% set form_widget_content %}
+                            {{ form_widget(child) }}
+                            {% endset %}
+                            {{ form_label(child, child.vars.label|default(null), { 'in_list_checkbox' : true, 'widget' : form_widget_content } ) }}
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    {% for child in form %}
                     <li style="width: 220px; float: left; display: block">
                         {% set form_widget_content %}
-                            {{ form_widget(child) }}
+                        {{ form_widget(child) }}
                         {% endset %}
                         {{ form_label(child, child.vars.label|default(null), { 'in_list_checkbox' : true, 'widget' : form_widget_content } ) }}
                     </li>
-                {% endfor %}
+                    {% endfor %}
+                {% endif %}
             </ul>
         {% else %}
             <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
