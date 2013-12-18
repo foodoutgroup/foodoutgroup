@@ -53,10 +53,19 @@ food_homepage:
     pattern: /
     defaults: { _controller: FoodAppBundle:Default:index }
 
+
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
     prefix:   /{_locale}
+    requirements:
+        _locale:  %available_locales_routing%
 
+adminroot:
+    path: /admin
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: sonata_admin_dashboard
+        permanent: true
 
 fos_user_profile:
     resource: "@FOSUserBundle/Resources/config/routing/profile.xml"

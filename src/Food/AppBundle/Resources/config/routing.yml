@@ -14,6 +14,10 @@ food_slug:
         #slug : "[^admin].+"
         slug : "^(?!admin).+"
 
+food_admin:
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix: /admin
+
 static:
     path:     /static/{id}
     defaults: { _controller: FoodAppBundle:Static:index }
