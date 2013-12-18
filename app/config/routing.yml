@@ -61,7 +61,7 @@ food_app:
         _locale:  %available_locales_routing%
 
 
-adminroot2:
+adminroot:
     path: /admin/
     defaults:
         _controller: FrameworkBundle:Redirect:redirect
