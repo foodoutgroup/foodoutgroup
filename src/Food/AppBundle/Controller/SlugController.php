@@ -16,7 +16,6 @@ class SlugController extends Controller
 
         // if we have uppercase letters - permanently redirect to lowercase version
         if (preg_match('#[A-Z]#', $slug)) {
-            // @todo - Reik sutvarkyt
             $queryString = $request->getQueryString();
             $url = $this->generateUrl('food_slug', ['slug' => mb_strtolower($slug, 'utf-8')], true);
             return new RedirectResponse(sprintf('%s%s', $url, !empty($queryString) ? '?' . $queryString : ''), 301);

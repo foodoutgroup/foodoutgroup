@@ -23,8 +23,6 @@ class DishUnitCategoryAdmin extends FoodAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
 
-        //$formMapper->add('unitCategory');
-        //$formMapper->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
         $formMapper->add('name', null, array('label' => 'admin.dish.unit.category.name'));
         $formMapper->add('place', null, array('label' => 'admin.dish.unit.category.place'));
 

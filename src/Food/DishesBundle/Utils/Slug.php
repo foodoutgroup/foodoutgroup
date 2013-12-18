@@ -9,10 +9,7 @@ use Food\DishesBundle\Utils\Slug\TextStrategy;
 use Food\AppBundle\Entity;
 use Food\AppBundle\Entity\Slug as SlugEntity;
 use Food\AppBundle\Traits;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernel;
-use Symfony\Component\Security\Acl\Exception\Exception;
-//use Symfony\Component\HttpFoundation\RequestStack;
+
 
 
 class Slug
