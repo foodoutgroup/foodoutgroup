@@ -60,8 +60,9 @@ food_app:
     requirements:
         _locale:  %available_locales_routing%
 
-adminroot:
-    path: /admin
+
+adminroot2:
+    path: /admin/
     defaults:
         _controller: FrameworkBundle:Redirect:redirect
         route: sonata_admin_dashboard
