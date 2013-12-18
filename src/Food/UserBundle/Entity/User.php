@@ -50,8 +50,6 @@ class User extends BaseUser
     }
 
     /**
-     *  TODO laikinas crap debuginimui. Po to pasidarykime normalu castinima
-     *
      * @return array
      */
     public function toArray()

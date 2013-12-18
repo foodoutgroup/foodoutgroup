@@ -7,8 +7,6 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
 /**
- * TODO ar neturetu sita klase extendinti PlacePointAdmin????!!!!
- *
  * @package Food\DishesBundle\Admin
  */
 class PlacePointFullAdmin extends FoodAdmin

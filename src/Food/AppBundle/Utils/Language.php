@@ -115,8 +115,6 @@ class Language
     /**
      * Get current language.
      * @return LanguageEntity
-     *
-     * @todo FIX
      */
     public function getCurrent()
     {
@@ -129,8 +127,6 @@ class Language
     /**
      * Get default language.
      * @return Language
-     *
-     * @todo FIX
      */
     public function getDefault()
     {

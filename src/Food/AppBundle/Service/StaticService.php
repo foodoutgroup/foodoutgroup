@@ -63,14 +63,4 @@ class StaticService {
 
         return $staticPage;
     }
-
-    /**
-     * TODO
-     *
-     * @param $slug
-     */
-    public function getPageBySlug($slug)
-    {
-        // TODO
-    }
 }

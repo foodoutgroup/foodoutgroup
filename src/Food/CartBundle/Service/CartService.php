@@ -153,7 +153,7 @@ class CartService {
      * @param array $options
      * @return $this
      *
-     * @todo NOT FINAL - Just testing :)
+     * Just test :)
      */
     public function addDish(Dish $dish, $quantity, $options = array()) {
         $cartItem = new Cart();

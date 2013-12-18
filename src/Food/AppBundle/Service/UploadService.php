@@ -158,8 +158,6 @@ class UploadService
     }
 
     /**
-     * @todo Sukurti unikalaus filename generavimo funkcionaluma.
-     *
      * @param $basepath
      */
     public function upload($basepath)
@@ -175,7 +173,6 @@ class UploadService
             return;
         }
 
-        // TODO jei yra senas failas - ji trinam
         $filename = $this->generateFileName();
         $uploadDir = $this->getUploadRootDir($basepath);
 

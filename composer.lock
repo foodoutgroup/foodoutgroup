@@ -180,7 +180,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan H. Wage",
+                    "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/",
                     "role": "Creator"
@@ -1740,12 +1740,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "e8bddae6acedd376fea658345891da97efe860fd"
+                "reference": "82bcaede82fb2d888281dc90d0c3fa386d731973"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/e8bddae6acedd376fea658345891da97efe860fd",
-                "reference": "e8bddae6acedd376fea658345891da97efe860fd",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/82bcaede82fb2d888281dc90d0c3fa386d731973",
+                "reference": "82bcaede82fb2d888281dc90d0c3fa386d731973",
                 "shasum": ""
             },
             "require": {
@@ -1789,7 +1789,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2013-12-17 13:45:05"
+            "time": "2013-12-18 10:38:41"
         },
         {
             "name": "sonata-project/doctrine-extensions",
