@@ -15,13 +15,11 @@ class CartService {
      */
     private $em;
 
-    public function __construct(Container $container)
+    public function __construct()
     {
-        $this->setContainer($container)
-            ->setEm(
-                $this->getContainer()->get('doctrine')->getManager()
-            );
+
     }
+
 
     /**
      * @param \Symfony\Component\DependencyInjection\Container $container
@@ -57,6 +55,9 @@ class CartService {
      */
     public function getEm()
     {
+        if (empty($this->em)) {
+            $this->setEm($this->getContainer()->get('doctrine')->getManager());
+        }
         return $this->em;
     }
 

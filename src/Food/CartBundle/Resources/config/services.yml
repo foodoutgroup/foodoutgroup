@@ -1,7 +1,8 @@
 services:
     food.cart:
         class: Food\CartBundle\Service\CartService
-        arguments: [@service_container]
+        calls:
+            - [container, [@service_container]]
 
     food.upload:
         class: Food\AppBundle\Service\UploadService
