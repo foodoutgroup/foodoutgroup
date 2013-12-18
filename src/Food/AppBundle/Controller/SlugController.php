@@ -31,7 +31,7 @@ class SlugController extends Controller
         $slugRow = $slugUtil->getOneByName($slug, $request->getLocale());
 
         // check if slug is active. If not - redirect to next slug with 301
-        if (!empty($slugRow) && !$slugRow->getIsActive()) {
+        if (!empty($slugRow) && !$slugRow->isActive()) {
             $slugRow = $slugRepo->findOneBy([
                 'item_id' => $slugRow->getItemId(),
                 'lang_id' => $slugRow->getLangId(),
@@ -70,34 +70,5 @@ class SlugController extends Controller
             default:
                 break;
         }
-
-        /*
-        $slugUtil->set($slug);
-        $slugUtil->setMain($slugUtil->getTopCategorySlug($slug)); // @todo clean
-
-        // @todo - sukurti clean puslapius kurie suvirshkintu ir apdorotu viska
-        if ($slugRow->getType() == Slug::TYPE_CATEGORY) {
-            // since categories can have attached custom action and/or template, we select this category first
-            $category = $repo->findOneById($slugRow->getItemId());
-
-            $action = $category->getAction() ?: 'list';
-            $template = $category->getTemplate() ?: 'list.html.twig';
-
-            return $this->forward(
-                "FishParadoBundle:Category:{$action}",
-                ['template' => $template, 'category' => $category]
-            );
-        }
-
-        if ($slugRow->getType() == Slug::TYPE_BRAND) {
-            return $this->forward(
-                'FishParadoBundle:Brand:index', ['request' => $request, 'id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]
-            );
-        }
-
-        if ($slugRow->getType() == Slug::TYPE_PRODUCT) return $this->forward('FishParadoBundle:Product:index', ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]);
-
-        if ($slugRow->getType() == Slug::TYPE_TEXT) return $this->forward('FishParadoBundle:Text:item', ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]);
-        */
     }
 }
