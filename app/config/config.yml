@@ -8,6 +8,7 @@ imports:
 parameters:
     available_locales: [lt, en, ru]
     available_locales_routing: lt | en | ru
+    time_zone: "Europe/Vilnius"
 
 framework:
     #esi:             ~
