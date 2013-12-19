@@ -56,9 +56,9 @@ food_homepage:
 
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
-    prefix:   /{_locale}
+    prefix:   /{_locale}/
     requirements:
-        _locale:  %available_locales_routing%
+        _locale:  "[a-z]{2}"
 
 
 adminroot:
