@@ -2,13 +2,25 @@
 namespace Food\DishesBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
+use Food\AppBundle\Filter\PlaceFilter;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
 class FoodCategoryAdmin extends FoodAdmin
 {
-    // Fields to be shown on create/edit forms
+
+//    public function __construct($code, $class, $baseControllerName)
+//    {
+//        parent::__construct($code, $class, $baseControllerName);
+//
+//
+//    }
+
+
+    /**
+     * Fields to be shown on create/edit forms
+     */
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper->add(
@@ -29,12 +41,14 @@ class FoodCategoryAdmin extends FoodAdmin
         ;
     }
 
-    // Fields to be shown on filter forms
+    /**
+     * Fields to be shown on filter forms
+     */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
             ->add('name', null, array('label' => 'admin.food_category.name'))
-            ->add('createdAt', null, array('label' => 'admin.places.list.active'))
+            ->add('createdAt', null, array('label' => 'admin.created_at'))
             ->add('editedAt', null, array('label' => 'admin.edited_at'))
             ->add('deletedAt', null, array('label' => 'admin.deleted_at'))
             ->add('place')
@@ -42,7 +56,9 @@ class FoodCategoryAdmin extends FoodAdmin
         ;
     }
 
-    // Fields to be shown on lists
+    /**
+     * Fields to be shown on lists
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -60,9 +76,12 @@ class FoodCategoryAdmin extends FoodAdmin
                 'label' => 'admin.actions'
             ))
         ;
+
+        $this->setPlaceFilter(new PlaceFilter($this->getSecurityContext()))
+            ->setPlaceFilterEnabled(true);
     }
 
-    /*
+    /**
      * If user is a moderator - set place, as he can not choose it. Chuck Norris protection is active
      */
     public function prePersist($object)
@@ -80,6 +99,7 @@ class FoodCategoryAdmin extends FoodAdmin
 
     /**
      * @param \Food\DishesBundle\Entity\FoodCategory $object
+     * @return mixed|void
      */
     public function postPersist($object)
     {
@@ -88,6 +108,7 @@ class FoodCategoryAdmin extends FoodAdmin
 
     /**
      * @param \Food\DishesBundle\Entity\FoodCategory $object
+     * @return mixed|void
      */
     public function postUpdate($object)
     {
@@ -118,6 +139,21 @@ class FoodCategoryAdmin extends FoodAdmin
         foreach ($languages as $loc) {
             $slugUtelyte->generateForFoodCategory($loc, $object->getId(), $textsForSlugs[$loc]);
         }
+    }
+
+    public function getFilterParameters()
+    {
+        $this->datagridValues = array_merge(
+            array(
+                'place' => array (
+                    'type' => 1,
+                    'value' => 1
+                ),
+            ),
+            $this->datagridValues
+        );
+
+        return parent::getFilterParameters();
     }
 
 }

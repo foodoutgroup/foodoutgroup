@@ -4,7 +4,7 @@ namespace Food\AppBundle\Admin;
 use Sonata\AdminBundle\Admin\Admin as SonataAdmin;
 use Food\AppBundle\Service\UploadService;
 use Symfony\Component\Security\Core\SecurityContext;
-
+use Food\AppBundle\Filter\PlaceFilter;
 
 /**
  * Class FooAdmin
@@ -31,6 +31,42 @@ class Admin extends SonataAdmin
      * @var SecurityContext
      */
     protected $securityContext = null;
+
+    /**
+     * @var PlaceFilter
+     */
+    private $placeFilter = null;
+
+    /**
+     * @var bool
+     */
+    private $placeFilterEnabled = false;
+
+    /**
+     * @param PlaceFilter $filter
+     * @return Admin
+     */
+    public function setPlaceFilter(PlaceFilter $filter){
+        $this->placeFilter = $filter;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $status
+     */
+    public function setPlaceFilterEnabled($status)
+    {
+        $this->placeFilterEnabled = $status;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPlaceFilterEnabled()
+    {
+        return $this->placeFilterEnabled;
+    }
 
     /**
      * @param mixed $user
@@ -193,5 +229,20 @@ class Admin extends SonataAdmin
     public function isAdmin()
     {
         return $this->getSecurityContext()->isGranted('ROLE_ADMIN');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function createQuery($context = 'list')
+    {
+        if ($context == 'list' && $this->isPlaceFilterEnabled() && !empty($this->placeFilter)) {
+            $query = parent::createQuery($context);
+            $this->placeFilter->apply($query);
+
+            return $query;
+        }
+
+        return parent::createQuery($context);
     }
 }

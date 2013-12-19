@@ -105,6 +105,14 @@
                 <source>general.error_happened.description</source>
                 <target>Prašome pabandyti iš naujo po keletos minučių</target>
             </trans-unit>
+            <trans-unit id="label_type_yes">
+                <source>label_type_yes</source>
+                <target>Taip</target>
+            </trans-unit>
+            <trans-unit id="label_type_no">
+                <source>label_type_no</source>
+                <target>Ne</target>
+            </trans-unit>
 
             <!-- Vartotojai -->
             <trans-unit id="ROLE_ADMIN: ROLE_MODERATOR">

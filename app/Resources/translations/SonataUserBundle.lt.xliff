@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="lt" datatype="plaintext" original="" >
+        <body>
+            <trans-unit id="Bad credentials">
+                <source>Bad credentials</source>
+                <target>Neteisingas vartotojo vardas/slaptažodis</target>
+            </trans-unit>
+            <trans-unit id="The presented password is invalid.">
+                <source>The presented password is invalid.</source>
+                <target>Neteisingas slaptažodis</target>
+            </trans-unit>
+            <trans-unit id="The presented password cannot be empty.">
+                <source>The presented password cannot be empty.</source>
+                <target>Slaptažodis negali būti tuščias</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
