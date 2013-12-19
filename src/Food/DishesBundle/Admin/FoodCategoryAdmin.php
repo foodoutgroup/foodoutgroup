@@ -34,7 +34,7 @@ class FoodCategoryAdmin extends FoodAdmin
     {
         $datagridMapper
             ->add('name', null, array('label' => 'admin.food_category.name'))
-            ->add('createdAt', null, array('label' => 'admin.places.list.active'))
+            ->add('createdAt', null, array('label' => 'admin.created_at'))
             ->add('editedAt', null, array('label' => 'admin.edited_at'))
             ->add('deletedAt', null, array('label' => 'admin.deleted_at'))
             ->add('place')
