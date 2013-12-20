@@ -2,6 +2,7 @@
 namespace Food\DishesBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
+use Food\AppBundle\Filter\PlaceFilter;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -81,5 +82,8 @@ class PlaceReviewsAdmin extends FoodAdmin
                 'label' => 'admin.actions'
             ))
         ;
+
+        $this->setPlaceFilter(new PlaceFilter($this->getSecurityContext()))
+            ->setPlaceFilterEnabled(true);
     }
 }

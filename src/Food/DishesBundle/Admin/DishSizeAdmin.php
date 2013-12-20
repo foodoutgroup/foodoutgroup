@@ -1,8 +1,8 @@
 <?php
 namespace Food\DishesBundle\Admin;
 
-use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Admin\Admin as FoodAdmin;
+use Food\AppBundle\Filter\PlaceFilter;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -81,5 +81,8 @@ class DishSizeAdmin extends FoodAdmin
                 'label' => 'admin.actions'
             ))
         ;
+
+        $this->setPlaceFilter(new PlaceFilter($this->getSecurityContext()))
+            ->setPlaceFilterEnabled(true);
     }
 }
