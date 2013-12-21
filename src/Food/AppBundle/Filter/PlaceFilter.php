@@ -21,8 +21,9 @@ class PlaceFilter
     public function __construct(SecurityContext $securityContext, $placeFieldName = null)
     {
         $this->securityContext = $securityContext;
-        if ($placeFieldName)
-        $this->placeFieldName = $placeFieldName;
+        if ($placeFieldName) {
+            $this->placeFieldName = $placeFieldName;
+        }
     }
 
     public function apply(ProxyQueryInterface $query)

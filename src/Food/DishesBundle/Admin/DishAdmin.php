@@ -3,6 +3,7 @@ namespace Food\DishesBundle\Admin;
 
 use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Admin\Admin as FoodAdmin;
+use Food\AppBundle\Filter\PlaceFilter;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -87,7 +88,6 @@ class DishAdmin extends FoodAdmin
                 )
             )
             ->add('options', null, array('query_builder' => $optionsQuery,'expanded' => true, 'multiple' => true, 'required' => false))
-            ->add('price')
             ->add('recomended', 'checkbox', array('label' => 'admin.dish.recomended', 'required' => false,))
         ;
     }
@@ -96,8 +96,13 @@ class DishAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name', null, array('label' => 'admin.dish.name'))
-            ->add('place')
+            ->add('name', null, array('label' => 'admin.dish.name'));
+
+        if ($this->isAdmin()) {
+            $datagridMapper->add('place');
+        }
+
+        $datagridMapper
             ->add('categories')
             ->add('options')
             ->add('recomended', null, array('label' => 'admin.dish.recomended'))
@@ -150,6 +155,9 @@ class DishAdmin extends FoodAdmin
                 'label' => 'admin.actions'
             ))
         ;
+
+        $this->setPlaceFilter(new PlaceFilter($this->getSecurityContext()))
+            ->setPlaceFilterEnabled(true);
     }
 
     /**
@@ -183,16 +191,20 @@ class DishAdmin extends FoodAdmin
 
     /**
      * @param \Food\DishesBundle\Entity\Dish $object
+     * @param null $setCreatedAt
      */
     private function fixRelations($object, $setCreatedAt = null)
     {
-        foreach ($object->getSizes() as $size)
-        {
-            $cAt = $size->getCreatedAt();
-            if (!$cAt) {
-                $size->setCreatedAt(new \DateTime('now'));
+        $dishSizes = $object->getSizes();
+        if (is_array($dishSizes)) {
+            foreach ($dishSizes as $size)
+            {
+                $cAt = $size->getCreatedAt();
+                if (!$cAt) {
+                    $size->setCreatedAt(new \DateTime('now'));
+                }
+                $size->setDish($object);
             }
-            $size->setDish($object);
         }
     }
 
