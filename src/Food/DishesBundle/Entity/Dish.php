@@ -26,13 +26,6 @@ class Dish implements Translatable
     private $id;
 
     /**
-     * @var double
-     *
-     * @ORM\Column(name="price", type="decimal", scale=2)
-     */
-    private $price;
-
-    /**
      * @var string
      *
      * @Gedmo\Translatable
@@ -166,29 +159,6 @@ class Dish implements Translatable
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set price
-     *
-     * @param float $price
-     * @return Dish
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
-    
-        return $this;
-    }
-
-    /**
-     * Get price
-     *
-     * @return float 
-     */
-    public function getPrice()
-    {
-        return $this->price;
     }
 
     /**

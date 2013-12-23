@@ -284,5 +284,141 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $foodAdmin->saveFile($object);
     }
 
+    public function testCreateQuery()
+    {
+        $placeFilter = $this->getMock(
+            '\Food\AppBundle\Filter\PlaceFilter',
+            array('apply'),
+            array($this->container->get('security.context'))
+        );
+        $doctrineRegistry = $this->getMock(
+            '\Doctrine\Bundle\DoctrineBundle\Registry',
+            array(),
+            array($this->container, array(), array(), '', '')
+        );
+        $modelManager = $this->getMock(
+            '\Sonata\DoctrineORMAdminBundle\Model\ModelManager',
+            array('createQuery'),
+            array($doctrineRegistry)
+        );
+        $queryBuilder = $this->getMock(
+            '\Doctrine\ORM\QueryBuilder',
+            array(),
+            array($this->container->get('doctrine')->getManager())
+        );
+        $query = $this->getMock(
+            '\Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery',
+            array(),
+            array($queryBuilder)
+        );
 
+        $foodAdmin = new Admin(null, null, null);
+        $foodAdmin->setModelManager($modelManager);
+        $foodAdmin->setPlaceFilter($placeFilter);
+        $foodAdmin->setPlaceFilterEnabled(true);
+
+        $modelManager->expects($this->once())
+            ->method('createQuery')
+            ->will($this->returnValue($query));
+
+        $placeFilter->expects($this->once())
+            ->method('apply')
+            ->with($query);
+
+        $foodAdmin->createQuery();
+    }
+
+
+    /**
+     * @depends testCreateQuery
+     */
+    public function testCreateQuery2()
+    {
+        $placeFilter = $this->getMock(
+            '\Food\AppBundle\Filter\PlaceFilter',
+            array('apply'),
+            array($this->container->get('security.context'))
+        );
+        $doctrineRegistry = $this->getMock(
+            '\Doctrine\Bundle\DoctrineBundle\Registry',
+            array(),
+            array($this->container, array(), array(), '', '')
+        );
+        $modelManager = $this->getMock(
+            '\Sonata\DoctrineORMAdminBundle\Model\ModelManager',
+            array('createQuery'),
+            array($doctrineRegistry)
+        );
+        $queryBuilder = $this->getMock(
+            '\Doctrine\ORM\QueryBuilder',
+            array(),
+            array($this->container->get('doctrine')->getManager())
+        );
+        $query = $this->getMock(
+            '\Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery',
+            array(),
+            array($queryBuilder)
+        );
+
+        $foodAdmin = new Admin(null, null, null);
+        $foodAdmin->setModelManager($modelManager);
+        $foodAdmin->setPlaceFilter($placeFilter);
+        $foodAdmin->setPlaceFilterEnabled(true);
+
+        $modelManager->expects($this->once())
+            ->method('createQuery')
+            ->will($this->returnValue($query));
+
+        $placeFilter->expects($this->never())
+            ->method('apply');
+
+        $foodAdmin->createQuery('create');
+    }
+
+    /**
+     * @depends testCreateQuery
+     * @depends testCreateQuery2
+     */
+    public function testCreateQuery3()
+    {
+        $placeFilter = $this->getMock(
+            '\Food\AppBundle\Filter\PlaceFilter',
+            array('apply'),
+            array($this->container->get('security.context'))
+        );
+        $doctrineRegistry = $this->getMock(
+            '\Doctrine\Bundle\DoctrineBundle\Registry',
+            array(),
+            array($this->container, array(), array(), '', '')
+        );
+        $modelManager = $this->getMock(
+            '\Sonata\DoctrineORMAdminBundle\Model\ModelManager',
+            array('createQuery'),
+            array($doctrineRegistry)
+        );
+        $queryBuilder = $this->getMock(
+            '\Doctrine\ORM\QueryBuilder',
+            array(),
+            array($this->container->get('doctrine')->getManager())
+        );
+        $query = $this->getMock(
+            '\Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery',
+            array(),
+            array($queryBuilder)
+        );
+
+        $foodAdmin = new Admin(null, null, null);
+        $foodAdmin->setModelManager($modelManager);
+        $foodAdmin->setPlaceFilter($placeFilter);
+        $foodAdmin->setPlaceFilterEnabled(false);
+
+        $modelManager->expects($this->once())
+            ->method('createQuery')
+            ->will($this->returnValue($query));
+
+        $placeFilter->expects($this->never())
+            ->method('apply');
+
+        $foodAdmin->createQuery('list');
+    }
 }

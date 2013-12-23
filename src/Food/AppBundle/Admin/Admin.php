@@ -236,13 +236,13 @@ class Admin extends SonataAdmin
      */
     public function createQuery($context = 'list')
     {
-        if ($context == 'list' && $this->isPlaceFilterEnabled() && !empty($this->placeFilter)) {
-            $query = parent::createQuery($context);
-            $this->placeFilter->apply($query);
+        $query = parent::createQuery($context);
 
-            return $query;
+        // Place Filter for moderator
+        if ($context == 'list' && $this->isPlaceFilterEnabled() && !empty($this->placeFilter)) {
+            $this->placeFilter->apply($query);
         }
 
-        return parent::createQuery($context);
+        return $query;
     }
 }

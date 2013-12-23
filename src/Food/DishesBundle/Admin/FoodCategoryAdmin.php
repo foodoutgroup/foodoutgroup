@@ -10,14 +10,6 @@ use Sonata\AdminBundle\Form\FormMapper;
 class FoodCategoryAdmin extends FoodAdmin
 {
 
-//    public function __construct($code, $class, $baseControllerName)
-//    {
-//        parent::__construct($code, $class, $baseControllerName);
-//
-//
-//    }
-
-
     /**
      * Fields to be shown on create/edit forms
      */
@@ -50,9 +42,13 @@ class FoodCategoryAdmin extends FoodAdmin
             ->add('name', null, array('label' => 'admin.food_category.name'))
             ->add('createdAt', null, array('label' => 'admin.created_at'))
             ->add('editedAt', null, array('label' => 'admin.edited_at'))
-            ->add('deletedAt', null, array('label' => 'admin.deleted_at'))
-            ->add('place')
-            ->add('active', null, array('label' => 'admin.places.list.active'))
+            ->add('deletedAt', null, array('label' => 'admin.deleted_at'));
+
+        if ($this->isAdmin()) {
+            $datagridMapper->add('place');
+        }
+
+        $datagridMapper->add('active', null, array('label' => 'admin.places.list.active'))
         ;
     }
 
