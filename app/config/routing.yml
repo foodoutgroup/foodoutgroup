@@ -68,6 +68,10 @@ adminroot:
         route: sonata_admin_dashboard
         permanent: true
 
+ordermobile:
+    path: /o/{hash}/
+    defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~ }
+
 fos_user_profile:
     resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
     prefix: /profile

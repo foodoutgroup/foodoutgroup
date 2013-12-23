@@ -49,6 +49,11 @@ class Order
     private $vat;
 
 
+    /**
+     * @var integer
+     * @ORM\Column(name="order_hash", type="string", length=100)
+     */
+    private $order_hash;
 
     /**
      * Get id
@@ -173,5 +178,28 @@ class Order
     public function getVat()
     {
         return $this->vat;
+    }
+
+    /**
+     * Set order_hash
+     *
+     * @param string $orderHash
+     * @return Order
+     */
+    public function setOrderHash($orderHash)
+    {
+        $this->order_hash = $orderHash;
+    
+        return $this;
+    }
+
+    /**
+     * Get order_hash
+     *
+     * @return string 
+     */
+    public function getOrderHash()
+    {
+        return $this->order_hash;
     }
 }
