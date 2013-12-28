@@ -10,6 +10,8 @@ interface SmsProviderInterface {
 
     public function getAccountBalance();
 
+    public function parseDeliveryReport($dlrData);
+
     public function setApiUrl($url);
 
 }

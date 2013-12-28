@@ -329,14 +329,30 @@ class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
             ),
         );
 
+        $dlrData4 =
+            '<DeliveryReport>
+             <message id="1023012301" sentdate="2013/7/19 22:0:0" donedate="2013/7/19 22:0:0" status="NOT_SENT_YOU_FOOL" gsmerror="0" />
+            </DeliveryReport>';
+        $expectedData4 = array(
+            array(
+                'extId' => '1023012301',
+                'sendDate' => '2013-07-19 22:00:00',
+                'completeDate' => '2013-07-19 22:00:00',
+                'delivered' => false,
+                'error' => 'Infobip returned unknown status: NOT_SENT_YOU_FOOL',
+            )
+        );
+
         $parsedEmptyData = $infobipProvider->parseDeliveryReport($empptyDlrData);
         $parsedData = $infobipProvider->parseDeliveryReport($dlrData);
         $parsedData2 = $infobipProvider->parseDeliveryReport($dlrData2);
         $parsedData3 = $infobipProvider->parseDeliveryReport($dlrData3);
+        $parsedData4 = $infobipProvider->parseDeliveryReport($dlrData4);
 
         $this->assertEquals($expectedEmptyData, $parsedEmptyData);
         $this->assertEquals($expectedData, $parsedData);
         $this->assertEquals($expectedData2, $parsedData2);
         $this->assertEquals($expectedData3, $parsedData3);
+        $this->assertEquals($expectedData4, $parsedData4);
     }
 }

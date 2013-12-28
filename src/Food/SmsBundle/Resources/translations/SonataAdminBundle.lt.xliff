@@ -47,6 +47,18 @@
                 <source>admin.sms.ext_id</source>
                 <target>Išorinės sistemos ID</target>
             </trans-unit>
+            <trans-unit id="admin.sms.last_error_date">
+                <source>admin.sms.last_error_date</source>
+                <target>Paskutinės klaidos data</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.times_sent">
+                <source>admin.sms.times_sent</source>
+                <target>Kartų siųsta</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.smsc">
+                <source>admin.sms.smsc</source>
+                <target>SMS centras</target>
+            </trans-unit>
 
         </body>
     </file>

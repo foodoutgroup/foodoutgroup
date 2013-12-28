@@ -340,13 +340,16 @@ class InfobipProvider implements SmsProviderInterface {
                 if ($this->isDeliveredStatus($infoBipStatus)) {
                     $message['delivered'] = true;
                     $message['error'] = null;
-                } else {
+                } else if ($this->isUndeliveredStatus($infoBipStatus)) {
                     $message['delivered'] = false;
                     $message['error'] = $infoBipStatus;
 
                     if (!empty($gsmErrorCode) && $gsmErrorCode > 0) {
                         $message['error'] .= ' GSM Error code: '.$gsmErrorCode;
                     }
+                } else {
+                    $message['delivered'] = false;
+                    $message['error'] = 'Infobip returned unknown status: '.$infoBipStatus;
                 }
 
                 $parsedMessages[] = $message;
@@ -430,5 +433,27 @@ class InfobipProvider implements SmsProviderInterface {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Determines by InfoBip status if message is delivered or not
+     *
+     * @param string $status
+     * @return bool
+     */
+    public function isUndeliveredStatus($status)
+    {
+        if (in_array($status, $this->undeliveredStates)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProviderName()
+    {
+        return 'InfoBip';
     }
 }

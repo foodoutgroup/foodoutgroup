@@ -4,6 +4,7 @@ namespace Food\SmsBundle\Service;
 
 use \Food\SmsBundle\Entity\Message;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * Class MessagesService
@@ -23,6 +24,11 @@ class MessagesService {
     private $container;
 
     /**
+     * @var null
+     */
+    private $manager = null;
+
+    /**
      * @param $container
      * @param SmsProviderInterface $messagingProvider
      */
@@ -30,6 +36,25 @@ class MessagesService {
     {
         $this->messagingProvider = $messagingProvider;
         $this->container = $container;
+    }
+
+    /**
+     * @param null $manager
+     */
+    public function setManager($manager)
+    {
+        $this->manager = $manager;
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
+    public function getManager()
+    {
+        if (empty($this->manager)) {
+            $this->manager = $this->getContainer()->get('doctrine')->getManager();
+        }
+        return $this->manager;
     }
 
     /**
@@ -66,18 +91,18 @@ class MessagesService {
 
     public function getAccountBalance()
     {
-        $this->getMessagingProvider()->authenticate('skanu', 'test');
         return $this->getMessagingProvider()->getAccountBalance();
     }
 
     /**
-     * TODO
+     * Get message by ID
+     *
      * @param int $id
      * @return bool|Message
      */
     public function getMessage($id)
     {
-        $em = $this->getContainer()->get('doctrine')->getManager();
+        $em = $this->getManager();
         $message = $em->getRepository('Food\SmsBundle\Entity\Message')->find($id);
 
         if (!$message) {
@@ -96,9 +121,35 @@ class MessagesService {
         if (!($message instanceof Message)) {
             throw new \Exception('Message not given. How should I save it?');
         }
-        $em = $this->getContainer()->get('doctrine')->getManager();
+        $em = $this->getManager();
         $em->persist($message);
         $em->flush();
+    }
+
+    /**
+     * Get message by ext id
+     *
+     * @param int|string $extId
+     * @throws \Exception
+     * @return bool|Message
+     */
+    public function getMessageByExtId($extId)
+    {
+        $em = $this->getManager();
+        $message = $em->getRepository('Food\SmsBundle\Entity\Message')->findBy(array('extId' => $extId), null, 1);
+
+        if (!$message) {
+            return false;
+        }
+
+        if (count($message) > 1) {
+            throw new \Exception('More then one message found. How the hell? Ext id: '.$extId);
+        }
+
+        // TODO negrazu, bet laikina :(
+        $message = $message[0];
+
+        return $message;
     }
 
     /**
@@ -123,7 +174,9 @@ class MessagesService {
             $message->setSent($status['sent'])
                 ->setSubmittedAt(new \DateTime("now"))
                 ->setExtId($status['messageid'])
-                ->setLastSendingError($status['error']);
+                ->setLastSendingError($status['error'])
+                ->setSmsc($this->getMessagingProvider()->getProviderName())
+                ->setTimesSent($message->getTimesSent()+1);
 
         // TODO Noramlus exception handlingas cia ir servise (https://basecamp.com/2470154/projects/4420182-skanu-lt-gamyba/todos/73047842-pilnas-exception)
         } catch (\Exception $e) {
@@ -131,13 +184,53 @@ class MessagesService {
         }
     }
 
-    public function getMessageStatus()
+    /**
+     * @param string|array $dlrData
+     * @throws \InvalidArgumentException
+     * @throws \Exception
+     */
+    public function updateMessagesDelivery($dlrData)
     {
-        // TODO https://basecamp.com/2470154/projects/4420182-skanu-lt-gamyba/todos/73004448-delivery-apdorojimas#events_todo_73004448
-        $this->getMessagingProvider()->authenticate('skanu', 'test');
-//        return $this->getMessagingProvider()->getMessageStatus();
+        $logger = $this->container->get("logger");
+        $logger->info('-- updateMessageDelivery:  --');
+        $logger->info(print_r($dlrData, true));
+        if (empty($dlrData)) {
+            throw new \InvalidArgumentException('No DLR data received');
+        }
+
+        $messageDeliveries = $this->getMessagingProvider()->parseDeliveryReport($dlrData);
+
+        try {
+            if (!empty($messageDeliveries)) {
+                foreach ($messageDeliveries as $messageData) {
+                    $message = $this->getMessageByExtId($messageData['extId']);
+
+                    if (!$message) {
+                        // TODO normalus exceptionas, kuri kitaip handlinsim
+                        throw new \InvalidArgumentException('Message not found!');
+                    }
+
+                    $logger->info(print_r($message, true));
+
+                    $message->setDelivered($messageData['delivered']);
+
+                    if ($messageData['delivered'] == true) {
+                        $message->setReceivedAt(new \DateTime($messageData['completeDate']))
+                            ->setLastSendingError($messageData['error'])
+                            ->setLastErrorDate(null);
+                    } else {
+                        $message->setDelivered(false)
+                            ->setLastSendingError($messageData['error'])
+                            ->setLastErrorDate(new \DateTime($messageData['completeDate']));
+                    }
+
+                    $this->saveMessage($message);
+                }
+            }
+
+            // TODO Noramlus exception handlingas cia ir servise (https://basecamp.com/2470154/projects/4420182-skanu-lt-gamyba/todos/73047842-pilnas-exception)
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
-
-
-    // TODO
 }
