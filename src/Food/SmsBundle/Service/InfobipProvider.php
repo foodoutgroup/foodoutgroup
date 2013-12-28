@@ -71,6 +71,31 @@ class InfobipProvider implements SmsProviderInterface {
     );
 
     /**
+     * Message states, assigned by InfoBip when message is delivered
+     * @var array
+     */
+    private $deliveredStates = array(
+        'SENT',
+        'DELIVERED',
+    );
+
+    /**
+     * Undelivered message state, assigned by InfoBip
+     * @var array
+     */
+    private $undeliveredStates = array(
+        'NOT_SENT',
+        'NOT_DELIVERED',
+        'NOT_ALLOWED',
+        'INVALID_DESTINATION_ADDRESS',
+        'INVALID_SOURCE_ADDRESS',
+        'ROUTE_NOT_AVAILABLE',
+        'NOT_ENOUGH_CREDITS',
+        'REJECTED',
+        'INVALID_MESSAGE_FORMAT',
+    );
+
+    /**
      * @param string $url
      * @param string $accoutApiUrl
      * @param null $logger
@@ -285,11 +310,53 @@ class InfobipProvider implements SmsProviderInterface {
     }
 
     /**
-     * @param $message
+     * @param $dlrData
+     *
+     * @return array
      */
-    public function getMessageStatus($message)
+    public function parseDeliveryReport($dlrData)
     {
-        // TODO: Implement getMessageStatus() method.
+        $parsedMessages = array();
+
+        $dom = new \DOMDocument();
+        $dom->loadXML($dlrData);
+        $xPath = new \domxpath($dom);
+        $reports = $xPath->query("/DeliveryReport/message");
+
+        if (!empty($reports)) {
+            foreach ($reports as $node) {
+                $message = array(
+                    'extId' => $node->getAttribute('id'),
+                    'sendDate' => $node->getAttribute('sentdate'),
+                    'completeDate' => $node->getAttribute('donedate'),
+                );
+
+                $message['sendDate'] = date("Y-m-d H:i:s", strtotime($message['sendDate']));
+                $message['completeDate'] = date("Y-m-d H:i:s", strtotime($message['completeDate']));
+
+                $infoBipStatus = $node->getAttribute('status');
+                $gsmErrorCode = $node->getAttribute('gsmerror');
+
+                if ($this->isDeliveredStatus($infoBipStatus)) {
+                    $message['delivered'] = true;
+                    $message['error'] = null;
+                } else if ($this->isUndeliveredStatus($infoBipStatus)) {
+                    $message['delivered'] = false;
+                    $message['error'] = $infoBipStatus;
+
+                    if (!empty($gsmErrorCode) && $gsmErrorCode > 0) {
+                        $message['error'] .= ' GSM Error code: '.$gsmErrorCode;
+                    }
+                } else {
+                    $message['delivered'] = false;
+                    $message['error'] = 'Infobip returned unknown status: '.$infoBipStatus;
+                }
+
+                $parsedMessages[] = $message;
+            }
+        }
+
+        return $parsedMessages;
     }
 
     /**
@@ -335,6 +402,11 @@ class InfobipProvider implements SmsProviderInterface {
         $this->apiUrl = $url;
     }
 
+    public function getApiUrl()
+    {
+        return $this->apiUrl;
+    }
+
     /**
      * @param $status
      *
@@ -347,5 +419,41 @@ class InfobipProvider implements SmsProviderInterface {
         } else {
             return $this->errorStatuses[$status];
         }
+    }
+
+    /**
+     * Determines by InfoBip status if message is delivered or not
+     *
+     * @param string $status
+     * @return bool
+     */
+    public function isDeliveredStatus($status)
+    {
+        if (in_array($status, $this->deliveredStates)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Determines by InfoBip status if message is delivered or not
+     *
+     * @param string $status
+     * @return bool
+     */
+    public function isUndeliveredStatus($status)
+    {
+        if (in_array($status, $this->undeliveredStates)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProviderName()
+    {
+        return 'InfoBip';
     }
 }

@@ -8,9 +8,9 @@ interface SmsProviderInterface {
 
     public function sendMessage($sender, $recipient, $message);
 
-    public function getMessageStatus($message);
-
     public function getAccountBalance();
+
+    public function parseDeliveryReport($dlrData);
 
     public function setApiUrl($url);
 
