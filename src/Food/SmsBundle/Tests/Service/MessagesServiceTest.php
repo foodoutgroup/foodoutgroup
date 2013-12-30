@@ -3,11 +3,9 @@ namespace Food\SmsBundle\Tests\Service;
 
 require_once dirname(__DIR__).'/../../../../app/AppKernel.php';
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\Tests\Mocks\ConnectionMock;
 use \Food\SmsBundle\Service\MessagesService;
 use \Food\SmsBundle\Entity\Message;
-use \Doctrine\Tests\Mocks\EntityManagerMock;
 
 class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
     /**
