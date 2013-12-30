@@ -43,7 +43,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ FoodAppBundle, FoodDishesBundle ]
+    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
