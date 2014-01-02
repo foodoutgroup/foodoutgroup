@@ -27,9 +27,24 @@ class OrderDetails
     private $dish_id;
 
     /**
+     * @ORM\Column(name="dish_unit_id", type="integer")
+     */
+    private $dish_unit_id;
+
+    /**
      * @ORM\Column(name="dish_name", type="string", length=255)
      */
     private $dish_name;
+
+    /**
+     * @ORM\Column(name="dish_unit_name", type="string", length=255)
+     */
+    private $dish_unit_name;
+
+    /**
+     * @ORM\Column(name="dish_size_code", type="string", length=255)
+     */
+    private $dish_size_code;
 
     /**
      * @ORM\Column(name="quantity", type="integer", length=3)
@@ -155,5 +170,74 @@ class OrderDetails
     public function getDishId()
     {
         return $this->dish_id;
+    }
+
+    /**
+     * Set dish_unit_id
+     *
+     * @param integer $dishUnitId
+     * @return OrderDetails
+     */
+    public function setDishUnitId($dishUnitId)
+    {
+        $this->dish_unit_id = $dishUnitId;
+    
+        return $this;
+    }
+
+    /**
+     * Get dish_unit_id
+     *
+     * @return integer 
+     */
+    public function getDishUnitId()
+    {
+        return $this->dish_unit_id;
+    }
+
+    /**
+     * Set dish_unit_name
+     *
+     * @param string $dishUnitName
+     * @return OrderDetails
+     */
+    public function setDishUnitName($dishUnitName)
+    {
+        $this->dish_unit_name = $dishUnitName;
+    
+        return $this;
+    }
+
+    /**
+     * Get dish_unit_name
+     *
+     * @return string 
+     */
+    public function getDishUnitName()
+    {
+        return $this->dish_unit_name;
+    }
+
+    /**
+     * Set dish_size_code
+     *
+     * @param string $dishSizeCode
+     * @return OrderDetails
+     */
+    public function setDishSizeCode($dishSizeCode)
+    {
+        $this->dish_size_code = $dishSizeCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get dish_size_code
+     *
+     * @return string 
+     */
+    public function getDishSizeCode()
+    {
+        return $this->dish_size_code;
     }
 }
