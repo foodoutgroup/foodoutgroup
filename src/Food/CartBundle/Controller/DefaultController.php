@@ -44,9 +44,14 @@ class DefaultController extends Controller
         return array('name' => $name);
     }
 
+    /**
+     * Side cart block
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function sideBlockAction()
     {
-        $list = $this->getCartService();
-        return $this->render('FoodCartBundle:Default:side_block.html.twig');//, array('list' => $list));
+        $list = $this->getCartService()->getCartDishes();
+        return $this->render('FoodCartBundle:Default:side_block.html.twig', array('list' => $list));
     }
 }

@@ -53,6 +53,8 @@ class Cart
     }
 
     /**
+     * DFQ cia sugalvojau - reik permastyt...
+     *
      * @return \Doctrine\ORM\EntityManager
      */
     public function getEm()
@@ -130,7 +132,7 @@ class Cart
             ->findBy(
                 array(
                     'dish_id' => $this->getDishId(),
-                    'sessions' => $this->getSession()
+                    'session' => $this->getSession()
                 )
             );
     }

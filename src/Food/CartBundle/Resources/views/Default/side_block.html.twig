@@ -4,7 +4,14 @@
             <h3 class="panel-title">Krep.</h3>
         </div>
         <div class="panel-body">
-            Panel content
+            {% for dish in list %}
+                <li>{{ dish.dishId.name }} - {{ dish.dishId.name }}</li>
+                <ul>
+                    {% for option in dish.options %}
+                        <li>{{ option.dishOptionId.name }} - {{ option.dishOptionId.price }}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
         </div>
     </div>
 </div>

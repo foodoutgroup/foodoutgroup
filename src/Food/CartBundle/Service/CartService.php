@@ -187,13 +187,15 @@ class CartService {
 
     public function getCartDishes()
     {
-        $dishes = $this->getEm()->getRepository('FoodCartBundle:Cart')->findBy(
+        $list = $this->getEm()->getRepository('FoodCartBundle:Cart')->findBy(
             array(
                 'session' => $this->getSessionId()
             )
         );
+
+        foreach($list as $k => &$item) {
+            $item->setEm($this->getEm());
+        }
+        return $list;
     }
-
-    public function
-
 }
