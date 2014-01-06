@@ -33,6 +33,7 @@
         <div class="row">
             {% block body %}{% endblock %}
             {{ render(controller('FoodDishesBundle:Kitchen:kitchenListWithImages', {})) }}
+            {{ render(controller('FoodCartBundle:Default:sideBlock')) }}
         </div>
     </div>
 {% block javascripts %}{% endblock %}

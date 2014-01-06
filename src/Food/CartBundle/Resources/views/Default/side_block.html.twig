@@ -1,0 +1,17 @@
+<div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Krep.</h3>
+        </div>
+        <div class="panel-body">
+            {% for dish in list %}
+                <li>{{ dish.dishId.name }} - {{ dish.dishId.name }}</li>
+                <ul>
+                    {% for option in dish.options %}
+                        <li>{{ option.dishOptionId.name }} - {{ option.dishOptionId.price }}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </div>
+    </div>
+</div>

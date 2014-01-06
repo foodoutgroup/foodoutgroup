@@ -2,6 +2,7 @@
 
 namespace Food\CartBundle\Entity;
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -37,6 +38,32 @@ class Cart
      * @param integer $quantity
      * @return Cart
      */
+
+    /**
+     * @var EntityManager
+     */
+    private $em;
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $em
+     */
+    public function setEm($em)
+    {
+        $this->em = $em;
+    }
+
+    /**
+     * DFQ cia sugalvojau - reik permastyt...
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    public function getEm()
+    {
+        return $this->em;
+    }
+
+
+
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
@@ -95,5 +122,19 @@ class Cart
         return $this->session;
     }
 
+
+    /**
+     * @return array|CartOption[]
+     */
+    public function getOptions()
+    {
+        return $this->getEm()->getRepository('FoodCartBundle:CartOption')
+            ->findBy(
+                array(
+                    'dish_id' => $this->getDishId(),
+                    'session' => $this->getSession()
+                )
+            );
+    }
 
 }
