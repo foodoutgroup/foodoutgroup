@@ -1,0 +1,8 @@
+services:
+    food.order:
+        class: Food\OrderBundle\Service\OrderService
+        arguments: []
+        calls:
+            - [setCartService, ["@food.cart"]]
+            - [setContainer, ["@service_container"]]
+            - [setContext, ["@security.context"]]

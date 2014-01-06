@@ -180,4 +180,33 @@ class CartService {
 
        return $this;
     }
+
+    /**
+     * @return array|\Food\CartBundle\Entity\Cart[]
+     */
+    public function getDishes()
+    {
+        $dishes = $this->getEm()->getRepository('FoodCartBundle:Cart')->findBy(
+            array(
+                'session' => $this->getSessionId()
+            )
+        );
+        return $dishes;
+    }
+
+
+    /**
+     * @param $dishId
+     * @return array|\Food\CartBundle\Entity\CartOption[]
+     */
+    public function getOptions($dishId)
+    {
+        $dishOptions = $this->getEm()->getRepository('FoodCartBundle:CartOption')->findBy(
+            array(
+                'dish_id' => $dishId,
+                'session' => $this->getSessionId()
+            )
+        );
+        return $dishOptions;
+    }
 }

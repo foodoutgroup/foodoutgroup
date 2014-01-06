@@ -2,10 +2,12 @@
 
 namespace Food\OrderBundle\Service;
 
+use Food\CartBundle\Service\CartService;
 use Food\OrderBundle\Entity\Order;
+use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Security\Acl\Exception\Exception;
 
-class OrderService
+class OrderService extends ContainerAware
 {
     public static $status_new = "new";
     public static $status_accepted = "accepted";
@@ -14,10 +16,73 @@ class OrderService
     public static $status_finished = "finished";
     public static $status_canceled = "canceled";
 
+
+    private $context;
+    /**
+     * @var \Food\UserBundle\Entity\User
+     */
+    private $user;
+
+    /**
+     * @var CartService
+     */
+    private $cartService;
+
     /**
      * @var Order
      */
     private $order;
+
+    /**
+     * @param \Food\CartBundle\Service\CartService $cartService
+     */
+    public function setCartService($cartService)
+    {
+        $this->cartService = $cartService;
+    }
+
+    /**
+     * @return \Food\CartBundle\Service\CartService
+     */
+    public function getCartService()
+    {
+        return $this->cartService;
+    }
+
+    /**
+     * @param \Food\UserBundle\Entity\User $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return \Food\UserBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $context
+     */
+    public function setContext($context)
+    {
+        $this->context = $context;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getContext()
+    {
+        return $this->context;
+    }
+
+
+
 
     /**
      * @return Order
@@ -102,6 +167,11 @@ class OrderService
             throw new Exception("Dude - no order here :)");
         }
         return $this->order;
+    }
+
+    public function createOrderFromCart()
+    {
+
     }
 
     /**
