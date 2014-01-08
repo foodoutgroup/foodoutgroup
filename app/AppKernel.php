@@ -36,6 +36,7 @@ class AppKernel extends Kernel
             new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
             new Application\Sonata\UserBundle\ApplicationSonataUserBundle(),
             new Food\SmsBundle\FoodSmsBundle(),
+            new Evp\Bundle\WebToPayBundle\EvpWebToPayBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -202,4 +202,13 @@ class Order
     {
         return $this->order_hash;
     }
+
+    /**
+     * @return float
+     */
+    public function getAmount()
+    {
+        // TODO susumuoti visu detailsu kainas ir grazinti ;)
+        return '15.5';
+    }
 }
