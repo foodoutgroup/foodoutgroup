@@ -260,4 +260,13 @@ class Order
     {
         return $this->place_comment;
     }
+
+    /**
+     * @return float
+     */
+    public function getAmount()
+    {
+        // TODO susumuoti visu detailsu kainas ir grazinti ;)
+        return '15.5';
+    }
 }

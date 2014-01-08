@@ -1,4 +1,14 @@
 services:
+    food.paysera_biller:
+        class: Food\OrderBundle\Service\PaySera
+        calls:
+            - [setProjectId, [%evp_web_to_pay.credentials.project_id%]]
+            - [setSiteUrl, [%domain%]]
+            - [setSightPassword, [%evp_web_to_pay.credentials.sign_password%]]
+    
+    food.local_biller:
+        class: Food\OrderBundle\Service\LocalBiller
+        
     food.order:
         class: Food\OrderBundle\Service\OrderService
         arguments: []
@@ -6,3 +16,5 @@ services:
             - [setCartService, ["@food.cart"]]
             - [setContainer, ["@service_container"]]
             - [setContext, ["@security.context"]]
+            - [setPayseraBiller, [@food.paysera_biller]]
+            - [setLocalBiller, [@food.local_biller]]

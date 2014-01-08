@@ -9,6 +9,7 @@ parameters:
     available_locales: [lt, en, ru]
     available_locales_routing: lt | en | ru
     time_zone: "Europe/Vilnius"
+    domain: "skanu.lt"
     arc_gis_user: "skanulabai"
     arc_gis_pass: "labaiskanu"
     arc_gis_geocode_url: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=pjson&Address=_1_&City=_2_&CountryCode=LT&outFields=AddrNum,StName,City"
@@ -184,3 +185,10 @@ a2lix_translation_form:
     default_required: true
     manager_registry: doctrine
     templating: "A2lixTranslationFormBundle::default.html.twig"
+
+#evp omg
+evp_web_to_pay:
+    credentials:
+        project_id: 12345 # Kolkas crap, o ne id :D
+        sign_password: mad8956115689
+    use_sandbox: true
