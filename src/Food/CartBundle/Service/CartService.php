@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\Container;
 
 
 class CartService {
+
     private $container;
     /**
      * @var  \Doctrine\Common\Persistence\ObjectManager
@@ -64,9 +65,12 @@ class CartService {
 
     /**
      * @return string
+     *
+     * @todo Panaikinti hardcoded dummy sesion id !!!!!
      */
     public function getSessionId()
     {
+        return 123;
         return $this->getContainer()->get('session')->getId();
     }
 
@@ -179,5 +183,19 @@ class CartService {
         }
 
        return $this;
+    }
+
+    public function getCartDishes()
+    {
+        $list = $this->getEm()->getRepository('FoodCartBundle:Cart')->findBy(
+            array(
+                'session' => $this->getSessionId()
+            )
+        );
+
+        foreach($list as $k => &$item) {
+            $item->setEm($this->getEm());
+        }
+        return $list;
     }
 }

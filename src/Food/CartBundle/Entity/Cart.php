@@ -2,6 +2,7 @@
 
 namespace Food\CartBundle\Entity;
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -27,6 +28,13 @@ class Cart
     private $dish_id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishSize")
+     * @ORM\JoinColumn(name="dish_size_id", referencedColumnName="id")
+     * @ORM\Id
+     */
+    private $dish_size_id;
+
+    /**
      * @ORM\Column(name="quantity", type="integer", length=3)
      */
     private $quantity;
@@ -37,6 +45,32 @@ class Cart
      * @param integer $quantity
      * @return Cart
      */
+
+    /**
+     * @var EntityManager
+     */
+    private $em;
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $em
+     */
+    public function setEm($em)
+    {
+        $this->em = $em;
+    }
+
+    /**
+     * DFQ cia sugalvojau - reik permastyt...
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    public function getEm()
+    {
+        return $this->em;
+    }
+
+
+
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
@@ -96,4 +130,41 @@ class Cart
     }
 
 
+    /**
+     * @return array|CartOption[]
+     */
+    public function getOptions()
+    {
+        return $this->getEm()->getRepository('FoodCartBundle:CartOption')
+            ->findBy(
+                array(
+                    'dish_id' => $this->getDishId(),
+                    'session' => $this->getSession()
+                )
+            );
+    }
+
+
+    /**
+     * Set dish_size_id
+     *
+     * @param \Food\DishesBundle\Entity\DishSize $dishSizeId
+     * @return Cart
+     */
+    public function setDishSizeId(\Food\DishesBundle\Entity\DishSize $dishSizeId)
+    {
+        $this->dish_size_id = $dishSizeId;
+    
+        return $this;
+    }
+
+    /**
+     * Get dish_size_id
+     *
+     * @return \Food\DishesBundle\Entity\DishSize 
+     */
+    public function getDishSizeId()
+    {
+        return $this->dish_size_id;
+    }
 }
