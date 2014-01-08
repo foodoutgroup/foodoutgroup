@@ -69,8 +69,10 @@ class Cart
         return $this->em;
     }
 
-
-
+    /**
+     * @param $quantity
+     * @return $this
+     */
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;

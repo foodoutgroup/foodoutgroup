@@ -33,7 +33,25 @@ class DefaultController extends Controller
         return $this->cartService;
     }
 
+    /**
+     * @param $dishId
+     * @param int $dishQuantity
+     * @param int[] $options
+     */
+    public function addDishToCartAction($dishId, $dishSize, $dishQuantity=0, $options=array())
+    {
+        $this->getCartService()->addDishByIds($dishId, $dishSize, $dishQuantity, $options);
+    }
 
+    public function removeDishAction($dishId)
+    {
+        $this->getCartService()->removeDish($dishId);
+    }
+
+    public function removeOpionAction($dishId, $optionId)
+    {
+        $this->getCartService()->removeOptionById($dishId, $optionId);
+    }
 
     /**
      * @Route("/hello/{name}")

@@ -9,6 +9,9 @@ parameters:
     available_locales: [lt, en, ru]
     available_locales_routing: lt | en | ru
     time_zone: "Europe/Vilnius"
+    arc_gis_user: "skanulabai"
+    arc_gis_pass: "labaiskanu"
+    arc_gis_geocode_url: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=pjson&Address=_1_&City=_2_&CountryCode=LT&outFields=AddrNum,StName,City"
 
 framework:
     #esi:             ~
