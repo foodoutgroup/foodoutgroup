@@ -84,7 +84,7 @@ class FoodCategoryStrategy extends AbstractStrategy
             ->setType($this->getType())
             ->setName($slug)
             ->setOrigName($origSlug)
-            ->setIsActive(1);
+            ->setActive(1);
 
 
         $em->persist($item);
