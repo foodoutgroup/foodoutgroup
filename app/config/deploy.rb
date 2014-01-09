@@ -49,6 +49,7 @@ namespace :deploy do
     task :chmod_things do
         run "chmod -R 777 #{deploy_to}current/app/cache"
         run "chmod -R 777 #{deploy_to}current/app/cache/prod"
+        run "chmod -R 777 #{deploy_to}current/app/log"
     end
 end
 
