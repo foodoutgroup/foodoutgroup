@@ -78,17 +78,6 @@ services:
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
 
-    sonata.admin.place.point:
-        class: Food\DishesBundle\Admin\PlacePointAdmin
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.place_points" }
-        arguments:
-            - ~
-            - Food\DishesBundle\Entity\PlacePoint
-            - ~
-        calls:
-            - [ setTranslationDomain, [SonataAdminBundle]]
-
     sonata.admin.place.pointfull:
         class: Food\DishesBundle\Admin\PlacePointFullAdmin
         tags:
