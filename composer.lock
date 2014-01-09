@@ -1531,16 +1531,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "217a3f3b7c13d3e582a4161ca566386ec218c6f7"
+                "reference": "0100f0ea5adb54418056048171eef83dc7ce47af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/217a3f3b7c13d3e582a4161ca566386ec218c6f7",
-                "reference": "217a3f3b7c13d3e582a4161ca566386ec218c6f7",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/0100f0ea5adb54418056048171eef83dc7ce47af",
+                "reference": "0100f0ea5adb54418056048171eef83dc7ce47af",
                 "shasum": ""
             },
             "require": {
                 "doctrine/common": "~2.2",
+                "knplabs/knp-menu": ">=1.1.0,<3.0.0",
+                "knplabs/knp-menu-bundle": ">=1.1.0,<3.0.0",
                 "sensio/generator-bundle": "~2.2",
                 "sonata-project/block-bundle": "~2.2,>=2.2.7",
                 "sonata-project/core-bundle": "~2.2@dev",
@@ -1601,7 +1603,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2014-01-07 11:44:39"
+            "time": "2014-01-08 15:44:27"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -1675,12 +1677,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCacheBundle.git",
-                "reference": "76489478b458fedaf2c1dc6daa7fc6590275bdf8"
+                "reference": "8fa6545f7ec9f82302e1efaa69f14249630b98a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCacheBundle/zipball/76489478b458fedaf2c1dc6daa7fc6590275bdf8",
-                "reference": "76489478b458fedaf2c1dc6daa7fc6590275bdf8",
+                "url": "https://api.github.com/repos/sonata-project/SonataCacheBundle/zipball/8fa6545f7ec9f82302e1efaa69f14249630b98a4",
+                "reference": "8fa6545f7ec9f82302e1efaa69f14249630b98a4",
                 "shasum": ""
             },
             "require": {
@@ -1731,7 +1733,7 @@
             "keywords": [
                 "cache block"
             ],
-            "time": "2013-12-17 13:44:34"
+            "time": "2014-01-08 12:37:46"
         },
         {
             "name": "sonata-project/core-bundle",
