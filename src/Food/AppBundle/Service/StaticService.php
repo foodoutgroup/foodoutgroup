@@ -40,6 +40,14 @@ class StaticService {
     }
 
     /**
+     * @return int
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
      * Get static page by id
      *
      * @param $id

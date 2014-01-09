@@ -42,9 +42,16 @@ class PlaceFilter
         return $this->securityContext;
     }
 
+    /**
+     * @return null|string
+     */
+    public function getPlaceFieldName()
+    {
+        return $this->placeFieldName;
+    }
+
     public function apply(ProxyQueryInterface $query)
     {
-        /* @var \Symfony\Component\Security\Core\TokenInterface $token */
         $token = $this->getSecurityContext()->getToken();
         $user = $token->getUser();
 
@@ -66,11 +73,11 @@ class PlaceFilter
 
             $alias = $query->getRootAlias();
 
-            $paramName = $this->placeFieldName.'Param';
+            $paramName = $this->getPlaceFieldName().'Param';
 
             $query->andWhere(
                 $query->expr()->eq(
-                    sprintf('%s.%s', $alias, $this->placeFieldName),
+                    sprintf('%s.%s', $alias, $this->getPlaceFieldName()),
                     ':'.$paramName
                 )
             );
