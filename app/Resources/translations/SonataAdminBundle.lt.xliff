@@ -160,7 +160,7 @@
             </trans-unit>
             <trans-unit id="admin.dishes.sizes">
                 <source>admin.dishes.sizes</source>
-                <target>Dydžiai</target>
+                <target>Dydžiai/porcijos</target>
             </trans-unit>
 
             <!-- Dish options -->
@@ -453,11 +453,6 @@
                 <source>admin.group.first</source>
                 <target>Pirmi žingsniai</target>
             </trans-unit>
-            <trans-unit id="admin.dishes.sizes">
-                <source>admin.dishes.sizes</source>
-                <target>Dydžiai/porcijos</target>
-            </trans-unit>
-
         </body>
     </file>
 </xliff>
