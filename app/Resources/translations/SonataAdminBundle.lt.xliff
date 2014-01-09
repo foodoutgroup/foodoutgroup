@@ -158,6 +158,10 @@
                 <source>admin.dish.recomended</source>
                 <target>Rekomenduojamas</target>
             </trans-unit>
+            <trans-unit id="admin.dishes.sizes">
+                <source>admin.dishes.sizes</source>
+                <target>Dydžiai</target>
+            </trans-unit>
 
             <!-- Dish options -->
             <trans-unit id="admin.dish_options">
