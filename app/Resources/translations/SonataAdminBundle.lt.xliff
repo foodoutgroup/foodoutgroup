@@ -441,6 +441,10 @@
                 <source>admin.dish.unit.category</source>
                 <target>Vienetų kategorijos</target>
             </trans-unit>
+            <trans-unit id="Dish Unit Category List">
+                <source>Dish Unit Category List</source>
+                <target>Vienetų kategorijos</target>
+            </trans-unit>
 
         </body>
     </file>
