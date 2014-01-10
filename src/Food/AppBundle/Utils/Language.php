@@ -36,7 +36,6 @@ class Language
         return $this->container;
     }
 
-
     /**
      * @param $lang
      * @param $text
@@ -81,7 +80,6 @@ class Language
         return strtr(mb_strtolower($text, 'utf-8'), $chars);
     }
 
-
     /**
      * @param $text
      * @return string
@@ -113,47 +111,11 @@ class Language
     }
 
     /**
-     * Get current language.
-     * @return LanguageEntity
-     */
-    public function getCurrent()
-    {
-        $route = $this->service('food.app.utils.route');
-        $repo = $this->repo('FoodAppBundle:Language');
-
-        return $repo->findOneBy(['name' => $route->getLocale(), 'is_active' => true]);
-    }
-
-    /**
-     * Get default language.
-     * @return Language
-     */
-    public function getDefault()
-    {
-        $repo = $this->repo('FoodAppBundle:Language');
-        $defaultLocale = Arr::getOrElse($this->container()->parameters, 'locale', '');
-
-        return $repo->findOneBy(['name' => $defaultLocale, 'is_active' => true]);
-    }
-
-    /**
      * Get all languages. Has language IDs as keys.
      * @return array
      */
     public function getAll()
     {
         return $this->getContainer()->getParameter('available_locales');
-    }
-
-
-    /**
-     * Switch language
-     * @param  \LanguageEntity $language Might be ID or identifier.
-     * @return void
-     */
-    public function switchLanguage(\LanguageEntity $language)
-    {
-        $request = $this->service('request');
-        $request->setLocale($language->getName());
     }
 }
