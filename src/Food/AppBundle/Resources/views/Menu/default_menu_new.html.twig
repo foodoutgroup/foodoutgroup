@@ -1,7 +1,7 @@
 <div class="navbar navbar-default navbar-static-top" style="background-color: #cb213a; background-image: none; margin-bottom: 0px; border: none;">
     <div style="width: 980px; margin-left: auto; margin-right: auto;">
         {% image '@FoodAppBundle/Resources/public/images/logo_dev.png' output='/images/logo_dev.png' %}
-            <img src="{{ asset_url }}" alt="" />
+            <a href="{{ url('food_lang_homepage') }}"><img src="{{ asset_url }}" alt="" /></a>
         {% endimage %}
         {% image '@FoodAppBundle/Resources/public/images/header_menu_dev.png' output='/images/header_menu_dev.png' %}
         <img src="{{ asset_url }}" alt="" />
