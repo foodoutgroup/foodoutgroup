@@ -20,11 +20,11 @@ class DishOptionAdmin extends FoodAdmin
                 'translatable_class' => 'Food\DishesBundle\Entity\DishOption',
                 'fields' => array(
                     'name' => array('label' => 'label.name'),
-                    'description' => array('label' => 'label.description'),
+                    'description' => array('label' => 'label.description', 'required' => false),
                 ),
 //                'label' => 'Unit name (transl)'
             )
-        )->add('code', null, array('label' => 'admin.dish_option.code'));
+        )->add('code', null, array('label' => 'admin.dish_option.code', 'required' => false));
 
         if ($this->isAdmin()) {
             $formMapper->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
