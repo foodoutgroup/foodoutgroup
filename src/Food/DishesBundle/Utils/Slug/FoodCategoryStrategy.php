@@ -14,9 +14,9 @@ class FoodCategoryStrategy extends AbstractStrategy
 
     private $type = Slug::TYPE_FOOD_CATEGORY;
 
-    public function __construct()
+    public function __construct(\Symfony\Component\DependencyInjection\ContainerInterface $container)
     {
-
+        $this->container($container);
     }
 
     public function setContainer(\Symfony\Component\DependencyInjection\ContainerInterface $container)
