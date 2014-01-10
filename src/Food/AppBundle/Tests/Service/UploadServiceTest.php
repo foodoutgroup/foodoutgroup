@@ -173,4 +173,76 @@ class UploadServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($filename, $fileNameGot);
     }
 
+    public function testUpload()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\Container');
+
+        $kernel = $this->getMockBuilder('\Symfony\Bundle\AsseticBundle\Tests\TestKernel')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $theObject = $this->getMock(
+            '\Food\AppBundle\Entity\Uploadable',
+            array('getId', 'getFile', 'setFile', 'setLogo', 'getLogo', 'getUploadDir')
+        );
+
+        $theFile = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $userId = 24;
+        $filename = '9_9d02c80338e3f7d43ea73f6c4c1fcf95.jpg';
+
+        $uploadableService = new UploadService($container, $userId);
+        $uploadableService->setObject($theObject);
+        $uploadableService->setUploadableFieldGetter('getLogo');
+        $uploadableService->setUploadableFieldSetter('setLogo');
+
+        $theObject->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(9));
+
+        $theObject->expects($this->once())
+            ->method('getUploadDir')
+            ->will($this->returnValue('products'));
+
+        $theObject->expects($this->any())
+            ->method('getFile')
+            ->will($this->returnValue($theFile));
+
+        $theFile->expects($this->once())
+            ->method('getClientOriginalName')
+            ->will($this->returnValue('superTurboLogotipas'));
+
+        $theFile->expects($this->once())
+            ->method('guessClientExtension')
+            ->will($this->returnValue('jpg'));
+
+        $kernel->expects($this->once())
+            ->method('getRootDir')
+            ->will($this->returnValue('/kelias/namo'));
+
+        $container->expects($this->once())
+            ->method('get')
+            ->with('kernel')
+            ->will($this->returnValue($kernel));
+
+        $theObject->expects($this->once())
+            ->method('getLogo')
+            ->will($this->returnValue(null));
+
+        $theFile->expects($this->once())
+            ->method('move')
+            ->with('super/path/products', $filename);
+
+        $theObject->expects($this->once())
+            ->method('setLogo')
+            ->with($filename);
+
+        $theObject->expects($this->once())
+            ->method('setFile')
+            ->with(null);
+
+        $uploadableService->upload('super/path/');
+    }
 }
