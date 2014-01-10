@@ -41,14 +41,14 @@ class DishOption implements Translatable
 
     /**
      * @var string
-     * @ORM\Column(name="code", type="string", length=45)
+     * @ORM\Column(name="code", type="string", length=45, nullable=true)
      */
     private $code;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
