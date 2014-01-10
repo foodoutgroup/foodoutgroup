@@ -3,6 +3,7 @@
 namespace Food\AppBundle\Utils;
 
 use Food\AppBundle\Traits;
+use Symfony\Component\DependencyInjection\Container;
 
 class Route
 {
@@ -12,6 +13,19 @@ class Route
     private $routeName;
     private $routeParams;
     private $queryParams;
+
+    /**
+     * @param \Symfony\Component\DependencyInjection\Container $container
+     */
+    public function setContainer(Container $container)
+    {
+        $this->container = $container;
+    }
+
+    public function getContaner()
+    {
+        return $this->container;
+    }
 
     public function setLocale($locale)
     {

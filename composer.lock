@@ -798,12 +798,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "826f29a97d437e88558dd74e7e15a3e8519b241c"
+                "reference": "0828095234a23ccf678c24ec2947743060025429"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/826f29a97d437e88558dd74e7e15a3e8519b241c",
-                "reference": "826f29a97d437e88558dd74e7e15a3e8519b241c",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/0828095234a23ccf678c24ec2947743060025429",
+                "reference": "0828095234a23ccf678c24ec2947743060025429",
                 "shasum": ""
             },
             "require": {
@@ -858,7 +858,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2014-01-06 17:33:34"
+            "time": "2014-01-09 11:02:08"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -1531,12 +1531,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "0100f0ea5adb54418056048171eef83dc7ce47af"
+                "reference": "e46820b992b68d8025b9f7d4de182f659a01610b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/0100f0ea5adb54418056048171eef83dc7ce47af",
-                "reference": "0100f0ea5adb54418056048171eef83dc7ce47af",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/e46820b992b68d8025b9f7d4de182f659a01610b",
+                "reference": "e46820b992b68d8025b9f7d4de182f659a01610b",
                 "shasum": ""
             },
             "require": {
@@ -1603,7 +1603,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2014-01-08 15:44:27"
+            "time": "2014-01-09 16:25:21"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -1742,12 +1742,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "fadf268d4b2c23220b27c33389b6a6132085159e"
+                "reference": "0c72b6b0212014c5b5e015b4bf3811bf42fb3728"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/fadf268d4b2c23220b27c33389b6a6132085159e",
-                "reference": "fadf268d4b2c23220b27c33389b6a6132085159e",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/0c72b6b0212014c5b5e015b4bf3811bf42fb3728",
+                "reference": "0c72b6b0212014c5b5e015b4bf3811bf42fb3728",
                 "shasum": ""
             },
             "require": {
@@ -1791,7 +1791,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-01-07 11:35:59"
+            "time": "2014-01-09 14:35:33"
         },
         {
             "name": "sonata-project/doctrine-extensions",
