@@ -12,14 +12,6 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         $util = new Route();
 
         $locale = 'en';
-        $queryParams = array(
-            'lang' => 'lt',
-            'page' => 62,
-        );
-        $routeParams = array(
-            'page' => 47,
-            'order' => 19,
-        );
 
         $util->setContainer($container);
         $gotContainer = $util->getContaner();
