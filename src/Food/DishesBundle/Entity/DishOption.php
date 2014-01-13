@@ -66,7 +66,6 @@ class DishOption implements Translatable
      **/
     private $translations;
 
-
     /**
      * @ORM\ManyToMany(targetEntity="Dish", mappedBy="options")
      */

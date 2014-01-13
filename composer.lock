@@ -862,16 +862,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.3.8",
+            "version": "v2.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/l3pp4rd/DoctrineExtensions.git",
-                "reference": "d2bef940268e4dc5f0f050e80458169a7267813a"
+                "reference": "35adcaae1a3f50d0d5b73aa50ed8fd28ee35ce54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/d2bef940268e4dc5f0f050e80458169a7267813a",
-                "reference": "d2bef940268e4dc5f0f050e80458169a7267813a",
+                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/35adcaae1a3f50d0d5b73aa50ed8fd28ee35ce54",
+                "reference": "35adcaae1a3f50d0d5b73aa50ed8fd28ee35ce54",
                 "shasum": ""
             },
             "require": {
@@ -938,7 +938,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2013-11-09 21:23:13"
+            "time": "2014-01-12 16:34:06"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -998,12 +998,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jdorn/sql-formatter.git",
-                "reference": "8859d664737492d313c34796731b35eca851b362"
+                "reference": "64990d96e0959dff8e059dfcdc1af130728d92bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jdorn/sql-formatter/zipball/8859d664737492d313c34796731b35eca851b362",
-                "reference": "8859d664737492d313c34796731b35eca851b362",
+                "url": "https://api.github.com/repos/jdorn/sql-formatter/zipball/64990d96e0959dff8e059dfcdc1af130728d92bc",
+                "reference": "64990d96e0959dff8e059dfcdc1af130728d92bc",
                 "shasum": ""
             },
             "require": {
@@ -1040,7 +1040,7 @@
                 "highlight",
                 "sql"
             ],
-            "time": "2013-11-27 22:51:13"
+            "time": "2014-01-12 16:20:24"
         },
         {
             "name": "jquery/jquery",
@@ -1531,12 +1531,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "e46820b992b68d8025b9f7d4de182f659a01610b"
+                "reference": "ac899038f0073656e5c981de8f31ef01eb778ed1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/e46820b992b68d8025b9f7d4de182f659a01610b",
-                "reference": "e46820b992b68d8025b9f7d4de182f659a01610b",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/ac899038f0073656e5c981de8f31ef01eb778ed1",
+                "reference": "ac899038f0073656e5c981de8f31ef01eb778ed1",
                 "shasum": ""
             },
             "require": {
@@ -1603,7 +1603,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2014-01-09 16:25:21"
+            "time": "2014-01-11 21:26:12"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -1612,12 +1612,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "6f0507df9cede2dd94accd3e2d5344e82beea635"
+                "reference": "d2950606a54cc55e0f0e6965cdb2c33e14652659"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/6f0507df9cede2dd94accd3e2d5344e82beea635",
-                "reference": "6f0507df9cede2dd94accd3e2d5344e82beea635",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/d2950606a54cc55e0f0e6965cdb2c33e14652659",
+                "reference": "d2950606a54cc55e0f0e6965cdb2c33e14652659",
                 "shasum": ""
             },
             "require": {
@@ -1668,7 +1668,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-01-02 17:16:42"
+            "time": "2014-01-10 17:03:57"
         },
         {
             "name": "sonata-project/cache-bundle",

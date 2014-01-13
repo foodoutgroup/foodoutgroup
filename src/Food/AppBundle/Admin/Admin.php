@@ -82,9 +82,7 @@ class Admin extends SonataAdmin
     public function getUser()
     {
         if (empty($this->user)) {
-            // @codeCoverageIgnoreStart
             $this->user = $this->getSecurityContext()->getToken()->getUser();
-            // @codeCoverageIgnoreEnd
         }
         return $this->user;
     }
@@ -147,9 +145,7 @@ class Admin extends SonataAdmin
     public function getContainer()
     {
         if (empty($this->_container)) {
-            // @codeCoverageIgnoreStart
             $this->_container = $this->getConfigurationPool()->getContainer();
-            // @codeCoverageIgnoreEnd
         }
         return $this->_container;
     }
@@ -168,9 +164,7 @@ class Admin extends SonataAdmin
     public function getUploadService()
     {
         if (empty($this->uploadService)) {
-            // @codeCoverageIgnoreStart
             $this->uploadService = $this->getContainer()->get('food.upload');
-            // @codeCoverageIgnoreEnd
         }
         return $this->uploadService;
     }
@@ -201,9 +195,7 @@ class Admin extends SonataAdmin
     public function getSecurityContext()
     {
         if (empty($this->securityContext)) {
-            // @codeCoverageIgnoreStart
             $this->securityContext = $this->getContainer()->get('security.context');
-            // @codeCoverageIgnoreEnd
         }
         return $this->securityContext;
     }

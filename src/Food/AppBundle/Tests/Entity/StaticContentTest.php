@@ -4,11 +4,10 @@ namespace Food\AppBundle\Tests\Entity;
 
 use Food\AppBundle\Entity\StaticContent;
 
-class AdminTest extends \PHPUnit_Framework_TestCase
+class StaticContentTest extends \PHPUnit_Framework_TestCase
 {
     public function testGettersSetters()
     {
-        $entityId = 5;
         $entityTitle = 'OmgTitle';
         $entityContent = 'Wow so content :)';
 
