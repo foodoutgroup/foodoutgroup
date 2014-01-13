@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "9a7a810c8c1b284ee8924404547ba99e",
+    "hash": "5a0220cb08aaf721942d98fac1f08e91",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -798,12 +798,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "c66cb666ea98d101c3650279c545081a94e47d3e"
+                "reference": "0828095234a23ccf678c24ec2947743060025429"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/c66cb666ea98d101c3650279c545081a94e47d3e",
-                "reference": "c66cb666ea98d101c3650279c545081a94e47d3e",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/0828095234a23ccf678c24ec2947743060025429",
+                "reference": "0828095234a23ccf678c24ec2947743060025429",
                 "shasum": ""
             },
             "require": {
@@ -858,7 +858,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2013-12-30 08:57:49"
+            "time": "2014-01-09 11:02:08"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -1243,12 +1243,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafo/lessphp.git",
-                "reference": "33a82c3d65d8004872f2f560a4d35eca8b85762b"
+                "reference": "704823f6213a8839b83ca7e8fb5874c5f02aba76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafo/lessphp/zipball/33a82c3d65d8004872f2f560a4d35eca8b85762b",
-                "reference": "33a82c3d65d8004872f2f560a4d35eca8b85762b",
+                "url": "https://api.github.com/repos/leafo/lessphp/zipball/704823f6213a8839b83ca7e8fb5874c5f02aba76",
+                "reference": "704823f6213a8839b83ca7e8fb5874c5f02aba76",
                 "shasum": ""
             },
             "type": "library",
@@ -1276,7 +1276,7 @@
             ],
             "description": "lessphp is a compiler for LESS written in PHP.",
             "homepage": "http://leafo.net/lessphp/",
-            "time": "2013-12-05 20:49:10"
+            "time": "2014-01-08 03:01:15"
         },
         {
             "name": "monolog/monolog",
@@ -1531,16 +1531,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "5b4bd51a37a2b6f85495642c2c732cfd7a672dc7"
+                "reference": "e46820b992b68d8025b9f7d4de182f659a01610b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/5b4bd51a37a2b6f85495642c2c732cfd7a672dc7",
-                "reference": "5b4bd51a37a2b6f85495642c2c732cfd7a672dc7",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/e46820b992b68d8025b9f7d4de182f659a01610b",
+                "reference": "e46820b992b68d8025b9f7d4de182f659a01610b",
                 "shasum": ""
             },
             "require": {
                 "doctrine/common": "~2.2",
+                "knplabs/knp-menu": ">=1.1.0,<3.0.0",
+                "knplabs/knp-menu-bundle": ">=1.1.0,<3.0.0",
                 "sensio/generator-bundle": "~2.2",
                 "sonata-project/block-bundle": "~2.2,>=2.2.7",
                 "sonata-project/core-bundle": "~2.2@dev",
@@ -1601,7 +1603,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2014-01-02 22:46:40"
+            "time": "2014-01-09 16:25:21"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -1675,12 +1677,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCacheBundle.git",
-                "reference": "76489478b458fedaf2c1dc6daa7fc6590275bdf8"
+                "reference": "8fa6545f7ec9f82302e1efaa69f14249630b98a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCacheBundle/zipball/76489478b458fedaf2c1dc6daa7fc6590275bdf8",
-                "reference": "76489478b458fedaf2c1dc6daa7fc6590275bdf8",
+                "url": "https://api.github.com/repos/sonata-project/SonataCacheBundle/zipball/8fa6545f7ec9f82302e1efaa69f14249630b98a4",
+                "reference": "8fa6545f7ec9f82302e1efaa69f14249630b98a4",
                 "shasum": ""
             },
             "require": {
@@ -1731,7 +1733,7 @@
             "keywords": [
                 "cache block"
             ],
-            "time": "2013-12-17 13:44:34"
+            "time": "2014-01-08 12:37:46"
         },
         {
             "name": "sonata-project/core-bundle",
@@ -1740,12 +1742,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "4967ccaf64ebc45cd2955849bf3823c7c64fde02"
+                "reference": "0c72b6b0212014c5b5e015b4bf3811bf42fb3728"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/4967ccaf64ebc45cd2955849bf3823c7c64fde02",
-                "reference": "4967ccaf64ebc45cd2955849bf3823c7c64fde02",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/0c72b6b0212014c5b5e015b4bf3811bf42fb3728",
+                "reference": "0c72b6b0212014c5b5e015b4bf3811bf42fb3728",
                 "shasum": ""
             },
             "require": {
@@ -1789,7 +1791,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-01-02 16:08:25"
+            "time": "2014-01-09 14:35:33"
         },
         {
             "name": "sonata-project/doctrine-extensions",
@@ -1846,12 +1848,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle.git",
-                "reference": "1f5cefcc4b4ba9cf4c5cceedcb8e5ba52a332111"
+                "reference": "bcbcfaf6c18f76b460c9f011809904611a8a618a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/1f5cefcc4b4ba9cf4c5cceedcb8e5ba52a332111",
-                "reference": "1f5cefcc4b4ba9cf4c5cceedcb8e5ba52a332111",
+                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/bcbcfaf6c18f76b460c9f011809904611a8a618a",
+                "reference": "bcbcfaf6c18f76b460c9f011809904611a8a618a",
                 "shasum": ""
             },
             "require": {
@@ -1895,7 +1897,7 @@
                 "generator",
                 "sonata"
             ],
-            "time": "2013-12-20 10:26:33"
+            "time": "2014-01-07 13:42:26"
         },
         {
             "name": "sonata-project/easy-extends-bundle",
@@ -2562,16 +2564,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.3.8",
+            "version": "v2.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "b0b421908d569e5024372ded65857707c409e0f7"
+                "reference": "ee1e0f2ef882ccd6a53ff91e5ffc39a22b6a6b74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/b0b421908d569e5024372ded65857707c409e0f7",
-                "reference": "b0b421908d569e5024372ded65857707c409e0f7",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/ee1e0f2ef882ccd6a53ff91e5ffc39a22b6a6b74",
+                "reference": "ee1e0f2ef882ccd6a53ff91e5ffc39a22b6a6b74",
                 "shasum": ""
             },
             "require": {
@@ -2666,7 +2668,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-12-16 14:36:05"
+            "time": "2014-01-05 01:24:54"
         },
         {
             "name": "twig/extensions",
@@ -2763,73 +2765,6 @@
                 "templating"
             ],
             "time": "2013-12-06 07:47:10"
-        },
-        {
-            "name": "webtopay/libwebtopay",
-            "version": "1.6.x-dev",
-            "source": {
-                "type": "hg",
-                "url": "https://bitbucket.org/paysera/libwebtopay",
-                "reference": "64fdfad73b0cd3593228143946f223062d5994a4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://bitbucket.org/paysera/libwebtopay/get/64fdfad73b0cd3593228143946f223062d5994a4.zip",
-                "reference": "64fdfad73b0cd3593228143946f223062d5994a4",
-                "shasum": ""
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "EVP International",
-                    "homepage": "http://www.webtopay.com/"
-                }
-            ],
-            "description": "PHP Library for WebToPay provided services",
-            "time": "2013-09-24 09:03:04"
-        },
-        {
-            "name": "webtopay/webtopay-bundle",
-            "version": "dev-master",
-            "target-dir": "Evp/Bundle/WebToPayBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/evp/WebToPayBundle.git",
-                "reference": "129d1cfcb3e5bb9810cadbfa4ca0f20ca9236d3a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/evp/WebToPayBundle/zipball/129d1cfcb3e5bb9810cadbfa4ca0f20ca9236d3a",
-                "reference": "129d1cfcb3e5bb9810cadbfa4ca0f20ca9236d3a",
-                "shasum": ""
-            },
-            "require": {
-                "webtopay/libwebtopay": "1.6.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Evp\\Bundle\\WebToPayBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "EVP International",
-                    "homepage": "http://www.webtopay.com/"
-                }
-            ],
-            "description": "Symfony2 bundle for WebToPay provided services",
-            "time": "2013-12-02 08:09:51"
         }
     ],
     "packages-dev": [
@@ -2864,9 +2799,7 @@
         "jdorn/sql-formatter": 20,
         "a2lix/translation-form-bundle": 20,
         "doctrine/doctrine-fixtures-bundle": 20,
-        "sonata-project/user-bundle": 20,
-        "webtopay/libwebtopay": 20,
-        "webtopay/webtopay-bundle": 20
+        "sonata-project/user-bundle": 20
     },
     "platform": {
         "php": ">=5.3.3"

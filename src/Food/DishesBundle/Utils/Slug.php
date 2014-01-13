@@ -134,7 +134,7 @@ class Slug
 
     public function generateForFoodCategory($langId, $itemId, $itemText)
     {
-        $strategy = new FoodCategoryStrategy();
+        $strategy = new FoodCategoryStrategy($this->container());
         $strategy->setContainer($this->container());
         $context = new SlugGenerator($strategy);
         $context->generate($langId, $itemId, $itemText);

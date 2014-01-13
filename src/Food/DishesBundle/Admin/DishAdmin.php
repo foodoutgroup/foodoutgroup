@@ -196,11 +196,10 @@ class DishAdmin extends FoodAdmin
     private function fixRelations($object, $setCreatedAt = null)
     {
         $dishSizes = $object->getSizes();
-        if (is_array($dishSizes)) {
-            foreach ($dishSizes as $size)
-            {
+        if (!empty($dishSizes)) {
+            foreach ($dishSizes as $size) {
                 $cAt = $size->getCreatedAt();
-                if (!$cAt) {
+                if (!$cAt || empty($cAt)) {
                     $size->setCreatedAt(new \DateTime('now'));
                 }
                 $size->setDish($object);

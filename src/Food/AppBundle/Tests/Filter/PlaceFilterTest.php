@@ -28,6 +28,34 @@ class PlaceFilterTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
     }
 
+    public function testSettersGetters()
+    {
+        $authManager = $this->getMock('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface');
+        $decisionManager = $this->getMock('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface');
+
+        $securityContext = $this->getMock(
+            '\Symfony\Component\Security\Core\SecurityContext',
+            array('getToken'),
+            array($authManager, $decisionManager)
+        );
+
+        $placeFilter = new PlaceFilter($securityContext, 'notThePlace');
+
+        $securityContextGot1 = $placeFilter->getSecurityContext();
+        $this->assertEquals($securityContext, $securityContextGot1);
+
+        $placeFilter->setSecurityContext(null);
+        $securityContextGot2 = $placeFilter->getSecurityContext();
+        $this->assertEquals(null, $securityContextGot2);
+
+        $placeFieldNameGot1 = $placeFilter->getPlaceFieldName();
+        $this->assertEquals('notThePlace', $placeFieldNameGot1);
+
+        $placeFilter = new PlaceFilter($securityContext);
+        $placeFieldNameGot2 = $placeFilter->getPlaceFieldName();
+        $this->assertEquals('place', $placeFieldNameGot2);
+    }
+
     /**
      * @expectedException InvalidArgumentException
      */

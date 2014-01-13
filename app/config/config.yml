@@ -143,19 +143,29 @@ sonata_admin:
       edit: SonataAdminBundle:CRUD:edit.html.twig
     dashboard:
           groups:
-              acme.admin.group.places:
-                  label: admin.group.places
+              acme.admin.group.first:
+                  label: admin.group.first
                   label_catalogue: SonataAdminBundle
                   items:
                       - sonata.admin.kitchen
                       - sonata.admin.place
-                      - sonata.admin.place.reviews
-                      - sonata.admin.dish.unit
-                      - sonata.admin.dish.size
                       - sonata.admin.food.category
+                      - sonata.admin.dish.unit.category
+                      - sonata.admin.dish.unit
+                  roles: [ ROLE_ADMIN ]
+              acme.admin.group.places:
+                  label: admin.group.places
+                  label_catalogue: SonataAdminBundle
+                  items:
+                      #- sonata.admin.kitchen
+                      - sonata.admin.place
+                      - sonata.admin.place.reviews
+                      #- sonata.admin.dish.unit
+                      #- sonata.admin.dish.size
+                      #- sonata.admin.food.category
                       - sonata.admin.static
                       - sonata.admin.sms
-                      - sonata.admin.dish.unit.category
+                      #- sonata.admin.dish.unit.category
                   roles: [ ROLE_ADMIN ]
               acme.admin.group.formanagers:
                   label: admin.group.formanagers
