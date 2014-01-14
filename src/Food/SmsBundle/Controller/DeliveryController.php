@@ -60,8 +60,9 @@ class DeliveryController extends Controller
         return $this->messagingService;
     }
 
-    public function indexAction($request)
+    public function indexAction()
     {
+        $request = $this->get('request');
         $messagingService = $this->getMessagingService();
 
         // TODO iskelti i services.yml, kad uzkrautu per ten :) gal :)
