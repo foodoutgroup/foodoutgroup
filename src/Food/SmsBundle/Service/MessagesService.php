@@ -2,6 +2,7 @@
 
 namespace Food\SmsBundle\Service;
 
+use Doctrine\DBAL\Query\QueryBuilder;
 use \Food\SmsBundle\Entity\Message;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Validator\Constraints\DateTime;
@@ -232,5 +233,27 @@ class MessagesService {
         } catch (\Exception $e) {
             throw $e;
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getUnsentMessages()
+    {
+        $repository = $this->getContainer()->get('doctrine')->getRepository('FoodSmsBundle:Message');
+
+        $query = $repository->createQueryBuilder('m')
+            ->where('m.sent = 0')
+            ->andWhere('m.createdAt >= :yesterday')
+            ->orderBy('m.createdAt', 'ASC')
+            ->setParameter('yesterday', new \DateTime('-1 days'))
+            ->getQuery();
+
+        $messages = $query->getResult();
+        if (!$messages) {
+            return array();
+        }
+
+        return $messages;
     }
 }

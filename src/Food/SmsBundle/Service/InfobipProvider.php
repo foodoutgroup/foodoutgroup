@@ -94,17 +94,25 @@ class InfobipProvider implements SmsProviderInterface {
         'REJECTED',
         'INVALID_MESSAGE_FORMAT',
     );
+    /**
+     * @var null
+     */
+    private $login;
 
     /**
      * @param string $url
      * @param string $accoutApiUrl
-     * @param null $logger
+     * @param string $login
+     * @param string $password
+     * @param Logger $logger
      */
-    public function __construct($url=null, $accoutApiUrl=null, $logger=null)
+    public function __construct($url=null, $accoutApiUrl=null, $login=null, $password=null, $logger=null)
     {
         $this->apiUrl = $url;
         $this->accountApiUrl = $accoutApiUrl;
         $this->logger = $logger;
+        $this->login = $login;
+        $this->password = $password;
     }
 
     /**
