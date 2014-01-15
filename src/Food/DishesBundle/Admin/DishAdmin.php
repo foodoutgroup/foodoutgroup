@@ -29,6 +29,7 @@ class DishAdmin extends FoodAdmin
          * @var EntityManager $em
          */
         $em = $this->modelManager->getEntityManager('Food\DishesBundle\Entity\FoodCategory');
+        
         /**
          * @var QueryBuilder
          */
@@ -53,6 +54,9 @@ class DishAdmin extends FoodAdmin
                 'fields' => array(
                     'name' => array(
                         'label' => 'label.name'
+                    ),
+                    'description' => array(
+                        'label' => 'label.description'
                     ),
                 )
             ));

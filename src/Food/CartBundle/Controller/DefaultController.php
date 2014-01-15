@@ -6,6 +6,7 @@ use Food\CartBundle\Service\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -31,6 +32,43 @@ class DefaultController extends Controller
             $this->setCartService($this->get('food.cart'));
         }
         return $this->cartService;
+    }
+
+    /**
+     * Daz proxy for ajax requests :)
+     *
+     * @param string $action
+     * @return Response
+     */
+    public function actionAction($action)
+    {
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        switch($action) {
+            case 'add':
+                break;
+            case 'add-option':
+                break;
+            case 'remove':
+                break;
+            case 'remove-option':
+                break;
+        }
+        return $response;
+    }
+
+    private function _itemList(Response $response)
+    {
+
+    }
+
+    /**
+     * @param Response $response
+     * @param $params
+     */
+    private function _actonAddItem(Response &$response, $params)
+    {
+
     }
 
     /**

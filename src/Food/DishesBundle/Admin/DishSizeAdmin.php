@@ -39,8 +39,15 @@ class DishSizeAdmin extends FoodAdmin
                             $place = null;
                             if (!empty($req['place'])) {
                                 $place = $req['place'];
-                            } else {
+                            } elseif (!$this->isAdmin()) {
                                 $place = $this->getUser()->getPlace()->getId();
+                            }
+                            if (empty($place)) {
+                                // @todo - sugalvoti teisinga
+                                // The EPIC FAIL OF FAILS :(
+                                $dishId = $this->getRequest()->get('id');
+                                $dish = $this->modelManager->getEntityManager('Food\DishesBundle\Entity\Dish')->getRepository('FoodDishesBundle:Dish')->findOneById($dishId);
+                                $place = $dish->getPlace()->getId();
                             }
 
                             return $repository->createQueryBuilder('s')

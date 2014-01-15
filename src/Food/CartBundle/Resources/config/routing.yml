@@ -1,0 +1,7 @@
+food_cart:
+    pattern: /
+    defaults: { _controller: FoodCartBundle:Default:index}
+
+food_cart_action:
+    pattern:  /action/{action}/
+    defaults: { _controller: FoodCartBundle:Default:action, action: empty }
