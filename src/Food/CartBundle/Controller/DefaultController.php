@@ -44,8 +44,10 @@ class DefaultController extends Controller
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
+        $jsonResponseData = array();
         switch($action) {
             case 'add':
+                $this->_actonAddItem($jsonResponseData, $this->getRequest());
                 break;
             case 'add-option':
                 break;
@@ -54,21 +56,18 @@ class DefaultController extends Controller
             case 'remove-option':
                 break;
         }
+        $jsonResponseData['items'] = $this->getCartService()->getCartDishesForJson();
+        $response->setContent(json_encode($jsonResponseData));
         return $response;
     }
 
-    private function _itemList(Response $response)
-    {
-
-    }
-
     /**
-     * @param Response $response
+     * @param array $response
      * @param $params
      */
-    private function _actonAddItem(Response &$response, $params)
+    private function _actonAddItem(&$responseData, $params)
     {
-
+        $responseData = array("kebas"=>"grabas");
     }
 
     /**

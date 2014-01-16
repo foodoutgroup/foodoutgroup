@@ -246,4 +246,53 @@ class CartService {
         }
         return $list;
     }
+
+    /**
+     * @param Dish $dish
+     * @return array|\Food\CartBundle\Entity\CartOption[]
+     */
+    public function getCartDishOptions(Cart $cartItem)
+    {
+        $list = $this->getEm()->getRepository('FoodCartBundle:CartOption')->findBy(
+            array(
+                'session' => $this->getSessionId(),
+                'dish_id' => $cartItem->getDishId()->getId()
+            )
+        );
+        return $list;
+    }
+
+    public function getCartDishesForJson()
+    {
+        $cartItems = $this->getCartDishes();
+        $returnData = array();
+        foreach ($cartItems as $cartItem) {
+            $tmpRow = array(
+                'name' => $cartItem->getDishId()->getName(),
+                'price' => $cartItem->getDishSizeId()->getPrice(),
+                'size' => $cartItem->getDishSizeId()->getUnit()->getName(),
+                'quantity' => $cartItem->getQuantity(),
+                'options' => $this->getOptionsForJson($cartItem)
+            );
+            $returnData[] = $tmpRow;
+        }
+        return $returnData;
+    }
+
+    /**
+     * @param Cart $cartItem
+     */
+    private function getOptionsForJson(Cart $cartItem)
+    {
+        $returnData = array();
+        $options = $this->getCartDishOptions($cartItem);
+        foreach ($options as $cartOption) {
+            $returnData[] = array(
+                'name' => $cartOption->getDishOptionId()->getName(),
+                'price' => $cartOption->getDishOptionId()->getPrice(),
+                'quantity' => $cartOption->getQuantity()
+            );
+        }
+        return $returnData;
+    }
 }
