@@ -3,6 +3,7 @@ namespace Food\SmsBundle\Tests\Service;
 
 require_once dirname(__DIR__).'/../../../../app/AppKernel.php';
 
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\Tests\Mocks\ConnectionMock;
 use \Food\SmsBundle\Service\MessagesService;
 use \Food\SmsBundle\Entity\Message;
@@ -479,4 +480,340 @@ class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
 
         $messagesService->updateMessagesDelivery($dlrData);
     }
+
+    public function testGetUnsentMessages()
+    {
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get')
+        );
+
+        $doctrine = $this->getMockBuilder('Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $queryBuilder = $this->getMockBuilder('\Doctrine\ORM\QueryBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $query = $this->getMock('\TestableQuery', array('getResult'));
+
+        $message = $this->getMockBuilder('\Food\SmsBundle\Entity\Message')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $messageRepository = $this->getMockBuilder('\Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $foundMessages = array($message);
+
+        $messageService = new MessagesService($container);
+
+        $container->expects($this->once())
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getRepository')
+            ->with('FoodSmsBundle:Message')
+            ->will($this->returnValue($messageRepository));
+
+        $messageRepository->expects($this->once())
+            ->method('createQueryBuilder')
+            ->with('m')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('where')
+            ->with('m.sent = 0')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(1))
+            ->method('andWhere')
+            ->with('m.createdAt >= :yesterday')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(2))
+            ->method('andWhere')
+            ->with('m.timesSent < 5')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('orderBy')
+            ->with('m.createdAt', 'ASC')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('setParameter')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('getQuery')
+            ->will($this->returnValue($query));
+
+        $query->expects($this->once())
+            ->method('getResult')
+            ->will($this->returnValue($foundMessages));
+
+        $unsentMessages = $messageService->getUnsentMessages();
+
+        $this->assertEquals($foundMessages, $unsentMessages);
+    }
+
+    public function testNoUnsentMessages()
+    {
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get')
+        );
+
+        $doctrine = $this->getMockBuilder('Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $queryBuilder = $this->getMockBuilder('\Doctrine\ORM\QueryBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $query = $this->getMock('\TestableQuery', array('getResult'));
+
+        $messageRepository = $this->getMockBuilder('\Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $messageService = new MessagesService($container);
+
+        $container->expects($this->once())
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getRepository')
+            ->with('FoodSmsBundle:Message')
+            ->will($this->returnValue($messageRepository));
+
+        $messageRepository->expects($this->once())
+            ->method('createQueryBuilder')
+            ->with('m')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('where')
+            ->with('m.sent = 0')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(1))
+            ->method('andWhere')
+            ->with('m.createdAt >= :yesterday')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(2))
+            ->method('andWhere')
+            ->with('m.timesSent < 5')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('orderBy')
+            ->with('m.createdAt', 'ASC')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('setParameter')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('getQuery')
+            ->will($this->returnValue($query));
+
+        $query->expects($this->once())
+            ->method('getResult')
+            ->will($this->returnValue(false));
+
+        $unsentMessages = $messageService->getUnsentMessages();
+
+        $this->assertEquals(array(), $unsentMessages);
+    }
+
+    public function testGetUndeliveredMessages()
+    {
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get')
+        );
+
+        $doctrine = $this->getMockBuilder('Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $queryBuilder = $this->getMockBuilder('\Doctrine\ORM\QueryBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $query = $this->getMock('\TestableQuery', array('getResult'));
+
+        $message = $this->getMockBuilder('\Food\SmsBundle\Entity\Message')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $messageRepository = $this->getMockBuilder('\Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $foundMessages = array($message);
+
+        $messageService = new MessagesService($container);
+
+        $container->expects($this->once())
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getRepository')
+            ->with('FoodSmsBundle:Message')
+            ->will($this->returnValue($messageRepository));
+
+        $messageRepository->expects($this->once())
+            ->method('createQueryBuilder')
+            ->with('m')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('where')
+            ->with('m.sent = 1')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(1))
+            ->method('andWhere')
+            ->with('m.delivered = 0')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(2))
+            ->method('andWhere')
+            ->with('m.createdAt >= :yesterday')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(3))
+            ->method('andWhere')
+            ->with('m.submittedAt <= :sentJustNow')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('orderBy')
+            ->with('m.createdAt', 'ASC')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->exactly(2))
+            ->method('setParameter')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('getQuery')
+            ->will($this->returnValue($query));
+
+        $query->expects($this->once())
+            ->method('getResult')
+            ->will($this->returnValue($foundMessages));
+
+        $undeliveredMessages = $messageService->getUndeliveredMessages();
+
+        $this->assertEquals($foundMessages, $undeliveredMessages);
+    }
+
+    public function testNoUndeliveredMessages()
+    {
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get')
+        );
+
+        $doctrine = $this->getMockBuilder('Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $queryBuilder = $this->getMockBuilder('\Doctrine\ORM\QueryBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $query = $this->getMock('\TestableQuery', array('getResult'));
+
+        $messageRepository = $this->getMockBuilder('\Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $messageService = new MessagesService($container);
+
+        $container->expects($this->once())
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getRepository')
+            ->with('FoodSmsBundle:Message')
+            ->will($this->returnValue($messageRepository));
+
+        $messageRepository->expects($this->once())
+            ->method('createQueryBuilder')
+            ->with('m')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('where')
+            ->with('m.sent = 1')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(1))
+            ->method('andWhere')
+            ->with('m.delivered = 0')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(2))
+            ->method('andWhere')
+            ->with('m.createdAt >= :yesterday')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(3))
+            ->method('andWhere')
+            ->with('m.submittedAt <= :sentJustNow')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('orderBy')
+            ->with('m.createdAt', 'ASC')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->exactly(2))
+            ->method('setParameter')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('getQuery')
+            ->will($this->returnValue($query));
+
+        $query->expects($this->once())
+            ->method('getResult')
+            ->will($this->returnValue(false));
+
+        $undeliveredMessages = $messageService->getUndeliveredMessages();
+        $this->assertEquals(array(), $undeliveredMessages);
+    }
+}
+
+
+class TestableQuery extends AbstractQuery {
+    public function getSQL()
+    {}
+
+    protected function _doExecute()
+    {}
+
+    public function getResult()
+    {}
+
+    public function __construct()
+    {}
 }

@@ -9,6 +9,11 @@ parameters:
     available_locales: [lt, en, ru]
     available_locales_routing: lt | en | ru
     time_zone: "Europe/Vilnius"
+    available_sms_providers: [food.infobip]
+    infobip_provider.api_url: "http://api.infobip.com/api/v3/sendsms/json"
+    infobip_provider.account_url: "http://api2.infobip.com/api"
+    infobip_provider.login: "skanu1"
+    infobip_provider.password: "119279"
 
 framework:
     #esi:             ~

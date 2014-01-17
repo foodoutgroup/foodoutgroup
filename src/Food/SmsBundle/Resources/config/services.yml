@@ -1,11 +1,8 @@
-parameters:
-#    food_sms.example.class: Food\SmsBundle\Example
-
 services:
-#    food_sms.example:
-#        class: %food_sms.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
-
   food.messages:
-          class: Food\SmsBundle\Service\MessagesService
-          arguments: [@service_container]
+      class: Food\SmsBundle\Service\MessagesService
+      arguments: [@service_container]
+
+  food.infobip:
+      class: Food\SmsBundle\Service\InfobipProvider
+      arguments: [%infobip_provider.api_url%, %infobip_provider.account_url%, %infobip_provider.login%, %infobip_provider.password%, @logger]
