@@ -226,7 +226,7 @@ class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
             ),
         );
 
-        $infobipResponse4 = '{"results": [{"status":"0","messageid":"092100115456775780","destination":"385951111111"},{"status":"-6","messageid":"","destination":"000000000000"},{"status":"0","messageid":"092105545063777484","destination":"385953333333"}]}';
+        $infobipResponse4 = '{"results": [{"status":"0","messageid":"092100115456775780","destination":"385951111111"},{"status":"-6","messageid":"","destination":"000000000000"},{"status":"0","messageid":"092105545063777484","destination":"385953333333"},{"status":"-1016","messageid":"092105545063777161","destination":"385953333333"}]}';
         $expectedResult4 = array(
             array(
                 'status' => 0,
@@ -249,6 +249,13 @@ class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
                 'sent' => 1,
                 'error' => null,
             ),
+            array(
+                'status' => -1016,
+                'messageid' => '092105545063777161',
+                'destination' => '385953333333',
+                'sent' => 0,
+                'error' => 'Unknown error returned from InfoBip. Error status: -1016',
+            ),
         );
 
         $parsedResponse = $infobipProvider->parseResponse($infobipResponse1);
@@ -260,6 +267,31 @@ class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expectedResult2, $parsedResponse2);
         $this->assertEquals($expectedResult3, $parsedResponse3);
         $this->assertEquals($expectedResult4, $parsedResponse4);
+    }
+
+    /**
+     * @depends testParse
+     * @expectedException \Food\SmsBundle\Exceptions\ParseException
+     */
+    public function testParseException()
+    {
+        $infobipProvider = new InfobipProvider();
+
+        $infobipResponse = '{"results", [{"status":"0","messageid":"072101113352779063","destination":"37061514333"}]}';
+
+        $infobipProvider->parseResponse($infobipResponse);
+    }
+    /**
+     * @depends testParse
+     * @expectedException \Food\SmsBundle\Exceptions\ParseException
+     */
+    public function testParseWrongFormat()
+    {
+        $infobipProvider = new InfobipProvider();
+
+        $infobipResponse = '{"rezultatas": [{"status":"0","messageid":"072101113352779063","destination":"37061514333"}]}';
+
+        $infobipProvider->parseResponse($infobipResponse);
     }
 
     public function testDlrRequest()

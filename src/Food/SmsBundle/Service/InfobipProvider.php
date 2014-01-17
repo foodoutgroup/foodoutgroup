@@ -94,24 +94,20 @@ class InfobipProvider implements SmsProviderInterface {
         'REJECTED',
         'INVALID_MESSAGE_FORMAT',
     );
-    /**
-     * @var null
-     */
-    private $login;
 
     /**
      * @param string $url
      * @param string $accoutApiUrl
-     * @param string $login
+     * @param string $username
      * @param string $password
      * @param Logger $logger
      */
-    public function __construct($url=null, $accoutApiUrl=null, $login=null, $password=null, $logger=null)
+    public function __construct($url=null, $accoutApiUrl=null, $username=null, $password=null, $logger=null)
     {
         $this->apiUrl = $url;
         $this->accountApiUrl = $accoutApiUrl;
         $this->logger = $logger;
-        $this->login = $login;
+        $this->username = $username;
         $this->password = $password;
     }
 
@@ -124,7 +120,7 @@ class InfobipProvider implements SmsProviderInterface {
     }
 
     /**
-     * @return null
+     * @return \Monolog\Logger
      */
     public function getLogger()
     {
@@ -207,7 +203,8 @@ class InfobipProvider implements SmsProviderInterface {
     }
 
     /**
-     * TODO
+     * Parse InfoBip response for message sending
+     *
      * @param $response
      * @throws \Food\SmsBundle\Exceptions\ParseException
      * @return mixed

@@ -13,34 +13,66 @@ class ReSendCommand extends ContainerAwareCommand
     {
         $this
             ->setName('sms:resend')
-            ->setDescription('Greet someone')
-            ->addArgument(
-                'name',
-                InputArgument::OPTIONAL,
-                'Who do you want to greet?'
-            )
+            ->setDescription('Resend messages that was not delivered')
             ->addOption(
-                'yell',
+                'debug',
                 null,
                 InputOption::VALUE_NONE,
-                'If set, the task will yell in uppercase letters'
+                'If set, debug information will be logged'
             )
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $name = $input->getArgument('name');
-        if ($name) {
-            $text = 'Hello '.$name;
-        } else {
-            $text = 'Hello';
+        $count = 0;
+
+        $messagingService = $this->getContainer()->get('food.messages');
+        $messagingProviders = $this->getContainer()->getParameter('available_sms_providers');
+
+        // TODO https://basecamp.com/2470154/projects/4420182-skanu-lt-gamyba/todos/72720237-antrinio
+        if (count($messagingProviders) < 1) {
+            $output->writeln('<error>No messaging providers configured. Please check Your configuration!</error>');
+            return;
+        }
+        if (count($messagingProviders) > 1) {
+            $output->writeln('<error>Sorry, at the moment we dont support more than one provider!</error>');
+            $output->writeln('Available provider: '.var_export($messagingProviders, true));
+            return;
         }
 
-        if ($input->getOption('yell')) {
-            $text = strtoupper($text);
-        }
+        // OMG kaip negrazu, bet cia laikinai, kol tik viena provideri turim
+        /**
+         * @var \Food\SmsBundle\Service\InfobipProvider $provider
+         */
+        $provider = $this->getContainer()->get($messagingProviders[0]);
 
-        $output->writeln($text);
+        if ($input->getOption('debug')) {
+            $provider->setDebugEnabled(true);
+        }
+        $messagingService->setMessagingProvider($provider);
+
+        try {
+            $unsentMessages = $messagingService->getUndeliveredMessages();
+            $unsentMessagesCount = count($unsentMessages);
+            $output->writeln(sprintf('<info>%d stuck messages found. Starting to send them now!</info>', $unsentMessagesCount));
+
+            if (!empty($unsentMessages) && $unsentMessagesCount > 0) {
+                foreach($unsentMessages as $message) {
+                    $output->writeln(sprintf('<info>Resending message id: %d</info>', $message->getId()));
+                    $messagingService->sendMessage($message);
+                    $messagingService->saveMessage($message);
+                    $count++;
+                }
+            }
+
+            $output->writeln(sprintf('<info>%d messages sent</info>', $count));
+        } catch (\InvalidArgumentException $e) {
+                $output->writeln('<error>Sorry, lazy programmer left a bug :(</error>');
+                $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
+        } catch (\Exception $e) {
+            $output->writeln('<error>Mayday mayday, an error knocked the process down.</error>');
+            $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
+        }
     }
 }

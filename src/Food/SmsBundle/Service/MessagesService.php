@@ -2,10 +2,8 @@
 
 namespace Food\SmsBundle\Service;
 
-use Doctrine\DBAL\Query\QueryBuilder;
 use \Food\SmsBundle\Entity\Message;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * Class MessagesService
@@ -245,8 +243,34 @@ class MessagesService {
         $query = $repository->createQueryBuilder('m')
             ->where('m.sent = 0')
             ->andWhere('m.createdAt >= :yesterday')
+            ->andWhere('m.timesSent < 5')
             ->orderBy('m.createdAt', 'ASC')
             ->setParameter('yesterday', new \DateTime('-1 days'))
+            ->getQuery();
+
+        $messages = $query->getResult();
+        if (!$messages) {
+            return array();
+        }
+
+        return $messages;
+    }
+
+    /**
+     * @return array
+     */
+    public function getUndeliveredMessages()
+    {
+        $repository = $this->getContainer()->get('doctrine')->getRepository('FoodSmsBundle:Message');
+
+        $query = $repository->createQueryBuilder('m')
+            ->where('m.sent = 1')
+            ->andWhere('m.delivered = 0')
+            ->andWhere('m.createdAt >= :yesterday')
+            ->andWhere('m.submittedAt <= :sentJustNow')
+            ->orderBy('m.createdAt', 'ASC')
+            ->setParameter('yesterday', new \DateTime('-1 days'))
+            ->setParameter('sentJustNow', new \DateTime('-6 minutes'))
             ->getQuery();
 
         $messages = $query->getResult();

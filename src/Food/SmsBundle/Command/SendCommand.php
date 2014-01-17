@@ -11,7 +11,6 @@ class SendCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
-        // TODO
         $this
             ->setName('sms:send')
             ->setDescription('Send messages')
@@ -43,10 +42,12 @@ class SendCommand extends ContainerAwareCommand
         }
 
         // OMG kaip negrazu, bet cia laikinai, kol tik viena provideri turim
+        $provider = $this->getContainer()->get($messagingProviders[0]);
+
         if ($input->getOption('debug')) {
-            $messagingProviders[0]->setDebugEnabled(true);
+            $provider->setDebugEnabled(true);
         }
-        $messagingService->setMessagingProvider($messagingProviders[0]);
+        $messagingService->setMessagingProvider($provider);
 
         try {
             $unsentMessages = $messagingService->getUnsentMessages();
@@ -63,11 +64,11 @@ class SendCommand extends ContainerAwareCommand
             }
 
             $output->writeln(sprintf('<info>%d messages sent</info>', $count));
-        } catch (Exception $e) {
-            $output->writeln('<error>Mayday mayday, an error knocked the process down.</error>');
-            $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
         } catch (\InvalidArgumentException $e) {
             $output->writeln('<error>Sorry, lazy programmer left a bug :(</error>');
+            $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
+        } catch (\Exception $e) {
+            $output->writeln('<error>Mayday mayday, an error knocked the process down.</error>');
             $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
         }
     }
