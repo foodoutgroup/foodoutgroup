@@ -17,7 +17,7 @@ parameters:
     infobip_provider.password: "119279"
     # Situos gal issikelkime i parametru faila pagal aplinka?
     admin.emails: [mantas@skanu.lt]
-    admin.send_monitoring_message: true
+    admin.send_monitoring_message: false
     admin.phones: [37061514333]
 
 framework:

@@ -318,21 +318,54 @@ class MessagesService {
     }
 
     /**
+     * @return mixed
+     */
+    protected function getUndeliveredMessagesQuery()
+    {
+        $repository = $this->getContainer()->get('doctrine')->getRepository('FoodSmsBundle:Message');
+
+        $queryBuilder = $repository->createQueryBuilder('m')
+            ->where('m.sent = 1')
+            ->andWhere('m.delivered = 0')
+            ->orderBy('m.createdAt', 'ASC');
+
+        return  $queryBuilder;
+    }
+
+    /**
      * @return array
      */
     public function getUndeliveredMessages()
     {
-        $repository = $this->getContainer()->get('doctrine')->getRepository('FoodSmsBundle:Message');
-
-        $query = $repository->createQueryBuilder('m')
-            ->where('m.sent = 1')
-            ->andWhere('m.delivered = 0')
-            ->andWhere('m.createdAt >= :yesterday')
+        $query = $this->getUndeliveredMessagesQuery()
+            ->andWhere('m.submittedAt >= :yesterday')
             ->andWhere('m.submittedAt <= :sentJustNow')
-            ->orderBy('m.createdAt', 'ASC')
             ->setParameter('yesterday', new \DateTime('-1 days'))
             ->setParameter('sentJustNow', new \DateTime('-6 minutes'))
             ->getQuery();
+
+        $messages = $query->getResult();
+        if (!$messages) {
+            return array();
+        }
+
+        return $messages;
+    }
+
+    /**
+     * @param \DateTime $from
+     * @param \DateTime $to
+     * @return array
+     */
+    public function getUndeliveredMessagesForRange(\DateTime $from, \DateTime $to)
+    {
+        $query = $this->getUndeliveredMessagesQuery()
+            ->andWhere('m.submittedAt >= :from_date')
+            ->andWhere('m.submittedAt <= :to_date')
+            ->setParameter('from_date', $from)
+            ->setParameter('to_date', $to)
+            ->getQuery();
+
 
         $messages = $query->getResult();
         if (!$messages) {
