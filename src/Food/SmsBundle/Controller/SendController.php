@@ -6,12 +6,15 @@ use Food\SmsBundle\Service\InfobipProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Controller for sending single message (by id) with enabled debugging
+ *
+ * @package Food\SmsBundle\Controller
+ */
 class SendController extends Controller
 {
     public function sendAction($messageId)
     {
-        // TODO laikinai. Veliau reikes crono
-
         $messagingService = $this->container->get('food.messages');
         $message = $messagingService->getMessage($messageId);
 
@@ -19,12 +22,10 @@ class SendController extends Controller
             return new Response("Message {$messageId} - NOT FOUND, looser");
         }
 
-        // TODO iskelti i services.yml, kad uzkrautu per ten :) gal :)
         $infobipProvider = new InfobipProvider();
         $infobipProvider->setApiUrl('http://api.infobip.com/api/v3/sendsms/json');
         $infobipProvider->authenticate('skanu1', '119279');
 
-        // For debuging only!! TODO turn off this damn thing
         $infobipProvider->setLogger($this->container->get('logger'));
         $infobipProvider->setDebugEnabled(true);
 
@@ -32,7 +33,6 @@ class SendController extends Controller
         $messagingService->sendMessage($message);
 
         $messagingService->saveMessage($message);
-
 
         return new Response("Message {$messageId} - sent");
     }

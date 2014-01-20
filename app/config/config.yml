@@ -10,10 +10,15 @@ parameters:
     available_locales_routing: lt | en | ru
     time_zone: "Europe/Vilnius"
     available_sms_providers: [food.infobip]
+    sms.sender: "Skanu.lt"
     infobip_provider.api_url: "http://api.infobip.com/api/v3/sendsms/json"
     infobip_provider.account_url: "http://api2.infobip.com/api"
     infobip_provider.login: "skanu1"
     infobip_provider.password: "119279"
+    # Situos gal issikelkime i parametru faila pagal aplinka?
+    admin.emails: [mantas@skanu.lt]
+    admin.send_monitoring_message: true
+    admin.phones: [37061514333]
 
 framework:
     #esi:             ~
