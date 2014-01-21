@@ -2,8 +2,11 @@
 
 namespace Food\OrderBundle\Service;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Food\CartBundle\Service\CartService;
 use Food\OrderBundle\Entity\Order;
+use Food\OrderBundle\Entity\OrderDetails;
+use Food\OrderBundle\Entity\OrderDetailsOptions;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Security\Acl\Exception\Exception;
 
@@ -15,6 +18,12 @@ class OrderService extends ContainerAware
     public static $status_completed = "completed";
     public static $status_finished = "finished";
     public static $status_canceled = "canceled";
+
+
+    /**
+     * @var ObjectManager
+     */
+    private $em;
 
 
     private $context;
@@ -49,6 +58,30 @@ class OrderService extends ContainerAware
         return $this->cartService;
     }
 
+
+    /**
+     * @param \Doctrine\Common\Persistence\ObjectManager $em
+     *
+     * @return $this
+     */
+    public function setEm($em)
+    {
+        $this->em = $em;
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
+    public function getEm()
+    {
+        if (empty($this->em)) {
+            $this->setEm($this->container->get('doctrine')->getManager());
+        }
+        return $this->em;
+    }
+
+
     /**
      * @param \Food\UserBundle\Entity\User $user
      */
@@ -80,9 +113,6 @@ class OrderService extends ContainerAware
     {
         return $this->context;
     }
-
-
-
 
     /**
      * @return Order
@@ -171,8 +201,48 @@ class OrderService extends ContainerAware
 
     public function createOrderFromCart()
     {
+        $this->createOrder();
+        $this->saveOrder();
+        foreach ($this->getCartService()->getCartDishes() as $cartDish) {
+            $options = $this->getCartService()->getCartDishOptions($cartDish);
+            $dish = new OrderDetails();
+            $dish->setDishId($cartDish->getDishId()->getId())
+                ->setOrderId($this->getOrder())
+                ->setQuantity($cartDish->getQuantity())
+                ->setDishSizeCode($cartDish->getDishSizeId())
+                ->setPrice($cartDish->getDishSizeId()->getPrice())
+                ->setDishName($cartDish->getDishId()->getName())
+                ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
+                ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
+                ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
+                ->setOrderId($this->getOrder()->getId());
+            $this->getEm()->persist($dish);
+            $this->getEm()->flush();
 
+            foreach ($options as $opt) {
+                $orderOpt = new OrderDetailsOptions();
+                $orderOpt->setDishOptionId($opt->getDishOptionId()->getId())
+                    ->setDishOptionCode($opt->getDishOptionId()->getCode())
+                    ->setDishOptionName($opt->getDishOptionId()->getName())
+                    ->setPrice($opt->getDishOptionId()->getPrice())
+                    ->setDishId($cartDish->getDishId()->getId())
+                    ->setOrderId($this->getOrder()->getId());
+                $this->getEm()->persist($orderOpt);
+                $this->getEm()->flush();
+            }
+        }
     }
+
+    public function saveOrder()
+    {
+        if (empty($this->order) || $this->order == null) {
+            throw new Exception("Yah whatever... seivinam orderi neturedami jo ?:)");
+        } else {
+            $this->getEm()->persist($this->getOrder());
+            $this->getEm()->flush();
+        }
+    }
+
 
     private $localBiller = null;
 

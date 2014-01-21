@@ -233,6 +233,9 @@ class CartService {
        return $this;
     }
 
+    /**
+     * @return array|\Food\CartBundle\Entity\Cart[]
+     */
     public function getCartDishes()
     {
         $list = $this->getEm()->getRepository('FoodCartBundle:Cart')->findBy(
@@ -288,9 +291,9 @@ class CartService {
         $options = $this->getCartDishOptions($cartItem);
         foreach ($options as $cartOption) {
             $returnData[] = array(
-                'name' => $cartOption->getDishOptionId()->getName(),
-                'price' => $cartOption->getDishOptionId()->getPrice(),
-                'quantity' => $cartOption->getQuantity()
+                'name'      => $cartOption->getDishOptionId()->getName(),
+                'price'     => $cartOption->getDishOptionId()->getPrice(),
+                'quantity'  => $cartOption->getQuantity()
             );
         }
         return $returnData;
