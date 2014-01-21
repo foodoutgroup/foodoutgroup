@@ -1,11 +1,11 @@
 <?php
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Food\SmsBundle\Command\CheckUnsentMessagesCommand;
+use Food\SmsBundle\Command\CheckUndeliveredMessagesCommand;
 
-class CheckUnsentMessagesCommandTest extends \PHPUnit_Framework_TestCase
+class CheckUndeliveredMessagesCommandTest extends \PHPUnit_Framework_TestCase
 {
-    public function testNoUnsentMessages()
+    public function testNoUndeliveredMessages()
     {
         $container = $this->getMock(
             'Symfony\Component\DependencyInjection\Container',
@@ -16,12 +16,12 @@ class CheckUnsentMessagesCommandTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $application = new Application();
-        $application->add(new CheckUnsentMessagesCommand());
+        $application->add(new CheckUndeliveredMessagesCommand());
 
         /**
          * @var SendCommand $command
          */
-        $command = $application->find('sms:check:unsent');
+        $command = $application->find('sms:check:undelivered');
         $command->setContainer($container);
 
         $container->expects($this->at(0))
@@ -30,7 +30,7 @@ class CheckUnsentMessagesCommandTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($messagingService));
 
         $messagingService->expects($this->once())
-            ->method('getUnsentMessagesForRange')
+            ->method('getUndeliveredMessagesForRange')
             ->with($this->isInstanceOf('\DateTime'), $this->isInstanceOf('\DateTime'))
             ->will($this->returnValue(array()));
 
@@ -39,11 +39,11 @@ class CheckUnsentMessagesCommandTest extends \PHPUnit_Framework_TestCase
             array('command' => $command->getName())
         );
 
-        $this->assertRegExp('/OK: all messages sent. Have a nice day/', $commandTester->getDisplay());
+        $this->assertRegExp('/OK: all messages delivered to client/', $commandTester->getDisplay());
     }
 
     /**
-     * @depends testNoUnsentMessages
+     * @depends testNoUndeliveredMessages
      */
     public function testExceptionHappenedSoundTheAlarm()
     {
@@ -59,12 +59,12 @@ class CheckUnsentMessagesCommandTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $application = new Application();
-        $application->add(new CheckUnsentMessagesCommand());
+        $application->add(new CheckUndeliveredMessagesCommand());
 
         /**
          * @var SendCommand $command
          */
-        $command = $application->find('sms:check:unsent');
+        $command = $application->find('sms:check:undelivered');
         $command->setContainer($container);
 
         $container->expects($this->at(0))
@@ -73,7 +73,7 @@ class CheckUnsentMessagesCommandTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($messagingService));
 
         $messagingService->expects($this->once())
-            ->method('getUnsentMessagesForRange')
+            ->method('getUndeliveredMessagesForRange')
             ->with($this->isInstanceOf('\DateTime'), $this->isInstanceOf('\DateTime'))
             ->will($this->throwException(new \Exception('I failed')));
 
@@ -97,7 +97,7 @@ class CheckUnsentMessagesCommandTest extends \PHPUnit_Framework_TestCase
             array('command' => $command->getName())
         );
 
-        $this->assertRegExp('/Error in unsent messages check: I failed/', $commandTester->getDisplay());
+        $this->assertRegExp('/Error in undelivered messages check: I failed/', $commandTester->getDisplay());
     }
 
     /**
@@ -126,7 +126,7 @@ class CheckUnsentMessagesCommandTest extends \PHPUnit_Framework_TestCase
         $phones = array($phone);
         $sendMessages = true;
         $sender = 'niamniamas.info monitoring';
-        $errorMessage = 'ERROR: 1 unsent messages!';
+        $errorMessage = 'ERROR: 1 undelivered messages!';
         $smsMessage = new \Food\SmsBundle\Entity\Message();
         $smsMessage->setSender($sender);
         $smsMessage->setRecipient($phone);
@@ -134,12 +134,12 @@ class CheckUnsentMessagesCommandTest extends \PHPUnit_Framework_TestCase
         $messages = array($smsMessage);
 
         $application = new Application();
-        $application->add(new CheckUnsentMessagesCommand());
+        $application->add(new CheckUndeliveredMessagesCommand());
 
         /**
          * @var SendCommand $command
          */
-        $command = $application->find('sms:check:unsent');
+        $command = $application->find('sms:check:undelivered');
         $command->setContainer($container);
 
         $container->expects($this->at(0))
@@ -148,7 +148,7 @@ class CheckUnsentMessagesCommandTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($messagingService));
 
         $messagingService->expects($this->once())
-            ->method('getUnsentMessagesForRange')
+            ->method('getUndeliveredMessagesForRange')
             ->with($this->isInstanceOf('\DateTime'), $this->isInstanceOf('\DateTime'))
             ->will($this->returnValue($messages));
 

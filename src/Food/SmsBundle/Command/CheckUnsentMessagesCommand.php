@@ -47,6 +47,7 @@ class CheckUnsentMessagesCommand extends ContainerAwareCommand
 
     protected function soundTheAlarm($text)
     {
+        $text = str_replace(array('<error>', '</error>'), '', $text);
         // TODO po merge su cart branchu - ijungiam domain pasiimima
 //        $domain = $this->getContainer()->getParameter('domain');
         $domain = 'skanu.lt';
@@ -81,7 +82,6 @@ class CheckUnsentMessagesCommand extends ContainerAwareCommand
 
         if ($sendMonitoringMessages && !empty($adminPhones)) {
             foreach ($adminPhones as $phone) {
-                $text = str_replace(array('<error>', '</error>'), '', $text);
                 $textMessage = $messagingService->createMessage($sender, $phone, $text);
                 $messagingService->sendMessage($textMessage);
                 $messagingService->saveMessage($textMessage);
