@@ -36,7 +36,7 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
-        array('command' => $command->getName())
+            array('command' => $command->getName())
         );
 
         $this->assertRegExp('/No messaging providers configured. Please check Your configuration!/', $commandTester->getDisplay());
@@ -73,7 +73,7 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
-        array('command' => $command->getName())
+            array('command' => $command->getName())
         );
 
         $this->assertRegExp('/Sorry, at the moment we dont support more than one provider!/', $commandTester->getDisplay());
@@ -138,7 +138,7 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
-        array('command' => $command->getName())
+            array('command' => $command->getName())
         );
 
         $this->assertRegExp('/0 messages sent/', $commandTester->getDisplay());
@@ -204,7 +204,7 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
-        array('command' => $command->getName(), '--debug' => true)
+            array('command' => $command->getName(), '--debug' => true)
         );
 
         $this->assertRegExp('/0 unsent messages found./', $commandTester->getDisplay());

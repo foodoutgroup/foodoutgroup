@@ -112,6 +112,33 @@ class MessagesService {
     }
 
     /**
+     * Creates message entity
+     *
+     * @param string $sender
+     * @param string $recipient
+     * @param string $text
+     *
+     * @return Message
+     */
+    public function createMessage($sender=null, $recipient=null, $text=null)
+    {
+        $message = new Message();
+        $message->setCreatedAt(new \DateTime("now"));
+
+        if (!empty($sender)) {
+            $message->setSender($sender);
+        }
+        if (!empty($recipient)) {
+            $message->setRecipient($recipient);
+        }
+        if (!empty($text)) {
+            $message->setMessage($text);
+        }
+
+        return $message;
+    }
+
+    /**
      * @param Message $message
      * @throws \Exception
      */
@@ -234,18 +261,87 @@ class MessagesService {
     }
 
     /**
+     * @return mixed
+     */
+    protected function getUnsentMessagesQuery()
+    {
+        $repository = $this->getContainer()->get('doctrine')->getRepository('FoodSmsBundle:Message');
+
+        $queryBuilder = $repository->createQueryBuilder('m')
+            ->where('m.sent = 0')
+            ->orderBy('m.createdAt', 'ASC');
+
+        return  $queryBuilder;
+    }
+
+    /**
      * @return array
      */
     public function getUnsentMessages()
     {
-        $repository = $this->getContainer()->get('doctrine')->getRepository('FoodSmsBundle:Message');
-
-        $query = $repository->createQueryBuilder('m')
-            ->where('m.sent = 0')
+        $query = $this->getUnsentMessagesQuery()
             ->andWhere('m.createdAt >= :yesterday')
             ->andWhere('m.timesSent < 5')
-            ->orderBy('m.createdAt', 'ASC')
             ->setParameter('yesterday', new \DateTime('-1 days'))
+            ->getQuery();
+
+
+        $messages = $query->getResult();
+        if (!$messages) {
+            return array();
+        }
+
+        return $messages;
+    }
+
+    /**
+     * @param \DateTime $from
+     * @param \DateTime $to
+     * @return array
+     */
+    public function getUnsentMessagesForRange(\DateTime $from, \DateTime $to)
+    {
+        $query = $this->getUnsentMessagesQuery()
+            ->andWhere('m.createdAt >= :from_date')
+            ->andWhere('m.createdAt <= :to_date')
+            ->setParameter('from_date', $from)
+            ->setParameter('to_date', $to)
+            ->getQuery();
+
+
+        $messages = $query->getResult();
+        if (!$messages) {
+            return array();
+        }
+
+        return $messages;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getUndeliveredMessagesQuery()
+    {
+        $repository = $this->getContainer()->get('doctrine')->getRepository('FoodSmsBundle:Message');
+
+        $queryBuilder = $repository->createQueryBuilder('m')
+            ->where('m.sent = 1')
+            ->andWhere('m.delivered = 0')
+            ->orderBy('m.createdAt', 'ASC');
+
+        return  $queryBuilder;
+    }
+
+    /**
+     * @return array
+     */
+    public function getUndeliveredMessages()
+    {
+        $query = $this->getUndeliveredMessagesQuery()
+            ->andWhere('m.submittedAt >= :yesterday')
+            ->andWhere('m.submittedAt <= :sentJustNow')
+            ->setParameter('yesterday', new \DateTime('-1 days'))
+            ->setParameter('sentJustNow', new \DateTime('-6 minutes'))
             ->getQuery();
 
         $messages = $query->getResult();
@@ -257,21 +353,19 @@ class MessagesService {
     }
 
     /**
+     * @param \DateTime $from
+     * @param \DateTime $to
      * @return array
      */
-    public function getUndeliveredMessages()
+    public function getUndeliveredMessagesForRange(\DateTime $from, \DateTime $to)
     {
-        $repository = $this->getContainer()->get('doctrine')->getRepository('FoodSmsBundle:Message');
-
-        $query = $repository->createQueryBuilder('m')
-            ->where('m.sent = 1')
-            ->andWhere('m.delivered = 0')
-            ->andWhere('m.createdAt >= :yesterday')
-            ->andWhere('m.submittedAt <= :sentJustNow')
-            ->orderBy('m.createdAt', 'ASC')
-            ->setParameter('yesterday', new \DateTime('-1 days'))
-            ->setParameter('sentJustNow', new \DateTime('-6 minutes'))
+        $query = $this->getUndeliveredMessagesQuery()
+            ->andWhere('m.submittedAt >= :from_date')
+            ->andWhere('m.submittedAt <= :to_date')
+            ->setParameter('from_date', $from)
+            ->setParameter('to_date', $to)
             ->getQuery();
+
 
         $messages = $query->getResult();
         if (!$messages) {

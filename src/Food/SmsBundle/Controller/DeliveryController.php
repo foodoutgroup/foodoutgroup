@@ -72,8 +72,6 @@ class DeliveryController extends Controller
         $provider->setDebugEnabled(true);
 
         $messagingService->setMessagingProvider($provider);
-
-        // TODO finish with deliveries
         $messagingService->updateMessagesDelivery($request->getContent());
 
         return new Response("OK, response parsed");

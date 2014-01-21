@@ -186,6 +186,43 @@ class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(false, $returnedMessage);
     }
 
+    public function testCreateMessage()
+    {
+        $message = new Message();
+        $createdDate = new \DateTime("now");
+
+        $messagesService = new MessagesService($this->container, null);
+        $newMessage = $messagesService->createMessage();
+
+        // OMG hack, kad datos skirtumai del galimo lago neknistu proto :(
+        $message->setCreatedAt($createdDate);
+        $newMessage->setCreatedAt($createdDate);
+
+        $this->assertEquals($message, $newMessage);
+    }
+
+    public function testCreateMessageWithParams()
+    {
+        $message = new Message();
+        $createdDate = new \DateTime("now");
+        $sender = 'niomNiom.info';
+        $recipient = '37061234567';
+        $text = 'Oh, happy text!';
+
+        $message->setSender($sender);
+        $message->setRecipient($recipient);
+        $message->setMessage($text);
+
+        $messagesService = new MessagesService($this->container, null);
+        $newMessage = $messagesService->createMessage($sender, $recipient, $text);
+
+        // OMG hack, kad datos skirtumai del galimo lago neknistu proto :(
+        $message->setCreatedAt($createdDate);
+        $newMessage->setCreatedAt($createdDate);
+
+        $this->assertEquals($message, $newMessage);
+    }
+
     /**
      * @expectedException \Exception
      */
@@ -525,24 +562,24 @@ class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
             ->with('m')
             ->will($this->returnValue($queryBuilder));
 
-        $queryBuilder->expects($this->once())
+        $queryBuilder->expects($this->at(0))
             ->method('where')
             ->with('m.sent = 0')
             ->will($this->returnValue($queryBuilder));
 
-        $queryBuilder->expects($this->at(1))
-            ->method('andWhere')
-            ->with('m.createdAt >= :yesterday')
-            ->will($this->returnValue($queryBuilder));
-
         $queryBuilder->expects($this->at(2))
             ->method('andWhere')
-            ->with('m.timesSent < 5')
+            ->with('m.createdAt >= :yesterday')
             ->will($this->returnValue($queryBuilder));
 
         $queryBuilder->expects($this->once())
             ->method('orderBy')
             ->with('m.createdAt', 'ASC')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(3))
+            ->method('andWhere')
+            ->with('m.timesSent < 5')
             ->will($this->returnValue($queryBuilder));
 
         $queryBuilder->expects($this->once())
@@ -600,24 +637,24 @@ class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
             ->with('m')
             ->will($this->returnValue($queryBuilder));
 
-        $queryBuilder->expects($this->once())
+        $queryBuilder->expects($this->at(0))
             ->method('where')
             ->with('m.sent = 0')
             ->will($this->returnValue($queryBuilder));
 
-        $queryBuilder->expects($this->at(1))
-            ->method('andWhere')
-            ->with('m.createdAt >= :yesterday')
-            ->will($this->returnValue($queryBuilder));
-
         $queryBuilder->expects($this->at(2))
             ->method('andWhere')
-            ->with('m.timesSent < 5')
+            ->with('m.createdAt >= :yesterday')
             ->will($this->returnValue($queryBuilder));
 
         $queryBuilder->expects($this->once())
             ->method('orderBy')
             ->with('m.createdAt', 'ASC')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(3))
+            ->method('andWhere')
+            ->with('m.timesSent < 5')
             ->will($this->returnValue($queryBuilder));
 
         $queryBuilder->expects($this->once())
@@ -691,12 +728,12 @@ class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
             ->with('m.delivered = 0')
             ->will($this->returnValue($queryBuilder));
 
-        $queryBuilder->expects($this->at(2))
+        $queryBuilder->expects($this->at(3))
             ->method('andWhere')
-            ->with('m.createdAt >= :yesterday')
+            ->with('m.submittedAt >= :yesterday')
             ->will($this->returnValue($queryBuilder));
 
-        $queryBuilder->expects($this->at(3))
+        $queryBuilder->expects($this->at(4))
             ->method('andWhere')
             ->with('m.submittedAt <= :sentJustNow')
             ->will($this->returnValue($queryBuilder));
@@ -771,12 +808,12 @@ class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
             ->with('m.delivered = 0')
             ->will($this->returnValue($queryBuilder));
 
-        $queryBuilder->expects($this->at(2))
+        $queryBuilder->expects($this->at(3))
             ->method('andWhere')
-            ->with('m.createdAt >= :yesterday')
+            ->with('m.submittedAt >= :yesterday')
             ->will($this->returnValue($queryBuilder));
 
-        $queryBuilder->expects($this->at(3))
+        $queryBuilder->expects($this->at(4))
             ->method('andWhere')
             ->with('m.submittedAt <= :sentJustNow')
             ->will($this->returnValue($queryBuilder));
@@ -800,6 +837,248 @@ class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
 
         $undeliveredMessages = $messageService->getUndeliveredMessages();
         $this->assertEquals(array(), $undeliveredMessages);
+    }
+
+    public function testGetUnsentMessagesForRange()
+    {
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get')
+        );
+
+        $queryBuilder = $this->getMockBuilder('\Doctrine\ORM\QueryBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $query = $this->getMock('\TestableQuery', array('getResult'));
+
+        $messageService = $this->getMock(
+            'Food\SmsBundle\Service\MessagesService',
+            array('getUnsentMessagesQuery'),
+            array($container, null)
+        );
+
+        $message = $this->getMockBuilder('\Food\SmsBundle\Entity\Message')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $from = new \DateTime('-1 hours');
+        $to = new \DateTime('-2 minutes');
+        $messages = array($message);
+
+        $messageService->expects($this->once())
+            ->method('getUnsentMessagesQuery')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(0))
+            ->method('andWhere')
+            ->with('m.createdAt >= :from_date')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(1))
+            ->method('andWhere')
+            ->with('m.createdAt <= :to_date')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(2))
+            ->method('setParameter')
+            ->with('from_date', $from)
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(3))
+            ->method('setParameter')
+            ->with('to_date', $to)
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('getQuery')
+            ->will($this->returnValue($query));
+
+        $query->expects($this->once())
+            ->method('getResult')
+            ->will($this->returnValue($messages));
+
+        $messagesForRange = $messageService->getUnsentMessagesForRange($from, $to);
+        $this->assertEquals($messages, $messagesForRange);
+    }
+
+    public function testNoUnsentMessagesForRange()
+    {
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get')
+        );
+
+        $queryBuilder = $this->getMockBuilder('\Doctrine\ORM\QueryBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $query = $this->getMock('\TestableQuery', array('getResult'));
+
+        $messageService = $this->getMock(
+            'Food\SmsBundle\Service\MessagesService',
+            array('getUnsentMessagesQuery'),
+            array($container, null)
+        );
+
+        $from = new \DateTime('-1 hours');
+        $to = new \DateTime('-2 minutes');
+
+        $messageService->expects($this->once())
+            ->method('getUnsentMessagesQuery')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(0))
+            ->method('andWhere')
+            ->with('m.createdAt >= :from_date')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(1))
+            ->method('andWhere')
+            ->with('m.createdAt <= :to_date')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(2))
+            ->method('setParameter')
+            ->with('from_date', $from)
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(3))
+            ->method('setParameter')
+            ->with('to_date', $to)
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('getQuery')
+            ->will($this->returnValue($query));
+
+        $query->expects($this->once())
+            ->method('getResult')
+            ->will($this->returnValue(false));
+
+        $messagesForRange = $messageService->getUnsentMessagesForRange($from, $to);
+        $this->assertEquals(array(), $messagesForRange);
+    }
+
+    public function testGetUndeliveredMessagesForRange()
+    {
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get')
+        );
+
+        $queryBuilder = $this->getMockBuilder('\Doctrine\ORM\QueryBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $query = $this->getMock('\TestableQuery', array('getResult'));
+
+        $messageService = $this->getMock(
+            'Food\SmsBundle\Service\MessagesService',
+            array('getUndeliveredMessagesQuery'),
+            array($container, null)
+        );
+
+        $message = $this->getMockBuilder('\Food\SmsBundle\Entity\Message')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $from = new \DateTime('-1 hours');
+        $to = new \DateTime('-2 minutes');
+        $messages = array($message);
+
+        $messageService->expects($this->once())
+            ->method('getUndeliveredMessagesQuery')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(0))
+            ->method('andWhere')
+            ->with('m.submittedAt >= :from_date')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(1))
+            ->method('andWhere')
+            ->with('m.submittedAt <= :to_date')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(2))
+            ->method('setParameter')
+            ->with('from_date', $from)
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(3))
+            ->method('setParameter')
+            ->with('to_date', $to)
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('getQuery')
+            ->will($this->returnValue($query));
+
+        $query->expects($this->once())
+            ->method('getResult')
+            ->will($this->returnValue($messages));
+
+        $messagesForRange = $messageService->getUndeliveredMessagesForRange($from, $to);
+        $this->assertEquals($messages, $messagesForRange);
+    }
+
+    public function testNoUndeliveredMessagesForRange()
+    {
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get')
+        );
+
+        $queryBuilder = $this->getMockBuilder('\Doctrine\ORM\QueryBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $query = $this->getMock('\TestableQuery', array('getResult'));
+
+        $messageService = $this->getMock(
+            'Food\SmsBundle\Service\MessagesService',
+            array('getUndeliveredMessagesQuery'),
+            array($container, null)
+        );
+
+        $from = new \DateTime('-1 hours');
+        $to = new \DateTime('-2 minutes');
+
+        $messageService->expects($this->once())
+            ->method('getUndeliveredMessagesQuery')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(0))
+            ->method('andWhere')
+            ->with('m.submittedAt >= :from_date')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(1))
+            ->method('andWhere')
+            ->with('m.submittedAt <= :to_date')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(2))
+            ->method('setParameter')
+            ->with('from_date', $from)
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(3))
+            ->method('setParameter')
+            ->with('to_date', $to)
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->once())
+            ->method('getQuery')
+            ->will($this->returnValue($query));
+
+        $query->expects($this->once())
+            ->method('getResult')
+            ->will($this->returnValue(false));
+
+        $messagesForRange = $messageService->getUndeliveredMessagesForRange($from, $to);
+        $this->assertEquals(array(), $messagesForRange);
     }
 }
 
