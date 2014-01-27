@@ -101,6 +101,7 @@ class UserAdmin extends SonataUserAdmin {
                         'choices' => array(
                             'ROLE_ADMIN' => 'ROLE_ADMIN: ROLE_MODERATOR',
                             'ROLE_MODERATOR' => 'ROLE_MODERATOR',
+                            'ROLE_SUPPORT' => 'ROLE_SUPPORT',
                             'ROLE_USER' => 'ROLE_USER',
                         )
                     )

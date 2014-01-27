@@ -6,6 +6,7 @@ security:
         ROLE_MODERATOR:   ROLE_USER, ROLE_SONATA_ADMIN
         ROLE_ADMIN:       ROLE_MODERATOR
         ROLE_SUPER_ADMIN: ROLE_SONATA_ADMIN
+        ROLE_SUPPORT:     ROLE_USER
 #        SONATA:
 #          - ROLE_SONATA_PAGE_ADMIN_PAGE_EDIT
 
@@ -39,8 +40,8 @@ security:
               check_path:     /login_check
               failure_path:   null
           logout:
-              path: /admin/logout
-              target: /admin/
+              path: /logout
+              target: /
           anonymous:    true
 #        main:
 #            pattern: ^/
@@ -73,7 +74,7 @@ security:
         # Secured part of the site
         # This config requires being logged for the whole site and having the admin role for the admin part.
         # Change these rules to adapt them to your needs
-        - { path: ^/[a-z][a-z]/admin, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_MODERATOR] }
+        - { path: ^/[a-z][a-z]/admin, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_MODERATOR, ROLE_SUPPORT] }
         - { path: ^/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }

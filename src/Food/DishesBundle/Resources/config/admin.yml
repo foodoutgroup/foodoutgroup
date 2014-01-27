@@ -133,3 +133,14 @@ services:
                 - ~
             calls:
                 - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.support:
+            class: Food\SupportBundle\Admin\SupportAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.order.support" }
+            arguments:
+                - ~
+                - Food\CartBundle\Entity\Cart
+                - 'FoodSupportBundle:SupportAdmin'
+            calls:
+                - [ setTranslationDomain, [SonataAdminBundle]]

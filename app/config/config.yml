@@ -182,6 +182,11 @@ sonata_admin:
                   item_adds:
                       - sonata.admin.users
                   roles: [ ROLE_ADMIN ]
+              admin.support:
+                  items: ~
+                  item_adds:
+                      - sonata.admin.support
+                  roles: [ ROLE_SUPPORT ]
               acme.admin.group.misc: ~
 
 stof_doctrine_extensions:
@@ -199,6 +204,6 @@ a2lix_translation_form:
 #evp omg
 evp_web_to_pay:
     credentials:
-        project_id: 12345 # Kolkas crap, o ne id :D
-        sign_password: mad8956115689
+        project_id: 45333 # Kolkas crap, o ne id :D
+        sign_password: 4e9f20772a3fa0c83f76dae9c6e06008
     use_sandbox: true
