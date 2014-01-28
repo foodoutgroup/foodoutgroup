@@ -33,6 +33,15 @@ class Dish implements Translatable
      */
     private $name;
 
+
+    /**
+     * @var string
+     *
+     * @Gedmo\Translatable
+     * @ORM\Column(name="description", type="text")
+     */
+    private $description;
+
     /**
      * @var \Food\DishesBundle\Entity\Place
      *
@@ -530,5 +539,28 @@ class Dish implements Translatable
     public function getSizes()
     {
         return $this->sizes;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Dish
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

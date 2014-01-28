@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "5a0220cb08aaf721942d98fac1f08e91",
+    "hash": "9a7a810c8c1b284ee8924404547ba99e",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -798,12 +798,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "58958e596541cc34d8a26050ca4fe69470c2722b"
+                "reference": "da9a97314884275c77a741205bda9f86afe23ffd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/58958e596541cc34d8a26050ca4fe69470c2722b",
-                "reference": "58958e596541cc34d8a26050ca4fe69470c2722b",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/da9a97314884275c77a741205bda9f86afe23ffd",
+                "reference": "da9a97314884275c77a741205bda9f86afe23ffd",
                 "shasum": ""
             },
             "require": {
@@ -858,7 +858,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2014-01-19 03:58:20"
+            "time": "2014-01-22 08:58:14"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -998,12 +998,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jdorn/sql-formatter.git",
-                "reference": "64990d96e0959dff8e059dfcdc1af130728d92bc"
+                "reference": "38058f6fc48b05bb7a18946e773f9916942dfecd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jdorn/sql-formatter/zipball/64990d96e0959dff8e059dfcdc1af130728d92bc",
-                "reference": "64990d96e0959dff8e059dfcdc1af130728d92bc",
+                "url": "https://api.github.com/repos/jdorn/sql-formatter/zipball/38058f6fc48b05bb7a18946e773f9916942dfecd",
+                "reference": "38058f6fc48b05bb7a18946e773f9916942dfecd",
                 "shasum": ""
             },
             "require": {
@@ -1040,7 +1040,7 @@
                 "highlight",
                 "sql"
             ],
-            "time": "2014-01-12 16:20:24"
+            "time": "2014-01-23 04:54:58"
         },
         {
             "name": "jquery/jquery",
@@ -1531,12 +1531,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "7edddb7497814c3251f0fb60e44c6ee1c3e3c2e1"
+                "reference": "5e8c2ce9116cde7ccaa4220d60f38f1d53209d73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/7edddb7497814c3251f0fb60e44c6ee1c3e3c2e1",
-                "reference": "7edddb7497814c3251f0fb60e44c6ee1c3e3c2e1",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/5e8c2ce9116cde7ccaa4220d60f38f1d53209d73",
+                "reference": "5e8c2ce9116cde7ccaa4220d60f38f1d53209d73",
                 "shasum": ""
             },
             "require": {
@@ -1603,7 +1603,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2014-01-16 13:06:00"
+            "time": "2014-01-21 09:04:46"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -2765,6 +2765,73 @@
                 "templating"
             ],
             "time": "2013-12-06 07:47:10"
+        },
+        {
+            "name": "webtopay/libwebtopay",
+            "version": "1.6.x-dev",
+            "source": {
+                "type": "hg",
+                "url": "https://bitbucket.org/paysera/libwebtopay",
+                "reference": "64fdfad73b0cd3593228143946f223062d5994a4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/paysera/libwebtopay/get/64fdfad73b0cd3593228143946f223062d5994a4.zip",
+                "reference": "64fdfad73b0cd3593228143946f223062d5994a4",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "EVP International",
+                    "homepage": "http://www.webtopay.com/"
+                }
+            ],
+            "description": "PHP Library for WebToPay provided services",
+            "time": "2013-09-24 09:03:04"
+        },
+        {
+            "name": "webtopay/webtopay-bundle",
+            "version": "dev-master",
+            "target-dir": "Evp/Bundle/WebToPayBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/evp/WebToPayBundle.git",
+                "reference": "fac566911f7b3da4086f2eb0511014bbe5838e4a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/evp/WebToPayBundle/zipball/fac566911f7b3da4086f2eb0511014bbe5838e4a",
+                "reference": "fac566911f7b3da4086f2eb0511014bbe5838e4a",
+                "shasum": ""
+            },
+            "require": {
+                "webtopay/libwebtopay": "1.6.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Evp\\Bundle\\WebToPayBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "EVP International",
+                    "homepage": "https://www.paysera.com/"
+                }
+            ],
+            "description": "Symfony2 bundle for WebToPay provided services",
+            "time": "2014-01-21 15:34:06"
         }
     ],
     "packages-dev": [
@@ -2799,7 +2866,9 @@
         "jdorn/sql-formatter": 20,
         "a2lix/translation-form-bundle": 20,
         "doctrine/doctrine-fixtures-bundle": 20,
-        "sonata-project/user-bundle": 20
+        "sonata-project/user-bundle": 20,
+        "webtopay/libwebtopay": 20,
+        "webtopay/webtopay-bundle": 20
     },
     "platform": {
         "php": ">=5.3.3"

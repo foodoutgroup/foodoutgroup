@@ -11,11 +11,15 @@ food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin).+"
+        slug : "^(?!admin|cart|call_center).+"
 
 food_admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
     prefix: /admin
+
+food_cart:
+    resource: "@FoodCartBundle/Resources/config/routing.yml"
+    prefix:   /cart
 
 static:
     path:     /static/{id}

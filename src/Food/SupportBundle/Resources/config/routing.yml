@@ -1,0 +1,19 @@
+#support:
+#    pattern:  /call_center/list
+#    defaults: { _controller: FoodSupportBundle:Support:index }
+#
+#support_create:
+#    pattern:  /call_center/create
+#    defaults: { _controller: FoodSupportBundle:Support:create }
+
+#suport_login:
+#    pattern: /support/login
+#    defaults: { _controller: FOSUserBundle:AdminSecurity:login }
+#
+#suport_login_check:
+#    pattern: /support/login_check
+#    defaults: { _controller: FOSUserBundle:AdminSecurity:check }
+#
+#suport_logout:
+#    pattern: /support/logout
+#    defaults: { _controller: FOSUserBundle:AdminSecurity:logout }

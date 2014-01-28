@@ -19,6 +19,10 @@ parameters:
     admin.emails: [mantas@skanu.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
+    domain: "skanu.lt"
+    arc_gis_user: "skanulabai"
+    arc_gis_pass: "labaiskanu"
+    arc_gis_geocode_url: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=pjson&Address=_1_&City=_2_&CountryCode=LT&outFields=AddrNum,StName,City"
 
 framework:
     #esi:             ~
@@ -188,6 +192,11 @@ sonata_admin:
                   item_adds:
                       - sonata.admin.users
                   roles: [ ROLE_ADMIN ]
+              admin.support:
+                  items: ~
+                  item_adds:
+                      - sonata.admin.support
+                  roles: [ ROLE_SUPPORT ]
               acme.admin.group.misc: ~
 
 stof_doctrine_extensions:
@@ -201,3 +210,10 @@ a2lix_translation_form:
     default_required: true
     manager_registry: doctrine
     templating: "A2lixTranslationFormBundle::default.html.twig"
+
+#evp omg
+evp_web_to_pay:
+    credentials:
+        project_id: 45333 # Kolkas crap, o ne id :D
+        sign_password: 4e9f20772a3fa0c83f76dae9c6e06008
+    use_sandbox: true

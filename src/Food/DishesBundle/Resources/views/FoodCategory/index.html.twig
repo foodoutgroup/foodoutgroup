@@ -12,9 +12,17 @@
             </ul>
         </div>
         <div class="row">
-
-            ERM JO
-
+            <h2>{{ category.name }}</h2>
+            {% for dish in category.dishes %}
+                <div class="col-6 col-sm-6 col-lg-4 dish">
+                    <h2>{{ dish.name }}</h2>
+                    <p>
+                        <img src="/app_dev.php/images/test_img_test_img_1.jpg" alt="" style="width: 200px; border-radius: 30px;">
+                    </p>
+                    {{ dish.description }}
+                    <p><a class="btn btn-default add-cart" href="#" role="button">Kalam i karta »</a></p>
+                </div>
+            {% endfor %}
         </div><!--/row-->
     </div><!--/span-->
 {% endblock %}

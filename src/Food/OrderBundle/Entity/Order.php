@@ -43,6 +43,18 @@ class Order
     private $order_status;
 
     /**
+     * @var text
+     * @ORM\Column(name="comment", type="text")
+     */
+    private $comment;
+
+    /**
+     * @var text
+     * @ORM\Column(name="place_comment", type="text")
+     */
+    private $place_comment;
+
+    /**
      * @var integer
      * @ORM\Column(name="vat", type="integer")
      */
@@ -201,5 +213,60 @@ class Order
     public function getOrderHash()
     {
         return $this->order_hash;
+    }
+
+    /**
+     * Set comment
+     *
+     * @param string $comment
+     * @return Order
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+    
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return string 
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * Set place_comment
+     *
+     * @param string $placeComment
+     * @return Order
+     */
+    public function setPlaceComment($placeComment)
+    {
+        $this->place_comment = $placeComment;
+    
+        return $this;
+    }
+
+    /**
+     * Get place_comment
+     *
+     * @return string 
+     */
+    public function getPlaceComment()
+    {
+        return $this->place_comment;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAmount()
+    {
+        // TODO susumuoti visu detailsu kainas ir grazinti ;)
+        return '15.5';
     }
 }

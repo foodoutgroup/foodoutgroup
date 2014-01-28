@@ -5,10 +5,13 @@ use Doctrine\Tests\Common\DataFixtures\ReferenceRepositoryTest;
 use Food\DishesBundle\Entity\Dish;
 use Food\CartBundle\Entity\Cart;
 use Food\CartBundle\Entity\CartOption;
+use Food\DishesBundle\Entity\DishOption;
+use Food\DishesBundle\Entity\DishSize;
 use Symfony\Component\DependencyInjection\Container;
 
 
 class CartService {
+
     private $container;
     /**
      * @var  \Doctrine\Common\Persistence\ObjectManager
@@ -64,9 +67,12 @@ class CartService {
 
     /**
      * @return string
+     *
+     * @todo Panaikinti hardcoded dummy sesion id !!!!!
      */
     public function getSessionId()
     {
+        return 123;
         return $this->getContainer()->get('session')->getId();
     }
 
@@ -106,6 +112,7 @@ class CartService {
                     )
                 )
         );
+        // @Todo - optionsai turi remoovintis kartu su
         $this->getEm()->flush();
         return $this;
     }
@@ -134,6 +141,12 @@ class CartService {
         return $this;
     }
 
+    /**
+     * @param $dish
+     * @param $option
+     * @param $quantity
+     * @return $this
+     */
     public function setOptionQuantity($dish, $option, $quantity)
     {
         $dishOption = $this->getEm()->getRepository('FoodCartBundle:CartOption')->findOneBy(
@@ -149,18 +162,57 @@ class CartService {
     }
 
     /**
-     * @param Dish $dish
-     * @param $quantity
-     * @param array $options
-     * @return $this
-     *
-     * Just test :)
+     * @param $dishId
+     * @param $optionId
      */
-    public function addDish(Dish $dish, $quantity, $options = array()) {
+    public function removeOptionById($dishId, $optionId)
+    {
+        $dish = $this->getEm()->getRepository('FoodDishesBundle:Dish')->find($dishId);
+        $option = $this->getEm()->getRepository('FoodDishesBundle:DishOption')->find($optionId);
+        $this->removeOption($dish, $option);
+    }
+
+    /**
+     * @param $dish
+     * @param $size
+     * @param $quantity
+     * @param $options
+     */
+    public function addDishByIds($dish, $size, $quantity, $options)
+    {
+        $dish = $this->getEm()->getRepository('FoodDishesBundle:Dish')->find($dish);
+        $size = $this->getEm()->getRepository('FoodDishesBundle:DishSize')->find($size);
+        $optionsEnt = array();
+        foreach ($options as $optId) {
+            $ent = $this->getEm()->getRepository('FoodDishesBundle:DishOption')->findBy(
+                array(
+                    'id' => $optId,
+                    'active' => 1,
+                    'place' => $dish->getPlace()->getId()
+                )
+            );
+            if ($ent) {
+                $optionsEnt[] = $ent;
+            }
+
+
+        }
+        $this->addDish($dish, $size, $quantity, $optionsEnt);
+    }
+
+    /**
+     * @param Dish $dish
+     * @param DishSize $dishSize
+     * @param $quantity
+     * @param DishOption[] $options
+     * @return $this
+     */
+    public function addDish(Dish $dish, DishSize $dishSize, $quantity, $options = array()) {
         $cartItem = new Cart();
         $cartItem->setDishId($dish);
         $cartItem->setSession($this->getSessionId());
         $cartItem->setQuantity($quantity);
+        $cartItem->setDishSizeId($dishSize);
 
         $this->getEm()->persist($cartItem);
         $this->getEm()->flush();
@@ -179,5 +231,71 @@ class CartService {
         }
 
        return $this;
+    }
+
+    /**
+     * @return array|\Food\CartBundle\Entity\Cart[]
+     */
+    public function getCartDishes()
+    {
+        $list = $this->getEm()->getRepository('FoodCartBundle:Cart')->findBy(
+            array(
+                'session' => $this->getSessionId()
+            )
+        );
+
+        foreach($list as $k => &$item) {
+            $item->setEm($this->getEm());
+        }
+        return $list;
+    }
+
+    /**
+     * @param Dish $dish
+     * @return array|\Food\CartBundle\Entity\CartOption[]
+     */
+    public function getCartDishOptions(Cart $cartItem)
+    {
+        $list = $this->getEm()->getRepository('FoodCartBundle:CartOption')->findBy(
+            array(
+                'session' => $this->getSessionId(),
+                'dish_id' => $cartItem->getDishId()->getId()
+            )
+        );
+        return $list;
+    }
+
+    public function getCartDishesForJson()
+    {
+        $cartItems = $this->getCartDishes();
+        $returnData = array();
+        foreach ($cartItems as $cartItem) {
+            $tmpRow = array(
+                'name' => $cartItem->getDishId()->getName(),
+                'price' => $cartItem->getDishSizeId()->getPrice(),
+                'size' => $cartItem->getDishSizeId()->getUnit()->getName(),
+                'quantity' => $cartItem->getQuantity(),
+                'options' => $this->getOptionsForJson($cartItem)
+            );
+            $returnData[] = $tmpRow;
+        }
+        return $returnData;
+    }
+
+    /**
+     * @param Cart $cartItem
+     */
+    private function getOptionsForJson(Cart $cartItem)
+    {
+        $returnData = array();
+        $options = $this->getCartDishOptions($cartItem);
+        foreach ($options as $cartOption) {
+            $returnData[] = array(
+                'name'      => $cartOption->getDishOptionId()->getName(),
+                'price'     => $cartOption->getDishOptionId()->getPrice(),
+                'quantity'  => $cartOption->getQuantity()
+            );
+        }
+        return $returnData;
     }
 }
