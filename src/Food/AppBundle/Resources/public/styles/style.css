@@ -1,0 +1,689 @@
+﻿/*Imported fonts------------------------------------------------------------------------------*/
+
+@font-face {
+    font-family: 'avenirbook';
+    src: url('/bundles/foodapp/styles/avenir-webfont.eot');
+    src: url('/bundles/foodapp/styles/avenir-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/bundles/foodapp/styles/avenir-webfont.woff') format('woff'),
+         url('/bundles/foodapp/styles/avenir-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'avenir_nextbold';
+    src: url('/bundles/foodapp/styles/avenirnext-webfont.eot');
+    src: url('/bundles/foodapp/styles/avenirnext-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/bundles/foodapp/styles/avenirnext-webfont.woff') format('woff'),
+         url('/bundles/foodapp/styles/avenirnext-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'avenir_next_condensedbold';
+    src: url('/bundles/foodapp/styles/avenirnextcondensed-webfont.eot');
+    src: url('/bundles/foodapp/styles/avenirnextcondensed-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/bundles/foodapp/styles/avenirnextcondensed-webfont.woff') format('woff'),
+         url('/bundles/foodapp/styles/avenirnextcondensed-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+.font-1, .font-2, .font-3 {font-size: 50px; font-weight: 200;}
+
+
+.font-1 {font-family: 'avenirbook';}
+.font-2 {font-family: 'avenir_nextbold';}
+.font-3 {font-family: 'avenir_next_condensedbold';}
+
+.site-header h1,
+.search-food-form input[type="submit"],
+.restaurant-menu-item .price,
+.check-block .total-sum,
+.check-block .order-button,
+.dish-size .custom-radio strong,
+.dish-ingredients .custom-checkbox strong,
+.detailed-dish-popup .button-submit,
+.delivery-info-form .submit-button span,
+.cupon-page p strong,
+.fb-button,
+.order-history-item .desc strong,
+.delivery-tracking-form button,
+.page-title h1 strong,
+.dish-info .name,
+.login-register-popup input[type="submit"],
+.user-details-form input[type="submit"] {font-family: 'avenir_nextbold';}
+
+/*Font declarations*/
+button, input, select, textarea,
+body, 
+.ui-widget-content,
+.ui-selectmenu-menu li a,.ui-selectmenu-status {font-family: 'avenirbook'; font-size: 12px;}
+
+
+
+/*Default elements, resets-------------------------------------------------------------*/
+html {color: #55422e; font-size: 100%; overflow-y: scroll; -webkit-overflow-scrolling: touch; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+body {margin: 0;}
+
+
+a {margin: 0; padding: 0; font-size: 100%; vertical-align: baseline; text-decoration: none;}
+a:hover {}
+a:hover, a:focus {outline: none;}
+a img {border: none;}
+img {vertical-align: middle; -ms-interpolation-mode: bicubic;}
+b, strong {font-weight: bold;}
+p {line-height: 1.2em; margin: 12px 0;}
+hr {display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;}
+h1, h2, h3, h4, h5, h6 {margin: 12px 0; color: #55422e; font-weight: normal;}
+
+/*Tables*/
+table {border-collapse: collapse; border-spacing: 0;}
+
+/*Forms*/
+form {margin: 0;}
+textarea {overflow: auto; vertical-align: top;}
+fieldset {border: 0; margin: 0; padding: 0;}
+legend {border: 0; *margin-left: -7px; padding: 0;}
+input[type="checkbox"], input[type="radio"] { box-sizing: border-box; }
+input[type="search"] { -moz-box-sizing: content-box; -webkit-box-sizing: content-box; box-sizing: content-box; }
+button, input[type="button"], input[type="reset"], input[type="submit"] { cursor: pointer; -webkit-appearance: button; }
+button, input { line-height: normal; *overflow: visible; }
+.form-row input[type="text"], .form-row label {display: inline-block; float: left;} 
+label.for-input {width: auto !important; cursor: pointer}
+input.radio, input.checkbox {vertical-align: text-bottom; margin: 0;}
+input[type="text"], input[type="password"], textarea, select {border: 1px solid #ccc;}
+button::-moz-focus-inner, input::-moz-focus-inner {border: 0; padding: 0;}
+button {width: auto; overflow: visible;}
+button, input, select, textarea {font-size: 100%; margin: 0; vertical-align: baseline; *vertical-align: middle; }
+
+/*Placeholders*/
+.placeholder {color: #b39196;}
+::-webkit-input-placeholder {color: #b39196;}
+:-moz-placeholder {color: #b39196;}
+::-moz-placeholder {color: #b39196; opacity: 1;}
+
+:focus {outline: none;}
+
+
+/*Helpers---------------------------------------------------------*/
+.menu {list-style: none; padding: 0; margin: 0;}
+.fl {float: left;}
+.fr {float: right;}
+.tar {text-align: right;}
+.tac {text-align: center;}
+.tal {text-align: left;}
+.date {color: #ccc;}
+
+/*Clearfix*/
+.clearfix:before, .clearfix:after , .form-row:before, .form-row:after {content: ""; display: table;}
+.clearfix:after, .form-row:after {clear: both;}
+.clearfix, .form-row {zoom: 1;}
+
+
+
+/*Common objects ---------------------------------------------------*/
+
+/*Buttons*/
+.button, button {}
+.button {display: inline-block;}
+.button:hover, button:hover {}
+input.button {}
+
+/*Messages*/
+.error-text {}
+.error label {}
+.error input.text, .error textarea {}
+.error-message, .warning-message, .success-message {}
+.error-message {}
+.warning-message {}
+.success-message {}
+
+/* Selectmenu */
+.ui-selectmenu, .ui-selectmenu.ui-state-active, .ui-selectmenu.ui-state-default {display: inline-block; position: relative; overflow: hidden; border-radius: 0; border: none; background: #fff; border: 1px solid #d0c8c1; text-decoration: none !important; border-radius: 3px; box-shadow: 0 0 2px #d0c8c1;}
+.ui-selectmenu .ui-selectmenu-icon { position:absolute; top: 10px; right: 6px; width: 22px; height: 29px; background: url(/bundles/foodapp/images/select-arrow.png) no-repeat left top;}
+.ui-selectmenu-menu { padding:0; margin:0; position:absolute; top: 0; display: none; z-index: 1005;}
+.ui-selectmenu-menu  ul { padding:0; margin:0; list-style:none; position: relative; overflow: auto; overflow-y: auto ; overflow-x: hidden; -webkit-overflow-scrolling: touch; border: 1px solid #d0c8c1; background: #fff; border-radius: 0; border-top: none; border-bottom: none;} 
+.ui-selectmenu-open { display: block; }
+.ui-selectmenu-menu li { padding:0; margin:0; display: block; border: none !important; font-weight: normal !important; background: none !important;}
+.ui-selectmenu-menu li a,.ui-selectmenu-status { display: block; padding: 6px 16px; padding-bottom: 4px; padding-right: 26px; outline:none; text-decoration:none; color: inherit; font-weight: normal; color: #000; font-size: 15px; line-height: 26px; }
+.ui-selectmenu-menu li a {border-bottom: 1px solid #d0c8c1;}
+.ui-selectmenu-menu li a:hover, .ui-selectmenu-menu .ui-state-hover a {color: #000; background: #efefef !important; zoom: 1;}
+ 
+
+/*Checkbox and radios*/
+.custom-checkbox, .custom-radio {float: none; display: block; position: relative; padding-left: 25px; padding-right: 20px; font-size: 15px; color: #513d28; cursor: pointer;}
+.custom-checkbox .icheckbox,
+.custom-radio .iradio {padding: 0; position: absolute; left: 0px; top: 1px; width: 18px; height: 19px;}
+.custom-checkbox .icheckbox {background: url(/bundles/foodapp/images/custom-checkbox.png) no-repeat left top;}
+.custom-checkbox .icheckbox.checked {background-position: left bottom;}
+.custom-radio .iradio {background: url(/bundles/foodapp/images/custom-radio.png) no-repeat left top;}
+.custom-radio .iradio.checked {background-position: left bottom;}
+
+/*-----------------Custom site style-------------------------------------------------------*/
+.site-block {margin: 0 auto; width: 980px;}
+
+
+.site-top {background: #cd1d36; color: #fff;}
+.site-top .site-block {height: 80px; position: relative;}
+.main-logo {position: absolute; left: -4px; top: 11px; z-index: 10;}
+
+.contact-phone {margin: 0; position: absolute; font-size: 14px; text-transform: uppercase; padding-left: 15px; background: url(/bundles/foodapp/images/mobile-ico.png) no-repeat left 2px; left: 267px; top: 32px; letter-spacing: 2px;}
+.contact-phone span {font-size: 10px; letter-spacing: 1.5px; padding-left: 2px;}
+
+/*Top menu*/
+.top-menu {float: right; padding-top: 32px; letter-spacing: 2px;}
+.top-menu li {float: left; margin-right: 59px;}
+.top-menu li:last-child {margin-right: 0;}
+.top-menu .login-ico {padding-left: 25px; background: url(/bundles/foodapp/images/login-ico.png) no-repeat left top;}
+.top-menu a {display: inline-block; text-transform: uppercase; color: #fff; font-size: 14px; text-transform: uppercase;}
+.top-menu span {display: inline-block; padding-bottom: 4px; border-bottom: 1px solid #fff;}
+.top-menu a:hover {color: #f1b3b3;}
+.top-menu a:hover span {border-bottom: 1px solid #cd1d36;}
+
+/*Header ------------------------------------------*/
+.site-header {}
+.site-header h1 {text-align: center; font-size: 67px; margin: 0px; color: #fff; padding-top: 64px; line-height: 60px; font-weight: normal; letter-spacing: -2.6px; padding-bottom: 44px;}
+
+.special-offer-block {position: relative; background-position: center top; background-repeat: no-repeat; background-size: cover;}
+.special-offer-block .site-block {height: 484px; position: relative;}
+.special-offer-block .img-description {position: absolute; margin: 0; right: 12px; bottom: 12px; font-size: 10px; text-transform: uppercase; color: #fff;}
+
+/*Food search form*/
+.search-food-form {background: url(/bundles/foodapp/images/search-bg.png) no-repeat center top; width: 826px; margin: 0 auto; min-height: 172px; padding-top: 46px; padding-left: 35px;}
+.search-food-form .title {font-size: 17px; color: #4d090a; text-align: center; margin: 0; padding-bottom: 15px; padding-right: 63px; letter-spacing: 0.6px;}
+.search-food-form input[type="text"] {float: left; border: 1px solid #e1ddd6; background: #fff; padding: 20px 16px; line-height: 18px; height: 18px; width: 191px; font-size: 15px; border-radius: 5px 0 0 5px;}
+.search-food-form input[type="text"].input-street {margin-right: 13px; border-left: none; border-radius: 0 5px 5px 0; width: 254px;}
+.search-food-form input[type="submit"] {float: left; height: 58px; background: url(/bundles/foodapp/images/big-button.png) no-repeat right center; padding-left: 29px; padding-right: 55px; border-radius: 5px; box-shadow: 0 1px 2px #b3afad; border: none; color: #86560d; font-size: 20px; text-transform: uppercase; letter-spacing: 1.5px; padding-top: 0px; padding-bottom: 0px; text-shadow: 0 1px 0 #fde99a;}
+
+
+/*Center -------------------------------------------*/
+.site-center {background: #f5f0eb;}
+
+.content-lefter {width: 180px; float: left; background: #fff; border-radius: 4px;}
+.content-righter {width: 780px; float: right; background: #fff; border-radius: 4px;}
+
+.content-lefter-big {float: left; width: 780px;}
+.content-righter-small {float: right; width: 180px;}
+
+/*Image top*/
+.image-top {background-repeat: no-repeat; background-position: center top; background-size: 100% 180px;}
+
+/*Page path*/
+.page-path {padding-top: 35px; letter-spacing: 0.4px; padding-left: 0.4px;}
+.page-path a {float: left; font-size: 10px; color: #b39196; padding-right: 10px; margin-right: 7px; background: url(/bundles/foodapp/images/small-arrow-right.png) no-repeat right center;}
+.page-path a:last-child,
+.image-top .page-path a:last-child {background: none; padding-right: 0; margin-right: 0;}
+
+.image-top .page-path a {color: #fff; background-image: url(/bundles/foodapp/images/small-arrow-right-2.png);}
+
+/*Page title*/
+.page-title {padding-bottom: 24px; letter-spacing: -0.7px;}
+.page-title.no-page-path {padding-top: 30px;}
+.page-title h1 {font-size: 30px; margin: 0; color: #513d28; font-weight: normal;}
+.page-title.no-page-path h1 {font-size: 41px;}
+.page-title span {float: left; margin-right: 18px;}
+.page-title a {text-transform: uppercase; float: left; padding-left: 15px; font-size: 10px; color: #b39196; background: url(/bundles/foodapp/images/location-ico.png) no-repeat left center; margin-top: 15px; letter-spacing: 1.7px;}
+
+.image-top .page-title h1 {color: #fff;}
+.page-title h1 strong {font-weight: normal;}
+
+/*Left filters*/
+.filter-title {color: #b39196; font-size: 10px; text-transform: uppercase; line-height: 17px; padding: 17px 20px; letter-spacing: 1.7px; padding-bottom: 14px;}
+
+.filters-list {border-bottom: 1px solid #ebe2d9;}
+.food-type-filters {padding-bottom: 9px;}
+.filters-list .custom-checkbox {margin-bottom: 11px; margin-left: 20px; margin-right: 20px; padding-left: 23px;}
+.custom-checkbox .count {position: absolute; right: 3px; top: 3px; font-size: 10px; color: #b39196;}
+
+.clear-filter-link {display: block; color: #b39196; font-size: 10px; text-transform: uppercase; line-height: 17px; padding: 15px 20px; padding-left: 30px; background: url(/bundles/foodapp/images/remove-ico.png) no-repeat 19px center; letter-spacing: 1.7px; text-align: center;}
+
+/*Restaurants list*/
+.restaurants-list-controls {border-bottom: 1px solid #ebe2d9;}
+.restaurants-list {}
+
+
+.list-search-form {position: relative; padding-left: 36px; padding-right: 10px; border-right: 1px solid #ebe2d9;}
+.list-search-form input[type="text"] {float: left; border: none; padding: 12px 10px; height: 16px; width: 213px; padding-left: 0px;}
+.list-search-form input[type="submit"] {position: absolute; left: 4px; top: 0px; width: 32px; height: 40px; background: url(/bundles/foodapp/images/search-ico.png) no-repeat center center; border: none;}
+
+.restaurant-item {padding: 19px 30px; padding-left: 15px; border-bottom: 1px solid #ebe2d9; position: relative;}
+.restaurant-item:hover {box-shadow: 0 0px 8px #e3ded9; z-index: 20;}
+.discount-tag {position: absolute; right: 231px; top: 27px; background: red; color: #fff; line-height: 18px; padding: 0 8px; padding-top: 2px;}
+.restaurant-item .logo {width: 120px; float: left; text-align: center; margin-right: 20px;}
+.restaurant-item .item-center {width: 380px; float: left;}
+.restaurant-item .item-righter {width: 170px; float: right; padding-top: 11px;}
+.restaurant-item .name {margin: 0; margin-top: 9px; letter-spacing: 1px;}
+.restaurant-item .desc {margin: 0; margin-top: 2px; margin-bottom: 25px; letter-spacing: 0.5px;}
+
+.restaurant-item .delivery,
+.restaurant-item .min-cart-size {padding-left: 20px;}
+.restaurant-item .delivery {background: url(/bundles/foodapp/images/delivery-ico.png) no-repeat left 2px; margin-right: 36px;}
+.restaurant-item .min-cart-size {background: url(/bundles/foodapp/images/cart-ico.png) no-repeat left 1px;}
+
+.restaurant-item .delivery span,
+.restaurant-item .min-cart-size span {padding-left: 13px; color: #bea2a6; letter-spacing: 0.5px;}
+
+.restaurant-item .restoran-rating {width: 90px !important;}
+.restaurant-item .restoran-rating img {margin-right: 1px;}
+.restaurant-item .rating-count {font-size: 10px; width: 78px; text-align: right; padding-top: 3px;}
+
+.restaurant-item .name span {float: left; margin-right: 13px;}
+.restaurant-item .name .tag {margin-right: 7px; position: relative;}
+
+.time-popup {position: absolute; left: 137px; top: -4px; background: #fff; border-radius: 3px; padding: 0 12px; line-height: 30px; border: 1px solid #efefef; box-shadow: 0 0 3px #efefef; letter-spacing: 1.5px; font-size: 10px; white-space: nowrap; color: #b39196; z-index: 30; display: none;}
+.tag:hover .time-popup {display: block;}
+.time-popup .nip {display: inline-block; width: 7px; height: 12px; background: url(/bundles/foodapp/images/time-nip.png) no-repeat left top; position: absolute; left: -7px; top: 9px;}
+
+.restaurant-item .logo-wrap {width: 120px; height: 101px; vertical-align: middle; text-align: center; display: table-cell;}
+
+.item-righter .button {display: block; border-radius: 3px; text-align: center; text-transform: uppercase; line-height: 36px; background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x left top; text-shadow: 0 1px 0 #fde99d; box-shadow: 0 1px 1px #c0c0c0; font-size: 10px; height: 36px; margin-top: 25px; color: #86560d; letter-spacing: 1.5px;}
+.item-righter .button span {display: inline-block; padding: 0 16px; background: url(/bundles/foodapp/images/button-arrow-3.png) no-repeat right center; line-height: 38px;}
+
+.list-top-filters {padding-top: 11px; width: 430px; letter-spacing: 0.4px;}
+.list-top-filters .label {float: left; margin-right: 8px; line-height: 18px;}
+.list-top-filters a {float: left; line-height: 17px; padding: 0 8px; padding-top: 1px; border-radius: 3px; margin-right: 2px; color: #b39196;}
+.list-top-filters .selected {background: #b39196; color: #fff;}
+
+
+/*Items lists*/
+.items-list {padding-bottom: 6px;}
+.items-list-col {width: 180px; float: left; margin-right: 20px;}
+.items-list-col:last-child {margin-right: 0;}
+
+/*Items list*/
+.items-list-title {padding-top: 65px; padding-bottom: 25px;}
+.items-list-title h2 {margin: 0; float: left; width: 80%; color: #513d28; font-weight: normal; font-size: 30px; letter-spacing: -0.7px;}
+.items-list-title .button {float: right; line-height: 21px; background: url(/bundles/foodapp/images/button-grad.png) repeat-x left top; border-radius: 3px; font-size: 10px; text-transform: uppercase; color: #86560d; box-shadow: 0 1px 1px #b8b5b1; padding: 0 21px; margin-top: 10px; padding-top: 3px; padding-bottom: 1px; letter-spacing: 1.6px;}
+
+
+/*Cupons list*/
+.cupom-item {text-align: center; margin-bottom: 5px; display: inline-block;}
+.cupon-top {background: #fff; border-bottom: 1px dashed #e0d6cc; height: 249px; letter-spacing: 0.5px; border-radius: 3px 3px 0 0; box-shadow: 0 0px 3px #e3ded9;}
+.cupon-top img {border-radius: 3px 3px 0 0;}
+.cupon-bottom {text-transform: uppercase; background: #fff; padding: 4px 10px; letter-spacing: 1.6px; border-radius: 0 0 3px 3px; box-shadow: 0 0px 3px #e3ded9;}
+.cupon-bottom .button {line-height: 28px;color: #b39196; text-align: center; font-size: 10px; display: block;}
+.cupon-name {margin: 0 10px; font-size: 15px; line-height: 21px; color: #513d28; padding-top: 11px; padding-bottom: 3px;}
+.cupon-desc {margin: 0 10px; line-height: 17px; color: #b39196; font-size: 12px;}
+
+.cupom-item:hover {margin-bottom: 0px;}
+.cupom-item:hover .cupon-top {margin-top: -5px; margin-bottom: 10px;}
+
+/*Restaurant list*/
+.restoran-item {display: block; background: #fff; text-align: center; padding-bottom: 15px; border-radius: 3px;}
+.restoran-item:hover {box-shadow: 0 0px 5px #e3ded9;}
+.restoran-item-top {width: 180px; height: 126px; display: table-cell; vertical-align: middle;}
+.restoran-name {font-size: 15px; color: #513d28; margin: 0; padding-bottom: 3px;}
+.restoran-item .restoran-rating {margin: 0 auto;}
+
+
+/*Detailed restaurant-----------------*/
+.detailed-resturant {padding: 0px; margin: 0; border: none; background: none;}
+.ui-tabs .ui-tabs-nav {padding: 0px;border: none;background: url(/bundles/foodapp/images/shadow.png) repeat-x left bottom; overflow: hidden; width: 780px; border-radius: 0;}
+.ui-tabs .ui-tabs-nav li {border: none; width: 256px; text-align: center; margin: 0px; margin-right: 6px; background: none; border-radius: 0;}
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {margin-bottom: 0; padding-bottom: 0;}
+.ui-tabs .ui-tabs-nav li.last {margin-right: 0;}
+.ui-tabs .ui-tabs-nav li a {display: block; text-align: center; background: #fff url(/bundles/foodapp/images/shadow.png) repeat-x left bottom;  line-height: 62px; padding: 0; font-size: 20px; color: #d3c0c0; font-weight: normal; border-radius: 4px 4px 0 0; width: 256px;}
+.ui-tabs .ui-tabs-nav .ui-tabs-active a {color: #55422e; background: #fff;}
+.detailed-resturant .ui-tabs-panel {padding: 15px; padding-right: 29px; background: #fff;}
+
+
+.menu-lefter {width: 166px; float: left; text-align: right; background: url(/bundles/foodapp/images/side-menu-shadow.png) repeat-y right top; padding-top: 21px; position: relative;}
+.menu-righter {width: 542px; float: right;}
+
+.menu-title {padding-bottom: 17px; padding-top: 8px;}
+.menu-title h2 {font-size: 20px; color: #55422e; font-weight: normal; margin: 0;}
+.view-type {float: right; border: 1px solid #e9e9e9; border-radius: 4px; box-shadow: 0 0 1px #f8f8f8;}
+.view-type a {float: left; width: 23px; height: 20px; background: url(/bundles/foodapp/images/listing-type.png) no-repeat 6px -34px;}
+.view-type .ico-thumbs {border-right: 1px solid #e9e9e9;}
+.view-type .ico-list {background-position: -33px -34px;}
+.view-type .ico-thumbs.active, .view-type .ico-thumbs:hover {background-position: 6px 5px;}
+.view-type .ico-list.active, .view-type .ico-list:hover {background-position: -33px 5px;}
+
+.restaurant-menu-item {width: 260px; float: left; margin-right: 18px; margin-bottom: 27px; border: 1px solid #efeeed; border-radius: 4px; box-shadow: 0 0 1px #efeeed;}
+.restaurant-menu-item:nth-child(2n) {margin-right: 0px;}
+.restaurant-menu-item img {border-radius: 4px 4px 0 0;}
+.restaurant-menu-item .name {margin: 0; padding: 12px 13px; padding-bottom: 1px; font-size: 15px; color: #543f42; line-height: 17px; font-weight: normal;}
+.restaurant-menu-item .desc {margin: 0; padding: 2px 13px; line-height: 17px; font-size: 12px; color: #b39196; min-height: 57px; padding-bottom: 8px;}
+.restaurant-menu-item .menu-item-bottom {padding: 5px 6px; border-top: 1px solid #f5efe9; background: #fdfaf7; border-radius: 0 0 4px 4px;}
+.restaurant-menu-item .price {float: left; line-height: 32px; padding-left: 9px; font-size: 14px; color: #543f42;}
+.restaurant-menu-item .add-to-cart {width: 32px; height: 32px; background: url(/bundles/foodapp/images/add-button.png) no-repeat left top; float: right;}
+
+.display-list .restaurant-menu-item {width: auto; float: none; margin-right: 0; position: relative; margin-bottom: 8px;}
+.display-list .restaurant-menu-item img {float: left; margin-right: 15px; border-radius: 4px 0 0 4px;}
+.display-list .restaurant-menu-item .name {padding-right: 150px; padding-top: 16px; letter-spacing: -0.4px;}
+.display-list .restaurant-menu-item .desc {padding-right: 60px; padding-top: 6px; min-height: 10px; }
+.display-list .restaurant-menu-item .menu-item-bottom {border: none; background: none; padding: 0;}
+.display-list .restaurant-menu-item .price {float: none; position: absolute; text-align: right; width: 160px; right: 18px; top: 8px; letter-spacing: 0.6px;}
+.display-list .restaurant-menu-item .add-to-cart {position: absolute; float: none; right: 13px; bottom: 13px;}
+
+/*Menu lefter*/
+.menu-lefter h4 {font-size: 10px; color: #b39196; text-transform: uppercase; padding: 5px 18px; margin: 0; font-weight: normal; padding-bottom: 10px; letter-spacing: 1.5px;}
+.menu-lefter li {padding: 1px; padding-right: 0px; margin-bottom: 2px;}
+.menu-lefter li a {font-size: 14px; display: block; color: #513d28; position: relative; padding-right: 39px; line-height: 18px; padding-top: 9px ; padding-bottom: 9px; padding-left: 15px; letter-spacing: 0.5px;}
+.menu-lefter .active {border-radius: 4px 0 0 4px; border: 1px solid #e9e9e9; border-right: none; box-shadow: -1px 0 1px #e9e9e9; background: #fff;}
+.menu-lefter li span {display: inline-block; position: absolute; right: 10px; font-size: 10px; color: #b39196; top: 9px; width: 29px; text-align: center;}
+
+/*Restaurant info*/
+.detailed-resturant .detailed-restaurant-info {padding: 24px 29px;}
+.detailed-restaurant-info h3 {font-size: 20px; color: #55422e; margin-bottom: 20px; margin-top: 0px;}
+.restaurant-info-lefter {width: 172px; float: left;}
+.restaurant-info-lefter li {line-height: 18px; color: #bea2a6; padding-left: 21px; margin-bottom: 16px;}
+.restaurant-info-lefter strong {display: block; font-weight: normal; color: #513d28;}
+.restaurant-info-righter {width: 490px; float: right;}
+.restaurant-info-righter p {font-size: 14px; line-height: 21px; margin-top: 0px; margin-bottom: 30px;}
+.restaurant-info-righter select {width: 100%;}
+
+.restaurant-info-lefter .ico-kitchen {background: url(/bundles/foodapp/images/kitchen-ico.png) no-repeat left top;}
+.restaurant-info-lefter .ico-time {background: url(/bundles/foodapp/images/time-ico.png) no-repeat left top;}
+.restaurant-info-lefter .ico-delivery {background: url(/bundles/foodapp/images/delivery-ico.png) no-repeat left top;}
+.restaurant-info-lefter .ico-cart {background: url(/bundles/foodapp/images/cart-ico.png) no-repeat left top;}
+.restaurant-info-lefter .ico-payments {background: url(/bundles/foodapp/images/payment-ico.png) no-repeat left top;}
+
+.location-work-hours {margin-top: 20px;}
+.location-work-hours .lefter {float: left; width: 300px;}
+.location-work-hours .righter {float: right; width: 170px;}
+
+.location-work-hours table {width: 100%; line-height: 18px;}
+.location-work-hours span {color: #b39196; letter-spacing: 0.6px;}
+
+
+/*Check block*/
+.check-block {background: #fff; border-radius: 4px; padding: 13px;}
+.check-block .restaurant-logo {}
+.check-block h5 {color: #55422e; font-size: 18px; font-weight: normal; margin-top: 11px; margin-bottom: 11px;}
+.check-item {padding: 10px 3px; border-top: 1px dashed #a9a197;}
+.check-item .name {color: #543f42; font-size: 12px; line-height: 13px;}
+.check-item .type {color: #d4c3c3; font-size: 10px; padding-top: 1px; line-height: 10px;}
+.check-item .count {color: #543f42; width: 49%; float: left; padding-top: 7px;}
+.check-item .sum {color: #543f42; width: 49%; float: right; text-align: right; padding-top: 7px;}
+.check-bottom {padding-top: 12px; background: url(/bundles/foodapp/images/double-line.png) repeat-x left top; color: #55422e; padding-bottom: 15px;}
+.check-bottom .fl,
+.check-bottom .fr {width: 49%;}
+.check-bottom .fr {text-align: right;}
+.check-block .delivery-price {}
+.check-block .total-sum {font-size: 14px;}
+.check-block .order-button {display: block; height: 46px; background: url(/bundles/foodapp/images/big-button-3.png) no-repeat right center; padding-left: 20px; padding-right: 40px; border-radius: 5px; box-shadow: 0 1px 2px #b3afad; border: none; color: #86560d; font-size: 18px; text-transform: uppercase; padding-top: 0px; padding-bottom: 0px; text-shadow: 0 1px 0 #fde99a; line-height: 48px; letter-spacing: 1px;}
+.check-block .delivery-time {padding-top: 12px; padding-bottom: 12px; color: #bea2a6;}
+
+
+/*Reviews*/
+.detailed-resturant .detailed-restaurant-review {padding-right: 19px;}
+.review-title {padding-left: 145px; padding-bottom: 23px; padding-top: 11px;}
+.review-title h3 {margin: 0; font-size: 20px; width: 60%; float: left; padding-top: 4px;}
+.review-title a {float: right; line-height: 21px; background: url(/bundles/foodapp/images/button-grad.png) repeat-x left top; border-radius: 3px; font-size: 10px; text-transform: uppercase; color: #86560d; box-shadow: 0 1px 1px #b8b5b1; padding: 0 18px; padding-top: 3px; padding-bottom: 1px; letter-spacing: 1.6px;}
+
+.review-list {}
+.review-item {padding-bottom: 16px;}
+
+.review-person {width: 110px; float: left; text-align: center; padding-left: 12px;}
+.review-person .name {margin: 0; font-size: 15px; line-height: 17px; padding-top: 10px;}
+.review-person .location {margin: 0; font-size: 10px; line-height: 12px;}
+
+.review-baloon {position: relative; padding: 18px 22px; background: #fff; border-radius: 4px; border: 1px solid #e5dfd8; width: 556px; float: right; padding-bottom: 21px;}
+.review-baloon .nip {position: absolute; background: url(/bundles/foodapp/images/white-nip.png) no-repeat left top; width: 15px; height: 28px; left: -15px; top: 50%; margin-top: -14px;}
+.review-baloon .text {font-size: 12px; line-height: 20px; color: #543f42; padding-bottom: 7px; margin: 0;}
+.review-baloon .restoran-rating {float: left;}
+.review-baloon .restoran-rating img {margin-right: 1px;}
+.review-baloon .date {float: right; font-size: 10px; color: #b39196; padding-top: 6px;}
+
+
+/*Paginator*/
+.paginator {padding-left: 145px; padding-bottom: 20px; padding-top: 12px;}
+.paginator a {display: inline-block; float: left; width: 37px; height: 37px; margin-right: 6px; line-height: 37px; text-align: center; font-size: 15px; color: #7a6c5e;}
+.paginator .active {background: url(/bundles/foodapp/images/paginator-active.png) no-repeat left top;}
+
+.paginator .prev,
+.paginator .next {width: 37px; height: 37px; border: none; background: url(/bundles/foodapp/images/paginator.png) no-repeat left top;}
+.paginator .prev {}
+.paginator .prev:hover {background-position: left bottom;}
+.paginator .next {background-position: right top;}
+.paginator .next:hover {background-position: right bottom;}
+
+
+/*Restaurant info*/
+.detailed-restaurant-info {}
+.detailed-restaurant-info h3 {padding-top: 4px;}
+
+.restaurant-info-lefter {width: 180px; float: left; padding-top: 4px;}
+.restaurant-info-righter {width: 490px; float: right;}
+
+.location-work-hours {}
+.location-work-hours .lefter {float: left; width: 300px;}
+.location-work-hours .righter {float: right; width: 168px;}
+
+
+/*Bottom blocks*/
+.bottom-blocks {padding-top: 94px;}
+.app-block {width: 580px; float: left; position: relative; height: 240px;}
+.app-block > img {position: absolute; left: -9px; bottom: 0px;}
+.app-block-inner {width: 304px; float: right;}
+.app-block-inner h3 {margin: 0; font-size: 30px; line-height: 30px; letter-spacing: -1.6px; color: #513d28;}
+.app-block-inner p {color: #543f42; line-height: 17px; font-size: 12px; margin-top: 6px; margin-bottom: 17px;}
+.app-block a {display: inline-block; margin-right: 10px;}
+
+.newsletter-block {float: right; width: 342px; background: #fff; padding: 19px; border-radius: 5px;}
+.newsletter-block h4 {margin: 0; font-size: 30px; line-height: 30px; color: #513d28; letter-spacing: -1.6px;}
+.newsletter-block p {color: #543f42; line-height: 17px; font-size: 12px; margin-top: 9px; margin-bottom: 19px;}
+
+.newsletter-form {}
+.newsletter-form input[type="text"] {float: left; float: left; border: 1px solid #e1ddd6; background: #fff; padding: 8px 16px; line-height: 18px; height: 18px; width: 180px; font-size: 15px; border-radius: 3px; margin-right: 8px;}
+.newsletter-form input[type="submit"] {float: left; float: left; height: 36px; background: url(/bundles/foodapp/images/big-button-2.png) no-repeat right center; border-radius: 3px; box-shadow: 0 1px 2px #b3afad; border: none; color: #86560d; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; width: 120px; text-shadow: 0 1px 0 #fde99d; line-height: 36px;}
+
+.newsletter-wide {padding-top: 94px; padding-bottom: 62px;}
+.newsletter-wide .newsletter-block {float: none; width: auto; padding: 37px;}
+.newsletter-wide .newsletter-block-inner {width: 678px; margin: 0 auto;}
+.newsletter-wide h4 {float: left; padding-top: 5px; padding-right: 17px; font-size: 32px;}
+.newsletter-wide .newsletter-form {float: left;}
+.newsletter-wide input[type="text"] {width: 294px;}
+
+.bottom-block-lower {padding-top: 85px;}
+.bottom-block-lower .app-block {height: 164px; overflow: hidden;}
+.bottom-block-lower .app-block-inner h3 {margin-bottom: 28px;}
+.bottom-block-lower .newsletter-block {padding-bottom: 23px;}
+.bottom-block-lower .newsletter-block h4 {margin-bottom: 23px;}
+.bottom-block-lower .app-block > img {bottom: auto; top: -9px;}
+
+/*Delivery*/
+.delivery-info-form {background: #fff; border-radius: 4px; margin-bottom: 90px;}
+.delivery-info-form-content {padding: 11px 29px;}
+.delivery-info-form h2 {padding-bottom: 37px; font-size: 24px; background: url(/bundles/foodapp/images/delivery-shadow.png) no-repeat center bottom; margin-bottom: 32px;}
+.delivery-info-form .delivery-type-radios {width: 340px; float: left; padding-bottom: 24px;}
+.delivery-type-radios .custom-radio {float: left; margin-right: 44px; font-size: 15px; padding-top: 1px; width: auto;}
+.delivery-type-radios .custom-radio:last-child {margin-right: 0;}
+.delivery-info-form .form-row {margin-bottom: 13px;}
+.delivery-info-form label {float: left; padding-top: 9px; width: 173px; padding-right: 5px; font-size: 15px;}
+.delivery-info-form .custom-radio {padding-top: 0px;}
+.delivery-info-form input[type="text"],
+.delivery-info-form textarea {width: 310px; font-size: 15px; padding: 9px 12px; border: 1px solid #d8d8d8; border-radius: 3px; box-shadow: 0 0 1px #f2f2f2; box-shadow: 0 0 2px #d0c8c1;}
+.delivery-info-form input[type="text"] {height: 17px;}
+.delivery-info-form textarea {height: 93px;}
+.delivery-info-form select {width: 335px;}
+
+.delivery-info-form .section-2 {margin-top: 48px; padding-bottom: 33px; margin-bottom: 21px;}
+
+.select-payment .custom-radio,
+.select-bank .custom-radio {width: 197px; margin-right: 15px; font-size: 12px; padding-top: 3px;}
+.select-bank .custom-radio:nth-child(3n) {margin-right: 0;}
+.select-payment {padding-bottom: 20px;}
+.select-bank .custom-radio {margin-bottom: 15px;}
+.select-bank .iradio {top: 12px;}
+
+.cupon-info {padding-left: 25px; margin-top: 27px; margin-bottom: 29px; background: url(/bundles/foodapp/images/cupon-ico.png) no-repeat left 1px;}
+.cupon-info a {color: #bea2a6; text-decoration: underline;}
+.cupon-info a:hover {text-decoration: none;}
+
+
+.delivery-info-form .form-controls {border-top: 1px solid #ebe2d9; padding: 29px 31px;}
+.delivery-info-form .button-back {float: left; padding-left: 17px; text-transform: uppercase; margin-top: 25px; color: #b39196; font-size: 10px; background: url(/bundles/foodapp/images/back-ico.png) no-repeat left center; letter-spacing: 1.5px;}
+.delivery-info-form .submit-button {float: right; line-height: 56px; height: 56px; width: 267px; border-radius: 4px; background: url(/bundles/foodapp/images/button-rep-2.png) repeat-x left top; text-align: center; color: #86560d; box-shadow: 0 1px 2px #b3afad; letter-spacing: 1px;}
+.delivery-info-form .submit-button span {display: inline-block; line-height: 56px; padding: 0 29px; background: url(/bundles/foodapp/images/button-arrow.png) no-repeat right center; font-size: 20px; text-transform: uppercase; text-shadow: 0 1px 0 #fde99a;}
+
+/*Cupon page*/
+.middle-content {width: 815px; margin: 0 auto; padding-top: 58px; padding-bottom: 58px;}
+.cupon-page {background: #fff; border-radius: 4px; text-align: center; padding-top: 62px; position: relative; padding-bottom: 187px;}
+.cupon-page-2 {padding-bottom: 50px;}
+.cupon-page h1 {font-size: 40px; margin-bottom: 7px;}
+.cupon-page p {font-size: 14px; line-height: 21px; margin-top: 7px; margin-bottom: 17px;}
+.cupon-page p a {color: #b39196; padding-right: 21px; background: url(/bundles/foodapp/images/delivery-ico.png) no-repeat right 5px;}
+.cupon-page a span {text-decoration: underline;}
+.cupon-page a:hover span {text-decoration: none;}
+.cupon-page p strong {font-weight: normal;}
+.cupon-page .share-block {padding-top: 49px;}
+
+.fb-button {background: url(/bundles/foodapp/images/fb-button.png) no-repeat left top; line-height: 56px; padding-bottom: 2px; padding-left: 68px; padding-right: 10px; text-align: center; text-transform: uppercase; font-size: 18px; color: #fff; text-shadow: 0 -1px 0 #16217d; display: inline-block; width: 158px; margin-top: 4px; letter-spacing: 1px;}
+
+.flying-cupon {position: absolute; bottom: 0px; left: 50%; margin-left: -407px;}
+
+/*Cupon inline*/
+.cupon-inline {padding: 53px 55px; padding-bottom: 32px; width: 280px; text-align: center; border-radius: 10px; box-shadow: 0 10px 40px #dbdbdb; margin: 0 auto; margin-top: 50px; position: relative; border: 1px solid #dbdbdb;}
+.cupon-inline h2 {color: #cf2428; font-size: 21px; margin: 0;}
+.cupon-inline p {}
+.cupon-inline .decoration {position: absolute; right: -12px; top: -19px;}
+
+
+/*User page*/
+.full-content {padding: 27px; border-radius: 4px; background: #fff; padding-right: 42px;}
+.user-lefter {width: 186px; float: left; background: url(/bundles/foodapp/images/side-menu-shadow.png) repeat-y right top; padding-bottom: 80px;}
+.user-righter {width: 680px; float: right;}
+
+/*Active user*/
+.active-user {text-align: center; position: relative; padding-bottom: 29px; padding-top: 5px; padding-right: 20px;}
+.active-user .edit {display: inline-block; position: absolute; width: 26px; height: 26px; position: absolute; left: 94px; top: 67px; background: url(/bundles/foodapp/images/edit-ico.png) no-repeat left top;}
+.user-name {font-size: 15px; line-height: 17px; padding-top: 9px;}
+.user-location {color: #b39196; font-size: 10px; line-height: 12px;}
+
+/*User menu*/
+.user-menu {text-align: right;}
+.user-menu li {padding: 1px; padding-right: 0px; margin-bottom: 2px;}
+.user-menu li a {font-size: 14px; display: block; color: #513d28; position: relative; padding-right: 17px; line-height: 18px; padding-top: 9px ; padding-bottom: 9px; padding-left: 34px;}
+.user-menu .active {border-radius: 4px 0 0 4px; border: 1px solid #e9e9e9; border-right: none; box-shadow: -1px 0 1px #e9e9e9; background: #fff;}
+
+.user-menu .user-ico a {background: url(/bundles/foodapp/images/user-ico.png) no-repeat 10px 10px;}
+.user-menu .cart-ico a {background: url(/bundles/foodapp/images/cart-ico-2.png) no-repeat 10px 10px;}
+.user-menu .delivery-ico a {background: url(/bundles/foodapp/images/delivery-ico-2.png) no-repeat 10px 10px;}
+.user-menu .logoff-ico a {background: url(/bundles/foodapp/images/logoff-ico.png) no-repeat 10px 10px;}
+
+.user-righter h2 {font-size: 20px; margin-top: 0px; margin-bottom: 18px; padding-top: 4px;}
+
+.user-details-form {padding-top: 10px;}
+.user-details-form .form-row {margin-bottom: 12px;}
+.user-details-form label {float: left; width: 173px; padding-right: 5px; font-size: 15px; padding-top: 9px;}
+.user-details-form .double {padding-top: 0px; margin-top: -1px;}
+.user-details-form input[type="text"],
+.user-details-form input[type="password"] {border: 1px solid #d8d8d8; border-radius: 4px; box-shadow: 0 0 1px #f2f2f2; float: left; font-size: 14px; height: 16px; padding: 10px 12px; width: 310px; box-shadow: 0 0 2px #d0c8c1;}
+.user-details-form select {width: 333px;}
+.user-details-form .form-controls {padding-left: 178px; padding-top: 12px;}
+.user-details-form input[type="submit"] {font-size: 13px; color: #86560d; text-shadow: 0 1px 0 #fff; text-transform: uppercase; width: 336px; height: 40px; border-radius: 4px; background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x left center; box-shadow: 0 1px 1px #c0c0c0; border: none; letter-spacing: 1px;}
+.user-details-form hr {border: none; margin: 25px 0;}
+
+/*Order history*/
+.order-history-list {padding-top: 5px;}
+.order-history-item {background: #fff; border-radius: 3px; border: 1px solid #efeeed; box-shadow: 0 1px 1px #efeeed; padding-right: 18px; margin-bottom: 16px; position: relative; padding-top: 10px; padding-bottom: 10px;}
+.order-history-item .restautrant-logo {float: left; width: 90px; text-align: center; margin-right: 6px;}
+.restautrant-logo-wrap {width: 90px; height: 76px; vertical-align: middle; text-align: center; display: table-cell;}
+.order-history-item .history-item-middle {width: 380px; float: left;}
+.order-history-item .number-date {font-size: 10px; padding-top: 23px; color: #b39196;}
+.order-history-item .number-date span {display: inline-block; padding-right: 20px;}
+.order-history-item .desc {font-size: 14px; padding-top: 4px; letter-spacing: 0.5px;}
+.order-history-item .desc strong {text-decoration: underline; font-weight: normal;}
+.order-history-item .history-item-righter {width: 166px; float: right; padding-top: 5px; letter-spacing: 1.5px;}
+.order-history-item .rate-link {display: block; font-size: 10px; color: #b39196; text-transform: uppercase; text-align: center; line-height: 22px; margin-bottom: 7px;}
+.order-history-item .order-button {display: block; font-size: 10px; color: #86560d; text-transform: uppercase; text-align: center; text-shadow: 0 1px 0 #fff; box-shadow: 0 1px 1px #c0c0c0; height: 36px; line-height: 40px; border-radius: 3px; background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x left top;}
+.order-history-item .close {display: inline-block; position: absolute; background: url(/bundles/foodapp/images/close-small.png) no-repeat left top; width: 20px; height: 20px; right: -10px; top: -10px; display: none; cursor: pointer;}
+.order-history-item:hover .close {display: block;}
+
+/*Delivery tracking*/
+.delivery-tracking-form {}
+.delivery-tracking-form .form-row {margin-bottom: 34px; margin-top: 14px;}
+.delivery-tracking-form p {font-size: 14px; line-height: 21px; }
+.delivery-tracking-form label {float: left; font-size: 15px; padding-top: 9px; padding-right: 37px; margin-top: 2px;}
+.delivery-tracking-form input[type="text"] {float: left; border: 1px solid #d8d8d8; border-radius: 4px; box-shadow: 0 0 1px #f2f2f2; float: left; font-size: 14px; height: 16px; padding: 10px 12px; width: 185px; margin-right: 17px; margin-top: 2px;}
+.delivery-tracking-form button {float: left; width: 205px; height: 40px; border-radius: 4px; background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x left top; text-shadow: 0 1px 0 #fff; box-shadow: 0 1px 1px #c0c0c0; color: #86560d; border: none; font-size: 15px;}
+.delivery-tracking-form button span {display: inline-block; padding: 0 16px; background: url(/bundles/foodapp/images/button-arrow-2.png) no-repeat right center; text-transform: uppercase; }
+.progress-image-wrap {text-align: center; padding: 8px; border-radius: 4px; border: 1px solid #f5f0eb;}
+
+
+/*Page bottom ----------------------------------------*/
+.site-footer {background: #cd1d36; padding-top: 31px; padding-bottom: 40px;}
+.site-footer .site-block {position: relative;}
+.site-footer h5 {color: #fff; margin: 0; font-size: 20px; font-weight: normal; margin-bottom: 4px; letter-spacing: -0.5px; }
+.site-footer .col {float: left; font-size: 15px; letter-spacing: 0.5px; margin-right: 36px; background: url(/bundles/foodapp/images/rep-dot.png) repeat-y right top;}
+.site-footer .col-1 {width: 180px;}
+.site-footer .col-2 {width: 190px;}
+.site-footer .col-3 {width: 423px; margin-right: 0px; padding-right: 18px;}
+.site-footer .col-4 {width: 96px; float: right; margin-right: 0px; text-align: right; background: none;}
+
+.site-footer li {line-height: 29px;}
+.site-footer a {color: #faafbb;}
+
+.site-footer .restoran-rating {margin-top: -1px;}
+
+.site-footer .copyrights {margin: 0; color: #fff;}
+
+.small-col {width: 193px; line-height: 29px;}
+
+.copyrights {position: absolute; right: 0px; bottom: 8px; font-size: 11px;}
+
+/*Popups*/
+#boxer.inline {padding: 0px; background: none;}
+#boxer .boxer-container,
+#boxer .boxer-content {background: none; height: auto !important; overflow: visible !important;}
+#boxer .boxer-close {background: url(/bundles/foodapp/images/close-popup.png) no-repeat left top; top: -18px; right: -18px; border-radius: none; box-shadow: none; width: 45px; height: 45px;}
+
+.detailed-dish-popup {width: 550px; border-radius: 10px; background: #fff;}
+.detailed-dish-popup img {border-radius: 10px 10px 0 0;}
+
+.dish-info {text-align: center; padding: 16px; border-bottom: 1px solid #ebe2d9;}
+.dish-info .name {font-size: 27px; color: #55422e; margin: 0;}
+.dish-info .desc {color: #cfb4b8; font-size: 12px; line-height: 17px; margin: 0;}
+
+.dish-size {padding: 21px 23px; padding-bottom: 3px; border-bottom: 1px solid #ebe2d9;}
+.dish-size .title {color: #55422e; font-size: 20px; padding-bottom: 12px;}
+.dish-size .custom-radio {width: 137px; padding-right: 0; float: left; margin-right: 15px; margin-bottom: 15px; font-size: 12px; color: #55422e; line-height: 18px; padding-top: 2px; padding-left: 21px;}
+.dish-size .custom-radio:nth-child(3n) {margin-right: 0;}
+.dish-size .custom-radio strong {display: block; font-weight: normal;}
+
+.dish-ingredients {padding: 15px 23px; padding-bottom: 4px; border-bottom: 1px solid #ebe2d9;}
+.dish-ingredients .title {color: #55422e; font-size: 20px; padding-bottom: 12px;}
+.dish-ingredients .custom-checkbox {width: 137px; padding-right: 0; float: left; margin-right: 15px; margin-bottom: 15px; font-size: 12px; color: #55422e; line-height: 18px; padding-top: 2px; padding-left: 21px;}
+.dish-ingredients .custom-checkbox:nth-child(3n) {margin-right: 0;}
+.dish-ingredients .custom-checkbox strong {display: block; font-weight: normal;}
+
+.detailed-dish-popup .popup-controls {padding: 16px 21px;}
+
+.detailed-dish-popup .button-submit {display: block; height: 48px; line-height: 48px; font-size: 20px; text-align: center; color: #86560d; border-radius: 4px; background: url(/bundles/foodapp/images/button-rep.png) repeat-x left top; box-shadow: 0 1px 1px #c0c0c0; text-transform: uppercase; letter-spacing: 1.7px; text-shadow: 0 1px 0 #fde99a;}
+.detailed-dish-popup .button-submit span {display: inline-block; line-height: 48px; padding: 0 29px; background: url(/bundles/foodapp/images/button-arrow.png) no-repeat right center; text-shadow: 0 0 0 #fff;}
+
+/*Login regsiter popup*/
+.login-register-popup {width: 860px; border-radius: 10px; background: #fff url(/bundles/foodapp/images/dot.png) repeat-y center top;}
+.login-register-popup .lefter {padding: 24px 34px; float: left; width: 360px;}
+.login-register-popup .righter {padding: 24px 34px; float: right; width: 360px;}
+.login-register-popup h3 {font-size: 27px; margin: 0; line-height: 36px; letter-spacing: 1px;}
+.login-register-popup h4 {font-size: 12px; color: #cfb4b8; margin: 0; margin-bottom: 27px;}
+.login-register-popup .form-row {margin-bottom: 13px;}
+.register-form .form-row {margin-bottom: 10px;}
+.login-register-popup .small-margin {margin-bottom: 10px;}
+.login-register-popup label {float: left; width: 142px; padding-right: 5px; font-size: 15px; padding-top: 9px;}
+.login-register-popup input[type="text"],
+.login-register-popup input[type="password"] {border: 1px solid #d8d8d8; border-radius: 4px; box-shadow: 0 0 1px #f2f2f2; float: left; font-size: 14px; height: 16px; padding: 10px 12px; width: 187px;}
+
+.login-register-popup input[type="submit"] {font-size: 13px; color: #86560d; text-shadow: 0 1px 0 #fff; text-transform: uppercase; width: 211px; height: 40px; border-radius: 4px; background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x left center; box-shadow: 0 1px 1px #c0c0c0; border: none; letter-spacing: 1px;}
+
+.login-register-popup .double {padding-top: 0px;}
+
+.login-form .form-controls {padding-top: 23px;}
+.register-form .form-controls {padding-top: 18px;}
+.login-register-popup .custom-checkbox {font-size: 12px; color: #cfb4b8; padding-top: 0px; width: 100px; margin-top: 9px; line-height: 22px;}
+.login-register-popup a {font-size: 12px; color: #cfb4b8; text-decoration: underline;}
+.login-register-popup a:hover {text-decoration: none;}

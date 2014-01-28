@@ -1,0 +1,7 @@
+#sliceview{position:absolute;left:2px;top:2px;font-family:Verdana, Geneva, sans-serif;z-index:1005;font-size:11px;width:180px;zoom:1;}
+.sliceview-info{padding:3px 5px;background:#04819E;height:19px;margin-bottom:2px;}
+.sliceview-info strong{display:inline-block;padding-top:2px;color:#fff;}
+#sliceview-toggle{display:inline-block;font-size:10px;background:#FFB100;margin-left:5px;float:right;}
+#sliceview a{text-decoration:none;display:block;padding:2px 4px;color:#000;background:#fff;display:block;text-align:left;border:1px solid #ccc;margin-top:2px;}
+#sliceview a.active, #sliceview a:hover{background:#FFB100;}
+#sliceview .sliceview-info a{margin-top: 0;}

@@ -2,7 +2,7 @@
     <div class="list-group">
         {% for item in list %}
             <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(item.id, 'kitchen') }) }}" class="list-group-item {% if item.id == 4 %} active {% endif %}" title="{{ 'places.count'|trans }} - {{ item.count }}" style="text-align: center">
-                {% image '@FoodAppBundle/Resources/public/images/pizza_256.png' output='/images/pizza_256.png' %}
+                {% image '@FoodAppBundle/Resources/public/images2/pizza_256.png' output='/images2/pizza_256.png' %}
                 <img src="{{ asset_url }}" alt="" style="width: 110px"/>
                 {% endimage %}
             {{ item.name }}</a>
