@@ -9,7 +9,7 @@ parameters:
     available_locales: [lt, en, ru]
     available_locales_routing: lt | en | ru
     time_zone: "Europe/Vilnius"
-    domain: "skanu.lt"
+    domain: "labai.skanu.lt"
     arc_gis_user: "skanulabai"
     arc_gis_pass: "labaiskanu"
     arc_gis_geocode_url: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=pjson&Address=_1_&City=_2_&CountryCode=LT&outFields=AddrNum,StName,City"
@@ -206,4 +206,4 @@ evp_web_to_pay:
     credentials:
         project_id: 45333 # Kolkas crap, o ne id :D
         sign_password: 4e9f20772a3fa0c83f76dae9c6e06008
-    use_sandbox: true
+    use_sandbox: false

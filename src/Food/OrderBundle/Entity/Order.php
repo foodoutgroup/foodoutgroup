@@ -267,6 +267,6 @@ class Order
     public function getAmount()
     {
         // TODO susumuoti visu detailsu kainas ir grazinti ;)
-        return '15.5';
+        return '1.5';
     }
 }

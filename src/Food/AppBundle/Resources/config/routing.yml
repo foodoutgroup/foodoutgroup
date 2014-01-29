@@ -2,16 +2,19 @@ food_lang_homepage:
     pattern: /
     defaults: { _controller: FoodAppBundle:Default:index }
 
+food_test_payment:
+    pattern:  /test/payment
+    defaults: { _controller: FoodAppBundle:Test:payment }
+
 food_test:
     pattern:  /test/
     defaults: { _controller: FoodAppBundle:Test:index }
-
 
 food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|call_center).+"
+        slug : "^(?!admin|cart|test).+"
 
 food_admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
