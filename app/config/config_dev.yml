@@ -26,6 +26,10 @@ monolog:
         chromephp:
             type:  chromephp
             level: info
+        console:
+            type:   stream
+            path:  %kernel.logs_dir%/console.log
+            level: debug
 
 assetic:
     use_controller: true

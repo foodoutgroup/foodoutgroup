@@ -60,8 +60,9 @@ class DeliveryController extends Controller
         return $this->messagingService;
     }
 
-    public function indexAction($request)
+    public function indexAction()
     {
+        $request = $this->get('request');
         $messagingService = $this->getMessagingService();
 
         // TODO iskelti i services.yml, kad uzkrautu per ten :) gal :)
@@ -71,8 +72,6 @@ class DeliveryController extends Controller
         $provider->setDebugEnabled(true);
 
         $messagingService->setMessagingProvider($provider);
-
-        // TODO finish with deliveries
         $messagingService->updateMessagesDelivery($request->getContent());
 
         return new Response("OK, response parsed");

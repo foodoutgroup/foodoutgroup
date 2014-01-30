@@ -35,7 +35,7 @@ class Slug
     private $item_id;
 
     /**
-     * @var integer $lang_id
+     * @var string $lang_id
      *
      * @ORM\Column(name="lang_id", type="string", length=3)
      */
@@ -106,7 +106,7 @@ class Slug
     /**
      * Set lang_id
      *
-     * @param integer $langId
+     * @param string $langId
      * @return Slug
      */
     public function setLangId($langId)
@@ -119,7 +119,7 @@ class Slug
     /**
      * Get lang_id
      *
-     * @return integer
+     * @return string
      */
     public function getLangId()
     {
@@ -130,6 +130,7 @@ class Slug
      * Set type
      *
      * @param string $type
+     * @throws \InvalidArgumentException
      * @return Slug
      */
     public function setType($type)

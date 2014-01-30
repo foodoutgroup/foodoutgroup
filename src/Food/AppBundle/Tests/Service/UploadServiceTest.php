@@ -245,4 +245,60 @@ class UploadServiceTest extends \PHPUnit_Framework_TestCase
 
         $uploadableService->upload('super/path/');
     }
+
+    public function testUploadNoBasePath()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\Container');
+
+        $theObject = $this->getMock(
+            '\Food\AppBundle\Entity\Uploadable',
+            array('getId', 'getFile')
+        );
+
+        $theFile = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $userId = 24;
+
+        $uploadableService = new UploadService($container, $userId);
+        $uploadableService->setObject($theObject);
+        $uploadableService->setUploadableFieldGetter('getLogo');
+        $uploadableService->setUploadableFieldSetter('setLogo');
+
+        $theObject->expects($this->any())
+            ->method('getFile')
+            ->will($this->returnValue($theFile));
+
+        $theObject->expects($this->never())
+            ->method('getId');
+
+        $uploadableService->upload(null);
+    }
+
+    public function testUploadNoFile()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\Container');
+
+        $theObject = $this->getMock(
+            '\Food\AppBundle\Entity\Uploadable',
+            array('getFile', 'getId')
+        );
+
+        $userId = 24;
+
+        $uploadableService = new UploadService($container, $userId);
+        $uploadableService->setObject($theObject);
+        $uploadableService->setUploadableFieldGetter('getLogo');
+        $uploadableService->setUploadableFieldSetter('setLogo');
+
+        $theObject->expects($this->once())
+            ->method('getFile')
+            ->will($this->returnValue(null));
+
+        $theObject->expects($this->never())
+            ->method('getId');
+
+        $uploadableService->upload(null);
+    }
 }

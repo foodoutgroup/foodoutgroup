@@ -5,4 +5,3 @@ message_send:
 delivery_report:
     path:     /messaging-delivery/
     defaults: { _controller: FoodSmsBundle:Delivery:index }
-    methods:  [POST]
