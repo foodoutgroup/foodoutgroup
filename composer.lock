@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "9a7a810c8c1b284ee8924404547ba99e",
+    "hash": "315a0ed3b96cd94818118dfd7d42c59c",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -1525,6 +1525,39 @@
             "time": "2013-08-21 18:09:35"
         },
         {
+            "name": "shuber/curl",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hamstar/curl.git",
+                "reference": "6624992df201f9fd7262080117385dd09b0ecd2b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hamstar/curl/zipball/6624992df201f9fd7262080117385dd09b0ecd2b",
+                "reference": "6624992df201f9fd7262080117385dd09b0ecd2b",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "curl.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP Wrapper for Curl",
+            "keywords": [
+                "bot",
+                "curl",
+                "scraper",
+                "spider"
+            ],
+            "time": "2013-11-23 01:44:31"
+        },
+        {
             "name": "sonata-project/admin-bundle",
             "version": "dev-master",
             "target-dir": "Sonata/AdminBundle",
@@ -2868,7 +2901,8 @@
         "doctrine/doctrine-fixtures-bundle": 20,
         "sonata-project/user-bundle": 20,
         "webtopay/libwebtopay": 20,
-        "webtopay/webtopay-bundle": 20
+        "webtopay/webtopay-bundle": 20,
+        "shuber/curl": 20
     },
     "platform": {
         "php": ">=5.3.3"
