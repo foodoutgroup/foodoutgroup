@@ -249,16 +249,45 @@ class OrderService extends ContainerAware
     private $payseraBiller = null;
 
     /**
-     * @param $id
+     * @param int $id
+     *
+     * @return Order|false
      */
     public function getOrderById($id)
     {
+        $em = $this->container->get('doctrine')->getManager();
+        $order = $em->getRepository('Food\OrderBundle\Entity\Order')->find($id);
 
+        if (!$order) {
+            return false;
+        }
+
+        return $order;
     }
 
+    /**
+     * @param string $hash
+     *
+     * @throws \Exception
+     * @return Order|false
+     */
     public function getOrderByHash($hash)
     {
+        $em = $this->container->get('doctrine')->getManager();
+        $order = $em->getRepository('Food\OrderBundle\Entity\Order')->findBy(array('hash' => $hash), null, 1);;
 
+        if (!$order) {
+            return false;
+        }
+
+        if (count($order) > 1) {
+            throw new \Exception('More then one order found. How the hell? Hash: '.$hash);
+        }
+
+        // TODO negrazu, bet laikina :(
+        $order = $order[0];
+
+        return $order;
     }
 
     /**
@@ -320,6 +349,8 @@ class OrderService extends ContainerAware
     /**
      * @param int $orderId
      * @param string $billingType
+     *
+     * @return string
      */
     public function billOrder($orderId, $billingType = 'paysera')
     {
@@ -327,6 +358,8 @@ class OrderService extends ContainerAware
         $biller = $this->getBillingInterface($billingType);
 
         $biller->setOrder($order);
-        $biller->bill();
+        $redirectUrl = $biller->bill();
+
+        return $redirectUrl;
     }
 }

@@ -72,6 +72,18 @@ ordermobile:
     path: /o/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~ }
 
+paysera_accept:
+    path: /payments/paysera/accept
+    defaults: { _controller: FoodOrderBundle:Payments:payseraAccept}
+
+paysera_cancel:
+    path: /payments/paysera/cancel
+    defaults: { _controller: FoodOrderBundle:Payments:payseraCancel}
+
+paysera_callback:
+    path: /payments/paysera/callback
+    defaults: { _controller: FoodOrderBundle:Payments:payseraCallback}
+
 fos_user_profile:
     resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
     prefix: /profile
