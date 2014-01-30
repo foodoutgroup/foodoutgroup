@@ -14,7 +14,7 @@ food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test).+"
+        slug : "^(?!admin|cart|test|payments).+"
 
 food_admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
