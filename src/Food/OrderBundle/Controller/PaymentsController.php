@@ -12,13 +12,19 @@ class PaymentsController extends Controller
     public function payseraAcceptAction()
     {
         // TODO accept da payment
-        $this->container->get("logger")->alert("==========================\naccept payment action for paysera came\n====================================\n");
+        $logger = $this->container->get("logger");
+        $logger->alert("==========================\naccept payment action for paysera came\n====================================\n");
+        $logger->alert("Request data: ".var_export($this->getRequest()->query->all(), true));
+        $logger->alert('-----------------------------------------------------------');
     }
 
     public function payseraCancelAction()
     {
         // TODO cancel cart, show das error
-        $this->container->get("logger")->alert("==========================\ncancel payment action for paysera came\n====================================\n");
+        $logger = $this->container->get("logger");
+        $logger->alert("==========================\ncancel payment action for paysera came\n====================================\n");
+        $logger->alert("Request data: ".var_export($this->getRequest()->query->all(), true));
+        $logger->alert('-----------------------------------------------------------');
     }
 
     public function payseraCallbackAction()
