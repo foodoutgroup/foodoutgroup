@@ -84,13 +84,12 @@ class GisService extends ContainerAware {
     public function getCoordsOfPlace($theText)
     {
         $resp = $this->getCli()->get(
-            $this->container->getParameter('arc_gis_geocode'),
+            $this->container->getParameter('arc_gis_geocode_single'),
             array(
-                'Address' => $theText,
-                'CountryCode' => 'LT',
+                'text' => $theText.', Lithuania',
                 'f' => 'pjson',
                 'token' => $this->getToken(),
-                'outFields' => 'AddrNum,StName,City'
+                'outFields' => 'AddNum,StName,City'
             )
         );
         return json_decode($resp->body);

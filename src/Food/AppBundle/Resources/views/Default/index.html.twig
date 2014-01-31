@@ -1,42 +1,123 @@
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
 
+
+    {% block jscode %}
+        $(document).ready(function(){
+            var tastyCities = {{ render(controller('FoodPlacesBundle:Default:cities')) }};
+            $("#index_city").autocomplete({
+                source: tastyCities,
+                minLength: 0
+            });
+        });
+    {% endblock %}
+
+
 {% block body %}
 
-    {% image '@FoodAppBundle/Resources/public/images2/slide_dev.jpg' output='/images2/slide_dev.jpg' %}
-    <div style="width: 1300px; height: 480px;  margin-left: auto; margin-right: auto; background-image: url('{{ asset_url }}')">
-        {% endimage %}
-        <div style="text-align: center">
-            {% image '@FoodAppBundle/Resources/public/images2/location_title_dev.png' output='/images2/location_title_dev.png' %}
-            <img src="{{ asset_url }}" alt="" style="margin-top: 36px; margin-bottom: 50px;"/>
-            {% endimage %}
-            {% image '@FoodAppBundle/Resources/public/images2/location_dev.png' output='/images2/location_dev.png' %}
-            <img src="{{ asset_url }}" alt="" />
-            {% endimage %}
+    <div style="background-image: url({{ asset('bundles/foodapp/images/offer-1.jpg') }});" class="site-header special-offer-block">
+        <div class="site-block">
+            <h1>Užsisakykite maistą į<br/> namus ar biurą</h1>
+            <form class="search-food-form">
+                <p class="title">Įveskite savo adresą ir sužinokite, kurie restoranai atveš nom nom</p>
+                <div class="clearfix">
+                    <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}">
+                    <input type="text" placeholder="{% trans %}index.street{% endtrans %}" class="input-street">
+                    <input type="submit" value="{% trans %}index.findfood{% endtrans %}">
+                </div>
+            </form>
+        </div>
+        <p class="img-description">Svaigioji pica, Čili pica, 25 Lt</p>
+    </div>
+    <div class="site-center">
+        <div class="site-block">
+            <div class="items-list-title clearfix">
+                <h2>Geri pasiūlymai</h2><a href="#" class="button">daugiau pasiūlymų</a>
+            </div>
+            <div class="items-list clearfix">
+                <div class="items-list-col"><a href="#" class="cupom-item">
+                        <div class="cupon-top"><img src="{{ asset('bundles/foodapp/images/cupo-1.png') }}">
+                            <p class="cupon-name">Pica už ačiū!</p>
+                            <p class="cupon-desc">Akcija galioja užsisakant dvi ir daugiau picų.</p>
+                        </div>
+                        <div class="cupon-bottom">
+                            <div class="button">Gauk šį pasiūlymą!</div>
+                        </div></a></div>
+                <div class="items-list-col"><a href="#" class="cupom-item">
+                        <div class="cupon-top"><img src="{{ asset('bundles/foodapp/images/cupo-2.png') }}">
+                            <p class="cupon-name">Pica už ačiū!</p>
+                            <p class="cupon-desc">Akcija galioja užsisakant dvi ir daugiau picų.</p>
+                        </div>
+                        <div class="cupon-bottom">
+                            <div class="button">Gauk šį pasiūlymą!</div>
+                        </div></a></div>
+                <div class="items-list-col"><a href="#" class="cupom-item">
+                        <div class="cupon-top"<img src="{{ asset('bundles/foodapp/images/cupo-3.png') }}">
+                        <p class="cupon-name">Pica už ačiū!</p>
+                        <p class="cupon-desc">Akcija galioja užsisakant dvi ir daugiau picų.</p>
+                </div>
+                <div class="cupon-bottom">
+                    <div class="button">Gauk šį pasiūlymą!</div>
+                </div></a></div>
+            <div class="items-list-col"><a href="#" class="cupom-item">
+                    <div class="cupon-top"><img src="{{ asset('bundles/foodapp/images/cupo-4.png') }}">
+                        <p class="cupon-name">Pica už ačiū!</p>
+                        <p class="cupon-desc">Akcija galioja užsisakant dvi ir daugiau picų.</p>
+                    </div>
+                    <div class="cupon-bottom">
+                        <div class="button">Gauk šį pasiūlymą!</div>
+                    </div></a></div>
+            <div class="items-list-col"><a href="#" class="cupom-item">
+                    <div class="cupon-top"><img src="{{ asset('bundles/foodapp/images/cupo-5.png') }}">
+                        <p class="cupon-name">Pica už ačiū!</p>
+                        <p class="cupon-desc">Akcija galioja užsisakant dvi ir daugiau picų.</p>
+                    </div>
+                    <div class="cupon-bottom">
+                        <div class="button">Gauk šį pasiūlymą!</div>
+                    </div></a></div>
+        </div>
+        <div class="items-list-title clearfix">
+            <h2>Mūsų rekomenduojami restoranai</h2><a href="#" class="button">daugiau pasiūlymų</a>
+        </div>
+        <div class="items-list clearfix">
+            <div class="items-list-col"><a href="#" class="restoran-item">
+                    <div class="restoran-item-top"><img src="{{ asset('bundles/foodapp/images/res-1.png') }}"></div>
+                    <p class="restoran-name">Pica už ačiū!</p>
+                    <div data-stars="4" class="restoran-rating"></div></a></div>
+            <div class="items-list-col"><a href="#" class="restoran-item">
+                    <div class="restoran-item-top"><img src="{{ asset('bundles/foodapp/images/res-2.png') }}"></div>
+                    <p class="restoran-name">Pica už ačiū!</p>
+                    <div data-stars="5" class="restoran-rating"></div></a></div>
+            <div class="items-list-col"><a href="#" class="restoran-item">
+                    <div class="restoran-item-top"><img src="{{ asset('bundles/foodapp/images/res-3.png') }}"></div>
+                    <p class="restoran-name">Pica už ačiū!</p>
+                    <div data-stars="5" class="restoran-rating"></div></a></div>
+            <div class="items-list-col"><a href="#" class="restoran-item">
+                    <div class="restoran-item-top"><img src="{{ asset('bundles/foodapp/images/res-4.png') }}"></div>
+                    <p class="restoran-name">Pica už ačiū!</p>
+                    <div data-stars="5" class="restoran-rating"></div></a></div>
+            <div class="items-list-col"><a href="#" class="restoran-item">
+                    <div class="restoran-item-top"><img src="{{ asset('bundles/foodapp/images/res-5.png') }}"></div>
+                    <p class="restoran-name">Pica už ačiū!</p>
+                    <div data-stars="3" class="restoran-rating"></div></a></div>
+        </div>
+        <div class="clearfix bottom-blocks">
+            <div class="app-block clearfix"><img src="{{ asset('bundles/foodapp/images/app-view.png') }}">
+                <div class="app-block-inner">
+                    <h3>Skanu.lt <br/>tavo kišenėje!</h3>
+                    <p>Lorem ipsum dolor sit amet, enim ad minim veniam, quis nostrud ullamco laboris nisi ut aliqip ex commodo consequat.</p>
+                    <div><a href="#"><img src="{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a href="#"><img src="{{ asset('bundles/foodapp/images/g-store.png') }}"></a></div>
+                </div>
+            </div>
+            <div class="newsletter-block">
+                <h4>Naujienlaiškis</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do enim ad minim veniam, quis nostrud.</p>
+                <form class="newsletter-form">
+                    <input type="text" placeholder="Tavo el. paštas">
+                    <input type="submit" value="Prenumeruok">
+                </form>
+            </div>
         </div>
     </div>
-
-    <div class="col-xs-12 col-sm-10">
-        <p class="pull-right visible-xs">
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-        </p>
-        <div class="jumbotron">
-            <h1>Jami. Skanu</h1>
-            <p>Galima uzsisakyti maista :)</p>
-        </div>
-        <div class="row">
-            {% for i in 0..10 %}
-            <div class="col-6 col-sm-6 col-lg-4">
-                <h2>Patiekalas</h2>
-                <p>
-                    {% image '@FoodAppBundle/Resources/public/images2/test_img.jpg' output='/images2/test_img.jpg' %}
-                    <img src="{{ asset_url }}" alt="" style="width: 200px; border-radius: 30px;"/>
-                    {% endimage %}
-                <li>Mesyte</li><li>Suris</li><li>Petrushka</li> </p>
-                <p><a class="btn btn-default" href="#" role="button">Placiau &raquo;</a></p>
-            </div>
-            {% endfor %}
-
-        </div><!--/row-->
-    </div><!--/span-->
+    </div>
 {% endblock %}

@@ -28,6 +28,7 @@ parameters:
 #  arc_gis_oauth: "https://www.arcgis.com/sharing/oauth2/token?client_id=rT6idyGGrhoLHfQY&grant_type=client_credentials&client_secret=13edb6261ed542e1be9ab27ec47d9d82&f=pjson"
     arc_gis_oauth: "https://www.arcgis.com/sharing/oauth2/token"
     arc_gis_geocode: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates"
+    arc_gis_geocode_single: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     arc_gis_geocode_url: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=pjson&Address=_1_&City=_2_&CountryCode=LT&outFields=AddrNum,StName,City"
 
 framework:

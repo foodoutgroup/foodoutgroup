@@ -3,17 +3,14 @@
 namespace Food\PlacesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class DefaultController extends Controller
 {
-    /**
-     * @Route("/hello/{name}")
-     * @Template()
-     */
-    public function indexAction($name)
+    public function citiesAction()
     {
-        return array('name' => $name);
+        $cities = $this->get('food.places')->getAvailableCities();
+        return new Response(json_encode($cities));
     }
 }

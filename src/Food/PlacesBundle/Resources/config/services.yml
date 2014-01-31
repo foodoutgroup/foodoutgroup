@@ -1,0 +1,7 @@
+services:
+    food.places:
+        class: Food\PlacesBundle\Service\PlacesService
+        calls:
+            - [setContainer, [@service_container]]
+
+
