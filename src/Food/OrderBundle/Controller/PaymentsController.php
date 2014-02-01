@@ -58,27 +58,27 @@ class PaymentsController extends Controller
 
         try {
             $callbackValidator = $this->get('evp_web_to_pay.callback_validator');
-            $data = $callbackValidator->validateAndParseData($this->getRequest()->query->all());
+//            $data = $callbackValidator->validateAndParseData($this->getRequest()->query->all());
 
-            $logger->alert("Parsed accept data: ".var_export($data, true));
-            $logger->alert('-----------------------------------------------------------');
+//            $logger->alert("Parsed accept data: ".var_export($data, true));
+//            $logger->alert('-----------------------------------------------------------');
 
-            $orderService = $this->container->get('food.order');
-            $order = $orderService->getOrderById($data['orderid']);
+//            $orderService = $this->container->get('food.order');
+//            $order = $orderService->getOrderById($data['orderid']);
 
-            $orderService->setPaymentStatus($orderService::$paymentStatusCanceled);
+//            $orderService->setPaymentStatus($orderService::$paymentStatusCanceled);
 
-            if (!$order) {
-                throw new \Exception('Order not found. Order id from Paysera: '.$data['orderid']);
-            }
+//            if (!$order) {
+//                throw new \Exception('Order not found. Order id from Paysera: '.$data['orderid']);
+//            }
         } catch (\Exception $e) {
             //handle the callback validation error here
             $logger->alert("payment data validation failed!. Error: ".$e->getMessage());
             $logger->alert("trace: ".$e->getTraceAsString());
 
-            if ($order) {
-                $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());
-            }
+//            if ($order) {
+//                $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());
+//            }
 
             return new Response($e->getTraceAsString(), 500);
         }
