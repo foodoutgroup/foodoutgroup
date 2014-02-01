@@ -11,6 +11,11 @@ class PaySera extends ContainerAware implements BillingInterface {
     /**
      * @var string
      */
+    private $siteDomain = null;
+
+    /**
+     * @var string
+     */
     private $acceptUrl = null;
 
     /**
@@ -108,6 +113,22 @@ class PaySera extends ContainerAware implements BillingInterface {
     }
 
     /**
+     * @param string $siteDomain
+     */
+    public function setSiteDomain($siteDomain)
+    {
+        $this->siteDomain = $siteDomain;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSiteDomain()
+    {
+        return $this->siteDomain;
+    }
+
+    /**
      * @param string $acceptUrl
      */
     public function setAcceptUrl($acceptUrl)
@@ -183,9 +204,9 @@ class PaySera extends ContainerAware implements BillingInterface {
             'amount' => $order->getAmount()*100,
             'currency' => 'LTL', // TODO kai eisim i kita rinka
             'country' => 'LT', // TODO kai eisim i kita rinka
-            'accepturl' => $this->getAcceptUrl(),
-            'cancelurl' => $this->getCancelUrl(),
-            'callbackurl' => $this->getCallbackUrl(),
+            'accepturl' => 'http://'.$this->getSiteDomain().$this->getAcceptUrl(),
+            'cancelurl' => 'http://'.$this->getSiteDomain().$this->getCancelUrl(),
+            'callbackurl' => 'http://'.$this->getSiteDomain().$this->getCallbackUrl(),
             'test' => $this->getTest(),
         );
 

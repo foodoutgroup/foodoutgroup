@@ -6,7 +6,8 @@ services:
             - [setSightPassword, [%evp_web_to_pay.credentials.sign_password%]]
             - [setContainer, ["@service_container"]]
             - [setTest, [%evp.test_payments%]]
-    
+            - [setSiteDomain, [%domain%]]
+
     food.local_biller:
         class: Food\OrderBundle\Service\LocalBiller
         
