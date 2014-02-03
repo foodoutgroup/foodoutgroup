@@ -68,6 +68,18 @@ class Order
     private $order_hash;
 
     /**
+     * @var string
+     * @ORM\Column(name="payment_status", type="string")
+     */
+    private $paymentStatus = 'new';
+
+    /**
+     * @var string
+     * @ORM\Column(name="last_payment_error", type="string", nullable=true)
+     */
+    private $lastPaymentError = null;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -267,6 +279,52 @@ class Order
     public function getAmount()
     {
         // TODO susumuoti visu detailsu kainas ir grazinti ;)
-        return '15.5';
+        return '1.5';
+    }
+
+    /**
+     * Set paymentStatus
+     *
+     * @param string $paymentStatus
+     * @return Order
+     */
+    public function setPaymentStatus($paymentStatus)
+    {
+        $this->paymentStatus = $paymentStatus;
+    
+        return $this;
+    }
+
+    /**
+     * Get paymentStatus
+     *
+     * @return string 
+     */
+    public function getPaymentStatus()
+    {
+        return $this->paymentStatus;
+    }
+
+    /**
+     * Set lastPaymentError
+     *
+     * @param string $lastPaymentError
+     * @return Order
+     */
+    public function setLastPaymentError($lastPaymentError)
+    {
+        $this->lastPaymentError = $lastPaymentError;
+    
+        return $this;
+    }
+
+    /**
+     * Get lastPaymentError
+     *
+     * @return string 
+     */
+    public function getLastPaymentError()
+    {
+        return $this->lastPaymentError;
     }
 }
