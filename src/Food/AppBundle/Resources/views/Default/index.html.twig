@@ -5,10 +5,47 @@
     {% block jscode %}
         $(document).ready(function(){
             var tastyCities = {{ render(controller('FoodPlacesBundle:Default:cities')) }};
-            $("#index_city").autocomplete({
+            $('#index_city').autocomplete({
                 source: tastyCities,
                 minLength: 0
             });
+            var addrXhr = null;
+            var addrResponse = {};
+            var waitIntervals = 0;
+            $('#index_address').keyup(function(){
+                if (addrXhr != null) {
+                    console.log(addrXhr.readyState);
+                    addrXhr.abort();
+                }
+                addrXhr = $.ajax({
+                    type: 'GET',
+                    url: '{{ path('food_ajax', {'action': 'find-address'}) }}',
+                    data:  {city: $('#index_city').val(), address: $(this).val()},
+                    success:  function(resp){
+                        addrResponse = resp.data;
+                        $('#index_coords').val(addrResponse.y + ',' + addrResponse.x);
+                        $('#index_address').val(addrResponse.name);
+                    }
+                });
+                setTimeout(function() { console.log(addrXhr); }, 10000);
+            });
+            $('#index_submit').click(function(){
+                if (addrXhr.readyState == 4) {
+                    $('.search-food-form').trigger('submit');
+                } else {
+                    waitForState();
+                }
+            });
+            function waitForState() {
+                if (waitIntervals < 20) {
+                    if (addrXhr.readyState == 4) {
+                        $('.search-food-form').trigger('submit');
+                    } else {
+                        waitIntervals++;
+                        setTimeout(function() { waitForState(); }, 1000);
+                    }
+                }
+            }
         });
     {% endblock %}
 
@@ -22,8 +59,10 @@
                 <p class="title">Įveskite savo adresą ir sužinokite, kurie restoranai atveš nom nom</p>
                 <div class="clearfix">
                     <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}">
-                    <input type="text" placeholder="{% trans %}index.street{% endtrans %}" class="input-street">
-                    <input type="submit" value="{% trans %}index.findfood{% endtrans %}">
+                    <input type="text" id="index_address" placeholder="{% trans %}index.street{% endtrans %}" class="input-street">
+                    <input type="submit" id="index_submit" value="{% trans %}index.findfood{% endtrans %}">
+                    <input type="hidden" id="index_h_coords" name="coords" />
+                    <input type="hidden" id="index_h_address" name="address" />
                 </div>
             </form>
         </div>

@@ -12,6 +12,11 @@ use Symfony\Component\Security\Acl\Exception\Exception;
 
 class OrderService extends ContainerAware
 {
+    // TODO statusu paaiskinimai
+    /**
+     * Naujas uzsakymas. Dar neperduotas restoranui
+     * @var string
+     */
     public static $status_new = "new";
     public static $status_accepted = "accepted";
     public static $status_forwarded = "forwarded";
@@ -19,6 +24,35 @@ class OrderService extends ContainerAware
     public static $status_finished = "finished";
     public static $status_canceled = "canceled";
 
+    /**
+     * Payment did not start yet
+     * @var string
+     */
+    public static $paymentStatusNew = "new";
+
+    /**
+     * Payment started in billing system
+     * @var string
+     */
+    public static $paymentStatusWait = "wait";
+
+    /**
+     * Payment has been canceled by user or billing system
+     * @var string
+     */
+    public static $paymentStatusCanceled = "cancel";
+
+    /**
+     * Payment completed
+     * @var string
+     */
+    public static $paymentStatusComplete = "complete";
+
+    /**
+     * Payment raised an error
+     * @var string
+     */
+    public static $paymentStatusError = "error";
 
     /**
      * @var ObjectManager
@@ -249,16 +283,47 @@ class OrderService extends ContainerAware
     private $payseraBiller = null;
 
     /**
-     * @param $id
+     * @param int $id
+     *
+     * @return Order|false
      */
     public function getOrderById($id)
     {
+        $em = $this->container->get('doctrine')->getManager();
+        $order = $em->getRepository('Food\OrderBundle\Entity\Order')->find($id);
 
+        if (!$order) {
+            return false;
+        }
+
+        $this->order = $order;
+
+        return $this->order;
     }
 
+    /**
+     * @param string $hash
+     *
+     * @throws \Exception
+     * @return Order|false
+     */
     public function getOrderByHash($hash)
     {
+        $em = $this->container->get('doctrine')->getManager();
+        $order = $em->getRepository('Food\OrderBundle\Entity\Order')->findBy(array('hash' => $hash), null, 1);;
 
+        if (!$order) {
+            return false;
+        }
+
+        if (count($order) > 1) {
+            throw new \Exception('More then one order found. How the hell? Hash: '.$hash);
+        }
+
+        // TODO negrazu, bet laikina :(
+        $this->order = $order[0];
+
+        return $this->order;
     }
 
     /**
@@ -320,6 +385,8 @@ class OrderService extends ContainerAware
     /**
      * @param int $orderId
      * @param string $billingType
+     *
+     * @return string
      */
     public function billOrder($orderId, $billingType = 'paysera')
     {
@@ -327,6 +394,83 @@ class OrderService extends ContainerAware
         $biller = $this->getBillingInterface($billingType);
 
         $biller->setOrder($order);
-        $biller->bill();
+        $redirectUrl = $biller->bill();
+
+        return $redirectUrl;
+    }
+
+    /**
+     * @param string $status Payment status
+     * @param string|null $message [optional] Error message
+     * @throws \InvalidArgumentException
+     */
+    public function setPaymentStatus($status, $message=null)
+    {
+        $order = $this->getOrder();
+
+        if (!$this->isAllowedPaymentStatus($status)) {
+            throw new \InvalidArgumentException('Status: "'.$status.'" is not a valid order status');
+        }
+
+        if (!$this->isValidPaymentStatusChange($order->getPaymentStatus(), $status)) {
+            throw new \InvalidArgumentException('Order can not go from status: "'.$order->getPaymentStatus().'" to: "'.$status.'" is not a valid order status');
+        }
+
+        $order->setPaymentStatus($status);
+
+        if ($status == self::$paymentStatusError) {
+            $order->setLastPaymentError($message);
+        }
+
+        $this->saveOrder();
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllowedPaymentStatuses()
+    {
+        return array(
+            self::$paymentStatusNew,
+            self::$paymentStatusWait,
+            self::$paymentStatusComplete,
+            self::$paymentStatusCanceled,
+            self::$paymentStatusError,
+        );
+    }
+
+    /**
+     * @param string $from
+     * @param string $to
+     * @return bool
+     */
+    public function isValidPaymentStatusChange($from, $to)
+    {
+        $flowLine = array(
+            self::$paymentStatusNew => 0,
+            self::$paymentStatusWait => 1,
+            self::$paymentStatusComplete => 2,
+            self::$paymentStatusCanceled => 2,
+            self::$paymentStatusError => 2,
+        );
+
+        if ($flowLine[$from] <= $flowLine[$to]) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $status
+     * @return bool
+     */
+    public function isAllowedPaymentStatus($status)
+    {
+        if (in_array($status, $this->getAllowedPaymentStatuses())) {
+            return true;
+        }
+
+        return false;
     }
 }

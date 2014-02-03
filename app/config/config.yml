@@ -21,7 +21,7 @@ parameters:
     admin.emails: [mantas@skanu.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
-    domain: "skanu.lt"
+    domain: "labai.skanu.lt"
     arc_gis_user: "skanulabai"
     arc_gis_pass: "labaiskanu"
     arc_gis_client_id: "rT6idyGGrhoLHfQY"
@@ -103,6 +103,8 @@ doctrine:
         # path:     %database_path%
         types:
             json: Sonata\Doctrine\Types\JsonType
+        mapping_types:
+            enum: string
 
     orm:
         auto_generate_proxy_classes: %kernel.debug%
@@ -225,4 +227,4 @@ evp_web_to_pay:
     credentials:
         project_id: 45333 # Kolkas crap, o ne id :D
         sign_password: 4e9f20772a3fa0c83f76dae9c6e06008
-    use_sandbox: true
+    use_sandbox: false

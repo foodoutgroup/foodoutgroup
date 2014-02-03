@@ -1564,12 +1564,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "5b8998208f3cb8fd2c5836dd4a74105f20388664"
+                "reference": "7e7245288e0eeb3e5dd8ad336783b8aeea1923df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/5b8998208f3cb8fd2c5836dd4a74105f20388664",
-                "reference": "5b8998208f3cb8fd2c5836dd4a74105f20388664",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/7e7245288e0eeb3e5dd8ad336783b8aeea1923df",
+                "reference": "7e7245288e0eeb3e5dd8ad336783b8aeea1923df",
                 "shasum": ""
             },
             "require": {
@@ -1636,7 +1636,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2014-02-02 23:10:41"
+            "time": "2014-01-30 08:36:39"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -1645,12 +1645,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "f411fcac0c9d8b7d5ff05f871dc42ebe4f03cbe5"
+                "reference": "657ae74116ec03cc91c23ce1f15390af3bf943bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/f411fcac0c9d8b7d5ff05f871dc42ebe4f03cbe5",
-                "reference": "f411fcac0c9d8b7d5ff05f871dc42ebe4f03cbe5",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/657ae74116ec03cc91c23ce1f15390af3bf943bf",
+                "reference": "657ae74116ec03cc91c23ce1f15390af3bf943bf",
                 "shasum": ""
             },
             "require": {
@@ -1701,7 +1701,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-02-02 23:11:50"
+            "time": "2014-01-29 10:34:19"
         },
         {
             "name": "sonata-project/cache-bundle",
@@ -1881,12 +1881,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle.git",
-                "reference": "fc514a81364c5f044a421772dae1397cf9fd9fb8"
+                "reference": "a8e4cb3723389b9ed60c83194d24026866ecd0a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/fc514a81364c5f044a421772dae1397cf9fd9fb8",
-                "reference": "fc514a81364c5f044a421772dae1397cf9fd9fb8",
+                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/a8e4cb3723389b9ed60c83194d24026866ecd0a8",
+                "reference": "a8e4cb3723389b9ed60c83194d24026866ecd0a8",
                 "shasum": ""
             },
             "require": {
@@ -1941,7 +1941,7 @@
                 "generator",
                 "sonata"
             ],
-            "time": "2014-02-02 23:23:05"
+            "time": "2014-01-24 14:05:29"
         },
         {
             "name": "sonata-project/easy-extends-bundle",
