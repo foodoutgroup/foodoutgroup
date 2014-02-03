@@ -1,15 +1,17 @@
 <?php
 
 namespace Food\SmsBundle\Service;
+
 use Food\SmsBundle\Exceptions\ParseException;
+use Curl;
 
 /**
  * Class InfobipProvider
  * @package Food\SmsBundle\Service
  *
  * @examples
- * http://api2.infobip.com/api/command?username=skanu1&password=119279&cmd=CREDITS
- * $infobipProvider->authenticate('skanu1', '119279');
+ * http://api2.infobip.com/api/command?username=login&password=password&cmd=CREDITS
+ * $infobipProvider->authenticate('login', 'password');
  * $infobipProvider->setApiUrl('http://api.infobip.com/api/v3/sendsms/json');
  */
 class InfobipProvider implements SmsProviderInterface {
@@ -96,6 +98,11 @@ class InfobipProvider implements SmsProviderInterface {
     );
 
     /**
+     * @var Curl
+     */
+    private $_cli;
+
+    /**
      * @param string $url
      * @param string $accoutApiUrl
      * @param string $username
@@ -143,6 +150,27 @@ class InfobipProvider implements SmsProviderInterface {
         $this->debugEnabled = $state;
     }
 
+    /**
+     * @param \Curl $cli
+     */
+    public function setCli($cli)
+    {
+        $this->_cli = $cli;
+    }
+
+    /**
+     * @return \Curl
+     */
+    public function getCli()
+    {
+        if (empty($this->_cli)) {
+            $this->_cli = new Curl;
+            $this->_cli->options['CURLOPT_SSL_VERIFYPEER'] = false;
+            $this->_cli->options['CURLOPT_SSL_VERIFYHOST'] = false;
+        }
+        return $this->_cli;
+    }
+
     public function log($message)
     {
         if ($this->isDebugEnabled() && !empty($this->logger)) {
@@ -181,25 +209,15 @@ class InfobipProvider implements SmsProviderInterface {
 
         $this->log('-- sending request withg data: '.var_export($requestData, true));
         $this->log('-- sending data in json: '.json_encode($requestData));
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $this->apiUrl);
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, 'JSON='.json_encode($requestData));
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-        $response = curl_exec($curl);
+        $resp = $this->getCli()->post(
+            $this->apiUrl,
+            'JSON='.json_encode($requestData)
+        );
 
-        $this->log('-- direct response from infobip: '.var_export($response, true));
+        $this->log('-- direct response from infobip: '.var_export($resp->body, true));
 
-        if (curl_errno($curl)) {
-            // TODO kitas exception tipas
-            $this->log('-- Got error connecting infobip: '.curl_error($curl));
-            new \InvalidArgumentException('Http connection error: '.curl_error($curl));
-        } else {
-            curl_close($curl);
-        }
-
-        return $response;
+        return $resp->body;
     }
 
     /**
@@ -384,16 +402,13 @@ class InfobipProvider implements SmsProviderInterface {
             $this->password
         );
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $balanceUrl);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $balance = curl_exec($curl);
+        $resp = $this->getCli()->get($balanceUrl);
+        $balance = json_decode($resp->body, true);
 
-        if (curl_errno($curl)) {
-            // TODO kitas exception tipas
-            new \InvalidArgumentException('Connection error: '.curl_error($curl));
-        } else {
-            curl_close($curl);
+        $jsonError = json_last_error();
+        if ($jsonError != JSON_ERROR_NONE) {
+            $this->log('-- HTTP Error: We have got an error while decoding response from Curl lib: '.$jsonError);
+            new \InvalidArgumentException('HTTP Error: We have got an error while decoding response from Curl lib: '.$jsonError);
         }
 
         return (float)$balance;

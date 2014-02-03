@@ -1,8 +1,6 @@
 <?php
 namespace Food\SmsBundle\Tests\Service;
 
-//use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
 use \Food\SmsBundle\Service\InfobipProvider;
 
 class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
