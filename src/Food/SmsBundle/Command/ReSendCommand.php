@@ -27,7 +27,7 @@ class ReSendCommand extends ContainerAwareCommand
         $count = 0;
 
         $messagingService = $this->getContainer()->get('food.messages');
-        $messagingProviders = $this->getContainer()->getParameter('available_sms_providers');
+        $messagingProviders = $this->getContainer()->getParameter('sms.available_providers');
 
         // TODO https://basecamp.com/2470154/projects/4420182-skanu-lt-gamyba/todos/72720237-antrinio
         if (count($messagingProviders) < 1) {

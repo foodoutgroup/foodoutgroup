@@ -31,7 +31,7 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('available_sms_providers')
+            ->with('sms.available_providers')
             ->will($this->returnValue(array()));
 
         $commandTester = new CommandTester($command);
@@ -68,7 +68,7 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('available_sms_providers')
+            ->with('sms.available_providers')
             ->will($this->returnValue(array('infobip', 'gsms')));
 
         $commandTester = new CommandTester($command);
@@ -116,7 +116,7 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('available_sms_providers')
+            ->with('sms.available_providers')
             ->will($this->returnValue(array('food.infobip')));
 
         $infobipProvider->expects($this->never())
@@ -181,7 +181,7 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('available_sms_providers')
+            ->with('sms.available_providers')
             ->will($this->returnValue(array('food.infobip')));
 
         $infobipProvider->expects($this->once())
@@ -252,7 +252,7 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('available_sms_providers')
+            ->with('sms.available_providers')
             ->will($this->returnValue(array('food.infobip')));
 
         $infobipProvider->expects($this->never())
@@ -329,7 +329,7 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('available_sms_providers')
+            ->with('sms.available_providers')
             ->will($this->returnValue(array('food.infobip')));
 
         $infobipProvider->expects($this->never())
@@ -411,7 +411,7 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('available_sms_providers')
+            ->with('sms.available_providers')
             ->will($this->returnValue(array('food.infobip')));
 
         $infobipProvider->expects($this->never())
@@ -489,7 +489,7 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('available_sms_providers')
+            ->with('sms.available_providers')
             ->will($this->returnValue(array('food.infobip')));
 
         $infobipProvider->expects($this->never())
