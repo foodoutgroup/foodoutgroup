@@ -1,1 +1,91 @@
-Hello {{ name }}!
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+{% block body %}
+    <div class="site-center">
+        <div class="site-block">
+            <div class="page-title no-page-path">
+                <h1 class="clearfix"><span>Užsakymas</span></h1>
+            </div>
+            <div class="clearfix">
+                <div class="content-lefter-big">
+                    <form class="delivery-info-form">
+                        <div class="delivery-info-form-content">
+                            <h2>1. Pristatymas</h2>
+                            <div class="form-row">
+                                <label><br></label>
+                                <div class="delivery-type-radios clearfix">
+                                    <label class="custom-radio">Pristatymas į namus
+                                        <input type="radio" name="delivery-type">
+                                    </label>
+                                    <label class="custom-radio">Atsiimsiu pats
+                                        <input type="radio" name="delivery-type">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <label>Miestas:</label>
+                                <select class="custom-select">
+                                    <option>Vilnius</option>
+                                    <option>Kaunas</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label>Adresas:</label>
+                                <input type="text">
+                            </div>
+                            <div class="form-row">
+                                <label>Telefonas:</label>
+                                <input type="text">
+                            </div>
+                            <div class="form-row">
+                                <label>Pristatymo laikas:</label>
+                                <select class="custom-select">
+                                    <option>18:45</option>
+                                    <option>19:45</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label>Papildoma info:</label>
+                                <textarea cols="20" rows="4" placeholder="Čia galite įvesti laiptinės kodą, aukštą ir kitą kurjeriui naudingą informaciją..."></textarea>
+                            </div>
+                            <h2 class="section-2">2. Saugus apmokėjimas</h2>
+                            <div class="select-payment clearfix">
+                                <label class="custom-radio">Grynais pristatymo metu
+                                    <input type="radio" name="payment-type">
+                                </label>
+                                <label class="custom-radio">Kredito kortele po pristatymo
+                                    <input type="radio" name="payment-type">
+                                </label>
+                            </div>
+                            <div class="select-bank clearfix">
+                                <label class="custom-radio"><img src="/bundles/foodapp/images/bank-sb.png">
+                                    <input type="radio" name="payment-type">
+                                </label>
+                                <label class="custom-radio"><img src="/bundles/foodapp/images/bank-seb.png">
+                                    <input type="radio" name="payment-type">
+                                </label>
+                                <label class="custom-radio"><img src="/bundles/foodapp/images/bank-db.png">
+                                    <input type="radio" name="payment-type">
+                                </label>
+                                <label class="custom-radio"><img src="/bundles/foodapp/images/bank-mb.png">
+                                    <input type="radio" name="payment-type">
+                                </label>
+                                <label class="custom-radio"><img src="/bundles/foodapp/images/bank-swb.png">
+                                    <input type="radio" name="payment-type">
+                                </label>
+                                <label class="custom-radio"><img src="/bundles/foodapp/images/bank-dnb.png">
+                                    <input type="radio" name="payment-type">
+                                </label>
+                            </div>
+                            <div class="cupon-info">Jei turite kuponą, įveskite <a href="#">jo kodą čia</a></div>
+                        </div>
+                        <div class="form-controls clearfix"><a href="#" class="button-back">Grįžti atgal</a><a href="#" class="submit-button"><span>Užsakyti</span></a></div>
+                    </form>
+                </div>
+                <div class="content-righter-small">
+                    {{ render(controller('FoodCartBundle:Default:sideBlock')) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -90,13 +90,9 @@ class DefaultController extends Controller
         $this->getCartService()->removeOptionById($dishId, $optionId);
     }
 
-    /**
-     * @Route("/hello/{name}")
-     * @Template()
-     */
-    public function indexAction($name)
+    public function indexAction()
     {
-        return array('name' => $name);
+        return $this->render('FoodCartBundle:Default:index.html.twig');
     }
 
     /**
