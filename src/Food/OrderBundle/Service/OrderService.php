@@ -265,6 +265,9 @@ class OrderService extends ContainerAware
                 $this->getEm()->flush();
             }
         }
+        // O cia Initas groblana Mokejima ar kaip?
+        // @todo - Koki mantas paymento flow sumislijo. Nes logiskiausia kol nera peymento - nera Orderio. O dabar...
+
     }
 
     public function saveOrder()

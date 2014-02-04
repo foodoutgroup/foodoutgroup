@@ -124,12 +124,6 @@ class CartService {
      */
     public function setDishQuantity($dish, $quantity)
     {
-        /*
-        $q = $this->getContainer()->get('doctrine')
-            ->update('Account')
-            ->set('amount', 'amount + 200')
-            ->where('id > 200');
-        */
         $dish = $this->getEm()->getRepository('FoodCartBundle:Cart')->findOneBy(
             array(
                 'dish_id' => $dish->getId(),
@@ -297,5 +291,10 @@ class CartService {
             );
         }
         return $returnData;
+    }
+
+    public function checkout()
+    {
+
     }
 }

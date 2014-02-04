@@ -14,7 +14,7 @@ food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|payments|call_center|ajax).+"
+        slug : "^(?!admin|cart|test|payments|call_center|ajax|places).+"
 
 food_admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
@@ -27,6 +27,11 @@ food_cart:
 food_ajax:
     pattern: /ajax/{action}/
     defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~}
+
+food_places:
+    pattern: /places/
+    defaults: { _controller: FoodPlacesBundle:Default:index}
+
 
 static:
     path:     /static/{id}
