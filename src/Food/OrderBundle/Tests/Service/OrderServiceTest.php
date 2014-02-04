@@ -93,12 +93,51 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
      */
     public function testBillOrderLocal()
     {
+        $this->markTestIncomplete();
         $localBiller = $this->getMock(
             '\Food\OrderBundle\Service\LocalBiller',
             array('setOrder', 'bill')
         );
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get')
+        );
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $entityManager = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $order = $this->getMockBuilder('Food\OrderBundle\Entity\Order')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $orderRepository = $this->getMockBuilder('\Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $orderService = new OrderService();
         $orderService->setLocalBiller($localBiller);
+        $orderService->setContainer($container);
+
+        $container->expects($this->once())
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getManager')
+            ->will($this->returnValue($entityManager));
+
+        $entityManager->expects($this->once())
+            ->method('getRepository')
+            ->will($this->returnValue($orderRepository));
+
+        $orderRepository->expects($this->once())
+            ->method('find')
+            ->with(1)
+            ->will($this->returnValue($order));
 
         $localBiller->expects($this->once())
             ->method('setOrder');
@@ -114,12 +153,51 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
      */
     public function testBillOrderPaysera()
     {
+        $this->markTestIncomplete();
         $payseraBiller = $this->getMock(
             '\Food\OrderBundle\Service\PaySera',
             array('setOrder', 'bill')
         );
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get')
+        );
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $entityManager = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $order = $this->getMockBuilder('Food\OrderBundle\Entity\Order')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $orderRepository = $this->getMockBuilder('\Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $orderService = new OrderService();
         $orderService->setPayseraBiller($payseraBiller);
+        $orderService->setContainer($container);
+
+        $container->expects($this->once())
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getManager')
+            ->will($this->returnValue($entityManager));
+
+        $entityManager->expects($this->once())
+            ->method('getRepository')
+            ->will($this->returnValue($orderRepository));
+
+        $orderRepository->expects($this->once())
+            ->method('find')
+            ->with(1)
+            ->will($this->returnValue($order));
 
         $payseraBiller->expects($this->once())
             ->method('setOrder');
