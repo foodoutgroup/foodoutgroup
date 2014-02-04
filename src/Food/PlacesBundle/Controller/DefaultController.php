@@ -11,7 +11,7 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return new Response("Kebai");
+        return $this->render('FoodPlacesBundle:Default:index.html.twig');
     }
 
 

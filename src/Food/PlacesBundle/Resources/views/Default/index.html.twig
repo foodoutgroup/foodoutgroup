@@ -1,1 +1,220 @@
-Hello {{ name }}!
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+{% block body %}
+    <div class="site-center">
+    <div class="site-block">
+    <div class="page-path clearfix"><a href="#">Pradžia</a><a href="#">Resoranai arti Žirmūnų</a></div>
+    <div class="page-title">
+        <h1 class="clearfix"><span>Rasti 67 restoranai netoli Žirmūnų</span><a href="#" class="change-location-link">keisti adresą</a></h1>
+    </div>
+    <div class="clearfix">
+        <div class="content-lefter">
+            <div class="filter-title">Pasirinkite virtuvę</div>
+            <div class="filters-list food-type-filters">
+                <label class="custom-checkbox">Kinų<span class="count">16</span>
+                    <input type="checkbox">
+                </label>
+                <label class="custom-checkbox">Pica<span class="count">8</span>
+                    <input type="checkbox">
+                </label>
+                <label class="custom-checkbox">Japonų<span class="count">19</span>
+                    <input type="checkbox">
+                </label>
+                <label class="custom-checkbox">Kebabai<span class="count">6</span>
+                    <input type="checkbox">
+                </label>
+                <label class="custom-checkbox">Italų<span class="count">3</span>
+                    <input type="checkbox">
+                </label>
+                <label class="custom-checkbox">Žalias<span class="count">21</span>
+                    <input type="checkbox">
+                </label>
+                <label class="custom-checkbox">Salotos<span class="count">5</span>
+                    <input type="checkbox">
+                </label>
+            </div>
+            <div class="filter-title">Rodyti tik</div>
+            <div class="filters-list">
+                <label class="custom-checkbox">Nuolaidos
+                    <input type="checkbox">
+                </label>
+                <label class="custom-checkbox">Atsiimsiu pats
+                    <input type="checkbox">
+                </label>
+                <label class="custom-checkbox">Tik dirbantys restoranai
+                    <input type="checkbox">
+                </label>
+                <label class="custom-checkbox">Apmokėjimas iš anksto
+                    <input type="checkbox">
+                </label>
+            </div><a href="#" class="clear-filter-link">išvalyti filtrus</a>
+        </div>
+        <div class="content-righter">
+            <div class="restaurants-list-controls clearfix">
+                <form class="list-search-form fl">
+                    <input type="text" placeholder="Paieška...">
+                    <input type="submit" value="">
+                </form>
+                <div class="list-top-filters clearfix fr">
+                    <div class="label">Rūšiuoti pagal:</div><a href="#">Relevance</a><a href="#" class="selected">Reitingą</a><a href="#">Pristatymo kainą</a><a href="#">Atstumą</a>
+                </div>
+            </div>
+            <div class="restaurants-list">
+                <div class="restaurant-item clearfix">
+                    <div class="logo">
+                        <div class="logo-wrap"><img src="images/res-1.png"></div>
+                    </div>
+                    <div class="item-center">
+                        <h2 class="name clearfix"><span class="text">Čili pica</span><span class="tag"><img src="images/tag-speed.png"></span></h2>
+                        <p class="desc">Pica, Salotos, Italų</p>
+                        <div class="details"><span class="delivery">Pristatymas:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">Min. krepšelis:<span>40 Lt </span></span></div>
+                    </div>
+                    <div class="discount-tag">-50%</div>
+                    <div class="item-righter">
+                        <div class="clearfix">
+                            <div data-stars="5" class="restoran-rating fl"></div>
+                            <div class="rating-count fr">25 Įvertinimai</div>
+                        </div><a href="#" class="button"><span>Žiūrėti meniu</span></a>
+                    </div>
+                </div>
+                <div class="restaurant-item clearfix">
+                    <div class="logo">
+                        <div class="logo-wrap"><img src="images/res-2.png"></div>
+                    </div>
+                    <div class="item-center">
+                        <h2 class="name clearfix"><span class="text">Čili pica</span><span class="tag"></span></h2>
+                        <p class="desc">Pica, Salotos, Italų</p>
+                        <div class="details"><span class="delivery">Pristatymas:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">Min. krepšelis:<span>40 Lt </span></span></div>
+                    </div>
+                    <div class="item-righter">
+                        <div class="clearfix">
+                            <div data-stars="5" class="restoran-rating fl"></div>
+                            <div class="rating-count fr">25 Įvertinimai</div>
+                        </div><a href="#" class="button"><span>Žiūrėti meniu</span></a>
+                    </div>
+                </div>
+                <div class="restaurant-item clearfix">
+                    <div class="logo">
+                        <div class="logo-wrap"><img src="images/res-3.png"></div>
+                    </div>
+                    <div class="item-center">
+                        <h2 class="name clearfix"><span class="text">Čili pica</span><span class="tag"><img src="images/tag-speed.png"></span><span class="tag"><img src="images/tag-new.png"></span></h2>
+                        <p class="desc">Pica, Salotos, Italų</p>
+                        <div class="details"><span class="delivery">Pristatymas:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">Min. krepšelis:<span>40 Lt </span></span></div>
+                    </div>
+                    <div class="discount-tag">-50%</div>
+                    <div class="item-righter">
+                        <div class="clearfix">
+                            <div data-stars="5" class="restoran-rating fl"></div>
+                            <div class="rating-count fr">25 Įvertinimai</div>
+                        </div><a href="#" class="button"><span>Žiūrėti meniu</span></a>
+                    </div>
+                </div>
+                <div class="restaurant-item clearfix">
+                    <div class="logo">
+                        <div class="logo-wrap"><img src="images/res-4.png"></div>
+                    </div>
+                    <div class="item-center">
+                        <h2 class="name clearfix"><span class="text">Čili pica</span><span class="tag"><img src="images/tag-new.png"></span><span class="tag"><img src="images/tag-not-working.png">
+                        <div class="time-popup">VII 11:00 - 00:00
+                            <div class="nip"></div>
+                        </div></span></h2>
+                        <p class="desc">Pica, Salotos, Italų</p>
+                        <div class="details"><span class="delivery">Pristatymas:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">Min. krepšelis:<span>40 Lt </span></span></div>
+                    </div>
+                    <div class="discount-tag">Akcija</div>
+                    <div class="item-righter">
+                        <div class="clearfix">
+                            <div data-stars="5" class="restoran-rating fl"></div>
+                            <div class="rating-count fr">25 Įvertinimai</div>
+                        </div><a href="#" class="button"><span>Žiūrėti meniu</span></a>
+                    </div>
+                </div>
+                <div class="restaurant-item clearfix">
+                    <div class="logo">
+                        <div class="logo-wrap"><img src="images/res-5.png"></div>
+                    </div>
+                    <div class="item-center">
+                        <h2 class="name clearfix"><span class="text">Čili pica</span></h2>
+                        <p class="desc">Pica, Salotos, Italų</p>
+                        <div class="details"><span class="delivery">Pristatymas:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">Min. krepšelis:<span>40 Lt </span></span></div>
+                    </div>
+                    <div class="item-righter">
+                        <div class="clearfix">
+                            <div data-stars="5" class="restoran-rating fl"></div>
+                            <div class="rating-count fr">25 Įvertinimai</div>
+                        </div><a href="#" class="button"><span>Žiūrėti meniu</span></a>
+                    </div>
+                </div>
+                <div class="restaurant-item clearfix">
+                    <div class="logo">
+                        <div class="logo-wrap"><img src="images/res-2.png"></div>
+                    </div>
+                    <div class="item-center">
+                        <h2 class="name clearfix"><span class="text">Čili pica</span><span class="tag"></span></h2>
+                        <p class="desc">Pica, Salotos, Italų</p>
+                        <div class="details"><span class="delivery">Pristatymas:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">Min. krepšelis:<span>40 Lt </span></span></div>
+                    </div>
+                    <div class="item-righter">
+                        <div class="clearfix">
+                            <div data-stars="5" class="restoran-rating fl"></div>
+                            <div class="rating-count fr">25 Įvertinimai</div>
+                        </div><a href="#" class="button"><span>Žiūrėti meniu</span></a>
+                    </div>
+                </div>
+                <div class="restaurant-item clearfix">
+                    <div class="logo">
+                        <div class="logo-wrap"><img src="images/res-3.png"></div>
+                    </div>
+                    <div class="item-center">
+                        <h2 class="name clearfix"><span class="text">Čili pica</span><span class="tag"><img src="images/tag-speed.png"></span><span class="tag"><img src="images/tag-new.png"></span></h2>
+                        <p class="desc">Pica, Salotos, Italų</p>
+                        <div class="details"><span class="delivery">Pristatymas:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">Min. krepšelis:<span>40 Lt </span></span></div>
+                    </div>
+                    <div class="item-righter">
+                        <div class="clearfix">
+                            <div data-stars="5" class="restoran-rating fl"></div>
+                            <div class="rating-count fr">25 Įvertinimai</div>
+                        </div><a href="#" class="button"><span>Žiūrėti meniu</span></a>
+                    </div>
+                </div>
+                <div class="restaurant-item clearfix">
+                    <div class="logo">
+                        <div class="logo-wrap"><img src="images/res-4.png"></div>
+                    </div>
+                    <div class="item-center">
+                        <h2 class="name clearfix"><span class="text">Čili pica</span><span class="tag"><img src="images/tag-new.png"></span><span class="tag"><img src="images/tag-not-working.png">
+                        <div class="time-popup">VII 11:00 - 00:00
+                            <div class="nip"></div>
+                        </div></span></h2>
+                        <p class="desc">Pica, Salotos, Italų</p>
+                        <div class="details"><span class="delivery">Pristatymas:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">Min. krepšelis:<span>40 Lt </span></span></div>
+                    </div>
+                    <div class="item-righter">
+                        <div class="clearfix">
+                            <div data-stars="5" class="restoran-rating fl"></div>
+                            <div class="rating-count fr">25 Įvertinimai</div>
+                        </div><a href="#" class="button"><span>Žiūrėti meniu</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix bottom-blocks bottom-block-lower">
+        <div class="app-block clearfix"><img src="images/app-view.png">
+            <div class="app-block-inner">
+                <h3>Skanu.lt <br/>tavo kišenėje!</h3>
+                <div><a href="#"><img src="images/app-store.png"></a><a href="#"><img src="images/g-store.png"></a></div>
+            </div>
+        </div>
+        <div class="newsletter-block">
+            <h4>Naujienlaiškis</h4>
+            <form class="newsletter-form">
+                <input type="text" placeholder="Tavo el. paštas">
+                <input type="submit" value="Prenumeruok">
+            </form>
+        </div>
+    </div>
+    </div>
+    </div>
+{% endblock %}
