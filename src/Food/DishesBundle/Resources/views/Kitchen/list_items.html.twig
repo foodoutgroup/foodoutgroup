@@ -1,5 +1,9 @@
-<ul class="dropdown-menu">
+{# Rodomas restoranu sarase #}
+<div class="filter-title">Pasirinkite virtuvę</div>
+<div class="filters-list food-type-filters">
     {% for item in list %}
-        <li><a href="">{{ item.name }} - {{ item.count }}</a></li>
+    <label class="custom-checkbox">{{ item.name }}<span class="count">{{ item.count }}</span>
+        <input type="checkbox" value="{{ item.id }}">
+    </label>
     {% endfor %}
-</ul>
+</div>

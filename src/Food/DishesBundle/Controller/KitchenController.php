@@ -13,6 +13,11 @@ class KitchenController extends Controller
         return $this->render('FoodDishesBundle:Kitchen:index.html.twig', array('kitchen' => $kitchen));
     }
 
+    /**
+     * Rodomas restoranu sarase
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function kitchenlistAction()
     {
         $list = $this->getKitchens();
@@ -20,6 +25,11 @@ class KitchenController extends Controller
     }
 
 
+    /**
+     * @todo - patikrinti reikalinguma. Nebeliko ikonkiu prie virtuviu
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function kitchenListWithImagesAction()
     {
         $list = $this->getKitchens();

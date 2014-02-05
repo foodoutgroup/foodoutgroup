@@ -11,4 +11,9 @@ class PlaceController extends Controller
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
         return $this->render('FoodDishesBundle:Place:index.html.twig', array('place' => $place));
     }
+
+    public function filtersListAction()
+    {
+        return $this->render('FoodDishesBundle:Place:filter_list.html.twig');
+    }
 }

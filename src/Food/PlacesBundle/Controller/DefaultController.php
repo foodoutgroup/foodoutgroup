@@ -14,6 +14,11 @@ class DefaultController extends Controller
         return $this->render('FoodPlacesBundle:Default:index.html.twig');
     }
 
+    public function listAction()
+    {
+        return $this->render('FoodPlacesBundle:Default:list.html.twig');
+    }
+
 
     public function citiesAction()
     {
