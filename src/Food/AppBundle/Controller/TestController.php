@@ -31,10 +31,10 @@ class TestController extends Controller
          */
         $paysera = $this->container->get('food.paysera_biller');
 //        $paysera->setTest(1);
-        $paysera->setAcceptUrl($this->generateUrl('paysera_accept'));
-        // TODO Paysera negrazina nieko, jei nutrauki mokejima. Gal vertetu order hash perduoti urlu del visa ko? jei sesija nusimustu?
-        $paysera->setCancelUrl($this->generateUrl('paysera_cancel'));
-        $paysera->setCallbackUrl($this->generateUrl('paysera_callback'));
+//        $paysera->setAcceptUrl($this->generateUrl('paysera_accept'));
+//        // TODO Paysera negrazina nieko, jei nutrauki mokejima. Gal vertetu order hash perduoti urlu del visa ko? jei sesija nusimustu?
+//        $paysera->setCancelUrl($this->generateUrl('paysera_cancel'));
+//        $paysera->setCallbackUrl($this->generateUrl('paysera_callback'));
         $orderService->setPayseraBiller($paysera);
 
         $redirectUrl = $orderService->billOrder(1, 'paysera');

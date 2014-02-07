@@ -57,7 +57,7 @@ class PaymentsController extends Controller
         $logger->alert('-----------------------------------------------------------');
 
         try {
-            $callbackValidator = $this->get('evp_web_to_pay.callback_validator');
+//            $callbackValidator = $this->get('evp_web_to_pay.callback_validator');
 //            $data = $callbackValidator->validateAndParseData($this->getRequest()->query->all());
 
 //            $logger->alert("Parsed accept data: ".var_export($data, true));

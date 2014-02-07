@@ -197,6 +197,12 @@ class PaySera extends ContainerAware implements BillingInterface {
         $logger->alert('++ Bandom bilinti orderi su Id: '.$order->getId());
         $logger->alert('-------------------------------------');
 
+        $siteDomain = 'http://'.$this->getSiteDomain();
+        $router = $this->container->get('router');
+        $acceptUrl = $siteDomain.$router->generate('paysera_accept', array('hash' => $order->getOrderHash()));
+        $cancelUrl = $siteDomain.$router->generate('paysera_cancel', array('hash' => $order->getOrderHash()));
+        $callbackUrl = $siteDomain.$router->generate('paysera_callback');
+
         $evpParams = array(
             'projectid' => $this->getProjectId(),
             'sign_password' => $this->getSightPassword(),
@@ -204,9 +210,9 @@ class PaySera extends ContainerAware implements BillingInterface {
             'amount' => $order->getAmount()*100,
             'currency' => 'LTL', // TODO kai eisim i kita rinka
             'country' => 'LT', // TODO kai eisim i kita rinka
-            'accepturl' => 'http://'.$this->getSiteDomain().$this->getAcceptUrl(),
-            'cancelurl' => 'http://'.$this->getSiteDomain().$this->getCancelUrl(),
-            'callbackurl' => 'http://'.$this->getSiteDomain().$this->getCallbackUrl(),
+            'accepturl' => $acceptUrl,
+            'cancelurl' => $cancelUrl,
+            'callbackurl' => $callbackUrl,
             'test' => $this->getTest(),
         );
 
