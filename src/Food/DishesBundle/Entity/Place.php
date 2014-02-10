@@ -10,7 +10,7 @@ use Food\AppBundle\Entity\Uploadable;
 /**
  * Client
  *
- * @ORM\Table()
+ * @ORM\Table(name="place")
  * @ORM\Entity
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */

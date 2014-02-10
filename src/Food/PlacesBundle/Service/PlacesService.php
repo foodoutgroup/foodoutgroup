@@ -17,7 +17,7 @@ class PlacesService extends ContainerAware {
     {
         $em = $this->em();
         $con = $em->getConnection();
-        $cities = $con->fetchAll("SELECT DISTINCT(pp.city) FROM `place_point` pp, `place` p WHERE pp.active=1 AND p.active = 1");
+        $cities = $con->fetchAll("SELECT DISTINCT(pp.city) FROM `place_point` pp, `place` p WHERE pp.place = p.id AND pp.active=1 AND p.active = 1");
         foreach ($cities as &$city) {
             $city = $city['city'];
         }

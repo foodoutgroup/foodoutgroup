@@ -9,7 +9,7 @@ use Gedmo\Translatable\Translatable;
 /**
  * Dish
  *
- * @ORM\Table()
+ * @ORM\Table(name="dish")
  * @ORM\Entity
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\DishLocalized")
