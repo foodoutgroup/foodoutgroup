@@ -6,7 +6,7 @@ set :repository,  "git@github.com:mid/skanu.lt.git"
 set :scm,         :git
 
 set :model_manager, "doctrine"
-set :branch, "master"
+set :branch, "design"
 
 # multi-stage environment
 set :stages,        %w(production staging)
