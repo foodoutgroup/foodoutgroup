@@ -11,24 +11,39 @@
             });
             var addrXhr = null;
             var addrResponse = {};
-            var waitIntervals = 0;
+            var waitIntervals = null;
+            var currentTime = null;
+
             $('#index_address').keyup(function(){
+                if (currentTime == null) {
+                    currentTime = new Date().getTime();
+                }
                 if (addrXhr != null) {
-                    console.log(addrXhr.readyState);
+                    addrXhr.abort();
+                }
+                currentTime = new Date().getTime();
+                setTimeout(function() { getCrds() }, 1000);
+            });
+
+            function getCrds() {
+                if (new Date().getTime() - currentTime < 1000) {
+                    return;
+                }
+                if (addrXhr != null) {
                     addrXhr.abort();
                 }
                 addrXhr = $.ajax({
                     type: 'GET',
                     url: '{{ path('food_ajax', {'action': 'find-address'}) }}',
-                    data:  {city: $('#index_city').val(), address: $(this).val()},
+                    data:  {city: $('#index_city').val(), address: $('#index_address').val()},
                     success:  function(resp){
-                        addrResponse = resp.data;
+                        var addrResponse = resp.data;
                         $('#index_coords').val(addrResponse.y + ',' + addrResponse.x);
                         $('#index_address').val(addrResponse.name);
                     }
                 });
-                setTimeout(function() { console.log(addrXhr); }, 10000);
-            });
+            }
+
             $('#index_submit').click(function(){
                 if (addrXhr.readyState == 4) {
                     $('.search-food-form').trigger('submit');
@@ -58,8 +73,8 @@
             <form class="search-food-form">
                 <p class="title">Įveskite savo adresą ir sužinokite, kurie restoranai atveš nom nom</p>
                 <div class="clearfix">
-                    <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}">
-                    <input type="text" id="index_address" placeholder="{% trans %}index.street{% endtrans %}" class="input-street">
+                    <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}"  autocomplete="off" >
+                    <input type="text" id="index_address" placeholder="{% trans %}index.street{% endtrans %}" class="input-street" autocomplete="off" >
                     <input type="submit" id="index_submit" value="{% trans %}index.findfood{% endtrans %}">
                     <input type="hidden" id="index_h_coords" name="coords" />
                     <input type="hidden" id="index_h_address" name="address" />
