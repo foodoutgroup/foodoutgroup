@@ -1,6 +1,21 @@
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
+
+{% block jscode %}
+    $(document).ready(function(){
+        $('.site-center').delegate('.delivery-info-form .submit-button', 'click', function(event){
+            Cart.submitOrder($(this).closest(".delivery-info-form"));
+            event.stopPropagation();
+            event.preventDefault();
+            return false;
+        });
+    });
+{% endblock %}
+
 {% block body %}
+    {% javascripts '@FoodAppBundle/Resources/public/js_main/order.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
     <div class="site-center">
         <div class="site-block">
             <div class="page-title no-page-path">
@@ -8,17 +23,17 @@
             </div>
             <div class="clearfix">
                 <div class="content-lefter-big">
-                    <form class="delivery-info-form">
+                    <form class="delivery-info-form" method="post">
                         <div class="delivery-info-form-content">
                             <h2>1. Pristatymas</h2>
                             <div class="form-row">
                                 <label><br></label>
                                 <div class="delivery-type-radios clearfix">
                                     <label class="custom-radio">Pristatymas į namus
-                                        <input type="radio" name="delivery-type">
+                                        <input type="radio" name="delivery-type" value="deliver">
                                     </label>
                                     <label class="custom-radio">Atsiimsiu pats
-                                        <input type="radio" name="delivery-type">
+                                        <input type="radio" name="delivery-type" value="pickup">
                                     </label>
                                 </div>
                             </div>
@@ -51,30 +66,31 @@
                             <h2 class="section-2">2. Saugus apmokėjimas</h2>
                             <div class="select-payment clearfix">
                                 <label class="custom-radio">Grynais pristatymo metu
-                                    <input type="radio" name="payment-type">
+                                    <input type="radio" name="payment-type" value="local">
                                 </label>
                                 <label class="custom-radio">Kredito kortele po pristatymo
-                                    <input type="radio" name="payment-type">
+                                    <input type="radio" name="payment-type" value="local.card">
                                 </label>
                             </div>
                             <div class="select-bank clearfix">
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-sb.png">
-                                    <input type="radio" name="payment-type">
+                                    <input type="radio" name="payment-type" value="sb">
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-seb.png">
-                                    <input type="radio" name="payment-type">
+                                    <input type="radio" name="payment-type" value="seb">
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-db.png">
-                                    <input type="radio" name="payment-type">
+                                    <input type="radio" name="payment-type" value="db">
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-mb.png">
-                                    <input type="radio" name="payment-type">
+                                    <input type="radio" name="payment-type" value="mb">
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-swb.png">
-                                    <input type="radio" name="payment-type">
+                                    {# TODO hackas testavimui. Reikia atskiro paysera optionso, kitus bankus kolkas slepiame #}
+                                    <input type="radio" name="payment-type" value="paysera">
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-dnb.png">
-                                    <input type="radio" name="payment-type">
+                                    <input type="radio" name="payment-type" value="dnb">
                                 </label>
                             </div>
                             <div class="cupon-info">Jei turite kuponą, įveskite <a href="#">jo kodą čia</a></div>

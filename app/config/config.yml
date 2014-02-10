@@ -32,6 +32,9 @@ parameters:
     arc_gis_geocode: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates"
     arc_gis_geocode_single: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     arc_gis_geocode_url: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=pjson&Address=_1_&City=_2_&CountryCode=LT&outFields=AddrNum,StName,City"
+    # Todo situos gal ir iskelsime i paramsus - dependant on install?
+    payment.methods: [local, local.card, paysera]
+    vat: 21
 
 framework:
     #esi:             ~
@@ -66,7 +69,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle ]
+    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

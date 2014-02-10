@@ -2,6 +2,7 @@
 
 namespace Food\OrderBundle\Service;
 
+use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
 use Food\CartBundle\Service\CartService;
 use Food\OrderBundle\Entity\Order;
@@ -12,6 +13,10 @@ use Symfony\Component\Security\Acl\Exception\Exception;
 
 class OrderService extends ContainerAware
 {
+    private $localBiller = null;
+
+    private $payseraBiller = null;
+
     // TODO statusu paaiskinimai
     /**
      * Naujas uzsakymas. Dar neperduotas restoranui
@@ -23,6 +28,16 @@ class OrderService extends ContainerAware
     public static $status_completed = "completed";
     public static $status_finished = "finished";
     public static $status_canceled = "canceled";
+
+    // TODO o gal sita mapa i configa? What do You think?
+    private $paymentSystemByMethod = array(
+        'local' => 'food.local_biller',
+        'local.card' => 'food.local_biller',
+        'paysera' => 'food.paysera_biller'
+    );
+
+    public static $deliveryDeliver = "deliver";
+    public static $deliveryPickup = "pickup";
 
     /**
      * Payment did not start yet
@@ -154,6 +169,17 @@ class OrderService extends ContainerAware
     public function createOrder()
     {
         $this->order = new Order();
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        if ($user == 'anon.') {
+            $user = null;
+        }
+        $this->order->setUser($user);
+        $this->order->setOrderDate(new \DateTime("now"));
+        $this->order->setVat($this->container->getParameter('vat'));
+        $this->order->setOrderHash(
+            $this->generateOrderHash($this->order)
+        );
+
         return $this->getOrder();
     }
 
@@ -219,18 +245,34 @@ class OrderService extends ContainerAware
         return $this;
     }
 
-
     /**
      * @return Order
-     * @throws \Symfony\Component\Security\Acl\Exception\Exception
+     * @throws \Exception
      */
     public function getOrder()
     {
         if (empty($this->order))
         {
-            throw new Exception("Dude - no order here :)");
+            throw new \Exception("Dude - no order here :)");
         }
         return $this->order;
+    }
+
+    /**
+     * @param Order $order
+     * @throws \InvalidArgumentException
+     */
+    public function setOrder($order)
+    {
+        if (empty($order)) {
+            throw new \InvalidArgumentException("An empty variable is not allowed on our company!");
+        }
+        if (!($order instanceof Order))
+        {
+            throw new \InvalidArgumentException("This is not an order, You gave me!");
+        }
+
+        $this->order = $order;
     }
 
     public function createOrderFromCart()
@@ -279,11 +321,6 @@ class OrderService extends ContainerAware
             $this->getEm()->flush();
         }
     }
-
-
-    private $localBiller = null;
-
-    private $payseraBiller = null;
 
     /**
      * @param int $id
@@ -386,20 +423,80 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param int $orderId
-     * @param string $billingType
+     * @param int|null $orderId [optional] Order ID if should be loading a new one
+     * @param string|null $billingType [optional] Billing type if should use another then saved in order
      *
      * @return string
      */
-    public function billOrder($orderId, $billingType = 'paysera')
+    public function billOrder($orderId = null, $billingType = null)
     {
-        $order = $this->getOrderById($orderId);
-        $biller = $this->getBillingInterface($billingType);
+        if (empty($orderId)) {
+            $order = $this->getOrder();
+        } else {
+            $order = $this->getOrderById($orderId);
+        }
+
+        if (empty($billingType)) {
+            $biller = $this->getPaymentSystemByMethod($order->getPaymentMethod());
+        } else {
+            $biller = $this->getBillingInterface($billingType);
+        }
 
         $biller->setOrder($order);
         $redirectUrl = $biller->bill();
 
+        $order->setSubmittedForPayment(new \DateTime("now"));
+
+        $this->saveOrder();
+
         return $redirectUrl;
+    }
+
+    /**
+     * @param string $method
+     * @throws \InvalidArgumentException
+     */
+    public function setPaymentMethod($method)
+    {
+        $order = $this->getOrder();
+
+        if (!$this->isAvailablePaymentMethod($method)) {
+            throw new \InvalidArgumentException('Payment method: '.$method.' is unknown to our system or not available');
+        }
+
+        $order->setPaymentMethod($method);
+    }
+
+    /**
+     * @param string $method
+     * @return bool
+     */
+    public function isAvailablePaymentMethod($method)
+    {
+        $paymentMethods = $this->container->getParameter('payment.methods');
+
+        if (in_array($method, $paymentMethods)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $method
+     *
+     * @return BillingInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getPaymentSystemByMethod($method)
+    {
+        if (isset($this->paymentSystemByMethod[$method]) && !empty($this->paymentSystemByMethod[$method])) {
+            $class = $this->paymentSystemByMethod[$method];
+        } else {
+            throw new \InvalidArgumentException('Sorry, no map for method "'.$method.'"');
+        }
+        return $this->container->get($class);
     }
 
     /**
@@ -475,5 +572,64 @@ class OrderService extends ContainerAware
         }
 
         return false;
+    }
+
+    /**
+     * @param Order $order
+     * @return string
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function generateOrderHash($order)
+    {
+        if (empty($order) || !($order instanceof Order)) {
+            throw new \InvalidArgumentException('Sorry, no order given, or this is not an order. I feel like in Sochi');
+        }
+
+        $user = $order->getUser();
+        if (empty($user) || (!$user instanceof User)) {
+            $userString = 'anonymous_'.mt_rand(0,10);
+        } else {
+            $userString = $user->getId();
+        }
+
+        $hash = md5(
+            $userString.$order->getOrderDate()->getTimestamp().$order->getAddressId()
+        );
+
+        return $hash;
+    }
+
+    /**
+     * @param string $type
+     * @return bool
+     */
+    public function isValidDeliveryType($type)
+    {
+        if (in_array($type, array(self::$deliveryDeliver, self::$deliveryPickup))) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $type
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function setDeliveryType($type)
+    {
+        if (empty($type)) {
+            throw new \InvalidArgumentException('Delivery type must be set! You gave - empty');
+        }
+
+        $order = $this->getOrder();
+
+        if (!$this->isValidDeliveryType($type)) {
+            throw new \InvalidArgumentException('Delivery type: "'.$type.'" is unknown or not allowed');
+        }
+
+        $order->setDeliveryType($type);
     }
 }

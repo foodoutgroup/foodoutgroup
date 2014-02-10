@@ -6,6 +6,7 @@ use Food\CartBundle\Service\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
@@ -62,8 +63,8 @@ class DefaultController extends Controller
     }
 
     /**
-     * @param array $response
-     * @param $params
+     * @param $responseData
+     * @param array $params
      */
     private function _actonAddItem(&$responseData, $params)
     {
@@ -72,6 +73,7 @@ class DefaultController extends Controller
 
     /**
      * @param $dishId
+     * @param $dishSize
      * @param int $dishQuantity
      * @param int[] $options
      */
@@ -92,6 +94,28 @@ class DefaultController extends Controller
 
     public function indexAction()
     {
+        $request = $this->getRequest();
+
+        // Form submitted
+        if ($request->getMethod() == 'POST') {
+//            die('I kill for food!');
+            // TODO update order data if changed (addres and stuff)
+
+            $orderService = $this->container->get('food.order');
+            $orderService->createOrderFromCart();
+
+            $paymentMethod = $request->request->get('payment-type');
+            $deliveryType = $request->request->get('delivery-type');
+            $orderService->setPaymentMethod($paymentMethod);
+            $orderService->setDeliveryType($deliveryType);
+
+
+            $billingUrl = $orderService->billOrder();
+            if (!empty($billingUrl)) {
+                return new RedirectResponse($billingUrl);
+            }
+        }
+
         return $this->render('FoodCartBundle:Default:index.html.twig');
     }
 

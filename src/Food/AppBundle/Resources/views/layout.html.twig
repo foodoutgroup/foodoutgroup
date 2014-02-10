@@ -15,6 +15,17 @@
     {% stylesheets '@FoodAppBundle/Resources/public/styles/style.css'  %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
     {% endstylesheets %}
+    <script src="{{ asset('bundles/foodapp/scripts/jquery-1.10.2.min.js') }}"></script>
+    <script src="{{ asset('bundles/foodapp/scripts/jquery.cycle2.min.js') }}"></script>
+    <script src="{{ asset('bundles/foodapp/scripts/jquery-ui/jquery-ui-1.10.3.custom.min.js') }}"></script>
+    <script src="{{ asset('bundles/foodapp/scripts/jquery.ui.selectmenu.js') }}"></script>
+    <script src="{{ asset('bundles/foodapp/scripts/jquery.raty.js') }}"></script>
+    <script src="{{ asset('bundles/foodapp/scripts/boxer/jquery.fs.boxer.min.js') }}"></script>
+    <script src="{{ asset('bundles/foodapp/scripts/icheck/jquery.icheck.min.js') }}">		</script>
+    <script src="{{ asset('bundles/foodapp/scripts/jquery.placeholder.min.js') }}"></script>
+    <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/selectivizr-min.js') }}"></script><![endif]-->
+    <!--[if IE 9]><script src="{{ asset('bundles/foodapp/scripts/pie_ie9.js') }}"></script><![endif]-->
+    <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/pie_ie8.js') }}"></script><![endif]-->
 </head>
 <body>
 <div class="site">
@@ -193,17 +204,7 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('bundles/foodapp/scripts/jquery-1.10.2.min.js') }}"></script>
-<script src="{{ asset('bundles/foodapp/scripts/jquery.cycle2.min.js') }}"></script>
-<script src="{{ asset('bundles/foodapp/scripts/jquery-ui/jquery-ui-1.10.3.custom.min.js') }}"></script>
-<script src="{{ asset('bundles/foodapp/scripts/jquery.ui.selectmenu.js') }}"></script>
-<script src="{{ asset('bundles/foodapp/scripts/jquery.raty.js') }}"></script>
-<script src="{{ asset('bundles/foodapp/scripts/boxer/jquery.fs.boxer.min.js') }}"></script>
-<script src="{{ asset('bundles/foodapp/scripts/icheck/jquery.icheck.min.js') }}">		</script>
-<script src="{{ asset('bundles/foodapp/scripts/jquery.placeholder.min.js') }}"></script>
-<!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/selectivizr-min.js') }}"></script><![endif]-->
-<!--[if IE 9]><script src="{{ asset('bundles/foodapp/scripts/pie_ie9.js') }}"></script><![endif]-->
-<!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/pie_ie8.js') }}"></script><![endif]-->
+
 <script src="{{ asset('bundles/foodapp/scripts/scripts.js')}} "></script>
 <script type="text/javascript">
     {% block jscode %}{% endblock %}

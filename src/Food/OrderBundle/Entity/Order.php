@@ -31,6 +31,12 @@ class Order
     private $user;
 
     /**
+     * @var string
+     * @ORM\Column(name="delivery_type", type="string", length=50, nullable=true)
+     */
+    private $deliveryType;
+
+    /**
      * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\UserAddress")
      * @ORM\JoinColumn(name="address_id", referencedColumnName="id")
      **/
@@ -43,14 +49,14 @@ class Order
     private $order_status;
 
     /**
-     * @var text
-     * @ORM\Column(name="comment", type="text")
+     * @var string
+     * @ORM\Column(name="comment", type="text", nullable=true)
      */
-    private $comment;
+    private $comment = null;
 
     /**
-     * @var text
-     * @ORM\Column(name="place_comment", type="text")
+     * @var string
+     * @ORM\Column(name="place_comment", type="text", nullable=true)
      */
     private $place_comment;
 
@@ -60,7 +66,6 @@ class Order
      */
     private $vat;
 
-
     /**
      * @var integer
      * @ORM\Column(name="order_hash", type="string", length=100)
@@ -69,9 +74,25 @@ class Order
 
     /**
      * @var string
+     * @ORM\Column(name="payment_method", type="string", length=100, nullable=true)
+     */
+    private $paymentMethod = null;
+
+    /**
+     * @var string
      * @ORM\Column(name="payment_status", type="string")
      */
     private $paymentStatus = 'new';
+
+    /**
+     * @ORM\Column(name="submitted_for_payment", type="datetime", nullable=true)
+     */
+    private $submittedForPayment = null;
+
+    /**
+     * @ORM\Column(name="lastUpdated", type="datetime", nullable=true)
+     */
+    private $lastUpdated = null;
 
     /**
      * @var string
@@ -326,5 +347,97 @@ class Order
     public function getLastPaymentError()
     {
         return $this->lastPaymentError;
+    }
+
+    /**
+     * Set paymentMethod
+     *
+     * @param string $paymentMethod
+     * @return Order
+     */
+    public function setPaymentMethod($paymentMethod)
+    {
+        $this->paymentMethod = $paymentMethod;
+    
+        return $this;
+    }
+
+    /**
+     * Get paymentMethod
+     *
+     * @return string 
+     */
+    public function getPaymentMethod()
+    {
+        return $this->paymentMethod;
+    }
+
+    /**
+     * Set submittedForPayment
+     *
+     * @param \DateTime $submittedForPayment
+     * @return Order
+     */
+    public function setSubmittedForPayment($submittedForPayment)
+    {
+        $this->submittedForPayment = $submittedForPayment;
+    
+        return $this;
+    }
+
+    /**
+     * Get submittedForPayment
+     *
+     * @return \DateTime 
+     */
+    public function getSubmittedForPayment()
+    {
+        return $this->submittedForPayment;
+    }
+
+    /**
+     * Set lastUpdated
+     *
+     * @param \DateTime $lastUpdated
+     * @return Order
+     */
+    public function setLastUpdated($lastUpdated)
+    {
+        $this->lastUpdated = $lastUpdated;
+    
+        return $this;
+    }
+
+    /**
+     * Get lastUpdated
+     *
+     * @return \DateTime 
+     */
+    public function getLastUpdated()
+    {
+        return $this->lastUpdated;
+    }
+
+    /**
+     * Set deliveryType
+     *
+     * @param string $deliveryType
+     * @return Order
+     */
+    public function setDeliveryType($deliveryType)
+    {
+        $this->deliveryType = $deliveryType;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryType
+     *
+     * @return string 
+     */
+    public function getDeliveryType()
+    {
+        return $this->deliveryType;
     }
 }

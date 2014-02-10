@@ -1,6 +1,7 @@
 <?php
 namespace Food\OrderBundle\Tests\Service;
 
+use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\LocalBiller;
 use Food\OrderBundle\Service\OrderService;
 use Food\OrderBundle\Service\PaySera;
@@ -41,8 +42,103 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
         parent::tearDown();
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetPaymentSystemByMethodException()
+    {
+        $orderService = new OrderService();
+
+        $orderService->getPaymentSystemByMethod('omg.service');
+    }
+
+    /**
+     * @depends testGetPaymentSystemByMethodException
+     */
+    public function testGetPaymentSystemByMethod()
+    {
+        $orderService = new OrderService();
+        $orderService->setContainer($this->container);
+
+        $biller = $orderService->getPaymentSystemByMethod('paysera');
+        $biller2 = $orderService->getPaymentSystemByMethod('local');
+        $biller3 = $orderService->getPaymentSystemByMethod('local.card');
+
+        $this->assertInstanceOf('\Food\OrderBundle\Service\Paysera', $biller);
+        $this->assertInstanceOf('\Food\OrderBundle\Service\LocalBiller', $biller2);
+        $this->assertInstanceOf('\Food\OrderBundle\Service\LocalBiller', $biller3);
+    }
+
+    public function testIsAvailablePaymentMethod()
+    {
+        $orderService = new OrderService();
+        $orderService->setContainer($this->container);
+
+        $isAvailable1 = $orderService->isAvailablePaymentMethod('paysera');
+        $isAvailable2 = $orderService->isAvailablePaymentMethod('local');
+        $isAvailable3 = $orderService->isAvailablePaymentMethod('local.card');
+        $isAvailable4 = $orderService->isAvailablePaymentMethod('card.local');
+
+        $this->assertTrue($isAvailable1);
+        $this->assertTrue($isAvailable2);
+        $this->assertTrue($isAvailable3);
+        $this->assertFalse($isAvailable4);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSetOrderEmptyException()
+    {
+        $orderService = new OrderService();
+        $orderService->setOrder(null);
+    }
+
+    /**
+     * @depends testSetOrderEmptyException
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSetOrderNotOrderException()
+    {
+        $container = $this->getMockBuilder('\Symfony\Component\DependencyInjection\Container')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $orderService = new OrderService();
+        $orderService->setOrder($container);
+    }
+
+    /**
+     * @depends testSetOrderEmptyException
+     * @depends testSetOrderNotOrderException
+     */
+    public function testSetPaymentMethod()
+    {
+        $container = $this->getMockBuilder('\Symfony\Component\DependencyInjection\Container')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $order = new Order();
+        $goodOrder = new Order();
+        $goodOrder->setPaymentMethod('local.card');
+
+        $orderService = new OrderService();
+        $orderService->setContainer($container);
+
+        $container->expects($this->once())
+            ->method('getParameter')
+            ->with('payment.methods')
+            ->will($this->returnValue(array('local', 'local.card', 'paysera')));
+
+        $orderService->setOrder($order);
+        $orderService->setPaymentMethod('local.card');
+
+        $this->assertEquals($goodOrder, $orderService->getOrder());
+    }
+
     public function testSettersGetters()
     {
+        $this->markTestIncomplete();
         $orderService = new OrderService();
         $payseraBiller = new PaySera();
         $localBiller = new LocalBiller();
@@ -70,8 +166,13 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($localBiller, $localBillerTest);
     }
 
+    /**
+     * TODO useles test?
+     * @depends testGetPaymentSystemByMethod
+     */
     public function testGetBillingInterface()
     {
+        $this->markTestIncomplete();
         $localBiller = new LocalBiller();
         $payseraBiller = new PaySera();
 
@@ -90,6 +191,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * TODO kai bus getOrderById is db - mockinti DB ir returninti dumb orderi
+     * @depends testGetPaymentSystemByMethod
      */
     public function testBillOrderLocal()
     {
@@ -150,6 +252,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * TODO kai bus getOrderById is db - mockinti DB ir returninti dumb orderi
+     * @depends testGetPaymentSystemByMethod
      */
     public function testBillOrderPaysera()
     {

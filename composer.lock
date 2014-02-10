@@ -215,16 +215,16 @@
         },
         {
             "name": "doctrine/collections",
-            "version": "v1.1",
+            "version": "v1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/collections.git",
-                "reference": "560f29c39cfcfbcd210e5d549d993a39d898b04b"
+                "reference": "b99c5c46c87126201899afe88ec490a25eedd6a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/collections/zipball/560f29c39cfcfbcd210e5d549d993a39d898b04b",
-                "reference": "560f29c39cfcfbcd210e5d549d993a39d898b04b",
+                "url": "https://api.github.com/repos/doctrine/collections/zipball/b99c5c46c87126201899afe88ec490a25eedd6a2",
+                "reference": "b99c5c46c87126201899afe88ec490a25eedd6a2",
                 "shasum": ""
             },
             "require": {
@@ -233,7 +233,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "1.2.x-dev"
                 }
             },
             "autoload": {
@@ -279,7 +279,7 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2013-03-07 12:15:54"
+            "time": "2014-02-03 23:07:43"
         },
         {
             "name": "doctrine/common",
@@ -1243,12 +1243,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafo/lessphp.git",
-                "reference": "704823f6213a8839b83ca7e8fb5874c5f02aba76"
+                "reference": "b7cd5c79e82666bcd2dfadb304342311209fb527"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafo/lessphp/zipball/704823f6213a8839b83ca7e8fb5874c5f02aba76",
-                "reference": "704823f6213a8839b83ca7e8fb5874c5f02aba76",
+                "url": "https://api.github.com/repos/leafo/lessphp/zipball/b7cd5c79e82666bcd2dfadb304342311209fb527",
+                "reference": "b7cd5c79e82666bcd2dfadb304342311209fb527",
                 "shasum": ""
             },
             "type": "library",
@@ -1276,7 +1276,7 @@
             ],
             "description": "lessphp is a compiler for LESS written in PHP.",
             "homepage": "http://leafo.net/lessphp/",
-            "time": "2014-01-08 03:01:15"
+            "time": "2014-02-05 19:36:35"
         },
         {
             "name": "monolog/monolog",
@@ -1564,12 +1564,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "ea90a63809382cfd827e4329571106e5b562074b"
+                "reference": "29a13b723bb5294d85a5ad47604722b76eac82b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/ea90a63809382cfd827e4329571106e5b562074b",
-                "reference": "ea90a63809382cfd827e4329571106e5b562074b",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/29a13b723bb5294d85a5ad47604722b76eac82b7",
+                "reference": "29a13b723bb5294d85a5ad47604722b76eac82b7",
                 "shasum": ""
             },
             "require": {
@@ -1636,7 +1636,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2014-02-03 13:11:02"
+            "time": "2014-02-05 10:12:01"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -1645,12 +1645,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "f411fcac0c9d8b7d5ff05f871dc42ebe4f03cbe5"
+                "reference": "f2a3f18b4be55a3422af6761d0a47bd55a816e2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/f411fcac0c9d8b7d5ff05f871dc42ebe4f03cbe5",
-                "reference": "f411fcac0c9d8b7d5ff05f871dc42ebe4f03cbe5",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/f2a3f18b4be55a3422af6761d0a47bd55a816e2f",
+                "reference": "f2a3f18b4be55a3422af6761d0a47bd55a816e2f",
                 "shasum": ""
             },
             "require": {
@@ -1662,7 +1662,7 @@
             "require-dev": {
                 "knplabs/knp-menu-bundle": "~1.1",
                 "sonata-project/admin-bundle": "~2.2",
-                "sonata-project/cache-bundle": "~2.1"
+                "sonata-project/cache": "~1.0@dev"
             },
             "suggest": {
                 "knplabs/knp-menu-bundle": "~1.1",
@@ -1701,7 +1701,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-02-02 23:11:50"
+            "time": "2014-02-05 21:59:45"
         },
         {
             "name": "sonata-project/cache-bundle",
@@ -1775,12 +1775,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "52c9227c10e4b48e03031d64f897ca6345635d48"
+                "reference": "7c3e7c8815ca286924164a0d9ce8a4a5806b013e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/52c9227c10e4b48e03031d64f897ca6345635d48",
-                "reference": "52c9227c10e4b48e03031d64f897ca6345635d48",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/7c3e7c8815ca286924164a0d9ce8a4a5806b013e",
+                "reference": "7c3e7c8815ca286924164a0d9ce8a4a5806b013e",
                 "shasum": ""
             },
             "require": {
@@ -1826,7 +1826,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-02-03 14:35:52"
+            "time": "2014-02-06 11:03:10"
         },
         {
             "name": "sonata-project/doctrine-extensions",
@@ -1883,12 +1883,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle.git",
-                "reference": "fc514a81364c5f044a421772dae1397cf9fd9fb8"
+                "reference": "ccc4f2b9abe1788d3d8460d92db27aa3d174f48b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/fc514a81364c5f044a421772dae1397cf9fd9fb8",
-                "reference": "fc514a81364c5f044a421772dae1397cf9fd9fb8",
+                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/ccc4f2b9abe1788d3d8460d92db27aa3d174f48b",
+                "reference": "ccc4f2b9abe1788d3d8460d92db27aa3d174f48b",
                 "shasum": ""
             },
             "require": {
@@ -1903,7 +1903,8 @@
                 "symfony/security": "~2.2"
             },
             "require-dev": {
-                "simplethings/entity-audit-bundle": "~0.1"
+                "simplethings/entity-audit-bundle": "~0.1",
+                "sonata-project/admin-bundle": "~2.2@dev"
             },
             "suggest": {
                 "simplethings/entity-audit-bundle": "If you want to support for versioning of entities and their associations."
@@ -1943,7 +1944,7 @@
                 "generator",
                 "sonata"
             ],
-            "time": "2014-02-02 23:23:05"
+            "time": "2014-02-06 11:30:56"
         },
         {
             "name": "sonata-project/easy-extends-bundle",
