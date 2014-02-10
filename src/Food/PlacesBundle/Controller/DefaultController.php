@@ -16,7 +16,8 @@ class DefaultController extends Controller
 
     public function listAction()
     {
-        return $this->render('FoodPlacesBundle:Default:list.html.twig');
+        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->findAll();
+        return $this->render('FoodPlacesBundle:Default:list.html.twig', array('places' => $places));
     }
 
 
