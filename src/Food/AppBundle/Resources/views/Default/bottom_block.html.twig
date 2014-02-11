@@ -1,0 +1,17 @@
+{# Mazas blokas su Appsu linkais/images ir newsletterio prenumerata #}
+
+<div class="clearfix bottom-blocks bottom-block-lower">
+    <div class="app-block clearfix"><img src="/bundles/foodapp/images/app-view.png">
+        <div class="app-block-inner">
+            <h3>Foodout <br/>{% trans %}index.app_title{% endtrans %}</h3>
+            <div><a href="#"><img src="/bundles/foodapp/images/app-store.png"></a><a href="#"><img src="/bundles/foodapp/images/g-store.png"></a></div>
+        </div>
+    </div>
+    <div class="newsletter-block">
+        <h4>{% trans %}index.newsletter{% endtrans %}</h4>
+        <form class="newsletter-form">
+            <input type="text" placeholder="{% trans %}index.newsletter_email{% endtrans %}">
+            <input type="submit" value="{% trans %}index.newsletter_subscribe{% endtrans %}">
+        </form>
+    </div>
+</div>
