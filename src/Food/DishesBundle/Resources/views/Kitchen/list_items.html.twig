@@ -1,5 +1,5 @@
 {# Rodomas restoranu sarase #}
-<div class="filter-title">Pasirinkite virtuvę</div>
+<div class="filter-title">{% trans %}places.select_kitchen{% endtrans %}</div>
 <div class="filters-list food-type-filters">
     {% for item in list %}
     <label class="custom-checkbox">{{ item.name }}<span class="count">{{ item.count }}</span>
