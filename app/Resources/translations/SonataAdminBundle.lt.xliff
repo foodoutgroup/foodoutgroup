@@ -453,6 +453,16 @@
                 <source>admin.group.first</source>
                 <target>Pirmi žingsniai</target>
             </trans-unit>
+
+            <!-- Place reviews -->
+            <trans-unit id="admin.support">
+                <source>admin.support</source>
+                <target>Pagalba</target>
+            </trans-unit>
+            <trans-unit id="admin.order.support">
+                <source>admin.order.support</source>
+                <target>Užsakymai</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

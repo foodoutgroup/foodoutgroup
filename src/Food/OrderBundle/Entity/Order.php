@@ -90,7 +90,7 @@ class Order
     private $submittedForPayment = null;
 
     /**
-     * @ORM\Column(name="lastUpdated", type="datetime", nullable=true)
+     * @ORM\Column(name="last_updated", type="datetime", nullable=true)
      */
     private $lastUpdated = null;
 
@@ -439,5 +439,54 @@ class Order
     public function getDeliveryType()
     {
         return $this->deliveryType;
+    }
+
+    /**
+     * Convert order to array
+     *
+     * TODO detailsu sudejimas i masyva
+     *
+     * @return array
+     */
+    public function __toArray()
+    {
+        $user = $this->getUser();
+        $userId = null;
+        if (!empty($user) && is_object($user)) {
+            $userId = $user->getId();
+        }
+
+        $submittedForPayment = $this->getSubmittedForPayment();
+        if (!empty($submittedForPayment) && $submittedForPayment instanceof \DateTime) {
+            $submittedForPayment = $submittedForPayment->format("Y-m-d H:i:s");
+        } else {
+            $submittedForPayment = null;
+        }
+
+        $lastUpdated = $this->getSubmittedForPayment();
+        if (!empty($lastUpdated) && $lastUpdated instanceof \DateTime) {
+            $lastUpdated = $lastUpdated->format("Y-m-d H:i:s");
+        } else {
+            $lastUpdated = null;
+        }
+
+        return array(
+            'id' => $this->getId(),
+            'userId' => $userId,
+            'addressId' => 'TODO', // TODO
+            'details' => 'TODO', // TODO
+            'orderStatus' => $this->getOrderStatus(),
+            'orderDate' => $this->getOrderDate()->format("Y-m-d H:i:s"),
+            'vat' => $this->getVat(),
+            'orderHash' => $this->getOrderHash(),
+            'comment' => $this->getComment(),
+            'placeComent' => $this->getPlaceComment(),
+            'paymentMethod' => $this->getPaymentMethod(),
+            'paymentStatus' => $this->getPaymentStatus(),
+            'submittedForPayment' => $submittedForPayment,
+            'lastUpdated' => $lastUpdated,
+            'lastPaymentError' => $this->getLastPaymentError(),
+            'deliveryType' => $this->getDeliveryType(),
+        );
     }
 }

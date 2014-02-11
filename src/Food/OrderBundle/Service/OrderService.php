@@ -8,6 +8,8 @@ use Food\CartBundle\Service\CartService;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Food\OrderBundle\Entity\OrderDetailsOptions;
+use Food\OrderBundle\Entity\OrderLog;
+use Food\OrderBundle\Entity\PaymentLog;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Security\Acl\Exception\Exception;
 
@@ -449,6 +451,8 @@ class OrderService extends ContainerAware
 
         $this->saveOrder();
 
+        $this->logPayment($order, 'billing start', 'Billing started with method: '.$billingType, $order);
+
         return $redirectUrl;
     }
 
@@ -464,7 +468,10 @@ class OrderService extends ContainerAware
             throw new \InvalidArgumentException('Payment method: '.$method.' is unknown to our system or not available');
         }
 
+        $oldMethod = $order->getPaymentMethod();
         $order->setPaymentMethod($method);
+
+        $this->logPayment($order, 'payement method change', sprintf('Method changed from "%s" to "%s"', $oldMethod, $method));
     }
 
     /**
@@ -516,11 +523,18 @@ class OrderService extends ContainerAware
             throw new \InvalidArgumentException('Order can not go from status: "'.$order->getPaymentStatus().'" to: "'.$status.'" is not a valid order status');
         }
 
+        $oldStatus = $order->getPaymentStatus();
         $order->setPaymentStatus($status);
 
         if ($status == self::$paymentStatusError) {
             $order->setLastPaymentError($message);
         }
+
+        $this->logPayment(
+            $order,
+            'payement status change',
+            sprintf('Status changed from "%s" to "%s" with message %s', $oldStatus, $status, $message)
+        );
 
         $this->saveOrder();
     }
@@ -631,5 +645,89 @@ class OrderService extends ContainerAware
         }
 
         $order->setDeliveryType($type);
+    }
+
+    /**
+     * @param Order|null $order
+     * @param string $event
+     * @param string|null $message
+     * @param mixed $debugData
+     */
+    public function logOrder($order=null, $event, $message=null, $debugData=null)
+    {
+        $log = new OrderLog();
+
+        if (empty($order) && !($order instanceof Order)) {
+            $order = $this->getOrder();
+        }
+
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        if ($user == 'anon.') {
+            $user = null;
+        }
+
+        $log->setOrder($order)
+            ->setOrderStatus($order->getOrderStatus())
+            ->setEvent($event)
+            ->setMessage($message)
+            ->setUser($user);
+
+        if (is_array($debugData)) {
+            $debugData = var_export($debugData, true);
+        } else if (is_object($debugData)) {
+            if (method_exists($debugData, '__toArray')) {
+                $debugData = 'Class: '.get_class($debugData).' Data: '
+                    .var_export($debugData->__toArray(), true);
+            } else {
+                $debugData = get_class($debugData);
+            }
+        }
+        $log->setDebugData($debugData);
+
+        $this->getEm()->persist($log);
+        $this->getEm()->flush();
+    }
+
+    /**
+     * @param Order|null $order
+     * @param string $event
+     * @param string|null $message
+     * @param mixed $debugData
+     */
+    public function logPayment($order=null, $event, $message=null, $debugData=null)
+    {
+        $log = new PaymentLog();
+
+        if (empty($order) && !($order instanceof Order)) {
+            $order = $this->getOrder();
+        }
+
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        if ($user == 'anon.') {
+            $user = null;
+        }
+
+        $log->setOrder($order)
+            ->setPaymentStatus($order->getPaymentStatus())
+            ->setEvent($event)
+            ->setMessage($message)
+            ->setUser($user);
+
+        if (is_array($debugData)) {
+            $debugData = var_export($debugData, true);
+        } else if (is_object($debugData)) {
+            if (method_exists($debugData, '__toArray')) {
+                $debugData = 'Class: '.get_class($debugData).' Data: '
+                    .var_export($debugData->__toArray(), true);
+            } else {
+                $debugData = get_class($debugData);
+            }
+        }
+        $log->setDebugData($debugData);
+
+        $this->getEm()->persist($log);
+        $this->getEm()->flush();
     }
 }
