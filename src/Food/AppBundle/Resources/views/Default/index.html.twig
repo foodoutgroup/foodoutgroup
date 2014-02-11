@@ -1,7 +1,6 @@
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
 
-
     {% block jscode %}
         $(document).ready(function(){
             var tastyCities = {{ render(controller('FoodPlacesBundle:Default:cities')) }};
@@ -155,23 +154,9 @@
                     <p class="restoran-name">Pica už ačiū!</p>
                     <div data-stars="3" class="restoran-rating"></div></a></div>
         </div>
-        <div class="clearfix bottom-blocks">
-            <div class="app-block clearfix"><img src="{{ asset('bundles/foodapp/images/app-view.png') }}">
-                <div class="app-block-inner">
-                    <h3>Skanu.lt <br/>tavo kišenėje!</h3>
-                    <p>Lorem ipsum dolor sit amet, enim ad minim veniam, quis nostrud ullamco laboris nisi ut aliqip ex commodo consequat.</p>
-                    <div><a href="#"><img src="{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a href="#"><img src="{{ asset('bundles/foodapp/images/g-store.png') }}"></a></div>
-                </div>
-            </div>
-            <div class="newsletter-block">
-                <h4>Naujienlaiškis</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do enim ad minim veniam, quis nostrud.</p>
-                <form class="newsletter-form">
-                    <input type="text" placeholder="Tavo el. paštas">
-                    <input type="submit" value="Prenumeruok">
-                </form>
-            </div>
-        </div>
+
+        {% include 'FoodAppBundle:Default:bottom_block.html.twig' %}
+
     </div>
     </div>
 {% endblock %}
