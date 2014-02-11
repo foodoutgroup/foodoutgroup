@@ -18,6 +18,12 @@ class PaymentLog
     private $order;
 
     /**
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     **/
+    private $user;
+
+    /**
      * @var \DateTime
      * @ORM\Column(name="event_date", type="datetime")
      */
@@ -46,6 +52,11 @@ class PaymentLog
      * @ORM\Column(name="debug_data", type="text", nullable=true)
      */
     private $debug_data;
+
+    public function __construct()
+    {
+        $this->event_date = new \DateTime("now");
+    }
 
     /**
      * Set event_date
@@ -183,5 +194,28 @@ class PaymentLog
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Food\UserBundle\Entity\User $user
+     * @return PaymentLog
+     */
+    public function setUser(\Food\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+    
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Food\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

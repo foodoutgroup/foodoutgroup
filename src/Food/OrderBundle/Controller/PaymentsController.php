@@ -31,6 +31,13 @@ class PaymentsController extends Controller
                 throw new \Exception('Order not found. Order id from Paysera: '.$data['orderid']);
             }
 
+            $orderService->logPayment(
+                $order,
+                'paysera payment accepted',
+                'Payment succesfuly billed in Paysera',
+                $order
+            );
+
             $orderService->setPaymentStatus($orderService::$paymentStatusComplete);
 
         } catch (\Exception $e) {
@@ -49,7 +56,7 @@ class PaymentsController extends Controller
         return new Response('Payment accepted');
     }
 
-    public function payseraCancelAction()
+    public function payseraCancelAction($hash)
     {
         $logger = $this->container->get("logger");
         $logger->alert("==========================\ncancel payment action for paysera came\n====================================\n");
@@ -57,6 +64,17 @@ class PaymentsController extends Controller
         $logger->alert('-----------------------------------------------------------');
 
         try {
+            $orderService = $this->container->get('food.order');
+            $order = $orderService->getOrderByHash($hash);
+
+            $orderService->logPayment(
+                $order,
+                'paysera payment canceled',
+                'Payment canceled in Paysera',
+                $order
+            );
+
+            $orderService->setPaymentStatus($orderService::$status_canceled, 'User canceled payment');
 //            $callbackValidator = $this->get('evp_web_to_pay.callback_validator');
 //            $data = $callbackValidator->validateAndParseData($this->getRequest()->query->all());
 
@@ -73,7 +91,7 @@ class PaymentsController extends Controller
 //            }
         } catch (\Exception $e) {
             //handle the callback validation error here
-            $logger->alert("payment data validation failed!. Error: ".$e->getMessage());
+            $logger->alert("payment cancelation failes!. Error: ".$e->getMessage());
             $logger->alert("trace: ".$e->getTraceAsString());
 
 //            if ($order) {
@@ -84,7 +102,7 @@ class PaymentsController extends Controller
         }
 
         // TODO - Parodom, kad nutiko beda, mes informuoti ir siulome bandyti dar karta??? arba pasakom, kad jus atsisakete susimoketi, gailike
-        return new Response('Payment canceled');
+        return new Response('Payment canceled -draw an error with a link to cart again, but with order loaded');
     }
 
     public function payseraCallbackAction()

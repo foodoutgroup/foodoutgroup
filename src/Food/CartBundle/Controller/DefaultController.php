@@ -103,6 +103,7 @@ class DefaultController extends Controller
 
             $orderService = $this->container->get('food.order');
             $orderService->createOrderFromCart();
+            $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
 
             $paymentMethod = $request->request->get('payment-type');
             $deliveryType = $request->request->get('delivery-type');
@@ -114,6 +115,7 @@ class DefaultController extends Controller
             if (!empty($billingUrl)) {
                 return new RedirectResponse($billingUrl);
             }
+            // Crap happened?
         }
 
         return $this->render('FoodCartBundle:Default:index.html.twig');

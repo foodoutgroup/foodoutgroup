@@ -451,6 +451,8 @@ class OrderService extends ContainerAware
 
         $this->saveOrder();
 
+        $this->logPayment($order, 'billing start', 'Billing started with method: '.$billingType, $order);
+
         return $redirectUrl;
     }
 
@@ -466,7 +468,10 @@ class OrderService extends ContainerAware
             throw new \InvalidArgumentException('Payment method: '.$method.' is unknown to our system or not available');
         }
 
+        $oldMethod = $order->getPaymentMethod();
         $order->setPaymentMethod($method);
+
+        $this->logPayment($order, 'payement method change', sprintf('Method changed from "%s" to "%s"', $oldMethod, $method));
     }
 
     /**
@@ -518,11 +523,18 @@ class OrderService extends ContainerAware
             throw new \InvalidArgumentException('Order can not go from status: "'.$order->getPaymentStatus().'" to: "'.$status.'" is not a valid order status');
         }
 
+        $oldStatus = $order->getPaymentStatus();
         $order->setPaymentStatus($status);
 
         if ($status == self::$paymentStatusError) {
             $order->setLastPaymentError($message);
         }
+
+        $this->logPayment(
+            $order,
+            'payement status change',
+            sprintf('Status changed from "%s" to "%s" with message %s', $oldStatus, $status, $message)
+        );
 
         $this->saveOrder();
     }
@@ -649,10 +661,17 @@ class OrderService extends ContainerAware
             $order = $this->getOrder();
         }
 
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        if ($user == 'anon.') {
+            $user = null;
+        }
+
         $log->setOrder($order)
             ->setOrderStatus($order->getOrderStatus())
             ->setEvent($event)
-            ->setMessage($message);
+            ->setMessage($message)
+            ->setUser($user);
 
         if (is_array($debugData)) {
             $debugData = var_export($debugData, true);
@@ -684,10 +703,17 @@ class OrderService extends ContainerAware
             $order = $this->getOrder();
         }
 
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        if ($user == 'anon.') {
+            $user = null;
+        }
+
         $log->setOrder($order)
             ->setPaymentStatus($order->getPaymentStatus())
             ->setEvent($event)
-            ->setMessage($message);
+            ->setMessage($message)
+            ->setUser($user);
 
         if (is_array($debugData)) {
             $debugData = var_export($debugData, true);
