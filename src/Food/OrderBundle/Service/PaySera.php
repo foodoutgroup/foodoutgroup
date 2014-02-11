@@ -199,7 +199,7 @@ class PaySera extends ContainerAware implements BillingInterface {
 
         $siteDomain = 'http://'.$this->getSiteDomain();
         $router = $this->container->get('router');
-        $acceptUrl = $siteDomain.$router->generate('paysera_accept', array('hash' => $order->getOrderHash()));
+        $acceptUrl = $siteDomain.$router->generate('paysera_accept');
         $cancelUrl = $siteDomain.$router->generate('paysera_cancel', array('hash' => $order->getOrderHash()));
         $callbackUrl = $siteDomain.$router->generate('paysera_callback');
 

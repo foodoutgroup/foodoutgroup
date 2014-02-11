@@ -319,6 +319,9 @@ class OrderService extends ContainerAware
         if (empty($this->order) || $this->order == null) {
             throw new Exception("Yah whatever... seivinam orderi neturedami jo ?:)");
         } else {
+            //Update the last update time ;)
+            $this->order->setLastUpdated(new \DateTime("now"));
+
             $this->getEm()->persist($this->getOrder());
             $this->getEm()->flush();
         }
@@ -560,6 +563,14 @@ class OrderService extends ContainerAware
      */
     public function isValidPaymentStatusChange($from, $to)
     {
+        if (empty($from) && !empty($to)) {
+            return true;
+        }
+
+        if (empty($to)) {
+            return false;
+        }
+
         $flowLine = array(
             self::$paymentStatusNew => 0,
             self::$paymentStatusWait => 1,
