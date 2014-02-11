@@ -8,6 +8,8 @@ use Food\CartBundle\Service\CartService;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Food\OrderBundle\Entity\OrderDetailsOptions;
+use Food\OrderBundle\Entity\OrderLog;
+use Food\OrderBundle\Entity\PaymentLog;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Security\Acl\Exception\Exception;
 
@@ -631,5 +633,75 @@ class OrderService extends ContainerAware
         }
 
         $order->setDeliveryType($type);
+    }
+
+    /**
+     * @param Order|null $order
+     * @param string $event
+     * @param string|null $message
+     * @param mixed $debugData
+     */
+    public function logOrder($order=null, $event, $message=null, $debugData=null)
+    {
+        $log = new OrderLog();
+
+        if (empty($order) && !($order instanceof Order)) {
+            $order = $this->getOrder();
+        }
+
+        $log->setOrder($order)
+            ->setOrderStatus($order->getOrderStatus())
+            ->setEvent($event)
+            ->setMessage($message);
+
+        if (is_array($debugData)) {
+            $debugData = var_export($debugData, true);
+        } else if (is_object($debugData)) {
+            if (method_exists($debugData, '__toArray')) {
+                $debugData = 'Class: '.get_class($debugData).' Data: '
+                    .var_export($debugData->__toArray(), true);
+            } else {
+                $debugData = get_class($debugData);
+            }
+        }
+        $log->setDebugData($debugData);
+
+        $this->getEm()->persist($log);
+        $this->getEm()->flush();
+    }
+
+    /**
+     * @param Order|null $order
+     * @param string $event
+     * @param string|null $message
+     * @param mixed $debugData
+     */
+    public function logPayment($order=null, $event, $message=null, $debugData=null)
+    {
+        $log = new PaymentLog();
+
+        if (empty($order) && !($order instanceof Order)) {
+            $order = $this->getOrder();
+        }
+
+        $log->setOrder($order)
+            ->setPaymentStatus($order->getPaymentStatus())
+            ->setEvent($event)
+            ->setMessage($message);
+
+        if (is_array($debugData)) {
+            $debugData = var_export($debugData, true);
+        } else if (is_object($debugData)) {
+            if (method_exists($debugData, '__toArray')) {
+                $debugData = 'Class: '.get_class($debugData).' Data: '
+                    .var_export($debugData->__toArray(), true);
+            } else {
+                $debugData = get_class($debugData);
+            }
+        }
+        $log->setDebugData($debugData);
+
+        $this->getEm()->persist($log);
+        $this->getEm()->flush();
     }
 }
