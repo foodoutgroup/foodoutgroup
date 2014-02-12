@@ -52,6 +52,20 @@ class PaymentsController extends Controller
             return new Response($e->getTraceAsString(), 500);
         }
 
+        // TODO translation and send to place point, not some number
+        $messagingService = $this->container->get('food.messages');
+
+        $sender = $this->container->getParameter('sms.sender');
+        $recipient = '37061514333';
+        $orderConfirmRoute = $this->container->get('router')
+            ->generate('ordermobile', array('hash' => $order->getOrderHash()));
+        $messageText = 'Naujas uzsakymas: http://'.$this->container->getParameter('domain').$orderConfirmRoute;
+        $message = $messagingService->createMessage($sender, $recipient, $messageText);
+
+        $messagingService->saveMessage($message);
+
+        $logger->alert("Sending message for order to be accepted to number: ".$recipient.' with text "'.$messageText.'"');
+
         // TODO - Parodom, kad viskas yra super ir gaus valgyt kazkada :)
         return new Response('Payment accepted');
     }

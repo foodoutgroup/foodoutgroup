@@ -11,9 +11,17 @@ use Doctrine\ORM\Mapping as ORM;
 class PaymentLog
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Order")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
-     * @ORM\Id
      */
     private $order;
 
@@ -43,7 +51,7 @@ class PaymentLog
 
     /**
      * @var string
-     * @ORM\Column(name="payment_status", type="text", length=50, nullable=true)
+     * @ORM\Column(name="payment_status", type="string", length=50, nullable=true)
      */
     private $payment_status;
 
