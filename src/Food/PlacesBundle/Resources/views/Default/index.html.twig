@@ -3,7 +3,40 @@
 
 {% block jscode %}
     $(document).ready(function() {
+        $(".filters-list input").on('ifChecked', function(event) {
+            $(this).attr('checked', true);
+            submitKitchens();
+        });
 
+        $(".filters-list input").on('ifUnchecked', function(event) {
+            $(this).attr('checked', false);
+            submitKitchens();
+        });
+
+        function submitKitchens() {
+            var checkBoxes = "";
+            var $filters = $(".filters-list input:checked");
+            for(i = 0; i < $filters.length; i++) {
+                if (checkBoxes !="") {
+                    checkBoxes += ",";
+                }
+                checkBoxes += $($filters[i]).val();
+            }
+
+            $.get('{{ path('food_places_filter') }}/' + checkBoxes, function(resp) {
+                var $container = $('.content-righter');
+                $container.find('.restaurants-list').remove();
+                $container.append(resp);
+
+                $('.restoran-rating').raty({
+                    readOnly: true,
+                    score: function() {
+                        return $(this).attr('data-stars');
+                    },
+                    path: '/bundles/foodapp/images/'
+                });
+            });
+        }
     });
 {% endblock %}
 {% block body %}
