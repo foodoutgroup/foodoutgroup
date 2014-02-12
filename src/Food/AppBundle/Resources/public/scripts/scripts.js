@@ -24,6 +24,8 @@
         $('.custom-select').selectmenu();
 
         $("input").iCheck();
+
+
         $(".boxer").boxer({
             callback: function(){
                 $("input").iCheck();
@@ -41,9 +43,6 @@
             },
             path: '/bundles/foodapp/images/'
         });
-
-
-
 
 
         function resizeSensitive() {

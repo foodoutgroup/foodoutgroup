@@ -32,6 +32,10 @@ food_places:
     pattern: /places/
     defaults: { _controller: FoodPlacesBundle:Default:index}
 
+food_places_filter:
+    pattern: /places/filter/{kitchens}
+    defaults: { _controller: FoodPlacesBundle:Default:list, kitchens: ~ }
+
 
 static:
     path:     /static/{id}

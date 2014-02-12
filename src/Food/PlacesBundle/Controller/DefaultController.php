@@ -14,9 +14,17 @@ class DefaultController extends Controller
         return $this->render('FoodPlacesBundle:Default:index.html.twig');
     }
 
-    public function listAction()
+    public function listAction($kitchens = "")
     {
-        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->findAll();
+        $kitchens = explode(",", $kitchens);
+        foreach ($kitchens as $kkey=> &$kitchen) {
+            $kitchen = intval($kitchen);
+        }
+        if (!empty($kitchens)) {
+            $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->findByKitchensIds(array(1,2,3,4,5,6,7));
+        } else {
+            $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->findAll();
+        }
         return $this->render('FoodPlacesBundle:Default:list.html.twig', array('places' => $places));
     }
 

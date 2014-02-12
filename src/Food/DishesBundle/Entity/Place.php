@@ -11,8 +11,9 @@ use Food\AppBundle\Entity\Uploadable;
  * Client
  *
  * @ORM\Table(name="place")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\PlaceRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ *
  */
 class Place extends Uploadable
 {
@@ -53,6 +54,10 @@ class Place extends Uploadable
 
     /**
      * @ORM\ManyToMany(targetEntity="Kitchen", inversedBy="places")
+     * @ORM\JoinTable(name="place_kitchen",
+     *      joinColumns={@ORM\JoinColumn(name="place_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="kitchen_id", referencedColumnName="id")}
+     *      )
      */
     private $kitchens;
 
