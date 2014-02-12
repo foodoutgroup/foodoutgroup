@@ -30,13 +30,14 @@
                                 <label><br></label>
                                 <div class="delivery-type-radios clearfix">
                                     <label class="custom-radio">Pristatymas į namus
-                                        <input type="radio" name="delivery-type" value="deliver">
+                                        <input type="radio" name="delivery-type" value="deliver"{% if order is not null and order.deliveryType == 'deliver' %} checked="checked"{% endif %}>
                                     </label>
                                     <label class="custom-radio">Atsiimsiu pats
-                                        <input type="radio" name="delivery-type" value="pickup">
+                                        <input type="radio" name="delivery-type" value="pickup"{% if order is not null and order.deliveryType == 'pickup' %} checked="checked"{% endif %}>
                                     </label>
                                 </div>
                             </div>
+                            {# TODO - sukelti visus laukus. Issiaiskinti su Paulium address flow #}
                             <div class="form-row">
                                 <label>Miestas:</label>
                                 <select class="custom-select">
@@ -66,10 +67,10 @@
                             <h2 class="section-2">2. Saugus apmokėjimas</h2>
                             <div class="select-payment clearfix">
                                 <label class="custom-radio">Grynais pristatymo metu
-                                    <input type="radio" name="payment-type" value="local">
+                                    <input type="radio" name="payment-type" value="local"{% if order is not null and order.paymentMethod == 'local' %} checked="checked"{% endif %}>
                                 </label>
                                 <label class="custom-radio">Kredito kortele po pristatymo
-                                    <input type="radio" name="payment-type" value="local.card">
+                                    <input type="radio" name="payment-type" value="local.card"{% if order is not null and order.paymentMethod == 'local.card' %} checked="checked"{% endif %}>
                                 </label>
                             </div>
                             <div class="select-bank clearfix">
@@ -87,7 +88,7 @@
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-swb.png">
                                     {# TODO hackas testavimui. Reikia atskiro paysera optionso, kitus bankus kolkas slepiame #}
-                                    <input type="radio" name="payment-type" value="paysera">
+                                    <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-dnb.png">
                                     <input type="radio" name="payment-type" value="dnb">

@@ -4,6 +4,11 @@ namespace Food\OrderBundle\Service;
 
 class LocalBiller implements BillingInterface {
 
+    /**
+     * @var string
+     */
+    private $locale;
+
     public function setOrder($order)
     {
 
@@ -18,5 +23,22 @@ class LocalBiller implements BillingInterface {
     {
 
     }
+
+    /**
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
 
 }

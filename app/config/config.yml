@@ -154,8 +154,8 @@ sonata_block:
 
 # Sonata admin bloku konfigas
 sonata_admin:
-    title: FoodOut
-    title_logo: /bundles/foodapp/images/logo_food.png
+    title: Foodout
+    title_logo: /bundles/foodapp/images/logo_food_small.png
     templates:
       #layout: SonataAdminBundle::standard_layout.html.twig
       layout: FoodAppBundle::admin_layout.html.twig

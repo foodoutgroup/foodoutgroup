@@ -10,4 +10,6 @@ interface BillingInterface {
 
     public function rollback();
 
+    public function setLocale($locale);
+
 }
