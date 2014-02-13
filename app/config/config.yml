@@ -21,6 +21,7 @@ parameters:
     admin.emails: [mantas@skanu.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
+    title: "Foodout"
     domain: "labai.skanu.lt"
     arc_gis_user: "skanulabai"
     arc_gis_pass: "labaiskanu"
@@ -63,6 +64,7 @@ twig:
     globals:
         slug_util:    "@food.dishes.utils.slug"
         locale:       "%locale%"
+        page_title:   "%title%"
 
 
 # Assetic Configuration
