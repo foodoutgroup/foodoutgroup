@@ -440,4 +440,27 @@ class FoodCategory implements Translatable
     {
         return $this->deletedBy;
     }
+
+    /**
+     * Add dishes
+     *
+     * @param \Food\DishesBundle\Entity\Dish $dishes
+     * @return FoodCategory
+     */
+    public function addDish(\Food\DishesBundle\Entity\Dish $dishes)
+    {
+        $this->dishes[] = $dishes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove dishes
+     *
+     * @param \Food\DishesBundle\Entity\Dish $dishes
+     */
+    public function removeDish(\Food\DishesBundle\Entity\Dish $dishes)
+    {
+        $this->dishes->removeElement($dishes);
+    }
 }

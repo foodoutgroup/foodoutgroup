@@ -40,9 +40,16 @@ class PlacePoint
     /**
      * @var string
      *
-     * @ORM\Column(name="coords", type="string", length=255)
+     * @ORM\Column(name="lat", type="string", length=30)
      */
-    private $coords;
+    private $lat;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lon", type="string", length=30)
+     */
+    private $lon;
 
     /**
      * @var bool
@@ -880,5 +887,51 @@ class PlacePoint
     public function getDelivery()
     {
         return $this->delivery;
+    }
+
+    /**
+     * Set lon
+     *
+     * @param string $lon
+     * @return PlacePoint
+     */
+    public function setLon($lon)
+    {
+        $this->lon = $lon;
+    
+        return $this;
+    }
+
+    /**
+     * Get lon
+     *
+     * @return string 
+     */
+    public function getLon()
+    {
+        return $this->lon;
+    }
+
+    /**
+     * Set lat
+     *
+     * @param string $lat
+     * @return PlacePoint
+     */
+    public function setLat($lat)
+    {
+        $this->lat = $lat;
+    
+        return $this;
+    }
+
+    /**
+     * Get lat
+     *
+     * @return string 
+     */
+    public function getLat()
+    {
+        return $this->lat;
     }
 }

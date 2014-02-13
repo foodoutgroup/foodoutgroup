@@ -17,7 +17,9 @@ class PlacePointFullAdmin extends FoodAdmin
         $formMapper
             ->add('address', 'text', array('label' => 'admin.point.address'))
             ->add('city', 'text', array('label' => 'admin.point.city'))
-            ->add('coords', 'text', array('label' => 'admin.point.coords'))
+            //->add('coords', 'text', array('label' => 'admin.point.coords'))
+            ->add('lat', 'text', array('label' => 'admin.point.lat'))
+            ->add('lon', 'text', array('label' => 'admin.point.lon'))
             ->add('pickUp',null, array('label' => 'admin.point.pickup'))
             ->add('delivery', null, array('label' => 'admin.point.delivery'))
             ->add('delivery_time', 'text', array('label' => 'admin.point.devtime'))
