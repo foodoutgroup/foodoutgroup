@@ -141,4 +141,12 @@ class DefaultController extends Controller
         $list = $this->getCartService()->getCartDishes();
         return $this->render('FoodCartBundle:Default:side_block.html.twig', array('list' => $list));
     }
+
+    /**
+     * TODO dabar routas cart/success, bet renaminant kart i kasikelis, reiks ir sita parenamint i kasikelis/apmoketas
+     */
+    public function successAction()
+    {
+        return $this->render('FoodCartBundle:Default:payment_success.html.twig');
+    }
 }

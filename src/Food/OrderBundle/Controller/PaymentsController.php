@@ -68,8 +68,7 @@ class PaymentsController extends Controller
 
         $logger->alert("Sending message for order to be accepted to number: ".$recipient.' with text "'.$messageText.'"');
 
-        // TODO - Parodom, kad viskas yra super ir gaus valgyt kazkada :)
-        return new Response('Payment accepted');
+        return new RedirectResponse($this->generateUrl('food_cart_success'));
     }
 
     public function payseraCancelAction($hash)
