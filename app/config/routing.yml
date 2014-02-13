@@ -73,11 +73,11 @@ ordermobile:
     defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~ }
 
 paysera_accept:
-    path: /payments/paysera/accept/
+    path: /{_locale}/payments/paysera/accept/
     defaults: { _controller: FoodOrderBundle:Payments:payseraAccept }
 
 paysera_cancel:
-    path: /payments/paysera/cancel/{hash}/
+    path: /{_locale}/payments/paysera/cancel/{hash}/
     defaults: { _controller: FoodOrderBundle:Payments:payseraCancel, hash: ~ }
 
 paysera_callback:

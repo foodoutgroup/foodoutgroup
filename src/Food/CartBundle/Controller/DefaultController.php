@@ -96,29 +96,39 @@ class DefaultController extends Controller
     {
         $request = $this->getRequest();
 
+        $orderService = $this->container->get('food.order');
+        $orderHash = $request->get('hash');
+        $order = null;
+
+        if (!empty($orderHash)) {
+            $order = $orderService->getOrderByHash($orderHash);
+        }
+
         // Form submitted
         if ($request->getMethod() == 'POST') {
-//            die('I kill for food!');
-            // TODO update order data if changed (addres and stuff)
+            if (empty($order)) {
+                $orderService->createOrderFromCart();
+                $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
+            } else {
+                $orderService->setOrder($order);
+                $orderService->logOrder(null, 'retry', 'Canceled order billing retry by user', $orderService->getOrder());
+            }
 
-            $orderService = $this->container->get('food.order');
-            $orderService->createOrderFromCart();
-            $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
-
-            $paymentMethod = $request->request->get('payment-type');
-            $deliveryType = $request->request->get('delivery-type');
+            $paymentMethod = $request->get('payment-type');
+            $deliveryType = $request->get('delivery-type');
             $orderService->setPaymentMethod($paymentMethod);
             $orderService->setDeliveryType($deliveryType);
-
+            $orderService->setLocale($request->getLocale());
+            $orderService->setPaymentStatus($orderService::$paymentStatusWait);
 
             $billingUrl = $orderService->billOrder();
             if (!empty($billingUrl)) {
                 return new RedirectResponse($billingUrl);
             }
-            // Crap happened?
+            // TODO Crap happened?
         }
 
-        return $this->render('FoodCartBundle:Default:index.html.twig');
+        return $this->render('FoodCartBundle:Default:index.html.twig', array('order' => $order));
     }
 
     /**
@@ -130,5 +140,13 @@ class DefaultController extends Controller
     {
         $list = $this->getCartService()->getCartDishes();
         return $this->render('FoodCartBundle:Default:side_block.html.twig', array('list' => $list));
+    }
+
+    /**
+     * TODO dabar routas cart/success, bet renaminant kart i kasikelis, reiks ir sita parenamint i kasikelis/apmoketas
+     */
+    public function successAction()
+    {
+        return $this->render('FoodCartBundle:Default:payment_success.html.twig');
     }
 }

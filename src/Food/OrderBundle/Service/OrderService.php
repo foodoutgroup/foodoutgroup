@@ -94,6 +94,11 @@ class OrderService extends ContainerAware
     private $order;
 
     /**
+     * @var string
+     */
+    private $locale;
+
+    /**
      * @param \Food\CartBundle\Service\CartService $cartService
      */
     public function setCartService($cartService)
@@ -147,6 +152,22 @@ class OrderService extends ContainerAware
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
     }
 
     /**
@@ -355,7 +376,7 @@ class OrderService extends ContainerAware
     public function getOrderByHash($hash)
     {
         $em = $this->container->get('doctrine')->getManager();
-        $order = $em->getRepository('Food\OrderBundle\Entity\Order')->findBy(array('hash' => $hash), null, 1);;
+        $order = $em->getRepository('Food\OrderBundle\Entity\Order')->findBy(array('order_hash' => $hash), null, 1);;
 
         if (!$order) {
             return false;
@@ -448,6 +469,7 @@ class OrderService extends ContainerAware
         }
 
         $biller->setOrder($order);
+        $biller->setLocale($this->getLocale());
         $redirectUrl = $biller->bill();
 
         $order->setSubmittedForPayment(new \DateTime("now"));
@@ -519,11 +541,11 @@ class OrderService extends ContainerAware
         $order = $this->getOrder();
 
         if (!$this->isAllowedPaymentStatus($status)) {
-            throw new \InvalidArgumentException('Status: "'.$status.'" is not a valid order status');
+            throw new \InvalidArgumentException('Status: "'.$status.'" is not a valid order payment status');
         }
 
         if (!$this->isValidPaymentStatusChange($order->getPaymentStatus(), $status)) {
-            throw new \InvalidArgumentException('Order can not go from status: "'.$order->getPaymentStatus().'" to: "'.$status.'" is not a valid order status');
+            throw new \InvalidArgumentException('Order can not go from status: "'.$order->getPaymentStatus().'" to: "'.$status.'" is not a valid order payment status');
         }
 
         $oldStatus = $order->getPaymentStatus();
@@ -574,9 +596,9 @@ class OrderService extends ContainerAware
         $flowLine = array(
             self::$paymentStatusNew => 0,
             self::$paymentStatusWait => 1,
-            self::$paymentStatusComplete => 2,
-            self::$paymentStatusCanceled => 2,
-            self::$paymentStatusError => 2,
+            self::$paymentStatusComplete => 1,
+            self::$paymentStatusCanceled => 1,
+            self::$paymentStatusError => 1,
         );
 
         if ($flowLine[$from] <= $flowLine[$to]) {
