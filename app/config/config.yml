@@ -119,6 +119,11 @@ doctrine:
                 class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
                 enabled: true
 
+        dql:
+            numeric_functions:
+                asin: DoctrineExtensions\Query\Mysql\Asin
+
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: %mailer_transport%

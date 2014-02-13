@@ -322,6 +322,14 @@
                 <source>admin.point.coords</source>
                 <target>Koordinatės</target>
             </trans-unit>
+            <trans-unit id="admin.point.lat">
+                <source>admin.point.lat</source>
+                <target>Lat.</target>
+            </trans-unit>
+            <trans-unit id="admin.point.lon">
+                <source>admin.point.lon</source>
+                <target>Long.</target>
+            </trans-unit>
 
             <!-- Place reviews -->
             <trans-unit id="place-reviews-list">

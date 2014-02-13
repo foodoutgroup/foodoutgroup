@@ -563,4 +563,27 @@ class Dish implements Translatable
     {
         return $this->description;
     }
+
+    /**
+     * Add categories
+     *
+     * @param \Food\DishesBundle\Entity\FoodCategory $categories
+     * @return Dish
+     */
+    public function addCategory(\Food\DishesBundle\Entity\FoodCategory $categories)
+    {
+        $this->categories[] = $categories;
+    
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \Food\DishesBundle\Entity\FoodCategory $categories
+     */
+    public function removeCategory(\Food\DishesBundle\Entity\FoodCategory $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
 }

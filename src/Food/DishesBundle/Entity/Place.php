@@ -619,4 +619,50 @@ class Place extends Uploadable
     {
         return $this->dishes;
     }
+
+    /**
+     * Add dishes
+     *
+     * @param \Food\DishesBundle\Entity\Dish $dishes
+     * @return Place
+     */
+    public function addDish(\Food\DishesBundle\Entity\Dish $dishes)
+    {
+        $this->dishes[] = $dishes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove dishes
+     *
+     * @param \Food\DishesBundle\Entity\Dish $dishes
+     */
+    public function removeDish(\Food\DishesBundle\Entity\Dish $dishes)
+    {
+        $this->dishes->removeElement($dishes);
+    }
+
+    /**
+     * Add categories
+     *
+     * @param \Food\DishesBundle\Entity\FoodCategory $categories
+     * @return Place
+     */
+    public function addCategory(\Food\DishesBundle\Entity\FoodCategory $categories)
+    {
+        $this->categories[] = $categories;
+    
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \Food\DishesBundle\Entity\FoodCategory $categories
+     */
+    public function removeCategory(\Food\DishesBundle\Entity\FoodCategory $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
 }

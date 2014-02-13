@@ -226,4 +226,14 @@ class OrderLog
     {
         return $this->user;
     }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }
