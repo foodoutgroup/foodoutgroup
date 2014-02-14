@@ -48,6 +48,14 @@
                                 <div class="menu-lefter">
                                     <h4>kategorijos:</h4>
                                     <ul class="menu">
+                                        {#
+                                        {% for category in place.categories %}
+                    <li class="active"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(category.id, 'food_category') }) }}">{{ category.name }}</a></li>
+                {% endfor %}
+                #}
+                                        {% for category in place.categories %}
+                                            <li><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(category.id, 'food_category') }) }}">{{ category.name }}<span>8?</span></a></li>
+                                        {% endfor %}
                                         <li class="active"><a href="#">Picos<span>16</span></a></li>
                                         <li><a href="#">Karšti patiekalai<span>8</span></a></li>
                                         <li><a href="#">Salotos<span>19</span></a></li>
