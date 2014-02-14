@@ -33,6 +33,7 @@ class PlaceAdmin extends FoodAdmin
 
         $formMapper
             ->add('name', 'text', array('label' => 'admin.place.name'))
+            ->add('slogan', 'text', array('label' => 'admin.place.slogan', 'required' => false,))
             ->add('kitchens', null, array(
                 'query_builder' => $kitchenQuery,
                 'multiple' => true,

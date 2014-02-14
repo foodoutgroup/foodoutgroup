@@ -1600,12 +1600,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "6243ed9ee8b798284fbd3b0c938ff2aefec1a573"
+                "reference": "3578e37098b9d3d642beeabdafe6946b2427bb0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/6243ed9ee8b798284fbd3b0c938ff2aefec1a573",
-                "reference": "6243ed9ee8b798284fbd3b0c938ff2aefec1a573",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/3578e37098b9d3d642beeabdafe6946b2427bb0d",
+                "reference": "3578e37098b9d3d642beeabdafe6946b2427bb0d",
                 "shasum": ""
             },
             "require": {
@@ -1672,7 +1672,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2014-02-13 10:58:08"
+            "time": "2014-02-13 17:59:13"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -1868,16 +1868,15 @@
         {
             "name": "sonata-project/core-bundle",
             "version": "dev-master",
-            "target-dir": "Sonata/CoreBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "2391040a4d0f47cce1be2add4eb8089ad346f8ac"
+                "reference": "e67c867922802dcdca02f44d70896d15297cce7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/2391040a4d0f47cce1be2add4eb8089ad346f8ac",
-                "reference": "2391040a4d0f47cce1be2add4eb8089ad346f8ac",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/e67c867922802dcdca02f44d70896d15297cce7a",
+                "reference": "e67c867922802dcdca02f44d70896d15297cce7a",
                 "shasum": ""
             },
             "require": {
@@ -1899,8 +1898,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Sonata\\CoreBundle": ""
+                "psr-4": {
+                    "Sonata\\CoreBundle\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1923,7 +1922,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-02-10 14:20:29"
+            "time": "2014-02-13 18:46:55"
         },
         {
             "name": "sonata-project/doctrine-extensions",

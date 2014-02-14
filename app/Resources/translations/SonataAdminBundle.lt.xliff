@@ -252,6 +252,10 @@
                 <source>admin.place.name</source>
                 <target>Vietos pavadinimas</target>
             </trans-unit>
+            <trans-unit id="admin.place.slogan">
+                <source>admin.place.slogan</source>
+                <target>Šūkis</target>
+            </trans-unit>
             <trans-unit id="admin.place.kitchens">
                 <source>admin.place.kitchens</source>
                 <target>Virtuvės</target>

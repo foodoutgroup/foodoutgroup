@@ -24,263 +24,265 @@
 
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
+{% block title %}{{ place.name }} - {{ page_title }}{% endblock %}
+
 {% block body %}
     <div style="background-image: url(/bundles/foodapp/images/inner-bg.jpg);" class="site-center image-top">
-    <div class="site-block">
-    <div class="page-path clearfix"><a href="#">Pradžia</a><a href="#">Resoranai arti Žirmūnų</a><a href="#">{{ place.name }}</a></div>
-    <div class="page-title">
-        <h1 class="clearfix"><span>Čili pica - Skaniausios Itališkos Picos</span>
-            <div data-stars="5" class="restoran-rating fl"></div>
-        </h1>
-    </div>
-    <div class="clearfix">
-    <div class="content-lefter-big">
-    <div id="detailed-restaurant" class="detailed-resturant">
-    <ul>
-        <li><a href="#detailed-restaurant-menu">Meniu</a></li>
-        <li><a href="#detailed-restaurant-review">Atsiliepimai</a></li>
-        <li class="last"><a href="#detailed-restaurant-info">Infoarmacija</a></li>
-    </ul>
-    <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
-        <div class="clearfix">
-            <div class="menu-lefter">
-                <h4>kategorijos:</h4>
-                <ul class="menu">
-                    <li class="active"><a href="#">Picos<span>16</span></a></li>
-                    <li><a href="#">Karšti patiekalai<span>8</span></a></li>
-                    <li><a href="#">Salotos<span>19</span></a></li>
-                    <li><a href="#">Užkandžiai<span>6</span></a></li>
-                    <li><a href="#">Sriubos<span>3</span></a></li>
-                    <li><a href="#">Buritas<span>21</span></a></li>
-                    <li><a href="#">Desertai<span>53</span></a></li>
-                    <li><a href="#">Gėrimai<span>21</span></a></li>
-                    <li><a href="#">Alkoholis<span>5</span></a></li>
-                </ul>
+        <div class="site-block">
+            <div class="page-path clearfix"><a href="#">Pradžia</a><a href="#">Resoranai arti Žirmūnų</a><a href="#">{{ place.name }}</a></div>
+            <div class="page-title">
+                <h1 class="clearfix"><span>{{ place.name }}{% if place.slogan is not empty %} - {{ place.slogan }}{% endif %}</span>
+                    <div data-stars="5" class="restoran-rating fl"></div>
+                </h1>
             </div>
-            <div class="menu-righter">
-                <div class="menu-title clearfix">
-                    <h2 class="fl">Picos</h2>
-                    <div class="view-type clearfix"><a href="#" class="ico-thumbs active"></a><a href="#" class="ico-list"></a></div>
+                <div class="clearfix">
+                    <div class="content-lefter-big">
+                        <div id="detailed-restaurant" class="detailed-resturant">
+                        <ul>
+                            <li><a href="#detailed-restaurant-menu">Meniu</a></li>
+                            <li><a href="#detailed-restaurant-review">Atsiliepimai</a></li>
+                            <li class="last"><a href="#detailed-restaurant-info">Infoarmacija</a></li>
+                        </ul>
+                        <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
+                            <div class="clearfix">
+                                <div class="menu-lefter">
+                                    <h4>kategorijos:</h4>
+                                    <ul class="menu">
+                                        <li class="active"><a href="#">Picos<span>16</span></a></li>
+                                        <li><a href="#">Karšti patiekalai<span>8</span></a></li>
+                                        <li><a href="#">Salotos<span>19</span></a></li>
+                                        <li><a href="#">Užkandžiai<span>6</span></a></li>
+                                        <li><a href="#">Sriubos<span>3</span></a></li>
+                                        <li><a href="#">Buritas<span>21</span></a></li>
+                                        <li><a href="#">Desertai<span>53</span></a></li>
+                                        <li><a href="#">Gėrimai<span>21</span></a></li>
+                                        <li><a href="#">Alkoholis<span>5</span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="menu-righter">
+                                    <div class="menu-title clearfix">
+                                        <h2 class="fl">Picos</h2>
+                                        <div class="view-type clearfix"><a href="#" class="ico-thumbs active"></a><a href="#" class="ico-list"></a></div>
+                                    </div>
+                                    <div class="clearfix restaurant-menu">
+                                        <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-1.png">
+                                            <h3 class="name">1. San Remo pica</h3>
+                                            <p class="desc">Šoninė, sūris, aitrusis "Čili picos Leco" padažas, pomidorų padažas</p>
+                                            <div class="menu-item-bottom clearfix"><span class="price">19,48 Lt - 25,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
+                                        </div>
+                                        <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-2.png">
+                                            <h3 class="name">2. Balatono pica</h3>
+                                            <p class="desc">Krevetės, pomidorai, žaliosios alyvuogės, mocarela , melsvasis sūris, pomidorų padažas, aliejaus ir... </p>
+                                            <div class="menu-item-bottom clearfix"><span class="price">15,00 Lt - 30,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
+                                        </div>
+                                        <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-3.png">
+                                            <h3 class="name">3. Tango pica</h3>
+                                            <p class="desc">Jautiena, šoninė, kons. paprikos, sūris, "Chipotle" padažas, aliejaus ir česnakų padažas, raudonėliai</p>
+                                            <div class="menu-item-bottom clearfix"><span class="price">18,98 Lt - 32,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
+                                        </div>
+                                        <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-4.png">
+                                            <h3 class="name">4. Akapulko pica</h3>
+                                            <p class="desc">Šoninė, sūris, aitrusis "Čili picos Leco" padažas, pomidorų padažas</p>
+                                            <div class="menu-item-bottom clearfix"><span class="price">15,00 Lt - 30,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
+                                        </div>
+                                        <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-5.png">
+                                            <h3 class="name">5. San Remo pica</h3>
+                                            <p class="desc">Šoninė, sūris, aitrusis "Čili picos Leco" padažas, pomidorų padažas</p>
+                                            <div class="menu-item-bottom clearfix"><span class="price">19,48 Lt - 25,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
+                                        </div>
+                                        <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-6.png">
+                                            <h3 class="name">6. Balatono pica</h3>
+                                            <p class="desc">Krevetės, pomidorai, žaliosios alyvuogės, mocarela , melsvasis sūris, pomidorų padažas, aliejaus ir... </p>
+                                            <div class="menu-item-bottom clearfix"><span class="price">15,00 Lt - 30,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="detailed-restaurant-review" class="detailed-restaurant-review">
+                            <div class="review-title clearfix">
+                                <h3>36 Atsiliepimai</h3><a href="#">Pridėk atsiliepimą</a>
+                            </div>
+                            <div class="review-list">
+                                <div class="review-item clearfix">
+                                    <div class="review-person"><img src="/bundles/foodapp/images/person-1.png">
+                                        <p class="name">Jaroslavas</p>
+                                        <p class="location">Kaunas</p>
+                                    </div>
+                                    <div class="review-baloon">
+                                        <div class="nip"></div>
+                                        <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. </p>
+                                        <div class="clearfix">
+                                            <div data-stars="5" class="restoran-rating fl"></div>
+                                            <div class="date fr">2013 gruodžio 28</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="review-item clearfix">
+                                    <div class="review-person"><img src="/bundles/foodapp/images/person-2.png">
+                                        <p class="name">Inga</p>
+                                        <p class="location">Kaunas</p>
+                                    </div>
+                                    <div class="review-baloon">
+                                        <div class="nip"></div>
+                                        <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles  </p>
+                                        <div class="clearfix">
+                                            <div data-stars="3" class="restoran-rating fl"></div>
+                                            <div class="date fr">2013 gruodžio 28</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="review-item clearfix">
+                                    <div class="review-person"><img src="/bundles/foodapp/images/person.png">
+                                        <p class="name">Rimas</p>
+                                        <p class="location">Kaunas</p>
+                                    </div>
+                                    <div class="review-baloon">
+                                        <div class="nip"></div>
+                                        <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. </p>
+                                        <div class="clearfix">
+                                            <div data-stars="3" class="restoran-rating fl"></div>
+                                            <div class="date fr">2013 gruodžio 28</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="review-item clearfix">
+                                    <div class="review-person"><img src="/bundles/foodapp/images/person-3.png">
+                                        <p class="name">Aleksas</p>
+                                        <p class="location">Kaunas</p>
+                                    </div>
+                                    <div class="review-baloon">
+                                        <div class="nip"></div>
+                                        <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. </p>
+                                        <div class="clearfix">
+                                            <div data-stars="3" class="restoran-rating fl"></div>
+                                            <div class="date fr">2013 gruodžio 28</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="review-item clearfix">
+                                    <div class="review-person"><img src="/bundles/foodapp/images/person-1.png">
+                                        <p class="name">Jaroslavas</p>
+                                        <p class="location">Kaunas</p>
+                                    </div>
+                                    <div class="review-baloon">
+                                        <div class="nip"></div>
+                                        <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. </p>
+                                        <div class="clearfix">
+                                            <div data-stars="5" class="restoran-rating fl"></div>
+                                            <div class="date fr">2013 gruodžio 28</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="review-item clearfix">
+                                    <div class="review-person"><img src="/bundles/foodapp/images/person-2.png">
+                                        <p class="name">Inga</p>
+                                        <p class="location">Kaunas</p>
+                                    </div>
+                                    <div class="review-baloon">
+                                        <div class="nip"></div>
+                                        <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles  </p>
+                                        <div class="clearfix">
+                                            <div data-stars="3" class="restoran-rating fl"></div>
+                                            <div class="date fr">2013 gruodžio 28</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="review-item clearfix">
+                                    <div class="review-person"><img src="/bundles/foodapp/images/person.png">
+                                        <p class="name">Rimas</p>
+                                        <p class="location">Kaunas</p>
+                                    </div>
+                                    <div class="review-baloon">
+                                        <div class="nip"></div>
+                                        <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. </p>
+                                        <div class="clearfix">
+                                            <div data-stars="3" class="restoran-rating fl"></div>
+                                            <div class="date fr">2013 gruodžio 28</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="paginator clearfix"><a href="#" class="prev"></a><a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="next"></a></div>
+                        </div>
+                        <div id="detailed-restaurant-info" class="detailed-restaurant-info">
+                            <h3>Apie restoraną</h3>
+                            <div class="clearfix">
+                                <div class="restaurant-info-lefter">
+                                    <ul class="menu">
+                                        <li class="ico-kitchen"><strong>Virtuvė:</strong>Italų, Salotos</li>
+                                        <li class="ico-time"><strong>Pristatymo laikas:</strong>40 min.</li>
+                                        <li class="ico-delivery"><strong>Pristatymo mokestis:</strong>5 Lt</li>
+                                        <li class="ico-cart"><strong>Minimalus krepšelis:</strong>25 Lt</li>
+                                        <li class="ico-payments"><strong>Atsiskaitymo būdai:</strong>Grynais, kortele</li>
+                                    </ul>
+                                </div>
+                                <div class="restaurant-info-righter simple-content">
+                                    <p>„Čili“ picerijos – tai daugiau nei 40 rūšių picų, gausybė kitų skanėstų: karštųjų patiekalų, užkandžių, desertų, gėrimų. „Čili Pica“ – skanus maistas, jauki aplinka ir malonus aptarnavimas. Išmanių virtuvės meistrų su meile pagaminti patiekalai pavers apsilankymą picerijoje mažyte <br> švente.</p>
+                                    <select class="custom-select">
+                                        <option>Gabijos g. 30 (PC MAXIMA)</option>
+                                        <option>Gabijos g. 30 (PC MAXIMA)</option>
+                                    </select>
+                                    <div class="location-work-hours clearfix">
+                                        <div class="lefter"><img src="/bundles/foodapp/images/ex-map.png"></div>
+                                        <div class="righter">
+                                            <table>
+                                                <tr>
+                                                    <td>Monday</td>
+                                                    <td class="tar"><span>10:00 - 24:00</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Tuesday</td>
+                                                    <td class="tar"> <span>10:00 - 24:00</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Wednesday</td>
+                                                    <td class="tar"> <span>10:00 - 24:00</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Thursday</td>
+                                                    <td class="tar"> <span>10:00 - 24:00</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Friday</td>
+                                                    <td class="tar"> <span>10:00 - 24:00</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Saturday</td>
+                                                    <td class="tar"> <span>10:00 - 24:00</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Sunday</td>
+                                                    <td class="tar"> <span>10:00 - 24:00</span></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="clearfix restaurant-menu">
-                    <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-1.png">
-                        <h3 class="name">1. San Remo pica</h3>
-                        <p class="desc">Šoninė, sūris, aitrusis "Čili picos Leco" padažas, pomidorų padažas</p>
-                        <div class="menu-item-bottom clearfix"><span class="price">19,48 Lt - 25,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
+                <div class="content-righter-small">
+                    {{ render(controller('FoodCartBundle:Default:sideBlock')) }}
+                </div>
+            </div>
+            <div class="clearfix bottom-blocks bottom-block-lower">
+                <div class="app-block clearfix"><img src="/bundles/foodapp/images/app-view.png">
+                    <div class="app-block-inner">
+                        <h3>Skanu.lt <br/>tavo kišenėje!</h3>
+                        <div><a href="#"><img src="/bundles/foodapp/images/app-store.png"></a><a href="#"><img src="/bundles/foodapp/images/g-store.png"></a></div>
                     </div>
-                    <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-2.png">
-                        <h3 class="name">2. Balatono pica</h3>
-                        <p class="desc">Krevetės, pomidorai, žaliosios alyvuogės, mocarela , melsvasis sūris, pomidorų padažas, aliejaus ir... </p>
-                        <div class="menu-item-bottom clearfix"><span class="price">15,00 Lt - 30,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
-                    </div>
-                    <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-3.png">
-                        <h3 class="name">3. Tango pica</h3>
-                        <p class="desc">Jautiena, šoninė, kons. paprikos, sūris, "Chipotle" padažas, aliejaus ir česnakų padažas, raudonėliai</p>
-                        <div class="menu-item-bottom clearfix"><span class="price">18,98 Lt - 32,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
-                    </div>
-                    <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-4.png">
-                        <h3 class="name">4. Akapulko pica</h3>
-                        <p class="desc">Šoninė, sūris, aitrusis "Čili picos Leco" padažas, pomidorų padažas</p>
-                        <div class="menu-item-bottom clearfix"><span class="price">15,00 Lt - 30,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
-                    </div>
-                    <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-5.png">
-                        <h3 class="name">5. San Remo pica</h3>
-                        <p class="desc">Šoninė, sūris, aitrusis "Čili picos Leco" padažas, pomidorų padažas</p>
-                        <div class="menu-item-bottom clearfix"><span class="price">19,48 Lt - 25,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
-                    </div>
-                    <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-6.png">
-                        <h3 class="name">6. Balatono pica</h3>
-                        <p class="desc">Krevetės, pomidorai, žaliosios alyvuogės, mocarela , melsvasis sūris, pomidorų padažas, aliejaus ir... </p>
-                        <div class="menu-item-bottom clearfix"><span class="price">15,00 Lt - 30,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
-                    </div>
+                </div>
+                <div class="newsletter-block">
+                    <h4>Naujienlaiškis</h4>
+                    <form class="newsletter-form">
+                        <input type="text" placeholder="Tavo el. paštas">
+                        <input type="submit" value="Prenumeruok">
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="detailed-restaurant-review" class="detailed-restaurant-review">
-        <div class="review-title clearfix">
-            <h3>36 Atsiliepimai</h3><a href="#">Pridėk atsiliepimą</a>
-        </div>
-        <div class="review-list">
-            <div class="review-item clearfix">
-                <div class="review-person"><img src="/bundles/foodapp/images/person-1.png">
-                    <p class="name">Jaroslavas</p>
-                    <p class="location">Kaunas</p>
-                </div>
-                <div class="review-baloon">
-                    <div class="nip"></div>
-                    <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. </p>
-                    <div class="clearfix">
-                        <div data-stars="5" class="restoran-rating fl"></div>
-                        <div class="date fr">2013 gruodžio 28</div>
-                    </div>
-                </div>
-            </div>
-            <div class="review-item clearfix">
-                <div class="review-person"><img src="/bundles/foodapp/images/person-2.png">
-                    <p class="name">Inga</p>
-                    <p class="location">Kaunas</p>
-                </div>
-                <div class="review-baloon">
-                    <div class="nip"></div>
-                    <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles  </p>
-                    <div class="clearfix">
-                        <div data-stars="3" class="restoran-rating fl"></div>
-                        <div class="date fr">2013 gruodžio 28</div>
-                    </div>
-                </div>
-            </div>
-            <div class="review-item clearfix">
-                <div class="review-person"><img src="/bundles/foodapp/images/person.png">
-                    <p class="name">Rimas</p>
-                    <p class="location">Kaunas</p>
-                </div>
-                <div class="review-baloon">
-                    <div class="nip"></div>
-                    <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. </p>
-                    <div class="clearfix">
-                        <div data-stars="3" class="restoran-rating fl"></div>
-                        <div class="date fr">2013 gruodžio 28</div>
-                    </div>
-                </div>
-            </div>
-            <div class="review-item clearfix">
-                <div class="review-person"><img src="/bundles/foodapp/images/person-3.png">
-                    <p class="name">Aleksas</p>
-                    <p class="location">Kaunas</p>
-                </div>
-                <div class="review-baloon">
-                    <div class="nip"></div>
-                    <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. </p>
-                    <div class="clearfix">
-                        <div data-stars="3" class="restoran-rating fl"></div>
-                        <div class="date fr">2013 gruodžio 28</div>
-                    </div>
-                </div>
-            </div>
-            <div class="review-item clearfix">
-                <div class="review-person"><img src="/bundles/foodapp/images/person-1.png">
-                    <p class="name">Jaroslavas</p>
-                    <p class="location">Kaunas</p>
-                </div>
-                <div class="review-baloon">
-                    <div class="nip"></div>
-                    <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. </p>
-                    <div class="clearfix">
-                        <div data-stars="5" class="restoran-rating fl"></div>
-                        <div class="date fr">2013 gruodžio 28</div>
-                    </div>
-                </div>
-            </div>
-            <div class="review-item clearfix">
-                <div class="review-person"><img src="/bundles/foodapp/images/person-2.png">
-                    <p class="name">Inga</p>
-                    <p class="location">Kaunas</p>
-                </div>
-                <div class="review-baloon">
-                    <div class="nip"></div>
-                    <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles  </p>
-                    <div class="clearfix">
-                        <div data-stars="3" class="restoran-rating fl"></div>
-                        <div class="date fr">2013 gruodžio 28</div>
-                    </div>
-                </div>
-            </div>
-            <div class="review-item clearfix">
-                <div class="review-person"><img src="/bundles/foodapp/images/person.png">
-                    <p class="name">Rimas</p>
-                    <p class="location">Kaunas</p>
-                </div>
-                <div class="review-baloon">
-                    <div class="nip"></div>
-                    <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. </p>
-                    <div class="clearfix">
-                        <div data-stars="3" class="restoran-rating fl"></div>
-                        <div class="date fr">2013 gruodžio 28</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="paginator clearfix"><a href="#" class="prev"></a><a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="next"></a></div>
-    </div>
-    <div id="detailed-restaurant-info" class="detailed-restaurant-info">
-        <h3>Apie restoraną</h3>
-        <div class="clearfix">
-            <div class="restaurant-info-lefter">
-                <ul class="menu">
-                    <li class="ico-kitchen"><strong>Virtuvė:</strong>Italų, Salotos</li>
-                    <li class="ico-time"><strong>Pristatymo laikas:</strong>40 min.</li>
-                    <li class="ico-delivery"><strong>Pristatymo mokestis:</strong>5 Lt</li>
-                    <li class="ico-cart"><strong>Minimalus krepšelis:</strong>25 Lt</li>
-                    <li class="ico-payments"><strong>Atsiskaitymo būdai:</strong>Grynais, kortele</li>
-                </ul>
-            </div>
-            <div class="restaurant-info-righter simple-content">
-                <p>„Čili“ picerijos – tai daugiau nei 40 rūšių picų, gausybė kitų skanėstų: karštųjų patiekalų, užkandžių, desertų, gėrimų. „Čili Pica“ – skanus maistas, jauki aplinka ir malonus aptarnavimas. Išmanių virtuvės meistrų su meile pagaminti patiekalai pavers apsilankymą picerijoje mažyte <br> švente.</p>
-                <select class="custom-select">
-                    <option>Gabijos g. 30 (PC MAXIMA)</option>
-                    <option>Gabijos g. 30 (PC MAXIMA)</option>
-                </select>
-                <div class="location-work-hours clearfix">
-                    <div class="lefter"><img src="/bundles/foodapp/images/ex-map.png"></div>
-                    <div class="righter">
-                        <table>
-                            <tr>
-                                <td>Monday</td>
-                                <td class="tar"><span>10:00 - 24:00</span></td>
-                            </tr>
-                            <tr>
-                                <td>Tuesday</td>
-                                <td class="tar"> <span>10:00 - 24:00</span></td>
-                            </tr>
-                            <tr>
-                                <td>Wednesday</td>
-                                <td class="tar"> <span>10:00 - 24:00</span></td>
-                            </tr>
-                            <tr>
-                                <td>Thursday</td>
-                                <td class="tar"> <span>10:00 - 24:00</span></td>
-                            </tr>
-                            <tr>
-                                <td>Friday</td>
-                                <td class="tar"> <span>10:00 - 24:00</span></td>
-                            </tr>
-                            <tr>
-                                <td>Saturday</td>
-                                <td class="tar"> <span>10:00 - 24:00</span></td>
-                            </tr>
-                            <tr>
-                                <td>Sunday</td>
-                                <td class="tar"> <span>10:00 - 24:00</span></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-    </div>
-    <div class="content-righter-small">
-        {{ render(controller('FoodCartBundle:Default:sideBlock')) }}
-    </div>
-    </div>
-    <div class="clearfix bottom-blocks bottom-block-lower">
-        <div class="app-block clearfix"><img src="/bundles/foodapp/images/app-view.png">
-            <div class="app-block-inner">
-                <h3>Skanu.lt <br/>tavo kišenėje!</h3>
-                <div><a href="#"><img src="/bundles/foodapp/images/app-store.png"></a><a href="#"><img src="/bundles/foodapp/images/g-store.png"></a></div>
-            </div>
-        </div>
-        <div class="newsletter-block">
-            <h4>Naujienlaiškis</h4>
-            <form class="newsletter-form">
-                <input type="text" placeholder="Tavo el. paštas">
-                <input type="submit" value="Prenumeruok">
-            </form>
-        </div>
-    </div>
-    </div>
     </div>
 
 {% endblock %}

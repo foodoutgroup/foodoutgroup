@@ -36,6 +36,13 @@ class Place extends Uploadable
     /**
      * @var string
      *
+     * @ORM\Column(name="slogan", type="string", length=255, nullable=true)
+     */
+    private $slogan;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="logo", type="string", length=255)
      */
     private $logo = "";
@@ -664,5 +671,28 @@ class Place extends Uploadable
     public function removeCategory(\Food\DishesBundle\Entity\FoodCategory $categories)
     {
         $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Set slogan
+     *
+     * @param string $slogan
+     * @return Place
+     */
+    public function setSlogan($slogan)
+    {
+        $this->slogan = $slogan;
+    
+        return $this;
+    }
+
+    /**
+     * Get slogan
+     *
+     * @return string 
+     */
+    public function getSlogan()
+    {
+        return $this->slogan;
     }
 }
