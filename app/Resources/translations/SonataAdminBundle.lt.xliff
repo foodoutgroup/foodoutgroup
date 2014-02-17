@@ -483,6 +483,12 @@
                 <source>admin.order.support</source>
                 <target>Užsakymai</target>
             </trans-unit>
+
+            <trans-unit id="places.watch_menu">
+                <source>places.watch_menu</source>
+                <target>Žiūrėti meniu</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>
