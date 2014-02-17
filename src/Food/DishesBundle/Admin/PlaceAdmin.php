@@ -40,6 +40,7 @@ class PlaceAdmin extends FoodAdmin
                 'label' => 'admin.place.kitchens')
             )
             ->add('active', 'checkbox', array('label' => 'admin.active', 'required' => false,))
+            ->add('new', 'checkbox', array('label' => 'admin.is_new', 'required' => false,))
             ->add('file', 'file', $options)
             ->add('points', 'sonata_type_collection',
                 array(
@@ -87,6 +88,7 @@ class PlaceAdmin extends FoodAdmin
                 'label' => 'admin.place.logo'
             ))
             ->add('active', null, array('label' => 'admin.active', 'editable' => true))
+            ->add('new', null, array('label' => 'admin.is_new', 'editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),

@@ -11,6 +11,10 @@
                 <source>admin.active</source>
                 <target>Aktyvus</target>
             </trans-unit>
+            <trans-unit id="admin.is_new">
+                <source>admin.is_new</source>
+                <target>Naujas</target>
+            </trans-unit>
             <trans-unit id="admin.created_by">
                 <source>admin.created_by</source>
                 <target>Sukūrė</target>
@@ -453,6 +457,10 @@
                 <source>admin.point.active</source>
                 <target>Aktyvus</target>
             </trans-unit>
+            <trans-unit id="admin.point.fast">
+                <source>admin.point.fast</source>
+                <target>Greitas</target>
+            </trans-unit>
             <trans-unit id="admin.dish.unit.category.name">
                 <source>admin.dish.unit.category.name</source>
                 <target>Pavadinimas</target>
@@ -483,6 +491,12 @@
                 <source>admin.order.support</source>
                 <target>Užsakymai</target>
             </trans-unit>
+
+            <trans-unit id="places.watch_menu">
+                <source>places.watch_menu</source>
+                <target>Žiūrėti meniu</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

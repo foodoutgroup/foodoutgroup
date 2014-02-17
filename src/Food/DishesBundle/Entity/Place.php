@@ -59,6 +59,14 @@ class Place extends Uploadable
      */
     private $active;
 
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="new", type="boolean")
+     */
+    private $new;
+
     /**
      * @ORM\ManyToMany(targetEntity="Kitchen", inversedBy="places")
      * @ORM\JoinTable(name="place_kitchen",
@@ -758,5 +766,28 @@ class Place extends Uploadable
     public function getSlogan()
     {
         return $this->slogan;
+    }
+
+    /**
+     * Set new
+     *
+     * @param boolean $new
+     * @return Place
+     */
+    public function setNew($new)
+    {
+        $this->new = $new;
+    
+        return $this;
+    }
+
+    /**
+     * Get new
+     *
+     * @return boolean 
+     */
+    public function getNew()
+    {
+        return $this->new;
     }
 }

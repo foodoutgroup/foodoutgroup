@@ -20,10 +20,11 @@ class PlacePointFullAdmin extends FoodAdmin
             //->add('coords', 'text', array('label' => 'admin.point.coords'))
             ->add('lat', 'text', array('label' => 'admin.point.lat'))
             ->add('lon', 'text', array('label' => 'admin.point.lon'))
-            ->add('pickUp',null, array('label' => 'admin.point.pickup'))
-            ->add('delivery', null, array('label' => 'admin.point.delivery'))
+            ->add('pickUp',null, array('label' => 'admin.point.pickup', 'required' => false))
+            ->add('delivery', null, array('label' => 'admin.point.delivery', 'required' => false))
             ->add('delivery_time', 'text', array('label' => 'admin.point.devtime'))
-            ->add('active', null, array('label' => 'admin.point.active'))
+            ->add('active', null, array('label' => 'admin.point.active', 'required' => false))
+            ->add('fast', null, array('label' => 'admin.point.fast', 'required' => false))
             ->with('admin.point.work_time')
             ->add('wd1_start', 'text', array('label' => 'admin.point.wd1_start'))
             ->add('wd1_end', 'text', array('label' => 'admin.point.wd_end'))
@@ -55,7 +56,8 @@ class PlacePointFullAdmin extends FoodAdmin
         $listMapper
             ->addIdentifier('address', 'string', array('label' => 'admin.point.address'))
             ->addIdentifier('city', 'string', array('label' => 'admin.point.city'))
-            ->addIdentifier('coords', 'string', array('label' => 'admin.point.coords'))
+            ->addIdentifier('active', 'string', array('label' => 'admin.point.active'))
+            ->addIdentifier('fast', 'string', array('label' => 'admin.point.fast'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),

@@ -10,9 +10,13 @@
                     {#
                     <span class="tag">
                         <img src="/bundles/foodapp/images/tag-speed.png">
+                    #}
+                    {% if place.new %}
                     <span class="tag">
                         <img src="/bundles/foodapp/images/tag-new.png">
                     </span>
+                    {% endif %}
+                    {#
                     <span class="tag">
                         <img src="/bundles/foodapp/images/tag-not-working.png">
                         <div class="time-popup">VII 11:00 - 00:00
@@ -26,7 +30,7 @@
                         {{kitchen.name}}{% if loop.last == false %}, {% endif %}
                     {% endfor %}
                 </p>
-                <div class="details"><span class="delivery">{{ place.delivery_info }}:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">{{ place.min_cart_amount }}:<span>40 Lt </span></span></div>
+                <div class="details"><span class="delivery">{% trans %}place.delivery_info{% endtrans %}:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">{% trans %}place.min_cart_amount{% endtrans %}:<span>40 Lt </span></span></div>
             </div>
             <!-- <div class="discount-tag"></div> -->
             <div class="item-righter">
