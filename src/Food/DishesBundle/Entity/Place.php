@@ -88,6 +88,12 @@ class Place extends Uploadable
      */
     private $categories;
 
+
+    /**
+     * @ORM\OneToMany(targetEntity="PlaceReviews", mappedBy="place")
+     */
+    private $reviews;
+
     /**
      * @ORM\OneToMany(targetEntity="\Food\UserBundle\Entity\User", mappedBy="place")
      **/
@@ -137,6 +143,11 @@ class Place extends Uploadable
      * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;
+
+
+    public $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
+    public $boxSize = array('w' => 130, 'h' => 86);
+
 
     /**
      * Returns place name
@@ -671,6 +682,59 @@ class Place extends Uploadable
     public function removeCategory(\Food\DishesBundle\Entity\FoodCategory $categories)
     {
         $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Add reviews
+     *
+     * @param \Food\DishesBundle\Entity\PlaceReviews $reviews
+     * @return Place
+     */
+    public function addReview(\Food\DishesBundle\Entity\PlaceReviews $reviews)
+    {
+        $this->reviews[] = $reviews;
+    
+        return $this;
+    }
+
+    /**
+     * Remove reviews
+     *
+     * @param \Food\DishesBundle\Entity\PlaceReviews $reviews
+     */
+    public function removeReview(\Food\DishesBundle\Entity\PlaceReviews $reviews)
+    {
+        $this->reviews->removeElement($reviews);
+    }
+
+    /**
+     * Get reviews
+     *
+     * @return \Food\DishesBundle\Entity\PlaceReviews[]
+     */
+    public function getReviews()
+    {
+        return $this->reviews;
+    }
+
+
+    /**
+     * Get average rating :) meh....
+     * @return int
+     */
+    public function getRating()
+    {
+        $reviews = $this->getReviews();
+        $sums = 0;
+        $counts = 0;
+        foreach ($reviews as $rev) {
+            $sums += $rev->getRate();
+            $counts++;
+        }
+        if ($sums == 0) {
+            return 0;
+        }
+        return floor(($sums / $counts) * 10) / 10;
     }
 
     /**

@@ -18,13 +18,29 @@ class Uploadable {
      */
     protected $uploadDir = null;
 
+    public $multipleThumbs = false;
+
+
+    public function getImageSetted()
+    {
+        $getter = 'get'.ucfirst($this->getUploadableField());
+        return $this->$getter();
+    }
     /**
      * @return null|string
      */
     public function getWebPath()
     {
+        return null === $this->$getter() ? null : $this->getUploadDir().'/'.$this->getImageSetted();
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getWebPathThumb($type = "")
+    {
         $getter = 'get'.ucfirst($this->getUploadableField());
-        return null === $this->$getter() ? null : $this->getUploadDir().'/'.$this->$getter();
+        return null === $this->$getter() ? null : $this->getUploadDir().'/thumb_'.($type!="" ? $type."_" : "") .$this->getImageSetted();
     }
 
     /**
@@ -57,5 +73,21 @@ class Uploadable {
     public function getUploadableField()
     {
         return $this->uploadableField;
+    }
+
+    /**
+     * @param boolean $multipleThumbs
+     */
+    public function setMultipleThumbs($multipleThumbs)
+    {
+        $this->multipleThumbs = $multipleThumbs;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getMultipleThumbs()
+    {
+        return $this->multipleThumbs;
     }
 }
