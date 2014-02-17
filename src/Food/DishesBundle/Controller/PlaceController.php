@@ -8,9 +8,16 @@ class PlaceController extends Controller
 {
     public function indexAction($id, $slug, $categoryId, $categorySlug)
     {
+        $request = $this->getRequest();
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
         $categoryList = $this->get('food.places')->getActiveCategories($place);
         $categoryRepo = $this->getDoctrine()->getRepository('FoodDishesBundle:FoodCategory');
+
+        $listType = 'thumbs';
+        // TODO save i sessija, tolesniam atsiminimui :)
+        if ($request->getMethod() == 'POST') {
+            $listType = $request->get('view-type', 'thumbs');
+        }
 
         if (!empty($categoryId)) {
             $activeCategory = $categoryRepo->find($categoryId);
@@ -18,15 +25,13 @@ class PlaceController extends Controller
             $activeCategory = $categoryList[0];
         }
 
-        // Jei neparinktas atvaizdavimo tipas - TODO - pick default
-        // Pagauk perjungima vaizdo :) TODO
         return $this->render(
             'FoodDishesBundle:Place:index.html.twig',
             array(
                 'place' => $place,
                 'placeCategories' => $categoryList,
                 'selectedCategory' => $activeCategory,
-                'listType' => 'list',
+                'listType' => $listType,
             )
         );
     }
