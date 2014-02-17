@@ -28,7 +28,7 @@ class PlaceAdmin extends FoodAdmin
 
         $options = array('required' => false, 'label' => 'admin.place.logo');
         if (($pl = $this->getSubject()) && $pl->getLogo()) {
-            $options['help'] = '<img src="/' . $pl->getWebPath() . '" />';
+            $options['help'] = '<img src="/' . $pl->getWebPathThumb() . '" />';
         }
 
         $formMapper

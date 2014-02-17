@@ -5,6 +5,7 @@ namespace Food\DishesBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
+use Food\AppBundle\Entity\Uploadable;
 
 /**
  * Dish
@@ -14,7 +15,7 @@ use Gedmo\Translatable\Translatable;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\DishLocalized")
  */
-class Dish implements Translatable
+class Dish extends Uploadable implements Translatable
 {
     /**
      * @var integer
@@ -127,6 +128,26 @@ class Dish implements Translatable
      * @ORM\Column(name="recomended", type="boolean")
      */
     private $recomended = false;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="photo", type="string", length=255)
+     */
+    private $photo = "";
+
+
+    /**
+     * @var object
+     */
+    protected $file;
+
+    public $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
+    public $multipleThumbs = true;
+    public $boxSize = array(
+        'type1' => array('w' => 260, 'h' => 179),
+        'type2' => array('w' => 118, 'h' => 97)
+    );
 
     /**
      * @Gedmo\Locale
@@ -585,5 +606,57 @@ class Dish implements Translatable
     public function removeCategory(\Food\DishesBundle\Entity\FoodCategory $categories)
     {
         $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Set photo
+     *
+     * @param string $photo
+     * @return Dish
+     */
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+    
+        return $this;
+    }
+
+    /**
+     * Get photo
+     *
+     * @return string 
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    public function getUploadableField()
+    {
+        return 'photo';
+    }
+
+    public function getUploadDir()
+    {
+        if (empty($this->uploadDir)) {
+            $this->uploadDir = 'uploads/dishes';
+        }
+        return $this->uploadDir;
+    }
+
+    /**
+     * @param object $file
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * @return object
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 }

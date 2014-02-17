@@ -154,9 +154,17 @@
                 <source>admin.dish.name</source>
                 <target>Patiekalas</target>
             </trans-unit>
+            <trans-unit id="admin.dish.photo">
+                <source>admin.dish.photo</source>
+                <target>Foto</target>
+            </trans-unit>
             <trans-unit id="admin.dish.recomended">
                 <source>admin.dish.recomended</source>
                 <target>Rekomenduojamas</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.recomended_list">
+                <source>admin.dish.recomended_list</source>
+                <target>Rekom.</target>
             </trans-unit>
             <trans-unit id="admin.dishes.sizes">
                 <source>admin.dishes.sizes</source>

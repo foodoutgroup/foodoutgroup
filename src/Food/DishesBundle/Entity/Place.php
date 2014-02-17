@@ -144,6 +144,11 @@ class Place extends Uploadable
      */
     private $deletedBy;
 
+
+    public $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
+    public $boxSize = array('w' => 130, 'h' => 86);
+
+
     /**
      * Returns place name
      *

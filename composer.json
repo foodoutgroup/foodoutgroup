@@ -59,7 +59,8 @@
         "sonata-project/user-bundle": "dev-master as v2.2.0",
         "webtopay/libwebtopay": "1.6.*@dev",
         "webtopay/webtopay-bundle": "dev-master",
-        "shuber/curl": "dev-master"
+        "shuber/curl": "dev-master",
+        "imagine/Imagine": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
