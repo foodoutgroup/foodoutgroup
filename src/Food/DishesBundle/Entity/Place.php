@@ -36,6 +36,13 @@ class Place extends Uploadable
     /**
      * @var string
      *
+     * @ORM\Column(name="slogan", type="string", length=255, nullable=true)
+     */
+    private $slogan;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="logo", type="string", length=255)
      */
     private $logo = "";
@@ -723,5 +730,28 @@ class Place extends Uploadable
             return 0;
         }
         return floor(($sums / $counts) * 10) / 10;
+    }
+
+    /**
+     * Set slogan
+     *
+     * @param string $slogan
+     * @return Place
+     */
+    public function setSlogan($slogan)
+    {
+        $this->slogan = $slogan;
+    
+        return $this;
+    }
+
+    /**
+     * Get slogan
+     *
+     * @return string 
+     */
+    public function getSlogan()
+    {
+        return $this->slogan;
     }
 }
