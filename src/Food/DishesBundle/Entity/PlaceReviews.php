@@ -39,6 +39,12 @@ class PlaceReviews
     private $place;
 
     /**
+     * @var int
+     * @ORM\Column(name="rate", type="integer")
+     */
+    private $rate;
+
+    /**
      * @var \Food\UserBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
@@ -286,5 +292,28 @@ class PlaceReviews
     public function getDeletedBy()
     {
         return $this->deletedBy;
+    }
+
+    /**
+     * Set rate
+     *
+     * @param integer $rate
+     * @return PlaceReviews
+     */
+    public function setRate($rate)
+    {
+        $this->rate = $rate;
+    
+        return $this;
+    }
+
+    /**
+     * Get rate
+     *
+     * @return integer 
+     */
+    public function getRate()
+    {
+        return $this->rate;
     }
 }
