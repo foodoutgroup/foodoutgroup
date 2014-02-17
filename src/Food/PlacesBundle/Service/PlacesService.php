@@ -23,4 +23,32 @@ class PlacesService extends ContainerAware {
         }
         return $cities;
     }
+
+    /**
+     * @param int $categoryId
+     * @return \Food\DishesBundle\Entity\Place|false
+     */
+    public function getPlaceByCategory($categoryId)
+    {
+        $cateogory = $this->em()->getRepository('FoodDishesBundle:FoodCategory')->find($categoryId);
+
+        if (!$cateogory) {
+            return false;
+        } else {
+            return $cateogory->getPlace();
+        }
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Place $place
+     * @return array|\Food\DishesBundle\Entity\FoodCategory[]
+     */
+    public function getActiveCategories($place)
+    {
+        return $this->em()->getRepository('FoodDishesBundle:FoodCategory')
+            ->findBy(array(
+                'place' => $place->getId(),
+                'active' => 1,
+            ));
+    }
 }

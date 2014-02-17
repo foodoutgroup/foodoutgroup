@@ -1,27 +1,3 @@
-{# Restorano meniu atvaizdavimas 2 stulpeliais #}
-
-{# OLD struff  - please, remove me #}
-{# {% block body %}
-    <div class="col-xs-12 col-sm-10">
-        <div class="jumbotron">
-            <h1>{{ place.name }}</h1>
-                <ul class="list-inline">
-                    {% for category in place.categories %}
-                        <li class="active"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(category.id, 'food_category') }) }}">{{ category.name }}</a></li>
-                    {% endfor %}
-                </ul>
-        </div>
-        <div class="row">
-
-            Some internal stuff
-
-        </div><!--/row-->
-    </div><!--/span-->
-{% endblock %} #}
-
-
-
-
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
 {% block title %}{{ place.name }} - {{ page_title }}{% endblock %}
@@ -29,7 +5,7 @@
 {% block body %}
     <div style="background-image: url(/bundles/foodapp/images/inner-bg.jpg);" class="site-center image-top">
         <div class="site-block">
-            <div class="page-path clearfix"><a href="#">Pradžia</a><a href="#">Resoranai arti Žirmūnų</a><a href="#">{{ place.name }}</a></div>
+            <div class="page-path clearfix"><a href="#">Pradžia</a><a href="#">Restoranai arti Žirmūnų</a><a href="#">{{ place.name }}</a></div>
             <div class="page-title">
                 <h1 class="clearfix"><span>{{ place.name }}{% if place.slogan is not empty %} - {{ place.slogan }}{% endif %}</span>
                     <div data-stars="5" class="restoran-rating fl"></div>
@@ -41,69 +17,37 @@
                         <ul>
                             <li><a href="#detailed-restaurant-menu">Meniu</a></li>
                             <li><a href="#detailed-restaurant-review">Atsiliepimai</a></li>
-                            <li class="last"><a href="#detailed-restaurant-info">Infoarmacija</a></li>
+                            <li class="last"><a href="#detailed-restaurant-info">Informacija</a></li>
                         </ul>
                         <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
                             <div class="clearfix">
                                 <div class="menu-lefter">
                                     <h4>kategorijos:</h4>
                                     <ul class="menu">
-                                        {#
-                                        {% for category in place.categories %}
-                    <li class="active"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(category.id, 'food_category') }) }}">{{ category.name }}</a></li>
-                {% endfor %}
-                #}
-                                        {% for category in place.categories %}
-                                            <li><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(category.id, 'food_category') }) }}">{{ category.name }}<span>8?</span></a></li>
+                                        {% for category in placeCategories %}
+                                            <li{% if category.id == selectedCategory.id %} class="active"{% endif %}>
+                                                <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(category.id, 'food_category')}) }}">{{ category.name }}<span>{{ category.dishes.count }}</span></a>
+                                            </li>
                                         {% endfor %}
-                                        <li class="active"><a href="#">Picos<span>16</span></a></li>
-                                        <li><a href="#">Karšti patiekalai<span>8</span></a></li>
-                                        <li><a href="#">Salotos<span>19</span></a></li>
-                                        <li><a href="#">Užkandžiai<span>6</span></a></li>
-                                        <li><a href="#">Sriubos<span>3</span></a></li>
-                                        <li><a href="#">Buritas<span>21</span></a></li>
-                                        <li><a href="#">Desertai<span>53</span></a></li>
-                                        <li><a href="#">Gėrimai<span>21</span></a></li>
-                                        <li><a href="#">Alkoholis<span>5</span></a></li>
                                     </ul>
                                 </div>
                                 <div class="menu-righter">
                                     <div class="menu-title clearfix">
-                                        <h2 class="fl">Picos</h2>
-                                        <div class="view-type clearfix"><a href="#" class="ico-thumbs active"></a><a href="#" class="ico-list"></a></div>
-                                    </div>
-                                    <div class="clearfix restaurant-menu">
-                                        <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-1.png">
-                                            <h3 class="name">1. San Remo pica</h3>
-                                            <p class="desc">Šoninė, sūris, aitrusis "Čili picos Leco" padažas, pomidorų padažas</p>
-                                            <div class="menu-item-bottom clearfix"><span class="price">19,48 Lt - 25,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
-                                        </div>
-                                        <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-2.png">
-                                            <h3 class="name">2. Balatono pica</h3>
-                                            <p class="desc">Krevetės, pomidorai, žaliosios alyvuogės, mocarela , melsvasis sūris, pomidorų padažas, aliejaus ir... </p>
-                                            <div class="menu-item-bottom clearfix"><span class="price">15,00 Lt - 30,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
-                                        </div>
-                                        <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-3.png">
-                                            <h3 class="name">3. Tango pica</h3>
-                                            <p class="desc">Jautiena, šoninė, kons. paprikos, sūris, "Chipotle" padažas, aliejaus ir česnakų padažas, raudonėliai</p>
-                                            <div class="menu-item-bottom clearfix"><span class="price">18,98 Lt - 32,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
-                                        </div>
-                                        <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-4.png">
-                                            <h3 class="name">4. Akapulko pica</h3>
-                                            <p class="desc">Šoninė, sūris, aitrusis "Čili picos Leco" padažas, pomidorų padažas</p>
-                                            <div class="menu-item-bottom clearfix"><span class="price">15,00 Lt - 30,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
-                                        </div>
-                                        <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-5.png">
-                                            <h3 class="name">5. San Remo pica</h3>
-                                            <p class="desc">Šoninė, sūris, aitrusis "Čili picos Leco" padažas, pomidorų padažas</p>
-                                            <div class="menu-item-bottom clearfix"><span class="price">19,48 Lt - 25,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
-                                        </div>
-                                        <div class="restaurant-menu-item"><img src="/bundles/foodapp/images/mi-6.png">
-                                            <h3 class="name">6. Balatono pica</h3>
-                                            <p class="desc">Krevetės, pomidorai, žaliosios alyvuogės, mocarela , melsvasis sūris, pomidorų padažas, aliejaus ir... </p>
-                                            <div class="menu-item-bottom clearfix"><span class="price">15,00 Lt - 30,48 Lt</span><a href="#detailed-dish-popup" class="add-to-cart boxer"></a></div>
+                                        <h2 class="fl">{{ selectedCategory.name }}</h2>
+                                        {# TODO pazymek aktyvu #}
+                                        <div class="view-type clearfix">
+                                            {% if listType == 'table' %}
+                                            <a href="#" class="ico-thumbs"></a><a href="#" class="ico-list active"></a>
+                                            {% else %}
+                                            <a href="#" class="ico-thumbs active"></a><a href="#" class="ico-list"></a>
+                                            {% endif %}
                                         </div>
                                     </div>
+                                    {% if listType == 'table' %}
+                                        {{ render(controller('FoodDishesBundle:FoodCategory:dishTable', {'categoryId': selectedCategory})) }}
+                                    {% else %}
+                                        {{ render(controller('FoodDishesBundle:FoodCategory:dishList', {'categoryId': selectedCategory})) }}
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

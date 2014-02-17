@@ -59,11 +59,21 @@ class SlugController extends Controller
                 break;
 
             case Slug::TYPE_PLACE:
-                return $this->forward('FoodDishesBundle:Place:index', ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]);
+                return $this->forward(
+                    'FoodDishesBundle:Place:index',
+                    ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName(), 'categoryId' => '', 'categorySlug' => '']
+                );
                 break;
 
             case Slug::TYPE_FOOD_CATEGORY:
-                return $this->forward('FoodDishesBundle:FoodCategory:index', ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]);
+                $place = $this->get('food.places')->getPlaceByCategory($slugRow->getItemId());
+                $slugUtele = $this->get('food.dishes.utils.slug');
+                $placeSlug = $slugUtele->getSlugByItem($place->getId(), Slug::TYPE_PLACE);
+
+                return $this->forward(
+                    'FoodDishesBundle:Place:index',
+                    ['id' => $place->getId(), 'slug' => $placeSlug, 'categoryId' => $slugRow->getItemId(), 'categorySlug' => $slugRow->getName()]
+                );
                 break;
 
             default:
