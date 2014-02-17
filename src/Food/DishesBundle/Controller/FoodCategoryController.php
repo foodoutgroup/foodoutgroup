@@ -17,4 +17,24 @@ class FoodCategoryController extends Controller
             )
         );
     }
+
+    public function dishListAction($categoryId)
+    {
+        return $this->render(
+            'FoodDishesBundle:FoodCategory:dish_list.html.twig',
+            array(
+
+            )
+        );
+    }
+
+    public function dishTableAction($categoryId)
+    {
+        return $this->render(
+            'FoodDishesBundle:FoodCategory:dish_table.html.twig',
+            array(
+
+            )
+        );
+    }
 }

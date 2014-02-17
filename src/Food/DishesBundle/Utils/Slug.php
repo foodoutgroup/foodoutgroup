@@ -2,14 +2,12 @@
 
 namespace Food\DishesBundle\Utils;
 
-
 use Food\DishesBundle\Utils\Slug\FoodCategoryStrategy;
 use Food\DishesBundle\Utils\Slug\SlugGenerator;
 use Food\DishesBundle\Utils\Slug\TextStrategy;
 use Food\AppBundle\Entity;
 use Food\AppBundle\Entity\Slug as SlugEntity;
 use Food\AppBundle\Traits;
-
 
 
 class Slug
@@ -146,6 +144,9 @@ class Slug
         $context->generate($langId, $itemId, $itemText);
     }
 
+    /**
+     * TODO Not working - fatal injuries can be caused
+     */
     public function fixUppercaseSlugs()
     {
         $em = $this->em();
