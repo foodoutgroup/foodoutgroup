@@ -11,6 +11,10 @@
                 <source>admin.active</source>
                 <target>Aktyvus</target>
             </trans-unit>
+            <trans-unit id="admin.is_new">
+                <source>admin.is_new</source>
+                <target>Naujas</target>
+            </trans-unit>
             <trans-unit id="admin.created_by">
                 <source>admin.created_by</source>
                 <target>Sukūrė</target>
@@ -452,6 +456,10 @@
             <trans-unit id="admin.point.active">
                 <source>admin.point.active</source>
                 <target>Aktyvus</target>
+            </trans-unit>
+            <trans-unit id="admin.point.fast">
+                <source>admin.point.fast</source>
+                <target>Greitas</target>
             </trans-unit>
             <trans-unit id="admin.dish.unit.category.name">
                 <source>admin.dish.unit.category.name</source>

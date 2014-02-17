@@ -59,6 +59,12 @@ class PlacePoint
 
 
     /**
+     * @var bool
+     * @ORM\Column(name="fast", type="boolean")
+     */
+    private $fast = true;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="delivery_time", type="string", length=255)
@@ -933,5 +939,28 @@ class PlacePoint
     public function getLat()
     {
         return $this->lat;
+    }
+
+    /**
+     * Set fast
+     *
+     * @param boolean $fast
+     * @return PlacePoint
+     */
+    public function setFast($fast)
+    {
+        $this->fast = $fast;
+    
+        return $this;
+    }
+
+    /**
+     * Get fast
+     *
+     * @return boolean 
+     */
+    public function getFast()
+    {
+        return $this->fast;
     }
 }

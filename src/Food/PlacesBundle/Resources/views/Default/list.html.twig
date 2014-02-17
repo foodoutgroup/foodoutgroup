@@ -10,9 +10,13 @@
                     {#
                     <span class="tag">
                         <img src="/bundles/foodapp/images/tag-speed.png">
+                    #}
+                    {% if place.new %}
                     <span class="tag">
                         <img src="/bundles/foodapp/images/tag-new.png">
                     </span>
+                    {% endif %}
+                    {#
                     <span class="tag">
                         <img src="/bundles/foodapp/images/tag-not-working.png">
                         <div class="time-popup">VII 11:00 - 00:00
