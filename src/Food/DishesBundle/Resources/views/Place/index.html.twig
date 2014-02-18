@@ -47,9 +47,13 @@
                                         </div>
                                     </div>
                                     {% if listType == 'thumbs' %}
+                                        <div class="clearfix restaurant-menu">
                                         {{ render(controller('FoodDishesBundle:FoodCategory:dishTable', {'categoryId': selectedCategory.id})) }}
+                                        </div>
                                     {% else %}
+                                        <div class="clearfix restaurant-menu display-list">
                                         {{ render(controller('FoodDishesBundle:FoodCategory:dishList', {'categoryId': selectedCategory.id})) }}
+                                        </div>
                                     {% endif %}
                                 </div>
                             </div>

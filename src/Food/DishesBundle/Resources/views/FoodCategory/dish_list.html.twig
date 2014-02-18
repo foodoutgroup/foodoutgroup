@@ -1,20 +1,18 @@
-<div class="clearfix restaurant-menu display-list">
-    {% for dish in dishes %}
-        {% set smallestPrice = dish_service.smallestDishPrice(dish.id) %}
-        {% set largestPrice = dish_service.largestDishPrice(dish.id) %}
-        <div class="restaurant-menu-item"><img src="/{{ dish.getWebPathThumb('type2') }}">
-            <h3 class="name">{{ loop.index }}. {{ dish.name }}</h3>
-            <p class="desc">{{ dish.description }}</p>
-            <div class="menu-item-bottom clearfix">
-                <span class="price">
-                    {% if smallestPrice == largestPrice %}
-                        {{ smallestPrice }} {{ currency_display }}
-                    {% else %}
-                        {{ smallestPrice }} {{ currency_display }} - {{ largestPrice }} {{ currency_display }}
-                    {% endif %}
-                </span>
-                <a href="#detailed-dish-popup" class="add-to-cart boxer"></a>
-            </div>
+{% for dish in dishes %}
+    {% set smallestPrice = dish_service.smallestDishPrice(dish.id) %}
+    {% set largestPrice = dish_service.largestDishPrice(dish.id) %}
+    <div class="restaurant-menu-item"><img src="/{{ dish.getWebPathThumb('type2') }}">
+        <h3 class="name">{{ loop.index }}. {{ dish.name }}</h3>
+        <p class="desc">{{ dish.description }}</p>
+        <div class="menu-item-bottom clearfix">
+            <span class="price">
+                {% if smallestPrice == largestPrice %}
+                    {{ smallestPrice }} {{ currency_display }}
+                {% else %}
+                    {{ smallestPrice }} {{ currency_display }} - {{ largestPrice }} {{ currency_display }}
+                {% endif %}
+            </span>
+            <a href="#detailed-dish-popup" class="add-to-cart boxer"></a>
         </div>
-    {% endfor %}
-</div>
+    </div>
+{% endfor %}
