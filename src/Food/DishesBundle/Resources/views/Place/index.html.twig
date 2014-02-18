@@ -47,9 +47,9 @@
                                         </div>
                                     </div>
                                     {% if listType == 'thumbs' %}
-                                        {{ render(controller('FoodDishesBundle:FoodCategory:dishTable', {'categoryId': selectedCategory})) }}
+                                        {{ render(controller('FoodDishesBundle:FoodCategory:dishTable', {'categoryId': selectedCategory.id})) }}
                                     {% else %}
-                                        {{ render(controller('FoodDishesBundle:FoodCategory:dishList', {'categoryId': selectedCategory})) }}
+                                        {{ render(controller('FoodDishesBundle:FoodCategory:dishList', {'categoryId': selectedCategory.id})) }}
                                     {% endif %}
                                 </div>
                             </div>

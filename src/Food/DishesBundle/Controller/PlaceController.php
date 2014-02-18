@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class PlaceController extends Controller
 {
-    public function indexAction($id, $slug, $categoryId, $categorySlug)
+    public function indexAction($id, $slug, $categoryId)
     {
         $request = $this->getRequest();
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);

@@ -23,7 +23,7 @@ class FoodCategoryController extends Controller
         return $this->render(
             'FoodDishesBundle:FoodCategory:dish_list.html.twig',
             array(
-
+                'dishes' => $this->get('food.dishes')->getActiveDishesByCategory($categoryId),
             )
         );
     }
@@ -33,7 +33,7 @@ class FoodCategoryController extends Controller
         return $this->render(
             'FoodDishesBundle:FoodCategory:dish_table.html.twig',
             array(
-
+                'dishes' => $this->get('food.dishes')->getActiveDishesByCategory($categoryId),
             )
         );
     }

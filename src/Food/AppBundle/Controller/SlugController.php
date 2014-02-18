@@ -61,7 +61,7 @@ class SlugController extends Controller
             case Slug::TYPE_PLACE:
                 return $this->forward(
                     'FoodDishesBundle:Place:index',
-                    ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName(), 'categoryId' => '', 'categorySlug' => '']
+                    ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName(), 'categoryId' => '']
                 );
                 break;
 
@@ -72,7 +72,7 @@ class SlugController extends Controller
 
                 return $this->forward(
                     'FoodDishesBundle:Place:index',
-                    ['id' => $place->getId(), 'slug' => $placeSlug, 'categoryId' => $slugRow->getItemId(), 'categorySlug' => $slugRow->getName()]
+                    ['id' => $place->getId(), 'slug' => $placeSlug, 'categoryId' => $slugRow->getItemId()]
                 );
                 break;
 

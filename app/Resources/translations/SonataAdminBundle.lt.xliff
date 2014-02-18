@@ -170,6 +170,14 @@
                 <source>admin.dish.recomended_list</source>
                 <target>Rekom.</target>
             </trans-unit>
+            <trans-unit id="admin.dish.active">
+                <source>admin.dish.active</source>
+                <target>Aktyvus</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.active_list">
+                <source>admin.dish.active_list</source>
+                <target>Aktyv.</target>
+            </trans-unit>
             <trans-unit id="admin.dishes.sizes">
                 <source>admin.dishes.sizes</source>
                 <target>Dydžiai/porcijos</target>
