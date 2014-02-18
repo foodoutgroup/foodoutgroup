@@ -3,6 +3,9 @@
 {% block title %}{{ place.name }} - {{ page_title }}{% endblock %}
 
 {% block body %}
+    {% javascripts '@FoodAppBundle/Resources/public/js_main/place.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
     <div style="background-image: url(/bundles/foodapp/images/inner-bg.jpg);" class="site-center image-top">
         <div class="site-block">
             <div class="page-path clearfix"><a href="#">Pradžia</a><a href="#">Restoranai arti Žirmūnų</a><a href="#">{{ place.name }}</a></div>
@@ -36,17 +39,21 @@
                                         <h2 class="fl">{{ selectedCategory.name }}</h2>
                                         {# TODO pazymek aktyvu #}
                                         <div class="view-type clearfix">
-                                            {% if listType == 'table' %}
-                                            <a href="#" class="ico-thumbs"></a><a href="#" class="ico-list active"></a>
-                                            {% else %}
+                                            {% if listType == 'thumbs' %}
                                             <a href="#" class="ico-thumbs active"></a><a href="#" class="ico-list"></a>
+                                            {% else %}
+                                            <a href="#" class="ico-thumbs"></a><a href="#" class="ico-list active"></a>
                                             {% endif %}
                                         </div>
                                     </div>
-                                    {% if listType == 'table' %}
-                                        {{ render(controller('FoodDishesBundle:FoodCategory:dishTable', {'categoryId': selectedCategory})) }}
+                                    {% if listType == 'thumbs' %}
+                                        <div class="clearfix restaurant-menu">
+                                        {{ render(controller('FoodDishesBundle:FoodCategory:dishTable', {'categoryId': selectedCategory.id})) }}
+                                        </div>
                                     {% else %}
-                                        {{ render(controller('FoodDishesBundle:FoodCategory:dishList', {'categoryId': selectedCategory})) }}
+                                        <div class="clearfix restaurant-menu display-list">
+                                        {{ render(controller('FoodDishesBundle:FoodCategory:dishList', {'categoryId': selectedCategory.id})) }}
+                                        </div>
                                     {% endif %}
                                 </div>
                             </div>

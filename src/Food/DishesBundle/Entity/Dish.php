@@ -11,7 +11,7 @@ use Food\AppBundle\Entity\Uploadable;
  * Dish
  *
  * @ORM\Table(name="dish")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\DishRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\DishLocalized")
  */
@@ -135,6 +135,13 @@ class Dish extends Uploadable implements Translatable
      * @ORM\Column(name="photo", type="string", length=255)
      */
     private $photo = "";
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active = true;
 
 
     /**
@@ -658,5 +665,28 @@ class Dish extends Uploadable implements Translatable
     public function getFile()
     {
         return $this->file;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     * @return Dish
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }

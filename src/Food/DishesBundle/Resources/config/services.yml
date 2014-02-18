@@ -10,3 +10,8 @@ services:
         class: Food\DishesBundle\Form\Type\worktimeType
         tags:
             - { name: form.type, alias: worktime }
+
+    food.dishes:
+        class: Food\DishesBundle\Service\DishesService
+        calls:
+            - [container, [@service_container]]

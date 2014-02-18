@@ -99,6 +99,7 @@ class DishAdmin extends FoodAdmin
             )
             ->add('options', null, array('query_builder' => $optionsQuery,'expanded' => true, 'multiple' => true, 'required' => false))
             ->add('recomended', 'checkbox', array('label' => 'admin.dish.recomended', 'required' => false,))
+            ->add('active', 'checkbox', array('label' => 'admin.dish.active', 'required' => false,))
         ;
     }
 
@@ -158,6 +159,7 @@ class DishAdmin extends FoodAdmin
             ->add('options')
             ->add('sizes', 'string', array('template' => 'FoodDishesBundle:Default:list_admin_list_sizes.html.twig'))
             ->add('recomended', null, array('label' => 'admin.dish.recomended_list', 'editable' => true))
+            ->add('active', null, array('label' => 'admin.dish.active_list', 'editable' => true))
             ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
