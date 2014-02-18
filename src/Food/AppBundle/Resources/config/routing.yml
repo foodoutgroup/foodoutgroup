@@ -33,8 +33,8 @@ food_place:
     prefix:   /places
 
 food_places_filter:
-    pattern: /places/filter/{kitchens}
-    defaults: { _controller: FoodPlacesBundle:Default:list, kitchens: ~ }
+    pattern: /places/filter/
+    defaults: { _controller: FoodPlacesBundle:Default:list }
 
 
 static:
