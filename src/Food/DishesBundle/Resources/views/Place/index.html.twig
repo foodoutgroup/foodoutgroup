@@ -55,7 +55,7 @@
                         </div>
                         <div id="detailed-restaurant-review" class="detailed-restaurant-review">
                             <div class="review-title clearfix">
-                                <h3>36 Atsiliepimai</h3><a href="#">Pridėk atsiliepimą</a>
+                                <h3>{{ place.reviews.count }} {{ "place_reviews.reviews_count"|transchoice(place.reviews.count)|desc("{0} There is no apples|{1} There is one apple|]1,Inf] There are %count% apples") }}</h3><a href="#">Pridėk atsiliepimą</a>
                             </div>
                             <div class="review-list">
                                 <div class="review-item clearfix">
