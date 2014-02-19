@@ -5,6 +5,9 @@
 {% block body %}
     {% javascripts '@FoodAppBundle/Resources/public/js_main/place.js' %}
     <script src="{{ asset_url }}"></script>
+    <script type="application/javascript">
+        Place.listTypeSaveUrl = '{{ path('food_place_menu_layout') }}';
+    </script>
     {% endjavascripts %}
     <div style="background-image: url(/bundles/foodapp/images/inner-bg.jpg);" class="site-center image-top">
         <div class="site-block">
@@ -46,15 +49,7 @@
                                             {% endif %}
                                         </div>
                                     </div>
-                                    {% if listType == 'thumbs' %}
-                                        <div class="clearfix restaurant-menu">
-                                        {{ render(controller('FoodDishesBundle:FoodCategory:dishTable', {'categoryId': selectedCategory.id})) }}
-                                        </div>
-                                    {% else %}
-                                        <div class="clearfix restaurant-menu display-list">
-                                        {{ render(controller('FoodDishesBundle:FoodCategory:dishList', {'categoryId': selectedCategory.id})) }}
-                                        </div>
-                                    {% endif %}
+                                        {{ render(controller('FoodDishesBundle:FoodCategory:dishList', {'categoryId': selectedCategory.id, 'listType': listType})) }}
                                 </div>
                             </div>
                         </div>

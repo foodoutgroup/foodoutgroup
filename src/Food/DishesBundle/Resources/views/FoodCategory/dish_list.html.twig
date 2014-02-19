@@ -1,7 +1,17 @@
+<div class="clearfix restaurant-menu{% if listType == 'list' %} display-list{% endif %}">
 {% for dish in dishes %}
     {% set smallestPrice = dish_service.smallestDishPrice(dish.id) %}
     {% set largestPrice = dish_service.largestDishPrice(dish.id) %}
-    <div class="restaurant-menu-item"><img src="/{{ dish.getWebPathThumb('type2') }}">
+    <div class="restaurant-menu-item">
+        {% if listType == 'thumbs' %}
+            {% set largeImgClass = '' %}
+            {% set smallImgClass = ' hidden' %}
+        {% else %}
+            {% set largeImgClass = ' hidden' %}
+            {% set smallImgClass = '' %}
+        {% endif %}
+        <img src="/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}">
+        <img src="/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
         <h3 class="name">{{ loop.index }}. {{ dish.name }}</h3>
         <p class="desc">{{ dish.description }}</p>
         <div class="menu-item-bottom clearfix">
@@ -16,3 +26,4 @@
         </div>
     </div>
 {% endfor %}
+</div>
