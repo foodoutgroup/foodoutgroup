@@ -44,7 +44,6 @@
             path: '/bundles/foodapp/images/'
         });
 
-
         function resizeSensitive() {
             
         }

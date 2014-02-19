@@ -125,6 +125,10 @@ doctrine:
         dql:
             numeric_functions:
                 asin: DoctrineExtensions\Query\Mysql\Asin
+                sin: DoctrineExtensions\Query\Mysql\Sin
+                pi: DoctrineExtensions\Query\Mysql\Pi
+                cos: DoctrineExtensions\Query\Mysql\Cos
+                power: Food\AppBundle\DQL\PowerFunction
 
 
 # Swiftmailer Configuration

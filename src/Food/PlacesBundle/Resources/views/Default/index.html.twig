@@ -13,17 +13,25 @@
             submitKitchens();
         });
 
+        $('.clear-filter-link').click(function() {
+            $('.content-lefter input').iCheck('uncheck');
+        });
+
         function submitKitchens() {
-            var checkBoxes = "";
+
             var $filters = $(".filters-list input:checked");
+
+            var params = {kitchens: '', filters: ''};
+            var tmpName = "";
             for(i = 0; i < $filters.length; i++) {
-                if (checkBoxes !="") {
-                    checkBoxes += ",";
+                tmpName = $($filters[i]).attr('name').replace("[]","");
+                if (params[tmpName]!="") {
+                    params[tmpName]+=",";
                 }
-                checkBoxes += $($filters[i]).val();
+                params[tmpName] += $($filters[i]).val();
             }
 
-            $.get('{{ path('food_places_filter') }}/' + checkBoxes, function(resp) {
+            $.post('{{ path('food_places_filter') }}', params, function(resp) {
                 var $container = $('.content-righter');
                 $container.find('.restaurants-list').remove();
                 $container.append(resp);
@@ -60,7 +68,7 @@
                 </form>
                 <div class="list-top-filters clearfix fr">
                     <div class="label">{% trans %}places.order_by{% endtrans %}:</div>
-                    <a href="#">{% trans %}places.sort_by_relevance{% endtrans %}</a>
+                    {# <a href="#">{% trans %}places.sort_by_relevance{% endtrans %}</a> #}
                     <a href="#" class="selected">{% trans %}places.sort_by_rating{% endtrans %}</a>
                     <a href="#">{% trans %}places.sort_by_delivery_price{% endtrans %}</a>
                     <a href="#">{% trans %}places.sort_by_distance{% endtrans %}</a>

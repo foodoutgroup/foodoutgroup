@@ -3,7 +3,7 @@
 <div class="filters-list food-type-filters">
     {% for item in list %}
     <label class="custom-checkbox">{{ item.name }}<span class="count">{{ item.count }}</span>
-        <input type="checkbox" value="{{ item.id }}">
+        <input type="checkbox" name="kitchens[]" value="{{ item.id }}">
     </label>
     {% endfor %}
 </div>
