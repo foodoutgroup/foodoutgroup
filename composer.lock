@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "caf17f5b306093afe66d6343274ab013",
+    "hash": "0037abe8a3f5b3e3946907208399700b",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -834,12 +834,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "23d15ad680fe5b695df1565e7854342e608bc483"
+                "reference": "ae2be6ca5886696ec6b20e31340387a3fd7d676e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/23d15ad680fe5b695df1565e7854342e608bc483",
-                "reference": "23d15ad680fe5b695df1565e7854342e608bc483",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/ae2be6ca5886696ec6b20e31340387a3fd7d676e",
+                "reference": "ae2be6ca5886696ec6b20e31340387a3fd7d676e",
                 "shasum": ""
             },
             "require": {
@@ -894,7 +894,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2014-01-26 23:20:11"
+            "time": "2014-02-19 14:32:53"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -1129,80 +1129,6 @@
                 "sql"
             ],
             "time": "2014-01-23 04:54:58"
-        },
-        {
-            "name": "jms/translation-bundle",
-            "version": "dev-master",
-            "target-dir": "JMS/TranslationBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/schmittjoh/JMSTranslationBundle.git",
-                "reference": "1c41baf3a0b8c6f0f3a3894c1adc0648ea651bc0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSTranslationBundle/zipball/1c41baf3a0b8c6f0f3a3894c1adc0648ea651bc0",
-                "reference": "1c41baf3a0b8c6f0f3a3894c1adc0648ea651bc0",
-                "shasum": ""
-            },
-            "require": {
-                "nikic/php-parser": "0.9.4",
-                "symfony/console": "*",
-                "symfony/framework-bundle": "~2.1"
-            },
-            "conflict": {
-                "twig/twig": "1.10.2"
-            },
-            "require-dev": {
-                "jms/di-extra-bundle": ">=1.1",
-                "sensio/framework-extra-bundle": "*",
-                "symfony/browser-kit": "*",
-                "symfony/class-loader": "*",
-                "symfony/css-selector": "*",
-                "symfony/finder": "*",
-                "symfony/form": "*",
-                "symfony/process": "*",
-                "symfony/security": "*",
-                "symfony/twig-bundle": "*",
-                "symfony/validator": "*",
-                "symfony/yaml": "*"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "JMS\\TranslationBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache2"
-            ],
-            "authors": [
-                {
-                    "name": "Johannes M. Schmitt",
-                    "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
-                    "role": "Developer of wrapped JMSSerializerBundle"
-                }
-            ],
-            "description": "Puts the Symfony2 Translation Component on steroids",
-            "homepage": "http://jmsyst.com/bundles/JMSTranslationBundle",
-            "keywords": [
-                "extract",
-                "extraction",
-                "i18n",
-                "interface",
-                "multilanguage",
-                "translation",
-                "ui",
-                "webinterface"
-            ],
-            "time": "2014-02-17 15:05:26"
         },
         {
             "name": "jquery/jquery",
@@ -1508,50 +1434,6 @@
             "time": "2013-11-14 19:48:31"
         },
         {
-            "name": "nikic/php-parser",
-            "version": "v0.9.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "1e5e280ae88a27effa2ae4aa2bd088494ed8594f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/1e5e280ae88a27effa2ae4aa2bd088494ed8594f",
-                "reference": "1e5e280ae88a27effa2ae4aa2bd088494ed8594f",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.9-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "PHPParser": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Nikita Popov"
-                }
-            ],
-            "description": "A PHP parser written in PHP",
-            "keywords": [
-                "parser",
-                "php"
-            ],
-            "time": "2013-08-25 17:11:40"
-        },
-        {
             "name": "psr/log",
             "version": "1.0.0",
             "source": {
@@ -1849,12 +1731,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "81be112e0cd76777280012288cabf4974de8d1a2"
+                "reference": "6ae679d66dea6502dce1b2a9d4103c7c3a741f22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/81be112e0cd76777280012288cabf4974de8d1a2",
-                "reference": "81be112e0cd76777280012288cabf4974de8d1a2",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/6ae679d66dea6502dce1b2a9d4103c7c3a741f22",
+                "reference": "6ae679d66dea6502dce1b2a9d4103c7c3a741f22",
                 "shasum": ""
             },
             "require": {
@@ -1905,7 +1787,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-02-14 14:21:50"
+            "time": "2014-02-19 20:57:11"
         },
         {
             "name": "sonata-project/cache",
@@ -3197,8 +3079,7 @@
         "webtopay/libwebtopay": 20,
         "webtopay/webtopay-bundle": 20,
         "shuber/curl": 20,
-        "imagine/imagine": 20,
-        "jms/translation-bundle": 20
+        "imagine/imagine": 20
     },
     "platform": {
         "php": ">=5.3.3"

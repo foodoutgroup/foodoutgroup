@@ -152,6 +152,11 @@ services:
     calls:
         - [ setAnnotationReader, [ @annotation_reader ] ]
 
+  twig.extension.intl:
+    class: Twig_Extensions_Extension_Intl
+    tags:
+        - { name: twig.extension }
+
 sonata_doctrine_orm_admin:
     templates:
         form: [ FoodDishesBundle:Forms:form_admin_fields.html.twig ]

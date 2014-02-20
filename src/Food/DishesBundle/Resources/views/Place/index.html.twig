@@ -14,7 +14,7 @@
             <div class="page-path clearfix"><a href="#">Pradžia</a><a href="#">Restoranai arti Žirmūnų</a><a href="#">{{ place.name }}</a></div>
             <div class="page-title">
                 <h1 class="clearfix"><span>{{ place.name }}{% if place.slogan is not empty %} - {{ place.slogan }}{% endif %}</span>
-                    <div data-stars="5" class="restoran-rating fl"></div>
+                    <div data-stars="{{ place.rating }}" class="restoran-rating fl"></div>
                 </h1>
             </div>
                 <div class="clearfix">
@@ -37,10 +37,10 @@
                                         {% endfor %}
                                     </ul>
                                 </div>
+                        {# Meniu #}
                                 <div class="menu-righter">
                                     <div class="menu-title clearfix">
                                         <h2 class="fl">{{ selectedCategory.name }}</h2>
-                                        {# TODO pazymek aktyvu #}
                                         <div class="view-type clearfix">
                                             {% if listType == 'thumbs' %}
                                             <a href="#" class="ico-thumbs active"></a><a href="#" class="ico-list"></a>
@@ -53,112 +53,33 @@
                                 </div>
                             </div>
                         </div>
+                        {# Atsiliepimai #}
                         <div id="detailed-restaurant-review" class="detailed-restaurant-review">
                             <div class="review-title clearfix">
-                                <h3>{{ place.reviews.count }} {{ "place_reviews.reviews_count"|transchoice(place.reviews.count)|desc("{0} There is no apples|{1} There is one apple|]1,Inf] There are %count% apples") }}</h3><a href="#">Pridėk atsiliepimą</a>
+                                {% set count = place.reviews.count %}
+                                <h3>{% transchoice count %}%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų{% endtranschoice %}</h3><a href="#">Pridėk atsiliepimą</a>
                             </div>
                             <div class="review-list">
-                                <div class="review-item clearfix">
-                                    <div class="review-person"><img src="/bundles/foodapp/images/person-1.png">
-                                        <p class="name">Jaroslavas</p>
-                                        <p class="location">Kaunas</p>
-                                    </div>
-                                    <div class="review-baloon">
-                                        <div class="nip"></div>
-                                        <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. </p>
-                                        <div class="clearfix">
-                                            <div data-stars="5" class="restoran-rating fl"></div>
-                                            <div class="date fr">2013 gruodžio 28</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="review-item clearfix">
-                                    <div class="review-person"><img src="/bundles/foodapp/images/person-2.png">
-                                        <p class="name">Inga</p>
-                                        <p class="location">Kaunas</p>
-                                    </div>
-                                    <div class="review-baloon">
-                                        <div class="nip"></div>
-                                        <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles  </p>
-                                        <div class="clearfix">
-                                            <div data-stars="3" class="restoran-rating fl"></div>
-                                            <div class="date fr">2013 gruodžio 28</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% for review in place.reviews %}
                                 <div class="review-item clearfix">
                                     <div class="review-person"><img src="/bundles/foodapp/images/person.png">
-                                        <p class="name">Rimas</p>
-                                        <p class="location">Kaunas</p>
+                                        <p class="name">{{ review.createdBy.getFirstname }}</p>
+                                        <p class="location">{{ review.createdBy.getDefaultAddress.city }}</p>
                                     </div>
                                     <div class="review-baloon">
                                         <div class="nip"></div>
-                                        <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. </p>
+                                        <p class="text">{{ review.review }}</p>
                                         <div class="clearfix">
-                                            <div data-stars="3" class="restoran-rating fl"></div>
-                                            <div class="date fr">2013 gruodžio 28</div>
+                                            <div data-stars="{{ review.rate }}" class="restoran-rating fl"></div>
+                                            <div class="date fr">{{ review.createdAt|localizeddate('medium', 'none', locale) }}</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="review-item clearfix">
-                                    <div class="review-person"><img src="/bundles/foodapp/images/person-3.png">
-                                        <p class="name">Aleksas</p>
-                                        <p class="location">Kaunas</p>
-                                    </div>
-                                    <div class="review-baloon">
-                                        <div class="nip"></div>
-                                        <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. </p>
-                                        <div class="clearfix">
-                                            <div data-stars="3" class="restoran-rating fl"></div>
-                                            <div class="date fr">2013 gruodžio 28</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="review-item clearfix">
-                                    <div class="review-person"><img src="/bundles/foodapp/images/person-1.png">
-                                        <p class="name">Jaroslavas</p>
-                                        <p class="location">Kaunas</p>
-                                    </div>
-                                    <div class="review-baloon">
-                                        <div class="nip"></div>
-                                        <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. </p>
-                                        <div class="clearfix">
-                                            <div data-stars="5" class="restoran-rating fl"></div>
-                                            <div class="date fr">2013 gruodžio 28</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="review-item clearfix">
-                                    <div class="review-person"><img src="/bundles/foodapp/images/person-2.png">
-                                        <p class="name">Inga</p>
-                                        <p class="location">Kaunas</p>
-                                    </div>
-                                    <div class="review-baloon">
-                                        <div class="nip"></div>
-                                        <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles  </p>
-                                        <div class="clearfix">
-                                            <div data-stars="3" class="restoran-rating fl"></div>
-                                            <div class="date fr">2013 gruodžio 28</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="review-item clearfix">
-                                    <div class="review-person"><img src="/bundles/foodapp/images/person.png">
-                                        <p class="name">Rimas</p>
-                                        <p class="location">Kaunas</p>
-                                    </div>
-                                    <div class="review-baloon">
-                                        <div class="nip"></div>
-                                        <p class="text">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. </p>
-                                        <div class="clearfix">
-                                            <div data-stars="3" class="restoran-rating fl"></div>
-                                            <div class="date fr">2013 gruodžio 28</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% endfor %}
                             </div>
                             <div class="paginator clearfix"><a href="#" class="prev"></a><a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="next"></a></div>
                         </div>
+                        {# Restorano informacija #}
                         <div id="detailed-restaurant-info" class="detailed-restaurant-info">
                             <h3>Apie restoraną</h3>
                             <div class="clearfix">

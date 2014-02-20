@@ -60,8 +60,7 @@
         "webtopay/libwebtopay": "1.6.*@dev",
         "webtopay/webtopay-bundle": "dev-master",
         "shuber/curl": "dev-master",
-        "imagine/Imagine": "dev-master",
-        "jms/translation-bundle": "1.1.*@dev"
+        "imagine/Imagine": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

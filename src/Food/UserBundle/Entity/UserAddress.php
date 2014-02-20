@@ -48,7 +48,7 @@ class UserAddress
     private $default;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="address")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
     private $user;
