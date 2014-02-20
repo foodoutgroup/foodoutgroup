@@ -687,3 +687,6 @@ input.button {}
 .login-register-popup .custom-checkbox {font-size: 12px; color: #cfb4b8; padding-top: 0px; width: 100px; margin-top: 9px; line-height: 22px;}
 .login-register-popup a {font-size: 12px; color: #cfb4b8; text-decoration: underline;}
 .login-register-popup a:hover {text-decoration: none;}
+
+/*Just hidden.. Nothing to see here*/
+.hidden { display: none; }

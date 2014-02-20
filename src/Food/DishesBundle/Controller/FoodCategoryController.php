@@ -3,6 +3,8 @@
 namespace Food\DishesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class FoodCategoryController extends Controller
 {
@@ -18,23 +20,27 @@ class FoodCategoryController extends Controller
         );
     }
 
-    public function dishListAction($categoryId)
+    public function dishListAction($categoryId, $listType)
     {
         return $this->render(
             'FoodDishesBundle:FoodCategory:dish_list.html.twig',
             array(
                 'dishes' => $this->get('food.dishes')->getActiveDishesByCategory($categoryId),
+                'listType' => $listType
             )
         );
     }
 
-    public function dishTableAction($categoryId)
+    public function restaurantMenuLayoutAction($layout)
     {
-        return $this->render(
-            'FoodDishesBundle:FoodCategory:dish_table.html.twig',
-            array(
-                'dishes' => $this->get('food.dishes')->getActiveDishesByCategory($categoryId),
-            )
-        );
+        if (!in_array($layout, array('thumbs', 'list'))) {
+            $layout = 'thumbs';
+        }
+
+        $cookie = new Cookie('restaurant_menu_layout', $layout, (time() + 3600 * 24 * 7 * 30), '/');
+
+        $response = new Response();
+        $response->headers->setCookie($cookie);
+        $response->send();
     }
 }

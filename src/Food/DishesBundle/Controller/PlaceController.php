@@ -14,9 +14,10 @@ class PlaceController extends Controller
         $categoryRepo = $this->getDoctrine()->getRepository('FoodDishesBundle:FoodCategory');
 
         $listType = 'thumbs';
-        // TODO save i sessija, tolesniam atsiminimui :)
-        if ($request->getMethod() == 'POST') {
-            $listType = $request->get('view-type', 'thumbs');
+        $cookies = $request->cookies;
+
+        if ($cookies->has('restaurant_menu_layout')) {
+            $listType = $cookies->get('restaurant_menu_layout');
         }
 
         if (!empty($categoryId)) {

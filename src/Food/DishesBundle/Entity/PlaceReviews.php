@@ -50,7 +50,7 @@ class PlaceReviews
      * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      **/
-    private $createdBy;
+    private $createdBy = null;
 
     /**
      * @var string
