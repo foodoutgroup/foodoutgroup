@@ -89,6 +89,30 @@ class Place extends Uploadable
     private $points;
 
 
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="delivery_price", type="integer")
+     */
+    private $deliveryPrice;
+
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="delivery_time", type="string")
+     */
+    private $deliveryTime;
+
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="cart_minimum", type="integer")
+     */
+    private $cartMinimum;
+
     /**
      * @ORM\OneToMany(targetEntity="FoodCategory", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
      *
@@ -789,5 +813,74 @@ class Place extends Uploadable
     public function getNew()
     {
         return $this->new;
+    }
+
+    /**
+     * Set deliveryPrice
+     *
+     * @param integer $deliveryPrice
+     * @return Place
+     */
+    public function setDeliveryPrice($deliveryPrice)
+    {
+        $this->deliveryPrice = $deliveryPrice;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryPrice
+     *
+     * @return integer 
+     */
+    public function getDeliveryPrice()
+    {
+        return $this->deliveryPrice;
+    }
+
+    /**
+     * Set deliveryTime
+     *
+     * @param string $deliveryTime
+     * @return Place
+     */
+    public function setDeliveryTime($deliveryTime)
+    {
+        $this->deliveryTime = $deliveryTime;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryTime
+     *
+     * @return string 
+     */
+    public function getDeliveryTime()
+    {
+        return $this->deliveryTime;
+    }
+
+    /**
+     * Set cartMinimum
+     *
+     * @param integer $cartMinimum
+     * @return Place
+     */
+    public function setCartMinimum($cartMinimum)
+    {
+        $this->cartMinimum = $cartMinimum;
+    
+        return $this;
+    }
+
+    /**
+     * Get cartMinimum
+     *
+     * @return integer 
+     */
+    public function getCartMinimum()
+    {
+        return $this->cartMinimum;
     }
 }

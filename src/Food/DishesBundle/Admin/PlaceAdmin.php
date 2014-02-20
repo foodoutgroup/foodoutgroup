@@ -41,6 +41,9 @@ class PlaceAdmin extends FoodAdmin
             )
             ->add('active', 'checkbox', array('label' => 'admin.active', 'required' => false,))
             ->add('new', 'checkbox', array('label' => 'admin.is_new', 'required' => false,))
+            ->add('deliveryTime', null, array('label' => 'admin.place.delivery_time'))
+            ->add('deliveryPrice', null, array('label' => 'admin.place.delivery_price'))
+            ->add('cartMinimum', null, array('label' => 'admin.place.cart_minimum'))
             ->add('file', 'file', $options)
             ->add('points', 'sonata_type_collection',
                 array(

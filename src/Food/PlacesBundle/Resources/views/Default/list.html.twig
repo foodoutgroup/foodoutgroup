@@ -2,16 +2,17 @@
     {% for place in places %}
         <div class="restaurant-item clearfix">
             <div class="logo">
-                <div class="logo-wrap"><img src="/uploads/places/thumb_{{ place.logo }}"></div>
+                <div class="logo-wrap"><img src="/uploads/places/thumb_{{ place.place.logo }}"></div>
             </div>
             <div class="item-center">
                 <h2 class="name clearfix">
-                    <span class="text">{{ place.name }}</span>
-                    {#
+                    <span class="text">{{ place.place.name }}</span>
+                    {% if place.point.fast %}
                     <span class="tag">
                         <img src="/bundles/foodapp/images/tag-speed.png">
-                    #}
-                    {% if place.new %}
+                    </span>
+                    {% endif %}
+                    {% if place.place.new %}
                     <span class="tag">
                         <img src="/bundles/foodapp/images/tag-new.png">
                     </span>
@@ -26,159 +27,21 @@
                     #}
                 </h2>
                 <p class="desc">
-                    {% for kitchen in place.kitchens %}
+                    {% for kitchen in place.place.kitchens %}
                         {{kitchen.name}}{% if loop.last == false %}, {% endif %}
                     {% endfor %}
                 </p>
-                <div class="details"><span class="delivery">{% trans %}place.delivery_info{% endtrans %}:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">{% trans %}place.min_cart_amount{% endtrans %}:<span>40 Lt </span></span></div>
+                <div class="details"><span class="delivery">{% trans %}place.delivery_info{% endtrans %}:<span>{{ place.place.deliveryPrice }} Lt / {{ place.place.deliveryTime }}</span></span><span class="min-cart-size">{% trans %}place.min_cart_amount{% endtrans %}:<span>{{ place.place.cartMinimum }} Lt </span></span></div>
             </div>
             <!-- <div class="discount-tag"></div> -->
             <div class="item-righter">
                 <div class="clearfix">
-                    <div data-stars="{{ place.rating }}" class="restoran-rating fl"></div>
-                    {% if place.reviews.count != 0 %}
-                        <div class="rating-count fr">{{ place.reviews.count }} {% trans %}places.reviews_count{% endtrans %}</div>
+                    <div data-stars="{{ place.place.rating }}" class="restoran-rating fl"></div>
+                    {% if place.place.reviews.count != 0 %}
+                        <div class="rating-count fr">{{ place.place.reviews.count }} {% trans %}places.reviews_count{% endtrans %}</div>
                     {% endif %}
-                </div><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button"><span>{% trans %}places.watch_menu{% endtrans %}</span></a>
+                </div><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}" class="button"><span>{% trans %}places.watch_menu{% endtrans %}</span></a>
             </div>
         </div>
     {% endfor %}
-    <hr>
-    <div class="restaurant-item clearfix">
-        <div class="logo">
-            <div class="logo-wrap"><img src="/bundles/foodapp/images/res-1.png"></div>
-        </div>
-        <div class="item-center">
-            <h2 class="name clearfix"><span class="text">Čili pica</span><span class="tag"><img src="/bundles/foodapp/images/tag-speed.png"></span></h2>
-            <p class="desc">Pica, Salotos, Italų</p>
-            <div class="details"><span class="delivery">Pristatymas:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">Min. krepšelis:<span>40 Lt </span></span></div>
-        </div>
-        <div class="discount-tag">-50%</div>
-        <div class="item-righter">
-            <div class="clearfix">
-                <div data-stars="5" class="restoran-rating fl"></div>
-                <div class="rating-count fr">25 Įvertinimai</div>
-            </div><a href="#" class="button"><span>Žiūrėti meniu</span></a>
-        </div>
-    </div>
-    <div class="restaurant-item clearfix">
-        <div class="logo">
-            <div class="logo-wrap"><img src="/bundles/foodapp/images/res-2.png"></div>
-        </div>
-        <div class="item-center">
-            <h2 class="name clearfix"><span class="text">Čili pica</span><span class="tag"></span></h2>
-            <p class="desc">Pica, Salotos, Italų</p>
-            <div class="details"><span class="delivery">Pristatymas:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">Min. krepšelis:<span>40 Lt </span></span></div>
-        </div>
-        <div class="item-righter">
-            <div class="clearfix">
-                <div data-stars="5" class="restoran-rating fl"></div>
-                <div class="rating-count fr">25 Įvertinimai</div>
-            </div><a href="#" class="button"><span>Žiūrėti meniu</span></a>
-        </div>
-    </div>
-    <div class="restaurant-item clearfix">
-        <div class="logo">
-            <div class="logo-wrap"><img src="/bundles/foodapp/images/res-3.png"></div>
-        </div>
-        <div class="item-center">
-            <h2 class="name clearfix"><span class="text">Čili pica</span><span class="tag"><img src="/bundles/foodapp/images/tag-speed.png"></span><span class="tag"><img src="/bundles/foodapp/images/tag-new.png"></span></h2>
-            <p class="desc">Pica, Salotos, Italų</p>
-            <div class="details"><span class="delivery">Pristatymas:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">Min. krepšelis:<span>40 Lt </span></span></div>
-        </div>
-        <div class="discount-tag">-50%</div>
-        <div class="item-righter">
-            <div class="clearfix">
-                <div data-stars="5" class="restoran-rating fl"></div>
-                <div class="rating-count fr">25 Įvertinimai</div>
-            </div><a href="#" class="button"><span>Žiūrėti meniu</span></a>
-        </div>
-    </div>
-    <div class="restaurant-item clearfix">
-        <div class="logo">
-            <div class="logo-wrap"><img src="/bundles/foodapp/images/res-4.png"></div>
-        </div>
-        <div class="item-center">
-            <h2 class="name clearfix"><span class="text">Čili pica</span><span class="tag"><img src="/bundles/foodapp/images/tag-new.png"></span><span class="tag"><img src="/bundles/foodapp/images/tag-not-working.png">
-                        <div class="time-popup">VII 11:00 - 00:00
-                            <div class="nip"></div>
-                        </div></span></h2>
-            <p class="desc">Pica, Salotos, Italų</p>
-            <div class="details"><span class="delivery">Pristatymas:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">Min. krepšelis:<span>40 Lt </span></span></div>
-        </div>
-        <div class="discount-tag">Akcija</div>
-        <div class="item-righter">
-            <div class="clearfix">
-                <div data-stars="5" class="restoran-rating fl"></div>
-                <div class="rating-count fr">25 Įvertinimai</div>
-            </div><a href="#" class="button"><span>Žiūrėti meniu</span></a>
-        </div>
-    </div>
-    <div class="restaurant-item clearfix">
-        <div class="logo">
-            <div class="logo-wrap"><img src="/bundles/foodapp/images/res-5.png"></div>
-        </div>
-        <div class="item-center">
-            <h2 class="name clearfix"><span class="text">Čili pica</span></h2>
-            <p class="desc">Pica, Salotos, Italų</p>
-            <div class="details"><span class="delivery">Pristatymas:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">Min. krepšelis:<span>40 Lt </span></span></div>
-        </div>
-        <div class="item-righter">
-            <div class="clearfix">
-                <div data-stars="5" class="restoran-rating fl"></div>
-                <div class="rating-count fr">25 Įvertinimai</div>
-            </div><a href="#" class="button"><span>Žiūrėti meniu</span></a>
-        </div>
-    </div>
-    <div class="restaurant-item clearfix">
-        <div class="logo">
-            <div class="logo-wrap"><img src="/bundles/foodapp/images/res-2.png"></div>
-        </div>
-        <div class="item-center">
-            <h2 class="name clearfix"><span class="text">Čili pica</span><span class="tag"></span></h2>
-            <p class="desc">Pica, Salotos, Italų</p>
-            <div class="details"><span class="delivery">Pristatymas:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">Min. krepšelis:<span>40 Lt </span></span></div>
-        </div>
-        <div class="item-righter">
-            <div class="clearfix">
-                <div data-stars="5" class="restoran-rating fl"></div>
-                <div class="rating-count fr">25 Įvertinimai</div>
-            </div><a href="#" class="button"><span>Žiūrėti meniu</span></a>
-        </div>
-    </div>
-    <div class="restaurant-item clearfix">
-        <div class="logo">
-            <div class="logo-wrap"><img src="/bundles/foodapp/images/res-3.png"></div>
-        </div>
-        <div class="item-center">
-            <h2 class="name clearfix"><span class="text">Čili pica</span><span class="tag"><img src="/bundles/foodapp/images/tag-speed.png"></span><span class="tag"><img src="/bundles/foodapp/images/tag-new.png"></span></h2>
-            <p class="desc">Pica, Salotos, Italų</p>
-            <div class="details"><span class="delivery">Pristatymas:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">Min. krepšelis:<span>40 Lt </span></span></div>
-        </div>
-        <div class="item-righter">
-            <div class="clearfix">
-                <div data-stars="5" class="restoran-rating fl"></div>
-                <div class="rating-count fr">25 Įvertinimai</div>
-            </div><a href="#" class="button"><span>Žiūrėti meniu</span></a>
-        </div>
-    </div>
-    <div class="restaurant-item clearfix">
-        <div class="logo">
-            <div class="logo-wrap"><img src="/bundles/foodapp/images/res-4.png"></div>
-        </div>
-        <div class="item-center">
-            <h2 class="name clearfix"><span class="text">Čili pica</span><span class="tag"><img src="/bundles/foodapp/images/tag-new.png"></span><span class="tag"><img src="/bundles/foodapp/images/tag-not-working.png">
-                        <div class="time-popup">VII 11:00 - 00:00
-                            <div class="nip"></div>
-                        </div></span></h2>
-            <p class="desc">Pica, Salotos, Italų</p>
-            <div class="details"><span class="delivery">Pristatymas:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">Min. krepšelis:<span>40 Lt </span></span></div>
-        </div>
-        <div class="item-righter">
-            <div class="clearfix">
-                <div data-stars="5" class="restoran-rating fl"></div>
-                <div class="rating-count fr">25 Įvertinimai</div>
-            </div><a href="#" class="button"><span>Žiūrėti meniu</span></a>
-        </div>
-    </div>
 </div>

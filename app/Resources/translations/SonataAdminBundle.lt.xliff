@@ -276,6 +276,20 @@
                 <source>admin.place.slogan</source>
                 <target>Šūkis</target>
             </trans-unit>
+
+            <trans-unit id="admin.place.delivery_time">
+                <source>admin.place.delivery_time</source>
+                <target>Prist. trukmė</target>
+            </trans-unit>
+            <trans-unit id="admin.place.delivery_price">
+                <source>admin.place.delivery_price</source>
+                <target>Prist. kaina</target>
+            </trans-unit>
+            <trans-unit id="admin.place.cart_minimum">
+                <source>admin.place.cart_minimum</source>
+                <target>Min. užsakymas</target>
+            </trans-unit>
+
             <trans-unit id="admin.place.kitchens">
                 <source>admin.place.kitchens</source>
                 <target>Virtuvės</target>

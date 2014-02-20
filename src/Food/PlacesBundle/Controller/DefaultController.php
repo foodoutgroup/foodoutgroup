@@ -16,23 +16,22 @@ class DefaultController extends Controller
 
     public function listAction()
     {
-        $kitchens = $this->getRequest()->get('kitchens');
+        $kitchens = $this->getRequest()->get('kitchens', "");
         $filters = $this->getRequest()->get('filters');
-        var_dump($filters);
-        var_dump($kitchens);
-        $kitchens = explode(",", $kitchens);
+        if (empty($kitchens)) {
+            $kitchens = array();
+        } else {
+            $kitchens = explode(",", $kitchens);
+        }
+
         $filters = explode(",", $filters);
         foreach ($kitchens as $kkey=> &$kitchen) {
             $kitchen = intval($kitchen);
         }
         foreach ($filters as $fkey=> &$filter) {
-            $filter = trim($kitchen);
+            $filter = trim($filter);
         }
-        if (!empty($kitchens)) {
-            $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->findByKitchensIds($kitchens, $filter);
-        } else {
-            $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->findAll();
-        }
+        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds($kitchens, $filter);
         return $this->render('FoodPlacesBundle:Default:list.html.twig', array('places' => $places));
     }
 

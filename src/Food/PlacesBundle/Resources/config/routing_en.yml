@@ -1,0 +1,3 @@
+food_places_en:
+    pattern: /
+    defaults: { _controller: FoodPlacesBundle:Default:index}
