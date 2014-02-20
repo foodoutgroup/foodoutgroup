@@ -85,19 +85,28 @@
                             <div class="clearfix">
                                 <div class="restaurant-info-lefter">
                                     <ul class="menu">
-                                        <li class="ico-kitchen"><strong>Virtuvė:</strong>Italų, Salotos</li>
-                                        <li class="ico-time"><strong>Pristatymo laikas:</strong>40 min.</li>
-                                        <li class="ico-delivery"><strong>Pristatymo mokestis:</strong>5 Lt</li>
-                                        <li class="ico-cart"><strong>Minimalus krepšelis:</strong>25 Lt</li>
-                                        <li class="ico-payments"><strong>Atsiskaitymo būdai:</strong>Grynais, kortele</li>
+                                        <li class="ico-kitchen">
+                                            <strong>Virtuvė:</strong>
+                                            {% for kitchen in place.kitchens %}
+                                                {% if loop.index != 1 %}, {% endif %}{{ kitchen.name }}
+                                            {% endfor %}
+                                        </li>
+                                        <li class="ico-time"><strong>Pristatymo laikas:</strong>{{ place.deliveryTime }}</li>
+                                        <li class="ico-delivery"><strong>Pristatymo mokestis:</strong>{{ place.deliveryPrice }} {{ currency_display }}</li>
+                                        <li class="ico-cart"><strong>Minimalus krepšelis:</strong>{{ place.cartMinimum }} {{ currency_display }}</li>
+                                        {# TODO the line below :)#}
+                                        {#<li class="ico-payments"><strong>Atsiskaitymo būdai:</strong>Grynais, kortele</li>#}
                                     </ul>
                                 </div>
                                 <div class="restaurant-info-righter simple-content">
-                                    <p>„Čili“ picerijos – tai daugiau nei 40 rūšių picų, gausybė kitų skanėstų: karštųjų patiekalų, užkandžių, desertų, gėrimų. „Čili Pica“ – skanus maistas, jauki aplinka ir malonus aptarnavimas. Išmanių virtuvės meistrų su meile pagaminti patiekalai pavers apsilankymą picerijoje mažyte <br> švente.</p>
+                                    <p>{{ place.description }}</p>
                                     <select class="custom-select">
-                                        <option>Gabijos g. 30 (PC MAXIMA)</option>
-                                        <option>Gabijos g. 30 (PC MAXIMA)</option>
+                                        {% for point in place.points%}
+                                            {% if loop.index == 1 %}{% set pointId = 1 %}{# TODO set to get data#}{% endif %}
+                                            <option>{{ point.address }}</option>
+                                        {% endfor %}
                                     </select>
+                                    {# TODO iskeliam i atskira controllsa #}
                                     <div class="location-work-hours clearfix">
                                         <div class="lefter"><img src="/bundles/foodapp/images/ex-map.png"></div>
                                         <div class="righter">

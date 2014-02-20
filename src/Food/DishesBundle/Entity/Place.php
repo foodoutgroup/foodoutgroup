@@ -43,6 +43,13 @@ class Place extends Uploadable
     /**
      * @var string
      *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description = null;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="logo", type="string", length=255)
      */
     private $logo = "";
@@ -882,5 +889,28 @@ class Place extends Uploadable
     public function getCartMinimum()
     {
         return $this->cartMinimum;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Place
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

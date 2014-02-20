@@ -20,6 +20,7 @@ class PlacePointFullAdmin extends FoodAdmin
             //->add('coords', 'text', array('label' => 'admin.point.coords'))
             ->add('lat', 'text', array('label' => 'admin.point.lat'))
             ->add('lon', 'text', array('label' => 'admin.point.lon'))
+            ->add('public',null, array('label' => 'admin.point.public', 'required' => false))
             ->add('pickUp',null, array('label' => 'admin.point.pickup', 'required' => false))
             ->add('delivery', null, array('label' => 'admin.point.delivery', 'required' => false))
             ->add('delivery_time', 'text', array('label' => 'admin.point.devtime'))
@@ -56,7 +57,7 @@ class PlacePointFullAdmin extends FoodAdmin
         $listMapper
             ->addIdentifier('address', 'string', array('label' => 'admin.point.address'))
             ->addIdentifier('city', 'string', array('label' => 'admin.point.city'))
-            ->addIdentifier('active', 'string', array('label' => 'admin.point.active'))
+            ->addIdentifier('active', 'boolean', array('label' => 'admin.point.active', 'editable' => true,))
             ->addIdentifier('fast', 'string', array('label' => 'admin.point.fast'))
             ->add('_action', 'actions', array(
                 'actions' => array(
