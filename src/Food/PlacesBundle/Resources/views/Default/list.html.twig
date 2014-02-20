@@ -7,10 +7,11 @@
             <div class="item-center">
                 <h2 class="name clearfix">
                     <span class="text">{{ place.place.name }}</span>
-                    {#
+                    {% if place.point.fast %}
                     <span class="tag">
                         <img src="/bundles/foodapp/images/tag-speed.png">
-                    #}
+                    </span>
+                    {% endif %}
                     {% if place.place.new %}
                     <span class="tag">
                         <img src="/bundles/foodapp/images/tag-new.png">
@@ -30,7 +31,7 @@
                         {{kitchen.name}}{% if loop.last == false %}, {% endif %}
                     {% endfor %}
                 </p>
-                <div class="details"><span class="delivery">{% trans %}place.delivery_info{% endtrans %}:<span>5 Lt / 10 min.</span></span><span class="min-cart-size">{% trans %}place.min_cart_amount{% endtrans %}:<span>40 Lt </span></span></div>
+                <div class="details"><span class="delivery">{% trans %}place.delivery_info{% endtrans %}:<span>{{ place.place.deliveryPrice }} Lt / {{ place.place.deliveryTime }}</span></span><span class="min-cart-size">{% trans %}place.min_cart_amount{% endtrans %}:<span>{{ place.place.cartMinimum }} Lt </span></span></div>
             </div>
             <!-- <div class="discount-tag"></div> -->
             <div class="item-righter">
