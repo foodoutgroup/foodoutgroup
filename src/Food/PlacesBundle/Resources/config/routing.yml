@@ -1,7 +1,3 @@
 food_places:
     pattern: /
     defaults: { _controller: FoodPlacesBundle:Default:index}
-
-food_place_menu_layout:
-    pattern: /save-menu-layout/{layout}
-    defaults: { _controller: FoodDishesBundle:FoodCategory:restaurantMenuLayout, layout: ~}
