@@ -178,7 +178,12 @@ class PlacePoint
      */
     private $wd7_end;
 
-
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="public", type="boolean")
+     */
+    private $public = true;
 
     /**
      * @var string
@@ -962,5 +967,28 @@ class PlacePoint
     public function getFast()
     {
         return $this->fast;
+    }
+
+    /**
+     * Set public
+     *
+     * @param boolean $public
+     * @return PlacePoint
+     */
+    public function setPublic($public)
+    {
+        $this->public = $public;
+    
+        return $this;
+    }
+
+    /**
+     * Get public
+     *
+     * @return boolean 
+     */
+    public function getPublic()
+    {
+        return $this->public;
     }
 }

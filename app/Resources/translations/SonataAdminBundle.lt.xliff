@@ -276,6 +276,10 @@
                 <source>admin.place.slogan</source>
                 <target>Šūkis</target>
             </trans-unit>
+            <trans-unit id="admin.place.description">
+                <source>admin.place.description</source>
+                <target>Aprašymas</target>
+            </trans-unit>
 
             <trans-unit id="admin.place.delivery_time">
                 <source>admin.place.delivery_time</source>
@@ -371,6 +375,10 @@
             <trans-unit id="admin.point.lon">
                 <source>admin.point.lon</source>
                 <target>Long.</target>
+            </trans-unit>
+            <trans-unit id="admin.point.public">
+                <source>admin.point.public</source>
+                <target>Rodomas viešai</target>
             </trans-unit>
 
             <!-- Place reviews -->
