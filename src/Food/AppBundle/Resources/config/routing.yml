@@ -24,6 +24,10 @@ food_cart:
     resource: "@FoodCartBundle/Resources/config/routing.yml"
     prefix:   /cart
 
+food_ajax_dish:
+    pattern: /ajax/dish/{dish}
+    defaults: { _controller: FoodDishesBundle:Dish:getDish, dish: ~}
+
 food_ajax:
     pattern: /ajax/{action}/
     defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~}

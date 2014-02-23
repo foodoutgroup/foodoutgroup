@@ -463,4 +463,14 @@ class FoodCategory implements Translatable
     {
         $this->dishes->removeElement($dishes);
     }
+
+    public function getActiveDishesCount()
+    {
+        $dishes = $this->getDishes()->filter(
+            function($dish) {
+                return $dish->getActive();
+            }
+        );
+        return sizeof($dishes);
+    }
 }
