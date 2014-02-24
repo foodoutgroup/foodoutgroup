@@ -1,46 +1,31 @@
 <div id="detailed-dish-popup">
     <form class="popup detailed-dish-popup"><img src="{{ asset('bundles/foodapp/images/popup-header.png') }}" class="popup-header">
         <div class="dish-info">
-            <p class="name">San Remo pica</p>
-            <p class="desc">Šoninė, sūris, aitrusis "Čili picos Leco" padažas, pomidorų padažas</p>
+            <p class="name">{{ dish.name }}</p>
+            <p class="desc">{{ dish.description }}</p>
         </div>
         <div class="dish-size">
-            <div class="title">Pasirinkite dydį</div>
+            <div class="title">{% trans %}dish.select_size{% endtrans %}</div>
             <div class="clearfix">
-                <label class="custom-radio">Maža pica, 25cm <strong class="price">15,00 Lt</strong>
-                    <input type="radio" name="size-1">
-                </label>
-                <label class="custom-radio">Vidutinė pica, 28cm<strong class="price">18,00 Lt</strong>
-                    <input type="radio" name="size-1">
-                </label>
-                <label class="custom-radio">Maža pica, 32cm <strong class="price">21,00 Lt</strong>
-                    <input type="radio" name="size-1">
-                </label>
-                <label class="custom-radio">Šeimyninė pica, 45cm <strong class="price">33,00 Lt</strong>
-                    <input type="radio" name="size-1">
-                </label>
+                {% for size in dish.sizes %}
+                    <label class="custom-radio">{{ size.unit.name }}<strong class="price">{{ size.price }} Lt</strong>
+                        <input type="radio" value="{{ size.id }}" name="size-1">
+                    </label>
+                {% endfor %}
             </div>
         </div>
         <div class="dish-ingredients">
-            <div class="title">Ar norėtumėt papildomų reikaliukų?</div>
-            <div class="clearfix">
-                <label class="custom-checkbox">Agurkas<strong class="price">+1,00 Lt</strong>
-                    <input type="checkbox">
-                </label>
-                <label class="custom-checkbox">Pomidoras<strong class="price">+1,00 Lt</strong>
-                    <input type="checkbox">
-                </label>
-                <label class="custom-checkbox">Grietinė<strong class="price">+2,00 Lt</strong>
-                    <input type="checkbox">
-                </label>
-                <label class="custom-checkbox">Artišokai<strong class="price">+3,00 Lt</strong>
-                    <input type="checkbox">
-                </label>
-                <label class="custom-checkbox">Paprika<strong class="price">+3,00 Lt</strong>
-                    <input type="checkbox">
-                </label>
-            </div>
+            <div class="title">{% trans %}dish.select_options{% endtrans %}</div>
+            {% if dish.options|length > 0 %}
+                <div class="clearfix">
+                {% for option in dish.options %}
+                    <label class="custom-checkbox">{{ option.name }}<strong class="price">+{{ option.price }} Lt</strong>
+                        <input type="checkbox" name="options[]" value="{{ option.id }}">
+                    </label>
+                {% endfor %}
+                </div>
+            {% endif %}
         </div>
-        <div class="popup-controls"><a href="#" class="button-submit"><span>Pridėti į krepšelį</span></a></div>
+        <div class="popup-controls"><a href="#" class="button-submit"><span>{% trans %}dish.add_to_cart{% endtrans %}</span></a></div>
     </form>
 </div>
