@@ -3,6 +3,8 @@
 namespace Food\DishesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class PlaceController extends Controller
 {
@@ -40,5 +42,22 @@ class PlaceController extends Controller
     public function filtersListAction()
     {
         return $this->render('FoodDishesBundle:Place:filter_list.html.twig');
+    }
+
+    public function placePointAction($point_id)
+    {
+        $placeService = $this->get('food.places');
+
+        $placePointData = array();
+        $placePoint = $placeService->getPlacePointData($point_id);
+        if ($placePoint->getActive() && $placePoint->getPublic()) {
+            $placePointData = $placePoint->__toArray();
+        }
+
+        $response = new JsonResponse($placePointData);
+        $response->setCharset('UTF-8');
+
+        $response->prepare($this->getRequest());
+        return $response;
     }
 }

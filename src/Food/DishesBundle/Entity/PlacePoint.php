@@ -186,6 +186,20 @@ class PlacePoint
     private $public = true;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="allow_cash", type="boolean")
+     */
+    private $allowCash = true;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="allow_card", type="boolean")
+     */
+    private $allowCard = true;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -763,6 +777,51 @@ class PlacePoint
     }
 
     /**
+     * @return array
+     */
+    public function  __toArray()
+    {
+        if (!$this->getId()) {
+            return array();
+        }
+
+        // TODO - kam ko reik - patys pasipildot!
+        return array(
+            'id' => $this->getId(),
+            'placeId' => $this->getPlace()->getId(),
+            'placeName' => $this->getPlace()->getName(),
+            'address' => $this->getAddress(),
+            'city' => $this->getCity(),
+            'active' => $this->getActive(),
+            'public' => $this->getPublic(),
+            'delivery' => $this->getDelivery(),
+            'deliveryTime' => $this->getDeliveryTime(),
+            'pick_up' => $this->getPickUp(),
+            'lat' => $this->getLat(),
+            'lon' => $this->getLon(),
+            'fast' => $this->getFast(),
+            'allowCash' => $this->getAllowCash(),
+            'allowCard' => $this->getAllowCard(),
+            'workTime' => array(
+                'wd1_start' => $this->getWd1Start(),
+                'wd1_end' => $this->getWd1End(),
+                'wd2_start' => $this->getWd2Start(),
+                'wd2_end' => $this->getWd2End(),
+                'wd3_start' => $this->getWd3Start(),
+                'wd3_end' => $this->getWd3End(),
+                'wd4_start' => $this->getWd4Start(),
+                'wd4_end' => $this->getWd4End(),
+                'wd5_start' => $this->getWd5Start(),
+                'wd5_end' => $this->getWd5End(),
+                'wd6_start' => $this->getWd6Start(),
+                'wd6_end' => $this->getWd6End(),
+                'wd7_start' => $this->getWd7Start(),
+                'wd7_end' => $this->getWd7End(),
+            ),
+        );
+    }
+
+    /**
      * Set createdBy
      *
      * @param \Food\UserBundle\Entity\User $createdBy
@@ -990,5 +1049,51 @@ class PlacePoint
     public function getPublic()
     {
         return $this->public;
+    }
+
+    /**
+     * Set allowCash
+     *
+     * @param boolean $allowCash
+     * @return PlacePoint
+     */
+    public function setAllowCash($allowCash)
+    {
+        $this->allowCash = $allowCash;
+    
+        return $this;
+    }
+
+    /**
+     * Get allowCash
+     *
+     * @return boolean 
+     */
+    public function getAllowCash()
+    {
+        return $this->allowCash;
+    }
+
+    /**
+     * Set allowCard
+     *
+     * @param boolean $allowCard
+     * @return PlacePoint
+     */
+    public function setAllowCard($allowCard)
+    {
+        $this->allowCard = $allowCard;
+    
+        return $this;
+    }
+
+    /**
+     * Get allowCard
+     *
+     * @return boolean 
+     */
+    public function getAllowCard()
+    {
+        return $this->allowCard;
     }
 }

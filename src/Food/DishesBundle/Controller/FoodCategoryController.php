@@ -41,6 +41,6 @@ class FoodCategoryController extends Controller
 
         $response = new Response();
         $response->headers->setCookie($cookie);
-        $response->send();
+        return $response->send();
     }
 }

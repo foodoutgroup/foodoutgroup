@@ -380,6 +380,18 @@
                 <source>admin.point.public</source>
                 <target>Rodomas viešai</target>
             </trans-unit>
+            <trans-unit id="admin.point.place">
+                <source>admin.point.place</source>
+                <target>Restoranas</target>
+            </trans-unit>
+            <trans-unit id="admin.point.allow_cash">
+                <source>admin.point.allow_cash</source>
+                <target>Grynais</target>
+            </trans-unit>
+            <trans-unit id="admin.point.allow_card">
+                <source>admin.point.allow_card</source>
+                <target>Kortele</target>
+            </trans-unit>
 
             <!-- Place reviews -->
             <trans-unit id="place-reviews-list">

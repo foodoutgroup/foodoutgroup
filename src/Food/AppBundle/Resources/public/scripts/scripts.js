@@ -33,7 +33,11 @@
         });
 
 
-        $( "#detailed-restaurant" ).tabs();
+        $( "#detailed-restaurant" ).tabs({
+            activate: function( event, ui ) {
+                ui.newTab.trigger('tab-activate');
+            }
+        });
 
 
         $('.restoran-rating').raty({

@@ -51,4 +51,13 @@ class PlacesService extends ContainerAware {
                 'active' => 1,
             ));
     }
+
+    /**
+     * @param $pointId
+     * @return \Food\DishesBundle\Entity\PlacePoint
+     */
+    public function getPlacePointData($pointId)
+    {
+        return $this->em()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
+    }
 }
