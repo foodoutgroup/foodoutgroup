@@ -1,0 +1,31 @@
+<div id="detailed-dish-popup">
+    <form class="popup detailed-dish-popup"><img src="{{ asset('bundles/foodapp/images/popup-header.png') }}" class="popup-header">
+        <div class="dish-info">
+            <p class="name">{{ dish.name }}</p>
+            <p class="desc">{{ dish.description }}</p>
+        </div>
+        <div class="dish-size">
+            <div class="title">{% trans %}dish.select_size{% endtrans %}</div>
+            <div class="clearfix">
+                {% for size in dish.sizes %}
+                    <label class="custom-radio">{{ size.unit.name }}<strong class="price">{{ size.price }} Lt</strong>
+                        <input type="radio" value="{{ size.id }}" name="size-1">
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="dish-ingredients">
+            <div class="title">{% trans %}dish.select_options{% endtrans %}</div>
+            {% if dish.options|length > 0 %}
+                <div class="clearfix">
+                {% for option in dish.options %}
+                    <label class="custom-checkbox">{{ option.name }}<strong class="price">+{{ option.price }} Lt</strong>
+                        <input type="checkbox" name="options[]" value="{{ option.id }}">
+                    </label>
+                {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="popup-controls"><a href="#" class="button-submit"><span>{% trans %}dish.add_to_cart{% endtrans %}</span></a></div>
+    </form>
+</div>

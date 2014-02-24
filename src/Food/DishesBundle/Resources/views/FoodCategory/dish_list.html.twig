@@ -22,7 +22,7 @@
                     {{ smallestPrice }} {{ currency_display }} - {{ largestPrice }} {{ currency_display }}
                 {% endif %}
             </span>
-            <a href="#detailed-dish-popup" class="add-to-cart boxer"></a>
+            <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" href2="#detailed-dish-popup" class="fancybox.ajax add-to-cart fancy-box"></a>
         </div>
     </div>
 {% endfor %}

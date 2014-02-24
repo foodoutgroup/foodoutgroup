@@ -29,8 +29,8 @@
         $(".boxer").boxer({
             callback: function(){
                 $("input").iCheck();
-                }
-            });
+            }
+        });
 
 
         $( "#detailed-restaurant" ).tabs({

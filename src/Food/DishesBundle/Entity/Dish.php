@@ -52,7 +52,7 @@ class Dish extends Uploadable implements Translatable
     private $place;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var DishSize[]
      *
      * @ORM\OneToMany(targetEntity="DishSize", mappedBy="dish", cascade={"persist", "remove"}, orphanRemoval=true)
      */
@@ -562,7 +562,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get sizes
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return DishSize[]
      */
     public function getSizes()
     {
