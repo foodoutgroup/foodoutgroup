@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="lt" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="c9f932900c061295799f8eee2ba492c6" resname="cart.block.your_order">
+        <source>cart.block.your_order</source>
+        <target>Tavo užsakymas</target>
+      </trans-unit>
+      <trans-unit id="ef66c3099bc075bfc93b091b1b012ac5" resname="cart.block.delivery_price">
+        <source>cart.block.delivery_price</source>
+        <target>Pristatymas</target>
+      </trans-unit>
+      <trans-unit id="ace667964c9c1c5c29134999deae92c0" resname="cart.block.total">
+        <source>cart.block.total</source>
+        <target>Viso</target>
+      </trans-unit>
+      <trans-unit id="cdb14f28caaf6c3aef4236ac7972219b" resname="cart.block.delivery_time">
+        <source>cart.block.delivery_time</source>
+        <target>Pristatymo trukmė</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

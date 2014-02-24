@@ -1,6 +1,6 @@
 <div class="check-block">
-    <div class="restaurant-logo tac"><img src="/bundles/foodapp/images/res-2.png"></div>
-    <h5 class="tac">Tavo užsakymas</h5>
+    <div class="restaurant-logo tac"><img src="/{{place.getWebPathThumb}}"></div>
+    <h5 class="tac">{% trans %}cart.block.your_order{% endtrans %}</h5>
     {% for dish in list %}
         <div class="check-item">
             <div class="name">{{ dish.dishId.name }}</div>
@@ -21,13 +21,13 @@
     {% endfor %}
     <div class="check-bottom">
         <div class="delivery-price clearfix">
-            <div class="fl">Pristatymas:</div>
-            <div class="fr">5 Lt</div>
+            <div class="fl">{% trans %}cart.block.delivery_price{% endtrans %}:</div>
+            <div class="fr">{{ place.deliveryPrice }} Lt</div>
         </div>
         <div class="total-sum clearfix">
-            <div class="fl">Viso:</div>
+            <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
             <div class="fr">65,98 Lt</div>
         </div>
     </div>
-    <div class="delivery-time tac">Pristatymas  ~40 min. @todo</div>
+    <div class="delivery-time tac">{% trans %}cart.block.delivery_time{% endtrans %} {{ place.deliveryTime }}</div>
 </div>

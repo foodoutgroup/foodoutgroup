@@ -228,9 +228,10 @@ class CartService {
     }
 
     /**
+     * @param \Place $place
      * @return array|\Food\CartBundle\Entity\Cart[]
      */
-    public function getCartDishes()
+    public function getCartDishes($place)
     {
         $list = $this->getEm()->getRepository('FoodCartBundle:Cart')->findBy(
             array(
