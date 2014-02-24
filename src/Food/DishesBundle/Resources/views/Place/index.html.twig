@@ -7,7 +7,9 @@
     <script src="{{ asset_url }}"></script>
     <script type="application/javascript">
         Place.listTypeSaveUrl = '{{ path('food_place_menu_layout') }}';
+        Place.placePointDataUrl = '{{ path('food_place_point_data') }}';
     </script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api }}&sensor=false"></script>
     {% endjavascripts %}
     <div style="background-image: url(/bundles/foodapp/images/inner-bg.jpg);" class="site-center image-top">
         <div class="site-block">
@@ -23,7 +25,7 @@
                         <ul>
                             <li><a href="#detailed-restaurant-menu">Meniu</a></li>
                             <li><a href="#detailed-restaurant-review">Atsiliepimai</a></li>
-                            <li class="last"><a href="#detailed-restaurant-info">Informacija</a></li>
+                            <li class="last restaurant-info-tab"><a href="#detailed-restaurant-info">Informacija</a></li>
                         </ul>
                         <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
                             <div class="clearfix">
@@ -94,50 +96,47 @@
                                         <li class="ico-time"><strong>Pristatymo laikas:</strong>{{ place.deliveryTime }}</li>
                                         <li class="ico-delivery"><strong>Pristatymo mokestis:</strong>{{ place.deliveryPrice }} {{ currency_display }}</li>
                                         <li class="ico-cart"><strong>Minimalus krepšelis:</strong>{{ place.cartMinimum }} {{ currency_display }}</li>
-                                        {# TODO the line below :)#}
-                                        {#<li class="ico-payments"><strong>Atsiskaitymo būdai:</strong>Grynais, kortele</li>#}
+                                        <li class="ico-payments"><strong>Atsiskaitymo būdai:</strong><span class="payments-data"></span></li>
                                     </ul>
                                 </div>
                                 <div class="restaurant-info-righter simple-content">
                                     <p>{{ place.description }}</p>
                                     <select class="custom-select">
                                         {% for point in place.points%}
-                                            {% if loop.index == 1 %}{% set pointId = 1 %}{# TODO set to get data#}{% endif %}
-                                            <option>{{ point.address }}</option>
+                                            <option value="{{ point.id }}">{{ point.address }}</option>
                                         {% endfor %}
                                     </select>
-                                    {# TODO iskeliam i atskira controllsa #}
                                     <div class="location-work-hours clearfix">
-                                        <div class="lefter"><img src="/bundles/foodapp/images/ex-map.png"></div>
+                                        <div class="lefter" id="restaurant-map-location" style="height: 300px;width: 300px;"></div>
                                         <div class="righter">
-                                            <table>
+                                            <table class="work-times">
                                                 <tr>
-                                                    <td>Monday</td>
-                                                    <td class="tar"><span>10:00 - 24:00</span></td>
+                                                    <td>Pirmadienis</td>
+                                                    <td class="tar wd1"><span>10:00 - 24:00</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Tuesday</td>
-                                                    <td class="tar"> <span>10:00 - 24:00</span></td>
+                                                    <td>Antradienis</td>
+                                                    <td class="tar wd2"> <span>10:00 - 24:00</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Wednesday</td>
-                                                    <td class="tar"> <span>10:00 - 24:00</span></td>
+                                                    <td>Trečiadienis</td>
+                                                    <td class="tar wd3"> <span>10:00 - 24:00</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Thursday</td>
-                                                    <td class="tar"> <span>10:00 - 24:00</span></td>
+                                                    <td>Ketvirtadienis</td>
+                                                    <td class="tar wd4"> <span>10:00 - 24:00</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Friday</td>
-                                                    <td class="tar"> <span>10:00 - 24:00</span></td>
+                                                    <td>Penktadienis</td>
+                                                    <td class="tar wd5"> <span>10:00 - 24:00</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Saturday</td>
-                                                    <td class="tar"> <span>10:00 - 24:00</span></td>
+                                                    <td>Šeštadienis</td>
+                                                    <td class="tar wd6"> <span>10:00 - 24:00</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Sunday</td>
-                                                    <td class="tar"> <span>10:00 - 24:00</span></td>
+                                                    <td>Sekmadienis</td>
+                                                    <td class="tar wd7"> <span>10:00 - 24:00</span></td>
                                                 </tr>
                                             </table>
                                         </div>

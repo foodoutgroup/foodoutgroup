@@ -33,6 +33,7 @@ parameters:
     arc_gis_geocode: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates"
     arc_gis_geocode_single: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     arc_gis_geocode_url: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=pjson&Address=_1_&City=_2_&CountryCode=LT&outFields=AddrNum,StName,City"
+    google.maps_api: "AIzaSyDyKJYX3Cr4Cn41VR9oaAqbmT8XlbHBY-Q"
     # Todo situos gal ir iskelsime i paramsus - dependant on install?
     payment.methods: [local, local.card, paysera]
     currency_display: Lt
@@ -68,6 +69,7 @@ twig:
         page_title:   "%title%"
         currency_display: "%currency_display%"
         dish_service: "@food.dishes"
+        google_maps_api: "%google.maps_api%"
 
 
 # Assetic Configuration

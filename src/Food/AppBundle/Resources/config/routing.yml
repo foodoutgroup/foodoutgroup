@@ -52,6 +52,10 @@ static:
     defaults: { _controller: FoodAppBundle:Static:index }
     methods:  [GET]
 
+food_place_point_data:
+    pattern: /ajax/place-point/{point_id}
+    defaults: { _controller: FoodDishesBundle:Place:placePoint, point_id: ~}
+
 food_place_menu_layout:
     pattern: /ajax/save-menu-layout/{layout}
     defaults: { _controller: FoodDishesBundle:FoodCategory:restaurantMenuLayout, layout: ~}

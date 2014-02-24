@@ -1,0 +1,22 @@
+.loadmask {
+    z-index: 100;
+    position: absolute;
+    top:0;
+    left:0;
+    -moz-opacity: 0.5;
+    opacity: .50;
+    filter: alpha(opacity=50);
+    background: #CCC url('/bundles/foodapp/images/loading.gif') no-repeat center center;
+    width: 100%;
+    height: 100%;
+    zoom: 1;
+}
+.masked {
+    overflow: hidden !important;
+}
+.masked-relative {
+    position: relative !important;
+}
+.masked-hidden {
+    visibility: hidden !important;
+}
