@@ -3,14 +3,18 @@
 namespace Food\DishesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
 
 /**
  * ClientLocalized
  *
- * @ORM\Table(name="place_localized")
+ * @ORM\Table(name="place_localized",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="lookup_unique_idx", columns={
+ *         "locale", "object_id", "field"
+ *     })})
  * @ORM\Entity
  */
-class PlaceLocalized
+class PlaceLocalized extends AbstractPersonalTranslation
 {
     /**
      * @ORM\ManyToOne(targetEntity="Place", inversedBy="translations")
@@ -147,7 +151,7 @@ class PlaceLocalized
      * @param \Food\DishesBundle\Entity\Place $object
      * @return PlaceLocalized
      */
-    public function setObject(\Food\DishesBundle\Entity\Place $object = null)
+    public function setObject($object)
     {
         $this->object = $object;
     

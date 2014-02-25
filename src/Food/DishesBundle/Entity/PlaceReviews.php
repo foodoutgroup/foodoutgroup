@@ -33,7 +33,7 @@ class PlaceReviews
     /**
      * @var \Food\DishesBundle\Entity\Place
      *
-     * @ORM\ManyToOne(targetEntity="Place")
+     * @ORM\ManyToOne(targetEntity="Place", inversedBy="reviews")
      * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
      */
     private $place;

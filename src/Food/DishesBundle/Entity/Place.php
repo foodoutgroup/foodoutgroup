@@ -199,7 +199,6 @@ class Place extends Uploadable implements Translatable
      **/
     private $translations;
 
-
     /**
      * Returns place name
      *
