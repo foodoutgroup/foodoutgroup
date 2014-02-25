@@ -51,7 +51,7 @@
 #}
     <div style="background-image: url(/bundles/foodapp/images/inner-bg.jpg);" class="site-center image-top">
         <div class="site-block">
-            <div class="page-path clearfix"><a href="#">Pradžia</a><a href="#">Restoranai arti Žirmūnų</a><a href="#">{{ place.name }}</a></div>
+            <div class="page-path clearfix"><a href="#">{% trans %}places.home{% endtrans %}</a><a href="#">Restoranai arti Žirmūnų</a><a href="#">{{ place.name }}</a></div>
             <div class="page-title">
                 <h1 class="clearfix"><span>{{ place.name }}{% if place.slogan is not empty %} - {{ place.slogan }}{% endif %}</span>
                     <div data-stars="{{ place.rating }}" class="restoran-rating fl"></div>
@@ -61,14 +61,14 @@
                     <div class="content-lefter-big">
                         <div id="detailed-restaurant" class="detailed-resturant">
                         <ul>
-                            <li><a href="#detailed-restaurant-menu">Meniu</a></li>
-                            <li><a href="#detailed-restaurant-review">Atsiliepimai</a></li>
-                            <li class="last restaurant-info-tab"><a href="#detailed-restaurant-info">Informacija</a></li>
+                            <li><a href="#detailed-restaurant-menu">{% trans %}places.menu{% endtrans %}</a></li>
+                            <li><a href="#detailed-restaurant-review">{% trans %}places.reviews{% endtrans %}</a></li>
+                            <li class="last restaurant-info-tab"><a href="#detailed-restaurant-info">{% trans %}places.information{% endtrans %}</a></li>
                         </ul>
                         <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
                             <div class="clearfix">
                                 <div class="menu-lefter">
-                                    <h4>kategorijos:</h4>
+                                    <h4>{% trans %}places.food_categories{% endtrans %}:</h4>
                                     <ul class="menu">
                                         {% for category in placeCategories %}
                                             <li{% if category.id == selectedCategory.id %} class="active"{% endif %}>
@@ -97,7 +97,7 @@
                         <div id="detailed-restaurant-review" class="detailed-restaurant-review">
                             <div class="review-title clearfix">
                                 {% set count = place.reviews.count %}
-                                <h3>{% transchoice count %}%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų{% endtranschoice %}</h3><a href="#">Pridėk atsiliepimą</a>
+                                <h3>{% transchoice count %}%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų{% endtranschoice %}</h3><a href="#">{% trans %}places.add_review{% endtrans %}</a>
                             </div>
                             <div class="review-list">
                                 {% for review in place.reviews %}
@@ -121,20 +121,20 @@
                         </div>
                         {# Restorano informacija #}
                         <div id="detailed-restaurant-info" class="detailed-restaurant-info">
-                            <h3>Apie restoraną</h3>
+                            <h3>{% trans %}places.about_place{% endtrans %}</h3>
                             <div class="clearfix">
                                 <div class="restaurant-info-lefter">
                                     <ul class="menu">
                                         <li class="ico-kitchen">
-                                            <strong>Virtuvė:</strong>
+                                            <strong>{% trans %}places.kitchen{% endtrans %}:</strong>
                                             {% for kitchen in place.kitchens %}
                                                 {% if loop.index != 1 %}, {% endif %}{{ kitchen.name }}
                                             {% endfor %}
                                         </li>
-                                        <li class="ico-time"><strong>Pristatymo laikas:</strong>{{ place.deliveryTime }}</li>
-                                        <li class="ico-delivery"><strong>Pristatymo mokestis:</strong>{{ place.deliveryPrice }} {{ currency_display }}</li>
-                                        <li class="ico-cart"><strong>Minimalus krepšelis:</strong>{{ place.cartMinimum }} {{ currency_display }}</li>
-                                        <li class="ico-payments"><strong>Atsiskaitymo būdai:</strong><span class="payments-data"></span></li>
+                                        <li class="ico-time"><strong>{% trans %}places.delivery_time{% endtrans %}:</strong>{{ place.deliveryTime }}</li>
+                                        <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>{{ place.deliveryPrice }} {{ currency_display }}</li>
+                                        <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>{{ place.cartMinimum }} {{ currency_display }}</li>
+                                        <li class="ico-payments"><strong>{% trans %}places.payment_types{% endtrans %}:</strong><span class="payments-data"></span></li>
                                     </ul>
                                 </div>
                                 <div class="restaurant-info-righter simple-content">
@@ -149,31 +149,31 @@
                                         <div class="righter">
                                             <table class="work-times">
                                                 <tr>
-                                                    <td>Pirmadienis</td>
+                                                    <td>{% trans %}general.monday{% endtrans %}</td>
                                                     <td class="tar wd1"><span>10:00 - 24:00</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Antradienis</td>
+                                                    <td>{% trans %}general.tuesday{% endtrans %}</td>
                                                     <td class="tar wd2"> <span>10:00 - 24:00</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Trečiadienis</td>
+                                                    <td>{% trans %}general.wednesday{% endtrans %}</td>
                                                     <td class="tar wd3"> <span>10:00 - 24:00</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Ketvirtadienis</td>
+                                                    <td>{% trans %}general.thursday{% endtrans %}</td>
                                                     <td class="tar wd4"> <span>10:00 - 24:00</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Penktadienis</td>
+                                                    <td>{% trans %}general.friday{% endtrans %}</td>
                                                     <td class="tar wd5"> <span>10:00 - 24:00</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Šeštadienis</td>
+                                                    <td>{% trans %}general.saturday{% endtrans %}</td>
                                                     <td class="tar wd6"> <span>10:00 - 24:00</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Sekmadienis</td>
+                                                    <td>{% trans %}general.sunday{% endtrans %}</td>
                                                     <td class="tar wd7"> <span>10:00 - 24:00</span></td>
                                                 </tr>
                                             </table>
