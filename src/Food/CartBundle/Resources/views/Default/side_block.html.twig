@@ -7,7 +7,7 @@
             <div class="type">{{ dish.dishSizeId.unit.name }}</div>
             <div class="clearfix">
                 <div class="count">{{ dish.quantity }} vnt.</div>
-                <div class="sum">{{ dish.dishSizeId.price }} Lt</div>
+                <div class="sum">x {{ dish.dishSizeId.price }} Lt</div>
             </div>
             {% if dish.options|length > 0 %}
                 {% for option in dish.options %}
@@ -26,7 +26,7 @@
         </div>
         <div class="total-sum clearfix">
             <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
-            <div class="fr">65,98 Lt</div>
+            <div class="fr">{{ total }} Lt</div>
         </div>
     </div>
     <div class="delivery-time tac">{% trans %}cart.block.delivery_time{% endtrans %} {{ place.deliveryTime }}</div>

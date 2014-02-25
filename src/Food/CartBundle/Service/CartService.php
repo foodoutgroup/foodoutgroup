@@ -235,14 +235,31 @@ class CartService {
     {
         $list = $this->getEm()->getRepository('FoodCartBundle:Cart')->findBy(
             array(
-                'session' => $this->getSessionId()
+                'session' => $this->getSessionId(),
+                'place_id' => $place
             )
         );
-
         foreach($list as $k => &$item) {
             $item->setEm($this->getEm());
         }
         return $list;
+    }
+
+    /**
+     * @param \Food\CartBundle\Entity\Cart[] $cartItems
+     * @param \Food\DishesBundle\Entity\Place $place
+     */
+    public function getCartTotal($cartItems, $place)
+    {
+        $total = 0;
+        foreach ($cartItems as $cartItem) {
+            $total += $cartItem->getDishSizeId()->getPrice() * $cartItem->getQuantity();
+            foreach ($cartItem->getOptions() as $opt) {
+                $total += $opt->getDishOptionId()->getPrice() * $opt->getQuantity();
+            }
+        }
+        $total += $place->getDeliveryPrice();
+        return $total;
     }
 
     /**
@@ -260,9 +277,13 @@ class CartService {
         return $list;
     }
 
-    public function getCartDishesForJson()
+    /**
+     * @param \Place $place
+     * @return array
+     */
+    public function getCartDishesForJson($place)
     {
-        $cartItems = $this->getCartDishes();
+        $cartItems = $this->getCartDishes($place);
         $returnData = array();
         foreach ($cartItems as $cartItem) {
             $tmpRow = array(

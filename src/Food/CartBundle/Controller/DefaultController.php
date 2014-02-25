@@ -46,6 +46,7 @@ class DefaultController extends Controller
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
         $jsonResponseData = array();
+
         switch($action) {
             case 'add':
                 $this->_actonAddItem($jsonResponseData, $this->getRequest());
@@ -57,7 +58,20 @@ class DefaultController extends Controller
             case 'remove-option':
                 break;
         }
-        $jsonResponseData['items'] = $this->getCartService()->getCartDishesForJson();
+        /*
+        $jsonResponseData['items'] = $this->getCartService()->getCartDishesForJson(
+            $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(
+                $this->getRequest()->get('place')
+            )
+        );
+        */
+        $jsonResponseData['block'] = $this->sideBlockAction(
+            $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(
+                $this->getRequest()->get('place')
+            ),
+            true
+        );
+
         $response->setContent(json_encode($jsonResponseData));
         return $response;
     }
@@ -134,12 +148,24 @@ class DefaultController extends Controller
     /**
      * Side cart block
      *
+     * @param \Place $place
+     * @param bool $renderView
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function sideBlockAction($place)
+    public function sideBlockAction($place, $renderView = false)
     {
         $list = $this->getCartService()->getCartDishes($place);
-        return $this->render('FoodCartBundle:Default:side_block.html.twig', array('list' => $list, 'place'=> $place));
+        $total = $this->getCartService()->getCartTotal($list, $place);
+        $params = array(
+            'list'  => $list,
+            'place' => $place,
+            'total' => $total
+        );
+        if ($renderView) {
+            return $this->renderView('FoodCartBundle:Default:side_block.html.twig', $params);
+        }
+        return $this->render('FoodCartBundle:Default:side_block.html.twig', $params);
     }
 
     /**
