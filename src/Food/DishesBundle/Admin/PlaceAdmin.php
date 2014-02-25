@@ -33,8 +33,16 @@ class PlaceAdmin extends FoodAdmin
 
         $formMapper
             ->add('name', 'text', array('label' => 'admin.place.name'))
-            ->add('slogan', 'text', array('label' => 'admin.place.slogan', 'required' => false,))
-            ->add('description', null, array('label' => 'admin.place.description', 'required' => false,))
+            ->add(
+                'translations',
+                'a2lix_translations_gedmo',
+                array(
+                    'translatable_class' => 'Food\DishesBundle\Entity\Place',
+                    'fields' => array(
+                        'slogan' => array('label' => 'admin.place.slogan', 'required' => false,),
+                        'description' => array('label' => 'admin.place.description', 'required' => true,),
+                )
+            ))
             ->add('kitchens', null, array(
                 'query_builder' => $kitchenQuery,
                 'multiple' => true,
@@ -176,7 +184,7 @@ class PlaceAdmin extends FoodAdmin
      */
     private function fixSlugs($object)
     {
-        $origName = $object->getName();
+        $origName = $object->getOrigName($this->modelManager->getEntityManager('FoodDishesBundle:Place'));
         $locales = $this->getContainer()->getParameter('available_locales');
         $textsForSlugs = array();
         foreach ($locales as $loc) {

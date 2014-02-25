@@ -6,6 +6,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Food\AppBundle\Entity\Uploadable;
+use Gedmo\Translatable\Translatable;
 
 /**
  * Client
@@ -13,9 +14,9 @@ use Food\AppBundle\Entity\Uploadable;
  * @ORM\Table(name="place")
  * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\PlaceRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- *
+ * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\PlaceLocalized")
  */
-class Place extends Uploadable
+class Place extends Uploadable implements Translatable
 {
     /**
      * @var integer
@@ -35,14 +36,14 @@ class Place extends Uploadable
 
     /**
      * @var string
-     *
+     * @Gedmo\Translatable
      * @ORM\Column(name="slogan", type="string", length=255, nullable=true)
      */
     private $slogan;
 
     /**
      * @var string
-     *
+     * @Gedmo\Translatable
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description = null;
@@ -183,9 +184,20 @@ class Place extends Uploadable
      */
     private $deletedBy;
 
-
     public $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
     public $boxSize = array('w' => 130, 'h' => 86);
+
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
+
+    /**
+     * @ORM\OneToMany(targetEntity="PlaceLocalized", mappedBy="object", cascade={"persist", "remove"})
+     **/
+    private $translations;
 
 
     /**
@@ -913,4 +925,54 @@ class Place extends Uploadable
     {
         return $this->description;
     }
+
+    /**
+     * Add translations
+     *
+     * @param \Food\DishesBundle\Entity\PlaceLocalized $translations
+     * @return Place
+     */
+    public function addTranslation(\Food\DishesBundle\Entity\PlaceLocalized $translations)
+    {
+        $this->translations[] = $translations;
+    
+        return $this;
+    }
+
+    /**
+     * Remove translations
+     *
+     * @param \Food\DishesBundle\Entity\PlaceLocalized $translations
+     */
+    public function removeTranslation(\Food\DishesBundle\Entity\PlaceLocalized $translations)
+    {
+        $this->translations->removeElement($translations);
+    }
+
+    /**
+     * Get translations
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * @param mixed $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
 }

@@ -272,15 +272,6 @@
                 <source>admin.place.name</source>
                 <target>Vietos pavadinimas</target>
             </trans-unit>
-            <trans-unit id="admin.place.slogan">
-                <source>admin.place.slogan</source>
-                <target>Šūkis</target>
-            </trans-unit>
-            <trans-unit id="admin.place.description">
-                <source>admin.place.description</source>
-                <target>Aprašymas</target>
-            </trans-unit>
-
             <trans-unit id="admin.place.delivery_time">
                 <source>admin.place.delivery_time</source>
                 <target>Prist. trukmė</target>
