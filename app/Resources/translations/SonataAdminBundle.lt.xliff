@@ -473,6 +473,14 @@
                 <source>admin.static.content</source>
                 <target>Turinys</target>
             </trans-unit>
+            <trans-unit id="admin.static.order_no">
+                <source>admin.static.order_no</source>
+                <target>Eilės nr.</target>
+            </trans-unit>
+            <trans-unit id="admin.static.order_no_short">
+                <source>admin.static.order_no_short</source>
+                <target>Eil.nr.</target>
+            </trans-unit>
             <trans-unit id="admin.dish_sizes">
                 <source>admin.dish_sizes</source>
                 <target>Dydžiai/Vienetai</target>

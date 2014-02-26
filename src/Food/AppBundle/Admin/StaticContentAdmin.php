@@ -26,7 +26,8 @@ class StaticContentAdmin extends FoodAdmin
                     'title' => array('label' => 'admin.static.title'),
                     'content' => array('label' => 'admin.static.content')
                 )
-            ));
+            ))
+            ->add('order', 'integer', array('label' => 'admin.static.order_no'));
         ;
     }
 
@@ -56,6 +57,7 @@ class StaticContentAdmin extends FoodAdmin
     {
         $listMapper
             ->addIdentifier('title', 'string', array('label' => 'admin.static.title'))
+            ->add('order', 'integer', array('label' => 'admin.static.order_no_short', 'editable' => true))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
             ->add('editedBy', null, array('label' => 'admin.edited_by'))
             ->add('_action', 'actions', array(
@@ -75,7 +77,7 @@ class StaticContentAdmin extends FoodAdmin
      */
     public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
     {
-        $collection->clearExcept(array('list', 'edit', 'show'));
+        $collection->clearExcept(array('list', 'edit', 'show', 'create'));
     }
 
     /**

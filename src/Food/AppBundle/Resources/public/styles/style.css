@@ -632,6 +632,8 @@ input.button {}
 .site-footer .copyrights {margin: 0; color: #fff;}
 
 .small-col {width: 193px; line-height: 29px;}
+/* TODO laikinas footerio reitingu isplatinimas */
+.small-col.rating-col {width: 227px;}
 
 .copyrights {position: absolute; right: 0px; bottom: 8px; font-size: 11px;}
 

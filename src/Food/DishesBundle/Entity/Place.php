@@ -135,6 +135,13 @@ class Place extends Uploadable implements Translatable
     private $reviews;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="average_rating", type="float")
+     */
+    private $averageRating = 0;
+
+    /**
      * @ORM\OneToMany(targetEntity="\Food\UserBundle\Entity\User", mappedBy="place")
      **/
     private $users;
@@ -974,4 +981,26 @@ class Place extends Uploadable implements Translatable
         return $this->locale;
     }
 
+    /**
+     * Set averageRating
+     *
+     * @param float $averageRating
+     * @return Place
+     */
+    public function setAverageRating($averageRating)
+    {
+        $this->averageRating = $averageRating;
+    
+        return $this;
+    }
+
+    /**
+     * Get averageRating
+     *
+     * @return float
+     */
+    public function getAverageRating()
+    {
+        return $this->averageRating;
+    }
 }

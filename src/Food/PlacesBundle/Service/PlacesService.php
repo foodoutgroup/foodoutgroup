@@ -87,4 +87,20 @@ class PlacesService extends ContainerAware {
         }
         $this->getSession()->set('point_data', $rel);
     }
+
+    /**
+     * @param int $limit
+     * @return array|\Food\DishesBundle\Entity\Place[]
+     */
+    public function getTopRatedPlaces($limit=10)
+    {
+        $placesQuery = $this->em()->getRepository('FoodDishesBundle:Place')
+            ->createQueryBuilder('p')
+            ->where('p.active = 1')
+            ->orderBy('p.averageRating', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        return $placesQuery->getResult();
+    }
 }
