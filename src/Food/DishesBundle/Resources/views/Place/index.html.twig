@@ -19,12 +19,35 @@
     {% javascripts '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.pack.js' %}
         <script src="{{ asset_url }}"></script>
         <script type="application/javascript">
+            /**
+             * @todo Migrate to JS file
+             */
+            var addToCartUrl = '{{ path('food_cart_action', {'action' : 'add'}) }}';
+            var dishBlock = null;
             $(document).ready(function(){
                 $('.fancy-box').fancybox({
                     padding : 0,
-                    scrolling: 'visible'
+                    scrolling: 'visible',
+                    afterShow: function(e) {
+                        dishBlock = $('#detailed-dish-popup');
+                        dishBlock.find('input').iCheck();
+                        dishBlock.find('.button-submit.add-to-cart:not(.has-bind)').addClass('has-bind').bind('click', function() {
+                            addToCart();
+                        });
+                    }
                 });
             });
+            function addToCart() {
+                if (dishBlock.find('.dish-size:checked').length != 0) {
+                    dishBlock.mask();
+                    $.post(addToCartUrl, $('.popup.detailed-dish-popup').serialize(), function(resp) {
+                        if (typeof(resp.block) != "undefined") {
+                            $('.check-block').replaceWith(resp.block);
+                        }
+                        dishBlock.unmask();
+                    }, 'json');
+                }
+            }
         </script>
     {% endjavascripts %}
 

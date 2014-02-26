@@ -9,14 +9,15 @@
             <div class="clearfix">
                 {% for size in dish.sizes %}
                     <label class="custom-radio">{{ size.unit.name }}<strong class="price">{{ size.price }} Lt</strong>
-                        <input type="radio" value="{{ size.id }}" name="size-1">
+                        <input type="radio" {% if loop.first %}checked{% endif %} value="{{ size.id }}" class="dish-size" name="dish-size">
                     </label>
                 {% endfor %}
             </div>
         </div>
-        <div class="dish-ingredients">
-            <div class="title">{% trans %}dish.select_options{% endtrans %}</div>
-            {% if dish.options|length > 0 %}
+
+        {% if dish.options|length > 0 %}
+            <div class="dish-ingredients">
+                <div class="title">{% trans %}dish.select_options{% endtrans %}</div>
                 <div class="clearfix">
                 {% for option in dish.options %}
                     <label class="custom-checkbox">{{ option.name }}<strong class="price">+{{ option.price }} Lt</strong>
@@ -24,8 +25,10 @@
                     </label>
                 {% endfor %}
                 </div>
-            {% endif %}
-        </div>
-        <div class="popup-controls"><a href="#" class="button-submit"><span>{% trans %}dish.add_to_cart{% endtrans %}</span></a></div>
+            </div>
+        {% endif %}
+        <input type="hidden" name="place" value="{{ dish.place.id }}">
+
+        <div class="popup-controls"><a href="#" class="button-submit add-to-cart"><span>{% trans %}dish.add_to_cart{% endtrans %}</span></a></div>
     </form>
 </div>

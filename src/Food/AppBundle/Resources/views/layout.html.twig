@@ -6,7 +6,7 @@
     <title>{% block title %}{{ page_title }}{% endblock %}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=1000">
-    {% stylesheets '@FoodAppBundle/Resources/public/scripts/jquery-ui/custom-theme/jquery-ui-1.10.3.custom.min.css' %}
+    {% stylesheets 'bundles/foodapp/scripts/jquery-ui/custom-theme/jquery-ui-1.10.3.custom.min.css' filter="cssrewrite" %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/scripts/boxer/jquery.fs.boxer.css*'  %}
@@ -164,6 +164,7 @@
     </div>
 </div>
 
+<script src="{{ asset('bundles/foodapp/scripts/common.js')}} "></script>
 <script src="{{ asset('bundles/foodapp/scripts/scripts.js')}} "></script>
 <script type="text/javascript">
     {% block jscode %}{% endblock %}
