@@ -8,6 +8,10 @@
     <script type="application/javascript">
         Place.listTypeSaveUrl = '{{ path('food_place_menu_layout') }}';
         Place.placePointDataUrl = '{{ path('food_place_point_data') }}';
+        Place.translations = {
+            'payments_cash': '{% trans %}places.payments.cash{% endtrans %}',
+            'payments_card': '{% trans %}places.payments.card{% endtrans %}'
+        };
     </script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api }}&sensor=false"></script>
     {% endjavascripts %}
@@ -134,51 +138,53 @@
                                         <li class="ico-time"><strong>{% trans %}places.delivery_time{% endtrans %}:</strong>{{ place.deliveryTime }}</li>
                                         <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>{{ place.deliveryPrice }} {{ currency_display }}</li>
                                         <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>{{ place.cartMinimum }} {{ currency_display }}</li>
-                                        <li class="ico-payments"><strong>{% trans %}places.payment_types{% endtrans %}:</strong><span class="payments-data"></span></li>
+                                        <li class="ico-payments hidden"><strong>{% trans %}places.payment_types{% endtrans %}:</strong><span class="payments-data"></span></li>
                                     </ul>
                                 </div>
                                 <div class="restaurant-info-righter simple-content">
                                     <p>{{ place.description }}</p>
-                                    <select class="custom-select">
-                                        {% for point in place.points%}
-                                            <option value="{{ point.id }}">{{ point.address }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <div class="location-work-hours clearfix">
-                                        <div class="lefter" id="restaurant-map-location" style="height: 300px;width: 300px;"></div>
-                                        <div class="righter">
-                                            <table class="work-times">
-                                                <tr>
-                                                    <td>{% trans %}general.monday{% endtrans %}</td>
-                                                    <td class="tar wd1"><span>10:00 - 24:00</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>{% trans %}general.tuesday{% endtrans %}</td>
-                                                    <td class="tar wd2"> <span>10:00 - 24:00</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>{% trans %}general.wednesday{% endtrans %}</td>
-                                                    <td class="tar wd3"> <span>10:00 - 24:00</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>{% trans %}general.thursday{% endtrans %}</td>
-                                                    <td class="tar wd4"> <span>10:00 - 24:00</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>{% trans %}general.friday{% endtrans %}</td>
-                                                    <td class="tar wd5"> <span>10:00 - 24:00</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>{% trans %}general.saturday{% endtrans %}</td>
-                                                    <td class="tar wd6"> <span>10:00 - 24:00</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>{% trans %}general.sunday{% endtrans %}</td>
-                                                    <td class="tar wd7"> <span>10:00 - 24:00</span></td>
-                                                </tr>
-                                            </table>
+                                    {% if placePoints is not empty %}
+                                        <select class="custom-select">
+                                            {% for point in placePoints%}
+                                                <option value="{{ point.id }}">{{ point.address }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <div class="location-work-hours clearfix">
+                                            <div class="lefter" id="restaurant-map-location" style="height: 300px;width: 300px;"></div>
+                                            <div class="righter">
+                                                <table class="work-times">
+                                                    <tr>
+                                                        <td>{% trans %}general.monday{% endtrans %}</td>
+                                                        <td class="tar wd1"><span>10:00 - 24:00</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{% trans %}general.tuesday{% endtrans %}</td>
+                                                        <td class="tar wd2"> <span>10:00 - 24:00</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{% trans %}general.wednesday{% endtrans %}</td>
+                                                        <td class="tar wd3"> <span>10:00 - 24:00</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{% trans %}general.thursday{% endtrans %}</td>
+                                                        <td class="tar wd4"> <span>10:00 - 24:00</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{% trans %}general.friday{% endtrans %}</td>
+                                                        <td class="tar wd5"> <span>10:00 - 24:00</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{% trans %}general.saturday{% endtrans %}</td>
+                                                        <td class="tar wd6"> <span>10:00 - 24:00</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{% trans %}general.sunday{% endtrans %}</td>
+                                                        <td class="tar wd7"> <span>10:00 - 24:00</span></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
                                         </div>
-                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -188,21 +194,7 @@
                     {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place })) }}
                 </div>
             </div>
-            <div class="clearfix bottom-blocks bottom-block-lower">
-                <div class="app-block clearfix"><img src="/bundles/foodapp/images/app-view.png">
-                    <div class="app-block-inner">
-                        <h3>Skanu.lt <br/>tavo kišenėje!</h3>
-                        <div><a href="#"><img src="/bundles/foodapp/images/app-store.png"></a><a href="#"><img src="/bundles/foodapp/images/g-store.png"></a></div>
-                    </div>
-                </div>
-                <div class="newsletter-block">
-                    <h4>Naujienlaiškis</h4>
-                    <form class="newsletter-form">
-                        <input type="text" placeholder="Tavo el. paštas">
-                        <input type="submit" value="Prenumeruok">
-                    </form>
-                </div>
-            </div>
+            {% include 'FoodAppBundle:Default:bottom_block.html.twig' %}
         </div>
     </div>
 

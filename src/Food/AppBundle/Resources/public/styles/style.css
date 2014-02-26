@@ -689,4 +689,4 @@ input.button {}
 .login-register-popup a:hover {text-decoration: none;}
 
 /*Just hidden.. Nothing to see here*/
-.hidden { display: none; }
+.hidden { display: none !important; }
