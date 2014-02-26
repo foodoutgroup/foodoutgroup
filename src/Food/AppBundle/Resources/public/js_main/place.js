@@ -1,6 +1,9 @@
 $(document).ready(function() {
     Place.bindEvents();
-    $('#detailed-restaurant-info .restaurant-info-righter .custom-select').trigger('change');
+    var placePointSelect = $('#detailed-restaurant-info .restaurant-info-righter .custom-select');
+    if (typeof placePointSelect != "undefined" && placePointSelect.length) {
+        placePointSelect.trigger('change');
+    }
     // Visual refresh - dont know what it is, but just leave it here
     google.maps.visualRefresh = true;
 
@@ -17,6 +20,10 @@ var Place = {
     placePointDataUrl: '',
     lastPointData: null,
     informationTabOpened: false,
+    translations: {
+        'payments_cash': 'grynais',
+        'payments_card': 'kortele'
+    },
 
     /**
      * Bind restaurant view actions
@@ -85,19 +92,28 @@ var Place = {
                 type: 'get',
                 dataType: 'json',
                 success: function(data) {
+                    if (typeof data == "undefined" || data == '' || data == null) {
+                        // dont brake stuff, please
+                        return;
+                    }
                     Place.lastPointData = data;
                     // TODO translation
                     var payments = '';
                     if (data.allowCash) {
-                        payments += 'grynais';
+                        payments += Place.translations.payments_cash;
                     }
                     if (data.allowCard) {
                         if (payments != '') {
                             payments += ', ';
                         }
-                        payments += 'kortele';
+                        payments += Place.translations.payments_card;
                     }
-                    $('.ico-payments .payments-data').html(payments);
+                    var paymentsDataField  =$('.ico-payments');
+                    paymentsDataField.find('.payments-data').html(payments);
+                    if (paymentsDataField.hasClass('hidden')) {
+                        paymentsDataField.removeClass('hidden');
+                    }
+
 
                     var workTimesHolder = $('.work-times');
 

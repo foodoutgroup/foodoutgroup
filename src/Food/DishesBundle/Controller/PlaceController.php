@@ -13,6 +13,7 @@ class PlaceController extends Controller
         $request = $this->getRequest();
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
         $categoryList = $this->get('food.places')->getActiveCategories($place);
+        $placePoints = $this->get('food.places')->getPublicPoints($place);
         $categoryRepo = $this->getDoctrine()->getRepository('FoodDishesBundle:FoodCategory');
 
         $listType = 'thumbs';
@@ -34,6 +35,7 @@ class PlaceController extends Controller
                 'place' => $place,
                 'placeCategories' => $categoryList,
                 'selectedCategory' => $activeCategory,
+                'placePoints' => $placePoints,
                 'listType' => $listType,
             )
         );
