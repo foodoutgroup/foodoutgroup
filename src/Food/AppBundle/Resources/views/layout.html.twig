@@ -45,72 +45,7 @@
 
     {% block body %}{% endblock %}
 
-    <div class="site-footer">
-        <div class="site-block clearfix">
-            <div class="col col-1">
-                <h5>Item1</h5>
-                <ul class="menu">
-                    <li><a href="#">About us</a></li>
-                    <li><a href="#">About us</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Terms and Conditions</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                </ul>
-            </div>
-            <div class="col col-2">
-                <h5>Daugiau nuorodu</h5>
-                <ul class="menu">
-                    <li><a href="#">About us</a></li>
-                    <li><a href="#">Terms and Conditions</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">About us</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                </ul>
-            </div>
-            <div class="col col-3">
-                <h5>TOP restoranai</h5>
-                <div class="clearfix">
-                    <div class="small-col fl">
-                        <div class="clearfix"><span class="name fl"><a href="#">Čili pica</a></span>
-                            <div data-stars="5" class="restoran-rating fr"></div>
-                        </div>
-                        <div class="clearfix"><span class="name fl"><a href="#">Soya</a></span>
-                            <div data-stars="4" class="restoran-rating fr"></div>
-                        </div>
-                        <div class="clearfix"><span class="name fl"><a href="#">Forrester</a></span>
-                            <div data-stars="5" class="restoran-rating fr"></div>
-                        </div>
-                        <div class="clearfix"><span class="name fl"><a href="#">Indai</a></span>
-                            <div data-stars="5" class="restoran-rating fr"></div>
-                        </div>
-                        <div class="clearfix"><span class="name fl"><a href="#">Hesburger</a></span>
-                            <div data-stars="4" class="restoran-rating fr"></div>
-                        </div>
-                    </div>
-                    <div class="small-col fr">
-                        <div class="clearfix"><span class="name fl"><a href="#">Čili pica</a></span>
-                            <div data-stars="5" class="restoran-rating fr"></div>
-                        </div>
-                        <div class="clearfix"><span class="name fl"><a href="#">Soya</a></span>
-                            <div data-stars="4" class="restoran-rating fr"></div>
-                        </div>
-                        <div class="clearfix"><span class="name fl"><a href="#">Forrester</a></span>
-                            <div data-stars="5" class="restoran-rating fr"></div>
-                        </div>
-                        <div class="clearfix"><span class="name fl"><a href="#">Indai</a></span>
-                            <div data-stars="5" class="restoran-rating fr"></div>
-                        </div>
-                        <div class="clearfix"><span class="name fl"><a href="#">Hesburger</a></span>
-                            <div data-stars="4" class="restoran-rating fr"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col col-4"><img src="{{ asset('bundles/foodapp/images/logo_food_small.png') }}">
-                <p class="copyrights">&copy; foodout.lt</p>
-            </div>
-        </div>
-    </div>
+    {{ render(controller('FoodAppBundle:Default:footer')) }}
 </div>
 
 <div id="login-register-popup" style="display: none;">

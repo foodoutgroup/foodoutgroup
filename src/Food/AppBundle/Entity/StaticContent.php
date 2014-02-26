@@ -42,6 +42,13 @@ class StaticContent implements Translatable
     private $content;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="order_no", type="integer")
+     */
+    private $order = 1;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -361,4 +368,27 @@ class StaticContent implements Translatable
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
+
+    /**
+     * Set order
+     *
+     * @param integer $order
+     * @return StaticContent
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    
+        return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return integer 
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
 }
