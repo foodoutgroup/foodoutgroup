@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+
+    <title>{% block title %}Orders!{% endblock %}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" hrefs="{{ asset('css/bootstrap.css') }}">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{{ asset('js/jquery.js') }}"><\/script>')</script>
+    <script src="{{ asset('js/bootstrap.js') }}"></script>
+
+    {% stylesheets
+    '@FoodAppBundle/Resources/public/css_theme/*'
+    filter="?yui_css" %}
+    <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
+    {% endstylesheets %}
+
+    {% stylesheets
+    '@FoodAppBundle/Resources/public/css/*'
+    filter="?yui_css" %}
+    <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
+    {% endstylesheets %}
+
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <table class="table table-bordered table condensed">
+            <thead>
+            <tr>
+                <th style="width: 30px">#</th>
+                <th style="width: 30px">Kiekis</th>
+                <th>Patiekalas</th>
+                <th>Priedai</th>
+            </tr>
+            </thead>
+            <tbody>
+            <Tr>
+                <td>1.</td>
+                <td>1</td>
+                <td>Pizza mafijoja da la el diablo porfavor</td>
+                <td> - Pinciukas<br>- Grybukas<br>- Keciupo extra level</td>
+            </Tr>
+            <Tr>
+                <td>2.</td>
+                <td>10</td>
+                <td>Alus</td>
+                <td>Su žagares likeriu VISI</td>
+            </Tr>
+            </tbody>
+        </table>
+
+        <button type="button" class="btn btn-primary">{% trans %}mobile.order_confirm{% endtrans %}</button>
+        <button type="button" class="btn btn-warning">{% trans %}mobile.order_delay{% endtrans %}</button>
+        <button type="button" class="btn btn-success">{% trans %}mobile.order_finish{% endtrans %}</button>
+        <button type="button" class="btn btn-danger">{% trans %}mobile.order_cancel{% endtrans %}</button>
+    </div>
+</div>
+{% block javascripts %}{% endblock %}
+</body>
+</html>

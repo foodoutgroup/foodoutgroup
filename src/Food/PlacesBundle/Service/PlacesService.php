@@ -13,6 +13,11 @@ class PlacesService extends ContainerAware {
 
     }
 
+    public function getSession()
+    {
+        return $this->container->get('session');
+    }
+
     public function getAvailableCities()
     {
         $em = $this->em();
@@ -59,5 +64,14 @@ class PlacesService extends ContainerAware {
     public function getPlacePointData($pointId)
     {
         return $this->em()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
+    }
+
+    public function saveRelationPlaceToPoint($data)
+    {
+        $rel = array();
+        foreach ($data as $row) {
+            $rel[$row['place_id']] = $row['point_id'];
+        }
+        $this->getSession()->set('point_data', $rel);
     }
 }

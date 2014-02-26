@@ -187,15 +187,27 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param int $place
      * @return Order
      */
-    public function createOrder()
+    public function createOrder($place)
     {
+
+        $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Entity:Place')->find($place);
+        $placePointMap = $this->container->get('session')->get('point_data');
+        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:Entity:PlacePoint')->find($placePointMap[$place]);
+
         $this->order = new Order();
         $user = $this->container->get('security.context')->getToken()->getUser();
         if ($user == 'anon.') {
             $user = null;
         }
+        $this->order->setPlace($placeRecord);
+        $this->order->setPlaceName($placeRecord->getName());
+
+        $this->order->setPlacePoint($placeRecord);
+        $this->order->setPlacePointAddress($pointRecord->getAddress());
+
         $this->order->setUser($user);
         $this->order->setOrderDate(new \DateTime("now"));
         $this->order->setVat($this->container->getParameter('vat'));
@@ -298,9 +310,12 @@ class OrderService extends ContainerAware
         $this->order = $order;
     }
 
-    public function createOrderFromCart()
+    /**
+     * @param int $place
+     */
+    public function createOrderFromCart($place)
     {
-        $this->createOrder();
+        $this->createOrder($place);
         $this->saveOrder();
         foreach ($this->getCartService()->getCartDishes() as $cartDish) {
             $options = $this->getCartService()->getCartDishOptions($cartDish);

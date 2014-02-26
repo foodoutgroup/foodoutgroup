@@ -31,7 +31,10 @@ class DefaultController extends Controller
         foreach ($filters as $fkey=> &$filter) {
             $filter = trim($filter);
         }
+
         $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds($kitchens, $filter);
+        $this->get('food.places')->saveRelationPlaceToPoint($places);
+
         return $this->render('FoodPlacesBundle:Default:list.html.twig', array('places' => $places));
     }
 

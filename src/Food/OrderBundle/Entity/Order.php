@@ -20,6 +20,32 @@ class Order
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place")
+     * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
+     */
+    private $place;
+
+    /**
+     * @var string
+     * @ORM\Column(name="place_name", type="string", length=100, nullable=true)
+     */
+    private $place_name;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\PlacePoint")
+     * @ORM\JoinColumn(name="point_id", referencedColumnName="id")
+     */
+    private $place_point;
+
+    /**
+     * @var string
+     * @ORM\Column(name="place_point_address", type="string", length=100, nullable=true)
+     */
+    private $place_point_address;
+
+
+    /**
      * @ORM\Column(name="order_date", type="datetime")
      */
     private $order_date;
@@ -488,5 +514,114 @@ class Order
             'lastPaymentError' => $this->getLastPaymentError(),
             'deliveryType' => $this->getDeliveryType(),
         );
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->place_point = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set place_name
+     *
+     * @param string $placeName
+     * @return Order
+     */
+    public function setPlaceName($placeName)
+    {
+        $this->place_name = $placeName;
+    
+        return $this;
+    }
+
+    /**
+     * Get place_name
+     *
+     * @return string 
+     */
+    public function getPlaceName()
+    {
+        return $this->place_name;
+    }
+
+    /**
+     * Set place_point_address
+     *
+     * @param string $placePointAddress
+     * @return Order
+     */
+    public function setPlacePointAddress($placePointAddress)
+    {
+        $this->place_point_address = $placePointAddress;
+    
+        return $this;
+    }
+
+    /**
+     * Get place_point_address
+     *
+     * @return string 
+     */
+    public function getPlacePointAddress()
+    {
+        return $this->place_point_address;
+    }
+
+    /**
+     * Set place
+     *
+     * @param \Food\DishesBundle\Entity\Place $place
+     * @return Order
+     */
+    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
+    {
+        $this->place = $place;
+    
+        return $this;
+    }
+
+    /**
+     * Get place
+     *
+     * @return \Food\DishesBundle\Entity\Place 
+     */
+    public function getPlace()
+    {
+        return $this->place;
+    }
+
+    /**
+     * Remove place_point
+     *
+     * @param \Food\DishesBundle\Entity\PlacePoint $placePoint
+     */
+    public function removePlacePoint(\Food\DishesBundle\Entity\PlacePoint $placePoint)
+    {
+        $this->place_point->removeElement($placePoint);
+    }
+
+    /**
+     * Get place_point
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPlacePoint()
+    {
+        return $this->place_point;
+    }
+
+    /**
+     * Set place_point
+     *
+     * @param \Food\DishesBundle\Entity\PlacePoint $placePoint
+     * @return Order
+     */
+    public function setPlacePoint(\Food\DishesBundle\Entity\PlacePoint $placePoint = null)
+    {
+        $this->place_point = $placePoint;
+    
+        return $this;
     }
 }
