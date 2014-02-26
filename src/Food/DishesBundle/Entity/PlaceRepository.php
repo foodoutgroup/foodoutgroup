@@ -84,9 +84,7 @@ class PlaceRepository extends EntityRepository
 
         foreach ($places as $pkey=>&$place) {
             $place['place'] = $this->find($place['place_id']);
-            unset($place['place_id']);
             $place['point'] = $this->getEntityManager()->getRepository('FoodDishesBundle:PlacePoint')->find($place['point_id']);
-            unset($place['point_id']);
         }
 
         return $places;

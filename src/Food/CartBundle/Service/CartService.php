@@ -167,6 +167,22 @@ class CartService {
     }
 
     /**
+     * @param int $size
+     * @param int $quantity
+     * @param array $options
+     */
+    public function addDishBySizeId($size, $quantity, $options)
+    {
+        $size = $this->getEm()->getRepository('FoodDishesBundle:DishSize')->find($size);
+        $this->addDishByIds(
+            $size->getDish()->getId(),
+            $size,
+            $quantity,
+            $options
+        );
+    }
+
+    /**
      * @param $dish
      * @param $size
      * @param $quantity
@@ -203,6 +219,8 @@ class CartService {
      */
     public function addDish(Dish $dish, DishSize $dishSize, $quantity, $options = array()) {
         $cartItem = new Cart();
+
+        $cartItem->setPlaceId($dish->getPlace());
         $cartItem->setDishId($dish);
         $cartItem->setSession($this->getSessionId());
         $cartItem->setQuantity($quantity);

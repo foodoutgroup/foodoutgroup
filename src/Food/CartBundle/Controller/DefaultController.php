@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
@@ -78,11 +79,15 @@ class DefaultController extends Controller
 
     /**
      * @param $responseData
-     * @param array $params
+     * @param Request $request
      */
-    private function _actonAddItem(&$responseData, $params)
+    private function _actonAddItem(&$responseData, $request)
     {
-        $responseData = array("kebas"=>"grabas");
+        $this->getCartService()->addDishBySizeId(
+            $request->get('dish-size'),
+            1,
+            $request->get('options')
+        );
     }
 
     /**
