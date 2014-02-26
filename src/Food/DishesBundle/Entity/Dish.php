@@ -153,7 +153,9 @@ class Dish extends Uploadable implements Translatable
     public $multipleThumbs = true;
     public $boxSize = array(
         'type1' => array('w' => 260, 'h' => 179),
-        'type2' => array('w' => 118, 'h' => 97)
+        'type2' => array('w' => 118, 'h' => 97),
+        'type3' => array('w' => 550, 'h' => 400), // @todo - check ar sitie gerai ir atitinka realybe :)
+        'type4' => array('w' => 1300, 'h' => 500), // @todo - check ar sitie gerai ir atitinka realybe :)
     );
 
     /**
