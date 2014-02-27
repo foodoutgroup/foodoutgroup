@@ -42,6 +42,13 @@ class StaticContent implements Translatable
     private $content;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active = false;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="order_no", type="integer")
@@ -132,6 +139,14 @@ class StaticContent implements Translatable
     public function getLocale()
     {
         return $this->locale;
+    }
+
+    /**
+     * @param $locale
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
     }
 
     /**
@@ -390,5 +405,28 @@ class StaticContent implements Translatable
     public function getOrder()
     {
         return $this->order;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     * @return StaticContent
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }

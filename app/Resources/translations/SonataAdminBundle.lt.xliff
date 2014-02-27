@@ -477,6 +477,10 @@
                 <source>admin.static.order_no</source>
                 <target>Eilės nr.</target>
             </trans-unit>
+            <trans-unit id="admin.static.active">
+                <source>admin.static.active</source>
+                <target>Aktyvus</target>
+            </trans-unit>
             <trans-unit id="admin.static.order_no_short">
                 <source>admin.static.order_no_short</source>
                 <target>Eil.nr.</target>
