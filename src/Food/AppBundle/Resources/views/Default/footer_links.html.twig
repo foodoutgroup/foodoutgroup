@@ -6,7 +6,7 @@
             <ul class="menu">
                 {% for page in staticPages %}
                     <li>
-                        <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(page.id, 'food_text')}) }}">
+                        <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(page.id, 'text')}) }}">
                             {{ page.title }}
                         </a>
                     </li>
@@ -34,7 +34,7 @@
                         {#{% if not (loop.index % 2) %}#}
                             <div class="clearfix">
                                 <span class="name fl">
-                                    <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'food_place')}) }}">
+                                    <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place')}) }}">
                                         {{ place.name }}
                                     </a>
                                 </span>
