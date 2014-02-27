@@ -351,9 +351,10 @@ class StaticContent implements Translatable
      */
     public function addTranslation(\Food\AppBundle\Entity\StaticContentLocalized $translations)
     {
-        $this->translations[] = $translations;
-    
-        return $this;
+        if (!$this->translations->contains($translations)) {
+            $this->translations[] = $translations;
+            $translations->setObject($this);
+        }
     }
 
     /**
