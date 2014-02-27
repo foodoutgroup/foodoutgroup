@@ -4,11 +4,13 @@
         <div class="col col-1">
             <h5>{% trans %}general.page_name{% endtrans %}</h5>
             <ul class="menu">
-                <li><a href="#">About us</a></li>
-                <li><a href="#">About us</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">Terms and Conditions</a></li>
-                <li><a href="#">Privacy Policy</a></li>
+                {% for page in staticPages %}
+                    <li>
+                        <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(page.id, 'food_text')}) }}">
+                            {{ page.title }}
+                        </a>
+                    </li>
+                {% endfor %}
             </ul>
         </div>
         {# TODO Kolkas neturime tiek nuorodu #}

@@ -20,7 +20,7 @@ class DefaultController extends Controller
             'FoodAppBundle:Default:footer_links.html.twig',
             array(
                 'topRatedPlaces' => $topRatedPlaces,
-                'styaticPages' => $staticPages,
+                'staticPages' => $staticPages,
             )
         );
     }
