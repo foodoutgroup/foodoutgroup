@@ -248,6 +248,32 @@ a2lix_translation_form:
 #evp omg
 evp_web_to_pay:
     credentials:
-        project_id: 45333 # Kolkas crap, o ne id :D
+        project_id: 45333
         sign_password: 4e9f20772a3fa0c83f76dae9c6e06008
     use_sandbox: false
+# TrkSteel cke editor
+trsteel_ckeditor:
+    class: Trsteel\CkeditorBundle\Form\Type\CkeditorType
+    transformers: ['html_purifier']
+    toolbar: ['document', 'clipboard', 'editing', '/', 'basicstyles', 'paragraph', 'links', '/', 'insert', 'styles', 'tools']
+    toolbar_groups:
+        document: ['Source','-','Save','-','Templates']
+        clipboard: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo']
+        editing: ['Find','Replace','-','SelectAll']
+        basicstyles: ['Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat']
+        paragraph: ['NumberedList','BulletedList','-','Outdent','Indent','-','JustifyLeft', 'JustifyCenter','JustifyRight','JustifyBlock']
+        links: ['Link','Unlink','Anchor']
+        insert: ['Image','Flash','Table','HorizontalRule']
+        styles: ['Styles','Format']
+        tools: ['Maximize', 'ShowBlocks']
+    ui_color: '#CCCCCC'
+    startup_outline_blocks: true
+    width: 800 #Integer or %
+    height: 300 #Integer or %
+    language: 'en-en'
+#    filebrowser_upload_url:
+#        url: relative-url.php?type=file
+#    filebrowser_image_browse_url:
+#        route: route_name
+#        route_parameters:
+#            type: image

@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "0037abe8a3f5b3e3946907208399700b",
+    "hash": "2d1ef33620d7cd615f620ee79ae2e93f",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -511,12 +511,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "e84e0229bae89a57106abf17753e351e9e16874a"
+                "reference": "941a69c8414a29f603991cd58542afd3865e960f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/e84e0229bae89a57106abf17753e351e9e16874a",
-                "reference": "e84e0229bae89a57106abf17753e351e9e16874a",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/941a69c8414a29f603991cd58542afd3865e960f",
+                "reference": "941a69c8414a29f603991cd58542afd3865e960f",
                 "shasum": ""
             },
             "require": {
@@ -575,7 +575,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2014-02-03 21:03:15"
+            "time": "2014-02-25 18:05:38"
         },
         {
             "name": "doctrine/doctrine-fixtures-bundle",
@@ -828,6 +828,51 @@
                 "orm"
             ],
             "time": "2014-02-09 14:45:36"
+        },
+        {
+            "name": "ezyang/htmlpurifier",
+            "version": "v4.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ezyang/htmlpurifier.git",
+                "reference": "6f389f0f25b90d0b495308efcfa073981177f0fd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/6f389f0f25b90d0b495308efcfa073981177f0fd",
+                "reference": "6f389f0f25b90d0b495308efcfa073981177f0fd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "HTMLPurifier": "library/"
+                },
+                "files": [
+                    "library/HTMLPurifier.composer.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Edward Z. Yang",
+                    "email": "admin@htmlpurifier.org",
+                    "homepage": "http://ezyang.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Standards compliant HTML filter written in PHP",
+            "homepage": "http://htmlpurifier.org/",
+            "keywords": [
+                "html"
+            ],
+            "time": "2013-11-30 08:25:19"
         },
         {
             "name": "friendsofsymfony/user-bundle",
@@ -1649,7 +1694,7 @@
         },
         {
             "name": "sonata-project/admin-bundle",
-            "version": "dev-master",
+            "version": "2.2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
@@ -1733,12 +1778,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "803a0b7eb69279670adb12b2385df7b51c324df8"
+                "reference": "7f6963007b8b74cca4a413d37d097e2eae2fddc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/803a0b7eb69279670adb12b2385df7b51c324df8",
-                "reference": "803a0b7eb69279670adb12b2385df7b51c324df8",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/7f6963007b8b74cca4a413d37d097e2eae2fddc2",
+                "reference": "7f6963007b8b74cca4a413d37d097e2eae2fddc2",
                 "shasum": ""
             },
             "require": {
@@ -1789,7 +1834,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-02-24 10:59:38"
+            "time": "2014-02-25 18:18:37"
         },
         {
             "name": "sonata-project/cache",
@@ -1925,12 +1970,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "a592fb248b512e5c25c46b15658eb841074c8620"
+                "reference": "ad52e53a2b6e91083135839e0192aee0403e2987"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/a592fb248b512e5c25c46b15658eb841074c8620",
-                "reference": "a592fb248b512e5c25c46b15658eb841074c8620",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/ad52e53a2b6e91083135839e0192aee0403e2987",
+                "reference": "ad52e53a2b6e91083135839e0192aee0403e2987",
                 "shasum": ""
             },
             "require": {
@@ -1943,6 +1988,9 @@
             "require-dev": {
                 "doctrine/orm": "~2.4",
                 "doctrine/phpcr-odm": "~1.0",
+                "friendsofsymfony/rest-bundle": "~1.1",
+                "jms/serializer-bundle": "~0.11",
+                "sensio/framework-extra-bundle": "~2.2",
                 "sonata-project/exporter": "~1.3"
             },
             "type": "symfony-bundle",
@@ -1976,7 +2024,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-02-24 10:02:06"
+            "time": "2014-02-26 16:14:27"
         },
         {
             "name": "sonata-project/doctrine-extensions",
@@ -2871,6 +2919,61 @@
             "time": "2014-02-12 08:18:23"
         },
         {
+            "name": "trsteel/ckeditor-bundle",
+            "version": "dev-master",
+            "target-dir": "Trsteel/CkeditorBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/trsteel88/TrsteelCkeditorBundle.git",
+                "reference": "19433201f664a4cc60fbd739978a3b13525f66ba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/trsteel88/TrsteelCkeditorBundle/zipball/19433201f664a4cc60fbd739978a3b13525f66ba",
+                "reference": "19433201f664a4cc60fbd739978a3b13525f66ba",
+                "shasum": ""
+            },
+            "require": {
+                "ezyang/htmlpurifier": "~4.0",
+                "php": ">=5.3.0",
+                "symfony/form": ">=2.1,<2.5-dev",
+                "symfony/framework-bundle": "2.*,<2.5",
+                "twig/twig": ">=1.1,<2.0-dev"
+            },
+            "require-dev": {
+                "symfony/twig-bundle": "2.*,<2.5",
+                "symfony/yaml": "~2.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Trsteel\\CkeditorBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Trent Steel",
+                    "email": "trsteel88@gmail.com"
+                }
+            ],
+            "description": "Symfony2 bundle for easy integration of the CKEditor WYSIWYG",
+            "keywords": [
+                "CKEditor",
+                "editor",
+                "wysiwyg"
+            ],
+            "time": "2014-02-19 13:03:18"
+        },
+        {
             "name": "twig/extensions",
             "version": "v1.0.1",
             "source": {
@@ -3081,7 +3184,8 @@
         "webtopay/libwebtopay": 20,
         "webtopay/webtopay-bundle": 20,
         "shuber/curl": 20,
-        "imagine/imagine": 20
+        "imagine/imagine": 20,
+        "trsteel/ckeditor-bundle": 20
     },
     "platform": {
         "php": ">=5.3.3"

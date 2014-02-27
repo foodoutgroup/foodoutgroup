@@ -60,7 +60,8 @@
         "webtopay/libwebtopay": "1.6.*@dev",
         "webtopay/webtopay-bundle": "dev-master",
         "shuber/curl": "dev-master",
-        "imagine/Imagine": "dev-master"
+        "imagine/Imagine": "dev-master",
+        "trsteel/ckeditor-bundle": "1.4.x-dev"
     },
     "scripts": {
         "post-install-cmd": [
