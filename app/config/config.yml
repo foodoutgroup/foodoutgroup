@@ -130,6 +130,7 @@ doctrine:
                 sin: DoctrineExtensions\Query\Mysql\Sin
                 pi: DoctrineExtensions\Query\Mysql\Pi
                 cos: DoctrineExtensions\Query\Mysql\Cos
+                rand: DoctrineExtensions\Query\Mysql\Rand
                 power: Food\AppBundle\DQL\PowerFunction
 
 

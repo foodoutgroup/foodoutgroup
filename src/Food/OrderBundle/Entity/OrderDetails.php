@@ -71,6 +71,15 @@ class OrderDetails
     }
 
     /**
+     * @todo REIK TESTUOT. Gink die koks jabanunas mappedBy :D - jei neveiks - Lenkai kalti :D
+     *
+     * @var OrderDetails[]
+     *
+     * ORM\OneToMany(targetEntity="OrderDetailsOptions", mappedBy={"order_id", "dish_id"})
+     */
+    private $details;
+
+    /**
      * Get dish_name
      *
      * @return string 

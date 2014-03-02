@@ -50,6 +50,7 @@ class PlaceAdmin extends FoodAdmin
             )
             ->add('active', 'checkbox', array('label' => 'admin.active', 'required' => false,))
             ->add('new', 'checkbox', array('label' => 'admin.is_new', 'required' => false,))
+            ->add('recommended', 'checkbox', array('label' => 'admin.place.recommended', 'required' => false,))
             ->add('deliveryTime', null, array('label' => 'admin.place.delivery_time'))
             ->add('deliveryPrice', null, array('label' => 'admin.place.delivery_price'))
             ->add('cartMinimum', null, array('label' => 'admin.place.cart_minimum'))
@@ -85,6 +86,7 @@ class PlaceAdmin extends FoodAdmin
         $datagridMapper
             ->add('name', null, array('label' => 'admin.place.name'))
             ->add('active', null, array('label' => 'admin.active'))
+            ->add('recommended', null, array('label' => 'admin.place.recommended'))
         ;
     }
 
@@ -101,6 +103,7 @@ class PlaceAdmin extends FoodAdmin
             ))
             ->add('active', null, array('label' => 'admin.active', 'editable' => true))
             ->add('new', null, array('label' => 'admin.is_new', 'editable' => true))
+            ->add('recommended', null, array('label' => 'admin.place.recommended', 'editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),

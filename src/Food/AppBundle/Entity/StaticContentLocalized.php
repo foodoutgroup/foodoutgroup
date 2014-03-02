@@ -9,7 +9,7 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
  * Food categories localized
  *
  * @ORM\Table(name="static_content_localized",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="lookup_unique_idx", columns={
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="zebalookup_unique_idx", columns={
  *         "locale", "object_id", "field"
  *     })}))
  * @ORM\Entity

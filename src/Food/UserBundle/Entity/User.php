@@ -192,4 +192,27 @@ class User extends BaseUser
     {
         return $this->address[0];
     }
+
+    /**
+     * Add address
+     *
+     * @param \Food\UserBundle\Entity\UserAddress $address
+     * @return User
+     */
+    public function addAddres(\Food\UserBundle\Entity\UserAddress $address)
+    {
+        $this->address[] = $address;
+    
+        return $this;
+    }
+
+    /**
+     * Remove address
+     *
+     * @param \Food\UserBundle\Entity\UserAddress $address
+     */
+    public function removeAddres(\Food\UserBundle\Entity\UserAddress $address)
+    {
+        $this->address->removeElement($address);
+    }
 }

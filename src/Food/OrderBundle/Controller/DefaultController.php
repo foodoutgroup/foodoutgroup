@@ -20,6 +20,10 @@ class DefaultController extends Controller
 
     public function mobileAction($hash)
     {
-        return $this->render('FoodOrderBundle:Default:mobile.html.twig');
+        /**
+         * @todo DFQ mantai per toArray struktura pas tave tam Orders?????
+         */
+        $order = $this->get('food.order')->getOrderByHash($hash);
+        return $this->render('FoodOrderBundle:Default:mobile.html.twig', array('order' => $order));
     }
 }
