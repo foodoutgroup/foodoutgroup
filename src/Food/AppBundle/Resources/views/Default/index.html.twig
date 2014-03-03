@@ -129,31 +129,8 @@
                         <div class="button">Gauk šį pasiūlymą!</div>
                     </div></a></div>
         </div>
-        <div class="items-list-title clearfix">
-            <h2>Mūsų rekomenduojami restoranai</h2><a href="#" class="button">daugiau pasiūlymų</a>
-        </div>
-        <div class="items-list clearfix">
-            <div class="items-list-col"><a href="#" class="restoran-item">
-                    <div class="restoran-item-top"><img src="{{ asset('bundles/foodapp/images/res-1.png') }}"></div>
-                    <p class="restoran-name">Pica už ačiū!</p>
-                    <div data-stars="4" class="restoran-rating"></div></a></div>
-            <div class="items-list-col"><a href="#" class="restoran-item">
-                    <div class="restoran-item-top"><img src="{{ asset('bundles/foodapp/images/res-2.png') }}"></div>
-                    <p class="restoran-name">Pica už ačiū!</p>
-                    <div data-stars="5" class="restoran-rating"></div></a></div>
-            <div class="items-list-col"><a href="#" class="restoran-item">
-                    <div class="restoran-item-top"><img src="{{ asset('bundles/foodapp/images/res-3.png') }}"></div>
-                    <p class="restoran-name">Pica už ačiū!</p>
-                    <div data-stars="5" class="restoran-rating"></div></a></div>
-            <div class="items-list-col"><a href="#" class="restoran-item">
-                    <div class="restoran-item-top"><img src="{{ asset('bundles/foodapp/images/res-4.png') }}"></div>
-                    <p class="restoran-name">Pica už ačiū!</p>
-                    <div data-stars="5" class="restoran-rating"></div></a></div>
-            <div class="items-list-col"><a href="#" class="restoran-item">
-                    <div class="restoran-item-top"><img src="{{ asset('bundles/foodapp/images/res-5.png') }}"></div>
-                    <p class="restoran-name">Pica už ačiū!</p>
-                    <div data-stars="3" class="restoran-rating"></div></a></div>
-        </div>
+
+        {{ render(controller('FoodPlacesBundle:Default:recommended')) }}
 
         {% include 'FoodAppBundle:Default:bottom_block.html.twig' %}
 

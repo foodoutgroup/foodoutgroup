@@ -5,8 +5,7 @@
 
     <title>{% block title %}Orders!{% endblock %}</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" hrefs="{{ asset('css/bootstrap.css') }}">
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -54,10 +53,10 @@
             </tbody>
         </table>
 
-        <button type="button" class="btn btn-primary">{% trans %}mobile.order_confirm{% endtrans %}</button>
-        <button type="button" class="btn btn-warning">{% trans %}mobile.order_delay{% endtrans %}</button>
-        <button type="button" class="btn btn-success">{% trans %}mobile.order_finish{% endtrans %}</button>
-        <button type="button" class="btn btn-danger">{% trans %}mobile.order_cancel{% endtrans %}</button>
+        <button type="button" class="btn btn-primary btn-block">{% trans %}mobile.order_confirm{% endtrans %}</button>
+        <button type="button" class="btn btn-warning btn-block">{% trans %}mobile.order_delay{% endtrans %}</button>
+        <button type="button" class="btn btn-success btn-block">{% trans %}mobile.order_finish{% endtrans %}</button>
+        <button type="button" class="btn btn-danger btn-block">{% trans %}mobile.order_cancel{% endtrans %}</button>
     </div>
 </div>
 {% block javascripts %}{% endblock %}

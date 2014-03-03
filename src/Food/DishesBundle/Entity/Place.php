@@ -67,6 +67,13 @@ class Place extends Uploadable implements Translatable
      */
     private $active;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="recommended", type="boolean")
+     */
+    private $recommended;
+
 
     /**
      * @var bool
@@ -1002,5 +1009,28 @@ class Place extends Uploadable implements Translatable
     public function getAverageRating()
     {
         return $this->averageRating;
+    }
+
+    /**
+     * Set recommended
+     *
+     * @param boolean $recommended
+     * @return Place
+     */
+    public function setRecommended($recommended)
+    {
+        $this->recommended = $recommended;
+    
+        return $this;
+    }
+
+    /**
+     * Get recommended
+     *
+     * @return boolean 
+     */
+    public function getRecommended()
+    {
+        return $this->recommended;
     }
 }

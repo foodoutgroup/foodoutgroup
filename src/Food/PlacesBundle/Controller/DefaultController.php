@@ -44,4 +44,10 @@ class DefaultController extends Controller
         $cities = $this->get('food.places')->getAvailableCities();
         return new Response(json_encode($cities));
     }
+
+    public function recommendedAction()
+    {
+        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getRecommendedForTitle();
+        return $this->render('FoodPlacesBundle:Default:recommended.html.twig', array('places' => $places));
+    }
 }

@@ -89,6 +89,22 @@ class PlaceRepository extends EntityRepository
 
         return $places;
     }
+
+    /**
+     * @return Place[]
+     */
+    public function getRecommendedForTitle()
+    {
+        $query = "SELECT p.id FROM place p WHERE p.active = 1 AND p.recommended = 1 AND p.deleted_at IS NULL ORDER BY RAND()";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $placesIds = $stmt->fetchAll();
+        $places = array();
+        foreach ($placesIds as $placeRow) {
+            $places[] = $this->find($placeRow['id']);
+        }
+        return $places;
+    }
 }
 
 ?>

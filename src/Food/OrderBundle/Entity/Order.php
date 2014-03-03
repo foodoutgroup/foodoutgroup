@@ -126,6 +126,14 @@ class Order
      */
     private $lastPaymentError = null;
 
+
+    /**
+     * @var OrderDetails[]
+     *
+     * @ORM\OneToMany(targetEntity="OrderDetails", mappedBy="order_id")
+     */
+    private $details;
+
     /**
      * Get id
      *
@@ -623,5 +631,38 @@ class Order
         $this->place_point = $placePoint;
     
         return $this;
+    }
+
+    /**
+     * Add details
+     *
+     * @param \Food\OrderBundle\Entity\OrderDetails $details
+     * @return Order
+     */
+    public function addDetail(\Food\OrderBundle\Entity\OrderDetails $details)
+    {
+        $this->details[] = $details;
+    
+        return $this;
+    }
+
+    /**
+     * Remove details
+     *
+     * @param \Food\OrderBundle\Entity\OrderDetails $details
+     */
+    public function removeDetail(\Food\OrderBundle\Entity\OrderDetails $details)
+    {
+        $this->details->removeElement($details);
+    }
+
+    /**
+     * Get details
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDetails()
+    {
+        return $this->details;
     }
 }
