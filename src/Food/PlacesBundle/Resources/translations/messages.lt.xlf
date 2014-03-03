@@ -170,6 +170,26 @@
         <source>places.watch_menu</source>
         <target>Žiūrėti meniu</target>
       </trans-unit>
+      <trans-unit id="bd1a1db3eb2d711ca8c2688222c5d0e7" resname="admin.place.slogan">
+        <source>admin.place.slogan</source>
+        <target>Šūkis</target>
+      </trans-unit>
+      <trans-unit id="cb9075cff71fef3e2f58f9f8bbd859ca" resname="admin.place.description">
+        <source>admin.place.description</source>
+        <target>Aprašymas</target>
+      </trans-unit>
+      <trans-unit id="8988cef218e29834d745dd0ccada226d" resname="admin.place.recommended">
+        <source>admin.place.recommended</source>
+        <target>Rekomend.</target>
+      </trans-unit>
+      <trans-unit id="b97ef5e6ab382da2cf8726ef38fcc091" resname="places.recomended_block_title">
+        <source>places.recomended_block_title</source>
+        <target>Mūsų rekomenduojami restoranai</target>
+      </trans-unit>
+      <trans-unit id="ff0bc83f13df6076f1fe1eda1481372d" resname="places.recomended_show_more">
+        <source>places.recomended_show_more</source>
+        <target>Daugiau pasiūlymų</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

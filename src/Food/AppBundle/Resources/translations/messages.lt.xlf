@@ -138,6 +138,46 @@
         <source>admin.places.list.actions.unhide</source>
         <target>__admin.places.list.actions.unhide</target>
       </trans-unit>
+      <trans-unit id="c9736bcd30d2902aaeb57bea426d0e11" resname="index.newsletter_provide_email">
+        <source>index.newsletter_provide_email</source>
+        <target>Įveskite savo el.pašto adresą</target>
+      </trans-unit>
+      <trans-unit id="d0ca001986ba80de3d2d4bec67ea4ee5" resname="general.page_name">
+        <source>general.page_name</source>
+        <target>Foodout</target>
+      </trans-unit>
+      <trans-unit id="2b1ab5c52042b1d22f211e5c27e5f9b8" resname="general.top_restaurants">
+        <source>general.top_restaurants</source>
+        <target>TOP restoranai</target>
+      </trans-unit>
+      <trans-unit id="6ed5de5936f5473971d03ec26290dbd5" resname="general.newsletter">
+        <source>general.newsletter</source>
+        <target>Naujienlaiškis</target>
+      </trans-unit>
+      <trans-unit id="2dcd088ae1551425f1d27f0c7c1b597f" resname="general.thank_you">
+        <source>general.thank_you</source>
+        <target>Ačiū</target>
+      </trans-unit>
+      <trans-unit id="7aaffcb3d756c2cd540c10c6feafacfa" resname="general.subscribed_newsletter">
+        <source>general.subscribed_newsletter</source>
+        <target>Jūs užsiprenumeravote naujienlaiškį</target>
+      </trans-unit>
+      <trans-unit id="19554e921e608df135b269a564c8cf6a" resname="mobile.order_confirm">
+        <source>mobile.order_confirm</source>
+        <target>Patvirtinti užsakymą</target>
+      </trans-unit>
+      <trans-unit id="7ebe276de073f58e9744cb5e46760b88" resname="mobile.order_delay">
+        <source>mobile.order_delay</source>
+        <target>Atidėti užsakymą</target>
+      </trans-unit>
+      <trans-unit id="e110f798f6661e6e1ac7fbfe1f03e679" resname="mobile.order_finish">
+        <source>mobile.order_finish</source>
+        <target>Pabaigti užsakymą</target>
+      </trans-unit>
+      <trans-unit id="ebbc16fb3a732d7abe363ef2463397f9" resname="mobile.order_cancel">
+        <source>mobile.order_cancel</source>
+        <target>Atšaukti užsakymą</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
