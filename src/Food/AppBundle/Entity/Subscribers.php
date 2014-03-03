@@ -42,6 +42,17 @@ class Subscribers
      */
     private $dateAdded;
 
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        if ($this->getId()) {
+            return ''.$this->getEmail();
+        }
+
+        return '';
+    }
 
     /**
      * Get id

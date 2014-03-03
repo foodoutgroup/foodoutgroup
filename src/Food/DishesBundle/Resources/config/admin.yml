@@ -144,3 +144,14 @@ services:
                 - 'FoodSupportBundle:SupportAdmin'
             calls:
                 - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.newsletter_subscribers:
+            class: Food\AppBundle\Admin\NewsletterSubscriberAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.users.subscribers" }
+            arguments:
+                - ~
+                - Food\AppBundle\Entity\Subscribers
+                - ~
+            calls:
+                - [ setTranslationDomain, [SonataAdminBundle]]

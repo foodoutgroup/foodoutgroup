@@ -14,6 +14,10 @@ services:
         class: Food\AppBundle\Service\StaticService
         arguments: [@service_container, user_id]
 
+    food.newsletter:
+        class: Food\AppBundle\Service\NewsletterService
+        arguments: [@service_container]
+
     food.gis:
         class: Food\AppBundle\Service\GisService
         calls:

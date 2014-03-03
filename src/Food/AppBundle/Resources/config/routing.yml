@@ -14,7 +14,7 @@ food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|payments|call_center|ajax|places|vietos|mesto).+"
+        slug : "^(?!admin|cart|test|payments|call_center|newsletter|ajax|places|vietos|mesto).+"
 
 food_admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
@@ -65,7 +65,11 @@ food_place_menu_layout:
     defaults: { _controller: FoodDishesBundle:FoodCategory:restaurantMenuLayout, layout: ~}
 
 food_newsletter_subscribe:
-    pattern: /ajax/newsletter-subscribe/
+    pattern: /newsletter/subscribe/
     defaults: { _controller: FoodAppBundle:Default:newsletterSubscribe}
     requirements:
       _method:  POST
+
+food_newsletter_thank:
+    pattern: /newsletter/thank/
+    defaults: { _controller: FoodAppBundle:Default:newsletterThank}

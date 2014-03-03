@@ -29,19 +29,8 @@
                 return false;
             }
 
-            var data = {
-                email: emailField.val()
-            };
-
-            {#$.ajax({#}
-                {#url: '{{ path('food_newsletter_subscribe') }}',#}
-                {#data: data,#}
-                {#method: 'POST'#}
-            {#});#}
-
             emailField.tooltip( "close" );
-            emailField.val('');
-            return false;
+            return true;
         });
     });
 </script>
@@ -54,8 +43,8 @@
     </div>
     <div class="newsletter-block">
         <h4>{% trans %}index.newsletter{% endtrans %}</h4>
-        <form class="newsletter-form">
-            <input type="text" class="newsletter-email" placeholder="{% trans %}index.newsletter_email{% endtrans %}" title="{% trans %}index.newsletter_provide_email{% endtrans %}">
+        <form class="newsletter-form" action="{{ path('food_newsletter_subscribe') }}" method="post">
+            <input type="text" name ="newsletter_email" class="newsletter-email" placeholder="{% trans %}index.newsletter_email{% endtrans %}" title="{% trans %}index.newsletter_provide_email{% endtrans %}">
             <input type="submit" value="{% trans %}index.newsletter_subscribe{% endtrans %}">
         </form>
     </div>

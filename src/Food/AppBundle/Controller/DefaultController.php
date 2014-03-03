@@ -25,8 +25,27 @@ class DefaultController extends Controller
         );
     }
 
+    /**
+     * Subscribtion to newsletter
+     * @return Response
+     */
     public function newsletterSubscribeAction()
     {
+        $request = $this->get('request');
+        $newsleterEmail = $request->get('newsletter_email');
 
+        $this->get('food.newsletter')->subscribe($newsleterEmail, $request->getLocale());
+
+        // Pagal visa tvarka, po posto - turi but redirectas
+        return $this->redirect($this->generateUrl('food_newsletter_thank'), 302);
+    }
+
+    /**
+     * Thank for subscribtion to newsletter
+     * @return Response
+     */
+    public function newsletterThankAction()
+    {
+        return $this->render('FoodAppBundle:Default:newsletter_subscribtion.html.twig');
     }
 }

@@ -226,6 +226,7 @@ sonata_admin:
                   items: ~
                   item_adds:
                       - sonata.admin.users
+                      - sonata.admin.newsletter_subscribers
                   roles: [ ROLE_ADMIN ]
               admin.support:
                   items: ~

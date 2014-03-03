@@ -1690,12 +1690,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "2b0648889eab75aeb0c2f1a1e264ec5bf0be56b8"
+                "reference": "f60420136ee898e6ebbe471a3129f1fed6c507ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/2b0648889eab75aeb0c2f1a1e264ec5bf0be56b8",
-                "reference": "2b0648889eab75aeb0c2f1a1e264ec5bf0be56b8",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/f60420136ee898e6ebbe471a3129f1fed6c507ca",
+                "reference": "f60420136ee898e6ebbe471a3129f1fed6c507ca",
                 "shasum": ""
             },
             "require": {
@@ -1762,7 +1762,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2014-02-20 08:45:58"
+            "time": "2014-03-03 07:31:33"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -2789,9 +2789,7 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
+                    "email": "fabien@symfony.com"
                 },
                 {
                     "name": "Symfony Community",

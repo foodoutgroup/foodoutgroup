@@ -63,6 +63,10 @@
                 <source>admin.actions</source>
                 <target>Veiksmai</target>
             </trans-unit>
+            <trans-unit id="batch">
+                <source>batch</source>
+                <target></target>
+            </trans-unit>
 
             <!-- Kitchen -->
             <trans-unit id="admin.kitchens.list.title">
@@ -546,6 +550,27 @@
                 <target>Žiūrėti meniu</target>
             </trans-unit>
 
+            <!-- Subscribers content -->
+            <trans-unit id="admin.users.subscribers">
+                <source>admin.users.subscribers</source>
+                <target>Prenumeratorius</target>
+            </trans-unit>
+            <trans-unit id="Subscribers List">
+                <source>Subscribers List</source>
+                <target>Prenumeratoriai</target>
+            </trans-unit>
+            <trans-unit id="admin.subscribers.email">
+                <source>admin.subscribers.email</source>
+                <target>El.paštas</target>
+            </trans-unit>
+            <trans-unit id="admin.subscribers.locale">
+                <source>admin.subscribers.locale</source>
+                <target>Kalba</target>
+            </trans-unit>
+            <trans-unit id="admin.subscribers.created_at">
+                <source>admin.subscribers.created_at</source>
+                <target>Užsiprenumeravo</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
