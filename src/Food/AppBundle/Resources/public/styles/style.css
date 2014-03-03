@@ -700,3 +700,6 @@ input.button {}
 
 /*Just hidden.. Nothing to see here*/
 .hidden { display: none !important; }
+
+/*Error tolltip*/
+.error-tooltip { border-color: #FF0000; }

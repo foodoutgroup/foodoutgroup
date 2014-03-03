@@ -63,3 +63,9 @@ food_place_point_data:
 food_place_menu_layout:
     pattern: /ajax/save-menu-layout/{layout}
     defaults: { _controller: FoodDishesBundle:FoodCategory:restaurantMenuLayout, layout: ~}
+
+food_newsletter_subscribe:
+    pattern: /ajax/newsletter-subscribe/
+    defaults: { _controller: FoodAppBundle:Default:newsletterSubscribe}
+    requirements:
+      _method:  POST
