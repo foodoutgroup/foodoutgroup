@@ -18,6 +18,10 @@
         <source>cart.block.delivery_time</source>
         <target>Pristatymo trukmė</target>
       </trans-unit>
+      <trans-unit id="426a1f73799f95d0ba9bd1a78adbdf79" resname="cart.block.your_order_empty">
+        <source>cart.block.your_order_empty</source>
+        <target>Pasirinkite patiekalus</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

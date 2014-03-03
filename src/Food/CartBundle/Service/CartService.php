@@ -173,9 +173,9 @@ class CartService {
      */
     public function addDishBySizeId($size, $quantity, $options)
     {
-        $size = $this->getEm()->getRepository('FoodDishesBundle:DishSize')->find($size);
+        $sizeEnt = $this->getEm()->getRepository('FoodDishesBundle:DishSize')->find($size);
         $this->addDishByIds(
-            $size->getDish()->getId(),
+            $sizeEnt->getDish()->getId(),
             $size,
             $quantity,
             $options
@@ -188,24 +188,23 @@ class CartService {
      * @param $quantity
      * @param $options
      */
-    public function addDishByIds($dish, $size, $quantity, $options)
+    public function addDishByIds($dish, $size, $quantity, $options = array())
     {
         $dish = $this->getEm()->getRepository('FoodDishesBundle:Dish')->find($dish);
         $size = $this->getEm()->getRepository('FoodDishesBundle:DishSize')->find($size);
         $optionsEnt = array();
-        foreach ($options as $optId) {
-            $ent = $this->getEm()->getRepository('FoodDishesBundle:DishOption')->findBy(
-                array(
-                    'id' => $optId,
-                    'active' => 1,
-                    'place' => $dish->getPlace()->getId()
-                )
-            );
-            if ($ent) {
-                $optionsEnt[] = $ent;
+        if (!empty($options)) {
+            foreach ($options as $optId) {
+                $ent = $this->getEm()->getRepository('FoodDishesBundle:DishOption')->findOneBy(
+                    array(
+                        'id' => $optId,
+                        'place' => $dish->getPlace()->getId()
+                    )
+                );
+                if ($ent) {
+                    $optionsEnt[] = $ent;
+                }
             }
-
-
         }
         $this->addDish($dish, $size, $quantity, $optionsEnt);
     }
@@ -230,13 +229,14 @@ class CartService {
         $this->getEm()->flush();
 
 
+
         if (!empty($options)) {
             foreach ($options as $opt) {
                 $cartOptionItem = new CartOption();
                 $cartOptionItem->setSession($this->getSessionId());
                 $cartOptionItem->setDishId($dish);
-                $cartOptionItem->setDishOptionId($opt['option']);
-                $cartOptionItem->setQuantity($opt['quantity']);
+                $cartOptionItem->setDishOptionId($opt);
+                $cartOptionItem->setQuantity(1);
                 $this->getEm()->persist($cartOptionItem);
                 $this->getEm()->flush();
             }
