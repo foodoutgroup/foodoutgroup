@@ -571,6 +571,92 @@
                 <source>admin.subscribers.created_at</source>
                 <target>Užsiprenumeravo</target>
             </trans-unit>
+
+            <!-- Orders list -->
+            <trans-unit id="admin.group.orders">
+                <source>admin.group.orders</source>
+                <target>Užsakymai</target>
+            </trans-unit>
+            <trans-unit id="Order List">
+                <source>Order List</source>
+                <target>Užsakymai</target>
+            </trans-unit>
+            <trans-unit id="admin.users.orders">
+                <source>admin.users.orders</source>
+                <target>Užsakymai</target>
+            </trans-unit>
+            <trans-unit id="admin.users.order">
+                <source>admin.users.order</source>
+                <target>Užsakymas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.id">
+                <source>admin.order.id</source>
+                <target>Id</target>
+            </trans-unit>
+            <trans-unit id="admin.order.order_date">
+                <source>admin.order.order_date</source>
+                <target>Užsakymo data</target>
+            </trans-unit>
+            <trans-unit id="admin.order.place_name_short">
+                <source>admin.order.place_name_short</source>
+                <target>Restor.</target>
+            </trans-unit>
+            <trans-unit id="admin.order.place_point">
+                <source>admin.order.place_point</source>
+                <target>Gamyb. adr.</target>
+            </trans-unit>
+            <trans-unit id="admin.order.user">
+                <source>admin.order.user</source>
+                <target>Klientas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.address">
+                <source>admin.order.address</source>
+                <target>Adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_type">
+                <source>admin.order.delivery_type</source>
+                <target>Pristat. tipas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.order_status">
+                <source>admin.order.order_status</source>
+                <target>Užsak. būklė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.payment_method">
+                <source>admin.order.payment_method</source>
+                <target>Mokėjimo būdas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.payment_status">
+                <source>admin.order.payment_status</source>
+                <target>Mokėjimo būklė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.submitted_for_payment">
+                <source>admin.order.submitted_for_payment</source>
+                <target>Mokėjimo pradžia</target>
+            </trans-unit>
+            <trans-unit id="admin.order.last_update">
+                <source>admin.order.last_update</source>
+                <target>Paskutinis pokytis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.last_payment_error">
+                <source>admin.order.last_payment_error</source>
+                <target>Paskutinė klaida</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details">
+                <source>admin.order.details</source>
+                <target>Patiekalai</target>
+            </trans-unit>
+            <trans-unit id="admin.order.vat">
+                <source>admin.order.vat</source>
+                <target>PVM</target>
+            </trans-unit>
+            <trans-unit id="admin.order.comment">
+                <source>admin.order.comment</source>
+                <target>Užsakovo komentaras</target>
+            </trans-unit>
+            <trans-unit id="admin.order.place_comment">
+                <source>admin.order.place_comment</source>
+                <target>Restorano komentaras</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

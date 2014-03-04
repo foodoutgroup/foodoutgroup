@@ -134,6 +134,14 @@ class Order
      */
     private $details;
 
+    public function __toString()
+    {
+        if ($this->getId()) {
+            return $this->getId().'-'.$this->getPlaceName().'-TODO'; // TODO add user email and other stuff
+        }
+        return '';
+    }
+
     /**
      * Get id
      *

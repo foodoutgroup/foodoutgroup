@@ -873,12 +873,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "815055bcb1936a0bba0af93cf1b44fddf98a64b5"
+                "reference": "6a79d379164ec7d63088c3c7ba18bcca5f993a97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/815055bcb1936a0bba0af93cf1b44fddf98a64b5",
-                "reference": "815055bcb1936a0bba0af93cf1b44fddf98a64b5",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/6a79d379164ec7d63088c3c7ba18bcca5f993a97",
+                "reference": "6a79d379164ec7d63088c3c7ba18bcca5f993a97",
                 "shasum": ""
             },
             "require": {
@@ -933,7 +933,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2014-02-21 12:52:40"
+            "time": "2014-03-04 01:12:08"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -1962,12 +1962,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "460b632a4e9e9c6a221a24f291c2b3da31b2fdce"
+                "reference": "91bfd94ddd0d140a69a0f40431c6c881c69781b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/460b632a4e9e9c6a221a24f291c2b3da31b2fdce",
-                "reference": "460b632a4e9e9c6a221a24f291c2b3da31b2fdce",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/91bfd94ddd0d140a69a0f40431c6c881c69781b4",
+                "reference": "91bfd94ddd0d140a69a0f40431c6c881c69781b4",
                 "shasum": ""
             },
             "require": {
@@ -2016,7 +2016,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-02-28 16:14:21"
+            "time": "2014-03-04 10:06:36"
         },
         {
             "name": "sonata-project/doctrine-extensions",
