@@ -6,7 +6,7 @@ use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="cart_option", uniqueConstraints={@ORM\UniqueConstraint(name="unique_id", columns={"session", "dish_id", "dish_option_id"})})
+ * @ORM\Table(name="cart_option", uniqueConstraints={@ORM\UniqueConstraint(name="unique_id", columns={"session", "cart_id", "dish_id", "dish_option_id"})})
  * @ORM\Entity
  */
 class CartOption
@@ -22,6 +22,12 @@ class CartOption
      * @ORM\Id
      */
     private $dish_id;
+
+    /**
+     * @ORM\Column(name="cart_id", type="integer", length=3)
+     * @ORM\Id
+     */
+    private $cart_id;
 
     /**
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishOption")
@@ -115,5 +121,28 @@ class CartOption
     public function getSession()
     {
         return $this->session;
+    }
+
+    /**
+     * Set cart_id
+     *
+     * @param \Food\CartBudle\Entity\Cart $cartId
+     * @return CartOption
+     */
+    public function setCartId(\Food\CartBudle\Entity\Cart $cartId)
+    {
+        $this->cart_id = $cartId;
+    
+        return $this;
+    }
+
+    /**
+     * Get cart_id
+     *
+     * @return \Food\CartBudle\Entity\Cart 
+     */
+    public function getCartId()
+    {
+        return $this->cart_id;
     }
 }

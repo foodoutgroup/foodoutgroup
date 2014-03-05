@@ -12,6 +12,13 @@ class OrderDetailsOptions
 {
 
     /**
+     * @ORM\ManyToOne(targetEntity="OrderDetails")
+     * @ORM\JoinColumn(name="order_detail", referencedColumnName="id")
+     * @ORM\Id
+     */
+    private $order_detail;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Order")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      * @ORM\Id
@@ -240,5 +247,28 @@ class OrderDetailsOptions
     public function getDishOptionCode()
     {
         return $this->dish_option_code;
+    }
+
+    /**
+     * Set order_detail
+     *
+     * @param \Food\OrderBundle\Entity\OrderDetail $orderDetail
+     * @return OrderDetailsOptions
+     */
+    public function setOrderDetail(\Food\OrderBundle\Entity\OrderDetail $orderDetail)
+    {
+        $this->order_detail = $orderDetail;
+    
+        return $this;
+    }
+
+    /**
+     * Get order_detail
+     *
+     * @return \Food\OrderBundle\Entity\OrderDetail 
+     */
+    public function getOrderDetail()
+    {
+        return $this->order_detail;
     }
 }

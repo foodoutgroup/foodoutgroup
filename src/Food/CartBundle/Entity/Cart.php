@@ -28,6 +28,12 @@ class Cart
     private $dish_id;
 
     /**
+     * @ORM\Column(name="cart_id", type="integer", length=3)
+     * @ORM\Id
+     */
+    private $cart_id;
+
+    /**
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishSize")
      * @ORM\JoinColumn(name="dish_size_id", referencedColumnName="id")
      * @ORM\Id
@@ -197,5 +203,28 @@ class Cart
     public function getPlaceId()
     {
         return $this->place_id;
+    }
+
+    /**
+     * Set cart_id
+     *
+     * @param integer $cartId
+     * @return Cart
+     */
+    public function setCartId($cartId)
+    {
+        $this->cart_id = $cartId;
+    
+        return $this;
+    }
+
+    /**
+     * Get cart_id
+     *
+     * @return integer 
+     */
+    public function getCartId()
+    {
+        return $this->cart_id;
     }
 }

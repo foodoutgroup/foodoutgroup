@@ -216,15 +216,29 @@ class CartService {
      * @param DishOption[] $options
      * @return $this
      */
-    public function addDish(Dish $dish, DishSize $dishSize, $quantity, $options = array()) {
-        $cartItem = new Cart();
+    public function addDish(Dish $dish, DishSize $dishSize, $quantity, $options = array())
+    {
+        $maxQuery = $this->getEm()->createQuery('SELECT MAX(c.cart_id) as top FROM FoodCartBundle:Cart c WHERE c.session = :session AND c.place_id= :place');
+        $maxQuery->setParameters(
+            array(
+                'session' => $this->getSessionId(),
+                'place' => $dish->getPlace()
+            )
+        );
+        $itemId = $maxQuery->getSingleScalarResult();
+        if (empty($itemId)) {
+            $itemId = 1;
+        } else {
+            $itemId++;
+        }
 
+        $cartItem = new Cart();
         $cartItem->setPlaceId($dish->getPlace());
         $cartItem->setDishId($dish);
+        $cartItem->setCartId($itemId);
         $cartItem->setSession($this->getSessionId());
         $cartItem->setQuantity($quantity);
         $cartItem->setDishSizeId($dishSize);
-
         $this->getEm()->persist($cartItem);
         $this->getEm()->flush();
 
@@ -235,6 +249,7 @@ class CartService {
                 $cartOptionItem = new CartOption();
                 $cartOptionItem->setSession($this->getSessionId());
                 $cartOptionItem->setDishId($dish);
+                $cartOptionItem->setCartId($itemId);
                 $cartOptionItem->setDishOptionId($opt);
                 $cartOptionItem->setQuantity(1);
                 $this->getEm()->persist($cartOptionItem);
