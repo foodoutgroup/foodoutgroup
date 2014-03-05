@@ -155,3 +155,14 @@ services:
                 - ~
             calls:
                 - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.order:
+            class: Food\OrderBundle\Admin\OrderAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.users.orders" }
+            arguments:
+                - ~
+                - Food\OrderBundle\Entity\Order
+                - ~
+            calls:
+                - [ setTranslationDomain, [SonataAdminBundle]]

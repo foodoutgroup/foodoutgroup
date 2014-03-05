@@ -222,6 +222,11 @@ sonata_admin:
                       - sonata.admin.place.pointfull
                       - sonata.admin.place.reviews
                   roles: [ ROLE_MODERATOR ]
+              admin.orders:
+                label: admin.group.orders
+                label_catalogue: SonataAdminBundle
+                items:
+                      - sonata.admin.order
               admin.users:
                   items: ~
                   item_adds:
