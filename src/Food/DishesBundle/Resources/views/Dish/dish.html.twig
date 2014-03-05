@@ -14,7 +14,6 @@
                 {% endfor %}
             </div>
         </div>
-
         {% if dish.options|length > 0 %}
             <div class="dish-ingredients">
                 <div class="title">{% trans %}dish.select_options{% endtrans %}</div>
@@ -27,6 +26,9 @@
                 </div>
             </div>
         {% endif %}
+        <div class="dish-size">
+            <div class="title">{% trans %}dish.select_quantity{% endtrans %} <input class="counter" name="counter"></div>
+        </div>
         <input type="hidden" name="place" value="{{ dish.place.id }}">
 
         <div class="popup-controls"><a href="#" class="button-submit add-to-cart"><span>{% trans %}dish.add_to_cart{% endtrans %}</span></a></div>

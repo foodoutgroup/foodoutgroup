@@ -31,6 +31,7 @@
                     afterShow: function(e) {
                         dishBlock = $('#detailed-dish-popup');
                         dishBlock.find('input').iCheck();
+                        dishBlock.find('.counter').spinner({ min: 0, max: 20 });
                         dishBlock.find('.button-submit.add-to-cart:not(.has-bind)').addClass('has-bind').bind('click', function() {
                             addToCart();
                         });
