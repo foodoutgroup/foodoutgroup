@@ -20,7 +20,7 @@
       </trans-unit>
       <trans-unit id="0a951587b898b69f4e5b5cfdf92e7852" resname="places.select_kitchen">
         <source>places.select_kitchen</source>
-        <target>__places.select_kitchen</target>
+        <target>Pasirink virtuvę</target>
       </trans-unit>
       <trans-unit id="62b1dc63ada5280847a9887717d0aeb0" resname="places.count">
         <source>places.count</source>
@@ -28,19 +28,19 @@
       </trans-unit>
       <trans-unit id="bd1085bf90cf48967828c550718c86b0" resname="places.show_only">
         <source>places.show_only</source>
-        <target>__places.show_only</target>
+        <target>Rodyti tik</target>
       </trans-unit>
       <trans-unit id="1ddd5e1e2eb721afb9e2ab1ef94a1764" resname="places.discount">
         <source>places.discount</source>
-        <target>__places.discount</target>
+        <target>Nuolaidos</target>
       </trans-unit>
       <trans-unit id="d4b8bb2c55c7e24d11f7dbc62e9ec22e" resname="places.pickup">
         <source>places.pickup</source>
-        <target>__places.pickup</target>
+        <target>Atsiimsiu pats</target>
       </trans-unit>
       <trans-unit id="7e1496e92a6e24b7dd800661764bdc22" resname="places.prepaid">
         <source>places.prepaid</source>
-        <target>__places.prepaid</target>
+        <target>Apmokėjimas iš anksto</target>
       </trans-unit>
       <trans-unit id="897c2eb6c2a84ef4214ff5f5f233e5c3" resname="places.payments.cash">
         <source>places.payments.cash</source>
