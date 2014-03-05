@@ -26,11 +26,11 @@ class OrderAdmin extends SonataAdmin
             ->addIdentifier('id', 'integer', array('label' => 'admin.order.id', 'editable' => false))
             ->addIdentifier('order_date', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.order_date'))
             ->add('place_name', 'string', array('label' => 'admin.order.place_name_short', 'editable' => false,))
-            ->add('place_point_address', 'string', array('label' => 'admin.order.place_point'))
+            ->add('place_point_address', 'string', array('label' => 'admin.order.place_point_short'))
             ->add('user', null, array('label' => 'admin.order.user'))
             ->add('address_id', null, array('label' => 'admin.order.address'))
-            ->add('deliveryType', 'string', array('label' => 'admin.order.delivery_type'))
-            ->add('order_status', 'string', array('label' => 'admin.order.order_status'))
+            ->add('deliveryType', 'string', array('label' => 'admin.order.delivery_type_short'))
+            ->add('order_status', 'string', array('label' => 'admin.order.order_status_short'))
             ->add('paymentMethod', 'string', array('label' => 'admin.order.payment_method'))
             ->add('paymentStatus', 'string', array('label' => 'admin.order.payment_status'))
             ->add('submittedForPayment', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.submitted_for_payment'))
@@ -53,12 +53,18 @@ class OrderAdmin extends SonataAdmin
         $showMapper
             ->add('id', null, array('label' => 'admin.order.id', 'editable' => false))
             ->add('order_date', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.order_date'))
-            ->add('place_name', 'string', array('label' => 'admin.order.place_name_short', 'editable' => false,))
+            ->add('place_name', 'string', array('label' => 'admin.order.place_name', 'editable' => false,))
             ->add('place_point_address', 'string', array('label' => 'admin.order.place_point'))
+            // TODO graziai ispiest userio info, kad restoranai matytu, kaip susisiekt
             ->add('user', null, array('label' => 'admin.order.user'))
             ->add('address_id', null, array('label' => 'admin.order.address'))
             ->add('deliveryType', 'string', array('label' => 'admin.order.delivery_type'))
-            ->add('details', null, array('label' => 'admin.order.details'))
+            ->add('details', 'sonata_type_collection',
+                array(
+                    'label' => 'admin.order.details',
+                    'template' => 'FoodOrderBundle:Admin:show_details_list.html.twig'
+                )
+            )
             ->add('vat', 'string', array('label' => 'admin.order.vat'))
             ->add('comment', 'string', array('label' => 'admin.order.comment'))
             ->add('place_comment', 'string', array('label' => 'admin.order.place_comment'))
