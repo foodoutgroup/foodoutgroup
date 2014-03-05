@@ -601,9 +601,17 @@
                 <source>admin.order.place_name_short</source>
                 <target>Restor.</target>
             </trans-unit>
+            <trans-unit id="admin.order.place_name">
+                <source>admin.order.place_name</source>
+                <target>Restoranas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.place_point_short">
+                <source>admin.order.place_point_short</source>
+                <target>Gamyb. adr.</target>
+            </trans-unit>
             <trans-unit id="admin.order.place_point">
                 <source>admin.order.place_point</source>
-                <target>Gamyb. adr.</target>
+                <target>Gamybos adresas</target>
             </trans-unit>
             <trans-unit id="admin.order.user">
                 <source>admin.order.user</source>
@@ -613,13 +621,21 @@
                 <source>admin.order.address</source>
                 <target>Adresas</target>
             </trans-unit>
+            <trans-unit id="admin.order.delivery_type_short">
+                <source>admin.order.delivery_type_short</source>
+                <target>Pristat. tipas</target>
+            </trans-unit>
             <trans-unit id="admin.order.delivery_type">
                 <source>admin.order.delivery_type</source>
-                <target>Pristat. tipas</target>
+                <target>Pristatymo tipas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.order_status_short">
+                <source>admin.order.order_status_short</source>
+                <target>Užsak. būklė</target>
             </trans-unit>
             <trans-unit id="admin.order.order_status">
                 <source>admin.order.order_status</source>
-                <target>Užsak. būklė</target>
+                <target>Užsakymo būklė</target>
             </trans-unit>
             <trans-unit id="admin.order.payment_method">
                 <source>admin.order.payment_method</source>
@@ -656,6 +672,26 @@
             <trans-unit id="admin.order.place_comment">
                 <source>admin.order.place_comment</source>
                 <target>Restorano komentaras</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.dish_name">
+                <source>admin.order.details.dish_name</source>
+                <target>Patiekalas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.price">
+                <source>admin.order.details.price</source>
+                <target>Kaina</target>
+            </trans-unit>
+            <trans-unit id="aadmin.order.details.dish_unit">
+                <source>admin.order.details.dish_unit</source>
+                <target>Mat. vienetas</target>
+            </trans-unit>
+            <trans-unit id="aadmin.order.details.dish_size_code">
+                <source>admin.order.details.dish_size_code</source>
+                <target>Kodas</target>
+            </trans-unit>
+            <trans-unit id="aadmin.order.details.options">
+                <source>admin.order.details.options</source>
+                <target>Priedai</target>
             </trans-unit>
         </body>
     </file>
