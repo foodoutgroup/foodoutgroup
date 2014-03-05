@@ -31,6 +31,11 @@ class AjaxController extends Controller
         return $response;
     }
 
+    /**
+     * @param Response $response
+     * @param string $city
+     * @param string $address
+     */
     private function _ajaxActFindAddress($response, $city, $address)
     {
         $locations = $this->get('food.gis')->getCoordsOfPlace($address.', '.$city)->locations;

@@ -24,39 +24,11 @@ class CartOption
     private $dish_id;
 
     /**
-     * @ORM\Column(name="quantity", type="integer", length=3)
-     */
-    private $quantity;
-
-    /**
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishOption")
      * @ORM\JoinColumn(name="dish_option_id", referencedColumnName="id")
      * @ORM\Id
      */
     private $dish_option_id;
-
-    /**
-     * Set quantity
-     *
-     * @param integer $quantity
-     * @return CartOption
-     */
-    public function setQuantity($quantity)
-    {
-        $this->quantity = $quantity;
-    
-        return $this;
-    }
-
-    /**
-     * Get quantity
-     *
-     * @return integer 
-     */
-    public function getQuantity()
-    {
-        return $this->quantity;
-    }
 
     /**
      * Set user

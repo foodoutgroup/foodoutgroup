@@ -273,7 +273,7 @@ class CartService {
         foreach ($cartItems as $cartItem) {
             $total += $cartItem->getDishSizeId()->getPrice() * $cartItem->getQuantity();
             foreach ($cartItem->getOptions() as $opt) {
-                $total += $opt->getDishOptionId()->getPrice() * $opt->getQuantity();
+                $total += $opt->getDishOptionId()->getPrice() * $cartItem->getQuantity();
             }
         }
         $total += $place->getDeliveryPrice();
