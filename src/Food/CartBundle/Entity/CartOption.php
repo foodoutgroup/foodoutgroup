@@ -126,10 +126,10 @@ class CartOption
     /**
      * Set cart_id
      *
-     * @param \Food\CartBudle\Entity\Cart $cartId
+     * @param integer $cartId
      * @return CartOption
      */
-    public function setCartId(\Food\CartBudle\Entity\Cart $cartId)
+    public function setCartId($cartId)
     {
         $this->cart_id = $cartId;
     
@@ -139,7 +139,7 @@ class CartOption
     /**
      * Get cart_id
      *
-     * @return \Food\CartBudle\Entity\Cart 
+     * @return integer 
      */
     public function getCartId()
     {

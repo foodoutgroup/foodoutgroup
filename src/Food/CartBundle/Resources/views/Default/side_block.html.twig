@@ -8,13 +8,13 @@
                 <div class="type">{{ dish.dishSizeId.unit.name }}</div>
                 <div class="clearfix">
                     <div class="count">{{ dish.quantity }} vnt.</div>
-                    <div class="sum">x {{ dish.dishSizeId.price }} Lt</div>
+                    <div class="sum">x {{ dish.dishSizeId.price }} {{ currency_display }}</div>
                 </div>
                 {% if dish.options|length > 0 %}
                     {% for option in dish.options %}
                         <div class="clearfix">
                             <div class="count">{{ option.dishOptionId.name }}</div>
-                            <div class="sum">{{ option.dishOptionId.price }} Lt</div>
+                            <div class="sum">{{ option.dishOptionId.price }} {{ currency_display }}</div>
                         </div>
                     {% endfor %}
                 {% endif %}
@@ -23,11 +23,11 @@
         <div class="check-bottom">
             <div class="delivery-price clearfix">
                 <div class="fl">{% trans %}cart.block.delivery_price{% endtrans %}:</div>
-                <div class="fr">{{ place.deliveryPrice }} Lt</div>
+                <div class="fr">{{ place.deliveryPrice }} {{ currency_display }}</div>
             </div>
             <div class="total-sum clearfix">
                 <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
-                <div class="fr">{{ total }} Lt</div>
+                <div class="fr">{{ total }} {{ currency_display }}</div>
             </div>
         </div>
         <div class="delivery-time tac">{% trans %}cart.block.delivery_time{% endtrans %} {{ place.deliveryTime }}</div>

@@ -242,8 +242,6 @@ class CartService {
         $this->getEm()->persist($cartItem);
         $this->getEm()->flush();
 
-
-
         if (!empty($options)) {
             foreach ($options as $opt) {
                 $cartOptionItem = new CartOption();
@@ -251,7 +249,6 @@ class CartService {
                 $cartOptionItem->setDishId($dish);
                 $cartOptionItem->setCartId($itemId);
                 $cartOptionItem->setDishOptionId($opt);
-                $cartOptionItem->setQuantity(1);
                 $this->getEm()->persist($cartOptionItem);
                 $this->getEm()->flush();
             }
@@ -259,6 +256,7 @@ class CartService {
 
        return $this;
     }
+
 
     /**
      * @param \Place $place
