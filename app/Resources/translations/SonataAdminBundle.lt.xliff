@@ -305,6 +305,10 @@
                 <source>admin.place.review.rate</source>
                 <target>Reitingas</target>
             </trans-unit>
+            <trans-unit id="admin.place.recommended">
+                <source>admin.place.recommended</source>
+                <target>Rekomend.</target>
+            </trans-unit>
 
             <!-- Place points -->
             <trans-unit id="place-point-list">

@@ -149,9 +149,9 @@ class Dish extends Uploadable implements Translatable
      */
     protected $file;
 
-    public $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
-    public $multipleThumbs = true;
-    public $boxSize = array(
+    protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
+    protected $multipleThumbs = true;
+    protected $boxSize = array(
         'type1' => array('w' => 260, 'h' => 179),
         'type2' => array('w' => 118, 'h' => 97),
         'type3' => array('w' => 550, 'h' => 400), // @todo - check ar sitie gerai ir atitinka realybe :)

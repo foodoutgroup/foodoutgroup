@@ -198,8 +198,8 @@ class Place extends Uploadable implements Translatable
      */
     private $deletedBy;
 
-    public $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
-    public $boxSize = array('w' => 130, 'h' => 86);
+    protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
+    protected $boxSize = array('w' => 130, 'h' => 86);
 
     /**
      * @Gedmo\Locale
@@ -236,6 +236,22 @@ class Place extends Uploadable implements Translatable
         $this->localized = new \Doctrine\Common\Collections\ArrayCollection();
         $this->points = new \Doctrine\Common\Collections\ArrayCollection();
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * @return array
+     */
+    public function getBoxSize()
+    {
+        return $this->boxSize;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResizeMode()
+    {
+        return $this->resizeMode;
     }
 
     /**

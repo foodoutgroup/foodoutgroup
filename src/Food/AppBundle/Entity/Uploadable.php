@@ -18,7 +18,25 @@ class Uploadable {
      */
     protected $uploadDir = null;
 
-    public $multipleThumbs = false;
+    protected $multipleThumbs = false;
+    protected $boxSize = null;
+    protected $resizeMode = null;
+
+    /**
+     * @return null
+     */
+    public function getBoxSize()
+    {
+        return $this->boxSize;
+    }
+
+    /**
+     * @return null
+     */
+    public function getResizeMode()
+    {
+        return $this->resizeMode;
+    }
 
 
     public function getImageSetted()
