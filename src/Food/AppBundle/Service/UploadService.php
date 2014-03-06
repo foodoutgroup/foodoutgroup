@@ -191,12 +191,13 @@ class UploadService
         $this->object->$setter($filename);
         $this->object->setFile(null);
 
-        if ($this->object->multipleThumbs) {
-            foreach ($this->object->boxSize as $boxKey=>$boxSz) {
-                $this->saveThumb($uploadDir, $filename, $boxKey.'_'.$filename, $boxSz['w'], $boxSz['h'], $this->object->resizeMode);
+        if ($this->object->getMultipleThumbs()) {
+            foreach ($this->object->getBoxSize() as $boxKey=>$boxSz) {
+                $this->saveThumb($uploadDir, $filename, $boxKey.'_'.$filename, $boxSz['w'], $boxSz['h'], $this->object->getResizeMode());
             }
         } else {
-            $this->saveThumb($uploadDir, $filename, $filename, $this->object->boxSize['w'], $this->object->boxSize['h'], $this->object->resizeMode);
+            $boxSize = $this->object->getBoxSize();
+            $this->saveThumb($uploadDir, $filename, $filename, $boxSize['w'], $boxSize['h'], $this->object->getResizeMode());
         }
     }
 

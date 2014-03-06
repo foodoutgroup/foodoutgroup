@@ -130,6 +130,10 @@
         <source>general.sunday</source>
         <target>Sekmadienis</target>
       </trans-unit>
+      <trans-unit id="1181d30f3954e89601ce6ba723eb04dc" resname="dish.select_quantity">
+        <source>dish.select_quantity</source>
+        <target>Kiekis</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
