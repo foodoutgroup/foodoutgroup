@@ -1,9 +1,28 @@
+<style>
+
+    .check-item .edit {
+        display: none;
+    }
+    .check-item:hover .edit {
+        display: block;
+        width: 60px;
+        background-color: #CCCCCC;
+        position: absolute;
+        margin-left: 88px;
+        text-align: center;
+        padding: 2px;
+        border-radius: 3px;
+        cursor: pointer;
+        margin-top: -3px;
+    }
+</style>
 <div class="check-block">
     <div class="restaurant-logo tac"><img src="/{{place.getWebPathThumb}}"></div>
     <h5 class="tac">{% trans %}cart.block.your_order{% endtrans %}</h5>
     {% if list|length > 0 %}
         {% for dish in list %}
             <div class="check-item">
+                <div class="edit">Redaguoti</div>
                 <div class="name">{{ dish.dishId.name }}</div>
                 <div class="type">{{ dish.dishSizeId.unit.name }}</div>
                 <div class="clearfix">
