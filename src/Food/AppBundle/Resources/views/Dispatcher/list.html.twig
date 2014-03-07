@@ -1,0 +1,36 @@
+{# Dispecerinis langas.. OMG, kas per 87 lvl zodziai...#}
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block actions %}{% endblock %}
+
+{% block side_menu %}
+    <div><a>top menu</a></div>
+{% endblock %}
+
+{% block list_table %}
+<div class="todo_nieks_nezino_klases">
+    <div class="order_list_block">
+        <table class="order_list">
+            <tr>
+                <th>{% trans %}admin.dispatcher.order_id{% endtrans %}</th>
+                <th>{% trans %}admin.dispatcher.order_date{% endtrans %}</th>
+            </tr>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>todo data</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="drivers_list">
+        {# TODO such hack. Wow, drivers. Much respect #}
+    </div>
+</div>
+{% endblock %}
+
+{% block list_filters %}
+    {# No filter at the moment #}
+{% endblock %}
+
+{# TODO such javascript block. Much ajax list refresh. Very kebab #}

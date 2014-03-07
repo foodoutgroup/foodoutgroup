@@ -697,6 +697,16 @@
                 <source>admin.order.details.options</source>
                 <target>Priedai</target>
             </trans-unit>
+
+            <!-- Dispatcher window -->
+            <trans-unit id="admin.order.dispatcher">
+                <source>admin.order.dispatcher</source>
+                <target>Dispečeris</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher">
+                <source>admin.dispatcher</source>
+                <target>Dispečeris</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

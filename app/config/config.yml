@@ -238,6 +238,11 @@ sonata_admin:
                   item_adds:
                       - sonata.admin.support
                   roles: [ ROLE_SUPPORT ]
+              admin.dispacher:
+                  items: ~
+                  item_adds:
+                      - sonata.admin.dispatcher
+                  roles: [ ROLE_SUPPORT ]
               acme.admin.group.misc: ~
 
 stof_doctrine_extensions:

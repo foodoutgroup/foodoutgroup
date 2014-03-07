@@ -391,7 +391,7 @@ class OrderService extends ContainerAware
     public function getOrderByHash($hash)
     {
         $em = $this->container->get('doctrine')->getManager();
-        $order = $em->getRepository('Food\OrderBundle\Entity\Order')->findBy(array('order_hash' => $hash), null, 1);;
+        $order = $em->getRepository('Food\OrderBundle\Entity\Order')->findBy(array('order_hash' => $hash), null, 1);
 
         if (!$order) {
             return false;
@@ -777,5 +777,21 @@ class OrderService extends ContainerAware
 
         $this->getEm()->persist($log);
         $this->getEm()->flush();
+    }
+
+    /**
+     * @return array
+     */
+    public function getOrdersUnassigned()
+    {
+        $em = $this->container->get('doctrine')->getManager();
+        $orders = $em->getRepository('Food\OrderBundle\Entity\Order')
+            ->findBy(array('order_status' =>  self::$status_accepted), array('order_date' => 'ASC'));
+
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
     }
 }

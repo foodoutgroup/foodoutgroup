@@ -166,3 +166,14 @@ services:
                 - ~
             calls:
                 - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.dispatcher:
+                class: Food\AppBundle\Admin\DispatcherAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.order.dispatcher" }
+                arguments:
+                    - ~
+                    - Food\OrderBundle\Entity\Order
+                    - 'FoodAppBundle:DispatcherAdmin'
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]

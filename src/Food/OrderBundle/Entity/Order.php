@@ -69,10 +69,9 @@ class Order
     private $address_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="OrderStatus")
-     * @ORM\JoinColumn(name="order_status", referencedColumnName="id")
+     * @ORM\Column(name="order_status", type="string", length=50, nullable=false)
      **/
-    private $order_status;
+    private $order_status = 'new';
 
     /**
      * @var string
