@@ -11,18 +11,24 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OrderDetails
 {
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Order")
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="details")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
-     * @ORM\Id
      */
     private $order_id;
 
     /**
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish")
      * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
-     * @ORM\Id
      */
     private $dish_id;
 
@@ -69,6 +75,15 @@ class OrderDetails
     
         return $this;
     }
+
+    /**
+     * @todo REIK TESTUOT. Gink die koks jabanunas mappedBy :D - jei neveiks - Lenkai kalti :D
+     *
+     * @var OrderDetails[]
+     *
+     * ORM\OneToMany(targetEntity="OrderDetailsOptions", mappedBy={"order_id", "dish_id"})
+     */
+    private $details;
 
     /**
      * Get dish_name
@@ -239,5 +254,15 @@ class OrderDetails
     public function getDishSizeCode()
     {
         return $this->dish_size_code;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

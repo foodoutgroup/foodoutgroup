@@ -80,8 +80,14 @@ class DishAdmin extends FoodAdmin
                 ->setParameter('place', $userPlaceId);
         }
 
+        $options = array('required' => false, 'label' => 'admin.dish.photo');
+        if (($pl = $this->getSubject()) && $pl->getPhoto()) {
+            $options['help'] = '<img src="/' . $pl->getWebPathThumb('type1') . '" />';
+        }
+
         $formMapper
             ->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
+            ->add('file', 'file', $options)
             ->add('sizes', 'sonata_type_collection', array(
                     'required' => false,
                     'by_reference' => false,
@@ -93,6 +99,7 @@ class DishAdmin extends FoodAdmin
             )
             ->add('options', null, array('query_builder' => $optionsQuery,'expanded' => true, 'multiple' => true, 'required' => false))
             ->add('recomended', 'checkbox', array('label' => 'admin.dish.recomended', 'required' => false,))
+            ->add('active', 'checkbox', array('label' => 'admin.dish.active', 'required' => false,))
         ;
     }
 
@@ -145,9 +152,14 @@ class DishAdmin extends FoodAdmin
             ->addIdentifier('name', 'string', array('label' => 'admin.dish.name'))
             ->add('place')
             ->add('categories')
+            ->add('image', 'string', array(
+                'template' => 'FoodDishesBundle:Default:list_image.html.twig',
+                'label' => 'admin.dish.photo'
+            ))
             ->add('options')
             ->add('sizes', 'string', array('template' => 'FoodDishesBundle:Default:list_admin_list_sizes.html.twig'))
-            ->add('recomended', null, array('label' => 'admin.dish.recomended', 'editable' => true))
+            ->add('recomended', null, array('label' => 'admin.dish.recomended_list', 'editable' => true))
+            ->add('active', null, array('label' => 'admin.dish.active_list', 'editable' => true))
             ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
@@ -182,6 +194,7 @@ class DishAdmin extends FoodAdmin
         }
         parent::prePersist($object);
         $this->fixRelations($object);
+        $this->saveFile($object);
     }
 
     /**
@@ -191,6 +204,7 @@ class DishAdmin extends FoodAdmin
     public function preUpdate($object)
     {
         $this->fixRelations($object);
+        $this->saveFile($object);
     }
 
     /**

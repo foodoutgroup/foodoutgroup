@@ -1,7 +1,11 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field%}
-    {%  if object.getLogo !=null %}
-        <img src="/{{object.getWebPath}}" style="height: 200px">
+    {%  if object.imageSetted !=null %}
+        {% if object.multipleThumbs %}
+            <img src="/{{object.getWebPathThumb('type2')}}">
+        {% else %}
+            <img src="/{{object.getWebPathThumb}}">
+        {% endif %}
     {% endif %}
 {% endblock %}

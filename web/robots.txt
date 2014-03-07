@@ -2,3 +2,10 @@
 # www.google.com/support/webmasters/bin/answer.py?hl=en&answer=156449
 
 User-agent: *
+# Allows everything
+Disallow:
+
+# disallows specific crap
+Disallow: /lt/newsletter/thank/
+Disallow: /en/newsletter/thank/
+Disallow: /ry/newsletter/thank/

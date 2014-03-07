@@ -1,0 +1,67 @@
+{# Apatine puslapio raudona juosta su nuorodomis #}
+<div class="site-footer">
+    <div class="site-block clearfix">
+        <div class="col col-1">
+            <h5>{% trans %}general.page_name{% endtrans %}</h5>
+            <ul class="menu">
+                {% for page in staticPages %}
+                    <li>
+                        <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(page.id, 'text')}) }}">
+                            {{ page.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {# TODO Kolkas neturime tiek nuorodu #}
+        {#<div class="col col-2">#}
+            {#<h5>Daugiau nuorodu</h5>#}
+            {#<ul class="menu">#}
+                {#<li><a href="#">About us</a></li>#}
+                {#<li><a href="#">Terms and Conditions</a></li>#}
+                {#<li><a href="#">Contact</a></li>#}
+                {#<li><a href="#">About us</a></li>#}
+                {#<li><a href="#">Privacy Policy</a></li>#}
+            {#</ul>#}
+        {#</div>#}
+        {% if topRatedPlaces is not empty %}
+        <div class="col col-3">
+            {# TODO kol nera rewievs bigti - rodome tik viena stulpeli ir jis praplatintas, nes ilgesni pavadinimai netelpa #}
+            <h5>{% trans %}general.top_restaurants{% endtrans %}</h5>
+            <div class="clearfix">
+                <div class="small-col fl rating-col">
+                    {% for place in topRatedPlaces %}
+                        {#{% if not (loop.index % 2) %}#}
+                            <div class="clearfix">
+                                <span class="name fl">
+                                    <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place')}) }}">
+                                        {{ place.name }}
+                                    </a>
+                                </span>
+                                <div data-stars="{{ place.averageRating }}" class="restoran-rating fr"></div>
+                            </div>
+                        {#{% endif %}#}
+                    {% endfor %}
+                </div>
+                {#<div class="small-col fr">#}
+                    {#{% for place in topRatedPlaces %}#}
+                        {#{% if (loop.index % 2) %}#}
+                            {#<div class="clearfix">#}
+                                {#<span class="name fl">#}
+                                    {#<a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'food_place')}) }}">#}
+                                        {#{{ place.name }}#}
+                                    {#</a>#}
+                                {#</span>#}
+                                {#<div data-stars="{{ place.averageRating }}" class="restoran-rating fr"></div>#}
+                            {#</div>#}
+                        {#{% endif %}#}
+                    {#{% endfor %}#}
+                {#</div>#}
+            </div>
+        </div>
+        {% endif %}
+        <div class="col col-4"><img src="{{ asset('bundles/foodapp/images/logo_food_small.png') }}">
+            <p class="copyrights">&copy; foodout.lt</p>
+        </div>
+    </div>
+</div>

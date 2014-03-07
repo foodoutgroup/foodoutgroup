@@ -10,7 +10,7 @@ use Gedmo\Translatable\Translatable;
 /**
  * Dish
  *
- * @ORM\Table()
+ * @ORM\Table(name="size")
  * @ORM\Entity
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\SizeLocalized")

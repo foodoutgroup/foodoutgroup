@@ -3,45 +3,68 @@
 namespace Food\DishesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
 
 /**
  * ClientLocalized
  *
- * @ORM\Table(name="place_localized")
+ * @ORM\Table(name="place_localized",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="lookup_unique_idx", columns={
+ *         "locale", "object_id", "field"
+ *     })})
  * @ORM\Entity
  */
-class PlaceLocalized
+class PlaceLocalized extends AbstractPersonalTranslation
 {
     /**
-     * @var integer
+     * @ORM\ManyToOne(targetEntity="Place", inversedBy="translations")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $object;
+
+    /**
+     * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue
      */
-    private $id;
+    protected $id;
 
     /**
-     * @var string
+     * @var string $locale
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(type="string", length=8)
      */
-    private $name;
+    protected $locale;
 
     /**
-     * @var string
+     * @var string $field
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(type="string", length=32)
      */
-    private $description;
+    protected $field;
 
     /**
-     * @var integer
+     * @var string $content
      *
-     * @ORM\Column(name="lang", type="integer")
+     * @ORM\Column(type="text", nullable=true)
      */
-    private $lang;
+    protected $content;
 
+    /**
+     * Convenient constructor
+     *
+     * @param string $locale
+     * @param string $field
+     * @param string $value
+     */
+    public function __construct($locale=null, $field=null, $value=null)
+    {
+        $this->setLocale($locale);
+        $this->setField($field);
+        $this->setContent($value);
+    }
 
     /**
      * Get id
@@ -54,71 +77,94 @@ class PlaceLocalized
     }
 
     /**
-     * Set name
+     * Set locale
      *
-     * @param string $name
+     * @param string $locale
      * @return PlaceLocalized
      */
-    public function setName($name)
+    public function setLocale($locale)
     {
-        $this->name = $name;
+        $this->locale = $locale;
     
         return $this;
     }
 
     /**
-     * Get name
+     * Get locale
      *
      * @return string 
      */
-    public function getName()
+    public function getLocale()
     {
-        return $this->name;
+        return $this->locale;
     }
 
     /**
-     * Set description
+     * Set field
      *
-     * @param string $description
-     * @return ClientLocalized
+     * @param string $field
+     * @return PlaceLocalized
      */
-    public function setDescription($description)
+    public function setField($field)
     {
-        $this->description = $description;
+        $this->field = $field;
     
         return $this;
     }
 
     /**
-     * Get description
+     * Get field
      *
      * @return string 
      */
-    public function getDescription()
+    public function getField()
     {
-        return $this->description;
+        return $this->field;
     }
 
     /**
-     * Set lang
+     * Set content
      *
-     * @param integer $lang
-     * @return ClientLocalized
+     * @param string $content
+     * @return PlaceLocalized
      */
-    public function setLang($lang)
+    public function setContent($content)
     {
-        $this->lang = $lang;
+        $this->content = $content;
     
         return $this;
     }
 
     /**
-     * Get lang
+     * Get content
      *
-     * @return integer 
+     * @return string 
      */
-    public function getLang()
+    public function getContent()
     {
-        return $this->lang;
+        return $this->content;
+    }
+
+    /**
+     * Set object
+     *
+     * @param \Food\DishesBundle\Entity\Place $object
+     * @return PlaceLocalized
+     */
+    public function setObject($object)
+    {
+        $this->object = $object;
+    
+        return $this;
+    }
+
+    /**
+     * Get object
+     *
+     * @return \Food\DishesBundle\Entity\Place 
+     */
+    public function getObject()
+    {
+        return $this->object;
     }
 }

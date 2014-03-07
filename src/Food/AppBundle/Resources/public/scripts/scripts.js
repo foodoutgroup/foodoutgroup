@@ -24,14 +24,20 @@
         $('.custom-select').selectmenu();
 
         $("input").iCheck();
+
+
         $(".boxer").boxer({
             callback: function(){
                 $("input").iCheck();
-                }
-            });
+            }
+        });
 
 
-        $( "#detailed-restaurant" ).tabs();
+        $( "#detailed-restaurant" ).tabs({
+            activate: function( event, ui ) {
+                ui.newTab.trigger('tab-activate');
+            }
+        });
 
 
         $('.restoran-rating').raty({
@@ -41,10 +47,6 @@
             },
             path: '/bundles/foodapp/images/'
         });
-
-
-
-
 
         function resizeSensitive() {
             

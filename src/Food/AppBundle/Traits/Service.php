@@ -17,6 +17,9 @@ trait Service
         return $this->container()->get($service);
     }
 
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
     public function em()
     {
         return $this->service('doctrine')->getManager();

@@ -49,6 +49,11 @@ class PaySera extends ContainerAware implements BillingInterface {
     private $test = 0;
 
     /**
+     * @var string
+     */
+    private $locale;
+
+    /**
      * @param int $projectId
      */
     public function setProjectId($projectId)
@@ -169,6 +174,22 @@ class PaySera extends ContainerAware implements BillingInterface {
     }
 
     /**
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
      * @return string
      */
     public function getCancelUrl()
@@ -199,8 +220,14 @@ class PaySera extends ContainerAware implements BillingInterface {
 
         $siteDomain = 'http://'.$this->getSiteDomain();
         $router = $this->container->get('router');
-        $acceptUrl = $siteDomain.$router->generate('paysera_accept', array('hash' => $order->getOrderHash()));
-        $cancelUrl = $siteDomain.$router->generate('paysera_cancel', array('hash' => $order->getOrderHash()));
+        $acceptUrl = $siteDomain.$router->generate('paysera_accept', array('_locale' => $this->getLocale()));
+        $cancelUrl = $siteDomain.$router->generate(
+                'paysera_cancel',
+                array(
+                    'hash' => $order->getOrderHash(),
+                    '_locale' => $this->getLocale(),
+                )
+            );
         $callbackUrl = $siteDomain.$router->generate('paysera_callback');
 
         $evpParams = array(

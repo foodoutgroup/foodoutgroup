@@ -8,6 +8,8 @@ use Food\CartBundle\Service\CartService;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Food\OrderBundle\Entity\OrderDetailsOptions;
+use Food\OrderBundle\Entity\OrderLog;
+use Food\OrderBundle\Entity\PaymentLog;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Security\Acl\Exception\Exception;
 
@@ -92,6 +94,11 @@ class OrderService extends ContainerAware
     private $order;
 
     /**
+     * @var string
+     */
+    private $locale;
+
+    /**
      * @param \Food\CartBundle\Service\CartService $cartService
      */
     public function setCartService($cartService)
@@ -148,6 +155,22 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
      * @param mixed $context
      */
     public function setContext($context)
@@ -164,15 +187,27 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param int $place
      * @return Order
      */
-    public function createOrder()
+    public function createOrder($place)
     {
+
+        $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Entity:Place')->find($place);
+        $placePointMap = $this->container->get('session')->get('point_data');
+        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:Entity:PlacePoint')->find($placePointMap[$place]);
+
         $this->order = new Order();
         $user = $this->container->get('security.context')->getToken()->getUser();
         if ($user == 'anon.') {
             $user = null;
         }
+        $this->order->setPlace($placeRecord);
+        $this->order->setPlaceName($placeRecord->getName());
+
+        $this->order->setPlacePoint($placeRecord);
+        $this->order->setPlacePointAddress($pointRecord->getAddress());
+
         $this->order->setUser($user);
         $this->order->setOrderDate(new \DateTime("now"));
         $this->order->setVat($this->container->getParameter('vat'));
@@ -275,9 +310,12 @@ class OrderService extends ContainerAware
         $this->order = $order;
     }
 
-    public function createOrderFromCart()
+    /**
+     * @param int $place
+     */
+    public function createOrderFromCart($place)
     {
-        $this->createOrder();
+        $this->createOrder($place);
         $this->saveOrder();
         foreach ($this->getCartService()->getCartDishes() as $cartDish) {
             $options = $this->getCartService()->getCartDishOptions($cartDish);
@@ -317,6 +355,9 @@ class OrderService extends ContainerAware
         if (empty($this->order) || $this->order == null) {
             throw new Exception("Yah whatever... seivinam orderi neturedami jo ?:)");
         } else {
+            //Update the last update time ;)
+            $this->order->setLastUpdated(new \DateTime("now"));
+
             $this->getEm()->persist($this->getOrder());
             $this->getEm()->flush();
         }
@@ -350,7 +391,7 @@ class OrderService extends ContainerAware
     public function getOrderByHash($hash)
     {
         $em = $this->container->get('doctrine')->getManager();
-        $order = $em->getRepository('Food\OrderBundle\Entity\Order')->findBy(array('hash' => $hash), null, 1);;
+        $order = $em->getRepository('Food\OrderBundle\Entity\Order')->findBy(array('order_hash' => $hash), null, 1);;
 
         if (!$order) {
             return false;
@@ -443,11 +484,14 @@ class OrderService extends ContainerAware
         }
 
         $biller->setOrder($order);
+        $biller->setLocale($this->getLocale());
         $redirectUrl = $biller->bill();
 
         $order->setSubmittedForPayment(new \DateTime("now"));
 
         $this->saveOrder();
+
+        $this->logPayment($order, 'billing start', 'Billing started with method: '.$billingType, $order);
 
         return $redirectUrl;
     }
@@ -464,7 +508,10 @@ class OrderService extends ContainerAware
             throw new \InvalidArgumentException('Payment method: '.$method.' is unknown to our system or not available');
         }
 
+        $oldMethod = $order->getPaymentMethod();
         $order->setPaymentMethod($method);
+
+        $this->logPayment($order, 'payement method change', sprintf('Method changed from "%s" to "%s"', $oldMethod, $method));
     }
 
     /**
@@ -509,18 +556,25 @@ class OrderService extends ContainerAware
         $order = $this->getOrder();
 
         if (!$this->isAllowedPaymentStatus($status)) {
-            throw new \InvalidArgumentException('Status: "'.$status.'" is not a valid order status');
+            throw new \InvalidArgumentException('Status: "'.$status.'" is not a valid order payment status');
         }
 
         if (!$this->isValidPaymentStatusChange($order->getPaymentStatus(), $status)) {
-            throw new \InvalidArgumentException('Order can not go from status: "'.$order->getPaymentStatus().'" to: "'.$status.'" is not a valid order status');
+            throw new \InvalidArgumentException('Order can not go from status: "'.$order->getPaymentStatus().'" to: "'.$status.'" is not a valid order payment status');
         }
 
+        $oldStatus = $order->getPaymentStatus();
         $order->setPaymentStatus($status);
 
         if ($status == self::$paymentStatusError) {
             $order->setLastPaymentError($message);
         }
+
+        $this->logPayment(
+            $order,
+            'payement status change',
+            sprintf('Status changed from "%s" to "%s" with message %s', $oldStatus, $status, $message)
+        );
 
         $this->saveOrder();
     }
@@ -546,12 +600,20 @@ class OrderService extends ContainerAware
      */
     public function isValidPaymentStatusChange($from, $to)
     {
+        if (empty($from) && !empty($to)) {
+            return true;
+        }
+
+        if (empty($to)) {
+            return false;
+        }
+
         $flowLine = array(
             self::$paymentStatusNew => 0,
             self::$paymentStatusWait => 1,
-            self::$paymentStatusComplete => 2,
-            self::$paymentStatusCanceled => 2,
-            self::$paymentStatusError => 2,
+            self::$paymentStatusComplete => 1,
+            self::$paymentStatusCanceled => 1,
+            self::$paymentStatusError => 1,
         );
 
         if ($flowLine[$from] <= $flowLine[$to]) {
@@ -631,5 +693,89 @@ class OrderService extends ContainerAware
         }
 
         $order->setDeliveryType($type);
+    }
+
+    /**
+     * @param Order|null $order
+     * @param string $event
+     * @param string|null $message
+     * @param mixed $debugData
+     */
+    public function logOrder($order=null, $event, $message=null, $debugData=null)
+    {
+        $log = new OrderLog();
+
+        if (empty($order) && !($order instanceof Order)) {
+            $order = $this->getOrder();
+        }
+
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        if ($user == 'anon.') {
+            $user = null;
+        }
+
+        $log->setOrder($order)
+            ->setOrderStatus($order->getOrderStatus())
+            ->setEvent($event)
+            ->setMessage($message)
+            ->setUser($user);
+
+        if (is_array($debugData)) {
+            $debugData = var_export($debugData, true);
+        } else if (is_object($debugData)) {
+            if (method_exists($debugData, '__toArray')) {
+                $debugData = 'Class: '.get_class($debugData).' Data: '
+                    .var_export($debugData->__toArray(), true);
+            } else {
+                $debugData = get_class($debugData);
+            }
+        }
+        $log->setDebugData($debugData);
+
+        $this->getEm()->persist($log);
+        $this->getEm()->flush();
+    }
+
+    /**
+     * @param Order|null $order
+     * @param string $event
+     * @param string|null $message
+     * @param mixed $debugData
+     */
+    public function logPayment($order=null, $event, $message=null, $debugData=null)
+    {
+        $log = new PaymentLog();
+
+        if (empty($order) && !($order instanceof Order)) {
+            $order = $this->getOrder();
+        }
+
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        if ($user == 'anon.') {
+            $user = null;
+        }
+
+        $log->setOrder($order)
+            ->setPaymentStatus($order->getPaymentStatus())
+            ->setEvent($event)
+            ->setMessage($message)
+            ->setUser($user);
+
+        if (is_array($debugData)) {
+            $debugData = var_export($debugData, true);
+        } else if (is_object($debugData)) {
+            if (method_exists($debugData, '__toArray')) {
+                $debugData = 'Class: '.get_class($debugData).' Data: '
+                    .var_export($debugData->__toArray(), true);
+            } else {
+                $debugData = get_class($debugData);
+            }
+        }
+        $log->setDebugData($debugData);
+
+        $this->getEm()->persist($log);
+        $this->getEm()->flush();
     }
 }

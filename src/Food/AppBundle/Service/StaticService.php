@@ -1,7 +1,10 @@
 <?php
 namespace Food\AppBundle\Service;
 
+use Food\AppBundle\Traits;
+
 class StaticService {
+    use Traits\Service;
 
     /**
      * @var Container
@@ -70,5 +73,22 @@ class StaticService {
         }
 
         return $staticPage;
+    }
+
+    /**
+     * @param int $limit
+     * @return array
+     */
+    public function getActivePages($limit=10)
+    {
+        $pagesQuery = $this->em()->getRepository('FoodAppBundle:StaticContent')
+            ->createQueryBuilder('s')
+        // TODO active-not active ir positioning (top, bottom menu, hidden)
+            ->where('s.active = 1')
+            ->orderBy('s.order', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        return $pagesQuery->getResult();
     }
 }

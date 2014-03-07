@@ -14,7 +14,7 @@ food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|payments|call_center|ajax|places).+"
+        slug : "^(?!admin|cart|test|payments|call_center|newsletter|ajax|places|vietos|mesto).+"
 
 food_admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
@@ -24,16 +24,52 @@ food_cart:
     resource: "@FoodCartBundle/Resources/config/routing.yml"
     prefix:   /cart
 
+food_ajax_dish:
+    pattern: /ajax/dish/{dish}
+    defaults: { _controller: FoodDishesBundle:Dish:getDish, dish: ~}
+
 food_ajax:
     pattern: /ajax/{action}/
     defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~}
 
-food_places:
-    pattern: /places/
-    defaults: { _controller: FoodPlacesBundle:Default:index}
+
+food_place_en:
+    resource: "@FoodPlacesBundle/Resources/config/routing_en.yml"
+    prefix:   /places
+
+food_place_lt:
+    resource: "@FoodPlacesBundle/Resources/config/routing_lt.yml"
+    prefix:   /vietos
+
+food_place_ru:
+    resource: "@FoodPlacesBundle/Resources/config/routing_ru.yml"
+    prefix:   /mesto
+
+
+food_places_filter:
+    pattern: /places/filter/
+    defaults: { _controller: FoodPlacesBundle:Default:list }
 
 
 static:
     path:     /static/{id}
     defaults: { _controller: FoodAppBundle:Static:index }
     methods:  [GET]
+
+food_place_point_data:
+    pattern: /ajax/place-point/{point_id}
+    defaults: { _controller: FoodDishesBundle:Place:placePoint, point_id: ~}
+
+food_place_menu_layout:
+    pattern: /ajax/save-menu-layout/{layout}
+    defaults: { _controller: FoodDishesBundle:FoodCategory:restaurantMenuLayout, layout: ~}
+
+food_newsletter_subscribe:
+    pattern: /newsletter/subscribe/
+    defaults: { _controller: FoodAppBundle:Default:newsletterSubscribe}
+    requirements:
+      _method:  POST
+
+food_newsletter_thank:
+    pattern: /newsletter/thank/
+    defaults: { _controller: FoodAppBundle:Default:newsletterThank}

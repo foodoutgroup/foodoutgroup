@@ -29,6 +29,7 @@
         "symfony/symfony": "2.3.*",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "doctrine/doctrine-bundle": "1.2.*",
+        "beberlei/DoctrineExtensions": "dev-master",
         "twig/extensions": "1.0.*",
         "symfony/assetic-bundle": "2.3.*",
         "symfony/icu": "1.1.*",
@@ -58,7 +59,9 @@
         "sonata-project/user-bundle": "dev-master as v2.2.0",
         "webtopay/libwebtopay": "1.6.*@dev",
         "webtopay/webtopay-bundle": "dev-master",
-        "shuber/curl": "dev-master"
+        "shuber/curl": "dev-master",
+        "imagine/Imagine": "dev-master",
+        "trsteel/ckeditor-bundle": "1.4.x-dev"
     },
     "scripts": {
         "post-install-cmd": [

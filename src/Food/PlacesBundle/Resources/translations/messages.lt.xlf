@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="lt" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="63a8c152b2f20462a41fabb0aed78b90" resname="label.name">
+        <source>label.name</source>
+        <target>Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="0420a37d01528c8ccb62e5fdab5833b1" resname="label.description">
+        <source>label.description</source>
+        <target>Aprašymas</target>
+      </trans-unit>
+      <trans-unit id="7a1920d61156abc05a60135aefe8bc67" resname="Default">
+        <source>Default</source>
+        <target>Pagr.</target>
+      </trans-unit>
+      <trans-unit id="99f5238dc66cbe96929c47644f0c2c76" resname="admin.active">
+        <source>admin.active</source>
+        <target>Aktyvus</target>
+      </trans-unit>
+      <trans-unit id="ec008def21d978019fd40f8f39866561" resname="admin.hidden">
+        <source>admin.hidden</source>
+        <target>Slepiamas</target>
+      </trans-unit>
+      <trans-unit id="a08b256228e3deea7b1a631ff3acfd46" resname="admin.visible">
+        <source>admin.visible</source>
+        <target>Rodoma</target>
+      </trans-unit>
+      <trans-unit id="6ee5d0ba516cc21109497e917b17ef18" resname="admin.static.title">
+        <source>admin.static.title</source>
+        <target>Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="22398e809e690c88e475630d11decf73" resname="admin.static.content">
+        <source>admin.static.content</source>
+        <target>Turinys</target>
+      </trans-unit>
+      <trans-unit id="4b0bdec793cf5139ea5e4c9fef0dac02" resname="admin.dish.recomended">
+        <source>admin.dish.recomended</source>
+        <target>Rekomenduojama</target>
+      </trans-unit>
+      <trans-unit id="2c33fa8aaa15d65cb09a1d95fc568389" resname="admin.place.point.weekdays_worktime">
+        <source>admin.place.point.weekdays_worktime</source>
+        <target>Darbo laikas</target>
+      </trans-unit>
+      <trans-unit id="0edf0d1f7b8afbd5362c9607b21e1fbd" resname="admin.place.point.weekday_trans1">
+        <source>admin.place.point.weekday_trans1</source>
+        <target>Pirmadienis</target>
+      </trans-unit>
+      <trans-unit id="03c391337821e4cc55c4ec117a976ed9" resname="admin.place.point.weekday_trans2">
+        <source>admin.place.point.weekday_trans2</source>
+        <target>Antradienis</target>
+      </trans-unit>
+      <trans-unit id="5b31f2408b1972d160c1cfa73523b025" resname="admin.place.point.weekday_trans3">
+        <source>admin.place.point.weekday_trans3</source>
+        <target>Trečiadienis</target>
+      </trans-unit>
+      <trans-unit id="1a9631bc77ac554d491b701348a14e72" resname="admin.place.point.weekday_trans4">
+        <source>admin.place.point.weekday_trans4</source>
+        <target>Ketvirtadienis</target>
+      </trans-unit>
+      <trans-unit id="4b3c3cef63851feab629dd6cc3a0fd62" resname="admin.place.point.weekday_trans5">
+        <source>admin.place.point.weekday_trans5</source>
+        <target>Penktadienis</target>
+      </trans-unit>
+      <trans-unit id="8c0cc485b23b63690161a65a6d607e12" resname="admin.place.point.weekday_trans6">
+        <source>admin.place.point.weekday_trans6</source>
+        <target>Šeštadienis</target>
+      </trans-unit>
+      <trans-unit id="c91f64f83dfa1a8b2c0505303d9fa0f9" resname="admin.place.point.weekday_trans7">
+        <source>admin.place.point.weekday_trans7</source>
+        <target>Sekmadienis</target>
+      </trans-unit>
+      <trans-unit id="f1e4237cc7baaeb83fc16739e156e2af" resname="admin.point.pickup">
+        <source>admin.point.pickup</source>
+        <target>Atsiimti vietoje</target>
+      </trans-unit>
+      <trans-unit id="030e4e680ac83e550bd6268d94c09de8" resname="admin.point.delivery">
+        <source>admin.point.delivery</source>
+        <target>Pristatymas</target>
+      </trans-unit>
+      <trans-unit id="e1e410cac45db85136792b6d662b199b" resname="admin.point.active">
+        <source>admin.point.active</source>
+        <target>Aktyvus</target>
+      </trans-unit>
+      <trans-unit id="1e6cd917ed71a1241e4bedc29264bd98" resname="404 Not Found">
+        <source>404 Not Found</source>
+        <target>Atsiprašome, puslapis nerastas.</target>
+      </trans-unit>
+      <trans-unit id="60c3de6def601e306f093cfa912f845c" resname="global.page_not_found">
+        <source>global.page_not_found</source>
+        <target>Puslapis nerastas</target>
+      </trans-unit>
+      <trans-unit id="10f11162c862a7df3189be97c180404b" resname="global.page_not_found.description">
+        <source>global.page_not_found.description</source>
+        <target>Pasitikrinkite, ar teisingai surinkote adresą.</target>
+      </trans-unit>
+      <trans-unit id="510b7879d5751a52bb1d1e33d31faf99" resname="general.error_happened">
+        <source>general.error_happened</source>
+        <target>Atsiprašome, įvyko klaida</target>
+      </trans-unit>
+      <trans-unit id="85a24106b1bb1388890f8fb6340af85f" resname="general.error_happened.description">
+        <source>general.error_happened.description</source>
+        <target>Prašome pabandyti iš naujo po keletos minučių</target>
+      </trans-unit>
+      <trans-unit id="a64946380123e11bb1a33f0b624b8861" resname="label_type_yes">
+        <source>label_type_yes</source>
+        <target>Taip</target>
+      </trans-unit>
+      <trans-unit id="d9901e7f42326dc58a5c5a1ed0257cc3" resname="label_type_no">
+        <source>label_type_no</source>
+        <target>Ne</target>
+      </trans-unit>
+      <trans-unit id="80dee81fa475dfebb87e5778ea7daa98" resname="ROLE_ADMIN: ROLE_MODERATOR">
+        <source>ROLE_ADMIN: ROLE_MODERATOR</source>
+        <target>Svetainės administratorius</target>
+      </trans-unit>
+      <trans-unit id="44e9e90e66cb740de4923d793b7ff04e" resname="ROLE_MODERATOR">
+        <source>ROLE_MODERATOR</source>
+        <target>Restorano atstovas</target>
+      </trans-unit>
+      <trans-unit id="1871dbe4ffdad6ba92dba845efaa6fa7" resname="ROLE_USER">
+        <source>ROLE_USER</source>
+        <target>Lankytojas</target>
+      </trans-unit>
+      <trans-unit id="2135b2419f893073ba9adda33c3c8634" resname="places.change_address">
+        <source>places.change_address</source>
+        <target>Keisti adresą</target>
+      </trans-unit>
+      <trans-unit id="53d74f60f82080e265d8783fdbc0d624" resname="places.clear_filters">
+        <source>places.clear_filters</source>
+        <target>Išvalyti filtrus</target>
+      </trans-unit>
+      <trans-unit id="2225567eada33a112dde56da166efec5" resname="places.search_placeholder">
+        <source>places.search_placeholder</source>
+        <target>Paieška...</target>
+      </trans-unit>
+      <trans-unit id="3ae217e1cb532beeb4c2445d53826bb9" resname="places.order_by">
+        <source>places.order_by</source>
+        <target>Rūšiuoti pagal</target>
+      </trans-unit>
+      <trans-unit id="1570d01bce64d0ff338129a67c3155b4" resname="places.sort_by_relevance">
+        <source>places.sort_by_relevance</source>
+        <target>Aktualumą</target>
+      </trans-unit>
+      <trans-unit id="037d42e4091b77dd78e11e12a5d55eeb" resname="places.sort_by_rating">
+        <source>places.sort_by_rating</source>
+        <target>Reitingą</target>
+      </trans-unit>
+      <trans-unit id="361056fb20b2ee8abd32922df2b1172f" resname="places.sort_by_delivery_price">
+        <source>places.sort_by_delivery_price</source>
+        <target>Pristatymo kainą</target>
+      </trans-unit>
+      <trans-unit id="03b9b2358460ada5aeba45c965a71b05" resname="places.sort_by_distance">
+        <source>places.sort_by_distance</source>
+        <target>Atstumą</target>
+      </trans-unit>
+      <trans-unit id="1214eef8a9c606ec44c7e3b97c349bdb" resname="place.delivery_info">
+        <source>place.delivery_info</source>
+        <target>Pristatymas</target>
+      </trans-unit>
+      <trans-unit id="de03d40f9e854231164bfbbfdbfa52f9" resname="place.min_cart_amount">
+        <source>place.min_cart_amount</source>
+        <target>Min. krepšelis</target>
+      </trans-unit>
+      <trans-unit id="4962db963b0f0d3cd2bc1b571272710b" resname="places.reviews_count">
+        <source>places.reviews_count</source>
+        <target>Įvertinimai</target>
+      </trans-unit>
+      <trans-unit id="c246f90396fd5c888eb71087fbb61789" resname="places.watch_menu">
+        <source>places.watch_menu</source>
+        <target>Žiūrėti meniu</target>
+      </trans-unit>
+      <trans-unit id="bd1a1db3eb2d711ca8c2688222c5d0e7" resname="admin.place.slogan">
+        <source>admin.place.slogan</source>
+        <target>Šūkis</target>
+      </trans-unit>
+      <trans-unit id="cb9075cff71fef3e2f58f9f8bbd859ca" resname="admin.place.description">
+        <source>admin.place.description</source>
+        <target>Aprašymas</target>
+      </trans-unit>
+      <trans-unit id="8988cef218e29834d745dd0ccada226d" resname="admin.place.recommended">
+        <source>admin.place.recommended</source>
+        <target>Rekomend.</target>
+      </trans-unit>
+      <trans-unit id="b97ef5e6ab382da2cf8726ef38fcc091" resname="places.recomended_block_title">
+        <source>places.recomended_block_title</source>
+        <target>Mūsų rekomenduojami restoranai</target>
+      </trans-unit>
+      <trans-unit id="ff0bc83f13df6076f1fe1eda1481372d" resname="places.recomended_show_more">
+        <source>places.recomended_show_more</source>
+        <target>Daugiau pasiūlymų</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

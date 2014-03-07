@@ -21,19 +21,22 @@ parameters:
     admin.emails: [mantas@skanu.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
+    title: "Foodout"
     domain: "labai.skanu.lt"
     arc_gis_user: "skanulabai"
     arc_gis_pass: "labaiskanu"
-    arc_gis_client_id: "rT6idyGGrhoLHfQY"
-    arc_gis_client_secret: "13edb6261ed542e1be9ab27ec47d9d82"
+    arc_gis_client_id: "QTFVE57PzjWLTXOj"
+    arc_gis_client_secret: "edf2c3d4c02f4076b9245c240dc0f662"
 #  arc_gis_oauth: "https://www.arcgis.com/sharing/oauth2/token?client_id=__id__&grant_type=client_credentials&client_secret=__secret__&f=pjson"
 #  arc_gis_oauth: "https://www.arcgis.com/sharing/oauth2/token?client_id=rT6idyGGrhoLHfQY&grant_type=client_credentials&client_secret=13edb6261ed542e1be9ab27ec47d9d82&f=pjson"
     arc_gis_oauth: "https://www.arcgis.com/sharing/oauth2/token"
     arc_gis_geocode: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates"
     arc_gis_geocode_single: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     arc_gis_geocode_url: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=pjson&Address=_1_&City=_2_&CountryCode=LT&outFields=AddrNum,StName,City"
+    google.maps_api: "AIzaSyDyKJYX3Cr4Cn41VR9oaAqbmT8XlbHBY-Q"
     # Todo situos gal ir iskelsime i paramsus - dependant on install?
     payment.methods: [local, local.card, paysera]
+    currency_display: Lt
     vat: 21
 
 framework:
@@ -63,6 +66,10 @@ twig:
     globals:
         slug_util:    "@food.dishes.utils.slug"
         locale:       "%locale%"
+        page_title:   "%title%"
+        currency_display: "%currency_display%"
+        dish_service: "@food.dishes"
+        google_maps_api: "%google.maps_api%"
 
 
 # Assetic Configuration
@@ -117,6 +124,16 @@ doctrine:
                 class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
                 enabled: true
 
+        dql:
+            numeric_functions:
+                asin: DoctrineExtensions\Query\Mysql\Asin
+                sin: DoctrineExtensions\Query\Mysql\Sin
+                pi: DoctrineExtensions\Query\Mysql\Pi
+                cos: DoctrineExtensions\Query\Mysql\Cos
+                rand: DoctrineExtensions\Query\Mysql\Rand
+                power: Food\AppBundle\DQL\PowerFunction
+
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: %mailer_transport%
@@ -138,6 +155,11 @@ services:
     calls:
         - [ setAnnotationReader, [ @annotation_reader ] ]
 
+  twig.extension.intl:
+    class: Twig_Extensions_Extension_Intl
+    tags:
+        - { name: twig.extension }
+
 sonata_doctrine_orm_admin:
     templates:
         form: [ FoodDishesBundle:Forms:form_admin_fields.html.twig ]
@@ -154,9 +176,8 @@ sonata_block:
 
 # Sonata admin bloku konfigas
 sonata_admin:
-    title: Skanu.lt
-#    title_logo: /bundles/foodapp/images/admin_icon.png
-    title_logo: /bundles/foodapp/images/admin_fun_icon.png
+    title: Foodout
+    title_logo: /bundles/foodapp/images/logo_food_small.png
     templates:
       #layout: SonataAdminBundle::standard_layout.html.twig
       layout: FoodAppBundle::admin_layout.html.twig
@@ -201,10 +222,16 @@ sonata_admin:
                       - sonata.admin.place.pointfull
                       - sonata.admin.place.reviews
                   roles: [ ROLE_MODERATOR ]
+              admin.orders:
+                label: admin.group.orders
+                label_catalogue: SonataAdminBundle
+                items:
+                      - sonata.admin.order
               admin.users:
                   items: ~
                   item_adds:
                       - sonata.admin.users
+                      - sonata.admin.newsletter_subscribers
                   roles: [ ROLE_ADMIN ]
               admin.support:
                   items: ~
@@ -228,6 +255,32 @@ a2lix_translation_form:
 #evp omg
 evp_web_to_pay:
     credentials:
-        project_id: 45333 # Kolkas crap, o ne id :D
+        project_id: 45333
         sign_password: 4e9f20772a3fa0c83f76dae9c6e06008
     use_sandbox: false
+# TrkSteel cke editor
+trsteel_ckeditor:
+    class: Trsteel\CkeditorBundle\Form\Type\CkeditorType
+    transformers: ['html_purifier']
+    toolbar: ['document', 'clipboard', 'editing', '/', 'basicstyles', 'paragraph', 'links', '/', 'insert', 'styles', 'tools']
+    toolbar_groups:
+        document: ['Source','-','Save','-','Templates']
+        clipboard: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo']
+        editing: ['Find','Replace','-','SelectAll']
+        basicstyles: ['Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat']
+        paragraph: ['NumberedList','BulletedList','-','Outdent','Indent','-','JustifyLeft', 'JustifyCenter','JustifyRight','JustifyBlock']
+        links: ['Link','Unlink','Anchor']
+        insert: ['Image','Flash','Table','HorizontalRule']
+        styles: ['Styles','Format']
+        tools: ['Maximize', 'ShowBlocks']
+    ui_color: '#CCCCCC'
+    startup_outline_blocks: true
+    width: 800 #Integer or %
+    height: 300 #Integer or %
+    language: 'en-en'
+#    filebrowser_upload_url:
+#        url: relative-url.php?type=file
+#    filebrowser_image_browse_url:
+#        route: route_name
+#        route_parameters:
+#            type: image

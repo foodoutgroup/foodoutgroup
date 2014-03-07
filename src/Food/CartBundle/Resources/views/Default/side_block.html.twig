@@ -1,33 +1,58 @@
+<style>
+
+    .check-item .edit {
+        display: none;
+    }
+    .check-item:hover .edit {
+        display: block;
+        width: 60px;
+        background-color: #CCCCCC;
+        position: absolute;
+        margin-left: 88px;
+        text-align: center;
+        padding: 2px;
+        border-radius: 3px;
+        cursor: pointer;
+        margin-top: -3px;
+    }
+</style>
 <div class="check-block">
-    <div class="restaurant-logo tac"><img src="/bundles/foodapp/images/res-2.png"></div>
-    <h5 class="tac">Tavo užsakymas</h5>
-    {% for dish in list %}
-        <div class="check-item">
-            <div class="name">{{ dish.dishId.name }}</div>
-            <div class="type">{{ dish.dishSizeId.unit.name }}</div>
-            <div class="clearfix">
-                <div class="count">{{ dish.quantity }} vnt.</div>
-                <div class="sum">{{ dish.dishSizeId.price }} Lt</div>
+    <div class="restaurant-logo tac"><img src="/{{place.getWebPathThumb}}"></div>
+    <h5 class="tac">{% trans %}cart.block.your_order{% endtrans %}</h5>
+    {% if list|length > 0 %}
+        {% for dish in list %}
+            <div class="check-item">
+                <div class="edit">Redaguoti</div>
+                <div class="name">{{ dish.dishId.name }}</div>
+                <div class="type">{{ dish.dishSizeId.unit.name }}</div>
+                <div class="clearfix">
+                    <div class="count">{{ dish.quantity }} vnt.</div>
+                    <div class="sum">x {{ dish.dishSizeId.price }} {{ currency_display }}</div>
+                </div>
+                {% if dish.options|length > 0 %}
+                    {% for option in dish.options %}
+                        <div class="clearfix">
+                            <div class="count">{{ option.dishOptionId.name }}</div>
+                            <div class="sum">{{ option.dishOptionId.price }} {{ currency_display }}</div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
-            {% if dish.options|length > 0 %}
-                {% for option in dish.options %}
-                    <div class="clearfix">
-                        <div class="count">{{ option.dishOptionId.name }}</div>
-                        <div class="sum">{{ option.dishOptionId.price }} Lt</div>
-                    </div>
-                {% endfor %}
-            {% endif %}
+        {% endfor %}
+        <div class="check-bottom">
+            <div class="delivery-price clearfix">
+                <div class="fl">{% trans %}cart.block.delivery_price{% endtrans %}:</div>
+                <div class="fr">{{ place.deliveryPrice }} {{ currency_display }}</div>
+            </div>
+            <div class="total-sum clearfix">
+                <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
+                <div class="fr">{{ total }} {{ currency_display }}</div>
+            </div>
         </div>
-    {% endfor %}
-    <div class="check-bottom">
-        <div class="delivery-price clearfix">
-            <div class="fl">Pristatymas:</div>
-            <div class="fr">5 Lt</div>
+        <div class="delivery-time tac">{% trans %}cart.block.delivery_time{% endtrans %} {{ place.deliveryTime }}</div>
+    {% else %}
+        <div class="check-bottom">
+            <h5 class="tac">{% trans %}cart.block.your_order_empty{% endtrans %}</h5>
         </div>
-        <div class="total-sum clearfix">
-            <div class="fl">Viso:</div>
-            <div class="fr">65,98 Lt</div>
-        </div>
-    </div>
-    <div class="delivery-time tac">Pristatymas  ~40 min. @todo</div>
+    {% endif %}
 </div>

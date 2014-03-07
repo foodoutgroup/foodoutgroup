@@ -5,6 +5,7 @@ namespace Food\OrderBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Acl\Exception\Exception;
 
@@ -31,6 +32,13 @@ class PaymentsController extends Controller
                 throw new \Exception('Order not found. Order id from Paysera: '.$data['orderid']);
             }
 
+            $orderService->logPayment(
+                $order,
+                'paysera payment accepted',
+                'Payment succesfuly billed in Paysera',
+                $order
+            );
+
             $orderService->setPaymentStatus($orderService::$paymentStatusComplete);
 
         } catch (\Exception $e) {
@@ -40,16 +48,30 @@ class PaymentsController extends Controller
 
             if ($order) {
                 $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());
+                $orderService->saveOrder();
             }
 
             return new Response($e->getTraceAsString(), 500);
         }
 
-        // TODO - Parodom, kad viskas yra super ir gaus valgyt kazkada :)
-        return new Response('Payment accepted');
+        // TODO translation and send to place point, not some number
+        $messagingService = $this->container->get('food.messages');
+
+        $sender = $this->container->getParameter('sms.sender');
+        $recipient = '37061514333';
+        $orderConfirmRoute = $this->container->get('router')
+            ->generate('ordermobile', array('hash' => $order->getOrderHash()));
+        $messageText = 'Naujas uzsakymas: http://'.$this->container->getParameter('domain').$orderConfirmRoute;
+        $message = $messagingService->createMessage($sender, $recipient, $messageText);
+
+        $messagingService->saveMessage($message);
+
+        $logger->alert("Sending message for order to be accepted to number: ".$recipient.' with text "'.$messageText.'"');
+
+        return new RedirectResponse($this->generateUrl('food_cart_success'));
     }
 
-    public function payseraCancelAction()
+    public function payseraCancelAction($hash)
     {
         $logger = $this->container->get("logger");
         $logger->alert("==========================\ncancel payment action for paysera came\n====================================\n");
@@ -57,34 +79,31 @@ class PaymentsController extends Controller
         $logger->alert('-----------------------------------------------------------');
 
         try {
-//            $callbackValidator = $this->get('evp_web_to_pay.callback_validator');
-//            $data = $callbackValidator->validateAndParseData($this->getRequest()->query->all());
+            $orderService = $this->container->get('food.order');
+            $order = $orderService->getOrderByHash($hash);
 
-//            $logger->alert("Parsed accept data: ".var_export($data, true));
-//            $logger->alert('-----------------------------------------------------------');
+            $orderService->logPayment(
+                $order,
+                'paysera payment canceled',
+                'Payment canceled in Paysera',
+                $order
+            );
 
-//            $orderService = $this->container->get('food.order');
-//            $order = $orderService->getOrderById($data['orderid']);
-
-//            $orderService->setPaymentStatus($orderService::$paymentStatusCanceled);
-
-//            if (!$order) {
-//                throw new \Exception('Order not found. Order id from Paysera: '.$data['orderid']);
-//            }
+            $orderService->setPaymentStatus($orderService::$paymentStatusCanceled, 'User canceled payment');
         } catch (\Exception $e) {
             //handle the callback validation error here
-            $logger->alert("payment data validation failed!. Error: ".$e->getMessage());
+            $logger->alert("payment cancelation fails!. Error: ".$e->getMessage());
             $logger->alert("trace: ".$e->getTraceAsString());
 
-//            if ($order) {
-//                $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());
-//            }
+            if ($order) {
+                $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());
+                $orderService->saveOrder();
+            }
 
             return new Response($e->getTraceAsString(), 500);
         }
 
-        // TODO - Parodom, kad nutiko beda, mes informuoti ir siulome bandyti dar karta??? arba pasakom, kad jus atsisakete susimoketi, gailike
-        return new Response('Payment canceled');
+        return new RedirectResponse($this->generateUrl('food_cart').'?hash='.$order->getOrderHash());
     }
 
     public function payseraCallbackAction()
@@ -116,6 +135,7 @@ class PaymentsController extends Controller
 
             if ($order) {
                 $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());
+                $orderService->saveOrder();
             }
 
             return new Response($e->getTraceAsString(), 500);

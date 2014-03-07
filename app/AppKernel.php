@@ -38,6 +38,7 @@ class AppKernel extends Kernel
             new Food\SmsBundle\FoodSmsBundle(),
             new Evp\Bundle\WebToPayBundle\EvpWebToPayBundle(),
             new Food\SupportBundle\FoodSupportBundle(),
+            new Trsteel\CkeditorBundle\TrsteelCkeditorBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
@@ -52,5 +53,10 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+    }
+
+    public function getCharset()
+    {
+        return 'UTF-8';
     }
 }

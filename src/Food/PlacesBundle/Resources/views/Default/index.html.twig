@@ -1,46 +1,86 @@
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
+{% block title %}{% trans %}general.places{% endtrans %} - {{ page_title }}{% endblock %}
+
+{% block jscode %}
+    $(document).ready(function() {
+        $(".filters-list input").on('ifChecked', function(event) {
+            $(this).attr('checked', true);
+            submitKitchens();
+        });
+
+        $(".filters-list input").on('ifUnchecked', function(event) {
+            $(this).attr('checked', false);
+            submitKitchens();
+        });
+
+        $('.clear-filter-link').click(function() {
+            $('.content-lefter input').iCheck('uncheck');
+        });
+
+        function submitKitchens() {
+
+            var $filters = $(".filters-list input:checked");
+
+            var params = {kitchens: '', filters: ''};
+            var tmpName = "";
+            for(i = 0; i < $filters.length; i++) {
+                tmpName = $($filters[i]).attr('name').replace("[]","");
+                if (params[tmpName]!="") {
+                    params[tmpName]+=",";
+                }
+                params[tmpName] += $($filters[i]).val();
+            }
+
+            $.post('{{ path('food_places_filter') }}', params, function(resp) {
+                var $container = $('.content-righter');
+                $container.find('.restaurants-list').remove();
+                $container.append(resp);
+
+                $('.restoran-rating').raty({
+                    readOnly: true,
+                    score: function() {
+                        return $(this).attr('data-stars');
+                    },
+                    path: '/bundles/foodapp/images/'
+                });
+            });
+        }
+    });
+{% endblock %}
 {% block body %}
     <div class="site-center">
     <div class="site-block">
     <div class="page-path clearfix"><a href="#">Pradžia</a><a href="#">Resoranai arti Žirmūnų</a></div>
     <div class="page-title">
-        <h1 class="clearfix"><span>Rasti 67 restoranai netoli Žirmūnų</span><a href="#" class="change-location-link">keisti adresą</a></h1>
+        <h1 class="clearfix"><span>Rasti 67 restoranai netoli Žirmūnų</span><a href="#" class="change-location-link">{% trans %}places.change_address{% endtrans %}</a></h1>
     </div>
     <div class="clearfix">
         <div class="content-lefter">
             {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {})) }}
             {{ render(controller('FoodDishesBundle:Place:filtersList')) }}
-            <a href="#" class="clear-filter-link">išvalyti filtrus</a>
+            <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a>
         </div>
         <div class="content-righter">
             <div class="restaurants-list-controls clearfix">
                 <form class="list-search-form fl">
-                    <input type="text" placeholder="Paieška...">
+                    <input type="text" placeholder="{% trans %}places.search_placeholder{% endtrans %}">
                     <input type="submit" value="">
                 </form>
                 <div class="list-top-filters clearfix fr">
-                    <div class="label">Rūšiuoti pagal:</div><a href="#">Relevance</a><a href="#" class="selected">Reitingą</a><a href="#">Pristatymo kainą</a><a href="#">Atstumą</a>
+                    <div class="label">{% trans %}places.order_by{% endtrans %}:</div>
+                    {# <a href="#">{% trans %}places.sort_by_relevance{% endtrans %}</a> #}
+                    <a href="#" class="selected">{% trans %}places.sort_by_rating{% endtrans %}</a>
+                    <a href="#">{% trans %}places.sort_by_delivery_price{% endtrans %}</a>
+                    <a href="#">{% trans %}places.sort_by_distance{% endtrans %}</a>
                 </div>
             </div>
             {{ render(controller('FoodPlacesBundle:Default:list', {})) }}
         </div>
     </div>
-    <div class="clearfix bottom-blocks bottom-block-lower">
-        <div class="app-block clearfix"><img src="/bundles/foodapp/images/app-view.png">
-            <div class="app-block-inner">
-                <h3>Skanu.lt <br/>tavo kišenėje!</h3>
-                <div><a href="#"><img src="/bundles/foodapp/images/app-store.png"></a><a href="#"><img src="/bundles/foodapp/images/g-store.png"></a></div>
-            </div>
-        </div>
-        <div class="newsletter-block">
-            <h4>Naujienlaiškis</h4>
-            <form class="newsletter-form">
-                <input type="text" placeholder="Tavo el. paštas">
-                <input type="submit" value="Prenumeruok">
-            </form>
-        </div>
-    </div>
+
+        {% include 'FoodAppBundle:Default:bottom_block.html.twig' %}
+
     </div>
     </div>
 {% endblock %}

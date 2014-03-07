@@ -17,11 +17,17 @@ class PlacePointFullAdmin extends FoodAdmin
         $formMapper
             ->add('address', 'text', array('label' => 'admin.point.address'))
             ->add('city', 'text', array('label' => 'admin.point.city'))
-            ->add('coords', 'text', array('label' => 'admin.point.coords'))
-            ->add('pickUp',null, array('label' => 'admin.point.pickup'))
-            ->add('delivery', null, array('label' => 'admin.point.delivery'))
+            //->add('coords', 'text', array('label' => 'admin.point.coords'))
+            ->add('lat', 'text', array('label' => 'admin.point.lat'))
+            ->add('lon', 'text', array('label' => 'admin.point.lon'))
+            ->add('public',null, array('label' => 'admin.point.public', 'required' => false))
+            ->add('pickUp',null, array('label' => 'admin.point.pickup', 'required' => false))
+            ->add('delivery', null, array('label' => 'admin.point.delivery', 'required' => false))
             ->add('delivery_time', 'text', array('label' => 'admin.point.devtime'))
-            ->add('active', null, array('label' => 'admin.point.active'))
+            ->add('active', null, array('label' => 'admin.point.active', 'required' => false))
+            ->add('fast', null, array('label' => 'admin.point.fast', 'required' => false))
+            ->add('allowCash', null, array('label' => 'admin.point.allow_cash', 'required' => false))
+            ->add('allowCard', null, array('label' => 'admin.point.allow_card', 'required' => false))
             ->with('admin.point.work_time')
             ->add('wd1_start', 'text', array('label' => 'admin.point.wd1_start'))
             ->add('wd1_end', 'text', array('label' => 'admin.point.wd_end'))
@@ -51,9 +57,13 @@ class PlacePointFullAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('place', null, array('label' => 'admin.point.place'))
             ->addIdentifier('address', 'string', array('label' => 'admin.point.address'))
             ->addIdentifier('city', 'string', array('label' => 'admin.point.city'))
-            ->addIdentifier('coords', 'string', array('label' => 'admin.point.coords'))
+            ->addIdentifier('active', 'boolean', array('label' => 'admin.point.active', 'editable' => true,))
+            ->addIdentifier('fast', 'boolean', array('label' => 'admin.point.fast', 'editable' => true))
+            ->add('allowCash', 'boolean', array('label' => 'admin.point.allow_cash', 'editable' => true))
+            ->add('allowCard', 'boolean', array('label' => 'admin.point.allow_card', 'editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),

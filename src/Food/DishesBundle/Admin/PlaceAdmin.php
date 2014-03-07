@@ -28,17 +28,32 @@ class PlaceAdmin extends FoodAdmin
 
         $options = array('required' => false, 'label' => 'admin.place.logo');
         if (($pl = $this->getSubject()) && $pl->getLogo()) {
-            $options['help'] = '<img src="/' . $pl->getWebPath() . '" />';
+            $options['help'] = '<img src="/' . $pl->getWebPathThumb() . '" />';
         }
 
         $formMapper
             ->add('name', 'text', array('label' => 'admin.place.name'))
+            ->add(
+                'translations',
+                'a2lix_translations_gedmo',
+                array(
+                    'translatable_class' => 'Food\DishesBundle\Entity\Place',
+                    'fields' => array(
+                        'slogan' => array('label' => 'admin.place.slogan', 'required' => false,),
+                        'description' => array('label' => 'admin.place.description', 'required' => true,),
+                )
+            ))
             ->add('kitchens', null, array(
                 'query_builder' => $kitchenQuery,
                 'multiple' => true,
                 'label' => 'admin.place.kitchens')
             )
             ->add('active', 'checkbox', array('label' => 'admin.active', 'required' => false,))
+            ->add('new', 'checkbox', array('label' => 'admin.is_new', 'required' => false,))
+            ->add('recommended', 'checkbox', array('label' => 'admin.place.recommended', 'required' => false,))
+            ->add('deliveryTime', null, array('label' => 'admin.place.delivery_time'))
+            ->add('deliveryPrice', null, array('label' => 'admin.place.delivery_price'))
+            ->add('cartMinimum', null, array('label' => 'admin.place.cart_minimum'))
             ->add('file', 'file', $options)
             ->add('points', 'sonata_type_collection',
                 array(
@@ -71,6 +86,7 @@ class PlaceAdmin extends FoodAdmin
         $datagridMapper
             ->add('name', null, array('label' => 'admin.place.name'))
             ->add('active', null, array('label' => 'admin.active'))
+            ->add('recommended', null, array('label' => 'admin.place.recommended'))
         ;
     }
 
@@ -86,6 +102,8 @@ class PlaceAdmin extends FoodAdmin
                 'label' => 'admin.place.logo'
             ))
             ->add('active', null, array('label' => 'admin.active', 'editable' => true))
+            ->add('new', null, array('label' => 'admin.is_new', 'editable' => true))
+            ->add('recommended', null, array('label' => 'admin.place.recommended', 'editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),
@@ -169,7 +187,7 @@ class PlaceAdmin extends FoodAdmin
      */
     private function fixSlugs($object)
     {
-        $origName = $object->getName();
+        $origName = $object->getOrigName($this->modelManager->getEntityManager('FoodDishesBundle:Place'));
         $locales = $this->getContainer()->getParameter('available_locales');
         $textsForSlugs = array();
         foreach ($locales as $loc) {

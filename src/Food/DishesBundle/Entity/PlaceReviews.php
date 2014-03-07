@@ -33,10 +33,16 @@ class PlaceReviews
     /**
      * @var \Food\DishesBundle\Entity\Place
      *
-     * @ORM\ManyToOne(targetEntity="Place")
+     * @ORM\ManyToOne(targetEntity="Place", inversedBy="reviews")
      * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
      */
     private $place;
+
+    /**
+     * @var int
+     * @ORM\Column(name="rate", type="integer")
+     */
+    private $rate;
 
     /**
      * @var \Food\UserBundle\Entity\User
@@ -44,7 +50,7 @@ class PlaceReviews
      * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      **/
-    private $createdBy;
+    private $createdBy = null;
 
     /**
      * @var string
@@ -286,5 +292,28 @@ class PlaceReviews
     public function getDeletedBy()
     {
         return $this->deletedBy;
+    }
+
+    /**
+     * Set rate
+     *
+     * @param integer $rate
+     * @return PlaceReviews
+     */
+    public function setRate($rate)
+    {
+        $this->rate = $rate;
+    
+        return $this;
+    }
+
+    /**
+     * Get rate
+     *
+     * @return integer 
+     */
+    public function getRate()
+    {
+        return $this->rate;
     }
 }

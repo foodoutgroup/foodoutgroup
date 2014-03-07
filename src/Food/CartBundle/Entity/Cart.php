@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 
 /**
- * @ORM\Table(name="cart", uniqueConstraints={@ORM\UniqueConstraint(name="unique_id", columns={"session", "dish_id"})})
+ * @ORM\Table(name="cart", uniqueConstraints={@ORM\UniqueConstraint(name="unique_id", columns={"session", "cart_id", "dish_id"})})
  * @ORM\Entity
  */
 class Cart
@@ -28,11 +28,23 @@ class Cart
     private $dish_id;
 
     /**
+     * @ORM\Column(name="cart_id", type="integer", length=3)
+     * @ORM\Id
+     */
+    private $cart_id;
+
+    /**
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishSize")
      * @ORM\JoinColumn(name="dish_size_id", referencedColumnName="id")
      * @ORM\Id
      */
     private $dish_size_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place")
+     * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
+     */
+    private $place_id;
 
     /**
      * @ORM\Column(name="quantity", type="integer", length=3)
@@ -141,6 +153,7 @@ class Cart
             ->findBy(
                 array(
                     'dish_id' => $this->getDishId(),
+                    'cart_id' => $this->getCartId(),
                     'session' => $this->getSession()
                 )
             );
@@ -168,5 +181,51 @@ class Cart
     public function getDishSizeId()
     {
         return $this->dish_size_id;
+    }
+
+    /**
+     * Set place_id
+     *
+     * @param \Food\DishesBundle\Entity\Place $placeId
+     * @return Cart
+     */
+    public function setPlaceId(\Food\DishesBundle\Entity\Place $placeId = null)
+    {
+        $this->place_id = $placeId;
+    
+        return $this;
+    }
+
+    /**
+     * Get place_id
+     *
+     * @return \Food\DishesBundle\Entity\Place 
+     */
+    public function getPlaceId()
+    {
+        return $this->place_id;
+    }
+
+    /**
+     * Set cart_id
+     *
+     * @param integer $cartId
+     * @return Cart
+     */
+    public function setCartId($cartId)
+    {
+        $this->cart_id = $cartId;
+    
+        return $this;
+    }
+
+    /**
+     * Get cart_id
+     *
+     * @return integer 
+     */
+    public function getCartId()
+    {
+        return $this->cart_id;
     }
 }

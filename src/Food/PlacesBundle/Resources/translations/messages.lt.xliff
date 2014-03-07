@@ -39,6 +39,18 @@
                 <source>admin.dish.recomended</source>
                 <target>Rekomenduojama</target>
             </trans-unit>
+            <trans-unit id="admin.place.slogan">
+                <source>admin.place.slogan</source>
+                <target>Šūkis</target>
+            </trans-unit>
+            <trans-unit id="admin.place.description">
+                <source>admin.place.description</source>
+                <target>Aprašymas</target>
+            </trans-unit>
+            <trans-unit id="admin.place.recommended">
+                <source>admin.place.recommended</source>
+                <target>Rekomend.</target>
+            </trans-unit>
             <trans-unit id="admin.place.point.weekdays_worktime">
                 <source>admin.place.point.weekdays_worktime</source>
                 <target>Darbo laikas</target>

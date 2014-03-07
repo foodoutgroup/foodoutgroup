@@ -43,8 +43,8 @@
 	#boxer .boxer-caption p { margin: 0; padding: 15px 10px 10px 10px; }
 	#boxer .boxer-caption.gallery p { padding-top: 0; }
 	
-	#boxer.loading .boxer-container { background: #fff url(fs-boxer-loading.gif) no-repeat center; }
-	
+	#boxer.loading .boxer-container { background: #fff url(/scripts/boxer/fs-boxer-loading.gif) no-repeat center; }
+
 	/* Mobile */
 	#boxer.mobile { background-color: #000; border-radius: 0; height: 100%; left: 0; padding: 30px; position: fixed; top: 0; width: 100%; }
 	#boxer.mobile .boxer-close { background-color: #000; background-position: -70px -60px; border-radius: 0; right: 0; top: 0; }

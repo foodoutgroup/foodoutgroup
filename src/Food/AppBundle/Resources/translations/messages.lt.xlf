@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="lt" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="e50b21cf0f01ec6f209d0f2a68d68001" resname="index.app_title">
+        <source>index.app_title</source>
+        <target>programėlė</target>
+      </trans-unit>
+      <trans-unit id="e79f0a96a14972d5383cff1e3fc00475" resname="index.newsletter">
+        <source>index.newsletter</source>
+        <target>Naujienlaiškis</target>
+      </trans-unit>
+      <trans-unit id="80ae01ad89a36c878618f64044dd7ae4" resname="index.newsletter_email">
+        <source>index.newsletter_email</source>
+        <target>Tavo el. paštas</target>
+      </trans-unit>
+      <trans-unit id="4687d99df9fae3b62e92c6b2b9b0e4ef" resname="index.newsletter_subscribe">
+        <source>index.newsletter_subscribe</source>
+        <target>Prenumeruok</target>
+      </trans-unit>
+      <trans-unit id="be95147756721360c95dba571491c885" resname="index.city">
+        <source>index.city</source>
+        <target>Miestas</target>
+      </trans-unit>
+      <trans-unit id="44f58adead70171ab653c725c9abf0c3" resname="index.street">
+        <source>index.street</source>
+        <target>Adresas</target>
+      </trans-unit>
+      <trans-unit id="bb1fb2fdfdba48c2b3d2ec83e968729c" resname="index.findfood">
+        <source>index.findfood</source>
+        <target>Ieškoti maisto</target>
+      </trans-unit>
+      <trans-unit id="1b78b59bfe4159583adb10ffa46bd822" resname="admin.kitchens.list.title">
+        <source>admin.kitchens.list.title</source>
+        <target>__admin.kitchens.list.title</target>
+      </trans-unit>
+      <trans-unit id="b3351508f66637ec0ac630ec350055e4" resname="admin.kitchens.list.name">
+        <source>admin.kitchens.list.name</source>
+        <target>__admin.kitchens.list.name</target>
+      </trans-unit>
+      <trans-unit id="8e692e1d1e1d412f8e6a1cc4696e5b69" resname="admin.kitchens.list.names">
+        <source>admin.kitchens.list.names</source>
+        <target>__admin.kitchens.list.names</target>
+      </trans-unit>
+      <trans-unit id="d945b749c1a3dbbdeedd263aeb5fadab" resname="admin.kitchens.list.count">
+        <source>admin.kitchens.list.count</source>
+        <target>__admin.kitchens.list.count</target>
+      </trans-unit>
+      <trans-unit id="5b91a93147542303c1c2c89439854708" resname="admin.kitchens.list.logo">
+        <source>admin.kitchens.list.logo</source>
+        <target>__admin.kitchens.list.logo</target>
+      </trans-unit>
+      <trans-unit id="450abc8065b25de909f6b3b51a04ece9" resname="admin.kitchens.list.visible">
+        <source>admin.kitchens.list.visible</source>
+        <target>__admin.kitchens.list.visible</target>
+      </trans-unit>
+      <trans-unit id="e01ccc4c69ee9b9c0037ad68235939d7" resname="admin.kitchens.list.actions">
+        <source>admin.kitchens.list.actions</source>
+        <target>__admin.kitchens.list.actions</target>
+      </trans-unit>
+      <trans-unit id="57043705200df1898f57a4ce31dc0f63" resname="admin.kitchens.list.actions.edit">
+        <source>admin.kitchens.list.actions.edit</source>
+        <target>__admin.kitchens.list.actions.edit</target>
+      </trans-unit>
+      <trans-unit id="78b4d0746d98867ab7995de3f2efaa7d" resname="admin.kitchens.list.actions.hide">
+        <source>admin.kitchens.list.actions.hide</source>
+        <target>__admin.kitchens.list.actions.hide</target>
+      </trans-unit>
+      <trans-unit id="a47a47cbe974b40c660db3a66a319562" resname="admin.kitchens.list.actions.unhide">
+        <source>admin.kitchens.list.actions.unhide</source>
+        <target>__admin.kitchens.list.actions.unhide</target>
+      </trans-unit>
+      <trans-unit id="cb5f3d5170208bd9aa3c07943fb9dd9b" resname="menu.main">
+        <source>menu.main</source>
+        <target>__menu.main</target>
+      </trans-unit>
+      <trans-unit id="63a3cc8df7d7043893e936b3a78f563c" resname="menu.about">
+        <source>menu.about</source>
+        <target>__menu.about</target>
+      </trans-unit>
+      <trans-unit id="7c5e189629698dd56afce1a5d358e831" resname="menu.contacts">
+        <source>menu.contacts</source>
+        <target>__menu.contacts</target>
+      </trans-unit>
+      <trans-unit id="04def2e17dbd7185519d9868066219a9" resname="menu.kitchens">
+        <source>menu.kitchens</source>
+        <target>__menu.kitchens</target>
+      </trans-unit>
+      <trans-unit id="77efd5ab64d10c8229919a263b1b6b68" resname="menu.profile">
+        <source>menu.profile</source>
+        <target>__menu.profile</target>
+      </trans-unit>
+      <trans-unit id="f57a89cbe68f6af28e00257032d944fb" resname="menu.profile.mycart">
+        <source>menu.profile.mycart</source>
+        <target>__menu.profile.mycart</target>
+      </trans-unit>
+      <trans-unit id="2c12928c2b481a0ba22da97349742794" resname="menu.profile.orders">
+        <source>menu.profile.orders</source>
+        <target>__menu.profile.orders</target>
+      </trans-unit>
+      <trans-unit id="5081fc8d0f945c9a8e083b2d21244650" resname="menu.profile.extra">
+        <source>menu.profile.extra</source>
+        <target>__menu.profile.extra</target>
+      </trans-unit>
+      <trans-unit id="ba502d1e2376f12a17d1902204a318d8" resname="menu.profile.settings">
+        <source>menu.profile.settings</source>
+        <target>__menu.profile.settings</target>
+      </trans-unit>
+      <trans-unit id="ab34660b67604dfa9b208a59f94c9a08" resname="menu.profile.logout">
+        <source>menu.profile.logout</source>
+        <target>__menu.profile.logout</target>
+      </trans-unit>
+      <trans-unit id="3a6d739fc186be6ccdf3b67db3879024" resname="admin.places.list.title">
+        <source>admin.places.list.title</source>
+        <target>__admin.places.list.title</target>
+      </trans-unit>
+      <trans-unit id="ef56946c08fa72828e61c1de8e6cd616" resname="admin.places.list.name">
+        <source>admin.places.list.name</source>
+        <target>__admin.places.list.name</target>
+      </trans-unit>
+      <trans-unit id="9ac1d2eb6bba30b4bbdff668c756d7dc" resname="admin.places.list.logo">
+        <source>admin.places.list.logo</source>
+        <target>__admin.places.list.logo</target>
+      </trans-unit>
+      <trans-unit id="47d1294456e7349f13e641a512853509" resname="admin.places.list.active">
+        <source>admin.places.list.active</source>
+        <target>__admin.places.list.active</target>
+      </trans-unit>
+      <trans-unit id="ee2c37575cd299bdbf11641685025c99" resname="admin.places.list.actions">
+        <source>admin.places.list.actions</source>
+        <target>__admin.places.list.actions</target>
+      </trans-unit>
+      <trans-unit id="82f38344a9b8d9d8753e67e3af18fd29" resname="admin.places.list.actions.hide">
+        <source>admin.places.list.actions.hide</source>
+        <target>__admin.places.list.actions.hide</target>
+      </trans-unit>
+      <trans-unit id="ad28d8014ac5520ca250e91a626122c7" resname="admin.places.list.actions.unhide">
+        <source>admin.places.list.actions.unhide</source>
+        <target>__admin.places.list.actions.unhide</target>
+      </trans-unit>
+      <trans-unit id="c9736bcd30d2902aaeb57bea426d0e11" resname="index.newsletter_provide_email">
+        <source>index.newsletter_provide_email</source>
+        <target>Įveskite savo el.pašto adresą</target>
+      </trans-unit>
+      <trans-unit id="d0ca001986ba80de3d2d4bec67ea4ee5" resname="general.page_name">
+        <source>general.page_name</source>
+        <target>Foodout</target>
+      </trans-unit>
+      <trans-unit id="2b1ab5c52042b1d22f211e5c27e5f9b8" resname="general.top_restaurants">
+        <source>general.top_restaurants</source>
+        <target>TOP restoranai</target>
+      </trans-unit>
+      <trans-unit id="6ed5de5936f5473971d03ec26290dbd5" resname="general.newsletter">
+        <source>general.newsletter</source>
+        <target>Naujienlaiškis</target>
+      </trans-unit>
+      <trans-unit id="2dcd088ae1551425f1d27f0c7c1b597f" resname="general.thank_you">
+        <source>general.thank_you</source>
+        <target>Ačiū</target>
+      </trans-unit>
+      <trans-unit id="7aaffcb3d756c2cd540c10c6feafacfa" resname="general.subscribed_newsletter">
+        <source>general.subscribed_newsletter</source>
+        <target>Jūs užsiprenumeravote naujienlaiškį</target>
+      </trans-unit>
+      <trans-unit id="19554e921e608df135b269a564c8cf6a" resname="mobile.order_confirm">
+        <source>mobile.order_confirm</source>
+        <target>Patvirtinti užsakymą</target>
+      </trans-unit>
+      <trans-unit id="7ebe276de073f58e9744cb5e46760b88" resname="mobile.order_delay">
+        <source>mobile.order_delay</source>
+        <target>Atidėti užsakymą</target>
+      </trans-unit>
+      <trans-unit id="e110f798f6661e6e1ac7fbfe1f03e679" resname="mobile.order_finish">
+        <source>mobile.order_finish</source>
+        <target>Pabaigti užsakymą</target>
+      </trans-unit>
+      <trans-unit id="ebbc16fb3a732d7abe363ef2463397f9" resname="mobile.order_cancel">
+        <source>mobile.order_cancel</source>
+        <target>Atšaukti užsakymą</target>
+      </trans-unit>
+      <trans-unit id="e9af7214246747e3648fdc0ec367494c" resname="general.places">
+        <source>general.places</source>
+        <target>Restoranai</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
