@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 
 /**
- * @ORM\Table(name="cart", uniqueConstraints={@ORM\UniqueConstraint(name="unique_id", columns={"session", "dish_id"})})
+ * @ORM\Table(name="cart", uniqueConstraints={@ORM\UniqueConstraint(name="unique_id", columns={"session", "cart_id", "dish_id"})})
  * @ORM\Entity
  */
 class Cart
@@ -153,6 +153,7 @@ class Cart
             ->findBy(
                 array(
                     'dish_id' => $this->getDishId(),
+                    'cart_id' => $this->getCartId(),
                     'session' => $this->getSession()
                 )
             );
