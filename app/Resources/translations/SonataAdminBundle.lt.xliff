@@ -707,6 +707,18 @@
                 <source>admin.dispatcher</source>
                 <target>Dispečeris</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.order_id">
+                <source>admin.dispatcher.order_id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_date">
+                <source>admin.dispatcher.order_date</source>
+                <target>Užsak. data</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.comment">
+                <source>admin.dispatcher.comment</source>
+                <target>Klient. koment.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
