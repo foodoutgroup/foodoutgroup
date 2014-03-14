@@ -33,6 +33,13 @@ class PlacePoint
     /**
      * @var string
      *
+     * @ORM\Column(name="phone", type="string", length=20)
+     */
+    private $phone;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="city", type="string", length=255)
      */
     private $city;
@@ -1095,5 +1102,28 @@ class PlacePoint
     public function getAllowCard()
     {
         return $this->allowCard;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     * @return PlacePoint
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string 
+     */
+    public function getPhone()
+    {
+        return $this->phone;
     }
 }

@@ -288,6 +288,10 @@
                 <source>admin.place.cart_minimum</source>
                 <target>Min. užsakymas</target>
             </trans-unit>
+            <trans-unit id="admin.place.self_delivery">
+                <source>admin.place.self_delivery</source>
+                <target>Sava logistika</target>
+            </trans-unit>
 
             <trans-unit id="admin.place.kitchens">
                 <source>admin.place.kitchens</source>
@@ -358,6 +362,10 @@
             <trans-unit id="admin.point.address">
                 <source>admin.point.address</source>
                 <target>Adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.point.phone">
+                <source>admin.point.phone</source>
+                <target>Tel.</target>
             </trans-unit>
             <trans-unit id="admin.point.city">
                 <source>admin.point.city</source>
