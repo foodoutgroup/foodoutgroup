@@ -277,6 +277,23 @@ class CartService {
     }
 
     /**
+     * Gauti patiekalo info carto dishams.
+     *
+     * @param int $dishId
+     * @param int $cartId
+     */
+    public function getCartDish($dishId, $cartId)
+    {
+        $item = $this->getEm()->getRepository('FoodCartBundle:Cart')->findOneBy(
+            array(
+                'session' => $this->getSessionId(),
+                'dish_id' => $dishId,
+                'cart_id' => $cartId
+            )
+        );
+    }
+
+    /**
      * @param \Food\CartBundle\Entity\Cart[] $cartItems
      * @param \Food\DishesBundle\Entity\Place $place
      */
