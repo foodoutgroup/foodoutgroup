@@ -104,7 +104,6 @@ class Place extends Uploadable implements Translatable
     private $points;
 
 
-
     /**
      * @var int
      *
@@ -114,7 +113,7 @@ class Place extends Uploadable implements Translatable
 
 
     /**
-     * @var bool
+     * @var string
      *
      * @ORM\Column(name="delivery_time", type="string")
      */
@@ -122,11 +121,18 @@ class Place extends Uploadable implements Translatable
 
 
     /**
-     * @var bool
+     * @var int
      *
      * @ORM\Column(name="cart_minimum", type="integer")
      */
     private $cartMinimum;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="self_delivery", type="boolean")
+     */
+    private $selfDelivery = false;
 
     /**
      * @ORM\OneToMany(targetEntity="FoodCategory", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
@@ -1048,5 +1054,28 @@ class Place extends Uploadable implements Translatable
     public function getRecommended()
     {
         return $this->recommended;
+    }
+
+    /**
+     * Set selfDelivery
+     *
+     * @param boolean $selfDelivery
+     * @return Place
+     */
+    public function setSelfDelivery($selfDelivery)
+    {
+        $this->selfDelivery = $selfDelivery;
+    
+        return $this;
+    }
+
+    /**
+     * Get selfDelivery
+     *
+     * @return boolean 
+     */
+    public function getSelfDelivery()
+    {
+        return $this->selfDelivery;
     }
 }
