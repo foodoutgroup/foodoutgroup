@@ -1770,12 +1770,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "580736be052c937bb58e2326af21a222e5be1032"
+                "reference": "18567e25331319a7b9642a3a7e75f1ed4811e180"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/580736be052c937bb58e2326af21a222e5be1032",
-                "reference": "580736be052c937bb58e2326af21a222e5be1032",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/18567e25331319a7b9642a3a7e75f1ed4811e180",
+                "reference": "18567e25331319a7b9642a3a7e75f1ed4811e180",
                 "shasum": ""
             },
             "require": {
@@ -1826,7 +1826,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-03-07 22:35:52"
+            "time": "2014-03-11 14:22:24"
         },
         {
             "name": "sonata-project/cache",
@@ -2917,12 +2917,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/trsteel88/TrsteelCkeditorBundle.git",
-                "reference": "19433201f664a4cc60fbd739978a3b13525f66ba"
+                "reference": "a4519cdfebc89fdfea9ddf9abc07fc383de9bba2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trsteel88/TrsteelCkeditorBundle/zipball/19433201f664a4cc60fbd739978a3b13525f66ba",
-                "reference": "19433201f664a4cc60fbd739978a3b13525f66ba",
+                "url": "https://api.github.com/repos/trsteel88/TrsteelCkeditorBundle/zipball/a4519cdfebc89fdfea9ddf9abc07fc383de9bba2",
+                "reference": "a4519cdfebc89fdfea9ddf9abc07fc383de9bba2",
                 "shasum": ""
             },
             "require": {
@@ -2963,7 +2963,7 @@
                 "editor",
                 "wysiwyg"
             ],
-            "time": "2014-02-19 13:03:18"
+            "time": "2014-03-12 06:12:24"
         },
         {
             "name": "twig/extensions",

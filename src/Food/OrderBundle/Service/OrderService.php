@@ -23,9 +23,11 @@ class OrderService extends ContainerAware
     /**
      * Naujas uzsakymas. Dar neperduotas restoranui
      * @var string
+     * TODO PN aptarti flow su Juozu
      */
     public static $status_new = "new";
     public static $status_accepted = "accepted";
+    public static $status_assiged = "assigned";
     public static $status_forwarded = "forwarded";
     public static $status_completed = "completed";
     public static $status_finished = "finished";
@@ -317,7 +319,7 @@ class OrderService extends ContainerAware
     {
         $this->createOrder($place);
         $this->saveOrder();
-        foreach ($this->getCartService()->getCartDishes() as $cartDish) {
+        foreach ($this->getCartService()->getCartDishes($place) as $cartDish) {
             $options = $this->getCartService()->getCartDishOptions($cartDish);
             $dish = new OrderDetails();
             $dish->setDishId($cartDish->getDishId()->getId())
@@ -780,13 +782,43 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param string $city
      * @return array
      */
-    public function getOrdersUnassigned()
+    public function getOrdersUnassigned($city)
     {
         $em = $this->container->get('doctrine')->getManager();
         $orders = $em->getRepository('Food\OrderBundle\Entity\Order')
-            ->findBy(array('order_status' =>  self::$status_accepted), array('order_date' => 'ASC'));
+            ->findBy(
+                array(
+                    'order_status' =>  self::$status_accepted,
+                    'place_point_city' => $city
+                ),
+                array('order_date' => 'ASC')
+            );
+
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
+
+    /**
+     * @param string $city
+     * @return array
+     */
+    public function getOrdersAssigned($city)
+    {
+        $em = $this->container->get('doctrine')->getManager();
+        $orders = $em->getRepository('Food\OrderBundle\Entity\Order')
+            ->findBy(
+                array(
+                    'order_status' =>  self::$status_assiged,
+                    'place_point_city' => $city
+                ),
+                array('order_date' => 'ASC')
+            );
 
         if (!$orders) {
             return array();

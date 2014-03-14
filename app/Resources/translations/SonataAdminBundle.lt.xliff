@@ -719,6 +719,14 @@
                 <source>admin.dispatcher.comment</source>
                 <target>Klient. koment.</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.unassigned">
+                <source>admin.dispatcher.unassigned</source>
+                <target>Nepriskirti</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.undelivered">
+                <source>admin.dispatcher.undelivered</source>
+                <target>Nepristatyti</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
