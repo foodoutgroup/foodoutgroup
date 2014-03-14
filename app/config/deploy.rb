@@ -19,7 +19,7 @@ require 'capistrano/ext/multistage'
 
 set :deploy_via, :remote_cache
 
-set :use_composer, true
+set :use_composer, false
 # share vendors files
 set :copy_vendors, true
 #set :update_vendors, true
@@ -54,10 +54,10 @@ end
 
 # Kolkas nevalom kol hostexas nesutvarke mums teisiu!
 #after "deploy", "deploy:cleanup"
-after "deploy", "deploy:chmod_things"
+#after "deploy", "deploy:chmod_things"
 # Uncomment kai bus airbrake
 #after "deploy:cleanup", "deploy:airbrake_notify"
-after "deploy:rollback", "symfony:cache:clear"
+#after "deploy:rollback", "symfony:cache:clear"
 
 # Be more verbose by uncommenting the following line
 # logger.level = Logger::MAX_LEVEL
