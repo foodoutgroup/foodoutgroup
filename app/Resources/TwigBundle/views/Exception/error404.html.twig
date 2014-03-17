@@ -3,10 +3,14 @@
 {% block title %}{{ 'global.page_not_found'|trans }}{% endblock %}
 
     {% block body %}
-        <div class="col-xs-12 col-sm-10">
-            <div class="row">
-                <h2>{{ 'global.page_not_found'|trans }}</h2>
-                {{ 'global.page_not_found.description'|trans }}
-            </div><!--/row-->
-        </div><!--/span-->
+        <div class="site-center">
+            <div class="site-block">
+                <div class="middle-content">
+                    <div class="error-page">
+                        <h1>{{ 'global.page_not_found'|trans }}</h1>
+                        {{ 'global.page_not_found.description'|trans }}
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endblock %}

@@ -423,6 +423,14 @@
                 <source>admin.users</source>
                 <target>Vartotojai</target>
             </trans-unit>
+            <trans-unit id="admin.users.firstname">
+                <source>admin.users.firstname</source>
+                <target>Vardas</target>
+            </trans-unit>
+            <trans-unit id="admin.users.lastname">
+                <source>admin.users.lastname</source>
+                <target>Pavardė</target>
+            </trans-unit>
             <trans-unit id="admin.users.username">
                 <source>admin.users.username</source>
                 <target>Vartotojas</target>

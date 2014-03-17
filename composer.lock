@@ -873,12 +873,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "7867dfc7aa67969a24fec7f8aa1051eda23098e9"
+                "reference": "9b8bbbcf50620f7c8af9c7588d9fe29247c2fa42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/7867dfc7aa67969a24fec7f8aa1051eda23098e9",
-                "reference": "7867dfc7aa67969a24fec7f8aa1051eda23098e9",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/9b8bbbcf50620f7c8af9c7588d9fe29247c2fa42",
+                "reference": "9b8bbbcf50620f7c8af9c7588d9fe29247c2fa42",
                 "shasum": ""
             },
             "require": {
@@ -933,7 +933,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2014-03-04 23:23:39"
+            "time": "2014-03-16 19:14:47"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -1125,12 +1125,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jdorn/sql-formatter.git",
-                "reference": "38058f6fc48b05bb7a18946e773f9916942dfecd"
+                "reference": "826d01c59bb972df6769f693a8b7d6ff13347557"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jdorn/sql-formatter/zipball/38058f6fc48b05bb7a18946e773f9916942dfecd",
-                "reference": "38058f6fc48b05bb7a18946e773f9916942dfecd",
+                "url": "https://api.github.com/repos/jdorn/sql-formatter/zipball/826d01c59bb972df6769f693a8b7d6ff13347557",
+                "reference": "826d01c59bb972df6769f693a8b7d6ff13347557",
                 "shasum": ""
             },
             "require": {
@@ -1167,7 +1167,7 @@
                 "highlight",
                 "sql"
             ],
-            "time": "2014-01-23 04:54:58"
+            "time": "2014-03-15 14:22:01"
         },
         {
             "name": "jquery/jquery",
