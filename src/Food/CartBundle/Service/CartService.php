@@ -284,13 +284,15 @@ class CartService {
      */
     public function getCartDish($dishId, $cartId)
     {
-        $item = $this->getEm()->getRepository('FoodCartBundle:Cart')->findOneBy(
+        $cartEnt = $this->getEm()->getRepository('FoodCartBundle:Cart')->findOneBy(
             array(
                 'session' => $this->getSessionId(),
                 'dish_id' => $dishId,
                 'cart_id' => $cartId
             )
         );
+        $cartEnt->setEm($this->getEm());
+        return $cartEnt;
     }
 
     /**

@@ -8,7 +8,7 @@ food_test_payment:
 
 food_test:
     pattern:  /test/
-    defaults: { _controller: FoodAppBundle:Test:index }
+    defaults: { _controller: FoodAppBundle:setupTest:index }
 
 food_slug:
     pattern:  /{slug}/
@@ -27,6 +27,10 @@ food_cart:
 food_ajax_dish:
     pattern: /ajax/dish/{dish}
     defaults: { _controller: FoodDishesBundle:Dish:getDish, dish: ~}
+
+food_ajax_edit_dish:
+        pattern: /ajax/edit-dish-in-cart/{dish}/{cartId}
+        defaults: { _controller: FoodDishesBundle:Dish:editDishInCart, dish: ~, cartId: ~}
 
 food_ajax:
     pattern: /ajax/{action}/

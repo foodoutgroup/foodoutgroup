@@ -19,7 +19,8 @@ class DishController extends Controller
         return $this->render(
             'FoodDishesBundle:Dish:dish.html.twig',
             array(
-                'dish' => $this->getDoctrine()->getRepository('FoodDishesBundle:Dish')->find((int)$dish)
+                'dish' => $this->getDoctrine()->getRepository('FoodDishesBundle:Dish')->find((int)$dish),
+                'cart' => null
             )
         );
     }
@@ -31,13 +32,15 @@ class DishController extends Controller
      * @param $cartId
      * @return Response
      */
-    public function editDishInCart($dish, $cartId)
+    public function editDishInCartAction($dish, $cartId)
     {
+        $dishEnt = $this->getDoctrine()->getRepository('FoodDishesBundle:Dish')->find((int)$dish);
+        $cartEnt = $this->get('food.cart')->getCartDish(intval($dish), intval($cartId));
         return $this->render(
             'FoodDishesBundle:Dish:dish.html.twig',
             array(
-                'dish' => $this->getDoctrine()->getRepository('FoodDishesBundle:Dish')->find((int)$dish),
-                'cart' => $this->get('food.cart')->getCartDish(intval($dish), intval($cartId))
+                'dish' => $dishEnt,
+                'cart' => $cartEnt
             )
         );
     }
