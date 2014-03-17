@@ -1,5 +1,5 @@
 <div id="detailed-dish-popup">
-    <form class="popup detailed-dish-popup"><img src="{{ asset('bundles/foodapp/images/popup-header.png') }}" class="popup-header">
+    <form class="popup detailed-dish-popup"><img src="/{{ dish.getWebPathThumb('type3') }}" class="popup-header">
         <div class="dish-info">
             <p class="name">{{ dish.name }}</p>
             <p class="desc">{{ dish.description }}</p>
