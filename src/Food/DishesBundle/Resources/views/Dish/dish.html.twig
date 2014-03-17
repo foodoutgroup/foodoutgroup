@@ -8,7 +8,8 @@
             <div class="title">{% trans %}dish.select_size{% endtrans %}</div>
             <div class="clearfix">
                 {% for size in dish.sizes %}
-                    <label class="custom-radio">{{ size.unit.name }}<strong class="price">{{ size.price }} Lt</strong>
+                    <label class="custom-radio">{{ size.unit.name }}
+                        <strong class="price">{{ size.price }} {{ currency_display }}</strong>
                         <input type="radio" {% if loop.first %}checked{% endif %} value="{{ size.id }}" class="dish-size" name="dish-size">
                     </label>
                 {% endfor %}
@@ -19,7 +20,8 @@
                 <div class="title">{% trans %}dish.select_options{% endtrans %}</div>
                 <div class="clearfix">
                 {% for option in dish.options %}
-                    <label class="custom-checkbox">{{ option.name }}<strong class="price">+{{ option.price }} Lt</strong>
+                    <label class="custom-checkbox">{{ option.name }}
+                        {% if option.price != 0 %}<strong class="price">+{{ option.price }} {{ currency_display }}</strong>{% endif %}
                         <input type="checkbox" name="options[]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
                     </label>
                 {% endfor %}
