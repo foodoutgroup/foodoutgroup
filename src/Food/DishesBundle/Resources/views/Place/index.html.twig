@@ -171,7 +171,7 @@
                                     {% if placePoints is not empty %}
                                         <select class="custom-select">
                                             {% for point in placePoints%}
-                                                <option value="{{ point.id }}">{{ point.address }} {{ point.city }}</option>
+                                                <option value="{{ point.id }}">{{ point.address }}, {{ point.city }}</option>
                                             {% endfor %}
                                         </select>
                                         <div class="location-work-hours clearfix">
