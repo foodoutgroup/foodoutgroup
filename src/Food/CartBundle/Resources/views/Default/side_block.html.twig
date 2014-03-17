@@ -28,6 +28,9 @@
         width: 35%;
         font-size: 11px;
     }
+    .check-item .clearfix.pad {
+        padding-left: 5px;
+    }
 </style>
 <div class="check-block">
     <div class="restaurant-logo tac"><img src="/{{place.getWebPathThumb}}"></div>
@@ -38,7 +41,7 @@
                 <div class="edit">Redaguoti</div>
                 <div class="name">{{ dish.dishId.name }}</div>
                 <div class="type">{{ dish.dishSizeId.unit.name }}</div>
-                <div class="clearfix">
+                <div class="clearfix pad">
                     <div class="count">{{ dish.quantity }} vnt.</div>
                     <div class="sum">x {{ dish.dishSizeId.price }} {{ currency_display }}</div>
                 </div>
