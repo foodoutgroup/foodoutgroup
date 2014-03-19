@@ -6,7 +6,7 @@ services:
         arguments:
             - ~
             - Food\DishesBundle\Entity\Dish
-            - ~
+            - 'FoodDishesBundle:DishAdmin'
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
            # - [ setTemplate, [edit, FoodDishesBundle:Dish:dish_admin.html.twig]]
