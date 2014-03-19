@@ -14,6 +14,18 @@ file that was distributed with this source code.
     {% endfor %}
 {% else %}
 
+    <style>
+        .the_epic_point_table {
+            float: left;
+            display: block;
+        }
+        .the_epic_point_table tr td {
+            height: 30px !important;
+        }
+        .the_epic_point_table tr td input[type="text"] {
+            width: 150px !important;
+        }
+    </style>
     <div id="field_container_{{ id }}" class="field-container">
         <span id="field_widget_{{ id }}" >
             {% if sonata_admin.edit == 'inline' %}
@@ -26,10 +38,8 @@ file that was distributed with this source code.
                                     {% if field_name == '_delete' %}
                                         <th>{{ 'action_delete'|trans({}, 'SonataAdminBundle') }}</th>
                                     {% else %}
-                                        {% if (field_name|slice(0,2)!="wd") %}
-                                            <th {{ nested_field.vars['required']  ? 'class="required"' : '' }}>
-                                                {{ nested_field.vars['sonata_admin'].admin.trans(nested_field.vars.label) }}
-                                            </th>
+                                        {% if (field_name|slice(0,2)!="wd") and field_name=="address" %}
+                                            <th></th>
                                         {% else %}
                                             {% if (field_name == "wd1_start") %}
                                                 <th>{{ 'admin.place.point.weekdays_worktime'|trans }}</th>
@@ -43,7 +53,7 @@ file that was distributed with this source code.
                             {% for nested_group_field_name, nested_group_field in form.children %}
                                 <tr>
                                     {% for field_name, nested_field in nested_group_field.children %}
-                                        {% if field_name|slice(0,2)!="wd" %}
+                                        {% if field_name == "_delete" %}
                                             <td class="sonata-ba-td-{{ id }}-{{ field_name  }} control-group{% if nested_field.vars.errors|length > 0 %} error{% endif %}">
                                                 {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
                                                     {{ form_widget(nested_field) }}
@@ -60,6 +70,61 @@ file that was distributed with this source code.
                                             </td>
                                         {% endif %}
                                     {% endfor %}
+                                    <td>
+                                        <table class="the_epic_point_table">
+                                            {% for field_name, nested_field in nested_group_field.children %}
+                                                {% if loop.index % 2 == 0 %}
+                                                    {% if field_name|slice(0,2)!="wd" and field_name != '_delete'%}
+                                                            <th {{ nested_field.vars['required']  ? 'class="required"' : '' }}>
+                                                                {{ nested_field.vars['sonata_admin'].admin.trans(nested_field.vars.label) }}
+                                                            </th>
+                                                            <td class="sonata-ba-td-{{ id }}-{{ field_name  }} control-group{% if nested_field.vars.errors|length > 0 %} error{% endif %}">
+                                                            {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
+                                                                {{ form_widget(nested_field) }}
+
+                                                                {% set dummy = nested_group_field.setrendered %}
+                                                            {% else %}
+                                                                {{ form_widget(nested_field) }}
+                                                            {% endif %}
+                                                            {% if nested_field.vars.errors|length > 0 %}
+                                                                <div class="help-inline sonata-ba-field-error-messages">
+                                                                    {{ form_errors(nested_field) }}
+                                                                </div>
+                                                            {% endif %}
+                                                            </td>
+                                                        </tr>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </table>
+                                        <table class="the_epic_point_table">
+                                            {% for field_name, nested_field in nested_group_field.children %}
+                                                {% if loop.index % 2 == 1 %}
+                                                    {% if field_name|slice(0,2)!="wd" and field_name != '_delete'%}
+                                                        <th {{ nested_field.vars['required']  ? 'class="required"' : '' }}>
+                                                            {{ nested_field.vars['sonata_admin'].admin.trans(nested_field.vars.label) }}
+                                                        </th>
+                                                        <td class="sonata-ba-td-{{ id }}-{{ field_name  }} control-group{% if nested_field.vars.errors|length > 0 %} error{% endif %}">
+                                                            {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
+                                                                {{ form_widget(nested_field) }}
+
+                                                                {% set dummy = nested_group_field.setrendered %}
+                                                            {% else %}
+                                                                {{ form_widget(nested_field) }}
+                                                            {% endif %}
+                                                            {% if nested_field.vars.errors|length > 0 %}
+                                                                <div class="help-inline sonata-ba-field-error-messages">
+                                                                    {{ form_errors(nested_field) }}
+                                                                </div>
+                                                            {% endif %}
+                                                        </td>
+                                                        </tr>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </table>
+
+                                    </td>
                                     <td>
                                         <table class="table table-striped table-bordered table-condensed" style="width: auto;">
                                         {% for field_name, nested_field in nested_group_field.children %}
