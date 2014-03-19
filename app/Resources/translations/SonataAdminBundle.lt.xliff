@@ -208,6 +208,10 @@
                 <source>admin.dish_option.description</source>
                 <target>Aprašymas</target>
             </trans-unit>
+            <trans-unit id="admin.dish_option.single_select">
+                <source>admin.dish_option.single_select</source>
+                <target>Vienetinis pasirinkimas</target>
+            </trans-unit>
             <trans-unit id="dish-option-list">
                 <source>Dish Option List</source>
                 <target>Patiekalų priedai</target>

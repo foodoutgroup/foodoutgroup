@@ -703,3 +703,9 @@ input.button {}
 
 /*Error tolltip*/
 .error-tooltip { border-color: #FF0000; }
+
+
+
+.dish-ingredients .custom-radio {width: 137px; padding-right: 0; float: left; margin-right: 15px; margin-bottom: 15px; font-size: 12px; color: #55422e; line-height: 18px; padding-top: 2px; padding-left: 21px;}
+.dish-ingredients .custom-radio:nth-child(3n) {margin-right: 0;}
+.dish-ingredients .custom-radio strong {display: block; font-family: 'avenir_nextbold';}

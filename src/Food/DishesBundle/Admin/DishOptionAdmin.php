@@ -24,7 +24,8 @@ class DishOptionAdmin extends FoodAdmin
                 ),
 //                'label' => 'Unit name (transl)'
             )
-        )->add('code', null, array('label' => 'admin.dish_option.code', 'required' => false));
+        )->add('code', null, array('label' => 'admin.dish_option.code', 'required' => false))
+         ->add('singleSelect', 'checkbox', array('label' => 'admin.dish_option.single_select', 'required' => false));
 
         if ($this->isAdmin()) {
             $formMapper->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
