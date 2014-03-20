@@ -43,14 +43,7 @@ Sonata edit form extension for ajax filtered food categories
                                 $(element).attr('selected', 'selected');
                             }
                         });
-                        console.log('----- was selected elements');
-                        console.log(selectedCategories);
-                        console.log('----- now selected elements');
-                        console.log(category.find('option:selected'));
-                        console.log('----- texts to be shown: ');
-                        console.log(textsToBeShown);
-                        console.log('----- shown as selected: ');
-                        console.log(shownAsSelected);
+
                         shownAsSelected.each(function(key, element) {
                             console.log(' ++++ tikrinam: ' + $(element).find('div:first').html());
                             if (textsToBeShown.indexOf($(element).find('div:first').html()) == -1) {
@@ -61,8 +54,6 @@ Sonata edit form extension for ajax filtered food categories
 
                         tabContent.unmask();
                     },"text");
-
-//                    category.val("option:first").attr("selected", true);
                 };
             }
         });

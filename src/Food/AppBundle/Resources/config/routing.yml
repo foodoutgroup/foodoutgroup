@@ -22,6 +22,12 @@ food_admin_get_place_categories:
     options:
         expose: true
 
+food_admin_get_place_unit_categories:
+    pattern: /admin/place/get-unit-categories/{placeId}
+    defaults: {_controller: FoodDishesBundle:DishUnitAdmin:getUnitCategoryOptionsFromPlace}
+    options:
+        expose: true
+
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 

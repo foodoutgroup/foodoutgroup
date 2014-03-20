@@ -230,6 +230,10 @@
                 <source>admin.unit.name</source>
                 <target>Matavimo vienetas</target>
             </trans-unit>
+            <trans-unit id="admin.unit.unit_category">
+                <source>admin.unit.unit_category</source>
+                <target>Vienetų kategorija</target>
+            </trans-unit>
             <trans-unit id="unit">
                 <source>Unit</source>
                 <target>Matas</target>

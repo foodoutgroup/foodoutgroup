@@ -35,7 +35,7 @@ class DishAdmin extends FoodAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         // Override edit template by our magic one with ajax
-        $this->setTemplate('edit', 'FoodDishesBundle:Dish:base_edit.html.twig');
+        $this->setTemplate('edit', 'FoodDishesBundle:Dish:admin_dish_edit.html.twig');
 
         /**
          * @var EntityManager $em
