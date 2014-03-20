@@ -1,7 +1,3 @@
-food_cart:
-    pattern: /
-    defaults: { _controller: FoodCartBundle:Default:index}
-
 food_cart_action:
     pattern:  /action/{action}/
     defaults: { _controller: FoodCartBundle:Default:action, action: empty }
@@ -9,3 +5,7 @@ food_cart_action:
 food_cart_success:
     pattern:  /success/
     defaults: { _controller: FoodCartBundle:Default:success }
+
+food_cart:
+    pattern: /{placeId}/
+    defaults: { _controller: FoodCartBundle:Default:index}

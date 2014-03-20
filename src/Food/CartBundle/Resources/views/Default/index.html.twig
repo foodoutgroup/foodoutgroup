@@ -100,7 +100,7 @@
                     </form>
                 </div>
                 <div class="content-righter-small">
-                    {{ render(controller('FoodCartBundle:Default:sideBlock')) }}
+                    {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': true })) }}
                 </div>
             </div>
         </div>
