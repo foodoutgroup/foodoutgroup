@@ -22,6 +22,12 @@ food_admin_get_place_categories:
     options:
         expose: true
 
+food_admin_get_place_dish_options:
+    pattern: /admin/place/get-dish-options/{placeId}/{uniqueId}
+    defaults: {_controller: FoodDishesBundle:DishAdmin:getDishOptionsFromPlace}
+    options:
+        expose: true
+
 food_admin_get_place_unit_categories:
     pattern: /admin/place/get-unit-categories/{placeId}
     defaults: {_controller: FoodDishesBundle:DishUnitAdmin:getUnitCategoryOptionsFromPlace}

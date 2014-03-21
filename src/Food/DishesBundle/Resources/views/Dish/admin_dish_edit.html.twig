@@ -16,20 +16,24 @@ Sonata edit form extension for ajax filtered food categories
 
             function updateCategories(){
                 return function () {
+                    var adminUniqId = '{{ admin.uniqId }}';
                     var placeId = $("#{{ admin.uniqId }}_place option:selected").val();
                     var category = $("#{{ admin.uniqId }}_categories");
+                    var options = $("#{{ admin.uniqId }}_options");
+                    var locale = '{{ app.request.get('_locale') }}';
+                    var objectId = '{{ admin.id(object) }}';
                     var tabContent = $(".sonata-ba-form:first");
+                    // If all fields loaded - we will remove the mask
+                    var allLoaded = -1;
+
                     tabContent.mask();
 
+                    // Update food categories
                     var selectedCategories = [];
                     category.find(':selected').each(function(key, element){
                         selectedCategories.push($(element).val());
                     });
                     category.empty();
-
-                    var locale = '{{ app.request.get('_locale') }}';
-
-                    var objectId = '{{ admin.id(object) }}'
 
                     var url = Routing.generate('food_admin_get_place_categories', { '_locale': locale, 'placeId': placeId, _sonata_admin: 'sonata.admin.dish', id: objectId });
                     $.post(url, { placeId: placeId }, function(data){
@@ -45,14 +49,38 @@ Sonata edit form extension for ajax filtered food categories
                         });
 
                         shownAsSelected.each(function(key, element) {
-                            console.log(' ++++ tikrinam: ' + $(element).find('div:first').html());
                             if (textsToBeShown.indexOf($(element).find('div:first').html()) == -1) {
-                                console.log('trinam!!!!!!!!!!');
                                 $(element).find('a').trigger('click');
                             }
                         });
 
-                        tabContent.unmask();
+                        allLoaded+=1;
+                        if (allLoaded == 1) {
+                            tabContent.unmask();
+                        }
+                    },"text");
+
+                    // Update dish options
+                    var selectedDishOptions = [];
+                    options.find('input:checked').each(function(key, element){
+                        selectedDishOptions.push($(element).val());
+                    });
+                    options.empty();
+
+                    var url = Routing.generate('food_admin_get_place_dish_options', { '_locale': locale, 'placeId': placeId, uniqueId: adminUniqId, _sonata_admin: 'sonata.admin.dish', id: objectId });
+                    $.post(url, { placeId: placeId, uniqueId: adminUniqId }, function(data){
+                        options.empty().append(data);
+
+                        options.find('input').each(function(key, element){
+                            if (selectedDishOptions.indexOf($(element).val()) != -1) {
+                                $(element).attr('checked', true);
+                            }
+                        });
+
+                        allLoaded+=1;
+                        if (allLoaded == 1) {
+                            tabContent.unmask();
+                        }
                     },"text");
                 };
             }
