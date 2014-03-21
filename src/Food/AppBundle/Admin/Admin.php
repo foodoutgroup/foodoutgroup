@@ -110,11 +110,14 @@ class Admin extends SonataAdmin
      */
     public function preUpdate($object)
     {
-        $deleted = $object->getDeletedAt();
-        if (empty($deleted)) {
-            // Log this troll, so we could burn him later
-            $object->setEditedAt(new \DateTime("now"));
-            $object->setEditedBy($this->getUser());
+        // Ne visi enticiai turi deleted reiksme :) kai kurie yra hard deletable :P
+        if (method_exists($object, 'getDeletedAt')) {
+            $deleted = $object->getDeletedAt();
+            if (empty($deleted)) {
+                // Log this troll, so we could burn him later
+                $object->setEditedAt(new \DateTime("now"));
+                $object->setEditedBy($this->getUser());
+            }
         }
     }
 
@@ -126,9 +129,12 @@ class Admin extends SonataAdmin
      */
     public function postRemove($object)
     {
-        // Log this troll, so we could burn him later
-        $object->setDeletedBy($this->getUser());
-        $this->update($object);
+        // Ne visi enticiai turi deleted reiksme :) kai kurie yra hard deletable :P
+        if (method_exists($object, 'setDeletedBy')) {
+            // Log this troll, so we could burn him later
+            $object->setDeletedBy($this->getUser());
+            $this->update($object);
+        }
     }
 
     /**
