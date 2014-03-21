@@ -252,10 +252,10 @@ class OrderDetailsOptions
     /**
      * Set order_detail
      *
-     * @param \Food\OrderBundle\Entity\OrderDetail $orderDetail
+     * @param \Food\OrderBundle\Entity\OrderDetails $orderDetail
      * @return OrderDetailsOptions
      */
-    public function setOrderDetail(\Food\OrderBundle\Entity\OrderDetail $orderDetail)
+    public function setOrderDetail(\Food\OrderBundle\Entity\OrderDetails $orderDetail)
     {
         $this->order_detail = $orderDetail;
     
@@ -265,7 +265,7 @@ class OrderDetailsOptions
     /**
      * Get order_detail
      *
-     * @return \Food\OrderBundle\Entity\OrderDetail 
+     * @return \Food\OrderBundle\Entity\OrderDetails
      */
     public function getOrderDetail()
     {

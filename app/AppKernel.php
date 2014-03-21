@@ -39,6 +39,7 @@ class AppKernel extends Kernel
             new Evp\Bundle\WebToPayBundle\EvpWebToPayBundle(),
             new Food\SupportBundle\FoodSupportBundle(),
             new Trsteel\CkeditorBundle\TrsteelCkeditorBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

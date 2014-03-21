@@ -208,6 +208,10 @@
                 <source>admin.dish_option.description</source>
                 <target>Aprašymas</target>
             </trans-unit>
+            <trans-unit id="admin.dish_option.single_select">
+                <source>admin.dish_option.single_select</source>
+                <target>Vienetinis pasirinkimas</target>
+            </trans-unit>
             <trans-unit id="dish-option-list">
                 <source>Dish Option List</source>
                 <target>Patiekalų priedai</target>
@@ -225,6 +229,10 @@
             <trans-unit id="admin.unit.name">
                 <source>admin.unit.name</source>
                 <target>Matavimo vienetas</target>
+            </trans-unit>
+            <trans-unit id="admin.unit.unit_category">
+                <source>admin.unit.unit_category</source>
+                <target>Vienetų kategorija</target>
             </trans-unit>
             <trans-unit id="unit">
                 <source>Unit</source>
@@ -287,6 +295,10 @@
             <trans-unit id="admin.place.cart_minimum">
                 <source>admin.place.cart_minimum</source>
                 <target>Min. užsakymas</target>
+            </trans-unit>
+            <trans-unit id="admin.place.self_delivery">
+                <source>admin.place.self_delivery</source>
+                <target>Sava logistika</target>
             </trans-unit>
 
             <trans-unit id="admin.place.kitchens">
@@ -359,6 +371,10 @@
                 <source>admin.point.address</source>
                 <target>Adresas</target>
             </trans-unit>
+            <trans-unit id="admin.point.phone">
+                <source>admin.point.phone</source>
+                <target>Tel.</target>
+            </trans-unit>
             <trans-unit id="admin.point.city">
                 <source>admin.point.city</source>
                 <target>Miestas</target>
@@ -414,6 +430,14 @@
             <trans-unit id="admin.users">
                 <source>admin.users</source>
                 <target>Vartotojai</target>
+            </trans-unit>
+            <trans-unit id="admin.users.firstname">
+                <source>admin.users.firstname</source>
+                <target>Vardas</target>
+            </trans-unit>
+            <trans-unit id="admin.users.lastname">
+                <source>admin.users.lastname</source>
+                <target>Pavardė</target>
             </trans-unit>
             <trans-unit id="admin.users.username">
                 <source>admin.users.username</source>

@@ -61,7 +61,8 @@
         "webtopay/webtopay-bundle": "dev-master",
         "shuber/curl": "dev-master",
         "imagine/Imagine": "dev-master",
-        "trsteel/ckeditor-bundle": "1.4.x-dev"
+        "trsteel/ckeditor-bundle": "1.4.x-dev",
+        "friendsofsymfony/jsrouting-bundle": "@stable"
     },
     "scripts": {
         "post-install-cmd": [

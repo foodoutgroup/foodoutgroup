@@ -103,7 +103,13 @@ class PaymentsController extends Controller
             return new Response($e->getTraceAsString(), 500);
         }
 
-        return new RedirectResponse($this->generateUrl('food_cart').'?hash='.$order->getOrderHash());
+        return new RedirectResponse(
+            $this->generateUrl(
+                'food_cart',
+                array('placeId' => $order->getPlace()->getId())
+            )
+            .'?hash='.$order->getOrderHash()
+        );
     }
 
     public function payseraCallbackAction()

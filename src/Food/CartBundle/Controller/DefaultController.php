@@ -111,7 +111,7 @@ class DefaultController extends Controller
         $this->getCartService()->removeOptionById($dishId, $optionId);
     }
 
-    public function indexAction()
+    public function indexAction($placeId)
     {
         $request = $this->getRequest();
 
@@ -121,12 +121,15 @@ class DefaultController extends Controller
 
         if (!empty($orderHash)) {
             $order = $orderService->getOrderByHash($orderHash);
+            $place = $order->getPlace();
+        } else {
+            $place = $this->get('food.places')->getPlace($placeId);
         }
 
         // Form submitted
         if ($request->getMethod() == 'POST') {
             if (empty($order)) {
-                $orderService->createOrderFromCart();
+                $orderService->createOrderFromCart($placeId);
                 $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
             } else {
                 $orderService->setOrder($order);
@@ -147,7 +150,13 @@ class DefaultController extends Controller
             // TODO Crap happened?
         }
 
-        return $this->render('FoodCartBundle:Default:index.html.twig', array('order' => $order));
+        return $this->render(
+            'FoodCartBundle:Default:index.html.twig',
+            array(
+                'order' => $order,
+                'place' => $place,
+            )
+        );
     }
 
     /**
@@ -158,14 +167,15 @@ class DefaultController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function sideBlockAction($place, $renderView = false)
+    public function sideBlockAction($place, $renderView = false, $inCart = false)
     {
         $list = $this->getCartService()->getCartDishes($place);
         $total = $this->getCartService()->getCartTotal($list, $place);
         $params = array(
             'list'  => $list,
             'place' => $place,
-            'total' => $total
+            'total' => $total,
+            'inCart' => $inCart,
         );
         if ($renderView) {
             return $this->renderView('FoodCartBundle:Default:side_block.html.twig', $params);

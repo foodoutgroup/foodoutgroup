@@ -22,9 +22,21 @@ class DishAdmin extends FoodAdmin
         '_sort_by' => 'id' // name of the ordered field (default = the model id field, if any)
     );
 
+    /**
+     * @return string
+     */
+    public function getEditTemplate()
+    {
+        return 'FoodDishesBundle:Dish:base_edit.html.twig';
+    }
+
+
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
+        // Override edit template by our magic one with ajax
+        $this->setTemplate('edit', 'FoodDishesBundle:Dish:admin_dish_edit.html.twig');
+
         /**
          * @var EntityManager $em
          */

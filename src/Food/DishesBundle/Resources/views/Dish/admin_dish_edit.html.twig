@@ -1,0 +1,61 @@
+{#
+
+Sonata edit form extension for ajax filtered food categories
+
+#}
+
+{% extends '@SonataAdmin/CRUD/base_edit.html.twig' %}
+
+{% block javascripts %}
+{{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var place = $("#{{ admin.uniqId }}_place");
+            place.change(updateCategories());
+            place.change();
+
+            function updateCategories(){
+                return function () {
+                    var placeId = $("#{{ admin.uniqId }}_place option:selected").val();
+                    var category = $("#{{ admin.uniqId }}_categories");
+                    var tabContent = $(".sonata-ba-form:first");
+                    tabContent.mask();
+
+                    var selectedCategories = [];
+                    category.find(':selected').each(function(key, element){
+                        selectedCategories.push($(element).val());
+                    });
+                    category.empty();
+
+                    var locale = '{{ app.request.get('_locale') }}';
+
+                    var objectId = '{{ admin.id(object) }}'
+
+                    var url = Routing.generate('food_admin_get_place_categories', { '_locale': locale, 'placeId': placeId, _sonata_admin: 'sonata.admin.dish', id: objectId });
+                    $.post(url, { placeId: placeId }, function(data){
+                        category.empty().append(data);
+
+                        var shownAsSelected = $('#s2id_{{ admin.uniqId }}_categories .select2-search-choice ');
+                        var textsToBeShown = [];
+                        category.find('option').each(function(key, element){
+                            if (selectedCategories.indexOf($(element).val()) != -1) {
+                                textsToBeShown.push($(element).html());
+                                $(element).attr('selected', 'selected');
+                            }
+                        });
+
+                        shownAsSelected.each(function(key, element) {
+                            console.log(' ++++ tikrinam: ' + $(element).find('div:first').html());
+                            if (textsToBeShown.indexOf($(element).find('div:first').html()) == -1) {
+                                console.log('trinam!!!!!!!!!!');
+                                $(element).find('a').trigger('click');
+                            }
+                        });
+
+                        tabContent.unmask();
+                    },"text");
+                };
+            }
+        });
+    </script>
+{% endblock %}

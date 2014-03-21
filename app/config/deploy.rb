@@ -40,7 +40,7 @@ set :shared_children,     ["bin", app_path + "/logs", web_path + "/uploads", web
 set :writable_dirs,     ["bin", app_path + "/cache", app_path + "/logs", web_path + "/images", app_path + "/cache/dev", app_path + "/cache/prod", web_path + "/images/cache"]
 set :composer_options, "--verbose"
 # Testing purpose
-#set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader --no-progress"
+# set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader --no-progress"
 
 set :keep_releases, 5
 
@@ -53,10 +53,10 @@ namespace :deploy do
 end
 
 # Kolkas nevalom kol hostexas nesutvarke mums teisiu!
-#after "deploy", "deploy:cleanup"
+# after "deploy", "deploy:cleanup"
 after "deploy", "deploy:chmod_things"
 # Uncomment kai bus airbrake
-#after "deploy:cleanup", "deploy:airbrake_notify"
+# after "deploy:cleanup", "deploy:airbrake_notify"
 after "deploy:rollback", "symfony:cache:clear"
 
 # Be more verbose by uncommenting the following line

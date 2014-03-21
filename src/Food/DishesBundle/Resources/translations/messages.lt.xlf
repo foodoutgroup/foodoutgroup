@@ -72,7 +72,7 @@
       </trans-unit>
       <trans-unit id="54a568de728392bbf4375dd135a19a2c" resname="%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų">
         <source>%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų</source>
-        <target>__%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų</target>
+        <target>%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų</target>
       </trans-unit>
       <trans-unit id="22056c616e95f30e6682641408e22382" resname="places.add_review">
         <source>places.add_review</source>

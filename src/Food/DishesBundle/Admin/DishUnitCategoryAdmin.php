@@ -43,6 +43,51 @@ class DishUnitCategoryAdmin extends FoodAdmin
         $listMapper
             ->addIdentifier('name', 'string', array('label' => 'admin.dish.unit.category.name'))
             ->add('place', 'entity', array('label' => 'admin.dish.unit.category.place'))
+            ->add('_action', 'actions', array(
+                'actions' => array(
+                    'edit' => array(),
+                    'delete' => array(),
+                ),
+                'label' => 'admin.actions'
+            ))
         ;
+    }
+
+    public function preRemove($object)
+    {
+        // Trinant kategorija - turi istrinti ir pacius matavimo vienetus
+        $doctrine = $this->getContainer()->get('doctrine');
+
+        $em = $doctrine->getManager();
+        $units = $doctrine->getRepository('FoodDishesBundle:DishUnit')
+            ->findBy(array('unitCategory' => $object));
+
+        $sizes = array();
+        if (count($units) > 0) {
+            $sizes = $doctrine->getRepository('FoodDishesBundle:DishSize')
+                ->findBy(array('unit' => $units));
+        }
+
+        if (count($sizes) == 0) {
+            foreach($units as $unit) {
+                $em->remove($unit);
+                $em->flush();
+            }
+
+            parent::preRemove($object);
+        } else {
+            throw new \Exception('Some units, that belong to this category are assigned to dishes. Can not delete');
+        }
+    }
+
+    /**
+     * @param mixed $object
+     * @return mixed|void
+     *
+     * @codeCoverageIgnore
+     */
+    public function postRemove($object)
+    {
+        // Do nothing after delete
     }
 }

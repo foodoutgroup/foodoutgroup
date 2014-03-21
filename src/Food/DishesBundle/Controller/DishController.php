@@ -8,13 +8,39 @@ use Symfony\Component\HttpFoundation\Cookie;
 
 class DishController extends Controller
 {
+    /**
+     * Disho langas kad prideti i cart
+     *
+     * @param $dish
+     * @return Response
+     */
     public function getDishAction($dish)
     {
-        $dishObj = $this->getDoctrine()->getRepository('FoodDishesBundle:Dish')->find((int)$dish);
         return $this->render(
             'FoodDishesBundle:Dish:dish.html.twig',
             array(
-                'dish' => $dishObj
+                'dish' => $this->getDoctrine()->getRepository('FoodDishesBundle:Dish')->find((int)$dish),
+                'cart' => null
+            )
+        );
+    }
+
+    /**
+     * Disho editas carte.
+     *
+     * @param $dish
+     * @param $cartId
+     * @return Response
+     */
+    public function editDishInCartAction($dish, $cartId)
+    {
+        $dishEnt = $this->getDoctrine()->getRepository('FoodDishesBundle:Dish')->find((int)$dish);
+        $cartEnt = $this->get('food.cart')->getCartDish(intval($dish), intval($cartId));
+        return $this->render(
+            'FoodDishesBundle:Dish:dish.html.twig',
+            array(
+                'dish' => $dishEnt,
+                'cart' => $cartEnt
             )
         );
     }

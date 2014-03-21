@@ -125,6 +125,13 @@ class DishOption implements Translatable
     private $deletedBy;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="single_select", type="boolean")
+     */
+    private $singleSelect = false;
+
+    /**
      * Returns the name
      *
      * @return string
@@ -518,5 +525,28 @@ class DishOption implements Translatable
     public function removeDish(\Food\DishesBundle\Entity\Dish $dishes)
     {
         $this->dishes->removeElement($dishes);
+    }
+
+    /**
+     * Set singleSelect
+     *
+     * @param integer $singleSelect
+     * @return DishOption
+     */
+    public function setSingleSelect($singleSelect)
+    {
+        $this->singleSelect = $singleSelect;
+    
+        return $this;
+    }
+
+    /**
+     * Get singleSelect
+     *
+     * @return integer 
+     */
+    public function getSingleSelect()
+    {
+        return $this->singleSelect;
     }
 }

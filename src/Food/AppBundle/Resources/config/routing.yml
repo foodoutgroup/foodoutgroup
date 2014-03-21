@@ -8,13 +8,28 @@ food_test_payment:
 
 food_test:
     pattern:  /test/
-    defaults: { _controller: FoodAppBundle:Test:index }
+    defaults: { _controller: FoodAppBundle:setupTest:index }
 
 food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|payments|call_center|newsletter|ajax|places|vietos|mesto).+"
+        slug : "^(?!admin|cart|test|payments|call_center|newsletter|ajax|js|places|vietos|mesto).+"
+
+food_admin_get_place_categories:
+    pattern: /admin/place/get-categories/{placeId}
+    defaults: {_controller: FoodDishesBundle:DishAdmin:getCategoryOptionsFromPlace}
+    options:
+        expose: true
+
+food_admin_get_place_unit_categories:
+    pattern: /admin/place/get-unit-categories/{placeId}
+    defaults: {_controller: FoodDishesBundle:DishUnitAdmin:getUnitCategoryOptionsFromPlace}
+    options:
+        expose: true
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
 food_admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
@@ -28,8 +43,12 @@ food_ajax_dish:
     pattern: /ajax/dish/{dish}
     defaults: { _controller: FoodDishesBundle:Dish:getDish, dish: ~}
 
+food_ajax_edit_dish:
+        pattern: /ajax/edit-dish-in-cart/{dish}/{cartId}
+        defaults: { _controller: FoodDishesBundle:Dish:editDishInCart, dish: ~, cartId: ~}
+
 food_ajax:
-    pattern: /ajax/{action}/
+    pattern: /ajax/{action}/i
     defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~}
 
 
