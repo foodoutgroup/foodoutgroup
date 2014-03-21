@@ -22,7 +22,6 @@ class DishOptionAdmin extends FoodAdmin
                     'name' => array('label' => 'label.name'),
                     'description' => array('label' => 'label.description', 'required' => false),
                 ),
-//                'label' => 'Unit name (transl)'
             )
         )->add('code', null, array('label' => 'admin.dish_option.code', 'required' => false))
          ->add('singleSelect', 'checkbox', array('label' => 'admin.dish_option.single_select', 'required' => false));
@@ -39,6 +38,7 @@ class DishOptionAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('place')
             ->add('name', null, array('label' => 'admin.dish_option.name'))
             ->add('code', null, array('label' => 'admin.dish_option.code'))
             ->add('price', null, array('label' => 'admin.dish_option.price'))
@@ -75,7 +75,9 @@ class DishOptionAdmin extends FoodAdmin
     {
         $listMapper
             ->addIdentifier('name', null, array('label' => 'admin.dish_option.name'))
+            ->add('place')
             ->add('price', null, array('label' => 'admin.dish_option.price'))
+            ->add('singleSelect', null, array('label' => 'admin.dish_option.single_select', 'editable' => true))
             ->add('createdBy', null, array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
