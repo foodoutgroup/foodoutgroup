@@ -86,7 +86,8 @@ class DefaultController extends Controller
         $this->getCartService()->addDishBySizeId(
             $request->get('dish-size'),
             intval($request->get('counter')),
-            $request->get('options')
+            $request->get('options'),
+            $request->get('option')
         );
     }
 

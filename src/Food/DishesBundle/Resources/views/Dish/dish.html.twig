@@ -21,7 +21,7 @@
                 {% for option in dish.options %}
                     {% if option.singleSelect == true %}
                         <label class="custom-radio">{{ option.name }}<strong class="price">+{{ option.price }} Lt</strong>
-                            <input type="radio" name="options[]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
+                            <input type="radio" name="option" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
                         </label>
                     {% endif %}
                 {% endfor %}

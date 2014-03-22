@@ -18,9 +18,12 @@ services:
         class: Food\AppBundle\Service\NewsletterService
         arguments: [@service_container]
 
-    food.gis:
-        class: Food\AppBundle\Service\GisService
+    food.arcgis:
+        class: Food\AppBundle\Service\ArcGisService
         calls:
             - [setContainer, [@service_container]]
 
-
+    food.googlegis:
+        class: Food\AppBundle\Service\GoogleGisService
+        calls:
+            - [setContainer, [@service_container]]

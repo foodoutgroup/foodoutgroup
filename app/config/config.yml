@@ -33,7 +33,9 @@ parameters:
     arc_gis_geocode: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates"
     arc_gis_geocode_single: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     arc_gis_geocode_url: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=pjson&Address=_1_&City=_2_&CountryCode=LT&outFields=AddrNum,StName,City"
+    google.maps_geocode: "https://maps.googleapis.com/maps/api/geocode/json"
     google.maps_api: "AIzaSyDyKJYX3Cr4Cn41VR9oaAqbmT8XlbHBY-Q"
+    google.maps_server_api: "AIzaSyBK3xf8ZPVWfTa2uXZN-OJHd6Fwl1Yo560"
     # Todo situos gal ir iskelsime i paramsus - dependant on install?
     payment.methods: [local, local.card, paysera]
     currency_display: Lt

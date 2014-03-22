@@ -171,9 +171,12 @@ class CartService {
      * @param int $quantity
      * @param array $options
      */
-    public function addDishBySizeId($size, $quantity, $options)
+    public function addDishBySizeId($size, $quantity, $options = array(), $option = array())
     {
         $sizeEnt = $this->getEm()->getRepository('FoodDishesBundle:DishSize')->find($size);
+        if(!empty($option)) {
+            $options[] = $option;
+        }
         $this->addDishByIds(
             $sizeEnt->getDish()->getId(),
             $size,

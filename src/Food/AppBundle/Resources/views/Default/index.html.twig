@@ -13,21 +13,8 @@
             var waitIntervals = null;
             var currentTime = null;
 
-            $('#index_address').keyup(function(){
-                if (currentTime == null) {
-                    currentTime = new Date().getTime();
-                }
-                if (addrXhr != null) {
-                    addrXhr.abort();
-                }
-                currentTime = new Date().getTime();
-                setTimeout(function() { getCrds() }, 1000);
-            });
 
             function getCrds() {
-                if (new Date().getTime() - currentTime < 1000) {
-                    return;
-                }
                 if (addrXhr != null) {
                     addrXhr.abort();
                 }
@@ -36,24 +23,25 @@
                     url: '{{ path('food_ajax', {'action': 'find-address'}) }}',
                     data:  {city: $('#index_city').val(), address: $('#index_address').val()},
                     success:  function(resp){
-                        var addrResponse = resp.data;
-                        $('#index_coords').val(addrResponse.y + ',' + addrResponse.x);
-                        $('#index_address').val(addrResponse.name);
+                        if (resp.data.success == 1) {
+                            $('.search-food-form').trigger('submit');
+                        } else {
+                            $('.search-food-form .title').after('<p>' + resp.data.message + '</p>');
+                        }
                     }
                 });
             }
 
-            $('#index_submit').click(function(){
-                if (addrXhr.readyState == 4) {
-                    $('.search-food-form').trigger('submit');
-                } else {
-                    waitForState();
-                }
+            $('#index_submit').click(function(e){
+                getCrds();
+                e.stopPropagation();
+                e.preventDefault();
             });
+
             function waitForState() {
                 if (waitIntervals < 20) {
                     if (addrXhr.readyState == 4) {
-                        $('.search-food-form').trigger('submit');
+                        //$('.search-food-form').trigger('submit');
                     } else {
                         waitIntervals++;
                         setTimeout(function() { waitForState(); }, 1000);

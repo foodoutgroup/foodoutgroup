@@ -2,6 +2,7 @@
 
 namespace Food\AppBundle\Controller;
 
+use Sonata\Doctrine\Types\JsonType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -38,17 +39,18 @@ class AjaxController extends Controller
      */
     private function _ajaxActFindAddress($response, $city, $address)
     {
-        $locations = $this->get('food.gis')->getCoordsOfPlace($address.', '.$city)->locations;
-        $respData = array();
-        if (!empty($locations)) {
-            foreach ($locations as $loc) {
-                $respData = array(
-                    'name' => $loc->name,
-                    'y' => $loc->feature->geometry->y,
-                    'x' => $loc->feature->geometry->x
-                );
-            }
+        $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
+        $locationInfo = $this->get('food.googlegis')->groupData($location);
+
+        $respData = array(
+            'success' => 0,
+            'message' => $this->get('translator')->trans('index.address_not_found')
+        );
+        if (!$locationInfo['not_found'] && $locationInfo['lng'] > 20 && $locationInfo['lat'] > 50) {
+            $respData['success'] = 1;
+            unset($respData['message']);
         }
+
         $response->setContent(json_encode(array(
             'data' => $respData
         )));

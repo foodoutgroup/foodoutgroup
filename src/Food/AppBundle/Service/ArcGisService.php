@@ -4,7 +4,7 @@ namespace Food\AppBundle\Service;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Curl;
 
-class GisService extends ContainerAware {
+class ArcGisService extends ContainerAware {
     /**
      * @var string
      */
