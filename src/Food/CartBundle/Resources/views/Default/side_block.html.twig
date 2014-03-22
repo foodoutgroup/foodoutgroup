@@ -65,6 +65,9 @@
                 <div class="fr">{{ total }} {{ currency_display }}</div>
             </div>
         </div>
+        {% if inCart == false %}
+        <a href="{{ path('food_cart', { 'placeId' : place.id }) }}" class="order-button">Užsakyk</a>
+        {% endif %}
         <div class="delivery-time tac">{% trans %}cart.block.delivery_time{% endtrans %} {{ place.deliveryTime }}</div>
     {% else %}
         <div class="check-bottom">

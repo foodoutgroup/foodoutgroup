@@ -1827,12 +1827,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "eb7a1ecf7271e618949cbf628f3ea54ee1fe41f9"
+                "reference": "fd344458ae702387251d7294196a927856a0c6cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/eb7a1ecf7271e618949cbf628f3ea54ee1fe41f9",
-                "reference": "eb7a1ecf7271e618949cbf628f3ea54ee1fe41f9",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/fd344458ae702387251d7294196a927856a0c6cb",
+                "reference": "fd344458ae702387251d7294196a927856a0c6cb",
                 "shasum": ""
             },
             "require": {
@@ -1883,7 +1883,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-03-13 21:00:03"
+            "time": "2014-03-19 11:43:04"
         },
         {
             "name": "sonata-project/cache",
@@ -2019,12 +2019,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "e5d33f55ce877a648add0fb221411a0251074b89"
+                "reference": "c3344a585985fcaab4900e920c2720610f0b75fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/e5d33f55ce877a648add0fb221411a0251074b89",
-                "reference": "e5d33f55ce877a648add0fb221411a0251074b89",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/c3344a585985fcaab4900e920c2720610f0b75fe",
+                "reference": "c3344a585985fcaab4900e920c2720610f0b75fe",
                 "shasum": ""
             },
             "require": {
@@ -2073,7 +2073,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-03-12 18:56:01"
+            "time": "2014-03-19 11:44:02"
         },
         {
             "name": "sonata-project/doctrine-extensions",
@@ -2130,12 +2130,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle.git",
-                "reference": "ec1949a98c1dddf79533db0b272f9573ad6e63ac"
+                "reference": "9f04e09e180fee6325a9a36c61d0414ed37e0917"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/ec1949a98c1dddf79533db0b272f9573ad6e63ac",
-                "reference": "ec1949a98c1dddf79533db0b272f9573ad6e63ac",
+                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/9f04e09e180fee6325a9a36c61d0414ed37e0917",
+                "reference": "9f04e09e180fee6325a9a36c61d0414ed37e0917",
                 "shasum": ""
             },
             "require": {
@@ -2190,7 +2190,7 @@
                 "generator",
                 "sonata"
             ],
-            "time": "2014-03-08 23:55:34"
+            "time": "2014-03-19 11:44:11"
         },
         {
             "name": "sonata-project/easy-extends-bundle",
@@ -2361,12 +2361,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataIntlBundle.git",
-                "reference": "d427a05af292098eb1fba4840970c72628447d67"
+                "reference": "292fad908cd6a02d48bdd8ac9ac76d4cbffd0e59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataIntlBundle/zipball/d427a05af292098eb1fba4840970c72628447d67",
-                "reference": "d427a05af292098eb1fba4840970c72628447d67",
+                "url": "https://api.github.com/repos/sonata-project/SonataIntlBundle/zipball/292fad908cd6a02d48bdd8ac9ac76d4cbffd0e59",
+                "reference": "292fad908cd6a02d48bdd8ac9ac76d4cbffd0e59",
                 "shasum": ""
             },
             "require": {
@@ -2415,7 +2415,7 @@
                 "sonata",
                 "time"
             ],
-            "time": "2014-03-12 21:23:47"
+            "time": "2014-03-19 11:44:49"
         },
         {
             "name": "sonata-project/jquery-bundle",
@@ -2698,17 +2698,17 @@
         },
         {
             "name": "symfony/icu",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "target-dir": "Symfony/Component/Icu",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Icu.git",
-                "reference": "b4081efff21a8a85c57789a39f454fed244f8e46"
+                "reference": "0b82950ece96c1f091dcdb088298bd72dbc83a47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Icu/zipball/b4081efff21a8a85c57789a39f454fed244f8e46",
-                "reference": "b4081efff21a8a85c57789a39f454fed244f8e46",
+                "url": "https://api.github.com/repos/symfony/Icu/zipball/0b82950ece96c1f091dcdb088298bd72dbc83a47",
+                "reference": "0b82950ece96c1f091dcdb088298bd72dbc83a47",
                 "shasum": ""
             },
             "require": {
@@ -2742,7 +2742,7 @@
                 "icu",
                 "intl"
             ],
-            "time": "2013-06-03 18:32:40"
+            "time": "2013-10-04 10:05:23"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -2846,9 +2846,7 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
+                    "email": "fabien@symfony.com"
                 },
                 {
                     "name": "Symfony Community",

@@ -9,7 +9,6 @@ services:
             - 'FoodDishesBundle:DishAdmin'
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
-           # - [ setTemplate, [edit, FoodDishesBundle:Dish:dish_admin.html.twig]]
 
     sonata.admin.dish.unit:
         class: Food\DishesBundle\Admin\DishUnitAdmin
@@ -18,7 +17,7 @@ services:
         arguments:
             - ~
             - Food\DishesBundle\Entity\DishUnit
-            - ~
+            - 'FoodDishesBundle:DishUnitAdmin'
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
 
