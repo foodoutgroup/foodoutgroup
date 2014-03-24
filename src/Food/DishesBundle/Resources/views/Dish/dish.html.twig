@@ -1,5 +1,5 @@
 <div id="detailed-dish-popup">
-    <form class="popup detailed-dish-popup"><img src="{{ asset('bundles/foodapp/images/popup-header.png') }}" class="popup-header">
+    <form class="popup detailed-dish-popup"><img src="/{{ dish.getWebPathThumb('type3') }}" class="popup-header">
         <div class="dish-info">
             <p class="name">{{ dish.name }}</p>
             <p class="desc">{{ dish.description }}</p>
@@ -19,15 +19,24 @@
                 <div class="title">{% trans %}dish.select_options{% endtrans %}</div>
                 <div class="clearfix">
                 {% for option in dish.options %}
-                    <label class="custom-checkbox">{{ option.name }}<strong class="price">+{{ option.price }} Lt</strong>
-                        <input type="checkbox" name="options[]" value="{{ option.id }}">
-                    </label>
+                    {% if option.singleSelect == true %}
+                        <label class="custom-radio">{{ option.name }}<strong class="price">+{{ option.price }} Lt</strong>
+                            <input type="radio" name="options[]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
+                        </label>
+                    {% endif %}
+                {% endfor %}
+                {% for option in dish.options %}
+                    {% if option.singleSelect == false %}
+                        <label class="custom-checkbox">{{ option.name }}<strong class="price">+{{ option.price }} Lt</strong>
+                            <input type="checkbox" name="options[]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
+                        </label>
+                    {% endif %}
                 {% endfor %}
                 </div>
             </div>
         {% endif %}
         <div class="dish-size">
-            <div class="title">{% trans %}dish.select_quantity{% endtrans %} <input class="counter" name="counter" value="1" /></div>
+            <div class="title">{% trans %}dish.select_quantity{% endtrans %} <input class="counter" name="counter" value="{% if cart %}{{ cart.quantity }}{% else %}1{% endif %}" /></div>
         </div>
         <input type="hidden" name="place" value="{{ dish.place.id }}">
 

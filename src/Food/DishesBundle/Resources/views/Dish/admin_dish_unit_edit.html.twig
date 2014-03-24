@@ -1,0 +1,47 @@
+{#
+
+Sonata edit form extension for ajax filtered unit categories
+
+#}
+
+{% extends '@SonataAdmin/CRUD/base_edit.html.twig' %}
+
+{% block javascripts %}
+{{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var place = $("#{{ admin.uniqId }}_place");
+            place.change(updateCategories());
+            place.change();
+
+            function updateCategories(){
+                return function () {
+                    var placeId = $("#{{ admin.uniqId }}_place option:selected").val();
+                    var category = $("#{{ admin.uniqId }}_unitCategory");
+                    var tabContent = $(".sonata-ba-form:first");
+                    tabContent.mask();
+
+                    var selectedCategory = category.val();
+                    category.empty();
+
+                    var locale = '{{ app.request.get('_locale') }}';
+
+                    var objectId = '{{ admin.id(object) }}'
+
+                    var url = Routing.generate('food_admin_get_place_unit_categories', { '_locale': locale, 'placeId': placeId, _sonata_admin: 'sonata.admin.dish.unit', id: objectId });
+                    $.post(url, { placeId: placeId }, function(data){
+                        category.empty().append(data);
+
+                        category.find('option').each(function(key, element){
+                            if (selectedCategory == $(element).val()) {
+                                $(element).attr('selected', 'selected');
+                            }
+                        });
+
+                        tabContent.unmask();
+                    },"text");
+                };
+            }
+        });
+    </script>
+{% endblock %}

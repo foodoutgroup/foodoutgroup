@@ -18,6 +18,24 @@ class PlacesService extends ContainerAware {
         return $this->container->get('session');
     }
 
+    /**
+     * @param int $placeId
+     * @return \Food\DishesBundle\Entity\Place
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getPlace($placeId) {
+        if (empty($placeId)) {
+            throw new \InvalidArgumentException('Cant seach a place without and id. How can you find a house without address?');
+        }
+
+        return $this->em()->getRepository('FoodDishesBundle:Place')
+            ->find($placeId);
+    }
+
+    /**
+     * @return mixed
+     */
     public function getAvailableCities()
     {
         $em = $this->em();
@@ -79,6 +97,9 @@ class PlacesService extends ContainerAware {
         return $this->em()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
     }
 
+    /**
+     * @param array $data
+     */
     public function saveRelationPlaceToPoint($data)
     {
         $rel = array();

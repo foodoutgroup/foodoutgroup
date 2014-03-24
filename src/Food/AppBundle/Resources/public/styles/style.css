@@ -551,14 +551,14 @@ input.button {}
 .cupon-inline p {}
 .cupon-inline .decoration {position: absolute; right: -12px; top: -19px;}
 
-/*Static page*/
-.static-page {background: #fff; border-radius: 4px; text-align: center; padding-top: 42px; position: relative; padding-bottom: 40px;}
-.static-page h1 {font-size: 40px; margin-bottom: 7px;}
-.static-page p {font-size: 14px; line-height: 21px; margin-top: 7px; margin-bottom: 17px;}
-.static-page p a {color: #b39196;}
-.static-page a span {text-decoration: underline;}
-.static-page a:hover span {text-decoration: none;}
-.static-page p strong {font-weight: normal;}
+/*Static page, error page*/
+.static-page, .error-page {background: #fff; border-radius: 4px; text-align: center; padding-top: 42px; position: relative; padding-bottom: 40px;}
+.static-page h1, .error-page h1 {font-size: 40px; margin-bottom: 7px;}
+.static-page p, .error-page p {font-size: 14px; line-height: 21px; margin-top: 7px; margin-bottom: 17px;}
+.static-page p a, .error-page p a {color: #b39196;}
+.static-page a span, .error-page a span {text-decoration: underline;}
+.static-page a:hover span, .error-page a:hover span {text-decoration: none;}
+.static-page p strong, .error-page p strong {font-weight: normal;}
 
 /*User page*/
 .full-content {padding: 27px; border-radius: 4px; background: #fff; padding-right: 42px;}
@@ -703,3 +703,9 @@ input.button {}
 
 /*Error tolltip*/
 .error-tooltip { border-color: #FF0000; }
+
+
+
+.dish-ingredients .custom-radio {width: 137px; padding-right: 0; float: left; margin-right: 15px; margin-bottom: 15px; font-size: 12px; color: #55422e; line-height: 18px; padding-top: 2px; padding-left: 21px;}
+.dish-ingredients .custom-radio:nth-child(3n) {margin-right: 0;}
+.dish-ingredients .custom-radio strong {display: block; font-family: 'avenir_nextbold';}

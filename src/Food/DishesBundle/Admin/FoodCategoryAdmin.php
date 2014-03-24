@@ -136,20 +136,4 @@ class FoodCategoryAdmin extends FoodAdmin
             $slugUtelyte->generateForFoodCategory($loc, $object->getId(), $textsForSlugs[$loc]);
         }
     }
-
-    public function getFilterParameters()
-    {
-        $this->datagridValues = array_merge(
-            array(
-                'place' => array (
-                    'type' => 1,
-                    'value' => 1
-                ),
-            ),
-            $this->datagridValues
-        );
-
-        return parent::getFilterParameters();
-    }
-
 }

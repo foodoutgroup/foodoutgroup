@@ -96,7 +96,7 @@ class Order
      */
     private $place_comment;
 
-    /**
+    /**;
      * @var integer
      * @ORM\Column(name="vat", type="integer")
      */

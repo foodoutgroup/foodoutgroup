@@ -159,6 +159,19 @@ class Cart
             );
     }
 
+    /**
+     * @return array
+     */
+    public function getOptionsIds()
+    {
+        $returner = array();
+        $data = $this->getOptions();
+        foreach ( $data as $dt) {
+            $returner[] = $dt->getDishOptionId()->getId();
+        }
+        return $returner;
+    }
+
 
     /**
      * Set dish_size_id
