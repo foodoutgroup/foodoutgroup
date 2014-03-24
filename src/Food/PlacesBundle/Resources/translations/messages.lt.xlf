@@ -118,6 +118,14 @@
         <source>ROLE_MODERATOR</source>
         <target>Restorano atstovas</target>
       </trans-unit>
+      <trans-unit id="44e9e90e66cb740de4923d793b7ff04a" resname="ROLE_SUPPORT">
+        <source>ROLE_SUPPORT</source>
+        <target>Pagalba</target>
+      </trans-unit>
+      <trans-unit id="44e9e90e66cb740de4923d793b7ff031" resname="ROLE_DISPATCHER">
+        <source>ROLE_DISPATCHER</source>
+        <target>Dispečerė</target>
+      </trans-unit>
       <trans-unit id="1871dbe4ffdad6ba92dba845efaa6fa7" resname="ROLE_USER">
         <source>ROLE_USER</source>
         <target>Lankytojas</target>
@@ -189,6 +197,10 @@
       <trans-unit id="ff0bc83f13df6076f1fe1eda1481372d" resname="places.recomended_show_more">
         <source>places.recomended_show_more</source>
         <target>Daugiau pasiūlymų</target>
+      </trans-unit>
+      <trans-unit id="e9af7214246747e3648fdc0ec367494c" resname="general.places">
+        <source>general.places</source>
+        <target>__general.places</target>
       </trans-unit>
     </body>
   </file>

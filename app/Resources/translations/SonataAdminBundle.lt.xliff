@@ -487,6 +487,14 @@
                 <source>ROLE_USER</source>
                 <target>Lankytojas</target>
             </trans-unit>
+            <trans-unit id="ROLE_DISPATCHER">
+                <source>ROLE_DISPATCHER</source>
+                <target>Dispečerė</target>
+            </trans-unit>
+            <trans-unit id="ROLE_SUPPORT">
+                <source>ROLE_SUPPORT</source>
+                <target>Pagalba</target>
+            </trans-unit>
 
             <!-- Static content -->
             <trans-unit id="admin.static">

@@ -1,5 +1,8 @@
 <div id="detailed-dish-popup">
-    <form class="popup detailed-dish-popup"><img src="/{{ dish.getWebPathThumb('type3') }}" class="popup-header">
+    <form class="popup detailed-dish-popup">
+        {% if dish.getWebPathThumb('type3') is not empty %}
+            <img src="/{{ dish.getWebPathThumb('type3') }}" class="popup-header" />
+        {% endif %}
         <div class="dish-info">
             <p class="name">{{ dish.name }}</p>
             <p class="desc">{{ dish.description }}</p>

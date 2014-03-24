@@ -53,12 +53,19 @@ class Uploadable {
     }
 
     /**
+     * @param string $type
      * @return null|string
      */
     public function getWebPathThumb($type = "")
     {
+        $image  = $this->getImageSetted();
+        // If no image is set - dont return just the path You little bastard!
+        if (empty($image)) {
+            return null;
+        }
+
         $getter = 'get'.ucfirst($this->getUploadableField());
-        return null === $this->$getter() ? null : $this->getUploadDir().'/thumb_'.($type!="" ? $type."_" : "") .$this->getImageSetted();
+        return null === $this->$getter() ? null : $this->getUploadDir().'/thumb_'.($type!="" ? $type."_" : "") .$image;
     }
 
     /**
