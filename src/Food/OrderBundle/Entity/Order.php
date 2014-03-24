@@ -40,10 +40,21 @@ class Order
 
     /**
      * @var string
+     * @ORM\Column(name="place_point_city", type="string", length=100, nullable=true)
+     */
+    private $place_point_city;
+
+    /**
+     * @var string
      * @ORM\Column(name="place_point_address", type="string", length=100, nullable=true)
      */
     private $place_point_address;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="place_point_self_delivery", type="boolean")
+     */
+    private $place_point_self_delivery = false;
 
     /**
      * @ORM\Column(name="order_date", type="datetime")
@@ -69,10 +80,9 @@ class Order
     private $address_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="OrderStatus")
-     * @ORM\JoinColumn(name="order_status", referencedColumnName="id")
+     * @ORM\Column(name="order_status", type="string", length=50, nullable=false)
      **/
-    private $order_status;
+    private $order_status = 'new';
 
     /**
      * @var string
@@ -672,5 +682,51 @@ class Order
     public function getDetails()
     {
         return $this->details;
+    }
+
+    /**
+     * Set place_point_city
+     *
+     * @param string $placePointCity
+     * @return Order
+     */
+    public function setPlacePointCity($placePointCity)
+    {
+        $this->place_point_city = $placePointCity;
+    
+        return $this;
+    }
+
+    /**
+     * Get place_point_city
+     *
+     * @return string 
+     */
+    public function getPlacePointCity()
+    {
+        return $this->place_point_city;
+    }
+
+    /**
+     * Set place_point_self_delivery
+     *
+     * @param boolean $placePointSelfDelivery
+     * @return Order
+     */
+    public function setPlacePointSelfDelivery($placePointSelfDelivery)
+    {
+        $this->place_point_self_delivery = $placePointSelfDelivery;
+    
+        return $this;
+    }
+
+    /**
+     * Get place_point_self_delivery
+     *
+     * @return boolean 
+     */
+    public function getPlacePointSelfDelivery()
+    {
+        return $this->place_point_self_delivery;
     }
 }

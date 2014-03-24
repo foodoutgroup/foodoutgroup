@@ -1,0 +1,69 @@
+{# Dispecerinis langas.. OMG, kas per 87 lvl zodziai...#}
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block actions %}{% endblock %}
+
+{% block side_menu %}{% endblock %}
+
+{% block list_table %}
+    {% macro order_table(order_list) %}
+        <table class="order_list">
+            <tr>
+                <th>{{ 'admin.dispatcher.order_id'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.dispatcher.order_date'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.dispatcher.comment'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.dispatcher.order_date'|trans({}, 'SonataAdminBundle') }}</th>
+            </tr>
+            {% for order in order_list %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.getOrderDate()|date("Y-m-d H:i:s") }}</td>
+                    <td>{{ order.comment }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endmacro %}
+    {% import _self as table %}
+
+    <style type="text/css">div.sidebar.span2 { display: none !important; }</style>
+    <div class="city_list todo_nieks_nezino_klases">
+        <ul>
+            {% for city in cities %}
+                <li><a href="#city_list-{{ loop.index }}">{{ city }}</a></li>
+            {% endfor %}
+        </ul>
+        {% for city in cityOrders %}
+            <div id="city_list-{{ loop.index }}">
+                <ul>
+                    <li><a href="#city-{{ loop.index }}-unassigned">{{ 'admin.dispatcher.unassigned'|trans({}, 'SonataAdminBundle') }}</a></li>
+                    <li><a href="#city-{{ loop.index }}-undelivered">{{ 'admin.dispatcher.undelivered'|trans({}, 'SonataAdminBundle') }}</a></li>
+                </ul>
+                <div id="city-{{ loop.index }}-unassigned">
+                    {{ table.order_table(city.unassigned) }}
+                </div>
+                <div id="city-{{ loop.index }}-undelivered">
+                    {{ table.order_table(city.not_finished) }}
+                </div>
+            </div>
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $('#city_list-{{ loop.index }}').tabs();
+                });
+            </script>
+        {% endfor %}
+    </div>
+    <div class="drivers_list">
+        {# TODO such hack. Wow, drivers. Much respect #}
+    </div>
+    {# TODO such javascript block. Much ajax list refresh. Very kebab #}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.city_list').tabs();
+        });
+    </script>
+
+{% endblock %}
+
+{% block list_filters %}
+    {# No filter at the moment #}
+{% endblock %}
