@@ -16,6 +16,7 @@ class PlacePointFullAdmin extends FoodAdmin
     {
         $formMapper
             ->add('address', 'text', array('label' => 'admin.point.address'))
+            ->add('company_code', 'text', array('label' => 'admin.point.company_code'))
             ->add('city', 'text', array('label' => 'admin.point.city'))
             ->add('phone', 'text', array('label' => 'admin.point.phone', 'attr'=>array('placeholder'=>'370')))
             //->add('coords', 'text', array('label' => 'admin.point.coords'))

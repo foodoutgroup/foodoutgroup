@@ -33,6 +33,13 @@ class PlacePoint
     /**
      * @var string
      *
+     * @ORM\Column(name="company_code", type="string", length=20)
+     */
+    private $company_code;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="phone", type="string", length=20)
      */
     private $phone;
@@ -1125,5 +1132,28 @@ class PlacePoint
     public function getPhone()
     {
         return $this->phone;
+    }
+
+    /**
+     * Set company_code
+     *
+     * @param string $companyCode
+     * @return PlacePoint
+     */
+    public function setCompanyCode($companyCode)
+    {
+        $this->company_code = $companyCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get company_code
+     *
+     * @return string 
+     */
+    public function getCompanyCode()
+    {
+        return $this->company_code;
     }
 }
