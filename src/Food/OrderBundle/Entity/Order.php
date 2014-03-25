@@ -234,10 +234,10 @@ class Order
     /**
      * Set order_status
      *
-     * @param \Food\OrderBundle\Entity\OrderStatus $orderStatus
+     * @param string $orderStatus
      * @return Order
      */
-    public function setOrderStatus(\Food\OrderBundle\Entity\OrderStatus $orderStatus = null)
+    public function setOrderStatus($orderStatus = null)
     {
         $this->order_status = $orderStatus;
     
@@ -247,7 +247,7 @@ class Order
     /**
      * Get order_status
      *
-     * @return \Food\OrderBundle\Entity\OrderStatus 
+     * @return string
      */
     public function getOrderStatus()
     {
