@@ -359,7 +359,7 @@ input.button {}
 .restaurant-menu-item .price {float: left; line-height: 32px; padding-left: 9px; font-size: 14px; color: #543f42;}
 .restaurant-menu-item .add-to-cart {width: 32px; height: 32px; background: url(/bundles/foodapp/images/add-button.png) no-repeat left top; float: right;}
 
-.display-list .restaurant-menu-item {width: auto; float: none; margin-right: 0; position: relative; margin-bottom: 8px;}
+.display-list .restaurant-menu-item {width: auto; float: none; margin-right: 0; position: relative; margin-bottom: 8px; min-height: 90px;}
 .display-list .restaurant-menu-item img {float: left; margin-right: 15px; border-radius: 4px 0 0 4px;}
 .display-list .restaurant-menu-item .name {padding-right: 150px; padding-top: 16px; letter-spacing: -0.4px;}
 .display-list .restaurant-menu-item .desc {padding-right: 60px; padding-top: 6px; min-height: 10px; }
