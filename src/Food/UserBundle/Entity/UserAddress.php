@@ -36,9 +36,16 @@ class UserAddress
     /**
      * @var string
      *
-     * @ORM\Column(name="coords", type="string", length=255)
+     * @ORM\Column(name="lat", type="string", length=30)
      */
-    private $coords;
+    private $lat;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lon", type="string", length=30)
+     */
+    private $lon;
 
     /**
      * @var int
@@ -176,5 +183,51 @@ class UserAddress
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set lat
+     *
+     * @param string $lat
+     * @return UserAddress
+     */
+    public function setLat($lat)
+    {
+        $this->lat = $lat;
+    
+        return $this;
+    }
+
+    /**
+     * Get lat
+     *
+     * @return string 
+     */
+    public function getLat()
+    {
+        return $this->lat;
+    }
+
+    /**
+     * Set lon
+     *
+     * @param string $lon
+     * @return UserAddress
+     */
+    public function setLon($lon)
+    {
+        $this->lon = $lon;
+    
+        return $this;
+    }
+
+    /**
+     * Get lon
+     *
+     * @return string 
+     */
+    public function getLon()
+    {
+        return $this->lon;
     }
 }
