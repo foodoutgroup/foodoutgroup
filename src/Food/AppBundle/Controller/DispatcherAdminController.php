@@ -30,5 +30,4 @@ class DispatcherAdminController extends Controller
             )
         );
     }
-
 }

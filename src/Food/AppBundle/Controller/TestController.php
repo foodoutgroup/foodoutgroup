@@ -13,9 +13,13 @@ class TestController extends Controller
 {
     public function indexAction()
     {
-        $gisService = $this->get('food.gis');
-        $resp = $gisService->getCoordsOfPlace('Vivulskio 21, Vilnius');
-        var_dump($resp);
+        $fo = $this->get('food.order');
+        $list = $fo->getOrdersUnassigned('Vilnius');
+        echo "<pre>";
+        var_dump($list[0]->getPlacePoint()->getCity());
+        var_dump($list[0]->getPlacePoint()->getLon());
+
+        echo "</pre>";
         return new Response('Uber');
     }
 

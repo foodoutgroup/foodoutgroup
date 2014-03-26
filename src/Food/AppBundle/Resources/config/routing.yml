@@ -8,7 +8,7 @@ food_test_payment:
 
 food_test:
     pattern:  /test/
-    defaults: { _controller: FoodAppBundle:setupTest:index }
+    defaults: { _controller: FoodAppBundle:Test:index }
 
 food_slug:
     pattern:  /{slug}/

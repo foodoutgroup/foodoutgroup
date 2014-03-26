@@ -19,9 +19,9 @@
                 <tr>
                     <td><input type="checkbox" id="order_{{ order.id }}" value="{{ order.id }}" class="order_checkbox" /></td>
                     <td>{{ order.id }}</td>
-                    <td>{{ order.getPlaceName() }}{{ dump(order.getPlacePoint()) }}</td>
-                    {#<td>{{ order.getPlacePoint().address }}</td>#}
-                    <td>{{ order.getOrderDate()|date("Y-m-d H:i:s") }}</td>
+                    <td>{{ order.placeName }}</td>
+                    <td>{{ order.placePoint.city }}</td>
+                    <td>{{ order.orderDate|date("Y-m-d H:i:s") }}</td>
                     <td>{{ order.comment }}</td>
                 </tr>
             {% endfor %}
