@@ -140,6 +140,14 @@
                 <source>admin.food_category.name</source>
                 <target>Kategorija</target>
             </trans-unit>
+            <trans-unit id="admin.food_category.drinks">
+                <source>admin.food_category.drinks</source>
+                <target>Gėrimai</target>
+            </trans-unit>
+            <trans-unit id="admin.food_category.alcohol">
+                <source>admin.food_category.alcohol</source>
+                <target>Alkoholis</target>
+            </trans-unit>
             <trans-unit id="food.category">
                 <source>food.category</source>
                 <target>Kategorija</target>
