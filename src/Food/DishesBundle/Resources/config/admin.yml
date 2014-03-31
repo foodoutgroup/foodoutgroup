@@ -176,3 +176,14 @@ services:
                     - 'FoodAppBundle:DispatcherAdmin'
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.drivers:
+                class: Food\AppBundle\Admin\DriverAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.drivers" }
+                arguments:
+                    - ~
+                    - Food\AppBundle\Entity\Driver
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]

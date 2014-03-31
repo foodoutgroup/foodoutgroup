@@ -244,6 +244,7 @@ sonata_admin:
                   items: ~
                   item_adds:
                       - sonata.admin.dispatcher
+                      - sonata.admin.drivers
                   roles: [ ROLE_DISPATCHER ]
               acme.admin.group.misc: ~
 

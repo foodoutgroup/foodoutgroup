@@ -763,6 +763,48 @@
                 <source>admin.dispatcher.undelivered</source>
                 <target>Nepristatyti</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.place">
+                <source>admin.dispatcher.place</source>
+                <target>Restoran.</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.address">
+                <source>admin.dispatcher.address</source>
+                <target>Adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.client_address">
+                <source>admin.dispatcher.client_address</source>
+                <target>Užsak. adresas</target>
+            </trans-unit>
+
+            <!-- Drivers listas -->
+            <trans-unit id="admin.drivers">
+                <source>admin.drivers</source>
+                <target>Vairuotojai</target>
+            </trans-unit>
+            <trans-unit id="Driver List">
+                <source>Driver List</source>
+                <target>Vairuotojai</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.name">
+                <source>admin.driver.name</source>
+                <target>Vairuotojas</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.name_placeholder">
+                <source>admin.driver.name_placeholder</source>
+                <target>Vardenis Pavardenis</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.phone">
+                <source>admin.driver.phone</source>
+                <target>Telefonas</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.phone_placeholder">
+                <source>admin.driver.phone_placeholder</source>
+                <target>37061234567</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.active">
+                <source>admin.driver.active</source>
+                <target>Dirba</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
