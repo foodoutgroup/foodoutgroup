@@ -41,6 +41,21 @@ class FoodCategory implements Translatable
      */
     private $place;
 
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="drinks", type="boolean")
+     */
+    private $drinks;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="alcohol", type="boolean")
+     */
+    private $alcohol;
+
     /**
      * @var bool
      *
@@ -472,5 +487,51 @@ class FoodCategory implements Translatable
             }
         );
         return sizeof($dishes);
+    }
+
+    /**
+     * Set drinks
+     *
+     * @param boolean $drinks
+     * @return FoodCategory
+     */
+    public function setDrinks($drinks)
+    {
+        $this->drinks = $drinks;
+    
+        return $this;
+    }
+
+    /**
+     * Get drinks
+     *
+     * @return boolean 
+     */
+    public function getDrinks()
+    {
+        return $this->drinks;
+    }
+
+    /**
+     * Set alcohol
+     *
+     * @param boolean $alcohol
+     * @return FoodCategory
+     */
+    public function setAlcohol($alcohol)
+    {
+        $this->alcohol = $alcohol;
+    
+        return $this;
+    }
+
+    /**
+     * Get alcohol
+     *
+     * @return boolean 
+     */
+    public function getAlcohol()
+    {
+        return $this->alcohol;
     }
 }
