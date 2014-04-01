@@ -793,6 +793,10 @@
                 <source>Driver List</source>
                 <target>Vairuotojai</target>
             </trans-unit>
+            <trans-unit id="admin.driver.id">
+                <source>admin.driver.id</source>
+                <target>ID</target>
+            </trans-unit>
             <trans-unit id="admin.driver.name">
                 <source>admin.driver.name</source>
                 <target>Vairuotojas</target>
@@ -812,6 +816,34 @@
             <trans-unit id="admin.driver.active">
                 <source>admin.driver.active</source>
                 <target>Dirba</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.provider">
+                <source>admin.driver.provider</source>
+                <target>Darbovietė</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.ext_id">
+                <source>admin.driver.ext_id</source>
+                <target>Išor.ID</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.ext_id_long">
+                <source>admin.driver.ext_id_long</source>
+                <target>Išorinis ID</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.city">
+                <source>admin.driver.city</source>
+                <target>Miestas</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.type">
+                <source>admin.driver.type</source>
+                <target>Tipas</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.type.local">
+                <source>admin.driver.type.local</source>
+                <target>Įmonės</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.type.outsource">
+                <source>admin.driver.type.outsource</source>
+                <target>Išorinis</target>
             </trans-unit>
         </body>
     </file>
