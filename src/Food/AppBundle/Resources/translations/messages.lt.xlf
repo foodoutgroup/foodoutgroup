@@ -182,6 +182,26 @@
         <source>general.places</source>
         <target>Restoranai</target>
       </trans-unit>
+      <trans-unit id="ceb80ce24895534499f2a5a28a707fbb" resname="mobile.order_dish">
+        <source>mobile.order_dish</source>
+        <target>Patiekalas</target>
+      </trans-unit>
+      <trans-unit id="6579716641cda122d1f726af7a28cbb3" resname="mobile.order_quantity">
+        <source>mobile.order_quantity</source>
+        <target>Kiekis</target>
+      </trans-unit>
+      <trans-unit id="9078e7d978c69fa56befc6342d1b1573" resname="mobile.order_toppings">
+        <source>mobile.order_toppings</source>
+        <target>Priedai</target>
+      </trans-unit>
+      <trans-unit id="mobile.order_unit_name" resname="mobile.order_unit_name">
+        <source>mobile.order_unit_name</source>
+        <target>Dydis</target>
+      </trans-unit>
+      <trans-unit id="mobile.place_finish_message" resname="mobile.place_finish_message">
+        <source>mobile.place_finish_message</source>
+        <target>Restorano darbas baigtas. Toliau logistika.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

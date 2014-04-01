@@ -33,11 +33,6 @@ class OrderDetailsOptions
     private $dish_id;
 
     /**
-     * @ORM\Column(name="dish_unit_id", type="integer")
-     */
-    private $dish_unit_id;
-
-    /**
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishOption")
      * @ORM\JoinColumn(name="dish_option_id", referencedColumnName="id")
      * @ORM\Id
@@ -160,7 +155,7 @@ class OrderDetailsOptions
     /**
      * Set dish_option_id
      *
-     * @param integer $dishOptionId
+     * @param \DishOption $dishOptionId
      * @return OrderDetailsOptions
      */
     public function setDishOptionId($dishOptionId)
@@ -201,29 +196,6 @@ class OrderDetailsOptions
     public function getDishId()
     {
         return $this->dish_id;
-    }
-
-    /**
-     * Set dish_unit_id
-     *
-     * @param integer $dishUnitId
-     * @return OrderDetailsOptions
-     */
-    public function setDishUnitId($dishUnitId)
-    {
-        $this->dish_unit_id = $dishUnitId;
-    
-        return $this;
-    }
-
-    /**
-     * Get dish_unit_id
-     *
-     * @return integer 
-     */
-    public function getDishUnitId()
-    {
-        return $this->dish_unit_id;
     }
 
     /**

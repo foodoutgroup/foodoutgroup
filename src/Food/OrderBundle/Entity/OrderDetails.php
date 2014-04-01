@@ -48,7 +48,7 @@ class OrderDetails
     private $dish_unit_name;
 
     /**
-     * @ORM\Column(name="dish_size_code", type="string", length=255)
+     * @ORM\Column(name="dish_size_code", type="string", length=255, nullable=true)
      */
     private $dish_size_code;
 
@@ -61,6 +61,14 @@ class OrderDetails
      * @ORM\Column(name="price", type="decimal", scale=2)
      */
     private $price;
+
+
+    /**
+     * @var OrderDetailsOptions[]
+     *
+     * @ORM\OneToMany(targetEntity="OrderDetailsOptions", mappedBy="order_detail")
+     */
+    private $options;
 
 
     /**
@@ -167,7 +175,7 @@ class OrderDetails
     /**
      * Set dish_id
      *
-     * @param integer $dishId
+     * @param Dish $dishId
      * @return OrderDetails
      */
     public function setDishId($dishId)
@@ -264,5 +272,45 @@ class OrderDetails
     public function getId()
     {
         return $this->id;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->options = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add options
+     *
+     * @param \Food\OrderBundle\Entity\OrderDetailsOptions $options
+     * @return OrderDetails
+     */
+    public function addOption(\Food\OrderBundle\Entity\OrderDetailsOptions $options)
+    {
+        $this->options[] = $options;
+    
+        return $this;
+    }
+
+    /**
+     * Remove options
+     *
+     * @param \Food\OrderBundle\Entity\OrderDetailsOptions $options
+     */
+    public function removeOption(\Food\OrderBundle\Entity\OrderDetailsOptions $options)
+    {
+        $this->options->removeElement($options);
+    }
+
+    /**
+     * Get options
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 }

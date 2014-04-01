@@ -28,6 +28,7 @@ class OrderService extends ContainerAware
     public static $status_new = "new";
     public static $status_accepted = "accepted";
     public static $status_assiged = "assigned";
+    public static $status_delayed = "delayed";
     public static $status_forwarded = "forwarded";
     public static $status_completed = "completed";
     public static $status_finished = "finished";
@@ -195,9 +196,9 @@ class OrderService extends ContainerAware
     public function createOrder($place)
     {
 
-        $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Entity:Place')->find($place);
+        $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($place);
         $placePointMap = $this->container->get('session')->get('point_data');
-        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:Entity:PlacePoint')->find($placePointMap[$place]);
+        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place]);
 
         $this->order = new Order();
         $user = $this->container->get('security.context')->getToken()->getUser();
@@ -207,7 +208,7 @@ class OrderService extends ContainerAware
         $this->order->setPlace($placeRecord);
         $this->order->setPlaceName($placeRecord->getName());
 
-        $this->order->setPlacePoint($placeRecord);
+        $this->order->setPlacePoint($pointRecord);
         $this->order->setPlacePointAddress($pointRecord->getAddress());
 
         $this->order->setUser($user);
@@ -283,6 +284,15 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @return $this
+     */
+    public function statusDelayed()
+    {
+        $this->chageOrderStatus(self::$status_delayed);
+        return $this;
+    }
+
+    /**
      * @return Order
      * @throws \Exception
      */
@@ -319,33 +329,37 @@ class OrderService extends ContainerAware
     {
         $this->createOrder($place);
         $this->saveOrder();
+
         foreach ($this->getCartService()->getCartDishes($place) as $cartDish) {
             $options = $this->getCartService()->getCartDishOptions($cartDish);
             $dish = new OrderDetails();
-            $dish->setDishId($cartDish->getDishId()->getId())
+            $dish->setDishId($cartDish->getDishId())
                 ->setOrderId($this->getOrder())
                 ->setQuantity($cartDish->getQuantity())
-                ->setDishSizeCode($cartDish->getDishSizeId())
+                ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
                 ->setPrice($cartDish->getDishSizeId()->getPrice())
                 ->setDishName($cartDish->getDishId()->getName())
                 ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
                 ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
-                ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
-                ->setOrderId($this->getOrder()->getId());
+                ->setDishSizeCode($cartDish->getDishSizeId()->getCode());
+            ;
             $this->getEm()->persist($dish);
             $this->getEm()->flush();
 
             foreach ($options as $opt) {
                 $orderOpt = new OrderDetailsOptions();
-                $orderOpt->setDishOptionId($opt->getDishOptionId()->getId())
+                $orderOpt->setDishOptionId($opt->getDishOptionId())
                     ->setDishOptionCode($opt->getDishOptionId()->getCode())
                     ->setDishOptionName($opt->getDishOptionId()->getName())
                     ->setPrice($opt->getDishOptionId()->getPrice())
-                    ->setDishId($cartDish->getDishId()->getId())
-                    ->setOrderId($this->getOrder()->getId());
+                    ->setDishId($cartDish->getDishId())
+                    ->setOrderId($this->getOrder())
+                    ->setQuantity($cartDish->getQuantity()) // @todo Kolkas paveldimas. Veliau taps valdomas kiekvienam topingui atskirai
+                    ->setOrderDetail($dish);
                 $this->getEm()->persist($orderOpt);
                 $this->getEm()->flush();
             }
+
         }
         // O cia Initas groblana Mokejima ar kaip?
         // @todo - Koki mantas paymento flow sumislijo. Nes logiskiausia kol nera peymento - nera Orderio. O dabar...
@@ -359,8 +373,7 @@ class OrderService extends ContainerAware
         } else {
             //Update the last update time ;)
             $this->order->setLastUpdated(new \DateTime("now"));
-
-            $this->getEm()->persist($this->getOrder());
+            $this->getEm()->persist($this->order);
             $this->getEm()->flush();
         }
     }

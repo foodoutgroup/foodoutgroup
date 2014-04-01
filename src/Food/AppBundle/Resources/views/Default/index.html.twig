@@ -57,18 +57,16 @@
     <div style="background-image: url({{ asset('bundles/foodapp/images/offer-1.jpg') }});" class="site-header special-offer-block">
         <div class="site-block">
             <h1>Užsisakykite maistą į<br/> namus ar biurą</h1>
-            <form class="search-food-form">
+            <form class="search-food-form"  action="{{ path('food_places_' ~ locale ~ '_main') }}" method="get">
                 <p class="title">Įveskite savo adresą ir sužinokite, kurie restoranai atveš nom nom</p>
                 <div class="clearfix">
                     <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}"  autocomplete="off" >
                     <input type="text" id="index_address" placeholder="{% trans %}index.street{% endtrans %}" class="input-street" autocomplete="off" >
                     <input type="submit" id="index_submit" value="{% trans %}index.findfood{% endtrans %}">
-                    <input type="hidden" id="index_h_coords" name="coords" />
-                    <input type="hidden" id="index_h_address" name="address" />
                 </div>
             </form>
         </div>
-        <p class="img-description">Svaigioji pica, Čili pica, 25 Lt</p>
+        <p class="img-description">{# pavadinimas produkto, vietove, kaina #}</p>
     </div>
     <div class="site-center">
         <div class="site-block">

@@ -30,33 +30,52 @@
     <div class="row">
         <table class="table table-bordered table condensed">
             <thead>
+            <Tr>
+                <th colspan="5"><img src="/bundles/foodapp/images/logo_food.png"> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
+            </Tr>
             <tr>
                 <th style="width: 30px">#</th>
-                <th style="width: 30px">Kiekis</th>
-                <th>Patiekalas</th>
-                <th>Priedai</th>
+                <th>{% trans %}mobile.order_dish{% endtrans %}</th>
+                <th style="width: 60px">{% trans %}mobile.order_unit_name{% endtrans %}</th>
+                <th style="width: 30px">{% trans %}mobile.order_quantity{% endtrans %}</th>
+                <th>{% trans %}mobile.order_toppings{% endtrans %}</th>
             </tr>
             </thead>
             <tbody>
-            <Tr>
-                <td>1.</td>
-                <td>1</td>
-                <td>Pizza mafijoja da la el diablo porfavor</td>
-                <td> - Pinciukas<br>- Grybukas<br>- Keciupo extra level</td>
-            </Tr>
-            <Tr>
-                <td>2.</td>
-                <td>10</td>
-                <td>Alus</td>
-                <td>Su žagares likeriu VISI</td>
-            </Tr>
+            {% for dish in order.details %}
+                <Tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ dish.dishId.name }}</td>
+                    <td>{{ dish.dishUnitName }}</td>
+                    <td>{{ dish.quantity }}</td>
+                    <td>
+                        {% for option in dish.options %}
+                            <li>{{ option.dishOptionId.name }}</li>
+                        {% endfor %}
+                    </td>
+                </Tr>
+            {% endfor %}
+            <tr>
+                <th colspan="5">Kita informacija:</th>
+            </tr>
+            <tr>
+                <td colspan="5">{{ order.comment }}</td>
+            </tr>
             </tbody>
         </table>
-
-        <button type="button" class="btn btn-primary btn-block">{% trans %}mobile.order_confirm{% endtrans %}</button>
-        <button type="button" class="btn btn-warning btn-block">{% trans %}mobile.order_delay{% endtrans %}</button>
-        <button type="button" class="btn btn-success btn-block">{% trans %}mobile.order_finish{% endtrans %}</button>
-        <button type="button" class="btn btn-danger btn-block">{% trans %}mobile.order_cancel{% endtrans %}</button>
+        <form method="post">
+            {% if order.orderStatus == "new" %}
+                <button type="submit" name="status" value="confirm" class="btn btn-primary btn-block">{% trans %}mobile.order_confirm{% endtrans %}</button>
+                <button type="submit" name="status" value="cancel" class="btn btn-danger btn-block">{% trans %}mobile.order_cancel{% endtrans %}</button>
+            {% elseif order.orderStatus == "accepted" or order.orderStatus == "delayed" %}
+                {% if order.orderStatus != "delayed" %}
+                    <button type="submit" name="status" value="delay" class="btn btn-warning btn-block">{% trans %}mobile.order_delay{% endtrans %}</button>
+                {% endif %}
+                <button type="submit" name="status" value="finish" class="btn btn-success btn-block">{% trans %}mobile.order_finish{% endtrans %}</button>
+            {% elseif order.orderStatus == "finished" or order.orderStatus == "assigned" or order.orderStatus == "completed" %}
+                <center><h2>{% trans %}mobile.place_finish_message{% endtrans %}</h2></center>
+            {% endif %}
+        </form>
     </div>
 </div>
 {% block javascripts %}{% endblock %}

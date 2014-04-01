@@ -70,7 +70,8 @@ adminroot:
 
 ordermobile:
     path: /o/{hash}/
-    defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~ }
+    defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~, action: ~ }
+
 
 paysera_accept:
     path: /{_locale}/payments/paysera/accept/

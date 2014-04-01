@@ -1,5 +1,5 @@
 <div class="items-list-title clearfix">
-    <h2>{% trans %}places.recomended_block_title{% endtrans %}</h2><a href="{{ path('food_places_lt') }}" class="button">{% trans %}places.recomended_show_more{% endtrans %}</a>
+    <h2>{% trans %}places.recomended_block_title{% endtrans %}</h2><a href="{{ path('food_places_' ~ locale ~ '_main') }}" class="button">{% trans %}places.recomended_show_more{% endtrans %}</a>
 </div>
 <div class="items-list clearfix">
     {% for place in places %}
