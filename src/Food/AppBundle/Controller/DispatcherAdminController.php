@@ -3,6 +3,7 @@
 namespace Food\AppBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
+use Symfony\Component\BrowserKit\Response;
 
 class DispatcherAdminController extends Controller
 {
@@ -10,7 +11,6 @@ class DispatcherAdminController extends Controller
     {
         $orderService = $this->get('food.order');
         $placeService = $this->get('food.places');
-        // TODO tabikai miestams :P
 
         $cityOrders = array();
         $availableCities = $placeService->getAvailableCities();
@@ -27,6 +27,38 @@ class DispatcherAdminController extends Controller
             array(
                 'cities' => $availableCities,
                 'cityOrders' => $cityOrders,
+            )
+        );
+    }
+
+    public function statusPopupAction($orderId)
+    {
+        $orderService = $this->get('food.order');
+        $order = $orderService->getOrderById($orderId);
+
+        return $this->render(
+            'FoodAppBundle:Dispatcher:status_popup.html.twig',
+            array(
+                'orderStatuses' => $orderService::getOrderStatuses(),
+                'currentStatus' => $order->getOrderStatus(),
+            )
+        );
+    }
+
+    public function setOrderStatusAction($orderId, $status)
+    {
+        // TODO
+        return new Response('OK');
+    }
+
+    public function getDriverListAction()
+    {
+        // TODO
+        return $this->render(
+            'FoodAppBundle:Dispatcher:status_popup.html.twig',
+            array(
+//                'cities' => $availableCities,
+//                'cityOrders' => $cityOrders,
             )
         );
     }

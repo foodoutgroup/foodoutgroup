@@ -805,7 +805,8 @@ class OrderService extends ContainerAware
             ->findBy(
                 array(
                     'order_status' =>  self::$status_accepted,
-                    'place_point_city' => $city
+                    'place_point_city' => $city,
+                    'deliveryType' => self::$deliveryDeliver,
                 ),
                 array('order_date' => 'ASC')
             );
@@ -828,7 +829,8 @@ class OrderService extends ContainerAware
             ->findBy(
                 array(
                     'order_status' =>  self::$status_assiged,
-                    'place_point_city' => $city
+                    'place_point_city' => $city,
+                    'deliveryType' => self::$deliveryDeliver,
                 ),
                 array('order_date' => 'ASC')
             );
@@ -838,5 +840,24 @@ class OrderService extends ContainerAware
         }
 
         return $orders;
+    }
+
+    /**
+     * Returns all available order statuses
+     *
+     * @return array
+     */
+    public static function getOrderStatuses()
+    {
+        return array
+        (
+            self::$status_new,
+            self::$status_accepted,
+            self::$status_assiged,
+            self::$status_forwarded,
+            self::$status_completed,
+            self::$status_finished,
+            self::$status_canceled,
+        );
     }
 }

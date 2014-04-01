@@ -112,6 +112,18 @@ class Driver
     private $deletedBy;
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        if ($this->getId()) {
+            return $this->getName().'-'.$this->getCity().'-'.$this->getId();
+        }
+
+        return '';
+    }
+
+    /**
      * Get id
      *
      * @return integer 

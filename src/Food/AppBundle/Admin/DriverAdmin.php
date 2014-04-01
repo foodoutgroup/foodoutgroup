@@ -18,10 +18,42 @@ class DriverAdmin extends FoodAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('name', 'text', array('label' => 'admin.driver.name', 'attr' => array('placeholder' => 'admin.driver.name_placeholder')))
-            ->add('phone', 'text', array('label' => 'admin.driver.phone', 'attr' => array('placeholder' => 'admin.driver.phone_placeholder')))
+            ->add(
+                'name',
+                'text',
+                array(
+                    'label' => 'admin.driver.name',
+                    'attr' => array(
+                        'placeholder' => $this->trans('admin.driver.name_placeholder')
+                    )
+                )
+            )
+            ->add(
+                'phone',
+                'text',
+                array(
+                    'label' => 'admin.driver.phone',
+                    'attr' => array(
+                        'placeholder' => $this->trans('admin.driver.phone_placeholder')
+                    )
+                )
+            )
+            ->add('city', null, array('label' => 'admin.driver.city'))
+            ->add(
+                'type',
+                'choice',
+                array(
+                    'multiple' => false,
+                    'required' => true,
+                    'label' => 'admin.driver.type',
+                    'choices' => array(
+                        'local' => $this->trans('admin.driver.type.local'),
+                        'outsource' => $this->trans('admin.driver.type.outsource'),
+                    )
+                )
+            )
             ->add('provider', null, array('label' => 'admin.driver.provider'))
-            ->add('extId', 'text', array('label' => 'admin.driver.ext_id_long'))
+            ->add('extId', 'text', array('label' => 'admin.driver.ext_id_long', 'required' => false))
             ->add('active', 'checkbox', array('label' => 'admin.driver.active', 'required' => false));
         ;
     }
@@ -56,7 +88,20 @@ class DriverAdmin extends FoodAdmin
         $listMapper
             ->addIdentifier('id', 'integer', array('label' => 'admin.driver.id'))
             ->addIdentifier('name', 'string', array('label' => 'admin.driver.name', 'editable' => true))
+            ->add('city', 'string', array('label' => 'admin.driver.city'))
+            ->add(
+                'type',
+                'choice',
+                array(
+                    'label' => 'admin.driver.type',
+                    'choices' => array(
+                        'local' => $this->trans('admin.driver.type.local'),
+                        'outsource' => $this->trans('admin.driver.type.outsource'),
+                    ),
+                )
+            )
             ->add('provider', 'string', array('label' => 'admin.driver.provider'))
+            ->add('extId', 'string', array('label' => 'admin.driver.ext_id'))
             ->add('phone', 'string', array('label' => 'admin.driver.phone', 'editable' => true))
             ->add('active', null, array('label' => 'admin.driver.active', 'editable' => true))
             ->add('_action', 'actions', array(

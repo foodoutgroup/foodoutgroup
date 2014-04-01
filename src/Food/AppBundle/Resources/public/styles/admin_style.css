@@ -3,6 +3,10 @@ h4.padded {
 }
 
 /* ---- Dispecherio langas ----- */
+.driver_button {
+    margin-bottom: 5px;
+}
+
 .order_list {}
 
 .order_list td {
@@ -12,3 +16,10 @@ h4.padded {
 .order_list tr.even {
     background-color: #e7e7e7;
 }
+/* TODO prie buttono nupieski vairiuka */
+/*span.icon_steering_wheel {*/
+    /*content: "";*/
+    /*background: url(/bundles/foodapp/images/steering_wheel.png) no-repeat left top;*/
+    /*height: 26px;*/
+    /*width: 26px;*/
+/*}*/

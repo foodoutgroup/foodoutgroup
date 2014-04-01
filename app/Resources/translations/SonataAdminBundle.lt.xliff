@@ -783,6 +783,46 @@
                 <source>admin.dispatcher.client_address</source>
                 <target>Užsak. adresas</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.self_delivery">
+                <source>admin.dispatcher.self_delivery</source>
+                <target>Prist. patys</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.get_drivers">
+                <source>admin.dispatcher.get_drivers</source>
+                <target>Gauti vairuotojus</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.change_status">
+                <source>admin.dispatcher.change_status</source>
+                <target>Keisti būklę</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.new">
+                <source>admin.dispatcher.order_status.new</source>
+                <target>Naujas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.accepted">
+                <source>admin.dispatcher.order_status.accepted</source>
+                <target>Priimtas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.assigned">
+                <source>admin.dispatcher.order_status.assigned</source>
+                <target>Paskirtas vairuotojui</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.forwarded">
+                <source>admin.dispatcher.order_status.forwarded</source>
+                <target>Perskirtas kitam gamybos taškui</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.completed">
+                <source>admin.dispatcher.order_status.completed</source>
+                <target>Pristatyas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.finished">
+                <source>admin.dispatcher.order_status.finished</source>
+                <target>Pagamintas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.canceled">
+                <source>admin.dispatcher.order_status.canceled</source>
+                <target>Atšauktas</target>
+            </trans-unit>
 
             <!-- Drivers listas -->
             <trans-unit id="admin.drivers">
@@ -792,6 +832,10 @@
             <trans-unit id="Driver List">
                 <source>Driver List</source>
                 <target>Vairuotojai</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.id">
+                <source>admin.driver.id</source>
+                <target>ID</target>
             </trans-unit>
             <trans-unit id="admin.driver.name">
                 <source>admin.driver.name</source>
@@ -812,6 +856,34 @@
             <trans-unit id="admin.driver.active">
                 <source>admin.driver.active</source>
                 <target>Dirba</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.provider">
+                <source>admin.driver.provider</source>
+                <target>Darbovietė</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.ext_id">
+                <source>admin.driver.ext_id</source>
+                <target>Išor.ID</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.ext_id_long">
+                <source>admin.driver.ext_id_long</source>
+                <target>Išorinis ID</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.city">
+                <source>admin.driver.city</source>
+                <target>Miestas</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.type">
+                <source>admin.driver.type</source>
+                <target>Tipas</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.type.local">
+                <source>admin.driver.type.local</source>
+                <target>Įmonės</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.type.outsource">
+                <source>admin.driver.type.outsource</source>
+                <target>Išorinis</target>
             </trans-unit>
         </body>
     </file>

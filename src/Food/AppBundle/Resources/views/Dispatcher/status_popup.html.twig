@@ -1,0 +1,8 @@
+<div>
+    {% for status in orderStatuses %}
+    <div>
+        <input type="radio" name="order_status" value="{{ status }}" {% if currentStatus == status %}checked="checked"{% endif %} />
+        {{ ('admin.dispatcher.order_status.' ~ status)|trans({}, 'SonataAdminBundle') }}
+    </div>
+    {% endfor %}
+</div>
