@@ -28,6 +28,25 @@ food_admin_get_place_dish_options:
     options:
         expose: true
 
+food_admin_get_order_status_popup:
+    pattern: /admin/dispatcher/get_order_status_popup/{orderId}
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:statusPopup}
+    options:
+        expose: true
+
+food_admin_set_order_status:
+    pattern: /admin/dispatcher/set-order-status/{orderId}/{status}
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:setOrderStatus}
+    options:
+        expose: true
+
+# TODO coordinaciu padavimas etaksui bus reikalingas
+food_admin_get_driver_list:
+      pattern: /admin/dispatcher/get-driver-list/{orderId}/{status}
+      defaults: {_controller: FoodAppBundle:DispatcherAdmin:getDriverList}
+      options:
+          expose: true
+
 food_admin_get_place_unit_categories:
     pattern: /admin/place/get-unit-categories/{placeId}
     defaults: {_controller: FoodDishesBundle:DishUnitAdmin:getUnitCategoryOptionsFromPlace}
