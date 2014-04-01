@@ -3,7 +3,7 @@
 namespace Food\AppBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
-use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class DispatcherAdminController extends Controller
 {
@@ -47,15 +47,25 @@ class DispatcherAdminController extends Controller
 
     public function setOrderStatusAction($orderId, $status)
     {
-        // TODO
+        $orderService = $this->get('food.order');
+
+        try {
+            $orderService->getOrderById($orderId);
+            $orderService->chageOrderStatus($status);
+            $orderService->saveOrder();
+        } catch (Exception $e) {
+            // TODO normalus error return ir ispiesimas popupe
+            return new Response('Error: error occured');
+        }
+
         return new Response('OK');
     }
 
-    public function getDriverListAction()
+    public function getDriverListAction($orders)
     {
         // TODO
         return $this->render(
-            'FoodAppBundle:Dispatcher:status_popup.html.twig',
+            'FoodAppBundle:Dispatcher:driver_list.html.twig',
             array(
 //                'cities' => $availableCities,
 //                'cityOrders' => $cityOrders,

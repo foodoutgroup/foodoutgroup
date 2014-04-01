@@ -222,9 +222,11 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * TODO paklausti Pauliaus, kodel jis padare protected? Gal kokia mintis nebaigta?
+     *
      * @param $status
      */
-    protected function chageOrderStatus($status)
+    public function chageOrderStatus($status)
     {
         $this->getOrder()->setOrderStatus($status);
     }

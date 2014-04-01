@@ -1,8 +1,21 @@
 var Dispatcher = {
     _locale: 'lt',
+    _translations: {},
 
     setLocale: function(locale) {
         Dispatcher._locale = locale;
+    },
+
+    setTranslation: function(key, value) {
+        Dispatcher._translations[key] = value;
+    },
+
+    getTranslation: function(key) {
+        if (typeof Dispatcher._translations[key] == "undefined") {
+            return key;
+        }
+
+        return Dispatcher._translations[key];
     },
 
     onLoadEvents: function() {
@@ -41,12 +54,24 @@ var Dispatcher = {
             url: url,
             success: function(data) {
                 tag.html(data).dialog({
+                    title: Dispatcher.getTranslation('change_status_title'),
                     resizable: false,
                     modal: true,
                     buttons: {
-                        // TODO isversti
+                        // translate buttons
                         "Keisti": function() {
+                            var newStatus = $(this).find('.order_status:checked').val();
+                            var url = Routing.generate('food_admin_set_order_status', { '_locale': Dispatcher._locale, 'orderId': orderId, 'status': newStatus, _sonata_admin: 'sonata.admin.dish' });
+                            $.get(
+                                url,
+                                function(data) {
+                                    // TODO error handlingas
+                                }
+                            );
+
+                            // TODO refresh the page!!!!
                             $( this ).dialog( "close" );
+                            $( this ).dialog( "destroy" );
                         },
                         "Atšaukti": function() {
                             $( this ).dialog( "close" );

@@ -823,6 +823,18 @@
                 <source>admin.dispatcher.order_status.canceled</source>
                 <target>Atšauktas</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status_title">
+                <source>admin.dispatcher.order_status_title</source>
+                <target>Užsakymo būklė</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.button_change">
+                <source>admin.dispatcher.button_change</source>
+                <target>Keisti</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.button_cancel">
+                <source>admin.dispatcher.button_cancel</source>
+                <target>Atšaukti</target>
+            </trans-unit>
 
             <!-- Drivers listas -->
             <trans-unit id="admin.drivers">

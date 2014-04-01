@@ -8,6 +8,10 @@
         $(document).ready(function(){
             Dispatcher.setLocale('{{ app.request.get('_locale') }}');
             Dispatcher.onLoadEvents();
+
+            Dispatcher.setTranslation('change_status_title', '{{ 'admin.dispatcher.order_status_title'|trans({}, 'SonataAdminBundle') }}');
+            Dispatcher.setTranslation('button_change', '{{ 'admin.dispatcher.button_change'|trans({}, 'SonataAdminBundle') }}');
+            Dispatcher.setTranslation('button_cancel', '{{ 'admin.dispatcher.button_cancel'|trans({}, 'SonataAdminBundle') }}');
         });
     </script>
 {% endblock %}
