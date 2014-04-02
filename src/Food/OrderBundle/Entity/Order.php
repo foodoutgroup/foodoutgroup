@@ -136,13 +136,18 @@ class Order
      */
     private $lastPaymentError = null;
 
-
     /**
      * @var OrderDetails[]
      *
      * @ORM\OneToMany(targetEntity="OrderDetails", mappedBy="order_id")
      */
     private $details;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Food\AppBundle\Entity\Driver")
+     * @ORM\JoinColumn(name="driver_id", referencedColumnName="id")
+     **/
+    private $driver;
 
     public function __toString()
     {
@@ -631,7 +636,7 @@ class Order
     /**
      * Get place_point
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Food\DishesBundle\Entity\PlacePoint
      */
     public function getPlacePoint()
     {
@@ -728,5 +733,28 @@ class Order
     public function getPlacePointSelfDelivery()
     {
         return $this->place_point_self_delivery;
+    }
+
+    /**
+     * Set driver
+     *
+     * @param \Food\AppBundle\Entity\Driver $driver
+     * @return Order
+     */
+    public function setDriver(\Food\AppBundle\Entity\Driver $driver = null)
+    {
+        $this->driver = $driver;
+    
+        return $this;
+    }
+
+    /**
+     * Get driver
+     *
+     * @return \Food\AppBundle\Entity\Driver 
+     */
+    public function getDriver()
+    {
+        return $this->driver;
     }
 }

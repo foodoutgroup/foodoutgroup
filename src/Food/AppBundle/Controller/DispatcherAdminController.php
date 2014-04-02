@@ -3,7 +3,8 @@
 namespace Food\AppBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
-use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DispatcherAdminController extends Controller
 {
@@ -47,19 +48,62 @@ class DispatcherAdminController extends Controller
 
     public function setOrderStatusAction($orderId, $status)
     {
-        // TODO
+        $orderService = $this->get('food.order');
+
+        try {
+            $orderService->getOrderById($orderId);
+            $orderService->chageOrderStatus($status);
+            $orderService->saveOrder();
+        } catch (Exception $e) {
+            // TODO normalus error return ir ispiesimas popupe
+            $this->get('logger')->error('Error happened setting status: '.$e->getMessage());
+            return new Response('Error: error occured');
+        }
+
         return new Response('OK');
     }
 
-    public function getDriverListAction()
+    public function getDriverListAction($orders)
     {
-        // TODO
+        $orderService = $this->get('food.order');
+        $logisticsService = $this->get('food.logistics');
+        // TODO koordinates, etaxi pajungimas ir switchas duomenu pagal setinga - ar backup ar etaxi
+        $orderIds = explode(',', $orders);
+        // TODO kolkas imam pirmo orderio, po to galim sugalvoti, kaip issirinkti kurias koordinates naudoti
+        $order = $orderService->getOrderById(reset($orderIds));
+        $placePoint = $order->getPlacePoint();
+
+        $drivers = $logisticsService->getDrivers(
+            $placePoint->getLat(),
+            $placePoint->getLon(),
+            $placePoint->getCity()
+        );
+
+
         return $this->render(
-            'FoodAppBundle:Dispatcher:status_popup.html.twig',
+            'FoodAppBundle:Dispatcher:driver_list.html.twig',
             array(
-//                'cities' => $availableCities,
-//                'cityOrders' => $cityOrders,
+                'drivers' => $drivers,
             )
         );
+    }
+
+    public function assignDriverAction()
+    {
+        $request = $this->get('request');
+        $driverId = $request->get('driverId');
+        $ordersIds = $request->get('orderIds');
+
+        $logisticsService = $this->get('food.logistics');
+
+        try {
+            $logisticsService->assignDriver($driverId, $ordersIds);
+        } catch (Exception $e) {
+            // TODO normalus error return ir ispiesimas popupe
+            $this->get('logger')->error('Error happened assigning a driver: '.$e->getMessage());
+            return new Response('Error: error occured');
+        }
+
+        return new Response('OK');
     }
 }

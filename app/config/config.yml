@@ -37,6 +37,8 @@ parameters:
     google.maps_geocode: "https://maps.googleapis.com/maps/api/geocode/json"
     google.maps_api: "AIzaSyDyKJYX3Cr4Cn41VR9oaAqbmT8XlbHBY-Q"
     google.maps_server_api: "AIzaSyBK3xf8ZPVWfTa2uXZN-OJHd6Fwl1Yo560"
+    # Possible values: "local", "etaxi"
+    active_logistics: "local"
     # Todo situos gal ir iskelsime i paramsus - dependant on install?
     payment.methods: [local, local.card, paysera]
     currency_display: Lt
@@ -72,6 +74,7 @@ twig:
         page_title:   "%title%"
         currency_display: "%currency_display%"
         dish_service: "@food.dishes"
+        order_service: "@food.order"
         google_maps_api: "%google.maps_api%"
 
 

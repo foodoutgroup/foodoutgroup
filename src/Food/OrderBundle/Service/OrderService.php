@@ -222,9 +222,11 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * TODO paklausti Pauliaus, kodel jis padare protected? Gal kokia mintis nebaigta?
+     *
      * @param $status
      */
-    protected function chageOrderStatus($status)
+    public function chageOrderStatus($status)
     {
         $this->getOrder()->setOrderStatus($status);
     }
@@ -834,6 +836,22 @@ class OrderService extends ContainerAware
                 ),
                 array('order_date' => 'ASC')
             );
+
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
+
+    public function getOrdersForDriver($driver)
+    {
+        $em = $this->container->get('doctrine')->getManager();
+        $orders = $em->getRepository('Food\OrderBundle\Entity\Order')
+            ->findBy(array(
+                'driver' => $driver,
+                'order_status' => self::$status_assiged,
+            ));
 
         if (!$orders) {
             return array();
