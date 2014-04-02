@@ -835,6 +835,18 @@
                 <source>admin.dispatcher.button_cancel</source>
                 <target>Atšaukti</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.no_driver_assigned">
+                <source>admin.dispatcher.no_driver_assigned</source>
+                <target>Nepriskirtas joks vairuotojas!!!</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.driver">
+                <source>admin.dispatcher.driver</source>
+                <target>Vairuotojas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.assign">
+                <source>admin.dispatcher.assign</source>
+                <target>Priskirti</target>
+            </trans-unit>
 
             <!-- Drivers listas -->
             <trans-unit id="admin.drivers">
@@ -896,6 +908,10 @@
             <trans-unit id="admin.driver.type.outsource">
                 <source>admin.driver.type.outsource</source>
                 <target>Išorinis</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.has_orders">
+                <source>admin.driver.has_orders</source>
+                <target>Turi užsak.</target>
             </trans-unit>
         </body>
     </file>

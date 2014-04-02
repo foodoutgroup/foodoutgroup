@@ -844,6 +844,22 @@ class OrderService extends ContainerAware
         return $orders;
     }
 
+    public function getOrdersForDriver($driver)
+    {
+        $em = $this->container->get('doctrine')->getManager();
+        $orders = $em->getRepository('Food\OrderBundle\Entity\Order')
+            ->findBy(array(
+                'driver' => $driver,
+                'order_status' => self::$status_assiged,
+            ));
+
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
+
     /**
      * Returns all available order statuses
      *

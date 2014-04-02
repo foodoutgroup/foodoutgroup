@@ -40,12 +40,19 @@ food_admin_set_order_status:
     options:
         expose: true
 
-# TODO coordinaciu padavimas etaksui bus reikalingas
 food_admin_get_driver_list:
     pattern: /admin/dispatcher/get-driver-list/{orders}
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:getDriverList}
     options:
         expose: true
+
+food_admin_assign_driver:
+    pattern: /admin/dispatcher/assign-driver/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:assignDriver}
+    options:
+        expose: true
+    requirements:
+          _method:  POST
 
 food_admin_get_place_unit_categories:
     pattern: /admin/place/get-unit-categories/{placeId}

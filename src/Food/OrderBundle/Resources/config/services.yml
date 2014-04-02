@@ -20,3 +20,11 @@ services:
             - [setContext, ["@security.context"]]
             - [setPayseraBiller, [@food.paysera_biller]]
             - [setLocalBiller, [@food.local_biller]]
+
+    food.logistics:
+        class: Food\OrderBundle\Service\LogisticsService
+        arguments: []
+        calls:
+            - [setContainer, ["@service_container"]]
+            - [setLogisticSystem, [%active_logistics%]]
+            - [setOrderService, ["@food.order"]]

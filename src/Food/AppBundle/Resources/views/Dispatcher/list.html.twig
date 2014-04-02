@@ -21,23 +21,29 @@
 {% block side_menu %}{% endblock %}
 
 {% block list_table %}
-    {% macro order_table(order_list) %}
+    {# type gali buti 'unassigned', 'not_finished' ;) Just in case you need that #}
+    {% macro order_table(order_list, type) %}
+        {% if type == 'unassigned' %}
         <div class="driver_button">
             <button class="get_drivers_button btn btn-lg" disabled="disabled">
                 {#<span class="icon_steering_wheel"></span>#}
                 {{ 'admin.dispatcher.get_drivers'|trans({}, 'SonataAdminBundle') }}
             </button>
         </div>
-        <table class="order_list">
+        {% endif %}
+        <table class="order_list {{ type }}">
             <tr>
                 <th></th>
                 <th>{{ 'admin.dispatcher.order_id'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.dispatcher.place'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.dispatcher.client_address'|trans({}, 'SonataAdminBundle') }}</th>
-                <th>{{ 'admin.dispatcher.self_delivery'|trans({}, 'SonataAdminBundle') }}</th>
-                <th>{{ 'admin.dispatcher.order_date'|trans({}, 'SonataAdminBundle') }}</th>
+                <th class="self_delivery">{{ 'admin.dispatcher.self_delivery'|trans({}, 'SonataAdminBundle') }}</th>
+                <th class="order_date">{{ 'admin.dispatcher.order_date'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.dispatcher.comment'|trans({}, 'SonataAdminBundle') }}</th>
+                {% if type == 'not_finished' %}
+                    <th>{{ 'admin.dispatcher.driver'|trans({}, 'SonataAdminBundle') }}</th>
+                {% endif %}
                 <th></th>
             </tr>
             {% for order in order_list %}
@@ -51,14 +57,14 @@
                     <td>{{ order.placeName }}</td>
                     <td>{{ order.placePoint.address }}</td>
                     <td>{{ order.addressId.address }}</td>
-                    <td>
+                    <td class="self_delivery">
                         {% if order.placePointSelfDelivery %}
                             <span class="glyphicon glyphicon-ok"></span>
                         {% else %}
                             <span class="glyphicon glyphicon-remove"></span>
                         {% endif %}
                     </td>
-                    <td>{{ order.orderDate|date("H:i:s") }}</td>
+                    <td class="order_date">{{ order.orderDate|date("H:i") }}</td>
                     <td>
                         {% if order.comment|length > 20 %}
                             <span class="shortened_comment">{{ order.comment|slice(0, 17) }}... <span class="glyphicon glyphicon-question-sign spliced-text" title="{{ order.comment }}"></span></span>
@@ -66,11 +72,26 @@
                             {{ order.comment }}
                         {% endif %}
                     </td>
+                    {% if type == 'not_finished' %}
+                    <td class="driver">
+                        {% if order.driver is not null and order.driver is not empty %}
+                            {%
+                                set driverInfo = 'admin.driver.phone'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.phone ~ "<br/>"
+                                ~ 'admin.driver.city'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.city ~ "<br/>"
+                                ~ 'admin.driver.type'|trans({}, 'SonataAdminBundle') ~ ': ' ~ ('admin.driver.type.' ~ order.driver.type)|trans({}, 'SonataAdminBundle') ~ "<br/>"
+                                ~ 'admin.driver.provider'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.provider ~ "<br/>"
+                                ~ 'admin.driver.ext_id'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.extId ~ "<br/>"
+                            %}
+                            {{ order.driver.name }} <span class="driver-info-extended glyphicon glyphicon-info-sign" title="{{ driverInfo }}"></span>
+                        {% else %}
+                            <span style="font-weight: bold; color: #FF0000;">{{ 'admin.dispatcher.no_driver_assigned'|trans({}, 'SonataAdminBundle') }}</span>
+                        {% endif %}
+                    </td>
+                    {% endif %}
                     <td>
                         <button class="btn btn-lg change_status_button" item-id="{{ order.id }}">
                             {{ 'admin.dispatcher.change_status'|trans({}, 'SonataAdminBundle') }}
                         </button>
-                        <input type="button" value="test" class="btn btn-lg" disabled="disabled" />
                     </td>
                 </tr>
             {% endfor %}
@@ -92,10 +113,10 @@
                     <li><a href="#city-{{ loop.index }}-undelivered">{{ 'admin.dispatcher.undelivered'|trans({}, 'SonataAdminBundle') }}</a></li>
                 </ul>
                 <div id="city-{{ loop.index }}-unassigned">
-                    {{ table.order_table(city.unassigned) }}
+                    {{ table.order_table(city.unassigned, 'unassigned') }}
                 </div>
                 <div id="city-{{ loop.index }}-undelivered">
-                    {{ table.order_table(city.not_finished) }}
+                    {{ table.order_table(city.not_finished, 'not_finished') }}
                 </div>
             </div>
             <script type="text/javascript">

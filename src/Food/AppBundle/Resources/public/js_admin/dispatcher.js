@@ -23,13 +23,25 @@ var Dispatcher = {
 
         // Visus stripintus tekstus ispiesim tooltipe :)
         $(".spliced-text").tooltip({});
+        // Vairuotojo papildoma info :)
+        $(".driver-info-extended").tooltip({
+            tooltipClass: 'driver-tooltip'
+        });
 
-        $(".order_checkbox").bind('click', function(){
+        $(".order_list.unassigned .order_checkbox").bind('click', function(){
             Dispatcher.toggleDriverButton($(this));
         });
 
         $(".change_status_button").bind('click', function() {
             Dispatcher.showStatusPopup($(this));
+        });
+
+        $(".get_drivers_button ").bind('click', function() {
+            Dispatcher.getDriversList($(this));
+        });
+
+        $('.drivers_list').delegate('.assign-driver', 'click', function() {
+            Dispatcher.assignDriver($(this).attr('item-id'));
         });
     },
 
@@ -66,6 +78,7 @@ var Dispatcher = {
                                 url,
                                 function(data) {
                                     // TODO error handlingas
+                                    console.log('succesas?');
                                 }
                             );
 
@@ -84,7 +97,45 @@ var Dispatcher = {
     },
 
     getDriversList: function(button) {
-        var activeList = checkbox.parent().find(".order_list");
+        var activePanel =  button.closest('.ui-tabs-panel');
+        var activeList = activePanel.find(".order_list");
         var checkedBoxes = activeList.find('.order_checkbox:checked');
+        var orderIds = [];
+
+        checkedBoxes.each(function(key, value){
+            orderIds.push($(value).val());
+        });
+
+        var url = Routing.generate('food_admin_get_driver_list', { '_locale': Dispatcher._locale, 'orders': orderIds, _sonata_admin: 'sonata.admin.dish' });
+
+        $.get(
+            url,
+            function(data) {
+                $('.drivers_list').html(data);
+            }
+        );
+    },
+
+    assignDriver: function(driverId) {
+        var activeList = $('.order_list:visible');
+        var checkedBoxes = activeList.find('.order_checkbox:checked');
+        var orderIds = [];
+
+        checkedBoxes.each(function(key, value){
+            orderIds.push($(value).val());
+        });
+
+        var url = Routing.generate('food_admin_assign_driver', { '_locale': Dispatcher._locale, _sonata_admin: 'sonata.admin.dish' });
+        $.post(
+            url,
+            {
+                driverId: driverId,
+                orderIds: orderIds
+            },
+            function (data) {
+                console.log('-- succeeded');
+                location.reload();
+            }
+        );
     }
 };

@@ -1,1 +1,20 @@
-Wow, such driver!
+<table class="drivers_table">
+    <tr>
+        <th>{{ 'admin.driver.name'|trans({}, 'SonataAdminBundle') }}</th>
+        <th>{{ 'admin.driver.phone'|trans({}, 'SonataAdminBundle') }}</th>
+        <th>{{ 'admin.driver.type'|trans({}, 'SonataAdminBundle') }}</th>
+        <th>{{ 'admin.driver.provider'|trans({}, 'SonataAdminBundle') }}</th>
+        <th>{{ 'admin.driver.has_orders'|trans({}, 'SonataAdminBundle') }}</th>
+        <th></th>
+    </tr>
+    {% for driver in drivers %}
+    <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">
+        <td>{{ driver.name }}</td>
+        <td>{{ driver.phone }}</td>
+        <td>{{ ('admin.driver.type.' ~ driver.type)|trans({}, 'SonataAdminBundle') }}</td>
+        <td>{{ driver.provider }}</td>
+        <td>{{ order_service.getOrdersForDriver(driver)|length }}</td>
+        <td><button class="assign-driver btn btn-lg" item-id="{{ driver.id }}">{{ 'admin.dispatcher.assign'|trans({}, 'SonataAdminBundle') }}</button></td>
+    </tr>
+    {% endfor %}
+</table>
