@@ -24,19 +24,22 @@
              */
             var addToCartUrl = '{{ path('food_cart_action', {'action' : 'add'}) }}';
             var dishBlock = null;
-            $(document).ready(function(){
+            var bindFancyBox = function() {
                 $('.fancy-box').fancybox({
                     padding : 0,
                     scrolling: 'visible',
                     afterShow: function(e) {
                         dishBlock = $('#detailed-dish-popup');
                         dishBlock.find('input').iCheck();
-                        dishBlock.find('.counter').spinner({ min: 0, max: 20 });
+                        dishBlock.find('.counter').foodCounter(0, 50, 1);
                         dishBlock.find('.button-submit.add-to-cart:not(.has-bind)').addClass('has-bind').bind('click', function() {
                             addToCart();
                         });
                     }
                 });
+            };
+            $(document).ready(function(){
+                bindFancyBox();
             });
             function addToCart() {
                 if (dishBlock.find('.dish-size:checked').length != 0) {

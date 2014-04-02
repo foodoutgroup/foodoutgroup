@@ -22,6 +22,14 @@
         <source>cart.block.your_order_empty</source>
         <target>Pasirinkite patiekalus</target>
       </trans-unit>
+      <trans-unit id="cart.block.edit_row" resname="cart.block.edit_row">
+        <source>cart.block.edit_row</source>
+        <target>Redaguoti</target>
+      </trans-unit>
+      <trans-unit id="cart.block.order_btn" resname="cart.block.order_btn">
+        <source>cart.block.order_btn</source>
+        <target>Užsakyk</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -38,7 +38,7 @@
     {% if list|length > 0 %}
         {% for dish in list %}
             <div class="check-item">
-                <div class="edit">Redaguoti</div>
+                <div class="edit"><a href="{{ path('food_ajax_edit_dish', {'dish': dish.dishId.id, 'cartId':dish.cartId}) }}" href2="#detailed-dish-popup" class="fancybox.ajax fancy-box">{% trans %}cart.block.edit_row{% endtrans %}</a></div>
                 <div class="name">{{ dish.dishId.name }}</div>
                 <div class="type">{{ dish.dishSizeId.unit.name }}</div>
                 <div class="clearfix pad">
@@ -66,7 +66,7 @@
             </div>
         </div>
         {% if inCart == false %}
-        <a href="{{ path('food_cart', { 'placeId' : place.id }) }}" class="order-button">Užsakyk</a>
+        <a href="{{ path('food_cart', { 'placeId' : place.id }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
         {% endif %}
         <div class="delivery-time tac">{% trans %}cart.block.delivery_time{% endtrans %} {{ place.deliveryTime }}</div>
     {% else %}

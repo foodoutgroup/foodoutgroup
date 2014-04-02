@@ -183,3 +183,41 @@ var Place = {
         }
     }
 }
+
+/**
+ * Itsy bitsy counter :D dieing in the streets....
+ *
+ * @param min
+ * @param max
+ * @param def
+ */
+$.fn.foodCounter = function(min,max,def) {
+    this.addClass('theCounter').data('min', min).data('max', max).data('def', def);
+    this.before('<input type="button" class="dec" value="-">');
+    this.after('<input type="button" class="inc" value="+">');
+    if (this.val() == "") {
+        this.val(def);
+    }
+    this.bind('inc', function(){
+        var theVal = parseInt($(this).val(), 10);
+        if (theVal + 1 > $(this).data('max')) {
+            return;
+        } else {
+            $(this).val(theVal + 1);
+        }
+    });
+    this.bind('dec', function(){
+        var theVal = parseInt($(this).val(), 10);
+        if (theVal - 1 < $(this).data('min')) {
+            return;
+        } else {
+            $(this).val(theVal - 1);
+        }
+    });
+    this.parent().find('.dec').bind('click', function(){
+        $(this).parent().find('.theCounter').trigger('dec');
+    });
+    this.parent().find('.inc').bind('click', function(){
+        $(this).parent().find('.theCounter').trigger('inc');
+    });
+};
