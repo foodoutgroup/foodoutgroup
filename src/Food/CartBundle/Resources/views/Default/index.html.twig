@@ -25,34 +25,35 @@
                 <div class="content-lefter-big">
                     <form class="delivery-info-form" method="post">
                         <div class="delivery-info-form-content">
-                            <h2>1. Pristatymas</h2>
+                            <h2>1. {% trans %}cart.checkout.block_title_delivery{% endtrans %}</h2>
                             <div class="form-row">
                                 <label><br></label>
                                 <div class="delivery-type-radios clearfix">
-                                    <label class="custom-radio">Pristatymas į namus
+                                    <label class="custom-radio">{% trans %}cart.checkout.delivery_to_home{% endtrans %}
                                         <input type="radio" name="delivery-type" value="deliver"{% if order is not null and order.deliveryType == 'deliver' %} checked="checked"{% endif %}>
                                     </label>
-                                    <label class="custom-radio">Atsiimsiu pats
+                                    <label class="custom-radio">{% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
                                         <input type="radio" name="delivery-type" value="pickup"{% if order is not null and order.deliveryType == 'pickup' %} checked="checked"{% endif %}>
                                     </label>
                                 </div>
                             </div>
                             {# TODO - sukelti visus laukus. Issiaiskinti su Paulium address flow #}
                             <div class="form-row">
-                                <label>Miestas:</label>
+                                <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
                                 <select class="custom-select">
                                     <option>Vilnius</option>
                                     <option>Kaunas</option>
                                 </select>
                             </div>
                             <div class="form-row">
-                                <label>Adresas:</label>
+                                <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
                                 <input type="text">
                             </div>
                             <div class="form-row">
-                                <label>Telefonas:</label>
+                                <label>{% trans %}cart.checkout.phone{% endtrans %}:</label>
                                 <input type="text">
                             </div>
+                            {#
                             <div class="form-row">
                                 <label>Pristatymo laikas:</label>
                                 <select class="custom-select">
@@ -60,16 +61,17 @@
                                     <option>19:45</option>
                                 </select>
                             </div>
+                            #}
                             <div class="form-row">
-                                <label>Papildoma info:</label>
-                                <textarea cols="20" rows="4" placeholder="Čia galite įvesti laiptinės kodą, aukštą ir kitą kurjeriui naudingą informaciją..."></textarea>
+                                <label>{% trans %}cart.checkout.delivery_comment{% endtrans %}:</label>
+                                <textarea cols="20" rows="4" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}"></textarea>
                             </div>
-                            <h2 class="section-2">2. Saugus apmokėjimas</h2>
+                            <h2 class="section-2">2. {% trans %}cart.checkout.block_title_secure_payment{% endtrans %}</h2>
                             <div class="select-payment clearfix">
-                                <label class="custom-radio">Grynais pristatymo metu
+                                <label class="custom-radio">{% trans %}cart.checkout.cash_on_delivery{% endtrans %}
                                     <input type="radio" name="payment-type" value="local"{% if order is not null and order.paymentMethod == 'local' %} checked="checked"{% endif %}>
                                 </label>
-                                <label class="custom-radio">Kredito kortele po pristatymo
+                                <label class="custom-radio">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
                                     <input type="radio" name="payment-type" value="local.card"{% if order is not null and order.paymentMethod == 'local.card' %} checked="checked"{% endif %}>
                                 </label>
                             </div>
@@ -94,9 +96,10 @@
                                     <input type="radio" name="payment-type" value="dnb">
                                 </label>
                             </div>
-                            <div class="cupon-info">Jei turite kuponą, įveskite <a href="#">jo kodą čia</a></div>
+
+                            {# <div class="cupon-info">Jei turite kuponą, įveskite <a href="#">jo kodą čia</a></div> #}
                         </div>
-                        <div class="form-controls clearfix"><a href="#" class="button-back">Grįžti atgal</a><a href="#" class="submit-button"><span>Užsakyti</span></a></div>
+                        <div class="form-controls clearfix"><a href="#" class="button-back">{% trans %}cart.checkout.button_get_back{% endtrans %}</a><a href="#" class="submit-button"><span>{% trans %}cart.checkout.button_order{% endtrans %}</span></a></div>
                     </form>
                 </div>
                 <div class="content-righter-small">

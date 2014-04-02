@@ -41,6 +41,7 @@ class DefaultController extends Controller
                     $this->get('food.order')->statusFinished();
                 break;
             }
+            $this->get('food.order')->saveOrder();
         }
         return $this->render('FoodOrderBundle:Default:mobile.html.twig', array('order' => $order));
     }

@@ -8,6 +8,7 @@ imports:
 parameters:
     available_locales: [lt, en, ru]
     available_locales_routing: lt | en | ru
+    available_cities: ["Vilnius", "Kaunas"]
     time_zone: "Europe/Vilnius"
     sms.available_providers: [food.infobip]
     sms.sender: "Skanu.lt"
