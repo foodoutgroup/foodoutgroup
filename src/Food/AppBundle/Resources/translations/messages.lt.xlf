@@ -194,14 +194,70 @@
         <source>mobile.order_toppings</source>
         <target>Priedai</target>
       </trans-unit>
-      <trans-unit id="mobile.order_unit_name" resname="mobile.order_unit_name">
+      <trans-unit id="d9b61e0a92b29d79db62732c4bb27cbf" resname="mobile.order_unit_name">
         <source>mobile.order_unit_name</source>
         <target>Dydis</target>
       </trans-unit>
-      <trans-unit id="mobile.place_finish_message" resname="mobile.place_finish_message">
+      <trans-unit id="05b48d26335e8a0f936e45abc2360074" resname="mobile.place_finish_message">
         <source>mobile.place_finish_message</source>
         <target>Restorano darbas baigtas. Toliau logistika.</target>
       </trans-unit>
+      <trans-unit id="ad0cfaf6d8907666cb2aee2b0210192e" resname="general.login_title">
+        <source>general.login_title</source>
+        <target>Prisijunkite</target>
+      </trans-unit>
+      <trans-unit id="7413f0a4146986cd61378b69b502072c" resname="general.login_text">
+        <source>general.login_text</source>
+        <target>Esate užsiregistravęs? Prisijunkite!</target>
+      </trans-unit>
+      <trans-unit id="a4b8e2e9a458e2fc6d8c1246cf907c47" resname="general.login_email">
+        <source>general.login_email</source>
+        <target>El. paštas</target>
+      </trans-unit>
+      <trans-unit id="ffcbcb7d389a2b16555a642c06fde538" resname="general.login_password">
+        <source>general.login_password</source>
+        <target>Slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="217fb76f1dceabbd81b98784d0f69d18" resname="general.login_forgot_password">
+        <source>general.login_forgot_password</source>
+        <target>Pamiršote slaptažodį?</target>
+      </trans-unit>
+      <trans-unit id="c5ed7f556b28c0409324f9a78ebecdcb" resname="general.register_title">
+        <source>general.register_title</source>
+        <target>Naujas vartotojas?</target>
+      </trans-unit>
+      <trans-unit id="bd8607a9fbe59fa1edf1e39eebec8ec7" resname="general.register_text">
+        <source>general.register_text</source>
+        <target>Prisiregistruokite - tai užtruks tik minutę!</target>
+      </trans-unit>
+      <trans-unit id="2b4478e800d24223655f60bfec1dc43f" resname="general.register_name">
+        <source>general.register_name</source>
+        <target>Vardas</target>
+      </trans-unit>
+      <trans-unit id="7e0ced7de42517333f6665b778eb1d01" resname="general.register_surename">
+        <source>general.register_surename</source>
+        <target>Pavardė</target>
+      </trans-unit>
+      <trans-unit id="bb95960993274fbcd944f650174156b9" resname="general.register_repeat_password">
+        <source>general.register_repeat_password</source>
+        <target>Pakartokite slaptažodį</target>
+      </trans-unit>
+      <trans-unit id="672e207a47e2f0c2eb683baece23978e" resname="general.register_register_button">
+        <source>general.register_register_button</source>
+        <target>Prisiregistruokite</target>
+      </trans-unit>
+      <trans-unit id="b0a9c97c04e0b242389f30ee11c04daa" resname="genera.help_button">
+        <source>genera.help_button</source>
+        <target>Pagalba</target>
+      </trans-unit>
+      <trans-unit id="6c9e9d508e6df307cfed5b371823ecce" resname="general.login_button">
+        <source>general.login_button</source>
+        <target>Prisijunk</target>
+      </trans-unit>
+        <trans-unit id="general.login_login_button" resname="general.login_login_button">
+            <source>general.login_login_button</source>
+            <target>Prisijunkite</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

@@ -37,8 +37,8 @@
         <div class="site-block clearfix"><a href="{{ path('food_lang_homepage') }}" class="main-logo"><img src="{{ asset('bundles/foodapp/images/logo_food.png') }}"></a>
             {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
             <ul class="menu top-menu clearfix">
-                <li><a href="#"><span>Pagalba</span></a></li>
-                <li class="login-ico"><a href="#login-register-popup" class="boxer"><span>Prisijunk</span></a></li>
+                <li><a href="#"><span>{% trans %}genera.help_button{% endtrans %}</span></a></li>
+                <li class="login-ico"><a href="#login-register-popup" class="boxer"><span>{% trans %}general.login_button{% endtrans %}</span></a></li>
             </ul>
         </div>
     </div>
@@ -48,56 +48,7 @@
     {{ render(controller('FoodAppBundle:Default:footer')) }}
 </div>
 
-<div id="login-register-popup" style="display: none;">
-    <div class="popup login-register-popup clearfix">
-        <form class="lefter login-form">
-            <h3>Prisijunkite</h3>
-            <h4>Esate užsiregistravęs? Prisijunkite!</h4>
-            <div class="form-row">
-                <label>El. paštas</label>
-                <input type="text">
-            </div>
-            <div class="form-row small-margin">
-                <label>Slaptažodis</label>
-                <input type="password">
-            </div>
-            <div class="tar"><a href="#">Pamiršote slaptažodį?</a></div>
-            <div class="form-controls clearfix">
-                <label class="fl custom-checkbox">Prisiminti mane
-                    <input type="checkbox">
-                </label>
-                <input type="submit" value="prisijunkite" class="fr">
-            </div>
-        </form>
-        <div class="righter register-form">
-            <h3>Naujas vartotojas?</h3>
-            <h4>Lorem ipsum dolor sit amet, consectetur </h4>
-            <div class="form-row">
-                <label>Vardas</label>
-                <input type="text">
-            </div>
-            <div class="form-row">
-                <label>Pavardė</label>
-                <input type="text">
-            </div>
-            <div class="form-row">
-                <label>El. paštas</label>
-                <input type="text">
-            </div>
-            <div class="form-row">
-                <label>Slaptažodis</label>
-                <input type="password">
-            </div>
-            <div class="form-row">
-                <label class="double">Pakartokite slaptažodį</label>
-                <input type="password">
-            </div>
-            <div class="form-controls clearfix">
-                <input type="submit" value="prisiregistruokite" class="fr">
-            </div>
-        </div>
-    </div>
-</div>
+{{ include('FoodAppBundle:Default:login_register.html.twig') }}
 
 <script src="{{ asset('bundles/foodapp/scripts/common.js')}} "></script>
 <script src="{{ asset('bundles/foodapp/scripts/scripts.js')}} "></script>
