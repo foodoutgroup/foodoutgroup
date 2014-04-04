@@ -22,12 +22,64 @@
         <source>cart.block.your_order_empty</source>
         <target>Pasirinkite patiekalus</target>
       </trans-unit>
-      <trans-unit id="cart.block.edit_row" resname="cart.block.edit_row">
+      <trans-unit id="c1774d38928cffe44ff5fecf48ca395a" resname="cart.block.edit_row">
         <source>cart.block.edit_row</source>
         <target>Redaguoti</target>
       </trans-unit>
-      <trans-unit id="cart.block.order_btn" resname="cart.block.order_btn">
+      <trans-unit id="da8a8494c54d8801c5e01d138431577d" resname="cart.block.order_btn">
         <source>cart.block.order_btn</source>
+        <target>Užsakyti</target>
+      </trans-unit>
+      <trans-unit id="b8c9a22a673a26c53288e0d2cdb7c327" resname="cart.checkout.block_title_delivery">
+        <source>cart.checkout.block_title_delivery</source>
+        <target>Pristatymas</target>
+      </trans-unit>
+      <trans-unit id="ab9dbc0e8b931d30795a4bcbeee01531" resname="cart.checkout.delivery_to_home">
+        <source>cart.checkout.delivery_to_home</source>
+        <target>Pristatymas į namus</target>
+      </trans-unit>
+      <trans-unit id="5934b3ea4d66d942ef9715da9d6fca1d" resname="cart.checkout.delivery_i_pickup">
+        <source>cart.checkout.delivery_i_pickup</source>
+        <target>Atsiimsiu pats</target>
+      </trans-unit>
+      <trans-unit id="91a531cac53e76cf23ca76d224b23c27" resname="cart.checkout.city">
+        <source>cart.checkout.city</source>
+        <target>Miestas</target>
+      </trans-unit>
+      <trans-unit id="5559d6cd38328adde3eba8dcb958f91b" resname="cart.checkout.address">
+        <source>cart.checkout.address</source>
+        <target>Adresas</target>
+      </trans-unit>
+      <trans-unit id="6c62969aa8128ea121c45f3fb049bec3" resname="cart.checkout.phone">
+        <source>cart.checkout.phone</source>
+        <target>Telefonas</target>
+      </trans-unit>
+      <trans-unit id="bc8439664f3800919e17d58ad5eaff4b" resname="cart.checkout.delivery_comment">
+        <source>cart.checkout.delivery_comment</source>
+        <target>Papildoma info</target>
+      </trans-unit>
+      <trans-unit id="58234b47f3f611cffbbd19bbaaa7dd73" resname="cart.checkout.delivery_comment_placeholder">
+        <source>cart.checkout.delivery_comment_placeholder</source>
+        <target>Čia galite įvesti laiptinės kodą, aukštą ir kitą kurjeriui naudingą informaciją...</target>
+      </trans-unit>
+      <trans-unit id="dff708f5d1b6a869b2c01aca17e8d7b0" resname="cart.checkout.block_title_secure_payment">
+        <source>cart.checkout.block_title_secure_payment</source>
+        <target>Saugus apmokėjimas</target>
+      </trans-unit>
+      <trans-unit id="51401b79dc9570ffe18190d54b163466" resname="cart.checkout.cash_on_delivery">
+        <source>cart.checkout.cash_on_delivery</source>
+        <target>Grynais pristatymo metu</target>
+      </trans-unit>
+      <trans-unit id="9330627cdb5d1c945003084cf89374b6" resname="cart.checkout.card_on_delivery">
+        <source>cart.checkout.card_on_delivery</source>
+        <target>Kredito kortele po pristatymo</target>
+      </trans-unit>
+      <trans-unit id="e03c0471e61e194d66faffb54af1ce45" resname="cart.checkout.button_get_back">
+        <source>cart.checkout.button_get_back</source>
+        <target>GRĮŽTI ATGAL</target>
+      </trans-unit>
+      <trans-unit id="ee13b89787248624f1722ac29170fc85" resname="cart.checkout.button_order">
+        <source>cart.checkout.button_order</source>
         <target>Užsakyti</target>
       </trans-unit>
     </body>

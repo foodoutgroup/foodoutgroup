@@ -51,9 +51,9 @@
 {% block body %}
     <div class="site-center">
     <div class="site-block">
-    <div class="page-path clearfix"><a href="#">Pradžia</a><a href="#">Resoranai arti Žirmūnų</a></div>
+    <div class="page-path clearfix"><a href="{{ path('food_homepage') }}">Pradžia</a>{#<a href="#">Resoranai arti Žirmūnų</a>#}</div>
     <div class="page-title">
-        <h1 class="clearfix"><span>Rasti 67 restoranai netoli Žirmūnų</span><a href="#" class="change-location-link">{% trans %}places.change_address{% endtrans %}</a></h1>
+        <h1 class="clearfix"><span>Rasti 67 restoranai netoli Žirmūnų</span><a href="{{ path('food_homepage') }}" class="change-location-link">{% trans %}places.change_address{% endtrans %}</a></h1>
     </div>
     <div class="clearfix">
         <div class="content-lefter">

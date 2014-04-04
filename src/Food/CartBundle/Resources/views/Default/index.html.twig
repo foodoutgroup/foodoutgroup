@@ -75,25 +75,26 @@
                                     <input type="radio" name="payment-type" value="local.card"{% if order is not null and order.paymentMethod == 'local.card' %} checked="checked"{% endif %}>
                                 </label>
                             </div>
+                            {# TODO kolkas viskas rodo i Paysera#}
                             <div class="select-bank clearfix">
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-sb.png">
-                                    <input type="radio" name="payment-type" value="sb">
+                                    <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-seb.png">
-                                    <input type="radio" name="payment-type" value="seb">
+                                    <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-db.png">
-                                    <input type="radio" name="payment-type" value="db">
+                                    <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-mb.png">
-                                    <input type="radio" name="payment-type" value="mb">
+                                    <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-swb.png">
                                     {# TODO hackas testavimui. Reikia atskiro paysera optionso, kitus bankus kolkas slepiame #}
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-dnb.png">
-                                    <input type="radio" name="payment-type" value="dnb">
+                                    <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
                             </div>
 
