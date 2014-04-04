@@ -19,7 +19,7 @@ parameters:
     infobip_provider.login: "skanu1"
     infobip_provider.password: "119279"
     # Situos gal issikelkime i parametru faila pagal aplinka?
-    admin.emails: [mantas@skanu.lt]
+    admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
     title: "Foodout"

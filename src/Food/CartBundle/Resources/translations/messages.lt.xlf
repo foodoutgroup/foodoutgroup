@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="c9f932900c061295799f8eee2ba492c6" resname="cart.block.your_order">
         <source>cart.block.your_order</source>
-        <target>Tavo užsakymas</target>
+        <target>Jūsų užsakymas</target>
       </trans-unit>
       <trans-unit id="ef66c3099bc075bfc93b091b1b012ac5" resname="cart.block.delivery_price">
         <source>cart.block.delivery_price</source>
@@ -28,7 +28,7 @@
       </trans-unit>
       <trans-unit id="cart.block.order_btn" resname="cart.block.order_btn">
         <source>cart.block.order_btn</source>
-        <target>Užsakyk</target>
+        <target>Užsakyti</target>
       </trans-unit>
     </body>
   </file>
