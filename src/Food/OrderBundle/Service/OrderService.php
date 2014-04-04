@@ -809,7 +809,7 @@ class OrderService extends ContainerAware
         $orders = $em->getRepository('Food\OrderBundle\Entity\Order')
             ->findBy(
                 array(
-                    'order_status' =>  self::$status_accepted,
+                    'order_status' =>  array(self::$status_accepted, self::$status_delayed),
                     'place_point_city' => $city,
                     'deliveryType' => self::$deliveryDeliver,
                 ),

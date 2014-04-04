@@ -20,7 +20,7 @@ class OrderStatusLog
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Order")
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="orderStatusLog")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      */
     private $order;

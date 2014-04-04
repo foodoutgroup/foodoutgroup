@@ -45,7 +45,7 @@
                 {% if type == 'not_finished' %}
                     <th>{{ 'admin.dispatcher.driver'|trans({}, 'SonataAdminBundle') }}</th>
                 {% endif %}
-                <th></th>
+                <th>{{ 'admin.dispatcher.status'|trans({}, 'SonataAdminBundle') }}</th>
             </tr>
             {% for order in order_list %}
                 <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">
@@ -74,24 +74,42 @@
                         {% endif %}
                     </td>
                     {% if type == 'not_finished' %}
-                    <td class="driver">
-                        {% if order.driver is not null and order.driver is not empty %}
-                            {%
+                        <td class="driver">
+                            {% if order.driver is not null and order.driver is not empty %}
+                                {%
                                 set driverInfo = 'admin.driver.phone'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.phone ~ "<br/>"
                                 ~ 'admin.driver.city'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.city ~ "<br/>"
                                 ~ 'admin.driver.type'|trans({}, 'SonataAdminBundle') ~ ': ' ~ ('admin.driver.type.' ~ order.driver.type)|trans({}, 'SonataAdminBundle') ~ "<br/>"
                                 ~ 'admin.driver.provider'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.provider ~ "<br/>"
                                 ~ 'admin.driver.ext_id'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.extId ~ "<br/>"
-                            %}
-                            {{ order.driver.name }} <span class="driver-info-extended glyphicon glyphicon-info-sign" title="{{ driverInfo }}"></span>
-                        {% else %}
-                            <span style="font-weight: bold; color: #FF0000;">{{ 'admin.dispatcher.no_driver_assigned'|trans({}, 'SonataAdminBundle') }}</span>
-                        {% endif %}
-                    </td>
+                                %}
+                                {{ order.driver.name }} <span class="driver-info-extended glyphicon glyphicon-info-sign" title="{{ driverInfo }}"></span>
+                            {% else %}
+                                <span style="font-weight: bold; color: #FF0000;">{{ 'admin.dispatcher.no_driver_assigned'|trans({}, 'SonataAdminBundle') }}</span>
+                            {% endif %}
+                        </td>
                     {% endif %}
-                    <td>
+                    <td class="order_status">
+                        {% if order.orderStatusLog|length > 0 %}
+                        {% set statusInfo = '' %}
+                            {% for status in order.orderStatusLog %}
+                                {%
+                                    set statusInfo = statusInfo
+                                    ~ 'admin.order.log.date'|trans({}, 'SonataAdminBundle') ~ ': ' ~ status.eventDate|date("H:i") ~ '<br />'
+                                    ~ 'admin.order.log.old_status'|trans({}, 'SonataAdminBundle') ~ ': ' ~ ('admin.dispatcher.order_status.' ~ status.oldStatus)|trans({}, 'SonataAdminBundle') ~ '<br />'
+                                    ~ 'admin.order.log.new_status'|trans({}, 'SonataAdminBundle') ~ ': ' ~ ('admin.dispatcher.order_status.' ~ status.newStatus)|trans({}, 'SonataAdminBundle') ~ '<br />'
+                                    ~ 'admin.order.log.message'|trans({}, 'SonataAdminBundle') ~ ': ' ~ status.message ~ '<br />'
+                                    ~ '<br />'
+                                %}
+                            {% endfor %}
+                        {% endif %}
+
+                        {{ ('admin.dispatcher.order_status.' ~ order.orderStatus)|trans({}, 'SonataAdminBundle') }}
+                        {% if order.orderStatusLog|length > 0 %}
+                            <span class="glyphicon glyphicon-info-sign status-change-history" title="{{ statusInfo }}"></span>
+                        {% endif %}
                         <button class="btn btn-lg change_status_button" item-id="{{ order.id }}">
-                            {{ 'admin.dispatcher.change_status'|trans({}, 'SonataAdminBundle') }}
+                            {{ 'admin.dispatcher.button_change'|trans({}, 'SonataAdminBundle') }}
                         </button>
                     </td>
                 </tr>

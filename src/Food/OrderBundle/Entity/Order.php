@@ -149,6 +149,11 @@ class Order
      **/
     private $driver;
 
+    /**
+     * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\OrderStatusLog", mappedBy="order")
+     **/
+    private $orderStatusLog;
+
     public function __toString()
     {
         if ($this->getId()) {
@@ -756,5 +761,38 @@ class Order
     public function getDriver()
     {
         return $this->driver;
+    }
+
+    /**
+     * Add orderStatusLog
+     *
+     * @param \Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog
+     * @return Order
+     */
+    public function addOrderStatusLog(\Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog)
+    {
+        $this->orderStatusLog[] = $orderStatusLog;
+    
+        return $this;
+    }
+
+    /**
+     * Remove orderStatusLog
+     *
+     * @param \Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog
+     */
+    public function removeOrderStatusLog(\Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog)
+    {
+        $this->orderStatusLog->removeElement($orderStatusLog);
+    }
+
+    /**
+     * Get orderStatusLog
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrderStatusLog()
+    {
+        return $this->orderStatusLog;
     }
 }

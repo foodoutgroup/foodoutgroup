@@ -795,10 +795,6 @@
                 <source>admin.dispatcher.get_drivers</source>
                 <target>Gauti vairuotojus</target>
             </trans-unit>
-            <trans-unit id="admin.dispatcher.change_status">
-                <source>admin.dispatcher.change_status</source>
-                <target>Keisti būklę</target>
-            </trans-unit>
             <trans-unit id="admin.dispatcher.order_status.new">
                 <source>admin.dispatcher.order_status.new</source>
                 <target>Naujas</target>
@@ -855,6 +851,29 @@
                 <source>admin.dispatcher.assign</source>
                 <target>Priskirti</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.status">
+                <source>admin.dispatcher.status</source>
+                <target>Būklė</target>
+            </trans-unit>
+
+            <!-- Status historis -->
+            <trans-unit id="admin.order.log.date">
+                <source>admin.order.log.date</source>
+                <target>Data</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.old_status">
+                <source>admin.order.log.old_status</source>
+                <target>Iš</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.new_status">
+                <source>admin.order.log.new_status</source>
+                <target>Į.</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.message">
+                <source>admin.order.log.message</source>
+                <target>Žinutė</target>
+            </trans-unit>
+
 
             <!-- Drivers listas -->
             <trans-unit id="admin.drivers">

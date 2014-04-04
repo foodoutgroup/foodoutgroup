@@ -27,6 +27,10 @@ var Dispatcher = {
         $(".driver-info-extended").tooltip({
             tooltipClass: 'driver-tooltip'
         });
+        // Vairuotojo papildoma info :)
+        $(".status-change-history").tooltip({
+            tooltipClass: 'driver-tooltip'
+        });
 
         $(".order_list.unassigned .order_checkbox").bind('click', function(){
             Dispatcher.toggleDriverButton($(this));
