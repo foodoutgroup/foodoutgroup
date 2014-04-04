@@ -9,6 +9,7 @@ use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Food\OrderBundle\Entity\OrderDetailsOptions;
 use Food\OrderBundle\Entity\OrderLog;
+use Food\OrderBundle\Entity\OrderStatusLog;
 use Food\OrderBundle\Entity\PaymentLog;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Security\Acl\Exception\Exception;
@@ -222,12 +223,14 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * TODO paklausti Pauliaus, kodel jis padare protected? Gal kokia mintis nebaigta?
-     *
-     * @param $status
+     * @param string $status
+     * @param string|null $message
      */
-    public function chageOrderStatus($status)
+    public function chageOrderStatus($status, $message=null)
     {
+        // Let's log the shit out of it
+        $this->logStatusChange($this->getOrder(), $status, $message);
+
         $this->getOrder()->setOrderStatus($status);
     }
 
@@ -861,6 +864,24 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param Order $order
+     * @param string $newStatus
+     * @param null|string $message
+     */
+    public function logStatusChange($order, $newStatus, $message=null)
+    {
+        $log = new OrderStatusLog();
+        $log->setOrder($order)
+            ->setEventDate(new \DateTime('now'))
+            ->setOldStatus($order->getOrderStatus())
+            ->setNewStatus($newStatus)
+            ->setMessage($message);
+
+        $this->getEm()->persist($log);
+        $this->getEm()->flush();
+    }
+
+    /**
      * Returns all available order statuses
      *
      * @return array
@@ -871,6 +892,7 @@ class OrderService extends ContainerAware
         (
             self::$status_new,
             self::$status_accepted,
+            self::$status_delayed,
             self::$status_assiged,
             self::$status_forwarded,
             self::$status_completed,

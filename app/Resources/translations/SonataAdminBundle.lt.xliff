@@ -803,6 +803,10 @@
                 <source>admin.dispatcher.order_status.new</source>
                 <target>Naujas</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.delayed">
+                <source>admin.dispatcher.order_status.delayed</source>
+                <target>Atidėtas</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.order_status.accepted">
                 <source>admin.dispatcher.order_status.accepted</source>
                 <target>Priimtas</target>

@@ -78,7 +78,8 @@ var Dispatcher = {
                                 url,
                                 function(data) {
                                     // TODO error handlingas
-                                    console.log('succesas?');
+//                                    console.log('succesas?');
+                                    location.reload();
                                 }
                             );
 
@@ -133,7 +134,7 @@ var Dispatcher = {
                 orderIds: orderIds
             },
             function (data) {
-                console.log('-- succeeded');
+//                console.log('-- succeeded');
                 location.reload();
             }
         );
