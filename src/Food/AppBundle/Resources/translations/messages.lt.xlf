@@ -246,18 +246,22 @@
         <source>general.register_register_button</source>
         <target>Prisiregistruokite</target>
       </trans-unit>
-      <trans-unit id="b0a9c97c04e0b242389f30ee11c04daa" resname="genera.help_button">
-        <source>genera.help_button</source>
+      <trans-unit id="e1743bc18f60072e811d2e99a53c7bc2" resname="general.help_button">
+        <source>general.help_button</source>
         <target>Pagalba</target>
       </trans-unit>
       <trans-unit id="6c9e9d508e6df307cfed5b371823ecce" resname="general.login_button">
         <source>general.login_button</source>
         <target>Prisijunk</target>
       </trans-unit>
-        <trans-unit id="general.login_login_button" resname="general.login_login_button">
-            <source>general.login_login_button</source>
-            <target>Prisijunkite</target>
-        </trans-unit>
+      <trans-unit id="3b71dfc8c61439d9e95d16cc0a177e77" resname="general.login_login_button">
+        <source>general.login_login_button</source>
+        <target>Prisijunkite</target>
+      </trans-unit>
+      <trans-unit id="5ad57190264dcf453d3f80908aa924de" resname="general.help_slug">
+        <source>general.help_slug</source>
+        <target>pagalba</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

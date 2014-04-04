@@ -44,6 +44,13 @@ class StaticContent implements Translatable
     /**
      * @var bool
      *
+     * @ORM\Column(name="visible", type="boolean")
+     */
+    private $visible = true;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="active", type="boolean")
      */
     private $active = false;
@@ -429,5 +436,28 @@ class StaticContent implements Translatable
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * Set visible
+     *
+     * @param boolean $visible
+     * @return StaticContent
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+    
+        return $this;
+    }
+
+    /**
+     * Get visible
+     *
+     * @return boolean 
+     */
+    public function getVisible()
+    {
+        return $this->visible;
     }
 }

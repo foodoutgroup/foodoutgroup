@@ -85,6 +85,7 @@ class StaticService {
             ->createQueryBuilder('s')
         // TODO active-not active ir positioning (top, bottom menu, hidden)
             ->where('s.active = 1')
+            ->where('s.visible = 1')
             ->orderBy('s.order', 'ASC')
             ->setMaxResults($limit)
             ->getQuery();

@@ -38,7 +38,7 @@
         <div class="site-block clearfix"><a href="{{ path('food_lang_homepage') }}" class="main-logo"><img src="{{ asset('bundles/foodapp/images/logo_food.png') }}"></a>
             {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
             <ul class="menu top-menu clearfix">
-                <li><a href="#"><span>{% trans %}genera.help_button{% endtrans %}</span></a></li>
+                <li><a href="{{ path('food_slug', {'slug': ('general.help_slug'|trans())}) }}"><span>{% trans %}general.help_button{% endtrans %}</span></a></li>
                 <li class="login-ico"><a href="#login-register-popup" class="boxer"><span>{% trans %}general.login_button{% endtrans %}</span></a></li>
             </ul>
         </div>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="lt" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="8f62696b90b7e9e57777cc9640b68675" resname="admin.driver.name">
+        <source>admin.driver.name</source>
+        <target>__admin.driver.name</target>
+      </trans-unit>
+      <trans-unit id="69361a5afb01e6f125dfe51c5682a4db" resname="admin.driver.phone">
+        <source>admin.driver.phone</source>
+        <target>__admin.driver.phone</target>
+      </trans-unit>
+      <trans-unit id="b1da3d8686dc47de9c0a1ba0e9124d6b" resname="admin.driver.type">
+        <source>admin.driver.type</source>
+        <target>__admin.driver.type</target>
+      </trans-unit>
+      <trans-unit id="0ef556618b5e066c03f2ded03f843d1c" resname="admin.driver.provider">
+        <source>admin.driver.provider</source>
+        <target>__admin.driver.provider</target>
+      </trans-unit>
+      <trans-unit id="bceec4d0614fe2ea8830c76e150bd4e4" resname="admin.driver.has_orders">
+        <source>admin.driver.has_orders</source>
+        <target>__admin.driver.has_orders</target>
+      </trans-unit>
+      <trans-unit id="64178b5d939fbd5cc41e955b3326b6b6" resname="admin.dispatcher.assign">
+        <source>admin.dispatcher.assign</source>
+        <target>__admin.dispatcher.assign</target>
+      </trans-unit>
+      <trans-unit id="2f29f96f558914bb9599559f3bb19df4" resname="admin.dispatcher.order_status_title">
+        <source>admin.dispatcher.order_status_title</source>
+        <target>__admin.dispatcher.order_status_title</target>
+      </trans-unit>
+      <trans-unit id="e08a5dd371b076ef69b7f20655611b3b" resname="admin.dispatcher.button_change">
+        <source>admin.dispatcher.button_change</source>
+        <target>__admin.dispatcher.button_change</target>
+      </trans-unit>
+      <trans-unit id="cdf3538bd62c41f1a0c02653366b3448" resname="admin.dispatcher.button_cancel">
+        <source>admin.dispatcher.button_cancel</source>
+        <target>__admin.dispatcher.button_cancel</target>
+      </trans-unit>
+      <trans-unit id="d10fa3b71b148ef631d2bbe61b9c26c0" resname="admin.dispatcher.unassigned">
+        <source>admin.dispatcher.unassigned</source>
+        <target>__admin.dispatcher.unassigned</target>
+      </trans-unit>
+      <trans-unit id="dd116d16e6ffc09dba4e5f8e210ffa7d" resname="admin.dispatcher.undelivered">
+        <source>admin.dispatcher.undelivered</source>
+        <target>__admin.dispatcher.undelivered</target>
+      </trans-unit>
+      <trans-unit id="b7ca19cfd98b4e74da50b5f1fc129b37" resname="admin.dispatcher.get_drivers">
+        <source>admin.dispatcher.get_drivers</source>
+        <target>__admin.dispatcher.get_drivers</target>
+      </trans-unit>
+      <trans-unit id="22369a62948045d3e730e8c9b2aa92c7" resname="admin.dispatcher.order_id">
+        <source>admin.dispatcher.order_id</source>
+        <target>__admin.dispatcher.order_id</target>
+      </trans-unit>
+      <trans-unit id="626a838cfce9b2932fef88eb2c0af991" resname="admin.dispatcher.place">
+        <source>admin.dispatcher.place</source>
+        <target>__admin.dispatcher.place</target>
+      </trans-unit>
+      <trans-unit id="c6655fd4821262904a4f3a164a067c31" resname="admin.dispatcher.address">
+        <source>admin.dispatcher.address</source>
+        <target>__admin.dispatcher.address</target>
+      </trans-unit>
+      <trans-unit id="12bc3de0a3f1bd17d0f2dec07eb9f3da" resname="admin.dispatcher.client_address">
+        <source>admin.dispatcher.client_address</source>
+        <target>__admin.dispatcher.client_address</target>
+      </trans-unit>
+      <trans-unit id="05b5ce8ab1595203ed873db2bc72e59c" resname="admin.dispatcher.self_delivery">
+        <source>admin.dispatcher.self_delivery</source>
+        <target>__admin.dispatcher.self_delivery</target>
+      </trans-unit>
+      <trans-unit id="e2524b5382e107393d5ee3fa6c97ef10" resname="admin.dispatcher.order_date">
+        <source>admin.dispatcher.order_date</source>
+        <target>__admin.dispatcher.order_date</target>
+      </trans-unit>
+      <trans-unit id="e6498f92706808a49cd9db2e182403de" resname="admin.dispatcher.comment">
+        <source>admin.dispatcher.comment</source>
+        <target>__admin.dispatcher.comment</target>
+      </trans-unit>
+      <trans-unit id="ec41ae56c7576bd2bf05687ba28bbbbd" resname="admin.dispatcher.driver">
+        <source>admin.dispatcher.driver</source>
+        <target>__admin.dispatcher.driver</target>
+      </trans-unit>
+      <trans-unit id="d321777d1de43ca9cf6c24eb511b24cf" resname="admin.driver.city">
+        <source>admin.driver.city</source>
+        <target>__admin.driver.city</target>
+      </trans-unit>
+      <trans-unit id="c09d61ace03ec16aaf7ac167757f86b5" resname="admin.driver.ext_id">
+        <source>admin.driver.ext_id</source>
+        <target>__admin.driver.ext_id</target>
+      </trans-unit>
+      <trans-unit id="9da89340a97ccfea633342e07c797ae8" resname="admin.dispatcher.no_driver_assigned">
+        <source>admin.dispatcher.no_driver_assigned</source>
+        <target>__admin.dispatcher.no_driver_assigned</target>
+      </trans-unit>
+      <trans-unit id="40cc9428d8d342dbb81b42e69761bb86" resname="admin.dispatcher.change_status">
+        <source>admin.dispatcher.change_status</source>
+        <target>__admin.dispatcher.change_status</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

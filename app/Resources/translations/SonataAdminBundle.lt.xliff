@@ -533,6 +533,10 @@
                 <source>admin.static.active</source>
                 <target>Aktyvus</target>
             </trans-unit>
+            <trans-unit id="admin.static.visible">
+                <source>admin.static.visible</source>
+                <target>Rodomas meniu</target>
+            </trans-unit>
             <trans-unit id="admin.static.order_no_short">
                 <source>admin.static.order_no_short</source>
                 <target>Eil.nr.</target>
