@@ -711,4 +711,46 @@ input.button {}
 .dish-ingredients .custom-radio strong {display: block; font-family: 'avenir_nextbold';}
 
 /** Uuuuuuuhhh - cant touch it **/
-.detailed-dish-popup .theCounter {width: 40px; text-align: center;}
+.detailed-dish-popup .theCounter {width: 40px; text-align: center; border-radius: 5px; border: 1px solid #cccccc;}
+.theCounter-dec, .theCounter-inc {border: none; background-color: transparent;}
+
+
+/** The happyness of the side cart **/
+.check-item .edit {
+    display: none;
+}
+.check-item .edit a {
+    color: #000000;
+}
+.check-item .edit a:hover {
+    color: #333333;
+}
+.check-item:hover .edit {
+    display: block;
+    width: 60px;
+    background-color: #CCCCCC;
+    position: absolute;
+    margin-left: 88px;
+    text-align: center;
+    padding: 2px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: -3px;
+}
+.check-item .extra {
+    color: #543F42;
+    float: left;
+    padding-top: 7px;
+    width: 65%;
+    overflow-x: hidden;
+    white-space: nowrap;
+    font-size: 11px;
+}
+.check-item .extra.sum {
+    width: 35%;
+    font-size: 11px;
+}
+.check-item .clearfix.pad {
+    padding-left: 5px;
+}
+/** End of side cart happyness **/

@@ -82,6 +82,10 @@
         <source>cart.checkout.button_order</source>
         <target>Užsakyti</target>
       </trans-unit>
+        <trans-unit id="cart.block.remove_row" resname="cart.block.remove_row">
+            <source>cart.block.remove_row</source>
+            <target>Pašalinti</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

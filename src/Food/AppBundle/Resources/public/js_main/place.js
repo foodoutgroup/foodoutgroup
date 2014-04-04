@@ -192,9 +192,9 @@ var Place = {
  * @param def
  */
 $.fn.foodCounter = function(min,max,def) {
-    this.addClass('theCounter').data('min', min).data('max', max).data('def', def);
-    this.before('<input type="button" class="dec" value="-">');
-    this.after('<input type="button" class="inc" value="+">');
+    this.addClass('theCounter').addClass('theCounter-input').data('min', min).data('max', max).data('def', def);
+    this.before('<button class="theCounter-dec dec"><span class="ui-icon ui-icon-minus"></span></button>');
+    this.after('<button class="theCounter-inc inc"><span class="ui-icon ui-icon-plus"></span></button>');
     if (this.val() == "") {
         this.val(def);
     }

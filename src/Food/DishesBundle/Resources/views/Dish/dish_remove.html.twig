@@ -1,0 +1,15 @@
+<div id="detailed-dish-popup-remove">
+    <form class="popup detailed-dish-popup">
+        {% if dish.getWebPathThumb('type3') is not empty %}
+            <img src="/{{ dish.getWebPathThumb('type3') }}" class="popup-header" />
+        {% endif %}
+        <div class="dish-info">
+            <p class="name">{{ dish.name }}</p>
+        </div>
+
+        <input type="hidden" name="place" value="{{ dish.place.id }}">
+        <input type="hidden" name="dish_id" value="{{ dish.id }}">
+        <input type="hidden" name="cart_id" value="{{ cart.cartId }}">
+        <div class="popup-controls"><a href="#" class="button-submit remove-from-cart"><span>{% trans %}dish.remove_from_cart{% endtrans %}</span></a></div>
+    </form>
+</div>

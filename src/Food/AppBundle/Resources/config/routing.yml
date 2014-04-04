@@ -76,8 +76,12 @@ food_ajax_dish:
     defaults: { _controller: FoodDishesBundle:Dish:getDish, dish: ~}
 
 food_ajax_edit_dish:
-        pattern: /ajax/edit-dish-in-cart/{dish}/{cartId}
-        defaults: { _controller: FoodDishesBundle:Dish:editDishInCart, dish: ~, cartId: ~}
+    pattern: /ajax/edit-dish-in-cart/{dish}/{cartId}
+    defaults: { _controller: FoodDishesBundle:Dish:editDishInCart, dish: ~, cartId: ~}
+
+food_ajax_remove_dish:
+    pattern: /ajax/remove-dish-in-cart/{dish}/{cartId}
+    defaults: { _controller: FoodDishesBundle:Dish:removeDishInCart, dish: ~, cartId: ~}
 
 food_ajax:
     pattern: /ajax/{action}/i

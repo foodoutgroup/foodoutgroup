@@ -134,6 +134,10 @@
         <source>dish.select_quantity</source>
         <target>Kiekis</target>
       </trans-unit>
+        <trans-unit id="dish.remove_from_cart" resname="dish.remove_from_cart">
+            <source>dish.remove_from_cart</source>
+            <target>Pašalinti</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>
