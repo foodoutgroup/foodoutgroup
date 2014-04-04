@@ -1,44 +1,13 @@
-<style>
-
-    .check-item .edit {
-        display: none;
-    }
-    .check-item:hover .edit {
-        display: block;
-        width: 60px;
-        background-color: #CCCCCC;
-        position: absolute;
-        margin-left: 88px;
-        text-align: center;
-        padding: 2px;
-        border-radius: 3px;
-        cursor: pointer;
-        margin-top: -3px;
-    }
-    .check-item .extra {
-        color: #543F42;
-        float: left;
-        padding-top: 7px;
-        width: 65%;
-        overflow-x: hidden;
-        white-space: nowrap;
-        font-size: 11px;
-    }
-    .check-item .extra.sum {
-        width: 35%;
-        font-size: 11px;
-    }
-    .check-item .clearfix.pad {
-        padding-left: 5px;
-    }
-</style>
 <div class="check-block">
     <div class="restaurant-logo tac"><img src="/{{place.getWebPathThumb}}"></div>
     <h5 class="tac">{% trans %}cart.block.your_order{% endtrans %}</h5>
     {% if list|length > 0 %}
         {% for dish in list %}
             <div class="check-item">
-                <div class="edit"><a href="{{ path('food_ajax_edit_dish', {'dish': dish.dishId.id, 'cartId':dish.cartId}) }}" href2="#detailed-dish-popup" class="fancybox.ajax fancy-box">{% trans %}cart.block.edit_row{% endtrans %}</a></div>
+                <div class="edit">
+                    {# <a href="{{ path('food_ajax_edit_dish', {'dish': dish.dishId.id, 'cartId':dish.cartId}) }}" href2="#detailed-dish-popup" class="fancybox.ajax fancy-box">{% trans %}cart.block.edit_row{% endtrans %}</a> #}
+                    <a href="{{ path('food_ajax_remove_dish', {'dish': dish.dishId.id, 'cartId':dish.cartId}) }}" class="fancybox.ajax fancy-box remove">{% trans %}cart.block.remove_row{% endtrans %}</a>
+                </div>
                 <div class="name">{{ dish.dishId.name }}</div>
                 <div class="type">{{ dish.dishSizeId.unit.name }}</div>
                 <div class="clearfix pad">

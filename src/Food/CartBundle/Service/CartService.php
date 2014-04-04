@@ -101,19 +101,36 @@ class CartService {
      * @param $dish
      * @return $this
      */
-    public function removeDish($dish)
+    public function removeDishByIds($dishId, $cartId, $placeId)
     {
-        $this->getEm()->remove(
-            $this->getEm()->getRepository('FoodCartBundle:Cart')
-                ->findOneBy(
-                    array(
-                        'dish_id' => $dish->getId(),
-                        'session' => $this->getSessionId()
-                    )
+        $dish = $this->getEm()->getRepository('FoodDishesBundle:Dish')->find((int)$dishId);
+        $place = $this->getEm()->getRepository('FoodDishesBundle:Place')->find((int)$placeId);
+        $opts = $this->getEm()->getRepository('FoodCartBundle:CartOption')
+            ->findBy(
+                array(
+                    'dish_id' => $dish,
+                    'cart_id' => (int)$cartId,
+                    'session' => $this->getSessionId()
                 )
-        );
-        // @Todo - optionsai turi remoovintis kartu su
+            );
+        foreach ($opts as $opt) {
+            $this->getEm()->remove($opt);
+            $this->getEm()->flush();
+        }
+
+        $cartDish = $this->getEm()->getRepository('FoodCartBundle:Cart')
+            ->findOneBy(
+                array(
+                    'dish_id' => $dish,
+                    'cart_id' => (int)$cartId,
+                    'place_id' => $place,
+                    'session' => $this->getSessionId()
+                )
+            );
+
+        $this->getEm()->remove($cartDish);
         $this->getEm()->flush();
+
         return $this;
     }
 

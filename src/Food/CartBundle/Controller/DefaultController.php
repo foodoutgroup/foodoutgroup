@@ -55,6 +55,7 @@ class DefaultController extends Controller
             case 'add-option':
                 break;
             case 'remove':
+                $this->_actonRemoveItem($jsonResponseData, $this->getRequest());
                 break;
             case 'remove-option':
                 break;
@@ -92,6 +93,19 @@ class DefaultController extends Controller
     }
 
     /**
+     * @param $responseData
+     * @param Request $request
+     */
+    private function _actonRemoveItem(&$responseData, $request)
+    {
+        $this->getCartService()->removeDishByIds(
+            $request->get('dish_id'),
+            $request->get('cart_id'),
+            $request->get('place')
+        );
+    }
+
+    /**
      * @param $dishId
      * @param $dishSize
      * @param int $dishQuantity
@@ -102,7 +116,7 @@ class DefaultController extends Controller
         $this->getCartService()->addDishByIds($dishId, $dishSize, $dishQuantity, $options);
     }
 
-    public function removeDishAction($dishId)
+    public function removeDishAction($dishId,$cartId, $placeId)
     {
         $this->getCartService()->removeDish($dishId);
     }

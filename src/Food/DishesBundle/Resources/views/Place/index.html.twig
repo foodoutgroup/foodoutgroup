@@ -23,7 +23,9 @@
              * @todo Migrate to JS file
              */
             var addToCartUrl = '{{ path('food_cart_action', {'action' : 'add'}) }}';
+            var removeFromCartUrl = '{{ path('food_cart_action', {'action' : 'remove'}) }}';
             var dishBlock = null;
+            var dishRemoveBlock = null;
             var bindFancyBox = function() {
                 $('.fancy-box').fancybox({
                     padding : 0,
@@ -37,11 +39,33 @@
                         });
                     }
                 });
+                $('.fancy-box.remove').fancybox({
+                    padding : 0,
+                    scrolling: 'visible',
+                    afterShow: function(e) {
+                        dishRemoveBlock = $('#detailed-dish-popup-remove');
+                        dishRemoveBlock.find('.remove-from-cart:not(.has-bind)').addClass('has-bind').bind('click', function() {
+                            removeFromCart();
+                        });
+                    }
+                });
             };
 
             $(document).ready(function(){
                 bindFancyBox();
             });
+
+            function removeFromCart()
+            {
+                dishRemoveBlock.mask();
+                $.post(removeFromCartUrl, dishRemoveBlock.find('form').serialize(), function(resp) {
+                    if (typeof(resp.block) != "undefined") {
+                        $('.check-block').replaceWith(resp.block);
+                    }
+                    dishRemoveBlock.unmask();
+                    $.fancybox.close();
+                }, 'json');
+            }
 
             function addToCart() {
                 if (dishBlock.find('.dish-size:checked').length != 0) {
