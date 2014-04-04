@@ -109,7 +109,7 @@
 #}
     <div style="background-image: url(/bundles/foodapp/images/inner-bg.jpg);" class="site-center image-top">
         <div class="site-block">
-            <div class="page-path clearfix"><a href="#">{% trans %}places.home{% endtrans %}</a><a href="#">Restoranai arti Žirmūnų</a><a href="#">{{ place.name }}</a></div>
+            <div class="page-path clearfix"><a href="#">{% trans %}places.home{% endtrans %}</a>{# TODO breadcrumbs <a href="#">Restoranai arti Žirmūnų</a>#}<a href="#">{{ place.name }}</a></div>
             <div class="page-title">
                 <h1 class="clearfix"><span>{{ place.name }}{% if place.slogan is not empty %} - {{ place.slogan }}{% endif %}</span>
                     <div data-stars="{{ place.rating }}" class="restoran-rating fl"></div>
