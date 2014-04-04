@@ -711,8 +711,8 @@ input.button {}
 .dish-ingredients .custom-radio strong {display: block; font-family: 'avenir_nextbold';}
 
 /** Uuuuuuuhhh - cant touch it **/
-.detailed-dish-popup .theCounter {width: 40px; text-align: center;}
-
+.detailed-dish-popup .theCounter {width: 40px; text-align: center; border-radius: 5px; border: 1px solid #cccccc;}
+.theCounter-dec, .theCounter-inc {border: none; background-color: transparent;}
 
 
 /** The happyness of the side cart **/
