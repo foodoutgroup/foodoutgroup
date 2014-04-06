@@ -44,6 +44,13 @@ class User extends BaseUser
      **/
     private $address;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="phone", type="string", length=20, nullable=true)
+     */
+    private $phone = null;
+
     public function __construct()
     {
         parent::__construct();
@@ -214,5 +221,28 @@ class User extends BaseUser
     public function removeAddres(\Food\UserBundle\Entity\UserAddress $address)
     {
         $this->address->removeElement($address);
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     * @return User
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string 
+     */
+    public function getPhone()
+    {
+        return $this->phone;
     }
 }
