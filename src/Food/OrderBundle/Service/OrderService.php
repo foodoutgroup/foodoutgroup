@@ -329,10 +329,12 @@ class OrderService extends ContainerAware
 
     /**
      * @param int $place
+     * @param string $locale
      */
-    public function createOrderFromCart($place)
+    public function createOrderFromCart($place, $locale='lt')
     {
         $this->createOrder($place);
+        $this->getOrder()->setLocale($locale);
         $this->saveOrder();
 
         foreach ($this->getCartService()->getCartDishes($place) as $cartDish) {
@@ -366,8 +368,6 @@ class OrderService extends ContainerAware
             }
 
         }
-        // O cia Initas groblana Mokejima ar kaip?
-        // @todo - Koki mantas paymento flow sumislijo. Nes logiskiausia kol nera peymento - nera Orderio. O dabar...
 
     }
 

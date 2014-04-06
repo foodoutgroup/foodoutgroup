@@ -150,6 +150,13 @@ class Order
     private $driver;
 
     /**
+     * @var string $locale
+     *
+     * @ORM\Column(name="locale", type="string", length=4)
+     */
+    private $locale;
+
+    /**
      * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\OrderStatusLog", mappedBy="order")
      **/
     private $orderStatusLog;
@@ -794,5 +801,28 @@ class Order
     public function getOrderStatusLog()
     {
         return $this->orderStatusLog;
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     * @return Order
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    
+        return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return string 
+     */
+    public function getLocale()
+    {
+        return $this->locale;
     }
 }

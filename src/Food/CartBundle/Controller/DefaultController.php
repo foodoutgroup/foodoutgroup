@@ -144,7 +144,7 @@ class DefaultController extends Controller
         // Form submitted
         if ($request->getMethod() == 'POST') {
             if (empty($order)) {
-                $orderService->createOrderFromCart($placeId);
+                $orderService->createOrderFromCart($placeId, $request->getLocale());
                 $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
             } else {
                 $orderService->setOrder($order);
