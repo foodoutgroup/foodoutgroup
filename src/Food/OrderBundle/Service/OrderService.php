@@ -231,6 +231,23 @@ class OrderService extends ContainerAware
         // Let's log the shit out of it
         $this->logStatusChange($this->getOrder(), $status, $message);
 
+        // Inform poor user, that his order was accepted
+        if ($this->getOrder()->getOrderStatus() == self::$status_new
+            && $status == self::$status_accepted) {
+            // TODO telefonas?? kur guli, prie address ar prie pacio userio?
+            $recipient = $this->getOrder()->getUser()->getPhone();
+            // TODO tik jei turim telefona - siunciam smske
+//            if (!empty($this->getOrder()->getUser()->getAddress()))
+            $smsService = $this->container->get('food.messages');
+
+            $sender = $this->container->getParameter('sms.sender');
+            $text = $this->container->get('translator')
+                ->trans('general.sms.user.order_accepted', array(), null, $this->getOrder()->getLocale());
+
+            $message = $smsService->createMessage($sender, $recipient, $text);
+            $smsService->saveMessage($message);
+        }
+
         $this->getOrder()->setOrderStatus($status);
     }
 
