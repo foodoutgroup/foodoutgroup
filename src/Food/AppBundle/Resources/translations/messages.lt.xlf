@@ -162,6 +162,10 @@
         <source>general.subscribed_newsletter</source>
         <target>Jūs užsiprenumeravote naujienlaiškį</target>
       </trans-unit>
+      <trans-unit id="general.sms.user.order_accepted" resname="general.sms.user.order_accepted">
+        <source>general.sms.user.order_accepted</source>
+        <target>Sveiki, restoranas patvirtino Jūsų užsakymą</target>
+      </trans-unit>
       <trans-unit id="19554e921e608df135b269a564c8cf6a" resname="mobile.order_confirm">
         <source>mobile.order_confirm</source>
         <target>Patvirtinti užsakymą</target>
