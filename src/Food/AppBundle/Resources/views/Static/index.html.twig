@@ -8,7 +8,9 @@
                 <div class="middle-content">
                     <div class="static-page">
                         <h1>{{ staticPage.title }}</h1>
-                        {{ staticPage.content|raw }}
+                        <div class="static-page-content">
+                            {{ staticPage.content|raw }}
+                        </div>
                     </div>
                 </div>
             </div>
