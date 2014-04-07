@@ -10,6 +10,8 @@ services:
 
     food.local_biller:
         class: Food\OrderBundle\Service\LocalBiller
+        calls:
+            - [setContainer, ["@service_container"]]
         
     food.order:
         class: Food\OrderBundle\Service\OrderService

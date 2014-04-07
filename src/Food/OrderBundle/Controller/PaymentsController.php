@@ -55,21 +55,7 @@ class PaymentsController extends Controller
             return new Response($e->getTraceAsString(), 500);
         }
 
-        $messagingService = $this->container->get('food.messages');
-
-        // Inform restourant about new order
-        $orderConfirmRoute = $this->container->get('router')
-            ->generate('ordermobile', array('hash' => $order->getOrderHash()));
-
-        $messageText = $this->get('translator')->trans('general.sms.new_order')
-            .': http://'.$this->container->getParameter('domain').$orderConfirmRoute;
-
-        $message = $messagingService->createMessage(
-            $this->container->getParameter('sms.sender'),
-            $order->getPlacePoint()->getPhone(),
-            $messageText
-        );
-        $messagingService->saveMessage($message);
+        $orderService->informPlace();
 
         $logger->alert("Sending message for order to be accepted to number: ".$recipient.' with text "'.$messageText.'"');
 

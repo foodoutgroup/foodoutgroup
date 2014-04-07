@@ -909,6 +909,28 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * Send a message to place about new order
+     */
+    public function informPlace()
+    {
+        $messagingService = $this->container->get('food.messages');
+
+        // Inform restourant about new order
+        $orderConfirmRoute = $this->container->get('router')
+            ->generate('ordermobile', array('hash' => $this->getOrder()->getOrderHash()));
+
+        $messageText = $this->container->get('translator')->trans('general.sms.new_order')
+            .': http://'.$this->container->getParameter('domain').$orderConfirmRoute;
+
+        $message = $messagingService->createMessage(
+            $this->container->getParameter('sms.sender'),
+            $this->getOrder()->getPlacePoint()->getPhone(),
+            $messageText
+        );
+        $messagingService->saveMessage($message);
+    }
+
+    /**
      * @param Order $order
      * @param string $newStatus
      * @param null|string $message
