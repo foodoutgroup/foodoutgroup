@@ -14,7 +14,7 @@ class DefaultController extends Controller
         return $this->render('FoodPlacesBundle:Default:index.html.twig');
     }
 
-    public function listAction()
+    public function listAction($recommended = false)
     {
         $kitchens = $this->getRequest()->get('kitchens', "");
         $filters = $this->getRequest()->get('filters');
@@ -35,7 +35,18 @@ class DefaultController extends Controller
         $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds($kitchens, $filter);
         $this->get('food.places')->saveRelationPlaceToPoint($places);
 
-        return $this->render('FoodPlacesBundle:Default:list.html.twig', array('places' => $places));
+
+        $locData =  $this->get('food.googlegis')->getLocationFromSession();
+        return $this->render(
+            'FoodPlacesBundle:Default:list.html.twig',
+            array(
+                'places' => $places,
+                'recommended' => ($recommended ? 1:0),
+                'location' => $locData,
+                'location_show' => (empty($locData) ? false : true)
+
+            )
+        );
     }
 
 
