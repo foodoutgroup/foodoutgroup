@@ -12,6 +12,7 @@
             var addrResponse = {};
             var waitIntervals = null;
             var currentTime = null;
+            var closeBtnTxt = '{% trans %}general.close_btn{% endtrans %}';
 
 
             function getCrds() {
@@ -26,7 +27,19 @@
                         if (resp.data.success == 1) {
                             $('.search-food-form').trigger('submit');
                         } else {
-                            $('.search-food-form .title').after('<p>' + resp.data.message + '</p>');
+                            var dialogOpts = {
+                                modal: true,
+                                resizable: false,
+                                buttons: {
+                                    'close': {
+                                        'text': closeBtnTxt,
+                                        'click': function() {
+                                            $(this).dialog('close');
+                                        }
+                                    }
+                                }
+                            };
+                            $("<div>"+resp.data.message+"</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();
                         }
                     }
                 });

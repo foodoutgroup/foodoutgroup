@@ -65,7 +65,7 @@ class GoogleGisService extends ContainerAware
         $returner = array();
         $returner['not_found'] = true;
         $returner['status'] = $location->status;
-        if( in_array('street_address', $location->results[0]->types)) {
+        if( !empty( $location->results[0]) && in_array('street_address', $location->results[0]->types)) {
             $returner['not_found'] = false;
             $returner['street_nr'] =  $location->results[0]->address_components[0]->long_name;
             $returner['street'] =  $location->results[0]->address_components[1]->long_name;
