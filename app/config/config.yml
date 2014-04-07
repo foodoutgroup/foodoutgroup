@@ -11,7 +11,7 @@ parameters:
     available_cities: ["Vilnius", "Kaunas"]
     time_zone: "Europe/Vilnius"
     sms.available_providers: [food.infobip]
-    sms.sender: "Skanu.lt"
+    sms.sender: "Foodout.lt"
     sms.balance_limit_warn: 10
     sms.balance_limit_critical: 5
     infobip_provider.api_url: "http://api.infobip.com/api/v3/sendsms/json"
@@ -23,7 +23,7 @@ parameters:
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
     title: "Foodout"
-    domain: "labai.skanu.lt"
+    domain: "beta.foodout.lt"
     arc_gis_user: "skanulabai"
     arc_gis_pass: "labaiskanu"
     arc_gis_client_id: "QTFVE57PzjWLTXOj"

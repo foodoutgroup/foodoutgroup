@@ -24,9 +24,12 @@ class OrderService extends ContainerAware
     /**
      * Naujas uzsakymas. Dar neperduotas restoranui
      * @var string
-     * TODO PN aptarti flow su Juozu
      */
     public static $status_new = "new";
+    /**
+     * @var string Nepavyko apmokejimas
+     */
+    public static $status_failed = "failed";
     public static $status_accepted = "accepted";
     public static $status_assiged = "assigned";
     public static $status_delayed = "delayed";
@@ -239,6 +242,17 @@ class OrderService extends ContainerAware
     public function statusNew()
     {
         $this->chageOrderStatus(self::$status_new);
+        return $this;
+    }
+
+    /**
+     * When payment has failed
+     *
+     * @return $this
+     */
+    public function statusFailed()
+    {
+        $this->chageOrderStatus(self::$status_failed);
         return $this;
     }
 
