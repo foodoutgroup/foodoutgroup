@@ -265,15 +265,19 @@
       <trans-unit id="5ad57190264dcf453d3f80908aa924de" resname="general.help_slug">
         <source>general.help_slug</source>
         <target>pagalba</target>
-      </trans-unit>
-        <trans-unit id="general.close_btn" resname="general.close_btn">
-            <source>general.close_btn</source>
-            <target>Uždaryti</target>
-        </trans-unit>
-        <trans-unit id="index.address_not_found" resname="index.address_not_found">
-            <source>index.address_not_found</source>
-            <target>Adresas nerastas arba neegzistuoja</target>
-        </trans-unit>
+    </trans-unit>
+    <trans-unit id="general.close_btn" resname="general.close_btn">
+        <source>general.close_btn</source>
+        <target>Uždaryti</target>
+    </trans-unit>
+    <trans-unit id="general.sms.new_order" resname="general.sms.new_order">
+        <source>general.sms.new_order</source>
+        <target>Naujas uzsakymas: </target>
+    </trans-unit>
+    <trans-unit id="index.address_not_found" resname="index.address_not_found">
+        <source>index.address_not_found</source>
+        <target>Adresas nerastas arba neegzistuoja</target>
+    </trans-unit>
     </body>
   </file>
 </xliff>

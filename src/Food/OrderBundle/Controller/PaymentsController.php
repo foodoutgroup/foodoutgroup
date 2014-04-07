@@ -47,6 +47,7 @@ class PaymentsController extends Controller
             $logger->alert("trace: ".$e->getTraceAsString());
 
             if ($order) {
+                $orderService->statusFailed();
                 $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());
                 $orderService->saveOrder();
             }
@@ -54,16 +55,20 @@ class PaymentsController extends Controller
             return new Response($e->getTraceAsString(), 500);
         }
 
-        // TODO translation and send to place point, not some number
         $messagingService = $this->container->get('food.messages');
 
-        $sender = $this->container->getParameter('sms.sender');
-        $recipient = '37061514333';
+        // Inform restourant about new order
         $orderConfirmRoute = $this->container->get('router')
             ->generate('ordermobile', array('hash' => $order->getOrderHash()));
-        $messageText = 'Naujas uzsakymas: http://'.$this->container->getParameter('domain').$orderConfirmRoute;
-        $message = $messagingService->createMessage($sender, $recipient, $messageText);
 
+        $messageText = $this->get('translator')->trans('general.sms.new_order')
+            .': http://'.$this->container->getParameter('domain').$orderConfirmRoute;
+
+        $message = $messagingService->createMessage(
+            $this->container->getParameter('sms.sender'),
+            $order->getPlacePoint()->getPhone(),
+            $messageText
+        );
         $messagingService->saveMessage($message);
 
         $logger->alert("Sending message for order to be accepted to number: ".$recipient.' with text "'.$messageText.'"');

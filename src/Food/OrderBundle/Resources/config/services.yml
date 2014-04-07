@@ -21,6 +21,12 @@ services:
             - [setPayseraBiller, [@food.paysera_biller]]
             - [setLocalBiller, [@food.local_biller]]
 
+    food.accounting:
+        class: Food\OrderBundle\Service\AccountingService
+        arguments: []
+        calls:
+            - [setContainer, ["@service_container"]]
+
     food.logistics:
         class: Food\OrderBundle\Service\LogisticsService
         arguments: []

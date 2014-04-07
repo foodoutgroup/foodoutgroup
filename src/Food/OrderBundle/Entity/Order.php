@@ -102,17 +102,29 @@ class Order
      */
     private $vat;
 
-
     /**
      * @var decimal
      * @ORM\Column(name="total", type="decimal", precision=4, nullable=true)
      */
     private $total;
+    
     /**
      * @var integer
      * @ORM\Column(name="order_hash", type="string", length=100)
      */
     private $order_hash;
+
+    /**
+     * @var string
+     * @ORM\Column(name="series", type="string", length=4)
+     */
+    private $series = 'A';
+
+    /**
+     * @var int
+     * @ORM\Column(name="number", type="integer", length=10)
+     */
+    private $number = 1;
 
     /**
      * @var string
@@ -367,6 +379,15 @@ class Order
     public function getPlaceComment()
     {
         return $this->place_comment;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAmount()
+    {
+        // TODO susumuoti visu detailsu kainas ir grazinti ;)
+        return '1.5';
     }
 
     /**
@@ -821,6 +842,85 @@ class Order
     public function getLocale()
     {
         return $this->locale;
+    }
+
+    /**
+     * Add accounting
+     *
+     * @param \Food\OrderBundle\Entity\OrderAccounting $accounting
+     * @return Order
+     */
+    public function addAccounting(\Food\OrderBundle\Entity\OrderAccounting $accounting)
+    {
+        $this->accounting[] = $accounting;
+    
+        return $this;
+    }
+
+    /**
+     * Remove accounting
+     *
+     * @param \Food\OrderBundle\Entity\OrderAccounting $accounting
+     */
+    public function removeAccounting(\Food\OrderBundle\Entity\OrderAccounting $accounting)
+    {
+        $this->accounting->removeElement($accounting);
+    }
+
+    /**
+     * Get accounting
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAccounting()
+    {
+        return $this->accounting;
+    }
+
+    /**
+     * Set series
+     *
+     * @param string $series
+     * @return Order
+     */
+    public function setSeries($series)
+    {
+        $this->series = $series;
+    
+        return $this;
+    }
+
+    /**
+     * Get series
+     *
+     * @return string 
+     */
+    public function getSeries()
+    {
+        return $this->series;
+    }
+
+    /**
+     * Set number
+     *
+     * @param integer $number
+     * @return Order
+     */
+    public function setNumber($number)
+    {
+        $this->number = $number;
+    
+        return $this;
+    }
+
+    /**
+     * Get number
+     *
+     * @return integer 
+     */
+    public function getNumber()
+    {
+        return $this->number;
     }
 
     /**
