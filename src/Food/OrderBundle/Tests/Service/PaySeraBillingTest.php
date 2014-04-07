@@ -116,7 +116,7 @@ class PaySeraBillingTest extends \PHPUnit_Framework_TestCase {
             ->will($this->returnValue(48));
 
         $order->expects($this->once())
-            ->method('getAmount')
+            ->method('getTotal')
             ->will($this->returnValue(115.55));
 
         $container->expects($this->once())

@@ -102,6 +102,12 @@ class Order
      */
     private $vat;
 
+
+    /**
+     * @var decimal
+     * @ORM\Column(name="total", type="decimal", precision=4, nullable=true)
+     */
+    private $total;
     /**
      * @var integer
      * @ORM\Column(name="order_hash", type="string", length=100)
@@ -361,15 +367,6 @@ class Order
     public function getPlaceComment()
     {
         return $this->place_comment;
-    }
-
-    /**
-     * @return float
-     */
-    public function getAmount()
-    {
-        // TODO susumuoti visu detailsu kainas ir grazinti ;)
-        return '1.5';
     }
 
     /**
@@ -824,5 +821,28 @@ class Order
     public function getLocale()
     {
         return $this->locale;
+    }
+
+    /**
+     * Set total
+     *
+     * @param string $total
+     * @return Order
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+    
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return string 
+     */
+    public function getTotal()
+    {
+        return $this->total;
     }
 }
