@@ -930,12 +930,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "f8e9255eedc91bc53195de288c9fe640719b2817"
+                "reference": "fa6022638e10342f5244181675e4bcd4955fc2ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/f8e9255eedc91bc53195de288c9fe640719b2817",
-                "reference": "f8e9255eedc91bc53195de288c9fe640719b2817",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/fa6022638e10342f5244181675e4bcd4955fc2ff",
+                "reference": "fa6022638e10342f5244181675e4bcd4955fc2ff",
                 "shasum": ""
             },
             "require": {
@@ -990,7 +990,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2014-03-18 08:55:34"
+            "time": "2014-04-05 11:45:34"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -1748,12 +1748,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "f60420136ee898e6ebbe471a3129f1fed6c507ca"
+                "reference": "9273791bdbffbe8bf75e92babddec393dc06e37f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/f60420136ee898e6ebbe471a3129f1fed6c507ca",
-                "reference": "f60420136ee898e6ebbe471a3129f1fed6c507ca",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/9273791bdbffbe8bf75e92babddec393dc06e37f",
+                "reference": "9273791bdbffbe8bf75e92babddec393dc06e37f",
                 "shasum": ""
             },
             "require": {
@@ -1820,7 +1820,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2014-03-03 07:31:33"
+            "time": "2014-03-31 10:42:40"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -1828,12 +1828,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "fd344458ae702387251d7294196a927856a0c6cb"
+                "reference": "74a0ee0b652690b918610caac28b1321f22a233c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/fd344458ae702387251d7294196a927856a0c6cb",
-                "reference": "fd344458ae702387251d7294196a927856a0c6cb",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/74a0ee0b652690b918610caac28b1321f22a233c",
+                "reference": "74a0ee0b652690b918610caac28b1321f22a233c",
                 "shasum": ""
             },
             "require": {
@@ -1884,7 +1884,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-03-19 11:43:04"
+            "time": "2014-04-04 16:19:20"
         },
         {
             "name": "sonata-project/cache",
@@ -2127,7 +2127,7 @@
         },
         {
             "name": "sonata-project/doctrine-orm-admin-bundle",
-            "version": "dev-master",
+            "version": "2.2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle.git",
@@ -2308,16 +2308,16 @@
         },
         {
             "name": "sonata-project/google-authenticator",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/GoogleAuthenticator.git",
-                "reference": "0bb0f409a93da46fd76fe641b3f0c5aa52d3c063"
+                "reference": "72f47caddd09d09c0d3c3e046f6b435e0c004cd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/GoogleAuthenticator/zipball/0bb0f409a93da46fd76fe641b3f0c5aa52d3c063",
-                "reference": "0bb0f409a93da46fd76fe641b3f0c5aa52d3c063",
+                "url": "https://api.github.com/repos/sonata-project/GoogleAuthenticator/zipball/72f47caddd09d09c0d3c3e046f6b435e0c004cd4",
+                "reference": "72f47caddd09d09c0d3c3e046f6b435e0c004cd4",
                 "shasum": ""
             },
             "require": {
@@ -2354,7 +2354,7 @@
             "keywords": [
                 "google authenticator"
             ],
-            "time": "2014-02-14 12:23:00"
+            "time": "2014-03-31 09:18:53"
         },
         {
             "name": "sonata-project/intl-bundle",
@@ -2587,16 +2587,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.0.3",
+            "version": "v5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "32edc3b0de0fdc1b10f5c4912e8677b3f411a230"
+                "reference": "748c01c1144713ac0118396935d10b6ceec91b68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/32edc3b0de0fdc1b10f5c4912e8677b3f411a230",
-                "reference": "32edc3b0de0fdc1b10f5c4912e8677b3f411a230",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/748c01c1144713ac0118396935d10b6ceec91b68",
+                "reference": "748c01c1144713ac0118396935d10b6ceec91b68",
                 "shasum": ""
             },
             "require": {
@@ -2620,7 +2620,9 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Chris Corbyn"
@@ -2632,7 +2634,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2013-12-03 13:33:24"
+            "time": "2014-03-18 09:03:27"
         },
         {
             "name": "symfony/assetic-bundle",
@@ -2805,22 +2807,22 @@
         },
         {
             "name": "symfony/swiftmailer-bundle",
-            "version": "v2.3.5",
+            "version": "v2.3.7",
             "target-dir": "Symfony/Bundle/SwiftmailerBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/SwiftmailerBundle.git",
-                "reference": "fcefa9dbd5a1ed20547b0f8a2afd5ad6837ea321"
+                "reference": "e98defd402f72e8b54a029ba4d3ac4cb51dc3577"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/SwiftmailerBundle/zipball/fcefa9dbd5a1ed20547b0f8a2afd5ad6837ea321",
-                "reference": "fcefa9dbd5a1ed20547b0f8a2afd5ad6837ea321",
+                "url": "https://api.github.com/repos/symfony/SwiftmailerBundle/zipball/e98defd402f72e8b54a029ba4d3ac4cb51dc3577",
+                "reference": "e98defd402f72e8b54a029ba4d3ac4cb51dc3577",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
-                "swiftmailer/swiftmailer": ">=4.2.0,<5.1-dev",
+                "swiftmailer/swiftmailer": ">=4.2.0,~5.0",
                 "symfony/swiftmailer-bridge": "~2.1"
             },
             "require-dev": {
@@ -2832,7 +2834,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
             "autoload": {
@@ -2847,7 +2849,9 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Symfony Community",
@@ -2856,20 +2860,20 @@
             ],
             "description": "Symfony SwiftmailerBundle",
             "homepage": "http://symfony.com",
-            "time": "2013-11-21 12:29:01"
+            "time": "2014-04-05 17:15:52"
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.3.11",
+            "version": "v2.3.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "aa5b228e87dde1a1a9c7c3c78ad538739da05fe1"
+                "reference": "3574df3d5e0039f3225007b8be534df5c4104503"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/aa5b228e87dde1a1a9c7c3c78ad538739da05fe1",
-                "reference": "aa5b228e87dde1a1a9c7c3c78ad538739da05fe1",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/3574df3d5e0039f3225007b8be534df5c4104503",
+                "reference": "3574df3d5e0039f3225007b8be534df5c4104503",
                 "shasum": ""
             },
             "require": {
@@ -2966,7 +2970,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-02-27 14:55:30"
+            "time": "2014-04-03 05:42:39"
         },
         {
             "name": "trsteel/ckeditor-bundle",

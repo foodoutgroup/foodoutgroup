@@ -80,7 +80,6 @@ class OrderService extends ContainerAware
      */
     private $em;
 
-
     private $context;
     /**
      * @var \Food\UserBundle\Entity\User
@@ -226,28 +225,10 @@ class OrderService extends ContainerAware
      * @param string $status
      * @param string|null $message
      */
-    public function chageOrderStatus($status, $message=null)
+    protected function chageOrderStatus($status, $message=null)
     {
         // Let's log the shit out of it
         $this->logStatusChange($this->getOrder(), $status, $message);
-
-        // Inform poor user, that his order was accepted
-        if ($this->getOrder()->getOrderStatus() == self::$status_new
-            && $status == self::$status_accepted) {
-
-            $recipient = $this->getOrder()->getUser()->getPhone();
-
-            if (!empty($recipient)) {
-                $smsService = $this->container->get('food.messages');
-
-                $sender = $this->container->getParameter('sms.sender');
-                $text = $this->container->get('translator')
-                    ->trans('general.sms.user.order_accepted', array(), null, $this->getOrder()->getLocale());
-
-                $message = $smsService->createMessage($sender, $recipient, $text);
-                $smsService->saveMessage($message);
-            }
-        }
 
         $this->getOrder()->setOrderStatus($status);
     }
@@ -266,7 +247,25 @@ class OrderService extends ContainerAware
      */
     public function statusAccepted()
     {
-        $this->chageOrderStatus(self::$status_accepted);
+        // Inform poor user, that his order was accepted
+        if ($this->getOrder()->getOrderStatus() == self::$status_new) {
+
+            $recipient = $this->getOrder()->getUser()->getPhone();
+
+            if (!empty($recipient)) {
+                $smsService = $this->container->get('food.messages');
+
+                $sender = $this->container->getParameter('sms.sender');
+                $text = $this->container->get('translator')
+                    ->trans('general.sms.user.order_accepted', array(), null, $this->getOrder()->getLocale());
+
+                $message = $smsService->createMessage($sender, $recipient, $text);
+                $smsService->saveMessage($message);
+            }
+
+            $this->chageOrderStatus(self::$status_accepted);
+        }
+
         return $this;
     }
 
@@ -285,6 +284,20 @@ class OrderService extends ContainerAware
     public function statusCompleted()
     {
         $this->chageOrderStatus(self::$status_completed);
+
+        // Form accounting data if it is not formed already
+        $order = $this->getOrder();
+        $accountingService = $this->container->get('food.accounting');
+        $accounting = $order->getAccounting();
+
+        // if not generated yet - do it!
+        if (empty($accounting)) {
+            // TODO kolkas stabdome. Pirmam testavimui reikia susitvarkyti su SMS'ais ir mobile vairuotojo aplinka, vaztarasciu
+//            $accounting = $accountingService->generateAccounting($this->getOrder());
+
+            // TODO upload accounting
+        }
+
         return $this;
     }
 
