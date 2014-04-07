@@ -45,3 +45,28 @@
         </div>
     {% endfor %}
 </div>
+<script>
+    $(document).ready(function(){
+        var c1 = '{% trans %}general.places_found1{% endtrans %}';
+        var c2 = '{% trans %}general.places_found2{% endtrans %}';
+        var c3 = '{% trans %}general.places_found3{% endtrans %}';
+        var cnt = {{ places|length }};
+        var trgt = $('.page-title .place-counter');
+        var recommended = {{ recommended }};
+        if (cnt == 0) {
+            trgt.text('');
+        } else if (cnt == 1) {
+            trgt.text(c1);
+        } else if (cnt > 1 && cnt < 10) {
+            trgt.text(c2);
+        } else {
+            trgt.text(c3);
+        }
+        trgt.text(trgt.text().replace("%1", cnt));
+        {% if location_show %}
+            if (recommended == 0 && cnt > 0) {
+                trgt.text(trgt.text() + ', {% trans %}places.places_near{% endtrans %} {{ location.address }}');
+            }
+        {% endif %}
+    });
+</script>

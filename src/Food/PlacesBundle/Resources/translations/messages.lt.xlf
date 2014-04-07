@@ -202,6 +202,22 @@
         <source>general.places</source>
         <target>Vietos</target>
       </trans-unit>
+      <trans-unit id="general.places_found1" resname="general.places_found1">
+        <source>general.places_found1</source>
+        <target>Rastas %1 restoranas</target>
+      </trans-unit>
+        <trans-unit id="general.places_found2" resname="general.places_found2">
+            <source>general.places_found2</source>
+            <target>Rasti %1 restoranai</target>
+        </trans-unit>
+        <trans-unit id="general.places_found3" resname="general.places_found3">
+            <source>general.places_found3</source>
+            <target>Rasta %1 restoranų</target>
+        </trans-unit>
+        <trans-unit id="places.places_near" resname="places.places_near">
+            <source>places.places_near</source>
+            <target>netoli</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>
