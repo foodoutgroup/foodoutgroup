@@ -341,6 +341,7 @@ class CartService {
         $list = $this->getEm()->getRepository('FoodCartBundle:CartOption')->findBy(
             array(
                 'session' => $this->getSessionId(),
+                'cart_id' => $cartItem->getCartId(),
                 'dish_id' => $cartItem->getDishId()->getId()
             )
         );

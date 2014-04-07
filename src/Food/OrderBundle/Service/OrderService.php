@@ -381,6 +381,7 @@ class OrderService extends ContainerAware
         $this->createOrder($place);
         $this->getOrder()->setLocale($locale);
         $this->saveOrder();
+        $sumTotal = 0;
 
         foreach ($this->getCartService()->getCartDishes($place) as $cartDish) {
             $options = $this->getCartService()->getCartDishOptions($cartDish);
@@ -398,6 +399,8 @@ class OrderService extends ContainerAware
             $this->getEm()->persist($dish);
             $this->getEm()->flush();
 
+            $sumTotal += $cartDish->getQuantity() * $cartDish->getDishSizeId()->getPrice();
+
             foreach ($options as $opt) {
                 $orderOpt = new OrderDetailsOptions();
                 $orderOpt->setDishOptionId($opt->getDishOptionId())
@@ -410,9 +413,14 @@ class OrderService extends ContainerAware
                     ->setOrderDetail($dish);
                 $this->getEm()->persist($orderOpt);
                 $this->getEm()->flush();
-            }
 
+                $sumTotal += $cartDish->getQuantity() * $opt->getDishOptionId()->getPrice();
+            }
         }
+
+        $sumTotal+= $this->getOrder()->getPlace()->getDeliveryPrice();
+        $this->getOrder()->setTotal($sumTotal);
+        $this->saveOrder();
 
     }
 

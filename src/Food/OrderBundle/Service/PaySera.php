@@ -234,7 +234,7 @@ class PaySera extends ContainerAware implements BillingInterface {
             'projectid' => $this->getProjectId(),
             'sign_password' => $this->getSightPassword(),
             'orderid' => $order->getId(),
-            'amount' => $order->getAmount()*100,
+            'amount' => $order->getTotal()*100,
             'currency' => 'LTL', // TODO kai eisim i kita rinka
             'country' => 'LT', // TODO kai eisim i kita rinka
             'accepturl' => $acceptUrl,
