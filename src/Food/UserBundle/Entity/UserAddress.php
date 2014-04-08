@@ -50,9 +50,9 @@ class UserAddress
     /**
      * @var int
      *
-     * @ORM\Column(name="default", type="integer", length=1)
+     * @ORM\Column(name="is_default", type="integer", length=1)
      */
-    private $default;
+    private $default = 1;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="address")

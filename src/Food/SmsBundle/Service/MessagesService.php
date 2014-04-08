@@ -129,6 +129,8 @@ class MessagesService {
             $message->setSender($sender);
         }
         if (!empty($recipient)) {
+            $recipient = str_replace('+', '', $recipient);
+
             $message->setRecipient($recipient);
         }
         if (!empty($text)) {
