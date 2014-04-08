@@ -416,5 +416,4 @@ class CartService {
             $this->getEm()->flush();
         }
     }
-
 }
