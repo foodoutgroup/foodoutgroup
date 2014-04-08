@@ -410,6 +410,9 @@ class OrderService extends ContainerAware
     {
         $this->createOrder($place);
         $this->getOrder()->setLocale($locale);
+        // TODO hackas isimti!!!
+        $user = $this->container->get('fos_user.user_manager')->findUserBy(array('id'=>1));
+        $this->getOrder()->setUser($user);
         $this->saveOrder();
         $sumTotal = 0;
 
