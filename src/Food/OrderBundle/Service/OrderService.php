@@ -210,6 +210,7 @@ class OrderService extends ContainerAware
         }
         $this->order->setPlace($placeRecord);
         $this->order->setPlaceName($placeRecord->getName());
+        $this->order->setPlacePointSelfDelivery($placeRecord->getSelfDelivery());
 
         $this->order->setPlacePoint($pointRecord);
         $this->order->setPlacePointCity($pointRecord->getCity());
