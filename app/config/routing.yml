@@ -72,6 +72,10 @@ ordermobile:
     path: /o/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~, action: ~ }
 
+drivermobile:
+    path: /d/{hash}/
+#    TODO pakeisti actiona i kuri veda
+    defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~, action: ~ }
 
 local_biller_accept:
     path: /{_locale}/payments/local/accept/
