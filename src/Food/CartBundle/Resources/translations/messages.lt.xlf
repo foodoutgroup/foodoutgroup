@@ -66,6 +66,10 @@
         <source>cart.checkout.phone</source>
         <target>Telefonas</target>
       </trans-unit>
+      <trans-unit id="cart.checkout.phone_placeholder" resname="cart.checkout.phone_placeholder">
+        <source>cart.checkout.phone_placeholder</source>
+        <target>3706</target>
+      </trans-unit>
       <trans-unit id="bc8439664f3800919e17d58ad5eaff4b" resname="cart.checkout.delivery_comment">
         <source>cart.checkout.delivery_comment</source>
         <target>Papildoma info</target>

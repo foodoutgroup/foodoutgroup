@@ -764,3 +764,10 @@ input.button {}
     padding-left: 5px;
 }
 /** End of side cart happyness **/
+
+/* Cart delivery mega hacked form */
+.form-row-required label:after {
+    content: '*';
+    color: #FF0000;
+}
+/* End of delivery mega super duper form styles */

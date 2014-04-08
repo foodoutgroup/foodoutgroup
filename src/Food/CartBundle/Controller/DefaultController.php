@@ -133,6 +133,12 @@ class DefaultController extends Controller
         $request = $this->getRequest();
 
         $orderService = $this->container->get('food.order');
+        $googleGisService = $this->container->get('food.googlegis');
+        /**
+         * @var UserManager $fosUserManager
+         */
+        $fosUserManager = $this->get('fos_user.user_manager');
+
         $orderHash = $request->get('hash');
         $order = null;
 
@@ -146,10 +152,33 @@ class DefaultController extends Controller
         // Form submitted
         if ($request->getMethod() == 'POST') {
             if (empty($order)) {
-                $fosUserManager = $this->get('fos_user.user_manager');
-                // @todo Mantai :) Holy shit - wtf?
-                // $fosUserManager->a();
-                //$user =
+                $userEmail = $request->get('customer-email');
+                $userPhone = $request->get('customer-phone');
+
+                $user = $fosUserManager->findUserByEmail($userEmail);
+
+                if (empty($user) || !$user->getId()) {
+                    /**
+                     * @var User $user
+                     */
+                    $user = $fosUserManager->createUser();
+                    $user->setUsername($userEmail);
+                    $user->setEmail($userEmail);
+
+                    $user->setFirstname($request->get('customer-firstname'));
+                    $user->setLastname($request->get('customer-lastname', null));
+
+                    if (!empty($userPhone)) {
+                        $user->setPhone($userPhone);
+                    }
+
+                    // TODO gal cia normaliai generuosim desra-sasyskos-random krap ir siusim useriui emailu ir dar iloginsim
+                    $user->setPlainPassword('new-user');
+                    $user->addRole('ROLE_USER');
+
+                    $fosUserManager->updateUser($user);
+                }
+
                 $orderService->createOrderFromCart($placeId, $request->getLocale(), $user);
                 $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
             } else {
@@ -157,12 +186,33 @@ class DefaultController extends Controller
                 $orderService->logOrder(null, 'retry', 'Canceled order billing retry by user', $orderService->getOrder());
             }
 
+            if ($userPhone != $user->getPhone()) {
+                $user->setPhone($userPhone);
+                $fosUserManager->updateUser($user);
+            }
+
             $paymentMethod = $request->get('payment-type');
             $deliveryType = $request->get('delivery-type');
+            $customerComment = $request->get('customer-comment');
             $orderService->setPaymentMethod($paymentMethod);
             $orderService->setDeliveryType($deliveryType);
             $orderService->setLocale($request->getLocale());
+            if (!empty($customerComment)) {
+                $orderService->getOrder()->setComment($customerComment);
+            }
             $orderService->setPaymentStatus($orderService::$paymentStatusWait);
+
+            // Update order with recent address information
+            $locationData = $googleGisService->getLocationFromSession();
+            $address = $orderService->createAddressMagic(
+                $user,
+                $locationData['city'],
+                $locationData['address_orig'],
+                (string)$locationData['lat'],
+                (string)$locationData['lng']
+            );
+            $orderService->getOrder()->setAddressId($address);
+            $orderService->saveOrder();
 
             $billingUrl = $orderService->billOrder();
             if (!empty($billingUrl)) {

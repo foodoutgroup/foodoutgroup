@@ -2,7 +2,6 @@
 
 namespace Food\OrderBundle\Service;
 
-use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
 use Food\CartBundle\Service\CartService;
 use Food\OrderBundle\Entity\Order;
@@ -11,6 +10,7 @@ use Food\OrderBundle\Entity\OrderDetailsOptions;
 use Food\OrderBundle\Entity\OrderLog;
 use Food\OrderBundle\Entity\OrderStatusLog;
 use Food\OrderBundle\Entity\PaymentLog;
+use Food\UserBundle\Entity\UserAddress;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Security\Acl\Exception\Exception;
 
@@ -404,16 +404,48 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param \Food\UserBundle\Entity\User $user
+     * @param string $city
+     * @param string $address
+     * @param string $lat
+     * @param string $lon
+     *
+     * @return UserAddress
+     */
+    public function createAddressMagic($user, $city, $address, $lat, $lon)
+    {
+        $userAddress = $this->getEm()
+            ->getRepository('Food\UserBundle\Entity\UserAddress')
+            ->findBy(array(
+                'user' => $user,
+                'city' => $city,
+                'address' => $address,
+        ));
+
+        if (!$userAddress) {
+            $userAddress = new UserAddress();
+            $userAddress->setUser($user)
+                ->setCity($city)
+                ->setAddress($address)
+                ->setLat($lat)
+                ->setLon($lon);
+
+            $this->getEm()->persist($userAddress);
+            $this->getEm()->flush();
+        }
+
+        return $userAddress;
+    }
+
+    /**
      * @param int $place
      * @param string $locale
+     * @param \Food\UserBundle\Entity\User $user
      */
-    public function createOrderFromCart($place, $locale='lt', $user=null)
+    public function createOrderFromCart($place, $locale='lt', $user)
     {
         $this->createOrder($place);
         $this->getOrder()->setLocale($locale);
-        // TODO hackas isimti!!!
-        $user = $this->container->get('fos_user.user_manager')
-            ->findEmail('admin@skanu.lt');
         $this->getOrder()->setUser($user);
         $this->saveOrder();
         $sumTotal = 0;
