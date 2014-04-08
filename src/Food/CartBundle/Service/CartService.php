@@ -73,7 +73,6 @@ class CartService {
      */
     public function getSessionId()
     {
-        return 123;
         return $this->getContainer()->get('session')->getId();
     }
 
