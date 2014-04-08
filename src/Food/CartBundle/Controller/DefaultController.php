@@ -202,16 +202,18 @@ class DefaultController extends Controller
             }
             $orderService->setPaymentStatus($orderService::$paymentStatusWait);
 
-            // Update order with recent address information
-            $locationData = $googleGisService->getLocationFromSession();
-            $address = $orderService->createAddressMagic(
-                $user,
-                $locationData['city'],
-                $locationData['address_orig'],
-                (string)$locationData['lat'],
-                (string)$locationData['lng']
-            );
-            $orderService->getOrder()->setAddressId($address);
+            // Update order with recent address information. but only if we need to deliver
+            if ($deliveryType == $orderService::$deliveryDeliver) {
+                $locationData = $googleGisService->getLocationFromSession();
+                $address = $orderService->createAddressMagic(
+                    $user,
+                    $locationData['city'],
+                    $locationData['address_orig'],
+                    (string)$locationData['lat'],
+                    (string)$locationData['lng']
+                );
+                $orderService->getOrder()->setAddressId($address);
+            }
             $orderService->saveOrder();
 
             $billingUrl = $orderService->billOrder();

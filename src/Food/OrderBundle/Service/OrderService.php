@@ -416,7 +416,7 @@ class OrderService extends ContainerAware
     {
         $userAddress = $this->getEm()
             ->getRepository('Food\UserBundle\Entity\UserAddress')
-            ->findBy(array(
+            ->findOneBy(array(
                 'user' => $user,
                 'city' => $city,
                 'address' => $address,
