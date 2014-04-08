@@ -286,6 +286,36 @@ class OrderService extends ContainerAware
     /**
      * @return $this
      */
+    public function statusAssigned()
+    {
+        // Inform poor user, that his order was accepted
+        $driver = $this->getOrder()->getDriver();
+        if ($driver->getType() == 'local') {
+            $messagingService = $this->container->get('food.messages');
+
+            // Inform driver about new order that was assigned to him
+            $orderConfirmRoute = $this->container->get('router')
+                ->generate('drivermobile', array('hash' => $this->getOrder()->getOrderHash()));
+
+            $messageText = $this->container->get('translator')->trans('general.sms.driver_assigned_order')
+                .': http://'.$this->container->getParameter('domain').$orderConfirmRoute;
+
+            $message = $messagingService->createMessage(
+                $this->container->getParameter('sms.sender'),
+                $driver->getPhone(),
+                $messageText
+            );
+            $messagingService->saveMessage($message);
+        }
+
+        $this->chageOrderStatus(self::$status_assiged);
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
     public function statusForwarded()
     {
         $this->chageOrderStatus(self::$status_forwarded);
@@ -914,6 +944,28 @@ class OrderService extends ContainerAware
         }
 
         return $orders;
+    }
+
+    /**
+     * Send a message to place about new order
+     */
+    public function informPlace()
+    {
+        $messagingService = $this->container->get('food.messages');
+
+        // Inform restourant about new order
+        $orderConfirmRoute = $this->container->get('router')
+            ->generate('ordermobile', array('hash' => $this->getOrder()->getOrderHash()));
+
+        $messageText = $this->container->get('translator')->trans('general.sms.new_order')
+            .': http://'.$this->container->getParameter('domain').$orderConfirmRoute;
+
+        $message = $messagingService->createMessage(
+            $this->container->getParameter('sms.sender'),
+            $this->getOrder()->getPlacePoint()->getPhone(),
+            $messageText
+        );
+        $messagingService->saveMessage($message);
     }
 
     /**

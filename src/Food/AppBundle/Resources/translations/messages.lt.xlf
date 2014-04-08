@@ -274,6 +274,10 @@
         <source>general.sms.new_order</source>
         <target>Naujas uzsakymas: </target>
     </trans-unit>
+    <trans-unit id="general.sms.driver_assigned_order" resname="general.sms.driver_assigned_order">
+        <source>general.sms.driver_assigned_order</source>
+        <target>Priskirtas naujas uzsakymas: </target>
+    </trans-unit>
     <trans-unit id="index.address_not_found" resname="index.address_not_found">
         <source>index.address_not_found</source>
         <target>Adresas nerastas arba neegzistuoja</target>

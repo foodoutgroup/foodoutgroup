@@ -151,7 +151,7 @@ class LogisticsService extends ContainerAware
             $order = $orderService->getOrderById($orderId);
             $order->setDriver($driver);
 
-            $orderService->statusAccepted();
+            $orderService->statusAssigned();
             $orderService->saveOrder();
         }
 
