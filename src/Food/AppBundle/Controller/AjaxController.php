@@ -40,7 +40,7 @@ class AjaxController extends Controller
     private function _ajaxActFindAddress($response, $city, $address)
     {
         $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
-        $locationInfo = $this->get('food.googlegis')->groupData($location);
+        $locationInfo = $this->get('food.googlegis')->groupData($location, $address);
 
         $respData = array(
             'success' => 0,

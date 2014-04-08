@@ -60,20 +60,23 @@ class GoogleGisService extends ContainerAware
      * @param \stdClass $location
      * @return array
      */
-    public function groupData($location)
+    public function groupData($location, $address)
     {
         $returner = array();
         $returner['not_found'] = true;
         $returner['status'] = $location->status;
+
         if( !empty( $location->results[0]) && in_array('street_address', $location->results[0]->types)) {
             $returner['not_found'] = false;
             $returner['street_nr'] =  $location->results[0]->address_components[0]->long_name;
             $returner['street'] =  $location->results[0]->address_components[1]->long_name;
             $returner['city'] =  $location->results[0]->address_components[2]->long_name;
             $returner['address'] = $returner['street']." ".$returner['street_nr'];
+            $returner['address_orig'] = $address;
             $returner['lat'] = $location->results[0]->geometry->location->lat;
             $returner['lng'] = $location->results[0]->geometry->location->lng;
         }
+
         $this->setLocationToSession($returner);
         return $returner;
     }

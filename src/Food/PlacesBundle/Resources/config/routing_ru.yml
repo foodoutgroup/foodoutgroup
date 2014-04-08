@@ -1,3 +1,7 @@
 food_places_ru_main:
     pattern: /
     defaults: { _controller: FoodPlacesBundle:Default:index}
+
+food_places_ru_recommended:
+    pattern: /rekomenduemyj/
+    defaults: { _controller: FoodPlacesBundle:Default:index, recommended: 1}

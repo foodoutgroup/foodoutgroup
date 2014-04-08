@@ -75,7 +75,7 @@
                     <a href="#">{% trans %}places.sort_by_distance{% endtrans %}</a>
                 </div>
             </div>
-            {{ render(controller('FoodPlacesBundle:Default:list', {})) }}
+            {{ render(controller('FoodPlacesBundle:Default:list', {'recommended':recommended})) }}
         </div>
     </div>
 

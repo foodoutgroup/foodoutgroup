@@ -9,13 +9,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
-    public function indexAction()
+    public function indexAction($recommended = false)
     {
-        return $this->render('FoodPlacesBundle:Default:index.html.twig');
+        if ($recommended) {
+            $recommended = true;
+        }
+        return $this->render('FoodPlacesBundle:Default:index.html.twig', array('recommended' => $recommended));
     }
 
     public function listAction($recommended = false)
     {
+        if ($recommended) {
+            $recommended = true;
+        }
+
         $kitchens = $this->getRequest()->get('kitchens', "");
         $filters = $this->getRequest()->get('filters');
         if (empty($kitchens)) {
@@ -32,7 +39,12 @@ class DefaultController extends Controller
             $filter = trim($filter);
         }
 
-        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds($kitchens, $filter);
+        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
+            $kitchens,
+            $filter,
+            $recommended,
+            $this->get('food.googlegis')->getLocationFromSession()
+        );
         $this->get('food.places')->saveRelationPlaceToPoint($places);
 
 
