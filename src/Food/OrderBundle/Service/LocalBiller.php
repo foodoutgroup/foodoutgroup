@@ -57,6 +57,7 @@ class LocalBiller extends ContainerAware implements BillingInterface {
         $order->setPaymentStatus($orderService::$paymentStatusComplete);
         $orderService->saveOrder();
 
+        $this->container->get('food.cart')->clearCart($order->getPlace());
         $orderService->informPlace();
 
         $router = $this->container->get('router');
