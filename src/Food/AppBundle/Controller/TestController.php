@@ -13,11 +13,9 @@ class TestController extends Controller
 {
     public function indexAction()
     {
-        $fo = $this->get('food.order');
-        $list = $fo->getOrdersUnassigned('Vilnius');
-        echo "<pre>";
-        var_dump($list[0]->getPlacePoint()->getCity());
-        var_dump($list[0]->getPlacePoint()->getLon());
+        $c = $this->get('food.cart');
+
+        $c->clearCart($this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(1));
 
         echo "</pre>";
         return new Response('Uber');

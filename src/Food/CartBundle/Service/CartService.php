@@ -7,6 +7,7 @@ use Food\CartBundle\Entity\Cart;
 use Food\CartBundle\Entity\CartOption;
 use Food\DishesBundle\Entity\DishOption;
 use Food\DishesBundle\Entity\DishSize;
+use Food\DishesBundle\Entity\Place;
 use Symfony\Component\DependencyInjection\Container;
 
 
@@ -386,8 +387,34 @@ class CartService {
         return $returnData;
     }
 
-    public function checkout()
+    /**
+     * @param Place $place
+     */
+    public function clearCart(Place $place)
     {
-
+        $cartDishes = $this->getEm()->getRepository('FoodCartBundle:Cart')
+            ->findBy(
+                array(
+                    'place_id' => $place,
+                    'session' => $this->getSessionId()
+                )
+            );
+        foreach ($cartDishes as $ck=>$cartDish) {
+            $cartOptions = $this->getEm()->getRepository('FoodCartBundle:CartOption')
+                ->findBy(
+                    array(
+                        'session' => $this->getSessionId(),
+                        'dish_id' => $cartDish->getDishId(),
+                        'cart_id' => $cartDish->getCartId()
+                    )
+                );
+            foreach ($cartOptions as $co=>$cartOption) {
+                $this->getEm()->remove($cartOption);
+                $this->getEm()->flush();
+            }
+            $this->getEm()->remove($cartDish);
+            $this->getEm()->flush();
+        }
     }
+
 }

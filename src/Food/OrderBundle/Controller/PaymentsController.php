@@ -55,6 +55,8 @@ class PaymentsController extends Controller
             return new Response($e->getTraceAsString(), 500);
         }
 
+
+        $this->get('food.cart')->clearCart($order->getPlace());
         $orderService->informPlace();
 
         $logger->alert("Sending message for order to be accepted to number: ".$recipient.' with text "'.$messageText.'"');
