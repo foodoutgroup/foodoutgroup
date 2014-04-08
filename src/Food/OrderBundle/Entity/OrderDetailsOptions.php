@@ -45,7 +45,7 @@ class OrderDetailsOptions
     private $dish_option_name;
 
     /**
-     * @ORM\Column(name="dish_option_code", type="string", length=255)
+     * @ORM\Column(name="dish_option_code", type="string", length=255, nullable=true)
      */
     private $dish_option_code;
 
