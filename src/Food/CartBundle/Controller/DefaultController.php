@@ -84,12 +84,14 @@ class DefaultController extends Controller
      */
     private function _actonAddItem(&$responseData, $request)
     {
-        $this->getCartService()->addDishBySizeId(
-            $request->get('dish-size'),
-            intval($request->get('counter')),
-            $request->get('options'),
-            $request->get('option')
-        );
+        if (intval($request->get('counter')) > 0) {
+            $this->getCartService()->addDishBySizeId(
+                $request->get('dish-size'),
+                intval($request->get('counter')),
+                $request->get('options'),
+                $request->get('option')
+            );
+        }
     }
 
     /**

@@ -214,10 +214,14 @@ $.fn.foodCounter = function(min,max,def) {
             $(this).val(theVal - 1);
         }
     });
-    this.parent().find('.dec').bind('click', function(){
+    this.parent().find('.dec').bind('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
         $(this).parent().find('.theCounter').trigger('dec');
     });
-    this.parent().find('.inc').bind('click', function(){
+    this.parent().find('.inc').bind('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
         $(this).parent().find('.theCounter').trigger('inc');
     });
 };
