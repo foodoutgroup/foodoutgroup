@@ -61,7 +61,7 @@ class PaymentsController extends Controller
 
         $logger->alert("Sending message for order to be accepted to number: ".$recipient.' with text "'.$messageText.'"');
 
-        return new RedirectResponse($this->generateUrl('food_cart_success'));
+        return new RedirectResponse($this->generateUrl('food_cart_success', array('orderHash' => $order->getOrderHash())));
     }
 
     public function payseraCancelAction($hash)

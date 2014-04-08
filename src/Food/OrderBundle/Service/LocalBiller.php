@@ -57,10 +57,11 @@ class LocalBiller extends ContainerAware implements BillingInterface {
         $order->setPaymentStatus($orderService::$paymentStatusComplete);
         $orderService->saveOrder();
 
+        $this->container->get('food.cart')->clearCart($order->getPlace());
         $orderService->informPlace();
 
         $router = $this->container->get('router');
-        return $router->generate('food_cart_success');
+        return $router->generate('food_cart_success', array('orderHash' => $order->getOrderHash()));
     }
 
     public function rollback()
