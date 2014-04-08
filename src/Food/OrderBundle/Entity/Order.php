@@ -116,18 +116,6 @@ class Order
 
     /**
      * @var string
-     * @ORM\Column(name="series", type="string", length=4)
-     */
-    private $series = 'A';
-
-    /**
-     * @var int
-     * @ORM\Column(name="number", type="integer", length=10)
-     */
-    private $number = 1;
-
-    /**
-     * @var string
      * @ORM\Column(name="payment_method", type="string", length=100, nullable=true)
      */
     private $paymentMethod = null;
