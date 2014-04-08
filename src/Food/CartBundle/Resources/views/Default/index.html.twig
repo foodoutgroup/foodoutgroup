@@ -9,9 +9,50 @@
             event.preventDefault();
             return false;
         });
+        $('.address-change').click(function(e){
+            if($(e.target).is('span') || $(e.target).is('input')) {
+                $("#change-address").dialog(
+                    {
+                        modal: true,
+                        resizable:false,
+                        width:360,
+                        buttons: {
+                            'change': {
+                                text: '{% trans %}cart.checkout.address_change_change{% endtrans %}',
+                                click: function() {
+                                    var thisDialog = $(this);
+                                    thisDialog.parent().mask();
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '{{ path('food_ajax', {'action': 'find-address'}) }}',
+                                        data:  {city: $('.city-row select').val(), address: $('.address-row input').val()},
+                                        success:  function(resp){
+                                            if (resp.data.success == 1) {
+                                                window.location.reload();
+                                            } else {
+                                                thisDialog.parent().unmask();
+                                                $('#change-address .alert').show();
+                                                setTimeout(function(){
+                                                    $('#change-address .alert').hide();
+                                                }, 5000);
+                                            }
+                                        }
+                                    });
+                                }
+                            },
+                            'cancel': {
+                                text: '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
+                                click: function() {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        }
+                    }
+                ).siblings('.ui-dialog-titlebar').remove();
+            }
+        });
     });
 {% endblock %}
-
 {% block body %}
     {% javascripts '@FoodAppBundle/Resources/public/js_main/order.js' %}
         <script src="{{ asset_url }}"></script>
@@ -38,16 +79,17 @@
                                 </div>
                             </div>
                             {# TODO - sukelti visus laukus. Issiaiskinti su Paulium address flow #}
-                            <div class="form-row form-row-required">
+                            <div class="form-row form-row-required address-change">
                                 <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
-                                <select class="custom-select">
-                                    <option>Vilnius</option>
-                                    <option>Kaunas</option>
+                                <select class="custom-select" disabled="true">
+                                    <option {% if location and location.city is defined and location.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
+                                    <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
                                 </select>
                             </div>
-                            <div class="form-row form-row-required">
+                            <div class="form-row form-row-required address-change">
                                 <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
-                                <input type="text">
+
+                                <input type="text" id="address" value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% endif %}" readonly>
                             </div>
                             <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.firstname{% endtrans %}:</label>
@@ -118,6 +160,24 @@
                 <div class="content-righter-small">
                     {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': true })) }}
                 </div>
+            </div>
+        </div>
+    </div>
+    <div style="display: none">
+        <div id="change-address" class="delivery-info-form">
+            <div class="alert alert-danger" style="display: none;">
+                {% trans %}cart.checkout.address_not_found{% endtrans %}
+            </div>
+            <div class="form-row form-row-required city-row">
+                <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
+                <select class="custom-select">
+                    <option {% if location and location.city is defined and location.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
+                    <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
+                </select>
+            </div>
+            <div class="form-row form-row-required address-row">
+                <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
+                <input type="text" id="address" value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}">
             </div>
         </div>
     </div>

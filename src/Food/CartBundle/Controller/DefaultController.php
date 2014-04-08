@@ -147,7 +147,8 @@ class DefaultController extends Controller
         if ($request->getMethod() == 'POST') {
             if (empty($order)) {
                 $fosUserManager = $this->get('fos_user.user_manager');
-                $fosUserManager->a();
+                // @todo Mantai :) Holy shit - wtf?
+                // $fosUserManager->a();
                 //$user =
                 $orderService->createOrderFromCart($placeId, $request->getLocale(), $user);
                 $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
@@ -175,6 +176,7 @@ class DefaultController extends Controller
             array(
                 'order' => $order,
                 'place' => $place,
+                'location' => $this->get('food.googlegis')->getLocationFromSession()
             )
         );
     }

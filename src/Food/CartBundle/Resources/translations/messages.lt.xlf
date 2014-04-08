@@ -50,15 +50,15 @@
         <source>cart.checkout.address</source>
         <target>Adresas</target>
       </trans-unit>
-      <trans-unit id="cart.checkout.firstname" resname="cart.checkout.firstname">
+      <trans-unit id="6238d9b3ece11579e33552e5ae583d8c" resname="cart.checkout.firstname">
         <source>cart.checkout.firstname</source>
         <target>Vardas</target>
       </trans-unit>
-      <trans-unit id="cart.checkout.lastname" resname="cart.checkout.lastname">
+      <trans-unit id="287f18ef4dab2171b43253d3bb3e9b5c" resname="cart.checkout.lastname">
         <source>cart.checkout.lastname</source>
         <target>Pavardė</target>
       </trans-unit>
-      <trans-unit id="cart.checkout.email" resname="cart.checkout.email">
+      <trans-unit id="6f5a03e2e6bd05aeb7121ccd70d3ac72" resname="cart.checkout.email">
         <source>cart.checkout.email</source>
         <target>El.paštas</target>
       </trans-unit>
@@ -94,9 +94,21 @@
         <source>cart.checkout.button_order</source>
         <target>Užsakyti</target>
       </trans-unit>
-        <trans-unit id="cart.block.remove_row" resname="cart.block.remove_row">
-            <source>cart.block.remove_row</source>
-            <target>Pašalinti</target>
+      <trans-unit id="e03b2e3719dfe3a72bcc59d62ae09bde" resname="cart.block.remove_row">
+        <source>cart.block.remove_row</source>
+        <target>Pašalinti</target>
+      </trans-unit>
+      <trans-unit id="28435c7899c2cd41b83b8d15c05cb370" resname="cart.checkout.address_change_change">
+        <source>cart.checkout.address_change_change</source>
+        <target>Keisti</target>
+      </trans-unit>
+      <trans-unit id="fd022aa10e027747c7660b3503777e00" resname="cart.checkout.address_change_cancel">
+        <source>cart.checkout.address_change_cancel</source>
+        <target>Atšaukti</target>
+      </trans-unit>
+        <trans-unit id="cart.checkout.address_not_found" resname="cart.checkout.address_not_found">
+            <source>cart.checkout.address_not_found</source>
+            <target>Adresas nerastas arba neegzistuoja</target>
         </trans-unit>
     </body>
   </file>
