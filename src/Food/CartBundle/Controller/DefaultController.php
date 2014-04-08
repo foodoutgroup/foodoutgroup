@@ -201,8 +201,13 @@ class DefaultController extends Controller
     /**
      * TODO dabar routas cart/success, bet renaminant kart i kasikelis, reiks ir sita parenamint i kasikelis/apmoketas
      */
-    public function successAction()
+    public function successAction($orderHash)
     {
-        return $this->render('FoodCartBundle:Default:payment_success.html.twig');
+        $order = $this->get('food.order')->getOrderByHash($orderHash);
+
+        return $this->render(
+            'FoodCartBundle:Default:payment_success.html.twig',
+            array('order' => $order)
+        );
     }
 }

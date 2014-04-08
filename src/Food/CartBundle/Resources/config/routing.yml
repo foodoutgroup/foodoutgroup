@@ -3,7 +3,7 @@ food_cart_action:
     defaults: { _controller: FoodCartBundle:Default:action, action: empty }
 
 food_cart_success:
-    pattern:  /success/
+    pattern:  /success/{orderHash}
     defaults: { _controller: FoodCartBundle:Default:success }
 
 food_cart:
