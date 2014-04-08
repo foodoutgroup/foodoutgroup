@@ -78,7 +78,12 @@ class PlaceRepository extends EntityRepository
         }
 
         if ($recommended) {
-            $query = "SELECT p.id as place_id, pp.id as point_id FROM place p, place_point PP WHERE pp.place = p.id AND ".$kitchensQuery." AND recommended=1";
+            if (!empty($kitchensQuery)) {
+                $kitchensQuery.= "AND recommended=1";
+            } else {
+                $kitchensQuery.= " recommended=1";
+            }
+            $query = "SELECT p.id as place_id, pp.id as point_id FROM place p, place_point PP WHERE pp.place = p.id AND ".$kitchensQuery;
         } else {
             $query = "SELECT p.id as place_id, pp.id as point_id FROM place p, place_point PP WHERE pp.place = p.id AND pp.id =  (". $subQuery .") ".$kitchensQuery;
         }
