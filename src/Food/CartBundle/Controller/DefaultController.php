@@ -144,7 +144,10 @@ class DefaultController extends Controller
         // Form submitted
         if ($request->getMethod() == 'POST') {
             if (empty($order)) {
-                $orderService->createOrderFromCart($placeId, $request->getLocale());
+                $fosUserManager = $this->get('fos_user.user_manager');
+                $fosUserManager->a();
+                //$user =
+                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user);
                 $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
             } else {
                 $orderService->setOrder($order);

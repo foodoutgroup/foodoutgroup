@@ -50,6 +50,18 @@
         <source>cart.checkout.address</source>
         <target>Adresas</target>
       </trans-unit>
+      <trans-unit id="cart.checkout.firstname" resname="cart.checkout.firstname">
+        <source>cart.checkout.firstname</source>
+        <target>Vardas</target>
+      </trans-unit>
+      <trans-unit id="cart.checkout.lastname" resname="cart.checkout.lastname">
+        <source>cart.checkout.lastname</source>
+        <target>Pavardė</target>
+      </trans-unit>
+      <trans-unit id="cart.checkout.email" resname="cart.checkout.email">
+        <source>cart.checkout.email</source>
+        <target>El.paštas</target>
+      </trans-unit>
       <trans-unit id="6c62969aa8128ea121c45f3fb049bec3" resname="cart.checkout.phone">
         <source>cart.checkout.phone</source>
         <target>Telefonas</target>

@@ -212,6 +212,7 @@ class OrderService extends ContainerAware
         $this->order->setPlaceName($placeRecord->getName());
 
         $this->order->setPlacePoint($pointRecord);
+        $this->order->setPlacePointCity($pointRecord->getCity());
         $this->order->setPlacePointAddress($pointRecord->getAddress());
 
         $this->order->setUser($user);
@@ -264,18 +265,18 @@ class OrderService extends ContainerAware
         // Inform poor user, that his order was accepted
         if ($this->getOrder()->getOrderStatus() == self::$status_new) {
 
-//            $recipient = $this->getOrder()->getUser()->getPhone();
-//
-//            if (!empty($recipient)) {
-//                $smsService = $this->container->get('food.messages');
-//
-//                $sender = $this->container->getParameter('sms.sender');
-//                $text = $this->container->get('translator')
-//                    ->trans('general.sms.user.order_accepted', array(), null, $this->getOrder()->getLocale());
-//
-//                $message = $smsService->createMessage($sender, $recipient, $text);
-//                $smsService->saveMessage($message);
-//            }
+            $recipient = $this->getOrder()->getUser()->getPhone();
+
+            if (!empty($recipient)) {
+                $smsService = $this->container->get('food.messages');
+
+                $sender = $this->container->getParameter('sms.sender');
+                $text = $this->container->get('translator')
+                    ->trans('general.sms.user.order_accepted', array(), null, $this->getOrder()->getLocale());
+
+                $message = $smsService->createMessage($sender, $recipient, $text);
+                $smsService->saveMessage($message);
+            }
 
             $this->chageOrderStatus(self::$status_accepted);
         }
@@ -406,14 +407,14 @@ class OrderService extends ContainerAware
      * @param int $place
      * @param string $locale
      */
-    public function createOrderFromCart($place, $locale='lt')
+    public function createOrderFromCart($place, $locale='lt', $user=null)
     {
         $this->createOrder($place);
         $this->getOrder()->setLocale($locale);
         // TODO hackas isimti!!!
-//        $user = $this->container->get('fos_user.user_manager')
-//            ->findEmail('admin@skanu.lt');
-//        $this->getOrder()->setUser($user);
+        $user = $this->container->get('fos_user.user_manager')
+            ->findEmail('admin@skanu.lt');
+        $this->getOrder()->setUser($user);
         $this->saveOrder();
         $sumTotal = 0;
 

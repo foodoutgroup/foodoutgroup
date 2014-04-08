@@ -38,15 +38,27 @@
                                 </div>
                             </div>
                             {# TODO - sukelti visus laukus. Issiaiskinti su Paulium address flow #}
-                            <div class="form-row">
+                            <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
                                 <select class="custom-select">
                                     <option>Vilnius</option>
                                     <option>Kaunas</option>
                                 </select>
                             </div>
-                            <div class="form-row">
+                            <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
+                                <input type="text">
+                            </div>
+                            <div class="form-row form-row-required">
+                                <label>{% trans %}cart.checkout.firstname{% endtrans %}:</label>
+                                <input type="text">
+                            </div>
+                            <div class="form-row">
+                                <label>{% trans %}cart.checkout.lastname{% endtrans %}:</label>
+                                <input type="text">
+                            </div>
+                            <div class="form-row form-row-required">
+                                <label>{% trans %}cart.checkout.email{% endtrans %}:</label>
                                 <input type="text">
                             </div>
                             <div class="form-row">
