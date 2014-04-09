@@ -4,6 +4,7 @@ namespace Food\OrderBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Food\CartBundle\Service\CartService;
+use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Food\OrderBundle\Entity\OrderDetailsOptions;
@@ -194,13 +195,18 @@ class OrderService extends ContainerAware
 
     /**
      * @param int $placeId
+     * @param PlacePoint $placePoint
      * @return Order
      */
-    public function createOrder($placeId)
+    public function createOrder($placeId, $placePoint=null)
     {
         $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
-        $placePointMap = $this->container->get('session')->get('point_data');
-        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$placeId]);
+        if (empty($placePoint)) {
+            $placePointMap = $this->container->get('session')->get('point_data');
+            $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$placeId]);
+        } else {
+            $pointRecord = $placePoint;
+        }
 
         $this->order = new Order();
         $user = $this->container->get('security.context')->getToken()->getUser();
@@ -441,11 +447,11 @@ class OrderService extends ContainerAware
      * @param int $place
      * @param string $locale
      * @param \Food\UserBundle\Entity\User $user
-     * @param boolean $takeAway - ar atsiims pats
+     * @param PlacePoint $placePoint - placePoint, jei atsiima pats
      */
-    public function createOrderFromCart($place, $locale='lt', $user, $takeAway=false)
+    public function createOrderFromCart($place, $locale='lt', $user, $placePoint=null)
     {
-        $this->createOrder($place);
+        $this->createOrder($place, $placePoint);
         $this->getOrder()->setLocale($locale);
         $this->getOrder()->setUser($user);
         $this->saveOrder();
