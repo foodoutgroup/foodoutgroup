@@ -128,7 +128,7 @@ class PlaceRepository extends EntityRepository
      */
     public function getRecommendedForTitle()
     {
-        $query = "SELECT p.id FROM place p WHERE p.active = 1 AND p.recommended = 1 AND p.deleted_at IS NULL ORDER BY RAND()";
+        $query = "SELECT p.id FROM place p WHERE p.active = 1 AND p.recommended = 1 AND p.deleted_at IS NULL ORDER BY RAND() LIMIT 5";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $placesIds = $stmt->fetchAll();
