@@ -130,6 +130,10 @@
             <source>cart.checkout.show_me_places</source>
             <target>Rodyti restoranus</target>
         </trans-unit>
+        <trans-unit id="cart.checkout.phone_tooltip" resname="cart.checkout.phone_tooltip">
+            <source>cart.checkout.phone_tooltip</source>
+            <target>Įveskite mobilaus telefono numerį</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

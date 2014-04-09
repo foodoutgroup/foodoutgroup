@@ -79,7 +79,9 @@
                 }
             }).siblings('.ui-dialog-titlebar').remove();
         }
+        $('.tooltip').tooltip();
     });
+
 {% endblock %}
 
 {% block body %}
@@ -133,7 +135,7 @@
                                 <input type="text" name="customer-email">
                             </div>
                             <div class="form-row">
-                                <label>{% trans %}cart.checkout.phone{% endtrans %}:</label>
+                                <label title="{% trans %}cart.checkout.phone_tooltip{% endtrans %}" class="tooltip">{% trans %}cart.checkout.phone{% endtrans %}:</label>
                                 <input type="text" name="customer-phone" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" />
                             </div>
                             {#
