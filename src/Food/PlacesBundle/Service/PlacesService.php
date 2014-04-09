@@ -110,6 +110,20 @@ class PlacesService extends ContainerAware {
     }
 
     /**
+     * @param $placeId
+     * @param $pointId
+     */
+    public function saveRelationPlaceToPointSingle($placeId, $pointId)
+    {
+        $sessionData = $this->getSession()->get('point_data');
+        if (empty($sessionData)) {
+            $sessionData = array();
+        }
+        $sessionData[$placeId] = $pointId;
+        $this->getSession()->set('point_data', $sessionData);
+    }
+
+    /**
      * @param int $limit
      * @return array|\Food\DishesBundle\Entity\Place[]
      */

@@ -128,7 +128,7 @@ class DefaultController extends Controller
         $this->getCartService()->removeOptionById($dishId, $optionId);
     }
 
-    public function indexAction($placeId)
+    public function indexAction($placeId, $takeAway = null)
     {
         $request = $this->getRequest();
 

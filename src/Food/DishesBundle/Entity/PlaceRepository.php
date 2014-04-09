@@ -101,6 +101,29 @@ class PlaceRepository extends EntityRepository
     }
 
     /**
+     * @param $placeId
+     * @param $locationData
+     * @return null
+     */
+    public function getPlacePointNear($placeId, $locationData)
+    {
+        $city = $locationData['city'];
+        $lat = str_replace(",", ".", $locationData['lat']);
+        $lon = str_replace(",", ".", $locationData['lng']);
+
+
+        $subQuery = "SELECT id  FROM place_point pp WHERE active=1 AND city='".$city."' AND place = $placeId AND (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <= 7 ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
+        $stmt->execute();
+        $places = $stmt->fetchAll();
+        if (!empty($places) && !empty($places[0])) {
+            return (int)$places[0]['id'];
+        }
+        return null;
+    }
+
+    /**
      * @return Place[]
      */
     public function getRecommendedForTitle()

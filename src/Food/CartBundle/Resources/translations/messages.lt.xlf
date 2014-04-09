@@ -114,6 +114,22 @@
             <source>cart.checkout.address_not_found</source>
             <target>Adresas nerastas arba neegzistuoja</target>
         </trans-unit>
+        <trans-unit id="cart.checkout.place_point_not_in_radius" resname="cart.checkout.place_point_not_in_radius">
+            <source>cart.checkout.place_point_not_in_radius</source>
+            <target>Jūsų adresu restoranas negali pristatyti užsakymo.</target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.no_delivery_choose_what_to_do" resname="cart.checkout.no_delivery_choose_what_to_do">
+            <source>cart.checkout.no_delivery_choose_what_to_do</source>
+            <target>Jūsų adresas yra didesniu atstumu nei vykdomas pristatymas. Pasirinkite arba "Atsiimsiu pats", arba rinkitės iš kitų restoranų kurie gali pristatyti JUMS maistą.</target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.i_will_take_it" resname="cart.checkout.i_will_take_it">
+            <source>cart.checkout.i_will_take_it</source>
+            <target>Pasiimsiu pats</target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.show_me_places" resname="cart.checkout.show_me_places">
+            <source>cart.checkout.show_me_places</source>
+            <target>Rodyti restoranus</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>
