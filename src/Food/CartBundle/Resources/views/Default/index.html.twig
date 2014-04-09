@@ -72,7 +72,7 @@
                                 <label><br></label>
                                 <div class="delivery-type-radios clearfix">
                                     <label class="custom-radio">{% trans %}cart.checkout.delivery_to_home{% endtrans %}
-                                        <input type="radio" name="delivery-type" value="deliver"{% if order is not null and order.deliveryType == 'deliver' %} checked="checked"{% endif %}>
+                                        <input type="radio" name="delivery-type" value="deliver"{% if (order is not null and order.deliveryType == 'deliver') or order is null %} checked="checked"{% endif %}>
                                     </label>
                                     <label class="custom-radio">{% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
                                         <input type="radio" name="delivery-type" value="pickup"{% if order is not null and order.deliveryType == 'pickup' %} checked="checked"{% endif %}>
