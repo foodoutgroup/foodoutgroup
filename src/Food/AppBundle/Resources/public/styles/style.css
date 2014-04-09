@@ -720,6 +720,7 @@ input.button {}
 .alert-info {background-color: #d9edf7; border-color: #bce8f1; color: #31708f; }
 .alert-success { background-color: #dff0d8; border-color: #d6e9c6; color: #3c763d;}
 #change-address .alert { margin-bottom: 0px;}
+h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
 
 .address-change a,.address-change a span, .address-change input { cursor: pointer !important; }
 .static-page-content { text-align: justify; padding-left: 20px; padding-right: 20px;}
