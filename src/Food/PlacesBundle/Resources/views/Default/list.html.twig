@@ -2,11 +2,11 @@
     {% for place in places %}
         <div class="restaurant-item clearfix">
             <div class="logo">
-                <div class="logo-wrap"><img src="/uploads/places/thumb_{{ place.place.logo }}"></div>
+                <div class="logo-wrap"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}"><img src="/uploads/places/thumb_{{ place.place.logo }}"></a></div>
             </div>
             <div class="item-center">
                 <h2 class="name clearfix">
-                    <span class="text">{{ place.place.name }}</span>
+                    <span class="text"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}">{{ place.place.name }}</a></span>
                     {% if place.point.fast %}
                     <span class="tag">
                         <img src="/bundles/foodapp/images/tag-speed.png">

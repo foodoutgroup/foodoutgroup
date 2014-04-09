@@ -128,7 +128,7 @@ class DefaultController extends Controller
         $this->getCartService()->removeOptionById($dishId, $optionId);
     }
 
-    public function indexAction($placeId, $takeAway)
+    public function indexAction($placeId, $takeAway = null)
     {
         $request = $this->getRequest();
 
@@ -155,7 +155,6 @@ class DefaultController extends Controller
             // Jeigu atsiima pats - dedam gamybos taska, kuri jis pats pasirinko, o ne mes Pauliaus magic find funkcijoje
             if ($takeAway) {
                 $placePointId = $request->get('place_point');
-                $this->get('logger')->alert('++ ajaja, toks placepointas: '.var_export($placePointId, true));
                 $placePoint = $placeService->getPlacePointData($placePointId);
             } else {
                 $placePoint = null;

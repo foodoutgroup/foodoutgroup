@@ -24,11 +24,17 @@
                                     thisDialog.parent().mask();
                                     $.ajax({
                                         type: 'GET',
-                                        url: '{{ path('food_ajax', {'action': 'find-address'}) }}',
-                                        data:  {city: $('.city-row select').val(), address: $('.address-row input').val()},
+                                        url: '{{ path('food_ajax', {'action': 'find-address-and-recount'}) }}',
+                                        data:  {city: $('.city-row select').val(), address: $('.address-row input').val(), place: {{ place.id }} },
                                         success:  function(resp){
                                             if (resp.data.success == 1) {
-                                                window.location.reload();
+                                                if (resp.data.no-delivery == 1) {
+                                                    thisDialog.parent().unmask();
+                                                    $(this).dialog('close');
+                                                    toTakeOrNotToTake();
+                                                } else {
+                                                    window.location.reload();
+                                                }
                                             } else {
                                                 thisDialog.parent().unmask();
                                                 $('#change-address .alert').show();
@@ -51,7 +57,31 @@
                 ).siblings('.ui-dialog-titlebar').remove();
             }
         });
+        function toTakeOrNotToTake() {
+            $('#place-point-not-found').dialog({
+                modal: true,
+                resizable:false,
+                width:360,
+                buttons: {
+                    'i_take_it': {
+                        text: '{% trans %}cart.checkout.i_will_take_it{% endtrans %}',
+                        click: function() {
+                            window.location.href = '{{ path('food_cart', {placeId: place.id, takeAway: 1}) }}';
+                        },
+                    },
+                    'show_the_list': {
+                        text: '{% trans %}cart.checkout.show_me_places{% endtrans %}',
+                        click: function() {
+                            $(this).parent().mask();
+                            window.location.href = '{{ path('food_places_' ~ locale ~ '_main') }}';
+                        }
+                    }
+                }
+            }).siblings('.ui-dialog-titlebar').remove();
+        }
+        $('.tooltip').tooltip();
     });
+
 {% endblock %}
 
 {% block body %}
@@ -124,7 +154,7 @@
                                 <input type="text" name="customer-email">
                             </div>
                             <div class="form-row form-row-required">
-                                <label>{% trans %}cart.checkout.phone{% endtrans %}:</label>
+                                <label title="{% trans %}cart.checkout.phone_tooltip{% endtrans %}" class="tooltip">{% trans %}cart.checkout.phone{% endtrans %}:</label>
                                 <input type="text" name="customer-phone" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" />
                             </div>
                             {#
@@ -199,6 +229,12 @@
             <div class="form-row form-row-required address-row">
                 <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
                 <input type="text" id="address" value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}">
+            </div>
+        </div>
+        <div id="place-point-not-found">
+            <div class="alert alert-danger">
+                <b>{% trans %}cart.checkout.place_point_not_in_radius{% endtrans %}</b><br />
+                <p>{% trans %}cart.checkout.no_delivery_choose_what_to_do{% endtrans %}</p>
             </div>
         </div>
     </div>
