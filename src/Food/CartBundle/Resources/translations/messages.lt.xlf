@@ -66,7 +66,7 @@
         <source>cart.checkout.phone</source>
         <target>Telefonas</target>
       </trans-unit>
-      <trans-unit id="cart.checkout.phone_placeholder" resname="cart.checkout.phone_placeholder">
+      <trans-unit id="72ac47fdc9d8610d13cc86b4dd35e24f" resname="cart.checkout.phone_placeholder">
         <source>cart.checkout.phone_placeholder</source>
         <target>3706</target>
       </trans-unit>
@@ -76,7 +76,7 @@
       </trans-unit>
       <trans-unit id="58234b47f3f611cffbbd19bbaaa7dd73" resname="cart.checkout.delivery_comment_placeholder">
         <source>cart.checkout.delivery_comment_placeholder</source>
-        <target>Čia galite įvesti laiptinės kodą, aukštą ir kitą kurjeriui naudingą informaciją...</target>
+        <target>Įvesti laiptinės kodą, aukštą ir kitą kurjeriui naudingą informaciją...</target>
       </trans-unit>
       <trans-unit id="dff708f5d1b6a869b2c01aca17e8d7b0" resname="cart.checkout.block_title_secure_payment">
         <source>cart.checkout.block_title_secure_payment</source>
@@ -110,10 +110,14 @@
         <source>cart.checkout.address_change_cancel</source>
         <target>Atšaukti</target>
       </trans-unit>
-        <trans-unit id="cart.checkout.address_not_found" resname="cart.checkout.address_not_found">
-            <source>cart.checkout.address_not_found</source>
-            <target>Adresas nerastas arba neegzistuoja</target>
-        </trans-unit>
+      <trans-unit id="33469b92ec70252868f2174c8df310f4" resname="cart.checkout.address_not_found">
+        <source>cart.checkout.address_not_found</source>
+        <target>Adresas nerastas arba neegzistuoja</target>
+      </trans-unit>
+      <trans-unit id="2d4e402558401b20f0603da2554047c1" resname="cart.checkout.place_point">
+        <source>cart.checkout.place_point</source>
+        <target>Atsiimsite iš</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

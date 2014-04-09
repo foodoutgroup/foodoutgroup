@@ -9,3 +9,5 @@ food_cart_success:
 food_cart:
     pattern: /{placeId}/{takeAway}
     defaults: { _controller: FoodCartBundle:Default:index, takeAway: ~}
+    options:
+            expose: true

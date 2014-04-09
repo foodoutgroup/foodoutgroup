@@ -193,15 +193,14 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param int $place
+     * @param int $placeId
      * @return Order
      */
-    public function createOrder($place)
+    public function createOrder($placeId)
     {
-
-        $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($place);
+        $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
         $placePointMap = $this->container->get('session')->get('point_data');
-        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place]);
+        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$placeId]);
 
         $this->order = new Order();
         $user = $this->container->get('security.context')->getToken()->getUser();
@@ -442,8 +441,9 @@ class OrderService extends ContainerAware
      * @param int $place
      * @param string $locale
      * @param \Food\UserBundle\Entity\User $user
+     * @param boolean $takeAway - ar atsiims pats
      */
-    public function createOrderFromCart($place, $locale='lt', $user)
+    public function createOrderFromCart($place, $locale='lt', $user, $takeAway=false)
     {
         $this->createOrder($place);
         $this->getOrder()->setLocale($locale);

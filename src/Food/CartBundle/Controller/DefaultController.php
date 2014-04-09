@@ -128,11 +128,12 @@ class DefaultController extends Controller
         $this->getCartService()->removeOptionById($dishId, $optionId);
     }
 
-    public function indexAction($placeId)
+    public function indexAction($placeId, $takeAway)
     {
         $request = $this->getRequest();
 
-        $orderService = $this->container->get('food.order');
+        $orderService = $this->get('food.order');
+        $placeService = $this->get('food.places');
         $googleGisService = $this->container->get('food.googlegis');
         /**
          * @var UserManager $fosUserManager
@@ -146,11 +147,20 @@ class DefaultController extends Controller
             $order = $orderService->getOrderByHash($orderHash);
             $place = $order->getPlace();
         } else {
-            $place = $this->get('food.places')->getPlace($placeId);
+            $place = $placeService->getPlace($placeId);
         }
 
         // Form submitted
         if ($request->getMethod() == 'POST') {
+            // Jeigu atsiima pats - dedam gamybos taska, kuri jis pats pasirinko, o ne mes Pauliaus magic find funkcijoje
+            if ($takeAway) {
+                $placePointId = $request->get('place_point');
+                $this->get('logger')->alert('++ ajaja, toks placepointas: '.var_export($placePointId, true));
+                $placePoint = $placeService->getPlacePointData($placePointId);
+            } else {
+                $placePoint = null;
+            }
+
             if (empty($order)) {
                 $userEmail = $request->get('customer-email');
                 $userPhone = $request->get('customer-phone');
@@ -179,10 +189,15 @@ class DefaultController extends Controller
                     $fosUserManager->updateUser($user);
                 }
 
-                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user);
+                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint);
                 $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
             } else {
                 $orderService->setOrder($order);
+                if ($takeAway) {
+                    $orderService->getOrder()->setPlacePoint($placePoint);
+                    $orderService->getOrder()->setPlacePointCity($placePoint->getCity());
+                    $orderService->getOrder()->setPlacePointAddress($placePoint->getAddress());
+                }
                 $orderService->logOrder(null, 'retry', 'Canceled order billing retry by user', $orderService->getOrder());
             }
 
@@ -228,6 +243,7 @@ class DefaultController extends Controller
             array(
                 'order' => $order,
                 'place' => $place,
+                'takeAway' => ($takeAway ? true : false),
                 'location' => $this->get('food.googlegis')->getLocationFromSession()
             )
         );
