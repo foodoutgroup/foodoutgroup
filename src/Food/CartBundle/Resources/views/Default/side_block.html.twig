@@ -1,5 +1,5 @@
 <div class="check-block">
-    <div class="restaurant-logo tac"><img src="/{{place.getWebPathThumb}}"></div>
+    <div class="restaurant-logo tac"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"><img src="/{{place.getWebPathThumb}}"></a></div>
     <h5 class="tac">{% trans %}cart.block.your_order{% endtrans %}</h5>
     {% if list|length > 0 %}
         {% for dish in list %}

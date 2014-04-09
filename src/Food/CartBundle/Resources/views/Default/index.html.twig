@@ -155,7 +155,7 @@
 
                             {# <div class="cupon-info">Jei turite kuponą, įveskite <a href="#">jo kodą čia</a></div> #}
                         </div>
-                        <div class="form-controls clearfix"><a href="#" class="button-back">{% trans %}cart.checkout.button_get_back{% endtrans %}</a><a href="#" class="submit-button"><span>{% trans %}cart.checkout.button_order{% endtrans %}</span></a></div>
+                        <div class="form-controls clearfix"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button-back">{% trans %}cart.checkout.button_get_back{% endtrans %}</a><a href="#" class="submit-button"><span>{% trans %}cart.checkout.button_order{% endtrans %}</span></a></div>
                     </form>
                 </div>
                 <div class="content-righter-small">
