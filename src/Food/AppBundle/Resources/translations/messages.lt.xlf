@@ -310,17 +310,33 @@
         <source>mobile.payment</source>
         <target>Atsiskaitymas</target>
       </trans-unit>
-      <trans-unit id="mobile.payment.local.card" resname="mobile.payment.local.card">
+      <trans-unit id="6f33924553f5d8fac62abb6a0c7a685c" resname="mobile.payment.local.card">
         <source>mobile.payment.local.card</source>
         <target>Kortele, atsiimant užsakymą</target>
       </trans-unit>
-      <trans-unit id="mobile.payment.local" resname="mobile.payment.local">
+      <trans-unit id="975056dcfb485500d01cf7f23d10c891" resname="mobile.payment.local">
         <source>mobile.payment.local</source>
         <target>Grynaisiais, atsiimant užsakymą</target>
       </trans-unit>
-      <trans-unit id="mobile.payment.paysera" resname="mobile.payment.paysera">
+      <trans-unit id="ff990e97a34ed6619f88da89f1555dd1" resname="mobile.payment.paysera">
         <source>mobile.payment.paysera</source>
         <target>Apmokėta internetu</target>
+      </trans-unit>
+      <trans-unit id="ca4d1fefea4fd64c121dbd0e8fa2819c" resname="mobile.order.sum_with_delivery">
+        <source>mobile.order.sum_with_delivery</source>
+        <target>Suma su pristatymu (su PVM)</target>
+      </trans-unit>
+      <trans-unit id="c4893f3e3a9f9062ea893935c75c4724" resname="mobile.order.sum">
+        <source>mobile.order.sum</source>
+        <target>Suma (su PVM)</target>
+      </trans-unit>
+      <trans-unit id="e0e188c6f3a31f7c0c241e260d7c442b" resname="mobile.customer_phone">
+        <source>mobile.customer_phone</source>
+        <target>Užsakovo tel.</target>
+      </trans-unit>
+      <trans-unit id="6b992ec872e88f6be09ab06f8cceb76e" resname="mobile.order_time">
+        <source>mobile.order_time</source>
+        <target>Užsakymo laikas</target>
       </trans-unit>
     </body>
   </file>
