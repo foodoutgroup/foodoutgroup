@@ -113,6 +113,9 @@ class PlaceRepository extends EntityRepository
      */
     public function getPlacePointNear($placeId, $locationData)
     {
+        if (empty($locationData['city']) || $locationData['lat']) {
+            return null;
+        }
         $city = $locationData['city'];
         $lat = str_replace(",", ".", $locationData['lat']);
         $lon = str_replace(",", ".", $locationData['lng']);
