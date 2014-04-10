@@ -89,9 +89,9 @@ class PlaceRepository extends EntityRepository
             } else {
                 $kitchensQuery.= " recommended=1";
             }
-            $query = "SELECT p.id as place_id, pp.id as point_id FROM place p, place_point pp WHERE pp.place = p.id AND ".$kitchensQuery;
+            $query = "SELECT p.id as place_id, pp.id as point_id FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND ".$kitchensQuery;
         } else {
-            $query = "SELECT p.id as place_id, pp.id as point_id FROM place p, place_point pp WHERE pp.place = p.id AND pp.id =  (". $subQuery .") ".$kitchensQuery;
+            $query = "SELECT p.id as place_id, pp.id as point_id FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.id =  (". $subQuery .") ".$kitchensQuery;
         }
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
@@ -121,7 +121,7 @@ class PlaceRepository extends EntityRepository
         $lon = str_replace(",", ".", $locationData['lng']);
 
 
-        $subQuery = "SELECT pp.id FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND pp.city='".$city."' AND pp.place = $placeId
+        $subQuery = "SELECT pp.id FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND p.active=1 AND pp.city='".$city."' AND pp.place = $placeId
             AND (
                 (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <= 7
                 OR
