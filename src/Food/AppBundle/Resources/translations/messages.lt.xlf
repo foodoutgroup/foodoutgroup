@@ -162,7 +162,7 @@
         <source>general.subscribed_newsletter</source>
         <target>Jūs užsiprenumeravote naujienlaiškį</target>
       </trans-unit>
-      <trans-unit id="general.sms.user.order_accepted" resname="general.sms.user.order_accepted">
+      <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
         <source>general.sms.user.order_accepted</source>
         <target>Sveiki, restoranas patvirtino Jūsų užsakymą</target>
       </trans-unit>
@@ -265,23 +265,63 @@
       <trans-unit id="5ad57190264dcf453d3f80908aa924de" resname="general.help_slug">
         <source>general.help_slug</source>
         <target>pagalba</target>
-    </trans-unit>
-    <trans-unit id="general.close_btn" resname="general.close_btn">
+      </trans-unit>
+      <trans-unit id="9e30081c6301c29c22942527d1d900ab" resname="general.close_btn">
         <source>general.close_btn</source>
         <target>Uždaryti</target>
-    </trans-unit>
-    <trans-unit id="general.sms.new_order" resname="general.sms.new_order">
+      </trans-unit>
+      <trans-unit id="e44e8ff9e4e47e49c926d67bf0112966" resname="general.sms.new_order">
         <source>general.sms.new_order</source>
         <target>Naujas uzsakymas: </target>
-    </trans-unit>
-    <trans-unit id="general.sms.driver_assigned_order" resname="general.sms.driver_assigned_order">
+      </trans-unit>
+      <trans-unit id="3d6f52993727876649fad3f9e2d5c687" resname="general.sms.driver_assigned_order">
         <source>general.sms.driver_assigned_order</source>
         <target>Priskirtas naujas uzsakymas: </target>
-    </trans-unit>
-    <trans-unit id="index.address_not_found" resname="index.address_not_found">
+      </trans-unit>
+      <trans-unit id="22a63be04fc38361fdf1ee63e1b4d4e0" resname="index.address_not_found">
         <source>index.address_not_found</source>
         <target>Adresas nerastas arba neegzistuoja</target>
-    </trans-unit>
+      </trans-unit>
+      <trans-unit id="f2e4d344548a4a45a1346062b31496f7" resname="mobile.pickup_type">
+        <source>mobile.pickup_type</source>
+        <target>Pristatymas</target>
+      </trans-unit>
+      <trans-unit id="468ce43659556a6f745a233e986ba679" resname="mobile.deliver">
+        <source>mobile.deliver</source>
+        <target>Pristatyti</target>
+      </trans-unit>
+      <trans-unit id="937d1ad95431022c4c1b33b8f83c30f3" resname="mobile.delivery_destination">
+        <source>mobile.delivery_destination</source>
+        <target>Pristatymo adresas</target>
+      </trans-unit>
+      <trans-unit id="88456d596941f6ec79d9cd30ae01e8af" resname="mobile.pickup_foodout">
+        <source>mobile.pickup_foodout</source>
+        <target>Atvyks "Foodout.lt" kurjeris</target>
+      </trans-unit>
+      <trans-unit id="5b47f6677b99741a5b189e0988b90a24" resname="mobile.pickup">
+        <source>mobile.pickup</source>
+        <target>Atsiims restorane</target>
+      </trans-unit>
+      <trans-unit id="84b322bfb942d74b28b61094cee1efab" resname="mobile.comment">
+        <source>mobile.comment</source>
+        <target>Kita informacija</target>
+      </trans-unit>
+      <trans-unit id="ff1fd4e7d3fb885df18c293c9c41a302" resname="mobile.payment">
+        <source>mobile.payment</source>
+        <target>Atsiskaitymas</target>
+      </trans-unit>
+      <trans-unit id="mobile.payment.local.card" resname="mobile.payment.local.card">
+        <source>mobile.payment.local.card</source>
+        <target>Kortele, atsiimant užsakymą</target>
+      </trans-unit>
+      <trans-unit id="mobile.payment.local" resname="mobile.payment.local">
+        <source>mobile.payment.local</source>
+        <target>Grynaisiais, atsiimant užsakymą</target>
+      </trans-unit>
+      <trans-unit id="mobile.payment.paysera" resname="mobile.payment.paysera">
+        <source>mobile.payment.paysera</source>
+        <target>Apmokėta internetu</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

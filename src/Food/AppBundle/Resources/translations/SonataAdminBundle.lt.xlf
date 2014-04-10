@@ -98,6 +98,26 @@
         <source>admin.dispatcher.change_status</source>
         <target>__admin.dispatcher.change_status</target>
       </trans-unit>
+      <trans-unit id="ca18753c0f6c688ce4e7a6aab2c055ec" resname="admin.dispatcher.status">
+        <source>admin.dispatcher.status</source>
+        <target>__admin.dispatcher.status</target>
+      </trans-unit>
+      <trans-unit id="28837c4eda1f53b90f7ede6091467808" resname="admin.order.log.date">
+        <source>admin.order.log.date</source>
+        <target>__admin.order.log.date</target>
+      </trans-unit>
+      <trans-unit id="c416e4f73e1f1c9241b08119e1882785" resname="admin.order.log.old_status">
+        <source>admin.order.log.old_status</source>
+        <target>__admin.order.log.old_status</target>
+      </trans-unit>
+      <trans-unit id="1f8f6d6b0e12d8169791f4ec16d105f3" resname="admin.order.log.new_status">
+        <source>admin.order.log.new_status</source>
+        <target>__admin.order.log.new_status</target>
+      </trans-unit>
+      <trans-unit id="08e4bdaa8691ef9a0d0b46ef4277c4e9" resname="admin.order.log.message">
+        <source>admin.order.log.message</source>
+        <target>__admin.order.log.message</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -55,12 +55,50 @@
                     </td>
                 </Tr>
             {% endfor %}
+            {% if order.deliveryType == 'deliver' %}
+                {% if order.placePointSelfDelivery == 1 %}
+                    <tr>
+                        <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
+                    </tr>
+                    <tr>
+                        <td colspan="5">{% trans %}mobile.deliver{% endtrans %}</td>
+                    </tr>
+                    <tr>
+                        <th colspan="5">{% trans %}mobile.delivery_destination{% endtrans %}</th>
+                    </tr>
+                    <tr>
+                        <td colspan="5">{{ order.addressId.address }}, {{ order.addressId.city }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
+                    </tr>
+                    <tr>
+                        <td colspan="5">{% trans %}mobile.pickup_foodout{% endtrans %}</td>
+                    </tr>
+                {% endif %}
+            {% else %}
+                <tr>
+                    <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
+                </tr>
+                <tr>
+                    <td colspan="5">{% trans %}mobile.pickup{% endtrans %}</td>
+                </tr>
+            {% endif %}
             <tr>
-                <th colspan="5">Kita informacija:</th>
+                <th colspan="5">{% trans %}mobile.comment{% endtrans %}</th>
             </tr>
             <tr>
                 <td colspan="5">{{ order.comment }}</td>
             </tr>
+            {% if order.placePointSelfDelivery == 1 or order.deliveryType == 'pickup' %}
+            <tr>
+                <th colspan="5">{% trans %}mobile.payment{% endtrans %}</th>
+            </tr>
+            <tr>
+                <td colspan="5">{{ ('mobile.payment.' ~ order.paymentMethod)|trans }}</td>
+            </tr>
+            {% endif %}
             </tbody>
         </table>
         <form method="post">
