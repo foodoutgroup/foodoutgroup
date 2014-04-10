@@ -43,7 +43,7 @@
             </thead>
             <tbody>
             {% for dish in order.details %}
-                <Tr>
+                <tr>
                     <td>{{ loop.index }}</td>
                     <td>{{ dish.dishId.name }}</td>
                     <td>{{ dish.dishUnitName }}</td>
@@ -53,8 +53,19 @@
                             <li>{{ option.dishOptionId.name }}</li>
                         {% endfor %}
                     </td>
-                </Tr>
+                </tr>
             {% endfor %}
+            <tr>
+                <td colspan="5">
+                    <b>
+                        {% if order.deliveryType == 'deliver' %}
+                            {% trans %}mobile.order.sum_with_delivery{% endtrans %}
+                        {% else %}
+                            {% trans %}mobile.order.sum{% endtrans %}
+                        {% endif %}:
+                    </b> {{ order.total }} {{ currency_display }}
+                </td>
+            </tr>
             {% if order.deliveryType == 'deliver' %}
                 {% if order.placePointSelfDelivery == 1 %}
                     <tr>
@@ -86,6 +97,12 @@
                 </tr>
             {% endif %}
             <tr>
+                <th colspan="5">{% trans %}mobile.customer_phone{% endtrans %}</th>
+            </tr>
+            <tr>
+                <td colspan="5">{{ order.user.phone }}</td>
+            </tr>
+            <tr>
                 <th colspan="5">{% trans %}mobile.comment{% endtrans %}</th>
             </tr>
             <tr>
@@ -97,6 +114,12 @@
             </tr>
             <tr>
                 <td colspan="5">{{ ('mobile.payment.' ~ order.paymentMethod)|trans }}</td>
+            </tr>
+            <tr>
+                <th colspan="5">{% trans %}mobile.order_time{% endtrans %}</th>
+            </tr>
+            <tr>
+                <td colspan="5">{{ order.orderDate|date("H:i") }}</td>
             </tr>
             {% endif %}
             </tbody>
