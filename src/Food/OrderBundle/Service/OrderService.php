@@ -996,20 +996,46 @@ class OrderService extends ContainerAware
     public function informPlace()
     {
         $messagingService = $this->container->get('food.messages');
+        $translator = $this->container->get('translator');
+        $logger = $this->container->get('logger');
+
+        $order = $this->getOrder();
+        $placePoint = $order->getPlacePoint();
+        $placePointEmail = $placePoint->getEmail();
+
+        $domain = $this->container->getParameter('domain');
 
         // Inform restourant about new order
         $orderConfirmRoute = $this->container->get('router')
-            ->generate('ordermobile', array('hash' => $this->getOrder()->getOrderHash()));
+            ->generate('ordermobile', array('hash' => $order->getOrderHash()));
 
-        $messageText = $this->container->get('translator')->trans('general.sms.new_order')
-            .': http://'.$this->container->getParameter('domain').$orderConfirmRoute;
+        $messageText = $translator->trans('general.sms.new_order')
+            .': http://'.$domain.$orderConfirmRoute;
 
+        // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
+        if (!empty($placePointEmail)) {
+            $logger->alert('--- Place asks for email, so we have sent an email about new order to: '.$placePointEmail);
+            $emailMessageText = $messageText;
+            $messageText = $translator->trans('general.sms.new_order_in_mail');
+
+            $mailer = $this->container->get('mailer');
+
+            $message = \Swift_Message::newInstance()
+                ->setSubject($this->container->getParameter('title').': '.$translator->trans('general.email.new_order'))
+                ->setFrom('info@'.$domain)
+            ;
+
+            $message->addTo($placePointEmail);
+            $message->setBody($emailMessageText);
+            $mailer->send($message);
+        }
         $message = $messagingService->createMessage(
             $this->container->getParameter('sms.sender'),
-            $this->getOrder()->getPlacePoint()->getPhone(),
+            $placePoint->getPhone(),
             $messageText
         );
         $messagingService->saveMessage($message);
+
     }
 
     /**
