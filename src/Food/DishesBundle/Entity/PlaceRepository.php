@@ -113,7 +113,7 @@ class PlaceRepository extends EntityRepository
      */
     public function getPlacePointNear($placeId, $locationData)
     {
-        if (empty($locationData['city']) || $locationData['lat']) {
+        if (empty($locationData['city']) || empty($locationData['lat'])) {
             return null;
         }
         $city = $locationData['city'];
@@ -130,7 +130,7 @@ class PlaceRepository extends EntityRepository
             ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
-        mail("paulius@foodout.lt", "QUERY[]", $subQuery, "FROM: paulius@skanu.lt");
+
         $stmt->execute();
         $places = $stmt->fetchAll();
         if (!empty($places) && !empty($places[0])) {
