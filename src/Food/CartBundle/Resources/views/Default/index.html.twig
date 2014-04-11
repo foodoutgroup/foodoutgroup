@@ -30,7 +30,7 @@
                                             if (resp.data.success == 1) {
                                                 if (resp.data.nodelivery == 1) {
                                                     thisDialog.parent().unmask();
-                                                    $(this).dialog('close');
+                                                    thisDialog.dialog('close');
                                                     toTakeOrNotToTake();
                                                 } else {
                                                     window.location.reload();
