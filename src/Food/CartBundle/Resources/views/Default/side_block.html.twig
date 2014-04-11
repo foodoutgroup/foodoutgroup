@@ -29,14 +29,16 @@
                 <div class="fl">{% trans %}cart.block.total_cart{% endtrans %}:</div>
                 <div class="fr">{{ total_cart }} {{ currency_display }}</div>
             </div>
-            <div class="delivery-price clearfix">
-                <div class="fl">{% trans %}cart.block.delivery_price{% endtrans %}:</div>
-                <div class="fr">{{ place.deliveryPrice }} {{ currency_display }}</div>
-            </div>
-            <div class="total-sum clearfix">
-                <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
-                <div class="fr">{{ total_with_delivery }} {{ currency_display }}</div>
-            </div>
+            {% if hide_delivery == 0 %}
+                <div class="delivery-price clearfix">
+                    <div class="fl">{% trans %}cart.block.delivery_price{% endtrans %}:</div>
+                    <div class="fr">{{ place.deliveryPrice }} {{ currency_display }}</div>
+                </div>
+                <div class="total-sum clearfix">
+                    <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
+                    <div class="fr">{{ total_with_delivery }} {{ currency_display }}</div>
+                </div>
+            {% endif %}
         </div>
         {% if inCart == false %}
             <a href="{{ path('food_cart', { 'placeId' : place.id }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>

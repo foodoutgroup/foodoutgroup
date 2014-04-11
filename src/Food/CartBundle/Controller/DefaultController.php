@@ -189,7 +189,9 @@ class DefaultController extends Controller
                     $fosUserManager->updateUser($user);
                 }
 
-                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint);
+                $selfDelivery = ($this->getRequest()->get('delivery-type') == "pickup" ? true : false);
+
+                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery);
                 $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
             } else {
                 $orderService->setOrder($order);
@@ -257,7 +259,7 @@ class DefaultController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function sideBlockAction(Place $place, $renderView = false, $inCart = false)
+    public function sideBlockAction(Place $place, $renderView = false, $inCart = false, $order = null, $takeAway = null)
     {
         $list = $this->getCartService()->getCartDishes($place);
         $total_cart = $this->getCartService()->getCartTotal($list, $place);
@@ -267,6 +269,7 @@ class DefaultController extends Controller
             'total_cart' => $total_cart,
             'total_with_delivery' => $total_cart + $place->getDeliveryPrice(),
             'inCart' => $inCart,
+            'hide_delivery' => (($order!=null AND $order->getDeliveryType() == 'pickup') || $takeAway == true ? 1: 0)
         );
         if ($renderView) {
             return $this->renderView('FoodCartBundle:Default:side_block.html.twig', $params);

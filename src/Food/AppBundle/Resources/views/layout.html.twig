@@ -28,6 +28,7 @@
     <script src="{{ asset('bundles/foodapp/scripts/icheck/jquery.icheck.min.js') }}">		</script>
     <script src="{{ asset('bundles/foodapp/scripts/jquery.placeholder.min.js') }}"></script>
     <script src="{{ asset('bundles/foodapp/scripts/jquery.loadmask.min.js') }}"></script>
+    {# <script src="{{ asset('bundles/foodapp/scripts/mediator.min.js') }}"></script> #}
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
     <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/selectivizr-min.js') }}"></script><![endif]-->
@@ -56,6 +57,7 @@
 <script src="{{ asset('bundles/foodapp/scripts/common.js')}} "></script>
 <script src="{{ asset('bundles/foodapp/scripts/scripts.js')}} "></script>
 <script type="text/javascript">
+    {# var mediator = new Mediator(); #}
     {% block jscode %}{% endblock %}
 </script>
 </body>

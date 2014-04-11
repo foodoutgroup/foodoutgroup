@@ -449,9 +449,10 @@ class OrderService extends ContainerAware
      * @param \Food\UserBundle\Entity\User $user
      * @param PlacePoint $placePoint - placePoint, jei atsiima pats
      */
-    public function createOrderFromCart($place, $locale='lt', $user, $placePoint=null)
+    public function createOrderFromCart($place, $locale='lt', $user, $placePoint=null, $selfDelivery = false)
     {
         $this->createOrder($place, $placePoint);
+        $this->getOrder()->setDeliveryType();
         $this->getOrder()->setLocale($locale);
         $this->getOrder()->setUser($user);
         $this->saveOrder();
@@ -491,8 +492,9 @@ class OrderService extends ContainerAware
                 $sumTotal += $cartDish->getQuantity() * $opt->getDishOptionId()->getPrice();
             }
         }
-
-        $sumTotal+= $this->getOrder()->getPlace()->getDeliveryPrice();
+        if(!$selfDelivery) {
+            $sumTotal+= $this->getOrder()->getPlace()->getDeliveryPrice();
+        }
         $this->getOrder()->setTotal($sumTotal);
         $this->saveOrder();
 
