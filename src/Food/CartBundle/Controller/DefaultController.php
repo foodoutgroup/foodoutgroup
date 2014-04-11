@@ -3,6 +3,7 @@
 namespace Food\CartBundle\Controller;
 
 use Food\CartBundle\Service\CartService;
+use Food\DishesBundle\Entity\Place;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -256,14 +257,15 @@ class DefaultController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function sideBlockAction($place, $renderView = false, $inCart = false)
+    public function sideBlockAction(Place $place, $renderView = false, $inCart = false)
     {
         $list = $this->getCartService()->getCartDishes($place);
-        $total = $this->getCartService()->getCartTotal($list, $place);
+        $total_cart = $this->getCartService()->getCartTotal($list, $place);
         $params = array(
             'list'  => $list,
             'place' => $place,
-            'total' => $total,
+            'total_cart' => $total_cart,
+            'total_with_delivery' => $total_cart + $place->getDeliveryPrice(),
             'inCart' => $inCart,
         );
         if ($renderView) {

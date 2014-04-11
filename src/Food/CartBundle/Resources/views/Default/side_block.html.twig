@@ -25,19 +25,24 @@
             </div>
         {% endfor %}
         <div class="check-bottom">
+            <div class="total-sum clearfix">
+                <div class="fl">{% trans %}cart.block.total_cart{% endtrans %}:</div>
+                <div class="fr">{{ total_cart }} {{ currency_display }}</div>
+            </div>
             <div class="delivery-price clearfix">
                 <div class="fl">{% trans %}cart.block.delivery_price{% endtrans %}:</div>
                 <div class="fr">{{ place.deliveryPrice }} {{ currency_display }}</div>
             </div>
             <div class="total-sum clearfix">
                 <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
-                <div class="fr">{{ total }} {{ currency_display }}</div>
+                <div class="fr">{{ total_with_delivery }} {{ currency_display }}</div>
             </div>
         </div>
         {% if inCart == false %}
-        <a href="{{ path('food_cart', { 'placeId' : place.id }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
+            <a href="{{ path('food_cart', { 'placeId' : place.id }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
         {% endif %}
         <div class="delivery-time tac">{% trans %}cart.block.delivery_time{% endtrans %} {{ place.deliveryTime }}</div>
+        <div class="delivery-time tac tooltip">{% trans %}cart.block.order_sum_minimum{% endtrans %} {{ place.cartMinimum }} {{ currency_display }}. {% trans %}cart.block.order_sum_minimum_take_myself{% endtrans %}</div>
     {% else %}
         <div class="check-bottom">
             <h5 class="tac">{% trans %}cart.block.your_order_empty{% endtrans %}</h5>
