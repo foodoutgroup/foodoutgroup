@@ -328,7 +328,6 @@ class CartService {
                 $total += $opt->getDishOptionId()->getPrice() * $cartItem->getQuantity();
             }
         }
-        $total += $place->getDeliveryPrice();
         return $total;
     }
 

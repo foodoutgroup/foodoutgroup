@@ -81,10 +81,14 @@
         }
         $('.tooltip').tooltip();
     });
-
 {% endblock %}
 
+
+
 {% block body %}
+
+    {% include 'FoodDishesBundle:Place:dish_cart_partial.html.twig' %}
+
     {% javascripts '@FoodAppBundle/Resources/public/js_main/order.js' %}
         <script src="{{ asset_url }}" type="text/javascript"></script>
         <script type="text/javascript">
@@ -208,7 +212,7 @@
                     </form>
                 </div>
                 <div class="content-righter-small">
-                    {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': true })) }}
+                    {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': true, 'order': order, 'takeAway': takeAway })) }}
                 </div>
             </div>
         </div>
