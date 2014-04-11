@@ -43,6 +43,7 @@ parameters:
     payment.methods: [local, local.card, paysera]
     currency_display: Lt
     vat: 21
+    evp.test_payments: 0
 
 framework:
     #esi:             ~

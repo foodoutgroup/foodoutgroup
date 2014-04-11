@@ -181,8 +181,7 @@
                                 </label>#}
                             </div>
                             {# TODO kolkas viskas rodo i Paysera#}
-                            {# TODO hackas testavimui. Reikia atskiro paysera optionso, kitus bankus kolkas slepiame #}
-                            {#<div class="select-bank clearfix">
+                            <div class="select-bank clearfix">
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-sb.png">
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
@@ -201,7 +200,7 @@
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-dnb.png">
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
-                            </div>#}
+                            </div>
 
                             {# <div class="cupon-info">Jei turite kuponą, įveskite <a href="#">jo kodą čia</a></div> #}
                         </div>
