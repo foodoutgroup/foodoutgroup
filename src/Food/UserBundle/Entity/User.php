@@ -245,4 +245,14 @@ class User extends BaseUser
     {
         return $this->phone;
     }
+
+    /**
+     * Because f**k FOSUserBundle.
+     */
+    public function setEmail($email)
+    {
+        $email = is_null($email) ? '' : $email;
+        parent::setEmail($email);
+        $this->setUsername($email);
+    }
 }

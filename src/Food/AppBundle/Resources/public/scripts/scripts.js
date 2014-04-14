@@ -1,6 +1,5 @@
 (function($, window){
     $(function() {
-
         var $window = $(window);
 
         /*Placeholder for old browsers*/
@@ -51,7 +50,25 @@
         function resizeSensitive() {
             
         }
-
-
     });
 })(jQuery, window);
+
+$(document).ready(function() {
+    $('body').on('submit', '.righter.register-form', function(e) {
+        var form = $(this);
+        var url =  form.attr('action');
+        var success_url = form.attr('data-success-url');
+        var data = form.serialize();
+        var callback = function(response) {
+            if (response.length > 0) {
+                $('.registration_form_wrapper:visible').html(response);
+            } else {
+                top.location.href = success_url;
+            }
+        }
+
+        $.post(url, data, callback);
+
+        return false;
+    });
+});

@@ -1,0 +1,22 @@
+<form class="lefter login-form">
+    <h3>{% trans %}general.login_title{% endtrans %}</h3>
+    <h4>{% trans %}general.login_text{% endtrans %}</h4>
+    <div class="form-row">
+        <label>{% trans %}general.login_email{% endtrans %}</label>
+        <input type="text">
+    </div>
+    <div class="form-row small-margin">
+        <label>{% trans %}general.login_password{% endtrans %}</label>
+        <input type="password">
+    </div>
+    <div class="tar"><a href="#">{% trans %}general.login_forgot_password{% endtrans %}</a></div>
+    <div class="form-controls clearfix">
+        {#
+        <label class="fl custom-checkbox">Prisiminti mane
+            <input type="checkbox">
+        </label>
+        #}
+        <input type="submit" value="{% trans %}general.login_login_button{% endtrans %}" class="fr">
+
+    </div>
+</form>
