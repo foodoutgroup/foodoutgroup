@@ -53,22 +53,25 @@
     });
 })(jQuery, window);
 
-$(document).ready(function() {
-    $('body').on('submit', '.righter.register-form', function(e) {
-        var form = $(this);
-        var url =  form.attr('action');
-        var success_url = form.attr('data-success-url');
-        var data = form.serialize();
-        var callback = function(response) {
-            if (response.length > 0) {
-                $('.registration_form_wrapper:visible').html(response);
-            } else {
-                top.location.href = success_url;
-            }
-        }
+$(function() {
+  return $('body').on('submit', '.righter.register-form', function(e) {
+    var callback, data, form, success_url, url;
 
-        $.post(url, data, callback);
+    form = $(this);
+    url = form.attr('action');
+    success_url = form.attr('data-success-url');
+    data = form.serialize();
 
-        return false;
-    });
+    callback = function(response) {
+      if (response.length > 0) {
+        return $('.registration_form_wrapper:visible').html(response);
+      } else {
+        return top.location.href = success_url;
+      }
+    };
+
+    $.post(url, data, callback);
+
+    return false;
+  });
 });

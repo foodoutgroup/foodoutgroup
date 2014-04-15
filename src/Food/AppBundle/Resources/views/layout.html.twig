@@ -41,7 +41,9 @@
             {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
             <ul class="menu top-menu clearfix">
                 <li><a href="{{ path('food_slug', {'slug': ('general.help_slug'|trans())}) }}"><span>{% trans %}general.help_button{% endtrans %}</span></a></li>
-                <li class="login-ico"><a href="#login-register-popup" class="boxer"><span>{% trans %}general.login_button{% endtrans %}</span></a></li>
+                <li class="login-ico">
+                    {% render(controller('FoodUserBundle:Default:loginButton')) %}
+                </li>
             </ul>
         </div>
     </div>

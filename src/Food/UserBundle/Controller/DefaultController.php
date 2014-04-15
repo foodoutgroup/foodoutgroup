@@ -90,4 +90,25 @@ class DefaultController extends Controller
     {
         return $this->render('FoodUserBundle:Default:login.html.twig');
     }
+
+    /**
+     * @Route("/{_locale}/profile", name="user_profile")
+     * @Template("FoodUserBundle:Default:profile.html.twig")
+     */
+    public function profileAction()
+    {
+        // 
+    }
+
+    public function loginButtonAction()
+    {
+        $token = $this->get('security.context')->getToken();
+        $user = $token->getUser();
+
+        if ($user->hasRole('ROLE_USER')) {
+            return $this->render('FoodUserBundle:Default:profile_button.html.twig');
+        } else {
+            return $this->render('FoodUserBundle:Default:login_button.html.twig');
+        }
+    }
 }
