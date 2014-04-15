@@ -773,3 +773,7 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
     color: #FF0000;
 }
 /* End of delivery mega super duper form styles */
+
+.register-form .form-row.error input {
+    border: 1px solid #ff0000;
+}

@@ -102,13 +102,10 @@ class DefaultController extends Controller
 
     public function loginButtonAction()
     {
-        $token = $this->get('security.context')->getToken();
-        $user = $token->getUser();
-
-        if ($user->hasRole('ROLE_USER')) {
+        if ($this->get('security.context')->isGranted('ROLE_USER')) {
             return $this->render('FoodUserBundle:Default:profile_button.html.twig');
-        } else {
-            return $this->render('FoodUserBundle:Default:login_button.html.twig');
         }
+
+        return $this->render('FoodUserBundle:Default:login_button.html.twig');
     }
 }

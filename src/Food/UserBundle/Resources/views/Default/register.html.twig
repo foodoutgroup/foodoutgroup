@@ -1,21 +1,25 @@
-<form class="righter register-form" data-success-url="{{ url('food_lang_homepage') }}" action="{{ url('user_register_create') }}" method="post">
+<form class="righter register-form" data-success-url="{{ url('food_lang_homepage') }}" action="{{ url('user_register_create') }}" method="post" novalidate>
     <h3>{% trans %}general.register_title{% endtrans %}</h3>
     <h4>{% trans %}general.register_text{% endtrans %}</h4>
-    {{ form_errors(form) }}
-    <div class="form-row">
-        {{ form_row(form.firstname) }}
+    <div class="form-row {% if form_errors(form.firstname) %}error{% endif %}">
+        {{ form_label(form.firstname) }}
+        {{ form_widget(form.firstname) }}
     </div>
-    <div class="form-row">
-        {{ form_row(form.lastname) }}
+    <div class="form-row {% if form_errors(form.lastname) %}error{% endif %}">
+        {{ form_label(form.lastname) }}
+        {{ form_widget(form.lastname) }}
     </div>
-    <div class="form-row">
-        {{ form_row(form.email) }}
+    <div class="form-row {% if form_errors(form.email) %}error{% endif %}">
+        {{ form_label(form.email) }}
+        {{ form_widget(form.email) }}
     </div>
-    <div class="form-row">
-        {{ form_row(form.plainPassword.first) }}
+    <div class="form-row {% if form_errors(form.plainPassword.first) %}error{% endif %}">
+        {{ form_label(form.plainPassword.first) }}
+        {{ form_widget(form.plainPassword.first) }}
     </div>
-    <div class="form-row">
-        {{ form_row(form.plainPassword.second) }}
+    <div class="form-row {% if form_errors(form.plainPassword.first) %}error{% endif %}">
+        {{ form_label(form.plainPassword.second) }}
+        {{ form_widget(form.plainPassword.second) }}
     </div>
     <div class="form-controls clearfix">
         <input type="submit" value="{% trans %}general.register_register_button{% endtrans %}" class="fr">
