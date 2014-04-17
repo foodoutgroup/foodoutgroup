@@ -10,3 +10,6 @@ services:
         arguments: [Food\UserBundle\Entity\User]
         tags:
             - { name: form.type, alias: food_user_registration }
+
+    food_user.authentication_handler:
+        class: Food\UserBundle\Handler\AuthenticationHandler

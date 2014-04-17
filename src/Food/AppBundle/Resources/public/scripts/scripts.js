@@ -54,7 +54,7 @@
 })(jQuery, window);
 
 $(function() {
-  return $('body').on('submit', '.righter.register-form', function(e) {
+  $('body').on('submit', '.righter.register-form', function(e) {
     var callback, data, form, success_url, url;
 
     form = $(this);
@@ -71,6 +71,32 @@ $(function() {
     };
 
     $.post(url, data, callback);
+
+    return false;
+  });
+
+  $('body').on('submit', '.lefter.login-form', function(e) {
+    var callback, data, form, success_url, url;
+
+    form = $(this);
+    url = form.attr('action');
+    success_url = form.attr('data-success-url');
+    data = form.serialize();
+    form_login_rows = $('.login-form-row')
+    dataType = 'json';
+
+    form_login_rows.removeClass('error');
+
+    callback = function(response) {
+      if (response.success == 1) {
+        return top.location.href = success_url;
+      } else {
+        form_login_rows.addClass('error');
+        form.find('input[password]').val('');
+      }
+    };
+
+    $.post(url, data, callback, dataType);
 
     return false;
   });

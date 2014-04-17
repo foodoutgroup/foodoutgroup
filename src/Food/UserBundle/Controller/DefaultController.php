@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\SecurityContext;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
@@ -86,9 +87,22 @@ class DefaultController extends Controller
      * @Route("/{_locale}/login", name="user_login")
      * @Template("FoodUserBundle:Default:login.html.twig")
      */
-    public function loginAction()
+    public function loginAction(Request $request)
     {
-        return $this->render('FoodUserBundle:Default:login.html.twig');
+        $session = $request->getSession();
+
+        $csrfToken = $this->container->has('form.csrf_provider')
+            ? $this->container->get('form.csrf_provider')->generateCsrfToken('authenticate')
+            : null;
+        $lastUsername = (null === $session) ? '' : $session->get(SecurityContext::LAST_USERNAME);
+
+        return $this->render(
+            'FoodUserBundle:Default:login.html.twig',
+            [
+                'csrf_token' => $csrfToken,
+                'last_username' => $lastUsername
+            ]
+        );
     }
 
     /**
@@ -97,7 +111,7 @@ class DefaultController extends Controller
      */
     public function profileAction()
     {
-        // 
+        # todo
     }
 
     public function loginButtonAction()
