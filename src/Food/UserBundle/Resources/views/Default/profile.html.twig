@@ -1,0 +1,260 @@
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+{% block body %}
+    <div class="site-center">
+        <div class="site-block">
+            <div class="page-path clearfix">
+                <a href="{{ path('food_lang_homepage') }}">Pradžia</a>
+                <a href="{{ path('user_profile') }}"> Vartotojo profilis</a>
+            </div>
+            <div class="page-title">
+                <h1 class="clearfix"><span>Sveiki, {{ app.user.firstname }}!</span></h1>
+            </div>
+            <div class="clearfix">
+                <div class="full-content user-page clearfix">
+                    <div class="user-lefter">
+                        <div class="active-user"><img src="images/user.png"><a href="#" class="edit"></a>
+                            <div class="user-name">{{ app.user.firstname }}</div>
+                            <div class="user-location">Vilnius</div>
+                        </div>
+                        <ul class="menu user-menu">
+                            <li class="user-ico active"><a href="#">Vartotojo duomenys</a></li>
+                            <li class="cart-ico"><a href="#">Užsakymų istorija</a></li>
+                            <li class="delivery-ico"><a href="#">Užsakymo sekimas</a></li>
+                            <li class="logoff-ico"><a href="#">Atsijungti</a></li>
+                        </ul>
+                    </div>
+                    <div class="user-righter">
+                        <h2>Vartotojo duomenys</h2>
+                        <form class="user-details-form" style="border: 1px solid #ff0000;">
+                            {{ form_rest(form) }}
+                            <!-- <div class="form-row">
+                                <label>Vardas:</label>
+                                <input type="text" value="Jonas">
+                            </div>
+                            <div class="form-row">
+                                <label>Pavardė:</label>
+                                <input type="text" value="Karosas">
+                            </div>
+                            <div class="form-row">
+                                <label>El. paštas:</label>
+                                <input type="text" value="Jonas@pastas.pastas">
+                            </div>
+                            <div class="form-row">
+                                <label>Telefonas:</label>
+                                <input type="text" value="+37062535891">
+                            </div>
+                            <hr>
+                            <div class="form-row">
+                                <label>Miestas:</label>
+                                <select class="custom-select">
+                                    <option>Vilnius</option>
+                                    <option>Kaunas</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label>Adresas:</label>
+                                <input type="text" value="Gedimino pr., 25 - 28">
+                            </div>
+                            <hr>
+                            <div class="form-row">
+                                <label>Senas slaptažodis:</label>
+                                <input type="password" value="Slaptazodis">
+                            </div>
+                            <div class="form-row">
+                                <label>Naujas slaptažodis:</label>
+                                <input type="password" value="">
+                            </div>
+                            <div class="form-row">
+                                <label class="double">Pakartokite naują slaptažodį:</label>
+                                <input type="password" value="">
+                            </div>
+                            <div class="form-controls">
+                                <input type="submit" value="išsaugoti">
+                            </div> -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix bottom-blocks">
+                <div class="app-block clearfix"><img src="images/app-view.png">
+                    <div class="app-block-inner">
+                        <h3>Skanu.lt <br/>tavo kišenėje!</h3>
+                        <p>Lorem ipsum dolor sit amet, enim ad minim veniam, quis nostrud ullamco laboris nisi ut aliqip ex commodo consequat.</p>
+                        <div><a href="#"><img src="images/app-store.png"></a><a href="#"><img src="images/g-store.png"></a></div>
+                    </div>
+                </div>
+                <div class="newsletter-block">
+                    <h4>Naujienlaiškis</h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do enim ad minim veniam, quis nostrud.</p>
+                    <form class="newsletter-form">
+                        <input type="text" placeholder="Tavo el. paštas">
+                        <input type="submit" value="Prenumeruok">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="site-footer">
+        <div class="site-block clearfix">
+            <div class="col col-1">
+                <h5>Maisto ralis</h5>
+                <ul class="menu">
+                    <li><a href="#">About us</a></li>
+                    <li><a href="#">1822 in press</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Terms and Conditions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="col col-2">
+                <h5>Daugiau nuorodu</h5>
+                <ul class="menu">
+                    <li><a href="#">About us</a></li>
+                    <li><a href="#">Terms and Conditions</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">1822 in press</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="col col-3">
+                <h5>TOP restoranai</h5>
+                <div class="clearfix">
+                    <div class="small-col fl">
+                        <div class="clearfix"><span class="name fl"><a href="#">Čili pica</a></span>
+                            <div data-stars="5" class="restoran-rating fr"></div>
+                        </div>
+                        <div class="clearfix"><span class="name fl"><a href="#">Soya</a></span>
+                            <div data-stars="4" class="restoran-rating fr"></div>
+                        </div>
+                        <div class="clearfix"><span class="name fl"><a href="#">Forrester</a></span>
+                            <div data-stars="5" class="restoran-rating fr"></div>
+                        </div>
+                        <div class="clearfix"><span class="name fl"><a href="#">Indai</a></span>
+                            <div data-stars="5" class="restoran-rating fr"></div>
+                        </div>
+                        <div class="clearfix"><span class="name fl"><a href="#">Hesburger</a></span>
+                            <div data-stars="4" class="restoran-rating fr"></div>
+                        </div>
+                    </div>
+                    <div class="small-col fr">
+                        <div class="clearfix"><span class="name fl"><a href="#">Čili pica</a></span>
+                            <div data-stars="5" class="restoran-rating fr"></div>
+                        </div>
+                        <div class="clearfix"><span class="name fl"><a href="#">Soya</a></span>
+                            <div data-stars="4" class="restoran-rating fr"></div>
+                        </div>
+                        <div class="clearfix"><span class="name fl"><a href="#">Forrester</a></span>
+                            <div data-stars="5" class="restoran-rating fr"></div>
+                        </div>
+                        <div class="clearfix"><span class="name fl"><a href="#">Indai</a></span>
+                            <div data-stars="5" class="restoran-rating fr"></div>
+                        </div>
+                        <div class="clearfix"><span class="name fl"><a href="#">Hesburger</a></span>
+                            <div data-stars="4" class="restoran-rating fr"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-4"><img src="images/bottom-logo.png">
+                <p class="copyrights">&copy; Skanu.lt</p>
+            </div>
+        </div>
+    </div>
+    <div id="detailed-dish-popup" style="display: none;">
+        <form class="popup detailed-dish-popup"><img src="images/popup-header.png" class="popup-header">
+            <div class="dish-info">
+                <p class="name">San Remo pica</p>
+                <p class="desc">Šoninė, sūris, aitrusis "Čili picos Leco" padažas, pomidorų padažas</p>
+            </div>
+            <div class="dish-size">
+                <div class="title">Pasirinkite dydį</div>
+                <div class="clearfix">
+                    <label class="custom-radio">Maža pica, 25cm <strong class="price">15,00 Lt</strong>
+                        <input type="radio" name="size-1">
+                    </label>
+                    <label class="custom-radio">Vidutinė pica, 28cm<strong class="price">18,00 Lt</strong>
+                        <input type="radio" name="size-1">
+                    </label>
+                    <label class="custom-radio">Maža pica, 32cm <strong class="price">21,00 Lt</strong>
+                        <input type="radio" name="size-1">
+                    </label>
+                    <label class="custom-radio">Šeimyninė pica, 45cm <strong class="price">33,00 Lt</strong>
+                        <input type="radio" name="size-1">
+                    </label>
+                </div>
+            </div>
+            <div class="dish-ingredients">
+                <div class="title">Ar norėtumėt papildomų reikaliukų?</div>
+                <div class="clearfix">
+                    <label class="custom-checkbox">Agurkas<strong class="price">+1,00 Lt</strong>
+                        <input type="checkbox">
+                    </label>
+                    <label class="custom-checkbox">Pomidoras<strong class="price">+1,00 Lt</strong>
+                        <input type="checkbox">
+                    </label>
+                    <label class="custom-checkbox">Grietinė<strong class="price">+2,00 Lt</strong>
+                        <input type="checkbox">
+                    </label>
+                    <label class="custom-checkbox">Artišokai<strong class="price">+3,00 Lt</strong>
+                        <input type="checkbox">
+                    </label>
+                    <label class="custom-checkbox">Paprika<strong class="price">+3,00 Lt</strong>
+                        <input type="checkbox">
+                    </label>
+                </div>
+            </div>
+            <div class="popup-controls"><a href="#" class="button-submit"><span>Pridėti į krepšelį</span></a></div>
+        </form>
+    </div>
+    <div id="login-register-popup" style="display: none;">                            
+        <div class="popup login-register-popup clearfix">
+            <form class="lefter login-form">
+                <h3>Prisijunkite</h3>
+                <h4>Esate užsiregistravęs? Prisijunkite!</h4>
+                <div class="form-row">
+                    <label>El. paštas</label>
+                    <input type="text">
+                </div>
+                <div class="form-row small-margin">
+                    <label>Slaptažodis</label>
+                    <input type="password">
+                </div>
+                <div class="tar"><a href="#">Pamiršote slaptažodį?</a></div>
+                <div class="form-controls clearfix">
+                    <label class="fl custom-checkbox">Prisiminti mane
+                        <input type="checkbox">
+                    </label>
+                    <input type="submit" value="prisijunkite" class="fr">
+                </div>
+            </form>
+            <div class="righter register-form">
+                <h3>Naujas vartotojas?</h3>
+                <h4>Lorem ipsum dolor sit amet, consectetur </h4>
+                <div class="form-row">
+                    <label>Vardas</label>
+                    <input type="text">
+                </div>
+                <div class="form-row">
+                    <label>Pavardė</label>
+                    <input type="text">
+                </div>
+                <div class="form-row">
+                    <label>El. paštas</label>
+                    <input type="text">
+                </div>
+                <div class="form-row">
+                    <label>Slaptažodis</label>
+                    <input type="password">
+                </div>
+                <div class="form-row">
+                    <label class="double">Pakartokite slaptažodį</label>
+                    <input type="password">
+                </div>
+                <div class="form-controls clearfix">
+                    <input type="submit" value="prisiregistruokite" class="fr">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

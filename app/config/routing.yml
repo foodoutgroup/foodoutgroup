@@ -93,10 +93,6 @@ paysera_callback:
     path: /payments/paysera/callback
     defaults: { _controller: FoodOrderBundle:Payments:payseraCallback}
 
-fos_user_profile:
-    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
-    prefix: /profile
-
 fos_user_register:
     resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
     prefix: /register

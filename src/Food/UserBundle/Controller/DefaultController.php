@@ -13,6 +13,9 @@ use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
+use Food\UserBundle\Form\Type\ProfileFormType;
+use Food\UserBundle\Form\Type\UserAddressFormType;
+use Food\UserBundle\Entity\UserAddress;
 
 class DefaultController extends Controller
 {
@@ -111,7 +114,22 @@ class DefaultController extends Controller
      */
     public function profileAction()
     {
-        # todo
+        $security = $this->get('security.context');
+
+        if (!$security->isGranted('ROLE_USER')) {
+            return $this->redirect($this->generateUrl('food_lang_homepage'));
+        }
+
+        // $user = $this->get('security.context')->getToken()->getUser();
+
+        // $form = $this->createForm(new ProfileFormType(get_class($user)), $user);
+        // $form = $this->createForm(new UserAddressFormType());
+        $form = $this->createForm(new ProfileFormType('Food\UserBundle\Entity\User'));
+
+        return [
+            'form' => $form->createView(),
+            // 'addressForm' => $addressForm->createView(),
+        ];
     }
 
     public function loginButtonAction()
