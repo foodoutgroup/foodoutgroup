@@ -166,7 +166,7 @@
         <source>general.sms.user.order_accepted</source>
         <target>Sveiki, restoranas patvirtino Jusu uzsakyma</target>
       </trans-unit>
-      <trans-unit id="general.email.new_order" resname="general.email.new_order">
+      <trans-unit id="74fbe91702c1ee04724c55bde63e654f" resname="general.email.new_order">
         <source>general.email.new_order</source>
         <target>naujas užsakymas</target>
       </trans-unit>
@@ -278,7 +278,7 @@
         <source>general.sms.new_order</source>
         <target>Naujas uzsakymas: </target>
       </trans-unit>
-      <trans-unit id="general.sms.new_order_in_mail" resname="general.sms.new_order_in_mail">
+      <trans-unit id="ddd5593d67b30b671c0533a616aa5398" resname="general.sms.new_order_in_mail">
         <source>general.sms.new_order_in_mail</source>
         <target>Prasome pasitikrinti savo el.pasta, gavote nauja uzsakyma</target>
       </trans-unit>
@@ -301,6 +301,14 @@
       <trans-unit id="937d1ad95431022c4c1b33b8f83c30f3" resname="mobile.delivery_destination">
         <source>mobile.delivery_destination</source>
         <target>Pristatymo adresas</target>
+      </trans-unit>
+      <trans-unit id="mobile.place_point_address" resname="mobile.place_point_address">
+        <source>mobile.place_point_address</source>
+        <target>Paimti iš</target>
+      </trans-unit>
+      <trans-unit id="mobile.place_point_phone" resname="mobile.place_point_phone">
+        <source>mobile.place_point_phone</source>
+        <target>Gamybos taško telefonas</target>
       </trans-unit>
       <trans-unit id="88456d596941f6ec79d9cd30ae01e8af" resname="mobile.pickup_foodout">
         <source>mobile.pickup_foodout</source>
