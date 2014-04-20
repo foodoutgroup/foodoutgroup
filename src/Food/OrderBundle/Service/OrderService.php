@@ -4,6 +4,7 @@ namespace Food\OrderBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Food\CartBundle\Service\CartService;
+use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Food\OrderBundle\Entity\OrderDetailsOptions;
@@ -193,15 +194,19 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param int $place
+     * @param int $placeId
+     * @param PlacePoint $placePoint
      * @return Order
      */
-    public function createOrder($place)
+    public function createOrder($placeId, $placePoint=null)
     {
-
-        $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($place);
-        $placePointMap = $this->container->get('session')->get('point_data');
-        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place]);
+        $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
+        if (empty($placePoint)) {
+            $placePointMap = $this->container->get('session')->get('point_data');
+            $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$placeId]);
+        } else {
+            $pointRecord = $placePoint;
+        }
 
         $this->order = new Order();
         $user = $this->container->get('security.context')->getToken()->getUser();
@@ -210,6 +215,7 @@ class OrderService extends ContainerAware
         }
         $this->order->setPlace($placeRecord);
         $this->order->setPlaceName($placeRecord->getName());
+        $this->order->setPlacePointSelfDelivery($placeRecord->getSelfDelivery());
 
         $this->order->setPlacePoint($pointRecord);
         $this->order->setPlacePointCity($pointRecord->getCity());
@@ -416,7 +422,7 @@ class OrderService extends ContainerAware
     {
         $userAddress = $this->getEm()
             ->getRepository('Food\UserBundle\Entity\UserAddress')
-            ->findBy(array(
+            ->findOneBy(array(
                 'user' => $user,
                 'city' => $city,
                 'address' => $address,
@@ -441,10 +447,12 @@ class OrderService extends ContainerAware
      * @param int $place
      * @param string $locale
      * @param \Food\UserBundle\Entity\User $user
+     * @param PlacePoint $placePoint - placePoint, jei atsiima pats
      */
-    public function createOrderFromCart($place, $locale='lt', $user)
+    public function createOrderFromCart($place, $locale='lt', $user, $placePoint=null, $selfDelivery = false)
     {
-        $this->createOrder($place);
+        $this->createOrder($place, $placePoint);
+        $this->getOrder()->setDeliveryType();
         $this->getOrder()->setLocale($locale);
         $this->getOrder()->setUser($user);
         $this->saveOrder();
@@ -484,8 +492,9 @@ class OrderService extends ContainerAware
                 $sumTotal += $cartDish->getQuantity() * $opt->getDishOptionId()->getPrice();
             }
         }
-
-        $sumTotal+= $this->getOrder()->getPlace()->getDeliveryPrice();
+        if(!$selfDelivery) {
+            $sumTotal+= $this->getOrder()->getPlace()->getDeliveryPrice();
+        }
         $this->getOrder()->setTotal($sumTotal);
         $this->saveOrder();
 
@@ -989,20 +998,46 @@ class OrderService extends ContainerAware
     public function informPlace()
     {
         $messagingService = $this->container->get('food.messages');
+        $translator = $this->container->get('translator');
+        $logger = $this->container->get('logger');
+
+        $order = $this->getOrder();
+        $placePoint = $order->getPlacePoint();
+        $placePointEmail = $placePoint->getEmail();
+
+        $domain = $this->container->getParameter('domain');
 
         // Inform restourant about new order
         $orderConfirmRoute = $this->container->get('router')
-            ->generate('ordermobile', array('hash' => $this->getOrder()->getOrderHash()));
+            ->generate('ordermobile', array('hash' => $order->getOrderHash()));
 
-        $messageText = $this->container->get('translator')->trans('general.sms.new_order')
-            .': http://'.$this->container->getParameter('domain').$orderConfirmRoute;
+        $messageText = $translator->trans('general.sms.new_order')
+            .': http://'.$domain.$orderConfirmRoute;
 
+        // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
+        if (!empty($placePointEmail)) {
+            $logger->alert('--- Place asks for email, so we have sent an email about new order to: '.$placePointEmail);
+            $emailMessageText = $messageText;
+            $messageText = $translator->trans('general.sms.new_order_in_mail');
+
+            $mailer = $this->container->get('mailer');
+
+            $message = \Swift_Message::newInstance()
+                ->setSubject($this->container->getParameter('title').': '.$translator->trans('general.email.new_order'))
+                ->setFrom('info@'.$domain)
+            ;
+
+            $message->addTo($placePointEmail);
+            $message->setBody($emailMessageText);
+            $mailer->send($message);
+        }
         $message = $messagingService->createMessage(
             $this->container->getParameter('sms.sender'),
-            $this->getOrder()->getPlacePoint()->getPhone(),
+            $placePoint->getPhone(),
             $messageText
         );
         $messagingService->saveMessage($message);
+
     }
 
     /**

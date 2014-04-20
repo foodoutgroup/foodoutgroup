@@ -15,9 +15,13 @@
 # ignore uploaded files
 /web/images/**/*
 /web/images2/**/*
+/web/uploads
 
 # ignore phpStorm crap
 .idea
 
 # Entity backups
 *.php~
+
+# ctags
+/tags

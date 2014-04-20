@@ -9,12 +9,95 @@
             event.preventDefault();
             return false;
         });
+        $('.address-change').click(function(e){
+            if($(e.target).is('span') || $(e.target).is('input')) {
+                $("#change-address").dialog(
+                    {
+                        modal: true,
+                        resizable:false,
+                        width:360,
+                        buttons: {
+                            'change': {
+                                text: '{% trans %}cart.checkout.address_change_change{% endtrans %}',
+                                click: function() {
+                                    var thisDialog = $(this);
+                                    thisDialog.parent().mask();
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '{{ path('food_ajax', {'action': 'find-address-and-recount'}) }}',
+                                        data:  {city: $('.city-row select').val(), address: $('.address-row input').val(), place: {{ place.id }} },
+                                        success:  function(resp){
+                                            if (resp.data.success == 1) {
+                                                if (resp.data.nodelivery == 1) {
+                                                    thisDialog.parent().unmask();
+                                                    thisDialog.dialog('close');
+                                                    toTakeOrNotToTake();
+                                                } else {
+                                                    window.location.reload();
+                                                }
+                                            } else {
+                                                thisDialog.parent().unmask();
+                                                $('#change-address .alert').show();
+                                                setTimeout(function(){
+                                                    $('#change-address .alert').hide();
+                                                }, 5000);
+                                            }
+                                        }
+                                    });
+                                }
+                            },
+                            'cancel': {
+                                text: '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
+                                click: function() {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        }
+                    }
+                ).siblings('.ui-dialog-titlebar').remove();
+            }
+        });
+        function toTakeOrNotToTake() {
+            $('#place-point-not-found').dialog({
+                modal: true,
+                resizable:false,
+                width:360,
+                buttons: {
+                    'i_take_it': {
+                        text: '{% trans %}cart.checkout.i_will_take_it{% endtrans %}',
+                        click: function() {
+                            window.location.href = '{{ path('food_cart', {placeId: place.id, takeAway: 1}) }}';
+                        },
+                    },
+                    'show_the_list': {
+                        text: '{% trans %}cart.checkout.show_me_places{% endtrans %}',
+                        click: function() {
+                            $(this).parent().mask();
+                            window.location.href = '{{ path('food_places_' ~ locale ~ '_main') }}';
+                        }
+                    }
+                }
+            }).siblings('.ui-dialog-titlebar').remove();
+        }
+        $('.tooltip').tooltip();
     });
 {% endblock %}
 
+
+
 {% block body %}
+
+    {% include 'FoodDishesBundle:Place:dish_cart_partial.html.twig' %}
+
     {% javascripts '@FoodAppBundle/Resources/public/js_main/order.js' %}
-        <script src="{{ asset_url }}"></script>
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                Cart.placeId = {{ place.id }};
+                Cart.locale = '{{ app.request.get('_locale') }}';
+                Cart.bindEvents();
+            });
+        </script>
     {% endjavascripts %}
     <div class="site-center">
         <div class="site-block">
@@ -30,25 +113,38 @@
                                 <label><br></label>
                                 <div class="delivery-type-radios clearfix">
                                     <label class="custom-radio">{% trans %}cart.checkout.delivery_to_home{% endtrans %}
-                                        <input type="radio" name="delivery-type" value="deliver"{% if order is not null and order.deliveryType == 'deliver' %} checked="checked"{% endif %}>
+                                        <input type="radio" name="delivery-type" value="deliver"{% if ((order is not null and order.deliveryType == 'deliver') or order is null) and takeAway == false %} checked="checked"{% endif %}>
                                     </label>
                                     <label class="custom-radio">{% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
-                                        <input type="radio" name="delivery-type" value="pickup"{% if order is not null and order.deliveryType == 'pickup' %} checked="checked"{% endif %}>
+                                        <input type="radio" name="delivery-type" value="pickup"{% if (order is not null and order.deliveryType == 'pickup') or takeAway == true %} checked="checked"{% endif %}>
                                     </label>
                                 </div>
                             </div>
-                            {# TODO - sukelti visus laukus. Issiaiskinti su Paulium address flow #}
-                            <div class="form-row">
+                            {# Pristatysime i namus - duodam susitvarkyti adresus #}
+                            {% if takeAway == false %}
+                            <div class="form-row form-row-required address-change">
                                 <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
-                                <select class="custom-select" name="customer-city">
-                                    <option value="Vilnius">Vilnius</option>
-                                    <option value="Kaunas">Kaunas</option>
+                                <select class="custom-select" disabled="true">
+                                    <option {% if location and location.city is defined and location.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
+                                    <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
                                 </select>
                             </div>
-                            <div class="form-row">
+                            <div class="form-row form-row-required address-change">
                                 <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
-                                <input type="text" name="customer-address" />
+
+                                <input type="text" id="address" value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% endif %}" readonly>
                             </div>
+                            {# Atsiims pats - leidziame pasirinkti padalini #}
+                            {% else %}
+                            <div class="form-row form-row-required">
+                                <label>{% trans %}cart.checkout.place_point{% endtrans %}:</label>
+                                <select class="custom-select" name="place_point">
+                                    {% for point in place.points %}
+                                    <option {% if order is not null and order.placePoint.id == point.id %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            {% endif %}
                             <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.firstname{% endtrans %}:</label>
                                 <input type="text" name="customer-firstname" />
@@ -61,8 +157,8 @@
                                 <label>{% trans %}cart.checkout.email{% endtrans %}:</label>
                                 <input type="text" name="customer-email">
                             </div>
-                            <div class="form-row">
-                                <label>{% trans %}cart.checkout.phone{% endtrans %}:</label>
+                            <div class="form-row form-row-required">
+                                <label title="{% trans %}cart.checkout.phone_tooltip{% endtrans %}" class="tooltip">{% trans %}cart.checkout.phone{% endtrans %}:</label>
                                 <input type="text" name="customer-phone" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" />
                             </div>
                             {#
@@ -74,21 +170,21 @@
                                 </select>
                             </div>
                             #}
-                            <div class="form-row">
+                            <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.delivery_comment{% endtrans %}:</label>
                                 <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}"></textarea>
                             </div>
+                            {# TODO laikinai viskas pirmam testui paslepta - nuimsim po testo #}
                             <h2 class="section-2">2. {% trans %}cart.checkout.block_title_secure_payment{% endtrans %}</h2>
                             <div class="select-payment clearfix">
                                 <label class="custom-radio">{% trans %}cart.checkout.cash_on_delivery{% endtrans %}
-                                    <input type="radio" name="payment-type" value="local"{% if order is not null and order.paymentMethod == 'local' %} checked="checked"{% endif %}>
+                                    <input type="radio" name="payment-type" value="local"{#{% if order is not null and order.paymentMethod == 'local' %}#} checked="checked"{#{% endif %}#}>
                                 </label>
-                                <label class="custom-radio">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
+                                {#<label class="custom-radio">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
                                     <input type="radio" name="payment-type" value="local.card"{% if order is not null and order.paymentMethod == 'local.card' %} checked="checked"{% endif %}>
-                                </label>
+                                </label>#}
                             </div>
                             {# TODO kolkas viskas rodo i Paysera#}
-                            {# TODO hackas testavimui. Reikia atskiro paysera optionso, kitus bankus kolkas slepiame #}
                             <div class="select-bank clearfix">
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-sb.png">
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
@@ -112,12 +208,36 @@
 
                             {# <div class="cupon-info">Jei turite kuponą, įveskite <a href="#">jo kodą čia</a></div> #}
                         </div>
-                        <div class="form-controls clearfix"><a href="#" class="button-back">{% trans %}cart.checkout.button_get_back{% endtrans %}</a><a href="#" class="submit-button"><span>{% trans %}cart.checkout.button_order{% endtrans %}</span></a></div>
+                        <div class="form-controls clearfix"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button-back">{% trans %}cart.checkout.button_get_back{% endtrans %}</a><a href="#" class="submit-button"><span>{% trans %}cart.checkout.button_order{% endtrans %}</span></a></div>
                     </form>
                 </div>
                 <div class="content-righter-small">
-                    {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': true })) }}
+                    {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': true, 'order': order, 'takeAway': takeAway })) }}
                 </div>
+            </div>
+        </div>
+    </div>
+    <div style="display: none">
+        <div id="change-address" class="delivery-info-form">
+            <div class="alert alert-danger" style="display: none;">
+                {% trans %}cart.checkout.address_not_found{% endtrans %}
+            </div>
+            <div class="form-row form-row-required city-row">
+                <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
+                <select class="custom-select">
+                    <option {% if location and location.city is defined and location.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
+                    <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
+                </select>
+            </div>
+            <div class="form-row form-row-required address-row">
+                <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
+                <input type="text" id="address" value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}">
+            </div>
+        </div>
+        <div id="place-point-not-found">
+            <div class="alert alert-danger">
+                <b>{% trans %}cart.checkout.place_point_not_in_radius{% endtrans %}</b><br />
+                <p>{% trans %}cart.checkout.no_delivery_choose_what_to_do{% endtrans %}</p>
             </div>
         </div>
     </div>

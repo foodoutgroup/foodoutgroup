@@ -3,9 +3,7 @@
 namespace Food\CartBundle\Controller;
 
 use Food\CartBundle\Service\CartService;
-use Food\UserBundle\Entity\User;
-use Food\UserBundle\Entity\UserAddress;
-use FOS\UserBundle\Doctrine\UserManager;
+use Food\DishesBundle\Entity\Place;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -131,11 +129,12 @@ class DefaultController extends Controller
         $this->getCartService()->removeOptionById($dishId, $optionId);
     }
 
-    public function indexAction($placeId)
+    public function indexAction($placeId, $takeAway = null)
     {
         $request = $this->getRequest();
 
-        $orderService = $this->container->get('food.order');
+        $orderService = $this->get('food.order');
+        $placeService = $this->get('food.places');
         $googleGisService = $this->container->get('food.googlegis');
         /**
          * @var UserManager $fosUserManager
@@ -149,11 +148,19 @@ class DefaultController extends Controller
             $order = $orderService->getOrderByHash($orderHash);
             $place = $order->getPlace();
         } else {
-            $place = $this->get('food.places')->getPlace($placeId);
+            $place = $placeService->getPlace($placeId);
         }
 
         // Form submitted
         if ($request->getMethod() == 'POST') {
+            // Jeigu atsiima pats - dedam gamybos taska, kuri jis pats pasirinko, o ne mes Pauliaus magic find funkcijoje
+            if ($takeAway) {
+                $placePointId = $request->get('place_point');
+                $placePoint = $placeService->getPlacePointData($placePointId);
+            } else {
+                $placePoint = null;
+            }
+
             if (empty($order)) {
                 $userEmail = $request->get('customer-email');
                 $userPhone = $request->get('customer-phone');
@@ -182,10 +189,17 @@ class DefaultController extends Controller
                     $fosUserManager->updateUser($user);
                 }
 
-                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user);
+                $selfDelivery = ($this->getRequest()->get('delivery-type') == "pickup" ? true : false);
+
+                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery);
                 $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
             } else {
                 $orderService->setOrder($order);
+                if ($takeAway) {
+                    $orderService->getOrder()->setPlacePoint($placePoint);
+                    $orderService->getOrder()->setPlacePointCity($placePoint->getCity());
+                    $orderService->getOrder()->setPlacePointAddress($placePoint->getAddress());
+                }
                 $orderService->logOrder(null, 'retry', 'Canceled order billing retry by user', $orderService->getOrder());
             }
 
@@ -205,16 +219,18 @@ class DefaultController extends Controller
             }
             $orderService->setPaymentStatus($orderService::$paymentStatusWait);
 
-            // Update order with recent address information
-            $locationData = $googleGisService->getLocationFromSession();
-            $address = $orderService->createAddressMagic(
-                $user,
-                $locationData['city'],
-                $locationData['address_orig'],
-                (string)$locationData['lat'],
-                (string)$locationData['lng']
-            );
-            $orderService->getOrder()->setAddressId($address);
+            // Update order with recent address information. but only if we need to deliver
+            if ($deliveryType == $orderService::$deliveryDeliver) {
+                $locationData = $googleGisService->getLocationFromSession();
+                $address = $orderService->createAddressMagic(
+                    $user,
+                    $locationData['city'],
+                    $locationData['address_orig'],
+                    (string)$locationData['lat'],
+                    (string)$locationData['lng']
+                );
+                $orderService->getOrder()->setAddressId($address);
+            }
             $orderService->saveOrder();
 
             $billingUrl = $orderService->billOrder();
@@ -229,6 +245,8 @@ class DefaultController extends Controller
             array(
                 'order' => $order,
                 'place' => $place,
+                'takeAway' => ($takeAway ? true : false),
+                'location' => $this->get('food.googlegis')->getLocationFromSession()
             )
         );
     }
@@ -241,15 +259,17 @@ class DefaultController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function sideBlockAction($place, $renderView = false, $inCart = false)
+    public function sideBlockAction(Place $place, $renderView = false, $inCart = false, $order = null, $takeAway = null)
     {
         $list = $this->getCartService()->getCartDishes($place);
-        $total = $this->getCartService()->getCartTotal($list, $place);
+        $total_cart = $this->getCartService()->getCartTotal($list, $place);
         $params = array(
             'list'  => $list,
             'place' => $place,
-            'total' => $total,
+            'total_cart' => $total_cart,
+            'total_with_delivery' => $total_cart + $place->getDeliveryPrice(),
             'inCart' => $inCart,
+            'hide_delivery' => (($order!=null AND $order->getDeliveryType() == 'pickup') || $takeAway == true ? 1: 0)
         );
         if ($renderView) {
             return $this->renderView('FoodCartBundle:Default:side_block.html.twig', $params);

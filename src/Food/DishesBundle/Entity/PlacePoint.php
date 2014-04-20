@@ -47,6 +47,13 @@ class PlacePoint
     /**
      * @var string
      *
+     * @ORM\Column(name="email", type="string", length=128)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="city", type="string", length=255)
      */
     private $city;
@@ -1155,5 +1162,28 @@ class PlacePoint
     public function getCompanyCode()
     {
         return $this->company_code;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return PlacePoint
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 }

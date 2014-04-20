@@ -713,7 +713,18 @@ input.button {}
 /** Uuuuuuuhhh - cant touch it **/
 .detailed-dish-popup .theCounter {width: 40px; text-align: center; border-radius: 5px; border: 1px solid #cccccc;}
 .theCounter-dec, .theCounter-inc {border: none; background-color: transparent;}
+#change-address { margin-bottom: 0px;}
+.alert {padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px;}
+.alert-danger { background-color: #f2dede; border-color: #ebccd1; color: #a94442; }
+.alert-warning { background-color: #fcf8e3; border-color: #faebcc; color: #8a6d3b; }
+.alert-info {background-color: #d9edf7; border-color: #bce8f1; color: #31708f; }
+.alert-success { background-color: #dff0d8; border-color: #d6e9c6; color: #3c763d;}
+#change-address .alert { margin-bottom: 0px;}
+h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
+
+.address-change a,.address-change a span, .address-change input { cursor: pointer !important; }
 .static-page-content { text-align: justify; padding-left: 20px; padding-right: 20px;}
+
 
 /** The happyness of the side cart **/
 .check-item .edit {

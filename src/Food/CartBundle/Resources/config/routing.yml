@@ -7,5 +7,7 @@ food_cart_success:
     defaults: { _controller: FoodCartBundle:Default:success }
 
 food_cart:
-    pattern: /{placeId}/
-    defaults: { _controller: FoodCartBundle:Default:index}
+    pattern: /{placeId}/{takeAway}
+    defaults: { _controller: FoodCartBundle:Default:index, takeAway: ~}
+    options:
+            expose: true

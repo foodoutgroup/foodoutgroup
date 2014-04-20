@@ -70,7 +70,13 @@ class PlaceRepository extends EntityRepository
         $lon = str_replace(",", ".", $locationData['lng']);
 
 
-        $subQuery = "SELECT id  FROM place_point WHERE active=1 AND city='".$city."' AND place = p.id AND (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <= 7 ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
+        $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND city='".$city."' AND place = p.id
+            AND (
+                (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) <= 7
+                 OR
+                 p.self_delivery = 1
+                 )
+            ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
         $kitchensQuery = "";
 
         if (!empty($kitchens)) {
@@ -83,9 +89,9 @@ class PlaceRepository extends EntityRepository
             } else {
                 $kitchensQuery.= " recommended=1";
             }
-            $query = "SELECT p.id as place_id, pp.id as point_id FROM place p, place_point pp WHERE pp.place = p.id AND ".$kitchensQuery;
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND ".$kitchensQuery;
         } else {
-            $query = "SELECT p.id as place_id, pp.id as point_id FROM place p, place_point pp WHERE pp.place = p.id AND pp.id =  (". $subQuery .") ".$kitchensQuery;
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.id =  (". $subQuery .") ".$kitchensQuery;
         }
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
@@ -101,11 +107,44 @@ class PlaceRepository extends EntityRepository
     }
 
     /**
+     * @param $placeId
+     * @param $locationData
+     * @return null
+     */
+    public function getPlacePointNear($placeId, $locationData)
+    {
+        if (empty($locationData['city']) || empty($locationData['lat'])) {
+            return null;
+        }
+        $city = $locationData['city'];
+        $lat = str_replace(",", ".", $locationData['lat']);
+        $lon = str_replace(",", ".", $locationData['lng']);
+
+
+        $subQuery = "SELECT pp.id FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND p.active=1 AND pp.city='".$city."' AND pp.place = $placeId
+            AND (
+                (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <= 7
+                OR
+                p.self_delivery = 1
+            )
+            ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
+
+        $stmt->execute();
+        $places = $stmt->fetchAll();
+        if (!empty($places) && !empty($places[0])) {
+            return (int)$places[0]['id'];
+        }
+        return null;
+    }
+
+    /**
      * @return Place[]
      */
     public function getRecommendedForTitle()
     {
-        $query = "SELECT p.id FROM place p WHERE p.active = 1 AND p.recommended = 1 AND p.deleted_at IS NULL ORDER BY RAND()";
+        $query = "SELECT p.id FROM place p WHERE p.active = 1 AND p.recommended = 1 AND p.deleted_at IS NULL ORDER BY RAND() LIMIT 5";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $placesIds = $stmt->fetchAll();
