@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Form\FormError;
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
@@ -42,10 +44,26 @@ class DefaultController extends Controller
         $form->setData($user);
         $form->bind($request);
 
-        if ($form->isValid()) {
+        $existingUser = $this->userExists($form->get('email')->getData());
+
+        // rebind if user exists
+        if ($existingUser) {
+            $user = $existingUser;
+
+            $form = $formFactory->createForm();
+            $form->setData($user);
+            $form->bind($request);
+        }
+
+        if ($form->isValid() && (!$existingUser || ($existingUser && !$existingUser->getFullyRegistered()))) {
             $event = new FormEvent($form, $request);
             $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
 
+            // manually set these flags. ->setEnabled is especially important for password update if user exists.
+            $user->setEnabled(true);
+            $user->setFullyRegistered(true);
+
+            // finally update user
             $userManager->updateUser($user);
 
             if (null === $response = $event->getResponse()) {
@@ -56,6 +74,10 @@ class DefaultController extends Controller
             $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
 
             return $response;
+        }
+
+        if ($existingUser) {
+            $form->get('email')->addError(new FormError('This user is already registered.'));
         }
 
         return $this->render(
@@ -121,5 +143,17 @@ class DefaultController extends Controller
         }
 
         return $this->render('FoodUserBundle:Default:login_button.html.twig');
+    }
+
+    private function userExists($email)
+    {
+        $existingUser = new ArrayCollection(
+            $this
+                ->getDoctrine()
+                ->getRepository('FoodUserBundle:User')
+                ->findByEmail($email)
+        );
+
+        return $existingUser->first();
     }
 }
