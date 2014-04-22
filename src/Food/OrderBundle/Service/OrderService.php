@@ -14,6 +14,7 @@ use Food\OrderBundle\Entity\PaymentLog;
 use Food\UserBundle\Entity\UserAddress;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Security\Acl\Exception\Exception;
+use Symfony\Component\HttpFoundation\Request;
 
 class OrderService extends ContainerAware
 {
@@ -1076,5 +1077,40 @@ class OrderService extends ContainerAware
             self::$status_finished,
             self::$status_canceled,
         );
+    }
+
+    /**
+     * @param Request $request
+     * @param $formHasErrors
+     * @param $formErrors
+     * @param bool $takeAeay
+     */
+    public function validateDaGiantForm(Request $request, &$formHasErrors, &$formErrors, $takeAway)
+    {
+        if (empty($request->get('customer-firstname'))) {
+            $formErrors[] = 'order.form.errors.customerfirstname';
+        }
+
+        if (empty($request->get('customer-phone'))) {
+            $formErrors[] = 'order.form.errors.customerphone';
+        }
+
+        if (empty($request->get('customer-comment'))) {
+            $formErrors[] = 'order.form.errors.customercomment';
+        }
+
+        if (empty($request->get('customer-email'))) {
+            $formErrors[] = 'order.form.errors.customeremail';
+        }
+
+        if (!$takeAway) {
+            $addrData = $this->container->get('food.googlegis')->getLocationFromSession();
+            if (empty($addrData['address_orig'])) {
+                $formErrors[] = 'order.form.errors.customeraddr';
+            }
+        }
+        if (!empty($formErrors)) {
+            $formHasErrors = true;
+        }
     }
 }

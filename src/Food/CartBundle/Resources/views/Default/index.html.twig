@@ -109,6 +109,15 @@
                     <form class="delivery-info-form" method="post">
                         <div class="delivery-info-form-content">
                             <h2>1. {% trans %}cart.checkout.block_title_delivery{% endtrans %}</h2>
+                            {% if formHasErrors %}
+                            <div class="form-row">
+                                <div class="alert alert-warning">
+                                    {% for err in formErrors %}
+                                        <li>{{ err|trans }}</li>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
                             <div class="form-row">
                                 <label><br></label>
                                 <div class="delivery-type-radios clearfix">
