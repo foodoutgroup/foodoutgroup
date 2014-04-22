@@ -152,7 +152,12 @@ class DefaultController extends Controller
         }
 
         // Form submitted
-        if ($request->getMethod() == 'POST') {
+        $formHasErrors = false;
+        $formErrors = array();
+
+        $this->get('food.order')->validateDaGiantForm($request, $formHasErrors, $formErrors, ($takeAway ? true : false));
+
+        if ($request->getMethod() == 'POST' && !$formHasErrors) {
             // Jeigu atsiima pats - dedam gamybos taska, kuri jis pats pasirinko, o ne mes Pauliaus magic find funkcijoje
             if ($takeAway) {
                 $placePointId = $request->get('place_point');
@@ -244,6 +249,8 @@ class DefaultController extends Controller
             'FoodCartBundle:Default:index.html.twig',
             array(
                 'order' => $order,
+                'formHasErrors' => $formHasErrors,
+                'formErrors' => $formErrors,
                 'place' => $place,
                 'takeAway' => ($takeAway ? true : false),
                 'location' => $this->get('food.googlegis')->getLocationFromSession()
