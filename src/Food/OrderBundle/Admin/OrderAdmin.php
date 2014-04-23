@@ -14,8 +14,18 @@ class OrderAdmin extends SonataAdmin
     {
         $datagridMapper
             ->add('id', null, array('label' => 'admin.order.id'))
+            ->add('address_id', null, array('label' => 'admin.order.delivery_address'))
+            ->add('place_name', null, array('label' => 'admin.order.place_name_short',))
             ->add('order_date', null, array('label' => 'admin.order.order_date'))
-//            ->add('place', null, array('label' => 'admin.order.place'))
+        // TODO kai prireiks ir issiaiskinsim su sitais tipais. kitu atveju callback tipas :(
+//            ->add(
+//                'order_status',
+//                'doctrine_orm_choice',
+//                array('label' => 'admin.order.order_status_short', 'multiple' => true, 'field_options' => array('choices' => array('a','b','c'))),
+//                'sonata_type_filter_choice',
+//                array('field_type' => 'choice', /*'choices' => array('a','b','c')*/)
+//            )
+//            ->add('paymentStatus', null, array('label' => 'admin.order.payment_status'))
         ;
     }
 
@@ -25,17 +35,13 @@ class OrderAdmin extends SonataAdmin
         $listMapper
             ->addIdentifier('id', 'integer', array('label' => 'admin.order.id', 'editable' => false))
             ->addIdentifier('order_date', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.order_date'))
+            ->add('address_id', null, array('label' => 'admin.order.delivery_address'))
             ->add('place_name', 'string', array('label' => 'admin.order.place_name_short', 'editable' => false,))
             ->add('place_point_address', 'string', array('label' => 'admin.order.place_point_short'))
-            ->add('user', null, array('label' => 'admin.order.user'))
-            ->add('address_id', null, array('label' => 'admin.order.address'))
             ->add('deliveryType', 'string', array('label' => 'admin.order.delivery_type_short'))
             ->add('order_status', 'string', array('label' => 'admin.order.order_status_short'))
             ->add('paymentMethod', 'string', array('label' => 'admin.order.payment_method'))
             ->add('paymentStatus', 'string', array('label' => 'admin.order.payment_status'))
-            ->add('submittedForPayment', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.submitted_for_payment'))
-            ->add('lastUpdate', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.last_update'))
-            ->add('lastPaymentError', 'string', array('label' => 'admin.order.last_payment_error'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -55,9 +61,8 @@ class OrderAdmin extends SonataAdmin
             ->add('order_date', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.order_date'))
             ->add('place_name', 'string', array('label' => 'admin.order.place_name', 'editable' => false,))
             ->add('place_point_address', 'string', array('label' => 'admin.order.place_point'))
-            // TODO graziai ispiest userio info, kad restoranai matytu, kaip susisiekt
-            ->add('user', null, array('label' => 'admin.order.user'))
-            ->add('address_id', null, array('label' => 'admin.order.address'))
+            ->add('user.contact', null, array('label' => 'admin.order.user'))
+            ->add('address_id', null, array('label' => 'admin.order.delivery_address'))
             ->add('deliveryType', 'string', array('label' => 'admin.order.delivery_type'))
             ->add('details', 'sonata_type_collection',
                 array(

@@ -677,6 +677,10 @@
                 <source>admin.order.address</source>
                 <target>Adresas</target>
             </trans-unit>
+            <trans-unit id="admin.order.delivery_address">
+                <source>admin.order.delivery_address</source>
+                <target>Užsak. adresas</target>
+            </trans-unit>
             <trans-unit id="admin.order.delivery_type_short">
                 <source>admin.order.delivery_type_short</source>
                 <target>Pristat. tipas</target>

@@ -56,6 +56,29 @@ class User extends BaseUser
         parent::__construct();
     }
 
+    public function getContact()
+    {
+        if (!$this->getId()) {
+            return '';
+        }
+        $userContactData = $this->getFirstname();
+        $surname = $this->getLastname();
+        $email = $this->getEmail();
+        $phone = $this->getPhone();
+
+        if (!empty($surname)) {
+            $userContactData .= ' '.$surname;
+        }
+        if (!empty($email)) {
+            $userContactData .= ', '.$email;
+        }
+        if (!empty($phone)) {
+            $userContactData .= ', '.$phone;
+        }
+
+        return $userContactData;
+    }
+
     /**
      * Get id
      *

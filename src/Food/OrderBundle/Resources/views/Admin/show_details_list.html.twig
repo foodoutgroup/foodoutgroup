@@ -18,9 +18,12 @@
                     <td>{{ detail.getDishUnitName() }}</td>
                     <td>{{ detail.getDishSizeCode() }}</td>
                     <td>
-                        --
+                        {#--#}
                         {#TODO, kai bus detail optionsu pasiekimas#}
                         {#{% set detail_options = detail.get %}#}
+                        {% for option in detail.options %}
+                            {{ option.dishOptionName }}<br />
+                        {% endfor %}
                     </td>
                     {#<td>{{ dump(detail) }}</td>#}
                 </tr>
