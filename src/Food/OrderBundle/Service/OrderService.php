@@ -47,6 +47,11 @@ class OrderService extends ContainerAware
         'paysera' => 'food.paysera_biller'
     );
 
+    public static $deliveryTrans = array(
+        'deliver' => 'PRISTATYMAS',
+        'pickup'  => 'ATSIEMIMAS'
+    );
+
     public static $deliveryDeliver = "deliver";
     public static $deliveryPickup = "pickup";
 
@@ -1112,5 +1117,124 @@ class OrderService extends ContainerAware
         if (!empty($formErrors)) {
             $formHasErrors = true;
         }
+    }
+
+    public function generateCsv($orderId)
+    {
+        $order = $this->getOrderById($orderId);
+        $orderDetails = array();
+        $foodTotalLine = 0;
+        $drinksTotalLine = 0;
+        $alcoholTotalLine = 0;
+        foreach ($order->getDetails() as $detail)
+        {
+            $cats = $detail->getDishId()->getCategories();
+            if (!empty($cats)) {
+                $isDrink = $cats[0]->getDrinks();
+                $isAlcohol = $cats[0]->getAlcohol();
+                if ($isAlcohol) {
+                    $alcoholTotalLine += $detail->getPrice() * $detail->getQuantity();
+                } elseif ($isDrink) {
+                    $drinksTotalLine += $detail->getPrice() * $detail->getQuantity();
+                } else {
+                    $foodTotalLine += $detail->getPrice() * $detail->getQuantity();
+                    foreach ($detail->getOptions() as $dtOption) {
+                        $foodTotalLine += $dtOption->getPrice() * $dtOption->getQuantity();
+                    }
+                }
+            }
+        }
+        $driver = $order->getDriver();
+        $driverRow = "#";
+        if (!empty($driver)) {
+            $driverRow = $driver->getName();
+        }
+        $address = $order->getAddressId();
+        $addRow = "#";
+        if (!empty($address)) {
+            $addRow = $address->getAddress();
+        }
+
+        if ($foodTotalLine > 0) {
+            $orderDetails[] = array(
+                $order->getId(),
+                $order->getPlace()->getName(),
+                $order->getPlacePoint()->getAddress(),
+                $driverRow,
+                self::$deliveryTrans[$order->getDeliveryType()],
+                $addRow,
+                $order->getPaymentMethod(),
+                "MAISTAS",
+                $foodTotalLine,
+                $order->getVat()
+            );
+        }
+        if ($drinksTotalLine > 0) {
+            $orderDetails[] = array(
+                $order->getId(),
+                $order->getPlace()->getName(),
+                $order->getPlacePoint()->getAddress(),
+                $driverRow,
+                self::$deliveryTrans[$order->getDeliveryType()],
+                $addRow,
+                $order->getPaymentMethod(),
+                "GERIMAI",
+                $drinksTotalLine,
+                $order->getVat()
+            );
+        }
+
+        if ($alcoholTotalLine > 0) {
+            $orderDetails[] = array(
+                $order->getId(),
+                $order->getPlace()->getName(),
+                $order->getPlacePoint()->getAddress(),
+                $driverRow,
+                self::$deliveryTrans[$order->getDeliveryType()],
+                $addRow,
+                $order->getPaymentMethod(),
+                "ALKOHOLIS",
+                $alcoholTotalLine,
+                $order->getVat()
+            );
+        }
+
+        if($order->getDeliveryType() == self::$deliveryDeliver) {
+            $orderDetails[] = array(
+                $order->getId(),
+                $order->getPlace()->getName(),
+                $order->getPlacePoint()->getAddress(),
+                $driverRow,
+                self::$deliveryTrans[$order->getDeliveryType()],
+                $addRow,
+                $order->getPaymentMethod(),
+                "PRISTATYMAS",
+                $order->getPlace()->getDeliveryPrice(),
+                $order->getVat()
+            );
+        }
+        foreach ($orderDetails as &$ordDet) {
+            foreach ($ordDet as &$someDet) {
+                $someDet = str_replace(",","_", $someDet);
+                $someDet = str_replace(".","_", $someDet);
+                $someDet = str_replace(";","_", $someDet);
+                $someDet = str_replace('"',"_", $someDet);
+                $someDet = str_replace("'","_", $someDet);
+            }
+            $ordDet = implode(";", $ordDet);
+        }
+        $upp = realpath($this->container->get('kernel')->getRootDir() . '/../web/uploads');
+        $uppDir = $upp."/csv";
+        $findex = $upp."/csv/list.txt";
+        if (!realpath($uppDir)) {
+            mkdir($uppDir, 777);
+        }
+        $fname = "f_".$order->getId().".csv";
+        $fres = fopen($uppDir."/".$fname, "w+");
+        fputs($fres, implode("\r\n", $orderDetails));
+        fclose($fres);
+        $fresIndex = fopen($findex,"a+");
+        fputs($fresIndex, $fname."\r\n");
+        fclose($fresIndex);
     }
 }
