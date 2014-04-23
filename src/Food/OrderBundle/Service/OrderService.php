@@ -1227,7 +1227,7 @@ class OrderService extends ContainerAware
         $uppDir = $upp."/csv";
         $findex = $upp."/csv/list.txt";
         if (!realpath($uppDir)) {
-            mkdir($uppDir, 777);
+            mkdir($uppDir, 757);
         }
         $fname = "f_".$order->getId().".csv";
         $fres = fopen($uppDir."/".$fname, "w+");
