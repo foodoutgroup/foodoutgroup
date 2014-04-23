@@ -1092,19 +1092,19 @@ class OrderService extends ContainerAware
      */
     public function validateDaGiantForm(Request $request, &$formHasErrors, &$formErrors, $takeAway)
     {
-        if (empty($request->get('customer-firstname'))) {
+        if (0 === strlen($request->get('customer-firstname'))) {
             $formErrors[] = 'order.form.errors.customerfirstname';
         }
 
-        if (empty($request->get('customer-phone'))) {
+        if (0 === strlen($request->get('customer-phone'))) {
             $formErrors[] = 'order.form.errors.customerphone';
         }
 
-        if (empty($request->get('customer-comment'))) {
+        if (0 === strlen($request->get('customer-comment'))) {
             $formErrors[] = 'order.form.errors.customercomment';
         }
 
-        if (empty($request->get('customer-email'))) {
+        if (0 === strlen($request->get('customer-email'))) {
             $formErrors[] = 'order.form.errors.customeremail';
         }
 

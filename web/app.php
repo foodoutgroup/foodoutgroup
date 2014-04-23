@@ -1,5 +1,8 @@
 <?php
 
+// Ijungti kai reikia laikinai stabdyti svetaines veikima del kokiu nors priezasciu
+//require 'maintenance.php';
+
 use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 
