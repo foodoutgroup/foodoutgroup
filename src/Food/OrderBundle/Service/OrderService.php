@@ -1215,8 +1215,6 @@ class OrderService extends ContainerAware
         }
         foreach ($orderDetails as &$ordDet) {
             foreach ($ordDet as &$someDet) {
-                $someDet = str_replace(",","_", $someDet);
-                $someDet = str_replace(".","_", $someDet);
                 $someDet = str_replace(";","_", $someDet);
                 $someDet = str_replace('"',"_", $someDet);
                 $someDet = str_replace("'","_", $someDet);
