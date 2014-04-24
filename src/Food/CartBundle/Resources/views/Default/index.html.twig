@@ -143,15 +143,15 @@
                             {% endif %}
                             <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.firstname{% endtrans %}:</label>
-                                <input type="text" name="customer-firstname" />
+                                <input type="text" name="customer-firstname" value="{{ app.user.firstname|default('') }}" />
                             </div>
                             <div class="form-row">
                                 <label>{% trans %}cart.checkout.lastname{% endtrans %}:</label>
-                                <input type="text" name="customer-lastname" />
+                                <input type="text" name="customer-lastname" value="{{ app.user.lastname|default('') }}" />
                             </div>
                             <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.email{% endtrans %}:</label>
-                                <input type="text" name="customer-email">
+                                <input type="text" name="customer-email" value="{{ app.user.email|default('') }}">
                             </div>
                             <div class="form-row form-row-required">
                                 <label title="{% trans %}cart.checkout.phone_tooltip{% endtrans %}" class="tooltip">{% trans %}cart.checkout.phone{% endtrans %}:</label>
