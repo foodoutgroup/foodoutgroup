@@ -15,7 +15,7 @@ class AuthenticationHandler implements AuthenticationFailureHandlerInterface,
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         if ($request->isXmlHttpRequest()) {
-            return new JsonResponse(['success' => 0]);
+            return new JsonResponse(['success' => 0, 'error' => $exception->getMessage()]);
         }
 
         return new JsonResponse([]);

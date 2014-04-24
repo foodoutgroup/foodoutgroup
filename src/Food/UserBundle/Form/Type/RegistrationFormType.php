@@ -22,9 +22,21 @@ class RegistrationFormType extends BaseType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('firstname', null, array('required' => true, 'label' => 'form.firstname', 'translation_domain' => 'FOSUserBundle'));
-        $builder->add('lastname', null, array('required' => true, 'label' => 'form.lastname', 'translation_domain' => 'FOSUserBundle'));
-        $builder->remove('username');
+        $builder
+            ->add('firstname', null, array('error_bubbling' => true, 'required' => true, 'label' => 'form.firstname', 'translation_domain' => 'FOSUserBundle'))
+            ->add('lastname', null, array('error_bubbling' => true, 'required' => true, 'label' => 'form.lastname', 'translation_domain' => 'FOSUserBundle'))
+            ->add('email', 'email', array('error_bubbling' => true, 'label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
+            ->add('username', null, array('error_bubbling' => true, 'label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))
+            ->add('plainPassword', 'repeated', array(
+                'error_bubbling' => true,
+                'type' => 'password',
+                'options' => array('translation_domain' => 'FOSUserBundle'),
+                'first_options' => array('label' => 'form.password'),
+                'second_options' => array('label' => 'form.password_confirmation'),
+                'invalid_message' => 'fos_user.password.mismatch',
+            ))
+            ->remove('username')
+        ;
     }
 
     public function getName()

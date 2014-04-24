@@ -1,23 +1,28 @@
 <form class="righter register-form" action="{{ url('user_register_create') }}" method="post" novalidate>
     <h3>{% trans %}general.register_title{% endtrans %}</h3>
     <h4>{% trans %}general.register_text{% endtrans %}</h4>
-    <div class="form-row {% if form_errors(form.firstname) %}error{% endif %}">
+    <div class="registration-errors">
+        {% for error in errors %}
+            <div>{{ error }}</div>
+        {% endfor %}
+    </div>
+    <div class="form-row">
         {{ form_label(form.firstname) }}
         {{ form_widget(form.firstname) }}
     </div>
-    <div class="form-row {% if form_errors(form.lastname) %}error{% endif %}">
+    <div class="form-row">
         {{ form_label(form.lastname) }}
         {{ form_widget(form.lastname) }}
     </div>
-    <div class="form-row {% if form_errors(form.email) %}error{% endif %}">
+    <div class="form-row">
         {{ form_label(form.email) }}
         {{ form_widget(form.email) }}
     </div>
-    <div class="form-row {% if form_errors(form.plainPassword.first) %}error{% endif %}">
+    <div class="form-row">
         {{ form_label(form.plainPassword.first) }}
         {{ form_widget(form.plainPassword.first) }}
     </div>
-    <div class="form-row {% if form_errors(form.plainPassword.first) %}error{% endif %}">
+    <div class="form-row">
         {{ form_label(form.plainPassword.second) }}
         {{ form_widget(form.plainPassword.second) }}
     </div>

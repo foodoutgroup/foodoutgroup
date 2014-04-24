@@ -73,7 +73,7 @@ bind_registration_form = function() {
                 $('.registration_form_wrapper:visible').html(response);
                 form.unmask();
             } else {
-                return top.location.href = top.location.href;
+                top.location.href = top.location.href;
             }
         };
 
@@ -85,23 +85,26 @@ bind_registration_form = function() {
 
 bind_login_form = function() {
     $('body').on('submit', '.lefter.login-form', function(e) {
-        var callback, data, form, url;
+        var callback, data, form, url, error;
 
         form = $(this);
         url = form.attr('action');
         data = form.serialize();
-        form_login_rows = $('.login-form-row')
+        form_login_rows = $('.login-form-row');
+        error = form.find('.login-error')
         dataType = 'json';
 
+        error.hide();
         form_login_rows.removeClass('error');
         form.mask();
 
         callback = function(response) {
             if (response.success == 1) {
-                return top.location.href = top.location.href;
+                top.location.href = top.location.href;
             } else {
                 form_login_rows.addClass('error');
                 form.find('input[password]').val('');
+                error.show();
                 form.unmask();
             }
         };
