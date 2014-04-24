@@ -70,6 +70,15 @@ class UserAddress
         return $this->id;
     }
 
+    public function __toString()
+    {
+        if (!$this->getId()) {
+            return '';
+        }
+
+        return $this->getAddress() .', ' . $this->getCity();
+    }
+
     /**
      * Set city
      *

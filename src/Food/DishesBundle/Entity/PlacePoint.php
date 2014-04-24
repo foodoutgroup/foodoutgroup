@@ -47,7 +47,7 @@ class PlacePoint
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=128)
+     * @ORM\Column(name="email", type="string", length=128, nullable=true)
      */
     private $email;
 

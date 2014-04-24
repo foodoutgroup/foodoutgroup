@@ -458,7 +458,9 @@ class OrderService extends ContainerAware
     public function createOrderFromCart($place, $locale='lt', $user, $placePoint=null, $selfDelivery = false)
     {
         $this->createOrder($place, $placePoint);
-        $this->getOrder()->setDeliveryType();
+        $this->getOrder()->setDeliveryType(
+            ($selfDelivery ? 'pickup' : 'deliver')
+        );
         $this->getOrder()->setLocale($locale);
         $this->getOrder()->setUser($user);
         $this->saveOrder();
