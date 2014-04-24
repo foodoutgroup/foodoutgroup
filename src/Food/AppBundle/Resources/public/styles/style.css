@@ -66,7 +66,7 @@
 
 /*Font declarations*/
 button, input, select, textarea,
-body, 
+body,
 .ui-widget-content,
 .ui-selectmenu-menu li a,.ui-selectmenu-status {font-family: 'avenirbook'; font-size: 12px;}
 
@@ -99,7 +99,7 @@ input[type="checkbox"], input[type="radio"] { box-sizing: border-box; }
 input[type="search"] { -moz-box-sizing: content-box; -webkit-box-sizing: content-box; box-sizing: content-box; }
 button, input[type="button"], input[type="reset"], input[type="submit"] { cursor: pointer; -webkit-appearance: button; }
 button, input { line-height: normal; *overflow: visible; }
-.form-row input[type="text"], .form-row label {display: inline-block; float: left;} 
+.form-row input[type="text"], .form-row label {display: inline-block; float: left;}
 label.for-input {width: auto !important; cursor: pointer}
 input.radio, input.checkbox {vertical-align: text-bottom; margin: 0;}
 input[type="text"], input[type="password"], textarea, select {border: 1px solid #ccc;}
@@ -153,13 +153,13 @@ input.button {}
 .ui-selectmenu, .ui-selectmenu.ui-state-active, .ui-selectmenu.ui-state-default {display: inline-block; position: relative; overflow: hidden; border-radius: 0; border: none; background: #fff; border: 1px solid #d0c8c1; text-decoration: none !important; border-radius: 3px; box-shadow: 0 0 2px #d0c8c1;}
 .ui-selectmenu .ui-selectmenu-icon { position:absolute; top: 10px; right: 6px; width: 22px; height: 29px; background: url(/bundles/foodapp/images/select-arrow.png) no-repeat left top;}
 .ui-selectmenu-menu { padding:0; margin:0; position:absolute; top: 0; display: none; z-index: 1005;}
-.ui-selectmenu-menu  ul { padding:0; margin:0; list-style:none; position: relative; overflow: auto; overflow-y: auto ; overflow-x: hidden; -webkit-overflow-scrolling: touch; border: 1px solid #d0c8c1; background: #fff; border-radius: 0; border-top: none; border-bottom: none;} 
+.ui-selectmenu-menu  ul { padding:0; margin:0; list-style:none; position: relative; overflow: auto; overflow-y: auto ; overflow-x: hidden; -webkit-overflow-scrolling: touch; border: 1px solid #d0c8c1; background: #fff; border-radius: 0; border-top: none; border-bottom: none;}
 .ui-selectmenu-open { display: block; }
 .ui-selectmenu-menu li { padding:0; margin:0; display: block; border: none !important; font-weight: normal !important; background: none !important;}
 .ui-selectmenu-menu li a,.ui-selectmenu-status { display: block; padding: 6px 16px; padding-bottom: 4px; padding-right: 26px; outline:none; text-decoration:none; color: inherit; font-weight: normal; color: #000; font-size: 15px; line-height: 26px; }
 .ui-selectmenu-menu li a {border-bottom: 1px solid #d0c8c1;}
 .ui-selectmenu-menu li a:hover, .ui-selectmenu-menu .ui-state-hover a {color: #000; background: #efefef !important; zoom: 1;}
- 
+
 
 /*Checkbox and radios*/
 .custom-checkbox, .custom-radio {float: none; display: block; position: relative; padding-left: 25px; padding-right: 20px; font-size: 15px; color: #513d28; cursor: pointer;}
@@ -776,9 +776,25 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
 
 .register-form .form-row.error input,
 .login-form .form-row.error input,
-.review-form .form-row.error textarea,
-.review-form .form-row.rate-review span {
+.review-form .form-row.error span.rate-review {
     border: 1px solid #ff0000;
+}
+.review-form .form-row span.rate-review {
+    display: inline-block;
+    margin-top: 9px;
+}
+.review-form .form-row textarea {
+    border: 1px solid #ccc;
+    height: 100px;
+    margin-top: 9px;
+    width: 200px;
+}
+
+.review-form .form-row.error textarea {
+    border: 1px solid #ff0000;
+    height: 100px;
+    margin-top: 9px;
+    width: 200px;
 }
 
 /* place review form */
