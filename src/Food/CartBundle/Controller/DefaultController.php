@@ -154,8 +154,17 @@ class DefaultController extends Controller
         // Form submitted
         $formHasErrors = false;
         $formErrors = array();
+        $dataToLoad = array();
 
-        $this->get('food.order')->validateDaGiantForm($request, $formHasErrors, $formErrors, ($takeAway ? true : false));
+        // TODO refactor this nonsense... if is if is if is bullshit...
+        // Validate only if post happened
+        if ($request->getMethod() == 'POST') {
+            $this->get('food.order')->validateDaGiantForm($request, $formHasErrors, $formErrors, ($takeAway ? true : false));
+        }
+
+        if ($formHasErrors) {
+            $dataToLoad = $this->getRequest()->request->all();
+        }
 
         if ($request->getMethod() == 'POST' && !$formHasErrors) {
             // Jeigu atsiima pats - dedam gamybos taska, kuri jis pats pasirinko, o ne mes Pauliaus magic find funkcijoje
@@ -253,7 +262,8 @@ class DefaultController extends Controller
                 'formErrors' => $formErrors,
                 'place' => $place,
                 'takeAway' => ($takeAway ? true : false),
-                'location' => $this->get('food.googlegis')->getLocationFromSession()
+                'location' => $this->get('food.googlegis')->getLocationFromSession(),
+                'dataToLoad' => $dataToLoad
             )
         );
     }
