@@ -969,9 +969,11 @@ class Place extends Uploadable implements Translatable
      */
     public function addTranslation(\Food\DishesBundle\Entity\PlaceLocalized $translations)
     {
-        if (!$this->translations->contains($translations)) {
-            $this->translations[] = $translations;
-            $translations->setObject($this);
+        if (method_exists($this->translations, 'contains')) {
+            if (!$this->translations->contains($translations)) {
+                $this->translations[] = $translations;
+                $translations->setObject($this);
+            }
         }
 
         return $this;
