@@ -341,7 +341,10 @@ class DishOption implements Translatable
      */
     public function addTranslation(\Food\DishesBundle\Entity\DishOptionLocalized $translations)
     {
-        $this->translations[] = $translations;
+        if (!$this->translations->contains($translations)) {
+            $this->translations[] = $translations;
+            $translations->setObject($this);
+        }
     
         return $this;
     }
