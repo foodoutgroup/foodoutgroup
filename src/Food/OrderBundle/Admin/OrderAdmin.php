@@ -71,6 +71,7 @@ class OrderAdmin extends SonataAdmin
                 )
             )
             ->add('vat', 'string', array('label' => 'admin.order.vat'))
+            ->add('total', 'string', array('label' => 'admin.order.total'))
             ->add('comment', 'string', array('label' => 'admin.order.comment'))
             ->add('place_comment', 'string', array('label' => 'admin.order.place_comment'))
             ->add('order_status', 'string', array('label' => 'admin.order.order_status'))

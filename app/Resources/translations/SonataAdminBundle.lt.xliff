@@ -725,6 +725,10 @@
                 <source>admin.order.vat</source>
                 <target>PVM</target>
             </trans-unit>
+            <trans-unit id="admin.order.total">
+                <source>admin.order.total</source>
+                <target>Viso (su PVM)</target>
+            </trans-unit>
             <trans-unit id="admin.order.comment">
                 <source>admin.order.comment</source>
                 <target>Užsakovo komentaras</target>
@@ -752,6 +756,14 @@
             <trans-unit id="aadmin.order.details.options">
                 <source>admin.order.details.options</source>
                 <target>Priedai</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.option_name">
+                <source>admin.order.details.option_name</source>
+                <target>Priedas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.option_code">
+                <source>admin.order.details.option_code</source>
+                <target>Kodas</target>
             </trans-unit>
 
             <!-- Dispatcher window -->
