@@ -62,12 +62,16 @@ bind_registration_form = function() {
         var callback, data, form, url;
 
         form = $(this);
+        submit_btn = form.find('input[type=submit]');
         url = form.attr('action');
         data = form.serialize();
 
+        form.mask();
+
         callback = function(response) {
             if (response.length > 0) {
-                return $('.registration_form_wrapper:visible').html(response);
+                $('.registration_form_wrapper:visible').html(response);
+                form.unmask();
             } else {
                 return top.location.href = top.location.href;
             }
@@ -90,6 +94,7 @@ bind_login_form = function() {
         dataType = 'json';
 
         form_login_rows.removeClass('error');
+        form.mask();
 
         callback = function(response) {
             if (response.success == 1) {
@@ -97,6 +102,7 @@ bind_login_form = function() {
             } else {
                 form_login_rows.addClass('error');
                 form.find('input[password]').val('');
+                form.unmask();
             }
         };
 
