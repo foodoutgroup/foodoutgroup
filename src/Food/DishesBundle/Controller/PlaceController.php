@@ -5,6 +5,11 @@ namespace Food\DishesBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\Collections\ArrayCollection;
+use Food\DishesBundle\Entity\Place;
+use Food\DishesBundle\Entity\PlaceReviews;
+use Food\UserBundle\Entity\User;
 
 class PlaceController extends Controller
 {
@@ -29,10 +34,15 @@ class PlaceController extends Controller
             $activeCategory = $categoryList[0];
         }
 
+        $wasHere = $this->wasHere($place, $this->user());
+        $alreadyWrote = $this->alreadyWrote($place, $this->user());
+
         return $this->render(
             'FoodDishesBundle:Place:index.html.twig',
             array(
                 'place' => $place,
+                'wasHere' => $wasHere,
+                'alreadyWrote' => $alreadyWrote,
                 'placeCategories' => $categoryList,
                 'selectedCategory' => $activeCategory,
                 'placePoints' => $placePoints,
@@ -61,5 +71,113 @@ class PlaceController extends Controller
 
         $response->prepare($this->getRequest());
         return $response;
+    }
+
+    public function reviewAction($id)
+    {
+        $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
+        $review = $this->defaultReview($place, $this->user());
+
+        return $this->render(
+            'FoodDishesBundle:Place:review.html.twig',
+            [
+                'place' => $place,
+                'form' => $this->reviewForm($review)->createView()
+            ]
+        );
+    }
+
+    public function reviewCreateAction($id, Request $request)
+    {
+        $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
+        $review = $this->defaultReview($place, $this->user());
+        $form = $this->reviewForm($review);
+
+        // apply data from submitted data to symfony form
+        $form->handleRequest($request);
+        $score = (int) $request->request->get('score');
+
+        if ($form->isValid() && $score >= 1 && $score <= 5) {
+            $em = $this->getDoctrine()->getManager();
+
+            // field 'rate' is neither mapped nor in symfony form, so update manually
+            $review->setRate($request->request->get('score'));
+
+            // commit changed to review
+            $em->persist($review);
+            $em->flush();
+
+            return new JsonResponse(['success' => true]);
+        }
+
+        return new JsonResponse(['success' => false]);
+    }
+
+    private function wasHere(Place $place = null, User $user = null)
+    {
+        $count = (int) $this
+            ->getDoctrine()
+            ->getManager()
+            ->createQueryBuilder()
+            ->select('COUNT(o)')
+            ->from('FoodOrderBundle:Order', 'o')
+            ->where('o.place = :place')
+            ->andWhere('o.user = :user')
+            ->setParameters(['place' => $place, 'user' => $user])
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        return $count ? true : false;
+    }
+
+    private function alreadyWrote(Place $place = null, User $user = null)
+    {
+        $review = $this
+            ->getDoctrine()
+            ->getManager()
+            ->createQueryBuilder()
+            ->select('pr')
+            ->from('FoodDishesBundle:PlaceReviews', 'pr')
+            ->where('pr.place = :place')
+            ->andWhere('pr.createdBy = :user')
+            ->setParameters(['place' => $place, 'user' => $user])
+            ->getQuery()
+            ->getResult()
+        ;
+
+        return $review ? true : false;
+    }
+
+    private function user()
+    {
+        $sc = $this->get('security.context');
+
+        if (!$sc->isGranted('ROLE_USER')) {
+            return null;
+        }
+
+        return $sc->getToken()->getUser();
+    }
+
+    private function reviewForm(PlaceReviews $review)
+    {
+        return $this
+            ->createFormBuilder($review, ['csrf_protection' => false])
+            ->add('review', 'textarea', ['required' => true, 'label' => 'general.review'])
+            ->getForm()
+        ;
+    }
+
+    private function defaultReview(Place $place = null, User $user = null)
+    {
+        $review = new PlaceReviews();
+        $review
+            ->setPlace($place)
+            ->setCreatedBy($user)
+            ->setCreatedAt(new \DateTime())
+        ;
+
+        return $review;
     }
 }

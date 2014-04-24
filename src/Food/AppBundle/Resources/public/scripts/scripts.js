@@ -28,6 +28,7 @@
         $(".boxer").boxer({
             callback: function(){
                 $("input").iCheck();
+                init_raty();
             }
         });
 
@@ -53,51 +54,84 @@
     });
 })(jQuery, window);
 
+init_raty = function() {
+    selector = '.place-review-popup-wrapper .rate-review:empty';
+    options = {
+        path: '/bundles/foodapp/images/'
+    };
+
+    $(selector).raty(options);
+}
+
 $(function() {
-  $('body').on('submit', '.righter.register-form', function(e) {
-    var callback, data, form, success_url, url;
+    $('body').on('submit', '.righter.register-form', function(e) {
+        var callback, data, form, success_url, url;
 
-    form = $(this);
-    url = form.attr('action');
-    success_url = form.attr('data-success-url');
-    data = form.serialize();
+        form = $(this);
+        url = form.attr('action');
+        success_url = form.attr('data-success-url');
+        data = form.serialize();
 
-    callback = function(response) {
-      if (response.length > 0) {
-        return $('.registration_form_wrapper:visible').html(response);
-      } else {
-        return top.location.href = success_url;
-      }
-    };
+        callback = function(response) {
+            if (response.length > 0) {
+                return $('.registration_form_wrapper:visible').html(response);
+            } else {
+                return top.location.href = success_url;
+            }
+        };
 
-    $.post(url, data, callback);
+        $.post(url, data, callback);
 
-    return false;
-  });
+        return false;
+    });
 
-  $('body').on('submit', '.lefter.login-form', function(e) {
-    var callback, data, form, success_url, url;
+    $('body').on('submit', '.lefter.login-form', function(e) {
+        var callback, data, form, success_url, url;
 
-    form = $(this);
-    url = form.attr('action');
-    success_url = form.attr('data-success-url');
-    data = form.serialize();
-    form_login_rows = $('.login-form-row')
-    dataType = 'json';
+        form = $(this);
+        url = form.attr('action');
+        success_url = form.attr('data-success-url');
+        data = form.serialize();
+        form_login_rows = $('.login-form-row')
+        dataType = 'json';
 
-    form_login_rows.removeClass('error');
+        form_login_rows.removeClass('error');
 
-    callback = function(response) {
-      if (response.success == 1) {
-        return top.location.href = success_url;
-      } else {
-        form_login_rows.addClass('error');
-        form.find('input[password]').val('');
-      }
-    };
+        callback = function(response) {
+            if (response.success == 1) {
+                return top.location.href = success_url;
+            } else {
+                form_login_rows.addClass('error');
+                form.find('input[password]').val('');
+            }
+        };
 
-    $.post(url, data, callback, dataType);
+        $.post(url, data, callback, dataType);
 
-    return false;
-  });
+        return false;
+    });
+
+    $('body').on('submit', '.review-form', function(e) {
+        var callback, data, form, url;
+
+        form = $(this);
+        url = form.attr('action');
+        data = form.serialize();
+        form_rows = $('.review-form .form-row')
+        dataType = 'json';
+
+        form_rows.removeClass('error');
+
+        callback = function(response) {
+            if (response.success == 1) {
+                top.location.reload();
+            } else {
+                form_rows.addClass('error');
+            }
+        };
+
+        $.post(url, data, callback, dataType);
+
+        return false;
+    });
 });
