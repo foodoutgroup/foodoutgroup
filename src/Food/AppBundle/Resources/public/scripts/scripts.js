@@ -51,54 +51,57 @@
         function resizeSensitive() {
             
         }
+
+        bind_registration_form();
+        bind_login_form();
     });
 })(jQuery, window);
 
-$(function() {
-  $('body').on('submit', '.righter.register-form', function(e) {
-    var callback, data, form, success_url, url;
+bind_registration_form = function() {
+    $('body').on('submit', '.righter.register-form', function(e) {
+        var callback, data, form, url;
 
-    form = $(this);
-    url = form.attr('action');
-    success_url = form.attr('data-success-url');
-    data = form.serialize();
+        form = $(this);
+        url = form.attr('action');
+        data = form.serialize();
 
-    callback = function(response) {
-      if (response.length > 0) {
-        return $('.registration_form_wrapper:visible').html(response);
-      } else {
-        return top.location.href = success_url;
-      }
-    };
+        callback = function(response) {
+            if (response.length > 0) {
+                return $('.registration_form_wrapper:visible').html(response);
+            } else {
+                return top.location.href = top.location.href;
+            }
+        };
 
-    $.post(url, data, callback);
+        $.post(url, data, callback);
 
-    return false;
-  });
+        return false;
+    });
+}
 
-  $('body').on('submit', '.lefter.login-form', function(e) {
-    var callback, data, form, success_url, url;
+bind_login_form = function() {
+    $('body').on('submit', '.lefter.login-form', function(e) {
+        var callback, data, form, url;
 
-    form = $(this);
-    url = form.attr('action');
-    success_url = form.attr('data-success-url');
-    data = form.serialize();
-    form_login_rows = $('.login-form-row')
-    dataType = 'json';
+        form = $(this);
+        url = form.attr('action');
+        data = form.serialize();
+        form_login_rows = $('.login-form-row')
+        dataType = 'json';
 
-    form_login_rows.removeClass('error');
+        form_login_rows.removeClass('error');
 
-    callback = function(response) {
-      if (response.success == 1) {
-        return top.location.href = success_url;
-      } else {
-        form_login_rows.addClass('error');
-        form.find('input[password]').val('');
-      }
-    };
+        callback = function(response) {
+            if (response.success == 1) {
+                return top.location.href = top.location.href;
+            } else {
+                form_login_rows.addClass('error');
+                form.find('input[password]').val('');
+            }
+        };
 
-    $.post(url, data, callback, dataType);
+        $.post(url, data, callback, dataType);
 
-    return false;
-  });
-});
+        return false;
+    });
+}

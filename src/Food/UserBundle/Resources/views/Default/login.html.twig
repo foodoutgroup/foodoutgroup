@@ -1,4 +1,4 @@
-<form class="lefter login-form" data-success-url="{{ url('food_lang_homepage') }}" action="{{ url('fos_user_security_check') }}" method="post" novalidate>
+<form class="lefter login-form" action="{{ url('fos_user_security_check') }}" method="post" novalidate>
     <h3>{% trans %}general.login_title{% endtrans %}</h3>
     <h4>{% trans %}general.login_text{% endtrans %}</h4>
     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />

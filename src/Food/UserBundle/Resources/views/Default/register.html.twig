@@ -1,4 +1,4 @@
-<form class="righter register-form" data-success-url="{{ url('food_lang_homepage') }}" action="{{ url('user_register_create') }}" method="post" novalidate>
+<form class="righter register-form" action="{{ url('user_register_create') }}" method="post" novalidate>
     <h3>{% trans %}general.register_title{% endtrans %}</h3>
     <h4>{% trans %}general.register_text{% endtrans %}</h4>
     <div class="form-row {% if form_errors(form.firstname) %}error{% endif %}">
