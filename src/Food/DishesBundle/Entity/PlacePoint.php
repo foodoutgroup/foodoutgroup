@@ -83,7 +83,7 @@ class PlacePoint
      * @var bool
      * @ORM\Column(name="fast", type="boolean")
      */
-    private $fast = true;
+    private $fast = false;
 
     /**
      * @var string
