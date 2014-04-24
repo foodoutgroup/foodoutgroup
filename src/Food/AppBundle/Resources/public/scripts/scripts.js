@@ -28,6 +28,7 @@
         $(".boxer").boxer({
             callback: function(){
                 $("input").iCheck();
+                $('form.login-form input[name=_username]').focus();
             }
         });
 
