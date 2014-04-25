@@ -134,10 +134,26 @@
         <source>dish.select_quantity</source>
         <target>Kiekis</target>
       </trans-unit>
-        <trans-unit id="dish.remove_from_cart" resname="dish.remove_from_cart">
-            <source>dish.remove_from_cart</source>
-            <target>Pašalinti</target>
-        </trans-unit>
+      <trans-unit id="dish.remove_from_cart" resname="dish.remove_from_cart">
+          <source>dish.remove_from_cart</source>
+          <target>Pašalinti</target>
+      </trans-unit>
+      <trans-unit id="general.review_title" resname="general.review_title">
+        <source>general.review_title</source>
+        <target>Naujas atsiliepimas</target>
+      </trans-unit>
+      <trans-unit id="general.submit_review" resname="general.submit_review">
+        <source>general.submit_review</source>
+        <target>Sukurti</target>
+      </trans-unit>
+      <trans-unit id="general.review" resname="general.review">
+        <source>general.review</source>
+        <target>Atsiliepimas</target>
+      </trans-unit>
+      <trans-unit id="general.rating" resname="general.rating">
+        <source>general.rating</source>
+        <target>Įvertinimas</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

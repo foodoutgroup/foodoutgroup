@@ -29,6 +29,7 @@
             callback: function(){
                 $("input").iCheck();
                 $('form.login-form input[name=_username]').focus();
+                init_raty();
             }
         });
 
@@ -54,6 +55,7 @@
 
         bind_registration_form();
         bind_login_form();
+        bind_review_form();
     });
 })(jQuery, window);
 
@@ -113,4 +115,39 @@ bind_login_form = function() {
 
         return false;
     });
+}
+
+bind_review_form = function() {
+    $('body').on('submit', '.review-form', function(e) {
+        var callback, data, form, url;
+
+        form = $(this);
+        url = form.attr('action');
+        data = form.serialize();
+        form_rows = $('.review-form .form-row')
+        dataType = 'json';
+
+        form_rows.removeClass('error');
+
+        callback = function(response) {
+            if (response.success == 1) {
+                top.location.reload();
+            } else {
+                form_rows.addClass('error');
+            }
+        };
+
+        $.post(url, data, callback, dataType);
+
+        return false;
+    });
+}
+
+init_raty = function() {
+    selector = '.place-review-popup-wrapper .rate-review:empty';
+    options = {
+        path: '/bundles/foodapp/images/'
+    };
+
+    $(selector).raty(options);
 }

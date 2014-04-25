@@ -66,7 +66,7 @@
 
 /*Font declarations*/
 button, input, select, textarea,
-body, 
+body,
 .ui-widget-content,
 .ui-selectmenu-menu li a,.ui-selectmenu-status {font-family: 'avenirbook'; font-size: 12px;}
 
@@ -99,7 +99,7 @@ input[type="checkbox"], input[type="radio"] { box-sizing: border-box; }
 input[type="search"] { -moz-box-sizing: content-box; -webkit-box-sizing: content-box; box-sizing: content-box; }
 button, input[type="button"], input[type="reset"], input[type="submit"] { cursor: pointer; -webkit-appearance: button; }
 button, input { line-height: normal; *overflow: visible; }
-.form-row input[type="text"], .form-row label {display: inline-block; float: left;} 
+.form-row input[type="text"], .form-row label {display: inline-block; float: left;}
 label.for-input {width: auto !important; cursor: pointer}
 input.radio, input.checkbox {vertical-align: text-bottom; margin: 0;}
 input[type="text"], input[type="password"], textarea, select {border: 1px solid #ccc;}
@@ -153,13 +153,13 @@ input.button {}
 .ui-selectmenu, .ui-selectmenu.ui-state-active, .ui-selectmenu.ui-state-default {display: inline-block; position: relative; overflow: hidden; border-radius: 0; border: none; background: #fff; border: 1px solid #d0c8c1; text-decoration: none !important; border-radius: 3px; box-shadow: 0 0 2px #d0c8c1;}
 .ui-selectmenu .ui-selectmenu-icon { position:absolute; top: 10px; right: 6px; width: 22px; height: 29px; background: url(/bundles/foodapp/images/select-arrow.png) no-repeat left top;}
 .ui-selectmenu-menu { padding:0; margin:0; position:absolute; top: 0; display: none; z-index: 1005;}
-.ui-selectmenu-menu  ul { padding:0; margin:0; list-style:none; position: relative; overflow: auto; overflow-y: auto ; overflow-x: hidden; -webkit-overflow-scrolling: touch; border: 1px solid #d0c8c1; background: #fff; border-radius: 0; border-top: none; border-bottom: none;} 
+.ui-selectmenu-menu  ul { padding:0; margin:0; list-style:none; position: relative; overflow: auto; overflow-y: auto ; overflow-x: hidden; -webkit-overflow-scrolling: touch; border: 1px solid #d0c8c1; background: #fff; border-radius: 0; border-top: none; border-bottom: none;}
 .ui-selectmenu-open { display: block; }
 .ui-selectmenu-menu li { padding:0; margin:0; display: block; border: none !important; font-weight: normal !important; background: none !important;}
 .ui-selectmenu-menu li a,.ui-selectmenu-status { display: block; padding: 6px 16px; padding-bottom: 4px; padding-right: 26px; outline:none; text-decoration:none; color: inherit; font-weight: normal; color: #000; font-size: 15px; line-height: 26px; }
 .ui-selectmenu-menu li a {border-bottom: 1px solid #d0c8c1;}
 .ui-selectmenu-menu li a:hover, .ui-selectmenu-menu .ui-state-hover a {color: #000; background: #efefef !important; zoom: 1;}
- 
+
 
 /*Checkbox and radios*/
 .custom-checkbox, .custom-radio {float: none; display: block; position: relative; padding-left: 25px; padding-right: 20px; font-size: 15px; color: #513d28; cursor: pointer;}
@@ -775,7 +775,8 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
 /* End of delivery mega super duper form styles */
 
 .register-form .form-row.error input,
-.login-form .form-row.error input {
+.login-form .form-row.error input,
+.review-form .form-row.error span.rate-review {
     border: 1px solid #ff0000;
 }
 
@@ -787,3 +788,40 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
     color: #ff0000;
     display: none;
 }
+
+.review-form .form-row span.rate-review {
+    display: inline-block;
+    margin-top: 9px;
+}
+.review-form .form-row textarea {
+    border: 1px solid #ccc;
+    height: 100px;
+    margin-top: 9px;
+    width: 200px;
+}
+
+.review-form .form-row.error textarea {
+    border: 1px solid #ff0000;
+    height: 100px;
+    margin-top: 9px;
+    width: 200px;
+}
+
+/* place review form */
+.place-review-popup {width: 440px; border-radius: 10px; background: #fff;}
+.place-review-popup .lefter {padding: 24px 34px; float: left; width: 360px;}
+.place-review-popup h3 {font-size: 27px; margin: 0; line-height: 36px; letter-spacing: 1px;}
+.place-review-popup h4 {font-size: 12px; color: #cfb4b8; margin: 0; margin-bottom: 27px;}
+.place-review-popup .form-row {margin-bottom: 13px;}
+.review-form .form-row {margin-bottom: 10px;}
+.place-review-popup .small-margin {margin-bottom: 10px;}
+.place-review-popup label {float: left; width: 142px; padding-right: 5px; font-size: 15px; padding-top: 9px;}
+.place-review-popup input[type="text"],
+.place-review-popup input[type="email"],
+.place-review-popup input[type="password"] {border: 1px solid #d8d8d8; border-radius: 4px; box-shadow: 0 0 1px #f2f2f2; float: left; font-size: 14px; height: 16px; padding: 10px 12px; width: 187px;}
+.place-review-popup input[type="submit"] {font-size: 13px; color: #86560d; text-shadow: 0 1px 0 #fff; text-transform: uppercase; width: 211px; height: 40px; border-radius: 4px; background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x left center; box-shadow: 0 1px 1px #c0c0c0; border: none; letter-spacing: 1px;}
+.place-review-popup .double {padding-top: 0px;}
+.review-form .form-controls {padding-top: 18px;}
+.place-review-popup .custom-checkbox {font-size: 12px; color: #cfb4b8; padding-top: 0px; width: 100px; margin-top: 9px; line-height: 22px;}
+.place-review-popup a {font-size: 12px; color: #cfb4b8; text-decoration: underline;}
+.place-review-popup a:hover {text-decoration: none;}
