@@ -397,11 +397,9 @@ class Dish extends Uploadable implements Translatable
      */
     public function addTranslation(\Food\DishesBundle\Entity\DishLocalized $t)
     {
-        if (method_exists($this->translations, 'contains')) {
-            if (!$this->translations->contains($t)) {
-                $this->translations[] = $t;
-                $t->setObject($this);
-            }
+        if (!$this->translations->contains($t)) {
+            $this->translations[] = $t;
+            $t->setObject($this);
         }
     }
 
