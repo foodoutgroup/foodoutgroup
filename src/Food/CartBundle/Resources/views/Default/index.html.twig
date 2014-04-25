@@ -155,15 +155,15 @@
                             {% endif %}
                             <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.firstname{% endtrans %}:</label>
-                                <input type="text" name="customer-firstname" value="{% if (dataToLoad is not empty and dataToLoad['customer-firstname'] is not empty) %}{{ dataToLoad['customer-firstname'] }}{% endif %}" />
+                                <input type="text" name="customer-firstname" value="{% if (dataToLoad is not empty and dataToLoad['customer-firstname'] is not empty) %}{{ dataToLoad['customer-firstname'] }}{% else %}{{ app.user.firstname|default('') }}{% endif %}" />
                             </div>
                             <div class="form-row">
                                 <label>{% trans %}cart.checkout.lastname{% endtrans %}:</label>
-                                <input type="text" name="customer-lastname" value="{% if (dataToLoad is not empty and dataToLoad['customer-lastname'] is not empty) %}{{ dataToLoad['customer-lastname'] }}{% endif %}" />
+                                <input type="text" name="customer-lastname" value="{% if (dataToLoad is not empty and dataToLoad['customer-lastname'] is not empty) %}{{ dataToLoad['customer-lastname'] }}{% else %}{{ app.user.lastname|default('') }}{% endif %}" />
                             </div>
                             <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.email{% endtrans %}:</label>
-                                <input type="text" name="customer-email" value="{% if (dataToLoad is not empty and dataToLoad['customer-email'] is not empty) %}{{ dataToLoad['customer-email'] }}{% endif %}" />
+                                <input type="text" name="customer-email" value="{% if (dataToLoad is not empty and dataToLoad['customer-email'] is not empty) %}{{ dataToLoad['customer-email'] }}{% else %}{{ app.user.firstname|email('') }}{% endif %}" />
                             </div>
                             <div class="form-row form-row-required">
                                 <label title="{% trans %}cart.checkout.phone_tooltip{% endtrans %}" class="tooltip">{% trans %}cart.checkout.phone{% endtrans %}:</label>

@@ -8,7 +8,7 @@ food_places:
     prefix:   /
 
 food_user:
-    resource: "@FoodUserBundle/Controller/"
+    resource: "@FoodUserBundle/Controller/DefaultController.php"
     type:     annotation
     prefix:   /
 

@@ -1,6 +1,5 @@
 (function($, window){
     $(function() {
-
         var $window = $(window);
 
         /*Placeholder for old browsers*/
@@ -29,6 +28,7 @@
         $(".boxer").boxer({
             callback: function(){
                 $("input").iCheck();
+                $('form.login-form input[name=_username]').focus();
             }
         });
 
@@ -52,6 +52,65 @@
             
         }
 
-
+        bind_registration_form();
+        bind_login_form();
     });
 })(jQuery, window);
+
+bind_registration_form = function() {
+    $('body').on('submit', '.righter.register-form', function(e) {
+        var callback, data, form, url;
+
+        form = $(this);
+        submit_btn = form.find('input[type=submit]');
+        url = form.attr('action');
+        data = form.serialize();
+
+        form.mask();
+
+        callback = function(response) {
+            if (response.length > 0) {
+                $('.registration_form_wrapper:visible').html(response);
+                form.unmask();
+            } else {
+                top.location.href = top.location.href;
+            }
+        };
+
+        $.post(url, data, callback);
+
+        return false;
+    });
+}
+
+bind_login_form = function() {
+    $('body').on('submit', '.lefter.login-form', function(e) {
+        var callback, data, form, url, error;
+
+        form = $(this);
+        url = form.attr('action');
+        data = form.serialize();
+        form_login_rows = $('.login-form-row');
+        error = form.find('.login-error')
+        dataType = 'json';
+
+        error.hide();
+        form_login_rows.removeClass('error');
+        form.mask();
+
+        callback = function(response) {
+            if (response.success == 1) {
+                top.location.href = top.location.href;
+            } else {
+                form_login_rows.addClass('error');
+                form.find('input[password]').val('');
+                error.show();
+                form.unmask();
+            }
+        };
+
+        $.post(url, data, callback, dataType);
+
+        return false;
+    });
+}
