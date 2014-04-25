@@ -10,6 +10,12 @@ food_test:
     pattern:  /test/
     defaults: { _controller: FoodAppBundle:Test:index }
 
+food_review_create:
+    pattern: /place/review/{id}
+    defaults: { _controller: FoodDishesBundle:Place:reviewCreate }
+    requirements:
+        _method: POST
+
 food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
@@ -128,3 +134,4 @@ food_newsletter_subscribe:
 food_newsletter_thank:
     pattern: /newsletter/thank/
     defaults: { _controller: FoodAppBundle:Default:newsletterThank}
+

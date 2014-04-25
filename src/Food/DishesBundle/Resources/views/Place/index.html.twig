@@ -83,14 +83,20 @@
                         <div id="detailed-restaurant-review" class="detailed-restaurant-review">
                             <div class="review-title clearfix">
                                 {% set count = place.reviews.count %}
-                                <h3>{% transchoice count %}%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų{% endtranschoice %}</h3><a href="#">{% trans %}places.add_review{% endtrans %}</a>
+                                <h3>{% transchoice count %}%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų{% endtranschoice %}</h3>
+                                {% if wasHere and not alreadyWrote %}
+                                    <a href="#place-review-popup" class="boxer">{% trans %}places.add_review{% endtrans %}</a>
+                                {% endif %}
+                                {{ include('FoodDishesBundle:Place:review-popup.html.twig') }}
                             </div>
                             <div class="review-list">
                                 {% for review in place.reviews %}
                                 <div class="review-item clearfix">
                                     <div class="review-person"><img src="/bundles/foodapp/images/person.png">
                                         <p class="name">{{ review.createdBy.getFirstname }}</p>
-                                        <p class="location">{{ review.createdBy.getDefaultAddress.city }}</p>
+                                        {% if review.createdBy.getDefaultAddress %}
+                                            <p class="location">{{ review.createdBy.getDefaultAddress.city }}</p>
+                                        {% endif %}
                                     </div>
                                     <div class="review-baloon">
                                         <div class="nip"></div>

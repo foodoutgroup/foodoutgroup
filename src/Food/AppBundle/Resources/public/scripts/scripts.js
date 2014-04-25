@@ -29,6 +29,7 @@
             callback: function(){
                 $("input").iCheck();
                 $('form.login-form input[name=_username]').focus();
+                init_raty();
             }
         });
 
@@ -57,6 +58,14 @@
     });
 })(jQuery, window);
 
+init_raty = function() {
+    selector = '.place-review-popup-wrapper .rate-review:empty';
+    options = {
+        path: '/bundles/foodapp/images/'
+    };
+
+    $(selector).raty(options);
+}
 bind_registration_form = function() {
     $('body').on('submit', '.righter.register-form', function(e) {
         var callback, data, form, url;
