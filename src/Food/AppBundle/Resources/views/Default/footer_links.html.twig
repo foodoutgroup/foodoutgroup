@@ -31,7 +31,7 @@
             <div class="clearfix">
                 <div class="small-col fl rating-col">
                     {% for place in topRatedPlaces %}
-                        {#{% if not (loop.index % 2) %}#}
+                        {% if not (loop.index % 2) %}
                             <div class="clearfix">
                                 <span class="name fl">
                                     <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place')}) }}">
@@ -40,23 +40,23 @@
                                 </span>
                                 <div data-stars="{{ place.averageRating }}" class="restoran-rating fr"></div>
                             </div>
-                        {#{% endif %}#}
+                        {% endif %}
                     {% endfor %}
                 </div>
-                {#<div class="small-col fr">#}
-                    {#{% for place in topRatedPlaces %}#}
-                        {#{% if (loop.index % 2) %}#}
-                            {#<div class="clearfix">#}
-                                {#<span class="name fl">#}
-                                    {#<a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'food_place')}) }}">#}
-                                        {#{{ place.name }}#}
-                                    {#</a>#}
-                                {#</span>#}
-                                {#<div data-stars="{{ place.averageRating }}" class="restoran-rating fr"></div>#}
-                            {#</div>#}
-                        {#{% endif %}#}
-                    {#{% endfor %}#}
-                {#</div>#}
+                <div class="small-col fr rating-col">
+                    {% for place in topRatedPlaces %}
+                        {% if (loop.index % 2) %}
+                            <div class="clearfix">
+                                <span class="name fl">
+                                    <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place')}) }}">
+                                        {{ place.name }}
+                                    </a>
+                                </span>
+                                <div data-stars="{{ place.averageRating }}" class="restoran-rating fr"></div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
         {% endif %}

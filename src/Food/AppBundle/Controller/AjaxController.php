@@ -75,7 +75,7 @@ class AjaxController extends Controller
             $this->get('food.googlegis')->getLocationFromSession()
         );
         $this->get('food.places')->saveRelationPlaceToPointSingle($placeId, $pointId);
-        $cont->data->{'no-delivery'} = (!empty($pointId) ? 0: 1);
+        $cont->data->{'nodelivery'} = (!empty($pointId) ? 0: 1);
         $response->setContent(json_encode($cont));
     }
 }

@@ -43,6 +43,7 @@ parameters:
     payment.methods: [local, local.card, paysera]
     currency_display: Lt
     vat: 21
+    evp.test_payments: 0
 
 framework:
     #esi:             ~
@@ -228,7 +229,8 @@ sonata_admin:
                       - sonata.admin.food.category
                       - sonata.admin.dish
                       - sonata.admin.dish.option
-                      - sonata.admin.place.pointfull
+#                      kolkas neveikia
+#                      - sonata.admin.place.pointfull
                       - sonata.admin.place.reviews
                   roles: [ ROLE_MODERATOR ]
               admin.orders:

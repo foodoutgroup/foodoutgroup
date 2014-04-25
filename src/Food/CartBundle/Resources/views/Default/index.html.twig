@@ -28,9 +28,9 @@
                                         data:  {city: $('.city-row select').val(), address: $('.address-row input').val(), place: {{ place.id }} },
                                         success:  function(resp){
                                             if (resp.data.success == 1) {
-                                                if (resp.data.no-delivery == 1) {
+                                                if (resp.data.nodelivery == 1) {
                                                     thisDialog.parent().unmask();
-                                                    $(this).dialog('close');
+                                                    thisDialog.dialog('close');
                                                     toTakeOrNotToTake();
                                                 } else {
                                                     window.location.reload();
@@ -81,10 +81,14 @@
         }
         $('.tooltip').tooltip();
     });
-
 {% endblock %}
 
+
+
 {% block body %}
+
+    {% include 'FoodDishesBundle:Place:dish_cart_partial.html.twig' %}
+
     {% javascripts '@FoodAppBundle/Resources/public/js_main/order.js' %}
         <script src="{{ asset_url }}" type="text/javascript"></script>
         <script type="text/javascript">
@@ -105,6 +109,15 @@
                     <form class="delivery-info-form" method="post">
                         <div class="delivery-info-form-content">
                             <h2>1. {% trans %}cart.checkout.block_title_delivery{% endtrans %}</h2>
+                            {% if formHasErrors %}
+                            <div class="form-row">
+                                <div class="alert alert-warning">
+                                    {% for err in formErrors %}
+                                        <li>{{ err|trans }}</li>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
                             <div class="form-row">
                                 <label><br></label>
                                 <div class="delivery-type-radios clearfix">
@@ -127,7 +140,6 @@
                             </div>
                             <div class="form-row form-row-required address-change">
                                 <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
-
                                 <input type="text" id="address" value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% endif %}" readonly>
                             </div>
                             {# Atsiims pats - leidziame pasirinkti padalini #}
@@ -136,26 +148,26 @@
                                 <label>{% trans %}cart.checkout.place_point{% endtrans %}:</label>
                                 <select class="custom-select" name="place_point">
                                     {% for point in place.points %}
-                                    <option {% if order is not null and order.placePoint.id == point.id %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}</option>
+                                    <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             {% endif %}
                             <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.firstname{% endtrans %}:</label>
-                                <input type="text" name="customer-firstname" value="{{ app.user.firstname|default('') }}" />
+                                <input type="text" name="customer-firstname" value="{% if (dataToLoad is not empty and dataToLoad['customer-firstname'] is not empty) %}{{ dataToLoad['customer-firstname'] }}{% else %}{{ app.user.firstname|default('') }}{% endif %}" />
                             </div>
                             <div class="form-row">
                                 <label>{% trans %}cart.checkout.lastname{% endtrans %}:</label>
-                                <input type="text" name="customer-lastname" value="{{ app.user.lastname|default('') }}" />
+                                <input type="text" name="customer-lastname" value="{% if (dataToLoad is not empty and dataToLoad['customer-lastname'] is not empty) %}{{ dataToLoad['customer-lastname'] }}{% else %}{{ app.user.lastname|default('') }}{% endif %}" />
                             </div>
                             <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.email{% endtrans %}:</label>
-                                <input type="text" name="customer-email" value="{{ app.user.email|default('') }}">
+                                <input type="text" name="customer-email" value="{% if (dataToLoad is not empty and dataToLoad['customer-email'] is not empty) %}{{ dataToLoad['customer-email'] }}{% else %}{{ app.user.firstname|email('') }}{% endif %}" />
                             </div>
                             <div class="form-row form-row-required">
                                 <label title="{% trans %}cart.checkout.phone_tooltip{% endtrans %}" class="tooltip">{% trans %}cart.checkout.phone{% endtrans %}:</label>
-                                <input type="text" name="customer-phone" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" />
+                                <input type="text" name="customer-phone" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" value="{% if (dataToLoad is not empty and dataToLoad['customer-phone'] is not empty) %}{{ dataToLoad['customer-phone'] }}{% endif %}" />
                             </div>
                             {#
                             <div class="form-row">
@@ -168,7 +180,7 @@
                             #}
                             <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.delivery_comment{% endtrans %}:</label>
-                                <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}"></textarea>
+                                <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['customer-comment'] is not empty) %}{{ dataToLoad['customer-comment'] }}{% endif %}</textarea>
                             </div>
                             {# TODO laikinai viskas pirmam testui paslepta - nuimsim po testo #}
                             <h2 class="section-2">2. {% trans %}cart.checkout.block_title_secure_payment{% endtrans %}</h2>
@@ -181,8 +193,7 @@
                                 </label>#}
                             </div>
                             {# TODO kolkas viskas rodo i Paysera#}
-                            {# TODO hackas testavimui. Reikia atskiro paysera optionso, kitus bankus kolkas slepiame #}
-                            {#<div class="select-bank clearfix">
+                            <div class="select-bank clearfix">
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-sb.png">
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
@@ -201,7 +212,7 @@
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-dnb.png">
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
-                            </div>#}
+                            </div>
 
                             {# <div class="cupon-info">Jei turite kuponą, įveskite <a href="#">jo kodą čia</a></div> #}
                         </div>
@@ -209,7 +220,7 @@
                     </form>
                 </div>
                 <div class="content-righter-small">
-                    {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': true })) }}
+                    {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': true, 'order': order, 'takeAway': takeAway })) }}
                 </div>
             </div>
         </div>

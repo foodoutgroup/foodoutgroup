@@ -155,8 +155,12 @@ class FoodCategory implements Translatable
     {
         $query = $em->createQuery("SELECT o.name FROM FoodDishesBundle:FoodCategory as o WHERE o.id=:id")
             ->setParameter('id', $this->getId());
-        $res = ($query->getSingleResult());
-        return $res['name'];
+        try{
+            $res = ($query->getSingleResult());
+            return $res['name'];
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return $this->getName();
+        }
     }
 
     public function getSlug()

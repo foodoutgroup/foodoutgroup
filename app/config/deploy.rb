@@ -10,6 +10,7 @@ set :branch, "design"
 
 # multi-stage environment
 set :stages,        %w(production staging)
+# isijungiam kada reik :)
 set :default_stage, "staging"
 set :stage_dir,     "app/config/deploy"
 require 'capistrano/ext/multistage'

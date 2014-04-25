@@ -96,7 +96,7 @@ class Order
      */
     private $place_comment;
 
-    /**;
+    /**
      * @var integer
      * @ORM\Column(name="vat", type="integer")
      */
@@ -170,7 +170,7 @@ class Order
     public function __toString()
     {
         if ($this->getId()) {
-            return $this->getId().'-'.$this->getPlaceName().'-TODO'; // TODO add user email and other stuff
+            return $this->getId().'-'.$this->getPlaceName().'-'.$this->getAddressId();
         }
         return '';
     }
@@ -700,7 +700,7 @@ class Order
     /**
      * Get details
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return OrderDetails[]
      */
     public function getDetails()
     {

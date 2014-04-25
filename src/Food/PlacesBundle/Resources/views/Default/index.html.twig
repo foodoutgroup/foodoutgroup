@@ -62,6 +62,7 @@
             <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a>
         </div>
         <div class="content-righter">
+            {#
             <div class="restaurants-list-controls clearfix">
                 <form class="list-search-form fl">
                     <input type="text" placeholder="{% trans %}places.search_placeholder{% endtrans %}">
@@ -69,12 +70,13 @@
                 </form>
                 <div class="list-top-filters clearfix fr">
                     <div class="label">{% trans %}places.order_by{% endtrans %}:</div>
-                    {# <a href="#">{% trans %}places.sort_by_relevance{% endtrans %}</a> #}
+                    <a href="#">{% trans %}places.sort_by_relevance{% endtrans %}</a>
                     <a href="#" class="selected">{% trans %}places.sort_by_rating{% endtrans %}</a>
                     <a href="#">{% trans %}places.sort_by_delivery_price{% endtrans %}</a>
                     <a href="#">{% trans %}places.sort_by_distance{% endtrans %}</a>
                 </div>
             </div>
+            #}
             {{ render(controller('FoodPlacesBundle:Default:list', {'recommended':recommended})) }}
         </div>
     </div>

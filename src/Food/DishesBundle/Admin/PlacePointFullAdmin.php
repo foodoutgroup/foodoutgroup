@@ -19,6 +19,7 @@ class PlacePointFullAdmin extends FoodAdmin
             ->add('company_code', 'text', array('label' => 'admin.point.company_code'))
             ->add('city', 'text', array('label' => 'admin.point.city'))
             ->add('phone', 'text', array('label' => 'admin.point.phone', 'attr'=>array('placeholder'=>'370')))
+            ->add('email', 'text', array('label' => 'admin.point.email', 'required' => false))
             //->add('coords', 'text', array('label' => 'admin.point.coords'))
             ->add('lat', 'text', array('label' => 'admin.point.lat','attr'=>array('placeholder'=>'xx.xxxxx')))
             ->add('lon', 'text', array('label' => 'admin.point.lon','attr'=>array('placeholder'=>'xx.xxxxx')))

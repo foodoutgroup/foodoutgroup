@@ -138,6 +138,39 @@
             <source>cart.checkout.place_point</source>
             <target>Atsiimsite iš</target>
         </trans-unit>
+        <trans-unit id="cart.block.order_sum_minimum" resname="cart.block.order_sum_minimum">
+            <source>cart.block.order_sum_minimum</source>
+            <target>Minimalus krepšelis:</target>
+        </trans-unit>
+        <trans-unit id="cart.block.total_cart" resname="cart.block.total_cart">
+            <source>cart.block.total_cart</source>
+            <target>Krepšelis</target>
+        </trans-unit>
+        <trans-unit id="cart.block.order_sum_minimum_take_myself" resname="cart.block.order_sum_minimum_take_myself">
+            <source>cart.block.order_sum_minimum_take_myself</source>
+            <target>Netaikoma jei užsakymą atsiimsite pats.</target>
+        </trans-unit>
+
+        <trans-unit id="order.form.errors.customerfirstname" resname="order.form.errors.customerfirstname">
+            <source>order.form.errors.customerfirstname</source>
+            <target>Įveskite savo vardą</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.customerphone" resname="order.form.errors.customerphone">
+            <source>order.form.errors.customerphone</source>
+            <target>Nurodykite mob. telefono numerį</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.customercomment" resname="order.form.errors.customercomment">
+            <source>order.form.errors.customercomment</source>
+            <target>Įveskite komentarą</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.customeremail" resname="order.form.errors.customeremail">
+            <source>order.form.errors.customeremail</source>
+            <target>Neįvestas el.pašto adresas</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.customeraddr" resname="order.form.errors.customeraddr">
+            <source>order.form.errors.customeraddr</source>
+            <target>Nenurodytas adresas</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

@@ -13,6 +13,7 @@ class CartOption
 {
     /**
      * @ORM\Column(name="session", type="string", length=255)
+     * @ORM\Id
      */
     private $session;
 

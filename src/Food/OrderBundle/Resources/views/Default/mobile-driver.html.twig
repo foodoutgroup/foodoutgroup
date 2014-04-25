@@ -1,3 +1,4 @@
+{# TODO sutvarkyti , kad normaliai mobile extendai veiktu #}
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,35 +60,20 @@
                 <td colspan="5">
                     <b>
                         {% if order.deliveryType == 'deliver' %}
-                            {% trans %}mobile.order.sum_with_delivery{% endtrans %}
-                        {% else %}
-                            {% trans %}mobile.order.sum{% endtrans %}
+                        {% trans %}mobile.order.sum_with_delivery{% endtrans %}
+                    {% else %}
+                        {% trans %}mobile.order.sum{% endtrans %}
                         {% endif %}:
                     </b> {{ order.total }} {{ currency_display }}
                 </td>
             </tr>
             {% if order.deliveryType == 'deliver' %}
-                {% if order.placePointSelfDelivery == 1 %}
                     <tr>
                         <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
                     </tr>
                     <tr>
                         <td colspan="5">{% trans %}mobile.deliver{% endtrans %}</td>
                     </tr>
-                    <tr>
-                        <th colspan="5">{% trans %}mobile.delivery_destination{% endtrans %}</th>
-                    </tr>
-                    <tr>
-                        <td colspan="5">{{ order.addressId.address }}, {{ order.addressId.city }}</td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
-                    </tr>
-                    <tr>
-                        <td colspan="5">{% trans %}mobile.pickup_foodout{% endtrans %}</td>
-                    </tr>
-                {% endif %}
             {% else %}
                 <tr>
                     <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
@@ -96,6 +82,24 @@
                     <td colspan="5">{% trans %}mobile.pickup{% endtrans %}</td>
                 </tr>
             {% endif %}
+            <tr>
+                <th colspan="5">{% trans %}mobile.place_point_address{% endtrans %}</th>
+            </tr>
+            <tr>
+                <td colspan="5">{{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.city }}</td>
+            </tr>
+            <tr>
+                <th colspan="5">{% trans %}mobile.place_point_phone{% endtrans %}</th>
+            </tr>
+            <tr>
+                <td colspan="5">{{ order.placePoint.phone }}</td>
+            </tr>
+            <tr>
+                <th colspan="5">{% trans %}mobile.delivery_destination{% endtrans %}</th>
+            </tr>
+            <tr>
+                <td colspan="5">{{ order.addressId.address }}, {{ order.addressId.city }}</td>
+            </tr>
             <tr>
                 <th colspan="5">{% trans %}mobile.customer_phone{% endtrans %}</th>
             </tr>
@@ -109,29 +113,23 @@
                 <td colspan="5">{{ order.comment }}</td>
             </tr>
             {% if order.placePointSelfDelivery == 1 or order.deliveryType == 'pickup' %}
-            <tr>
-                <th colspan="5">{% trans %}mobile.payment{% endtrans %}</th>
-            </tr>
-            <tr>
-                <td colspan="5">{{ ('mobile.payment.' ~ order.paymentMethod)|trans }}</td>
-            </tr>
-            <tr>
-                <th colspan="5">{% trans %}mobile.order_time{% endtrans %}</th>
-            </tr>
-            <tr>
-                <td colspan="5">{{ order.orderDate|date("H:i") }}</td>
-            </tr>
+                <tr>
+                    <th colspan="5">{% trans %}mobile.payment{% endtrans %}</th>
+                </tr>
+                <tr>
+                    <td colspan="5">{{ ('mobile.payment.' ~ order.paymentMethod)|trans }}</td>
+                </tr>
+                <tr>
+                    <th colspan="5">{% trans %}mobile.order_time{% endtrans %}</th>
+                </tr>
+                <tr>
+                    <td colspan="5">{{ order.orderDate|date("H:i") }}</td>
+                </tr>
             {% endif %}
             </tbody>
         </table>
         <form method="post">
-            {% if order.orderStatus == "new" %}
-                <button type="submit" name="status" value="confirm" class="btn btn-primary btn-block">{% trans %}mobile.order_confirm{% endtrans %}</button>
-                <button type="submit" name="status" value="cancel" class="btn btn-danger btn-block">{% trans %}mobile.order_cancel{% endtrans %}</button>
-            {% elseif order.orderStatus == "accepted" or order.orderStatus == "delayed" %}
-                {% if order.orderStatus != "delayed" %}
-                    <button type="submit" name="status" value="delay" class="btn btn-warning btn-block">{% trans %}mobile.order_delay{% endtrans %}</button>
-                {% endif %}
+            {% if order.orderStatus == "accepted" or order.orderStatus == "delayed" %}
                 <button type="submit" name="status" value="finish" class="btn btn-success btn-block">{% trans %}mobile.order_finish{% endtrans %}</button>
             {% elseif order.orderStatus == "finished" or order.orderStatus == "assigned" or order.orderStatus == "completed" %}
                 <center><h2>{% trans %}mobile.place_finish_message{% endtrans %}</h2></center>

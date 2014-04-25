@@ -114,7 +114,9 @@ class PaySera extends ContainerAware implements BillingInterface {
      */
     public function getTest()
     {
-        return $this->test;
+        // TODO hackas, kazko vistiek varo vieneta
+        return 0;
+//        return $this->test;
     }
 
     /**
