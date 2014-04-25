@@ -262,6 +262,10 @@
         <source>general.login_button</source>
         <target>Prisijunk</target>
       </trans-unit>
+      <trans-unit id="general.profile_button" resname="general.profile_button">
+        <source>general.profile_button</source>
+        <target>Sveiki, %firstname%</target>
+      </trans-unit>
       <trans-unit id="3b71dfc8c61439d9e95d16cc0a177e77" resname="general.login_login_button">
         <source>general.login_login_button</source>
         <target>Prisijunkite</target>

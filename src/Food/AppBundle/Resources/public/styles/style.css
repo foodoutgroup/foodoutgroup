@@ -686,6 +686,7 @@ input.button {}
 .login-register-popup .small-margin {margin-bottom: 10px;}
 .login-register-popup label {float: left; width: 142px; padding-right: 5px; font-size: 15px; padding-top: 9px;}
 .login-register-popup input[type="text"],
+.login-register-popup input[type="email"],
 .login-register-popup input[type="password"] {border: 1px solid #d8d8d8; border-radius: 4px; box-shadow: 0 0 1px #f2f2f2; float: left; font-size: 14px; height: 16px; padding: 10px 12px; width: 187px;}
 
 .login-register-popup input[type="submit"] {font-size: 13px; color: #86560d; text-shadow: 0 1px 0 #fff; text-transform: uppercase; width: 211px; height: 40px; border-radius: 4px; background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x left center; box-shadow: 0 1px 1px #c0c0c0; border: none; letter-spacing: 1px;}
@@ -772,3 +773,17 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
     color: #FF0000;
 }
 /* End of delivery mega super duper form styles */
+
+.register-form .form-row.error input,
+.login-form .form-row.error input {
+    border: 1px solid #ff0000;
+}
+
+.register-form .registration-errors div {
+    color: #ff0000;
+}
+
+.login-form .login-error {
+    color: #ff0000;
+    display: none;
+}

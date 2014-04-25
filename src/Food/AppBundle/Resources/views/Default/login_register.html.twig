@@ -1,53 +1,6 @@
 <div id="login-register-popup" style="display: none;">
     <div class="popup login-register-popup clearfix">
-        <form class="lefter login-form">
-            <h3>{% trans %}general.login_title{% endtrans %}</h3>
-            <h4>{% trans %}general.login_text{% endtrans %}</h4>
-            <div class="form-row">
-                <label>{% trans %}general.login_email{% endtrans %}</label>
-                <input type="text">
-            </div>
-            <div class="form-row small-margin">
-                <label>{% trans %}general.login_password{% endtrans %}</label>
-                <input type="password">
-            </div>
-            <div class="tar"><a href="#">{% trans %}general.login_forgot_password{% endtrans %}</a></div>
-            <div class="form-controls clearfix">
-                {#
-                <label class="fl custom-checkbox">Prisiminti mane
-                    <input type="checkbox">
-                </label>
-                #}
-                <input type="submit" value="{% trans %}general.login_login_button{% endtrans %}" class="fr">
-
-            </div>
-        </form>
-        <div class="righter register-form">
-            <h3>{% trans %}general.register_title{% endtrans %}</h3>
-            <h4>{% trans %}general.register_text{% endtrans %}</h4>
-            <div class="form-row">
-                <label>{% trans %}general.register_name{% endtrans %}</label>
-                <input type="text">
-            </div>
-            <div class="form-row">
-                <label>{% trans %}general.register_surename{% endtrans %}</label>
-                <input type="text">
-            </div>
-            <div class="form-row">
-                <label>{% trans %}general.login_email{% endtrans %}</label>
-                <input type="text">
-            </div>
-            <div class="form-row">
-                <label>{% trans %}general.login_password{% endtrans %}</label>
-                <input type="password">
-            </div>
-            <div class="form-row">
-                <label class="double">{% trans %}general.register_repeat_password{% endtrans %}</label>
-                <input type="password">
-            </div>
-            <div class="form-controls clearfix">
-                <input type="submit" value="{% trans %}general.register_register_button{% endtrans %}" class="fr">
-            </div>
-        </div>
+        {% render(controller('FoodUserBundle:Default:login')) %}
+        <div class="registration_form_wrapper">{% render(controller('FoodUserBundle:Default:register')) %}</div>
     </div>
 </div>

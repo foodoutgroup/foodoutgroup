@@ -13,7 +13,7 @@ security:
 
     providers:
         fos_userbundle:
-           id: fos_user.user_provider.username
+           id: fos_user.user_provider.username_email
 
     firewalls:
       admin:
@@ -40,6 +40,8 @@ security:
               use_forward:    false
               check_path:     /login_check
               failure_path:   null
+              failure_handler: food_user.authentication_handler
+              success_handler: food_user.authentication_handler
           logout:
               path: /logout
               target: /
