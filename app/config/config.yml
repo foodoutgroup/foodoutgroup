@@ -62,6 +62,7 @@ framework:
     trusted_proxies: ~
     session:
         name: skaniSesija2014PerkamPicasUrmu
+        save_path: %kernel.root_dir%/var/sessions
     fragments:       ~
     http_method_override: true
 
