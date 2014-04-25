@@ -173,7 +173,7 @@ class DefaultController extends Controller
                     $user = $fosUserManager->createUser();
                     $user->setUsername($userEmail);
                     $user->setEmail($userEmail);
-
+                    $user->setFullyRegistered(false);
                     $user->setFirstname($request->get('customer-firstname'));
                     $user->setLastname($request->get('customer-lastname', null));
 
