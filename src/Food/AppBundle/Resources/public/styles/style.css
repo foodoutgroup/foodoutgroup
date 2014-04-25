@@ -787,3 +787,14 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
     color: #ff0000;
     display: none;
 }
+.static-page-content ul,
+.static-page-content ol {
+     font-size: 14px;
+     line-height: 21px;
+     margin-top: 7px;
+     margin-bottom: 17px;
+}
+.static-page-content ul li,
+.static-page-content ol li {
+    margin-bottom: 17px;
+}
