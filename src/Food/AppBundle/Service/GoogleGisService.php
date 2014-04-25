@@ -45,6 +45,15 @@ class GoogleGisService extends ContainerAware
      */
     public function getPlaceData($address)
     {
+        $addressSplt = explode("-", $address);
+        if (sizeof($addressSplt) > 1) {
+            $tmp = substr($addressSplt[1], 0, 1);
+            if ($tmp == intval($tmp)) {
+                $address = $addressSplt[0];
+            } else {
+                // Nieko nekeiciam
+            }
+        }
         $resp = $this->getCli()->get(
             $this->container->getParameter('google.maps_geocode'),
             array(
@@ -53,6 +62,7 @@ class GoogleGisService extends ContainerAware
                 'key' => $this->container->getParameter('google.maps_server_api')
             )
         );
+
         return json_decode($resp->body);
     }
 

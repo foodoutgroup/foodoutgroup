@@ -629,7 +629,7 @@ input.button {}
 .site-footer .col {float: left; font-size: 15px; letter-spacing: 0.5px; margin-right: 36px; background: url(/bundles/foodapp/images/rep-dot.png) repeat-y right top;}
 .site-footer .col-1 {width: 180px;}
 .site-footer .col-2 {width: 190px;}
-.site-footer .col-3 {width: 423px; margin-right: 0px; padding-right: 18px;}
+.site-footer .col-3 {width: 455px; margin-right: 0px; padding-right: 18px;}
 .site-footer .col-4 {width: 96px; float: right; margin-right: 0px; text-align: right; background: none;}
 
 .site-footer li {line-height: 29px;}
@@ -778,6 +778,15 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
 .login-form .form-row.error input,
 .review-form .form-row.error span.rate-review {
     border: 1px solid #ff0000;
+}
+
+.register-form .registration-errors div {
+    color: #ff0000;
+}
+
+.login-form .login-error {
+    color: #ff0000;
+    display: none;
 }
 .review-form .form-row span.rate-review {
     display: inline-block;

@@ -3,6 +3,7 @@
 namespace Food\CartBundle\Controller;
 
 use Food\CartBundle\Service\CartService;
+use Food\DishesBundle\Entity\Place;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -151,7 +152,21 @@ class DefaultController extends Controller
         }
 
         // Form submitted
+        $formHasErrors = false;
+        $formErrors = array();
+        $dataToLoad = array();
+
+        // TODO refactor this nonsense... if is if is if is bullshit...
+        // Validate only if post happened
         if ($request->getMethod() == 'POST') {
+            $this->get('food.order')->validateDaGiantForm($request, $formHasErrors, $formErrors, ($takeAway ? true : false));
+        }
+
+        if ($formHasErrors) {
+            $dataToLoad = $this->getRequest()->request->all();
+        }
+
+        if ($request->getMethod() == 'POST' && !$formHasErrors) {
             // Jeigu atsiima pats - dedam gamybos taska, kuri jis pats pasirinko, o ne mes Pauliaus magic find funkcijoje
             if ($takeAway) {
                 $placePointId = $request->get('place_point');
@@ -188,7 +203,9 @@ class DefaultController extends Controller
                     $fosUserManager->updateUser($user);
                 }
 
-                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint);
+                $selfDelivery = ($this->getRequest()->get('delivery-type') == "pickup" ? true : false);
+
+                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery);
                 $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
             } else {
                 $orderService->setOrder($order);
@@ -241,9 +258,12 @@ class DefaultController extends Controller
             'FoodCartBundle:Default:index.html.twig',
             array(
                 'order' => $order,
+                'formHasErrors' => $formHasErrors,
+                'formErrors' => $formErrors,
                 'place' => $place,
                 'takeAway' => ($takeAway ? true : false),
-                'location' => $this->get('food.googlegis')->getLocationFromSession()
+                'location' => $this->get('food.googlegis')->getLocationFromSession(),
+                'dataToLoad' => $dataToLoad
             )
         );
     }
@@ -256,15 +276,17 @@ class DefaultController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function sideBlockAction($place, $renderView = false, $inCart = false)
+    public function sideBlockAction(Place $place, $renderView = false, $inCart = false, $order = null, $takeAway = null)
     {
         $list = $this->getCartService()->getCartDishes($place);
-        $total = $this->getCartService()->getCartTotal($list, $place);
+        $total_cart = $this->getCartService()->getCartTotal($list, $place);
         $params = array(
             'list'  => $list,
             'place' => $place,
-            'total' => $total,
+            'total_cart' => $total_cart,
+            'total_with_delivery' => $total_cart + $place->getDeliveryPrice(),
             'inCart' => $inCart,
+            'hide_delivery' => (($order!=null AND $order->getDeliveryType() == 'pickup') || $takeAway == true ? 1: 0)
         );
         if ($renderView) {
             return $this->renderView('FoodCartBundle:Default:side_block.html.twig', $params);
