@@ -21,13 +21,11 @@ class UserAddressFormType extends AbstractType
         return 'food_user_address';
     }
 
-    protected function buildUserForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            // ->add('city', 'choice', ['choices' => ['Vilnius', 'Kaunas'], 'required' => true])
-            // ->add('address', null, ['required' => true])
-            ->add('city')
-            ->add('address')
+            ->add('city', 'choice', ['label' => 'form.city', 'translation_domain' => 'FOSUserBundle', 'choices' => ['Vilnius', 'Kaunas'], 'required' => true, 'empty_value' => '-', 'attr' => ['class' => 'custom-select']])
+            ->add('address', null, ['label' => 'form.address', 'translation_domain' => 'FOSUserBundle', 'required' => false])
         ;
     }
 }

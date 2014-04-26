@@ -17,6 +17,7 @@ use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use Food\UserBundle\Form\Type\ProfileFormType;
 use Food\UserBundle\Form\Type\UserAddressFormType;
+use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
 
 class DefaultController extends Controller
@@ -139,6 +140,47 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/{_locale}/profile/update", name="user_profile_update")
+     * @Template("FoodUserBundle:Default:profile.html.twig")
+     * @Method("POST")
+     */
+    public function profileUpdateAction(Request $request)
+    {
+        $userManager = $this->container->get('fos_user.user_manager');
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $this->user();
+        $address = $this->address($user);
+
+        $form = $this->createForm(new ProfileFormType(get_class($user)), $user);
+        $form->handleRequest($request);
+
+        $addressForm = $this->createForm(new UserAddressFormType(), $address);
+        $addressForm->handleRequest($request);
+
+        if ($form->isValid() && $addressForm->isValid()) {
+            // update/create address
+            $address
+                ->setCity($addressForm->get('city')->getData())
+                ->setAddress($addressForm->get('address')->getData())
+            ;
+
+            if (!$user->getDefaultAddress()) {
+                $em->persist($address);
+                $user->addAddress($address);
+            }
+
+            $userManager->updateUser($user);
+
+            return $this->redirect($this->generateUrl('user_profile'));
+        }
+
+        return [
+            'form' => $form->createView(),
+        ];
+    }
+
+    /**
      * @Route("/{_locale}/profile", name="user_profile")
      * @Template("FoodUserBundle:Default:profile.html.twig")
      */
@@ -150,15 +192,15 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('food_lang_homepage'));
         }
 
-        // $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->user();
+        $address = $this->address($user);
 
-        // $form = $this->createForm(new ProfileFormType(get_class($user)), $user);
-        // $form = $this->createForm(new UserAddressFormType());
-        $form = $this->createForm(new ProfileFormType('Food\UserBundle\Entity\User'));
+        $form = $this->createForm(new ProfileFormType(get_class($user)), $user);
+        $addressForm = $this->createForm(new UserAddressFormType(), $address);
 
         return [
             'form' => $form->createView(),
-            // 'addressForm' => $addressForm->createView(),
+            'addressForm' => $addressForm->createView(),
         ];
     }
 
@@ -181,5 +223,33 @@ class DefaultController extends Controller
         );
 
         return $existingUser->first();
+    }
+
+    private function user()
+    {
+        $sc = $this->get('security.context');
+
+        if (!$sc->isGranted('ROLE_USER')) {
+            return null;
+        }
+
+        return $sc->getToken()->getUser();
+    }
+
+    private function address(User $user)
+    {
+        if ($user->getDefaultAddress()) {
+            return $user->getDefaultAddress();
+        }
+
+        $address = new UserAddress();
+
+        $address
+            ->setUser($user)
+            ->setLat(0)
+            ->setLon(0)
+        ;
+
+        return $address;
     }
 }

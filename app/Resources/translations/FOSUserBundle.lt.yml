@@ -91,6 +91,9 @@ form:
     lastname: "Pavardė"
     username: "Naudotojo vardas"
     email: "El. paštas"
+    phone: "Telefono numeris"
+    city: Miestas
+    address: Adresas
     current_password: "Dabartinis slaptažodis"
     password: "Slaptažodis"
     password_confirmation: "Pakartoti slaptažodį"
