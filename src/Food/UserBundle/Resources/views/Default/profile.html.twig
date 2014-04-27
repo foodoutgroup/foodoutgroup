@@ -30,13 +30,13 @@
                             <div class="user-location">Vilnius</div>
                         </div>
                         <ul class="menu user-menu">
-                            <li class="user-ico active"><a href="#">Vartotojo duomenys</a></li>
-                            <li class="cart-ico"><a href="#">Užsakymų istorija</a></li>
-                            <li class="delivery-ico"><a href="#">Užsakymo sekimas</a></li>
-                            <li class="logoff-ico"><a href="#">Atsijungti</a></li>
+                            <li class="menu-item user-ico active" data-target=".user-page .content-item.user"><a href="#">Vartotojo duomenys</a></li>
+                            <li class="menu-item cart-ico" data-target=".user-page .content-item.cart"><a href="#">Užsakymų istorija</a></li>
+                            <li class="menu-item delivery-ico" data-target=".user-page .content-item.delivery"><a href="#">Užsakymo sekimas</a></li>
+                            <li class="logoff-ico"><a href="{{ path('fos_user_security_logout') }}">Atsijungti</a></li>
                         </ul>
                     </div>
-                    <div class="user-righter">
+                    <div class="user-righter content-item user">
                         <h2>Vartotojo duomenys</h2>
                         <form class="user-details-form" action="{{ path('user_profile_update') }}" method="POST">
                             {{ form_row(form.firstname) }}
@@ -53,6 +53,35 @@
                             <div class="form-controls">
                                 <input type="submit" value="išsaugoti">
                             </div>
+                        </form>
+                    </div>
+                    <div class="user-righter content-item cart">
+                        <h2>Užsakymų istorija</h2>
+                        <div class="order-history-list">
+                            {% for order in orders %}
+                                <div class="order-history-item clearfix">
+                                    <div class="restautrant-logo">
+                                        <div class="restautrant-logo-wrap"><img src="{{ asset('bundles/foodapp/images/res-1-s.png') }}"></div>
+                                    </div>
+                                    <div class="history-item-middle">
+                                        <div class="number-date"><span>Užsakymas #{{ order.id }}</span><span>2013 gruodžio 28, 18,50</span></div>
+                                        <div class="desc">Pristatyti <strong>{{ order.details.count }} patiekalai</strong> už {{ order.total }} Lt į Kuršių g. </div>
+                                    </div>
+                                    <div class="history-item-righter"><a href="#" class="rate-link">Įvertink šį užsakymą</a><a href="#" class="order-button">Užsakyti dar kartą</a></div><span class="close"></span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="user-righter content-item delivery">
+                        <h2>Užsakymo sekimas</h2>
+                        <form class="delivery-tracking-form">
+                            <p>Norite sužinoti kas vyksta su Jūsų užsakymu šiuo metu? Čili seklys leidžia stebėti Jūsų užsakymo statusą nuo jo priėmimo iki pristatymo.</p>
+                            <div class="form-row">
+                                <label>Įveskite savo Telefono numerį:</label>
+                                <input type="text" value="+370">
+                                <button type="submit"><span>Sekti užsakymą</span></button>
+                            </div>
+                            {# <div class="progress-image-wrap"><img src="{{ asset('bundle/foodap/images/delivery-progress.jpg') }}"></div> #}
                         </form>
                     </div>
                 </div>

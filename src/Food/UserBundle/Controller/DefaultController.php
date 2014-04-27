@@ -181,10 +181,10 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/profile", name="user_profile")
+     * @Route("/{_locale}/profile/{tab}", name="user_profile", defaults={"tab" = ""})
      * @Template("FoodUserBundle:Default:profile.html.twig")
      */
-    public function profileAction()
+    public function profileAction($tab)
     {
         $security = $this->get('security.context');
 
@@ -201,6 +201,8 @@ class DefaultController extends Controller
         return [
             'form' => $form->createView(),
             'addressForm' => $addressForm->createView(),
+            'tab' => $tab,
+            'orders' => $this->orders($user),
         ];
     }
 
@@ -251,5 +253,18 @@ class DefaultController extends Controller
         ;
 
         return $address;
+    }
+
+    private function orders(User $user)
+    {
+        return $this
+            ->getDoctrine()
+            ->getManager()
+            ->createQueryBuilder()
+            ->select('o')
+            ->from('FoodOrderBundle:Order', 'o')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

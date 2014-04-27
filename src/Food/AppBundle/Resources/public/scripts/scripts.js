@@ -56,6 +56,7 @@
         bind_registration_form();
         bind_login_form();
         bind_review_form();
+        bind_profile_menu_items();
     });
 })(jQuery, window);
 
@@ -87,7 +88,7 @@ bind_registration_form = function() {
 
 bind_login_form = function() {
     $('body').on('submit', '.lefter.login-form', function(e) {
-        var callback, data, form, url, error;
+        var callback, data, form, url, error, dataType;
 
         form = $(this);
         url = form.attr('action');
@@ -119,7 +120,7 @@ bind_login_form = function() {
 
 bind_review_form = function() {
     $('body').on('submit', '.review-form', function(e) {
-        var callback, data, form, url;
+        var callback, data, form, url, form_rows, dataType;
 
         form = $(this);
         url = form.attr('action');
@@ -144,10 +145,29 @@ bind_review_form = function() {
 }
 
 init_raty = function() {
+    var selector, options;
+
     selector = '.place-review-popup-wrapper .rate-review:empty';
     options = {
         path: '/bundles/foodapp/images/'
     };
 
     $(selector).raty(options);
+}
+
+bind_profile_menu_items = function() {
+    var menu_items, content_items;
+
+    menu_items = $('.user-page .user-menu .menu-item');
+    content_items = $('.user-page .content-item');
+
+    menu_items.click(function() {
+        menu_items.removeClass('active');
+        content_items.hide();
+
+        $(this).addClass('active');
+        $($(this).attr('data-target')).show();
+
+        return false;
+    });
 }
