@@ -294,6 +294,10 @@
         <source>index.address_not_found</source>
         <target>Adresas nerastas arba neegzistuoja</target>
       </trans-unit>
+        <trans-unit id="index.street_found_only" resname="index.street_found_only">
+            <source>index.street_found_only</source>
+            <target>Rasta tik gatvė. Patikrinkite ar įvedėte namo numerį ir ar jis teisingas.</target>
+        </trans-unit>
       <trans-unit id="f2e4d344548a4a45a1346062b31496f7" resname="mobile.pickup_type">
         <source>mobile.pickup_type</source>
         <target>Pristatymas</target>

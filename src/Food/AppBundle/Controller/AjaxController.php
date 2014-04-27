@@ -54,6 +54,10 @@ class AjaxController extends Controller
             $respData['success'] = 1;
             unset($respData['message']);
         }
+        if ($locationInfo['not_found'] && $locationInfo['street_found']) {
+            $respData['success'] = 0;
+            $respData['message'] = $this->get('translator')->trans('index.street_found_only');
+        }
 
         $response->setContent(json_encode(array(
             'data' => $respData
