@@ -93,8 +93,6 @@ class GoogleGisService extends ContainerAware
             $returner['street_found'] = true;
             $returner['street'] =  $location->results[0]->address_components[0]->long_name;
             $returner['city'] =  $location->results[0]->address_components[1]->long_name;
-            $returner['address'] = $returner['street'];
-            $returner['address_orig'] = $address;
         }
 
 
