@@ -163,7 +163,7 @@
                             </div>
                             <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.email{% endtrans %}:</label>
-                                <input type="text" name="customer-email" value="{% if (dataToLoad is not empty and dataToLoad['customer-email'] is not empty) %}{{ dataToLoad['customer-email'] }}{% else %}{{ app.user.firstname|email('') }}{% endif %}" />
+                                <input type="text" name="customer-email" value="{% if (dataToLoad is not empty and dataToLoad['customer-email'] is not empty) %}{{ dataToLoad['customer-email'] }}{% else %}{{ app.user.email|default('') }}{% endif %}" />
                             </div>
                             <div class="form-row form-row-required">
                                 <label title="{% trans %}cart.checkout.phone_tooltip{% endtrans %}" class="tooltip">{% trans %}cart.checkout.phone{% endtrans %}:</label>
