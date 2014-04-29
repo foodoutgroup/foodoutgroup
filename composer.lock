@@ -1427,12 +1427,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafo/lessphp.git",
-                "reference": "f2ef589c9ce712179138a9eac11141ea4ed6cc1a"
+                "reference": "011afcca8e6f1000a6e789921ba805fa578271a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafo/lessphp/zipball/f2ef589c9ce712179138a9eac11141ea4ed6cc1a",
-                "reference": "f2ef589c9ce712179138a9eac11141ea4ed6cc1a",
+                "url": "https://api.github.com/repos/leafo/lessphp/zipball/011afcca8e6f1000a6e789921ba805fa578271a3",
+                "reference": "011afcca8e6f1000a6e789921ba805fa578271a3",
                 "shasum": ""
             },
             "type": "library",
@@ -1460,20 +1460,20 @@
             ],
             "description": "lessphp is a compiler for LESS written in PHP.",
             "homepage": "http://leafo.net/lessphp/",
-            "time": "2014-04-23 21:35:41"
+            "time": "2014-04-27 02:56:30"
         },
         {
             "name": "monolog/monolog",
-            "version": "1.9.0",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "1afc39690e7414412face1f8cbf67b73db34485c"
+                "reference": "65026b610f8c19e61d7242f600530677b0466aac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1afc39690e7414412face1f8cbf67b73db34485c",
-                "reference": "1afc39690e7414412face1f8cbf67b73db34485c",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/65026b610f8c19e61d7242f600530677b0466aac",
+                "reference": "65026b610f8c19e61d7242f600530677b0466aac",
                 "shasum": ""
             },
             "require": {
@@ -1528,7 +1528,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-04-20 16:41:26"
+            "time": "2014-04-24 13:29:03"
         },
         {
             "name": "psr/log",
@@ -1828,12 +1828,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "647ae4040823ddf062a70ff274da9e598c43b053"
+                "reference": "25abd44cb777da84960a41361a011b02a77d3946"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/647ae4040823ddf062a70ff274da9e598c43b053",
-                "reference": "647ae4040823ddf062a70ff274da9e598c43b053",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/25abd44cb777da84960a41361a011b02a77d3946",
+                "reference": "25abd44cb777da84960a41361a011b02a77d3946",
                 "shasum": ""
             },
             "require": {
@@ -1884,7 +1884,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-04-24 08:39:21"
+            "time": "2014-04-25 16:15:20"
         },
         {
             "name": "sonata-project/cache",
@@ -2864,16 +2864,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.3.12",
+            "version": "v2.3.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "3574df3d5e0039f3225007b8be534df5c4104503"
+                "reference": "9c4b11915d7409a9cecd155d954f2ade273f3359"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/3574df3d5e0039f3225007b8be534df5c4104503",
-                "reference": "3574df3d5e0039f3225007b8be534df5c4104503",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/9c4b11915d7409a9cecd155d954f2ade273f3359",
+                "reference": "9c4b11915d7409a9cecd155d954f2ade273f3359",
                 "shasum": ""
             },
             "require": {
@@ -2970,7 +2970,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-04-03 05:42:39"
+            "time": "2014-04-27 08:34:33"
         },
         {
             "name": "trsteel/ckeditor-bundle",

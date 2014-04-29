@@ -262,7 +262,7 @@
         <source>general.login_button</source>
         <target>Prisijunk</target>
       </trans-unit>
-      <trans-unit id="general.profile_button" resname="general.profile_button">
+      <trans-unit id="947ad05ca557a6f415c38c8a87ddfc58" resname="general.profile_button">
         <source>general.profile_button</source>
         <target>Sveiki, %firstname%</target>
       </trans-unit>
@@ -294,10 +294,10 @@
         <source>index.address_not_found</source>
         <target>Adresas nerastas arba neegzistuoja</target>
       </trans-unit>
-        <trans-unit id="index.street_found_only" resname="index.street_found_only">
-            <source>index.street_found_only</source>
-            <target>Rasta tik gatvė. Patikrinkite ar įvedėte namo numerį ir ar jis teisingas.</target>
-        </trans-unit>
+      <trans-unit id="d1cb72fdc18a2ae2a96a7341a9bc78f2" resname="index.street_found_only">
+        <source>index.street_found_only</source>
+        <target>Rasta tik gatvė. Patikrinkite ar įvedėte namo numerį ir ar jis teisingas.</target>
+      </trans-unit>
       <trans-unit id="f2e4d344548a4a45a1346062b31496f7" resname="mobile.pickup_type">
         <source>mobile.pickup_type</source>
         <target>Pristatymas</target>
@@ -310,11 +310,11 @@
         <source>mobile.delivery_destination</source>
         <target>Pristatymo adresas</target>
       </trans-unit>
-      <trans-unit id="mobile.place_point_address" resname="mobile.place_point_address">
+      <trans-unit id="0144b5f007f80909d118805c288cac04" resname="mobile.place_point_address">
         <source>mobile.place_point_address</source>
         <target>Paimti iš</target>
       </trans-unit>
-      <trans-unit id="mobile.place_point_phone" resname="mobile.place_point_phone">
+      <trans-unit id="c515ebc67239e3c3555e84b329f7eeba" resname="mobile.place_point_phone">
         <source>mobile.place_point_phone</source>
         <target>Gamybos taško telefonas</target>
       </trans-unit>
@@ -361,6 +361,82 @@
       <trans-unit id="6b992ec872e88f6be09ab06f8cceb76e" resname="mobile.order_time">
         <source>mobile.order_time</source>
         <target>Užsakymo laikas</target>
+      </trans-unit>
+      <trans-unit id="mobile.restaurant_order" resname="mobile.restaurant_order">
+        <source>mobile.restaurant_order</source>
+        <target>Naujas užsakymas</target>
+      </trans-unit>
+      <trans-unit id="mobile.driver_order" resname="mobile.driver_order">
+        <source>mobile.driver_order</source>
+        <target>Naujas pristatymas</target>
+      </trans-unit>
+      <trans-unit id="mobile.restaurant_invoice" resname="mobile.restaurant_invoice">
+        <source>mobile.restaurant_invoice</source>
+        <target>Priėmimo perdavimo aktas</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.date" resname="mobile.invoice.date">
+        <source>mobile.invoice.date</source>
+        <target>Data</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.assign_date" resname="mobile.invoice.assign_date">
+        <source>mobile.invoice.assign_date</source>
+        <target>Užsakymo išsiuntimo laikas</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.delivery_date" resname="mobile.invoice.delivery_date">
+        <source>mobile.invoice.delivery_date</source>
+        <target>Užsakymo pristatymo laikas</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.dish_name" resname="mobile.invoice.dish_name">
+        <source>mobile.invoice.dish_name</source>
+        <target>Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.quantity" resname="mobile.invoice.quantity">
+        <source>mobile.invoice.quantity</source>
+        <target>Kiekis</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.price" resname="mobile.invoice.price">
+        <source>mobile.invoice.price</source>
+        <target>Kaina</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.sum" resname="mobile.invoice.sum">
+        <source>mobile.invoice.sum</source>
+        <target>Suma</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.customer" resname="mobile.invoice.customer">
+        <source>mobile.invoice.customer</source>
+        <target>Užsakovas</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.customer_phone" resname="mobile.invoice.customer_phone">
+        <source>mobile.invoice.customer_phone</source>
+        <target>Tel.</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.submitted" resname="mobile.invoice.submitted">
+        <source>mobile.invoice.submitted</source>
+        <target>Perdavė</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.received" resname="mobile.invoice.received">
+        <source>mobile.invoice.received</source>
+        <target>Priėmė</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.vat_code" resname="mobile.invoice.vat_code">
+        <source>mobile.invoice.vat_code</source>
+        <target>PVM kodas</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.company_code" resname="mobile.invoice.company_code">
+        <source>mobile.invoice.company_code</source>
+        <target>Įm. kodas</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice_driver" resname="mobile.invoice_driver">
+        <source>mobile.invoice_driver</source>
+        <target>Važtaraštis</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.driver" resname="mobile.invoice.driver">
+        <source>mobile.invoice.driver</source>
+        <target>Vairuotojas</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.car_number" resname="mobile.invoice.car_number">
+        <source>mobile.invoice.car_number</source>
+        <target>Automobilio Nr.</target>
       </trans-unit>
     </body>
   </file>
