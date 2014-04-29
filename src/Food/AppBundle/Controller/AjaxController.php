@@ -50,13 +50,9 @@ class AjaxController extends Controller
             'success' => 0,
             'message' => $this->get('translator')->trans('index.address_not_found')
         );
-        if (!$locationInfo['not_found'] && $locationInfo['lng'] > 20 && $locationInfo['lat'] > 50) {
+        if ((!$locationInfo['not_found'] || $locationInfo['street_found']) && $locationInfo['lng'] > 20 && $locationInfo['lat'] > 50) {
             $respData['success'] = 1;
             unset($respData['message']);
-        }
-        if ($locationInfo['not_found'] && $locationInfo['street_found']) {
-            $respData['success'] = 0;
-            $respData['message'] = $this->get('translator')->trans('index.street_found_only');
         }
 
         $response->setContent(json_encode(array(

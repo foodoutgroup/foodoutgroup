@@ -54,6 +54,9 @@
     <div class="page-path clearfix">{#<a href="{{ path('food_homepage') }}">Pradžia</a>#}</div>{# TODO breadcrumbs <a href="#">Restoranai arti Žirmūnų</a>#}
     <div class="page-title">
         <h1 class="clearfix"><span class="place-counter"></span><a href="{{ path('food_homepage') }}" class="change-location-link">{% trans %}places.change_address{% endtrans %}</a></h1>
+        {% if recommended==0 and location.not_found == true and location.street_found==true%}
+            <div class="alert alert2 alert-warning"><li>{% trans %}places.is_not_detailed_search{% endtrans %}</li></div>
+        {% endif %}
     </div>
     <div class="clearfix">
         <div class="content-lefter">
