@@ -14,7 +14,14 @@ class DefaultController extends Controller
         if ($recommended) {
             $recommended = true;
         }
-        return $this->render('FoodPlacesBundle:Default:index.html.twig', array('recommended' => $recommended));
+        $locData =  $this->get('food.googlegis')->getLocationFromSession();
+        return $this->render(
+            'FoodPlacesBundle:Default:index.html.twig',
+            array(
+                'recommended' => $recommended,
+                'location' => $locData
+            )
+        );
     }
 
     public function listAction($recommended = false)
@@ -49,6 +56,7 @@ class DefaultController extends Controller
 
 
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
+
         return $this->render(
             'FoodPlacesBundle:Default:list.html.twig',
             array(
