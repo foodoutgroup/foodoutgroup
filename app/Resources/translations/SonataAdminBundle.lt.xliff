@@ -387,9 +387,17 @@
                 <source>admin.point.phone</source>
                 <target>Tel.</target>
             </trans-unit>
+            <trans-unit id="admin.point.alt_phone">
+                <source>admin.point.alt_phone</source>
+                <target>Papildomas tel.</target>
+            </trans-unit>
             <trans-unit id="admin.point.email">
                 <source>admin.point.email</source>
                 <target>El.paštas</target>
+            </trans-unit>
+            <trans-unit id="admin.point.alt_email">
+                <source>admin.point.alt_email</source>
+                <target>Papild. el.paštas</target>
             </trans-unit>
             <trans-unit id="admin.point.city">
                 <source>admin.point.city</source>

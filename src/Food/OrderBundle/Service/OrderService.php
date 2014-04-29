@@ -1012,6 +1012,10 @@ class OrderService extends ContainerAware
         $order = $this->getOrder();
         $placePoint = $order->getPlacePoint();
         $placePointEmail = $placePoint->getEmail();
+        $placePointAltEmail1 = $placePoint->getAltEmail1();
+        $placePointAltEmail2 = $placePoint->getAltEmail2();
+        $placePointAltPhone1 = $placePoint->getAltPhone1();
+        $placePointAltPhone2 = $placePoint->getAltPhone2();
 
         $domain = $this->container->getParameter('domain');
 
@@ -1026,7 +1030,8 @@ class OrderService extends ContainerAware
         if (!empty($placePointEmail)) {
             $logger->alert('--- Place asks for email, so we have sent an email about new order to: '.$placePointEmail);
             $emailMessageText = $messageText;
-            $messageText = $translator->trans('general.sms.new_order_in_mail');
+            // Buvo liepta padaryti, kad sms'u eitu tas pats, kas emailu. Pasiliekam, o maza kas
+//            $messageText = $translator->trans('general.sms.new_order_in_mail');
 
             $mailer = $this->container->get('mailer');
 
@@ -1036,9 +1041,19 @@ class OrderService extends ContainerAware
             ;
 
             $message->addTo($placePointEmail);
+
+            if (!empty($placePointAltEmail1)) {
+                $message->addCc($placePointAltEmail1);
+            }
+            if (!empty($placePointAltEmail2)) {
+                $message->addCc($placePointAltEmail2);
+            }
+
             $message->setBody($emailMessageText);
             $mailer->send($message);
         }
+
+        // Siunciam sms'a
         $message = $messagingService->createMessage(
             $this->container->getParameter('sms.sender'),
             $placePoint->getPhone(),
@@ -1046,6 +1061,23 @@ class OrderService extends ContainerAware
         );
         $messagingService->saveMessage($message);
 
+        // Informuojame papildomais numeriais (del visa ko)
+        if (!empty($placePointAltPhone1)) {
+            $message = $messagingService->createMessage(
+                $this->container->getParameter('sms.sender'),
+                $placePointAltPhone1,
+                $messageText
+            );
+            $messagingService->saveMessage($message);
+        }
+        if (!empty($placePointAltPhone2)) {
+            $message = $messagingService->createMessage(
+                $this->container->getParameter('sms.sender'),
+                $placePointAltPhone2,
+                $messageText
+            );
+            $messagingService->saveMessage($message);
+        }
     }
 
     /**
