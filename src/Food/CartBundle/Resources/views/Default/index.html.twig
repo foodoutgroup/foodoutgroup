@@ -27,7 +27,7 @@
                                         url: '{{ path('food_ajax', {'action': 'find-address-and-recount'}) }}',
                                         data:  {city: $('.city-row select').val(), address: $('.address-row input').val(), place: {{ place.id }} },
                                         success:  function(resp){
-                                            if (resp.data.success == 1) {
+                                            if (resp.data.success == 1 && resp.data.adr == 1) {
                                                 if (resp.data.nodelivery == 1) {
                                                     thisDialog.parent().unmask();
                                                     thisDialog.dialog('close');
