@@ -63,4 +63,24 @@ class DefaultController extends Controller
         }
         return $this->render('FoodOrderBundle:Default:mobile-driver.html.twig', array('order' => $order));
     }
+
+    /**
+     * @param $hash
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function driverInvoiceAction($hash)
+    {
+        $order = $this->get('food.order')->getOrderByHash($hash);
+        return $this->render('FoodOrderBundle:Default:driver-invoice.html.twig', array('order' => $order));
+    }
+
+    /**
+     * @param $hash
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function restaurantInvoiceAction($hash)
+    {
+        $order = $this->get('food.order')->getOrderByHash($hash);
+        return $this->render('FoodOrderBundle:Default:restaurant-invoice.html.twig', array('order' => $order));
+    }
 }

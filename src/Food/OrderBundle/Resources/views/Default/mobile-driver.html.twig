@@ -1,142 +1,115 @@
-{# TODO sutvarkyti , kad normaliai mobile extendai veiktu #}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8" />
+{% extends 'FoodAppBundle::mobilelayout.html.twig' %}
 
-    <title>{% block title %}Orders!{% endblock %}</title>
+{% block title %}{% trans %}mobile.driver_order{% endtrans %} - {{ page_title }}{% endblock %}
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" hrefs="{{ asset('css/bootstrap.css') }}">
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="{{ asset('js/jquery.js') }}"><\/script>')</script>
-    <script src="{{ asset('js/bootstrap.js') }}"></script>
-
-    {% stylesheets
-    '@FoodAppBundle/Resources/public/css_theme/*'
-    filter="?yui_css" %}
-    <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
-    {% endstylesheets %}
-
-    {% stylesheets
-    '@FoodAppBundle/Resources/public/css/*'
-    filter="?yui_css" %}
-    <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
-    {% endstylesheets %}
-
-</head>
-<body>
-<div class="container">
-    <div class="row">
-        <table class="table table-bordered table condensed">
-            <thead>
-            <Tr>
-                <th colspan="5"><img src="/bundles/foodapp/images/logo_food.png"> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
-            </Tr>
+{% block body %}
+    <table class="table table-bordered table condensed">
+        <thead>
+        <tr>
+            <th colspan="5"><img src="/bundles/foodapp/images/logo_food.png"> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
+        </tr>
+        <tr>
+            <th style="width: 30px">#</th>
+            <th>{% trans %}mobile.order_dish{% endtrans %}</th>
+            <th style="width: 60px">{% trans %}mobile.order_unit_name{% endtrans %}</th>
+            <th style="width: 30px">{% trans %}mobile.order_quantity{% endtrans %}</th>
+            <th>{% trans %}mobile.order_toppings{% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for dish in order.details %}
             <tr>
-                <th style="width: 30px">#</th>
-                <th>{% trans %}mobile.order_dish{% endtrans %}</th>
-                <th style="width: 60px">{% trans %}mobile.order_unit_name{% endtrans %}</th>
-                <th style="width: 30px">{% trans %}mobile.order_quantity{% endtrans %}</th>
-                <th>{% trans %}mobile.order_toppings{% endtrans %}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for dish in order.details %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td>{{ dish.dishId.name }}</td>
-                    <td>{{ dish.dishUnitName }}</td>
-                    <td>{{ dish.quantity }}</td>
-                    <td>
-                        {% for option in dish.options %}
-                            <li>{{ option.dishOptionId.name }}</li>
-                        {% endfor %}
-                    </td>
-                </tr>
-            {% endfor %}
-            <tr>
-                <td colspan="5">
-                    <b>
-                        {% if order.deliveryType == 'deliver' %}
-                        {% trans %}mobile.order.sum_with_delivery{% endtrans %}
-                    {% else %}
-                        {% trans %}mobile.order.sum{% endtrans %}
-                        {% endif %}:
-                    </b> {{ order.total }} {{ currency_display }}
+                <td>{{ loop.index }}</td>
+                <td>{{ dish.dishId.name }}</td>
+                <td>{{ dish.dishUnitName }}</td>
+                <td>{{ dish.quantity }}</td>
+                <td>
+                    {% for option in dish.options %}
+                        <li>{{ option.dishOptionId.name }}</li>
+                    {% endfor %}
                 </td>
             </tr>
-            {% if order.deliveryType == 'deliver' %}
-                    <tr>
-                        <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
-                    </tr>
-                    <tr>
-                        <td colspan="5">{% trans %}mobile.deliver{% endtrans %}</td>
-                    </tr>
-            {% else %}
+        {% endfor %}
+        <tr>
+            <td colspan="5">
+                <b>
+                    {% if order.deliveryType == 'deliver' %}
+                    {% trans %}mobile.order.sum_with_delivery{% endtrans %}
+                {% else %}
+                    {% trans %}mobile.order.sum{% endtrans %}
+                    {% endif %}:
+                </b> {{ order.total }} {{ currency_display }}
+            </td>
+        </tr>
+        {% if order.deliveryType == 'deliver' %}
                 <tr>
                     <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
                 </tr>
                 <tr>
-                    <td colspan="5">{% trans %}mobile.pickup{% endtrans %}</td>
+                    <td colspan="5">{% trans %}mobile.deliver{% endtrans %}</td>
                 </tr>
-            {% endif %}
+        {% else %}
             <tr>
-                <th colspan="5">{% trans %}mobile.place_point_address{% endtrans %}</th>
+                <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
             </tr>
             <tr>
-                <td colspan="5">{{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.city }}</td>
+                <td colspan="5">{% trans %}mobile.pickup{% endtrans %}</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <th colspan="5">{% trans %}mobile.place_point_address{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.city }}</td>
+        </tr>
+        <tr>
+            <th colspan="5">{% trans %}mobile.place_point_phone{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ order.placePoint.phone }}</td>
+        </tr>
+        <tr>
+            <th colspan="5">{% trans %}mobile.delivery_destination{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ order.addressId.address }}, {{ order.addressId.city }}</td>
+        </tr>
+        <tr>
+            <th colspan="5">{% trans %}mobile.customer_phone{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ order.user.phone }}</td>
+        </tr>
+        <tr>
+            <th colspan="5">{% trans %}mobile.comment{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ order.comment }}</td>
+        </tr>
+        {% if order.placePointSelfDelivery == 1 or order.deliveryType == 'pickup' %}
+            <tr>
+                <th colspan="5">{% trans %}mobile.payment{% endtrans %}</th>
             </tr>
             <tr>
-                <th colspan="5">{% trans %}mobile.place_point_phone{% endtrans %}</th>
+                <td colspan="5">{{ ('mobile.payment.' ~ order.paymentMethod)|trans }}</td>
             </tr>
             <tr>
-                <td colspan="5">{{ order.placePoint.phone }}</td>
+                <th colspan="5">{% trans %}mobile.order_time{% endtrans %}</th>
             </tr>
             <tr>
-                <th colspan="5">{% trans %}mobile.delivery_destination{% endtrans %}</th>
+                <td colspan="5">{{ order.orderDate|date("H:i") }}</td>
             </tr>
-            <tr>
-                <td colspan="5">{{ order.addressId.address }}, {{ order.addressId.city }}</td>
-            </tr>
-            <tr>
-                <th colspan="5">{% trans %}mobile.customer_phone{% endtrans %}</th>
-            </tr>
-            <tr>
-                <td colspan="5">{{ order.user.phone }}</td>
-            </tr>
-            <tr>
-                <th colspan="5">{% trans %}mobile.comment{% endtrans %}</th>
-            </tr>
-            <tr>
-                <td colspan="5">{{ order.comment }}</td>
-            </tr>
-            {% if order.placePointSelfDelivery == 1 or order.deliveryType == 'pickup' %}
-                <tr>
-                    <th colspan="5">{% trans %}mobile.payment{% endtrans %}</th>
-                </tr>
-                <tr>
-                    <td colspan="5">{{ ('mobile.payment.' ~ order.paymentMethod)|trans }}</td>
-                </tr>
-                <tr>
-                    <th colspan="5">{% trans %}mobile.order_time{% endtrans %}</th>
-                </tr>
-                <tr>
-                    <td colspan="5">{{ order.orderDate|date("H:i") }}</td>
-                </tr>
-            {% endif %}
-            </tbody>
-        </table>
-        <form method="post">
-            {% if order.orderStatus == "accepted" or order.orderStatus == "delayed" %}
-                <button type="submit" name="status" value="finish" class="btn btn-success btn-block">{% trans %}mobile.order_finish{% endtrans %}</button>
-            {% elseif order.orderStatus == "finished" or order.orderStatus == "assigned" or order.orderStatus == "completed" %}
-                <center><h2>{% trans %}mobile.place_finish_message{% endtrans %}</h2></center>
-            {% endif %}
-        </form>
-    </div>
-</div>
-{% block javascripts %}{% endblock %}
-</body>
-</html>
+        {% endif %}
+        </tbody>
+    </table>
+    <form method="post">
+        {% if order.orderStatus == "accepted" or order.orderStatus == "delayed" %}
+            <button type="submit" name="status" value="finish" class="btn btn-success btn-block">{% trans %}mobile.order_finish{% endtrans %}</button>
+        {% elseif order.orderStatus == "finished" or order.orderStatus == "assigned" or order.orderStatus == "completed" %}
+            <center><h2>{% trans %}mobile.place_finish_message{% endtrans %}</h2></center>
+        {% endif %}
+        <a class="btn btn-info btn-block" href="{{ path('driver_mobile_invoice', {hash: order.orderHash}) }}">{% trans %}mobile.invoice_driver{% endtrans %}</a>
+
+    </form>
+{% endblock %}

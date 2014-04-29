@@ -76,6 +76,14 @@ drivermobile:
     path: /d/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:mobileDriver, hash: ~, action: ~ }
 
+driver_mobile_invoice:
+    path: /invoice/driver/{hash}/
+    defaults: { _controller: FoodOrderBundle:Default:driverInvoice, hash: ~, action: ~ }
+
+restaurant_mobile_invoice:
+    path: /invoice/restaurant/{hash}/
+    defaults: { _controller: FoodOrderBundle:Default:restaurantInvoice, hash: ~, action: ~ }
+
 local_biller_accept:
     path: /{_locale}/payments/local/accept/
     defaults: { _controller: FoodOrderBundle:Payments:localAccept }
