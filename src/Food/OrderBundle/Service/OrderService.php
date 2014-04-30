@@ -1006,6 +1006,9 @@ class OrderService extends ContainerAware
      */
     public function informPlace()
     {
+        // @TODO remove after beta! testing puspose only. Inform developers about new order - NOW!
+        $this->notifyOrderCreate();
+
         $messagingService = $this->container->get('food.messages');
         $translator = $this->container->get('translator');
         $logger = $this->container->get('logger');
@@ -1079,6 +1082,63 @@ class OrderService extends ContainerAware
             );
             $messagingService->saveMessage($message);
         }
+    }
+
+    /**
+     * For debuging purpose only!
+     */
+    public function notifyOrderCreate() {
+        $order = $this->getOrder();
+
+        $domain = $this->container->getParameter('domain');
+        $notifyEmails = $this->container->getParameter('order.notify_emails');
+
+        $userAddress = '';
+        $userAddressObject = $order->getAddressId();
+
+        if (!empty($userAddressObject) && is_object($userAddressObject)) {
+            $userAddress = $order->getAddressId()->getAddress().', '.$order->getAddressId()->getCity();
+        }
+
+        $emailMessageText = 'Gautas naujas uzsakymas restoranui '.$order->getPlace()->getName()."\n"
+            ."OrderId: " . $order->getId()."\n\n"
+            ."Parinktas gamybos taskas adresu: ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
+            ."\n"
+            ."Uzsakovo vardas: ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
+            ."Uzsakovo adresas: ".$userAddress."\n"
+            ."\n"
+            ."Pristatymo tipas: ".$order->getDeliveryType()."\n"
+            ."Apmokejimo tipas: ".$order->getPaymentMethod()."\n"
+            ."Apmokejimo bukle: ".$order->getPaymentStatus()."\n"
+        ;
+
+
+
+        $emailMessageText .= "\n"
+            ."Restoranui issiusta nuoroda: http://".$domain.$this->container->get('router')
+                ->generate('ordermobile', array('hash' => $order->getOrderHash()))
+            ."\n";
+
+        $mailer = $this->container->get('mailer');
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Naujas uzsakymas restoranui: '.$order->getPlace()->getName())
+            ->setFrom('info@'.$domain)
+        ;
+
+        $mainEmailSet = false;
+
+        foreach ($notifyEmails as $email) {
+            if (!$mainEmailSet) {
+                $mainEmailSet = true;
+                $message->addTo($email);
+            } else {
+                $message->addCc($email);
+            }
+        }
+
+        $message->setBody($emailMessageText);
+        $mailer->send($message);
     }
 
     /**
