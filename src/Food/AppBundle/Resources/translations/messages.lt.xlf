@@ -20,7 +20,7 @@
       </trans-unit>
       <trans-unit id="be95147756721360c95dba571491c885" resname="index.city">
         <source>index.city</source>
-        <target>Miestas</target>
+        <target>Pasirinkite miestą</target>
       </trans-unit>
       <trans-unit id="44f58adead70171ab653c725c9abf0c3" resname="index.street">
         <source>index.street</source>

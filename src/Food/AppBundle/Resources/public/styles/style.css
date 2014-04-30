@@ -837,3 +837,51 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
 .static-page-content ol li {
     margin-bottom: 17px;
 }
+/** title search change **/
+.search-food-form span a {
+    float: left;
+    border: 1px solid #e1ddd6 !important;
+    background: #fff;
+    padding: 17px 16px 23px;
+    line-height: 18px;
+    height: 18px !important;
+    width: 191px !important;
+    font-size: 15px;
+    border-radius: 5px 0 0 5px !important;
+    box-shadow: none !important;
+}
+.search-food-form span a span.ui-selectmenu-icon {
+    margin-top: 10px;
+}
+.search-food-form span a span.ui-selectmenu-status {
+    padding: 0 !important;
+    color: #aaaaaa;
+}
+.search-food-form span a span.ui-selectmenu-status.nodisabled {
+    color: #000000;
+}
+
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #aaaaaa;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #aaaaaa;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #aaaaaa;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #aaaaaa;
+}
+#index_city-menu,
+#index_city-menu li {
+    width:  223px !important;
+}
+#index_city-menu .ui-state-disabled {
+    display: none;
+}
+#index_city-menu {
+    border-radius: 5px 0 0 5px !important;
+}
+/** end title search change **/
