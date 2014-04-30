@@ -23,7 +23,7 @@ parameters:
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
     title: "Foodout"
-    domain: "beta.foodout.lt"
+    domain: "foodout.lt"
     arc_gis_user: "skanulabai"
     arc_gis_pass: "labaiskanu"
     arc_gis_client_id: "QTFVE57PzjWLTXOj"

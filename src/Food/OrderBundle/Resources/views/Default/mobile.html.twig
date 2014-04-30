@@ -111,6 +111,6 @@
         {% elseif order.orderStatus == "finished" or order.orderStatus == "assigned" or order.orderStatus == "completed" %}
             <center><h2>{% trans %}mobile.place_finish_message{% endtrans %}</h2></center>
         {% endif %}
-        <a class="btn btn-info btn-block" href="{{ path('restaurant_mobile_invoice', {hash: order.orderHash}) }}">{% trans %}mobile.invoice_restaurant{% endtrans %}</a>
+        <a class="btn btn-info btn-block" href="{{ path('restaurant_mobile_invoice', {hash: order.orderHash}) }}">{% trans %}mobile.restaurant_invoice{% endtrans %}</a>
     </form>
 {% endblock %}
