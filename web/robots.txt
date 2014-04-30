@@ -8,4 +8,8 @@ Disallow:
 # disallows specific crap
 Disallow: /lt/newsletter/thank/
 Disallow: /en/newsletter/thank/
-Disallow: /ry/newsletter/thank/
+Disallow: /ru/newsletter/thank/
+
+Disallow: /lt/cart/
+Disallow: /en/cart/
+Disallow: /ru/cart/
