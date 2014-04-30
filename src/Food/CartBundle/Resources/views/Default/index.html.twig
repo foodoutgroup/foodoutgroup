@@ -113,7 +113,7 @@
                             <div class="form-row">
                                 <div class="alert alert-warning">
                                     {% for err in formErrors %}
-                                        <li>{{ err|trans }}</li>
+                                        <li>{{ err|trans|raw }}</li>
                                     {% endfor %}
                                 </div>
                             </div>

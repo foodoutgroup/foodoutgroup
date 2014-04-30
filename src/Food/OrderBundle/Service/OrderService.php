@@ -4,6 +4,7 @@ namespace Food\OrderBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Food\CartBundle\Service\CartService;
+use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
@@ -1119,13 +1120,27 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param Place $placeId
      * @param Request $request
      * @param $formHasErrors
      * @param $formErrors
-     * @param bool $takeAeay
+     * @param $takeAway
      */
-    public function validateDaGiantForm(Request $request, &$formHasErrors, &$formErrors, $takeAway)
+    public function validateDaGiantForm(Place $place, Request $request, &$formHasErrors, &$formErrors, $takeAway)
     {
+        if (!$takeAway) {
+            $list = $this->getCartService()->getCartDishes($place);
+            $total_cart = $this->getCartService()->getCartTotal($list, $place);
+            if ($total_cart < $place->getCartMinimum()) {
+                $formErrors[] = 'order.form.errors.cartlessthanminimum';
+            }
+
+            $addrData = $this->container->get('food.googlegis')->getLocationFromSession();
+            if (empty($addrData['address_orig'])) {
+                $formErrors[] = 'order.form.errors.customeraddr';
+            }
+        }
+
         if (0 === strlen($request->get('customer-firstname'))) {
             $formErrors[] = 'order.form.errors.customerfirstname';
         }
@@ -1142,12 +1157,6 @@ class OrderService extends ContainerAware
             $formErrors[] = 'order.form.errors.customeremail';
         }
 
-        if (!$takeAway) {
-            $addrData = $this->container->get('food.googlegis')->getLocationFromSession();
-            if (empty($addrData['address_orig'])) {
-                $formErrors[] = 'order.form.errors.customeraddr';
-            }
-        }
         if (!empty($formErrors)) {
             $formHasErrors = true;
         }

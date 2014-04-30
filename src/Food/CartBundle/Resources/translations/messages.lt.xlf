@@ -171,6 +171,10 @@
             <source>order.form.errors.customeraddr</source>
             <target>Nenurodytas adresas</target>
         </trans-unit>
+        <trans-unit id="order.form.errors.cartlessthanminimum" resname="order.form.errors.cartlessthanminimum">
+            <source>order.form.errors.cartlessthanminimum</source>
+            <target><![CDATA[<b>Užsakymas nesiekia minimalios krepšelio sumos</b>]]></target>
+        </trans-unit>
     </body>
   </file>
 </xliff>
