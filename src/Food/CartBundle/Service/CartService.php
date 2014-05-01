@@ -76,6 +76,27 @@ class CartService {
         return $this->getContainer()->get('session')->getId();
     }
 
+    public function migrateCartBetweenSessionIds($oldSid, $newSid)
+    {
+        $carts = $this->getEm()->getRepository('FoodCartBundle:Cart')->findBy(
+            array(
+                'session' => $oldSid
+            )
+        );
+        $cartsOptions = $this->getEm()->getRepository('FoodCartBundle:CartOption')->findBy(
+            array(
+                'session' => $oldSid
+            )
+        );
+        foreach ($carts as $cart) {
+            $cart->setSession($newSid);
+        }
+        foreach ($cartsOptions as $cartOp) {
+            $cartOp->setSession($newSid);
+        }
+        $this->getEm()->flush();
+    }
+
     /**
      * @param $dish
      * @param $option
