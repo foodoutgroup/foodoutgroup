@@ -630,7 +630,7 @@ input.button {}
 .site-footer .col {float: left; font-size: 15px; letter-spacing: 0.5px; margin-right: 36px; background: url(/bundles/foodapp/images/rep-dot.png) repeat-y right top;}
 .site-footer .col-1 {width: 180px;}
 .site-footer .col-2 {width: 190px;}
-.site-footer .col-3 {width: 423px; margin-right: 0px; padding-right: 18px;}
+.site-footer .col-3 {width: 455px; margin-right: 0px; padding-right: 18px;}
 .site-footer .col-4 {width: 96px; float: right; margin-right: 0px; text-align: right; background: none;}
 
 .site-footer li {line-height: 29px;}
@@ -717,6 +717,7 @@ input.button {}
 .theCounter-dec, .theCounter-inc {border: none; background-color: transparent;}
 #change-address { margin-bottom: 0px;}
 .alert {padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px;}
+.alert.alert2 { margin-bottom: 0px }
 .alert-danger { background-color: #f2dede; border-color: #ebccd1; color: #a94442; }
 .alert-warning { background-color: #fcf8e3; border-color: #faebcc; color: #8a6d3b; }
 .alert-info {background-color: #d9edf7; border-color: #bce8f1; color: #31708f; }
@@ -789,7 +790,6 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
     color: #ff0000;
     display: none;
 }
-
 .review-form .form-row span.rate-review {
     display: inline-block;
     margin-top: 9px;
@@ -827,6 +827,65 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
 .place-review-popup a {font-size: 12px; color: #cfb4b8; text-decoration: underline;}
 .place-review-popup a:hover {text-decoration: none;}
 
+.static-page-content ul,
+.static-page-content ol {
+     font-size: 14px;
+     line-height: 21px;
+     margin-top: 7px;
+     margin-bottom: 17px;
+}
+.static-page-content ul li,
+.static-page-content ol li {
+    margin-bottom: 17px;
+}
+/** title search change **/
+.search-food-form span a {
+    float: left;
+    border: 1px solid #e1ddd6 !important;
+    background: #fff;
+    padding: 17px 16px 23px;
+    line-height: 18px;
+    height: 18px !important;
+    width: 191px !important;
+    font-size: 15px;
+    border-radius: 5px 0 0 5px !important;
+    box-shadow: none !important;
+}
+.search-food-form span a span.ui-selectmenu-icon {
+    margin-top: 10px;
+}
+.search-food-form span a span.ui-selectmenu-status {
+    padding: 0 !important;
+    color: #aaaaaa;
+}
+.search-food-form span a span.ui-selectmenu-status.nodisabled {
+    color: #000000;
+}
+
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #aaaaaa;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #aaaaaa;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #aaaaaa;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #aaaaaa;
+}
+#index_city-menu,
+#index_city-menu li {
+    width:  223px !important;
+}
+#index_city-menu .ui-state-disabled {
+    display: none;
+}
+#index_city-menu {
+    border-radius: 5px 0 0 5px !important;
+}
+/** end title search change **/
 .user-page .order-history {
     display: none;
 }

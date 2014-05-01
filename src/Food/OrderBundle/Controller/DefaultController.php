@@ -45,4 +45,42 @@ class DefaultController extends Controller
         }
         return $this->render('FoodOrderBundle:Default:mobile.html.twig', array('order' => $order));
     }
+
+    /**
+     * @param $hash
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function mobileDriverAction($hash)
+    {
+        $order = $this->get('food.order')->getOrderByHash($hash);
+        if ($this->getRequest()->isMethod('post')) {
+            switch($this->getRequest()->get('status')) {
+                case 'finish':
+                    $this->get('food.order')->statusFinished();
+                break;
+            }
+            $this->get('food.order')->saveOrder();
+        }
+        return $this->render('FoodOrderBundle:Default:mobile-driver.html.twig', array('order' => $order));
+    }
+
+    /**
+     * @param $hash
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function driverInvoiceAction($hash)
+    {
+        $order = $this->get('food.order')->getOrderByHash($hash);
+        return $this->render('FoodOrderBundle:Default:driver-invoice.html.twig', array('order' => $order));
+    }
+
+    /**
+     * @param $hash
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function restaurantInvoiceAction($hash)
+    {
+        $order = $this->get('food.order')->getOrderByHash($hash);
+        return $this->render('FoodOrderBundle:Default:restaurant-invoice.html.twig', array('order' => $order));
+    }
 }

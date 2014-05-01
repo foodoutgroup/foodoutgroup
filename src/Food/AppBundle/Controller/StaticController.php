@@ -15,6 +15,10 @@ class StaticController extends Controller
             throw new NotFoundHttpException('Sorry not existing!');
         }
 
+        $video = '<iframe width="560" height="315" src="//www.youtube-nocookie.com/embed/3zFW6hnuvJY" frameborder="0" allowfullscreen></iframe>';
+        $cont = $staticPage->getContent();
+        $cont = str_replace("{{ faq_video }}", $video, $cont);
+        $staticPage->setContent($cont);
         return $this->render(
             'FoodAppBundle:Static:index.html.twig',
             array('staticPage' => $staticPage)

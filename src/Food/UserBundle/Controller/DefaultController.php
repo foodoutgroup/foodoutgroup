@@ -75,7 +75,14 @@ class DefaultController extends Controller
                 $response = new Response('');
             }
 
+            $oldSid = $request->getSession()->getId();
             $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+            $newSid = $request->getSession()->getId();
+
+            /**
+             * @TODO - WATAFAK. Tik taip uzgesinom gaisra. Need to fix normaly :)
+             */
+            $this->get('food.cart')->migrateCartBetweenSessionIds($oldSid, $newSid);
 
             return $response;
         }

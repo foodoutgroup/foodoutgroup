@@ -12,14 +12,14 @@
             });
         }
 
-        resizeSensitive(); 
+        resizeSensitive();
 
         $window.resize(function () {
             resizeSensitive();
         });
 
         // Boxer lightbox plugin
-        
+
         $('.custom-select').selectmenu();
 
         $("input").iCheck();
@@ -50,7 +50,7 @@
         });
 
         function resizeSensitive() {
-            
+
         }
 
         bind_registration_form();
@@ -60,6 +60,14 @@
     });
 })(jQuery, window);
 
+init_raty = function() {
+    selector = '.place-review-popup-wrapper .rate-review:empty';
+    options = {
+        path: '/bundles/foodapp/images/'
+    };
+
+    $(selector).raty(options);
+}
 bind_registration_form = function() {
     $('body').on('submit', '.righter.register-form', function(e) {
         var callback, data, form, url;
@@ -88,7 +96,7 @@ bind_registration_form = function() {
 
 bind_login_form = function() {
     $('body').on('submit', '.lefter.login-form', function(e) {
-        var callback, data, form, url, error, dataType;
+        var callback, data, form, url, error;
 
         form = $(this);
         url = form.attr('action');
@@ -116,43 +124,6 @@ bind_login_form = function() {
 
         return false;
     });
-}
-
-bind_review_form = function() {
-    $('body').on('submit', '.review-form', function(e) {
-        var callback, data, form, url, form_rows, dataType;
-
-        form = $(this);
-        url = form.attr('action');
-        data = form.serialize();
-        form_rows = $('.review-form .form-row')
-        dataType = 'json';
-
-        form_rows.removeClass('error');
-
-        callback = function(response) {
-            if (response.success == 1) {
-                top.location.reload();
-            } else {
-                form_rows.addClass('error');
-            }
-        };
-
-        $.post(url, data, callback, dataType);
-
-        return false;
-    });
-}
-
-init_raty = function() {
-    var selector, options;
-
-    selector = '.place-review-popup-wrapper .rate-review:empty';
-    options = {
-        path: '/bundles/foodapp/images/'
-    };
-
-    $(selector).raty(options);
 }
 
 bind_profile_menu_items = function() {

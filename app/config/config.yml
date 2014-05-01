@@ -22,8 +22,9 @@ parameters:
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
+    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt]
     title: "Foodout"
-    domain: "beta.foodout.lt"
+    domain: "foodout.lt"
     arc_gis_user: "skanulabai"
     arc_gis_pass: "labaiskanu"
     arc_gis_client_id: "QTFVE57PzjWLTXOj"
@@ -43,6 +44,7 @@ parameters:
     payment.methods: [local, local.card, paysera]
     currency_display: Lt
     vat: 21
+    evp.test_payments: 0
 
 framework:
     #esi:             ~
@@ -61,6 +63,7 @@ framework:
     trusted_proxies: ~
     session:
         name: skaniSesija2014PerkamPicasUrmu
+        save_path: %kernel.root_dir%/var/sessions
     fragments:       ~
     http_method_override: true
 
@@ -228,7 +231,8 @@ sonata_admin:
                       - sonata.admin.food.category
                       - sonata.admin.dish
                       - sonata.admin.dish.option
-                      - sonata.admin.place.pointfull
+#                      kolkas neveikia
+#                      - sonata.admin.place.pointfull
                       - sonata.admin.place.reviews
                   roles: [ ROLE_MODERATOR ]
               admin.orders:

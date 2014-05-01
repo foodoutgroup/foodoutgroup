@@ -3,8 +3,8 @@ var Cart = {
     locale: null,
 
     bindEvents: function() {
-        $('.delivery-type-radios label').bind('click', function(){
-            Cart.deliveryTypeChanged($(this).find('input').val());
+        $('.delivery-type-radios input').on('ifChecked', function(event){
+            Cart.deliveryTypeChanged($(this).val());
         });
     },
 

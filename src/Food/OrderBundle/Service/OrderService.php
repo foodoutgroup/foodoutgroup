@@ -4,6 +4,7 @@ namespace Food\OrderBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Food\CartBundle\Service\CartService;
+use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
@@ -14,6 +15,7 @@ use Food\OrderBundle\Entity\PaymentLog;
 use Food\UserBundle\Entity\UserAddress;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Security\Acl\Exception\Exception;
+use Symfony\Component\HttpFoundation\Request;
 
 class OrderService extends ContainerAware
 {
@@ -44,6 +46,11 @@ class OrderService extends ContainerAware
         'local' => 'food.local_biller',
         'local.card' => 'food.local_biller',
         'paysera' => 'food.paysera_biller'
+    );
+
+    public static $deliveryTrans = array(
+        'deliver' => 'PRISTATYMAS',
+        'pickup'  => 'ATSIEMIMAS'
     );
 
     public static $deliveryDeliver = "deliver";
@@ -449,9 +456,12 @@ class OrderService extends ContainerAware
      * @param \Food\UserBundle\Entity\User $user
      * @param PlacePoint $placePoint - placePoint, jei atsiima pats
      */
-    public function createOrderFromCart($place, $locale='lt', $user, $placePoint=null)
+    public function createOrderFromCart($place, $locale='lt', $user, $placePoint=null, $selfDelivery = false)
     {
         $this->createOrder($place, $placePoint);
+        $this->getOrder()->setDeliveryType(
+            ($selfDelivery ? 'pickup' : 'deliver')
+        );
         $this->getOrder()->setLocale($locale);
         $this->getOrder()->setUser($user);
         $this->saveOrder();
@@ -491,8 +501,9 @@ class OrderService extends ContainerAware
                 $sumTotal += $cartDish->getQuantity() * $opt->getDishOptionId()->getPrice();
             }
         }
-
-        $sumTotal+= $this->getOrder()->getPlace()->getDeliveryPrice();
+        if(!$selfDelivery) {
+            $sumTotal+= $this->getOrder()->getPlace()->getDeliveryPrice();
+        }
         $this->getOrder()->setTotal($sumTotal);
         $this->saveOrder();
 
@@ -995,21 +1006,139 @@ class OrderService extends ContainerAware
      */
     public function informPlace()
     {
+        // @TODO remove after beta! testing puspose only. Inform developers about new order - NOW!
+        $this->notifyOrderCreate();
+
         $messagingService = $this->container->get('food.messages');
+        $translator = $this->container->get('translator');
+        $logger = $this->container->get('logger');
+
+        $order = $this->getOrder();
+        $placePoint = $order->getPlacePoint();
+        $placePointEmail = $placePoint->getEmail();
+        $placePointAltEmail1 = $placePoint->getAltEmail1();
+        $placePointAltEmail2 = $placePoint->getAltEmail2();
+        $placePointAltPhone1 = $placePoint->getAltPhone1();
+        $placePointAltPhone2 = $placePoint->getAltPhone2();
+
+        $domain = $this->container->getParameter('domain');
 
         // Inform restourant about new order
         $orderConfirmRoute = $this->container->get('router')
-            ->generate('ordermobile', array('hash' => $this->getOrder()->getOrderHash()));
+            ->generate('ordermobile', array('hash' => $order->getOrderHash()));
 
-        $messageText = $this->container->get('translator')->trans('general.sms.new_order')
-            .': http://'.$this->container->getParameter('domain').$orderConfirmRoute;
+        $messageText = $translator->trans('general.sms.new_order')
+            .': http://'.$domain.$orderConfirmRoute;
 
+        // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
+        if (!empty($placePointEmail)) {
+            $logger->alert('--- Place asks for email, so we have sent an email about new order to: '.$placePointEmail);
+            $emailMessageText = $messageText;
+            // Buvo liepta padaryti, kad sms'u eitu tas pats, kas emailu. Pasiliekam, o maza kas
+//            $messageText = $translator->trans('general.sms.new_order_in_mail');
+
+            $mailer = $this->container->get('mailer');
+
+            $message = \Swift_Message::newInstance()
+                ->setSubject($this->container->getParameter('title').': '.$translator->trans('general.email.new_order'))
+                ->setFrom('info@'.$domain)
+            ;
+
+            $message->addTo($placePointEmail);
+
+            if (!empty($placePointAltEmail1)) {
+                $message->addCc($placePointAltEmail1);
+            }
+            if (!empty($placePointAltEmail2)) {
+                $message->addCc($placePointAltEmail2);
+            }
+
+            $message->setBody($emailMessageText);
+            $mailer->send($message);
+        }
+
+        // Siunciam sms'a
         $message = $messagingService->createMessage(
             $this->container->getParameter('sms.sender'),
-            $this->getOrder()->getPlacePoint()->getPhone(),
+            $placePoint->getPhone(),
             $messageText
         );
         $messagingService->saveMessage($message);
+
+        // Informuojame papildomais numeriais (del visa ko)
+        if (!empty($placePointAltPhone1)) {
+            $message = $messagingService->createMessage(
+                $this->container->getParameter('sms.sender'),
+                $placePointAltPhone1,
+                $messageText
+            );
+            $messagingService->saveMessage($message);
+        }
+        if (!empty($placePointAltPhone2)) {
+            $message = $messagingService->createMessage(
+                $this->container->getParameter('sms.sender'),
+                $placePointAltPhone2,
+                $messageText
+            );
+            $messagingService->saveMessage($message);
+        }
+    }
+
+    /**
+     * For debuging purpose only!
+     */
+    public function notifyOrderCreate() {
+        $order = $this->getOrder();
+
+        $domain = $this->container->getParameter('domain');
+        $notifyEmails = $this->container->getParameter('order.notify_emails');
+
+        $userAddress = '';
+        $userAddressObject = $order->getAddressId();
+
+        if (!empty($userAddressObject) && is_object($userAddressObject)) {
+            $userAddress = $order->getAddressId()->getAddress().', '.$order->getAddressId()->getCity();
+        }
+
+        $emailMessageText = 'Gautas naujas uzsakymas restoranui '.$order->getPlace()->getName()."\n"
+            ."OrderId: " . $order->getId()."\n\n"
+            ."Parinktas gamybos taskas adresu: ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
+            ."\n"
+            ."Uzsakovo vardas: ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
+            ."Uzsakovo adresas: ".$userAddress."\n"
+            ."\n"
+            ."Pristatymo tipas: ".$order->getDeliveryType()."\n"
+            ."Apmokejimo tipas: ".$order->getPaymentMethod()."\n"
+            ."Apmokejimo bukle: ".$order->getPaymentStatus()."\n"
+        ;
+
+
+
+        $emailMessageText .= "\n"
+            ."Restoranui issiusta nuoroda: http://".$domain.$this->container->get('router')
+                ->generate('ordermobile', array('hash' => $order->getOrderHash()))
+            ."\n";
+
+        $mailer = $this->container->get('mailer');
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Naujas uzsakymas restoranui: '.$order->getPlace()->getName())
+            ->setFrom('info@'.$domain)
+        ;
+
+        $mainEmailSet = false;
+
+        foreach ($notifyEmails as $email) {
+            if (!$mainEmailSet) {
+                $mainEmailSet = true;
+                $message->addTo($email);
+            } else {
+                $message->addCc($email);
+            }
+        }
+
+        $message->setBody($emailMessageText);
+        $mailer->send($message);
     }
 
     /**
@@ -1048,5 +1177,165 @@ class OrderService extends ContainerAware
             self::$status_finished,
             self::$status_canceled,
         );
+    }
+
+    /**
+     * @param Place $placeId
+     * @param Request $request
+     * @param $formHasErrors
+     * @param $formErrors
+     * @param $takeAway
+     */
+    public function validateDaGiantForm(Place $place, Request $request, &$formHasErrors, &$formErrors, $takeAway)
+    {
+        if (!$takeAway) {
+            $list = $this->getCartService()->getCartDishes($place);
+            $total_cart = $this->getCartService()->getCartTotal($list, $place);
+            if ($total_cart < $place->getCartMinimum()) {
+                $formErrors[] = 'order.form.errors.cartlessthanminimum';
+            }
+
+            $addrData = $this->container->get('food.googlegis')->getLocationFromSession();
+            if (empty($addrData['address_orig'])) {
+                $formErrors[] = 'order.form.errors.customeraddr';
+            }
+        }
+
+        if (0 === strlen($request->get('customer-firstname'))) {
+            $formErrors[] = 'order.form.errors.customerfirstname';
+        }
+
+        if (0 === strlen($request->get('customer-phone'))) {
+            $formErrors[] = 'order.form.errors.customerphone';
+        }
+
+        if (0 === strlen($request->get('customer-comment'))) {
+            $formErrors[] = 'order.form.errors.customercomment';
+        }
+
+        if (0 === strlen($request->get('customer-email'))) {
+            $formErrors[] = 'order.form.errors.customeremail';
+        }
+
+        if (!empty($formErrors)) {
+            $formHasErrors = true;
+        }
+    }
+
+    public function generateCsv($orderId)
+    {
+        $order = $this->getOrderById($orderId);
+        $orderDetails = array();
+        $foodTotalLine = 0;
+        $drinksTotalLine = 0;
+        $alcoholTotalLine = 0;
+        foreach ($order->getDetails() as $detail)
+        {
+            $cats = $detail->getDishId()->getCategories();
+            if (!empty($cats)) {
+                $isDrink = $cats[0]->getDrinks();
+                $isAlcohol = $cats[0]->getAlcohol();
+                if ($isAlcohol) {
+                    $alcoholTotalLine += $detail->getPrice() * $detail->getQuantity();
+                } elseif ($isDrink) {
+                    $drinksTotalLine += $detail->getPrice() * $detail->getQuantity();
+                } else {
+                    $foodTotalLine += $detail->getPrice() * $detail->getQuantity();
+                    foreach ($detail->getOptions() as $dtOption) {
+                        $foodTotalLine += $dtOption->getPrice() * $dtOption->getQuantity();
+                    }
+                }
+            }
+        }
+        $driver = $order->getDriver();
+        $driverRow = "#";
+        if (!empty($driver)) {
+            $driverRow = $driver->getName();
+        }
+        $address = $order->getAddressId();
+        $addRow = "#";
+        if (!empty($address)) {
+            $addRow = $address->getAddress();
+        }
+
+        if ($foodTotalLine > 0) {
+            $orderDetails[] = array(
+                $order->getId(),
+                $order->getPlace()->getName(),
+                $order->getPlacePoint()->getAddress(),
+                $driverRow,
+                self::$deliveryTrans[$order->getDeliveryType()],
+                $addRow,
+                $order->getPaymentMethod(),
+                "MAISTAS",
+                $foodTotalLine,
+                $order->getVat()
+            );
+        }
+        if ($drinksTotalLine > 0) {
+            $orderDetails[] = array(
+                $order->getId(),
+                $order->getPlace()->getName(),
+                $order->getPlacePoint()->getAddress(),
+                $driverRow,
+                self::$deliveryTrans[$order->getDeliveryType()],
+                $addRow,
+                $order->getPaymentMethod(),
+                "GERIMAI",
+                $drinksTotalLine,
+                $order->getVat()
+            );
+        }
+
+        if ($alcoholTotalLine > 0) {
+            $orderDetails[] = array(
+                $order->getId(),
+                $order->getPlace()->getName(),
+                $order->getPlacePoint()->getAddress(),
+                $driverRow,
+                self::$deliveryTrans[$order->getDeliveryType()],
+                $addRow,
+                $order->getPaymentMethod(),
+                "ALKOHOLIS",
+                $alcoholTotalLine,
+                $order->getVat()
+            );
+        }
+
+        if($order->getDeliveryType() == self::$deliveryDeliver) {
+            $orderDetails[] = array(
+                $order->getId(),
+                $order->getPlace()->getName(),
+                $order->getPlacePoint()->getAddress(),
+                $driverRow,
+                self::$deliveryTrans[$order->getDeliveryType()],
+                $addRow,
+                $order->getPaymentMethod(),
+                "PRISTATYMAS",
+                $order->getPlace()->getDeliveryPrice(),
+                $order->getVat()
+            );
+        }
+        foreach ($orderDetails as &$ordDet) {
+            foreach ($ordDet as &$someDet) {
+                $someDet = str_replace(";","_", $someDet);
+                $someDet = str_replace('"',"_", $someDet);
+                $someDet = str_replace("'","_", $someDet);
+            }
+            $ordDet = implode(";", $ordDet);
+        }
+        $upp = realpath($this->container->get('kernel')->getRootDir() . '/../web/uploads');
+        $uppDir = $upp."/csv";
+        $findex = $upp."/csv/list.txt";
+        if (!realpath($uppDir)) {
+            mkdir($uppDir, 757);
+        }
+        $fname = "f_".$order->getId().".csv";
+        $fres = fopen($uppDir."/".$fname, "w+");
+        fputs($fres, implode("\r\n", $orderDetails));
+        fclose($fres);
+        $fresIndex = fopen($findex,"a+");
+        fputs($fresIndex, $fname."\r\n");
+        fclose($fresIndex);
     }
 }

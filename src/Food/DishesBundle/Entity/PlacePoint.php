@@ -47,6 +47,41 @@ class PlacePoint
     /**
      * @var string
      *
+     * @ORM\Column(name="alt_phone1", type="string", length=20, nullable=true)
+     */
+    private $altPhone1;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="alt_phone2", type="string", length=20, nullable=true)
+     */
+    private $altPhone2;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=128, nullable=true)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="alt_email1", type="string", length=128, nullable=true)
+     */
+    private $altEmail1;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="alt_email2", type="string", length=128, nullable=true)
+     */
+    private $altEmail2;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="city", type="string", length=255)
      */
     private $city;
@@ -76,7 +111,7 @@ class PlacePoint
      * @var bool
      * @ORM\Column(name="fast", type="boolean")
      */
-    private $fast = true;
+    private $fast = false;
 
     /**
      * @var string
@@ -1155,5 +1190,120 @@ class PlacePoint
     public function getCompanyCode()
     {
         return $this->company_code;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return PlacePoint
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set altPhone1
+     *
+     * @param string $altPhone1
+     * @return PlacePoint
+     */
+    public function setAltPhone1($altPhone1)
+    {
+        $this->altPhone1 = $altPhone1;
+    
+        return $this;
+    }
+
+    /**
+     * Get altPhone1
+     *
+     * @return string 
+     */
+    public function getAltPhone1()
+    {
+        return $this->altPhone1;
+    }
+
+    /**
+     * Set altPhone2
+     *
+     * @param string $altPhone2
+     * @return PlacePoint
+     */
+    public function setAltPhone2($altPhone2)
+    {
+        $this->altPhone2 = $altPhone2;
+    
+        return $this;
+    }
+
+    /**
+     * Get altPhone2
+     *
+     * @return string 
+     */
+    public function getAltPhone2()
+    {
+        return $this->altPhone2;
+    }
+
+    /**
+     * Set altEmail1
+     *
+     * @param string $altEmail1
+     * @return PlacePoint
+     */
+    public function setAltEmail1($altEmail1)
+    {
+        $this->altEmail1 = $altEmail1;
+    
+        return $this;
+    }
+
+    /**
+     * Get altEmail1
+     *
+     * @return string 
+     */
+    public function getAltEmail1()
+    {
+        return $this->altEmail1;
+    }
+
+    /**
+     * Set altEmail2
+     *
+     * @param string $altEmail2
+     * @return PlacePoint
+     */
+    public function setAltEmail2($altEmail2)
+    {
+        $this->altEmail2 = $altEmail2;
+    
+        return $this;
+    }
+
+    /**
+     * Get altEmail2
+     *
+     * @return string 
+     */
+    public function getAltEmail2()
+    {
+        return $this->altEmail2;
     }
 }
