@@ -886,6 +886,14 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
     border-radius: 5px 0 0 5px !important;
 }
 /** end title search change **/
-.user-page .order-history {
+
+.user-page .user-righter.content-item.cart,
+.user-page .user-righter.content-item.delivery {
+    display: none;
+}
+
+/* TODO Uzkomentuota tai, ko dabar neturime */
+.user-page .menu-item.cart-ico,
+.user-page .menu-item.delivery-ico {
     display: none;
 }

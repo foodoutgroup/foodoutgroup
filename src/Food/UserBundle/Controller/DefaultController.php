@@ -162,7 +162,9 @@ class DefaultController extends Controller
         $form = $this->createForm(new ProfileFormType(get_class($user)), $user);
         $form->handleRequest($request);
 
-        $addressForm = $this->createForm(new UserAddressFormType(), $address);
+        // @TODO tikejaus, kad tituliniam nebeliko hardkodo :| Deja.. Palieku ir cia, iki rankos issities padaryt tvarka
+        $cities = array('Vilnius' => 'Vilnius', 'Kaunas' => 'Kaunas');
+        $addressForm = $this->createForm(new UserAddressFormType($cities), $address);
         $addressForm->handleRequest($request);
 
         if ($form->isValid() && $addressForm->isValid()) {
@@ -202,8 +204,11 @@ class DefaultController extends Controller
         $user = $this->user();
         $address = $this->address($user);
 
+        // @TODO tikejaus, kad tituliniam nebeliko hardkodo :| Deja.. Palieku ir cia, iki rankos issities padaryt tvarka
+        $cities = array('Vilnius' => 'Vilnius', 'Kaunas' => 'Kaunas');
+
         $form = $this->createForm(new ProfileFormType(get_class($user)), $user);
-        $addressForm = $this->createForm(new UserAddressFormType(), $address);
+        $addressForm = $this->createForm(new UserAddressFormType($cities), $address);
 
         return [
             'form' => $form->createView(),

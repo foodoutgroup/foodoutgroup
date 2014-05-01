@@ -142,3 +142,29 @@ bind_profile_menu_items = function() {
         return false;
     });
 }
+
+bind_review_form = function() {
+    $('body').on('submit', '.review-form', function(e) {
+        var callback, data, form, url, form_rows, dataType;
+
+        form = $(this);
+        url = form.attr('action');
+        data = form.serialize();
+        form_rows = $('.review-form .form-row')
+        dataType = 'json';
+
+        form_rows.removeClass('error');
+
+        callback = function(response) {
+            if (response.success == 1) {
+                top.location.reload();
+            } else {
+                form_rows.addClass('error');
+            }
+        };
+
+        $.post(url, data, callback, dataType);
+
+        return false;
+    });
+}

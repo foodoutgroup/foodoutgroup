@@ -13,8 +13,6 @@ class UserAddressFormType extends AbstractType
     function __construct($cities)
     {
         $this->setAvailableCities($cities);
-
-        parent::_construct();
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
