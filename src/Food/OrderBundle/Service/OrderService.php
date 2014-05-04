@@ -1179,6 +1179,29 @@ class OrderService extends ContainerAware
         );
     }
 
+
+    /**
+     * @param PlacePoint $placePoint
+     * @todo fix laiku poslinkiai
+     */
+    private function workTimeErrors(PlacePoint $placePoint, &$errors)
+    {
+        $wd = date('w');
+        if ($wd == 0) $wd = 7;
+        $timeFr = $placePoint->{'getWd'.$wd.'Start'}();
+        $timeTo = $placePoint->{'getWd'.$wd.'End'}();
+
+        if(!strpos($timeFr, ':')|| !strpos($timeTo, ':')) {
+            $errors[] = "order.form.errors.today_no_work";
+        } else {
+            if (strtotime($timeFr) > date('U')) {
+                $errors[] = "order.form.errors.isnt_open";
+            } elseif (strtotime($timeTo) < date('U')) {
+                $errors[] = "order.form.errors.is_already_close";
+            }
+        }
+    }
+
     /**
      * @param Place $placeId
      * @param Request $request
@@ -1186,7 +1209,7 @@ class OrderService extends ContainerAware
      * @param $formErrors
      * @param $takeAway
      */
-    public function validateDaGiantForm(Place $place, Request $request, &$formHasErrors, &$formErrors, $takeAway)
+    public function validateDaGiantForm(Place $place, Request $request, &$formHasErrors, &$formErrors, $takeAway, $placePointId = null)
     {
         if (!$takeAway) {
             $list = $this->getCartService()->getCartDishes($place);
@@ -1200,6 +1223,17 @@ class OrderService extends ContainerAware
                 $formErrors[] = 'order.form.errors.customeraddr';
             }
         }
+
+        if (empty($placePoint)) {
+            $placePointMap = $this->container->get('session')->get('point_data');
+            $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+        } else {
+            $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
+        }
+
+        $this->workTimeErrors($pointRecord, $formErrors);
+
+
 
         if (0 === strlen($request->get('customer-firstname'))) {
             $formErrors[] = 'order.form.errors.customerfirstname';
