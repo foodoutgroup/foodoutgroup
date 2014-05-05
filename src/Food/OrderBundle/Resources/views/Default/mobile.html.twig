@@ -83,20 +83,18 @@
         <tr>
             <td colspan="5">{{ order.comment }}</td>
         </tr>
-        {% if order.placePointSelfDelivery == 1 or order.deliveryType == 'pickup' %}
-            <tr>
-                <th colspan="5">{% trans %}mobile.payment{% endtrans %}</th>
-            </tr>
-            <tr>
-                <td colspan="5">{{ ('mobile.payment.' ~ order.paymentMethod)|trans }}</td>
-            </tr>
-            <tr>
-                <th colspan="5">{% trans %}mobile.order_time{% endtrans %}</th>
-            </tr>
-            <tr>
-                <td colspan="5">{{ order.orderDate|date("H:i") }}</td>
-            </tr>
-        {% endif %}
+        <tr>
+            <th colspan="5">{% trans %}mobile.payment{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ ('mobile.payment.' ~ order.paymentMethod)|trans }}</td>
+        </tr>
+        <tr>
+            <th colspan="5">{% trans %}mobile.order_time{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ order.orderDate|date("H:i") }}</td>
+        </tr>
         </tbody>
     </table>
     <form method="post">
