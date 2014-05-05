@@ -277,7 +277,6 @@ class OrderService extends ContainerAware
     {
         // Inform poor user, that his order was accepted
         if ($this->getOrder()->getOrderStatus() == self::$status_new) {
-
             $recipient = $this->getOrder()->getUser()->getPhone();
 
             if (!empty($recipient)) {
@@ -290,7 +289,11 @@ class OrderService extends ContainerAware
                 $message = $smsService->createMessage($sender, $recipient, $text);
                 $smsService->saveMessage($message);
             }
-
+            $this->getOrder()->setAcceptTime(new \DateTime("now"));
+            $dt = new \DateTime('now');
+            $dt->add(new \DateInterval('P0DT1H0M0S'));
+            $this->getOrder()->setDeliveryTime($dt);
+            $this->saveOrder();
             $this->chageOrderStatus(self::$status_accepted);
         }
 
@@ -1371,5 +1374,26 @@ class OrderService extends ContainerAware
         $fresIndex = fopen($findex,"a+");
         fputs($fresIndex, $fname."\r\n");
         fclose($fresIndex);
+    }
+
+    /**
+     * Save with delay info...
+     */
+    public function saveDelay()
+    {
+
+        $duration = $this->getOrder()->getDelayDuration();
+        $oTime = $this->getOrder()->getDeliveryTime();
+
+        $oTimeClone = clone $oTime;
+
+        $oTimeClone->add(new \DateInterval('P0DT0H'.$duration.'M0S'));
+
+        $diffInMinutes = ceil(($oTimeClone->getTimestamp() - $oTime->getTimestamp()) / 60/10) * 10;
+
+        $this->getOrder()->setDeliveryTime($oTimeClone);
+        $this->saveOrder();
+        var_dump($diffInMinutes);
+        die();
     }
 }

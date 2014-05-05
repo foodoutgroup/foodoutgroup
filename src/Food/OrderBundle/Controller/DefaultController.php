@@ -33,6 +33,11 @@ class DefaultController extends Controller
                 break;
                 case 'delay':
                     $this->get('food.order')->statusDelayed();
+                    $this->get('food.order')->getOrder()->setDelayed(true);
+                    $this->get('food.order')->getOrder()->setDelayReason($this->getRequest()->get('delay_reason'));
+                    $this->get('food.order')->getOrder()->setDelayDuration($this->getRequest()->get('delay_duration'));
+                    $this->get('food.order')->saveDelay();
+                    $order = $this->get('food.order')->getOrderByHash($hash);
                 break;
                 case 'cancel':
                     $this->get('food.order')->statusCanceled();
