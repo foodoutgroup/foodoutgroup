@@ -1828,12 +1828,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "25abd44cb777da84960a41361a011b02a77d3946"
+                "reference": "30ccaa691e695aafc254da197ac545f719a1d132"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/25abd44cb777da84960a41361a011b02a77d3946",
-                "reference": "25abd44cb777da84960a41361a011b02a77d3946",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/30ccaa691e695aafc254da197ac545f719a1d132",
+                "reference": "30ccaa691e695aafc254da197ac545f719a1d132",
                 "shasum": ""
             },
             "require": {
@@ -1884,7 +1884,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-04-25 16:15:20"
+            "time": "2014-04-30 12:24:22"
         },
         {
             "name": "sonata-project/cache",
@@ -2020,12 +2020,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "86ae107d623118f393a149d800135d8942a5a9f1"
+                "reference": "664631de527373a3b1ee74772e83484679fb65a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/86ae107d623118f393a149d800135d8942a5a9f1",
-                "reference": "86ae107d623118f393a149d800135d8942a5a9f1",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/664631de527373a3b1ee74772e83484679fb65a0",
+                "reference": "664631de527373a3b1ee74772e83484679fb65a0",
                 "shasum": ""
             },
             "require": {
@@ -2074,7 +2074,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-04-14 17:04:46"
+            "time": "2014-04-30 12:21:30"
         },
         {
             "name": "sonata-project/doctrine-extensions",

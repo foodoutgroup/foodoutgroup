@@ -40,7 +40,7 @@
             <div class="page-path clearfix"><a href="{{ path('food_homepage') }}">{% trans %}places.home{% endtrans %}</a>{# TODO breadcrumbs <a href="#">Restoranai arti Žirmūnų</a>#}<a href="#">{{ place.name }}</a></div>
             <div class="page-title">
                 <h1 class="clearfix"><span>{{ place.name }}{% if place.slogan is not empty %} - {{ place.slogan }}{% endif %}</span>
-                    <div data-stars="{{ place.rating }}" class="restoran-rating fl"></div>
+                    <div data-stars="{{ place.averageRating }}" class="restoran-rating fl"></div>
                 </h1>
             </div>
                 <div class="clearfix">
@@ -85,7 +85,7 @@
                                 {% set count = place.reviews.count %}
                                 <h3>{% transchoice count %}%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų{% endtranschoice %}</h3>
                                 {% if wasHere and not alreadyWrote %}
-                                    <a href="#place-review-popup" class="boxer">{% trans %}places.add_review{% endtrans %}</a>
+                                    <a href="#place-review-popup" class="fancy-box">{% trans %}places.add_review{% endtrans %}</a>
                                 {% endif %}
                                 {{ include('FoodDishesBundle:Place:review-popup.html.twig') }}
                             </div>
