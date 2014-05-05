@@ -1393,7 +1393,7 @@ class OrderService extends ContainerAware
 
         $this->getOrder()->setDeliveryTime($oTimeClone);
         $this->saveOrder();
-        var_dump($diffInMinutes);
-        die();
+//        var_dump($diffInMinutes);
+
     }
 }
