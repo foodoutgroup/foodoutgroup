@@ -1381,7 +1381,6 @@ class OrderService extends ContainerAware
      */
     public function saveDelay()
     {
-
         $duration = $this->getOrder()->getDelayDuration();
         $oTime = $this->getOrder()->getDeliveryTime();
 
@@ -1394,6 +1393,41 @@ class OrderService extends ContainerAware
         $this->getOrder()->setDeliveryTime($oTimeClone);
         $this->saveOrder();
 //        var_dump($diffInMinutes);
+
+        // Lets inform the user, that the order was delayed :(
+        $user = $this->getOrder()->getUser();
+        $userPhone = $user->getPhone();
+        $userEmail = $user->getEmail();
+
+        $translator = $this->container->get('translator');
+        $domain = $this->container->getParameter('domain');
+
+        $messageText = $translator->trans(
+            'general.sms.user_order_delayed',
+            array('delay' => $diffInMinutes)
+        );
+
+        if (!empty($userPhone)) {
+            $messagingService = $this->container->get('food.messages');
+
+            $message = $messagingService->createMessage(
+                $this->container->getParameter('sms.sender'),
+                $userPhone,
+                $messageText
+            );
+            $messagingService->saveMessage($message);
+        }
+        // And an email
+        $mailer = $this->container->get('mailer');
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($this->container->getParameter('title').': '.$translator->trans('general.email.user_delayed_subject'))
+            ->setFrom('info@'.$domain)
+        ;
+
+        $message->addTo($userEmail);
+        $message->setBody($messageText);
+        $mailer->send($message);
 
     }
 }
