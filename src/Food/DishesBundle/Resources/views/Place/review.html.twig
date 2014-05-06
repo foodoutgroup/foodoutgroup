@@ -1,5 +1,6 @@
 <form class="lefter review-form" action="{{ url('food_review_create', {id: place.id}) }}" method="post" novalidate>
     <h3>{% trans %}general.review_title{% endtrans %}</h3>
+    <div class="error alert alert-danger" style="display: none;"></div>
     <div class="form-row">
         {{ form_label(form.review) }}
         {{ form_widget(form.review) }}

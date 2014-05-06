@@ -92,12 +92,17 @@ class PlaceController extends Controller
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
         $review = $this->defaultReview($place, $this->user());
         $form = $this->reviewForm($review);
+        $placeService = $this->get('food.places');
+
+        $errors = array();
 
         // apply data from submitted data to symfony form
         $form->handleRequest($request);
         $score = (int) $request->request->get('score');
+        $formVar = $request->request->get('form');
+        $reviewText = (string) $formVar['review'];
 
-        if ($form->isValid() && $score >= 1 && $score <= 5) {
+        if ($form->isValid() && $score >= 1 && $score <= 5 && !empty($reviewText)) {
             $em = $this->getDoctrine()->getManager();
 
             // field 'rate' is neither mapped nor in symfony form, so update manually
@@ -107,10 +112,24 @@ class PlaceController extends Controller
             $em->persist($review);
             $em->flush();
 
+            $averageRating = $placeService->calculateAverageRating($place);
+
+            $place->setAverageRating($averageRating);
+            $placeService->savePlace($place);
+
             return new JsonResponse(['success' => true]);
+        } else {
+           $translator = $this->get('translator');
+
+            if (empty($reviewText)) {
+                $errors[] = $translator->trans('places.reviews.empty_review');
+            }
+            if (empty($score) || ($score < 1 || $score > 5)) {
+                $errors[] = $translator->trans('places.reviews.empty_rating');
+            }
         }
 
-        return new JsonResponse(['success' => false]);
+        return new JsonResponse(['success' => false, 'errors' => $errors]);
     }
 
     private function wasHere(Place $place = null, User $user = null)

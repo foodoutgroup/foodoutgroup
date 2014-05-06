@@ -1,6 +1,7 @@
 <?php
 namespace Food\PlacesBundle\Service;
 
+use Food\DishesBundle\Entity\Place;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Response;
 use Food\AppBundle\Traits;
@@ -31,6 +32,16 @@ class PlacesService extends ContainerAware {
 
         return $this->em()->getRepository('FoodDishesBundle:Place')
             ->find($placeId);
+    }
+
+    public function savePlace($place)
+    {
+        if (!($place instanceof Place)) {
+            throw new \Exception('Place not given. How should I save it?');
+        }
+        $em = $this->em();
+        $em->persist($place);
+        $em->flush();
     }
 
     /**
@@ -137,5 +148,18 @@ class PlacesService extends ContainerAware {
             ->getQuery();
 
         return $placesQuery->getResult();
+    }
+
+    /**
+     * @param Place $place
+     * @return mixed
+     */
+    public function calculateAverageRating($place)
+    {
+        $em = $this->em();
+        $con = $em->getConnection();
+        $rating = $con->fetchColumn("SELECT AVG( rate ) FROM  place_reviews WHERE place_id = ".$place->getId());
+
+        return $rating;
     }
 }

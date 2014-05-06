@@ -45,6 +45,49 @@ var Place = {
         $('#detailed-restaurant-info .restaurant-info-righter .custom-select').bind('change', function() {
             Place.loadPlacePointData($(this).val());
         });
+
+        $('.place-review-popup').delegate('.review-form', 'submit', function() {
+            $('.popup.place-review-popup').mask();
+
+            var form = $(this);
+
+            $.ajax({
+                type	: "POST",
+                cache	: false,
+                url		: $(this).attr('action'),
+                data		: $(this).serializeArray(),
+                success: function(data) {
+                    if (data.success) {
+                        form.find('.error').html('').hide();
+                        $('.popup.place-review-popup').unmask();
+                        location.reload();
+                        $.fancybox.close();
+                    } else {
+                        if (typeof data.errors != "undefined") {
+                            var errorText = '';
+                            $.each(data.errors, function(element, error){
+                                if (errorText != '') {
+                                    errorText += "<br>";
+                                }
+                                errorText += error;
+                            });
+                            form.find('.error').html(errorText).show();
+                            setTimeout(
+                                function() {
+                                    form.find('.error').hide().html('');
+                                },
+                                15000
+                            )
+                        }
+                        $('.popup.place-review-popup').unmask();
+                    }
+                }
+            });
+
+            return false;
+        });
+
+        init_raty();
     },
     /**
      * Change restaurant menu layout
