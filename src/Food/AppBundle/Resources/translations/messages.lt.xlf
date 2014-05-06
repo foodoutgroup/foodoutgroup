@@ -306,6 +306,14 @@
         <source>general.sms.driver_assigned_order</source>
         <target>Priskirtas naujas uzsakymas: </target>
       </trans-unit>
+      <trans-unit id="general.sms.user_order_delayed" resname="general.sms.user_order_delayed">
+        <source>general.sms.user_order_delayed</source>
+        <target>Atsiprasome, taciau jusu uzsakymas bus pristatytas po delay min.</target>
+      </trans-unit>
+      <trans-unit id="general.email.user_delayed_subject" resname="general.email.user_delayed_subject">
+        <source>general.email.user_delayed_subject</source>
+        <target>pasikeites pristatymo laikas</target>
+      </trans-unit>
       <trans-unit id="22a63be04fc38361fdf1ee63e1b4d4e0" resname="index.address_not_found">
         <source>index.address_not_found</source>
         <target>Adresas nerastas arba neegzistuoja</target>
