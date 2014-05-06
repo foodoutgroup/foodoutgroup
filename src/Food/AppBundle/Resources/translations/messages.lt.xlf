@@ -210,6 +210,28 @@
         <source>mobile.place_finish_message</source>
         <target>Restorano darbas baigtas. Toliau logistika.</target>
       </trans-unit>
+
+        <trans-unit id="mobile.order_submit_delay" resname="mobile.order_submit_delay">
+            <source>mobile.order_submit_delay</source>
+            <target>Patvirtinti atidėjimą</target>
+        </trans-unit>
+        <trans-unit id="mobile.order_cancel_delay" resname="mobile.order_cancel_delay">
+            <source>mobile.order_cancel_delay</source>
+            <target>Atšaukti atidėjimą</target>
+        </trans-unit>
+        <trans-unit id="mobile.place_finish_message" resname="mobile.place_finish_message">
+            <source>mobile.place_finish_message</source>
+            <target>Restorano darbas baigtas. Toliau logistika.</target>
+        </trans-unit>
+        <trans-unit id="mobile.order_delay_reason" resname="mobile.order_delay_reason">
+            <source>mobile.order_delay_reason</source>
+            <target>Atidėjimo priežastis</target>
+        </trans-unit>
+        <trans-unit id="mobile.order_delay_duration" resname="mobile.order_delay_duration">
+            <source>mobile.order_delay_duration</source>
+            <target>Atidėjimo trukmė</target>
+        </trans-unit>
+
       <trans-unit id="ad0cfaf6d8907666cb2aee2b0210192e" resname="general.login_title">
         <source>general.login_title</source>
         <target>Prisijunkite</target>

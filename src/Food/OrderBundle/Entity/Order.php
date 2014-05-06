@@ -194,7 +194,7 @@ class Order
     /**
      * @var string $locale
      *
-     * @ORM\Column(name="delay_reason", type="string", length=4,  nullable=true)
+     * @ORM\Column(name="delay_reason", type="string", length=255,  nullable=true)
      */
     private $delayReason;
 
