@@ -1,0 +1,21 @@
+Food\UserBundle\Entity\User:
+    properties:
+        firstname:
+            - NotBlank:
+                message: general.user.firsname.not_blank
+            - Length:
+                min: 2
+                minMessage: general.user.firsname.short
+                max: 255
+                maxMessage: general.user.firsname.long
+        lastname:
+            - NotBlank:
+                message: general.user.lastname.not_blank
+            - Length:
+                min: 2
+                minMessage: general.user.lastname.short
+                max: 255
+                maxMessage: general.user.lastname.long
+        email:
+            - NotBlank:
+                message: general.user.email.not_blank

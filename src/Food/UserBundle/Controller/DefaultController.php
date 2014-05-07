@@ -163,11 +163,15 @@ class DefaultController extends Controller
         $form->handleRequest($request);
 
         // @TODO tikejaus, kad tituliniam nebeliko hardkodo :| Deja.. Palieku ir cia, iki rankos issities padaryt tvarka
-        $cities = array('Vilnius' => 'Vilnius', 'Kaunas' => 'Kaunas');
+        $cities = array('Vilnius' => 'Vilnius', /*'Kaunas' => 'Kaunas'*/);
         $addressForm = $this->createForm(new UserAddressFormType($cities), $address);
         $addressForm->handleRequest($request);
 
-        if ($form->isValid() && $addressForm->isValid()) {
+        $validator = $this->get('validator');
+        $errors = $validator->validate($user);
+        $hasErrors = false;
+
+        if ($form->isValid() && $addressForm->isValid() && count($errors) == 0) {
             // update/create address
             $address
                 ->setCity($addressForm->get('city')->getData())
@@ -182,10 +186,15 @@ class DefaultController extends Controller
             $userManager->updateUser($user);
 
             return $this->redirect($this->generateUrl('user_profile'));
+        } else {
+            $hasErrors = true;
         }
 
         return [
             'form' => $form->createView(),
+            'addressForm' => $addressForm->createView(),
+            'hasErrors' => $hasErrors,
+            'errors' => $errors
         ];
     }
 
@@ -215,6 +224,7 @@ class DefaultController extends Controller
             'addressForm' => $addressForm->createView(),
             'tab' => $tab,
             'orders' => $this->orders($user),
+            'hasErrors' => false,
         ];
     }
 

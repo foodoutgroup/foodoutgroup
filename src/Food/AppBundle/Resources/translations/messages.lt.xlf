@@ -434,6 +434,34 @@
         <source>mobile.invoice.car_number</source>
         <target>Automobilio Nr.</target>
       </trans-unit>
+      <trans-unit id="general.user.firsname.not_blank" resname="general.user.firsname.not_blank">
+        <source>general.user.firsname.not_blank</source>
+        <target>Įveskite savo vardą</target>
+      </trans-unit>
+      <trans-unit id="general.user.firsname.short" resname="general.user.firsname.short">
+        <source>general.user.firsname.short</source>
+        <target>Vardas negali būti trumpesnis nei 2 simboliai</target>
+      </trans-unit>
+      <trans-unit id="general.user.firsname.long" resname="general.user.firsname.long">
+        <source>general.user.firsname.long</source>
+        <target>Vardas negali būti ilgesnis nei 255 simboliai</target>
+      </trans-unit>
+      <trans-unit id="general.user.lastname.not_blank" resname="general.user.lastname.not_blank">
+        <source>general.user.lastname.not_blank</source>
+        <target>Įveskite savo pavardę</target>
+      </trans-unit>
+      <trans-unit id="general.user.lastname.short" resname="general.user.lastname.short">
+        <source>general.user.lastname.short</source>
+        <target>Pavardė negali būti trumpesnė nei 2 simboliai</target>
+      </trans-unit>
+      <trans-unit id="general.user.lastname.long" resname="general.user.lastname.long">
+        <source>general.user.lastname.long</source>
+        <target>Pavardė negali būti ilgesnė nei 255 simboliai</target>
+      </trans-unit>
+      <trans-unit id="general.user.email.not_blank" resname="general.user.email.not_blank">
+        <source>general.user.email.not_blank</source>
+        <target>Įveskite savo el.pašto adresą</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

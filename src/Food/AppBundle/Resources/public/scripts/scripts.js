@@ -107,7 +107,7 @@ bind_login_form = function() {
 
         error.hide();
         form_login_rows.removeClass('error');
-        form.mask();
+        form.closest('.login-register-popup').mask();
 
         callback = function(response) {
             if (response.success == 1) {
@@ -116,7 +116,7 @@ bind_login_form = function() {
                 form_login_rows.addClass('error');
                 form.find('input[password]').val('');
                 error.show();
-                form.unmask();
+                form.closest('.login-register-popup').unmask();
             }
         };
 

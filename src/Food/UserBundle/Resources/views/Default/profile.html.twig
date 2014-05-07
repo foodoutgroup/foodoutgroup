@@ -38,7 +38,16 @@
                     </div>
                     <div class="user-righter content-item user">
                         <h2>Vartotojo duomenys</h2>
-                        <form class="user-details-form" action="{{ path('user_profile_update') }}" method="POST">
+                        {% if hasErrors is defined and hasErrors %}
+                            <div class="error alert alert-danger">
+                                <ul>
+                                {% for error in errors %}
+                                    <li>{{ error.message|trans() }}</li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        <form class="user-details-form" action="{{ path('user_profile_update') }}" method="POST" novalidate="novalidate">
                             {{ form_row(form.firstname) }}
                             {{ form_row(form.lastname) }}
                             {{ form_row(form.email) }}
@@ -47,9 +56,9 @@
                             {{ form_row(addressForm.city) }}
                             {{ form_row(addressForm.address) }}
                             <hr>
-                            {{ form_row(form.current_password) }}
-                            {{ form_row(form.plainPassword.first) }}
-                            {{ form_row(form.plainPassword.second) }}
+                            {#{{ form_row(form.current_password) }}#}
+                            {#{{ form_row(form.plainPassword.first) }}#}
+                            {#{{ form_row(form.plainPassword.second) }}#}
                             <div class="form-controls">
                                 <input type="submit" value="išsaugoti">
                             </div>
@@ -58,7 +67,7 @@
                     <div class="user-righter content-item cart">
                         <h2>Užsakymų istorija</h2>
                         <div class="order-history-list">
-                            {% for order in orders %}
+                            {#{% for order in orders %}
                                 <div class="order-history-item clearfix">
                                     <div class="restautrant-logo">
                                         <div class="restautrant-logo-wrap"><img src="{{ asset('bundles/foodapp/images/res-1-s.png') }}"></div>
@@ -69,7 +78,7 @@
                                     </div>
                                     <div class="history-item-righter"><a href="#" class="rate-link">Įvertink šį užsakymą</a><a href="#" class="order-button">Užsakyti dar kartą</a></div><span class="close"></span>
                                 </div>
-                            {% endfor %}
+                            {% endfor %}#}
                         </div>
                     </div>
                     <div class="user-righter content-item delivery">
