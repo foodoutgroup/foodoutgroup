@@ -64,6 +64,12 @@
             </tr>
         {% endif %}
         <tr>
+            <th colspan="5">{% trans %}mobile.deliver_time{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ order.deliveryTime|date("H:i") }}</td>
+        </tr>
+        <tr>
             <th colspan="5">{% trans %}mobile.place_point_address{% endtrans %}</th>
         </tr>
         <tr>
