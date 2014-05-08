@@ -556,7 +556,7 @@
       </trans-unit>
       <trans-unit id="general.profile.no_orders" resname="general.profile.no_orders">
         <source>general.profile.no_orders</source>
-        <target>Dar nieko užsisakėte</target>
+        <target>Dar nieko neužsisakėte</target>
       </trans-unit>
     </body>
   </file>
