@@ -12,6 +12,7 @@ use Food\OrderBundle\Entity\OrderDetailsOptions;
 use Food\OrderBundle\Entity\OrderLog;
 use Food\OrderBundle\Entity\OrderStatusLog;
 use Food\OrderBundle\Entity\PaymentLog;
+use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Security\Acl\Exception\Exception;
@@ -1429,5 +1430,38 @@ class OrderService extends ContainerAware
         $message->setBody($messageText);
         $mailer->send($message);
 
+    }
+
+    /**
+     * Get finished and ongoing user orders
+     *
+     * @param User $user
+     * @return array|\Food\OrderBundle\Entity\Order[]
+     * @throws \InvalidArgumentException
+     */
+    public function getUserOrders(User $user)
+    {
+        if (!($user instanceof User)) {
+            throw new \InvalidArgumentException('Not a user is given, sorry..');
+        }
+
+        $em = $this->container->get('doctrine')->getManager();
+        $orders = $em->getRepository('Food\OrderBundle\Entity\Order')
+            ->findBy(
+                array(
+                    'user' => $user,
+                    'order_status' => array(
+                        self::$status_accepted,
+                        self::$status_assiged,
+                        self::$status_delayed,
+                        self::$status_finished,
+                    )
+                ),
+                array(
+                    'order_date' => 'DESC',
+                )
+            );
+
+        return $orders;
     }
 }

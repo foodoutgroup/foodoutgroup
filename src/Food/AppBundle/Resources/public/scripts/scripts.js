@@ -12,14 +12,14 @@
             });
         }
 
-        resizeSensitive(); 
+        resizeSensitive();
 
         $window.resize(function () {
             resizeSensitive();
         });
 
         // Boxer lightbox plugin
-        
+
         $('.custom-select').selectmenu();
 
         $("input").iCheck();
@@ -49,11 +49,13 @@
         });
 
         function resizeSensitive() {
-            
+
         }
 
         bind_registration_form();
         bind_login_form();
+        bind_review_form();
+        bind_profile_menu_items();
     });
 })(jQuery, window);
 
@@ -104,7 +106,7 @@ bind_login_form = function() {
 
         error.hide();
         form_login_rows.removeClass('error');
-        form.mask();
+        form.closest('.login-register-popup').mask();
 
         callback = function(response) {
             if (response.success == 1) {
@@ -113,7 +115,50 @@ bind_login_form = function() {
                 form_login_rows.addClass('error');
                 form.find('input[password]').val('');
                 error.show();
-                form.unmask();
+                form.closest('.login-register-popup').unmask();
+            }
+        };
+
+        $.post(url, data, callback, dataType);
+
+        return false;
+    });
+}
+
+bind_profile_menu_items = function() {
+    var menu_items, content_items;
+
+    menu_items = $('.user-page .user-menu .menu-item');
+    content_items = $('.user-page .content-item');
+
+    menu_items.click(function() {
+        menu_items.removeClass('active');
+        content_items.hide();
+
+        $(this).addClass('active');
+        $($(this).attr('data-target')).show();
+
+        return false;
+    });
+}
+
+bind_review_form = function() {
+    $('body').on('submit', '.review-form', function(e) {
+        var callback, data, form, url, form_rows, dataType;
+
+        form = $(this);
+        url = form.attr('action');
+        data = form.serialize();
+        form_rows = $('.review-form .form-row')
+        dataType = 'json';
+
+        form_rows.removeClass('error');
+
+        callback = function(response) {
+            if (response.success == 1) {
+                top.location.reload();
+            } else {
+                form_rows.addClass('error');
             }
         };
 

@@ -15,6 +15,10 @@ use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
+use Food\UserBundle\Form\Type\ProfileFormType;
+use Food\UserBundle\Form\Type\UserAddressFormType;
+use Food\UserBundle\Entity\User;
+use Food\UserBundle\Entity\UserAddress;
 
 class DefaultController extends Controller
 {
@@ -143,12 +147,86 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/profile", name="user_profile")
+     * @Route("/{_locale}/profile/update", name="user_profile_update")
+     * @Template("FoodUserBundle:Default:profile.html.twig")
+     * @Method("POST")
+     */
+    public function profileUpdateAction(Request $request)
+    {
+        $userManager = $this->container->get('fos_user.user_manager');
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $this->user();
+        $address = $this->address($user);
+
+        $form = $this->createForm(new ProfileFormType(get_class($user)), $user);
+        $form->handleRequest($request);
+
+        // @TODO tikejaus, kad tituliniam nebeliko hardkodo :| Deja.. Palieku ir cia, iki rankos issities padaryt tvarka
+        $cities = array('Vilnius' => 'Vilnius', /*'Kaunas' => 'Kaunas'*/);
+        $addressForm = $this->createForm(new UserAddressFormType($cities), $address);
+        $addressForm->handleRequest($request);
+
+        $validator = $this->get('validator');
+        $errors = $validator->validate($user);
+        $hasErrors = false;
+
+        if ($form->isValid() && $addressForm->isValid() && count($errors) == 0) {
+            // update/create address
+            $address
+                ->setCity($addressForm->get('city')->getData())
+                ->setAddress($addressForm->get('address')->getData())
+            ;
+
+            if (!$user->getDefaultAddress()) {
+                $em->persist($address);
+                $user->addAddress($address);
+            }
+
+            $userManager->updateUser($user);
+
+            return $this->redirect($this->generateUrl('user_profile'));
+        } else {
+            $hasErrors = true;
+        }
+
+        return [
+            'form' => $form->createView(),
+            'addressForm' => $addressForm->createView(),
+            'orders' => $this->get('food.order')->getUserOrders($user),
+            'hasErrors' => $hasErrors,
+            'errors' => $errors
+        ];
+    }
+
+    /**
+     * @Route("/{_locale}/profile/{tab}", name="user_profile", defaults={"tab" = ""})
      * @Template("FoodUserBundle:Default:profile.html.twig")
      */
-    public function profileAction()
+    public function profileAction($tab)
     {
-        # todo
+        $security = $this->get('security.context');
+
+        if (!$security->isGranted('ROLE_USER')) {
+            return $this->redirect($this->generateUrl('food_lang_homepage'));
+        }
+
+        $user = $this->user();
+        $address = $this->address($user);
+
+        // @TODO tikejaus, kad tituliniam nebeliko hardkodo :| Deja.. Palieku ir cia, iki rankos issities padaryt tvarka
+        $cities = array('Vilnius' => 'Vilnius', /*'Kaunas' => 'Kaunas'*/);
+
+        $form = $this->createForm(new ProfileFormType(get_class($user)), $user);
+        $addressForm = $this->createForm(new UserAddressFormType($cities), $address);
+
+        return [
+            'form' => $form->createView(),
+            'addressForm' => $addressForm->createView(),
+            'tab' => $tab,
+            'orders' => $this->get('food.order')->getUserOrders($user),
+            'hasErrors' => false,
+        ];
     }
 
     public function loginButtonAction()
@@ -170,5 +248,33 @@ class DefaultController extends Controller
         );
 
         return $existingUser->first();
+    }
+
+    private function user()
+    {
+        $sc = $this->get('security.context');
+
+        if (!$sc->isGranted('ROLE_USER')) {
+            return null;
+        }
+
+        return $sc->getToken()->getUser();
+    }
+
+    private function address(User $user)
+    {
+        if ($user->getDefaultAddress()) {
+            return $user->getDefaultAddress();
+        }
+
+        $address = new UserAddress();
+
+        $address
+            ->setUser($user)
+            ->setLat(0)
+            ->setLon(0)
+        ;
+
+        return $address;
     }
 }

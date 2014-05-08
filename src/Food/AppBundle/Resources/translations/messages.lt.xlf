@@ -466,6 +466,94 @@
         <source>mobile.deliver_time</source>
         <target>Pristatyti iki</target>
       </trans-unit>
+      <trans-unit id="general.user.firsname.not_blank" resname="general.user.firsname.not_blank">
+        <source>general.user.firsname.not_blank</source>
+        <target>Įveskite savo vardą</target>
+      </trans-unit>
+      <trans-unit id="general.user.firsname.short" resname="general.user.firsname.short">
+        <source>general.user.firsname.short</source>
+        <target>Vardas negali būti trumpesnis nei 2 simboliai</target>
+      </trans-unit>
+      <trans-unit id="general.user.firsname.long" resname="general.user.firsname.long">
+        <source>general.user.firsname.long</source>
+        <target>Vardas negali būti ilgesnis nei 255 simboliai</target>
+      </trans-unit>
+      <trans-unit id="general.user.lastname.not_blank" resname="general.user.lastname.not_blank">
+        <source>general.user.lastname.not_blank</source>
+        <target>Įveskite savo pavardę</target>
+      </trans-unit>
+      <trans-unit id="general.user.lastname.short" resname="general.user.lastname.short">
+        <source>general.user.lastname.short</source>
+        <target>Pavardė negali būti trumpesnė nei 2 simboliai</target>
+      </trans-unit>
+      <trans-unit id="general.user.lastname.long" resname="general.user.lastname.long">
+        <source>general.user.lastname.long</source>
+        <target>Pavardė negali būti ilgesnė nei 255 simboliai</target>
+      </trans-unit>
+      <trans-unit id="general.user.email.not_blank" resname="general.user.email.not_blank">
+        <source>general.user.email.not_blank</source>
+        <target>Įveskite savo el.pašto adresą</target>
+      </trans-unit>
+      <trans-unit id="general.order" resname="general.order">
+        <source>general.order</source>
+        <target>Užsakymas</target>
+      </trans-unit>
+      <trans-unit id="general.order.delivered" resname="general.order.delivered">
+        <source>general.order.delivered</source>
+        <target>Pristatyti</target>
+      </trans-unit>
+      <trans-unit id="general.order.on_delivery" resname="general.order.on_delivery">
+        <source>general.order.on_delivery</source>
+        <target>Pristatomi</target>
+      </trans-unit>
+      <trans-unit id="general.order.in_progress" resname="general.order.in_progress">
+        <source>general.order.in_progress</source>
+        <target>Vykdomas</target>
+      </trans-unit>
+      <trans-unit id="general.order.making" resname="general.order.making">
+        <source>general.order.making</source>
+        <target>Gaminami</target>
+      </trans-unit>
+      <trans-unit id="general.order.dishes" resname="general.order.dishes">
+        <source>general.order.dishes</source>
+        <target>patiekalai</target>
+      </trans-unit>
+      <trans-unit id="general.for" resname="general.for">
+        <source>general.for</source>
+        <target>už</target>
+      </trans-unit>
+      <trans-unit id="general.tp" resname="general.to">
+        <source>general.to</source>
+        <target>į</target>
+      </trans-unit>
+      <trans-unit id="general.greating" resname="general.greating">
+        <source>general.greating</source>
+        <target>Sveiki</target>
+      </trans-unit>
+      <trans-unit id="general.profile.user_data" resname="general.profile.user_data">
+        <source>general.profile.user_data</source>
+        <target>Vartotojo duomenys</target>
+      </trans-unit>
+      <trans-unit id="general.profile.cart_history" resname="general.profile.cart_history">
+        <source>general.profile.cart_history</source>
+        <target>Užsakymų istorija</target>
+      </trans-unit>
+      <trans-unit id="general.profile.logout" resname="general.profile.logout">
+        <source>general.profile.logout</source>
+        <target>Atsijungti</target>
+      </trans-unit>
+      <trans-unit id="general.profile.button_save" resname="general.profile.button_save">
+        <source>general.profile.button_save</source>
+        <target>Išsaugoti</target>
+      </trans-unit>
+      <trans-unit id="general.profile.home" resname="general.profile.home">
+        <source>general.profile.home</source>
+        <target>Pradžia</target>
+      </trans-unit>
+      <trans-unit id="general.profile" resname="general.profile">
+        <source>general.profile</source>
+        <target>Vartotojo profilis</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

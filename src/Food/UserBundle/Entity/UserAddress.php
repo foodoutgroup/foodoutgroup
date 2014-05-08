@@ -22,28 +22,28 @@ class UserAddress
     /**
      * @var string
      *
-     * @ORM\Column(name="city", type="string", length=255)
+     * @ORM\Column(name="city", type="string", length=255, nullable=true)
      */
     private $city;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="address", type="string", length=255)
+     * @ORM\Column(name="address", type="string", length=255, nullable=true)
      */
     private $address;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="lat", type="string", length=30)
+     * @ORM\Column(name="lat", type="string", length=30, nullable=true)
      */
     private $lat;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="lon", type="string", length=30)
+     * @ORM\Column(name="lon", type="string", length=30, nullable=true)
      */
     private $lon;
 
