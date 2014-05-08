@@ -86,6 +86,10 @@
         <source>places.add_review</source>
         <target>Pridėk atsiliepimą</target>
       </trans-unit>
+        <trans-unit id="places.dishes_title" resname="places.dishes_title">
+            <source>places.dishes_title</source>
+            <target>Meniu</target>
+        </trans-unit>
       <trans-unit id="488219962375251b4c263e1bf17ecee5" resname="places.about_place">
         <source>places.about_place</source>
         <target>Apie restoraną</target>

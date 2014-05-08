@@ -80,10 +80,15 @@ class PlacesService extends ContainerAware {
     public function getActiveCategories($place)
     {
         return $this->em()->getRepository('FoodDishesBundle:FoodCategory')
-            ->findBy(array(
-                'place' => $place->getId(),
-                'active' => 1,
-            ));
+            ->findBy(
+                array(
+                    'place' => $place->getId(),
+                    'active' => 1,
+                ),
+                array(
+                    'lineup' => 'DESC'
+                )
+            );
     }
 
     /**
