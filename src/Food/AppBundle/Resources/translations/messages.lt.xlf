@@ -182,6 +182,10 @@
         <source>mobile.order_finish</source>
         <target>Pabaigti užsakymą</target>
       </trans-unit>
+      <trans-unit id="mobile.order_delivered" resname="mobile.order_delivered">
+        <source>mobile.order_delivered</source>
+        <target>Pristačiau užskymą</target>
+      </trans-unit>
       <trans-unit id="ebbc16fb3a732d7abe363ef2463397f9" resname="mobile.order_cancel">
         <source>mobile.order_cancel</source>
         <target>Atšaukti užsakymą</target>

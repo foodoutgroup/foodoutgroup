@@ -110,11 +110,9 @@
         </tbody>
     </table>
     <form method="post">
-        {#{% if order.orderStatus == "accepted" or order.orderStatus == "delayed" %}#}
-            {#<button type="submit" name="status" value="finish" class="btn btn-success btn-block">{% trans %}mobile.order_finish{% endtrans %}</button>#}
-        {#{% elseif order.orderStatus == "finished" or order.orderStatus == "assigned" or order.orderStatus == "completed" %}#}
-            {#<center><h2>{% trans %}mobile.place_finish_message{% endtrans %}</h2></center>#}
-        {#{% endif %}#}
+        {% if order.orderStatus == "assigned" %}
+            <button type="submit" name="status" value="finish" class="btn btn-success btn-block">{% trans %}mobile.order_delivered{% endtrans %}</button>
+        {% endif %}
         <a class="btn btn-info btn-block" href="{{ path('driver_mobile_invoice', {hash: order.orderHash}) }}">{% trans %}mobile.invoice_driver{% endtrans %}</a>
 
     </form>
