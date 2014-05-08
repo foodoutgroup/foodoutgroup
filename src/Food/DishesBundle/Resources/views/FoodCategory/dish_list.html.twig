@@ -1,4 +1,4 @@
-<div class="clearfix"><h2 class="fl clearfix" id="{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}</h2></div>
+<div class="menu-title clearfix"><h2 class="fl clearfix" id="{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}</h2></div>
 <div class="clearfix restaurant-menu{% if listType == 'list' %} display-list{% endif %}">
 {% for dish in dishes %}
     {% set smallestPrice = dish_service.smallestDishPrice(dish.id) %}

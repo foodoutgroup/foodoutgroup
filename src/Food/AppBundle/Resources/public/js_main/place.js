@@ -224,6 +224,35 @@ var Place = {
                 mapHolder.unmask();
             });
         }
+    },
+    catmenuObj: null,
+    catmenuHeight: 0,
+    catmenuOffset: {},
+    contentHeight: 0,
+    cartObj: null,
+    initWindowScroll: function() {
+        this.catmenuObj = $("#catmnu");
+        this.cartObj = $("#cartmnu");
+        this.catmenuOffset = this.catmenuObj.offset();
+        this.catmenuHeight = this.catmenuObj.height();
+        this.contentHeight = $('#detailed-restaurant-menu').height()-30;
+        $(window).bind('scroll', function(){
+            Place.moveBlocks();
+        });
+    },
+    moveBlocks: function() {
+        var scTop = $('body').scrollTop();
+        var newTop = scTop - this.catmenuOffset.top;
+        if (this.catmenuOffset.top < scTop) {
+            if (newTop + this.catmenuHeight > this.contentHeight) {
+                newTop = this.contentHeight - this.catmenuHeight;
+            }
+            this.catmenuObj.css('top', newTop);
+            this.cartObj.css('margin-top', newTop+80);
+        } else {
+            this.catmenuObj.css('top', 0);
+            this.cartObj.css('margin-top', 0);
+        }
     }
 }
 

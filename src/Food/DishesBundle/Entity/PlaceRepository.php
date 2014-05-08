@@ -89,9 +89,11 @@ class PlaceRepository extends EntityRepository
             } else {
                 $kitchensQuery.= " recommended=1";
             }
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND ".$kitchensQuery." GROUP BY p.id";
+            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.place = p.id";
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND ".$kitchensQuery." GROUP BY p.id";
         } else {
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.id =  (". $subQuery .") ".$kitchensQuery;
+            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.city='".$city."' AND ppc.place = p.id";
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.id =  (". $subQuery .") ".$kitchensQuery;
         }
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
@@ -99,6 +101,7 @@ class PlaceRepository extends EntityRepository
         $places = $stmt->fetchAll();
 
         foreach ($places as $pkey=>&$place) {
+            //var_dump($place['pp_count']);
             $place['place'] = $this->find($place['place_id']);
             $place['point'] = $this->getEntityManager()->getRepository('FoodDishesBundle:PlacePoint')->find($place['point_id']);
         }

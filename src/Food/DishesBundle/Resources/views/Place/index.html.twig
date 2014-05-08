@@ -12,6 +12,9 @@
             'payments_cash': '{% trans %}places.payments.cash{% endtrans %}',
             'payments_card': '{% trans %}places.payments.card{% endtrans %}'
         };
+        $(document).ready(function(){
+            Place.initWindowScroll();
+        });
     </script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api }}&sensor=false"></script>
     {% endjavascripts %}
@@ -53,7 +56,7 @@
                         </ul>
                         <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
                             <div class="clearfix">
-                                <div class="menu-lefter">
+                                <div class="menu-lefter" id="catmnu">
                                     <h4>{% trans %}places.food_categories{% endtrans %}:</h4>
                                     <ul class="menu">
                                         {% for category in placeCategories %}
