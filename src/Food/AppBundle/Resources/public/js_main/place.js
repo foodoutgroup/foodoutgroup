@@ -241,13 +241,15 @@ var Place = {
         });
     },
     moveBlocks: function() {
-        var scTop = $('body').scrollTop();
+        var scTop = $(document).scrollTop();
         var newTop = scTop - this.catmenuOffset.top;
-        if (this.catmenuOffset.top < scTop) {
+        if (this.catmenuOffset.top < scTop+80) {
             if (newTop + this.catmenuHeight > this.contentHeight) {
                 newTop = this.contentHeight - this.catmenuHeight;
             }
-            this.catmenuObj.css('top', newTop);
+            if(this.catmenuOffset.top < scTop) {
+                this.catmenuObj.css('top', newTop);
+            }
             this.cartObj.css('margin-top', newTop+80);
         } else {
             this.catmenuObj.css('top', 0);
