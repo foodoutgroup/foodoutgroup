@@ -235,13 +235,13 @@ var Place = {
         this.cartObj = $("#cartmnu");
         this.catmenuOffset = this.catmenuObj.offset();
         this.catmenuHeight = this.catmenuObj.height();
-        this.contentHeight = $('#detailed-restaurant-menu').height()-30;
         $(window).bind('scroll', function(){
             Place.moveBlocks();
         });
     },
     moveBlocks: function() {
         var scTop = $(document).scrollTop();
+        this.contentHeight = $('#detailed-restaurant-menu').height()-30;
         var newTop = scTop - this.catmenuOffset.top;
         if (this.catmenuOffset.top < scTop+80) {
             if (newTop + this.catmenuHeight > this.contentHeight) {
