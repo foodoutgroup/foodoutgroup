@@ -156,6 +156,10 @@
                 <source>Food Category List</source>
                 <target>Kategorijos</target>
             </trans-unit>
+            <trans-unit id="admin.food_category.lineup">
+                <source>admin.food_category.lineup</source>
+                <target>Pozicija</target>
+            </trans-unit>
 
             <!-- Dish -->
             <trans-unit id="dish">

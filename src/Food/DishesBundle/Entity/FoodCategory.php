@@ -84,6 +84,13 @@ class FoodCategory implements Translatable
      */
     private $deletedAt;
 
+
+    /**
+     * @var
+     * @ORM\Column(name="lineup", type="integer", nullable=true)
+     */
+    private $lineup;
+
     /**
      * @var \Food\UserBundle\Entity\User
      *
@@ -537,5 +544,28 @@ class FoodCategory implements Translatable
     public function getAlcohol()
     {
         return $this->alcohol;
+    }
+
+    /**
+     * Set lineup
+     *
+     * @param integer $lineup
+     * @return FoodCategory
+     */
+    public function setLineup($lineup)
+    {
+        $this->lineup = $lineup;
+    
+        return $this;
+    }
+
+    /**
+     * Get lineup
+     *
+     * @return integer 
+     */
+    public function getLineup()
+    {
+        return $this->lineup;
     }
 }
