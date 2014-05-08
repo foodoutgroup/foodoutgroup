@@ -167,6 +167,37 @@ class Order
      **/
     private $orderStatusLog;
 
+    /**
+     * @var
+     * @ORM\Column(name="accept_time", type="datetime", nullable=true)
+     */
+    private $acceptTime;
+
+    /**
+     * @var
+     * @ORM\Column(name="delivery_time", type="datetime", nullable=true)
+     */
+    private $deliveryTime;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="is_delay", type="boolean", nullable=true)
+     */
+    private $delayed;
+
+    /**
+     * @var int
+     * @ORM\Column(name="delay_duration", type="integer", nullable=true)
+     */
+    private $delayDuration;
+
+    /**
+     * @var string $locale
+     *
+     * @ORM\Column(name="delay_reason", type="string", length=255,  nullable=true)
+     */
+    private $delayReason;
+
     public function __toString()
     {
         if ($this->getId()) {
@@ -932,5 +963,120 @@ class Order
     public function getTotal()
     {
         return $this->total;
+    }
+
+    /**
+     * Set delayDuration
+     *
+     * @param integer $delayDuration
+     * @return Order
+     */
+    public function setDelayDuration($delayDuration)
+    {
+        $this->delayDuration = $delayDuration;
+    
+        return $this;
+    }
+
+    /**
+     * Get delayDuration
+     *
+     * @return integer 
+     */
+    public function getDelayDuration()
+    {
+        return $this->delayDuration;
+    }
+
+    /**
+     * Set delayReason
+     *
+     * @param string $delayReason
+     * @return Order
+     */
+    public function setDelayReason($delayReason)
+    {
+        $this->delayReason = $delayReason;
+    
+        return $this;
+    }
+
+    /**
+     * Get delayReason
+     *
+     * @return string 
+     */
+    public function getDelayReason()
+    {
+        return $this->delayReason;
+    }
+
+    /**
+     * Set acceptTime
+     *
+     * @param \DateTime $acceptTime
+     * @return Order
+     */
+    public function setAcceptTime($acceptTime)
+    {
+        $this->acceptTime = $acceptTime;
+    
+        return $this;
+    }
+
+    /**
+     * Get acceptTime
+     *
+     * @return \DateTime 
+     */
+    public function getAcceptTime()
+    {
+        return $this->acceptTime;
+    }
+
+    /**
+     * Set deliveryTime
+     *
+     * @param \DateTime $deliveryTime
+     * @return Order
+     */
+    public function setDeliveryTime($deliveryTime)
+    {
+        $this->deliveryTime = $deliveryTime;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryTime
+     *
+     * @return \DateTime 
+     */
+    public function getDeliveryTime()
+    {
+        return $this->deliveryTime;
+    }
+
+    /**
+     * Set delayed
+     *
+     * @param boolean $delayed
+     * @return Order
+     */
+    public function setDelayed($delayed)
+    {
+        $this->delayed = $delayed;
+    
+        return $this;
+    }
+
+    /**
+     * Get delayed
+     *
+     * @return boolean 
+     */
+    public function getDelayed()
+    {
+        return $this->delayed;
     }
 }

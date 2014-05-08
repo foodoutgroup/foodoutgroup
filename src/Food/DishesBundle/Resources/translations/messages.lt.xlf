@@ -62,6 +62,14 @@
         <source>places.reviews</source>
         <target>Atsiliepimai</target>
       </trans-unit>
+      <trans-unit id="places.reviews.empty_review" resname="places.reviews.empty_review">
+        <source>places.reviews.empty_review</source>
+        <target>Įveskite atsiliepimą</target>
+      </trans-unit>
+      <trans-unit id="places.reviews.empty_rating" resname="places.reviews.empty_rating">
+        <source>places.reviews.empty_rating</source>
+        <target>Įvertinkite restoraną žvaigždutėmis</target>
+      </trans-unit>
       <trans-unit id="2a5d4d12eceaf831f2410429e3ca36db" resname="places.information">
         <source>places.information</source>
         <target>Informacija</target>
@@ -78,6 +86,10 @@
         <source>places.add_review</source>
         <target>Pridėk atsiliepimą</target>
       </trans-unit>
+        <trans-unit id="places.dishes_title" resname="places.dishes_title">
+            <source>places.dishes_title</source>
+            <target>Meniu</target>
+        </trans-unit>
       <trans-unit id="488219962375251b4c263e1bf17ecee5" resname="places.about_place">
         <source>places.about_place</source>
         <target>Apie restoraną</target>

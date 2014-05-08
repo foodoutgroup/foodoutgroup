@@ -29,6 +29,7 @@ class FoodCategoryAdmin extends FoodAdmin
                 ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place',));
         }
         $formMapper
+            ->add('lineup', '', array('required' => false, 'label' => 'admin.food_category.lineup'))
             ->add('drinks', 'checkbox', array('required' => false, 'label' => 'admin.food_category.drinks'))
             ->add('alcohol', 'checkbox', array('required' => false, 'label' => 'admin.food_category.alcohol'))
             ->add('active', 'checkbox', array('required' => false, 'label' => 'admin.active'))
@@ -67,6 +68,7 @@ class FoodCategoryAdmin extends FoodAdmin
             ->add('drinks', null, array('label' => 'admin.food_category.drinks'))
             ->add('alcohol', null, array('label' => 'admin.food_category.alcohol'))
             ->add('active', null, array('label' => 'admin.places.list.active', 'editable' => true))
+            ->add('lineup', '', array('required' => false, 'label' => 'admin.food_category.lineup','editable' => true))
             ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))

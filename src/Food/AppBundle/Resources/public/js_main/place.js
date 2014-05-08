@@ -45,6 +45,49 @@ var Place = {
         $('#detailed-restaurant-info .restaurant-info-righter .custom-select').bind('change', function() {
             Place.loadPlacePointData($(this).val());
         });
+
+        $('.place-review-popup').delegate('.review-form', 'submit', function() {
+            $('.popup.place-review-popup').mask();
+
+            var form = $(this);
+
+            $.ajax({
+                type	: "POST",
+                cache	: false,
+                url		: $(this).attr('action'),
+                data		: $(this).serializeArray(),
+                success: function(data) {
+                    if (data.success) {
+                        form.find('.error').html('').hide();
+                        $('.popup.place-review-popup').unmask();
+                        location.reload();
+                        $.fancybox.close();
+                    } else {
+                        if (typeof data.errors != "undefined") {
+                            var errorText = '';
+                            $.each(data.errors, function(element, error){
+                                if (errorText != '') {
+                                    errorText += "<br>";
+                                }
+                                errorText += error;
+                            });
+                            form.find('.error').html(errorText).show();
+                            setTimeout(
+                                function() {
+                                    form.find('.error').hide().html('');
+                                },
+                                15000
+                            )
+                        }
+                        $('.popup.place-review-popup').unmask();
+                    }
+                }
+            });
+
+            return false;
+        });
+
+        init_raty();
     },
     /**
      * Change restaurant menu layout
@@ -180,6 +223,37 @@ var Place = {
             google.maps.event.addListenerOnce(map, 'idle', function(){
                 mapHolder.unmask();
             });
+        }
+    },
+    catmenuObj: null,
+    catmenuHeight: 0,
+    catmenuOffset: {},
+    contentHeight: 0,
+    cartObj: null,
+    initWindowScroll: function() {
+        this.catmenuObj = $("#catmnu");
+        this.cartObj = $("#cartmnu");
+        this.catmenuOffset = this.catmenuObj.offset();
+        this.catmenuHeight = this.catmenuObj.height();
+        $(window).bind('scroll', function(){
+            Place.moveBlocks();
+        });
+    },
+    moveBlocks: function() {
+        var scTop = $(document).scrollTop();
+        this.contentHeight = $('#detailed-restaurant-menu').height()-30;
+        var newTop = scTop - this.catmenuOffset.top;
+        if (this.catmenuOffset.top < scTop+80) {
+            if (newTop + this.catmenuHeight > this.contentHeight) {
+                newTop = this.contentHeight - this.catmenuHeight;
+            }
+            if(this.catmenuOffset.top < scTop) {
+                this.catmenuObj.css('top', newTop);
+            }
+            this.cartObj.css('margin-top', newTop+80);
+        } else {
+            this.catmenuObj.css('top', 0);
+            this.cartObj.css('margin-top', 0);
         }
     }
 }

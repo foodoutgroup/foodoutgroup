@@ -40,7 +40,7 @@
             <div class="page-path clearfix"><a href="{{ path('food_homepage') }}">{% trans %}places.home{% endtrans %}</a>{# TODO breadcrumbs <a href="#">Restoranai arti Žirmūnų</a>#}<a href="#">{{ place.name }}</a></div>
             <div class="page-title">
                 <h1 class="clearfix"><span>{{ place.name }}{% if place.slogan is not empty %} - {{ place.slogan }}{% endif %}</span>
-                    <div data-stars="{{ place.rating }}" class="restoran-rating fl"></div>
+                    <div data-stars="{{ place.averageRating }}" class="restoran-rating fl"></div>
                 </h1>
             </div>
                 <div class="clearfix">
@@ -53,12 +53,12 @@
                         </ul>
                         <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
                             <div class="clearfix">
-                                <div class="menu-lefter">
+                                <div class="menu-lefter" id="catmnu">
                                     <h4>{% trans %}places.food_categories{% endtrans %}:</h4>
                                     <ul class="menu">
                                         {% for category in placeCategories %}
-                                            <li{% if category.id == selectedCategory.id %} class="active"{% endif %}>
-                                                <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(category.id, 'food_category')}) }}">{{ category.name }}<span>{{ category.activeDishesCount }}</span></a>
+                                            <li {# {% if category.id == selectedCategory.id %} class="active"{% endif %} #}>
+                                                <a href="#{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}<span>{{ category.activeDishesCount }}</span></a>
                                             </li>
                                         {% endfor %}
                                     </ul>
@@ -66,7 +66,7 @@
                         {# Meniu #}
                                 <div class="menu-righter">
                                     <div class="menu-title clearfix">
-                                        <h2 class="fl">{{ selectedCategory.name }}</h2>
+                                        <h2 class="fl">{% trans %}places.dishes_title{% endtrans %}{# {{ selectedCategory.name }} #}</h2>
                                         <div class="view-type clearfix">
                                             {% if listType == 'thumbs' %}
                                             <a href="#" class="ico-thumbs active"></a><a href="#" class="ico-list"></a>
@@ -75,7 +75,10 @@
                                             {% endif %}
                                         </div>
                                     </div>
-                                        {{ render(controller('FoodDishesBundle:FoodCategory:dishList', {'categoryId': selectedCategory.id, 'listType': listType})) }}
+                                    {# {{ render(controller('FoodDishesBundle:FoodCategory:dishList', {'categoryId': selectedCategory.id, 'listType': listType})) }} #}
+                                    {% for dishCategory in placeCategories %}
+                                        {{ render(controller('FoodDishesBundle:FoodCategory:dishList', {'categoryId': dishCategory.id, 'category': dishCategory, 'listType': listType})) }}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -85,7 +88,7 @@
                                 {% set count = place.reviews.count %}
                                 <h3>{% transchoice count %}%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų{% endtranschoice %}</h3>
                                 {% if wasHere and not alreadyWrote %}
-                                    <a href="#place-review-popup" class="boxer">{% trans %}places.add_review{% endtrans %}</a>
+                                    <a href="#place-review-popup" class="fancy-box">{% trans %}places.add_review{% endtrans %}</a>
                                 {% endif %}
                                 {{ include('FoodDishesBundle:Place:review-popup.html.twig') }}
                             </div>
@@ -186,4 +189,9 @@
         </div>
     </div>
 
+    <script type="application/javascript">
+        $(document).ready(function(){
+            Place.initWindowScroll();
+        });
+    </script>
 {% endblock %}

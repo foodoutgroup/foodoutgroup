@@ -20,11 +20,12 @@ class FoodCategoryController extends Controller
         );
     }
 
-    public function dishListAction($categoryId, $listType)
+    public function dishListAction($categoryId, $category, $listType)
     {
         return $this->render(
             'FoodDishesBundle:FoodCategory:dish_list.html.twig',
             array(
+                'category' => $category,
                 'dishes' => $this->get('food.dishes')->getActiveDishesByCategory($categoryId),
                 'listType' => $listType
             )

@@ -118,6 +118,14 @@
         <source>admin.order.log.message</source>
         <target>__admin.order.log.message</target>
       </trans-unit>
+      <trans-unit id="0d02bb7fd4c07249c1c2b4236a7621bb" resname="admin.dispatcher.delivery_time">
+        <source>admin.dispatcher.delivery_time</source>
+        <target>Prist. iki</target>
+      </trans-unit>
+      <trans-unit id="0ec0b2be2b04f6575267da2994969fad" resname="admin.dispatcher.delayed">
+        <source>admin.dispatcher.delayed</source>
+        <target>Atidėta</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
