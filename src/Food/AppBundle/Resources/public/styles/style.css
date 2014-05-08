@@ -787,7 +787,7 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
 }
 
 .login-form .login-error {
-    color: #ff0000;
+    /*color: #ff0000;*/
     display: none;
 }
 .review-form .form-row span.rate-review {
