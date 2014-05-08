@@ -12,9 +12,6 @@
             'payments_cash': '{% trans %}places.payments.cash{% endtrans %}',
             'payments_card': '{% trans %}places.payments.card{% endtrans %}'
         };
-        $(document).ready(function(){
-            Place.initWindowScroll();
-        });
     </script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api }}&sensor=false"></script>
     {% endjavascripts %}
@@ -192,4 +189,9 @@
         </div>
     </div>
 
+    <script type="application/javascript">
+        $(document).ready(function(){
+            Place.initWindowScroll();
+        });
+    </script>
 {% endblock %}
