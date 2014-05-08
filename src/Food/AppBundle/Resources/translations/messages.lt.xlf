@@ -546,6 +546,14 @@
         <source>general.profile.button_save</source>
         <target>Išsaugoti</target>
       </trans-unit>
+      <trans-unit id="general.profile.home" resname="general.profile.home">
+        <source>general.profile.home</source>
+        <target>Pradžia</target>
+      </trans-unit>
+      <trans-unit id="general.profile" resname="general.profile">
+        <source>general.profile</source>
+        <target>Vartotojo profilis</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

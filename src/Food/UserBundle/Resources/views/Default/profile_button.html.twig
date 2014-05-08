@@ -1,1 +1,1 @@
-<a href="{{ path('user_profile') }}"><span>{% trans with {'%firstname%': app.user.firstname} %}general.profile_button{% endtrans %}</span></a>
+<a href="{{ path('user_profile') }}"><span>{% trans with {'%firstname%': language_utils.name(app.user.firstname, locale)} %}general.profile_button{% endtrans %}</span></a>

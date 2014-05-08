@@ -193,6 +193,7 @@ class DefaultController extends Controller
         return [
             'form' => $form->createView(),
             'addressForm' => $addressForm->createView(),
+            'orders' => $this->get('food.order')->getUserOrders($user),
             'hasErrors' => $hasErrors,
             'errors' => $errors
         ];
@@ -214,7 +215,7 @@ class DefaultController extends Controller
         $address = $this->address($user);
 
         // @TODO tikejaus, kad tituliniam nebeliko hardkodo :| Deja.. Palieku ir cia, iki rankos issities padaryt tvarka
-        $cities = array('Vilnius' => 'Vilnius', 'Kaunas' => 'Kaunas');
+        $cities = array('Vilnius' => 'Vilnius', /*'Kaunas' => 'Kaunas'*/);
 
         $form = $this->createForm(new ProfileFormType(get_class($user)), $user);
         $addressForm = $this->createForm(new UserAddressFormType($cities), $address);

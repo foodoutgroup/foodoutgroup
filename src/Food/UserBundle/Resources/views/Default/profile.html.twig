@@ -15,12 +15,18 @@
 {% block body %}
     <div class="site-center">
         <div class="site-block">
-            <div class="page-path clearfix"><h1>{% trans %}general.greating{% endtrans %}, {{ app.user.firstname }}!</span></h1>
+            <div class="page-path clearfix">
+                <a href="{{ path('food_lang_homepage') }}">{% trans %}general.profile.home{% endtrans %}</a>
+                <a href="{{ path('user_profile') }}"> {% trans %}general.profile{% endtrans %}</a>
+            </div>
+            <div class="page-title">
+                <h1 class="clearfix"><span>{% trans %}general.greating{% endtrans %}, {{ language_utils.name(app.user.firstname, locale) }}!</span></h1>
             </div>
             <div class="clearfix">
                 <div class="full-content user-page clearfix">
                     <div class="user-lefter">
-                        <div class="active-user"><img src="{{ asset('bundles/foodapp/images/person.png') }}"><a href="#" class="edit"></a>
+                        <div class="active-user"><img src="{{ asset('bundles/foodapp/images/person.png') }}">
+                            {#<a href="#" class="edit"></a>#}
                             <div class="user-name">{{ app.user.firstname }}</div>
                             <div class="user-location">{{ app.user.defaultAddress.city }}</div>
                         </div>
