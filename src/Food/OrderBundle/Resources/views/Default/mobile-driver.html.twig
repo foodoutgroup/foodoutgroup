@@ -42,6 +42,12 @@
                 </b> {{ order.total }} {{ currency_display }}
             </td>
         </tr>
+        <tr>
+            <th colspan="5">{% trans %}mobile.payment{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ ('mobile.payment.' ~ order.paymentMethod)|trans }}</td>
+        </tr>
         {% if order.deliveryType == 'deliver' %}
                 <tr>
                     <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
@@ -104,11 +110,11 @@
         </tbody>
     </table>
     <form method="post">
-        {% if order.orderStatus == "accepted" or order.orderStatus == "delayed" %}
-            <button type="submit" name="status" value="finish" class="btn btn-success btn-block">{% trans %}mobile.order_finish{% endtrans %}</button>
-        {% elseif order.orderStatus == "finished" or order.orderStatus == "assigned" or order.orderStatus == "completed" %}
-            <center><h2>{% trans %}mobile.place_finish_message{% endtrans %}</h2></center>
-        {% endif %}
+        {#{% if order.orderStatus == "accepted" or order.orderStatus == "delayed" %}#}
+            {#<button type="submit" name="status" value="finish" class="btn btn-success btn-block">{% trans %}mobile.order_finish{% endtrans %}</button>#}
+        {#{% elseif order.orderStatus == "finished" or order.orderStatus == "assigned" or order.orderStatus == "completed" %}#}
+            {#<center><h2>{% trans %}mobile.place_finish_message{% endtrans %}</h2></center>#}
+        {#{% endif %}#}
         <a class="btn btn-info btn-block" href="{{ path('driver_mobile_invoice', {hash: order.orderHash}) }}">{% trans %}mobile.invoice_driver{% endtrans %}</a>
 
     </form>
