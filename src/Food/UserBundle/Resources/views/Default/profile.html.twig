@@ -76,6 +76,9 @@
                     <div class="user-righter content-item cart">
                         <h2>{% trans %}general.profile.cart_history{% endtrans %}</h2>
                         <div class="order-history-list">
+                            {% if orders is empty %}
+                                {% trans %}general.profile.no_orders{% endtrans %}
+                            {% endif %}
                             {% for order in orders %}
                                 <div class="order-history-item clearfix">
                                     <div class="restautrant-logo">

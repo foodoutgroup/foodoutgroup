@@ -554,6 +554,10 @@
         <source>general.profile</source>
         <target>Vartotojo profilis</target>
       </trans-unit>
+      <trans-unit id="general.profile.no_orders" resname="general.profile.no_orders">
+        <source>general.profile.no_orders</source>
+        <target>Dar nieko užsisakėte</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
