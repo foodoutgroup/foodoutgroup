@@ -27,13 +27,13 @@ class PlaceController extends Controller
         if ($cookies->has('restaurant_menu_layout')) {
             $listType = $cookies->get('restaurant_menu_layout');
         }
-
+/**
         if (!empty($categoryId)) {
             $activeCategory = $categoryRepo->find($categoryId);
         } else {
             $activeCategory = $categoryList[0];
         }
-
+*/
         $wasHere = $this->wasHere($place, $this->user());
         $alreadyWrote = $this->alreadyWrote($place, $this->user());
 
@@ -44,7 +44,7 @@ class PlaceController extends Controller
                 'wasHere' => $wasHere,
                 'alreadyWrote' => $alreadyWrote,
                 'placeCategories' => $categoryList,
-                'selectedCategory' => $activeCategory,
+                // 'selectedCategory' => $activeCategory,
                 'placePoints' => $placePoints,
                 'listType' => $listType,
             )

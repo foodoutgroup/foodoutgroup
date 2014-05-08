@@ -24,22 +24,22 @@ class DishesService extends ContainerAware {
     public function getSmallestDishPrice($dishId)
     {
         $prices = $this->em()->getRepository('FoodDishesBundle:Dish')->getSmallestPrice($dishId);
-
         if (!empty($prices) && is_array($prices)) {
             return $prices[0]['price'];
-        } else {
+        } elseif (!empty($prices)) {
             return $prices['price'];
         }
+        return null;
     }
 
     public function getLargestDishPrice($dishId)
     {
         $prices = $this->em()->getRepository('FoodDishesBundle:Dish')->getLargestPrice($dishId);
-
         if (!empty($prices) && is_array($prices)) {
             return $prices[0]['price'];
-        } else {
+        } elseif (!empty($prices)) {
             return $prices['price'];
         }
+        return null;
     }
 }
