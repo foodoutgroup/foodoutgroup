@@ -223,7 +223,7 @@ class DefaultController extends Controller
             'form' => $form->createView(),
             'addressForm' => $addressForm->createView(),
             'tab' => $tab,
-            'orders' => $this->orders($user),
+            'orders' => $this->get('food.order')->getUserOrders($user),
             'hasErrors' => false,
         ];
     }
@@ -275,18 +275,5 @@ class DefaultController extends Controller
         ;
 
         return $address;
-    }
-
-    private function orders(User $user)
-    {
-        return $this
-            ->getDoctrine()
-            ->getManager()
-            ->createQueryBuilder()
-            ->select('o')
-            ->from('FoodOrderBundle:Order', 'o')
-            ->getQuery()
-            ->getResult()
-        ;
     }
 }

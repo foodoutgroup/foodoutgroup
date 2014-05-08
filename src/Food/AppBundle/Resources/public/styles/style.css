@@ -892,8 +892,23 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
     display: none;
 }
 
+.user-page .user-righter.content-item.cart .in-progress {
+    margin-top: 14px;
+    width: 70px;
+}
+
+/* ------------------------------------ */
+/* TODO HACK kol neturime orderio vertinimo ir neturime susirink nauja uzsakyma pagal sena - platinam viduri, kad tilptu adresas i viena eilute ir siaurinam desini sona. Veliau galvosim, kaip graziau issprest :P */
+.order-history-item .history-item-middle {
+    width: 440px !important;
+}
+.order-history-item .history-item-righter {
+    width: 100px !important;
+}
+/* End of hack */
+/* ------------------------------------ */
+
 /* TODO Uzkomentuota tai, ko dabar neturime */
-.user-page .menu-item.cart-ico,
 .user-page .menu-item.delivery-ico {
     display: none;
 }

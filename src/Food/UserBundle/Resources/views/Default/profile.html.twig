@@ -15,29 +15,32 @@
 {% block body %}
     <div class="site-center">
         <div class="site-block">
-            <div class="page-path clearfix">
-                <a href="{{ path('food_lang_homepage') }}">Pradžia</a>
-                <a href="{{ path('user_profile') }}"> Vartotojo profilis</a>
-            </div>
-            <div class="page-title">
-                <h1 class="clearfix"><span>Sveiki, {{ app.user.firstname }}!</span></h1>
+            <div class="page-path clearfix"><h1>{% trans %}general.greating{% endtrans %}, {{ app.user.firstname }}!</span></h1>
             </div>
             <div class="clearfix">
                 <div class="full-content user-page clearfix">
                     <div class="user-lefter">
                         <div class="active-user"><img src="{{ asset('bundles/foodapp/images/person.png') }}"><a href="#" class="edit"></a>
                             <div class="user-name">{{ app.user.firstname }}</div>
-                            <div class="user-location">Vilnius</div>
+                            <div class="user-location">{{ app.user.defaultAddress.city }}</div>
                         </div>
                         <ul class="menu user-menu">
-                            <li class="menu-item user-ico active" data-target=".user-page .content-item.user"><a href="#">Vartotojo duomenys</a></li>
-                            <li class="menu-item cart-ico" data-target=".user-page .content-item.cart"><a href="#">Užsakymų istorija</a></li>
-                            <li class="menu-item delivery-ico" data-target=".user-page .content-item.delivery"><a href="#">Užsakymo sekimas</a></li>
-                            <li class="logoff-ico"><a href="{{ path('fos_user_security_logout') }}">Atsijungti</a></li>
+                            <li class="menu-item user-ico active" data-target=".user-page .content-item.user">
+                                <a href="#">{% trans %}general.profile.user_data{% endtrans %}</a>
+                            </li>
+                            <li class="menu-item cart-ico" data-target=".user-page .content-item.cart">
+                                <a href="#">{% trans %}general.profile.cart_history{% endtrans %}</a>
+                            </li>
+                            {#<li class="menu-item delivery-ico" data-target=".user-page .content-item.delivery">#}
+                                {#<a href="#">Užsakymo sekimas</a>#}
+                            {#</li>#}
+                            <li class="logoff-ico">
+                                <a href="{{ path('fos_user_security_logout') }}">{% trans %}general.profile.logout{% endtrans %}</a>
+                            </li>
                         </ul>
                     </div>
                     <div class="user-righter content-item user">
-                        <h2>Vartotojo duomenys</h2>
+                        <h2>{% trans %}general.profile.user_data{% endtrans %}</h2>
                         {% if hasErrors is defined and hasErrors %}
                             <div class="error alert alert-danger">
                                 <ul>
@@ -60,28 +63,41 @@
                             {#{{ form_row(form.plainPassword.first) }}#}
                             {#{{ form_row(form.plainPassword.second) }}#}
                             <div class="form-controls">
-                                <input type="submit" value="išsaugoti">
+                                <input type="submit" value="{% trans %}general.profile.button_save{% endtrans %}">
                             </div>
                         </form>
                     </div>
                     <div class="user-righter content-item cart">
-                        <h2>Užsakymų istorija</h2>
+                        <h2>{% trans %}general.profile.cart_history{% endtrans %}</h2>
                         <div class="order-history-list">
-                            {#{% for order in orders %}
+                            {% for order in orders %}
                                 <div class="order-history-item clearfix">
                                     <div class="restautrant-logo">
-                                        <div class="restautrant-logo-wrap"><img src="{{ asset('bundles/foodapp/images/res-1-s.png') }}"></div>
+                                        <div class="restautrant-logo-wrap">
+                                            <img src="/uploads/places/thumb_{{ order.place.logo }}" alt="{{ order.placeName }}" />
+                                        </div>
                                     </div>
                                     <div class="history-item-middle">
-                                        <div class="number-date"><span>Užsakymas #{{ order.id }}</span><span>2013 gruodžio 28, 18,50</span></div>
-                                        <div class="desc">Pristatyti <strong>{{ order.details.count }} patiekalai</strong> už {{ order.total }} Lt į Kuršių g. </div>
+                                        <div class="number-date"><span>{% trans %}general.order{% endtrans %} #{{ order.id }}</span><span>{{ order.orderDate|date("Y m d, H:i") }}</span></div>
+                                        <div class="desc">
+                                            {% if order.orderStatus == 'finished' %}{% trans %}general.order.delivered{% endtrans %}{% elseif order.orderStatus == 'assigned' %}{% trans %}general.order.on_delivery{% endtrans %}{% else %}{% trans %}general.order.making{% endtrans %}{% endif %}
+                                            <strong>{{ order.details.count }} {% trans %}general.order.dishes{% endtrans %}</strong> {% trans %}general.for{% endtrans %} {{ order.total }} {{ currency_display }} {% trans %}general.to{% endtrans %} {{ order.addressId.address }}.
+                                        </div>
                                     </div>
-                                    <div class="history-item-righter"><a href="#" class="rate-link">Įvertink šį užsakymą</a><a href="#" class="order-button">Užsakyti dar kartą</a></div><span class="close"></span>
+                                    <div class="history-item-righter">
+                                        {% if order.orderStatus != 'finished' %}
+                                            <div class="in-progress alert alert-warning">{% trans %}general.order.in_progress{% endtrans %}</div>
+                                        {% endif %}
+                                        {#<a href="#" class="rate-link">Įvertink šį užsakymą</a>#}
+                                        {#<a href="#" class="order-button">Užsakyti dar kartą</a>#}
+                                    </div>
+                                        {#<span class="close"></span>#}
                                 </div>
-                            {% endfor %}#}
+                            {% endfor %}
                         </div>
                     </div>
-                    <div class="user-righter content-item delivery">
+                    {# TODO delivery sekimas! Omg, so fun :) #}
+                    {#<div class="user-righter content-item delivery">
                         <h2>Užsakymo sekimas</h2>
                         <form class="delivery-tracking-form">
                             <p>Norite sužinoti kas vyksta su Jūsų užsakymu šiuo metu? Čili seklys leidžia stebėti Jūsų užsakymo statusą nuo jo priėmimo iki pristatymo.</p>
@@ -90,9 +106,9 @@
                                 <input type="text" value="+370">
                                 <button type="submit"><span>Sekti užsakymą</span></button>
                             </div>
-                            {# <div class="progress-image-wrap"><img src="{{ asset('bundle/foodap/images/delivery-progress.jpg') }}"></div> #}
+                            &#123;&#35; <div class="progress-image-wrap"><img src="{{ asset('bundle/foodap/images/delivery-progress.jpg') }}"></div> &#35;&#125;
                         </form>
-                    </div>
+                    </div>#}
                 </div>
             </div>
         </div>

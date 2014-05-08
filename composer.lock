@@ -930,12 +930,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "e4c000a9b19096be0135d0773b56f7c757c93542"
+                "reference": "13c173ff60eef8e32c10f76225eacca00a430826"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/e4c000a9b19096be0135d0773b56f7c757c93542",
-                "reference": "e4c000a9b19096be0135d0773b56f7c757c93542",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/13c173ff60eef8e32c10f76225eacca00a430826",
+                "reference": "13c173ff60eef8e32c10f76225eacca00a430826",
                 "shasum": ""
             },
             "require": {
@@ -990,7 +990,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2014-04-08 21:21:16"
+            "time": "2014-05-07 23:51:03"
         },
         {
             "name": "gedmo/doctrine-extensions",

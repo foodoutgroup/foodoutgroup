@@ -16,6 +16,3 @@ Food\UserBundle\Entity\User:
                 minMessage: general.user.lastname.short
                 max: 255
                 maxMessage: general.user.lastname.long
-        email:
-            - NotBlank:
-                message: general.user.email.not_blank
