@@ -52,6 +52,12 @@
                 </b> {{ order.total }} {{ currency_display }}
             </td>
         </tr>
+        <tr>
+            <th colspan="5">{% trans %}mobile.restourant_place_point_address{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.city }}</td>
+        </tr>
         {% if order.deliveryType == 'deliver' %}
             {% if order.placePointSelfDelivery == 1 %}
                 <tr>
