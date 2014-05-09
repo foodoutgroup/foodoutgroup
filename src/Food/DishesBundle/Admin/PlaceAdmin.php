@@ -52,6 +52,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('new', 'checkbox', array('label' => 'admin.is_new', 'required' => false,))
             ->add('recommended', 'checkbox', array('label' => 'admin.place.recommended', 'required' => false,))
             ->add('deliveryTime', null, array('label' => 'admin.place.delivery_time'))
+            ->add('deliveryTimeInfo', null, array('label' => 'admin.place.delivery_time_info', 'required' => false))
             ->add('deliveryPrice', null, array('label' => 'admin.place.delivery_price'))
             ->add('cartMinimum', null, array('label' => 'admin.place.cart_minimum'))
             ->add('selfDelivery', 'checkbox', array('label' => 'admin.place.self_delivery', 'required' => false))

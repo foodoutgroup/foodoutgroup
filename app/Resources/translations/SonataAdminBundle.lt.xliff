@@ -300,6 +300,10 @@
                 <source>admin.place.delivery_time</source>
                 <target>Prist. trukmė</target>
             </trans-unit>
+            <trans-unit id="admin.place.delivery_time_info">
+                <source>admin.place.delivery_time_info</source>
+                <target>Papild. trukm. info.</target>
+            </trans-unit>
             <trans-unit id="admin.place.delivery_price">
                 <source>admin.place.delivery_price</source>
                 <target>Prist. kaina</target>
