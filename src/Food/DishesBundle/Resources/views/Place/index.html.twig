@@ -65,6 +65,13 @@
                                 </div>
                         {# Meniu #}
                                 <div class="menu-righter">
+                                    {% if placePointsAll|length == 1 %}
+                                        {% if order_service.isTodayWork(placePointsAll[0]) == false %}
+                                            <div class="alert alert-danger">
+                                                {{ order_service.workTimeErrorsReturn(placePointsAll[0])|trans }}
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
                                     <div class="menu-title clearfix">
                                         <h2 class="fl">{% trans %}places.dishes_title{% endtrans %}{# {{ selectedCategory.name }} #}</h2>
                                         <div class="view-type clearfix">

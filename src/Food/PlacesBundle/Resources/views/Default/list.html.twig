@@ -17,14 +17,17 @@
                         <img src="/bundles/foodapp/images/tag-new.png">
                     </span>
                     {% endif %}
-                    {#
-                    <span class="tag">
-                        <img src="/bundles/foodapp/images/tag-not-working.png">
-                        <div class="time-popup">VII 11:00 - 00:00
-                            <div class="nip"></div>
-                        </div>
-                    </span>
-                    #}
+                    {% if place.pp_count == 1 %}
+                        {% if order_service.isTodayWork(place.point) == false %}
+                            <span class="tag">
+                                <img src="/bundles/foodapp/images/tag-not-working.png">
+                                <div class="time-popup">{{ order_service.getTodayWork(place.point) }}
+                                    <div class="nip"></div>
+                                </div>
+                            </span>
+                        {% endif %}
+                    {% endif %}
+
                 </h2>
                 <p class="desc">
                     {% for kitchen in place.place.kitchens %}

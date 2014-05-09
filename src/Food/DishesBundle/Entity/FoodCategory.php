@@ -45,6 +45,13 @@ class FoodCategory implements Translatable
     /**
      * @var bool
      *
+     * @ORM\Column(name="texts_only", type="boolean", nullable=true)
+     */
+    private $textsOnly;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="drinks", type="boolean")
      */
     private $drinks;
@@ -567,5 +574,28 @@ class FoodCategory implements Translatable
     public function getLineup()
     {
         return $this->lineup;
+    }
+
+    /**
+     * Set textsOnly
+     *
+     * @param boolean $textsOnly
+     * @return FoodCategory
+     */
+    public function setTextsOnly($textsOnly)
+    {
+        $this->textsOnly = $textsOnly;
+    
+        return $this;
+    }
+
+    /**
+     * Get textsOnly
+     *
+     * @return boolean 
+     */
+    public function getTextsOnly()
+    {
+        return $this->textsOnly;
     }
 }

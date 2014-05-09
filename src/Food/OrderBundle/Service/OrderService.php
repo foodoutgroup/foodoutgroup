@@ -1188,7 +1188,7 @@ class OrderService extends ContainerAware
      * @param PlacePoint $placePoint
      * @todo fix laiku poslinkiai
      */
-    private function workTimeErrors(PlacePoint $placePoint, &$errors)
+    private  function workTimeErrors(PlacePoint $placePoint, &$errors)
     {
         $wd = date('w');
         if ($wd == 0) $wd = 7;
@@ -1204,6 +1204,53 @@ class OrderService extends ContainerAware
                 $errors[] = "order.form.errors.is_already_close";
             }
         }
+    }
+
+    public function workTimeErrorsReturn(PlacePoint $placePoint)
+    {
+        $errors = array();
+        $this->workTimeErrors($placePoint, $errors);
+        if (!empty($errors)) {
+            return end($errors);
+        }
+        return "";
+    }
+
+    public function isTodayWork(PlacePoint $placePoint)
+    {
+        $wd = date('w');
+        if ($wd == 0) $wd = 7;
+        $timeFr = $placePoint->{'getWd'.$wd.'Start'}();
+        $timeTo = $placePoint->{'getWd'.$wd.'End'}();
+
+        if(!strpos($timeFr, ':')|| !strpos($timeTo, ':')) {
+            return false;
+        } else {
+            if (strtotime($timeFr) > date('U')) {
+                return false;
+            } elseif (strtotime($timeTo) < date('U')) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function getTodayWork(PlacePoint $placePoint, $showDayNumber = true)
+    {
+        $wdays = array(
+            '1' =>'I',
+            '2' =>'II',
+            '3' =>'III',
+            '4' =>'IV',
+            '5' =>'V',
+            '6' =>'VI',
+            '7' =>'VII',
+        );
+        $wd = date('w');
+        if ($wd == 0) $wd = 7;
+        $timeFr = $placePoint->{'getWd'.$wd.'Start'}();
+        $timeTo = $placePoint->{'getWd'.$wd.'End'}();
+        return ($showDayNumber ? $wdays[$wd]." " : ""). $timeFr." - ".$timeTo;
     }
 
     /**
