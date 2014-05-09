@@ -951,7 +951,7 @@ class OrderService extends ContainerAware
         $orders = $em->getRepository('Food\OrderBundle\Entity\Order')
             ->findBy(
                 array(
-                    'order_status' =>  array(self::$status_accepted, self::$status_delayed),
+                    'order_status' =>  array(self::$status_accepted, self::$status_delayed, self::finished),
                     'place_point_city' => $city,
                     'deliveryType' => self::$deliveryDeliver,
                 ),
