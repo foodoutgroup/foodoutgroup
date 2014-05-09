@@ -1198,9 +1198,14 @@ class OrderService extends ContainerAware
         if(!strpos($timeFr, ':')|| !strpos($timeTo, ':')) {
             $errors[] = "order.form.errors.today_no_work";
         } else {
-            if (strtotime($timeFr) > date('U')) {
+            $timeFrTs = strtotime($timeFr);
+            $timeToFs = strtotime($timeTo);
+            if ($timeToFs < $timeFrTs) {
+                $timeToFs+= 60 * 60 * 24;
+            }
+            if ($timeFrTs > date('U')) {
                 $errors[] = "order.form.errors.isnt_open";
-            } elseif (strtotime($timeTo) < date('U')) {
+            } elseif ($timeToFs < date('U')) {
                 $errors[] = "order.form.errors.is_already_close";
             }
         }
@@ -1226,9 +1231,14 @@ class OrderService extends ContainerAware
         if(!strpos($timeFr, ':')|| !strpos($timeTo, ':')) {
             return false;
         } else {
-            if (strtotime($timeFr) > date('U')) {
+            $timeFrTs = strtotime($timeFr);
+            $timeToFs = strtotime($timeTo);
+            if ($timeToFs < $timeFrTs) {
+                $timeToFs+= 60 * 60 * 24;
+            }
+            if ($timeFrTs > date('U')) {
                 return false;
-            } elseif (strtotime($timeTo) < date('U')) {
+            } elseif ($timeToFs < date('U')) {
                 return false;
             }
         }
