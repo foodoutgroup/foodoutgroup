@@ -1,6 +1,8 @@
 <div class="menu-title clearfix"><h2 class="fl clearfix" id="{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}</h2></div>
 <div class="clearfix restaurant-menu{% if listType == 'list' %} display-list{% endif %}">
     {% for dish in dishes %}
+        {% set smallestPrice = dish_service.smallestDishPrice(dish.id) %}
+        {% set largestPrice = dish_service.largestDishPrice(dish.id) %}
         <div class="restaurant-menu-item text">
             <h3 class="name">{{ dish.name }}</h3>
             <p class="desc">
@@ -17,6 +19,20 @@
                 {% endif %}
                 {{ dish.description|nl2br }}
             </p>
+            {% if smallestPrice and largestPrice %}
+            <div class="menu-item-bottom clearfix">
+                {% if smallestPrice and largestPrice %}
+                    <span class="price">
+                        {% if smallestPrice == largestPrice %}
+                            {{ smallestPrice }} {{ currency_display }}
+                        {% else %}
+                            {{ smallestPrice }} {{ currency_display }} - {{ largestPrice }} {{ currency_display }}
+                        {% endif %}
+                     </span>
+                {% endif %}
+                <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" href2="#detailed-dish-popup" class="fancybox.ajax add-to-cart fancy-box"></a>
+            </div>
+            {% endif %}
         </div>
     {% endfor %}
 </div>
