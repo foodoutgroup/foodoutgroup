@@ -19,6 +19,7 @@ class PlaceController extends Controller
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
         $categoryList = $this->get('food.places')->getActiveCategories($place);
         $placePoints = $this->get('food.places')->getPublicPoints($place);
+        $placePointsAll = $this->get('food.places')->getAllPoints($place);
         $categoryRepo = $this->getDoctrine()->getRepository('FoodDishesBundle:FoodCategory');
 
         $listType = 'thumbs';
@@ -36,7 +37,6 @@ class PlaceController extends Controller
 */
         $wasHere = $this->wasHere($place, $this->user());
         $alreadyWrote = $this->alreadyWrote($place, $this->user());
-
         return $this->render(
             'FoodDishesBundle:Place:index.html.twig',
             array(
@@ -46,6 +46,7 @@ class PlaceController extends Controller
                 'placeCategories' => $categoryList,
                 // 'selectedCategory' => $activeCategory,
                 'placePoints' => $placePoints,
+                'placePointsAll' => $placePointsAll,
                 'listType' => $listType,
             )
         );
