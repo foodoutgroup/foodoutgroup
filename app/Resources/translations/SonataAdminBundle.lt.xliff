@@ -160,6 +160,10 @@
                 <source>admin.food_category.lineup</source>
                 <target>Pozicija</target>
             </trans-unit>
+            <trans-unit id="admin.food_category.texts_onlyp">
+                <source>admin.food_category.texts_only</source>
+                <target>Tekstai</target>
+            </trans-unit>
 
             <!-- Dish -->
             <trans-unit id="dish">

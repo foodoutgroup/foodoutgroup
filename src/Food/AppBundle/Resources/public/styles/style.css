@@ -912,3 +912,14 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
 .user-page .menu-item.delivery-ico {
     display: none;
 }
+
+/** Dish liste - textu hackas **/
+.restaurant-menu-item.text {
+    width: auto;
+    margin-right: 0;
+}
+.restaurant-menu-item.text .dish_larger {
+    padding-right: 10px;
+    float: left;
+    border-radius: 4px;
+}

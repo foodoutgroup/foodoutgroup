@@ -29,7 +29,8 @@ class FoodCategoryAdmin extends FoodAdmin
                 ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place',));
         }
         $formMapper
-            ->add('lineup', '', array('required' => false, 'label' => 'admin.food_category.lineup'))
+            ->add('lineup', null, array('required' => false, 'label' => 'admin.food_category.lineup'))
+            ->add('textsOnly', null, array('required' => false, 'label' => 'admin.food_category.texts_only'))
             ->add('drinks', 'checkbox', array('required' => false, 'label' => 'admin.food_category.drinks'))
             ->add('alcohol', 'checkbox', array('required' => false, 'label' => 'admin.food_category.alcohol'))
             ->add('active', 'checkbox', array('required' => false, 'label' => 'admin.active'))
@@ -65,6 +66,7 @@ class FoodCategoryAdmin extends FoodAdmin
         $listMapper
             ->addIdentifier('name', 'string', array('label' => 'admin.food_category.name'))
             ->add('place')
+            ->add('textsOnly', null, array('label' => 'admin.food_category.texts_only'))
             ->add('drinks', null, array('label' => 'admin.food_category.drinks'))
             ->add('alcohol', null, array('label' => 'admin.food_category.alcohol'))
             ->add('active', null, array('label' => 'admin.places.list.active', 'editable' => true))

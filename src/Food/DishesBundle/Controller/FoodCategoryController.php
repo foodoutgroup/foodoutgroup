@@ -2,6 +2,7 @@
 
 namespace Food\DishesBundle\Controller;
 
+use Food\DishesBundle\Entity\FoodCategory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -20,10 +21,14 @@ class FoodCategoryController extends Controller
         );
     }
 
-    public function dishListAction($categoryId, $category, $listType)
+    public function dishListAction($categoryId, FoodCategory $category, $listType)
     {
+        $template = 'FoodDishesBundle:FoodCategory:dish_list.html.twig';
+        if ($category->getTextsOnly()) {
+            $template = 'FoodDishesBundle:FoodCategory:dish_list_texts.html.twig';
+        }
         return $this->render(
-            'FoodDishesBundle:FoodCategory:dish_list.html.twig',
+            $template,
             array(
                 'category' => $category,
                 'dishes' => $this->get('food.dishes')->getActiveDishesByCategory($categoryId),

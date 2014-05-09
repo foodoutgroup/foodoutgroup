@@ -1,0 +1,22 @@
+<div class="menu-title clearfix"><h2 class="fl clearfix" id="{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}</h2></div>
+<div class="clearfix restaurant-menu{% if listType == 'list' %} display-list{% endif %}">
+    {% for dish in dishes %}
+        <div class="restaurant-menu-item text">
+            <h3 class="name">{{ dish.name }}</h3>
+            <p class="desc">
+                {% if dish.getWebPathThumb('type1') is not empty %}
+                    {% if listType == 'thumbs' %}
+                        {% set largeImgClass = '' %}
+                        {% set smallImgClass = ' hidden' %}
+                    {% else %}
+                        {% set largeImgClass = ' hidden' %}
+                        {% set smallImgClass = '' %}
+                    {% endif %}
+                    <img src="/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}">
+                    <img src="/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
+                {% endif %}
+                {{ dish.description|nl2br }}
+            </p>
+        </div>
+    {% endfor %}
+</div>
