@@ -87,6 +87,8 @@ var Place = {
             return false;
         });
 
+        $('.delivery-time-info').tooltip();
+
         init_raty();
     },
     /**

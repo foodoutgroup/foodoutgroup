@@ -43,11 +43,21 @@
         {% if inCart == false %}
             <a href="{{ path('food_cart', { 'placeId' : place.id }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
         {% endif %}
-        <div class="delivery-time tac">{% trans %}cart.block.delivery_time{% endtrans %} {{ place.deliveryTime }}</div>
+        <div class="delivery-time tac">
+            {% trans %}cart.block.delivery_time{% endtrans %} {{ place.deliveryTime }}
+            {% if place.deliveryTimeInfo is not empty %}
+                <span class="delivery-time-info-cart ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
+            {% endif %}
+        </div>
         <div class="delivery-time tac tooltip">{% trans %}cart.block.order_sum_minimum{% endtrans %} {{ place.cartMinimum }} {{ currency_display }}. {% trans %}cart.block.order_sum_minimum_take_myself{% endtrans %}</div>
     {% else %}
         <div class="check-bottom">
             <h5 class="tac">{% trans %}cart.block.your_order_empty{% endtrans %}</h5>
         </div>
     {% endif %}
+    <script type="application/javascript">
+        $(document).ready(function(){
+            $('.delivery-time-info-cart').tooltip();
+        });
+    </script>
 </div>

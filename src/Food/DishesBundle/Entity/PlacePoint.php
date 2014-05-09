@@ -121,6 +121,13 @@ class PlacePoint
     private $deliveryTime;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="delivery_time_info", type="string", nullable=true)
+     */
+    private $deliveryTimeInfo;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="pick_up", type="boolean")
@@ -1305,5 +1312,28 @@ class PlacePoint
     public function getAltEmail2()
     {
         return $this->altEmail2;
+    }
+
+    /**
+     * Set deliveryTimeInfo
+     *
+     * @param string $deliveryTimeInfo
+     * @return PlacePoint
+     */
+    public function setDeliveryTimeInfo($deliveryTimeInfo)
+    {
+        $this->deliveryTimeInfo = $deliveryTimeInfo;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryTimeInfo
+     *
+     * @return string 
+     */
+    public function getDeliveryTimeInfo()
+    {
+        return $this->deliveryTimeInfo;
     }
 }
