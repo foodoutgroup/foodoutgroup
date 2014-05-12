@@ -75,8 +75,8 @@
                             <span class="glyphicon glyphicon-remove"></span>
                         {% endif %}
                     </td>
-                    <td class="order_date">{{ order.orderDate|date("H:i") }}</td>
-                    <td class="order_date">{{ order.deliveryTime|date("H:i") }}</td>
+                    <td class="order_date" title="{{ order.orderDate|date("Y-m-d") }}">{{ order.orderDate|date("H:i") }}</td>
+                    <td class="order_date" title="{{ order.deliveryTime|date("Y-m-d") }}">{{ order.deliveryTime|date("H:i") }}</td>
                     <td class="order_date{% if order.delayed %} delayed-order{% endif %}">
                         {% if order.delayed %}
                             {{ order.delayDuration }} min
