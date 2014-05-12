@@ -45,6 +45,7 @@ parameters:
     currency_display: Lt
     vat: 21
     evp.test_payments: 0
+    mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
 
 framework:
     #esi:             ~
