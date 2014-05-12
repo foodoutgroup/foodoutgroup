@@ -23,7 +23,7 @@
 
 {% block list_table %}
     {# type gali buti 'unassigned', 'not_finished' ;) Just in case you need that #}
-    {% macro order_table(order_list, type) %}
+    {% macro order_table(order_list, type, cityName) %}
         {% if type == 'unassigned' %}
         <div class="driver_button">
             <button class="get_drivers_button btn btn-lg" disabled="disabled">
@@ -32,7 +32,7 @@
             </button>
         </div>
         {% endif %}
-        <table class="order_list {{ type }}">
+        <table class="order_list {{ type }}" list-type="{{ type }}">
             <tr>
                 <th></th>
                 <th>{{ 'admin.dispatcher.order_id'|trans({}, 'SonataAdminBundle') }}</th>
@@ -50,6 +50,14 @@
                 <th>{{ 'admin.dispatcher.status'|trans({}, 'SonataAdminBundle') }}</th>
             </tr>
             {% for order in order_list %}
+                {% if loop.last %}
+                    <script type="text/javascript">
+                        if (typeof Dispatcher.recentOrders['{{ cityName }}'] == "undefined") {
+                            Dispatcher.recentOrders['{{ cityName }}'] = {};
+                        }
+                        Dispatcher.recentOrders['{{ cityName }}']['{{ type }}'] = {{ order.id }};
+                    </script>
+                {% endif %}
                 <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">
                     <td>
                         {% if not order.placePointSelfDelivery %}
@@ -133,17 +141,33 @@
                 <li><a href="#city_list-{{ loop.index }}">{{ city }}</a></li>
             {% endfor %}
         </ul>
-        {% for city in cityOrders %}
+        {% for cityName,city in cityOrders %}
             <div id="city_list-{{ loop.index }}">
                 <ul>
-                    <li><a href="#city-{{ loop.index }}-unassigned">{{ 'admin.dispatcher.unassigned'|trans({}, 'SonataAdminBundle') }}</a></li>
-                    <li><a href="#city-{{ loop.index }}-undelivered">{{ 'admin.dispatcher.undelivered'|trans({}, 'SonataAdminBundle') }}</a></li>
+                    <li>
+                        <a href="#city-{{ loop.index }}-unassigned">
+                            {{ 'admin.dispatcher.unassigned'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.unassigned|length }})</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#city-{{ loop.index }}-unconfirmed">
+                            {{ 'admin.dispatcher.unconfirmed'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.unconfirmed|length }})</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#city-{{ loop.index }}-undelivered">
+                            {{ 'admin.dispatcher.undelivered'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.not_finished|length }})</span>
+                        </a>
+                    </li>
                 </ul>
                 <div id="city-{{ loop.index }}-unassigned">
-                    {{ table.order_table(city.unassigned, 'unassigned') }}
+                    {{ table.order_table(city.unassigned, 'unassigned', cityName) }}
+                </div>
+                <div id="city-{{ loop.index }}-unconfirmed">
+                    {{ table.order_table(city.unconfirmed, 'unconfirmed', cityName) }}
                 </div>
                 <div id="city-{{ loop.index }}-undelivered">
-                    {{ table.order_table(city.not_finished, 'not_finished') }}
+                    {{ table.order_table(city.not_finished, 'not_finished', cityName) }}
                 </div>
             </div>
             <script type="text/javascript">

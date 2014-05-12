@@ -947,16 +947,34 @@ class OrderService extends ContainerAware
      */
     public function getOrdersUnassigned($city)
     {
-        $em = $this->container->get('doctrine')->getManager();
-        $orders = $em->getRepository('Food\OrderBundle\Entity\Order')
-            ->findBy(
-                array(
-                    'order_status' =>  array(self::$status_accepted, self::$status_delayed, self::$status_finished),
-                    'place_point_city' => $city,
-                    'deliveryType' => self::$deliveryDeliver,
-                ),
-                array('order_date' => 'ASC')
-            );
+        $filter = array(
+            'order_status' =>  array(self::$status_accepted, self::$status_delayed, self::$status_finished),
+            'place_point_city' => $city,
+            'deliveryType' => self::$deliveryDeliver,
+        );
+
+        $orders = $orders = $this->getOrdersByFilter($filter, 'list');
+
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
+
+    /**
+     * @param string $city
+     * @return array
+     */
+    public function getOrdersUnconfirmed($city)
+    {
+        $filter = array(
+            'order_status' =>  array(self::$status_new),
+            'place_point_city' => $city,
+            'deliveryType' => self::$deliveryDeliver,
+        );
+
+        $orders = $orders = $this->getOrdersByFilter($filter, 'list');
 
         if (!$orders) {
             return array();
@@ -971,22 +989,103 @@ class OrderService extends ContainerAware
      */
     public function getOrdersAssigned($city)
     {
-        $em = $this->container->get('doctrine')->getManager();
-        $orders = $em->getRepository('Food\OrderBundle\Entity\Order')
-            ->findBy(
-                array(
-                    'order_status' =>  self::$status_assiged,
-                    'place_point_city' => $city,
-                    'deliveryType' => self::$deliveryDeliver,
-                ),
-                array('order_date' => 'ASC')
-            );
+        $filter = array(
+            'order_status' =>  self::$status_assiged,
+            'place_point_city' => $city,
+            'deliveryType' => self::$deliveryDeliver,
+        );
+
+        $orders = $this->getOrdersByFilter($filter, 'list');
 
         if (!$orders) {
             return array();
         }
 
         return $orders;
+    }
+
+    /**
+     * @param array $filter
+     * @param string $type Type of result expected. Available: ['list', 'single']
+     * @throws \InvalidArgumentException
+     * @return array|\Food\OrderBundle\Entity\Order[]
+     */
+    protected function getOrdersByFilter($filter, $type = 'list')
+    {
+        if (!in_array($type, array('list', 'single'))) {
+            throw new \InvalidArgumentException('Unknown query type, dude');
+        }
+
+        $em = $this->container->get('doctrine')->getManager();
+
+        if ($type == 'list') {
+            $orders = $em->getRepository('Food\OrderBundle\Entity\Order')
+                ->findBy(
+                    $filter,
+                    array('order_date' => 'ASC')
+                );
+        } else {
+            $orders = $em->getRepository('Food\OrderBundle\Entity\Order')
+                ->findBy(
+                    $filter,
+                    array('order_date' => 'DESC'),
+                    1
+                );
+        }
+
+        return $orders;
+    }
+
+    /**
+     * @param string $city
+     * @param int $id
+     * @return bool
+     */
+    public function hasNewUnassignedOrder($city, $id)
+    {
+        $filter = array(
+            'order_status' =>  array(self::$status_accepted, self::$status_delayed, self::$status_finished),
+            'place_point_city' => $city,
+            'deliveryType' => self::$deliveryDeliver,
+        );
+        $order = $this->getOrdersByFilter($filter, 'single');
+
+        if (!$order) {
+            return false;
+        }
+
+        $order = $order[0];
+
+        if ($order->getId() > $id) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param string $city
+     * @param int $id
+     * @return bool
+     */
+    public function hasNewUnconfirmedOrder($city, $id)
+    {
+        $filter = array(
+            'order_status' =>  array(self::$status_new),
+            'place_point_city' => $city,
+            'deliveryType' => self::$deliveryDeliver,
+        );
+        $order = $this->getOrdersByFilter($filter, 'single');
+
+        if (!$order) {
+            return false;
+        }
+
+        $order = $order[0];
+
+        if ($order->getId() > $id) {
+            return true;
+        }
+        return false;
     }
 
     public function getOrdersForDriver($driver)

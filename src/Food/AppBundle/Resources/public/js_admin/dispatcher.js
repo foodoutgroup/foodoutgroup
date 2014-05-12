@@ -1,6 +1,7 @@
 var Dispatcher = {
     _locale: 'lt',
     _translations: {},
+    recentOrders: {},
 
     setLocale: function(locale) {
         Dispatcher._locale = locale;
@@ -47,6 +48,8 @@ var Dispatcher = {
         $('.drivers_list').delegate('.assign-driver', 'click', function() {
             Dispatcher.assignDriver($(this).attr('item-id'));
         });
+
+        Dispatcher.subscribeForNewOrders();
     },
 
     toggleDriverButton: function(checkbox) {
@@ -140,6 +143,31 @@ var Dispatcher = {
             function (data) {
 //                console.log('-- succeeded');
                 location.reload();
+            }
+        );
+    },
+
+    subscribeForNewOrders: function() {
+        setTimeout(
+            function() {
+                Dispatcher.checkForNewOrders();
+            },
+            60000
+        );
+    },
+
+    checkForNewOrders: function() {
+//        var activeList = $('.order_list:visible').attr('list-type');
+        var url = Routing.generate('food_admin_check_new_orders', { '_locale': Dispatcher._locale, _sonata_admin: 'sonata.admin.dish' });
+        $.get(
+            url,
+            { 'orders': Dispatcher.recentOrders},
+            function(data) {
+                if (data == "YES") {
+                    location.reload();
+                }
+
+                Dispatcher.subscribeForNewOrders();
             }
         );
     }

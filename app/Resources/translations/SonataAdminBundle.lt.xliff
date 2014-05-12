@@ -815,6 +815,10 @@
                 <source>admin.dispatcher.undelivered</source>
                 <target>Nepristatyti</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.unconfirmed">
+                <source>admin.dispatcher.unconfirmed</source>
+                <target>Nepatvirtinti rest.</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.place">
                 <source>admin.dispatcher.place</source>
                 <target>Restoran.</target>
