@@ -1,28 +1,168 @@
 {% extends 'FoodAppBundle::mobilelayout.html.twig' %}
 
-
+{% block title %}{% trans %}mobile.restaurant_order{% endtrans %} - {{ page_title }}{% endblock %}
+{% block javascripts %}
+    <script language="JavaScript">
+        function delayOrder() {
+            document.getElementById('maintable').style.display = 'none';
+            document.getElementById('delay_block').style.display = 'block';
+        }
+        function cancelDelay() {
+            document.getElementById('maintable').style.display = 'table';
+            document.getElementById('delay_block').style.display = 'none';
+        }
+    </script>
+{% endblock %}
 {% block body %}
-    <div class="col-xs-12 col-sm-10">
-        <p class="pull-right visible-xs">
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-        </p>
-        <div class="jumbotron">
-            <h1>Jami. Skanu</h1>
-            <p>Galima uzsisakyti maista :)</p>
-        </div>
-        <div class="row">
-            {% for i in 0..10 %}
-                <div class="col-6 col-sm-6 col-lg-4">
-                    <h2>Patiekalas</h2>
-                    <p>
-                        {% image '@FoodAppBundle/Resources/public/images2/test_img.jpg' output='/images2/test_img.jpg' %}
-                        <img src="{{ asset_url }}" alt="" style="width: 200px; border-radius: 30px;"/>
-                        {% endimage %}
-                    <li>Mesyte</li><li>Suris</li><li>Petrushka</li> </p>
-                    <p><a class="btn btn-default" href="#" role="button">Placiau &raquo;</a></p>
+    <table class="table table-bordered table condensed" id="maintable">
+        <thead>
+        <tr>
+            <th colspan="5"><img src="/bundles/foodapp/images/logo_food.png"> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
+        </tr>
+        <tr>
+            <th style="width: 30px">#</th>
+            <th>{% trans %}mobile.order_dish{% endtrans %}</th>
+            <th style="width: 60px">{% trans %}mobile.order_unit_name{% endtrans %}</th>
+            <th style="width: 30px">{% trans %}mobile.order_quantity{% endtrans %}</th>
+            <th>{% trans %}mobile.order_toppings{% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for dish in order.details %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ dish.dishId.name }}</td>
+                <td>{{ dish.dishUnitName }}</td>
+                <td>{{ dish.quantity }}</td>
+                <td>
+                    {% for option in dish.options %}
+                        <li>{{ option.dishOptionId.name }}</li>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="5">
+                <b>
+                    {% if order.deliveryType == 'deliver' %}
+                    {% trans %}mobile.order.sum_with_delivery{% endtrans %}
+                {% else %}
+                    {% trans %}mobile.order.sum{% endtrans %}
+                    {% endif %}:
+                </b> {{ order.total }} {{ currency_display }}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="5">{% trans %}mobile.restourant_place_point_address{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.city }}</td>
+        </tr>
+        {% if order.deliveryType == 'deliver' %}
+            {% if order.placePointSelfDelivery == 1 %}
+                <tr>
+                    <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
+                </tr>
+                <tr>
+                    <td colspan="5">{% trans %}mobile.deliver{% endtrans %}</td>
+                </tr>
+                <tr>
+                    <th colspan="5">{% trans %}mobile.delivery_destination{% endtrans %}</th>
+                </tr>
+                <tr>
+                    <td colspan="5">{{ order.addressId.address }}, {{ order.addressId.city }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
+                </tr>
+                <tr>
+                    <td colspan="5">{% trans %}mobile.pickup_foodout{% endtrans %}</td>
+                </tr>
+            {% endif %}
+        {% else %}
+            <tr>
+                <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
+            </tr>
+            <tr>
+                <td colspan="5">{% trans %}mobile.pickup{% endtrans %}</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <th colspan="5">{% trans %}mobile.customer_phone{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ order.user.phone }}</td>
+        </tr>
+        <tr>
+            <th colspan="5">{% trans %}mobile.comment{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ order.comment }}</td>
+        </tr>
+        <tr>
+            <th colspan="5">{% trans %}mobile.payment{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ ('mobile.payment.' ~ order.paymentMethod)|trans }}</td>
+        </tr>
+        <tr>
+            <th colspan="5">{% trans %}mobile.order_time{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ order.orderDate|date("H:i") }}</td>
+        </tr>
+        <tr>
+            <th colspan="5">{% trans %}mobile.deliver_time{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ order.deliveryTime|date("H:i") }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <form method="post">
+        {% if order.orderStatus == "new" %}
+            <button type="submit" name="status" value="confirm" class="btn btn-primary btn-block">{% trans %}mobile.order_confirm{% endtrans %}</button>
+            <button type="submit" name="status" value="cancel" class="btn btn-danger btn-block">{% trans %}mobile.order_cancel{% endtrans %}</button>
+        {% elseif order.orderStatus == "accepted" or order.orderStatus == "delayed" %}
+            {% if order.orderStatus != "delayed" %}
+                <div id="delay_block" style="display: none;">
+                    <div class="form-group">
+                        <label for="delay_reason" class="col-sm-2 control-label">{% trans %}mobile.order_delay_reason{% endtrans %}</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="delay_reason" name="delay_reason">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="delay_duration" class="col-sm-2 control-label">{% trans %}mobile.order_delay_duration{% endtrans %} min.</label>
+                        <div class="col-sm-10">
+                            <select name="delay_duration" id="delay_duration" class="form-control">
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                                <option value="60">60</option>
+                                <option value="90">90</option>
+                                <option value="120">120</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="delay_duration" class="col-sm-2 control-label"></label>
+                        <div class="col-sm-2">
+                            <button name="status" value="delay" class="btn btn-warning btn-block">{% trans %}mobile.order_submit_delay{% endtrans %}</button>
+                        </div>
+                        <div class="col-sm-8">
+                            <button type="button" class="btn btn-danger btn-block" onclick="cancelDelay();">{% trans %}mobile.order_cancel_delay{% endtrans %}</button>
+                        </div>
+                    </div>
+                    <br clear="all" />
+                    <br clear="all" />
                 </div>
-            {% endfor %}
-
-        </div><!--/row-->
-    </div><!--/span-->
+                <button type="button"  onclick="delayOrder();" class="btn btn-warning btn-block">{% trans %}mobile.order_delay{% endtrans %}</button>
+            {% endif %}
+            <button type="submit" name="status" value="finish" class="btn btn-success btn-block">{% trans %}mobile.order_finish{% endtrans %}</button>
+        {% elseif order.orderStatus == "finished" or order.orderStatus == "assigned" or order.orderStatus == "completed" %}
+            <center><h2>{% trans %}mobile.place_finish_message{% endtrans %}</h2></center>
+        {% endif %}
+        <a class="btn btn-info btn-block" href="{{ path('restaurant_mobile_invoice', {hash: order.orderHash}) }}">{% trans %}mobile.restaurant_invoice{% endtrans %}</a>
+    </form>
 {% endblock %}

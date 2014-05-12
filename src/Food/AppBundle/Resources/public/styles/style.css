@@ -66,7 +66,7 @@
 
 /*Font declarations*/
 button, input, select, textarea,
-body, 
+body,
 .ui-widget-content,
 .ui-selectmenu-menu li a,.ui-selectmenu-status {font-family: 'avenirbook'; font-size: 12px;}
 
@@ -99,7 +99,7 @@ input[type="checkbox"], input[type="radio"] { box-sizing: border-box; }
 input[type="search"] { -moz-box-sizing: content-box; -webkit-box-sizing: content-box; box-sizing: content-box; }
 button, input[type="button"], input[type="reset"], input[type="submit"] { cursor: pointer; -webkit-appearance: button; }
 button, input { line-height: normal; *overflow: visible; }
-.form-row input[type="text"], .form-row label {display: inline-block; float: left;} 
+.form-row input[type="text"], .form-row label {display: inline-block; float: left;}
 label.for-input {width: auto !important; cursor: pointer}
 input.radio, input.checkbox {vertical-align: text-bottom; margin: 0;}
 input[type="text"], input[type="password"], textarea, select {border: 1px solid #ccc;}
@@ -153,13 +153,13 @@ input.button {}
 .ui-selectmenu, .ui-selectmenu.ui-state-active, .ui-selectmenu.ui-state-default {display: inline-block; position: relative; overflow: hidden; border-radius: 0; border: none; background: #fff; border: 1px solid #d0c8c1; text-decoration: none !important; border-radius: 3px; box-shadow: 0 0 2px #d0c8c1;}
 .ui-selectmenu .ui-selectmenu-icon { position:absolute; top: 10px; right: 6px; width: 22px; height: 29px; background: url(/bundles/foodapp/images/select-arrow.png) no-repeat left top;}
 .ui-selectmenu-menu { padding:0; margin:0; position:absolute; top: 0; display: none; z-index: 1005;}
-.ui-selectmenu-menu  ul { padding:0; margin:0; list-style:none; position: relative; overflow: auto; overflow-y: auto ; overflow-x: hidden; -webkit-overflow-scrolling: touch; border: 1px solid #d0c8c1; background: #fff; border-radius: 0; border-top: none; border-bottom: none;} 
+.ui-selectmenu-menu  ul { padding:0; margin:0; list-style:none; position: relative; overflow: auto; overflow-y: auto ; overflow-x: hidden; -webkit-overflow-scrolling: touch; border: 1px solid #d0c8c1; background: #fff; border-radius: 0; border-top: none; border-bottom: none;}
 .ui-selectmenu-open { display: block; }
 .ui-selectmenu-menu li { padding:0; margin:0; display: block; border: none !important; font-weight: normal !important; background: none !important;}
 .ui-selectmenu-menu li a,.ui-selectmenu-status { display: block; padding: 6px 16px; padding-bottom: 4px; padding-right: 26px; outline:none; text-decoration:none; color: inherit; font-weight: normal; color: #000; font-size: 15px; line-height: 26px; }
 .ui-selectmenu-menu li a {border-bottom: 1px solid #d0c8c1;}
 .ui-selectmenu-menu li a:hover, .ui-selectmenu-menu .ui-state-hover a {color: #000; background: #efefef !important; zoom: 1;}
- 
+
 
 /*Checkbox and radios*/
 .custom-checkbox, .custom-radio {float: none; display: block; position: relative; padding-left: 25px; padding-right: 20px; font-size: 15px; color: #513d28; cursor: pointer;}
@@ -589,6 +589,7 @@ input.button {}
 .user-details-form label {float: left; width: 173px; padding-right: 5px; font-size: 15px; padding-top: 9px;}
 .user-details-form .double {padding-top: 0px; margin-top: -1px;}
 .user-details-form input[type="text"],
+.user-details-form input[type="email"],
 .user-details-form input[type="password"] {border: 1px solid #d8d8d8; border-radius: 4px; box-shadow: 0 0 1px #f2f2f2; float: left; font-size: 14px; height: 16px; padding: 10px 12px; width: 310px; box-shadow: 0 0 2px #d0c8c1;}
 .user-details-form select {width: 333px;}
 .user-details-form .form-controls {padding-left: 178px; padding-top: 12px;}
@@ -629,7 +630,7 @@ input.button {}
 .site-footer .col {float: left; font-size: 15px; letter-spacing: 0.5px; margin-right: 36px; background: url(/bundles/foodapp/images/rep-dot.png) repeat-y right top;}
 .site-footer .col-1 {width: 180px;}
 .site-footer .col-2 {width: 190px;}
-.site-footer .col-3 {width: 423px; margin-right: 0px; padding-right: 18px;}
+.site-footer .col-3 {width: 455px; margin-right: 0px; padding-right: 18px;}
 .site-footer .col-4 {width: 96px; float: right; margin-right: 0px; text-align: right; background: none;}
 
 .site-footer li {line-height: 29px;}
@@ -686,6 +687,7 @@ input.button {}
 .login-register-popup .small-margin {margin-bottom: 10px;}
 .login-register-popup label {float: left; width: 142px; padding-right: 5px; font-size: 15px; padding-top: 9px;}
 .login-register-popup input[type="text"],
+.login-register-popup input[type="email"],
 .login-register-popup input[type="password"] {border: 1px solid #d8d8d8; border-radius: 4px; box-shadow: 0 0 1px #f2f2f2; float: left; font-size: 14px; height: 16px; padding: 10px 12px; width: 187px;}
 
 .login-register-popup input[type="submit"] {font-size: 13px; color: #86560d; text-shadow: 0 1px 0 #fff; text-transform: uppercase; width: 211px; height: 40px; border-radius: 4px; background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x left center; box-shadow: 0 1px 1px #c0c0c0; border: none; letter-spacing: 1px;}
@@ -715,6 +717,7 @@ input.button {}
 .theCounter-dec, .theCounter-inc {border: none; background-color: transparent;}
 #change-address { margin-bottom: 0px;}
 .alert {padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px;}
+.alert.alert2 { margin-bottom: 0px }
 .alert-danger { background-color: #f2dede; border-color: #ebccd1; color: #a94442; }
 .alert-warning { background-color: #fcf8e3; border-color: #faebcc; color: #8a6d3b; }
 .alert-info {background-color: #d9edf7; border-color: #bce8f1; color: #31708f; }
@@ -772,3 +775,164 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
     color: #FF0000;
 }
 /* End of delivery mega super duper form styles */
+
+.register-form .form-row.error input,
+.login-form .form-row.error input,
+.review-form .form-row.error span.rate-review {
+    border: 1px solid #ff0000;
+}
+
+.register-form .registration-errors div {
+    color: #ff0000;
+}
+
+.login-form .login-error {
+    /*color: #ff0000;*/
+    display: none;
+}
+.review-form .form-row span.rate-review {
+    display: inline-block;
+    margin-top: 9px;
+}
+.review-form .form-row textarea {
+    border: 1px solid #ccc;
+    height: 100px;
+    margin-top: 9px;
+    width: 200px;
+}
+
+.review-form .form-row.error textarea {
+    border: 1px solid #ff0000;
+    height: 100px;
+    margin-top: 9px;
+    width: 200px;
+}
+
+/* place review form */
+.place-review-popup {width: 440px; border-radius: 10px; background: #fff;}
+.place-review-popup .lefter {padding: 24px 34px; float: left; width: 360px;}
+.place-review-popup h3 {font-size: 27px; margin: 0; line-height: 36px; letter-spacing: 1px;}
+.place-review-popup h4 {font-size: 12px; color: #cfb4b8; margin: 0; margin-bottom: 27px;}
+.place-review-popup .form-row {margin-bottom: 13px;}
+.review-form .form-row {margin-bottom: 10px;}
+.place-review-popup .small-margin {margin-bottom: 10px;}
+.place-review-popup label {float: left; width: 142px; padding-right: 5px; font-size: 15px; padding-top: 9px;}
+.place-review-popup input[type="text"],
+.place-review-popup input[type="email"],
+.place-review-popup input[type="password"] {border: 1px solid #d8d8d8; border-radius: 4px; box-shadow: 0 0 1px #f2f2f2; float: left; font-size: 14px; height: 16px; padding: 10px 12px; width: 187px;}
+.place-review-popup input[type="submit"] {font-size: 13px; color: #86560d; text-shadow: 0 1px 0 #fff; text-transform: uppercase; width: 211px; height: 40px; border-radius: 4px; background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x left center; box-shadow: 0 1px 1px #c0c0c0; border: none; letter-spacing: 1px;}
+.place-review-popup .double {padding-top: 0px;}
+.review-form .form-controls {padding-top: 18px;}
+.place-review-popup .custom-checkbox {font-size: 12px; color: #cfb4b8; padding-top: 0px; width: 100px; margin-top: 9px; line-height: 22px;}
+.place-review-popup a {font-size: 12px; color: #cfb4b8; text-decoration: underline;}
+.place-review-popup a:hover {text-decoration: none;}
+
+.static-page-content ul,
+.static-page-content ol {
+     font-size: 14px;
+     line-height: 21px;
+     margin-top: 7px;
+     margin-bottom: 17px;
+}
+.static-page-content ul li,
+.static-page-content ol li {
+    margin-bottom: 17px;
+}
+/** title search change **/
+.search-food-form span a {
+    float: left;
+    border: 1px solid #e1ddd6 !important;
+    background: #fff;
+    padding: 17px 16px 23px;
+    line-height: 18px;
+    height: 18px !important;
+    width: 191px !important;
+    font-size: 15px;
+    border-radius: 5px 0 0 5px !important;
+    box-shadow: none !important;
+}
+.search-food-form span a span.ui-selectmenu-icon {
+    margin-top: 10px;
+}
+.search-food-form span a span.ui-selectmenu-status {
+    padding: 0 !important;
+    color: #aaaaaa;
+}
+.search-food-form span a span.ui-selectmenu-status.nodisabled {
+    color: #000000;
+}
+
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #aaaaaa;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #aaaaaa;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #aaaaaa;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #aaaaaa;
+}
+#index_city-menu,
+#index_city-menu li {
+    width:  223px !important;
+}
+#index_city-menu .ui-state-disabled {
+    display: none;
+}
+#index_city-menu {
+    border-radius: 5px 0 0 5px !important;
+}
+/** end title search change **/
+
+.user-page .user-righter.content-item.cart,
+.user-page .user-righter.content-item.delivery {
+    display: none;
+}
+
+.user-page .user-righter.content-item.cart .in-progress {
+    margin-top: 14px;
+    width: 70px;
+}
+
+/* ------------------------------------ */
+/* TODO HACK kol neturime orderio vertinimo ir neturime susirink nauja uzsakyma pagal sena - platinam viduri, kad tilptu adresas i viena eilute ir siaurinam desini sona. Veliau galvosim, kaip graziau issprest :P */
+.order-history-item .history-item-middle {
+    width: 440px !important;
+}
+.order-history-item .history-item-righter {
+    width: 100px !important;
+}
+/* End of hack */
+/* ------------------------------------ */
+
+/* TODO Uzkomentuota tai, ko dabar neturime */
+.user-page .menu-item.delivery-ico {
+    display: none;
+}
+
+/** Dish liste - textu hackas **/
+.restaurant-menu-item.text {
+    width: auto;
+    margin-right: 0;
+}
+.restaurant-menu-item.text .dish_larger {
+    padding-right: 10px;
+    float: left;
+    border-radius: 4px;
+}
+
+/* Place'o puslapio custom bajeriai */
+.delivery-time-info,
+.delivery-time-info-cart {
+    display: inline-block;
+    vertical-align: sub;
+    margin-left: 3px;
+    width: 14px;
+}
+.restaurant-item .delivery-time-info {
+    width: 4px;
+}
+/* End of custom place bajkos */

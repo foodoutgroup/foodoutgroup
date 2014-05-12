@@ -156,6 +156,14 @@
                 <source>Food Category List</source>
                 <target>Kategorijos</target>
             </trans-unit>
+            <trans-unit id="admin.food_category.lineup">
+                <source>admin.food_category.lineup</source>
+                <target>Pozicija</target>
+            </trans-unit>
+            <trans-unit id="admin.food_category.texts_onlyp">
+                <source>admin.food_category.texts_only</source>
+                <target>Tekstai</target>
+            </trans-unit>
 
             <!-- Dish -->
             <trans-unit id="dish">
@@ -296,6 +304,10 @@
                 <source>admin.place.delivery_time</source>
                 <target>Prist. trukmė</target>
             </trans-unit>
+            <trans-unit id="admin.place.delivery_time_info">
+                <source>admin.place.delivery_time_info</source>
+                <target>Papild. trukm. info.</target>
+            </trans-unit>
             <trans-unit id="admin.place.delivery_price">
                 <source>admin.place.delivery_price</source>
                 <target>Prist. kaina</target>
@@ -387,9 +399,17 @@
                 <source>admin.point.phone</source>
                 <target>Tel.</target>
             </trans-unit>
+            <trans-unit id="admin.point.alt_phone">
+                <source>admin.point.alt_phone</source>
+                <target>Papildomas tel.</target>
+            </trans-unit>
             <trans-unit id="admin.point.email">
                 <source>admin.point.email</source>
                 <target>El.paštas</target>
+            </trans-unit>
+            <trans-unit id="admin.point.alt_email">
+                <source>admin.point.alt_email</source>
+                <target>Papild. el.paštas</target>
             </trans-unit>
             <trans-unit id="admin.point.city">
                 <source>admin.point.city</source>
@@ -677,6 +697,10 @@
                 <source>admin.order.address</source>
                 <target>Adresas</target>
             </trans-unit>
+            <trans-unit id="admin.order.delivery_address">
+                <source>admin.order.delivery_address</source>
+                <target>Užsak. adresas</target>
+            </trans-unit>
             <trans-unit id="admin.order.delivery_type_short">
                 <source>admin.order.delivery_type_short</source>
                 <target>Pristat. tipas</target>
@@ -721,6 +745,10 @@
                 <source>admin.order.vat</source>
                 <target>PVM</target>
             </trans-unit>
+            <trans-unit id="admin.order.total">
+                <source>admin.order.total</source>
+                <target>Viso (su PVM)</target>
+            </trans-unit>
             <trans-unit id="admin.order.comment">
                 <source>admin.order.comment</source>
                 <target>Užsakovo komentaras</target>
@@ -748,6 +776,14 @@
             <trans-unit id="aadmin.order.details.options">
                 <source>admin.order.details.options</source>
                 <target>Priedai</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.option_name">
+                <source>admin.order.details.option_name</source>
+                <target>Priedas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.option_code">
+                <source>admin.order.details.option_code</source>
+                <target>Kodas</target>
             </trans-unit>
 
             <!-- Dispatcher window -->
@@ -778,6 +814,10 @@
             <trans-unit id="admin.dispatcher.undelivered">
                 <source>admin.dispatcher.undelivered</source>
                 <target>Nepristatyti</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.unconfirmed">
+                <source>admin.dispatcher.unconfirmed</source>
+                <target>Nepatvirtinti rest.</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.place">
                 <source>admin.dispatcher.place</source>

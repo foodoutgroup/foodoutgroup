@@ -150,6 +150,43 @@
             <source>cart.block.order_sum_minimum_take_myself</source>
             <target>Netaikoma jei užsakymą atsiimsite pats.</target>
         </trans-unit>
+
+        <trans-unit id="order.form.errors.customerfirstname" resname="order.form.errors.customerfirstname">
+            <source>order.form.errors.customerfirstname</source>
+            <target>Įveskite savo vardą</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.customerphone" resname="order.form.errors.customerphone">
+            <source>order.form.errors.customerphone</source>
+            <target>Nurodykite mob. telefono numerį</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.customercomment" resname="order.form.errors.customercomment">
+            <source>order.form.errors.customercomment</source>
+            <target>Įveskite komentarą</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.customeremail" resname="order.form.errors.customeremail">
+            <source>order.form.errors.customeremail</source>
+            <target>Neįvestas el.pašto adresas</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.customeraddr" resname="order.form.errors.customeraddr">
+            <source>order.form.errors.customeraddr</source>
+            <target>Nenurodytas adresas</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.cartlessthanminimum" resname="order.form.errors.cartlessthanminimum">
+            <source>order.form.errors.cartlessthanminimum</source>
+            <target><![CDATA[<b>Užsakymas nesiekia minimalios krepšelio sumos</b>]]></target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.today_no_work" resname="order.form.errors.today_no_work">
+            <source>order.form.errors.today_no_work</source>
+            <target>Restoranas šiandien nedirba.</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.isnt_open" resname="order.form.errors.isnt_open">
+            <source>order.form.errors.isnt_open</source>
+            <target>Restoranas šiandien dar nepradėjo dirbti.</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.is_already_close" resname="order.form.errors.is_already_close">
+            <source>order.form.errors.is_already_close</source>
+            <target>Restoranas šiandien jau nebedirba.</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

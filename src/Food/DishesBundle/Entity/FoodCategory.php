@@ -45,6 +45,13 @@ class FoodCategory implements Translatable
     /**
      * @var bool
      *
+     * @ORM\Column(name="texts_only", type="boolean", nullable=true)
+     */
+    private $textsOnly;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="drinks", type="boolean")
      */
     private $drinks;
@@ -83,6 +90,13 @@ class FoodCategory implements Translatable
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
     private $deletedAt;
+
+
+    /**
+     * @var
+     * @ORM\Column(name="lineup", type="integer", nullable=true)
+     */
+    private $lineup;
 
     /**
      * @var \Food\UserBundle\Entity\User
@@ -155,8 +169,12 @@ class FoodCategory implements Translatable
     {
         $query = $em->createQuery("SELECT o.name FROM FoodDishesBundle:FoodCategory as o WHERE o.id=:id")
             ->setParameter('id', $this->getId());
-        $res = ($query->getSingleResult());
-        return $res['name'];
+        try{
+            $res = ($query->getSingleResult());
+            return $res['name'];
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return $this->getName();
+        }
     }
 
     public function getSlug()
@@ -533,5 +551,51 @@ class FoodCategory implements Translatable
     public function getAlcohol()
     {
         return $this->alcohol;
+    }
+
+    /**
+     * Set lineup
+     *
+     * @param integer $lineup
+     * @return FoodCategory
+     */
+    public function setLineup($lineup)
+    {
+        $this->lineup = $lineup;
+    
+        return $this;
+    }
+
+    /**
+     * Get lineup
+     *
+     * @return integer 
+     */
+    public function getLineup()
+    {
+        return $this->lineup;
+    }
+
+    /**
+     * Set textsOnly
+     *
+     * @param boolean $textsOnly
+     * @return FoodCategory
+     */
+    public function setTextsOnly($textsOnly)
+    {
+        $this->textsOnly = $textsOnly;
+    
+        return $this;
+    }
+
+    /**
+     * Get textsOnly
+     *
+     * @return boolean 
+     */
+    public function getTextsOnly()
+    {
+        return $this->textsOnly;
     }
 }

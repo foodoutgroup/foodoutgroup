@@ -45,6 +45,11 @@ class User extends BaseUser
     private $address;
 
     /**
+     * @ORM\Column(name="fully_registered", type="smallint", nullable=true)
+     */
+    private $fully_registered = 0;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="phone", type="string", length=20, nullable=true)
@@ -54,6 +59,29 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
+    }
+
+    public function getContact()
+    {
+        if (!$this->getId()) {
+            return '';
+        }
+        $userContactData = $this->getFirstname();
+        $surname = $this->getLastname();
+        $email = $this->getEmail();
+        $phone = $this->getPhone();
+
+        if (!empty($surname)) {
+            $userContactData .= ' '.$surname;
+        }
+        if (!empty($email)) {
+            $userContactData .= ', '.$email;
+        }
+        if (!empty($phone)) {
+            $userContactData .= ', '.$phone;
+        }
+
+        return $userContactData;
     }
 
     /**
@@ -244,5 +272,38 @@ class User extends BaseUser
     public function getPhone()
     {
         return $this->phone;
+    }
+
+    /**
+     * Because f**k FOSUserBundle.
+     */
+    public function setEmail($email)
+    {
+        $email = is_null($email) ? '' : $email;
+        parent::setEmail($email);
+        $this->setUsername($email);
+    }
+
+    /**
+     * Set fully_registered
+     *
+     * @param integer $fullyRegistered
+     * @return User
+     */
+    public function setFullyRegistered($fullyRegistered)
+    {
+        $this->fully_registered = $fullyRegistered;
+    
+        return $this;
+    }
+
+    /**
+     * Get fully_registered
+     *
+     * @return integer 
+     */
+    public function getFullyRegistered()
+    {
+        return $this->fully_registered;
     }
 }

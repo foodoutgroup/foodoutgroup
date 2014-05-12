@@ -119,6 +119,12 @@ class Place extends Uploadable implements Translatable
      */
     private $deliveryTime;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="delivery_time_info", type="string", nullable=true)
+     */
+    private $deliveryTimeInfo;
 
     /**
      * @var int
@@ -969,8 +975,13 @@ class Place extends Uploadable implements Translatable
      */
     public function addTranslation(\Food\DishesBundle\Entity\PlaceLocalized $translations)
     {
-        $this->translations[] = $translations;
-    
+        if (method_exists($this->translations, 'contains')) {
+            if (!$this->translations->contains($translations)) {
+                $this->translations[] = $translations;
+                $translations->setObject($this);
+            }
+        }
+
         return $this;
     }
 
@@ -1077,5 +1088,28 @@ class Place extends Uploadable implements Translatable
     public function getSelfDelivery()
     {
         return $this->selfDelivery;
+    }
+
+    /**
+     * Set deliveryTimeInfo
+     *
+     * @param string $deliveryTimeInfo
+     * @return Place
+     */
+    public function setDeliveryTimeInfo($deliveryTimeInfo)
+    {
+        $this->deliveryTimeInfo = $deliveryTimeInfo;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryTimeInfo
+     *
+     * @return string 
+     */
+    public function getDeliveryTimeInfo()
+    {
+        return $this->deliveryTimeInfo;
     }
 }

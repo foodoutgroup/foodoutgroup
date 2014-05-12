@@ -8,7 +8,7 @@ imports:
 parameters:
     available_locales: [lt, en, ru]
     available_locales_routing: lt | en | ru
-    available_cities: ["Vilnius", "Kaunas"]
+    available_cities: ["Vilnius"]
     time_zone: "Europe/Vilnius"
     sms.available_providers: [food.infobip]
     sms.sender: "Foodout.lt"
@@ -22,8 +22,9 @@ parameters:
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
+    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt, vyr.dispeceres@maistoralis.lt]
     title: "Foodout"
-    domain: "beta.foodout.lt"
+    domain: "foodout.lt"
     arc_gis_user: "skanulabai"
     arc_gis_pass: "labaiskanu"
     arc_gis_client_id: "QTFVE57PzjWLTXOj"
@@ -44,6 +45,7 @@ parameters:
     currency_display: Lt
     vat: 21
     evp.test_payments: 0
+    mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
 
 framework:
     #esi:             ~
@@ -62,6 +64,7 @@ framework:
     trusted_proxies: ~
     session:
         name: skaniSesija2014PerkamPicasUrmu
+        save_path: %kernel.root_dir%/var/sessions
     fragments:       ~
     http_method_override: true
 
@@ -77,6 +80,7 @@ twig:
         dish_service: "@food.dishes"
         order_service: "@food.order"
         google_maps_api: "%google.maps_api%"
+        language_utils: "@food.app.utils.language"
 
 
 # Assetic Configuration
@@ -153,6 +157,9 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: Food\UserBundle\Entity\User
+    registration:
+      form:
+        type: food_user_registration
 
 services:
   gedmo.listener.softdeleteable:
@@ -226,7 +233,8 @@ sonata_admin:
                       - sonata.admin.food.category
                       - sonata.admin.dish
                       - sonata.admin.dish.option
-                      - sonata.admin.place.pointfull
+#                      kolkas neveikia
+#                      - sonata.admin.place.pointfull
                       - sonata.admin.place.reviews
                   roles: [ ROLE_MODERATOR ]
               admin.orders:

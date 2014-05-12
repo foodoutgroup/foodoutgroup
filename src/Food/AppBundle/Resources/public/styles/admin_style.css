@@ -39,6 +39,9 @@ h4.padded {
 .order_list th.order_date {
     width: 20px;
 }
+.order_list td.order_date.delayed-order{
+    background-color: #ffe9dd;
+}
 
 .order_list td.self_delivery,
 .order_list td.order_date {

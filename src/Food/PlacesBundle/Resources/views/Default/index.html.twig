@@ -54,6 +54,9 @@
     <div class="page-path clearfix">{#<a href="{{ path('food_homepage') }}">Pradžia</a>#}</div>{# TODO breadcrumbs <a href="#">Restoranai arti Žirmūnų</a>#}
     <div class="page-title">
         <h1 class="clearfix"><span class="place-counter"></span><a href="{{ path('food_homepage') }}" class="change-location-link">{% trans %}places.change_address{% endtrans %}</a></h1>
+        {% if recommended==0 and location.not_found == true and location.street_found==true%}
+            <div class="alert alert2 alert-warning"><li>{% trans %}places.is_not_detailed_search{% endtrans %}</li></div>
+        {% endif %}
     </div>
     <div class="clearfix">
         <div class="content-lefter">
@@ -62,6 +65,7 @@
             <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a>
         </div>
         <div class="content-righter">
+            {#
             <div class="restaurants-list-controls clearfix">
                 <form class="list-search-form fl">
                     <input type="text" placeholder="{% trans %}places.search_placeholder{% endtrans %}">
@@ -69,12 +73,13 @@
                 </form>
                 <div class="list-top-filters clearfix fr">
                     <div class="label">{% trans %}places.order_by{% endtrans %}:</div>
-                    {# <a href="#">{% trans %}places.sort_by_relevance{% endtrans %}</a> #}
+                    <a href="#">{% trans %}places.sort_by_relevance{% endtrans %}</a>
                     <a href="#" class="selected">{% trans %}places.sort_by_rating{% endtrans %}</a>
                     <a href="#">{% trans %}places.sort_by_delivery_price{% endtrans %}</a>
                     <a href="#">{% trans %}places.sort_by_distance{% endtrans %}</a>
                 </div>
             </div>
+            #}
             {{ render(controller('FoodPlacesBundle:Default:list', {'recommended':recommended})) }}
         </div>
     </div>

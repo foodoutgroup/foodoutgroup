@@ -19,6 +19,7 @@ class DispatcherAdminController extends Controller
         foreach ($availableCities as $city) {
             $cityOrders[$city] = array(
                 'unassigned' => $orderService->getOrdersUnassigned($city),
+                'unconfirmed' => $orderService->getOrdersUnconfirmed($city),
                 'not_finished' => $orderService->getOrdersAssigned($city),
             );
         }
@@ -110,5 +111,42 @@ class DispatcherAdminController extends Controller
         }
 
         return new Response('OK');
+    }
+
+    public function checkNewOrdersAction()
+    {
+        $request = $this->get('request');
+        $orderService = $this->get('food.order');
+
+        $orders = $request->get('orders');
+        $needUpdate = false;
+
+        if (!empty($orders)) {
+            foreach($orders as $city => $orderData) {
+                foreach ($orderData as $type => $recentId) {
+                    switch($type) {
+                        case 'unassigned':
+                            if ($orderService->hasNewUnassignedOrder($city, $recentId)) {
+                                $needUpdate = true;
+                                break 2;
+                            }
+                            break;
+
+                        case 'unconfirmed':
+                            if ($orderService->hasNewUnconfirmedOrder($city, $recentId)) {
+                                $needUpdate = true;
+                                break 2;
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        if ($needUpdate) {
+            return new Response('YES');
+        }
+
+        return new Response('NO');
     }
 }

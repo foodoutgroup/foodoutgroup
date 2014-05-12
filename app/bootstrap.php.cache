@@ -891,7 +891,6 @@ if (in_array($mimeType, (array) $mimeTypes)) {
 return $format;
 }
 }
-return null;
 }
 public function setFormat($format, $mimeTypes)
 {
@@ -1466,7 +1465,6 @@ return (int) $this->headers->getCacheControlDirective('max-age');
 if (null !== $this->getExpires()) {
 return $this->getExpires()->format('U') - $this->getDate()->format('U');
 }
-return null;
 }
 public function setMaxAge($value)
 {
@@ -1484,7 +1482,6 @@ public function getTtl()
 if (null !== $maxAge = $this->getMaxAge()) {
 return $maxAge - $this->getAge();
 }
-return null;
 }
 public function setTtl($seconds)
 {
@@ -1648,7 +1645,7 @@ return in_array($this->statusCode, array(201, 301, 302, 303, 307, 308)) && (null
 }
 public function isEmpty()
 {
-return in_array($this->statusCode, array(201, 204, 304));
+return in_array($this->statusCode, array(204, 304));
 }
 protected function ensureIEOverSSLCompatibility(Request $request)
 {
@@ -1970,7 +1967,7 @@ $alternatives[] = $key;
 }
 throw new ServiceNotFoundException($id, null, null, $alternatives);
 }
-return null;
+return;
 }
 $this->loading[$id] = true;
 try {
@@ -1981,7 +1978,7 @@ if (array_key_exists($id, $this->services)) {
 unset($this->services[$id]);
 }
 if ($e instanceof InactiveScopeException && self::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
-return null;
+return;
 }
 throw $e;
 }
@@ -2174,16 +2171,16 @@ protected $booted;
 protected $name;
 protected $startTime;
 protected $loadClassCache;
-const VERSION ='2.3.12';
-const VERSION_ID ='20312';
+const VERSION ='2.3.13';
+const VERSION_ID ='20313';
 const MAJOR_VERSION ='2';
 const MINOR_VERSION ='3';
-const RELEASE_VERSION ='12';
+const RELEASE_VERSION ='13';
 const EXTRA_VERSION ='';
 public function __construct($environment, $debug)
 {
 $this->environment = $environment;
-$this->debug = (Boolean) $debug;
+$this->debug = (bool) $debug;
 $this->booted = false;
 $this->rootDir = $this->getRootDir();
 $this->name = $this->getName();
@@ -2717,7 +2714,6 @@ return dirname($this->reflected->getFileName());
 }
 public function getParent()
 {
-return null;
 }
 final public function getName()
 {
@@ -2761,7 +2757,7 @@ private $file;
 public function __construct($file, $debug)
 {
 $this->file = $file;
-$this->debug = (Boolean) $debug;
+$this->debug = (bool) $debug;
 }
 public function __toString()
 {

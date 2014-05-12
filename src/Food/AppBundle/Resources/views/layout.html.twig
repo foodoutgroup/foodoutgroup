@@ -42,7 +42,9 @@
             {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
             <ul class="menu top-menu clearfix">
                 <li><a href="{{ path('food_slug', {'slug': ('general.help_slug'|trans())}) }}"><span>{% trans %}general.help_button{% endtrans %}</span></a></li>
-                <li class="login-ico"><a href="#login-register-popup" class="boxer"><span>{% trans %}general.login_button{% endtrans %}</span></a></li>
+                <li class="login-ico">
+                    {% render(controller('FoodUserBundle:Default:loginButton')) %}
+                </li>
             </ul>
         </div>
     </div>
@@ -59,6 +61,16 @@
 <script type="text/javascript">
     {# var mediator = new Mediator(); #}
     {% block jscode %}{% endblock %}
+</script>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-50355577-1', 'foodout.lt');
+    ga('send', 'pageview');
+
 </script>
 </body>
 </html>

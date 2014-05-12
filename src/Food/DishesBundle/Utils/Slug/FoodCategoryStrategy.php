@@ -101,6 +101,9 @@ class FoodCategoryStrategy extends AbstractStrategy
     {
         $em = $this->em();
         $row = $em->getRepository('FoodDishesBundle:FoodCategory')->findOneById($categoryId);
+        if (empty($row)) {
+            return "";
+        }
         $placeRow = $em->getRepository('FoodAppBundle:Slug')->findOneBy(array('item_id' => $row->getPlace()->getId(), 'type' => 'place', 'lang_id' => $langId));
         return $placeRow->getName();
     }

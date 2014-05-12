@@ -8,7 +8,7 @@ food_places:
     prefix:   /
 
 food_user:
-    resource: "@FoodUserBundle/Controller/"
+    resource: "@FoodUserBundle/Controller/DefaultController.php"
     type:     annotation
     prefix:   /
 
@@ -76,6 +76,14 @@ drivermobile:
     path: /d/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:mobileDriver, hash: ~, action: ~ }
 
+driver_mobile_invoice:
+    path: /invoice/driver/{hash}/
+    defaults: { _controller: FoodOrderBundle:Default:driverInvoice, hash: ~, action: ~ }
+
+restaurant_mobile_invoice:
+    path: /invoice/restaurant/{hash}/
+    defaults: { _controller: FoodOrderBundle:Default:restaurantInvoice, hash: ~, action: ~ }
+
 local_biller_accept:
     path: /{_locale}/payments/local/accept/
     defaults: { _controller: FoodOrderBundle:Payments:localAccept }
@@ -91,10 +99,6 @@ paysera_cancel:
 paysera_callback:
     path: /payments/paysera/callback
     defaults: { _controller: FoodOrderBundle:Payments:payseraCallback}
-
-fos_user_profile:
-    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
-    prefix: /profile
 
 fos_user_register:
     resource: "@FOSUserBundle/Resources/config/routing/registration.xml"

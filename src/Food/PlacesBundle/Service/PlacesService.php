@@ -1,6 +1,7 @@
 <?php
 namespace Food\PlacesBundle\Service;
 
+use Food\DishesBundle\Entity\Place;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Response;
 use Food\AppBundle\Traits;
@@ -31,6 +32,16 @@ class PlacesService extends ContainerAware {
 
         return $this->em()->getRepository('FoodDishesBundle:Place')
             ->find($placeId);
+    }
+
+    public function savePlace($place)
+    {
+        if (!($place instanceof Place)) {
+            throw new \Exception('Place not given. How should I save it?');
+        }
+        $em = $this->em();
+        $em->persist($place);
+        $em->flush();
     }
 
     /**
@@ -69,10 +80,15 @@ class PlacesService extends ContainerAware {
     public function getActiveCategories($place)
     {
         return $this->em()->getRepository('FoodDishesBundle:FoodCategory')
-            ->findBy(array(
-                'place' => $place->getId(),
-                'active' => 1,
-            ));
+            ->findBy(
+                array(
+                    'place' => $place->getId(),
+                    'active' => 1,
+                ),
+                array(
+                    'lineup' => 'DESC'
+                )
+            );
     }
 
     /**
@@ -85,6 +101,18 @@ class PlacesService extends ContainerAware {
             ->findBy(array(
                 'place' => $place->getId(),
                 'public' => 1,
+            ));
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Place $place
+     * @return array|\Food\DishesBundle\Entity\PlacePoint[]
+     */
+    public function getAllPoints($place)
+    {
+        return $this->em()->getRepository('FoodDishesBundle:PlacePoint')
+            ->findBy(array(
+                'place' => $place->getId()
             ));
     }
 
@@ -137,5 +165,18 @@ class PlacesService extends ContainerAware {
             ->getQuery();
 
         return $placesQuery->getResult();
+    }
+
+    /**
+     * @param Place $place
+     * @return mixed
+     */
+    public function calculateAverageRating($place)
+    {
+        $em = $this->em();
+        $con = $em->getConnection();
+        $rating = $con->fetchColumn("SELECT AVG( rate ) FROM  place_reviews WHERE place_id = ".$place->getId());
+
+        return $rating;
     }
 }

@@ -14,13 +14,29 @@
             {% for detail in object.details %}
                 <tr>
                     <td>{{ detail.getDishName() }}</td>
-                    <td>{{ detail.getPrice() }}</td>
+                    <td>{{ detail.getPrice() }} {{ currency_display }}</td>
                     <td>{{ detail.getDishUnitName() }}</td>
                     <td>{{ detail.getDishSizeCode() }}</td>
                     <td>
-                        --
+                        {#--#}
                         {#TODO, kai bus detail optionsu pasiekimas#}
                         {#{% set detail_options = detail.get %}#}
+                        {% if detail.options is not empty %}
+                            <table>
+                                <tr>
+                                    <th>{{ 'admin.order.details.option_name'|trans({}, 'SonataAdminBundle') }}</th>
+                                    <th>{{ 'admin.order.details.price'|trans({}, 'SonataAdminBundle') }}</th>
+                                    <th>{{ 'admin.order.details.option_code'|trans({}, 'SonataAdminBundle') }}</th>
+                                </tr>
+                            {% for option in detail.options %}
+                                <tr>
+                                    <td>{{ option.dishOptionName }}</td>
+                                    <td>{{ option.price }} {{ currency_display }}</td>
+                                    <td>{{ option.dishOptionCode }}</td>
+                                </tr>
+                            {% endfor %}
+                            </table>
+                        {% endif %}
                     </td>
                     {#<td>{{ dump(detail) }}</td>#}
                 </tr>

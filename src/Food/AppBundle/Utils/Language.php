@@ -15,6 +15,15 @@ class Language
      */
     private $container;
 
+    private $nameInflection = array(
+        'a' => 'a',
+        'as' => 'ai',
+        'ė' => 'e',
+        'is' => 'i',
+        'us' => 'au',
+        'ys' => 'y'
+    ) ;
+
     public function __construct(Container $container)
     {
         $this->setContainer($container);
@@ -117,5 +126,56 @@ class Language
     public function getAll()
     {
         return $this->getContainer()->getParameter('available_locales');
+    }
+
+
+    /**
+     * TODO - multilingual
+     */
+    public function getName ($name, $lang = null)
+    {
+        // TODO - multilingual
+        if ($lang != 'lt') {
+            return $name;
+        }
+
+        $names = explode( ' ', $this->cleanName($name, $lang) ) ;
+        $namesConv = array() ;
+        foreach ( $names as $v ) {
+            $namesConv[] = $this->getTransformedName($v, $lang) ;
+        }
+
+        return count($namesConv) ? implode(' ', $namesConv) : $name ;
+    }
+
+    /**
+     * TODO - multiligual
+     */
+    protected function cleanName ($name, $lang = null) {
+
+        $name = mb_eregi_replace('[^a-ž]', ' ', $name) ;
+        $name = mb_eregi_replace('\s+', ' ', $name) ;
+        $name = trim($name) ;
+        $name = mb_convert_case($name, MB_CASE_TITLE) ;
+
+        return $name ;
+    }
+
+    /**
+     * TODO - multilingual
+     */
+    protected function getTransformedName ($name, $lang = null) {
+
+        $return = $name ;
+
+        foreach ( $this->nameInflection as $from=>$to ) {
+            if ( mb_substr( $return, -mb_strlen($from) ) == $from ) {
+                $return = mb_substr( $return, 0, -mb_strlen($from) ) ;
+                $return .= $to ;
+                break ;
+            }
+        }
+
+        return $return ;
     }
 }

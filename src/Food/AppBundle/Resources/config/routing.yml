@@ -10,11 +10,17 @@ food_test:
     pattern:  /test/
     defaults: { _controller: FoodAppBundle:Test:index }
 
+food_review_create:
+    pattern: /place/review/{id}
+    defaults: { _controller: FoodDishesBundle:Place:reviewCreate }
+    requirements:
+        _method: POST
+
 food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|payments|call_center|newsletter|ajax|js|places|vietos|mesto).+"
+        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto).+"
 
 food_admin_get_place_categories:
     pattern: /admin/place/get-categories/{placeId}
@@ -53,6 +59,14 @@ food_admin_assign_driver:
         expose: true
     requirements:
           _method:  POST
+
+food_admin_check_new_orders:
+    pattern: /admin/dispatcher/check-new-orders/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:checkNewOrders}
+    options:
+        expose: true
+    requirements:
+          _method:  GET
 
 food_admin_get_place_unit_categories:
     pattern: /admin/place/get-unit-categories/{placeId}
@@ -128,3 +142,4 @@ food_newsletter_subscribe:
 food_newsletter_thank:
     pattern: /newsletter/thank/
     defaults: { _controller: FoodAppBundle:Default:newsletterThank}
+

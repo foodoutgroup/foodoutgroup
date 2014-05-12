@@ -3,11 +3,8 @@
 
     {% block jscode %}
         $(document).ready(function(){
-            var tastyCities = {{ render(controller('FoodPlacesBundle:Default:cities')) }};
-            $('#index_city').autocomplete({
-                source: tastyCities,
-                minLength: 0
-            });
+            $('#index_city').selectmenu();
+
             var addrXhr = null;
             var addrResponse = {};
             var waitIntervals = null;
@@ -61,6 +58,10 @@
                     }
                 }
             }
+            $('#index_city').change(function(){
+                $(this).next('span').find('a').find('span:first').addClass('nodisabled');
+
+            });
         });
     {% endblock %}
 
@@ -73,7 +74,14 @@
             <form class="search-food-form"  action="{{ path('food_places_' ~ locale ~ '_main') }}" method="get">
                 <p class="title">Įveskite savo adresą ir sužinokite, iš kurių restoranų galite užsisakyti</p>
                 <div class="clearfix">
-                    <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}"  autocomplete="off" >
+
+                    <select id="index_city">
+                        <option value="" disabled {#selected#}>{% trans %}index.city{% endtrans %}</option>
+                        <option value="Vilnius" selected>Vilnius</option>
+                        {#<option value="Kaunas">Kaunas</option>#}
+                    </select>
+
+                    {# <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}"  autocomplete="off" > #}
                     <input type="text" id="index_address" placeholder="{% trans %}index.street{% endtrans %}" class="input-street" autocomplete="off" >
                     <input type="submit" id="index_submit" value="{% trans %}index.findfood{% endtrans %}">
                 </div>
