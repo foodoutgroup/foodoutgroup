@@ -27,3 +27,7 @@ services:
         class: Food\AppBundle\Service\GoogleGisService
         calls:
             - [setContainer, [@service_container]]
+
+    food.mailer:
+        class: Food\AppBundle\Service\MailerMessagesService
+        arguments: [%mailer_api_key%]

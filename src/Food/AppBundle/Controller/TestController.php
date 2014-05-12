@@ -13,11 +13,20 @@ class TestController extends Controller
 {
     public function indexAction()
     {
-        $c = $this->get('food.cart');
+        $ml = $this->get('food.mailer');
 
-        $c->clearCart($this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(1));
+        $variables = array(
+            'username' => 'Birutė Biliūtė',
+            'maisto_gamintojas' => 'FitFood',
+            'maisto_ruosejas' => 'FitFood',
+            'uzsakymas' => '1 butelis Šaltupio. 2 buteliai Krantų. 3 buteliai Smigio',
+            'adresas' => 'Laisves 77c-58',
+            'pristatymo_data' => 'Vakar',
+        );
 
-        echo "</pre>";
+        $ml->setVariables( $variables )->setRecipient( 'paulius@foodout.lt', 'Sample Client')->setId( 30009269 )->send();
+
+
         return new Response('Uber');
     }
 
