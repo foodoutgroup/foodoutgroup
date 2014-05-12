@@ -61,7 +61,7 @@ class DefaultController extends Controller
         if ($this->getRequest()->isMethod('post')) {
             switch($this->getRequest()->get('status')) {
                 case 'finish':
-                    $this->get('food.order')->statusFinished();
+                    $this->get('food.order')->statusCompleted();
                 break;
             }
             $this->get('food.order')->saveOrder();

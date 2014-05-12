@@ -338,6 +338,10 @@
         <source>mobile.place_point_address</source>
         <target>Paimti iš</target>
       </trans-unit>
+      <trans-unit id="mobile.restourant_place_point_address" resname="mobile.restourant_place_point_address">
+        <source>mobile.restourant_place_point_address</source>
+        <target>Gamybos taškas</target>
+      </trans-unit>
       <trans-unit id="c515ebc67239e3c3555e84b329f7eeba" resname="mobile.place_point_phone">
         <source>mobile.place_point_phone</source>
         <target>Gamybos taško telefonas</target>

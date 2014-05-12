@@ -1038,6 +1038,8 @@ class OrderService extends ContainerAware
         if (!empty($placePointEmail)) {
             $logger->alert('--- Place asks for email, so we have sent an email about new order to: '.$placePointEmail);
             $emailMessageText = $messageText;
+            $emailMessageText .= "\n" . $translator->trans('general.email.new_order') . ': '
+                . $order->getPlacePoint()->getAddress() . ', ' . $order->getPlacePoint()->getCity();
             // Buvo liepta padaryti, kad sms'u eitu tas pats, kas emailu. Pasiliekam, o maza kas
 //            $messageText = $translator->trans('general.sms.new_order_in_mail');
 
