@@ -167,8 +167,9 @@
                             </div>
                             <div class="form-row form-row-required">
                                 <label title="{% trans %}cart.checkout.phone_tooltip{% endtrans %}" class="tooltip">{% trans %}cart.checkout.phone{% endtrans %}:</label>
-                                <input type="text" name="customer-phone" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" value="{% if (dataToLoad is not empty and dataToLoad['customer-phone'] is not empty) %}{{ dataToLoad['customer-phone'] }}{% endif %}" />
+                                <input type="text" name="customer-phone" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" value="{% if (dataToLoad is not empty and dataToLoad['customer-phone'] is not empty) %}{{ dataToLoad['customer-phone'] }}{% else %}{{ app.user.phone|default('') }}{% endif %}" />
                             </div>
+
                             {#
                             <div class="form-row">
                                 <label>Pristatymo laikas:</label>
