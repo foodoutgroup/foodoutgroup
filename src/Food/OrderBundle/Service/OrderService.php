@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\QueryBuilder;
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
@@ -1007,7 +1008,7 @@ class OrderService extends ContainerAware
     public function getOrdersUnassigned($city)
     {
         $date = new \DateTime();
-        $date->modify("+2 minutes");
+        $date->modify("-2 minutes");
 
         $filter = array(
             'order_status' =>  array(self::$status_accepted, self::$status_delayed, self::$status_finished),
@@ -1084,12 +1085,15 @@ class OrderService extends ContainerAware
         if ($type == 'list') {
             $qb = $em->getRepository('Food\OrderBundle\Entity\Order')->createQueryBuilder('o');
 
+            /**
+             * @var QueryBuilder $qb
+             */
             $qb->where('1 = 1');
 
             foreach ($filter as $filterName => $filterValue) {
                 switch($filterName) {
                     case 'order_date_more':
-                        $qb->andWhere('o.order_date >= :'.$filterName);
+                        $qb->andWhere('o.order_date < :'.$filterName);
                         break;
 
                     case 'order_status':
