@@ -297,6 +297,9 @@ class OrderService extends ContainerAware
             $this->saveOrder();
             $this->chageOrderStatus(self::$status_accepted);
             $this->_notifyOnAccepted();
+
+            // Notify Dispatchers
+            $this->notifyOrderAccept();
         }
 
         return $this;
@@ -1003,10 +1006,14 @@ class OrderService extends ContainerAware
      */
     public function getOrdersUnassigned($city)
     {
+        $date = new \DateTime();
+        $date->modify("+2 minutes");
+
         $filter = array(
             'order_status' =>  array(self::$status_accepted, self::$status_delayed, self::$status_finished),
             'place_point_city' => $city,
             'deliveryType' => self::$deliveryDeliver,
+            'order_date_more' => $date
         );
 
         $orders = $orders = $this->getOrdersByFilter($filter, 'list');
@@ -1075,11 +1082,31 @@ class OrderService extends ContainerAware
         $em = $this->container->get('doctrine')->getManager();
 
         if ($type == 'list') {
-            $orders = $em->getRepository('Food\OrderBundle\Entity\Order')
-                ->findBy(
-                    $filter,
-                    array('order_date' => 'ASC')
-                );
+            $qb = $em->getRepository('Food\OrderBundle\Entity\Order')->createQueryBuilder('o');
+
+            $qb->where('1 = 1');
+
+            foreach ($filter as $filterName => $filterValue) {
+                switch($filterName) {
+                    case 'order_date_more':
+                        $qb->andWhere('o.order_date >= :'.$filterName);
+                        break;
+
+                    case 'order_status':
+                        $qb->andWhere('o.'.$filterName.' IN (:'.$filterName.')');
+                        break;
+
+                    default:
+                        $qb->andWhere('o.'.$filterName.' = :'.$filterName);
+                        break;
+                }
+            }
+
+            $qb->setParameters($filter)
+                ->orderBy('o.order_date', 'ASC');
+
+            $orders = $qb->getQuery()
+                ->getResult();
         } else {
             $orders = $em->getRepository('Food\OrderBundle\Entity\Order')
                 ->findBy(
@@ -1279,6 +1306,56 @@ class OrderService extends ContainerAware
             ."Restoranui issiusta nuoroda: http://".$domain.$this->container->get('router')
                 ->generate('ordermobile', array('hash' => $order->getOrderHash()))
             ."\n";
+
+        $mailer = $this->container->get('mailer');
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Naujas uzsakymas restoranui: '.$order->getPlace()->getName())
+            ->setFrom('info@'.$domain)
+        ;
+
+        $mainEmailSet = false;
+
+        foreach ($notifyEmails as $email) {
+            if (!$mainEmailSet) {
+                $mainEmailSet = true;
+                $message->addTo($email);
+            } else {
+                $message->addCc($email);
+            }
+        }
+
+        $message->setBody($emailMessageText);
+        $mailer->send($message);
+    }
+
+    /**
+     * For debuging purpose only!
+     */
+    public function notifyOrderAccept() {
+        $order = $this->getOrder();
+
+        $domain = $this->container->getParameter('domain');
+        $notifyEmails = $this->container->getParameter('order.accept_notify_emails');
+
+        $userAddress = '';
+        $userAddressObject = $order->getAddressId();
+
+        if (!empty($userAddressObject) && is_object($userAddressObject)) {
+            $userAddress = $order->getAddressId()->getAddress().', '.$order->getAddressId()->getCity();
+        }
+
+        $emailMessageText = 'Gautas naujas uzsakymas restoranui '.$order->getPlace()->getName()."\n"
+            ."OrderId: " . $order->getId()."\n\n"
+            ."Parinktas gamybos taskas adresu: ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
+            ."\n"
+            ."Uzsakovo vardas: ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
+            ."Uzsakovo adresas: ".$userAddress."\n"
+            ."\n"
+            ."Pristatymo tipas: ".$order->getDeliveryType()."\n"
+            ."Apmokejimo tipas: ".$order->getPaymentMethod()."\n"
+            ."Apmokejimo bukle: ".$order->getPaymentStatus()."\n"
+        ;
 
         $mailer = $this->container->get('mailer');
 

@@ -22,7 +22,8 @@ parameters:
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
-    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt, vyr.dispeceres@maistoralis.lt]
+    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt]
+    order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
     title: "Foodout"
     domain: "foodout.lt"
     arc_gis_user: "skanulabai"
