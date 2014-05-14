@@ -58,7 +58,7 @@ class OrderDetails
     private $quantity;
 
     /**
-     * @ORM\Column(name="price", type="decimal", scale=2)
+     * @ORM\Column(name="price", type="decimal", precision=8, scale=2)
      */
     private $price;
 

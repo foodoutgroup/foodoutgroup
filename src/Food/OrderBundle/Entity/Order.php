@@ -104,7 +104,7 @@ class Order
 
     /**
      * @var decimal
-     * @ORM\Column(name="total", type="decimal", precision=4, nullable=true)
+     * @ORM\Column(name="total", type="decimal", precision=8, scale=2, nullable=true)
      */
     private $total;
     
