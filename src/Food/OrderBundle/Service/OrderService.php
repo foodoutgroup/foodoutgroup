@@ -1754,6 +1754,7 @@ class OrderService extends ContainerAware
                         self::$status_assiged,
                         self::$status_delayed,
                         self::$status_finished,
+                        self::$status_completed,
                     )
                 ),
                 array(

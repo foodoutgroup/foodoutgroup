@@ -89,7 +89,7 @@
                                     <div class="history-item-middle">
                                         <div class="number-date"><span>{% trans %}general.order{% endtrans %} #{{ order.id }}</span><span>{{ order.orderDate|date("Y m d, H:i") }}</span></div>
                                         <div class="desc">
-                                            {% if order.orderStatus == 'finished' %}{% trans %}general.order.delivered{% endtrans %}{% elseif order.orderStatus == 'assigned' %}{% trans %}general.order.on_delivery{% endtrans %}{% else %}{% trans %}general.order.making{% endtrans %}{% endif %}
+                                            {% if order.orderStatus == 'completed' %}{% trans %}general.order.delivered{% endtrans %}{% elseif order.orderStatus == 'assigned' %}{% trans %}general.order.on_delivery{% endtrans %}{% else %}{% trans %}general.order.making{% endtrans %}{% endif %}
                                             <strong>{{ order.details.count }} {% trans %}general.order.dishes{% endtrans %}</strong> {% trans %}general.for{% endtrans %} {{ order.total }} {{ currency_display }} {% trans %}general.to{% endtrans %} {{ order.addressId.address }}.
                                         </div>
                                     </div>
