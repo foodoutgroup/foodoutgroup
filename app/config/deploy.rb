@@ -9,7 +9,7 @@ set :model_manager, "doctrine"
 set :branch, "design"
 
 # multi-stage environment
-set :stages,        %w(production staging)
+set :stages,        %w(production staging sandbox)
 # isijungiam kada reik :)
 set :default_stage, "sandbox"
 set :stage_dir,     "app/config/deploy"

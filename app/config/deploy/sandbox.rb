@@ -4,8 +4,8 @@ set :deploy_to,   "/home/foodout/"
 set :scm,         :git
 set :model_manager, "doctrine"
 
-set :user, "foodout"
-set :password, "kebabas"
+set :user, "root"
+set :password, "niom_niom"
 
 set :symfony_env_prod, "prod"
 ssh_options[:keys] = ["C:\Users\drawgas\.ssh\id_rsa"]
