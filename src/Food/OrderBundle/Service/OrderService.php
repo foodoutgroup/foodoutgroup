@@ -230,8 +230,12 @@ class OrderService extends ContainerAware
         $this->order->setPlacePointCity($pointRecord->getCity());
         $this->order->setPlacePointAddress($pointRecord->getAddress());
 
+        $deliveryTime = new \DateTime("now");
+        $deliveryTime->modify("+60 minutes");
+
         $this->order->setUser($user);
         $this->order->setOrderDate(new \DateTime("now"));
+        $this->order->setDeliveryTime($deliveryTime);
         $this->order->setVat($this->container->getParameter('vat'));
         $this->order->setOrderHash(
             $this->generateOrderHash($this->order)
