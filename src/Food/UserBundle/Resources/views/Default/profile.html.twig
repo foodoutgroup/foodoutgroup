@@ -28,7 +28,7 @@
                         <div class="active-user"><img src="{{ asset('bundles/foodapp/images/person.png') }}">
                             {#<a href="#" class="edit"></a>#}
                             <div class="user-name">{{ app.user.firstname }}</div>
-                            <div class="user-location">{{ app.user.defaultAddress.city }}</div>
+                            <div class="user-location">{% if app.user.defaultAddress %}{{ app.user.defaultAddress.city }}{% endif %}</div>
                         </div>
                         <ul class="menu user-menu">
                             <li class="menu-item user-ico active" data-target=".user-page .content-item.user">
