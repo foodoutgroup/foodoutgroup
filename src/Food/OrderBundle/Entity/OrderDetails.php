@@ -307,7 +307,7 @@ class OrderDetails
     /**
      * Get options
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Food\OrderBundle\Entity\OrderDetailsOptions[]
      */
     public function getOptions()
     {

@@ -296,9 +296,65 @@ class OrderService extends ContainerAware
             $this->getOrder()->setDeliveryTime($dt);
             $this->saveOrder();
             $this->chageOrderStatus(self::$status_accepted);
+            $this->_notifyOnAccepted();
         }
 
         return $this;
+    }
+
+    private function _notifyOnAccepted()
+    {
+        $ml = $this->container->get('food.mailer');
+
+        $userName = "";
+        if ($this->getOrder()->getUser()->getFirstname()) {
+            $userName = $this->getOrder()->getUser()->getFirstname();
+        }
+        if ($this->getOrder()->getUser()->getLastname()) {
+            if (!empty($userName)) {
+                $userName.= " ";
+            }
+            $userName.= $this->getOrder()->getUser()->getLastname();
+        }
+        $ordersText = "<br />";
+        $ordersText.= "<ul>";
+        foreach ($this->getOrder()->getDetails() as $ord) {
+            $ordersText.="<li>".$ord->getDishName()." (".$ord->getQuantity()." vnt.)";
+            $options = $ord->getOptions();
+            if (sizeof($options) > 0) {
+                /*
+                $ordersText.="<ul>";
+                foreach ($options as $opt) {
+                    $ordersText.="<li>".$opt->getDishOptionName()."</li>";
+                }
+                $ordersText.="</ul>";
+                */
+
+                $ordersText.=" (".$this->container->get('translator')->trans('email.dishes.options').": ";
+                foreach ($options as $k=>$opt) {
+                    if ($k !=0) {
+                        $ordersText.=", ";
+                    }
+                    $ordersText.=$opt->getDishOptionName();
+                }
+                $ordersText.=")";
+
+            }
+            $ordersText.="</li>";
+        }
+        $ordersText.= "</ul>";
+
+        $variables = array(
+            'username' => $userName,
+            'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
+            'maisto_ruosejas' => $this->getOrder()->getPlacePoint()->getAddress(),
+            'uzsakymas' => $ordersText,
+            'adresas' => $this->getOrder()->getAddressId()->getAddress().", ".$this->getOrder()->getAddressId()->getCity(),
+            'pristatymo_data' => $this->getOrder()->getDeliveryTime()->format('Y-m-d H:i:s')
+        );
+
+        $ml->setVariables( $variables )->setRecipient( $this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30009269 )->send();
+
     }
 
     /**
