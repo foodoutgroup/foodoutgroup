@@ -70,6 +70,10 @@ class DefaultController extends Controller
             // finally update user
             $userManager->updateUser($user);
 
+            $d = $request->get('fos_user_registration_form');
+
+            $this->_notifyNewUser($user, $d['plainPassword']['first']);
+
             if (null === $response = $event->getResponse()) {
                 $url = $this->container->get('router')->generate('food_lang_homepage');
                 $response = new Response('');
@@ -104,6 +108,23 @@ class DefaultController extends Controller
                 'errors' => $errors,
             ]
         );
+    }
+
+    /**
+     * @param User $user
+     * @param $pass
+     */
+    private function _notifyNewUser($user, $pass)
+    {
+        $ml = $this->get('food.mailer');
+
+        $variables = array(
+            'username' => $user->getUsername(),
+            'password' => $pass,
+            'login_url' => $this->generateUrl('food_lang_homepage', array(), true),
+        );
+
+        $ml->setVariables( $variables )->setRecipient( $user->getEmail(), $user->getEmail())->setId( 30009253 )->send();
     }
 
     /**
