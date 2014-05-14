@@ -38,10 +38,22 @@ class DispatcherAdminController extends Controller
         $orderService = $this->get('food.order');
         $order = $orderService->getOrderById($orderId);
 
+        switch ($order->getOrderStatus()) {
+            case 'new':
+                $orderStatuses = array(
+                    $orderService::$status_canceled,
+                );
+                break;
+
+            default:
+                $orderStatuses = $orderService::getOrderStatuses();
+                break;
+        }
+
         return $this->render(
             'FoodAppBundle:Dispatcher:status_popup.html.twig',
             array(
-                'orderStatuses' => $orderService::getOrderStatuses(),
+                'orderStatuses' => $orderStatuses,
                 'currentStatus' => $order->getOrderStatus(),
             )
         );
