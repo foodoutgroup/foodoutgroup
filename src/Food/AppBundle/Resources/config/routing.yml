@@ -98,7 +98,7 @@ food_ajax_remove_dish:
     defaults: { _controller: FoodDishesBundle:Dish:removeDishInCart, dish: ~, cartId: ~}
 
 food_ajax:
-    pattern: /ajax/{action}/i
+    pattern: /ajax/{action}/
     defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~}
 
 
