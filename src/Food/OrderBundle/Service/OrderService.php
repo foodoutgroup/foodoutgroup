@@ -357,7 +357,7 @@ class OrderService extends ContainerAware
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
             'maisto_ruosejas' => $this->getOrder()->getPlacePoint()->getAddress(),
             'uzsakymas' => $ordersText,
-            'adresas' => $this->getOrder()->getAddressId()->getAddress().", ".$this->getOrder()->getAddressId()->getCity(),
+            'adresas' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->getAddress().", ".$this->getOrder()->getAddressId()->getCity() : "--"),
             'pristatymo_data' => $this->getOrder()->getDeliveryTime()->format('Y-m-d H:i:s')
         );
 
