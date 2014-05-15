@@ -180,7 +180,7 @@
       </trans-unit>
       <trans-unit id="e110f798f6661e6e1ac7fbfe1f03e679" resname="mobile.order_finish">
         <source>mobile.order_finish</source>
-        <target>Pabaigti užsakymą</target>
+        <target>Pagamintas</target>
       </trans-unit>
       <trans-unit id="mobile.order_delivered" resname="mobile.order_delivered">
         <source>mobile.order_delivered</source>
