@@ -39,10 +39,20 @@ class DispatcherAdminController extends Controller
         $order = $orderService->getOrderById($orderId);
 
         switch ($order->getOrderStatus()) {
-            case 'new':
+            case $orderService::$status_new:
                 $orderStatuses = array(
                     $orderService::$status_canceled,
                 );
+                break;
+
+            case $orderService::$status_accepted:
+            case $orderService::$status_finished:
+            case $orderService::$status_delayed:
+                $orderStatuses = $orderService::getOrderStatuses();
+                $index = array_search('assigned', $orderStatuses);
+                if (isset($orderStatuses[$index])) {
+                    unset($orderStatuses[$index]);
+                }
                 break;
 
             default:
