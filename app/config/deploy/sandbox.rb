@@ -10,7 +10,7 @@ set :password, "kebabas"
 set :symfony_env_prod, "prod"
 ssh_options[:keys] = ["/home/foodout/.ssh/id_rsa"]
 
-set :use_composer, false
+set :use_composer, true
 
 role :web,        domain                         # Your HTTP server, Apache/etc
 role :app,        domain                         # This may be the same as your `Web` server

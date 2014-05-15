@@ -61,8 +61,8 @@ after "deploy", "deploy:chmod_things"
 after "deploy:rollback", "symfony:cache:clear"
 
 # Be more verbose by uncommenting the following line
-logger.level = Logger::MAX_LEVEL
-# logger.level = 0
+# logger.level = Logger::MAX_LEVEL
+logger.level = 0
 
 # copy parameters.yml to specific env
 set :parameters_dir, "app/config/parameters"
