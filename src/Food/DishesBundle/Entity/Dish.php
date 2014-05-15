@@ -30,7 +30,7 @@ class Dish extends Uploadable implements Translatable
      * @var string
      *
      * @Gedmo\Translatable
-     * @ORM\Column(name="name", type="string", length=45)
+     * @ORM\Column(name="name", type="string", length=65)
      */
     private $name;
 
