@@ -1463,6 +1463,60 @@ class OrderService extends ContainerAware
         return "";
     }
 
+    public function isTodayNoOneWantsToWork(Place $place)
+    {
+        $returner = true;
+        foreach ($place->getPoints() as $point) {
+            if ($point->getActive()) {
+                if ($this->isTodayWork($point)) {
+                    $returner = false;
+                }
+            }
+        }
+        return $returner;
+    }
+
+    /**
+     * @param Place $place
+     * @return bool
+     */
+    public function isTodayWorkDayForAll(Place $place)
+    {
+        $returner = false;
+        $works = 0;
+        $total = 0;
+        foreach ($place->getPoints() as $point) {
+            if ($point->getActive()) {
+                $total++;
+                if ($this->isTodayWork($point)) {
+                    $works++;
+                }
+            }
+        }
+        if ($total == $works) {
+            $returner = true;
+        }
+        return $returner;
+    }
+
+    public function notWorkingPlacesPoints(Place $place)
+    {
+        $returner = '<div>';
+        foreach ($place->getPoints() as $point) {
+            if ($point->getActive()) {
+                $returner.= $point->getAddress()." ";
+                if ($this->isTodayWork($point)) {
+                    $returner.= '<span class="work-green">'.$this->getTodayWork($point, false)."</span>";
+                } else {
+                    $returner.= '<span class="work-red">'.$this->getTodayWork($point, false)."</span> ". $this->container->get('translator')->trans($this->workTimeErrorsReturn($point));
+                }
+                $returner.="<br />";
+            }
+        }
+        $returner.="</div>";
+        return $returner;
+    }
+
     public function isTodayWork(PlacePoint $placePoint)
     {
         $wd = date('w');

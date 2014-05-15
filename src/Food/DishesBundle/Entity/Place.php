@@ -509,7 +509,7 @@ class Place extends Uploadable implements Translatable
     /**
      * Get points
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return PlacePoint[]
      */
     public function getPoints()
     {
