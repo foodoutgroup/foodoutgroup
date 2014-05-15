@@ -4,11 +4,13 @@ set :deploy_to,   "/home/foodout/"
 set :scm,         :git
 set :model_manager, "doctrine"
 
-set :user, "root"
-set :password, "niom_niom"
+set :user, "foodout"
+set :password, "kebabas"
 
 set :symfony_env_prod, "prod"
-ssh_options[:keys] = ["C:\Users\drawgas\.ssh\id_rsa"]
+ssh_options[:keys] = ["/home/foodout/.ssh/id_rsa"]
+
+set :use_composer, false
 
 role :web,        domain                         # Your HTTP server, Apache/etc
 role :app,        domain                         # This may be the same as your `Web` server
