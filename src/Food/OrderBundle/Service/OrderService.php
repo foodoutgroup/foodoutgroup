@@ -1222,7 +1222,7 @@ class OrderService extends ContainerAware
             ->generate('ordermobile', array('hash' => $order->getOrderHash()));
 
         $messageText = $translator->trans('general.sms.new_order')
-            .': http://'.$domain.$orderConfirmRoute;
+            .'http://'.$domain.$orderConfirmRoute;
 
         // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
         if (!empty($placePointEmail)) {
