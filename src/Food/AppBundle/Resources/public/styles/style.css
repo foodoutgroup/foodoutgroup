@@ -729,6 +729,27 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
 .static-page-content { text-align: justify; padding-left: 20px; padding-right: 20px;}
 
 
+.work-green {
+    color: #002923;
+    float: none !important;
+}
+.work-red {
+    color: #9a0200;
+    float: none !important;
+}
+.partial-work {
+    background-image: url('/bundles/foodapp/images/tag-not-working.png');
+    background-repeat: no-repeat;
+    background-position: center right;
+    width: 18px;
+    height: 15px;
+    margin-top: 5px;
+    border-radius: 3px;
+}
+.time-popup.time-popup2 {
+    left: 30px;
+}
+
 /** The happyness of the side cart **/
 .check-item .edit {
     display: none;
