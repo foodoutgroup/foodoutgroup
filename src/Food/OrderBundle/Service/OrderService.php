@@ -1018,7 +1018,8 @@ class OrderService extends ContainerAware
             'order_status' =>  array(self::$status_accepted, self::$status_delayed, self::$status_finished),
             'place_point_city' => $city,
             'deliveryType' => self::$deliveryDeliver,
-            'order_date_more' => $date
+            'order_date_more' => $date,
+            'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
         $orders = $orders = $this->getOrdersByFilter($filter, 'list');
@@ -1040,6 +1041,7 @@ class OrderService extends ContainerAware
             'order_status' =>  array(self::$status_new),
             'place_point_city' => $city,
             'deliveryType' => self::$deliveryDeliver,
+            'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
         $orders = $orders = $this->getOrdersByFilter($filter, 'list');
@@ -1061,6 +1063,7 @@ class OrderService extends ContainerAware
             'order_status' =>  self::$status_assiged,
             'place_point_city' => $city,
             'deliveryType' => self::$deliveryDeliver,
+            'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
         $orders = $this->getOrdersByFilter($filter, 'list');
