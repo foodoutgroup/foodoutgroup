@@ -1356,6 +1356,9 @@ class OrderService extends ContainerAware
             $userAddress = $order->getAddressId()->getAddress().', '.$order->getAddressId()->getCity();
         }
 
+        $driverUrl = 'http://'.$domain.$this->container->get('router')
+                ->generate('drivermobile', array('hash' => $order->getOrderHash()));
+
         $emailMessageText = 'Gautas naujas uzsakymas restoranui '.$order->getPlace()->getName()."\n"
             ."OrderId: " . $order->getId()."\n\n"
             ."Parinktas gamybos taskas adresu: ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
@@ -1366,6 +1369,8 @@ class OrderService extends ContainerAware
             ."Pristatymo tipas: ".$order->getDeliveryType()."\n"
             ."Apmokejimo tipas: ".$order->getPaymentMethod()."\n"
             ."Apmokejimo bukle: ".$order->getPaymentStatus()."\n"
+            ."\n"
+            ."Vairuotojas gaus nuoroda: ".$driverUrl
         ;
 
         $mailer = $this->container->get('mailer');
