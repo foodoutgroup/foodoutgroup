@@ -3,6 +3,8 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <meta name="msapplication-config" content="none"/>
+
     {% stylesheets 'bundles/foodapp/styles/admin_style.css' filter="cssrewrite" %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
     {% endstylesheets %}
