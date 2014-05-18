@@ -1346,6 +1346,16 @@ class OrderService extends ContainerAware
     public function notifyOrderAccept() {
         $order = $this->getOrder();
 
+        if ($order->getDeliveryType() == 'pickup') {
+            // no email for dispatcher if uster picks up by himself
+            return;
+        }
+
+        if ($order->getPlacePointSelfDelivery() == true) {
+            // if place delivers by themselves - why bother dispatcher
+            return;
+        }
+
         $domain = $this->container->getParameter('domain');
         $notifyEmails = $this->container->getParameter('order.accept_notify_emails');
 
