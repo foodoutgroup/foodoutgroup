@@ -322,6 +322,8 @@ class CartService {
      *
      * @param int $dishId
      * @param int $cartId
+     *
+     * @return \Food\CartBundle\Entity\Cart
      */
     public function getCartDish($dishId, $cartId)
     {
@@ -332,7 +334,11 @@ class CartService {
                 'cart_id' => $cartId
             )
         );
-        $cartEnt->setEm($this->getEm());
+
+        // Set Object Manager only if cart found
+        if ($cartEnt) {
+            $cartEnt->setEm($this->getEm());
+        }
         return $cartEnt;
     }
 
