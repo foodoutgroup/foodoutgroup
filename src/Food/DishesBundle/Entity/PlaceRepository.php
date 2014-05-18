@@ -69,7 +69,6 @@ class PlaceRepository extends EntityRepository
         $lat = str_replace(",", ".", $locationData['lat']);
         $lon = str_replace(",", ".", $locationData['lng']);
 
-
         $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND city='".$city."' AND place = p.id
             AND (
                 (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) <= 7
@@ -91,6 +90,9 @@ class PlaceRepository extends EntityRepository
             }
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.place = p.id";
             $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND ".$kitchensQuery." GROUP BY p.id";
+        } elseif (empty($locationData)) {
+            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.place = p.id";
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 ".$kitchensQuery." GROUP BY p.id";
         } else {
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.city='".$city."' AND ppc.place = p.id";
             $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.id =  (". $subQuery .") ".$kitchensQuery;
@@ -105,7 +107,6 @@ class PlaceRepository extends EntityRepository
             $place['place'] = $this->find($place['place_id']);
             $place['point'] = $this->getEntityManager()->getRepository('FoodDishesBundle:PlacePoint')->find($place['point_id']);
         }
-
         return $places;
     }
 
