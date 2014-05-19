@@ -833,7 +833,7 @@ class Order
     /**
      * Get orderStatusLog
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Food\OrderBundle\Entity\OrderStatusLog
      */
     public function getOrderStatusLog()
     {

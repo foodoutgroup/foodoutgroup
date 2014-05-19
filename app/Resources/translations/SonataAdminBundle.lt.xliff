@@ -785,6 +785,38 @@
                 <source>admin.order.details.option_code</source>
                 <target>Kodas</target>
             </trans-unit>
+            <trans-unit id="admin.order.details.quantity">
+                <source>admin.order.details.quantity</source>
+                <target>Kiekis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.sum">
+                <source>admin.order.details.sum</source>
+                <target>Suma</target>
+            </trans-unit>
+            <trans-unit id="admin.order.driver">
+                <source>admin.order.driver</source>
+                <target>Vairuotojas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.order_status.log">
+                <source>admin.order.order_status.log</source>
+                <target>Būkles istorija</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.date">
+                <source>admin.order.status.date</source>
+                <target>Data</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.old_status">
+                <source>admin.order.status.old_status</source>
+                <target>Iš būklės</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.new_status">
+                <source>admin.order.status.new_status</source>
+                <target>Į būklę</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.message">
+                <source>admin.order.status.message</source>
+                <target>Pranešimas</target>
+            </trans-unit>
 
             <!-- Dispatcher window -->
             <trans-unit id="admin.order.dispatcher">

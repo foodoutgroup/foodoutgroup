@@ -9,6 +9,19 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class MessagesAdmin extends SonataAdmin
 {
+    public function __construct($code, $class, $baseControllerName)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+
+        if (!$this->hasRequest()) {
+            $this->datagridValues = array(
+                '_page'       => 1,
+                '_sort_order' => 'DESC',
+                '_sort_by'    => 'createdAt'
+            );
+        }
+    }
+
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {

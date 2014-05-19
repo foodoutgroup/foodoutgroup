@@ -9,6 +9,19 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class OrderAdmin extends SonataAdmin
 {
+    public function __construct($code, $class, $baseControllerName)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+
+        if (!$this->hasRequest()) {
+            $this->datagridValues = array(
+                '_page'       => 1,
+                '_sort_order' => 'DESC',
+                '_sort_by'    => 'order_date'
+            );
+        }
+    }
+
     // Fields to be shown on filter forms
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
@@ -74,10 +87,16 @@ class OrderAdmin extends SonataAdmin
             ->add('total', 'string', array('label' => 'admin.order.total'))
             ->add('comment', 'string', array('label' => 'admin.order.comment'))
             ->add('place_comment', 'string', array('label' => 'admin.order.place_comment'))
-            ->add('order_status', 'string', array('label' => 'admin.order.order_status'))
+            ->add('order_status', 'sonata_type_collection',
+                array(
+                    'label' => 'admin.order.order_status',
+                    'template' => 'FoodOrderBundle:Admin:order_status_list.html.twig'
+                )
+            )
             ->add('paymentMethod', 'string', array('label' => 'admin.order.payment_method'))
             ->add('paymentStatus', 'string', array('label' => 'admin.order.payment_status'))
             ->add('submittedForPayment', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.submitted_for_payment'))
+            ->add('driver.contact', null, array('label' => 'admin.order.driver'))
             ->add('lastUpdate', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.last_update'))
             ->add('lastPaymentError', 'string', array('label' => 'admin.order.last_payment_error'))
         ;

@@ -7,6 +7,8 @@
                 <tr>
                     <th>{{ 'admin.order.details.dish_name'|trans({}, 'SonataAdminBundle') }}</th>
                     <th>{{ 'admin.order.details.price'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.details.quantity'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.details.sum'|trans({}, 'SonataAdminBundle') }}</th>
                     <th>{{ 'admin.order.details.dish_unit'|trans({}, 'SonataAdminBundle') }}</th>
                     <th>{{ 'admin.order.details.dish_size_code'|trans({}, 'SonataAdminBundle') }}</th>
                     <th>{{ 'admin.order.details.options'|trans({}, 'SonataAdminBundle') }}</th>
@@ -15,12 +17,11 @@
                 <tr>
                     <td>{{ detail.getDishName() }}</td>
                     <td>{{ detail.getPrice() }} {{ currency_display }}</td>
+                    <td>{{ detail.getQuantity() }}</td>
+                    <td>{{ detail.getPrice() * detail.getQuantity() }} {{ currency_display }}</td>
                     <td>{{ detail.getDishUnitName() }}</td>
                     <td>{{ detail.getDishSizeCode() }}</td>
                     <td>
-                        {#--#}
-                        {#TODO, kai bus detail optionsu pasiekimas#}
-                        {#{% set detail_options = detail.get %}#}
                         {% if detail.options is not empty %}
                             <table>
                                 <tr>
@@ -38,7 +39,6 @@
                             </table>
                         {% endif %}
                     </td>
-                    {#<td>{{ dump(detail) }}</td>#}
                 </tr>
             {% endfor %}
             </table>
