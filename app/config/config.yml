@@ -78,6 +78,7 @@ twig:
         locale:       "%locale%"
         page_title:   "%title%"
         currency_display: "%currency_display%"
+        vat_size: "%vat%"
         dish_service: "@food.dishes"
         order_service: "@food.order"
         google_maps_api: "%google.maps_api%"

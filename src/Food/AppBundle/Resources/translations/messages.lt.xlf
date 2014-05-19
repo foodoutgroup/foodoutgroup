@@ -466,6 +466,22 @@
         <source>mobile.invoice.car_number</source>
         <target>Automobilio Nr.</target>
       </trans-unit>
+      <trans-unit id="mobile.invoice.sum_no_vat" resname="mobile.invoice.sum_no_vat">
+        <source>mobile.invoice.sum_no_vat</source>
+        <target>Suma be PVM</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.delivery_no_vat" resname="mobile.invoice.delivery_no_vat">
+        <source>mobile.invoice.delivery_no_vat</source>
+        <target>Pristatymas be PVM</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.vat" resname="mobile.invoice.vat">
+        <source>mobile.invoice.vat</source>
+        <target>PVM</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.total_with_vat" resname="mobile.invoice.total_with_vat">
+        <source>mobile.invoice.total_with_vat</source>
+        <target>Viso</target>
+      </trans-unit>
       <trans-unit id="16e198a6b48257e47d9ce572ab7ce655" resname="mobile.deliver_time">
         <source>mobile.deliver_time</source>
         <target>Pristatyti iki</target>
