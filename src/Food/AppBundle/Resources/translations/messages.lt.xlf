@@ -166,6 +166,14 @@
         <source>general.sms.user.order_accepted</source>
         <target>Sveiki, restoranas patvirtino Jusu uzsakyma</target>
       </trans-unit>
+      <trans-unit id="general.sms.client.restourant_cancel" resname="general.sms.client.restourant_cancel">
+        <source>general.sms.client.restourant_cancel</source>
+        <target>Atsiprasome, restoranas atsauke Jusu uzsakyma.</target>
+      </trans-unit>
+      <trans-unit id="general.sms.client.restourant_cancel_banklink" resname="general.sms.client.restourant_cancel_banklink">
+        <source>general.sms.client.restourant_cancel_banklink</source>
+        <target>Atsiprasome, restoranas atsauke Jusu uzsakyma. Pinigai bus grazinti i Jusu saskaita</target>
+      </trans-unit>
       <trans-unit id="74fbe91702c1ee04724c55bde63e654f" resname="general.email.new_order">
         <source>general.email.new_order</source>
         <target>naujas užsakymas</target>
