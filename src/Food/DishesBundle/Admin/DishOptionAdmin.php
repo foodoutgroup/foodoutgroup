@@ -24,6 +24,7 @@ class DishOptionAdmin extends FoodAdmin
                 ),
             )
         )->add('code', null, array('label' => 'admin.dish_option.code', 'required' => false))
+         ->add('groupName', null, array('label' => 'admin.dish_option.group_name'))
          ->add('singleSelect', 'checkbox', array('label' => 'admin.dish_option.single_select', 'required' => false));
 
         if ($this->isAdmin()) {
@@ -78,6 +79,7 @@ class DishOptionAdmin extends FoodAdmin
             ->add('place')
             ->add('price', null, array('label' => 'admin.dish_option.price'))
             ->add('singleSelect', null, array('label' => 'admin.dish_option.single_select', 'editable' => true))
+            ->add('groupName', null, array('label' => 'admin.dish_option.group_name', 'editable' => true))
             ->add('createdBy', null, array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))

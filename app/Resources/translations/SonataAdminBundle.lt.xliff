@@ -212,6 +212,10 @@
                 <source>admin.dish_option.code</source>
                 <target>Sis. kodas</target>
             </trans-unit>
+            <trans-unit id="admin.dish_option.group_name">
+                <source>admin.dish_option.group_name</source>
+                <target>Grupė</target>
+            </trans-unit>
             <trans-unit id="admin.dish_option.name">
                 <source>admin.dish_option.name</source>
                 <target>Priedas</target>

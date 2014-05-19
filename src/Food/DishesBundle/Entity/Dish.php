@@ -119,6 +119,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * @ORM\ManyToMany(targetEntity="DishOption", inversedBy="dishes")
      * @ORM\JoinTable(name="dish_option_map")
+     * @ORM\OrderBy({"groupName" = "DESC", "singleSelect" = "DESC"})
      */
     private $options;
 

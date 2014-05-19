@@ -211,9 +211,17 @@ class CartService {
      */
     public function addDishBySizeId($size, $quantity, $options = array(), $option = array())
     {
+        if (!is_array($options)) {
+            $options = array();
+        }
         $sizeEnt = $this->getEm()->getRepository('FoodDishesBundle:DishSize')->find($size);
+
         if(!empty($option)) {
-            $options[] = $option;
+            if (is_array($option)) {
+                $options = array_merge($options, array_values($option));
+            } else {
+                $options[] = $option;
+            }
         }
         $this->addDishByIds(
             $sizeEnt->getDish()->getId(),
