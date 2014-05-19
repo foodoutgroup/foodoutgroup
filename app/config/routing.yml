@@ -100,6 +100,10 @@ paysera_callback:
     path: /payments/paysera/callback
     defaults: { _controller: FoodOrderBundle:Payments:payseraCallback}
 
+food_nagios:
+    pattern:  /nagios/
+    defaults: { _controller: FoodAppBundle:Monitoring:nagios }
+
 fos_user_register:
     resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
     prefix: /register
