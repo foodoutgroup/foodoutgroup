@@ -166,6 +166,14 @@
         <source>general.sms.user.order_accepted</source>
         <target>Sveiki, restoranas patvirtino Jusu uzsakyma</target>
       </trans-unit>
+      <trans-unit id="general.sms.client.restourant_cancel" resname="general.sms.client.restourant_cancel">
+        <source>general.sms.client.restourant_cancel</source>
+        <target>Atsiprasome, restoranas atsauke Jusu uzsakyma.</target>
+      </trans-unit>
+      <trans-unit id="general.sms.client.restourant_cancel_banklink" resname="general.sms.client.restourant_cancel_banklink">
+        <source>general.sms.client.restourant_cancel_banklink</source>
+        <target>Atsiprasome, restoranas atsauke Jusu uzsakyma. Pinigai bus grazinti i Jusu saskaita</target>
+      </trans-unit>
       <trans-unit id="74fbe91702c1ee04724c55bde63e654f" resname="general.email.new_order">
         <source>general.email.new_order</source>
         <target>naujas užsakymas</target>
@@ -465,6 +473,22 @@
       <trans-unit id="b4db2e74a666e4a25386b3f68c64e27a" resname="mobile.invoice.car_number">
         <source>mobile.invoice.car_number</source>
         <target>Automobilio Nr.</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.sum_no_vat" resname="mobile.invoice.sum_no_vat">
+        <source>mobile.invoice.sum_no_vat</source>
+        <target>Suma be PVM</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.delivery_no_vat" resname="mobile.invoice.delivery_no_vat">
+        <source>mobile.invoice.delivery_no_vat</source>
+        <target>Pristatymas be PVM</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.vat" resname="mobile.invoice.vat">
+        <source>mobile.invoice.vat</source>
+        <target>PVM</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.total_with_vat" resname="mobile.invoice.total_with_vat">
+        <source>mobile.invoice.total_with_vat</source>
+        <target>Viso</target>
       </trans-unit>
       <trans-unit id="16e198a6b48257e47d9ce572ab7ce655" resname="mobile.deliver_time">
         <source>mobile.deliver_time</source>

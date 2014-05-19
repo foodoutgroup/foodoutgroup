@@ -431,4 +431,27 @@ class Driver
     {
         return $this->deletedBy;
     }
+
+    /**
+     * @return string
+     */
+    public function getContact()
+    {
+        if (!$this->getId()) {
+            return '';
+        }
+        $driverContactData = $this->getName();
+        $phone = $this->getPhone();
+        $company = $this->getProvider();
+
+        if (!empty($phone)) {
+            $driverContactData .= ', '.$phone;
+        }
+
+        if (!empty($company)) {
+            $driverContactData .= ', '.$company;
+        }
+
+        return $driverContactData;
+    }
 }

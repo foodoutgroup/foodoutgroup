@@ -37,6 +37,41 @@
                 <td>{{ dish.price * dish.quantity }}</td>
             </tr>
         {% endfor %}
+            {% set sum_no_vat = ((order.total - order.place.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
+
+            {% if order.deliveryType == 'deliver' %}
+                {% set sum_no_vat = ((order.total - order.place.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
+                {% set delivery_no_vat =  (order.place.deliveryPrice / (( vat_size / 100 ) + 1))|round(2) %}
+            {% else %}
+                {% set sum_no_vat = ((order.total) / (( vat_size / 100 ) + 1))|round(2) %}
+                {% set delivery_no_vat =  0 %}
+            {% endif %}
+
+            {% set vat_sum = order.total - sum_no_vat - delivery_no_vat %}
+
+            <tr>
+                <td colspan="4" style="border: none;"></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="border: none;"></td>
+                <td>{% trans %}mobile.invoice.sum_no_vat{% endtrans %}:</td>
+                <td>{{ sum_no_vat }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="border: none;"></td>
+                <td>{% trans %}mobile.invoice.delivery_no_vat{% endtrans %}:</td>
+                <td>{{ delivery_no_vat }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="border: none;"></td>
+                <td>{% trans %}mobile.invoice.vat{% endtrans %} ({{ vat_size }}%):</td>
+                <td>{{ vat_sum }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="border: none;"></td>
+                <td>{% trans %}mobile.invoice.total_with_vat{% endtrans %}:</td>
+                <td>{{ order.total }} {{ currency_display }}</td>
+            </tr>
         </tbody>
     </table>
     {# Customer information#}

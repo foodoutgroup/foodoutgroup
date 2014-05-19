@@ -172,7 +172,11 @@
       </trans-unit>
       <trans-unit id="4962db963b0f0d3cd2bc1b571272710b" resname="places.reviews_count">
         <source>places.reviews_count</source>
-        <target>Įvertinimai</target>
+        <target>Įvertinimas|Įvertinimai|Įvertinimų</target>
+      </trans-unit>
+      <trans-unit id="places.review_choice" resname="places.review_choice">
+        <source>places.review_choice</source>
+        <target>Atsiliepimas|Atsiliepimai|Atsiliepimų</target>
       </trans-unit>
       <trans-unit id="c246f90396fd5c888eb71087fbb61789" resname="places.watch_menu">
         <source>places.watch_menu</source>
