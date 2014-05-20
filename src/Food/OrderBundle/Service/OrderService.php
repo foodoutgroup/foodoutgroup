@@ -374,6 +374,7 @@ class OrderService extends ContainerAware
         $driver = $this->getOrder()->getDriver();
         if ($driver->getType() == 'local') {
             $messagingService = $this->container->get('food.messages');
+            $logger = $this->container->get('logger');
 
             // Inform driver about new order that was assigned to him
             $orderConfirmRoute = $this->container->get('router')
@@ -381,6 +382,8 @@ class OrderService extends ContainerAware
 
             $messageText = $this->container->get('translator')->trans('general.sms.driver_assigned_order')
                 .': http://'.$this->container->getParameter('domain').$orderConfirmRoute;
+
+            $logger->alert("Sending message for driver about assigned order to number: ".$driver->getPhone().' with text "'.$messageText.'"');
 
             $message = $messagingService->createMessage(
                 $this->container->getParameter('sms.sender'),
@@ -1279,6 +1282,8 @@ class OrderService extends ContainerAware
         }
 
         // Siunciam sms'a
+        $logger->alert("Sending message for order to be accepted to number: ".$placePoint->getPhone().' with text "'.$messageText.'"');
+
         $message = $messagingService->createMessage(
             $this->container->getParameter('sms.sender'),
             $placePoint->getPhone(),
@@ -1288,6 +1293,8 @@ class OrderService extends ContainerAware
 
         // Informuojame papildomais numeriais (del visa ko)
         if (!empty($placePointAltPhone1)) {
+            $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone1.' with text "'.$messageText.'"');
+
             $message = $messagingService->createMessage(
                 $this->container->getParameter('sms.sender'),
                 $placePointAltPhone1,
@@ -1296,6 +1303,8 @@ class OrderService extends ContainerAware
             $messagingService->saveMessage($message);
         }
         if (!empty($placePointAltPhone2)) {
+            $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone2.' with text "'.$messageText.'"');
+
             $message = $messagingService->createMessage(
                 $this->container->getParameter('sms.sender'),
                 $placePointAltPhone2,

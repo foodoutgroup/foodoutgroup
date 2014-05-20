@@ -59,8 +59,6 @@ class PaymentsController extends Controller
         $this->get('food.cart')->clearCart($order->getPlace());
         $orderService->informPlace();
 
-        $logger->alert("Sending message for order to be accepted to number: ".$recipient.' with text "'.$messageText.'"');
-
         return new RedirectResponse($this->generateUrl('food_cart_success', array('orderHash' => $order->getOrderHash())));
     }
 
