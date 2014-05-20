@@ -957,3 +957,9 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
     width: 4px;
 }
 /* End of custom place bajkos */
+
+/* order history navarots */
+.order-history-item .restautrant-logo .restautrant-logo-wrap img {
+    width: 90px;
+}
+/* end of order history navarots */

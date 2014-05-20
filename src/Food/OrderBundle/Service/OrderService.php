@@ -415,9 +415,10 @@ class OrderService extends ContainerAware
         $this->chageOrderStatus(self::$status_completed);
 
         // Form accounting data if it is not formed already
-        $order = $this->getOrder();
-        $accountingService = $this->container->get('food.accounting');
-        $accounting = $order->getAccounting();
+        // TODO uzkomentuota, nes nenaudojame, o dabar meta: Error: Class 'Food\OrderBundle\Service\AccountingService' not found in app\cache\dev\appDevDebugProjectContainer.php line 1211
+//        $order = $this->getOrder();
+//        $accountingService = $this->container->get('food.accounting');
+//        $accounting = $order->getAccounting();
 
         // if not generated yet - do it!
         if (empty($accounting)) {
