@@ -47,18 +47,18 @@ class PlaceReviewsAdmin extends FoodAdmin
         }
         $datagridMapper
             ->add('createdBy', null, array('label' => 'admin.created_by'))
-            ->add(
-                'createdAt',
-                'doctrine_orm_datetime_range',
-                array('label' => 'admin.created_at', 'format' => 'Y-m-d',),
-                null,
-                array(
-                    'widget' => 'single_text',
-                    'required' => false,
-                    'format' => 'Y-m-d',
-                    'attr' => array('class' => 'datepicker')
-                )
-            )
+//            ->add(
+//                'createdAt',
+//                'doctrine_orm_datetime_range',
+//                array('label' => 'admin.created_at', 'format' => 'Y-m-d',),
+//                null,
+//                array(
+//                    'widget' => 'single_text',
+//                    'required' => false,
+//                    'format' => 'Y-m-d',
+//                    'attr' => array('class' => 'datepicker')
+//                )
+//            )
         ;
     }
 
