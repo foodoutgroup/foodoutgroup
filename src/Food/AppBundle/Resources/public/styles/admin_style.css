@@ -10,6 +10,7 @@ h4.padded {
 .city_list {
     display: inline-block;
     width: 925px;
+    vertical-align: top;
 }
 
 .city_list .ui-tabs-panel {
