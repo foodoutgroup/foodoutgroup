@@ -1621,14 +1621,21 @@ class OrderService extends ContainerAware
             }
         }
 
+        $pointRecord = null;
+
         if (empty($placePoint)) {
             $placePointMap = $this->container->get('session')->get('point_data');
-            $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+            if (!empty($placePointMap[$place->getId()])) {
+                $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+            } else {
+                $formErrors[] = 'order.form.errors.customeraddr';
+            }
         } else {
             $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
         }
-
-        $this->workTimeErrors($pointRecord, $formErrors);
+        if ($pointRecord != null) {
+            $this->workTimeErrors($pointRecord, $formErrors);
+        }
 
 
 
