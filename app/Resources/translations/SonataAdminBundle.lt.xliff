@@ -897,7 +897,7 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.order_status.completed">
                 <source>admin.dispatcher.order_status.completed</source>
-                <target>Pristatyas</target>
+                <target>Pristatytas</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.order_status.finished">
                 <source>admin.dispatcher.order_status.finished</source>
