@@ -65,7 +65,7 @@ class StaticContentAdmin extends FoodAdmin
             ->add('active', null, array('label' => 'admin.static.active', 'editable' => true))
             ->add('visible', null, array('label' => 'admin.static.visible', 'editable' => true))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
-            ->add('editedBy', null, array('label' => 'admin.edited_by'))
+//            ->add('editedBy', null, array('label' => 'admin.edited_by'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
