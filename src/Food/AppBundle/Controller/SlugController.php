@@ -38,14 +38,34 @@ class SlugController extends Controller
                 'is_active' => true,
             ]);
             if (empty($slugRow)) {
-                throw new NotFoundHttpException('Sorry page does not exist!');
+                // Log da shit about slug problems :)
+                $errorMessage = sprintf(
+                    'User requested non-existant slug: "%s" Locale: "%s" IP: "%s" UserAgent: "%s"',
+                    $slug,
+                    $request->getLocale(),
+                    $request->getClientIp(),
+                    $request->headers->get('User-Agent')
+                );
+                $this->get('logger')->error($errorMessage);
+
+                throw new NotFoundHttpException('Sorry page "'.$slug.'" does not exist!');
             }
             return $this->redirect($this->generateUrl('food_slug', ['slug' => $slugRow->getName()]), 301);
         }
 
         if ($slugRow == null) {
             if ($slug != null) {
-                throw new NotFoundHttpException('Sorry page does not exist');
+                // Log da shit about slug problems :)
+                $errorMessage = sprintf(
+                    'User requested non-existant slug: "%s" Locale: "%s" IP: "%s" UserAgent: "%s"',
+                    $slug,
+                    $request->getLocale(),
+                    $request->getClientIp(),
+                    $request->headers->get('User-Agent')
+                );
+                $this->get('logger')->error($errorMessage);
+
+                throw new NotFoundHttpException('Sorry page "'.$slug.'" does not exist');
             }
         }
 
