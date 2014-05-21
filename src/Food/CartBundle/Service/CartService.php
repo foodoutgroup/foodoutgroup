@@ -135,6 +135,17 @@ class CartService {
                 )
             );
         foreach ($opts as $opt) {
+            if ($opt == null) {
+                $context = array(
+                    'RequestData: '.json_encode($this->container->get('request')->request->all()),
+                    'EntityType: '.get_class($opt),
+                    'ParentType: '.get_class($dish)
+                );
+                $this->container->get('logger')->error(
+                    "ACTION: removeDishByIds, options removal",
+                    $context
+                );
+            }
             $this->getEm()->remove($opt);
             $this->getEm()->flush();
         }
@@ -148,6 +159,17 @@ class CartService {
                     'session' => $this->getSessionId()
                 )
             );
+
+        if ($cartDish == null) {
+            $context = array(
+                'RequestData: '.json_encode($this->container->get('request')->request->all()),
+                'EntityType: '.get_class($cartDish),
+            );
+            $this->container->get('logger')->error(
+                "ACTION: removeDishByIds, Dish removal removal",
+                $context
+            );
+        }
 
         $this->getEm()->remove($cartDish);
         $this->getEm()->flush();
