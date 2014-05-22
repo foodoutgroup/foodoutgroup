@@ -53,7 +53,7 @@ class DailyOrdersCommand extends ContainerAwareCommand
                         'orders' => $orders,
                         'reportFor' => date("Y-m-d", strtotime('-1 day')),
                     )
-                ));
+                ), 'text/html');
 
             $mailer->send($message);
 
