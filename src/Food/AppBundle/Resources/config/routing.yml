@@ -6,6 +6,10 @@ food_test_payment:
     pattern:  /test/payment
     defaults: { _controller: FoodAppBundle:Test:payment }
 
+food_test_report:
+    pattern:  /test/report
+    defaults: { _controller: FoodAppBundle:Test:report }
+
 food_test:
     pattern:  /test/
     defaults: { _controller: FoodAppBundle:Test:index }

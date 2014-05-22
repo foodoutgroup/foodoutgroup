@@ -178,6 +178,10 @@
         <source>general.email.new_order</source>
         <target>naujas užsakymas</target>
       </trans-unit>
+      <trans-unit id="general.email.accounting_yesterday_report" resname="general.email.accounting_yesterday_report">
+        <source>general.email.accounting_yesterday_report</source>
+        <target>vakaryksciu uzsakymu ataskaita</target>
+      </trans-unit>
       <trans-unit id="19554e921e608df135b269a564c8cf6a" resname="mobile.order_confirm">
         <source>mobile.order_confirm</source>
         <target>Patvirtinti užsakymą</target>
@@ -585,6 +589,18 @@
       <trans-unit id="general.profile.no_orders" resname="general.profile.no_orders">
         <source>general.profile.no_orders</source>
         <target>Dar nieko neužsisakėte</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.local.card" resname="general.email.accounting_report.local.card">
+          <source>general.email.accounting_report.local.card</source>
+          <target>Kortele, atsiimant</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.local" resname="general.email.accounting_report.local">
+          <source>general.email.accounting_report.local</source>
+          <target>Grynaisiais</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.paysera" resname="general.email.accounting_report.paysera">
+          <source>general.email.accounting_report.paysera</source>
+          <target>Internetu</target>
       </trans-unit>
     </body>
   </file>

@@ -1032,6 +1032,45 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @return array
+     */
+    public function getYesterdayOrdersGrouped()
+    {
+        $dateFrom = new \DateTime(date("Y-m-d 00:00:00", strtotime('-1 day')));
+        $dateTo = new \DateTime(date("Y-m-d 23:59:59", strtotime('-1 day')));
+
+        $filter = array(
+            'order_status' =>  array(self::$status_completed),
+            'order_date_between' => array('from' => $dateFrom, 'to' => $dateTo),
+        );
+
+        $orders = $this->getOrdersByFilter($filter, 'list');
+
+        if (!$orders) {
+            return array('total' => 0);
+        }
+
+        $ordersGrouped = array(
+            'pickup' => array(),
+            'self_delivered' => array(),
+            'our_deliver' => array(),
+            'total' => count($orders),
+        );
+
+        foreach ($orders as $order) {
+            if ($order->getDeliveryType() == 'pickup') {
+                $ordersGrouped['pickup'][] = $order;
+            } elseif ($order->getPlacePointSelfDelivery()) {
+                $ordersGrouped['self_delivered'][] = $order;
+            } else {
+                $ordersGrouped['our_deliver'][] = $order;
+            }
+        }
+
+        return $ordersGrouped;
+    }
+
+    /**
      * @param string $city
      * @return array
      */
@@ -1048,7 +1087,7 @@ class OrderService extends ContainerAware
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
-        $orders = $orders = $this->getOrdersByFilter($filter, 'list');
+        $orders = $this->getOrdersByFilter($filter, 'list');
 
         if (!$orders) {
             return array();
@@ -1070,7 +1109,7 @@ class OrderService extends ContainerAware
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
-        $orders = $orders = $this->getOrdersByFilter($filter, 'list');
+        $orders = $this->getOrdersByFilter($filter, 'list');
 
         if (!$orders) {
             return array();
@@ -1127,6 +1166,13 @@ class OrderService extends ContainerAware
                 switch($filterName) {
                     case 'order_date_more':
                         $qb->andWhere('o.order_date < :'.$filterName);
+                        break;
+
+                    case 'order_date_between':
+                        $qb->andWhere('o.order_date BETWEEN :order_date_between_from AND :order_date_between_to');
+                        unset($filter['order_date_between']);
+                        $filter['order_date_between_from'] = $filterValue['from'];
+                        $filter['order_date_between_to'] = $filterValue['to'];
                         break;
 
                     case 'order_status':
