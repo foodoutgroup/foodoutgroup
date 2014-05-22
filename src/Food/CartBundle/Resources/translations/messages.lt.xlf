@@ -175,6 +175,10 @@
             <source>order.form.errors.cartlessthanminimum</source>
             <target><![CDATA[<b>Užsakymas nesiekia minimalios krepšelio sumos</b>]]></target>
         </trans-unit>
+        <trans-unit id="order.form.errors.cartlessthanminimum_on_pickup" resname="order.form.errors.cartlessthanminimum_on_pickup">
+            <source>order.form.errors.cartlessthanminimum_on_pickup</source>
+            <target><![CDATA[<b>Užsakymas nesiekia minimalios krepšelio sumos.</b>]]></target>
+        </trans-unit>
         <trans-unit id="order.form.errors.today_no_work" resname="order.form.errors.today_no_work">
             <source>order.form.errors.today_no_work</source>
             <target>Restoranas šiandien nedirba.</target>

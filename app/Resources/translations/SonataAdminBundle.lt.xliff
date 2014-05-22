@@ -324,7 +324,10 @@
                 <source>admin.place.self_delivery</source>
                 <target>Sava logistika</target>
             </trans-unit>
-
+            <trans-unit id="admin.place.minimal_on_self_delivery">
+                <source>admin.place.minimal_on_self_delivery</source>
+                <target>Min krep. atsiimant</target>
+            </trans-unit>
             <trans-unit id="admin.place.kitchens">
                 <source>admin.place.kitchens</source>
                 <target>Virtuvės</target>
