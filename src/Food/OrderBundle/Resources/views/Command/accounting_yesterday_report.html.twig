@@ -48,7 +48,7 @@
                     <td>{{ order.orderDate|date("H:i") }}</td>
                     <td>{{ order.placeName }}</td>
                     <td>
-                        {% if order.driver is not empty %}
+                        {% if order.driver is defined and order.driver is not empty %}
                             {{ order.driver.contact }}
                         {% else %}
                             Nenurodytas??
