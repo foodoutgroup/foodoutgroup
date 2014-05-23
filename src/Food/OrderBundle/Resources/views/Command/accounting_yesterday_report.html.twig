@@ -1,0 +1,175 @@
+<html>
+<head><title></title></head>
+    <body>
+        <style>
+            table tr {
+                border: 1px solid #ACACAC;
+            }
+            table td {
+                border: 1px solid #EFEFEF;
+                padding: 0 10px 0 10px;
+            }
+            td.total {
+                text-align: right;
+                padding-right: 10px;
+            }
+            td.total div {
+                width: 100px;
+                display: inline-block;
+            }
+            td.sum {
+                text-align: right;
+            }
+        </style>
+        <h2>Vakar dienos ({{ reportFor }}) užsakymai:</h2>
+
+        <h3>Užsakymai su mūsų pristatymu</h3>
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Laikas</th>
+                <th>Restoranas</th>
+                <th>Vairuotojas</th>
+                <th>Atsiskaitymo tipas</th>
+                <th>Pristat.<br />(su PVM)</th>
+                <th>Pristat.<br />(be PVM)</th>
+                <th>Patiekalai<br />(be PVM)</th>
+                <th>PVM</th>
+                <th>Viso<br />(su PVM)</th>
+            </tr>
+            {% set totalSum = 0 %}
+            {% set totalSumBanklink = 0 %}
+            {% set totalSumDriver = 0 %}
+            {% for order in orders.our_deliver %}
+                {% set sum_no_vat = ((order.total - order.place.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
+                {% set delivery_no_vat =  (order.place.deliveryPrice / (( vat_size / 100 ) + 1))|round(2) %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.orderDate|date("H:i") }}</td>
+                    <td>{{ order.placeName }}</td>
+                    <td>
+                        {% if order.driver is not empty %}
+                            {{ order.driver.contact }}
+                        {% else %}
+                            Nenurodytas??
+                        {% endif %}
+                    </td>
+                    <td>{{ ('general.email.accounting_report.' ~ order.paymentMethod)|trans() }}</td>
+                    <td class="sum">{{ order.place.deliveryPrice }}</td>
+                    <td class="sum">{{ delivery_no_vat }}</td>
+                    <td class="sum">{{ sum_no_vat }}</td>
+                    <td class="sum">{{ order.total - (sum_no_vat + delivery_no_vat) }}</td>
+                    <td class="sum">{{ order.total }}</td>
+                </tr>
+                {% set totalSum = totalSum + order.total %}
+                {% if order.paymentMethod == 'paysera' %}
+                    {% set totalSumBanklink = totalSumBanklink + order.total %}
+                {% else %}
+                    {% set totalSumDriver = totalSumDriver + order.total %}
+                {% endif %}
+            {% endfor %}
+            <tr>
+                <td colspan="10" class="total">
+                    <strong>Viso internetu (su PVM): </strong><div>{{ totalSumBanklink }} {{ currency_display }}</div><br />
+                    <strong>Viso atsiimant (su PVM): </strong><div>{{ totalSumDriver }} {{ currency_display }}</div><br />
+                    <strong>Viso (su PVM): </strong><div>{{ totalSum }} {{ currency_display }}</div>
+                </td>
+            </tr>
+        </table>
+
+        <br />
+        <h3>Užsakymai, kuriuos pristatė pats restoranas</h3>
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Laikas</th>
+                <th>Restoranas</th>
+                <th>Atsiskaitymo tipas</th>
+                <th>Pristat.<br />(su PVM)</th>
+                <th>Pristat.<br />(be PVM)</th>
+                <th>Patiekalai<br />(be PVM)</th>
+                <th>PVM</th>
+                <th>Viso<br />(su PVM)</th>
+            </tr>
+            {% set totalSum = 0 %}
+            {% set totalSumBanklink = 0 %}
+            {% set totalSumDriver = 0 %}
+            {% for order in orders.self_delivered %}
+                {% set sum_no_vat = ((order.total - order.place.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
+                {% set delivery_no_vat =  (order.place.deliveryPrice / (( vat_size / 100 ) + 1))|round(2) %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.orderDate|date("H:i") }}</td>
+                    <td>{{ order.placeName }}</td>
+                    <td>{{ ('general.email.accounting_report.' ~ order.paymentMethod)|trans() }}</td>
+                    <td class="sum">{{ order.place.deliveryPrice }}</td>
+                    <td class="sum">{{ delivery_no_vat }}</td>
+                    <td class="sum">{{ sum_no_vat }}</td>
+                    <td class="sum">{{ order.total - (sum_no_vat + delivery_no_vat) }}</td>
+                    <td class="sum">{{ order.total }}</td>
+                </tr>
+                {% set totalSum = totalSum + order.total %}
+                {% if order.paymentMethod == 'paysera' %}
+                    {% set totalSumBanklink = totalSumBanklink + order.total %}
+                {% else %}
+                    {% set totalSumDriver = totalSumDriver + order.total %}
+                {% endif %}
+            {% endfor %}
+            <tr>
+                <td colspan="10" class="total">
+                    <strong>Viso internetu (su PVM): </strong><div>{{ totalSumBanklink }} {{ currency_display }}</div><br />
+                    <strong>Viso atsiimant (su PVM): </strong><div>{{ totalSumDriver }} {{ currency_display }}</div><br />
+                    <strong>Viso (su PVM): </strong><div>{{ totalSum }} {{ currency_display }}</div>
+                </td>
+            </tr>
+        </table>
+        <br />
+
+        <h3>Restorane asiimti užsakymai</h3>
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Laikas</th>
+                <th>Restoranas</th>
+                <th>Atsiskaitymo tipas</th>
+                <th>Patiekalai<br />(be PVM)</th>
+                <th>PVM</th>
+                <th>Viso<br />(su PVM)</th>
+            </tr>
+            {% set totalSum = 0 %}
+            {% set totalSumBanklink = 0 %}
+            {% set totalSumDriver = 0 %}
+            {% for order in orders.pickup %}
+                {% set sum_no_vat = ((order.total) / (( vat_size / 100 ) + 1))|round(2) %}
+                {% set delivery_no_vat =  0 %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.orderDate|date("H:i") }}</td>
+                    <td>{{ order.placeName }}</td>
+                    <td>{{ ('mobile.payment.' ~ order.paymentMethod)|trans() }}</td>
+                    <td class="sum">{{ sum_no_vat }}</td>
+                    <td class="sum">{{ order.total - (sum_no_vat) }}</td>
+                    <td class="sum">{{ order.total }}</td>
+                </tr>
+                {% set totalSum = totalSum + order.total %}
+                {% if order.paymentMethod == 'paysera' %}
+                    {% set totalSumBanklink = totalSumBanklink + order.total %}
+                {% else %}
+                    {% set totalSumDriver = totalSumDriver + order.total %}
+                {% endif %}
+            {% endfor %}
+            <tr>
+                <td colspan="10" class="total">
+                    <strong>Viso internetu (su PVM): </strong><div>{{ totalSumBanklink }} {{ currency_display }}</div><br />
+                    <strong>Viso atsiimant (su PVM): </strong><div>{{ totalSumDriver }} {{ currency_display }}</div><br />
+                    <strong>Viso (su PVM): </strong><div>{{ totalSum }} {{ currency_display }}</div>
+                </td>
+            </tr>
+        </table>
+
+        <br />
+        <div>
+            <strong>Viso užsakymų: {{ orders.total }}</strong>
+        </div>
+    </body>
+</html>
