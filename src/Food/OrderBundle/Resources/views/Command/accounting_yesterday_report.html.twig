@@ -47,7 +47,13 @@
                     <td>{{ order.id }}</td>
                     <td>{{ order.orderDate|date("H:i") }}</td>
                     <td>{{ order.placeName }}</td>
-                    <td>{{ order.driver.contact }}</td>
+                    <td>
+                        {% if order.driver is not empty %}
+                            {{ order.driver.contact }}
+                        {% else %}
+                            Nenurodytas??
+                        {% endif %}
+                    </td>
                     <td>{{ ('general.email.accounting_report.' ~ order.paymentMethod)|trans() }}</td>
                     <td class="sum">{{ order.place.deliveryPrice }}</td>
                     <td class="sum">{{ delivery_no_vat }}</td>

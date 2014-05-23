@@ -1047,7 +1047,12 @@ class OrderService extends ContainerAware
         $orders = $this->getOrdersByFilter($filter, 'list');
 
         if (!$orders) {
-            return array('total' => 0);
+            return array(
+                'pickup' => array(),
+                'self_delivered' => array(),
+                'our_deliver' => array(),
+                'total' => 0,
+            );
         }
 
         $ordersGrouped = array(
