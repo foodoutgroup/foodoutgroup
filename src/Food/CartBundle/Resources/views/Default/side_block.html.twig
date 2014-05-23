@@ -49,7 +49,9 @@
                 <span class="delivery-time-info-cart ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
             {% endif %}
         </div>
-        <div class="delivery-time tac tooltip">{% trans %}cart.block.order_sum_minimum{% endtrans %} {{ place.cartMinimum }} {{ currency_display }}. {% trans %}cart.block.order_sum_minimum_take_myself{% endtrans %}</div>
+        <div class="delivery-time tac tooltip">{% trans %}cart.block.order_sum_minimum{% endtrans %} {{ place.cartMinimum }} {{ currency_display }}.
+            {% if place.minimalOnSelfDel == false %}{% trans %}cart.block.order_sum_minimum_take_myself{% endtrans %}{% endif %}
+        </div>
     {% else %}
         <div class="check-bottom">
             <h5 class="tac">{% trans %}cart.block.your_order_empty{% endtrans %}</h5>

@@ -1680,6 +1680,12 @@ class OrderService extends ContainerAware
             if (empty($addrData['address_orig'])) {
                 $formErrors[] = 'order.form.errors.customeraddr';
             }
+        } elseif ($place->getMinimalOnSelfDel()) {
+            $list = $this->getCartService()->getCartDishes($place);
+            $total_cart = $this->getCartService()->getCartTotal($list, $place);
+            if ($total_cart < $place->getCartMinimum()) {
+                $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
+            }
         }
 
         $pointRecord = null;
