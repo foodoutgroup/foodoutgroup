@@ -306,4 +306,17 @@ class DefaultController extends Controller
             array('order' => $order)
         );
     }
+
+    /**
+     * TODO dabar routas cart/success, bet renaminant kart i kasikelis, reiks ir sita parenamint i kasikelis/apmoketas
+     */
+    public function waitAction($orderHash)
+    {
+        $order = $this->get('food.order')->getOrderByHash($orderHash);
+
+        return $this->render(
+            'FoodCartBundle:Default:payment_wait.html.twig',
+            array('order' => $order)
+        );
+    }
 }

@@ -32,14 +32,30 @@ class PaymentsController extends Controller
                 throw new \Exception('Order not found. Order id from Paysera: '.$data['orderid']);
             }
 
-            $orderService->logPayment(
-                $order,
-                'paysera payment accepted',
-                'Payment succesfuly billed in Paysera',
-                $order
-            );
+            if ($data['status'] == 1) {
+                $orderService->logPayment(
+                    $order,
+                    'paysera payment accepted',
+                    'Payment succesfuly billed in Paysera',
+                    $order
+                );
 
-            $orderService->setPaymentStatus($orderService::$paymentStatusComplete);
+                $orderService->setPaymentStatus($orderService::$paymentStatusComplete);
+            } else if ($data['status'] == 2) {
+                // Paysera wallet used. Payment in process, money havent reached our pocket yet
+                $orderService->logPayment(
+                    $order,
+                    'paysera wallet payment started',
+                    'Paysera wallet payment accepted. Waiting for funds to be billed',
+                    $order
+                );
+
+                $orderService->setPaymentStatus($orderService::$paymentStatusWait);
+
+                $this->get('food.cart')->clearCart($order->getPlace());
+
+                return new RedirectResponse($this->generateUrl('food_cart_wait', array('orderHash' => $order->getOrderHash())));
+            }
 
         } catch (\Exception $e) {
             //handle the callback validation error here
@@ -121,8 +137,17 @@ class PaymentsController extends Controller
             }
 
             if ($data['status'] == 1) {
-                // Lets check if order in our side is all OK
-                $logger->alert('-- Payment is valid. Procceed with care..');
+                // Paysera was waiting for funds to be transfered
+                if ($order->getPaymentStatus() == $orderService::$paymentStatusWaitFunds) {
+                    $logger->alert('-- Payment was waiting for funds... now they are transfered');
+
+                    $orderService->setPaymentStatus($orderService::$paymentStatusComplete);
+                    $orderService->saveOrder();
+                    $orderService->informPlace();
+                } else {
+                    // Lets check if order in our side is all OK
+                    $logger->alert('-- Payment is valid. Procceed with care..');
+                }
                 return new Response('OK');
             }
         } catch (\Exception $e) {

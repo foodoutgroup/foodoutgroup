@@ -71,6 +71,12 @@ class OrderService extends ContainerAware
     public static $paymentStatusWait = "wait";
 
     /**
+     * Payment started in billing system and accepted. Waiting for transfer
+     * @var string
+     */
+    public static $paymentStatusWaitFunds = "wait_funds";
+
+    /**
      * Payment has been canceled by user or billing system
      * @var string
      */
@@ -839,6 +845,7 @@ class OrderService extends ContainerAware
         return array(
             self::$paymentStatusNew,
             self::$paymentStatusWait,
+            self::$paymentStatusWaitFunds,
             self::$paymentStatusComplete,
             self::$paymentStatusCanceled,
             self::$paymentStatusError,
@@ -863,6 +870,7 @@ class OrderService extends ContainerAware
         $flowLine = array(
             self::$paymentStatusNew => 0,
             self::$paymentStatusWait => 1,
+            self::$paymentStatusWaitFunds => 1,
             self::$paymentStatusComplete => 1,
             self::$paymentStatusCanceled => 1,
             self::$paymentStatusError => 1,
@@ -1395,8 +1403,6 @@ class OrderService extends ContainerAware
             ."Apmokejimo tipas: ".$order->getPaymentMethod()."\n"
             ."Apmokejimo bukle: ".$order->getPaymentStatus()."\n"
         ;
-
-
 
         $emailMessageText .= "\n"
             ."Restoranui issiusta nuoroda: http://".$domain.$this->container->get('router')
