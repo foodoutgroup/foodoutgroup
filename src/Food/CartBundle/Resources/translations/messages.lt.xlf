@@ -68,7 +68,7 @@
       </trans-unit>
       <trans-unit id="72ac47fdc9d8610d13cc86b4dd35e24f" resname="cart.checkout.phone_placeholder">
         <source>cart.checkout.phone_placeholder</source>
-        <target>3706</target>
+        <target>37060000000</target>
       </trans-unit>
       <trans-unit id="bc8439664f3800919e17d58ad5eaff4b" resname="cart.checkout.delivery_comment">
         <source>cart.checkout.delivery_comment</source>
@@ -76,7 +76,7 @@
       </trans-unit>
       <trans-unit id="58234b47f3f611cffbbd19bbaaa7dd73" resname="cart.checkout.delivery_comment_placeholder">
         <source>cart.checkout.delivery_comment_placeholder</source>
-        <target>Įvesti laiptinės kodą, aukštą ir kitą kurjeriui naudingą informaciją...</target>
+        <target>Įveskite laiptinės kodą, aukštą ir kitą kurjeriui naudingą informaciją...</target>
       </trans-unit>
       <trans-unit id="dff708f5d1b6a869b2c01aca17e8d7b0" resname="cart.checkout.block_title_secure_payment">
         <source>cart.checkout.block_title_secure_payment</source>
@@ -132,7 +132,7 @@
         </trans-unit>
         <trans-unit id="cart.checkout.phone_tooltip" resname="cart.checkout.phone_tooltip">
             <source>cart.checkout.phone_tooltip</source>
-            <target>Įveskite mobilaus telefono numerį</target>
+            <target>Įveskite mobilaus telefono numerį formatu 3706xxxxxxxx</target>
         </trans-unit>
         <trans-unit id="2d4e402558401b20f0603da2554047c1" resname="cart.checkout.place_point">
             <source>cart.checkout.place_point</source>
