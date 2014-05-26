@@ -79,7 +79,7 @@
 		        transition: 		transform 0.25s ease-out !important;
 	}
 	
-	#boxer.mobile.loading .boxer-container { background: #000 url(fs-boxer-loading-dark.gif) no-repeat center; }
+	#boxer.mobile.loading .boxer-container { background: #000 url(/scripts/boxer/fs-boxer-loading-dark.gif) no-repeat center; }
 	
 	@media screen and (min-width: 980px) { 
 		/* #boxer .boxer-close:hover { background-position: -70px -20px; } */
