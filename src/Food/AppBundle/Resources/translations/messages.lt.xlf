@@ -226,6 +226,10 @@
         <source>mobile.place_finish_message</source>
         <target>Restorano darbas baigtas. Toliau logistika.</target>
       </trans-unit>
+      <trans-unit id="mobile.place_finish_message_self_delivery" resname="mobile.place_finish_message_self_delivery">
+        <source>mobile.place_finish_message_self_delivery</source>
+        <target>Gamyba baigta. Toliau pristatymas.</target>
+      </trans-unit>
       <trans-unit id="cb2ecbcd06bc62396f6bb198d438dccf" resname="mobile.order_submit_delay">
         <source>mobile.order_submit_delay</source>
         <target>Patvirtinti atidėjimą</target>

@@ -161,7 +161,12 @@
             {% endif %}
             <button type="submit" name="status" value="finish" class="btn btn-success btn-block">{% trans %}mobile.order_finish{% endtrans %}</button>
         {% elseif order.orderStatus == "finished" or order.orderStatus == "assigned" or order.orderStatus == "completed" %}
-            <center><h2>{% trans %}mobile.place_finish_message{% endtrans %}</h2></center>
+            <center>
+                <h2>{% if order.placePointSelfDelivery %}{% trans %}mobile.place_finish_message_self_delivery{% endtrans %}{% else %}{% trans %}mobile.place_finish_message{% endtrans %}{% endif %}</h2>
+            </center>
+        {% endif %}
+        {% if order.placePointSelfDelivery and (order.orderStatus != 'new' and order.orderStatus != 'canceled' and order.orderStatus != 'completed') %}
+            <button type="submit" name="status" value="completed" class="btn btn-success btn-block">{% trans %}mobile.order_delivered{% endtrans %}</button>
         {% endif %}
         <a class="btn btn-info btn-block" href="{{ path('restaurant_mobile_invoice', {hash: order.orderHash}) }}">{% trans %}mobile.restaurant_invoice{% endtrans %}</a>
     </form>

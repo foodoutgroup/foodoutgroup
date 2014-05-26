@@ -31,6 +31,7 @@ class DefaultController extends Controller
                 case 'confirm':
                     $this->get('food.order')->statusAccepted();
                 break;
+
                 case 'delay':
                     $this->get('food.order')->statusDelayed();
                     $this->get('food.order')->getOrder()->setDelayed(true);
@@ -39,11 +40,17 @@ class DefaultController extends Controller
                     $this->get('food.order')->saveDelay();
                     $order = $this->get('food.order')->getOrderByHash($hash);
                 break;
+
                 case 'cancel':
                     $this->get('food.order')->statusCanceled();
                 break;
+
                 case 'finish':
                     $this->get('food.order')->statusFinished();
+                break;
+
+                case 'completed':
+                    $this->get('food.order')->statusCompleted();
                 break;
             }
             $this->get('food.order')->saveOrder();
