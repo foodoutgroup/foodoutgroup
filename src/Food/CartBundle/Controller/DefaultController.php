@@ -215,6 +215,9 @@ class DefaultController extends Controller
                     $orderService->getOrder()->setPlacePointAddress($placePoint->getAddress());
                 }
                 $orderService->logOrder(null, 'retry', 'Canceled order billing retry by user', $orderService->getOrder());
+
+                $user = $order->getUser();
+                $userPhone = $user->getPhone();
             }
 
             if ($userPhone != $user->getPhone()) {
