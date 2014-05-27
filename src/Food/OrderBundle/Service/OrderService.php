@@ -384,10 +384,10 @@ class OrderService extends ContainerAware
 
             // Inform driver about new order that was assigned to him
             $orderConfirmRoute = $this->container->get('router')
-                ->generate('drivermobile', array('hash' => $this->getOrder()->getOrderHash()));
+                ->generate('drivermobile', array('hash' => $this->getOrder()->getOrderHash()), true);
 
             $messageText = $this->container->get('translator')->trans('general.sms.driver_assigned_order')
-                .': http://'.$this->container->getParameter('domain').$orderConfirmRoute;
+                .': '.$orderConfirmRoute;
 
             $logger->alert("Sending message for driver about assigned order to number: ".$driver->getPhone().' with text "'.$messageText.'"');
 
@@ -1307,10 +1307,10 @@ class OrderService extends ContainerAware
 
         // Inform restourant about new order
         $orderConfirmRoute = $this->container->get('router')
-            ->generate('ordermobile', array('hash' => $order->getOrderHash()));
+            ->generate('ordermobile', array('hash' => $order->getOrderHash()), true);
 
         $messageText = $translator->trans('general.sms.new_order')
-            .'http://'.$domain.$orderConfirmRoute;
+            .$orderConfirmRoute;
 
         // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
         if (!empty($placePointEmail)) {
@@ -1405,8 +1405,8 @@ class OrderService extends ContainerAware
         ;
 
         $emailMessageText .= "\n"
-            ."Restoranui issiusta nuoroda: http://".$domain.$this->container->get('router')
-                ->generate('ordermobile', array('hash' => $order->getOrderHash()))
+            ."Restoranui issiusta nuoroda: ".$this->container->get('router')
+                ->generate('ordermobile', array('hash' => $order->getOrderHash()), true)
             ."\n";
 
         $mailer = $this->container->get('mailer');
@@ -1457,8 +1457,8 @@ class OrderService extends ContainerAware
             $userAddress = $order->getAddressId()->getAddress().', '.$order->getAddressId()->getCity();
         }
 
-        $driverUrl = 'http://'.$domain.$this->container->get('router')
-                ->generate('drivermobile', array('hash' => $order->getOrderHash()));
+        $driverUrl = $this->container->get('router')
+                ->generate('drivermobile', array('hash' => $order->getOrderHash()), true);
 
         $emailMessageText = 'Gautas naujas uzsakymas restoranui '.$order->getPlace()->getName()."\n"
             ."OrderId: " . $order->getId()."\n\n"
