@@ -64,10 +64,16 @@ class PlaceRepository extends EntityRepository
         , $rsm);
         */
         //return $query->getResult();
+        $city = null;
+        $lat = null;
+        $lon = null;
 
-        $city = $locationData['city'];
-        $lat = str_replace(",", ".", $locationData['lat']);
-        $lon = str_replace(",", ".", $locationData['lng']);
+        if (!empty($locationData) && !empty($locationData['city']) && !empty($locationData['lat']) && !empty($locationData['lng'])) {
+            $city = $locationData['city'];
+            $lat = str_replace(",", ".", $locationData['lat']);
+            $lon = str_replace(",", ".", $locationData['lng']);
+        }
+
 
         $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND city='".$city."' AND place = p.id
             AND (
@@ -90,7 +96,7 @@ class PlaceRepository extends EntityRepository
             }
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
             $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND ".$kitchensQuery." GROUP BY p.id";
-        } elseif (empty($locationData)) {
+        } elseif ($city == null || $lat == null || $lon == null) {
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
             $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 ".$kitchensQuery." GROUP BY p.id";
         } else {
