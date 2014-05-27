@@ -48,12 +48,14 @@ class PaymentsController extends Controller
                     $order
                 );
 
-                $orderService->setPaymentStatus($orderService::$paymentStatusWaitFunds);
-                $orderService->saveOrder();
+                if ($order->getPaymentStatus() != $orderService::$paymentStatusComplete) {
+                    $orderService->setPaymentStatus($orderService::$paymentStatusWaitFunds);
+                    $orderService->saveOrder();
 
-                $this->get('food.cart')->clearCart($order->getPlace());
+                    $this->get('food.cart')->clearCart($order->getPlace());
 
-                return new RedirectResponse($this->generateUrl('food_cart_wait', array('orderHash' => $order->getOrderHash())));
+                    return new RedirectResponse($this->generateUrl('food_cart_wait', array('orderHash' => $order->getOrderHash())));
+                }
             }
 
         } catch (\Exception $e) {
