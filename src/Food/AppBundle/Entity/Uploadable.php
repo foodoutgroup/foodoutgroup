@@ -49,6 +49,7 @@ class Uploadable {
      */
     public function getWebPath()
     {
+        $getter = 'get'.ucfirst($this->getUploadableField());
         return null === $this->$getter() ? null : $this->getUploadDir().'/'.$this->getImageSetted();
     }
 

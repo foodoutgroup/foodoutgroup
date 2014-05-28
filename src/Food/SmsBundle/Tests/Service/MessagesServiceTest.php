@@ -1090,7 +1090,7 @@ class TestableQuery extends AbstractQuery {
     protected function _doExecute()
     {}
 
-    public function getResult()
+    public function getResult($hydrationMode = self::HYDRATE_OBJECT)
     {}
 
     public function __construct()

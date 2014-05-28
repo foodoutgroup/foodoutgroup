@@ -2,7 +2,7 @@ set :application, "skanu"
 set :deploy_to,   "/home/labai.skanu.lt/"
 set :app_path,    "app"
 
-set :repository,  "git@github.com:mid/skanu.lt.git"
+set :repository,  "git@github.com:Foodout/skanu.lt.git"
 set :scm,         :git
 
 set :model_manager, "doctrine"
