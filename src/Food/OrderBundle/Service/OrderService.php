@@ -296,7 +296,16 @@ class OrderService extends ContainerAware
 
                 $sender = $this->container->getParameter('sms.sender');
                 $text = $this->container->get('translator')
-                    ->trans('general.sms.user.order_accepted', array(), null, $this->getOrder()->getLocale());
+                    ->trans(
+                        'general.sms.user.order_accepted',
+                        array(
+                            'restourant_name' => $this->getOrder()->getPlaceName(),
+                            'delivery_time' => $this->getOrder()->getPlace()->getDeliveryTime(),
+                            'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone()
+                        ),
+                        null,
+                        $this->getOrder()->getLocale()
+                    );
 
                 $message = $smsService->createMessage($sender, $recipient, $text);
                 $smsService->saveMessage($message);
@@ -1861,12 +1870,15 @@ class OrderService extends ContainerAware
     {
         $duration = $this->getOrder()->getDelayDuration();
         $oTime = $this->getOrder()->getDeliveryTime();
+        $now = new \DateTime("now");
 
         $oTimeClone = clone $oTime;
 
         $oTimeClone->add(new \DateInterval('P0DT0H'.$duration.'M0S'));
 
         $diffInMinutes = ceil(($oTimeClone->getTimestamp() - $oTime->getTimestamp()) / 60/10) * 10;
+
+        $deliverIn = ceil(($oTimeClone->getTimestamp() - $now->getTimestamp()) / 60/10) * 10;
 
         $this->getOrder()->setDeliveryTime($oTimeClone);
         $this->saveOrder();
@@ -1880,9 +1892,15 @@ class OrderService extends ContainerAware
         $translator = $this->container->get('translator');
         $domain = $this->container->getParameter('domain');
 
+        $delayTime = $this->getOrder()->getDelayDuration();
+
         $messageText = $translator->trans(
             'general.sms.user_order_delayed',
-            array('delay' => $diffInMinutes)
+            array(
+                'delay_time' => $delayTime,
+                'delivery_min' => $deliverIn,
+                'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone(),
+            )
         );
 
         if (!empty($userPhone)) {
