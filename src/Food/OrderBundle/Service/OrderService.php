@@ -1897,7 +1897,7 @@ class OrderService extends ContainerAware
         $messageText = $translator->trans(
             'general.sms.user_order_delayed',
             array(
-                'delay_time' => $delayTime,
+                'delay_time' => $diffInMinutes,
                 'delivery_min' => $deliverIn,
                 'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone(),
             )
