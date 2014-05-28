@@ -135,7 +135,11 @@ class DefaultController extends Controller
 
         $orderService = $this->get('food.order');
         $placeService = $this->get('food.places');
+        $miscUtils = $this->get('food.app.utils.misc');
         $googleGisService = $this->container->get('food.googlegis');
+
+        $country = $this->container->getParameter('country');
+
         /**
          * @var UserManager $fosUserManager
          */
@@ -193,7 +197,13 @@ class DefaultController extends Controller
                     $user->setLastname($request->get('customer-lastname', null));
 
                     if (!empty($userPhone)) {
-                        $user->setPhone($userPhone);
+                        $formatedPhone = $miscUtils->formatPhone($userPhone, $country);
+
+                        if (!empty($formatedPhone)) {
+                            $user->setPhone($formatedPhone);
+                        } else {
+                            $user->setPhone($userPhone);
+                        }
                     }
 
                     // TODO gal cia normaliai generuosim desra-sasyskos-random krap ir siusim useriui emailu ir dar iloginsim
@@ -221,7 +231,13 @@ class DefaultController extends Controller
             }
 
             if ($userPhone != $user->getPhone()) {
-                $user->setPhone($userPhone);
+                $formatedPhone = $miscUtils->formatPhone($userPhone, $country);
+
+                if (!empty($formatedPhone)) {
+                    $user->setPhone($formatedPhone);
+                } else {
+                    $user->setPhone($userPhone);
+                }
                 $fosUserManager->updateUser($user);
             }
 

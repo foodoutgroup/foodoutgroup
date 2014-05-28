@@ -45,6 +45,8 @@ parameters:
     # Todo situos gal ir iskelsime i paramsus - dependant on install?
     payment.methods: [local, local.card, paysera]
     currency_display: Lt
+    # naudojam telefonu validacijoms
+    country: LT
     vat: 21
     evp.test_payments: 0
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
