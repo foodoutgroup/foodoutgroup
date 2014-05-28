@@ -79,7 +79,7 @@ class DispatcherAdminController extends Controller
 //            $orderService->chageOrderStatus($status);
             $method = 'status'.ucfirst($status);
             if (method_exists($orderService, $method)) {
-                $orderService->$method();
+                $orderService->$method('dispatcher');
             }
             $orderService->saveOrder();
         } catch (Exception $e) {

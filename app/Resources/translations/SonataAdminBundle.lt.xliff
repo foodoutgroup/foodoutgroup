@@ -820,9 +820,33 @@
                 <source>admin.order.status.new_status</source>
                 <target>Į būklę</target>
             </trans-unit>
+            <trans-unit id="admin.order.status.source">
+                <source>admin.order.status.source</source>
+                <target>Šaltinis</target>
+            </trans-unit>
             <trans-unit id="admin.order.status.message">
                 <source>admin.order.status.message</source>
                 <target>Pranešimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.restourant_mobile">
+                <source>admin.order.status.source.restourant_mobile</source>
+                <target>Restorano mobilus puslapis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.driver_mobile">
+                <source>admin.order.status.source.driver_mobile</source>
+                <target>Vairuotojo mobilus puslapis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.dispatcher">
+                <source>admin.order.status.source.dispatcher</source>
+                <target>Dispečerinė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.paysera_payment">
+                <source>admin.order.status.source.paysera_payment</source>
+                <target>Paysera apmokėjimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.logistics_service">
+                <source>admin.order.status.source.logistics_service</source>
+                <target>Logistika</target>
             </trans-unit>
 
             <!-- Dispatcher window -->

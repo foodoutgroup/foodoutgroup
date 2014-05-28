@@ -252,12 +252,13 @@ class OrderService extends ContainerAware
 
     /**
      * @param string $status
+     * @param string|null $source
      * @param string|null $message
      */
-    protected function chageOrderStatus($status, $message=null)
+    protected function chageOrderStatus($status, $source=null, $message=null)
     {
         // Let's log the shit out of it
-        $this->logStatusChange($this->getOrder(), $status, $message);
+        $this->logStatusChange($this->getOrder(), $status, $source, $message);
 
         $this->getOrder()->setOrderStatus($status);
     }
@@ -265,9 +266,9 @@ class OrderService extends ContainerAware
     /**
      * @return $this
      */
-    public function statusNew()
+    public function statusNew($source=null, $statusMessage=null)
     {
-        $this->chageOrderStatus(self::$status_new);
+        $this->chageOrderStatus(self::$status_new, $source, $statusMessage);
         return $this;
     }
 
@@ -276,16 +277,16 @@ class OrderService extends ContainerAware
      *
      * @return $this
      */
-    public function statusFailed()
+    public function statusFailed($source=null, $statusMessage=null)
     {
-        $this->chageOrderStatus(self::$status_failed);
+        $this->chageOrderStatus(self::$status_failed, $source, $statusMessage);
         return $this;
     }
 
     /**
      * @return $this
      */
-    public function statusAccepted()
+    public function statusAccepted($source=null, $statusMessage=null)
     {
         // Inform poor user, that his order was accepted
         if ($this->getOrder()->getOrderStatus() == self::$status_new) {
@@ -315,7 +316,7 @@ class OrderService extends ContainerAware
             $dt->add(new \DateInterval('P0DT1H0M0S'));
             $this->getOrder()->setDeliveryTime($dt);
             $this->saveOrder();
-            $this->chageOrderStatus(self::$status_accepted);
+            $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
             $this->_notifyOnAccepted();
 
             // Notify Dispatchers
@@ -383,7 +384,7 @@ class OrderService extends ContainerAware
     /**
      * @return $this
      */
-    public function statusAssigned()
+    public function statusAssigned($source=null, $statusMessage=null)
     {
         // Inform poor user, that his order was accepted
         $driver = $this->getOrder()->getDriver();
@@ -408,7 +409,7 @@ class OrderService extends ContainerAware
             $messagingService->saveMessage($message);
         }
 
-        $this->chageOrderStatus(self::$status_assiged);
+        $this->chageOrderStatus(self::$status_assiged, $source, $statusMessage);
 
         return $this;
     }
@@ -416,18 +417,18 @@ class OrderService extends ContainerAware
     /**
      * @return $this
      */
-    public function statusForwarded()
+    public function statusForwarded($source=null, $statusMessage=null)
     {
-        $this->chageOrderStatus(self::$status_forwarded);
+        $this->chageOrderStatus(self::$status_forwarded, $source, $statusMessage);
         return $this;
     }
 
     /**
      * @return $this
      */
-    public function statusCompleted()
+    public function statusCompleted($source=null, $statusMessage=null)
     {
-        $this->chageOrderStatus(self::$status_completed);
+        $this->chageOrderStatus(self::$status_completed, $source, $statusMessage);
 
         // Form accounting data if it is not formed already
         // TODO uzkomentuota, nes nenaudojame, o dabar meta: Error: Class 'Food\OrderBundle\Service\AccountingService' not found in app\cache\dev\appDevDebugProjectContainer.php line 1211
@@ -449,16 +450,16 @@ class OrderService extends ContainerAware
     /**
      * @return $this
      */
-    public function statusFinished()
+    public function statusFinished($source=null, $statusMessage=null)
     {
-        $this->chageOrderStatus(self::$status_finished);
+        $this->chageOrderStatus(self::$status_finished, $source, $statusMessage);
         return $this;
     }
 
     /**
      * @return $this
      */
-    public function statusCanceled()
+    public function statusCanceled($source=null, $statusMessage=null)
     {
         // If restourant (or Foodout) has canceled order - send informational SMS message to user
         $userPhone = $this->getOrder()->getUser()->getPhone();
@@ -482,16 +483,16 @@ class OrderService extends ContainerAware
             }
         }
 
-        $this->chageOrderStatus(self::$status_canceled);
+        $this->chageOrderStatus(self::$status_canceled, $source, $statusMessage);
         return $this;
     }
 
     /**
      * @return $this
      */
-    public function statusDelayed()
+    public function statusDelayed($source=null, $statusMessage=null)
     {
-        $this->chageOrderStatus(self::$status_delayed);
+        $this->chageOrderStatus(self::$status_delayed, $source, $statusMessage);
         return $this;
     }
 
@@ -1510,15 +1511,17 @@ class OrderService extends ContainerAware
     /**
      * @param Order $order
      * @param string $newStatus
+     * @param null|string $source
      * @param null|string $message
      */
-    public function logStatusChange($order, $newStatus, $message=null)
+    public function logStatusChange($order, $newStatus, $source=null, $message=null)
     {
         $log = new OrderStatusLog();
         $log->setOrder($order)
             ->setEventDate(new \DateTime('now'))
             ->setOldStatus($order->getOrderStatus())
             ->setNewStatus($newStatus)
+            ->setSource($source)
             ->setMessage($message);
 
         $this->getEm()->persist($log);
@@ -1891,8 +1894,6 @@ class OrderService extends ContainerAware
 
         $translator = $this->container->get('translator');
         $domain = $this->container->getParameter('domain');
-
-        $delayTime = $this->getOrder()->getDelayDuration();
 
         $messageText = $translator->trans(
             'general.sms.user_order_delayed',

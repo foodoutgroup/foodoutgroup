@@ -64,7 +64,7 @@ class PaymentsController extends Controller
             $logger->alert("trace: ".$e->getTraceAsString());
 
             if ($order) {
-                $orderService->statusFailed();
+                $orderService->statusFailed('paysera_payment');
                 $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());
                 $orderService->saveOrder();
             }
