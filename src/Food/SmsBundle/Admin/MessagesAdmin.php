@@ -104,7 +104,7 @@ class MessagesAdmin extends SonataAdmin
      */
     public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
     {
-        $collection->clearExcept(array('list', 'edit', 'show'));
+        $collection->clearExcept(array('list', 'edit', 'show', 'create'));
     }
 
 }
