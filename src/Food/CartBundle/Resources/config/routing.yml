@@ -6,6 +6,10 @@ food_cart_success:
     pattern:  /success/{orderHash}
     defaults: { _controller: FoodCartBundle:Default:success }
 
+food_cart_wait:
+    pattern:  /wait/{orderHash}
+    defaults: { _controller: FoodCartBundle:Default:wait }
+
 food_cart_generate_order:
     pattern: /generator/{oid}
     defaults: { _controller: FoodCartBundle:Generator:generator}

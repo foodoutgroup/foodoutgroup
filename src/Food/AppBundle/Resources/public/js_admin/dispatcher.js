@@ -105,6 +105,8 @@ var Dispatcher = {
     },
 
     getDriversList: function(button) {
+        $('.city_list').mask();
+
         var activePanel =  button.closest('.ui-tabs-panel');
         var activeList = activePanel.find(".order_list");
         var checkedBoxes = activeList.find('.order_checkbox:checked');
@@ -120,11 +122,13 @@ var Dispatcher = {
             url,
             function(data) {
                 $('.drivers_list').html(data);
+                $('.city_list').unmask();
             }
         );
     },
 
     assignDriver: function(driverId) {
+        $('.sonata-ba-list').mask();
         var activeList = $('.order_list:visible');
         var checkedBoxes = activeList.find('.order_checkbox:checked');
         var orderIds = [];

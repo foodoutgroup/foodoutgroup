@@ -26,6 +26,22 @@
                                 </div>
                             </span>
                         {% endif %}
+                    {% else %}
+                        {% if order_service.isTodayWorkDayForAll(place.place) == false %}
+                            <span class="tag">
+                                {% if order_service.isTodayNoOneWantsToWork(place.place) == true %}
+                                    <img src="/bundles/foodapp/images/tag-not-working.png">
+                                    <div class="time-popup">{{ order_service.notWorkingPlacesPoints(place.place)|raw }}
+                                        <div class="nip"></div>
+                                    </div>
+                                {% else %}
+                                    <span class="partial-work"></span>
+                                    <div class="time-popup time-popup2">{{ order_service.notWorkingPlacesPoints(place.place)|raw }}
+                                        <div class="nip"></div>
+                                    </div>
+                                {% endif %}
+                            </span>
+                        {% endif %}
                     {% endif %}
 
                 </h2>
@@ -53,7 +69,7 @@
                 <div class="clearfix">
                     <div data-stars="{{ place.place.rating }}" class="restoran-rating fl"></div>
                     {% if place.place.reviews.count != 0 %}
-                        <div class="rating-count fr">{{ place.place.reviews.count }} {% trans %}places.reviews_count{% endtrans %}</div>
+                        <div class="rating-count fr">{{ place.place.reviews.count }} {% transchoice place.place.reviews.count %}places.reviews_count{% endtranschoice %}</div>
                     {% endif %}
                 </div><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}" class="button"><span>{% trans %}places.watch_menu{% endtrans %}</span></a>
             </div>

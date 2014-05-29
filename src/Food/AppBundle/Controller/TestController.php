@@ -56,4 +56,21 @@ class TestController extends Controller
 
         return new Response("Ola, mister payment nothing happened :)");
     }
+
+    public function reportAction()
+    {
+        $orderService = $this->get('food.order');
+
+        $orders = $orderService->getYesterdayOrdersGrouped();
+
+        return (
+            $this->render(
+                'FoodOrderBundle:Command:accounting_yesterday_report.txt.twig',
+                array(
+                    'orders' => $orders,
+                    'reportFor' => date("Y-m-d", strtotime('-1 day')),
+                )
+            )
+        );
+    }
 }

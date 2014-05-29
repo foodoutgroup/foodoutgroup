@@ -21,10 +21,20 @@
             <div class="dish-ingredients">
                 <div class="title">{% trans %}dish.select_options{% endtrans %}</div>
                 <div class="clearfix">
+                {% set groupName = "" %}
+                {% set optCounter = 0 %}
                 {% for option in dish.options %}
+                    {% if groupName != option.groupName and optCounter != 0 %}
+                        <br clear="all" />
+                        <br clear="all" />
+                    {% endif %}
+
+                    {% set groupName = option.groupName %}
+                    {% set optCounter = optCounter+1 %}
+
                     {% if option.singleSelect == true %}
                         <label class="custom-radio">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ option.price }} Lt</strong>{% endif %}
-                            <input type="radio" name="option" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
+                            <input type="radio" name="option[{{ option.groupName }}]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
                         </label>
                     {% endif %}
                 {% endfor %}

@@ -212,6 +212,10 @@
                 <source>admin.dish_option.code</source>
                 <target>Sis. kodas</target>
             </trans-unit>
+            <trans-unit id="admin.dish_option.group_name">
+                <source>admin.dish_option.group_name</source>
+                <target>Grupė</target>
+            </trans-unit>
             <trans-unit id="admin.dish_option.name">
                 <source>admin.dish_option.name</source>
                 <target>Priedas</target>
@@ -320,7 +324,10 @@
                 <source>admin.place.self_delivery</source>
                 <target>Sava logistika</target>
             </trans-unit>
-
+            <trans-unit id="admin.place.minimal_on_self_delivery">
+                <source>admin.place.minimal_on_self_delivery</source>
+                <target>Min krep. atsiimant</target>
+            </trans-unit>
             <trans-unit id="admin.place.kitchens">
                 <source>admin.place.kitchens</source>
                 <target>Virtuvės</target>
@@ -785,6 +792,62 @@
                 <source>admin.order.details.option_code</source>
                 <target>Kodas</target>
             </trans-unit>
+            <trans-unit id="admin.order.details.quantity">
+                <source>admin.order.details.quantity</source>
+                <target>Kiekis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.sum">
+                <source>admin.order.details.sum</source>
+                <target>Suma</target>
+            </trans-unit>
+            <trans-unit id="admin.order.driver">
+                <source>admin.order.driver</source>
+                <target>Vairuotojas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.order_status.log">
+                <source>admin.order.order_status.log</source>
+                <target>Būkles istorija</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.date">
+                <source>admin.order.status.date</source>
+                <target>Data</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.old_status">
+                <source>admin.order.status.old_status</source>
+                <target>Iš būklės</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.new_status">
+                <source>admin.order.status.new_status</source>
+                <target>Į būklę</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source">
+                <source>admin.order.status.source</source>
+                <target>Šaltinis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.message">
+                <source>admin.order.status.message</source>
+                <target>Pranešimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.restourant_mobile">
+                <source>admin.order.status.source.restourant_mobile</source>
+                <target>Restorano mobilus puslapis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.driver_mobile">
+                <source>admin.order.status.source.driver_mobile</source>
+                <target>Vairuotojo mobilus puslapis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.dispatcher">
+                <source>admin.order.status.source.dispatcher</source>
+                <target>Dispečerinė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.paysera_payment">
+                <source>admin.order.status.source.paysera_payment</source>
+                <target>Paysera apmokėjimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.logistics_service">
+                <source>admin.order.status.source.logistics_service</source>
+                <target>Logistika</target>
+            </trans-unit>
 
             <!-- Dispatcher window -->
             <trans-unit id="admin.order.dispatcher">
@@ -861,7 +924,7 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.order_status.completed">
                 <source>admin.dispatcher.order_status.completed</source>
-                <target>Pristatyas</target>
+                <target>Pristatytas</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.order_status.finished">
                 <source>admin.dispatcher.order_status.finished</source>

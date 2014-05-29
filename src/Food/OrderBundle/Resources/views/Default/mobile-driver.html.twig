@@ -21,12 +21,12 @@
         {% for dish in order.details %}
             <tr>
                 <td>{{ loop.index }}</td>
-                <td>{{ dish.dishId.name }}</td>
+                <td>{{ dish.dishName }}</td>
                 <td>{{ dish.dishUnitName }}</td>
                 <td>{{ dish.quantity }}</td>
                 <td>
                     {% for option in dish.options %}
-                        <li>{{ option.dishOptionId.name }}</li>
+                        <li>{{ option.dishOptionName }}</li>
                     {% endfor %}
                 </td>
             </tr>
@@ -97,7 +97,7 @@
             <th colspan="5">{% trans %}mobile.comment{% endtrans %}</th>
         </tr>
         <tr>
-            <td colspan="5">{{ order.comment }}</td>
+            <td colspan="5">{{ order.comment|nl2br }}</td>
         </tr>
         {% if order.placePointSelfDelivery == 1 or order.deliveryType == 'pickup' %}
             <tr>

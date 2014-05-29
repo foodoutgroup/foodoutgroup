@@ -83,8 +83,8 @@ class GoogleGisService extends ContainerAware
             $returner['street_found'] = true;
             $returner['address_found'] = true;
             $returner['street_nr'] =  $location->results[0]->address_components[0]->long_name;
-            $returner['street'] =  $location->results[0]->address_components[1]->long_name;
-            $returner['city'] =  $location->results[0]->address_components[2]->long_name;
+            $returner['street'] =  $this->__getStreet($location->results[0]->address_components);
+            $returner['city'] =  $this->__getCity($location->results[0]->address_components);
             $returner['address'] = $returner['street']." ".$returner['street_nr'];
             $returner['address_orig'] = $address;
             $returner['lat'] = $location->results[0]->geometry->location->lat;
@@ -100,6 +100,26 @@ class GoogleGisService extends ContainerAware
 
         $this->setLocationToSession($returner);
         return $returner;
+    }
+
+    private function __getCity($results)
+    {
+        foreach ($results as $res) {
+            if (in_array('locality', $res->types) && in_array('political', $res->types)) {
+                return $res->long_name;
+            }
+        }
+        return "";
+    }
+
+    private function __getStreet($results)
+    {
+        foreach ($results as $res) {
+            if (in_array('route', $res->types)) {
+                return $res->long_name;
+            }
+        }
+        return "";
     }
 
     /**

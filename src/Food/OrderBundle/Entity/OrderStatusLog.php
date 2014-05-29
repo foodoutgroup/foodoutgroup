@@ -49,11 +49,16 @@ class OrderStatusLog
      */
     private $message;
 
+    /**
+     * @var string
+     * @ORM\Column(name="source", type="string", length=25, nullable=true)
+     */
+    private $source;
+
     public function __construct()
     {
         $this->event_date = new \DateTime("now");
     }
-
 
     /**
      * Get id
@@ -178,5 +183,28 @@ class OrderStatusLog
     public function getNewStatus()
     {
         return $this->newStatus;
+    }
+
+    /**
+     * Set source
+     *
+     * @param string $source
+     * @return OrderStatusLog
+     */
+    public function setSource($source)
+    {
+        $this->source = $source;
+    
+        return $this;
+    }
+
+    /**
+     * Get source
+     *
+     * @return string 
+     */
+    public function getSource()
+    {
+        return $this->source;
     }
 }

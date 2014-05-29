@@ -29,21 +29,28 @@ class DefaultController extends Controller
         if ($this->getRequest()->isMethod('post')) {
             switch($this->getRequest()->get('status')) {
                 case 'confirm':
-                    $this->get('food.order')->statusAccepted();
+                    $this->get('food.order')->statusAccepted('restourant_mobile');
                 break;
+
                 case 'delay':
-                    $this->get('food.order')->statusDelayed();
+                    $this->get('food.order')->statusDelayed('restourant_mobile', 'delay reason: '.$this->getRequest()->get('delay_reason'));
                     $this->get('food.order')->getOrder()->setDelayed(true);
                     $this->get('food.order')->getOrder()->setDelayReason($this->getRequest()->get('delay_reason'));
                     $this->get('food.order')->getOrder()->setDelayDuration($this->getRequest()->get('delay_duration'));
                     $this->get('food.order')->saveDelay();
                     $order = $this->get('food.order')->getOrderByHash($hash);
                 break;
+
                 case 'cancel':
-                    $this->get('food.order')->statusCanceled();
+                    $this->get('food.order')->statusCanceled('restourant_mobile');
                 break;
+
                 case 'finish':
-                    $this->get('food.order')->statusFinished();
+                    $this->get('food.order')->statusFinished('restourant_mobile');
+                break;
+
+                case 'completed':
+                    $this->get('food.order')->statusCompleted('restourant_mobile');
                 break;
             }
             $this->get('food.order')->saveOrder();
@@ -61,7 +68,7 @@ class DefaultController extends Controller
         if ($this->getRequest()->isMethod('post')) {
             switch($this->getRequest()->get('status')) {
                 case 'finish':
-                    $this->get('food.order')->statusCompleted();
+                    $this->get('food.order')->statusCompleted('driver_mobile');
                 break;
             }
             $this->get('food.order')->saveOrder();

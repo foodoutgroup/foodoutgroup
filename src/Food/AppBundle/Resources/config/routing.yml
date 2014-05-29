@@ -6,6 +6,10 @@ food_test_payment:
     pattern:  /test/payment
     defaults: { _controller: FoodAppBundle:Test:payment }
 
+food_test_report:
+    pattern:  /test/report
+    defaults: { _controller: FoodAppBundle:Test:report }
+
 food_test:
     pattern:  /test/
     defaults: { _controller: FoodAppBundle:Test:index }
@@ -20,7 +24,7 @@ food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto).+"
+        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto|monitoring|nagios).+"
 
 food_admin_get_place_categories:
     pattern: /admin/place/get-categories/{placeId}
@@ -98,7 +102,7 @@ food_ajax_remove_dish:
     defaults: { _controller: FoodDishesBundle:Dish:removeDishInCart, dish: ~, cartId: ~}
 
 food_ajax:
-    pattern: /ajax/{action}/i
+    pattern: /ajax/{action}/
     defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~}
 
 

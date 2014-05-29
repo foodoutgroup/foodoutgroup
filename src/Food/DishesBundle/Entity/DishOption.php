@@ -126,10 +126,15 @@ class DishOption implements Translatable
 
     /**
      * @var bool
-     *
      * @ORM\Column(name="single_select", type="boolean")
      */
     private $singleSelect = false;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="group_name", type="string", length=45, nullable=true)
+     */
+    private $groupName;
 
     /**
      * Returns the name
@@ -553,5 +558,28 @@ class DishOption implements Translatable
     public function getSingleSelect()
     {
         return $this->singleSelect;
+    }
+
+    /**
+     * Set groupName
+     *
+     * @param string $groupName
+     * @return DishOption
+     */
+    public function setGroupName($groupName)
+    {
+        $this->groupName = $groupName;
+    
+        return $this;
+    }
+
+    /**
+     * Get groupName
+     *
+     * @return string 
+     */
+    public function getGroupName()
+    {
+        return $this->groupName;
     }
 }

@@ -42,6 +42,11 @@ security:
               failure_path:   null
               failure_handler: food_user.authentication_handler
               success_handler: food_user.authentication_handler
+          remember_me:
+              key:      "%secret%"
+              lifetime: 31536000 # 365 days in seconds
+              path:     /
+              domain:   ~ # Defaults to the current domain from $_SERVER
           logout:
               path: /logout
               target: /

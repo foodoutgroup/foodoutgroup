@@ -2,16 +2,16 @@ set :application, "skanu"
 set :deploy_to,   "/home/labai.skanu.lt/"
 set :app_path,    "app"
 
-set :repository,  "git@github.com:mid/skanu.lt.git"
+set :repository,  "git@github.com:Foodout/skanu.lt.git"
 set :scm,         :git
 
 set :model_manager, "doctrine"
 set :branch, "design"
 
 # multi-stage environment
-set :stages,        %w(production staging)
+set :stages,        %w(production staging sandbox)
 # isijungiam kada reik :)
-set :default_stage, "staging"
+set :default_stage, "sandbox"
 set :stage_dir,     "app/config/deploy"
 require 'capistrano/ext/multistage'
 
@@ -54,7 +54,7 @@ namespace :deploy do
 end
 
 # Kolkas nevalom kol hostexas nesutvarke mums teisiu!
-# after "deploy", "deploy:cleanup"
+after "deploy", "deploy:cleanup"
 after "deploy", "deploy:chmod_things"
 # Uncomment kai bus airbrake
 # after "deploy:cleanup", "deploy:airbrake_notify"

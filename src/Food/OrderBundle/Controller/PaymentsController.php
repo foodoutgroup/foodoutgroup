@@ -32,14 +32,31 @@ class PaymentsController extends Controller
                 throw new \Exception('Order not found. Order id from Paysera: '.$data['orderid']);
             }
 
-            $orderService->logPayment(
-                $order,
-                'paysera payment accepted',
-                'Payment succesfuly billed in Paysera',
-                $order
-            );
+            if ($data['status'] == 1) {
+                $orderService->logPayment(
+                    $order,
+                    'paysera payment accepted',
+                    'Payment succesfuly billed in Paysera',
+                    $order
+                );
+            } else if ($data['status'] == 2) {
+                // Paysera wallet used. Payment in process, money havent reached our pocket yet
+                $orderService->logPayment(
+                    $order,
+                    'paysera wallet payment started',
+                    'Paysera wallet payment accepted. Waiting for funds to be billed',
+                    $order
+                );
 
-            $orderService->setPaymentStatus($orderService::$paymentStatusComplete);
+                if ($order->getPaymentStatus() != $orderService::$paymentStatusComplete) {
+                    $orderService->setPaymentStatus($orderService::$paymentStatusWaitFunds);
+                    $orderService->saveOrder();
+
+                    $this->get('food.cart')->clearCart($order->getPlace());
+
+                    return new RedirectResponse($this->generateUrl('food_cart_wait', array('orderHash' => $order->getOrderHash())));
+                }
+            }
 
         } catch (\Exception $e) {
             //handle the callback validation error here
@@ -47,7 +64,7 @@ class PaymentsController extends Controller
             $logger->alert("trace: ".$e->getTraceAsString());
 
             if ($order) {
-                $orderService->statusFailed();
+                $orderService->statusFailed('paysera_payment');
                 $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());
                 $orderService->saveOrder();
             }
@@ -57,9 +74,6 @@ class PaymentsController extends Controller
 
 
         $this->get('food.cart')->clearCart($order->getPlace());
-        $orderService->informPlace();
-
-        $logger->alert("Sending message for order to be accepted to number: ".$recipient.' with text "'.$messageText.'"');
 
         return new RedirectResponse($this->generateUrl('food_cart_success', array('orderHash' => $order->getOrderHash())));
     }
@@ -123,8 +137,12 @@ class PaymentsController extends Controller
             }
 
             if ($data['status'] == 1) {
-                // Lets check if order in our side is all OK
+                // Paysera was waiting for funds to be transfered
                 $logger->alert('-- Payment is valid. Procceed with care..');
+                $orderService->setPaymentStatus($orderService::$paymentStatusComplete);
+                $orderService->saveOrder();
+                $orderService->informPlace();
+
                 return new Response('OK');
             }
         } catch (\Exception $e) {

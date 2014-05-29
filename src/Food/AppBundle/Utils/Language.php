@@ -151,12 +151,12 @@ class Language
     /**
      * TODO - multiligual
      */
-    protected function cleanName ($name, $lang = null) {
-
+    protected function cleanName ($name, $lang = null)
+    {
         $name = mb_eregi_replace('[^a-ž]', ' ', $name) ;
         $name = mb_eregi_replace('\s+', ' ', $name) ;
         $name = trim($name) ;
-        $name = mb_convert_case($name, MB_CASE_TITLE) ;
+        $name = mb_convert_case($name, MB_CASE_TITLE, "UTF-8") ;
 
         return $name ;
     }
@@ -164,8 +164,8 @@ class Language
     /**
      * TODO - multilingual
      */
-    protected function getTransformedName ($name, $lang = null) {
-
+    protected function getTransformedName ($name, $lang = null)
+    {
         $return = $name ;
 
         foreach ( $this->nameInflection as $from=>$to ) {
@@ -177,5 +177,15 @@ class Language
         }
 
         return $return ;
+    }
+
+    /**
+     * Temporary for debuging
+     *
+     * @param string $message
+     */
+    protected function log($message)
+    {
+        $this->container->get('logger')->alert($message);
     }
 }

@@ -135,7 +135,11 @@ class DefaultController extends Controller
 
         $orderService = $this->get('food.order');
         $placeService = $this->get('food.places');
+        $miscUtils = $this->get('food.app.utils.misc');
         $googleGisService = $this->container->get('food.googlegis');
+
+        $country = $this->container->getParameter('country');
+
         /**
          * @var UserManager $fosUserManager
          */
@@ -193,7 +197,13 @@ class DefaultController extends Controller
                     $user->setLastname($request->get('customer-lastname', null));
 
                     if (!empty($userPhone)) {
-                        $user->setPhone($userPhone);
+                        $formatedPhone = $miscUtils->formatPhone($userPhone, $country);
+
+                        if (!empty($formatedPhone)) {
+                            $user->setPhone($formatedPhone);
+                        } else {
+                            $user->setPhone($userPhone);
+                        }
                     }
 
                     // TODO gal cia normaliai generuosim desra-sasyskos-random krap ir siusim useriui emailu ir dar iloginsim
@@ -215,10 +225,19 @@ class DefaultController extends Controller
                     $orderService->getOrder()->setPlacePointAddress($placePoint->getAddress());
                 }
                 $orderService->logOrder(null, 'retry', 'Canceled order billing retry by user', $orderService->getOrder());
+
+                $user = $order->getUser();
+                $userPhone = $user->getPhone();
             }
 
             if ($userPhone != $user->getPhone()) {
-                $user->setPhone($userPhone);
+                $formatedPhone = $miscUtils->formatPhone($userPhone, $country);
+
+                if (!empty($formatedPhone)) {
+                    $user->setPhone($formatedPhone);
+                } else {
+                    $user->setPhone($userPhone);
+                }
                 $fosUserManager->updateUser($user);
             }
 
@@ -303,6 +322,19 @@ class DefaultController extends Controller
 
         return $this->render(
             'FoodCartBundle:Default:payment_success.html.twig',
+            array('order' => $order)
+        );
+    }
+
+    /**
+     * TODO dabar routas cart/success, bet renaminant kart i kasikelis, reiks ir sita parenamint i kasikelis/apmoketas
+     */
+    public function waitAction($orderHash)
+    {
+        $order = $this->get('food.order')->getOrderByHash($orderHash);
+
+        return $this->render(
+            'FoodCartBundle:Default:payment_wait.html.twig',
             array('order' => $order)
         );
     }

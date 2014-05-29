@@ -135,6 +135,17 @@ class CartService {
                 )
             );
         foreach ($opts as $opt) {
+            if ($opt == null) {
+                $context = array(
+                    'RequestData: '.json_encode($this->container->get('request')->request->all()),
+                    'EntityType: '.get_class($opt),
+                    'ParentType: '.get_class($dish)
+                );
+                $this->container->get('logger')->error(
+                    "ACTION: removeDishByIds, options removal",
+                    $context
+                );
+            }
             $this->getEm()->remove($opt);
             $this->getEm()->flush();
         }
@@ -148,6 +159,17 @@ class CartService {
                     'session' => $this->getSessionId()
                 )
             );
+
+        if ($cartDish == null) {
+            $context = array(
+                'RequestData: '.json_encode($this->container->get('request')->request->all()),
+                'EntityType: '.get_class($cartDish),
+            );
+            $this->container->get('logger')->error(
+                "ACTION: removeDishByIds, Dish removal removal",
+                $context
+            );
+        }
 
         $this->getEm()->remove($cartDish);
         $this->getEm()->flush();
@@ -211,9 +233,17 @@ class CartService {
      */
     public function addDishBySizeId($size, $quantity, $options = array(), $option = array())
     {
+        if (!is_array($options)) {
+            $options = array();
+        }
         $sizeEnt = $this->getEm()->getRepository('FoodDishesBundle:DishSize')->find($size);
+
         if(!empty($option)) {
-            $options[] = $option;
+            if (is_array($option)) {
+                $options = array_merge($options, array_values($option));
+            } else {
+                $options[] = $option;
+            }
         }
         $this->addDishByIds(
             $sizeEnt->getDish()->getId(),
@@ -322,6 +352,8 @@ class CartService {
      *
      * @param int $dishId
      * @param int $cartId
+     *
+     * @return \Food\CartBundle\Entity\Cart
      */
     public function getCartDish($dishId, $cartId)
     {
@@ -332,7 +364,11 @@ class CartService {
                 'cart_id' => $cartId
             )
         );
-        $cartEnt->setEm($this->getEm());
+
+        // Set Object Manager only if cart found
+        if ($cartEnt) {
+            $cartEnt->setEm($this->getEm());
+        }
         return $cartEnt;
     }
 

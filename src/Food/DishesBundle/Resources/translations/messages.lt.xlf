@@ -12,7 +12,7 @@
       </trans-unit>
       <trans-unit id="69c86123da06eeee7c5c169db51400cd" resname="dish.select_options">
         <source>dish.select_options</source>
-        <target>Ar norėtumėt papildomų priedų?</target>
+        <target>Pasirinkite papildomų priedų</target>
       </trans-unit>
       <trans-unit id="88b14861f44ed09bb7f45d4edbc7fa9d" resname="dish.add_to_cart">
         <source>dish.add_to_cart</source>

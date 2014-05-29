@@ -92,8 +92,7 @@
                         {# Atsiliepimai #}
                         <div id="detailed-restaurant-review" class="detailed-restaurant-review">
                             <div class="review-title clearfix">
-                                {% set count = place.reviews.count %}
-                                <h3>{% transchoice count %}%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų{% endtranschoice %}</h3>
+                                <h3>{{ place.reviews.count }} {% transchoice place.reviews.count %}places.review_choice{% endtranschoice %}</h3>
                                 {% if wasHere and not alreadyWrote %}
                                     <a href="#place-review-popup" class="fancy-box">{% trans %}places.add_review{% endtrans %}</a>
                                 {% endif %}

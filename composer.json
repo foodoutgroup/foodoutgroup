@@ -62,7 +62,8 @@
         "shuber/curl": "dev-master",
         "imagine/Imagine": "dev-master",
         "trsteel/ckeditor-bundle": "1.4.x-dev",
-        "friendsofsymfony/jsrouting-bundle": "@stable"
+        "friendsofsymfony/jsrouting-bundle": "@stable",
+        "giggsey/libphonenumber-for-php": "6.1"
     },
     "scripts": {
         "post-install-cmd": [

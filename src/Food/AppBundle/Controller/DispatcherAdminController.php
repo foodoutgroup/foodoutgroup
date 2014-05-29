@@ -38,10 +38,32 @@ class DispatcherAdminController extends Controller
         $orderService = $this->get('food.order');
         $order = $orderService->getOrderById($orderId);
 
+        switch ($order->getOrderStatus()) {
+            case $orderService::$status_new:
+                $orderStatuses = array(
+                    $orderService::$status_canceled,
+                );
+                break;
+
+            case $orderService::$status_accepted:
+            case $orderService::$status_finished:
+            case $orderService::$status_delayed:
+                $orderStatuses = $orderService::getOrderStatuses();
+                $index = array_search('assigned', $orderStatuses);
+                if (isset($orderStatuses[$index])) {
+                    unset($orderStatuses[$index]);
+                }
+                break;
+
+            default:
+                $orderStatuses = $orderService::getOrderStatuses();
+                break;
+        }
+
         return $this->render(
             'FoodAppBundle:Dispatcher:status_popup.html.twig',
             array(
-                'orderStatuses' => $orderService::getOrderStatuses(),
+                'orderStatuses' => $orderStatuses,
                 'currentStatus' => $order->getOrderStatus(),
             )
         );
@@ -57,7 +79,7 @@ class DispatcherAdminController extends Controller
 //            $orderService->chageOrderStatus($status);
             $method = 'status'.ucfirst($status);
             if (method_exists($orderService, $method)) {
-                $orderService->$method();
+                $orderService->$method('dispatcher');
             }
             $orderService->saveOrder();
         } catch (Exception $e) {

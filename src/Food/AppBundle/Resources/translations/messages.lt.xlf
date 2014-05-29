@@ -164,11 +164,23 @@
       </trans-unit>
       <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
         <source>general.sms.user.order_accepted</source>
-        <target>Sveiki, restoranas patvirtino Jusu uzsakyma</target>
+        <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista turetumete gauti per delivery_time! Jei turite dar klausimu susisiekite telefonu +restourant_phone!</target>
+      </trans-unit>
+      <trans-unit id="general.sms.client.restourant_cancel" resname="general.sms.client.restourant_cancel">
+        <source>general.sms.client.restourant_cancel</source>
+        <target>Atsiprasome, restoranas atsauke Jusu uzsakyma.</target>
+      </trans-unit>
+      <trans-unit id="general.sms.client.restourant_cancel_banklink" resname="general.sms.client.restourant_cancel_banklink">
+        <source>general.sms.client.restourant_cancel_banklink</source>
+        <target>Atsiprasome, restoranas atsauke Jusu uzsakyma. Pinigai bus grazinti i Jusu saskaita</target>
       </trans-unit>
       <trans-unit id="74fbe91702c1ee04724c55bde63e654f" resname="general.email.new_order">
         <source>general.email.new_order</source>
         <target>naujas užsakymas</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_yesterday_report" resname="general.email.accounting_yesterday_report">
+        <source>general.email.accounting_yesterday_report</source>
+        <target>vakaryksciu uzsakymu ataskaita</target>
       </trans-unit>
       <trans-unit id="19554e921e608df135b269a564c8cf6a" resname="mobile.order_confirm">
         <source>mobile.order_confirm</source>
@@ -180,7 +192,7 @@
       </trans-unit>
       <trans-unit id="e110f798f6661e6e1ac7fbfe1f03e679" resname="mobile.order_finish">
         <source>mobile.order_finish</source>
-        <target>Pabaigti užsakymą</target>
+        <target>Pagamintas</target>
       </trans-unit>
       <trans-unit id="mobile.order_delivered" resname="mobile.order_delivered">
         <source>mobile.order_delivered</source>
@@ -213,6 +225,10 @@
       <trans-unit id="05b48d26335e8a0f936e45abc2360074" resname="mobile.place_finish_message">
         <source>mobile.place_finish_message</source>
         <target>Restorano darbas baigtas. Toliau logistika.</target>
+      </trans-unit>
+      <trans-unit id="mobile.place_finish_message_self_delivery" resname="mobile.place_finish_message_self_delivery">
+        <source>mobile.place_finish_message_self_delivery</source>
+        <target>Gamyba baigta. Toliau pristatymas.</target>
       </trans-unit>
       <trans-unit id="cb2ecbcd06bc62396f6bb198d438dccf" resname="mobile.order_submit_delay">
         <source>mobile.order_submit_delay</source>
@@ -312,7 +328,7 @@
       </trans-unit>
       <trans-unit id="general.sms.user_order_delayed" resname="general.sms.user_order_delayed">
         <source>general.sms.user_order_delayed</source>
-        <target>Atsiprasome, taciau jusu uzsakymas bus pristatytas po delay min.</target>
+        <target>Atsiprasome, taciau del didelio uzsakymu srauto Jusu uzsakymas atidedamas delay_time min ir bus pristatytas po delivery_min min. Jei nesutinkate laukti - susisiekite +restourant_phone</target>
       </trans-unit>
       <trans-unit id="general.email.user_delayed_subject" resname="general.email.user_delayed_subject">
         <source>general.email.user_delayed_subject</source>
@@ -466,6 +482,22 @@
         <source>mobile.invoice.car_number</source>
         <target>Automobilio Nr.</target>
       </trans-unit>
+      <trans-unit id="mobile.invoice.sum_no_vat" resname="mobile.invoice.sum_no_vat">
+        <source>mobile.invoice.sum_no_vat</source>
+        <target>Suma be PVM</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.delivery_no_vat" resname="mobile.invoice.delivery_no_vat">
+        <source>mobile.invoice.delivery_no_vat</source>
+        <target>Pristatymas be PVM</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.vat" resname="mobile.invoice.vat">
+        <source>mobile.invoice.vat</source>
+        <target>PVM</target>
+      </trans-unit>
+      <trans-unit id="mobile.invoice.total_with_vat" resname="mobile.invoice.total_with_vat">
+        <source>mobile.invoice.total_with_vat</source>
+        <target>Viso</target>
+      </trans-unit>
       <trans-unit id="16e198a6b48257e47d9ce572ab7ce655" resname="mobile.deliver_time">
         <source>mobile.deliver_time</source>
         <target>Pristatyti iki</target>
@@ -561,6 +593,18 @@
       <trans-unit id="general.profile.no_orders" resname="general.profile.no_orders">
         <source>general.profile.no_orders</source>
         <target>Dar nieko neužsisakėte</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.local.card" resname="general.email.accounting_report.local.card">
+          <source>general.email.accounting_report.local.card</source>
+          <target>Kortele, atsiimant</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.local" resname="general.email.accounting_report.local">
+          <source>general.email.accounting_report.local</source>
+          <target>Grynaisiais</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.paysera" resname="general.email.accounting_report.paysera">
+          <source>general.email.accounting_report.paysera</source>
+          <target>Internetu</target>
       </trans-unit>
     </body>
   </file>

@@ -141,6 +141,13 @@ class Place extends Uploadable implements Translatable
     private $selfDelivery = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="min_on_self", type="boolean")
+     */
+    private $minimalOnSelfDel = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="FoodCategory", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
      *
      * @var ArrayCollection
@@ -509,7 +516,7 @@ class Place extends Uploadable implements Translatable
     /**
      * Get points
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return PlacePoint[]
      */
     public function getPoints()
     {
@@ -1111,5 +1118,28 @@ class Place extends Uploadable implements Translatable
     public function getDeliveryTimeInfo()
     {
         return $this->deliveryTimeInfo;
+    }
+
+    /**
+     * Set minimalOnSelfDel
+     *
+     * @param boolean $minimalOnSelfDel
+     * @return Place
+     */
+    public function setMinimalOnSelfDel($minimalOnSelfDel)
+    {
+        $this->minimalOnSelfDel = $minimalOnSelfDel;
+    
+        return $this;
+    }
+
+    /**
+     * Get minimalOnSelfDel
+     *
+     * @return boolean 
+     */
+    public function getMinimalOnSelfDel()
+    {
+        return $this->minimalOnSelfDel;
     }
 }
