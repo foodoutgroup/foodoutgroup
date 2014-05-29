@@ -30,7 +30,12 @@ class MessagesAdmin extends SonataAdmin
             ->add('sender', 'text', array('label' => 'admin.sms.sender', 'required' => true))
             ->add('message', null, array('label' => 'admin.sms.message', 'required' => true))
             ->add('sent', 'checkbox', array('required' => false, 'label' => 'admin.sms.sent'))
-            ->add('timesSent', 'checkbox', array('required' => false, 'label' => 'admin.sms.times_sent'))
+            ->add('delivered', 'checkbox', array('required' => false, 'label' => 'admin.sms.delivered'))
+            ->add('createdAt', null, array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
+            ->add('submittedAt', null, array('format' => 'Y-m-d H:i:s', 'label' => 'admin.sms.submitted_at'))
+            ->add('timesSent', null, array('required' => false, 'label' => 'admin.sms.times_sent'))
+            ->add('smsc', null, array('required' => false, 'label' => 'admin.sms.smsc'))
+            ->add('extId', null, array('required' => false, 'label' => 'admin.sms.ext_id'))
         ;
     }
 
@@ -55,9 +60,9 @@ class MessagesAdmin extends SonataAdmin
             ->add('sender', 'string', array('label' => 'admin.sms.sender'))
             ->add('message', 'string', array('label' => 'admin.sms.message'))
             ->add('smsc', 'string', array('label' => 'admin.sms.smsc'))
-            ->add('timesSent', null, array('label' => 'admin.sms.times_sent'))
+            ->add('timesSent', null, array('label' => 'admin.sms.times_sent', 'editable' => true,))
             ->add('sent', null, array('label' => 'admin.sms.sent', 'editable' => true))
-            ->add('delivered', null, array('label' => 'admin.sms.delivered', 'editable' => false))
+            ->add('delivered', null, array('label' => 'admin.sms.delivered', 'editable' => true))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('submittedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.sms.submitted_at'))
             ->add('receivedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.sms.received_at'))
