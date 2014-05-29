@@ -77,9 +77,9 @@ class SmsBalanceCommand extends ContainerAwareCommand
 
         // Output formating:
         if ($criticalCount > 0) {
-            $mainMessage = sprintf('<error>Critical: %d of providers has criticaly low balance</error>', $criticalCount);
+            $mainMessage = sprintf('<error>%d of providers has criticaly low balance</error>', $criticalCount);
         } else if ($warnCount > 0) {
-            $mainMessage = sprintf('<comment>Warning: %d of providers soon will be low on balance</comment>', $warnCount);
+            $mainMessage = sprintf('<comment>%d of providers soon will be low on balance</comment>', $warnCount);
         } else {
             $mainMessage = '<info>OK: all providers have enough of money</info>';
         }
@@ -104,7 +104,11 @@ class SmsBalanceCommand extends ContainerAwareCommand
         }
 
         if ($criticalCount > 0) {
-            // TODO send das message, or we are doomed!
+            return 2;
+        } else if ($warnCount > 0) {
+            return 1;
+        } else {
+            return 0;
         }
     }
 }

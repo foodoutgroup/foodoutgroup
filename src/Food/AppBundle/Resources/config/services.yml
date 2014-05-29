@@ -5,6 +5,12 @@ services:
             - [container, [@service_container]]
         arguments: [@service_container]
 
+    food.app.utils.misc:
+        class: Food\AppBundle\Utils\Misc
+        calls:
+            - [container, [@service_container]]
+        arguments: [@service_container]
+
     food.app.utils.route:
         class: Food\AppBundle\Utils\Route
         calls:

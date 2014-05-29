@@ -159,6 +159,14 @@
             <source>order.form.errors.customerphone</source>
             <target>Nurodykite mob. telefono numerį</target>
         </trans-unit>
+        <trans-unit id="order.form.errors.customerphone_format" resname="order.form.errors.customerphone_format">
+            <source>order.form.errors.customerphone_format</source>
+            <target>Nurodykite mob. telefono numerį formatu 37061234567</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.customerphone_not_mobile" resname="order.form.errors.customerphone_not_mobile">
+            <source>order.form.errors.customerphone_not_mobile</source>
+            <target>Nurodytas ne mobilaus telefono numeris</target>
+        </trans-unit>
         <trans-unit id="order.form.errors.customercomment" resname="order.form.errors.customercomment">
             <source>order.form.errors.customercomment</source>
             <target>Įveskite komentarą</target>

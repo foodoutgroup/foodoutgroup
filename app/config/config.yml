@@ -12,7 +12,7 @@ parameters:
     time_zone: "Europe/Vilnius"
     sms.available_providers: [food.infobip]
     sms.sender: "Foodout.lt"
-    sms.balance_limit_warn: 10
+    sms.balance_limit_warn: 8
     sms.balance_limit_critical: 5
     infobip_provider.api_url: "http://api.infobip.com/api/v3/sendsms/json"
     infobip_provider.account_url: "http://api2.infobip.com/api"
@@ -46,6 +46,8 @@ parameters:
     payment.methods: [local, local.card, paysera]
     currency_display: Lt
     currency_iso: LTL
+    # naudojam telefonu validacijoms
+    country: LT
     vat: 21
     evp.test_payments: 0
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
@@ -80,7 +82,6 @@ twig:
         locale:       "%locale%"
         page_title:   "%title%"
         currency_display: "%currency_display%"
-        currency_iso: "%currency_iso%"
         vat_size: "%vat%"
         dish_service: "@food.dishes"
         order_service: "@food.order"

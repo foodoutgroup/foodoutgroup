@@ -1726,13 +1726,13 @@ class OrderService extends ContainerAware
             $this->workTimeErrors($pointRecord, $formErrors);
         }
 
-
+        $phone = $request->get('customer-phone');
 
         if (0 === strlen($request->get('customer-firstname'))) {
             $formErrors[] = 'order.form.errors.customerfirstname';
         }
 
-        if (0 === strlen($request->get('customer-phone'))) {
+        if (0 === strlen($phone)) {
             $formErrors[] = 'order.form.errors.customerphone';
         }
 
@@ -1742,6 +1742,31 @@ class OrderService extends ContainerAware
 
         if (0 === strlen($request->get('customer-email'))) {
             $formErrors[] = 'order.form.errors.customeremail';
+        }
+
+        // Validate das phone number :)
+        if (0 != strlen($phone)) {
+            $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+            $country = $this->container->getParameter('country');
+
+            try {
+                $numberProto = $phoneUtil->parse($phone, $country);
+            } catch (\libphonenumber\NumberParseException $e) {
+                // no need for exception
+            }
+
+            if (isset($numberProto)) {
+                $numberType = $phoneUtil->getNumberType($numberProto);
+                $isValid = $phoneUtil->isValidNumber($numberProto);
+            } else {
+                $isValid = false;
+            }
+
+            if (!$isValid) {
+                $formErrors[] = 'order.form.errors.customerphone_format';
+            } else if ($isValid && !in_array($numberType, array(\libphonenumber\PhoneNumberType::MOBILE, \libphonenumber\PhoneNumberType::FIXED_LINE_OR_MOBILE))) {
+                $formErrors[] = 'order.form.errors.customerphone_not_mobile';
+            }
         }
 
         if (!empty($formErrors)) {
