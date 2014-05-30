@@ -180,6 +180,13 @@ services:
     tags:
         - { name: twig.extension }
 
+  kernel.listener.command_dispatch:
+      class: Food\AppBundle\EventListener\ConsoleExceptionListener
+      arguments:
+          logger: "@logger"
+      tags:
+          - { name: kernel.event_listener, event: console.exception }
+
 sonata_doctrine_orm_admin:
     templates:
         form: [ FoodDishesBundle:Forms:form_admin_fields.html.twig ]

@@ -40,6 +40,8 @@ class CheckUnsentMessagesCommand extends ContainerAwareCommand
         } catch (\Exception $e) {
             $text = 'Error in unsent messages check: '.$e->getMessage();
             $this->soundTheAlarm($text);
+
+            throw $e;
         }
 
         $output->writeln($text);
@@ -48,9 +50,7 @@ class CheckUnsentMessagesCommand extends ContainerAwareCommand
     protected function soundTheAlarm($text)
     {
         $text = str_replace(array('<error>', '</error>'), '', $text);
-        // TODO po merge su cart branchu - ijungiam domain pasiimima
-//        $domain = $this->getContainer()->getParameter('domain');
-        $domain = 'skanu.lt';
+        $domain = $this->getContainer()->getParameter('domain');
         $adminEmails = $this->getContainer()->getParameter('admin.emails');
         $mailer = $this->getContainer()->get('mailer');
 
