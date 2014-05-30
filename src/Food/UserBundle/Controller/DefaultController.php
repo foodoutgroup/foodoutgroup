@@ -184,7 +184,7 @@ class DefaultController extends Controller
         $form->handleRequest($request);
 
         // @TODO tikejaus, kad tituliniam nebeliko hardkodo :| Deja.. Palieku ir cia, iki rankos issities padaryt tvarka
-        $cities = array('Vilnius' => 'Vilnius', /*'Kaunas' => 'Kaunas'*/);
+        $cities = array('Vilnius' => 'Vilnius', 'Kaunas' => 'Kaunas');
         $addressForm = $this->createForm(new UserAddressFormType($cities), $address);
         $addressForm->handleRequest($request);
 
@@ -236,7 +236,7 @@ class DefaultController extends Controller
         $address = $this->address($user);
 
         // @TODO tikejaus, kad tituliniam nebeliko hardkodo :| Deja.. Palieku ir cia, iki rankos issities padaryt tvarka
-        $cities = array('Vilnius' => 'Vilnius', /*'Kaunas' => 'Kaunas'*/);
+        $cities = array('Vilnius' => 'Vilnius', 'Kaunas' => 'Kaunas');
 
         $form = $this->createForm(new ProfileFormType(get_class($user)), $user);
         $addressForm = $this->createForm(new UserAddressFormType($cities), $address);

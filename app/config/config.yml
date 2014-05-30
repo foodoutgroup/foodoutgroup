@@ -8,7 +8,7 @@ imports:
 parameters:
     available_locales: [lt, en, ru]
     available_locales_routing: lt | en | ru
-    available_cities: ["Vilnius"]
+    available_cities: ["Vilnius","Kaunas"]
     time_zone: "Europe/Vilnius"
     sms.available_providers: [food.infobip]
     sms.sender: "Foodout.lt"
@@ -82,6 +82,7 @@ twig:
         locale:       "%locale%"
         page_title:   "%title%"
         currency_display: "%currency_display%"
+        currency_iso: "%currency_iso%"
         vat_size: "%vat%"
         dish_service: "@food.dishes"
         order_service: "@food.order"
