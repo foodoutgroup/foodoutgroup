@@ -321,6 +321,9 @@ class OrderService extends ContainerAware
 
             // Notify Dispatchers
             $this->notifyOrderAccept();
+            // Kitais atvejais tik keiciam statusa, nes gal taip reikia
+        } else {
+            $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
         }
 
         return $this;
