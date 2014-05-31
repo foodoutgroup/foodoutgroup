@@ -24,14 +24,18 @@ var Dispatcher = {
 
         // Visus stripintus tekstus ispiesim tooltipe :)
         $(".spliced-text").tooltip({});
+
         // Vairuotojo papildoma info :)
         $(".driver-info-extended").tooltip({
             tooltipClass: 'driver-tooltip'
         });
+
         // Vairuotojo papildoma info :)
         $(".status-change-history").tooltip({
             tooltipClass: 'driver-tooltip'
         });
+
+        $(".city-tab a").tooltip({});
 
         $(".order_list.unassigned .order_checkbox").bind('click', function(){
             Dispatcher.toggleDriverButton($(this));

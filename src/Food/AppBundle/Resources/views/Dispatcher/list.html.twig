@@ -138,7 +138,13 @@
     <div class="city_list todo_nieks_nezino_klases">
         <ul>
             {% for city in cities %}
-                <li><a href="#city_list-{{ loop.index }}">{{ city }}</a></li>
+                {% set cityUnassigned = cityOrders[city].unassigned|length %}
+                {% set cityUnconfirmed = cityOrders[city].unconfirmed|length %}
+                {% set cityNotFinished = cityOrders[city].not_finished|length %}
+                {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished}, 'SonataAdminBundle') %}
+                <li class="city-tab">
+                    <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} ({{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }})</a>
+                </li>
             {% endfor %}
         </ul>
         {% for cityName,city in cityOrders %}
