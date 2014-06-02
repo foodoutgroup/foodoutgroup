@@ -107,7 +107,7 @@
                     {% endif %}
                     <td class="order_status">
                         {% if order.orderStatusLog|length > 0 %}
-                        {% set statusInfo = '' %}
+                            {% set statusInfo = '<div class=\'driver-tooltip\'>' %}
                             {% for status in order.orderStatusLog %}
                                 {%
                                     set statusInfo = statusInfo
@@ -118,6 +118,7 @@
                                     ~ '<br />'
                                 %}
                             {% endfor %}
+                            {% set statusInfo = statusInfo ~ '</div>' %}
                         {% endif %}
 
                         {{ ('admin.dispatcher.order_status.' ~ order.orderStatus)|trans({}, 'SonataAdminBundle') }}

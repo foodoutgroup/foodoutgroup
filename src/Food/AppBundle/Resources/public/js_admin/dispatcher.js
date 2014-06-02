@@ -32,7 +32,7 @@ var Dispatcher = {
 
         // Vairuotojo papildoma info :)
         $(".status-change-history").tooltip({
-            tooltipClass: 'driver-tooltip'
+            placement: 'right'
         });
 
         $(".city-tab a").tooltip({});
