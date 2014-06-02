@@ -1401,6 +1401,7 @@ class OrderService extends ContainerAware
 
         $domain = $this->container->getParameter('domain');
         $notifyEmails = $this->container->getParameter('order.notify_emails');
+        $cityCoordinators = $this->container->getParameter('order.city_coordinators');
 
         $userAddress = '';
         $userAddressObject = $order->getAddressId();
@@ -1443,6 +1444,14 @@ class OrderService extends ContainerAware
                 $message->addTo($email);
             } else {
                 $message->addCc($email);
+            }
+        }
+
+        if (!empty($cityCoordinators)) {
+            if (isset($cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')])) {
+                foreach($cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')] as $coordinatorEmail) {
+                    $message->addCc($coordinatorEmail);
+                }
             }
         }
 
