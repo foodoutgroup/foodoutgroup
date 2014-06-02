@@ -44,6 +44,7 @@ class CheckUnsentMessagesCommandTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @depends testNoUnsentMessages
+     * @expectedException \Exception
      */
     public function testExceptionHappenedSoundTheAlarm()
     {
@@ -79,15 +80,20 @@ class CheckUnsentMessagesCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->at(1))
             ->method('getParameter')
+            ->with('domain')
+            ->will($this->returnValue('foodout'));
+
+        $container->expects($this->at(2))
+            ->method('getParameter')
             ->with('admin.emails')
             ->will($this->returnValue(array()));
 
-        $container->expects($this->at(2))
+        $container->expects($this->at(3))
             ->method('get')
             ->with('mailer')
             ->will($this->returnValue($mailer));
 
-        $container->expects($this->at(3))
+        $container->expects($this->at(4))
             ->method('getParameter')
             ->with('admin.send_monitoring_message')
             ->will($this->returnValue(false));
@@ -154,25 +160,30 @@ class CheckUnsentMessagesCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->at(1))
             ->method('getParameter')
+            ->with('domain')
+            ->will($this->returnValue('foodout'));
+
+        $container->expects($this->at(2))
+            ->method('getParameter')
             ->with('admin.emails')
             ->will($this->returnValue($emails));
 
-        $container->expects($this->at(2))
+        $container->expects($this->at(3))
             ->method('get')
             ->with('mailer')
             ->will($this->returnValue($mailer));
 
-        $container->expects($this->at(3))
+        $container->expects($this->at(4))
             ->method('getParameter')
             ->with('admin.send_monitoring_message')
             ->will($this->returnValue($sendMessages));
 
-        $container->expects($this->at(4))
+        $container->expects($this->at(5))
             ->method('get')
             ->with('food.messages')
             ->will($this->returnValue($messagingService));
 
-        $container->expects($this->at(5))
+        $container->expects($this->at(6))
             ->method('get')
             ->with('food.infobip')
             ->will($this->returnValue($infobipProvider));
@@ -181,12 +192,12 @@ class CheckUnsentMessagesCommandTest extends \PHPUnit_Framework_TestCase
             ->method('setMessagingProvider')
             ->with($infobipProvider);
 
-        $container->expects($this->at(6))
+        $container->expects($this->at(7))
             ->method('getParameter')
             ->with('admin.phones')
             ->will($this->returnValue($phones));
 
-        $container->expects($this->at(7))
+        $container->expects($this->at(8))
             ->method('getParameter')
             ->with('sms.sender')
             ->will($this->returnValue($sender));

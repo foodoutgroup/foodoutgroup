@@ -75,8 +75,7 @@ class DispatcherAdminController extends Controller
 
         try {
             $orderService->getOrderById($orderId);
-            // TODO negrazu, bet tap reik :( pagrazinam kai bus minciu
-//            $orderService->chageOrderStatus($status);
+
             $method = 'status'.ucfirst($status);
             if (method_exists($orderService, $method)) {
                 $orderService->$method('dispatcher');

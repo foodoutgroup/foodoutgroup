@@ -5,6 +5,10 @@ use Food\SmsBundle\Command\ReSendCommand;
 
 class ResendCommandTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage No messaging providers configured. Please check Your configuration!
+     */
     public function testNoSmsProviders()
     {
         $container = $this->getMock(
@@ -42,6 +46,10 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/No messaging providers configured. Please check Your configuration!/', $commandTester->getDisplay());
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Sorry, at the moment we dont support more than one provider!
+     */
     public function testTooMuchSmsProviders()
     {
         $container = $this->getMock(
@@ -370,6 +378,10 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/2 messages sent/', $commandTester->getDisplay());
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Omg test hack
+     */
     public function testMessagesResendException()
     {
         $container = $this->getMock(
@@ -448,6 +460,10 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/Error: Omg test hack/', $commandTester->getDisplay());
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Zis iz not a message
+     */
     public function testMessagesResendInvalidArgumentException()
     {
         $container = $this->getMock(
