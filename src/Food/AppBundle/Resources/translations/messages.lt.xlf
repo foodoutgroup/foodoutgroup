@@ -166,6 +166,10 @@
         <source>general.sms.user.order_accepted</source>
         <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista turetumete gauti per delivery_time! Jei turite dar klausimu susisiekite telefonu +restourant_phone!</target>
       </trans-unit>
+      <trans-unit id="general.sms.user.order_accepted_pickup" resname="general.sms.user.order_accepted_pickup">
+        <source>general.sms.user.order_accepted_pickup</source>
+        <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista galesite atsiimti po delivery_time! Jei turite dar klausimu susisiekite telefonu +restourant_phone!</target>
+      </trans-unit>
       <trans-unit id="general.sms.client.restourant_cancel" resname="general.sms.client.restourant_cancel">
         <source>general.sms.client.restourant_cancel</source>
         <target>Atsiprasome, restoranas atsauke Jusu uzsakyma.</target>
@@ -329,6 +333,10 @@
       <trans-unit id="general.sms.user_order_delayed" resname="general.sms.user_order_delayed">
         <source>general.sms.user_order_delayed</source>
         <target>Atsiprasome, taciau del didelio uzsakymu srauto Jusu uzsakymas atidedamas delay_time min ir bus pristatytas po delivery_min min. Jei nesutinkate laukti - susisiekite +restourant_phone</target>
+      </trans-unit>
+      <trans-unit id="general.sms.user_order_delayed_pickup" resname="general.sms.user_order_delayed_pickup">
+        <source>general.sms.user_order_delayed_pickup</source>
+        <target>Atsiprasome, taciau del didelio uzsakymu srauto Jusu uzsakymas atidedamas delay_time min ir bus paruostas po delivery_min min. Jei nesutinkate laukti - susisiekite +restourant_phone</target>
       </trans-unit>
       <trans-unit id="general.email.user_delayed_subject" resname="general.email.user_delayed_subject">
         <source>general.email.user_delayed_subject</source>

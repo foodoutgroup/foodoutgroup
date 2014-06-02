@@ -296,9 +296,15 @@ class OrderService extends ContainerAware
                 $smsService = $this->container->get('food.messages');
 
                 $sender = $this->container->getParameter('sms.sender');
+
+                $translation = 'general.sms.user.order_accepted';
+                if ($this->getOrder()->getDeliveryType() == 'pickup') {
+                    $translation = 'general.sms.user.order_accepted_pickup';
+                }
+
                 $text = $this->container->get('translator')
                     ->trans(
-                        'general.sms.user.order_accepted',
+                        $translation,
                         array(
                             'restourant_name' => $this->getOrder()->getPlaceName(),
                             'delivery_time' => $this->getOrder()->getPlace()->getDeliveryTime(),
@@ -1923,8 +1929,13 @@ class OrderService extends ContainerAware
         $translator = $this->container->get('translator');
         $domain = $this->container->getParameter('domain');
 
+        $translation = 'general.sms.user_order_delayed';
+        if ($this->getOrder()->getDeliveryType() == 'pickup') {
+            $translation = 'general.sms.user_order_delayed_pickup';
+        }
+
         $messageText = $translator->trans(
-            'general.sms.user_order_delayed',
+            $translation,
             array(
                 'delay_time' => $diffInMinutes,
                 'delivery_min' => $deliverIn,
