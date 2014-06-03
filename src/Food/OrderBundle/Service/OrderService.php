@@ -1792,9 +1792,15 @@ class OrderService extends ContainerAware
         }
     }
 
-    public function generateCsv($orderId)
+
+    public function generateCsvById($orderId)
     {
         $order = $this->getOrderById($orderId);
+        $this->generateCsv($order);
+    }
+
+    public function generateCsv(Order $order)
+    {
         $orderDetails = array();
         $foodTotalLine = 0;
         $drinksTotalLine = 0;
