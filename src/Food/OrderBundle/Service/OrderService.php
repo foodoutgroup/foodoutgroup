@@ -1837,6 +1837,7 @@ class OrderService extends ContainerAware
         if ($foodTotalLine > 0) {
             $orderDetails[] = array(
                 $order->getId(),
+                $order->getOrderDate()->format("Y-m-d H:i:s"),
                 $order->getPlace()->getName(),
                 $order->getPlacePoint()->getAddress(),
                 $driverRow,
@@ -1851,6 +1852,7 @@ class OrderService extends ContainerAware
         if ($drinksTotalLine > 0) {
             $orderDetails[] = array(
                 $order->getId(),
+                $order->getOrderDate()->format("Y-m-d H:i:s"),
                 $order->getPlace()->getName(),
                 $order->getPlacePoint()->getAddress(),
                 $driverRow,
@@ -1866,6 +1868,7 @@ class OrderService extends ContainerAware
         if ($alcoholTotalLine > 0) {
             $orderDetails[] = array(
                 $order->getId(),
+                $order->getOrderDate()->format("Y-m-d H:i:s"),
                 $order->getPlace()->getName(),
                 $order->getPlacePoint()->getAddress(),
                 $driverRow,
@@ -1881,6 +1884,7 @@ class OrderService extends ContainerAware
         if($order->getDeliveryType() == self::$deliveryDeliver) {
             $orderDetails[] = array(
                 $order->getId(),
+                $order->getOrderDate()->format("Y-m-d H:i:s"),
                 $order->getPlace()->getName(),
                 $order->getPlacePoint()->getAddress(),
                 $driverRow,
