@@ -1336,4 +1336,29 @@ class PlacePoint
     {
         return $this->deliveryTimeInfo;
     }
+
+    /**
+     * Returns place point phone formated in nice output for end user
+     *
+     * @return string
+     */
+    public function getPhoneNiceFormat()
+    {
+        if ($this->getId()) {
+            $phone = $this->getPhone();
+            $returnPhone = '';
+
+            for ($i = 0; $i < strlen($phone); $i++) {
+                $returnPhone .= $phone[$i];
+
+                if ($i == 2 || $i == 5) {
+                    $returnPhone .= ' ';
+                }
+            }
+
+            return $returnPhone;
+        } else {
+            return '';
+        }
+    }
 }

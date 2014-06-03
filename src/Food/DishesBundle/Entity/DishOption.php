@@ -191,6 +191,14 @@ class DishOption implements Translatable
     }
 
     /**
+     * @return mixed
+     */
+    public function getPriceLocalized()
+    {
+        return str_replace('.', ',', $this->price);
+    }
+
+    /**
      * Set name
      *
      * @param string $name
