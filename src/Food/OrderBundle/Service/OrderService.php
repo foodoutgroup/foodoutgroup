@@ -5,6 +5,7 @@ namespace Food\OrderBundle\Service;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\QueryBuilder;
 use Food\CartBundle\Service\CartService;
+use Food\DishesBundle\Entity\Dish;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
@@ -1807,14 +1808,21 @@ class OrderService extends ContainerAware
         $alcoholTotalLine = 0;
         foreach ($order->getDetails() as $detail)
         {
-            $cats = array();
-            $data = $detail->getDishId();
-            if (!empty($data)) {
-                $cats = $detail->getDishId()->getCategories();
+            //$cats = $detail->getDishId()->getCategories();
+
+            //$cats = $this->get
+            $query = "SELECT foodcategory_id FROM `food_category_dish_map` WHERE dish_id = ".$detail->getDishId()->getId();
+            $stmt = $this->container->get('doctrine')->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+            $map = $stmt->fetchAll();
+            $cat = null;
+            if (!empty($map)) {
+                $cat = $this->getEm()->getRepository('FoodDishesBundle:FoodCategory')->find($map[0]['foodcategory_id']);
             }
-            if (!empty($cats)) {
-                $isDrink = $cats[0]->getDrinks();
-                $isAlcohol = $cats[0]->getAlcohol();
+
+            if (!empty($cat)) {
+                $isDrink = $cat->getDrinks();
+                $isAlcohol = $cat->getAlcohol();
                 if ($isAlcohol) {
                     $alcoholTotalLine += $detail->getPrice() * $detail->getQuantity();
                 } elseif ($isDrink) {
