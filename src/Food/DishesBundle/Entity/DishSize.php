@@ -145,6 +145,14 @@ class DishSize
     }
 
     /**
+     * @return mixed
+     */
+    public function getPriceLocalized()
+    {
+        return str_replace('.', ',', $this->price);
+    }
+
+    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt

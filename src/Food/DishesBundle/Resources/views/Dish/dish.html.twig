@@ -11,7 +11,7 @@
             <div class="title">{% trans %}dish.select_size{% endtrans %}</div>
             <div class="clearfix">
                 {% for size in dish.sizes %}
-                    <label class="custom-radio">{{ size.unit.name }}<strong class="price">{{ size.price }} Lt</strong>
+                    <label class="custom-radio">{{ size.unit.name }}<strong class="price">{{ size.priceLocalized }} {{ currency_display }}</strong>
                         <input type="radio" {% if loop.first %}checked{% endif %} value="{{ size.id }}" class="dish-size" name="dish-size">
                     </label>
                 {% endfor %}
@@ -33,14 +33,14 @@
                     {% set optCounter = optCounter+1 %}
 
                     {% if option.singleSelect == true %}
-                        <label class="custom-radio">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ option.price }} Lt</strong>{% endif %}
+                        <label class="custom-radio">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ option.priceLocalized }} {{ currency_display }}</strong>{% endif %}
                             <input type="radio" name="option[{{ option.groupName }}]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
                         </label>
                     {% endif %}
                 {% endfor %}
                 {% for option in dish.options %}
                     {% if option.singleSelect == false %}
-                        <label class="custom-checkbox">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ option.price }} Lt</strong>{% endif %}
+                        <label class="custom-checkbox">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ option.priceLocalized }} {{ currency_display }}</strong>{% endif %}
                             <input type="checkbox" name="options[]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
                         </label>
                     {% endif %}

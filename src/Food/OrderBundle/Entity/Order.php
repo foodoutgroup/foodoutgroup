@@ -966,6 +966,16 @@ class Order
     }
 
     /**
+     * Get total
+     *
+     * @return string
+     */
+    public function getTotalLocalized()
+    {
+        return str_replace('.', ',', $this->total);
+    }
+
+    /**
      * Set delayDuration
      *
      * @param integer $delayDuration

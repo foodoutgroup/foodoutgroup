@@ -12,13 +12,13 @@
                 <div class="type">{{ dish.dishSizeId.unit.name }}</div>
                 <div class="clearfix pad">
                     <div class="count">{{ dish.quantity }} vnt.</div>
-                    <div class="sum">x {{ dish.dishSizeId.price }} {{ currency_display }}</div>
+                    <div class="sum">x {{ dish.dishSizeId.priceLocalized }} {{ currency_display }}</div>
                 </div>
                 {% if dish.options|length > 0 %}
                     {% for option in dish.options %}
                         <div class="clearfix">
                             <div class="extra" title="{{ option.dishOptionId.name }}">{{ option.dishOptionId.name }}</div>
-                            <div class="extra sum">{{ option.dishOptionId.price }} {{ currency_display }}</div>
+                            <div class="extra sum">{{ option.dishOptionId.priceLocalized }} {{ currency_display }}</div>
                         </div>
                     {% endfor %}
                 {% endif %}
@@ -27,7 +27,7 @@
         <div class="check-bottom">
             <div class="total-sum clearfix">
                 <div class="fl">{% trans %}cart.block.total_cart{% endtrans %}:</div>
-                <div class="fr">{{ total_cart }} {{ currency_display }}</div>
+                <div class="fr">{{ total_cart|replace({'.': ','}) }} {{ currency_display }}</div>
             </div>
             {% if hide_delivery == 0 %}
                 <div class="delivery-price clearfix">
@@ -36,7 +36,7 @@
                 </div>
                 <div class="total-sum clearfix">
                     <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
-                    <div class="fr">{{ total_with_delivery }} {{ currency_display }}</div>
+                    <div class="fr">{{ total_with_delivery|replace({'.': ','}) }} {{ currency_display }}</div>
                 </div>
             {% endif %}
         </div>
