@@ -2,6 +2,25 @@ food_api_homepage:
     pattern:  /
     defaults: { _controller: FoodApiBundle:Default:index }
 
+
+#Restaurant routings
+food_api_restaurants:
+    pattern: /restaurants
+    defaults: { _controller: FoodApiBundle:Restaurants:getRestaurants }
+    methods: [GET]
+
+food_api_restaurants_filtered:
+    pattern: /restaurants/filters
+    defaults: { _controller: FoodApiBundle:Restaurants:getRestaurantsFiltered }
+    methods: [GET]
+
+food_api_restaurants_get:
+    pattern: /restaurants/{id}
+    defaults: { _controller: FFoodApiBundle:Restaurants:getRestaurant}
+    methods: [GET]
+
+
+# Orders Routings :)
 food_api_orders:
     pattern: /orders
     defaults: { _controller: FoodApiBundle:Orders:getOrders}
