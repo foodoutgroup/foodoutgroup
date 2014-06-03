@@ -1807,7 +1807,11 @@ class OrderService extends ContainerAware
         $alcoholTotalLine = 0;
         foreach ($order->getDetails() as $detail)
         {
-            $cats = $detail->getDishId()->getCategories();
+            $cats = array();
+            $data = $detail->getDishId();
+            if (!empty($data)) {
+                $cats = $detail->getDishId()->getCategories();
+            }
             if (!empty($cats)) {
                 $isDrink = $cats[0]->getDrinks();
                 $isAlcohol = $cats[0]->getAlcohol();
@@ -1821,6 +1825,9 @@ class OrderService extends ContainerAware
                         $foodTotalLine += $dtOption->getPrice() * $dtOption->getQuantity();
                     }
                 }
+            } else {
+                $isDrink = false;
+                $isAlcohol = false;
             }
         }
         $driver = $order->getDriver();
