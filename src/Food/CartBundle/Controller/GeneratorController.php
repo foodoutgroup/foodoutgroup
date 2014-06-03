@@ -25,7 +25,7 @@ class GeneratorController extends Controller
             )
         );
         foreach ($oids as $oid) {
-            $ois->generateCsvById($oid);
+            $ois->generateCsv($oid);
         }
         return new Response(sizeof($oids));
     }
