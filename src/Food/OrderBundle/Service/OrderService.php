@@ -1838,8 +1838,8 @@ class OrderService extends ContainerAware
             $orderDetails[] = array(
                 $order->getId(),
                 $order->getOrderDate()->format("Y-m-d H:i:s"),
-                $order->getPlace()->getName(),
-                $order->getPlacePoint()->getAddress(),
+                $order->getPlaceName(),
+                $order->getPlacePointAddress(),
                 $driverRow,
                 self::$deliveryTrans[$order->getDeliveryType()],
                 $addRow,
@@ -1853,8 +1853,8 @@ class OrderService extends ContainerAware
             $orderDetails[] = array(
                 $order->getId(),
                 $order->getOrderDate()->format("Y-m-d H:i:s"),
-                $order->getPlace()->getName(),
-                $order->getPlacePoint()->getAddress(),
+                $order->getPlaceName(),
+                $order->getPlacePointAddress(),
                 $driverRow,
                 self::$deliveryTrans[$order->getDeliveryType()],
                 $addRow,
@@ -1869,8 +1869,8 @@ class OrderService extends ContainerAware
             $orderDetails[] = array(
                 $order->getId(),
                 $order->getOrderDate()->format("Y-m-d H:i:s"),
-                $order->getPlace()->getName(),
-                $order->getPlacePoint()->getAddress(),
+                $order->getPlaceName(),
+                $order->getPlacePointAddress(),
                 $driverRow,
                 self::$deliveryTrans[$order->getDeliveryType()],
                 $addRow,
@@ -1885,8 +1885,8 @@ class OrderService extends ContainerAware
             $orderDetails[] = array(
                 $order->getId(),
                 $order->getOrderDate()->format("Y-m-d H:i:s"),
-                $order->getPlace()->getName(),
-                $order->getPlacePoint()->getAddress(),
+                $order->getPlaceName(),
+                $order->getPlacePointAddress(),
                 $driverRow,
                 self::$deliveryTrans[$order->getDeliveryType()],
                 $addRow,
