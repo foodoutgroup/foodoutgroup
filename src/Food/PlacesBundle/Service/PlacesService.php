@@ -179,4 +179,29 @@ class PlacesService extends ContainerAware {
 
         return $rating;
     }
+
+    public function placesPlacePointsWorkInformation($places)
+    {
+        $sortArr = array();
+        foreach ($places as &$place) {
+            $place['is_work'] = 9;
+            if ($place['pp_count'] == 1) {
+                $place['is_work'] = ($this->container->get('food.order')->isTodayWork($place['point']) ? 1:9);
+            } else {
+                if ($this->container->get('food.order')->isTodayWorkDayForAll($place['place'])) {
+                    $place['is_work'] = 1;
+                } else {
+                    if ($this->container->get('food.order')->isTodayNoOneWantsToWork($place['place'])) {
+                        $place['is_work'] = 9;
+                    } else {
+                        $place['is_work'] = 2;
+                    }
+                }
+            }
+            $sortArr[] = $place['is_work'];
+        }
+
+        array_multisort($sortArr, SORT_NUMERIC, SORT_ASC, $places);
+        return $places;
+    }
 }

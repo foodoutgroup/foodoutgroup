@@ -53,6 +53,8 @@ class DefaultController extends Controller
             $this->get('food.googlegis')->getLocationFromSession()
         );
         $this->get('food.places')->saveRelationPlaceToPoint($places);
+        $places = $this->get('food.places')->placesPlacePointsWorkInformation($places);
+
 
 
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
