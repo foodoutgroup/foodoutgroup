@@ -56,7 +56,7 @@
       </trans-unit>
       <trans-unit id="acd4bfe53bef0a8ccb990ef6be9f0e38" resname="places.menu">
         <source>places.menu</source>
-        <target>Meniu</target>
+        <target>Valgiaraštis</target>
       </trans-unit>
       <trans-unit id="1b039906355efdc4c9eb48ca625c993c" resname="places.reviews">
         <source>places.reviews</source>
@@ -86,10 +86,10 @@
         <source>places.add_review</source>
         <target>Pridėk atsiliepimą</target>
       </trans-unit>
-        <trans-unit id="places.dishes_title" resname="places.dishes_title">
-            <source>places.dishes_title</source>
-            <target>Meniu</target>
-        </trans-unit>
+      <trans-unit id="places.dishes_title" resname="places.dishes_title">
+        <source>places.dishes_title</source>
+        <target>Valgiaraštis</target>
+      </trans-unit>
       <trans-unit id="488219962375251b4c263e1bf17ecee5" resname="places.about_place">
         <source>places.about_place</source>
         <target>Apie restoraną</target>

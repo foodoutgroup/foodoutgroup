@@ -8,7 +8,7 @@ imports:
 parameters:
     available_locales: [lt, en, ru]
     available_locales_routing: lt | en | ru
-    available_cities: ["Vilnius"]
+    available_cities: ["Vilnius","Kaunas"]
     time_zone: "Europe/Vilnius"
     sms.available_providers: [food.infobip]
     sms.sender: "Foodout.lt"
@@ -23,6 +23,9 @@ parameters:
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
     order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt]
+    order.city_coordinators:
+        vilnius: []
+        kaunas: [renata@foodout.lt]
     order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
@@ -82,6 +85,7 @@ twig:
         locale:       "%locale%"
         page_title:   "%title%"
         currency_display: "%currency_display%"
+        currency_iso: "%currency_iso%"
         vat_size: "%vat%"
         dish_service: "@food.dishes"
         order_service: "@food.order"
@@ -179,6 +183,13 @@ services:
     class: Twig_Extensions_Extension_Intl
     tags:
         - { name: twig.extension }
+
+  kernel.listener.command_dispatch:
+      class: Food\AppBundle\EventListener\ConsoleExceptionListener
+      arguments:
+          logger: "@logger"
+      tags:
+          - { name: kernel.event_listener, event: console.exception }
 
 sonata_doctrine_orm_admin:
     templates:

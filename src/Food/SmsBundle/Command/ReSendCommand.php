@@ -29,15 +29,18 @@ class ReSendCommand extends ContainerAwareCommand
         $messagingService = $this->getContainer()->get('food.messages');
         $messagingProviders = $this->getContainer()->getParameter('sms.available_providers');
 
-        // TODO https://basecamp.com/2470154/projects/4420182-skanu-lt-gamyba/todos/72720237-antrinio
         if (count($messagingProviders) < 1) {
-            $output->writeln('<error>No messaging providers configured. Please check Your configuration!</error>');
-            return;
+            $errMessage = 'No messaging providers configured. Please check Your configuration!';
+            $output->writeln('<error>'.$errMessage.'</error>');
+
+            throw new \Exception($errMessage);
         }
         if (count($messagingProviders) > 1) {
-            $output->writeln('<error>Sorry, at the moment we dont support more than one provider!</error>');
+            $errMessage = 'Sorry, at the moment we dont support more than one provider!';
+            $output->writeln('<error>'.$errMessage.'</error>');
             $output->writeln('Available provider: '.var_export($messagingProviders, true));
-            return;
+
+            throw new \Exception($errMessage);
         }
 
         // OMG kaip negrazu, bet cia laikinai, kol tik viena provideri turim
@@ -67,11 +70,15 @@ class ReSendCommand extends ContainerAwareCommand
 
             $output->writeln(sprintf('<info>%d messages sent</info>', $count));
         } catch (\InvalidArgumentException $e) {
-                $output->writeln('<error>Sorry, lazy programmer left a bug :(</error>');
-                $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
+            $output->writeln('<error>Sorry, lazy programmer left a bug :(</error>');
+            $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
+
+            throw $e;
         } catch (\Exception $e) {
             $output->writeln('<error>Mayday mayday, an error knocked the process down.</error>');
             $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
+
+            throw $e;
         }
     }
 }
