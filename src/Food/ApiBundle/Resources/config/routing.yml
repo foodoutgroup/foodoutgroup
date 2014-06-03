@@ -1,0 +1,28 @@
+food_api_homepage:
+    pattern:  /
+    defaults: { _controller: FoodApiBundle:Default:index }
+
+food_api_orders:
+    pattern: /orders
+    defaults: { _controller: FoodApiBundle:Orders:getOrders}
+    methods: [GET]
+
+food_api_order_create:
+    pattern: /orders
+    defaults: { _controller: FoodApiBundle:Orders:createOrder}
+    methods: [POST]
+
+food_api_order_details:
+    pattern: /orders/{id}
+    defaults: { _controller: FoodApiBundle:Orders:getOrderDetails }
+    methods: [GET]
+
+food_api_order_confirm:
+    pattern: /orders/{id}
+    defaults: { _controller: FoodApiBundle:Orders:confirmOrder }
+    methods: [POST]
+
+food_api_order_status:
+    pattern: /orders/{id}/status
+    defaults: { _controller: FoodApiBundle:Orders:getOrderStatus}
+    methods: [GET]
