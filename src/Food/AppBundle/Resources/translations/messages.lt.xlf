@@ -166,15 +166,15 @@
         <source>general.sms.user.order_accepted</source>
         <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista turetumete gauti per delivery_time! Jei turite dar klausimu susisiekite telefonu +restourant_phone!</target>
       </trans-unit>
-      <trans-unit id="general.sms.user.order_accepted_pickup" resname="general.sms.user.order_accepted_pickup">
+      <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
         <source>general.sms.user.order_accepted_pickup</source>
         <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista galesite atsiimti po delivery_time! Jei turite dar klausimu susisiekite telefonu +restourant_phone!</target>
       </trans-unit>
-      <trans-unit id="general.sms.client.restourant_cancel" resname="general.sms.client.restourant_cancel">
+      <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
         <source>general.sms.client.restourant_cancel</source>
         <target>Atsiprasome, restoranas atsauke Jusu uzsakyma.</target>
       </trans-unit>
-      <trans-unit id="general.sms.client.restourant_cancel_banklink" resname="general.sms.client.restourant_cancel_banklink">
+      <trans-unit id="30dc3f60ca025a053ed3728a342c566a" resname="general.sms.client.restourant_cancel_banklink">
         <source>general.sms.client.restourant_cancel_banklink</source>
         <target>Atsiprasome, restoranas atsauke Jusu uzsakyma. Pinigai bus grazinti i Jusu saskaita</target>
       </trans-unit>
@@ -182,7 +182,7 @@
         <source>general.email.new_order</source>
         <target>naujas užsakymas</target>
       </trans-unit>
-      <trans-unit id="general.email.accounting_yesterday_report" resname="general.email.accounting_yesterday_report">
+      <trans-unit id="77c7e784b0de17ca35cb5e6e9b59b207" resname="general.email.accounting_yesterday_report">
         <source>general.email.accounting_yesterday_report</source>
         <target>vakaryksciu uzsakymu ataskaita</target>
       </trans-unit>
@@ -198,7 +198,7 @@
         <source>mobile.order_finish</source>
         <target>Pagamintas</target>
       </trans-unit>
-      <trans-unit id="mobile.order_delivered" resname="mobile.order_delivered">
+      <trans-unit id="2b94e2d1c25ddac053ea4bd3eaadd41f" resname="mobile.order_delivered">
         <source>mobile.order_delivered</source>
         <target>Pristačiau užskymą</target>
       </trans-unit>
@@ -230,7 +230,7 @@
         <source>mobile.place_finish_message</source>
         <target>Restorano darbas baigtas. Toliau logistika.</target>
       </trans-unit>
-      <trans-unit id="mobile.place_finish_message_self_delivery" resname="mobile.place_finish_message_self_delivery">
+      <trans-unit id="3c3315f51972d750f464ae815babdff1" resname="mobile.place_finish_message_self_delivery">
         <source>mobile.place_finish_message_self_delivery</source>
         <target>Gamyba baigta. Toliau pristatymas.</target>
       </trans-unit>
@@ -330,15 +330,15 @@
         <source>general.sms.driver_assigned_order</source>
         <target>Priskirtas naujas uzsakymas: </target>
       </trans-unit>
-      <trans-unit id="general.sms.user_order_delayed" resname="general.sms.user_order_delayed">
+      <trans-unit id="28ecbd185a859ae613493c195207e5e0" resname="general.sms.user_order_delayed">
         <source>general.sms.user_order_delayed</source>
         <target>Atsiprasome, taciau del didelio uzsakymu srauto Jusu uzsakymas atidedamas delay_time min ir bus pristatytas po delivery_min min. Jei nesutinkate laukti - susisiekite +restourant_phone</target>
       </trans-unit>
-      <trans-unit id="general.sms.user_order_delayed_pickup" resname="general.sms.user_order_delayed_pickup">
+      <trans-unit id="e7bd53e2c7fa9e93ede0c7b307426c5a" resname="general.sms.user_order_delayed_pickup">
         <source>general.sms.user_order_delayed_pickup</source>
         <target>Atsiprasome, taciau del didelio uzsakymu srauto Jusu uzsakymas atidedamas delay_time min ir bus paruostas po delivery_min min. Jei nesutinkate laukti - susisiekite +restourant_phone</target>
       </trans-unit>
-      <trans-unit id="general.email.user_delayed_subject" resname="general.email.user_delayed_subject">
+      <trans-unit id="8036a67ebc0bbfebb10242dfaabceaf3" resname="general.email.user_delayed_subject">
         <source>general.email.user_delayed_subject</source>
         <target>pasikeites pristatymo laikas</target>
       </trans-unit>
@@ -362,7 +362,7 @@
         <source>mobile.place_point_address</source>
         <target>Paimti iš</target>
       </trans-unit>
-      <trans-unit id="mobile.restourant_place_point_address" resname="mobile.restourant_place_point_address">
+      <trans-unit id="34e780a20dd8982964b54edd9425ffe3" resname="mobile.restourant_place_point_address">
         <source>mobile.restourant_place_point_address</source>
         <target>Gamybos taškas</target>
       </trans-unit>
@@ -490,19 +490,19 @@
         <source>mobile.invoice.car_number</source>
         <target>Automobilio Nr.</target>
       </trans-unit>
-      <trans-unit id="mobile.invoice.sum_no_vat" resname="mobile.invoice.sum_no_vat">
+      <trans-unit id="97f1b49f5db8eafedd659da228102ab6" resname="mobile.invoice.sum_no_vat">
         <source>mobile.invoice.sum_no_vat</source>
         <target>Suma be PVM</target>
       </trans-unit>
-      <trans-unit id="mobile.invoice.delivery_no_vat" resname="mobile.invoice.delivery_no_vat">
+      <trans-unit id="7c5b0e5b63f5243ec75be8eeb31415e5" resname="mobile.invoice.delivery_no_vat">
         <source>mobile.invoice.delivery_no_vat</source>
         <target>Pristatymas be PVM</target>
       </trans-unit>
-      <trans-unit id="mobile.invoice.vat" resname="mobile.invoice.vat">
+      <trans-unit id="ad7ab425c1bb8b6ff7465c9904c4ab7e" resname="mobile.invoice.vat">
         <source>mobile.invoice.vat</source>
         <target>PVM</target>
       </trans-unit>
-      <trans-unit id="mobile.invoice.total_with_vat" resname="mobile.invoice.total_with_vat">
+      <trans-unit id="3e8dbd3b6c212811e68a1e118164a660" resname="mobile.invoice.total_with_vat">
         <source>mobile.invoice.total_with_vat</source>
         <target>Viso</target>
       </trans-unit>
@@ -510,109 +510,129 @@
         <source>mobile.deliver_time</source>
         <target>Pristatyti iki</target>
       </trans-unit>
-      <trans-unit id="general.user.firsname.not_blank" resname="general.user.firsname.not_blank">
+      <trans-unit id="4fb8db91bc66edcad1edbf26d918235c" resname="general.user.firsname.not_blank">
         <source>general.user.firsname.not_blank</source>
         <target>Įveskite savo vardą</target>
       </trans-unit>
-      <trans-unit id="general.user.firsname.short" resname="general.user.firsname.short">
+      <trans-unit id="c2d3b4fc6b96d87d230d72b1492c354b" resname="general.user.firsname.short">
         <source>general.user.firsname.short</source>
         <target>Vardas negali būti trumpesnis nei 2 simboliai</target>
       </trans-unit>
-      <trans-unit id="general.user.firsname.long" resname="general.user.firsname.long">
+      <trans-unit id="c55240db34347d177c3aec0b93b73389" resname="general.user.firsname.long">
         <source>general.user.firsname.long</source>
         <target>Vardas negali būti ilgesnis nei 255 simboliai</target>
       </trans-unit>
-      <trans-unit id="general.user.lastname.not_blank" resname="general.user.lastname.not_blank">
+      <trans-unit id="eac01114b0976e68239dfd36aeacbed0" resname="general.user.lastname.not_blank">
         <source>general.user.lastname.not_blank</source>
         <target>Įveskite savo pavardę</target>
       </trans-unit>
-      <trans-unit id="general.user.lastname.short" resname="general.user.lastname.short">
+      <trans-unit id="414f36b3933132261c070fa1179087cb" resname="general.user.lastname.short">
         <source>general.user.lastname.short</source>
         <target>Pavardė negali būti trumpesnė nei 2 simboliai</target>
       </trans-unit>
-      <trans-unit id="general.user.lastname.long" resname="general.user.lastname.long">
+      <trans-unit id="efe502b0e090904235afb3f5afb3ffc0" resname="general.user.lastname.long">
         <source>general.user.lastname.long</source>
         <target>Pavardė negali būti ilgesnė nei 255 simboliai</target>
       </trans-unit>
-      <trans-unit id="general.user.email.not_blank" resname="general.user.email.not_blank">
+      <trans-unit id="c1d379b8878916928a9c4c935daa3e14" resname="general.user.email.not_blank">
         <source>general.user.email.not_blank</source>
         <target>Įveskite savo el.pašto adresą</target>
       </trans-unit>
-      <trans-unit id="general.order" resname="general.order">
+      <trans-unit id="36e5d23120269705d139f18a4ee96f4f" resname="general.order">
         <source>general.order</source>
         <target>Užsakymas</target>
       </trans-unit>
-      <trans-unit id="general.order.delivered" resname="general.order.delivered">
+      <trans-unit id="c5b6d9efee2da625ca3f97b621bbf2db" resname="general.order.delivered">
         <source>general.order.delivered</source>
         <target>Pristatyti</target>
       </trans-unit>
-      <trans-unit id="general.order.on_delivery" resname="general.order.on_delivery">
+      <trans-unit id="b8d0b782b8f556f1c6340b3e3eb2888e" resname="general.order.on_delivery">
         <source>general.order.on_delivery</source>
         <target>Pristatomi</target>
       </trans-unit>
-      <trans-unit id="general.order.in_progress" resname="general.order.in_progress">
+      <trans-unit id="61253403522f312c0970b8f9026d1b45" resname="general.order.in_progress">
         <source>general.order.in_progress</source>
         <target>Vykdomas</target>
       </trans-unit>
-      <trans-unit id="general.order.making" resname="general.order.making">
+      <trans-unit id="762eed86fc40be6111718945639f0673" resname="general.order.making">
         <source>general.order.making</source>
         <target>Gaminami</target>
       </trans-unit>
-      <trans-unit id="general.order.dishes" resname="general.order.dishes">
+      <trans-unit id="25d620dbbe37b0506d40fea6e6fdb8e0" resname="general.order.dishes">
         <source>general.order.dishes</source>
         <target>patiekalai</target>
       </trans-unit>
-      <trans-unit id="general.for" resname="general.for">
+      <trans-unit id="8540a3f4a2e4a8d25fb8b518ea07d6c2" resname="general.for">
         <source>general.for</source>
         <target>už</target>
       </trans-unit>
-      <trans-unit id="general.tp" resname="general.to">
+      <trans-unit id="59fb7baae09f0848dc2cc994412415c8" resname="general.to">
         <source>general.to</source>
         <target>į</target>
       </trans-unit>
-      <trans-unit id="general.greating" resname="general.greating">
+      <trans-unit id="general.from" resname="general.from">
+        <source>general.from</source>
+        <target>iš</target>
+      </trans-unit>
+      <trans-unit id="general.will_pickup_from" resname="general.will_pickup_from">
+        <source>general.will_pickup_from</source>
+        <target>, atsiimsite iš</target>
+      </trans-unit>
+      <trans-unit id="general.picked_up" resname="general.picked_up">
+        <source>general.picked_up</source>
+        <target>Atsiimti</target>
+      </trans-unit>
+      <trans-unit id="00b693a37152f5f97b20851212b53429" resname="general.greating">
         <source>general.greating</source>
         <target>Sveiki</target>
       </trans-unit>
-      <trans-unit id="general.profile.user_data" resname="general.profile.user_data">
+      <trans-unit id="28a7c7f756114029e6a1ebe7488ca7b4" resname="general.profile.user_data">
         <source>general.profile.user_data</source>
         <target>Vartotojo duomenys</target>
       </trans-unit>
-      <trans-unit id="general.profile.cart_history" resname="general.profile.cart_history">
+      <trans-unit id="5cf69119a26982c1d484cbc8476067e3" resname="general.profile.cart_history">
         <source>general.profile.cart_history</source>
         <target>Užsakymų istorija</target>
       </trans-unit>
-      <trans-unit id="general.profile.logout" resname="general.profile.logout">
+      <trans-unit id="4c0c2aa6ad499bfdd3f6e8edffc6336c" resname="general.profile.logout">
         <source>general.profile.logout</source>
         <target>Atsijungti</target>
       </trans-unit>
-      <trans-unit id="general.profile.button_save" resname="general.profile.button_save">
+      <trans-unit id="6defb486341307b289948eb8fa05624f" resname="general.profile.button_save">
         <source>general.profile.button_save</source>
         <target>Išsaugoti</target>
       </trans-unit>
-      <trans-unit id="general.profile.home" resname="general.profile.home">
+      <trans-unit id="9274e23fa49ef791a605538ff3996088" resname="general.profile.home">
         <source>general.profile.home</source>
         <target>Pradžia</target>
       </trans-unit>
-      <trans-unit id="general.profile" resname="general.profile">
+      <trans-unit id="e4209a725a5c0427b4f1f87316e85794" resname="general.profile">
         <source>general.profile</source>
         <target>Vartotojo profilis</target>
       </trans-unit>
-      <trans-unit id="general.profile.no_orders" resname="general.profile.no_orders">
+      <trans-unit id="a9bc7e139157e0da93261b03e01ac056" resname="general.profile.no_orders">
         <source>general.profile.no_orders</source>
         <target>Dar nieko neužsisakėte</target>
       </trans-unit>
-      <trans-unit id="general.email.accounting_report.local.card" resname="general.email.accounting_report.local.card">
-          <source>general.email.accounting_report.local.card</source>
-          <target>Kortele, atsiimant</target>
+      <trans-unit id="892229102c7bcdeb4e6dbd72703f707e" resname="general.email.accounting_report.local.card">
+        <source>general.email.accounting_report.local.card</source>
+        <target>Kortele, atsiimant</target>
       </trans-unit>
-      <trans-unit id="general.email.accounting_report.local" resname="general.email.accounting_report.local">
-          <source>general.email.accounting_report.local</source>
-          <target>Grynaisiais</target>
+      <trans-unit id="992360f614ab5f74ccc60fd3b5ff6064" resname="general.email.accounting_report.local">
+        <source>general.email.accounting_report.local</source>
+        <target>Grynaisiais</target>
       </trans-unit>
-      <trans-unit id="general.email.accounting_report.paysera" resname="general.email.accounting_report.paysera">
-          <source>general.email.accounting_report.paysera</source>
-          <target>Internetu</target>
+      <trans-unit id="6ff5d01a17890ac3a904f3340c591192" resname="general.email.accounting_report.paysera">
+        <source>general.email.accounting_report.paysera</source>
+        <target>Internetu</target>
+      </trans-unit>
+      <trans-unit id="2a27b06725260bba699dd331a49827d8" resname="index.title_page_header">
+        <source>index.title_page_header</source>
+        <target><![CDATA[Užsisakykite maistą į<br/> namus ar biurą]]></target>
+      </trans-unit>
+      <trans-unit id="02e3d3477fa84ee89d7c8f812fe8d4b1" resname="index.search_form_qlue">
+        <source>index.search_form_qlue</source>
+        <target>Įveskite savo adresą ir sužinokite, iš kurių restoranų galite užsisakyti</target>
       </trans-unit>
     </body>
   </file>
