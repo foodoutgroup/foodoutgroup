@@ -2080,12 +2080,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "d72e256cdb36b0f8992e5b662ab38cd326673df8"
+                "reference": "454d8eaea22da0ab63908c85f0267470988ed1a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/d72e256cdb36b0f8992e5b662ab38cd326673df8",
-                "reference": "d72e256cdb36b0f8992e5b662ab38cd326673df8",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/454d8eaea22da0ab63908c85f0267470988ed1a0",
+                "reference": "454d8eaea22da0ab63908c85f0267470988ed1a0",
                 "shasum": ""
             },
             "require": {
@@ -2134,7 +2134,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-05-28 09:33:51"
+            "time": "2014-06-04 10:21:44"
         },
         {
             "name": "sonata-project/doctrine-extensions",
@@ -2927,16 +2927,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.3.15",
+            "version": "v2.3.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "424a567d2c1fb918a32f302b5c2bcb67d2661e76"
+                "reference": "069683a14eb361f892c9bdc9d10d4f5dac3c0ee3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/424a567d2c1fb918a32f302b5c2bcb67d2661e76",
-                "reference": "424a567d2c1fb918a32f302b5c2bcb67d2661e76",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/069683a14eb361f892c9bdc9d10d4f5dac3c0ee3",
+                "reference": "069683a14eb361f892c9bdc9d10d4f5dac3c0ee3",
                 "shasum": ""
             },
             "require": {
@@ -3033,7 +3033,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-05-22 17:23:49"
+            "time": "2014-05-31 02:04:21"
         },
         {
             "name": "trsteel/ckeditor-bundle",
@@ -3042,23 +3042,23 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/trsteel88/TrsteelCkeditorBundle.git",
-                "reference": "f2f036e837089d4e891f503ed8f946562321c867"
+                "reference": "837c4f7b1832228dcbe11c8a7d7377db8c1da912"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trsteel88/TrsteelCkeditorBundle/zipball/f2f036e837089d4e891f503ed8f946562321c867",
-                "reference": "f2f036e837089d4e891f503ed8f946562321c867",
+                "url": "https://api.github.com/repos/trsteel88/TrsteelCkeditorBundle/zipball/837c4f7b1832228dcbe11c8a7d7377db8c1da912",
+                "reference": "837c4f7b1832228dcbe11c8a7d7377db8c1da912",
                 "shasum": ""
             },
             "require": {
                 "ezyang/htmlpurifier": "~4.0",
                 "php": ">=5.3.0",
-                "symfony/form": ">=2.1,<2.5-dev",
-                "symfony/framework-bundle": "2.*,<2.5",
+                "symfony/form": ">=2.1,<2.6-dev",
+                "symfony/framework-bundle": "2.*,<2.6",
                 "twig/twig": ">=1.1,<2.0-dev"
             },
             "require-dev": {
-                "symfony/twig-bundle": "2.*,<2.5",
+                "symfony/twig-bundle": "2.*,<2.6",
                 "symfony/yaml": "~2.0"
             },
             "type": "symfony-bundle",
@@ -3088,7 +3088,7 @@
                 "editor",
                 "wysiwyg"
             ],
-            "time": "2014-03-17 23:55:39"
+            "time": "2014-06-04 05:55:53"
         },
         {
             "name": "twig/extensions",

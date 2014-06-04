@@ -248,6 +248,9 @@ class OrderService extends ContainerAware
             $this->generateOrderHash($this->order)
         );
 
+        // Log user IP address
+        $this->order->setUserIp($this->container->get('request')->getClientIp());
+
         return $this->getOrder();
     }
 
@@ -1559,17 +1562,36 @@ class OrderService extends ContainerAware
             self::$status_new,
             self::$status_accepted,
             self::$status_delayed,
-            self::$status_assiged,
             self::$status_forwarded,
-            self::$status_completed,
             self::$status_finished,
+            self::$status_assiged,
+            self::$status_completed,
             self::$status_canceled,
+        );
+    }
+
+    /**
+     * Returns all available payment statuses
+     *
+     * @return array
+     */
+    public static function getPaymentStatuses()
+    {
+        return array
+        (
+            self::$paymentStatusNew,
+            self::$paymentStatusWait,
+            self::$paymentStatusWaitFunds,
+            self::$paymentStatusCanceled,
+            self::$paymentStatusComplete,
+            self::$paymentStatusError,
         );
     }
 
 
     /**
      * @param PlacePoint $placePoint
+     * @param array $errors
      * @todo fix laiku poslinkiai
      */
     private  function workTimeErrors(PlacePoint $placePoint, &$errors)
