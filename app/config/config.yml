@@ -4,6 +4,7 @@ imports:
     - { resource: "@FoodCartBundle/Resources/config/services.yml" }
     - { resource: "@FoodDishesBundle/Resources/config/admin.yml" }
     - { resource: "@FoodSmsBundle/Resources/config/admin.yml" }
+    - { resource: @A2lixTranslationFormBundle/Resources/config/gedmo.xml }
 
 parameters:
     available_locales: [lt, en, ru]
