@@ -2,6 +2,7 @@
 
 namespace Food\AppBundle\Controller;
 
+use Food\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -9,7 +10,40 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('FoodAppBundle:Default:index.html.twig');
+        $formDefaults = array(
+            'city' => '',
+            'address' => '',
+        );
+
+        $user = $this->getUser();
+
+        if ($user instanceof User) {
+            $defaultUserAddress = $user->getDefaultAddress();
+            if (!empty($defaultUserAddress)) {
+                $formDefaults = array(
+                    'city' => $defaultUserAddress->getCity(),
+                    'address' => $defaultUserAddress->getAddress(),
+                );
+            }
+        }
+
+        // Lets check session for last used address and use it
+        $sessionLocation = $this->get('food.googlegis')->getLocationFromSession();
+        if (!empty($sessionLocation)) {
+            if (!empty($sessionLocation['city']) && !empty($sessionLocation['address_orig'])) {
+                $formDefaults = array(
+                    'city' => $sessionLocation['city'],
+                    'address' => $sessionLocation['address_orig'],
+                );
+            }
+        }
+
+        return $this->render(
+            'FoodAppBundle:Default:index.html.twig',
+            array(
+                'formDefaults' => $formDefaults
+            )
+        );
     }
 
     public function footerAction()

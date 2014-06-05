@@ -198,6 +198,13 @@ class Order
      */
     private $delayReason;
 
+    /**
+     * @var string $userIp
+     *
+     * @ORM\Column(name="user_ip", type="string", length=32,  nullable=true)
+     */
+    private $userIp;
+
     public function __toString()
     {
         if ($this->getId()) {
@@ -966,6 +973,16 @@ class Order
     }
 
     /**
+     * Get total
+     *
+     * @return string
+     */
+    public function getTotalLocalized()
+    {
+        return str_replace('.', ',', $this->total);
+    }
+
+    /**
      * Set delayDuration
      *
      * @param integer $delayDuration
@@ -1078,5 +1095,28 @@ class Order
     public function getDelayed()
     {
         return $this->delayed;
+    }
+
+    /**
+     * Set userIp
+     *
+     * @param string $userIp
+     * @return Order
+     */
+    public function setUserIp($userIp)
+    {
+        $this->userIp = $userIp;
+    
+        return $this;
+    }
+
+    /**
+     * Get userIp
+     *
+     * @return string 
+     */
+    public function getUserIp()
+    {
+        return $this->userIp;
     }
 }

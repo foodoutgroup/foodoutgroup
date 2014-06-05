@@ -1,6 +1,7 @@
 <?php
 namespace Food\OrderBundle\Admin;
 
+use Food\OrderBundle\Service\OrderService;
 use Sonata\AdminBundle\Admin\Admin as SonataAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -17,7 +18,7 @@ class OrderAdmin extends SonataAdmin
             $this->datagridValues = array(
                 '_page'       => 1,
                 '_sort_order' => 'DESC',
-                '_sort_by'    => 'order_date'
+                '_sort_by'    => 'order_date',
             );
         }
     }
@@ -25,20 +26,35 @@ class OrderAdmin extends SonataAdmin
     // Fields to be shown on filter forms
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
+        $statusChoices = array();
+        $allOrderStatuses = OrderService::getOrderStatuses();
+        foreach ($allOrderStatuses as $status) {
+            $statusChoices[$status] = $this->trans('admin.dispatcher.order_status.'.$status);
+        }
+
+        $paymentStatusChoices = array();
+        $allPaymentStatuses = OrderService::getPaymentStatuses();
+        foreach ($allPaymentStatuses as $status) {
+            $paymentStatusChoices[$status] = $this->trans('admin.order.payment_status.'.$status);
+        }
+
         $datagridMapper
             ->add('id', null, array('label' => 'admin.order.id'))
             ->add('address_id', null, array('label' => 'admin.order.delivery_address'))
             ->add('place_name', null, array('label' => 'admin.order.place_name_short',))
             ->add('order_date', null, array('label' => 'admin.order.order_date'))
-        // TODO kai prireiks ir issiaiskinsim su sitais tipais. kitu atveju callback tipas :(
-//            ->add(
-//                'order_status',
-//                'doctrine_orm_choice',
-//                array('label' => 'admin.order.order_status_short', 'multiple' => true, 'field_options' => array('choices' => array('a','b','c'))),
-//                'sonata_type_filter_choice',
-//                array('field_type' => 'choice', /*'choices' => array('a','b','c')*/)
-//            )
-//            ->add('paymentStatus', null, array('label' => 'admin.order.payment_status'))
+            ->add('userIp', null, array('label' => 'admin.order.user_ip'))
+            ->add('order_status',null, array('label' => 'admin.order.order_status'), 'choice', array(
+                'choices' => $statusChoices
+            ))
+            ->add('paymentStatus',null, array('label' => 'admin.order.payment_status'), 'choice', array(
+                'choices' => $paymentStatusChoices
+            ))
+            ->add('place_point_self_delivery',null, array('label' => 'admin.order.self_delivery'), 'choice', array(
+                'choices' => array(
+                    '1' => $this->trans('label_type_yes'),
+                )
+            ))
         ;
     }
 
@@ -76,6 +92,7 @@ class OrderAdmin extends SonataAdmin
             ->add('place_point_address', 'string', array('label' => 'admin.order.place_point'))
             ->add('user.contact', null, array('label' => 'admin.order.user'))
             ->add('address_id', null, array('label' => 'admin.order.delivery_address'))
+            ->add('userIp', null, array('label' => 'admin.order.user_ip'))
             ->add('deliveryType', 'string', array('label' => 'admin.order.delivery_type'))
             ->add('details', 'sonata_type_collection',
                 array(

@@ -70,20 +70,20 @@
 
     <div style="background-image: url({{ asset('bundles/foodapp/images/offer-1.jpg') }});" class="site-header special-offer-block">
         <div class="site-block">
-            <h1>Užsisakykite maistą į<br/> namus ar biurą</h1>
+            <h1>{% trans %}index.title_page_header{% endtrans %}</h1>
             <form class="search-food-form"  action="{{ path('food_places_' ~ locale ~ '_main') }}" method="get">
-                <p class="title">Įveskite savo adresą ir sužinokite, iš kurių restoranų galite užsisakyti</p>
+                <p class="title">{% trans %}index.search_form_qlue{% endtrans %}</p>
                 <div class="clearfix">
-
+                    {# TODO remove city hardcode, damn it... #}
                     <select id="index_city">
-                        <option value="" disabled selected>{% trans %}index.city{% endtrans %}</option>
-                        <option value="Vilnius">Vilnius</option>
-                        <option value="Kaunas">Kaunas</option>
+                        <option value="" disabled {% if formDefaults.city == '' %}selected{% endif %}>{% trans %}index.city{% endtrans %}</option>
+                        <option value="Vilnius" {% if formDefaults.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
+                        <option value="Kaunas" {% if formDefaults.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
                     </select>
 
                     {# <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}"  autocomplete="off" > #}
-                    <input type="text" id="index_address" placeholder="{% trans %}index.street{% endtrans %}" class="input-street" autocomplete="off" >
-                    <input type="submit" id="index_submit" value="{% trans %}index.findfood{% endtrans %}">
+                    <input type="text" id="index_address" placeholder="{% trans %}index.street{% endtrans %}" class="input-street" autocomplete="off" value="{{ formDefaults.address }}" />
+                    <input type="submit" id="index_submit" value="{% trans %}index.findfood{% endtrans %}" />
                 </div>
             </form>
         </div>

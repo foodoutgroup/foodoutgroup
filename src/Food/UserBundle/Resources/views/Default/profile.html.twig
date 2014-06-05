@@ -89,8 +89,28 @@
                                     <div class="history-item-middle">
                                         <div class="number-date"><span>{% trans %}general.order{% endtrans %} #{{ order.id }}</span><span>{{ order.orderDate|date("Y m d, H:i") }}</span></div>
                                         <div class="desc">
-                                            {% if order.orderStatus == 'completed' %}{% trans %}general.order.delivered{% endtrans %}{% elseif order.orderStatus == 'assigned' %}{% trans %}general.order.on_delivery{% endtrans %}{% else %}{% trans %}general.order.making{% endtrans %}{% endif %}
-                                            <strong>{{ order.details.count }} {% trans %}general.order.dishes{% endtrans %}</strong> {% trans %}general.for{% endtrans %} {{ order.total }} {{ currency_display }} {% trans %}general.to{% endtrans %} {{ order.addressId.address }}.
+                                            {% if order.orderStatus == 'completed' %}
+                                                {% if order.deliveryType == 'deliver' %}
+                                                    {% trans %}general.order.delivered{% endtrans %}
+                                                {% else %}
+                                                    {% trans %}general.picked_up{% endtrans %}
+                                                {% endif %}
+                                            {% elseif order.orderStatus == 'assigned' %}
+                                                {% trans %}general.order.on_delivery{% endtrans %}
+                                            {% else %}
+                                                {% trans %}general.order.making{% endtrans %}
+                                            {% endif %}
+                                            <strong>{{ order.details.count }} {% trans %}general.order.dishes{% endtrans %}</strong> {% trans %}general.for{% endtrans %} {{ order.total }} {{ currency_display }}
+                                            {% if order.deliveryType == 'deliver' %}
+                                                {% trans %}general.to{% endtrans %} {{ order.addressId.address }}.
+                                            {% else %}
+                                                {% if order.orderStatus == 'completed' %}
+                                                    {% trans %}general.from{% endtrans %}
+                                                {% else %}
+                                                    {% trans %}general.will_pickup_from{% endtrans %}
+                                                {% endif %}
+                                                {{ order.placePointAddress }}.
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="history-item-righter">

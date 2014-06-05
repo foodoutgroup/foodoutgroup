@@ -5,6 +5,7 @@ namespace Food\OrderBundle\Service;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\QueryBuilder;
 use Food\CartBundle\Service\CartService;
+use Food\DishesBundle\Entity\Dish;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
@@ -246,6 +247,9 @@ class OrderService extends ContainerAware
         $this->order->setOrderHash(
             $this->generateOrderHash($this->order)
         );
+
+        // Log user IP address
+        $this->order->setUserIp($this->container->get('request')->getClientIp());
 
         return $this->getOrder();
     }
@@ -1558,17 +1562,36 @@ class OrderService extends ContainerAware
             self::$status_new,
             self::$status_accepted,
             self::$status_delayed,
-            self::$status_assiged,
             self::$status_forwarded,
-            self::$status_completed,
             self::$status_finished,
+            self::$status_assiged,
+            self::$status_completed,
             self::$status_canceled,
+        );
+    }
+
+    /**
+     * Returns all available payment statuses
+     *
+     * @return array
+     */
+    public static function getPaymentStatuses()
+    {
+        return array
+        (
+            self::$paymentStatusNew,
+            self::$paymentStatusWait,
+            self::$paymentStatusWaitFunds,
+            self::$paymentStatusCanceled,
+            self::$paymentStatusComplete,
+            self::$paymentStatusError,
         );
     }
 
 
     /**
      * @param PlacePoint $placePoint
+     * @param array $errors
      * @todo fix laiku poslinkiai
      */
     private  function workTimeErrors(PlacePoint $placePoint, &$errors)
@@ -1792,19 +1815,36 @@ class OrderService extends ContainerAware
         }
     }
 
-    public function generateCsv($orderId)
+
+    public function generateCsvById($orderId)
     {
         $order = $this->getOrderById($orderId);
+        $this->generateCsv($order);
+    }
+
+    public function generateCsv(Order $order)
+    {
         $orderDetails = array();
         $foodTotalLine = 0;
         $drinksTotalLine = 0;
         $alcoholTotalLine = 0;
         foreach ($order->getDetails() as $detail)
         {
-            $cats = $detail->getDishId()->getCategories();
-            if (!empty($cats)) {
-                $isDrink = $cats[0]->getDrinks();
-                $isAlcohol = $cats[0]->getAlcohol();
+            //$cats = $detail->getDishId()->getCategories();
+
+            //$cats = $this->get
+            $query = "SELECT foodcategory_id FROM `food_category_dish_map` WHERE dish_id = ".$detail->getDishId()->getId();
+            $stmt = $this->container->get('doctrine')->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+            $map = $stmt->fetchAll();
+            $cat = null;
+            if (!empty($map)) {
+                $cat = $this->getEm()->getRepository('FoodDishesBundle:FoodCategory')->find($map[0]['foodcategory_id']);
+            }
+
+            if (!empty($cat)) {
+                $isDrink = $cat->getDrinks();
+                $isAlcohol = $cat->getAlcohol();
                 if ($isAlcohol) {
                     $alcoholTotalLine += $detail->getPrice() * $detail->getQuantity();
                 } elseif ($isDrink) {
@@ -1815,6 +1855,9 @@ class OrderService extends ContainerAware
                         $foodTotalLine += $dtOption->getPrice() * $dtOption->getQuantity();
                     }
                 }
+            } else {
+                $isDrink = false;
+                $isAlcohol = false;
             }
         }
         $driver = $order->getDriver();
@@ -1831,8 +1874,9 @@ class OrderService extends ContainerAware
         if ($foodTotalLine > 0) {
             $orderDetails[] = array(
                 $order->getId(),
-                $order->getPlace()->getName(),
-                $order->getPlacePoint()->getAddress(),
+                $order->getOrderDate()->format("Y-m-d H:i:s"),
+                $order->getPlaceName(),
+                $order->getPlacePointAddress(),
                 $driverRow,
                 self::$deliveryTrans[$order->getDeliveryType()],
                 $addRow,
@@ -1845,8 +1889,9 @@ class OrderService extends ContainerAware
         if ($drinksTotalLine > 0) {
             $orderDetails[] = array(
                 $order->getId(),
-                $order->getPlace()->getName(),
-                $order->getPlacePoint()->getAddress(),
+                $order->getOrderDate()->format("Y-m-d H:i:s"),
+                $order->getPlaceName(),
+                $order->getPlacePointAddress(),
                 $driverRow,
                 self::$deliveryTrans[$order->getDeliveryType()],
                 $addRow,
@@ -1860,8 +1905,9 @@ class OrderService extends ContainerAware
         if ($alcoholTotalLine > 0) {
             $orderDetails[] = array(
                 $order->getId(),
-                $order->getPlace()->getName(),
-                $order->getPlacePoint()->getAddress(),
+                $order->getOrderDate()->format("Y-m-d H:i:s"),
+                $order->getPlaceName(),
+                $order->getPlacePointAddress(),
                 $driverRow,
                 self::$deliveryTrans[$order->getDeliveryType()],
                 $addRow,
@@ -1875,8 +1921,9 @@ class OrderService extends ContainerAware
         if($order->getDeliveryType() == self::$deliveryDeliver) {
             $orderDetails[] = array(
                 $order->getId(),
-                $order->getPlace()->getName(),
-                $order->getPlacePoint()->getAddress(),
+                $order->getOrderDate()->format("Y-m-d H:i:s"),
+                $order->getPlaceName(),
+                $order->getPlacePointAddress(),
                 $driverRow,
                 self::$deliveryTrans[$order->getDeliveryType()],
                 $addRow,
