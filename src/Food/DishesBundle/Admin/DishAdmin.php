@@ -3,6 +3,7 @@ namespace Food\DishesBundle\Admin;
 
 use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Admin\Admin as FoodAdmin;
+use Food\AppBundle\Filter\PlaceFilter;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -21,13 +22,26 @@ class DishAdmin extends FoodAdmin
         '_sort_by' => 'id' // name of the ordered field (default = the model id field, if any)
     );
 
+    /**
+     * @return string
+     */
+    public function getEditTemplate()
+    {
+        return 'FoodDishesBundle:Dish:base_edit.html.twig';
+    }
+
+
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
+        // Override edit template by our magic one with ajax
+        $this->setTemplate('edit', 'FoodDishesBundle:Dish:admin_dish_edit.html.twig');
+
         /**
          * @var EntityManager $em
          */
         $em = $this->modelManager->getEntityManager('Food\DishesBundle\Entity\FoodCategory');
+        
         /**
          * @var QueryBuilder
          */
@@ -53,6 +67,9 @@ class DishAdmin extends FoodAdmin
                     'name' => array(
                         'label' => 'label.name'
                     ),
+                    'description' => array(
+                        'label' => 'label.description'
+                    ),
                 )
             ));
 
@@ -75,8 +92,14 @@ class DishAdmin extends FoodAdmin
                 ->setParameter('place', $userPlaceId);
         }
 
+        $options = array('required' => false, 'label' => 'admin.dish.photo');
+        if (($pl = $this->getSubject()) && $pl->getPhoto()) {
+            $options['help'] = '<img src="/' . $pl->getWebPathThumb('type1') . '" />';
+        }
+
         $formMapper
             ->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
+            ->add('file', 'file', $options)
             ->add('sizes', 'sonata_type_collection', array(
                     'required' => false,
                     'by_reference' => false,
@@ -87,8 +110,8 @@ class DishAdmin extends FoodAdmin
                 )
             )
             ->add('options', null, array('query_builder' => $optionsQuery,'expanded' => true, 'multiple' => true, 'required' => false))
-            ->add('price')
             ->add('recomended', 'checkbox', array('label' => 'admin.dish.recomended', 'required' => false,))
+            ->add('active', 'checkbox', array('label' => 'admin.dish.active', 'required' => false,))
         ;
     }
 
@@ -96,36 +119,42 @@ class DishAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name', null, array('label' => 'admin.dish.name'))
-            ->add('place')
+            ->add('name', null, array('label' => 'admin.dish.name'));
+
+        if ($this->isAdmin()) {
+            $datagridMapper->add('place');
+        }
+
+        $datagridMapper
             ->add('categories')
             ->add('options')
             ->add('recomended', null, array('label' => 'admin.dish.recomended'))
             ->add('createdBy', null, array('label' => 'admin.created_by'))
-            ->add(
-                'createdAt',
-                'doctrine_orm_datetime_range',
-                array('label' => 'admin.created_at', 'format' => 'Y-m-d',),
-                null,
-                array(
-                    'widget' => 'single_text',
-                    'required' => false,
-                    'format' => 'Y-m-d',
-                    'attr' => array('class' => 'datepicker')
-                )
-            )
-            ->add(
-                'deletedAt',
-                'doctrine_orm_datetime_range',
-                array('label' => 'admin.deleted_at', 'format' => 'Y-m-d',),
-                null,
-                array(
-                    'widget' => 'single_text',
-                    'required' => false,
-                    'format' => 'Y-m-d',
-                    'attr' => array('class' => 'datepicker')
-                )
-            )
+        // TODO isjungiau, nes nenaudojam, o po sonatos update - griuna widget optionsas
+//            ->add(
+//                'createdAt',
+//                'doctrine_orm_datetime_range',
+//                array('label' => 'admin.created_at', 'format' => 'Y-m-d',),
+//                null,
+//                array(
+//                    'widget' => 'single_text',
+//                    'required' => false,
+//                    'format' => 'Y-m-d',
+//                    'attr' => array('class' => 'datepicker')
+//                )
+//            )
+//            ->add(
+//                'deletedAt',
+//                'doctrine_orm_datetime_range',
+//                array('label' => 'admin.deleted_at', 'format' => 'Y-m-d',),
+//                null,
+//                array(
+//                    'widget' => 'single_text',
+//                    'required' => false,
+//                    'format' => 'Y-m-d',
+//                    'attr' => array('class' => 'datepicker')
+//                )
+//            )
         ;
     }
 
@@ -136,9 +165,14 @@ class DishAdmin extends FoodAdmin
             ->addIdentifier('name', 'string', array('label' => 'admin.dish.name'))
             ->add('place')
             ->add('categories')
+            ->add('image', 'string', array(
+                'template' => 'FoodDishesBundle:Default:list_image.html.twig',
+                'label' => 'admin.dish.photo'
+            ))
             ->add('options')
             ->add('sizes', 'string', array('template' => 'FoodDishesBundle:Default:list_admin_list_sizes.html.twig'))
-            ->add('recomended', null, array('label' => 'admin.dish.recomended', 'editable' => true))
+            ->add('recomended', null, array('label' => 'admin.dish.recomended_list', 'editable' => true))
+            ->add('active', null, array('label' => 'admin.dish.active_list', 'editable' => true))
             ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
@@ -150,6 +184,9 @@ class DishAdmin extends FoodAdmin
                 'label' => 'admin.actions'
             ))
         ;
+
+        $this->setPlaceFilter(new PlaceFilter($this->getSecurityContext()))
+            ->setPlaceFilterEnabled(true);
     }
 
     /**
@@ -170,6 +207,7 @@ class DishAdmin extends FoodAdmin
         }
         parent::prePersist($object);
         $this->fixRelations($object);
+        $this->saveFile($object);
     }
 
     /**
@@ -179,20 +217,24 @@ class DishAdmin extends FoodAdmin
     public function preUpdate($object)
     {
         $this->fixRelations($object);
+        $this->saveFile($object);
     }
 
     /**
      * @param \Food\DishesBundle\Entity\Dish $object
+     * @param null $setCreatedAt
      */
     private function fixRelations($object, $setCreatedAt = null)
     {
-        foreach ($object->getSizes() as $size)
-        {
-            $cAt = $size->getCreatedAt();
-            if (!$cAt) {
-                $size->setCreatedAt(new \DateTime('now'));
+        $dishSizes = $object->getSizes();
+        if (!empty($dishSizes)) {
+            foreach ($dishSizes as $size) {
+                $cAt = $size->getCreatedAt();
+                if (!$cAt || empty($cAt)) {
+                    $size->setCreatedAt(new \DateTime('now'));
+                }
+                $size->setDish($object);
             }
-            $size->setDish($object);
         }
     }
 

@@ -2,17 +2,12 @@
 
 namespace Food\DishesBundle\Utils;
 
-
 use Food\DishesBundle\Utils\Slug\FoodCategoryStrategy;
 use Food\DishesBundle\Utils\Slug\SlugGenerator;
 use Food\DishesBundle\Utils\Slug\TextStrategy;
 use Food\AppBundle\Entity;
 use Food\AppBundle\Entity\Slug as SlugEntity;
 use Food\AppBundle\Traits;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernel;
-use Symfony\Component\Security\Acl\Exception\Exception;
-//use Symfony\Component\HttpFoundation\RequestStack;
 
 
 class Slug
@@ -101,14 +96,7 @@ class Slug
 
     public function getOneByName($slug, $lang)
     {
-        // @todo - Kaip su keshu? Fisho kodas
-        // $memcache = $this->service('beryllium_cache');
-
-        //if (($item = $memcache->get('slug_' . $slug)) != null) return $item;
-
         $item = $this->repo('FoodAppBundle:Slug')->findOneBy(['name' => $slug, 'lang_id' => $lang ]);
-        // $memcache->set('slug_' . $slug, $item);
-
         return $item;
     }
 
@@ -144,7 +132,9 @@ class Slug
 
     public function generateForFoodCategory($langId, $itemId, $itemText)
     {
-        $context = new SlugGenerator(new FoodCategoryStrategy($this->container()));
+        $strategy = new FoodCategoryStrategy($this->container());
+        $strategy->setContainer($this->container());
+        $context = new SlugGenerator($strategy);
         $context->generate($langId, $itemId, $itemText);
     }
 
@@ -154,6 +144,9 @@ class Slug
         $context->generate($langId, $itemId, $itemText);
     }
 
+    /**
+     * TODO Not working - fatal injuries can be caused
+     */
     public function fixUppercaseSlugs()
     {
         $em = $this->em();

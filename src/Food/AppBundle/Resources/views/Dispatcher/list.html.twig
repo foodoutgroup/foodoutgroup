@@ -1,0 +1,194 @@
+{# Dispecerinis langas.. OMG, kas per 87 lvl zodziai...#}
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <script src="{{ asset('bundles/foodapp/js_admin/dispatcher.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            Dispatcher.setLocale('{{ app.request.get('_locale') }}');
+            Dispatcher.onLoadEvents();
+
+            Dispatcher.setTranslation('change_status_title', '{{ 'admin.dispatcher.order_status_title'|trans({}, 'SonataAdminBundle') }}');
+            Dispatcher.setTranslation('button_change', '{{ 'admin.dispatcher.button_change'|trans({}, 'SonataAdminBundle') }}');
+            Dispatcher.setTranslation('button_cancel', '{{ 'admin.dispatcher.button_cancel'|trans({}, 'SonataAdminBundle') }}');
+        });
+    </script>
+{% endblock %}
+
+{% block actions %}{% endblock %}
+
+{% block side_menu %}{% endblock %}
+
+{% block list_table %}
+    {# type gali buti 'unassigned', 'not_finished' ;) Just in case you need that #}
+    {% macro order_table(order_list, type, cityName) %}
+        {% if type == 'unassigned' %}
+        <div class="driver_button">
+            <button class="get_drivers_button btn btn-lg" disabled="disabled">
+                {#<span class="icon_steering_wheel"></span>#}
+                {{ 'admin.dispatcher.get_drivers'|trans({}, 'SonataAdminBundle') }}
+            </button>
+        </div>
+        {% endif %}
+        <table class="order_list {{ type }}" list-type="{{ type }}">
+            <tr>
+                <th></th>
+                <th>{{ 'admin.dispatcher.order_id'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.dispatcher.place'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.dispatcher.client_address'|trans({}, 'SonataAdminBundle') }}</th>
+                <th class="self_delivery">{{ 'admin.dispatcher.self_delivery'|trans({}, 'SonataAdminBundle') }}</th>
+                <th class="order_date">{{ 'admin.dispatcher.order_date'|trans({}, 'SonataAdminBundle') }}</th>
+                <th class="order_date">{{ 'admin.dispatcher.delivery_time'|trans({}, 'SonataAdminBundle') }}</th>
+                <th class="order_date">{{ 'admin.dispatcher.delayed'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.dispatcher.comment'|trans({}, 'SonataAdminBundle') }}</th>
+                {% if type == 'not_finished' %}
+                    <th>{{ 'admin.dispatcher.driver'|trans({}, 'SonataAdminBundle') }}</th>
+                {% endif %}
+                <th>{{ 'admin.dispatcher.status'|trans({}, 'SonataAdminBundle') }}</th>
+            </tr>
+            {% for order in order_list %}
+                {% if loop.last %}
+                    <script type="text/javascript">
+                        if (typeof Dispatcher.recentOrders['{{ cityName }}'] == "undefined") {
+                            Dispatcher.recentOrders['{{ cityName }}'] = {};
+                        }
+                        Dispatcher.recentOrders['{{ cityName }}']['{{ type }}'] = {{ order.id }};
+                    </script>
+                {% endif %}
+                <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">
+                    <td>
+                        {% if not order.placePointSelfDelivery %}
+                            <input type="checkbox" id="order_{{ order.id }}" value="{{ order.id }}" class="order_checkbox" />
+                        {% endif %}
+                    </td>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.placeName }}</td>
+                    <td>{{ order.placePoint.address }}</td>
+                    <td>{{ order.addressId.address }}</td>
+                    <td class="self_delivery">
+                        {% if order.placePointSelfDelivery %}
+                            <span class="glyphicon glyphicon-ok"></span>
+                        {% else %}
+                            <span class="glyphicon glyphicon-remove"></span>
+                        {% endif %}
+                    </td>
+                    <td class="order_date" title="{{ order.orderDate|date("Y-m-d") }}">{{ order.orderDate|date("H:i") }}</td>
+                    <td class="order_date" title="{{ order.deliveryTime|date("Y-m-d") }}">{{ order.deliveryTime|date("H:i") }}</td>
+                    <td class="order_date{% if order.delayed %} delayed-order{% endif %}">
+                        {% if order.delayed %}
+                            {{ order.delayDuration }} min
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if order.comment|length > 20 %}
+                            <span class="shortened_comment">{{ order.comment|slice(0, 17) }}... <span class="glyphicon glyphicon-question-sign spliced-text" title="{{ order.comment }}"></span></span>
+                        {% else %}
+                            {{ order.comment }}
+                        {% endif %}
+                    </td>
+                    {% if type == 'not_finished' %}
+                        <td class="driver">
+                            {% if order.driver is not null and order.driver is not empty %}
+                                {%
+                                set driverInfo = 'admin.driver.phone'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.phone ~ "<br/>"
+                                ~ 'admin.driver.city'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.city ~ "<br/>"
+                                ~ 'admin.driver.type'|trans({}, 'SonataAdminBundle') ~ ': ' ~ ('admin.driver.type.' ~ order.driver.type)|trans({}, 'SonataAdminBundle') ~ "<br/>"
+                                ~ 'admin.driver.provider'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.provider ~ "<br/>"
+                                ~ 'admin.driver.ext_id'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.extId ~ "<br/>"
+                                %}
+                                {{ order.driver.name }} <span class="driver-info-extended glyphicon glyphicon-info-sign" title="{{ driverInfo }}"></span>
+                            {% else %}
+                                <span style="font-weight: bold; color: #FF0000;">{{ 'admin.dispatcher.no_driver_assigned'|trans({}, 'SonataAdminBundle') }}</span>
+                            {% endif %}
+                        </td>
+                    {% endif %}
+                    <td class="order_status">
+                        {% if order.orderStatusLog|length > 0 %}
+                            {% set statusInfo = '<div class=\'driver-tooltip\'>' %}
+                            {% for status in order.orderStatusLog %}
+                                {%
+                                    set statusInfo = statusInfo
+                                    ~ 'admin.order.log.date'|trans({}, 'SonataAdminBundle') ~ ': ' ~ status.eventDate|date("H:i") ~ '<br />'
+                                    ~ 'admin.order.log.old_status'|trans({}, 'SonataAdminBundle') ~ ': ' ~ ('admin.dispatcher.order_status.' ~ status.oldStatus)|trans({}, 'SonataAdminBundle') ~ '<br />'
+                                    ~ 'admin.order.log.new_status'|trans({}, 'SonataAdminBundle') ~ ': ' ~ ('admin.dispatcher.order_status.' ~ status.newStatus)|trans({}, 'SonataAdminBundle') ~ '<br />'
+                                    ~ 'admin.order.log.message'|trans({}, 'SonataAdminBundle') ~ ': ' ~ status.message ~ '<br />'
+                                    ~ '<br />'
+                                %}
+                            {% endfor %}
+                            {% set statusInfo = statusInfo ~ '</div>' %}
+                        {% endif %}
+
+                        {{ ('admin.dispatcher.order_status.' ~ order.orderStatus)|trans({}, 'SonataAdminBundle') }}
+                        {% if order.orderStatusLog|length > 0 %}
+                            <span class="glyphicon glyphicon-info-sign status-change-history" title="{{ statusInfo }}"></span>
+                        {% endif %}
+                        <button class="btn btn-lg change_status_button" item-id="{{ order.id }}">
+                            {{ 'admin.dispatcher.button_change'|trans({}, 'SonataAdminBundle') }}
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endmacro %}
+    {% import _self as table %}
+
+    <style type="text/css">div.sidebar.span2 { display: none !important; }</style>
+    <div class="city_list todo_nieks_nezino_klases">
+        <ul>
+            {% for city in cities %}
+                {% set cityUnassigned = cityOrders[city].unassigned|length %}
+                {% set cityUnconfirmed = cityOrders[city].unconfirmed|length %}
+                {% set cityNotFinished = cityOrders[city].not_finished|length %}
+                {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished}, 'SonataAdminBundle') %}
+                <li class="city-tab">
+                    <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} ({{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }})</a>
+                </li>
+            {% endfor %}
+        </ul>
+        {% for cityName,city in cityOrders %}
+            <div id="city_list-{{ loop.index }}">
+                <ul>
+                    <li>
+                        <a href="#city-{{ loop.index }}-unassigned">
+                            {{ 'admin.dispatcher.unassigned'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.unassigned|length }})</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#city-{{ loop.index }}-unconfirmed">
+                            {{ 'admin.dispatcher.unconfirmed'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.unconfirmed|length }})</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#city-{{ loop.index }}-undelivered">
+                            {{ 'admin.dispatcher.undelivered'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.not_finished|length }})</span>
+                        </a>
+                    </li>
+                </ul>
+                <div id="city-{{ loop.index }}-unassigned">
+                    {{ table.order_table(city.unassigned, 'unassigned', cityName) }}
+                </div>
+                <div id="city-{{ loop.index }}-unconfirmed">
+                    {{ table.order_table(city.unconfirmed, 'unconfirmed', cityName) }}
+                </div>
+                <div id="city-{{ loop.index }}-undelivered">
+                    {{ table.order_table(city.not_finished, 'not_finished', cityName) }}
+                </div>
+            </div>
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $('#city_list-{{ loop.index }}').tabs();
+                });
+            </script>
+        {% endfor %}
+    </div>
+    <div class="drivers_list">
+        {# TODO such hack. Wow, drivers. Much respect #}
+    </div>
+{% endblock %}
+
+{% block list_filters %}
+    {# No filter at the moment #}
+{% endblock %}

@@ -169,3 +169,5 @@ Enjoy!
 [11]: http://symfony.com/doc/2.3/cookbook/logging/monolog.html
 [12]: http://symfony.com/doc/2.3/cookbook/assetic/asset_management.html
 [13]: http://symfony.com/doc/2.3/bundles/SensioGeneratorBundle/index.html
+
+![codeship status](https://codeship.io/projects/e3574e90-c88c-0131-d791-1a1512409d80/status)

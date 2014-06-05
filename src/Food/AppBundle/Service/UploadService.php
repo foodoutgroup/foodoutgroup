@@ -158,8 +158,6 @@ class UploadService
     }
 
     /**
-     * @todo Sukurti unikalaus filename generavimo funkcionaluma.
-     *
      * @param $basepath
      */
     public function upload($basepath)
@@ -175,7 +173,6 @@ class UploadService
             return;
         }
 
-        // TODO jei yra senas failas - ji trinam
         $filename = $this->generateFileName();
         $uploadDir = $this->getUploadRootDir($basepath);
 
@@ -193,6 +190,25 @@ class UploadService
         $this->object->getFile()->move($uploadDir, $filename);
         $this->object->$setter($filename);
         $this->object->setFile(null);
+
+        if ($this->object->getMultipleThumbs()) {
+            foreach ($this->object->getBoxSize() as $boxKey=>$boxSz) {
+                $this->saveThumb($uploadDir, $filename, $boxKey.'_'.$filename, $boxSz['w'], $boxSz['h'], $this->object->getResizeMode());
+            }
+        } else {
+            $boxSize = $this->object->getBoxSize();
+            $this->saveThumb($uploadDir, $filename, $filename, $boxSize['w'], $boxSize['h'], $this->object->getResizeMode());
+        }
+    }
+
+    private function saveThumb($uploadDir, $origName, $newName, $w, $h, $mode)
+    {
+        $imagine = new \Imagine\Gd\Imagine();
+        $size = new \Imagine\Image\Box($w, $h);
+
+        $imagine->open($uploadDir."/".$origName)
+            ->thumbnail($size, $mode)
+            ->save($uploadDir."/thumb_".$newName);
     }
 
     /**

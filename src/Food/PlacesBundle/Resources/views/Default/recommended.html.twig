@@ -1,0 +1,14 @@
+<div class="items-list-title clearfix">
+    <h2>{% trans %}places.recomended_block_title{% endtrans %}</h2><a href="{{ path('food_places_' ~ locale ~ '_recommended') }}" class="button">{% trans %}places.recomended_show_more{% endtrans %}</a>
+</div>
+<div class="items-list clearfix">
+    {% for place in places %}
+        <div class="items-list-col">
+            <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="restoran-item">
+                <div class="restoran-item-top"><img src="/uploads/places/thumb_{{ place.logo }}"></div>
+                <p class="restoran-name">{{ place.name }}</p>
+                <div data-stars="{{ place.averageRating }}" class="restoran-rating"></div>
+            </a>
+        </div>
+    {% endfor %}
+</div>

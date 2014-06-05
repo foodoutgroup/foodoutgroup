@@ -1,0 +1,127 @@
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+{% form_theme form _self %}
+{% form_theme addressForm _self %}
+
+{% block form_row %}
+{% spaceless %}
+    <div class="form-row">
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+    </div>
+{% endspaceless %}
+{% endblock form_row %}
+
+{% block body %}
+    <div class="site-center">
+        <div class="site-block">
+            <div class="page-path clearfix">
+                <a href="{{ path('food_lang_homepage') }}">{% trans %}general.profile.home{% endtrans %}</a>
+                <a href="{{ path('user_profile') }}"> {% trans %}general.profile{% endtrans %}</a>
+            </div>
+            <div class="page-title">
+                <h1 class="clearfix"><span>{% trans %}general.greating{% endtrans %}, {{ language_utils.name(app.user.firstname, locale) }}!</span></h1>
+            </div>
+            <div class="clearfix">
+                <div class="full-content user-page clearfix">
+                    <div class="user-lefter">
+                        <div class="active-user"><img src="{{ asset('bundles/foodapp/images/person.png') }}">
+                            {#<a href="#" class="edit"></a>#}
+                            <div class="user-name">{{ app.user.firstname }}</div>
+                            <div class="user-location">{% if app.user.defaultAddress %}{{ app.user.defaultAddress.city }}{% endif %}</div>
+                        </div>
+                        <ul class="menu user-menu">
+                            <li class="menu-item user-ico active" data-target=".user-page .content-item.user">
+                                <a href="#">{% trans %}general.profile.user_data{% endtrans %}</a>
+                            </li>
+                            <li class="menu-item cart-ico" data-target=".user-page .content-item.cart">
+                                <a href="#">{% trans %}general.profile.cart_history{% endtrans %}</a>
+                            </li>
+                            {#<li class="menu-item delivery-ico" data-target=".user-page .content-item.delivery">#}
+                                {#<a href="#">Užsakymo sekimas</a>#}
+                            {#</li>#}
+                            <li class="logoff-ico">
+                                <a href="{{ path('fos_user_security_logout') }}">{% trans %}general.profile.logout{% endtrans %}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="user-righter content-item user">
+                        <h2>{% trans %}general.profile.user_data{% endtrans %}</h2>
+                        {% if hasErrors is defined and hasErrors %}
+                            <div class="error alert alert-danger">
+                                <ul>
+                                {% for error in errors %}
+                                    <li>{{ error.message|trans() }}</li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        <form class="user-details-form" action="{{ path('user_profile_update') }}" method="POST" novalidate="novalidate">
+                            {{ form_row(form.firstname) }}
+                            {{ form_row(form.lastname) }}
+                            {{ form_row(form.email) }}
+                            {{ form_row(form.phone) }}
+                            <hr>
+                            {{ form_row(addressForm.city) }}
+                            {{ form_row(addressForm.address) }}
+                            <hr>
+                            {#{{ form_row(form.current_password) }}#}
+                            {#{{ form_row(form.plainPassword.first) }}#}
+                            {#{{ form_row(form.plainPassword.second) }}#}
+                            <div class="form-controls">
+                                <input type="submit" value="{% trans %}general.profile.button_save{% endtrans %}">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="user-righter content-item cart">
+                        <h2>{% trans %}general.profile.cart_history{% endtrans %}</h2>
+                        <div class="order-history-list">
+                            {% if orders is empty %}
+                                {% trans %}general.profile.no_orders{% endtrans %}
+                            {% endif %}
+                            {% for order in orders %}
+                                <div class="order-history-item clearfix">
+                                    <div class="restautrant-logo">
+                                        <div class="restautrant-logo-wrap">
+                                            <img src="/uploads/places/thumb_{{ order.place.logo }}" alt="{{ order.placeName }}" />
+                                        </div>
+                                    </div>
+                                    <div class="history-item-middle">
+                                        <div class="number-date"><span>{% trans %}general.order{% endtrans %} #{{ order.id }}</span><span>{{ order.orderDate|date("Y m d, H:i") }}</span></div>
+                                        <div class="desc">
+                                            {% if order.orderStatus == 'completed' %}{% trans %}general.order.delivered{% endtrans %}{% elseif order.orderStatus == 'assigned' %}{% trans %}general.order.on_delivery{% endtrans %}{% else %}{% trans %}general.order.making{% endtrans %}{% endif %}
+                                            <strong>{{ order.details.count }} {% trans %}general.order.dishes{% endtrans %}</strong> {% trans %}general.for{% endtrans %} {{ order.total }} {{ currency_display }} {% trans %}general.to{% endtrans %} {{ order.addressId.address }}.
+                                        </div>
+                                    </div>
+                                    <div class="history-item-righter">
+                                        {% if order.orderStatus != 'completed' %}
+                                            <div class="in-progress alert alert-warning">{% trans %}general.order.in_progress{% endtrans %}</div>
+                                        {% endif %}
+                                        {#<a href="#" class="rate-link">Įvertink šį užsakymą</a>#}
+                                        {#<a href="#" class="order-button">Užsakyti dar kartą</a>#}
+                                    </div>
+                                        {#<span class="close"></span>#}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {# TODO delivery sekimas! Omg, so fun :) #}
+                    {#<div class="user-righter content-item delivery">
+                        <h2>Užsakymo sekimas</h2>
+                        <form class="delivery-tracking-form">
+                            <p>Norite sužinoti kas vyksta su Jūsų užsakymu šiuo metu? Čili seklys leidžia stebėti Jūsų užsakymo statusą nuo jo priėmimo iki pristatymo.</p>
+                            <div class="form-row">
+                                <label>Įveskite savo Telefono numerį:</label>
+                                <input type="text" value="+370">
+                                <button type="submit"><span>Sekti užsakymą</span></button>
+                            </div>
+                            &#123;&#35; <div class="progress-image-wrap"><img src="{{ asset('bundle/foodap/images/delivery-progress.jpg') }}"></div> &#35;&#125;
+                        </form>
+                    </div>#}
+                </div>
+            </div>
+            {# Bottom block - apps, newsletter#}
+            {% include 'FoodAppBundle:Default:bottom_block.html.twig' %}
+        </div>
+    </div>
+{% endblock %}

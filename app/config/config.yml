@@ -8,6 +8,53 @@ imports:
 
 parameters:
     available_locales: [lt, en, ru]
+    available_locales_routing: lt | en | ru
+    available_cities: ["Vilnius","Kaunas"]
+    time_zone: "Europe/Vilnius"
+    sms.available_providers: [food.infobip]
+    sms.sender: "Foodout.lt"
+    sms.balance_limit_warn: 8
+    sms.balance_limit_critical: 5
+    infobip_provider.api_url: "http://api.infobip.com/api/v3/sendsms/json"
+    infobip_provider.account_url: "http://api2.infobip.com/api"
+    infobip_provider.login: "skanu1"
+    infobip_provider.password: "119279"
+    # Situos gal issikelkime i parametru faila pagal aplinka?
+    admin.emails: [mantas@foodout.lt]
+    admin.send_monitoring_message: false
+    admin.phones: [37061514333]
+    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt]
+    order.city_coordinators:
+        vilnius: []
+        kaunas: [renata@foodout.lt]
+    order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
+    accounting_email: "buhalterija@foodout.lt"
+    title: "Foodout"
+    domain: "foodout.lt"
+    arc_gis_user: "skanulabai"
+    arc_gis_pass: "labaiskanu"
+    arc_gis_client_id: "QTFVE57PzjWLTXOj"
+    arc_gis_client_secret: "edf2c3d4c02f4076b9245c240dc0f662"
+#  arc_gis_oauth: "https://www.arcgis.com/sharing/oauth2/token?client_id=__id__&grant_type=client_credentials&client_secret=__secret__&f=pjson"
+#  arc_gis_oauth: "https://www.arcgis.com/sharing/oauth2/token?client_id=rT6idyGGrhoLHfQY&grant_type=client_credentials&client_secret=13edb6261ed542e1be9ab27ec47d9d82&f=pjson"
+    arc_gis_oauth: "https://www.arcgis.com/sharing/oauth2/token"
+    arc_gis_geocode: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates"
+    arc_gis_geocode_single: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
+    arc_gis_geocode_url: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=pjson&Address=_1_&City=_2_&CountryCode=LT&outFields=AddrNum,StName,City"
+    google.maps_geocode: "https://maps.googleapis.com/maps/api/geocode/json"
+    google.maps_api: "AIzaSyDyKJYX3Cr4Cn41VR9oaAqbmT8XlbHBY-Q"
+    google.maps_server_api: "AIzaSyBK3xf8ZPVWfTa2uXZN-OJHd6Fwl1Yo560"
+    # Possible values: "local", "etaxi"
+    active_logistics: "local"
+    # Todo situos gal ir iskelsime i paramsus - dependant on install?
+    payment.methods: [local, local.card, paysera]
+    currency_display: Lt
+    currency_iso: LTL
+    # naudojam telefonu validacijoms
+    country: LT
+    vat: 21
+    evp.test_payments: 0
+    mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
 
 framework:
     #esi:             ~
@@ -26,6 +73,7 @@ framework:
     trusted_proxies: ~
     session:
         name: skaniSesija2014PerkamPicasUrmu
+        save_path: %kernel.root_dir%/var/sessions
     fragments:       ~
     http_method_override: true
 
@@ -36,13 +84,21 @@ twig:
     globals:
         slug_util:    "@food.dishes.utils.slug"
         locale:       "%locale%"
+        page_title:   "%title%"
+        currency_display: "%currency_display%"
+        currency_iso: "%currency_iso%"
+        vat_size: "%vat%"
+        dish_service: "@food.dishes"
+        order_service: "@food.order"
+        google_maps_api: "%google.maps_api%"
+        language_utils: "@food.app.utils.language"
 
 
 # Assetic Configuration
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ FoodAppBundle, FoodDishesBundle ]
+    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -79,6 +135,8 @@ doctrine:
         # path:     %database_path%
         types:
             json: Sonata\Doctrine\Types\JsonType
+        mapping_types:
+            enum: string
 
     orm:
         auto_generate_proxy_classes: %kernel.debug%
@@ -87,6 +145,16 @@ doctrine:
             softdeleteable:
                 class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
                 enabled: true
+
+        dql:
+            numeric_functions:
+                asin: DoctrineExtensions\Query\Mysql\Asin
+                sin: DoctrineExtensions\Query\Mysql\Sin
+                pi: DoctrineExtensions\Query\Mysql\Pi
+                cos: DoctrineExtensions\Query\Mysql\Cos
+                rand: DoctrineExtensions\Query\Mysql\Rand
+                power: Food\AppBundle\DQL\PowerFunction
+
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -100,6 +168,9 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: Food\UserBundle\Entity\User
+    registration:
+      form:
+        type: food_user_registration
 
 services:
   gedmo.listener.softdeleteable:
@@ -108,6 +179,18 @@ services:
         - { name: doctrine.event_subscriber, connection: default }
     calls:
         - [ setAnnotationReader, [ @annotation_reader ] ]
+
+  twig.extension.intl:
+    class: Twig_Extensions_Extension_Intl
+    tags:
+        - { name: twig.extension }
+
+  kernel.listener.command_dispatch:
+      class: Food\AppBundle\EventListener\ConsoleExceptionListener
+      arguments:
+          logger: "@logger"
+      tags:
+          - { name: kernel.event_listener, event: console.exception }
 
 sonata_doctrine_orm_admin:
     templates:
@@ -125,9 +208,8 @@ sonata_block:
 
 # Sonata admin bloku konfigas
 sonata_admin:
-    title: Skanu.lt
-#    title_logo: /bundles/foodapp/images/admin_icon.png
-    title_logo: /bundles/foodapp/images/admin_fun_icon.png
+    title: Foodout
+    title_logo: /bundles/foodapp/images/logo_food_small.png
     templates:
       #layout: SonataAdminBundle::standard_layout.html.twig
       layout: FoodAppBundle::admin_layout.html.twig
@@ -138,18 +220,29 @@ sonata_admin:
       edit: SonataAdminBundle:CRUD:edit.html.twig
     dashboard:
           groups:
-              acme.admin.group.places:
-                  label: admin.group.places
+              acme.admin.group.first:
+                  label: admin.group.first
                   label_catalogue: SonataAdminBundle
                   items:
                       - sonata.admin.kitchen
                       - sonata.admin.place
-                      - sonata.admin.place.reviews
-                      - sonata.admin.dish.unit
-                      - sonata.admin.dish.size
                       - sonata.admin.food.category
+                      - sonata.admin.dish.unit.category
+                      - sonata.admin.dish.unit
+                  roles: [ ROLE_ADMIN ]
+              acme.admin.group.places:
+                  label: admin.group.places
+                  label_catalogue: SonataAdminBundle
+                  items:
+                      #- sonata.admin.kitchen
+                      - sonata.admin.place
+                      - sonata.admin.place.reviews
+                      #- sonata.admin.dish.unit
+                      #- sonata.admin.dish.size
+                      #- sonata.admin.food.category
                       - sonata.admin.static
                       - sonata.admin.sms
+                      #- sonata.admin.dish.unit.category
                   roles: [ ROLE_ADMIN ]
               acme.admin.group.formanagers:
                   label: admin.group.formanagers
@@ -158,14 +251,32 @@ sonata_admin:
                       - sonata.admin.food.category
                       - sonata.admin.dish
                       - sonata.admin.dish.option
-                      - sonata.admin.place.pointfull
+#                      kolkas neveikia
+#                      - sonata.admin.place.pointfull
                       - sonata.admin.place.reviews
                   roles: [ ROLE_MODERATOR ]
+              admin.orders:
+                label: admin.group.orders
+                label_catalogue: SonataAdminBundle
+                items:
+                      - sonata.admin.order
               admin.users:
                   items: ~
                   item_adds:
                       - sonata.admin.users
+                      - sonata.admin.newsletter_subscribers
                   roles: [ ROLE_ADMIN ]
+              admin.support:
+                  items: ~
+                  item_adds:
+                      - sonata.admin.support
+                  roles: [ ROLE_SUPPORT ]
+              admin.dispatcher:
+                  items: ~
+                  item_adds:
+                      - sonata.admin.dispatcher
+                      - sonata.admin.drivers
+                  roles: [ ROLE_DISPATCHER ]
               acme.admin.group.misc: ~
 
 stof_doctrine_extensions:
@@ -179,3 +290,36 @@ a2lix_translation_form:
     default_required: true
     manager_registry: doctrine
     templating: "A2lixTranslationFormBundle::default.html.twig"
+
+#evp omg
+evp_web_to_pay:
+    credentials:
+        project_id: 45333
+        sign_password: 4e9f20772a3fa0c83f76dae9c6e06008
+    use_sandbox: false
+# TrkSteel cke editor
+trsteel_ckeditor:
+    class: Trsteel\CkeditorBundle\Form\Type\CkeditorType
+    transformers: ['html_purifier']
+    toolbar: ['document', 'clipboard', 'editing', '/', 'basicstyles', 'paragraph', 'links', '/', 'insert', 'styles', 'tools']
+    toolbar_groups:
+        document: ['Source','-','Save','-','Templates']
+        clipboard: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo']
+        editing: ['Find','Replace','-','SelectAll']
+        basicstyles: ['Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat']
+        paragraph: ['NumberedList','BulletedList','-','Outdent','Indent','-','JustifyLeft', 'JustifyCenter','JustifyRight','JustifyBlock']
+        links: ['Link','Unlink','Anchor']
+        insert: ['Image','Flash','Table','HorizontalRule']
+        styles: ['Styles','Format']
+        tools: ['Maximize', 'ShowBlocks']
+    ui_color: '#CCCCCC'
+    startup_outline_blocks: true
+    width: 800 #Integer or %
+    height: 300 #Integer or %
+    language: 'en-en'
+#    filebrowser_upload_url:
+#        url: relative-url.php?type=file
+#    filebrowser_image_browse_url:
+#        route: route_name
+#        route_parameters:
+#            type: image

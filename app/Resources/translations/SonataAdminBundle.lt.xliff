@@ -11,6 +11,10 @@
                 <source>admin.active</source>
                 <target>Aktyvus</target>
             </trans-unit>
+            <trans-unit id="admin.is_new">
+                <source>admin.is_new</source>
+                <target>Naujas</target>
+            </trans-unit>
             <trans-unit id="admin.created_by">
                 <source>admin.created_by</source>
                 <target>Sukūrė</target>
@@ -58,6 +62,10 @@
             <trans-unit id="admin.actions">
                 <source>admin.actions</source>
                 <target>Veiksmai</target>
+            </trans-unit>
+            <trans-unit id="batch">
+                <source>batch</source>
+                <target></target>
             </trans-unit>
 
             <!-- Kitchen -->
@@ -132,6 +140,14 @@
                 <source>admin.food_category.name</source>
                 <target>Kategorija</target>
             </trans-unit>
+            <trans-unit id="admin.food_category.drinks">
+                <source>admin.food_category.drinks</source>
+                <target>Gėrimai</target>
+            </trans-unit>
+            <trans-unit id="admin.food_category.alcohol">
+                <source>admin.food_category.alcohol</source>
+                <target>Alkoholis</target>
+            </trans-unit>
             <trans-unit id="food.category">
                 <source>food.category</source>
                 <target>Kategorija</target>
@@ -139,6 +155,14 @@
             <trans-unit id="food-category-list">
                 <source>Food Category List</source>
                 <target>Kategorijos</target>
+            </trans-unit>
+            <trans-unit id="admin.food_category.lineup">
+                <source>admin.food_category.lineup</source>
+                <target>Pozicija</target>
+            </trans-unit>
+            <trans-unit id="admin.food_category.texts_onlyp">
+                <source>admin.food_category.texts_only</source>
+                <target>Tekstai</target>
             </trans-unit>
 
             <!-- Dish -->
@@ -154,9 +178,29 @@
                 <source>admin.dish.name</source>
                 <target>Patiekalas</target>
             </trans-unit>
+            <trans-unit id="admin.dish.photo">
+                <source>admin.dish.photo</source>
+                <target>Foto</target>
+            </trans-unit>
             <trans-unit id="admin.dish.recomended">
                 <source>admin.dish.recomended</source>
                 <target>Rekomenduojamas</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.recomended_list">
+                <source>admin.dish.recomended_list</source>
+                <target>Rekom.</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.active">
+                <source>admin.dish.active</source>
+                <target>Aktyvus</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.active_list">
+                <source>admin.dish.active_list</source>
+                <target>Aktyv.</target>
+            </trans-unit>
+            <trans-unit id="admin.dishes.sizes">
+                <source>admin.dishes.sizes</source>
+                <target>Dydžiai/porcijos</target>
             </trans-unit>
 
             <!-- Dish options -->
@@ -167,6 +211,10 @@
             <trans-unit id="admin.dish_option.code">
                 <source>admin.dish_option.code</source>
                 <target>Sis. kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.dish_option.group_name">
+                <source>admin.dish_option.group_name</source>
+                <target>Grupė</target>
             </trans-unit>
             <trans-unit id="admin.dish_option.name">
                 <source>admin.dish_option.name</source>
@@ -179,6 +227,10 @@
             <trans-unit id="admin.dish_option.description">
                 <source>admin.dish_option.description</source>
                 <target>Aprašymas</target>
+            </trans-unit>
+            <trans-unit id="admin.dish_option.single_select">
+                <source>admin.dish_option.single_select</source>
+                <target>Vienetinis pasirinkimas</target>
             </trans-unit>
             <trans-unit id="dish-option-list">
                 <source>Dish Option List</source>
@@ -197,6 +249,10 @@
             <trans-unit id="admin.unit.name">
                 <source>admin.unit.name</source>
                 <target>Matavimo vienetas</target>
+            </trans-unit>
+            <trans-unit id="admin.unit.unit_category">
+                <source>admin.unit.unit_category</source>
+                <target>Vienetų kategorija</target>
             </trans-unit>
             <trans-unit id="unit">
                 <source>Unit</source>
@@ -248,6 +304,30 @@
                 <source>admin.place.name</source>
                 <target>Vietos pavadinimas</target>
             </trans-unit>
+            <trans-unit id="admin.place.delivery_time">
+                <source>admin.place.delivery_time</source>
+                <target>Prist. trukmė</target>
+            </trans-unit>
+            <trans-unit id="admin.place.delivery_time_info">
+                <source>admin.place.delivery_time_info</source>
+                <target>Papild. trukm. info.</target>
+            </trans-unit>
+            <trans-unit id="admin.place.delivery_price">
+                <source>admin.place.delivery_price</source>
+                <target>Prist. kaina</target>
+            </trans-unit>
+            <trans-unit id="admin.place.cart_minimum">
+                <source>admin.place.cart_minimum</source>
+                <target>Min. užsakymas</target>
+            </trans-unit>
+            <trans-unit id="admin.place.self_delivery">
+                <source>admin.place.self_delivery</source>
+                <target>Sava logistika</target>
+            </trans-unit>
+            <trans-unit id="admin.place.minimal_on_self_delivery">
+                <source>admin.place.minimal_on_self_delivery</source>
+                <target>Min krep. atsiimant</target>
+            </trans-unit>
             <trans-unit id="admin.place.kitchens">
                 <source>admin.place.kitchens</source>
                 <target>Virtuvės</target>
@@ -259,6 +339,14 @@
             <trans-unit id="admin.place.review">
                 <source>admin.place.review</source>
                 <target>Atsiliepimas</target>
+            </trans-unit>
+            <trans-unit id="admin.place.review.rate">
+                <source>admin.place.review.rate</source>
+                <target>Reitingas</target>
+            </trans-unit>
+            <trans-unit id="admin.place.recommended">
+                <source>admin.place.recommended</source>
+                <target>Rekomend.</target>
             </trans-unit>
 
             <!-- Place points -->
@@ -310,6 +398,26 @@
                 <source>admin.point.address</source>
                 <target>Adresas</target>
             </trans-unit>
+            <trans-unit id="admin.point.company_code">
+                <source>admin.point.company_code</source>
+                <target>Įm.kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.point.phone">
+                <source>admin.point.phone</source>
+                <target>Tel.</target>
+            </trans-unit>
+            <trans-unit id="admin.point.alt_phone">
+                <source>admin.point.alt_phone</source>
+                <target>Papildomas tel.</target>
+            </trans-unit>
+            <trans-unit id="admin.point.email">
+                <source>admin.point.email</source>
+                <target>El.paštas</target>
+            </trans-unit>
+            <trans-unit id="admin.point.alt_email">
+                <source>admin.point.alt_email</source>
+                <target>Papild. el.paštas</target>
+            </trans-unit>
             <trans-unit id="admin.point.city">
                 <source>admin.point.city</source>
                 <target>Miestas</target>
@@ -317,6 +425,30 @@
             <trans-unit id="admin.point.coord">
                 <source>admin.point.coords</source>
                 <target>Koordinatės</target>
+            </trans-unit>
+            <trans-unit id="admin.point.lat">
+                <source>admin.point.lat</source>
+                <target>Lat.</target>
+            </trans-unit>
+            <trans-unit id="admin.point.lon">
+                <source>admin.point.lon</source>
+                <target>Long.</target>
+            </trans-unit>
+            <trans-unit id="admin.point.public">
+                <source>admin.point.public</source>
+                <target>Rodomas viešai</target>
+            </trans-unit>
+            <trans-unit id="admin.point.place">
+                <source>admin.point.place</source>
+                <target>Restoranas</target>
+            </trans-unit>
+            <trans-unit id="admin.point.allow_cash">
+                <source>admin.point.allow_cash</source>
+                <target>Grynais</target>
+            </trans-unit>
+            <trans-unit id="admin.point.allow_card">
+                <source>admin.point.allow_card</source>
+                <target>Kortele</target>
             </trans-unit>
 
             <!-- Place reviews -->
@@ -341,6 +473,14 @@
             <trans-unit id="admin.users">
                 <source>admin.users</source>
                 <target>Vartotojai</target>
+            </trans-unit>
+            <trans-unit id="admin.users.firstname">
+                <source>admin.users.firstname</source>
+                <target>Vardas</target>
+            </trans-unit>
+            <trans-unit id="admin.users.lastname">
+                <source>admin.users.lastname</source>
+                <target>Pavardė</target>
             </trans-unit>
             <trans-unit id="admin.users.username">
                 <source>admin.users.username</source>
@@ -390,6 +530,14 @@
                 <source>ROLE_USER</source>
                 <target>Lankytojas</target>
             </trans-unit>
+            <trans-unit id="ROLE_DISPATCHER">
+                <source>ROLE_DISPATCHER</source>
+                <target>Dispečerė</target>
+            </trans-unit>
+            <trans-unit id="ROLE_SUPPORT">
+                <source>ROLE_SUPPORT</source>
+                <target>Pagalba</target>
+            </trans-unit>
 
             <!-- Static content -->
             <trans-unit id="admin.static">
@@ -407,6 +555,22 @@
             <trans-unit id="admin.static.content">
                 <source>admin.static.content</source>
                 <target>Turinys</target>
+            </trans-unit>
+            <trans-unit id="admin.static.order_no">
+                <source>admin.static.order_no</source>
+                <target>Eilės nr.</target>
+            </trans-unit>
+            <trans-unit id="admin.static.active">
+                <source>admin.static.active</source>
+                <target>Aktyvus</target>
+            </trans-unit>
+            <trans-unit id="admin.static.visible">
+                <source>admin.static.visible</source>
+                <target>Rodomas meniu</target>
+            </trans-unit>
+            <trans-unit id="admin.static.order_no_short">
+                <source>admin.static.order_no_short</source>
+                <target>Eil.nr.</target>
             </trans-unit>
             <trans-unit id="admin.dish_sizes">
                 <source>admin.dish_sizes</source>
@@ -428,6 +592,464 @@
             <trans-unit id="admin.point.active">
                 <source>admin.point.active</source>
                 <target>Aktyvus</target>
+            </trans-unit>
+            <trans-unit id="admin.point.fast">
+                <source>admin.point.fast</source>
+                <target>Greitas</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.unit.category.name">
+                <source>admin.dish.unit.category.name</source>
+                <target>Pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.unit.category.place">
+                <source>admin.dish.unit.category.place</source>
+                <target>Vieta</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.unit.category">
+                <source>admin.dish.unit.category</source>
+                <target>Vienetų kategorijos</target>
+            </trans-unit>
+            <trans-unit id="Dish Unit Category List">
+                <source>Dish Unit Category List</source>
+                <target>Vienetų kategorijos</target>
+            </trans-unit>
+            <trans-unit id="admin.group.first">
+                <source>admin.group.first</source>
+                <target>Pirmi žingsniai</target>
+            </trans-unit>
+
+            <!-- Place reviews -->
+            <trans-unit id="admin.support">
+                <source>admin.support</source>
+                <target>Pagalba</target>
+            </trans-unit>
+            <trans-unit id="admin.order.support">
+                <source>admin.order.support</source>
+                <target>Užsakymai</target>
+            </trans-unit>
+
+            <trans-unit id="places.watch_menu">
+                <source>places.watch_menu</source>
+                <target>Žiūrėti meniu</target>
+            </trans-unit>
+
+            <!-- Subscribers content -->
+            <trans-unit id="admin.users.subscribers">
+                <source>admin.users.subscribers</source>
+                <target>Prenumeratorius</target>
+            </trans-unit>
+            <trans-unit id="Subscribers List">
+                <source>Subscribers List</source>
+                <target>Prenumeratoriai</target>
+            </trans-unit>
+            <trans-unit id="admin.subscribers.email">
+                <source>admin.subscribers.email</source>
+                <target>El.paštas</target>
+            </trans-unit>
+            <trans-unit id="admin.subscribers.locale">
+                <source>admin.subscribers.locale</source>
+                <target>Kalba</target>
+            </trans-unit>
+            <trans-unit id="admin.subscribers.created_at">
+                <source>admin.subscribers.created_at</source>
+                <target>Užsiprenumeravo</target>
+            </trans-unit>
+
+            <!-- Orders list -->
+            <trans-unit id="admin.group.orders">
+                <source>admin.group.orders</source>
+                <target>Užsakymai</target>
+            </trans-unit>
+            <trans-unit id="Order List">
+                <source>Order List</source>
+                <target>Užsakymai</target>
+            </trans-unit>
+            <trans-unit id="admin.users.orders">
+                <source>admin.users.orders</source>
+                <target>Užsakymai</target>
+            </trans-unit>
+            <trans-unit id="admin.users.order">
+                <source>admin.users.order</source>
+                <target>Užsakymas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.id">
+                <source>admin.order.id</source>
+                <target>Id</target>
+            </trans-unit>
+            <trans-unit id="admin.order.order_date">
+                <source>admin.order.order_date</source>
+                <target>Užsakymo data</target>
+            </trans-unit>
+            <trans-unit id="admin.order.place_name_short">
+                <source>admin.order.place_name_short</source>
+                <target>Restor.</target>
+            </trans-unit>
+            <trans-unit id="admin.order.place_name">
+                <source>admin.order.place_name</source>
+                <target>Restoranas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.place_point_short">
+                <source>admin.order.place_point_short</source>
+                <target>Gamyb. adr.</target>
+            </trans-unit>
+            <trans-unit id="admin.order.place_point">
+                <source>admin.order.place_point</source>
+                <target>Gamybos adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.user">
+                <source>admin.order.user</source>
+                <target>Klientas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.address">
+                <source>admin.order.address</source>
+                <target>Adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_address">
+                <source>admin.order.delivery_address</source>
+                <target>Užsak. adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_type_short">
+                <source>admin.order.delivery_type_short</source>
+                <target>Pristat. tipas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_type">
+                <source>admin.order.delivery_type</source>
+                <target>Pristatymo tipas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.order_status_short">
+                <source>admin.order.order_status_short</source>
+                <target>Užsak. būklė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.order_status">
+                <source>admin.order.order_status</source>
+                <target>Užsakymo būklė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.payment_method">
+                <source>admin.order.payment_method</source>
+                <target>Mokėjimo būdas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.payment_status">
+                <source>admin.order.payment_status</source>
+                <target>Mokėjimo būklė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.submitted_for_payment">
+                <source>admin.order.submitted_for_payment</source>
+                <target>Mokėjimo pradžia</target>
+            </trans-unit>
+            <trans-unit id="admin.order.last_update">
+                <source>admin.order.last_update</source>
+                <target>Paskutinis pokytis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.last_payment_error">
+                <source>admin.order.last_payment_error</source>
+                <target>Paskutinė klaida</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details">
+                <source>admin.order.details</source>
+                <target>Patiekalai</target>
+            </trans-unit>
+            <trans-unit id="admin.order.vat">
+                <source>admin.order.vat</source>
+                <target>PVM</target>
+            </trans-unit>
+            <trans-unit id="admin.order.total">
+                <source>admin.order.total</source>
+                <target>Viso (su PVM)</target>
+            </trans-unit>
+            <trans-unit id="admin.order.comment">
+                <source>admin.order.comment</source>
+                <target>Užsakovo komentaras</target>
+            </trans-unit>
+            <trans-unit id="admin.order.place_comment">
+                <source>admin.order.place_comment</source>
+                <target>Restorano komentaras</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.dish_name">
+                <source>admin.order.details.dish_name</source>
+                <target>Patiekalas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.price">
+                <source>admin.order.details.price</source>
+                <target>Kaina</target>
+            </trans-unit>
+            <trans-unit id="aadmin.order.details.dish_unit">
+                <source>admin.order.details.dish_unit</source>
+                <target>Mat. vienetas</target>
+            </trans-unit>
+            <trans-unit id="aadmin.order.details.dish_size_code">
+                <source>admin.order.details.dish_size_code</source>
+                <target>Kodas</target>
+            </trans-unit>
+            <trans-unit id="aadmin.order.details.options">
+                <source>admin.order.details.options</source>
+                <target>Priedai</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.option_name">
+                <source>admin.order.details.option_name</source>
+                <target>Priedas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.option_code">
+                <source>admin.order.details.option_code</source>
+                <target>Kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.quantity">
+                <source>admin.order.details.quantity</source>
+                <target>Kiekis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.sum">
+                <source>admin.order.details.sum</source>
+                <target>Suma</target>
+            </trans-unit>
+            <trans-unit id="admin.order.driver">
+                <source>admin.order.driver</source>
+                <target>Vairuotojas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.order_status.log">
+                <source>admin.order.order_status.log</source>
+                <target>Būkles istorija</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.date">
+                <source>admin.order.status.date</source>
+                <target>Data</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.old_status">
+                <source>admin.order.status.old_status</source>
+                <target>Iš būklės</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.new_status">
+                <source>admin.order.status.new_status</source>
+                <target>Į būklę</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source">
+                <source>admin.order.status.source</source>
+                <target>Šaltinis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.message">
+                <source>admin.order.status.message</source>
+                <target>Pranešimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.restourant_mobile">
+                <source>admin.order.status.source.restourant_mobile</source>
+                <target>Restorano mobilus puslapis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.driver_mobile">
+                <source>admin.order.status.source.driver_mobile</source>
+                <target>Vairuotojo mobilus puslapis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.dispatcher">
+                <source>admin.order.status.source.dispatcher</source>
+                <target>Dispečerinė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.paysera_payment">
+                <source>admin.order.status.source.paysera_payment</source>
+                <target>Paysera apmokėjimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.logistics_service">
+                <source>admin.order.status.source.logistics_service</source>
+                <target>Logistika</target>
+            </trans-unit>
+
+            <!-- Dispatcher window -->
+            <trans-unit id="admin.order.dispatcher">
+                <source>admin.order.dispatcher</source>
+                <target>Dispečeris</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher">
+                <source>admin.dispatcher</source>
+                <target>Dispečeris</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_id">
+                <source>admin.dispatcher.order_id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_date">
+                <source>admin.dispatcher.order_date</source>
+                <target>Užsak. data</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.comment">
+                <source>admin.dispatcher.comment</source>
+                <target>Klient. koment.</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.unassigned">
+                <source>admin.dispatcher.unassigned</source>
+                <target>Nepriskirti</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.undelivered">
+                <source>admin.dispatcher.undelivered</source>
+                <target>Nepristatyti</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.unconfirmed">
+                <source>admin.dispatcher.unconfirmed</source>
+                <target>Nepatvirtinti rest.</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.city_tip">
+                <source>admin.dispatcher.city_tip</source>
+                <target><![CDATA[Nepriskirti: unassignedCount<br />Nepatvirtinti: unconfirmedCount<br />Nepristatyti: notfinishedCount]]></target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.place">
+                <source>admin.dispatcher.place</source>
+                <target>Restoran.</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.address">
+                <source>admin.dispatcher.address</source>
+                <target>Adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.client_address">
+                <source>admin.dispatcher.client_address</source>
+                <target>Užsak. adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.self_delivery">
+                <source>admin.dispatcher.self_delivery</source>
+                <target>Prist. patys</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.get_drivers">
+                <source>admin.dispatcher.get_drivers</source>
+                <target>Gauti vairuotojus</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.new">
+                <source>admin.dispatcher.order_status.new</source>
+                <target>Naujas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.delayed">
+                <source>admin.dispatcher.order_status.delayed</source>
+                <target>Atidėtas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.accepted">
+                <source>admin.dispatcher.order_status.accepted</source>
+                <target>Priimtas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.assigned">
+                <source>admin.dispatcher.order_status.assigned</source>
+                <target>Paskirtas vairuotojui</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.forwarded">
+                <source>admin.dispatcher.order_status.forwarded</source>
+                <target>Perskirtas kitam gamybos taškui</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.completed">
+                <source>admin.dispatcher.order_status.completed</source>
+                <target>Pristatytas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.finished">
+                <source>admin.dispatcher.order_status.finished</source>
+                <target>Pagamintas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.canceled">
+                <source>admin.dispatcher.order_status.canceled</source>
+                <target>Atšauktas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status_title">
+                <source>admin.dispatcher.order_status_title</source>
+                <target>Užsakymo būklė</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.button_change">
+                <source>admin.dispatcher.button_change</source>
+                <target>Keisti</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.button_cancel">
+                <source>admin.dispatcher.button_cancel</source>
+                <target>Atšaukti</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.no_driver_assigned">
+                <source>admin.dispatcher.no_driver_assigned</source>
+                <target>Nepriskirtas joks vairuotojas!!!</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.driver">
+                <source>admin.dispatcher.driver</source>
+                <target>Vairuotojas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.assign">
+                <source>admin.dispatcher.assign</source>
+                <target>Priskirti</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.status">
+                <source>admin.dispatcher.status</source>
+                <target>Būklė</target>
+            </trans-unit>
+
+            <!-- Status historis -->
+            <trans-unit id="admin.order.log.date">
+                <source>admin.order.log.date</source>
+                <target>Data</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.old_status">
+                <source>admin.order.log.old_status</source>
+                <target>Iš</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.new_status">
+                <source>admin.order.log.new_status</source>
+                <target>Į.</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.message">
+                <source>admin.order.log.message</source>
+                <target>Žinutė</target>
+            </trans-unit>
+
+
+            <!-- Drivers listas -->
+            <trans-unit id="admin.drivers">
+                <source>admin.drivers</source>
+                <target>Vairuotojai</target>
+            </trans-unit>
+            <trans-unit id="Driver List">
+                <source>Driver List</source>
+                <target>Vairuotojai</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.id">
+                <source>admin.driver.id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.name">
+                <source>admin.driver.name</source>
+                <target>Vairuotojas</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.name_placeholder">
+                <source>admin.driver.name_placeholder</source>
+                <target>Vardenis Pavardenis</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.phone">
+                <source>admin.driver.phone</source>
+                <target>Telefonas</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.phone_placeholder">
+                <source>admin.driver.phone_placeholder</source>
+                <target>37061234567</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.active">
+                <source>admin.driver.active</source>
+                <target>Dirba</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.provider">
+                <source>admin.driver.provider</source>
+                <target>Darbovietė</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.ext_id">
+                <source>admin.driver.ext_id</source>
+                <target>Išor.ID</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.ext_id_long">
+                <source>admin.driver.ext_id_long</source>
+                <target>Išorinis ID</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.city">
+                <source>admin.driver.city</source>
+                <target>Miestas</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.type">
+                <source>admin.driver.type</source>
+                <target>Tipas</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.type.local">
+                <source>admin.driver.type.local</source>
+                <target>Įmonės</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.type.outsource">
+                <source>admin.driver.type.outsource</source>
+                <target>Išorinis</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.has_orders">
+                <source>admin.driver.has_orders</source>
+                <target>Turi užsak.</target>
             </trans-unit>
         </body>
     </file>

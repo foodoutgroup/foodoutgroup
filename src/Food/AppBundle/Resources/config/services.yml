@@ -5,6 +5,12 @@ services:
             - [container, [@service_container]]
         arguments: [@service_container]
 
+    food.app.utils.misc:
+        class: Food\AppBundle\Utils\Misc
+        calls:
+            - [container, [@service_container]]
+        arguments: [@service_container]
+
     food.app.utils.route:
         class: Food\AppBundle\Utils\Route
         calls:
@@ -14,3 +20,20 @@ services:
         class: Food\AppBundle\Service\StaticService
         arguments: [@service_container, user_id]
 
+    food.newsletter:
+        class: Food\AppBundle\Service\NewsletterService
+        arguments: [@service_container]
+
+    food.arcgis:
+        class: Food\AppBundle\Service\ArcGisService
+        calls:
+            - [setContainer, [@service_container]]
+
+    food.googlegis:
+        class: Food\AppBundle\Service\GoogleGisService
+        calls:
+            - [setContainer, [@service_container]]
+
+    food.mailer:
+        class: Food\AppBundle\Service\MailerMessagesService
+        arguments: [%mailer_api_key%]

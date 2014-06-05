@@ -1,7 +1,7 @@
-#food_sms_homepage:
-#    pattern:  /hello/{name}
-#    defaults: { _controller: FoodSmsBundle:Default:index }
 message_send:
     path:     /messaging-send/{messageId}
     defaults: { _controller: FoodSmsBundle:Send:send }
     methods:  [GET]
+delivery_report:
+    path:     /messaging-delivery/
+    defaults: { _controller: FoodSmsBundle:Delivery:index }

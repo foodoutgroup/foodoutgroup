@@ -6,10 +6,9 @@ services:
         arguments:
             - ~
             - Food\DishesBundle\Entity\Dish
-            - ~
+            - 'FoodDishesBundle:DishAdmin'
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
-           # - [ setTemplate, [edit, FoodDishesBundle:Dish:dish_admin.html.twig]]
 
     sonata.admin.dish.unit:
         class: Food\DishesBundle\Admin\DishUnitAdmin
@@ -18,7 +17,7 @@ services:
         arguments:
             - ~
             - Food\DishesBundle\Entity\DishUnit
-            - ~
+            - 'FoodDishesBundle:DishUnitAdmin'
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
 
@@ -78,17 +77,6 @@ services:
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
 
-    sonata.admin.place.point:
-        class: Food\DishesBundle\Admin\PlacePointAdmin
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.place_points" }
-        arguments:
-            - ~
-            - Food\DishesBundle\Entity\PlacePoint
-            - ~
-        calls:
-            - [ setTranslationDomain, [SonataAdminBundle]]
-
     sonata.admin.place.pointfull:
         class: Food\DishesBundle\Admin\PlacePointFullAdmin
         tags:
@@ -133,3 +121,69 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.dish.unit.category:
+            class: Food\DishesBundle\Admin\DishUnitCategoryAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.dish.unit.category" }
+            arguments:
+                - ~
+                - Food\DishesBundle\Entity\DishUnitCategory
+                - ~
+            calls:
+                - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.support:
+            class: Food\SupportBundle\Admin\SupportAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.order.support" }
+            arguments:
+                - ~
+                - Food\CartBundle\Entity\Cart
+                - 'FoodSupportBundle:SupportAdmin'
+            calls:
+                - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.newsletter_subscribers:
+            class: Food\AppBundle\Admin\NewsletterSubscriberAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.users.subscribers" }
+            arguments:
+                - ~
+                - Food\AppBundle\Entity\Subscribers
+                - ~
+            calls:
+                - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.order:
+            class: Food\OrderBundle\Admin\OrderAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.users.orders" }
+            arguments:
+                - ~
+                - Food\OrderBundle\Entity\Order
+                - ~
+            calls:
+                - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.dispatcher:
+                class: Food\AppBundle\Admin\DispatcherAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.order.dispatcher" }
+                arguments:
+                    - ~
+                    - Food\OrderBundle\Entity\Order
+                    - 'FoodAppBundle:DispatcherAdmin'
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.drivers:
+                class: Food\AppBundle\Admin\DriverAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.drivers" }
+                arguments:
+                    - ~
+                    - Food\AppBundle\Entity\Driver
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]

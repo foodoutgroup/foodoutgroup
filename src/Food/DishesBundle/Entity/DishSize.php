@@ -42,7 +42,7 @@ class DishSize
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=45)
+     * @ORM\Column(name="code", type="string", length=45, nullable=true)
      */
     private $code;
 

@@ -35,7 +35,7 @@ class Slug
     private $item_id;
 
     /**
-     * @var integer $lang_id
+     * @var string $lang_id
      *
      * @ORM\Column(name="lang_id", type="string", length=3)
      */
@@ -63,11 +63,11 @@ class Slug
     private $orig_name;
 
     /**
-     * @var integer $is_active
+     * @var boolean $active
      *
-     * @ORM\Column(name="is_active", type="smallint")
+     * @ORM\Column(name="is_active", type="boolean")
      */
-    private $is_active = 1;
+    private $active = true;
 
 
     /**
@@ -106,7 +106,7 @@ class Slug
     /**
      * Set lang_id
      *
-     * @param integer $langId
+     * @param string $langId
      * @return Slug
      */
     public function setLangId($langId)
@@ -119,7 +119,7 @@ class Slug
     /**
      * Get lang_id
      *
-     * @return integer
+     * @return string
      */
     public function getLangId()
     {
@@ -130,6 +130,7 @@ class Slug
      * Set type
      *
      * @param string $type
+     * @throws \InvalidArgumentException
      * @return Slug
      */
     public function setType($type)
@@ -186,12 +187,12 @@ class Slug
     /**
      * Set is_active
      *
-     * @param integer $isActive
+     * @param boolean $isActive
      * @return Slug
      */
-    public function setIsActive($isActive)
+    public function setActive($isActive)
     {
-        $this->is_active = $isActive;
+        $this->active = $isActive;
 
         return $this;
     }
@@ -199,11 +200,11 @@ class Slug
     /**
      * Get is_active
      *
-     * @return integer
+     * @return boolean
      */
-    public function getIsActive()
+    public function isActive()
     {
-        return $this->is_active;
+        return $this->getActive();
     }
 
     /**
@@ -227,5 +228,15 @@ class Slug
     public function getOrigName()
     {
         return $this->orig_name;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }

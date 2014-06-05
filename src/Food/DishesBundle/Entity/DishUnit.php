@@ -11,7 +11,6 @@ use Gedmo\Translatable\Translatable;
  *
  * @ORM\Table(name="dish_unit")
  * @ORM\Entity
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\DishUnitsLocalized")
  */
 class DishUnit implements Translatable
@@ -64,13 +63,6 @@ class DishUnit implements Translatable
     private $editedAt;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
-     */
-    private $deletedAt;
-
-    /**
      * @var \Food\UserBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
@@ -85,14 +77,6 @@ class DishUnit implements Translatable
      * @ORM\JoinColumn(name="edited_by", referencedColumnName="id")
      */
     private $editedBy;
-
-    /**
-     * @var \Food\UserBundle\Entity\User
-     *
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
-     */
-    private $deletedBy;
 
     /**
      * @var \Food\DishesBundle\Entity\DishUnitsLocalized
@@ -227,29 +211,6 @@ class DishUnit implements Translatable
     }
 
     /**
-     * Set deletedAt
-     *
-     * @param \DateTime $deletedAt
-     * @return DishUnit
-     */
-    public function setDeletedAt($deletedAt)
-    {
-        $this->deletedAt = $deletedAt;
-    
-        return $this;
-    }
-
-    /**
-     * Get deletedAt
-     *
-     * @return \DateTime 
-     */
-    public function getDeletedAt()
-    {
-        return $this->deletedAt;
-    }
-
-    /**
      * @param $locale
      */
     public function setTranslatableLocale($locale)
@@ -335,29 +296,6 @@ class DishUnit implements Translatable
     public function getEditedBy()
     {
         return $this->editedBy;
-    }
-
-    /**
-     * Set deletedBy
-     *
-     * @param \Food\UserBundle\Entity\User $deletedBy
-     * @return DishUnit
-     */
-    public function setDeletedBy(\Food\UserBundle\Entity\User $deletedBy = null)
-    {
-        $this->deletedBy = $deletedBy;
-    
-        return $this;
-    }
-
-    /**
-     * Get deletedBy
-     *
-     * @return \Food\UserBundle\Entity\User 
-     */
-    public function getDeletedBy()
-    {
-        return $this->deletedBy;
     }
 
     /**

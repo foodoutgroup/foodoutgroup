@@ -23,7 +23,6 @@
                             <td>{{ item.name }}</td>
                             <td>{{ item.logo }}</td>
                             <td>
-                                {# TODO #}
                                 {% if item.active == 1 %}
                                     <a href="{{ path('_places_status', {'id': item.id, 'status': 0}) }}#" class="btn btn-default btn-block">{% trans %}admin.places.list.actions.hide{% endtrans %}</a>
                                 {% else %}

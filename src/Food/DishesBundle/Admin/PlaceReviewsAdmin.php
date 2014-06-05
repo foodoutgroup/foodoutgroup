@@ -2,6 +2,7 @@
 namespace Food\DishesBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
+use Food\AppBundle\Filter\PlaceFilter;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -23,13 +24,15 @@ class PlaceReviewsAdmin extends FoodAdmin
 
         if ($this->isAdmin()) {
             $formMapper
-                ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
+                ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'))
+                ->add('rate', null, array('label' => 'admin.place.review.rate'));
         }
         $formMapper
             ->add('createdBy', 'entity', array(
                 'class' => 'Food\UserBundle\Entity\User',
                 'label' => 'admin.created_by',
-                'disabled' => $fieldDisabled
+                'disabled' => $fieldDisabled,
+                'required' => false,
             ))
             ->add('review', 'textarea', array('label' => 'admin.place.review'))
         ;
@@ -44,18 +47,18 @@ class PlaceReviewsAdmin extends FoodAdmin
         }
         $datagridMapper
             ->add('createdBy', null, array('label' => 'admin.created_by'))
-            ->add(
-                'createdAt',
-                'doctrine_orm_datetime_range',
-                array('label' => 'admin.created_at', 'format' => 'Y-m-d',),
-                null,
-                array(
-                    'widget' => 'single_text',
-                    'required' => false,
-                    'format' => 'Y-m-d',
-                    'attr' => array('class' => 'datepicker')
-                )
-            )
+//            ->add(
+//                'createdAt',
+//                'doctrine_orm_datetime_range',
+//                array('label' => 'admin.created_at', 'format' => 'Y-m-d',),
+//                null,
+//                array(
+//                    'widget' => 'single_text',
+//                    'required' => false,
+//                    'format' => 'Y-m-d',
+//                    'attr' => array('class' => 'datepicker')
+//                )
+//            )
         ;
     }
 
@@ -70,6 +73,7 @@ class PlaceReviewsAdmin extends FoodAdmin
                 ->add('place', 'entity');
         }
         $listMapper
+            ->add('rate', 'string', array('label' => 'admin.place.review.rate'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
             ->add('editedBy', 'entity', array('label' => 'admin.edited_by'))
@@ -81,5 +85,8 @@ class PlaceReviewsAdmin extends FoodAdmin
                 'label' => 'admin.actions'
             ))
         ;
+
+        $this->setPlaceFilter(new PlaceFilter($this->getSecurityContext()))
+            ->setPlaceFilterEnabled(true);
     }
 }

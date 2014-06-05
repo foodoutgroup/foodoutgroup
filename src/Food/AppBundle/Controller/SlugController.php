@@ -16,7 +16,6 @@ class SlugController extends Controller
 
         // if we have uppercase letters - permanently redirect to lowercase version
         if (preg_match('#[A-Z]#', $slug)) {
-            // @todo - Reik sutvarkyt
             $queryString = $request->getQueryString();
             $url = $this->generateUrl('food_slug', ['slug' => mb_strtolower($slug, 'utf-8')], true);
             return new RedirectResponse(sprintf('%s%s', $url, !empty($queryString) ? '?' . $queryString : ''), 301);
@@ -31,7 +30,7 @@ class SlugController extends Controller
         $slugRow = $slugUtil->getOneByName($slug, $request->getLocale());
 
         // check if slug is active. If not - redirect to next slug with 301
-        if (!empty($slugRow) && !$slugRow->getIsActive()) {
+        if (!empty($slugRow) && !$slugRow->isActive()) {
             $slugRow = $slugRepo->findOneBy([
                 'item_id' => $slugRow->getItemId(),
                 'lang_id' => $slugRow->getLangId(),
@@ -39,14 +38,34 @@ class SlugController extends Controller
                 'is_active' => true,
             ]);
             if (empty($slugRow)) {
-                throw new NotFoundHttpException('Sorry page does not exist!');
+                // Log da shit about slug problems :)
+                $errorMessage = sprintf(
+                    'User requested non-existant slug: "%s" Locale: "%s" IP: "%s" UserAgent: "%s"',
+                    $slug,
+                    $request->getLocale(),
+                    $request->getClientIp(),
+                    $request->headers->get('User-Agent')
+                );
+                $this->get('logger')->error($errorMessage);
+
+                throw new NotFoundHttpException('Sorry page "'.$slug.'" does not exist!');
             }
             return $this->redirect($this->generateUrl('food_slug', ['slug' => $slugRow->getName()]), 301);
         }
 
         if ($slugRow == null) {
             if ($slug != null) {
-                throw new NotFoundHttpException('Sorry page does not exist');
+                // Log da shit about slug problems :)
+                $errorMessage = sprintf(
+                    'User requested non-existant slug: "%s" Locale: "%s" IP: "%s" UserAgent: "%s"',
+                    $slug,
+                    $request->getLocale(),
+                    $request->getClientIp(),
+                    $request->headers->get('User-Agent')
+                );
+                $this->get('logger')->error($errorMessage);
+
+                throw new NotFoundHttpException('Sorry page "'.$slug.'" does not exist');
             }
         }
 
@@ -60,44 +79,25 @@ class SlugController extends Controller
                 break;
 
             case Slug::TYPE_PLACE:
-                return $this->forward('FoodDishesBundle:Place:index', ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]);
+                return $this->forward(
+                    'FoodDishesBundle:Place:index',
+                    ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName(), 'categoryId' => '']
+                );
                 break;
 
             case Slug::TYPE_FOOD_CATEGORY:
-                return $this->forward('FoodDishesBundle:FoodCategory:index', ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]);
+                $place = $this->get('food.places')->getPlaceByCategory($slugRow->getItemId());
+                $slugUtele = $this->get('food.dishes.utils.slug');
+                $placeSlug = $slugUtele->getSlugByItem($place->getId(), Slug::TYPE_PLACE);
+
+                return $this->forward(
+                    'FoodDishesBundle:Place:index',
+                    ['id' => $place->getId(), 'slug' => $placeSlug, 'categoryId' => $slugRow->getItemId()]
+                );
                 break;
 
             default:
                 break;
         }
-
-        /*
-        $slugUtil->set($slug);
-        $slugUtil->setMain($slugUtil->getTopCategorySlug($slug)); // @todo clean
-
-        // @todo - sukurti clean puslapius kurie suvirshkintu ir apdorotu viska
-        if ($slugRow->getType() == Slug::TYPE_CATEGORY) {
-            // since categories can have attached custom action and/or template, we select this category first
-            $category = $repo->findOneById($slugRow->getItemId());
-
-            $action = $category->getAction() ?: 'list';
-            $template = $category->getTemplate() ?: 'list.html.twig';
-
-            return $this->forward(
-                "FishParadoBundle:Category:{$action}",
-                ['template' => $template, 'category' => $category]
-            );
-        }
-
-        if ($slugRow->getType() == Slug::TYPE_BRAND) {
-            return $this->forward(
-                'FishParadoBundle:Brand:index', ['request' => $request, 'id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]
-            );
-        }
-
-        if ($slugRow->getType() == Slug::TYPE_PRODUCT) return $this->forward('FishParadoBundle:Product:index', ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]);
-
-        if ($slugRow->getType() == Slug::TYPE_TEXT) return $this->forward('FishParadoBundle:Text:item', ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]);
-        */
     }
 }

@@ -7,8 +7,6 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
 /**
- * TODO ar neturetu sita klase extendinti PlacePointAdmin????!!!!
- *
  * @package Food\DishesBundle\Admin
  */
 class PlacePointFullAdmin extends FoodAdmin
@@ -18,12 +16,25 @@ class PlacePointFullAdmin extends FoodAdmin
     {
         $formMapper
             ->add('address', 'text', array('label' => 'admin.point.address'))
+            ->add('company_code', 'text', array('label' => 'admin.point.company_code'))
             ->add('city', 'text', array('label' => 'admin.point.city'))
-            ->add('coords', 'text', array('label' => 'admin.point.coords'))
-            ->add('pickUp',null, array('label' => 'admin.point.pickup'))
-            ->add('delivery', null, array('label' => 'admin.point.delivery'))
+            ->add('phone', 'text', array('label' => 'admin.point.phone', 'attr' => array('placeholder'=>'3706xxxxxxx')))
+            ->add('alt_phone1', 'text', array('label' => 'admin.point.alt_phone', 'required' => false, 'attr' => array('placeholder'=>'370xxxxxxx')))
+            ->add('alt_phone2', 'text', array('label' => 'admin.point.alt_phone', 'required' => false, 'attr' => array('placeholder'=>'370xxxxxxx')))
+            ->add('email', 'text', array('label' => 'admin.point.email', 'required' => false))
+            ->add('alt_email1', 'text', array('label' => 'admin.point.alt_email', 'required' => false))
+            ->add('alt_email2', 'text', array('label' => 'admin.point.alt_email', 'required' => false))
+            //->add('coords', 'text', array('label' => 'admin.point.coords'))
             ->add('delivery_time', 'text', array('label' => 'admin.point.devtime'))
-            ->add('active', null, array('label' => 'admin.point.active'))
+            ->add('lat', 'text', array('label' => 'admin.point.lat','attr'=>array('placeholder'=>'xx.xxxxx')))
+            ->add('lon', 'text', array('label' => 'admin.point.lon','attr'=>array('placeholder'=>'xx.xxxxx')))
+            ->add('public',null, array('label' => 'admin.point.public', 'required' => false))
+            ->add('pickUp',null, array('label' => 'admin.point.pickup', 'required' => false))
+            ->add('delivery', null, array('label' => 'admin.point.delivery', 'required' => false))
+            ->add('active', null, array('label' => 'admin.point.active', 'required' => false))
+            ->add('fast', null, array('label' => 'admin.point.fast', 'required' => false))
+            ->add('allowCash', null, array('label' => 'admin.point.allow_cash', 'required' => false))
+            ->add('allowCard', null, array('label' => 'admin.point.allow_card', 'required' => false))
             ->with('admin.point.work_time')
             ->add('wd1_start', 'text', array('label' => 'admin.point.wd1_start'))
             ->add('wd1_end', 'text', array('label' => 'admin.point.wd_end'))
@@ -53,9 +64,13 @@ class PlacePointFullAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('place', null, array('label' => 'admin.point.place'))
             ->addIdentifier('address', 'string', array('label' => 'admin.point.address'))
             ->addIdentifier('city', 'string', array('label' => 'admin.point.city'))
-            ->addIdentifier('coords', 'string', array('label' => 'admin.point.coords'))
+            ->addIdentifier('active', 'boolean', array('label' => 'admin.point.active', 'editable' => true,))
+            ->addIdentifier('fast', 'boolean', array('label' => 'admin.point.fast', 'editable' => true))
+            ->add('allowCash', 'boolean', array('label' => 'admin.point.allow_cash', 'editable' => true))
+            ->add('allowCard', 'boolean', array('label' => 'admin.point.allow_card', 'editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),

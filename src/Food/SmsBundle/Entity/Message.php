@@ -45,6 +45,13 @@ class Message
     /**
      * @var string
      *
+     * @ORM\Column(name="smsc", type="string", length=45, nullable=true)
+     */
+    private $smsc = null;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
@@ -64,11 +71,11 @@ class Message
     private $receivedAt;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="dlr_id", type="integer", nullable=true)
+     * @ORM\Column(name="last_error_date", type="datetime", nullable=true)
      */
-    private $dlrId;
+    private $lastErrorDate;
 
     /**
      * @var string|null
@@ -76,6 +83,13 @@ class Message
      * @ORM\Column(name="last_sending_error", type="string", nullable=true)
      */
     private $lastSendingError = null;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="times_sent", type="integer")
+     */
+    private $timesSent = 0;
 
     /**
      * @var boolean
@@ -370,5 +384,74 @@ class Message
     public function getExtId()
     {
         return $this->extId;
+    }
+
+    /**
+     * Set lastErrorDate
+     *
+     * @param \DateTime $lastErrorDate
+     * @return Message
+     */
+    public function setLastErrorDate($lastErrorDate)
+    {
+        $this->lastErrorDate = $lastErrorDate;
+    
+        return $this;
+    }
+
+    /**
+     * Get lastErrorDate
+     *
+     * @return \DateTime 
+     */
+    public function getLastErrorDate()
+    {
+        return $this->lastErrorDate;
+    }
+
+    /**
+     * Set timesSent
+     *
+     * @param integer $timesSent
+     * @return Message
+     */
+    public function setTimesSent($timesSent)
+    {
+        $this->timesSent = $timesSent;
+    
+        return $this;
+    }
+
+    /**
+     * Get timesSent
+     *
+     * @return integer 
+     */
+    public function getTimesSent()
+    {
+        return $this->timesSent;
+    }
+
+    /**
+     * Set smsc
+     *
+     * @param string $smsc
+     * @return Message
+     */
+    public function setSmsc($smsc)
+    {
+        $this->smsc = $smsc;
+    
+        return $this;
+    }
+
+    /**
+     * Get smsc
+     *
+     * @return string 
+     */
+    public function getSmsc()
+    {
+        return $this->smsc;
     }
 }

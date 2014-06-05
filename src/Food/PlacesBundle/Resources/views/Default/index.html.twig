@@ -1,1 +1,91 @@
-Hello {{ name }}!
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+{% block title %}{% trans %}general.places{% endtrans %} - {{ page_title }}{% endblock %}
+
+{% block jscode %}
+    $(document).ready(function() {
+        $(".filters-list input").on('ifChecked', function(event) {
+            $(this).attr('checked', true);
+            submitKitchens();
+        });
+
+        $(".filters-list input").on('ifUnchecked', function(event) {
+            $(this).attr('checked', false);
+            submitKitchens();
+        });
+
+        $('.clear-filter-link').click(function() {
+            $('.content-lefter input').iCheck('uncheck');
+        });
+
+        function submitKitchens() {
+
+            var $filters = $(".filters-list input:checked");
+
+            var params = {kitchens: '', filters: ''};
+            var tmpName = "";
+            for(i = 0; i < $filters.length; i++) {
+                tmpName = $($filters[i]).attr('name').replace("[]","");
+                if (params[tmpName]!="") {
+                    params[tmpName]+=",";
+                }
+                params[tmpName] += $($filters[i]).val();
+            }
+
+            $.post('{{ path('food_places_filter') }}', params, function(resp) {
+                var $container = $('.content-righter');
+                $container.find('.restaurants-list').remove();
+                $container.append(resp);
+
+                $('.restoran-rating').raty({
+                    readOnly: true,
+                    score: function() {
+                        return $(this).attr('data-stars');
+                    },
+                    path: '/bundles/foodapp/images/'
+                });
+            });
+        }
+    });
+{% endblock %}
+{% block body %}
+    <div class="site-center">
+    <div class="site-block">
+    <div class="page-path clearfix">{#<a href="{{ path('food_homepage') }}">Pradžia</a>#}</div>{# TODO breadcrumbs <a href="#">Restoranai arti Žirmūnų</a>#}
+    <div class="page-title">
+        <h1 class="clearfix"><span class="place-counter"></span><a href="{{ path('food_homepage') }}" class="change-location-link">{% trans %}places.change_address{% endtrans %}</a></h1>
+        {% if recommended==0 and ( location == null or (location.not_found == true and location.street_found==true)) %}
+            <div class="alert alert2 alert-warning"><li>{% trans %}places.is_not_detailed_search{% endtrans %}</li></div>
+        {% endif %}
+    </div>
+    <div class="clearfix">
+        <div class="content-lefter">
+            {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {})) }}
+            {{ render(controller('FoodDishesBundle:Place:filtersList')) }}
+            <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a>
+        </div>
+        <div class="content-righter">
+            {#
+            <div class="restaurants-list-controls clearfix">
+                <form class="list-search-form fl">
+                    <input type="text" placeholder="{% trans %}places.search_placeholder{% endtrans %}">
+                    <input type="submit" value="">
+                </form>
+                <div class="list-top-filters clearfix fr">
+                    <div class="label">{% trans %}places.order_by{% endtrans %}:</div>
+                    <a href="#">{% trans %}places.sort_by_relevance{% endtrans %}</a>
+                    <a href="#" class="selected">{% trans %}places.sort_by_rating{% endtrans %}</a>
+                    <a href="#">{% trans %}places.sort_by_delivery_price{% endtrans %}</a>
+                    <a href="#">{% trans %}places.sort_by_distance{% endtrans %}</a>
+                </div>
+            </div>
+            #}
+            {{ render(controller('FoodPlacesBundle:Default:list', {'recommended':recommended})) }}
+        </div>
+    </div>
+
+        {% include 'FoodAppBundle:Default:bottom_block.html.twig' %}
+
+    </div>
+    </div>
+{% endblock %}

@@ -76,6 +76,8 @@ class UserAdmin extends SonataUserAdmin {
     protected function configureFormFields(\Sonata\AdminBundle\Form\FormMapper $formMapper)
     {
         $formMapper
+            ->add('firstname', 'text', array('label' => 'admin.users.firstname'))
+            ->add('lastname', 'text', array('label' => 'admin.users.lastname', 'required' => false))
             ->add('username', 'text', array('label' => 'admin.users.username'))
             ->add('email', 'text', array('label' => 'admin.users.email'))
             ->add('place', 'entity', array(
@@ -99,7 +101,11 @@ class UserAdmin extends SonataUserAdmin {
                         'required' => false,
                         'label' => 'admin.users.roles',
                         'choices' => array(
-                            'ROLE_ADMIN: ROLE_MODERATOR', 'ROLE_MODERATOR', 'ROLE_USER',
+                            'ROLE_ADMIN' => 'ROLE_ADMIN: ROLE_MODERATOR',
+                            'ROLE_MODERATOR' => 'ROLE_MODERATOR',
+                            'ROLE_SUPPORT' => 'ROLE_SUPPORT',
+                            'ROLE_DISPATCHER' => 'ROLE_DISPATCHER',
+                            'ROLE_USER' => 'ROLE_USER',
                         )
                     )
                 )

@@ -6,15 +6,17 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Food\AppBundle\Entity\Uploadable;
+use Gedmo\Translatable\Translatable;
 
 /**
  * Client
  *
- * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Table(name="place")
+ * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\PlaceRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\PlaceLocalized")
  */
-class Place extends Uploadable
+class Place extends Uploadable implements Translatable
 {
     /**
      * @var integer
@@ -31,6 +33,20 @@ class Place extends Uploadable
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
+
+    /**
+     * @var string
+     * @Gedmo\Translatable
+     * @ORM\Column(name="slogan", type="string", length=255, nullable=true)
+     */
+    private $slogan;
+
+    /**
+     * @var string
+     * @Gedmo\Translatable
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description = null;
 
     /**
      * @var string
@@ -52,7 +68,26 @@ class Place extends Uploadable
     private $active;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="recommended", type="boolean")
+     */
+    private $recommended;
+
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="new", type="boolean")
+     */
+    private $new;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Kitchen", inversedBy="places")
+     * @ORM\JoinTable(name="place_kitchen",
+     *      joinColumns={@ORM\JoinColumn(name="place_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="kitchen_id", referencedColumnName="id")}
+     *      )
      */
     private $kitchens;
 
@@ -70,11 +105,67 @@ class Place extends Uploadable
 
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="delivery_price", type="integer")
+     */
+    private $deliveryPrice;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="delivery_time", type="string")
+     */
+    private $deliveryTime;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="delivery_time_info", type="string", nullable=true)
+     */
+    private $deliveryTimeInfo;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="cart_minimum", type="integer")
+     */
+    private $cartMinimum;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="self_delivery", type="boolean")
+     */
+    private $selfDelivery = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="min_on_self", type="boolean")
+     */
+    private $minimalOnSelfDel = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="FoodCategory", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
      *
      * @var ArrayCollection
      */
     private $categories;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="PlaceReviews", mappedBy="place")
+     */
+    private $reviews;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="average_rating", type="float")
+     */
+    private $averageRating = 0;
 
     /**
      * @ORM\OneToMany(targetEntity="\Food\UserBundle\Entity\User", mappedBy="place")
@@ -126,6 +217,21 @@ class Place extends Uploadable
      */
     private $deletedBy;
 
+    protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
+    protected $boxSize = array('w' => 130, 'h' => 86);
+
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
+
+    /**
+     * @ORM\OneToMany(targetEntity="PlaceLocalized", mappedBy="object", cascade={"persist", "remove"})
+     **/
+    private $translations;
+
     /**
      * Returns place name
      *
@@ -149,6 +255,22 @@ class Place extends Uploadable
         $this->localized = new \Doctrine\Common\Collections\ArrayCollection();
         $this->points = new \Doctrine\Common\Collections\ArrayCollection();
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * @return array
+     */
+    public function getBoxSize()
+    {
+        return $this->boxSize;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResizeMode()
+    {
+        return $this->resizeMode;
     }
 
     /**
@@ -394,7 +516,7 @@ class Place extends Uploadable
     /**
      * Get points
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return PlacePoint[]
      */
     public function getPoints()
     {
@@ -613,5 +735,411 @@ class Place extends Uploadable
     public function getDishes()
     {
         return $this->dishes;
+    }
+
+    /**
+     * Add dishes
+     *
+     * @param \Food\DishesBundle\Entity\Dish $dishes
+     * @return Place
+     */
+    public function addDish(\Food\DishesBundle\Entity\Dish $dishes)
+    {
+        $this->dishes[] = $dishes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove dishes
+     *
+     * @param \Food\DishesBundle\Entity\Dish $dishes
+     */
+    public function removeDish(\Food\DishesBundle\Entity\Dish $dishes)
+    {
+        $this->dishes->removeElement($dishes);
+    }
+
+    /**
+     * Add categories
+     *
+     * @param \Food\DishesBundle\Entity\FoodCategory $categories
+     * @return Place
+     */
+    public function addCategory(\Food\DishesBundle\Entity\FoodCategory $categories)
+    {
+        $this->categories[] = $categories;
+    
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \Food\DishesBundle\Entity\FoodCategory $categories
+     */
+    public function removeCategory(\Food\DishesBundle\Entity\FoodCategory $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Add reviews
+     *
+     * @param \Food\DishesBundle\Entity\PlaceReviews $reviews
+     * @return Place
+     */
+    public function addReview(\Food\DishesBundle\Entity\PlaceReviews $reviews)
+    {
+        $this->reviews[] = $reviews;
+    
+        return $this;
+    }
+
+    /**
+     * Remove reviews
+     *
+     * @param \Food\DishesBundle\Entity\PlaceReviews $reviews
+     */
+    public function removeReview(\Food\DishesBundle\Entity\PlaceReviews $reviews)
+    {
+        $this->reviews->removeElement($reviews);
+    }
+
+    /**
+     * Get reviews
+     *
+     * @return \Food\DishesBundle\Entity\PlaceReviews[]
+     */
+    public function getReviews()
+    {
+        return $this->reviews;
+    }
+
+
+    /**
+     * Get average rating :) meh....
+     * @return int
+     */
+    public function getRating()
+    {
+        $reviews = $this->getReviews();
+        $sums = 0;
+        $counts = 0;
+        foreach ($reviews as $rev) {
+            $sums += $rev->getRate();
+            $counts++;
+        }
+        if ($sums == 0) {
+            return 0;
+        }
+        return floor(($sums / $counts) * 10) / 10;
+    }
+
+    /**
+     * Set slogan
+     *
+     * @param string $slogan
+     * @return Place
+     */
+    public function setSlogan($slogan)
+    {
+        $this->slogan = $slogan;
+    
+        return $this;
+    }
+
+    /**
+     * Get slogan
+     *
+     * @return string 
+     */
+    public function getSlogan()
+    {
+        return $this->slogan;
+    }
+
+    /**
+     * Set new
+     *
+     * @param boolean $new
+     * @return Place
+     */
+    public function setNew($new)
+    {
+        $this->new = $new;
+    
+        return $this;
+    }
+
+    /**
+     * Get new
+     *
+     * @return boolean 
+     */
+    public function getNew()
+    {
+        return $this->new;
+    }
+
+    /**
+     * Set deliveryPrice
+     *
+     * @param integer $deliveryPrice
+     * @return Place
+     */
+    public function setDeliveryPrice($deliveryPrice)
+    {
+        $this->deliveryPrice = $deliveryPrice;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryPrice
+     *
+     * @return integer 
+     */
+    public function getDeliveryPrice()
+    {
+        return $this->deliveryPrice;
+    }
+
+    /**
+     * Set deliveryTime
+     *
+     * @param string $deliveryTime
+     * @return Place
+     */
+    public function setDeliveryTime($deliveryTime)
+    {
+        $this->deliveryTime = $deliveryTime;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryTime
+     *
+     * @return string 
+     */
+    public function getDeliveryTime()
+    {
+        return $this->deliveryTime;
+    }
+
+    /**
+     * Set cartMinimum
+     *
+     * @param integer $cartMinimum
+     * @return Place
+     */
+    public function setCartMinimum($cartMinimum)
+    {
+        $this->cartMinimum = $cartMinimum;
+    
+        return $this;
+    }
+
+    /**
+     * Get cartMinimum
+     *
+     * @return integer 
+     */
+    public function getCartMinimum()
+    {
+        return $this->cartMinimum;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Place
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Add translations
+     *
+     * @param \Food\DishesBundle\Entity\PlaceLocalized $translations
+     * @return Place
+     */
+    public function addTranslation(\Food\DishesBundle\Entity\PlaceLocalized $translations)
+    {
+        if (method_exists($this->translations, 'contains')) {
+            if (!$this->translations->contains($translations)) {
+                $this->translations[] = $translations;
+                $translations->setObject($this);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove translations
+     *
+     * @param \Food\DishesBundle\Entity\PlaceLocalized $translations
+     */
+    public function removeTranslation(\Food\DishesBundle\Entity\PlaceLocalized $translations)
+    {
+        $this->translations->removeElement($translations);
+    }
+
+    /**
+     * Get translations
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * @param mixed $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Set averageRating
+     *
+     * @param float $averageRating
+     * @return Place
+     */
+    public function setAverageRating($averageRating)
+    {
+        $this->averageRating = $averageRating;
+    
+        return $this;
+    }
+
+    /**
+     * Get averageRating
+     *
+     * @return float
+     */
+    public function getAverageRating()
+    {
+        return $this->averageRating;
+    }
+
+    /**
+     * Set recommended
+     *
+     * @param boolean $recommended
+     * @return Place
+     */
+    public function setRecommended($recommended)
+    {
+        $this->recommended = $recommended;
+    
+        return $this;
+    }
+
+    /**
+     * Get recommended
+     *
+     * @return boolean 
+     */
+    public function getRecommended()
+    {
+        return $this->recommended;
+    }
+
+    /**
+     * Set selfDelivery
+     *
+     * @param boolean $selfDelivery
+     * @return Place
+     */
+    public function setSelfDelivery($selfDelivery)
+    {
+        $this->selfDelivery = $selfDelivery;
+    
+        return $this;
+    }
+
+    /**
+     * Get selfDelivery
+     *
+     * @return boolean 
+     */
+    public function getSelfDelivery()
+    {
+        return $this->selfDelivery;
+    }
+
+    /**
+     * Set deliveryTimeInfo
+     *
+     * @param string $deliveryTimeInfo
+     * @return Place
+     */
+    public function setDeliveryTimeInfo($deliveryTimeInfo)
+    {
+        $this->deliveryTimeInfo = $deliveryTimeInfo;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryTimeInfo
+     *
+     * @return string 
+     */
+    public function getDeliveryTimeInfo()
+    {
+        return $this->deliveryTimeInfo;
+    }
+
+    /**
+     * Set minimalOnSelfDel
+     *
+     * @param boolean $minimalOnSelfDel
+     * @return Place
+     */
+    public function setMinimalOnSelfDel($minimalOnSelfDel)
+    {
+        $this->minimalOnSelfDel = $minimalOnSelfDel;
+    
+        return $this;
+    }
+
+    /**
+     * Get minimalOnSelfDel
+     *
+     * @return boolean 
+     */
+    public function getMinimalOnSelfDel()
+    {
+        return $this->minimalOnSelfDel;
     }
 }

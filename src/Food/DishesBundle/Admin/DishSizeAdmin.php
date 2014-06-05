@@ -1,11 +1,12 @@
 <?php
 namespace Food\DishesBundle\Admin;
 
-use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Admin\Admin as FoodAdmin;
+use Food\AppBundle\Filter\PlaceFilter;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Security\Acl\Exception\Exception;
 
 class DishSizeAdmin extends FoodAdmin
 {
@@ -23,9 +24,6 @@ class DishSizeAdmin extends FoodAdmin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
-        if ($this->isAdmin()) {
-            $formMapper->add('unit', 'entity', array('group_by' => 'group', 'class' => 'Food\DishesBundle\Entity\DishUnit', 'multiple' => false));
-        } else {
             $formMapper->add(
                 'unit',
                 'entity',
@@ -35,13 +33,29 @@ class DishSizeAdmin extends FoodAdmin
                     'multiple' => false,
                     'query_builder' => function ($repository)
                         {
+                            $uid = $this->getRequest()->get('uniqid');
+                            $req = $this->getRequest()->get($uid);
+
+                            $place = null;
+                            if (!empty($req['place'])) {
+                                $place = $req['place'];
+                            } elseif (!$this->isAdmin()) {
+                                $place = $this->getUser()->getPlace()->getId();
+                            }
+                            if (empty($place)) {
+                                // @todo - sugalvoti teisinga
+                                // The EPIC FAIL OF FAILS :(
+                                $dishId = $this->getRequest()->get('id');
+                                $dish = $this->modelManager->getEntityManager('Food\DishesBundle\Entity\Dish')->getRepository('FoodDishesBundle:Dish')->findOneById($dishId);
+                                $place = $dish->getPlace()->getId();
+                            }
+
                             return $repository->createQueryBuilder('s')
                                 ->where('s.place = ?1')
-                                ->setParameter(1, $this->getUser()->getPlace()->getId());
+                                ->setParameter(1, $place);
                         }
                 )
             );
-        }
 
         $formMapper->add('code')
             ->add('price')
@@ -81,5 +95,8 @@ class DishSizeAdmin extends FoodAdmin
                 'label' => 'admin.actions'
             ))
         ;
+
+        $this->setPlaceFilter(new PlaceFilter($this->getSecurityContext()))
+            ->setPlaceFilterEnabled(true);
     }
 }

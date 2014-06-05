@@ -24,9 +24,12 @@ class StaticContentAdmin extends FoodAdmin
                 'translatable_class' => 'Food\AppBundle\Entity\StaticContent',
                 'fields' => array(
                     'title' => array('label' => 'admin.static.title'),
-                    'content' => array('label' => 'admin.static.content')
+                    'content' => array('label' => 'admin.static.content', 'attr' => array('class' => 'ckeditor_custom'), )
                 )
-            ));
+            ))
+            ->add('order', 'integer', array('label' => 'admin.static.order_no'))
+            ->add('active', 'checkbox', array('label' => 'admin.static.active', 'required' => false))
+            ->add('visible', 'checkbox', array('label' => 'admin.static.visible', 'required' => false));
         ;
     }
 
@@ -42,6 +45,8 @@ class StaticContentAdmin extends FoodAdmin
         $datagridMapper
             ->add('title', null, array('label' => 'admin.static.title'))
             ->add('editedAt', null, array('label' => 'admin.edited_at'))
+            ->add('active', null, array('label' => 'admin.static.active'))
+            ->add('visible', null, array('label' => 'admin.static.visible'))
         ;
     }
 
@@ -56,12 +61,16 @@ class StaticContentAdmin extends FoodAdmin
     {
         $listMapper
             ->addIdentifier('title', 'string', array('label' => 'admin.static.title'))
+            ->add('order', 'integer', array('label' => 'admin.static.order_no_short', 'editable' => true))
+            ->add('active', null, array('label' => 'admin.static.active', 'editable' => true))
+            ->add('visible', null, array('label' => 'admin.static.visible', 'editable' => true))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
-            ->add('editedBy', null, array('label' => 'admin.edited_by'))
+//            ->add('editedBy', null, array('label' => 'admin.edited_by'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
                     'edit' => array(),
+                    'delete' => array(),
                 ),
                 'label' => 'admin.actions'
             ))
@@ -75,7 +84,7 @@ class StaticContentAdmin extends FoodAdmin
      */
     public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
     {
-        $collection->clearExcept(array('list', 'edit', 'show'));
+        $collection->clearExcept(array('list', 'edit', 'show', 'create', 'delete'));
     }
 
     /**
@@ -100,6 +109,8 @@ class StaticContentAdmin extends FoodAdmin
     public function postPersist($object)
     {
         $this->fixSlugs($object);
+
+        parent::postPersist($object);
     }
 
     /**
@@ -110,6 +121,8 @@ class StaticContentAdmin extends FoodAdmin
     public function postUpdate($object)
     {
         $this->fixSlugs($object);
+
+        parent::postUpdate($object);
     }
 
     /**

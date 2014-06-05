@@ -2,15 +2,16 @@ set :application, "skanu"
 set :deploy_to,   "/home/labai.skanu.lt/"
 set :app_path,    "app"
 
-set :repository,  "git@github.com:mid/skanu.lt.git"
+set :repository,  "git@github.com:Foodout/skanu.lt.git"
 set :scm,         :git
 
 set :model_manager, "doctrine"
-set :branch, "master"
+set :branch, "design"
 
 # multi-stage environment
-set :stages,        %w(production staging)
-set :default_stage, "staging"
+set :stages,        %w(production staging sandbox)
+# isijungiam kada reik :)
+set :default_stage, "sandbox"
 set :stage_dir,     "app/config/deploy"
 require 'capistrano/ext/multistage'
 
@@ -36,11 +37,11 @@ ssh_options[:port] = 22
 default_run_options[:pty] = true
 
 set :shared_files,      ["app/config/parameters.yml"]
-set :shared_children,     ["bin", app_path + "/logs", web_path + "/uploads", web_path + "/images", "web/images"]
+set :shared_children,     ["bin", app_path + "/logs", web_path + "/uploads", web_path + "/images", "web/images", app_path + "/var"]
 set :writable_dirs,     ["bin", app_path + "/cache", app_path + "/logs", web_path + "/images", app_path + "/cache/dev", app_path + "/cache/prod", web_path + "/images/cache"]
 set :composer_options, "--verbose"
 # Testing purpose
-#set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader --no-progress"
+# set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader --no-progress"
 
 set :keep_releases, 5
 
@@ -52,10 +53,11 @@ namespace :deploy do
     end
 end
 
+# Kolkas nevalom kol hostexas nesutvarke mums teisiu!
 after "deploy", "deploy:cleanup"
 after "deploy", "deploy:chmod_things"
 # Uncomment kai bus airbrake
-#after "deploy:cleanup", "deploy:airbrake_notify"
+# after "deploy:cleanup", "deploy:airbrake_notify"
 after "deploy:rollback", "symfony:cache:clear"
 
 # Be more verbose by uncommenting the following line

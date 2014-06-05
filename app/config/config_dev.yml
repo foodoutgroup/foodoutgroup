@@ -1,6 +1,10 @@
 imports:
     - { resource: config.yml }
 
+parameters:
+  evp.test_payments: 1
+  domain: "skanu"
+
 framework:
     router:
         resource: "%kernel.root_dir%/config/routing_dev.yml"
@@ -23,6 +27,10 @@ monolog:
         chromephp:
             type:  chromephp
             level: info
+        console:
+            type:   stream
+            path:  %kernel.logs_dir%/console.log
+            level: debug
 
 assetic:
     use_controller: true

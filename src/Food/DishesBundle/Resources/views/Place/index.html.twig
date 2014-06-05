@@ -1,20 +1,208 @@
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
+{% block title %}{{ place.name }} - {{ page_title }}{% endblock %}
 
 {% block body %}
-    <div class="col-xs-12 col-sm-10">
-        <div class="jumbotron">
-            <h1>{{ place.name }}</h1>
-                <ul class="list-inline">
-                    {% for category in place.categories %}
-                        <li class="active"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(category.id, 'food_category') }) }}">{{ category.name }}</a></li>
-                    {% endfor %}
-                </ul>
+    {% javascripts '@FoodAppBundle/Resources/public/js_main/place.js' %}
+    <script src="{{ asset_url }}"></script>
+    <script type="application/javascript">
+        Place.listTypeSaveUrl = '{{ path('food_place_menu_layout') }}';
+        Place.placePointDataUrl = '{{ path('food_place_point_data') }}';
+        Place.translations = {
+            'payments_cash': '{% trans %}places.payments.cash{% endtrans %}',
+            'payments_card': '{% trans %}places.payments.card{% endtrans %}'
+        };
+    </script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api }}&sensor=false"></script>
+    {% endjavascripts %}
+
+    {% include 'FoodDishesBundle:Place:dish_cart_partial.html.twig' %}
+
+
+{#
+    <!-- Add fancyBox main JS and CSS files -->
+    <script type="text/javascript" src="/bundles/foodapp/scripts/fancy/jquery.fancybox.js?v=2.1.5"></script>
+    <link rel="stylesheet" type="text/css" href="/bundles/foodapp/scripts/fancy/jquery.fancybox.css?v=2.1.5" media="screen" />
+
+    <!-- Add Button helper (this is optional) -->
+    <link rel="stylesheet" type="text/css" href="/bund;es/foodapp/scripts/fancy/helpers/jquery.fancybox-buttons.css?v=1.0.5" />
+    <script type="text/javascript" src="/bundles/foodapp/scripts/fancy/helpers/jquery.fancybox-buttons.js?v=1.0.5"></script>
+
+    <!-- Add Thumbnail helper (this is optional) -->
+    <link rel="stylesheet" type="text/css" href="/bundles/foodapp/scripts/fancy/helpers/jquery.fancybox-thumbs.css?v=1.0.7" />
+    <script type="text/javascript" src="/bundles/foodapp/scripts/fancy/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+
+    <!-- Add Media helper (this is optional) -->
+    <script type="text/javascript" src="/bundles/foodapp/scripts/fancy/helpers/jquery.fancybox-media.js?v=1.0.6"></script>
+#}
+    <div style="background-image: url(/bundles/foodapp/images/inner-bg.jpg);" class="site-center image-top">
+        <div class="site-block">
+            <div class="page-path clearfix"><a href="{{ path('food_homepage') }}">{% trans %}places.home{% endtrans %}</a>{# TODO breadcrumbs <a href="#">Restoranai arti Žirmūnų</a>#}<a href="#">{{ place.name }}</a></div>
+            <div class="page-title">
+                <h1 class="clearfix"><span>{{ place.name }}{% if place.slogan is not empty %} - {{ place.slogan }}{% endif %}</span>
+                    <div data-stars="{{ place.averageRating }}" class="restoran-rating fl"></div>
+                </h1>
+            </div>
+                <div class="clearfix">
+                    <div class="content-lefter-big">
+                        <div id="detailed-restaurant" class="detailed-resturant">
+                        <ul>
+                            <li><a href="#detailed-restaurant-menu">{% trans %}places.menu{% endtrans %}</a></li>
+                            <li><a href="#detailed-restaurant-review">{% trans %}places.reviews{% endtrans %}</a></li>
+                            <li class="last restaurant-info-tab"><a href="#detailed-restaurant-info">{% trans %}places.information{% endtrans %}</a></li>
+                        </ul>
+                        <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
+                            <div class="clearfix">
+                                <div class="menu-lefter" id="catmnu">
+                                    <h4>{% trans %}places.food_categories{% endtrans %}:</h4>
+                                    <ul class="menu">
+                                        {% for category in placeCategories %}
+                                            <li {# {% if category.id == selectedCategory.id %} class="active"{% endif %} #}>
+                                                <a href="#{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}<span>{{ category.activeDishesCount }}</span></a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                        {# Meniu #}
+                                <div class="menu-righter">
+                                    {% if placePointsAll|length == 1 %}
+                                        {% if order_service.isTodayWork(placePointsAll[0]) == false %}
+                                            <div class="alert alert-danger">
+                                                {{ order_service.workTimeErrorsReturn(placePointsAll[0])|trans }}
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                    <div class="menu-title clearfix">
+                                        <h2 class="fl">{% trans %}places.dishes_title{% endtrans %}{# {{ selectedCategory.name }} #}</h2>
+                                        <div class="view-type clearfix">
+                                            {% if listType == 'thumbs' %}
+                                            <a href="#" class="ico-thumbs active"></a><a href="#" class="ico-list"></a>
+                                            {% else %}
+                                            <a href="#" class="ico-thumbs"></a><a href="#" class="ico-list active"></a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {# {{ render(controller('FoodDishesBundle:FoodCategory:dishList', {'categoryId': selectedCategory.id, 'listType': listType})) }} #}
+                                    {% for dishCategory in placeCategories %}
+                                        {{ render(controller('FoodDishesBundle:FoodCategory:dishList', {'categoryId': dishCategory.id, 'category': dishCategory, 'listType': listType})) }}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {# Atsiliepimai #}
+                        <div id="detailed-restaurant-review" class="detailed-restaurant-review">
+                            <div class="review-title clearfix">
+                                <h3>{{ place.reviews.count }} {% transchoice place.reviews.count %}places.review_choice{% endtranschoice %}</h3>
+                                {% if wasHere and not alreadyWrote %}
+                                    <a href="#place-review-popup" class="fancy-box">{% trans %}places.add_review{% endtrans %}</a>
+                                {% endif %}
+                                {{ include('FoodDishesBundle:Place:review-popup.html.twig') }}
+                            </div>
+                            <div class="review-list">
+                                {% for review in place.reviews %}
+                                <div class="review-item clearfix">
+                                    <div class="review-person"><img src="/bundles/foodapp/images/person.png">
+                                        <p class="name">{{ review.createdBy.getFirstname }}</p>
+                                        {% if review.createdBy.getDefaultAddress %}
+                                            <p class="location">{{ review.createdBy.getDefaultAddress.city }}</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="review-baloon">
+                                        <div class="nip"></div>
+                                        <p class="text">{{ review.review }}</p>
+                                        <div class="clearfix">
+                                            <div data-stars="{{ review.rate }}" class="restoran-rating fl"></div>
+                                            <div class="date fr">{{ review.createdAt|localizeddate('medium', 'none', locale) }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {#<div class="paginator clearfix"><a href="#" class="prev"></a><a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="next"></a></div>#}
+                        </div>
+                        {# Restorano informacija #}
+                        <div id="detailed-restaurant-info" class="detailed-restaurant-info">
+                            <h3>{% trans %}places.about_place{% endtrans %}</h3>
+                            <div class="clearfix">
+                                <div class="restaurant-info-lefter">
+                                    <ul class="menu">
+                                        <li class="ico-kitchen">
+                                            <strong>{% trans %}places.kitchen{% endtrans %}:</strong>
+                                            {% for kitchen in place.kitchens %}
+                                                {% if loop.index != 1 %}, {% endif %}{{ kitchen.name }}
+                                            {% endfor %}
+                                        </li>
+                                        <li class="ico-time">
+                                            <strong>{% trans %}places.delivery_time{% endtrans %}:</strong>{{ place.deliveryTime }}
+                                            {% if place.deliveryTimeInfo is not empty %}
+                                                <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
+                                            {% endif %}
+                                        </li>
+                                        <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>{{ place.deliveryPrice }} {{ currency_display }}</li>
+                                        <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>{{ place.cartMinimum }} {{ currency_display }}</li>
+                                        <li class="ico-payments hidden"><strong>{% trans %}places.payment_types{% endtrans %}:</strong><span class="payments-data"></span></li>
+                                    </ul>
+                                </div>
+                                <div class="restaurant-info-righter simple-content">
+                                    <p>{{ place.description }}</p>
+                                    {% if placePoints is not empty %}
+                                        <select class="custom-select">
+                                            {% for point in placePoints%}
+                                                <option value="{{ point.id }}">{{ point.address }}, {{ point.city }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <div class="location-work-hours clearfix">
+                                            <div class="lefter" id="restaurant-map-location" style="height: 300px;width: 300px;"></div>
+                                            <div class="righter">
+                                                <table class="work-times">
+                                                    <tr>
+                                                        <td>{% trans %}general.monday{% endtrans %}</td>
+                                                        <td class="tar wd1"><span>10:00 - 24:00</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{% trans %}general.tuesday{% endtrans %}</td>
+                                                        <td class="tar wd2"> <span>10:00 - 24:00</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{% trans %}general.wednesday{% endtrans %}</td>
+                                                        <td class="tar wd3"> <span>10:00 - 24:00</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{% trans %}general.thursday{% endtrans %}</td>
+                                                        <td class="tar wd4"> <span>10:00 - 24:00</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{% trans %}general.friday{% endtrans %}</td>
+                                                        <td class="tar wd5"> <span>10:00 - 24:00</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{% trans %}general.saturday{% endtrans %}</td>
+                                                        <td class="tar wd6"> <span>10:00 - 24:00</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{% trans %}general.sunday{% endtrans %}</td>
+                                                        <td class="tar wd7"> <span>10:00 - 24:00</span></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-righter-small">
+                    {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place })) }}
+                </div>
+            </div>
+            {% include 'FoodAppBundle:Default:bottom_block.html.twig' %}
         </div>
-        <div class="row">
+    </div>
 
-            Some internal stuff
-
-        </div><!--/row-->
-    </div><!--/span-->
+    <script type="application/javascript">
+        $(document).ready(function(){
+            Place.initWindowScroll();
+        });
+    </script>
 {% endblock %}

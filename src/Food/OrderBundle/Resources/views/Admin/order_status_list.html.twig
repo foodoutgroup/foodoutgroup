@@ -1,0 +1,29 @@
+{# Uzsakymo statuso ir statuso istorijos ispiesimas prie sonatos order show formos #}
+<td colspan="2">
+    <b>{{ field_description.options.label|trans({}, 'SonataAdminBundle') }}:</b> {{ ( 'admin.dispatcher.order_status.' ~ object.orderStatus)|trans({}, 'SonataAdminBundle') }}
+    <br />
+    <br />
+    <div class="collapsable">
+        <h4 class="padded">{{ 'admin.order.order_status.log'|trans({}, 'SonataAdminBundle') }}</h4>
+        <div id="field_container_details" class="field-container">
+            <table>
+                <tr>
+                    <th>{{ 'admin.order.status.date'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.status.old_status'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.status.new_status'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.status.source'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.status.message'|trans({}, 'SonataAdminBundle') }}</th>
+                </tr>
+            {% for statusInfo in object.orderStatusLog %}
+                <tr>
+                    <td style="white-space: nowrap">{{ statusInfo.eventDate|date("Y-m-d H:i:s") }}</td>
+                    <td>{{ ( 'admin.dispatcher.order_status.' ~ statusInfo.oldStatus)|trans({}, 'SonataAdminBundle') }}</td>
+                    <td>{{ ( 'admin.dispatcher.order_status.' ~ statusInfo.newStatus)|trans({}, 'SonataAdminBundle') }}</td>
+                    <td>{{ ( 'admin.order.status.source.' ~ statusInfo.source)|trans({}, 'SonataAdminBundle') }}</td>
+                    <td>{{ statusInfo.message }}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+</td>

@@ -2,19 +2,148 @@ food_lang_homepage:
     pattern: /
     defaults: { _controller: FoodAppBundle:Default:index }
 
+food_test_payment:
+    pattern:  /test/payment
+    defaults: { _controller: FoodAppBundle:Test:payment }
+
+food_test_report:
+    pattern:  /test/report
+    defaults: { _controller: FoodAppBundle:Test:report }
+
 food_test:
     pattern:  /test/
     defaults: { _controller: FoodAppBundle:Test:index }
 
+food_review_create:
+    pattern: /place/review/{id}
+    defaults: { _controller: FoodDishesBundle:Place:reviewCreate }
+    requirements:
+        _method: POST
 
 food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        #slug : "[^admin].+"
-        slug : "^(?!admin).+"
+        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto|monitoring|nagios).+"
+
+food_admin_get_place_categories:
+    pattern: /admin/place/get-categories/{placeId}
+    defaults: {_controller: FoodDishesBundle:DishAdmin:getCategoryOptionsFromPlace}
+    options:
+        expose: true
+
+food_admin_get_place_dish_options:
+    pattern: /admin/place/get-dish-options/{placeId}/{uniqueId}
+    defaults: {_controller: FoodDishesBundle:DishAdmin:getDishOptionsFromPlace}
+    options:
+        expose: true
+
+food_admin_get_order_status_popup:
+    pattern: /admin/dispatcher/get_order_status_popup/{orderId}
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:statusPopup}
+    options:
+        expose: true
+
+food_admin_set_order_status:
+    pattern: /admin/dispatcher/set-order-status/{orderId}/{status}
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:setOrderStatus}
+    options:
+        expose: true
+
+food_admin_get_driver_list:
+    pattern: /admin/dispatcher/get-driver-list/{orders}
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:getDriverList}
+    options:
+        expose: true
+
+food_admin_assign_driver:
+    pattern: /admin/dispatcher/assign-driver/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:assignDriver}
+    options:
+        expose: true
+    requirements:
+          _method:  POST
+
+food_admin_check_new_orders:
+    pattern: /admin/dispatcher/check-new-orders/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:checkNewOrders}
+    options:
+        expose: true
+    requirements:
+          _method:  GET
+
+food_admin_get_place_unit_categories:
+    pattern: /admin/place/get-unit-categories/{placeId}
+    defaults: {_controller: FoodDishesBundle:DishUnitAdmin:getUnitCategoryOptionsFromPlace}
+    options:
+        expose: true
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+food_admin:
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix: /admin
+
+food_cart:
+    resource: "@FoodCartBundle/Resources/config/routing.yml"
+    prefix:   /cart
+
+food_ajax_dish:
+    pattern: /ajax/dish/{dish}
+    defaults: { _controller: FoodDishesBundle:Dish:getDish, dish: ~}
+
+food_ajax_edit_dish:
+    pattern: /ajax/edit-dish-in-cart/{dish}/{cartId}
+    defaults: { _controller: FoodDishesBundle:Dish:editDishInCart, dish: ~, cartId: ~}
+
+food_ajax_remove_dish:
+    pattern: /ajax/remove-dish-in-cart/{dish}/{cartId}
+    defaults: { _controller: FoodDishesBundle:Dish:removeDishInCart, dish: ~, cartId: ~}
+
+food_ajax:
+    pattern: /ajax/{action}/
+    defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~}
+
+
+food_place_en:
+    resource: "@FoodPlacesBundle/Resources/config/routing_en.yml"
+    prefix:   /places
+
+food_place_lt:
+    resource: "@FoodPlacesBundle/Resources/config/routing_lt.yml"
+    prefix:   /vietos
+
+food_place_ru:
+    resource: "@FoodPlacesBundle/Resources/config/routing_ru.yml"
+    prefix:   /mesto
+
+
+food_places_filter:
+    pattern: /places/filter/
+    defaults: { _controller: FoodPlacesBundle:Default:list }
+
 
 static:
     path:     /static/{id}
     defaults: { _controller: FoodAppBundle:Static:index }
     methods:  [GET]
+
+food_place_point_data:
+    pattern: /ajax/place-point/{point_id}
+    defaults: { _controller: FoodDishesBundle:Place:placePoint, point_id: ~}
+
+food_place_menu_layout:
+    pattern: /ajax/save-menu-layout/{layout}
+    defaults: { _controller: FoodDishesBundle:FoodCategory:restaurantMenuLayout, layout: ~}
+
+food_newsletter_subscribe:
+    pattern: /newsletter/subscribe/
+    defaults: { _controller: FoodAppBundle:Default:newsletterSubscribe}
+    requirements:
+      _method:  POST
+
+food_newsletter_thank:
+    pattern: /newsletter/thank/
+    defaults: { _controller: FoodAppBundle:Default:newsletterThank}
+

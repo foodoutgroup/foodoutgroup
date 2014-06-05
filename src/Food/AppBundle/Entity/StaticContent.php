@@ -42,6 +42,27 @@ class StaticContent implements Translatable
     private $content;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="visible", type="boolean")
+     */
+    private $visible = true;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active = false;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="order_no", type="integer")
+     */
+    private $order = 1;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -125,6 +146,14 @@ class StaticContent implements Translatable
     public function getLocale()
     {
         return $this->locale;
+    }
+
+    /**
+     * @param $locale
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
     }
 
     /**
@@ -329,9 +358,10 @@ class StaticContent implements Translatable
      */
     public function addTranslation(\Food\AppBundle\Entity\StaticContentLocalized $translations)
     {
-        $this->translations[] = $translations;
-    
-        return $this;
+        if (!$this->translations->contains($translations)) {
+            $this->translations[] = $translations;
+            $translations->setObject($this);
+        }
     }
 
     /**
@@ -361,4 +391,73 @@ class StaticContent implements Translatable
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
+
+    /**
+     * Set order
+     *
+     * @param integer $order
+     * @return StaticContent
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    
+        return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return integer 
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     * @return StaticContent
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set visible
+     *
+     * @param boolean $visible
+     * @return StaticContent
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+    
+        return $this;
+    }
+
+    /**
+     * Get visible
+     *
+     * @return boolean 
+     */
+    public function getVisible()
+    {
+        return $this->visible;
+    }
 }

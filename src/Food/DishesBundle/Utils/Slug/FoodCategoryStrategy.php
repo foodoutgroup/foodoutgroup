@@ -19,6 +19,11 @@ class FoodCategoryStrategy extends AbstractStrategy
         $this->container($container);
     }
 
+    public function setContainer(\Symfony\Component\DependencyInjection\ContainerInterface $container)
+    {
+        $this->container($container);
+    }
+
     /**
      * @param string $type
      */
@@ -79,7 +84,7 @@ class FoodCategoryStrategy extends AbstractStrategy
             ->setType($this->getType())
             ->setName($slug)
             ->setOrigName($origSlug)
-            ->setIsActive(1);
+            ->setActive(1);
 
 
         $em->persist($item);
@@ -96,6 +101,9 @@ class FoodCategoryStrategy extends AbstractStrategy
     {
         $em = $this->em();
         $row = $em->getRepository('FoodDishesBundle:FoodCategory')->findOneById($categoryId);
+        if (empty($row)) {
+            return "";
+        }
         $placeRow = $em->getRepository('FoodAppBundle:Slug')->findOneBy(array('item_id' => $row->getPlace()->getId(), 'type' => 'place', 'lang_id' => $langId));
         return $placeRow->getName();
     }

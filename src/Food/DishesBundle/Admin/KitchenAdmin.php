@@ -22,12 +22,12 @@ class KitchenAdmin extends FoodAdmin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $options = array('required' => false, 'label' => 'admin.kitchen.logo');
-
-        if (($pl = $this->getSubject()) && $pl->getLogo()) {
-            $this->getUploadService()->setObject($pl);
-            $options['help'] = '<img src="/' . $pl->getWebPath() . '" />';
-        }
+//        $options = array('required' => false, 'label' => 'admin.kitchen.logo');
+//
+//        if (($pl = $this->getSubject()) && $pl->getLogo()) {
+//            $this->getUploadService()->setObject($pl);
+//            $options['help'] = '<img src="/' . $pl->getWebPath() . '" />';
+//        }
 
         $formMapper->add(
             'translations',
@@ -38,7 +38,7 @@ class KitchenAdmin extends FoodAdmin
                     'name' => array('label' => 'label.name'),
                 )
             ))
-            ->add('file', 'file', $options)
+            //->add('file', 'file', $options)
             ->add('visible', 'checkbox', array(
                 'required' => false,
                 'label' => 'admin.visible'
@@ -53,30 +53,30 @@ class KitchenAdmin extends FoodAdmin
             ->add('name', null, array('label' => 'admin.kitchen.name'))
             ->add('visible', null, array('label' => 'admin.visible'))
             ->add('createdBy', null, array('label' => 'admin.created_by'))
-            ->add(
-                'createdAt',
-                'doctrine_orm_datetime_range',
-                array('label' => 'admin.created_at', 'format' => 'Y-m-d',),
-                null,
-                array(
-                    'widget' => 'single_text',
-                    'required' => false,
-                    'format' => 'Y-m-d',
-                    'attr' => array('class' => 'datepicker')
-                )
-            )
-            ->add(
-                'deletedAt',
-                'doctrine_orm_datetime_range',
-                array('label' => 'admin.deleted_at', 'format' => 'Y-m-d',),
-                null,
-                array(
-                    'widget' => 'single_text',
-                    'required' => false,
-                    'format' => 'Y-m-d',
-                    'attr' => array('class' => 'datepicker')
-                )
-            )
+//            ->add(
+//                'createdAt',
+//                'doctrine_orm_datetime_range',
+//                array('label' => 'admin.created_at', 'format' => 'Y-m-d',),
+//                null,
+//                array(
+//                    'widget' => 'single_text',
+//                    'required' => false,
+//                    'format' => 'Y-m-d',
+//                    'attr' => array('class' => 'datepicker')
+//                )
+//            )
+//            ->add(
+//                'deletedAt',
+//                'doctrine_orm_datetime_range',
+//                array('label' => 'admin.deleted_at', 'format' => 'Y-m-d',),
+//                null,
+//                array(
+//                    'widget' => 'single_text',
+//                    'required' => false,
+//                    'format' => 'Y-m-d',
+//                    'attr' => array('class' => 'datepicker')
+//                )
+//            )
         ;
     }
 
@@ -85,10 +85,10 @@ class KitchenAdmin extends FoodAdmin
     {
         $listMapper
             ->addIdentifier('name', 'string', array('label' => 'admin.kitchen.name'))
-            ->add('logo', 'string', array(
-                'template' => 'FoodDishesBundle:Default:list_image.html.twig',
-                'label' => 'admin.kitchen.logo')
-            )
+            //->add('logo', 'string', array(
+            //    'template' => 'FoodDishesBundle:Default:list_image.html.twig',
+            //    'label' => 'admin.kitchen.logo')
+            //)
             ->add('visible', null, array('label' => 'admin.visible', 'editable' => true))
             ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
@@ -113,7 +113,7 @@ class KitchenAdmin extends FoodAdmin
      */
     public function prePersist($object)
     {
-        $this->saveFile($object);
+        //$this->saveFile($object);
         parent::prePersist($object);
     }
 
@@ -123,7 +123,7 @@ class KitchenAdmin extends FoodAdmin
      */
     public function preUpdate($object)
     {
-        $this->saveFile($object);
+        //$this->saveFile($object);
         parent::preUpdate($object);
     }
 

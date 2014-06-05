@@ -2,6 +2,7 @@
 
 namespace Food\DishesBundle\Controller;
 
+use Sonata\DoctrineORMAdminBundle\Tests\Filter\QueryBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class KitchenController extends Controller
@@ -13,6 +14,11 @@ class KitchenController extends Controller
         return $this->render('FoodDishesBundle:Kitchen:index.html.twig', array('kitchen' => $kitchen));
     }
 
+    /**
+     * Rodomas restoranu sarase
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function kitchenlistAction()
     {
         $list = $this->getKitchens();
@@ -20,6 +26,11 @@ class KitchenController extends Controller
     }
 
 
+    /**
+     * @todo - patikrinti reikalinguma. Nebeliko ikonkiu prie virtuviu
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function kitchenListWithImagesAction()
     {
         $list = $this->getKitchens();
@@ -31,10 +42,22 @@ class KitchenController extends Controller
      */
     private function getKitchens()
     {
-        $repo = $this->getDoctrine()->getRepository('FoodDishesBundle:Kitchen');
-        $kitchens = $repo->findBy(
-            array('visible' => 1)
-        );
-        return $kitchens;
+        $repository = $this->getDoctrine()->getRepository('FoodDishesBundle:Kitchen');
+
+        /**
+         * @var \Doctrine\ORM\QueryBuilder $qb
+         */
+        $qb = $repository->createQueryBuilder('k');
+
+        $query = $qb
+            ->leftJoin('k.places', 'p', \Doctrine\ORM\Query\Expr\Join::WITH, 'p.active = 1')
+            ->addSelect('k.id, k.name, COUNT(p.id) AS placeCount')
+            ->where('k.visible = 1')
+            ->groupBy('k.id')
+            ->orderBy('placeCount', 'DESC')
+            ->having('placeCount > 0')
+            ->getQuery();
+
+        return $query->getResult();
     }
 }

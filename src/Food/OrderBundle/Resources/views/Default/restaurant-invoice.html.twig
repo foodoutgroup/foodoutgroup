@@ -1,0 +1,115 @@
+{% extends 'FoodAppBundle::mobilelayout.html.twig' %}
+
+{% block title %}{% trans %}mobile.restaurant_invoice{% endtrans %} - {{ page_title }}{% endblock %}
+
+{% block body %}
+    <div>
+        <div><img src="/bundles/foodapp/images/logo_food.png" alt="{{ page_title }}" title="{{ page_title }}" /></div>
+        <div><b>{% trans %}mobile.restaurant_invoice{% endtrans %}</b></div>
+        <br />
+        <table class="table condensed" style="width: 310px;">
+            <tr>
+                <td>{% trans %}mobile.invoice.date{% endtrans %}:</td>
+                <td>{{ order.orderDate|date("Y.m.d") }}</td>
+            </tr>
+            <tr>
+                <td>{% trans %}mobile.invoice.delivery_date{% endtrans %}:</td>
+                <td>____________{#{{ order.orderDate|date("H:i") }}#}</td>
+            </tr>
+        </table>
+    </div>
+    <br />
+    <table class="table table-bordered table condensed">
+        <thead>
+            <tr>
+                <th>{% trans %}mobile.invoice.dish_name{% endtrans %}</th>
+                <th>{% trans %}mobile.invoice.quantity{% endtrans %}</th>
+                <th>{% trans %}mobile.invoice.price{% endtrans %}</th>
+                <th>{% trans %}mobile.invoice.sum{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for dish in order.details %}
+            <tr>
+                <td>{{ dish.dishId.name }}</td>
+                <td>{{ dish.quantity }}</td>
+                <td>{{ dish.price }}</td>
+                <td>{{ dish.price * dish.quantity }}</td>
+            </tr>
+        {% endfor %}
+            {% set sum_no_vat = ((order.total - order.place.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
+
+            {% if order.deliveryType == 'deliver' %}
+                {% set sum_no_vat = ((order.total - order.place.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
+                {% set delivery_no_vat =  (order.place.deliveryPrice / (( vat_size / 100 ) + 1))|round(2) %}
+            {% else %}
+                {% set sum_no_vat = ((order.total) / (( vat_size / 100 ) + 1))|round(2) %}
+                {% set delivery_no_vat =  0 %}
+            {% endif %}
+
+            {% set vat_sum = order.total - sum_no_vat - delivery_no_vat %}
+
+            <tr>
+                <td colspan="4" style="border: none;"></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="border: none;"></td>
+                <td>{% trans %}mobile.invoice.sum_no_vat{% endtrans %}:</td>
+                <td>{{ sum_no_vat }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="border: none;"></td>
+                <td>{% trans %}mobile.invoice.delivery_no_vat{% endtrans %}:</td>
+                <td>{{ delivery_no_vat }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="border: none;"></td>
+                <td>{% trans %}mobile.invoice.vat{% endtrans %} ({{ vat_size }}%):</td>
+                <td>{{ vat_sum }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="border: none;"></td>
+                <td>{% trans %}mobile.invoice.total_with_vat{% endtrans %}:</td>
+                <td>{{ order.total }} {{ currency_display }}</td>
+            </tr>
+        </tbody>
+    </table>
+    {# Customer information#}
+    <div>
+        {% trans %}mobile.invoice.customer{% endtrans %}:<br />
+        {% trans %}mobile.invoice.customer_phone{% endtrans %}: {{ order.user.phone }}, {{ order.addressId.address }}, {{ order.addressId.city }}, {{ order.comment }}<br />
+        {% trans %}mobile.payment{% endtrans %}: {{ ('mobile.payment.' ~ order.paymentMethod)|trans }}
+    </div>
+    <br />
+    {# Legal information #}
+    <table  class="table table-bordered table condensed">
+        <thead>
+            <tr>
+                <th>{% trans %}mobile.invoice.submitted{% endtrans %}</th>
+                <th>{% trans %}mobile.invoice.received{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>________________</td>
+                <td>________________</td>
+            </tr>
+            <tr>
+                <td>{{ order.place.name }}</td>
+                <td>Foodout.lt UAB</td>
+            </tr>
+            <tr>
+                <td>{% trans %}mobile.invoice.vat_code{% endtrans %}: ______________</td>
+                <td>{% trans %}mobile.invoice.vat_code{% endtrans %}: LT100008038519</td>
+            </tr>
+            <tr>
+                <td>{% trans %}mobile.invoice.company_code{% endtrans %}: {{ order.placePoint.companyCode }}</td>
+                <td>{% trans %}mobile.invoice.company_code{% endtrans %}: 303134580</td>
+            </tr>
+            <tr>
+                <td>{{ order.placePoint.address }}, {{ order.placePoint.city }}</td>
+                <td>Laisvės pr. 77c-58, Vilnius</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

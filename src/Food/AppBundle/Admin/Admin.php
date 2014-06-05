@@ -4,7 +4,7 @@ namespace Food\AppBundle\Admin;
 use Sonata\AdminBundle\Admin\Admin as SonataAdmin;
 use Food\AppBundle\Service\UploadService;
 use Symfony\Component\Security\Core\SecurityContext;
-
+use Food\AppBundle\Filter\PlaceFilter;
 
 /**
  * Class FooAdmin
@@ -33,6 +33,42 @@ class Admin extends SonataAdmin
     protected $securityContext = null;
 
     /**
+     * @var PlaceFilter
+     */
+    private $placeFilter = null;
+
+    /**
+     * @var bool
+     */
+    private $placeFilterEnabled = false;
+
+    /**
+     * @param PlaceFilter $filter
+     * @return Admin
+     */
+    public function setPlaceFilter(PlaceFilter $filter){
+        $this->placeFilter = $filter;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $status
+     */
+    public function setPlaceFilterEnabled($status)
+    {
+        $this->placeFilterEnabled = $status;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPlaceFilterEnabled()
+    {
+        return $this->placeFilterEnabled;
+    }
+
+    /**
      * @param mixed $user
      */
     public function setUser($user)
@@ -46,9 +82,7 @@ class Admin extends SonataAdmin
     public function getUser()
     {
         if (empty($this->user)) {
-            // @codeCoverageIgnoreStart
             $this->user = $this->getSecurityContext()->getToken()->getUser();
-            // @codeCoverageIgnoreEnd
         }
         return $this->user;
     }
@@ -76,11 +110,14 @@ class Admin extends SonataAdmin
      */
     public function preUpdate($object)
     {
-        $deleted = $object->getDeletedAt();
-        if (empty($deleted)) {
-            // Log this troll, so we could burn him later
-            $object->setEditedAt(new \DateTime("now"));
-            $object->setEditedBy($this->getUser());
+        // Ne visi enticiai turi deleted reiksme :) kai kurie yra hard deletable :P
+        if (method_exists($object, 'getDeletedAt')) {
+            $deleted = $object->getDeletedAt();
+            if (empty($deleted)) {
+                // Log this troll, so we could burn him later
+                $object->setEditedAt(new \DateTime("now"));
+                $object->setEditedBy($this->getUser());
+            }
         }
     }
 
@@ -92,9 +129,12 @@ class Admin extends SonataAdmin
      */
     public function postRemove($object)
     {
-        // Log this troll, so we could burn him later
-        $object->setDeletedBy($this->getUser());
-        $this->update($object);
+        // Ne visi enticiai turi deleted reiksme :) kai kurie yra hard deletable :P
+        if (method_exists($object, 'setDeletedBy')) {
+            // Log this troll, so we could burn him later
+            $object->setDeletedBy($this->getUser());
+            $this->update($object);
+        }
     }
 
     /**
@@ -111,9 +151,7 @@ class Admin extends SonataAdmin
     public function getContainer()
     {
         if (empty($this->_container)) {
-            // @codeCoverageIgnoreStart
             $this->_container = $this->getConfigurationPool()->getContainer();
-            // @codeCoverageIgnoreEnd
         }
         return $this->_container;
     }
@@ -132,9 +170,7 @@ class Admin extends SonataAdmin
     public function getUploadService()
     {
         if (empty($this->uploadService)) {
-            // @codeCoverageIgnoreStart
             $this->uploadService = $this->getContainer()->get('food.upload');
-            // @codeCoverageIgnoreEnd
         }
         return $this->uploadService;
     }
@@ -165,9 +201,7 @@ class Admin extends SonataAdmin
     public function getSecurityContext()
     {
         if (empty($this->securityContext)) {
-            // @codeCoverageIgnoreStart
             $this->securityContext = $this->getContainer()->get('security.context');
-            // @codeCoverageIgnoreEnd
         }
         return $this->securityContext;
     }
@@ -193,5 +227,20 @@ class Admin extends SonataAdmin
     public function isAdmin()
     {
         return $this->getSecurityContext()->isGranted('ROLE_ADMIN');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+
+        // Place Filter for moderator
+        if ($context == 'list' && $this->isPlaceFilterEnabled() && !empty($this->placeFilter)) {
+            $this->placeFilter->apply($query);
+        }
+
+        return $query;
     }
 }

@@ -1,0 +1,58 @@
+<div id="detailed-dish-popup">
+    <form class="popup detailed-dish-popup">
+        {% if dish.getWebPathThumb('type3') is not empty %}
+            <img src="/{{ dish.getWebPathThumb('type3') }}" class="popup-header" />
+        {% endif %}
+        <div class="dish-info">
+            <p class="name">{{ dish.name }}</p>
+            <p class="desc">{{ dish.description }}</p>
+        </div>
+        <div class="dish-size">
+            <div class="title">{% trans %}dish.select_size{% endtrans %}</div>
+            <div class="clearfix">
+                {% for size in dish.sizes %}
+                    <label class="custom-radio">{{ size.unit.name }}<strong class="price">{{ size.price }} Lt</strong>
+                        <input type="radio" {% if loop.first %}checked{% endif %} value="{{ size.id }}" class="dish-size" name="dish-size">
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+        {% if dish.options|length > 0 %}
+            <div class="dish-ingredients">
+                <div class="title">{% trans %}dish.select_options{% endtrans %}</div>
+                <div class="clearfix">
+                {% set groupName = "" %}
+                {% set optCounter = 0 %}
+                {% for option in dish.options %}
+                    {% if groupName != option.groupName and optCounter != 0 %}
+                        <br clear="all" />
+                        <br clear="all" />
+                    {% endif %}
+
+                    {% set groupName = option.groupName %}
+                    {% set optCounter = optCounter+1 %}
+
+                    {% if option.singleSelect == true %}
+                        <label class="custom-radio">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ option.price }} Lt</strong>{% endif %}
+                            <input type="radio" name="option[{{ option.groupName }}]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
+                        </label>
+                    {% endif %}
+                {% endfor %}
+                {% for option in dish.options %}
+                    {% if option.singleSelect == false %}
+                        <label class="custom-checkbox">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ option.price }} Lt</strong>{% endif %}
+                            <input type="checkbox" name="options[]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
+                        </label>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        <div class="dish-size">
+            <div class="title">{% trans %}dish.select_quantity{% endtrans %} <input class="counter" name="counter" value="{% if cart %}{{ cart.quantity }}{% else %}1{% endif %}" /></div>
+        </div>
+        <input type="hidden" name="place" value="{{ dish.place.id }}">
+
+        <div class="popup-controls"><a href="#" class="button-submit add-to-cart"><span>{% trans %}dish.add_to_cart{% endtrans %}</span></a></div>
+    </form>
+</div>

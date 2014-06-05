@@ -8,7 +8,7 @@ food_places:
     prefix:   /
 
 food_user:
-    resource: "@FoodUserBundle/Controller/"
+    resource: "@FoodUserBundle/Controller/DefaultController.php"
     type:     annotation
     prefix:   /
 
@@ -53,14 +53,56 @@ food_homepage:
     pattern: /
     defaults: { _controller: FoodAppBundle:Default:index }
 
+
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
-    prefix:   /{_locale}
+    prefix:   /{_locale}/
+    requirements:
+        _locale:  "[a-z]{2}"
 
 
-fos_user_profile:
-    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
-    prefix: /profile
+adminroot:
+    path: /admin/
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: sonata_admin_dashboard
+        permanent: true
+
+ordermobile:
+    path: /o/{hash}/
+    defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~, action: ~ }
+
+drivermobile:
+    path: /d/{hash}/
+    defaults: { _controller: FoodOrderBundle:Default:mobileDriver, hash: ~, action: ~ }
+
+driver_mobile_invoice:
+    path: /invoice/driver/{hash}/
+    defaults: { _controller: FoodOrderBundle:Default:driverInvoice, hash: ~, action: ~ }
+
+restaurant_mobile_invoice:
+    path: /invoice/restaurant/{hash}/
+    defaults: { _controller: FoodOrderBundle:Default:restaurantInvoice, hash: ~, action: ~ }
+
+local_biller_accept:
+    path: /{_locale}/payments/local/accept/
+    defaults: { _controller: FoodOrderBundle:Payments:localAccept }
+
+paysera_accept:
+    path: /{_locale}/payments/paysera/accept/
+    defaults: { _controller: FoodOrderBundle:Payments:payseraAccept }
+
+paysera_cancel:
+    path: /{_locale}/payments/paysera/cancel/{hash}/
+    defaults: { _controller: FoodOrderBundle:Payments:payseraCancel, hash: ~ }
+
+paysera_callback:
+    path: /payments/paysera/callback
+    defaults: { _controller: FoodOrderBundle:Payments:payseraCallback}
+
+food_nagios:
+    pattern:  /nagios/
+    defaults: { _controller: FoodAppBundle:Monitoring:nagios }
 
 fos_user_register:
     resource: "@FOSUserBundle/Resources/config/routing/registration.xml"

@@ -1,15 +1,17 @@
 <?php
 
 namespace Food\SmsBundle\Service;
+
 use Food\SmsBundle\Exceptions\ParseException;
+use Curl;
 
 /**
  * Class InfobipProvider
  * @package Food\SmsBundle\Service
  *
  * @examples
- * http://api2.infobip.com/api/command?username=skanu1&password=119279&cmd=CREDITS
- * $infobipProvider->authenticate('skanu1', '119279');
+ * http://api2.infobip.com/api/command?username=login&password=password&cmd=CREDITS
+ * $infobipProvider->authenticate('login', 'password');
  * $infobipProvider->setApiUrl('http://api.infobip.com/api/v3/sendsms/json');
  */
 class InfobipProvider implements SmsProviderInterface {
@@ -71,15 +73,49 @@ class InfobipProvider implements SmsProviderInterface {
     );
 
     /**
+     * Message states, assigned by InfoBip when message is delivered
+     * @var array
+     */
+    private $deliveredStates = array(
+        'SENT',
+        'DELIVERED',
+    );
+
+    /**
+     * Undelivered message state, assigned by InfoBip
+     * @var array
+     */
+    private $undeliveredStates = array(
+        'NOT_SENT',
+        'NOT_DELIVERED',
+        'NOT_ALLOWED',
+        'INVALID_DESTINATION_ADDRESS',
+        'INVALID_SOURCE_ADDRESS',
+        'ROUTE_NOT_AVAILABLE',
+        'NOT_ENOUGH_CREDITS',
+        'REJECTED',
+        'INVALID_MESSAGE_FORMAT',
+    );
+
+    /**
+     * @var Curl
+     */
+    private $_cli;
+
+    /**
      * @param string $url
      * @param string $accoutApiUrl
-     * @param null $logger
+     * @param string $username
+     * @param string $password
+     * @param Logger $logger
      */
-    public function __construct($url=null, $accoutApiUrl=null, $logger=null)
+    public function __construct($url=null, $accoutApiUrl=null, $username=null, $password=null, $logger=null)
     {
         $this->apiUrl = $url;
         $this->accountApiUrl = $accoutApiUrl;
         $this->logger = $logger;
+        $this->username = $username;
+        $this->password = $password;
     }
 
     /**
@@ -91,7 +127,7 @@ class InfobipProvider implements SmsProviderInterface {
     }
 
     /**
-     * @return null
+     * @return \Monolog\Logger
      */
     public function getLogger()
     {
@@ -112,6 +148,27 @@ class InfobipProvider implements SmsProviderInterface {
     public function setDebugEnabled($state)
     {
         $this->debugEnabled = $state;
+    }
+
+    /**
+     * @param \Curl $cli
+     */
+    public function setCli($cli)
+    {
+        $this->_cli = $cli;
+    }
+
+    /**
+     * @return \Curl
+     */
+    public function getCli()
+    {
+        if (empty($this->_cli)) {
+            $this->_cli = new Curl;
+            $this->_cli->options['CURLOPT_SSL_VERIFYPEER'] = false;
+            $this->_cli->options['CURLOPT_SSL_VERIFYHOST'] = false;
+        }
+        return $this->_cli;
     }
 
     public function log($message)
@@ -152,29 +209,20 @@ class InfobipProvider implements SmsProviderInterface {
 
         $this->log('-- sending request withg data: '.var_export($requestData, true));
         $this->log('-- sending data in json: '.json_encode($requestData));
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $this->apiUrl);
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, 'JSON='.json_encode($requestData));
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-        $response = curl_exec($curl);
+        $resp = $this->getCli()->post(
+            $this->apiUrl,
+            'JSON='.json_encode($requestData)
+        );
 
-        $this->log('-- direct response from infobip: '.var_export($response, true));
+        $this->log('-- direct response from infobip: '.var_export($resp->body, true));
 
-        if (curl_errno($curl)) {
-            // TODO kitas exception tipas
-            $this->log('-- Got error connecting infobip: '.curl_error($curl));
-            new \InvalidArgumentException('Http connection error: '.curl_error($curl));
-        } else {
-            curl_close($curl);
-        }
-
-        return $response;
+        return $resp->body;
     }
 
     /**
-     * TODO
+     * Parse InfoBip response for message sending
+     *
      * @param $response
      * @throws \Food\SmsBundle\Exceptions\ParseException
      * @return mixed
@@ -285,11 +333,53 @@ class InfobipProvider implements SmsProviderInterface {
     }
 
     /**
-     * @param $message
+     * @param $dlrData
+     *
+     * @return array
      */
-    public function getMessageStatus($message)
+    public function parseDeliveryReport($dlrData)
     {
-        // TODO: Implement getMessageStatus() method.
+        $parsedMessages = array();
+
+        $dom = new \DOMDocument();
+        $dom->loadXML($dlrData);
+        $xPath = new \domxpath($dom);
+        $reports = $xPath->query("/DeliveryReport/message");
+
+        if (!empty($reports)) {
+            foreach ($reports as $node) {
+                $message = array(
+                    'extId' => $node->getAttribute('id'),
+                    'sendDate' => $node->getAttribute('sentdate'),
+                    'completeDate' => $node->getAttribute('donedate'),
+                );
+
+                $message['sendDate'] = date("Y-m-d H:i:s", strtotime($message['sendDate']));
+                $message['completeDate'] = date("Y-m-d H:i:s", strtotime($message['completeDate']));
+
+                $infoBipStatus = $node->getAttribute('status');
+                $gsmErrorCode = $node->getAttribute('gsmerror');
+
+                if ($this->isDeliveredStatus($infoBipStatus)) {
+                    $message['delivered'] = true;
+                    $message['error'] = null;
+                } else if ($this->isUndeliveredStatus($infoBipStatus)) {
+                    $message['delivered'] = false;
+                    $message['error'] = $infoBipStatus;
+
+                    if (!empty($gsmErrorCode) && $gsmErrorCode > 0) {
+                        $message['error'] .= ' GSM Error code: '.$gsmErrorCode;
+                    }
+                } else {
+                    $message['delivered'] = false;
+                    $message['error'] = 'Infobip returned unknown status: '.$infoBipStatus;
+                }
+
+                $parsedMessages[] = $message;
+            }
+        }
+
+        return $parsedMessages;
     }
 
     /**
@@ -312,16 +402,13 @@ class InfobipProvider implements SmsProviderInterface {
             $this->password
         );
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $balanceUrl);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $balance = curl_exec($curl);
+        $resp = $this->getCli()->get($balanceUrl);
+        $balance = json_decode($resp->body, true);
 
-        if (curl_errno($curl)) {
-            // TODO kitas exception tipas
-            new \InvalidArgumentException('Connection error: '.curl_error($curl));
-        } else {
-            curl_close($curl);
+        $jsonError = json_last_error();
+        if ($jsonError != JSON_ERROR_NONE) {
+            $this->log('-- HTTP Error: We have got an error while decoding response from Curl lib: '.$jsonError);
+            new \InvalidArgumentException('HTTP Error: We have got an error while decoding response from Curl lib: '.$jsonError);
         }
 
         return (float)$balance;
@@ -333,6 +420,11 @@ class InfobipProvider implements SmsProviderInterface {
     public function setApiUrl($url)
     {
         $this->apiUrl = $url;
+    }
+
+    public function getApiUrl()
+    {
+        return $this->apiUrl;
     }
 
     /**
@@ -347,5 +439,41 @@ class InfobipProvider implements SmsProviderInterface {
         } else {
             return $this->errorStatuses[$status];
         }
+    }
+
+    /**
+     * Determines by InfoBip status if message is delivered or not
+     *
+     * @param string $status
+     * @return bool
+     */
+    public function isDeliveredStatus($status)
+    {
+        if (in_array($status, $this->deliveredStates)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Determines by InfoBip status if message is delivered or not
+     *
+     * @param string $status
+     * @return bool
+     */
+    public function isUndeliveredStatus($status)
+    {
+        if (in_array($status, $this->undeliveredStates)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProviderName()
+    {
+        return 'InfoBip';
     }
 }

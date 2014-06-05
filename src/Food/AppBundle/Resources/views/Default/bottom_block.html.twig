@@ -1,0 +1,47 @@
+{# Mazas blokas su Appsu linkais/images ir newsletterio prenumerata #}
+<script type="text/javascript">
+    // Do the newsletter submit
+    $(document).ready(function() {
+        var tooltip = $('.newsletter-email').tooltip({
+            position: {
+                my: "center bottom-20",
+                at: "center top"
+            }
+        });
+
+
+        $('.newsletter-form').bind('submit', function(){
+            function isEmailAddress(str) {
+                if (typeof str == "undefined") {
+                    str = '';
+                }
+                var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+
+                return str.match(pattern);
+            }
+
+            var emailField = $(this).find('.newsletter-email');
+
+            // This is not email!
+            if (!isEmailAddress(emailField.val())) {
+                tooltip.tooltip( "open" );
+
+                return false;
+            }
+
+            emailField.tooltip( "close" );
+            return true;
+        });
+    });
+</script>
+<div class="clearfix bottom-blocks newsletter-wide">
+    <div class="newsletter-block">
+        <div class="newsletter-block-inner clearfix">
+        <h4>{% trans %}index.newsletter{% endtrans %}</h4>
+            <form class="newsletter-form" action="{{ path('food_newsletter_subscribe') }}" method="post">
+                <input type="text" name ="newsletter_email" class="newsletter-email" placeholder="{% trans %}index.newsletter_email{% endtrans %}" title="{% trans %}index.newsletter_provide_email{% endtrans %}">
+                <input type="submit" value="{% trans %}index.newsletter_subscribe{% endtrans %}">
+            </form>
+        </div>
+    </div>
+</div>

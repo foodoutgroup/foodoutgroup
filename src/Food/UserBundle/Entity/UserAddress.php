@@ -22,33 +22,40 @@ class UserAddress
     /**
      * @var string
      *
-     * @ORM\Column(name="city", type="string", length=255)
+     * @ORM\Column(name="city", type="string", length=255, nullable=true)
      */
     private $city;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="address", type="string", length=255)
+     * @ORM\Column(name="address", type="string", length=255, nullable=true)
      */
     private $address;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="coords", type="string", length=255)
+     * @ORM\Column(name="lat", type="string", length=30, nullable=true)
      */
-    private $coords;
+    private $lat;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lon", type="string", length=30, nullable=true)
+     */
+    private $lon;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="default", type="integer", length=1)
+     * @ORM\Column(name="is_default", type="integer", length=1)
      */
-    private $default;
+    private $default = 1;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="address")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
     private $user;
@@ -61,6 +68,15 @@ class UserAddress
     public function getId()
     {
         return $this->id;
+    }
+
+    public function __toString()
+    {
+        if (!$this->getId()) {
+            return '';
+        }
+
+        return $this->getAddress() .', ' . $this->getCity();
     }
 
     /**
@@ -176,5 +192,51 @@ class UserAddress
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set lat
+     *
+     * @param string $lat
+     * @return UserAddress
+     */
+    public function setLat($lat)
+    {
+        $this->lat = $lat;
+    
+        return $this;
+    }
+
+    /**
+     * Get lat
+     *
+     * @return string 
+     */
+    public function getLat()
+    {
+        return $this->lat;
+    }
+
+    /**
+     * Set lon
+     *
+     * @param string $lon
+     * @return UserAddress
+     */
+    public function setLon($lon)
+    {
+        $this->lon = $lon;
+    
+        return $this;
+    }
+
+    /**
+     * Get lon
+     *
+     * @return string 
+     */
+    public function getLon()
+    {
+        return $this->lon;
     }
 }

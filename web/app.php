@@ -1,7 +1,12 @@
 <?php
 
+// Ijungti kai reikia laikinai stabdyti svetaines veikima del kokiu nors priezasciu
+//require 'maintenance.php';
+
 use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
+
+umask(0002);
 
 $loader = require_once __DIR__.'/../app/bootstrap.php.cache';
 

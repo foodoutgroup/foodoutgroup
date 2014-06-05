@@ -5,16 +5,17 @@ namespace Food\DishesBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
+use Food\AppBundle\Entity\Uploadable;
 
 /**
  * Dish
  *
- * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Table(name="dish")
+ * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\DishRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\DishLocalized")
  */
-class Dish implements Translatable
+class Dish extends Uploadable implements Translatable
 {
     /**
      * @var integer
@@ -26,19 +27,21 @@ class Dish implements Translatable
     private $id;
 
     /**
-     * @var double
+     * @var string
      *
-     * @ORM\Column(name="price", type="decimal", scale=2)
+     * @Gedmo\Translatable
+     * @ORM\Column(name="name", type="string", length=65)
      */
-    private $price;
+    private $name;
+
 
     /**
      * @var string
      *
      * @Gedmo\Translatable
-     * @ORM\Column(name="name", type="string", length=45)
+     * @ORM\Column(name="description", type="text")
      */
-    private $name;
+    private $description;
 
     /**
      * @var \Food\DishesBundle\Entity\Place
@@ -49,7 +52,7 @@ class Dish implements Translatable
     private $place;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var DishSize[]
      *
      * @ORM\OneToMany(targetEntity="DishSize", mappedBy="dish", cascade={"persist", "remove"}, orphanRemoval=true)
      */
@@ -116,6 +119,7 @@ class Dish implements Translatable
     /**
      * @ORM\ManyToMany(targetEntity="DishOption", inversedBy="dishes")
      * @ORM\JoinTable(name="dish_option_map")
+     * @ORM\OrderBy({"groupName" = "DESC", "singleSelect" = "DESC"})
      */
     private $options;
 
@@ -125,6 +129,35 @@ class Dish implements Translatable
      * @ORM\Column(name="recomended", type="boolean")
      */
     private $recomended = false;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="photo", type="string", length=255)
+     */
+    private $photo = "";
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active = true;
+
+
+    /**
+     * @var object
+     */
+    protected $file;
+
+    protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
+    protected $multipleThumbs = true;
+    protected $boxSize = array(
+        'type1' => array('w' => 260, 'h' => 179),
+        'type2' => array('w' => 118, 'h' => 97),
+        'type3' => array('w' => 550, 'h' => 400), // @todo - check ar sitie gerai ir atitinka realybe :)
+        'type4' => array('w' => 1300, 'h' => 500), // @todo - check ar sitie gerai ir atitinka realybe :)
+    );
 
     /**
      * @Gedmo\Locale
@@ -166,29 +199,6 @@ class Dish implements Translatable
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set price
-     *
-     * @param float $price
-     * @return Dish
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
-    
-        return $this;
-    }
-
-    /**
-     * Get price
-     *
-     * @return float 
-     */
-    public function getPrice()
-    {
-        return $this->price;
     }
 
     /**
@@ -555,10 +565,131 @@ class Dish implements Translatable
     /**
      * Get sizes
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return DishSize[]
      */
     public function getSizes()
     {
         return $this->sizes;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Dish
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Add categories
+     *
+     * @param \Food\DishesBundle\Entity\FoodCategory $categories
+     * @return Dish
+     */
+    public function addCategory(\Food\DishesBundle\Entity\FoodCategory $categories)
+    {
+        $this->categories[] = $categories;
+    
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \Food\DishesBundle\Entity\FoodCategory $categories
+     */
+    public function removeCategory(\Food\DishesBundle\Entity\FoodCategory $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Set photo
+     *
+     * @param string $photo
+     * @return Dish
+     */
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+    
+        return $this;
+    }
+
+    /**
+     * Get photo
+     *
+     * @return string 
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    public function getUploadableField()
+    {
+        return 'photo';
+    }
+
+    public function getUploadDir()
+    {
+        if (empty($this->uploadDir)) {
+            $this->uploadDir = 'uploads/dishes';
+        }
+        return $this->uploadDir;
+    }
+
+    /**
+     * @param object $file
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * @return object
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     * @return Dish
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }

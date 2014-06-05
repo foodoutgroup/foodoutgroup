@@ -41,14 +41,14 @@ class DishOption implements Translatable
 
     /**
      * @var string
-     * @ORM\Column(name="code", type="string", length=45)
+     * @ORM\Column(name="code", type="string", length=45, nullable=true)
      */
     private $code;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
@@ -65,7 +65,6 @@ class DishOption implements Translatable
      * @ORM\OneToMany(targetEntity="DishOptionLocalized", mappedBy="object", cascade={"persist", "remove"})
      **/
     private $translations;
-
 
     /**
      * @ORM\ManyToMany(targetEntity="Dish", mappedBy="options")
@@ -124,6 +123,18 @@ class DishOption implements Translatable
      * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="single_select", type="boolean")
+     */
+    private $singleSelect = false;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="group_name", type="string", length=45, nullable=true)
+     */
+    private $groupName;
 
     /**
      * Returns the name
@@ -335,7 +346,12 @@ class DishOption implements Translatable
      */
     public function addTranslation(\Food\DishesBundle\Entity\DishOptionLocalized $translations)
     {
-        $this->translations[] = $translations;
+        if (method_exists($this->translations, 'contains')) {
+            if (!$this->translations->contains($translations)) {
+                $this->translations[] = $translations;
+                $translations->setObject($this);
+            }
+        }
     
         return $this;
     }
@@ -496,5 +512,74 @@ class DishOption implements Translatable
     public function getCode()
     {
         return $this->code;
+    }
+
+    /**
+     * Add dishes
+     *
+     * @param \Food\DishesBundle\Entity\Dish $dishes
+     * @return DishOption
+     */
+    public function addDish(\Food\DishesBundle\Entity\Dish $dishes)
+    {
+        $this->dishes[] = $dishes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove dishes
+     *
+     * @param \Food\DishesBundle\Entity\Dish $dishes
+     */
+    public function removeDish(\Food\DishesBundle\Entity\Dish $dishes)
+    {
+        $this->dishes->removeElement($dishes);
+    }
+
+    /**
+     * Set singleSelect
+     *
+     * @param integer $singleSelect
+     * @return DishOption
+     */
+    public function setSingleSelect($singleSelect)
+    {
+        $this->singleSelect = $singleSelect;
+    
+        return $this;
+    }
+
+    /**
+     * Get singleSelect
+     *
+     * @return integer 
+     */
+    public function getSingleSelect()
+    {
+        return $this->singleSelect;
+    }
+
+    /**
+     * Set groupName
+     *
+     * @param string $groupName
+     * @return DishOption
+     */
+    public function setGroupName($groupName)
+    {
+        $this->groupName = $groupName;
+    
+        return $this;
+    }
+
+    /**
+     * Get groupName
+     *
+     * @return string 
+     */
+    public function getGroupName()
+    {
+        return $this->groupName;
     }
 }

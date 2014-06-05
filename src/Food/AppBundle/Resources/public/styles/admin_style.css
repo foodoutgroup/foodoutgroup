@@ -1,0 +1,74 @@
+h4.padded {
+    padding-left: 30px;
+}
+
+/* ---- Dispecherio langas ----- */
+.driver_button {
+    margin-bottom: 5px;
+}
+
+.city_list {
+    display: inline-block;
+    width: 925px;
+    vertical-align: top;
+}
+
+.city_list .ui-tabs-panel {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.drivers_list {
+    display: inline-block;
+}
+
+.order_list {
+    width: 915px;
+}
+
+.order_list td,
+.drivers_list td {
+    padding-left: 10px;
+}
+
+.order_list th,
+.drivers_list th {
+    padding-left: 5px;
+}
+
+.order_list th.self_delivery,
+.order_list th.order_date {
+    width: 20px;
+}
+.order_list td.order_date.delayed-order{
+    background-color: #ffe9dd;
+}
+
+.order_list td.self_delivery,
+.order_list td.order_date {
+    text-align: center;
+}
+
+.order_list td.order_status {
+    text-align: right;
+}
+
+.order_list td.driver {
+    white-space: nowrap;
+}
+
+.order_list tr.even,
+.drivers_list tr.even {
+    background-color: #e7e7e7;
+}
+
+.driver-tooltip {
+    text-align: left;
+}
+/* TODO prie buttono nupieski vairiuka */
+/*span.icon_steering_wheel {*/
+    /*content: "";*/
+    /*background: url(/bundles/foodapp/images/steering_wheel.png) no-repeat left top;*/
+    /*height: 26px;*/
+    /*width: 26px;*/
+/*}*/

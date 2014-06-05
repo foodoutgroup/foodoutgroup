@@ -3,7 +3,7 @@
 namespace Food\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Food\DishesBundle\Entity\DishOption;
 
 /**
  * @ORM\Table(name="order_details")
@@ -11,20 +11,31 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OrderDetails
 {
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Order")
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="details")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
-     * @ORM\Id
      */
     private $order_id;
 
     /**
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Dish")
      * @ORM\JoinColumn(name="dish_id", referencedColumnName="id")
-     * @ORM\Id
      */
     private $dish_id;
+
+    /**
+     * @ORM\Column(name="dish_unit_id", type="integer")
+     */
+    private $dish_unit_id;
 
     /**
      * @ORM\Column(name="dish_name", type="string", length=255)
@@ -32,14 +43,32 @@ class OrderDetails
     private $dish_name;
 
     /**
+     * @ORM\Column(name="dish_unit_name", type="string", length=255)
+     */
+    private $dish_unit_name;
+
+    /**
+     * @ORM\Column(name="dish_size_code", type="string", length=255, nullable=true)
+     */
+    private $dish_size_code;
+
+    /**
      * @ORM\Column(name="quantity", type="integer", length=3)
      */
     private $quantity;
 
     /**
-     * @ORM\Column(name="price", type="decimal", scale=2)
+     * @ORM\Column(name="price", type="decimal", precision=8, scale=2)
      */
     private $price;
+
+
+    /**
+     * @var OrderDetailsOptions[]
+     *
+     * @ORM\OneToMany(targetEntity="OrderDetailsOptions", mappedBy="order_detail")
+     */
+    private $options;
 
 
     /**
@@ -54,6 +83,15 @@ class OrderDetails
     
         return $this;
     }
+
+    /**
+     * @todo REIK TESTUOT. Gink die koks jabanunas mappedBy :D - jei neveiks - Lenkai kalti :D
+     *
+     * @var OrderDetails[]
+     *
+     * ORM\OneToMany(targetEntity="OrderDetailsOptions", mappedBy={"order_id", "dish_id"})
+     */
+    private $details;
 
     /**
      * Get dish_name
@@ -137,7 +175,7 @@ class OrderDetails
     /**
      * Set dish_id
      *
-     * @param integer $dishId
+     * @param Dish $dishId
      * @return OrderDetails
      */
     public function setDishId($dishId)
@@ -150,10 +188,129 @@ class OrderDetails
     /**
      * Get dish_id
      *
-     * @return integer 
+     * @return Dish
      */
     public function getDishId()
     {
         return $this->dish_id;
+    }
+
+    /**
+     * Set dish_unit_id
+     *
+     * @param integer $dishUnitId
+     * @return OrderDetails
+     */
+    public function setDishUnitId($dishUnitId)
+    {
+        $this->dish_unit_id = $dishUnitId;
+    
+        return $this;
+    }
+
+    /**
+     * Get dish_unit_id
+     *
+     * @return integer 
+     */
+    public function getDishUnitId()
+    {
+        return $this->dish_unit_id;
+    }
+
+    /**
+     * Set dish_unit_name
+     *
+     * @param string $dishUnitName
+     * @return OrderDetails
+     */
+    public function setDishUnitName($dishUnitName)
+    {
+        $this->dish_unit_name = $dishUnitName;
+    
+        return $this;
+    }
+
+    /**
+     * Get dish_unit_name
+     *
+     * @return string 
+     */
+    public function getDishUnitName()
+    {
+        return $this->dish_unit_name;
+    }
+
+    /**
+     * Set dish_size_code
+     *
+     * @param string $dishSizeCode
+     * @return OrderDetails
+     */
+    public function setDishSizeCode($dishSizeCode)
+    {
+        $this->dish_size_code = $dishSizeCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get dish_size_code
+     *
+     * @return string 
+     */
+    public function getDishSizeCode()
+    {
+        return $this->dish_size_code;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->options = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add options
+     *
+     * @param \Food\OrderBundle\Entity\OrderDetailsOptions $options
+     * @return OrderDetails
+     */
+    public function addOption(\Food\OrderBundle\Entity\OrderDetailsOptions $options)
+    {
+        $this->options[] = $options;
+    
+        return $this;
+    }
+
+    /**
+     * Remove options
+     *
+     * @param \Food\OrderBundle\Entity\OrderDetailsOptions $options
+     */
+    public function removeOption(\Food\OrderBundle\Entity\OrderDetailsOptions $options)
+    {
+        $this->options->removeElement($options);
+    }
+
+    /**
+     * Get options
+     *
+     * @return \Food\OrderBundle\Entity\OrderDetailsOptions[]
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 }

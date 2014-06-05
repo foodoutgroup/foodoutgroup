@@ -1,0 +1,105 @@
+<div class="restaurants-list">
+    {% for place in places %}
+        <div class="restaurant-item clearfix">
+            <div class="logo">
+                <div class="logo-wrap"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}"><img src="/uploads/places/thumb_{{ place.place.logo }}"></a></div>
+            </div>
+            <div class="item-center">
+                <h2 class="name clearfix">
+                    <span class="text"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}">{{ place.place.name }}</a></span>
+                    {% if place.point.fast %}
+                    <span class="tag">
+                        <img src="/bundles/foodapp/images/tag-speed.png">
+                    </span>
+                    {% endif %}
+                    {% if place.place.new %}
+                    <span class="tag">
+                        <img src="/bundles/foodapp/images/tag-new.png">
+                    </span>
+                    {% endif %}
+                    {% if place.pp_count == 1 %}
+                        {% if order_service.isTodayWork(place.point) == false %}
+                            <span class="tag">
+                                <img src="/bundles/foodapp/images/tag-not-working.png">
+                                <div class="time-popup">{{ order_service.getTodayWork(place.point) }}
+                                    <div class="nip"></div>
+                                </div>
+                            </span>
+                        {% endif %}
+                    {% else %}
+                        {% if order_service.isTodayWorkDayForAll(place.place) == false %}
+                            <span class="tag">
+                                {% if order_service.isTodayNoOneWantsToWork(place.place) == true %}
+                                    <img src="/bundles/foodapp/images/tag-not-working.png">
+                                    <div class="time-popup">{{ order_service.notWorkingPlacesPoints(place.place)|raw }}
+                                        <div class="nip"></div>
+                                    </div>
+                                {% else %}
+                                    <span class="partial-work"></span>
+                                    <div class="time-popup time-popup2">{{ order_service.notWorkingPlacesPoints(place.place)|raw }}
+                                        <div class="nip"></div>
+                                    </div>
+                                {% endif %}
+                            </span>
+                        {% endif %}
+                    {% endif %}
+
+                </h2>
+                <p class="desc">
+                    {% for kitchen in place.place.kitchens %}
+                        {{kitchen.name}}{% if loop.last == false %}, {% endif %}
+                    {% endfor %}
+                </p>
+                <div class="details">
+                    <span class="delivery">{% trans %}place.delivery_info{% endtrans %}:
+                        <span>
+                            {{ place.place.deliveryPrice }} Lt / {{ place.place.deliveryTime }}
+                            {% if place.place.deliveryTimeInfo is not empty %}
+                                <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.place.deliveryTimeInfo }}"></span>
+                            {% endif %}
+                        </span>
+                    </span>
+                    <span class="min-cart-size">{% trans %}place.min_cart_amount{% endtrans %}:
+                        <span>{{ place.place.cartMinimum }} Lt </span>
+                    </span>
+                </div>
+            </div>
+            <!-- <div class="discount-tag"></div> -->
+            <div class="item-righter">
+                <div class="clearfix">
+                    <div data-stars="{{ place.place.rating }}" class="restoran-rating fl"></div>
+                    {% if place.place.reviews.count != 0 %}
+                        <div class="rating-count fr">{{ place.place.reviews.count }} {% transchoice place.place.reviews.count %}places.reviews_count{% endtranschoice %}</div>
+                    {% endif %}
+                </div><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}" class="button"><span>{% trans %}places.watch_menu{% endtrans %}</span></a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<script>
+    $(document).ready(function(){
+        var c1 = '{% trans %}general.places_found1{% endtrans %}';
+        var c2 = '{% trans %}general.places_found2{% endtrans %}';
+        var c3 = '{% trans %}general.places_found3{% endtrans %}';
+        var cnt = {{ places|length }};
+        var trgt = $('.page-title .place-counter');
+        var recommended = {{ recommended }};
+        if (cnt == 0) {
+            trgt.text('');
+        } else if (cnt == 1) {
+            trgt.text(c1);
+        } else if (cnt > 1 && cnt < 10) {
+            trgt.text(c2);
+        } else {
+            trgt.text(c3);
+        }
+        trgt.text(trgt.text().replace("%1", cnt));
+        {% if location_show %}
+            if (recommended == 0 && cnt > 0) {
+                trgt.text(trgt.text() + ', {% trans %}places.places_near{% endtrans %} {{ location.address }}');
+            }
+        {% endif %}
+
+        $('.delivery-time-info').tooltip();
+    });
+</script>

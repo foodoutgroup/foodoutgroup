@@ -12,6 +12,13 @@ class OrderDetailsOptions
 {
 
     /**
+     * @ORM\ManyToOne(targetEntity="OrderDetails")
+     * @ORM\JoinColumn(name="order_detail", referencedColumnName="id")
+     * @ORM\Id
+     */
+    private $order_detail;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Order")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      * @ORM\Id
@@ -38,12 +45,17 @@ class OrderDetailsOptions
     private $dish_option_name;
 
     /**
+     * @ORM\Column(name="dish_option_code", type="string", length=255, nullable=true)
+     */
+    private $dish_option_code;
+
+    /**
      * @ORM\Column(name="quantity", type="integer", length=3)
      */
     private $quantity;
 
     /**
-     * @ORM\Column(name="price", type="decimal", scale=2)
+     * @ORM\Column(name="price", type="decimal", precision=8, scale=2)
      */
     private $price;
 
@@ -143,7 +155,7 @@ class OrderDetailsOptions
     /**
      * Set dish_option_id
      *
-     * @param integer $dishOptionId
+     * @param \DishOption $dishOptionId
      * @return OrderDetailsOptions
      */
     public function setDishOptionId($dishOptionId)
@@ -184,5 +196,51 @@ class OrderDetailsOptions
     public function getDishId()
     {
         return $this->dish_id;
+    }
+
+    /**
+     * Set dish_option_code
+     *
+     * @param string $dishOptionCode
+     * @return OrderDetailsOptions
+     */
+    public function setDishOptionCode($dishOptionCode)
+    {
+        $this->dish_option_code = $dishOptionCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get dish_option_code
+     *
+     * @return string 
+     */
+    public function getDishOptionCode()
+    {
+        return $this->dish_option_code;
+    }
+
+    /**
+     * Set order_detail
+     *
+     * @param \Food\OrderBundle\Entity\OrderDetails $orderDetail
+     * @return OrderDetailsOptions
+     */
+    public function setOrderDetail(\Food\OrderBundle\Entity\OrderDetails $orderDetail)
+    {
+        $this->order_detail = $orderDetail;
+    
+        return $this;
+    }
+
+    /**
+     * Get order_detail
+     *
+     * @return \Food\OrderBundle\Entity\OrderDetails
+     */
+    public function getOrderDetail()
+    {
+        return $this->order_detail;
     }
 }

@@ -3,14 +3,17 @@ security:
         FOS\UserBundle\Model\UserInterface: sha512
 
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_MODERATOR, ROLE_USER
-        ROLE_SUPER_ADMIN: ROLE_SONATA_ADMIN, ROLE_ADMIN
+        ROLE_MODERATOR:   ROLE_USER, ROLE_SONATA_ADMIN
+        ROLE_ADMIN:       ROLE_MODERATOR
+        ROLE_SUPER_ADMIN: ROLE_SONATA_ADMIN
+        ROLE_SUPPORT:     ROLE_USER
+        ROLE_DISPATCHER:  ROLE_USER
 #        SONATA:
 #          - ROLE_SONATA_PAGE_ADMIN_PAGE_EDIT
 
     providers:
         fos_userbundle:
-           id: fos_user.user_provider.username
+           id: fos_user.user_provider.username_email
 
     firewalls:
       admin:
@@ -24,6 +27,7 @@ security:
               failure_path:   null
           logout:
               path:           /%locale%/admin/logout
+              target:         /%locale%/admin/
           anonymous:    true
       # -> end custom configuration
 
@@ -36,7 +40,16 @@ security:
               use_forward:    false
               check_path:     /login_check
               failure_path:   null
-          logout:       true
+              failure_handler: food_user.authentication_handler
+              success_handler: food_user.authentication_handler
+          remember_me:
+              key:      "%secret%"
+              lifetime: 31536000 # 365 days in seconds
+              path:     /
+              domain:   ~ # Defaults to the current domain from $_SERVER
+          logout:
+              path: /logout
+              target: /
           anonymous:    true
 #        main:
 #            pattern: ^/
@@ -69,7 +82,7 @@ security:
         # Secured part of the site
         # This config requires being logged for the whole site and having the admin role for the admin part.
         # Change these rules to adapt them to your needs
-        - { path: ^/[a-z][a-z]/admin, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_MODERATOR] }
+        - { path: ^/[a-z][a-z]/admin, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_MODERATOR, ROLE_SUPPORT, ROLE_DISPATCHER] }
         - { path: ^/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }

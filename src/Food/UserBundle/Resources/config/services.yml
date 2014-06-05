@@ -4,3 +4,15 @@ services:
         tags:
             - { name: form.type, alias: sonata_security_roles}
         arguments: [Sonata\AdminBundle\Admin\Pool]
+
+    food_user.registration.form.type:
+        class: Food\UserBundle\Form\Type\RegistrationFormType
+        arguments: [Food\UserBundle\Entity\User]
+        tags:
+            - { name: form.type, alias: food_user_registration }
+
+    food_user.authentication_handler:
+        class: Food\UserBundle\Handler\AuthenticationHandler
+
+    food_user.user_password_validator:
+        class: Food\UserBundle\Service\UserPasswordValidator

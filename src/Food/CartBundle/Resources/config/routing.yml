@@ -1,0 +1,22 @@
+food_cart_action:
+    pattern:  /action/{action}/
+    defaults: { _controller: FoodCartBundle:Default:action, action: empty }
+
+food_cart_success:
+    pattern:  /success/{orderHash}
+    defaults: { _controller: FoodCartBundle:Default:success }
+
+food_cart_wait:
+    pattern:  /wait/{orderHash}
+    defaults: { _controller: FoodCartBundle:Default:wait }
+
+food_cart_generate_order:
+    pattern: /generator/{oid}
+    defaults: { _controller: FoodCartBundle:Generator:generator}
+
+
+food_cart:
+    pattern: /{placeId}/{takeAway}
+    defaults: { _controller: FoodCartBundle:Default:index, takeAway: ~}
+    options:
+            expose: true

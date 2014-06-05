@@ -15,6 +15,15 @@ class Language
      */
     private $container;
 
+    private $nameInflection = array(
+        'a' => 'a',
+        'as' => 'ai',
+        'ė' => 'e',
+        'is' => 'i',
+        'us' => 'au',
+        'ys' => 'y'
+    ) ;
+
     public function __construct(Container $container)
     {
         $this->setContainer($container);
@@ -35,7 +44,6 @@ class Language
     {
         return $this->container;
     }
-
 
     /**
      * @param $lang
@@ -81,7 +89,6 @@ class Language
         return strtr(mb_strtolower($text, 'utf-8'), $chars);
     }
 
-
     /**
      * @param $text
      * @return string
@@ -113,34 +120,6 @@ class Language
     }
 
     /**
-     * Get current language.
-     * @return LanguageEntity
-     *
-     * @todo FIX
-     */
-    public function getCurrent()
-    {
-        $route = $this->service('food.app.utils.route');
-        $repo = $this->repo('FoodAppBundle:Language');
-
-        return $repo->findOneBy(['name' => $route->getLocale(), 'is_active' => true]);
-    }
-
-    /**
-     * Get default language.
-     * @return Language
-     *
-     * @todo FIX
-     */
-    public function getDefault()
-    {
-        $repo = $this->repo('FoodAppBundle:Language');
-        $defaultLocale = Arr::getOrElse($this->container()->parameters, 'locale', '');
-
-        return $repo->findOneBy(['name' => $defaultLocale, 'is_active' => true]);
-    }
-
-    /**
      * Get all languages. Has language IDs as keys.
      * @return array
      */
@@ -151,13 +130,62 @@ class Language
 
 
     /**
-     * Switch language
-     * @param  \LanguageEntity $language Might be ID or identifier.
-     * @return void
+     * TODO - multilingual
      */
-    public function switchLanguage(\LanguageEntity $language)
+    public function getName ($name, $lang = null)
     {
-        $request = $this->service('request');
-        $request->setLocale($language->getName());
+        // TODO - multilingual
+        if ($lang != 'lt') {
+            return $name;
+        }
+
+        $names = explode( ' ', $this->cleanName($name, $lang) ) ;
+        $namesConv = array() ;
+        foreach ( $names as $v ) {
+            $namesConv[] = $this->getTransformedName($v, $lang) ;
+        }
+
+        return count($namesConv) ? implode(' ', $namesConv) : $name ;
+    }
+
+    /**
+     * TODO - multiligual
+     */
+    protected function cleanName ($name, $lang = null)
+    {
+        $name = mb_eregi_replace('[^a-ž]', ' ', $name) ;
+        $name = mb_eregi_replace('\s+', ' ', $name) ;
+        $name = trim($name) ;
+        $name = mb_convert_case($name, MB_CASE_TITLE, "UTF-8") ;
+
+        return $name ;
+    }
+
+    /**
+     * TODO - multilingual
+     */
+    protected function getTransformedName ($name, $lang = null)
+    {
+        $return = $name ;
+
+        foreach ( $this->nameInflection as $from=>$to ) {
+            if ( mb_substr( $return, -mb_strlen($from) ) == $from ) {
+                $return = mb_substr( $return, 0, -mb_strlen($from) ) ;
+                $return .= $to ;
+                break ;
+            }
+        }
+
+        return $return ;
+    }
+
+    /**
+     * Temporary for debuging
+     *
+     * @param string $message
+     */
+    protected function log($message)
+    {
+        $this->container->get('logger')->alert($message);
     }
 }

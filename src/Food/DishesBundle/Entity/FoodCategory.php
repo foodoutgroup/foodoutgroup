@@ -41,6 +41,28 @@ class FoodCategory implements Translatable
      */
     private $place;
 
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="texts_only", type="boolean", nullable=true)
+     */
+    private $textsOnly;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="drinks", type="boolean")
+     */
+    private $drinks;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="alcohol", type="boolean")
+     */
+    private $alcohol;
+
     /**
      * @var bool
      *
@@ -68,6 +90,13 @@ class FoodCategory implements Translatable
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
     private $deletedAt;
+
+
+    /**
+     * @var
+     * @ORM\Column(name="lineup", type="integer", nullable=true)
+     */
+    private $lineup;
 
     /**
      * @var \Food\UserBundle\Entity\User
@@ -140,8 +169,12 @@ class FoodCategory implements Translatable
     {
         $query = $em->createQuery("SELECT o.name FROM FoodDishesBundle:FoodCategory as o WHERE o.id=:id")
             ->setParameter('id', $this->getId());
-        $res = ($query->getSingleResult());
-        return $res['name'];
+        try{
+            $res = ($query->getSingleResult());
+            return $res['name'];
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return $this->getName();
+        }
     }
 
     public function getSlug()
@@ -439,5 +472,130 @@ class FoodCategory implements Translatable
     public function getDeletedBy()
     {
         return $this->deletedBy;
+    }
+
+    /**
+     * Add dishes
+     *
+     * @param \Food\DishesBundle\Entity\Dish $dishes
+     * @return FoodCategory
+     */
+    public function addDish(\Food\DishesBundle\Entity\Dish $dishes)
+    {
+        $this->dishes[] = $dishes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove dishes
+     *
+     * @param \Food\DishesBundle\Entity\Dish $dishes
+     */
+    public function removeDish(\Food\DishesBundle\Entity\Dish $dishes)
+    {
+        $this->dishes->removeElement($dishes);
+    }
+
+    public function getActiveDishesCount()
+    {
+        $dishes = $this->getDishes()->filter(
+            function($dish) {
+                return $dish->getActive();
+            }
+        );
+        return sizeof($dishes);
+    }
+
+    /**
+     * Set drinks
+     *
+     * @param boolean $drinks
+     * @return FoodCategory
+     */
+    public function setDrinks($drinks)
+    {
+        $this->drinks = $drinks;
+    
+        return $this;
+    }
+
+    /**
+     * Get drinks
+     *
+     * @return boolean 
+     */
+    public function getDrinks()
+    {
+        return $this->drinks;
+    }
+
+    /**
+     * Set alcohol
+     *
+     * @param boolean $alcohol
+     * @return FoodCategory
+     */
+    public function setAlcohol($alcohol)
+    {
+        $this->alcohol = $alcohol;
+    
+        return $this;
+    }
+
+    /**
+     * Get alcohol
+     *
+     * @return boolean 
+     */
+    public function getAlcohol()
+    {
+        return $this->alcohol;
+    }
+
+    /**
+     * Set lineup
+     *
+     * @param integer $lineup
+     * @return FoodCategory
+     */
+    public function setLineup($lineup)
+    {
+        $this->lineup = $lineup;
+    
+        return $this;
+    }
+
+    /**
+     * Get lineup
+     *
+     * @return integer 
+     */
+    public function getLineup()
+    {
+        return $this->lineup;
+    }
+
+    /**
+     * Set textsOnly
+     *
+     * @param boolean $textsOnly
+     * @return FoodCategory
+     */
+    public function setTextsOnly($textsOnly)
+    {
+        $this->textsOnly = $textsOnly;
+    
+        return $this;
+    }
+
+    /**
+     * Get textsOnly
+     *
+     * @return boolean 
+     */
+    public function getTextsOnly()
+    {
+        return $this->textsOnly;
     }
 }
