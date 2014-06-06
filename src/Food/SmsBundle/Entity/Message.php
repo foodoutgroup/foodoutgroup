@@ -249,29 +249,6 @@ class Message
     }
 
     /**
-     * Set dlrId
-     *
-     * @param integer $dlrId
-     * @return Message
-     */
-    public function setDlrId($dlrId)
-    {
-        $this->dlrId = $dlrId;
-    
-        return $this;
-    }
-
-    /**
-     * Get dlrId
-     *
-     * @return integer 
-     */
-    public function getDlrId()
-    {
-        return $this->dlrId;
-    }
-
-    /**
      * Set sent
      *
      * @param boolean $sent

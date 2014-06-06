@@ -78,7 +78,7 @@ class Uploadable {
     }
 
     /**
-     * @param $uploadDir
+     * @param string $uploadDir
      */
     public function setUploadDir($uploadDir)
     {

@@ -56,15 +56,6 @@ class CheckUnsentMessagesCommand extends ContainerAwareCommand
 
         $sendMonitoringMessages = $this->getContainer()->getParameter('admin.send_monitoring_message');
         $adminPhones = array();
-        if ($sendMonitoringMessages) {
-            $messagingService = $this->getContainer()->get('food.messages');
-            // Rizikuojam siusdami per ji, nes jis stabiliausias, o luzis greiciausiai musu crono :(
-            $provider = $this->getContainer()->get('food.infobip');
-            $messagingService->setMessagingProvider($provider);
-
-            $adminPhones = $this->getContainer()->getParameter('admin.phones');
-            $sender = $this->getContainer()->getParameter('sms.sender');
-        }
 
         if (!empty($adminEmails)) {
             $message = \Swift_Message::newInstance()
@@ -81,6 +72,14 @@ class CheckUnsentMessagesCommand extends ContainerAwareCommand
         }
 
         if ($sendMonitoringMessages && !empty($adminPhones)) {
+            $messagingService = $this->getContainer()->get('food.messages');
+            // Rizikuojam siusdami per ji, nes jis stabiliausias, o luzis greiciausiai musu crono :(
+            $provider = $this->getContainer()->get('food.infobip');
+            $messagingService->setMessagingProvider($provider);
+
+            $adminPhones = $this->getContainer()->getParameter('admin.phones');
+            $sender = $this->getContainer()->getParameter('sms.sender');
+
             foreach ($adminPhones as $phone) {
                 $textMessage = $messagingService->createMessage($sender, $phone, $text);
                 $messagingService->sendMessage($textMessage);

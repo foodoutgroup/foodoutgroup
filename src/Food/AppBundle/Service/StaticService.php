@@ -18,7 +18,7 @@ class StaticService {
 
     /**
      * @param Container $container
-     * @param $userId
+     * @param integer $userId
      */
     public function __construct($container, $userId)
     {
@@ -53,7 +53,7 @@ class StaticService {
     /**
      * Get static page by id
      *
-     * @param $id
+     * @param null|integer $id
      *
      * @return bool
      *
