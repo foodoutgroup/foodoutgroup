@@ -168,6 +168,11 @@ class Order
     private $orderStatusLog;
 
     /**
+     * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\PaymentLog", mappedBy="order")
+     **/
+    private $paymentLog;
+
+    /**
      * @var
      * @ORM\Column(name="accept_time", type="datetime", nullable=true)
      */
@@ -1118,5 +1123,38 @@ class Order
     public function getUserIp()
     {
         return $this->userIp;
+    }
+
+    /**
+     * Add paymentLog
+     *
+     * @param \Food\OrderBundle\Entity\PaymentLog $paymentLog
+     * @return Order
+     */
+    public function addPaymentLog(\Food\OrderBundle\Entity\PaymentLog $paymentLog)
+    {
+        $this->paymentLog[] = $paymentLog;
+    
+        return $this;
+    }
+
+    /**
+     * Remove paymentLog
+     *
+     * @param \Food\OrderBundle\Entity\PaymentLog $paymentLog
+     */
+    public function removePaymentLog(\Food\OrderBundle\Entity\PaymentLog $paymentLog)
+    {
+        $this->paymentLog->removeElement($paymentLog);
+    }
+
+    /**
+     * Get paymentLog
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPaymentLog()
+    {
+        return $this->paymentLog;
     }
 }

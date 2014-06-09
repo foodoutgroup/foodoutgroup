@@ -339,6 +339,9 @@ class OrderService extends ContainerAware
         return $this;
     }
 
+    /**
+     * Inform client, that restourant accepted their order
+     */
     private function _notifyOnAccepted()
     {
         $ml = $this->container->get('food.mailer');
@@ -395,6 +398,9 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param null|string $source
+     * @param null|string $statusMessage
+     *
      * @return $this
      */
     public function statusAssigned($source=null, $statusMessage=null)
@@ -410,7 +416,7 @@ class OrderService extends ContainerAware
                 ->generate('drivermobile', array('hash' => $this->getOrder()->getOrderHash()), true);
 
             $messageText = $this->container->get('translator')->trans('general.sms.driver_assigned_order')
-                .': '.$orderConfirmRoute;
+                .$orderConfirmRoute;
 
             $logger->alert("Sending message for driver about assigned order to number: ".$driver->getPhone().' with text "'.$messageText.'"');
 
@@ -428,6 +434,9 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param null|string $source
+     * @param null|string $statusMessage
+     *
      * @return $this
      */
     public function statusForwarded($source=null, $statusMessage=null)
@@ -437,6 +446,9 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param null|string $source
+     * @param null|string $statusMessage
+     *
      * @return $this
      */
     public function statusCompleted($source=null, $statusMessage=null)
@@ -461,6 +473,9 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param null|string $source
+     * @param null|string $statusMessage
+     *
      * @return $this
      */
     public function statusFinished($source=null, $statusMessage=null)
@@ -470,6 +485,9 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param null|string $source
+     * @param null|string $statusMessage
+     *
      * @return $this
      */
     public function statusCanceled($source=null, $statusMessage=null)
@@ -501,6 +519,9 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param null|string $source
+     * @param null|string $statusMessage
+     *
      * @return $this
      */
     public function statusDelayed($source=null, $statusMessage=null)
@@ -578,6 +599,7 @@ class OrderService extends ContainerAware
      * @param string $locale
      * @param \Food\UserBundle\Entity\User $user
      * @param PlacePoint $placePoint - placePoint, jei atsiima pats
+     * @param bool $selfDelivery - ar restoranas pristato pats
      */
     public function createOrderFromCart($place, $locale='lt', $user, $placePoint=null, $selfDelivery = false)
     {
@@ -894,9 +916,9 @@ class OrderService extends ContainerAware
             self::$paymentStatusNew => 0,
             self::$paymentStatusWait => 1,
             self::$paymentStatusWaitFunds => 1,
-            self::$paymentStatusComplete => 1,
-            self::$paymentStatusCanceled => 1,
-            self::$paymentStatusError => 1,
+            self::$paymentStatusComplete => 2,
+            self::$paymentStatusCanceled => 2,
+            self::$paymentStatusError => 2,
         );
 
         if ($flowLine[$from] <= $flowLine[$to]) {
@@ -1417,6 +1439,7 @@ class OrderService extends ContainerAware
         $emailMessageText = 'Gautas naujas uzsakymas restoranui '.$order->getPlace()->getName()."\n"
             ."OrderId: " . $order->getId()."\n\n"
             ."Parinktas gamybos taskas adresu: ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
+            ."Gamybos tasko telefonas:".$order->getPlacePoint()->getPhone()."\n"
             ."\n"
             ."Uzsakovo vardas: ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
             ."Uzsakovo adresas: ".$userAddress."\n"
@@ -1495,6 +1518,7 @@ class OrderService extends ContainerAware
         $emailMessageText = 'Gautas naujas uzsakymas restoranui '.$order->getPlace()->getName()."\n"
             ."OrderId: " . $order->getId()."\n\n"
             ."Parinktas gamybos taskas adresu: ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
+            ."Gamybos tasko telefonas:".$order->getPlacePoint()->getPhone()."\n"
             ."\n"
             ."Uzsakovo vardas: ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
             ."Uzsakovo adresas: ".$userAddress."\n"
@@ -1617,6 +1641,10 @@ class OrderService extends ContainerAware
         }
     }
 
+    /**
+     * @param PlacePoint $placePoint
+     * @return mixed|string
+     */
     public function workTimeErrorsReturn(PlacePoint $placePoint)
     {
         $errors = array();
@@ -1627,6 +1655,10 @@ class OrderService extends ContainerAware
         return "";
     }
 
+    /**
+     * @param Place $place
+     * @return bool
+     */
     public function isTodayNoOneWantsToWork(Place $place)
     {
         $returner = true;
@@ -1663,6 +1695,10 @@ class OrderService extends ContainerAware
         return $returner;
     }
 
+    /**
+     * @param Place $place
+     * @return string
+     */
     public function notWorkingPlacesPoints(Place $place)
     {
         $returner = '<div>';
@@ -1681,6 +1717,10 @@ class OrderService extends ContainerAware
         return $returner;
     }
 
+    /**
+     * @param PlacePoint $placePoint
+     * @return bool
+     */
     public function isTodayWork(PlacePoint $placePoint)
     {
         $wd = date('w');
@@ -1705,6 +1745,11 @@ class OrderService extends ContainerAware
         return true;
     }
 
+    /**
+     * @param PlacePoint $placePoint
+     * @param bool $showDayNumber
+     * @return string
+     */
     public function getTodayWork(PlacePoint $placePoint, $showDayNumber = true)
     {
         $wdays = array(
@@ -1724,11 +1769,12 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param Place $placeId
+     * @param \Food\DishesBundle\Entity\Place $place
      * @param Request $request
      * @param $formHasErrors
      * @param $formErrors
      * @param $takeAway
+     * @param null|int $placePointId
      */
     public function validateDaGiantForm(Place $place, Request $request, &$formHasErrors, &$formErrors, $takeAway, $placePointId = null)
     {
@@ -1815,13 +1861,18 @@ class OrderService extends ContainerAware
         }
     }
 
-
+    /**
+     * @param int $orderId
+     */
     public function generateCsvById($orderId)
     {
         $order = $this->getOrderById($orderId);
         $this->generateCsv($order);
     }
 
+    /**
+     * @param Order $order
+     */
     public function generateCsv(Order $order)
     {
         $orderDetails = array();

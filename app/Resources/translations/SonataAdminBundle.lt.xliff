@@ -760,6 +760,18 @@
                 <source>admin.order.payment_status.error</source>
                 <target>Klaida</target>
             </trans-unit>
+            <trans-unit id="admin.order.payment_status.event">
+                <source>admin.order.payment_status.event</source>
+                <target>Įvykis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.payment_status.new_status">
+                <source>admin.order.payment_status.new_status</source>
+                <target>Nauja būklė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.order_payemnt_status.log">
+                <source>admin.order.order_payemnt_status.log</source>
+                <target>Mokėjimo būklės istorija</target>
+            </trans-unit>
             <trans-unit id="admin.order.submitted_for_payment">
                 <source>admin.order.submitted_for_payment</source>
                 <target>Mokėjimo pradžia</target>

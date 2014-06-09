@@ -1,0 +1,27 @@
+{# Uzsakymo apmokejimo statuso ir statuso istorijos ispiesimas prie sonatos order show formos #}
+<td colspan="2">
+    <b>{{ field_description.options.label|trans({}, 'SonataAdminBundle') }}:</b> {{ ( 'admin.order.payment_status.' ~ object.paymentStatus)|trans({}, 'SonataAdminBundle') }}
+    <br />
+    <br />
+    <div class="collapsable">
+        <h4 class="padded">{{ 'admin.order.order_payemnt_status.log'|trans({}, 'SonataAdminBundle') }}</h4>
+        <div id="field_container_details" class="field-container">
+            <table>
+                <tr>
+                    <th>{{ 'admin.order.status.date'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.payment_status.new_status'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.payment_status.event'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.status.message'|trans({}, 'SonataAdminBundle') }}</th>
+                </tr>
+            {% for statusInfo in object.paymentLog %}
+                <tr>
+                    <td style="white-space: nowrap">{{ statusInfo.eventDate|date("Y-m-d H:i:s") }}</td>
+                    <td>{{ ( 'admin.order.payment_status.' ~ statusInfo.paymentStatus)|trans({}, 'SonataAdminBundle') }}</td>
+                    <td>{{ statusInfo.event }}</td>
+                    <td>{{ statusInfo.message }}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+</td>

@@ -48,6 +48,11 @@ class PaymentsController extends Controller
                     $order
                 );
 
+                // Apsauga nuo labai greito responso, kai viena sekunde sukrenta viskas - negrazu, bet saugotis reikia, nes numusam complete su waitu ir gaunasi cirkas..
+                // Palaukiam 0.4s ir pasitikrine ar viskas ok - vaziuojam toliau
+                usleep(400000);
+                $order = $orderService->getOrderById($data['orderid']);
+
                 if ($order->getPaymentStatus() != $orderService::$paymentStatusComplete) {
                     $orderService->setPaymentStatus($orderService::$paymentStatusWaitFunds);
                     $orderService->saveOrder();
@@ -139,7 +144,7 @@ class PaymentsController extends Controller
             if ($data['status'] == 1) {
                 // Paysera was waiting for funds to be transfered
                 $logger->alert('-- Payment is valid. Procceed with care..');
-                $orderService->setPaymentStatus($orderService::$paymentStatusComplete);
+                $orderService->setPaymentStatus($orderService::$paymentStatusComplete, 'Paysera billed payment');
                 $orderService->saveOrder();
                 $orderService->informPlace();
 
