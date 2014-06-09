@@ -13,6 +13,14 @@ class SlugController extends Controller
 {
     public function processAction(Request $request, $slug)
     {
+        // Check if user is not banned
+        $ip = $request->getClientIp();
+        $repository = $this->getDoctrine()->getRepository('FoodAppBundle:BannedIp');
+        $isBanned = $repository->findOneBy(array('ip' => $ip, 'active' => true));
+        // Dude is banned - hit him
+        if ($isBanned) {
+            return $this->redirect($this->generateUrl('banned'), 302);
+        }
 
         // if we have uppercase letters - permanently redirect to lowercase version
         if (preg_match('#[A-Z]#', $slug)) {

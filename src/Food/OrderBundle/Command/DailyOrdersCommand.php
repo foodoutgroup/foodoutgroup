@@ -58,7 +58,7 @@ class DailyOrdersCommand extends ContainerAwareCommand
             $mailer->send($message);
 
             $output->writeln('Message sent to: '.$this->getContainer()->getParameter('accounting_email'));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $output->writeln('Error generating report');
             $output->writeln('Error: '.$e->getMessage());
             throw $e;

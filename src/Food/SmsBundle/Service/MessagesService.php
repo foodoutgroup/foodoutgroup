@@ -236,23 +236,23 @@ class MessagesService {
                     if (!$message) {
                         // TODO normalus exceptionas, kuri kitaip handlinsim
                         throw new \InvalidArgumentException('Message not found!');
-                    }
-
-                    $logger->info(print_r($message, true));
-
-                    $message->setDelivered($messageData['delivered']);
-
-                    if ($messageData['delivered'] == true) {
-                        $message->setReceivedAt(new \DateTime($messageData['completeDate']))
-                            ->setLastSendingError($messageData['error'])
-                            ->setLastErrorDate(null);
                     } else {
-                        $message->setDelivered(false)
-                            ->setLastSendingError($messageData['error'])
-                            ->setLastErrorDate(new \DateTime($messageData['completeDate']));
-                    }
+                        $logger->info(print_r($message, true));
 
-                    $this->saveMessage($message);
+                        $message->setDelivered($messageData['delivered']);
+
+                        if ($messageData['delivered'] == true) {
+                            $message->setReceivedAt(new \DateTime($messageData['completeDate']))
+                                ->setLastSendingError($messageData['error'])
+                                ->setLastErrorDate(null);
+                        } else {
+                            $message->setDelivered(false)
+                                ->setLastSendingError($messageData['error'])
+                                ->setLastErrorDate(new \DateTime($messageData['completeDate']));
+                        }
+
+                        $this->saveMessage($message);
+                    }
                 }
             }
 

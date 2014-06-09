@@ -1095,6 +1095,36 @@
                 <source>admin.driver.has_orders</source>
                 <target>Turi užsak.</target>
             </trans-unit>
+
+            <!-- Banned IP listas -->
+            <trans-unit id="admin.banned_ips">
+                <source>admin.banned_ips</source>
+                <target>Blokuoti IP adresai</target>
+            </trans-unit>
+            <trans-unit id="Banned Ip List">
+                <source>Banned Ip List</source>
+                <target>Blokuoti IP adresai</target>
+            </trans-unit>
+            <trans-unit id="admin.banned_ip.ip">
+                <source>admin.banned_ip.ip</source>
+                <target>IP</target>
+            </trans-unit>
+            <trans-unit id="admin.banned_ip.ip_placeholder">
+                <source>admin.banned_ip.ip_placeholder</source>
+                <target>192.168.1.1</target>
+            </trans-unit>
+            <trans-unit id="admin.banned_ip.active">
+                <source>admin.banned_ip.active</source>
+                <target>Aktyvus</target>
+            </trans-unit>
+            <trans-unit id="admin.banned_ip.reason">
+                <source>admin.banned_ip.reason</source>
+                <target>Priežastis</target>
+            </trans-unit>
+            <trans-unit id="admin.banned_ip.id">
+                <source>admin.banned_ip.id</source>
+                <target>ID</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

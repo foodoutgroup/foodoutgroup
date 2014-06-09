@@ -634,6 +634,14 @@
         <source>index.search_form_qlue</source>
         <target>Įveskite savo adresą ir sužinokite, iš kurių restoranų galite užsisakyti</target>
       </trans-unit>
+      <trans-unit id="general.ip_banned" resname="general.ip_banned">
+        <source>general.ip_banned</source>
+        <target>Jūsų IP adresas užblokuotas</target>
+      </trans-unit>
+      <trans-unit id="general.ip_banned_info" resname="general.ip_banned_info">
+        <source>general.ip_banned_info</source>
+        <target><![CDATA[Atsiprašome, tačiau Jūsų IP adresas (%ip%) yra užblokuotas.<br />IP adresai blokuojami, jei: lankytojas kuria melagingus užsakymus; smeižia, įžeidžia ar kita tyčine veikla trikdo kitų lankytojų ar restoranų darbą.<br /><br />Administracijos nurodyta priežastis: "%reason%".<br /><br />Jeigu manote, jog tai įvyko per klaidą - susisiekite su mumis <strong><a href="mailto:info@foodout.lt">info@foodout.lt</a></strong> arba telefonu <strong>+370 687 44359</strong>]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

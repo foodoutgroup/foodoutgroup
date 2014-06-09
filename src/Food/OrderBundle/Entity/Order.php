@@ -163,17 +163,19 @@ class Order
     private $locale;
 
     /**
+     * @var \Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog
      * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\OrderStatusLog", mappedBy="order")
      **/
     private $orderStatusLog;
 
     /**
+     * @var \Food\OrderBundle\Entity\PaymentLog $paymentLog
      * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\PaymentLog", mappedBy="order")
      **/
     private $paymentLog;
 
     /**
-     * @var
+     * @var \DateTime
      * @ORM\Column(name="accept_time", type="datetime", nullable=true)
      */
     private $acceptTime;

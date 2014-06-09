@@ -147,12 +147,14 @@ class LogisticsService extends ContainerAware
         $driver = $this->getDriverById($driverId);
         $orderService = $this->getOrderService();
 
-        foreach($orderIds as $orderId) {
-            $order = $orderService->getOrderById($orderId);
-            $order->setDriver($driver);
+        if ($driver) {
+            foreach($orderIds as $orderId) {
+                $order = $orderService->getOrderById($orderId);
+                $order->setDriver($driver);
 
-            $orderService->statusAssigned('logistics_service');
-            $orderService->saveOrder();
+                $orderService->statusAssigned('logistics_service');
+                $orderService->saveOrder();
+            }
         }
 
         // TODO etaksi assigninimas

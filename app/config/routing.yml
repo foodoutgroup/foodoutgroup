@@ -68,6 +68,10 @@ adminroot:
         route: sonata_admin_dashboard
         permanent: true
 
+banned:
+    path: /banned/
+    defaults: { _controller: FoodAppBundle:Default:banned}
+
 ordermobile:
     path: /o/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~, action: ~ }

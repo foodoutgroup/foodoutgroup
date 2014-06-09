@@ -4,12 +4,22 @@ namespace Food\AppBundle\Controller;
 
 use Food\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+        // Check if user is not banned
+        $ip = $request->getClientIp();
+        $repository = $this->getDoctrine()->getRepository('FoodAppBundle:BannedIp');
+        $isBanned = $repository->findOneBy(array('ip' => $ip, 'active' => true));
+        // Dude is banned - hit him
+        if ($isBanned) {
+            return $this->redirect($this->generateUrl('banned'), 302);
+        }
+
         $formDefaults = array(
             'city' => '',
             'address' => '',
@@ -55,6 +65,21 @@ class DefaultController extends Controller
             array(
                 'topRatedPlaces' => $topRatedPlaces,
                 'staticPages' => $staticPages,
+            )
+        );
+    }
+
+    public function bannedAction(Request $request)
+    {
+        $ip = $request->getClientIp();
+
+        $repository = $this->getDoctrine()->getRepository('FoodAppBundle:BannedIp');
+        $ipInfo = $repository->findOneBy(array('ip' => $ip));
+
+        return $this->render(
+            'FoodAppBundle:Default:banned.html.twig',
+            array(
+                'ipInfo' => $ipInfo
             )
         );
     }

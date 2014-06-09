@@ -1001,7 +1001,7 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param Order|null $order
+     * @param Order|null|false $order
      * @param string $event
      * @param string|null $message
      * @param mixed $debugData
