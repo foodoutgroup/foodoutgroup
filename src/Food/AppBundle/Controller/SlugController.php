@@ -15,10 +15,8 @@ class SlugController extends Controller
     {
         // Check if user is not banned
         $ip = $request->getClientIp();
-        $repository = $this->getDoctrine()->getRepository('FoodAppBundle:BannedIp');
-        $isBanned = $repository->findOneBy(array('ip' => $ip, 'active' => true));
         // Dude is banned - hit him
-        if ($isBanned) {
+        if ($this->get('food.app.utils.misc')->isIpBanned($ip)) {
             return $this->redirect($this->generateUrl('banned'), 302);
         }
 

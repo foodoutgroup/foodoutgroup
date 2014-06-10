@@ -4,6 +4,7 @@ namespace Food\SmsBundle\Controller;
 
 use Food\SmsBundle\Service\InfobipProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -60,9 +61,8 @@ class DeliveryController extends Controller
         return $this->messagingService;
     }
 
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $request = $this->get('request');
         $messagingService = $this->getMessagingService();
 
         // TODO iskelti i services.yml, kad uzkrautu per ten :) gal :)

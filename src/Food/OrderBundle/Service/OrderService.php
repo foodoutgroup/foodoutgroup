@@ -916,8 +916,8 @@ class OrderService extends ContainerAware
             self::$paymentStatusNew => 0,
             self::$paymentStatusWait => 1,
             self::$paymentStatusWaitFunds => 1,
+            self::$paymentStatusCanceled => 1,
             self::$paymentStatusComplete => 2,
-            self::$paymentStatusCanceled => 2,
             self::$paymentStatusError => 2,
         );
 

@@ -385,4 +385,6 @@ class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expectedData3, $parsedData3);
         $this->assertEquals($expectedData4, $parsedData4);
     }
+
+
 }

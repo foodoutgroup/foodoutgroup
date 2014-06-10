@@ -3,6 +3,7 @@
 namespace Food\AppBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DispatcherAdminController extends Controller
@@ -114,9 +115,8 @@ class DispatcherAdminController extends Controller
         );
     }
 
-    public function assignDriverAction()
+    public function assignDriverAction(Request $request)
     {
-        $request = $this->get('request');
         $driverId = $request->get('driverId');
         $ordersIds = $request->get('orderIds');
 
@@ -133,9 +133,8 @@ class DispatcherAdminController extends Controller
         return new Response('OK');
     }
 
-    public function checkNewOrdersAction()
+    public function checkNewOrdersAction(Request $request)
     {
-        $request = $this->get('request');
         $orderService = $this->get('food.order');
 
         $orders = $request->get('orders');
