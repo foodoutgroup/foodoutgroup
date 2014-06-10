@@ -77,7 +77,6 @@ class GoogleGisService extends ContainerAware
         $returner['street_found'] = false;
         $returner['address_found'] = false;
         $returner['status'] = $location->status;
-
         if( !empty( $location->results[0]) && in_array('street_address', $location->results[0]->types)) {
             $returner['not_found'] = false;
             $returner['street_found'] = true;
@@ -89,15 +88,24 @@ class GoogleGisService extends ContainerAware
             $returner['address_orig'] = $address;
             $returner['lat'] = $location->results[0]->geometry->location->lat;
             $returner['lng'] = $location->results[0]->geometry->location->lng;
-        } elseif( !empty( $location->results[0]) && in_array('route', $location->results[0]->types) && preg_match('/\d\w{0,}$/i', $address)!=1) {
-            $returner['street_found'] = true;
-            $returner['street'] =  $location->results[0]->address_components[0]->long_name;
-            $returner['city'] =  $location->results[0]->address_components[1]->long_name;
-            $returner['address'] = $returner['street'];
-            $returner['lat'] = $location->results[0]->geometry->location->lat;
-            $returner['lng'] = $location->results[0]->geometry->location->lng;
-        }
+        } elseif( !empty( $location->results[0]) && in_array('route', $location->results[0]->types)) {
+            $res = preg_match('/\d\w{0,}$/i', $address, $rezult);
+            if (!empty($rezult)) {
+                $crit = $rezult[0];
+            } else {
+                $crit = "0000";
+            }
+            $resIs = preg_match('/'.$crit.'/', $location->results[0]->address_components[0]->long_name);
 
+            if ($res == 0 || $res==1 && $resIs == 1) {
+                $returner['street_found'] = true;
+                $returner['street'] =  $location->results[0]->address_components[0]->long_name;
+                $returner['city'] =  $location->results[0]->address_components[1]->long_name;
+                $returner['address'] = $returner['street'];
+                $returner['lat'] = $location->results[0]->geometry->location->lat;
+                $returner['lng'] = $location->results[0]->geometry->location->lng;
+            }
+        }
         $this->setLocationToSession($returner);
         return $returner;
     }
