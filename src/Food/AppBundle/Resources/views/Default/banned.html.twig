@@ -1,0 +1,18 @@
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+{% block title %}{% trans %}general.ip_banned{% endtrans %}{% endblock %}
+
+    {% block body %}
+        <div class="site-center">
+            <div class="site-block">
+                <div class="middle-content">
+                    <div class="static-page">
+                        <h1>{% trans %}general.ip_banned{% endtrans %}</h1>
+                        <div class="static-page-content">
+                            {% trans with {'%ip%': ipInfo.ip, '%reason%': ipInfo.reason} %}general.ip_banned_info{% endtrans %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}

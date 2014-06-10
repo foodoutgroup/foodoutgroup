@@ -218,17 +218,17 @@ class PaySera extends ContainerAware implements BillingInterface {
         $logger->alert('++ Bandom bilinti orderi su Id: '.$order->getId());
         $logger->alert('-------------------------------------');
 
-        $siteDomain = 'http://'.$this->getSiteDomain();
         $router = $this->container->get('router');
-        $acceptUrl = $siteDomain.$router->generate('paysera_accept', array('_locale' => $this->getLocale()));
-        $cancelUrl = $siteDomain.$router->generate(
+        $acceptUrl = $router->generate('paysera_accept', array('_locale' => $this->getLocale()), true);
+        $cancelUrl = $router->generate(
                 'paysera_cancel',
                 array(
                     'hash' => $order->getOrderHash(),
                     '_locale' => $this->getLocale(),
-                )
+                ),
+            true
             );
-        $callbackUrl = $siteDomain.$router->generate('paysera_callback');
+        $callbackUrl = $router->generate('paysera_callback', array(), true);
 
         $evpParams = array(
             'projectid' => $this->getProjectId(),
@@ -258,6 +258,7 @@ class PaySera extends ContainerAware implements BillingInterface {
 // TODO lower is useless?
     /**
      * @param $request
+     * @throws \Exception
      * @return mixed
      */
     public function parseEvpResponse($request)
@@ -266,11 +267,11 @@ class PaySera extends ContainerAware implements BillingInterface {
             $callbackValidator = $this->container->get('evp_web_to_pay.callback_validator')
                 ->validateAndParseData($request->query->all());
             $data = $callbackValidator->validateAndParseData($request->query->all());
-        } catch (\Exception $e) {
-            // refrow :(
-        }
 
-        return $data;
+            return $data;
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     /**

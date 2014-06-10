@@ -163,12 +163,19 @@ class Order
     private $locale;
 
     /**
+     * @var \Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog
      * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\OrderStatusLog", mappedBy="order")
      **/
     private $orderStatusLog;
 
     /**
-     * @var
+     * @var \Food\OrderBundle\Entity\PaymentLog $paymentLog
+     * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\PaymentLog", mappedBy="order")
+     **/
+    private $paymentLog;
+
+    /**
+     * @var \DateTime
      * @ORM\Column(name="accept_time", type="datetime", nullable=true)
      */
     private $acceptTime;
@@ -1118,5 +1125,38 @@ class Order
     public function getUserIp()
     {
         return $this->userIp;
+    }
+
+    /**
+     * Add paymentLog
+     *
+     * @param \Food\OrderBundle\Entity\PaymentLog $paymentLog
+     * @return Order
+     */
+    public function addPaymentLog(\Food\OrderBundle\Entity\PaymentLog $paymentLog)
+    {
+        $this->paymentLog[] = $paymentLog;
+    
+        return $this;
+    }
+
+    /**
+     * Remove paymentLog
+     *
+     * @param \Food\OrderBundle\Entity\PaymentLog $paymentLog
+     */
+    public function removePaymentLog(\Food\OrderBundle\Entity\PaymentLog $paymentLog)
+    {
+        $this->paymentLog->removeElement($paymentLog);
+    }
+
+    /**
+     * Get paymentLog
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPaymentLog()
+    {
+        return $this->paymentLog;
     }
 }

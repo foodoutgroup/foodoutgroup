@@ -265,6 +265,7 @@ sonata_admin:
                   item_adds:
                       - sonata.admin.users
                       - sonata.admin.newsletter_subscribers
+                      - sonata.admin.banned_ips
                   roles: [ ROLE_ADMIN ]
               admin.support:
                   items: ~

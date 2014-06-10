@@ -18,6 +18,8 @@ class PaymentsController extends Controller
         $logger->alert("Request data: ".var_export($this->getRequest()->query->all(), true));
         $logger->alert('-----------------------------------------------------------');
 
+        $orderService = $this->container->get('food.order');
+
         try {
             $callbackValidator = $this->get('evp_web_to_pay.callback_validator');
             $data = $callbackValidator->validateAndParseData($this->getRequest()->query->all());
@@ -25,7 +27,6 @@ class PaymentsController extends Controller
             $logger->alert("Parsed accept data: ".var_export($data, true));
             $logger->alert('-----------------------------------------------------------');
 
-            $orderService = $this->container->get('food.order');
             $order = $orderService->getOrderById($data['orderid']);
 
             if (!$order) {
@@ -48,6 +49,11 @@ class PaymentsController extends Controller
                     $order
                 );
 
+                // Apsauga nuo labai greito responso, kai viena sekunde sukrenta viskas - negrazu, bet saugotis reikia, nes numusam complete su waitu ir gaunasi cirkas..
+                // Palaukiam 0.4s ir pasitikrine ar viskas ok - vaziuojam toliau
+                usleep(400000);
+                $order = $orderService->getOrderById($data['orderid']);
+
                 if ($order->getPaymentStatus() != $orderService::$paymentStatusComplete) {
                     $orderService->setPaymentStatus($orderService::$paymentStatusWaitFunds);
                     $orderService->saveOrder();
@@ -63,7 +69,7 @@ class PaymentsController extends Controller
             $logger->alert("payment data validation failed!. Error: ".$e->getMessage());
             $logger->alert("trace: ".$e->getTraceAsString());
 
-            if ($order) {
+            if (isset($order) && $order) {
                 $orderService->statusFailed('paysera_payment');
                 $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());
                 $orderService->saveOrder();
@@ -102,7 +108,7 @@ class PaymentsController extends Controller
             $logger->alert("payment cancelation fails!. Error: ".$e->getMessage());
             $logger->alert("trace: ".$e->getTraceAsString());
 
-            if ($order) {
+            if (isset($order) && $order) {
                 $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());
                 $orderService->saveOrder();
             }
@@ -123,13 +129,15 @@ class PaymentsController extends Controller
     {
         $logger = $this->container->get("logger");
         $logger->alert("==========================\ncallback payment action for paysera came\n====================================\n");
+
+        $orderService = $this->container->get('food.order');
+
         try {
             $callbackValidator = $this->get('evp_web_to_pay.callback_validator');
             $data = $callbackValidator->validateAndParseData($this->getRequest()->query->all());
             $logger->alert('-- parsing data');
             $logger->alert('Parsed data: '.var_export($data, true));
 
-            $orderService = $this->container->get('food.order');
             $order = $orderService->getOrderById($data['orderid']);
 
             if (!$order) {
@@ -139,7 +147,7 @@ class PaymentsController extends Controller
             if ($data['status'] == 1) {
                 // Paysera was waiting for funds to be transfered
                 $logger->alert('-- Payment is valid. Procceed with care..');
-                $orderService->setPaymentStatus($orderService::$paymentStatusComplete);
+                $orderService->setPaymentStatus($orderService::$paymentStatusComplete, 'Paysera billed payment');
                 $orderService->saveOrder();
                 $orderService->informPlace();
 
@@ -150,7 +158,7 @@ class PaymentsController extends Controller
             $logger->alert("payment callback validation failed!. Error: ".$e->getMessage());
             $logger->alert("trace: ".$e->getTraceAsString());
 
-            if ($order) {
+            if (isset($order) && $order) {
                 $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());
                 $orderService->saveOrder();
             }

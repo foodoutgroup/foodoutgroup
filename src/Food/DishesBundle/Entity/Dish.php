@@ -425,29 +425,6 @@ class Dish extends Uploadable implements Translatable
     }
 
     /**
-     * Set unit
-     *
-     * @param \Food\DishesBundle\Entity\DishUnit $unit
-     * @return Dish
-     */
-    public function setUnit(\Food\DishesBundle\Entity\DishUnit $unit = null)
-    {
-        $this->unit = $unit;
-    
-        return $this;
-    }
-
-    /**
-     * Get unit
-     *
-     * @return \Food\DishesBundle\Entity\DishUnit 
-     */
-    public function getUnit()
-    {
-        return $this->unit;
-    }
-
-    /**
      * Set createdBy
      *
      * @param \Food\UserBundle\Entity\User $createdBy

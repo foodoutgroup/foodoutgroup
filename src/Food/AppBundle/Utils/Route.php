@@ -15,6 +15,11 @@ class Route
     private $queryParams;
 
     /**
+     * @var \Symfony\Component\DependencyInjection\Container
+     */
+    private $container;
+
+    /**
      * @param \Symfony\Component\DependencyInjection\Container $container
      */
     public function setContainer(Container $container)
