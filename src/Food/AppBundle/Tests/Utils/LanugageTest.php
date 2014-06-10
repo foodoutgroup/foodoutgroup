@@ -86,4 +86,48 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $allLocales = $util->getAll();
         $this->assertEquals($expectedLocales, $allLocales);
     }
+
+    public function testNameFormaterLt()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\Container');
+        $util = new Language($container);
+
+        $nameToFormat1 = 'Mantas';
+        $nameToFormat2 = 'Paulius';
+        $nameToFormat3 = 'Eglė';
+        $nameToFormat4 = 'Ona';
+        $nameToFormat5 = 'Viktorija';
+        $nameToFormat6 = 'Karolis';
+        $nameToFormat7 = 'Balys';
+        $nameToFormat8 = 'John';
+
+        $expectedName1 = 'Mantai';
+        $expectedName2 = 'Pauliau';
+        $expectedName3 = 'Egle';
+        $expectedName4 = 'Ona';
+        $expectedName5 = 'Viktorija';
+        $expectedName6 = 'Karoli';
+        $expectedName7 = 'Baly';
+        $expectedName8 = 'John';
+
+        $formatedName1 = $util->getName($nameToFormat1, 'lt');
+        $formatedName2 = $util->getName($nameToFormat2, 'lt');
+        $formatedName3 = $util->getName($nameToFormat3, 'lt');
+        $formatedName4 = $util->getName($nameToFormat4, 'lt');
+        $formatedName5 = $util->getName($nameToFormat5, 'lt');
+        $formatedName6 = $util->getName($nameToFormat6, 'lt');
+        $formatedName7 = $util->getName($nameToFormat7, 'lt');
+        $formatedName8 = $util->getName($nameToFormat8, 'lt');
+        $formatedName9 = $util->getName($nameToFormat8, 'en');
+
+        $this->assertEquals($expectedName1, $formatedName1);
+        $this->assertEquals($expectedName2, $formatedName2);
+        $this->assertEquals($expectedName3, $formatedName3);
+        $this->assertEquals($expectedName4, $formatedName4);
+        $this->assertEquals($expectedName5, $formatedName5);
+        $this->assertEquals($expectedName6, $formatedName6);
+        $this->assertEquals($expectedName7, $formatedName7);
+        $this->assertEquals($expectedName8, $formatedName8);
+        $this->assertEquals($expectedName8, $formatedName9);
+    }
 }

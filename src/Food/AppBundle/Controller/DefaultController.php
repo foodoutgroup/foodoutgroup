@@ -13,10 +13,8 @@ class DefaultController extends Controller
     {
         // Check if user is not banned
         $ip = $request->getClientIp();
-        $repository = $this->getDoctrine()->getRepository('FoodAppBundle:BannedIp');
-        $isBanned = $repository->findOneBy(array('ip' => $ip, 'active' => true));
         // Dude is banned - hit him
-        if ($isBanned) {
+        if ($this->get('food.app.utils.misc')->isIpBanned($ip)) {
             return $this->redirect($this->generateUrl('banned'), 302);
         }
 
@@ -39,13 +37,12 @@ class DefaultController extends Controller
 
         // Lets check session for last used address and use it
         $sessionLocation = $this->get('food.googlegis')->getLocationFromSession();
-        if (!empty($sessionLocation)) {
-            if (!empty($sessionLocation['city']) && !empty($sessionLocation['address_orig'])) {
-                $formDefaults = array(
-                    'city' => $sessionLocation['city'],
-                    'address' => $sessionLocation['address_orig'],
-                );
-            }
+        if (!empty($sessionLocation)
+            && !empty($sessionLocation['city']) && !empty($sessionLocation['address_orig'])) {
+            $formDefaults = array(
+                'city' => $sessionLocation['city'],
+                'address' => $sessionLocation['address_orig'],
+            );
         }
 
         return $this->render(
@@ -86,11 +83,11 @@ class DefaultController extends Controller
 
     /**
      * Subscribtion to newsletter
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return Response
      */
-    public function newsletterSubscribeAction()
+    public function newsletterSubscribeAction(Request $request)
     {
-        $request = $this->get('request');
         $newsleterEmail = $request->get('newsletter_email');
 
         $this->get('food.newsletter')->subscribe($newsleterEmail, $request->getLocale());

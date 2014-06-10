@@ -128,9 +128,12 @@ class Language
         return $this->getContainer()->getParameter('available_locales');
     }
 
-
     /**
      * TODO - multilingual
+     * @param string $name
+     * @param null|string $lang
+     *
+     * @return string
      */
     public function getName ($name, $lang = null)
     {
@@ -150,6 +153,10 @@ class Language
 
     /**
      * TODO - multiligual
+     * @param string $name
+     * @param null|string $lang
+     *
+     * @return string
      */
     protected function cleanName ($name, $lang = null)
     {
@@ -163,6 +170,10 @@ class Language
 
     /**
      * TODO - multilingual
+     * @param string $name
+     * @param null|string $lang
+     *
+     * @return string
      */
     protected function getTransformedName ($name, $lang = null)
     {
@@ -177,15 +188,5 @@ class Language
         }
 
         return $return ;
-    }
-
-    /**
-     * Temporary for debuging
-     *
-     * @param string $message
-     */
-    protected function log($message)
-    {
-        $this->container->get('logger')->alert($message);
     }
 }
