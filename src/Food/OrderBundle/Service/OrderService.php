@@ -358,17 +358,24 @@ class OrderService extends ContainerAware
         }
         $ordersText = "<br />";
         $ordersText.= "<ul>";
+        $invoice = array();
         foreach ($this->getOrder()->getDetails() as $ord) {
             $ordersText.="<li>".$ord->getDishName()." (".$ord->getQuantity()." vnt.)";
             $options = $ord->getOptions();
+            $invoice[] = array(
+                'itm_name' => $ord->getDishName(),
+                'itm_amount' => $ord->getQuantity(),
+                'itm_price' => $ord->getPrice(),
+                'itm_sum' => $ord->getPrice() * $ord->getQuantity(),
+            );
             if (sizeof($options) > 0) {
-                /*
+
                 $ordersText.="<ul>";
                 foreach ($options as $opt) {
                     $ordersText.="<li>".$opt->getDishOptionName()."</li>";
                 }
                 $ordersText.="</ul>";
-                */
+
 
                 $ordersText.=" (".$this->container->get('translator')->trans('email.dishes.options').": ";
                 foreach ($options as $k=>$opt) {
@@ -376,6 +383,12 @@ class OrderService extends ContainerAware
                         $ordersText.=", ";
                     }
                     $ordersText.=$opt->getDishOptionName();
+                    $invoice[] = array(
+                        'itm_name' => "  - ".$opt->getDishOptionName(),
+                        'itm_amount' => $ord->getQuantity(),
+                        'itm_price' => $opt->getPrice(),
+                        'itm_sum' => $opt->getPrice() * $ord->getQuantity(),
+                    );
                 }
                 $ordersText.=")";
 
@@ -384,6 +397,7 @@ class OrderService extends ContainerAware
         }
         $ordersText.= "</ul>";
 
+/*
         $variables = array(
             'username' => $userName,
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
@@ -393,8 +407,23 @@ class OrderService extends ContainerAware
             'pristatymo_data' => $this->getOrder()->getDeliveryTime()->format('Y-m-d H:i:s')
         );
 
-        $ml->setVariables( $variables )->setRecipient( $this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30009269 )->send();
+*/
 
+        $variables = array(
+            'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
+            'maisto_ruosejas' => $this->getOrder()->getPlacePoint()->getAddress(),
+            'uzsakymas' => $this->getOrder()->getId(),
+            'adresas' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->getAddress().", ".$this->getOrder()->getAddressId()->getCity() : "--"),
+            'pristatymo_data' => $this->getOrder()->getDeliveryTime()->format('Y-m-d H:i:s'),
+            'total_sum' => $this->getOrder()->getTotal(),
+            'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getPlace()->getDeliveryPrice() : 0),
+            'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ?  ($this->getOrder()->getTotal() - $this->getOrder()->getPlace()->getDeliveryPrice()) :  $this->getOrder()->getTotal()),
+            'invoice' => $invoice
+        );
+
+
+//        $ml->setVariables( $variables )->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30009269  )->send();
+        $ml->setVariables( $variables )->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30010811 )->send();
     }
 
     /**
@@ -468,7 +497,7 @@ class OrderService extends ContainerAware
 
             // TODO upload accounting
         }
-
+        //$ml = $this->container->get('food.mailer');
         return $this;
     }
 
