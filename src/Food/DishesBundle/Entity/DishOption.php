@@ -35,7 +35,7 @@ class DishOption implements Translatable
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=45)
+     * @ORM\Column(name="name", type="string", length=60)
      */
     private $name;
 
