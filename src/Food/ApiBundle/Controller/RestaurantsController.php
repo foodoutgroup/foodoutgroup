@@ -23,10 +23,17 @@ class RestaurantsController extends Controller
             $this->get('food.googlegis')->getLocationFromSession()
         );
 
-        $response = array();
+        $response = array(
+            'restaurants' => array(),
+            '_meta' => array(
+                'total' => sizeof($places),
+                'offset' => 0,
+                'limit' => 50
+            )
+        );
         foreach ($places as $place) {
             $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place['place'], $place['point']);
-            $response[] = $restaurant->data;
+            $response['restaurants'][] = $restaurant->data;
         }
         return new JsonResponse($response);
     }

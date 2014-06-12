@@ -102,7 +102,7 @@ class Restaurant extends ContainerAware
             ->set('title', $place->getName())
             ->set('description', $place->getDescription())
             ->set('cuisine', $kitchensForResp)
-            //->set('tags', array()) // @todo FILL IT !!
+            ->set('tags', array()) // @todo FILL IT !!
             ->set('thumbnail_url', 'http://www.foodout.lt/uploads/places/thumb_'.$place->getLogo())
             ->set(
                 'payment_options',
@@ -143,13 +143,13 @@ class Restaurant extends ContainerAware
     private function _getWorkHoursOfPlacePoint(PlacePoint $point)
     {
         return array(
-            $point->getWd1Start()." - ".$point->getWd1End(),
-            $point->getWd2Start()." - ".$point->getWd2End(),
-            $point->getWd3Start()." - ".$point->getWd3End(),
-            $point->getWd4Start()." - ".$point->getWd4End(),
-            $point->getWd5Start()." - ".$point->getWd5End(),
-            $point->getWd6Start()." - ".$point->getWd6End(),
-            $point->getWd7Start()." - ".$point->getWd7End()
+            (strpos($point->getWd1Start(), ":") > 0 ? array($point->getWd1Start(),$point->getWd1End()) : array()),
+            (strpos($point->getWd2Start(), ":") > 0 ? array($point->getWd2Start(),$point->getWd2End()) : array()),
+            (strpos($point->getWd3Start(), ":") > 0 ? array($point->getWd3Start(),$point->getWd3End()) : array()),
+            (strpos($point->getWd4Start(), ":") > 0 ? array($point->getWd4Start(),$point->getWd4End()) : array()),
+            (strpos($point->getWd5Start(), ":") > 0 ? array($point->getWd5Start(),$point->getWd5End()) : array()),
+            (strpos($point->getWd6Start(), ":") > 0 ? array($point->getWd6Start(),$point->getWd6End()) : array()),
+            (strpos($point->getWd7Start(), ":") > 0 ? array($point->getWd7Start(),$point->getWd7End()) : array())
         );
     }
 
@@ -163,7 +163,7 @@ class Restaurant extends ContainerAware
                     'location_id' => $point->getId(),
                     'address' => $point->getAddress(),
                     'city' => $point->getCity(),
-                    // 'selected' => (!empty($placePoint) && $point->getId() == $placePoint->getId() ? true: false),
+                    'selected' => (!empty($placePoint) && $point->getId() == $placePoint->getId() ? true: false),
                     'coords' => array(
                         'latitude' => $point->getLat(),
                         'longitude' => $point->getLon()
