@@ -4,20 +4,31 @@ namespace Food\ApiBundle\Controller;
 
 use Food\ApiBundle\Common\Restaurant;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class RestaurantsController extends Controller
 {
     public function getRestaurantsAction()
     {
-        $data = new Restaurant();
-        var_dump($data->get('delivery_options', 'price'));
-        //echo "<pre>";
-        //print_r($data->data);
-        //$data->set('delivery_options.price', array('amount'=>'16'));
-        //print_r($data->data);
-        //echo "</pre>";
-        return new Response();
+        $address = "Vivulskio 21";
+        $city = "Vilnius";
+        $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
+        $locationInfo = $this->get('food.googlegis')->groupData($location, $address);
+
+        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
+            array(),
+            array(),
+            false,
+            $this->get('food.googlegis')->getLocationFromSession()
+        );
+
+        $response = array();
+        foreach ($places as $place) {
+            $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place['place'], $place['point']);
+            $response[] = $restaurant->data;
+        }
+        return new JsonResponse($response);
     }
 
     public function getRestaurantsFilteredAction()

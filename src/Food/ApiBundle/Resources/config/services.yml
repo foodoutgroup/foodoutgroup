@@ -2,6 +2,7 @@ parameters:
 #    food_api.example.class: Food\ApiBundle\Example
 
 services:
-#    food_api.example:
-#        class: %food_api.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    food_api.api:
+        class: Food\ApiBundle\Service\ApiService
+        calls:
+            - [setContainer, [@service_container]]

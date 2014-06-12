@@ -18,8 +18,14 @@ class Restaurant extends ContainerAware
         'thumbnail_url' => '',
         'photos_urls' => array(),
         'menu_photos_enabled' => true,
-        'payment_options' => array(),
-        'services' => array(),
+        'payment_options' => array(
+            // 'cash' => true,
+            // 'credit_card' => true
+        ),
+        'services' => array(
+            // 'delivery'=>true,
+            // 'pickup' => true
+        ),
         'delivery_options' => array(
             'estimated_time' => 0,
             'price' => array(
@@ -33,21 +39,22 @@ class Restaurant extends ContainerAware
         ),
         'is_working' => false,
         'is_taking_orders' => false,
-        'order_hours' => array('','','','','','',''),
-        'work_hours' => array('','','','','','',''),
+        'order_hours' => array(),
+        'work_hours' => array(),
         'locations' => array(),
     );
 
     public  $data;
     private $availableFields = array();
 
-    public function __construct(Place $place = null)
+    public function __construct(Place $place = null, $container = null)
     {
         $this->data = $this->block;
         $this->availableFields = array_keys($this->block);
         if (!empty($place)) {
             $this->loadFromEntity($place);
         }
+        $this->container = $container;
     }
 
     public function get($param) {
@@ -63,7 +70,7 @@ class Restaurant extends ContainerAware
     public function set($param, $data)
     {
         $this->checkParam($param);
-        $this->data[$param] = array_merge($this->data[$param], $data);
+        $this->data[$param] = $data;
         return $this;
     }
 
@@ -100,15 +107,15 @@ class Restaurant extends ContainerAware
             ->set(
                 'payment_options',
                 array(
-                    'cash' => true, // @todo
-                    'credit_card' => true // @todo
+                    'cash' => true,
+                    'credit_card' => ($place->getSelfDelivery() ? false: true)
                 )
             )
             ->set(
                 'services',
                 array(
-                    'pickup' => true,
-                    'delivery' => true // @todo - bus priklausomybe nuo PlacePoint. Taigi gal net ne cia turetu buti.
+                    'pickup' => ($placePoint->getPickUp() ? true: false),
+                    'delivery' => ($placePoint->getDelivery() ? true: false)
                 )
             )
             ->set(
@@ -127,7 +134,23 @@ class Restaurant extends ContainerAware
             )
             ->set('is_working', !$this->container->get('food.order')->isTodayNoOneWantsToWork($place))
             ->set('is_taking_orders', !$this->container->get('food.order')->isTodayNoOneWantsToWork($place))
+            ->set('order_hours', $this->_getWorkHoursOfPlacePoint($placePoint))
+            ->set('work_hours', $this->_getWorkHoursOfPlacePoint($placePoint))
             ->set('locations', $this->_getLocationsForResponse($place, $placePoint));
+        return $this;
+    }
+
+    private function _getWorkHoursOfPlacePoint(PlacePoint $point)
+    {
+        return array(
+            $point->getWd1Start()." - ".$point->getWd1End(),
+            $point->getWd2Start()." - ".$point->getWd2End(),
+            $point->getWd3Start()." - ".$point->getWd3End(),
+            $point->getWd4Start()." - ".$point->getWd4End(),
+            $point->getWd5Start()." - ".$point->getWd5End(),
+            $point->getWd6Start()." - ".$point->getWd6End(),
+            $point->getWd7Start()." - ".$point->getWd7End()
+        );
     }
 
     private function _getLocationsForResponse(Place $place, PlacePoint $placePoint = null)
@@ -140,27 +163,21 @@ class Restaurant extends ContainerAware
                     'location_id' => $point->getId(),
                     'address' => $point->getAddress(),
                     'city' => $point->getCity(),
-                    'selected' => (!empty($placePoint) && $point->getId() == $placePoint->getId() ? true: false),
+                    // 'selected' => (!empty($placePoint) && $point->getId() == $placePoint->getId() ? true: false),
                     'coords' => array(
                         'latitude' => $point->getLat(),
                         'longitude' => $point->getLon()
                     ),
                     'is_working' => $this->container->get('food.order')->isTodayWork($point),
-                    'work_hours' => array(              // @todo Fix kad jei nedirba nebutu tokia narkata.
-                        $point->getWd1Start()." - ".$point->getWd1End(),
-                        $point->getWd2Start()." - ".$point->getWd2End(),
-                        $point->getWd3Start()." - ".$point->getWd3End(),
-                        $point->getWd4Start()." - ".$point->getWd4End(),
-                        $point->getWd5Start()." - ".$point->getWd5End(),
-                        $point->getWd6Start()." - ".$point->getWd6End(),
-                        $point->getWd7Start()." - ".$point->getWd7End()
-                    ),
+                    'work_hours' => $this->_getWorkHoursOfPlacePoint($point),
                     'phone_number' => $point->getPhone(),
+                    /*
                     'services' => array(
                         'pickup' => $point->getPickUp(),
                         'delivery' => $point->getDelivery()
                     )
-                )
+                    */
+                );
             }
         }
     }
