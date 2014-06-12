@@ -200,7 +200,7 @@
       </trans-unit>
       <trans-unit id="2b94e2d1c25ddac053ea4bd3eaadd41f" resname="mobile.order_delivered">
         <source>mobile.order_delivered</source>
-        <target>Pristačiau užskymą</target>
+        <target>Pristačiau užsakymą</target>
       </trans-unit>
       <trans-unit id="ebbc16fb3a732d7abe363ef2463397f9" resname="mobile.order_cancel">
         <source>mobile.order_cancel</source>

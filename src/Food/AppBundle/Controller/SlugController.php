@@ -96,10 +96,15 @@ class SlugController extends Controller
                 $slugUtele = $this->get('food.dishes.utils.slug');
                 $placeSlug = $slugUtele->getSlugByItem($place->getId(), Slug::TYPE_PLACE);
 
-                return $this->forward(
-                    'FoodDishesBundle:Place:index',
-                    ['id' => $place->getId(), 'slug' => $placeSlug, 'categoryId' => $slugRow->getItemId()]
-                );
+                $url = $this->generateUrl('food_slug', ['slug' => $placeSlug], true);
+                $queryString = $request->getQueryString().'#'.$slug;
+                return new RedirectResponse(sprintf('%s%s', $url, !empty($queryString) ? '?' . $queryString : ''), 301);
+
+                // Sena logika, kai kategorijos turejo sub puslapius
+//                return $this->forward(
+//                    'FoodDishesBundle:Place:index',
+//                    ['id' => $place->getId(), 'slug' => $placeSlug, 'categoryId' => $slugRow->getItemId()]
+//                );
                 break;
 
             default:

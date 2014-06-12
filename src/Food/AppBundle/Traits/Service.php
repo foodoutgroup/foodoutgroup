@@ -8,8 +8,11 @@ trait Service
 {
     public function container(ContainerInterface $container = null)
     {
-        if ($container) $this->container = $container;
-        else return $this->container;
+        if ($container) {
+            $this->container = $container;
+        } else {
+            return $this->container;
+        }
     }
 
     public function service($service)

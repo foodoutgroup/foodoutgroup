@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 class LogisticsService extends ContainerAware
 {
     /**
-     * @var string Possible values: 'local', 'etaxi'
+     * @var string Possible values: 'local', 'etaxi', 'external'
      */
     private $logisticSystem = 'local';
 

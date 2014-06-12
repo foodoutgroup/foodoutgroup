@@ -142,6 +142,8 @@ class OrderService extends ContainerAware
      * @param \Doctrine\Common\Persistence\ObjectManager $em
      *
      * @return $this
+     *
+     * @codeCoverageIgnore
      */
     public function setEm($em)
     {
@@ -151,6 +153,8 @@ class OrderService extends ContainerAware
 
     /**
      * @return \Doctrine\Common\Persistence\ObjectManager
+     *
+     * @codeCoverageIgnore
      */
     public function getEm()
     {
@@ -159,7 +163,6 @@ class OrderService extends ContainerAware
         }
         return $this->em;
     }
-
 
     /**
      * @param \Food\UserBundle\Entity\User $user
@@ -268,6 +271,8 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param string|null $source
+     * @param string|null $statusMessage
      * @return $this
      */
     public function statusNew($source=null, $statusMessage=null)
@@ -279,6 +284,9 @@ class OrderService extends ContainerAware
     /**
      * When payment has failed
      *
+     * @param string|null $source
+     * @param string|null $statusMessage
+     *
      * @return $this
      */
     public function statusFailed($source=null, $statusMessage=null)
@@ -288,6 +296,9 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param string|null $source
+     * @param string|null $statusMessage
+     *
      * @return $this
      */
     public function statusAccepted($source=null, $statusMessage=null)
@@ -306,11 +317,15 @@ class OrderService extends ContainerAware
                     $translation = 'general.sms.user.order_accepted_pickup';
                 }
 
+                $placeName = $this->container->get('food.app.utils.language')
+                    ->removeChars('lt', $this->getOrder()->getPlaceName(), false, false);
+                $placeName = ucfirst($placeName);
+
                 $text = $this->container->get('translator')
                     ->trans(
                         $translation,
                         array(
-                            'restourant_name' => $this->getOrder()->getPlaceName(),
+                            'restourant_name' => $placeName,
                             'delivery_time' => $this->getOrder()->getPlace()->getDeliveryTime(),
                             'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone()
                         ),
@@ -346,7 +361,8 @@ class OrderService extends ContainerAware
     {
         $ml = $this->container->get('food.mailer');
 
-        $userName = "";
+        // TODO pansu, kad naujame sablone sitie nebereikalingi
+        /*$userName = "";
         if ($this->getOrder()->getUser()->getFirstname()) {
             $userName = $this->getOrder()->getUser()->getFirstname();
         }
@@ -357,10 +373,10 @@ class OrderService extends ContainerAware
             $userName.= $this->getOrder()->getUser()->getLastname();
         }
         $ordersText = "<br />";
-        $ordersText.= "<ul>";
+        $ordersText.= "<ul>";*/
         $invoice = array();
         foreach ($this->getOrder()->getDetails() as $ord) {
-            $ordersText.="<li>".$ord->getDishName()." (".$ord->getQuantity()." vnt.)";
+//            $ordersText.="<li>".$ord->getDishName()." (".$ord->getQuantity()." vnt.)";
             $options = $ord->getOptions();
             $invoice[] = array(
                 'itm_name' => $ord->getDishName(),
@@ -369,20 +385,19 @@ class OrderService extends ContainerAware
                 'itm_sum' => $ord->getPrice() * $ord->getQuantity(),
             );
             if (sizeof($options) > 0) {
-
-                $ordersText.="<ul>";
+                /*$ordersText.="<ul>";
                 foreach ($options as $opt) {
                     $ordersText.="<li>".$opt->getDishOptionName()."</li>";
                 }
                 $ordersText.="</ul>";
 
 
-                $ordersText.=" (".$this->container->get('translator')->trans('email.dishes.options').": ";
+                $ordersText.=" (".$this->container->get('translator')->trans('email.dishes.options').": ";*/
                 foreach ($options as $k=>$opt) {
-                    if ($k !=0) {
+                    /*if ($k !=0) {
                         $ordersText.=", ";
                     }
-                    $ordersText.=$opt->getDishOptionName();
+                    $ordersText.=$opt->getDishOptionName();*/
                     $invoice[] = array(
                         'itm_name' => "  - ".$opt->getDishOptionName(),
                         'itm_amount' => $ord->getQuantity(),
@@ -390,12 +405,12 @@ class OrderService extends ContainerAware
                         'itm_sum' => $opt->getPrice() * $ord->getQuantity(),
                     );
                 }
-                $ordersText.=")";
+//                $ordersText.=")";
 
             }
-            $ordersText.="</li>";
+//            $ordersText.="</li>";
         }
-        $ordersText.= "</ul>";
+//        $ordersText.= "</ul>";
 
 /*
         $variables = array(
@@ -962,6 +977,10 @@ class OrderService extends ContainerAware
             self::$paymentStatusError => 2,
         );
 
+        if (!isset($flowLine[$from]) || !isset($flowLine[$to])) {
+            return false;
+        }
+
         if ($flowLine[$from] <= $flowLine[$to]) {
             return true;
         }
@@ -996,7 +1015,7 @@ class OrderService extends ContainerAware
 
         $user = $order->getUser();
         if (empty($user) || (!$user instanceof User)) {
-            $userString = 'anonymous_'.mt_rand(0,10);
+            $userString = 'anonymous_'.mt_rand(0,50);
         } else {
             $userString = $user->getId();
         }

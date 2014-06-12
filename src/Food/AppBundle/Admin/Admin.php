@@ -69,7 +69,7 @@ class Admin extends SonataAdmin
     }
 
     /**
-     * @param mixed $user
+     * @param \Food\UserBundle\Entity\User $user
      */
     public function setUser($user)
     {

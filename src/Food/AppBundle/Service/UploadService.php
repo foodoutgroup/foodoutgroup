@@ -33,7 +33,7 @@ class UploadService
 
     /**
      * @param Container $container
-     * @param $userId
+     * @param integer $userId
      */
     public function __construct($container, $userId)
     {
@@ -158,7 +158,7 @@ class UploadService
     }
 
     /**
-     * @param $basepath
+     * @param string|null $basepath
      */
     public function upload($basepath)
     {
@@ -201,6 +201,14 @@ class UploadService
         }
     }
 
+    /**
+     * @param string $uploadDir
+     * @param string $origName
+     * @param string $newName
+     * @param integer $w
+     * @param integer $h
+     * @param string $mode
+     */
     private function saveThumb($uploadDir, $origName, $newName, $w, $h, $mode)
     {
         $imagine = new \Imagine\Gd\Imagine();

@@ -1,10 +1,12 @@
 <?php
 namespace Food\OrderBundle\Tests\Service;
 
+use Food\CartBundle\Service\CartService;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\LocalBiller;
 use Food\OrderBundle\Service\OrderService;
 use Food\OrderBundle\Service\PaySera;
+use Food\UserBundle\Entity\User;
 
 require_once dirname(__DIR__).'/../../../../app/AppKernel.php';
 
@@ -141,7 +143,6 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testSettersGetters()
     {
-        $this->markTestIncomplete();
         $orderService = new OrderService();
         $payseraBiller = new PaySera();
         $localBiller = new LocalBiller();
@@ -167,6 +168,22 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
 
         $localBillerTest = $orderService->getLocalBiller();
         $this->assertEquals($localBiller, $localBillerTest);
+
+        $cartService = new CartService();
+        $orderService->setCartService($cartService);
+        $gotCartService = $orderService->getCartService();
+        $this->assertEquals($cartService, $gotCartService);
+
+        $user = new User();
+        $user->setEmail('testovicius');
+        $orderService->setUser($user);
+        $gotUser = $orderService->getUser();
+        $this->assertEquals($user, $gotUser);
+
+        $locale = 'en';
+        $orderService->setLocale($locale);
+        $gotLocale = $orderService->getLocale();
+        $this->assertEquals($locale, $gotLocale);
     }
 
     /**
@@ -312,5 +329,277 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
             ->method('bill');
 
         $orderService->billOrder(1, 'paysera');
+    }
+
+    public function testCreateOrderPlacePointGiven()
+    {
+        $placeId = 5;
+
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get', 'getParameter')
+        );
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $entityManager = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $placeRepository = $this->getMockBuilder('\Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $placePoint = $this->getMockBuilder('Food\DishesBundle\Entity\PlacePoint')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $place = $this->getMockBuilder('Food\DishesBundle\Entity\Place')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $securityContext = $this->getMockBuilder('\Symfony\Component\Security\Core\SecurityContext')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $token = $this->getMockBuilder('\Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $user = $this->getMockBuilder('\Food\UserBundle\Entity\User')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $request = $this->getMockBuilder('\Symfony\Component\HttpFoundation\Request')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $container->expects($this->at(0))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getManager')
+            ->will($this->returnValue($entityManager));
+
+        $entityManager->expects($this->once())
+            ->method('getRepository')
+            ->with('FoodDishesBundle:Place')
+            ->will($this->returnValue($placeRepository));
+
+        $placeRepository->expects($this->once())
+            ->method('find')
+            ->with($placeId)
+            ->will($this->returnValue($place));
+
+        $container->expects($this->at(1))
+            ->method('get')
+            ->with('security.context')
+            ->will($this->returnValue($securityContext));
+
+        $securityContext->expects($this->once())
+            ->method('getToken')
+            ->will($this->returnValue($token));
+
+        $token->expects($this->once())
+            ->method('getUser')
+            ->will($this->returnValue($user));
+
+        $place->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('Skanus maistas'));
+
+        $place->expects($this->once())
+            ->method('getSelfDelivery')
+            ->will($this->returnValue(1));
+
+        $placePoint->expects($this->once())
+            ->method('getCity')
+            ->will($this->returnValue('Vilnius'));
+
+        $placePoint->expects($this->once())
+            ->method('getAddress')
+            ->will($this->returnValue('Laisves pr. 77'));
+
+        $container->expects($this->any())
+            ->method('getParameter')
+            ->with('vat')
+            ->will($this->returnValue(21));
+
+        $user->expects($this->exactly(3))
+            ->method('getId')
+            ->will($this->returnValue(1254));
+
+        $container->expects($this->at(3))
+            ->method('get')
+            ->with('request')
+            ->will($this->returnValue($request));
+
+        $request->expects($this->once())
+            ->method('getClientIp')
+            ->will($this->returnValue('192.1.10.15'));
+
+
+        $orderService = new OrderService();
+        $orderService->setContainer($container);
+
+        $expectedOrder = new Order();
+        $expectedOrder->setPlacePointSelfDelivery(true)
+            ->setPlace($place)
+            ->setPlacePoint($placePoint)
+            ->setUser($user)
+            ->setPlaceName('Skanus maistas')
+            ->setPlacePointCity('Vilnius')
+            ->setPlacePointAddress('Laisves pr. 77')
+            ->setOrderDate(new \DateTime("now"))
+            ->setUserIp('192.1.10.15');
+
+        $gotOrder = $orderService->createOrder($placeId, $placePoint);
+
+
+        $this->assertEquals($this->cleanOrderForCompare($expectedOrder->__toArray()), $this->cleanOrderForCompare($gotOrder->__toArray()));
+    }
+
+    public function testStatusesGetters()
+    {
+        $expectedOrderStatuses = array(
+            OrderService::$status_new,
+            OrderService::$status_accepted,
+            OrderService::$status_delayed,
+            OrderService::$status_forwarded,
+            OrderService::$status_finished,
+            OrderService::$status_assiged,
+            OrderService::$status_completed,
+            OrderService::$status_canceled,
+        );
+
+        $expectedPaymentStatuses = array(
+            OrderService::$paymentStatusNew,
+            OrderService::$paymentStatusWait,
+            OrderService::$paymentStatusWaitFunds,
+            OrderService::$paymentStatusCanceled,
+            OrderService::$paymentStatusComplete,
+            OrderService::$paymentStatusError,
+        );
+
+        $gotOrderStatuses = OrderService::getOrderStatuses();
+        $gotPaymentStatuses = OrderService::getPaymentStatuses();
+
+        $this->assertEquals($expectedOrderStatuses, $gotOrderStatuses);
+        $this->assertEquals($expectedPaymentStatuses, $gotPaymentStatuses);
+    }
+
+    public function testDeliveryTypeValidation()
+    {
+        $expected1 = true;
+        $expected2 = false;
+        $expected3 = true;
+        $expected4 = false;
+        $expected5 = false;
+
+        $orderService = new OrderService();
+
+        $gotValidity1 = $orderService->isValidDeliveryType('pickup');
+        $gotValidity2 = $orderService->isValidDeliveryType('atidok');
+        $gotValidity3 = $orderService->isValidDeliveryType('deliver');
+        $gotValidity4 = $orderService->isValidDeliveryType('');
+        $gotValidity5 = $orderService->isValidDeliveryType(null);
+
+        $this->assertEquals($expected1, $gotValidity1);
+        $this->assertEquals($expected2, $gotValidity2);
+        $this->assertEquals($expected3, $gotValidity3);
+        $this->assertEquals($expected4, $gotValidity4);
+        $this->assertEquals($expected5, $gotValidity5);
+    }
+
+    public function testPaymentStatusValidity()
+    {
+        $expected1 = true;
+        $expected2 = true;
+        $expected3 = false;
+        $expected4 = false;
+        $expected5 = false;
+
+        $orderService = new OrderService();
+
+        $gotValidity1 = $orderService->isAllowedPaymentStatus('complete');
+        $gotValidity2 = $orderService->isAllowedPaymentStatus('cancel');
+        $gotValidity3 = $orderService->isAllowedPaymentStatus('assigned');
+        $gotValidity4 = $orderService->isAllowedPaymentStatus('');
+        $gotValidity5 = $orderService->isAllowedPaymentStatus(null);
+
+        $this->assertEquals($expected1, $gotValidity1);
+        $this->assertEquals($expected2, $gotValidity2);
+        $this->assertEquals($expected3, $gotValidity3);
+        $this->assertEquals($expected4, $gotValidity4);
+        $this->assertEquals($expected5, $gotValidity5);
+    }
+
+    public function testPaymentStatusChange()
+    {
+        $expected1 = false;
+        $expected2 = false;
+        $expected3 = true;
+        $expected4 = true;
+        $expected5 = true;
+        $expected6 = true;
+        $expected7 = true;
+        $expected8 = true;
+        $expected9 = true;
+        $expected10 = true;
+        $expected11 = true;
+        $expected12 = true;
+        $expected13 = false;
+        $expected14 = true;
+        $expected15 = false;
+        $expected16 = false;
+        $expected17 = false;
+        $expected18 = false;
+        $expected19 = false;
+        $expected20 = true;
+
+        $orderService = new OrderService();
+
+        $gotValidity1 = $orderService->isValidPaymentStatusChange('', '');
+        $gotValidity2 = $orderService->isValidPaymentStatusChange('new', '');
+        $gotValidity3 = $orderService->isValidPaymentStatusChange('new', 'wait');
+        $gotValidity4 = $orderService->isValidPaymentStatusChange('new', 'wait_funds');
+        $gotValidity5 = $orderService->isValidPaymentStatusChange('new', 'complete');
+        $gotValidity6 = $orderService->isValidPaymentStatusChange('new', 'cancel');
+        $gotValidity7 = $orderService->isValidPaymentStatusChange('new', 'error');
+        $gotValidity8 = $orderService->isValidPaymentStatusChange('wait', 'wait_funds');
+        $gotValidity9 = $orderService->isValidPaymentStatusChange('wait', 'complete');
+        $gotValidity10 = $orderService->isValidPaymentStatusChange('wait', 'cancel');
+        $gotValidity11 = $orderService->isValidPaymentStatusChange('wait', 'error');
+        $gotValidity12 = $orderService->isValidPaymentStatusChange('cancel', 'complete');
+        $gotValidity13 = $orderService->isValidPaymentStatusChange('complete', 'cancel');
+        $gotValidity14 = $orderService->isValidPaymentStatusChange('error', 'complete');
+        $gotValidity15 = $orderService->isValidPaymentStatusChange('error', 'cancel');
+        $gotValidity16 = $orderService->isValidPaymentStatusChange('complete', 'new');
+        $gotValidity17 = $orderService->isValidPaymentStatusChange('complete', 'wait');
+        $gotValidity18 = $orderService->isValidPaymentStatusChange('completedas', 'wait');
+        $gotValidity19 = $orderService->isValidPaymentStatusChange('complete', 'waitas');
+        $gotValidity20 = $orderService->isValidPaymentStatusChange('', 'new');
+
+        $this->assertEquals($expected1, $gotValidity1);
+        $this->assertEquals($expected2, $gotValidity2);
+        $this->assertEquals($expected3, $gotValidity3);
+        $this->assertEquals($expected4, $gotValidity4);
+        $this->assertEquals($expected5, $gotValidity5);
+        $this->assertEquals($expected6, $gotValidity6);
+        $this->assertEquals($expected7, $gotValidity7);
+        $this->assertEquals($expected8, $gotValidity8);
+        $this->assertEquals($expected9, $gotValidity9);
+        $this->assertEquals($expected10, $gotValidity10);
+        $this->assertEquals($expected11, $gotValidity11);
+        $this->assertEquals($expected12, $gotValidity12);
+        $this->assertEquals($expected13, $gotValidity13);
+        $this->assertEquals($expected14, $gotValidity14);
+        $this->assertEquals($expected15, $gotValidity15);
+        $this->assertEquals($expected16, $gotValidity16);
+        $this->assertEquals($expected17, $gotValidity17);
+        $this->assertEquals($expected18, $gotValidity18);
+        $this->assertEquals($expected19, $gotValidity19);
+        $this->assertEquals($expected20, $gotValidity20);
+    }
+
+    private function cleanOrderForCompare($orderArray)
+    {
+        unset($orderArray['orderDate']);
+        unset($orderArray['orderHash']);
     }
 }

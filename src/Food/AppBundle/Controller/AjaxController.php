@@ -2,7 +2,6 @@
 
 namespace Food\AppBundle\Controller;
 
-use Sonata\Doctrine\Types\JsonType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -69,7 +68,7 @@ class AjaxController extends Controller
 
     /**
      * @param Response $response
-     * @param $placeId
+     * @param integer $placeId
      *
      * @todo dieve atleisk uz mano kaltes del json_encode - reik swiceri pakeisti kad contentas encodinamas priesh pati response grazinima
      */

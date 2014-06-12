@@ -11,6 +11,8 @@ class DispatcherAdmin extends SonataAdmin
     /**
      * @param \Sonata\AdminBundle\Route\RouteCollection $collection
      * @inheritdoc
+     *
+     * @codeCoverageIgnore
      */
     public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
     {

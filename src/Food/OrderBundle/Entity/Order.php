@@ -590,10 +590,16 @@ class Order
             $lastUpdated = null;
         }
 
+        $addressId = null;
+        if ($userAddress = $this->getAddressId()) {
+            $addressId = $userAddress->getAddress().', '.$userAddress->getCity();
+        }
+
         return array(
             'id' => $this->getId(),
             'userId' => $userId,
-            'addressId' => 'TODO', // TODO
+            'addressId' => $addressId,
+            'userIp' => $this->getUserIp(),
             'details' => 'TODO', // TODO
             'orderStatus' => $this->getOrderStatus(),
             'orderDate' => $this->getOrderDate()->format("Y-m-d H:i:s"),

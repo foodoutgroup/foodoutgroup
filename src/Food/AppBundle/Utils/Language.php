@@ -3,7 +3,6 @@
 namespace Food\AppBundle\Utils;
 
 use Food\AppBundle\Traits;
-use Axelarge\ArrayTools\Arr;
 use Symfony\Component\DependencyInjection\Container;
 
 class Language
@@ -23,6 +22,72 @@ class Language
         'us' => 'au',
         'ys' => 'y'
     ) ;
+
+    /**
+     * @var array
+     */
+    private $countryCharReplacements = array(
+        'lt' => array(
+            'ą' => 'a',
+            'č' => 'c',
+            'ę' => 'e',
+            'ė' => 'e',
+            'į' => 'i',
+            'š' => 's',
+            'ų' => 'u',
+            'ū' => 'u',
+            'ž' => 'z',
+        ),
+        'en' => array(),
+        'ru' => array(
+            'ґ'=>'g','ё'=>'e','є'=>'e','ї'=>'i','і'=>'i',
+            'а'=>'a', 'б'=>'b', 'в'=>'v',
+            'г'=>'g', 'д'=>'d', 'е'=>'e', 'ё'=>'e',
+            'ж'=>'zh', 'з'=>'z', 'и'=>'i', 'й'=>'i',
+            'к'=>'k', 'л'=>'l', 'м'=>'m', 'н'=>'n',
+            'о'=>'o', 'п'=>'p', 'р'=>'r', 'с'=>'s',
+            'т'=>'t', 'у'=>'u', 'ф'=>'f', 'х'=>'h',
+            'ц'=>'c', 'ч'=>'ch', 'ш'=>'sh', 'щ'=>'sch',
+            'ы'=>'y', 'э'=>'e', 'ю'=>'u', 'я'=>'ya', 'é'=>'e',
+            'ь'=>'', 'ъ' => '',
+        ),
+    );
+
+    /**
+     * @var array
+     */
+    private $countryCapitalCharReplacements = array(
+        'lt' => array(
+            'Ą' => 'A',
+            'Č' => 'C',
+            'Ę' => 'E',
+            'Ė' => 'E',
+            'Į' => 'I',
+            'Š' => 'S',
+            'Ų' => 'U',
+            'Ū' => 'U',
+            'Ž' => 'Z',
+        ),
+        'en' => array(),
+        'ru' => array(
+            'А'=>'A','Б'=>'B','В'=>'V','Г'=>'G','Д'=>'D',
+            'Е'=>'E', 'Ж'=>'Zh', 'З'=>'Z',
+            'И'=>'I', 'Й'=>'Y', 'К'=>'K', 'Л'=>'L',
+            'М'=>'M', 'Н'=>'N', 'О'=>'O', 'П'=>'P',
+            'Р'=>'R', 'С'=>'S', 'Т'=>'T', 'У'=>'U',
+            'Ф'=>'F', 'Х'=>'H', 'Ц'=>'Ts', 'Ч'=>'Ch',
+            'Ш'=>'Sh', 'Щ'=>'Sht', 'Ъ'=>'A', 'Ь'=>'Y',
+            'Ю'=>'Yu', 'Я'=>'Ya',
+        ),
+    );
+
+    /**
+     * @var array
+     */
+    private $specialCharReplacements = array(
+        '#' => '-',
+        '&' => 'and'
+    );
 
     public function __construct(Container $container)
     {
@@ -46,77 +111,57 @@ class Language
     }
 
     /**
-     * @param $lang
-     * @param $text
+     * @param string $lang
+     * @param string $text
+     * @param boolean $removeSpecialChars
+     * @param boolean $toLower
      * @throws \Exception
      * @return string
      */
-    public function removeChars($lang, $text)
+    public function removeChars($lang, $text, $toLower = true, $removeSpecialChars=true)
     {
         switch($lang) {
             case 'lt':
-                return $this->_removeLtChars($text);
+                if ($toLower) {
+                    $text = strtr(mb_strtolower($text, 'utf-8'), $this->countryCharReplacements['lt']);
+                } else {
+                    $text = strtr($text, $this->countryCharReplacements['lt']);
+                    $text = strtr($text, $this->countryCapitalCharReplacements['lt']);
+                }
+
+                if ($removeSpecialChars) {
+                    $text = strtr($text, $this->specialCharReplacements);
+                }
+                return $text;
                 break;
             case 'ru':
-                return $this->_removeRuChars($text);
+                if ($toLower) {
+                    $text = strtr(mb_strtolower($text, 'utf-8'), $this->countryCharReplacements['ru']);
+                } else {
+                    $text = strtr($text, $this->countryCharReplacements['ru']);
+                    $text = strtr($text, $this->countryCapitalCharReplacements['ru']);
+                }
+
+                if ($removeSpecialChars) {
+                    $text = strtr($text, $this->specialCharReplacements);
+                }
+                return $text;
                 break;
             case 'en':
-                return $this->_removeEnChars($text);
+                if ($toLower) {
+                    $text = strtr(mb_strtolower($text, 'utf-8'), $this->countryCharReplacements['en']);
+                } else {
+                    $text = strtr($text, $this->countryCharReplacements['en']);
+                    $text = strtr($text, $this->countryCapitalCharReplacements['en']);
+                }
+
+                if ($removeSpecialChars) {
+                    $text = strtr($text, $this->specialCharReplacements);
+                }
+                return $text;
                 break;
         }
         throw new \Exception('Undefined language');
-    }
-
-    /**
-     * @param $text
-     * @return string
-     */
-    private function _removeLtChars($text)
-    {
-        $chars = array(
-            'ą' => 'a',
-            'č' => 'c',
-            'ę' => 'e',
-            'ė' => 'e',
-            'į' => 'i',
-            'š' => 's',
-            'ų' => 'u',
-            'ū' => 'u',
-            'ž' => 'z',
-            '#' => '-',
-            '&' => 'and'
-        );
-        return strtr(mb_strtolower($text, 'utf-8'), $chars);
-    }
-
-    /**
-     * @param $text
-     * @return string
-     */
-    private function _removeRuChars($text)
-    {
-        $chars = array(
-            'ґ'=>'g','ё'=>'e','є'=>'e','ї'=>'i','і'=>'i',
-            'а'=>'a', 'б'=>'b', 'в'=>'v',
-            'г'=>'g', 'д'=>'d', 'е'=>'e', 'ё'=>'e',
-            'ж'=>'zh', 'з'=>'z', 'и'=>'i', 'й'=>'i',
-            'к'=>'k', 'л'=>'l', 'м'=>'m', 'н'=>'n',
-            'о'=>'o', 'п'=>'p', 'р'=>'r', 'с'=>'s',
-            'т'=>'t', 'у'=>'u', 'ф'=>'f', 'х'=>'h',
-            'ц'=>'c', 'ч'=>'ch', 'ш'=>'sh', 'щ'=>'sch',
-            'ы'=>'y', 'э'=>'e', 'ю'=>'u', 'я'=>'ya', 'é'=>'e', '&'=>'and',
-            'ь'=>'', 'ъ' => '', '#' => '-'
-        );
-        return strtr(mb_strtolower($text, 'utf-8'), $chars);
-    }
-
-    private function _removeEnChars($text)
-    {
-        $chars = array(
-            '#' => '-',
-            '&' => 'and'
-        );
-        return strtr(mb_strtolower($text, 'utf-8'), $chars);
     }
 
     /**
