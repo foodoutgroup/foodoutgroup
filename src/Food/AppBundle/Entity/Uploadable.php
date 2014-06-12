@@ -23,7 +23,7 @@ class Uploadable {
     protected $resizeMode = null;
 
     /**
-     * @return null
+     * @return string
      */
     public function getBoxSize()
     {
@@ -31,7 +31,7 @@ class Uploadable {
     }
 
     /**
-     * @return null
+     * @return string
      */
     public function getResizeMode()
     {
@@ -39,6 +39,9 @@ class Uploadable {
     }
 
 
+    /**
+     * @return mixed
+     */
     public function getImageSetted()
     {
         $getter = 'get'.ucfirst($this->getUploadableField());

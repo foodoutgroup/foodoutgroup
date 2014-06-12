@@ -61,6 +61,18 @@ class TestController extends Controller
     {
         $orderService = $this->get('food.order');
 
+        $orders = $orderService->getDriversMonthlyOrderCount();
+
+        return (
+            $this->render(
+                'FoodOrderBundle:Command:accounting_monthly_driver_report.html.twig',
+                array(
+                    'orders' => $orders,
+                    'reportFor' => date("Y-m", strtotime('-1 month')),
+                )
+            )
+        );
+
         $orders = $orderService->getYesterdayOrdersGrouped();
 
         return (

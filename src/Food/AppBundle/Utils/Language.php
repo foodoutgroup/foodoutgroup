@@ -120,48 +120,21 @@ class Language
      */
     public function removeChars($lang, $text, $toLower = true, $removeSpecialChars=true)
     {
-        switch($lang) {
-            case 'lt':
-                if ($toLower) {
-                    $text = strtr(mb_strtolower($text, 'utf-8'), $this->countryCharReplacements['lt']);
-                } else {
-                    $text = strtr($text, $this->countryCharReplacements['lt']);
-                    $text = strtr($text, $this->countryCapitalCharReplacements['lt']);
-                }
-
-                if ($removeSpecialChars) {
-                    $text = strtr($text, $this->specialCharReplacements);
-                }
-                return $text;
-                break;
-            case 'ru':
-                if ($toLower) {
-                    $text = strtr(mb_strtolower($text, 'utf-8'), $this->countryCharReplacements['ru']);
-                } else {
-                    $text = strtr($text, $this->countryCharReplacements['ru']);
-                    $text = strtr($text, $this->countryCapitalCharReplacements['ru']);
-                }
-
-                if ($removeSpecialChars) {
-                    $text = strtr($text, $this->specialCharReplacements);
-                }
-                return $text;
-                break;
-            case 'en':
-                if ($toLower) {
-                    $text = strtr(mb_strtolower($text, 'utf-8'), $this->countryCharReplacements['en']);
-                } else {
-                    $text = strtr($text, $this->countryCharReplacements['en']);
-                    $text = strtr($text, $this->countryCapitalCharReplacements['en']);
-                }
-
-                if ($removeSpecialChars) {
-                    $text = strtr($text, $this->specialCharReplacements);
-                }
-                return $text;
-                break;
+        if (!in_array($lang, array('lt', 'ru', 'en'))) {
+            throw new \Exception('Undefined language');
         }
-        throw new \Exception('Undefined language');
+
+        if ($toLower) {
+            $text = strtr(mb_strtolower($text, 'utf-8'), $this->countryCharReplacements[$lang]);
+        } else {
+            $text = strtr($text, $this->countryCharReplacements[$lang]);
+            $text = strtr($text, $this->countryCapitalCharReplacements[$lang]);
+        }
+
+        if ($removeSpecialChars) {
+            $text = strtr($text, $this->specialCharReplacements);
+        }
+        return $text;
     }
 
     /**

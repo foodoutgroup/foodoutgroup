@@ -138,7 +138,7 @@ class Admin extends SonataAdmin
     }
 
     /**
-     * @param null|\Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
     public function setContainer($container)
     {
@@ -146,7 +146,7 @@ class Admin extends SonataAdmin
     }
 
     /**
-     * @return null|\Symfony\Component\DependencyInjection\ContainerInterface
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
     public function getContainer()
     {

@@ -186,6 +186,10 @@
         <source>general.email.accounting_yesterday_report</source>
         <target>vakaryksciu uzsakymu ataskaita</target>
       </trans-unit>
+      <trans-unit id="general.email.driver_monthly_report" resname="general.email.driver_monthly_report">
+        <source>general.email.driver_monthly_report</source>
+        <target>praejusio menesio vairuotoju ataskaita</target>
+      </trans-unit>
       <trans-unit id="19554e921e608df135b269a564c8cf6a" resname="mobile.order_confirm">
         <source>mobile.order_confirm</source>
         <target>Patvirtinti užsakymą</target>

@@ -1,0 +1,56 @@
+<html>
+<head><title></title></head>
+    <body>
+        <style>
+            table tr {
+                border: 1px solid #ACACAC;
+            }
+            table td {
+                border: 1px solid #EFEFEF;
+                padding: 0 10px 0 10px;
+            }
+            td.total {
+                text-align: right;
+                padding-right: 10px;
+            }
+            td.total div {
+                width: 100px;
+                display: inline-block;
+            }
+            td.sum {
+                text-align: right;
+            }
+        </style>
+        <h2>Praėjusio mėnesio ({{ reportFor }}) vairuotojų vežti užsakymai:</h2>
+
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Vairuotojas</th>
+                <th>Viso užsakymų</th>
+                <th>Apmokėti vietoje</th>
+                <th>Apmokėti internetu</th>
+                <th>Suma apmokėta vietoje<br />(su PVM)</th>
+                <th>Suma apmokėta internetu<br />(su PVM)</th>
+                <th>Visų užsakymų suma<br />(su PVM)</th>
+            </tr>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.name }}</td>
+                    <td class="sum">{{ order.total_orders }}</td>
+                    <td class="sum">{{ order.local_payments }}</td>
+                    <td class="sum">{{ order.external_payments }}</td>
+                    <td class="sum">{{ order.total_local }} {{ currency_display }}</td>
+                    <td class="sum">{{ order.total_external }} {{ currency_display }}</td>
+                    <td class="sum">{{ order.order_total_sum }} {{ currency_display }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <br />
+        <div>
+            <strong>Viso vežusių vairuotojų: {{ orders|length }}</strong>
+        </div>
+    </body>
+</html>

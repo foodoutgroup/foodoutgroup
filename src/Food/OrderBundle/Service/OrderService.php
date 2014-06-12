@@ -1189,6 +1189,75 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @return array
+     */
+    public function getDriversMonthlyOrderCount()
+    {
+        $dateFrom = date("Y-m-01 00:00:00", strtotime('-1 month'));
+        $dateTo = date("Y-m-t 23:59:59", strtotime('-1 month'));
+
+        $query = "
+            SELECT
+                d.`id`,
+                d.`name`,
+                COUNT(  `orders`.`id` ) AS  `total_orders`,
+                SUM( IF(  `orders`.`payment_method` =  'local', 1, 0 ) ) AS  `local_payments` ,
+                SUM( IF(  `orders`.`payment_method` =  'local', 0, 1 ) ) AS  `external_payments` ,
+                SUM( IF(  `orders`.`payment_method` =  'local',  `orders`.`total` , 0 ) ) AS  `total_local` ,
+                SUM( IF(  `orders`.`payment_method` =  'local', 0,  `orders`.`total` ) ) AS  `total_external`,
+                SUM(`orders`.`total`) AS `order_total_sum`
+            FROM  `orders`
+            LEFT JOIN  `drivers` d ON d.id =  `orders`.`driver_id`
+            WHERE  `order_status` =  'completed'
+                AND  `delivery_type` =  'deliver'
+                AND  `place_point_self_delivery` =  '0'
+                AND  `driver_id` IS NOT NULL
+                AND  `order_date` >=  '{$dateFrom}'
+                AND  `order_date` <=  '{$dateTo}'
+            GROUP BY  `driver_id`
+        ";
+
+        $stmt = $this->container->get('doctrine')->getManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $ordersGrouped = $stmt->fetchAll();
+
+//        $filter = array(
+//            'order_status' =>  array(self::$status_completed),
+//            'order_date_between' => array('from' => $dateFrom, 'to' => $dateTo),
+//        );
+//
+//        $orders = $this->getOrdersByFilter($filter, 'list');
+//
+//        if (!$orders) {
+//            return array(
+//                'pickup' => array(),
+//                'self_delivered' => array(),
+//                'our_deliver' => array(),
+//                'total' => 0,
+//            );
+//        }
+//
+//        $ordersGrouped = array(
+//            'pickup' => array(),
+//            'self_delivered' => array(),
+//            'our_deliver' => array(),
+//            'total' => count($orders),
+//        );
+//
+//        foreach ($orders as $order) {
+//            if ($order->getDeliveryType() == 'pickup') {
+//                $ordersGrouped['pickup'][] = $order;
+//            } elseif ($order->getPlacePointSelfDelivery()) {
+//                $ordersGrouped['self_delivered'][] = $order;
+//            } else {
+//                $ordersGrouped['our_deliver'][] = $order;
+//            }
+//        }
+
+        return $ordersGrouped;
+    }
+
+    /**
      * @param string $city
      * @return array
      */
