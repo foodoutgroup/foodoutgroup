@@ -13,6 +13,14 @@ class PlacesService extends ContainerAware {
 
     }
 
+    /**
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
     public function getSession()
     {
         return $this->container->get('session');
@@ -36,7 +44,7 @@ class PlacesService extends ContainerAware {
     public function savePlace($place)
     {
         if (!($place instanceof Place)) {
-            throw new \Exception('Place not given. How should I save it?');
+            throw new \InvalidArgumentException('Place not given. How should I save it?');
         }
         $em = $this->em();
         $em->persist($place);

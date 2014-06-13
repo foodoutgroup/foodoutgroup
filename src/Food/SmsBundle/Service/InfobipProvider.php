@@ -333,7 +333,7 @@ class InfobipProvider implements SmsProviderInterface {
     }
 
     /**
-     * @param $dlrData
+     * @param string|array $dlrData
      *
      * @return array
      */

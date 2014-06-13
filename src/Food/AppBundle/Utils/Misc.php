@@ -32,7 +32,7 @@ class Misc
     /**
      * @param string $phone
      * @param string $country
-     * @return mixed|null
+     * @return null|string
      */
     public function formatPhone($phone, $country)
     {

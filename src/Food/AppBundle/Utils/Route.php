@@ -9,9 +9,20 @@ class Route
 {
     use Traits\Service;
 
+    /**
+     * @var string
+     */
     private $locale;
     private $routeName;
+
+    /**
+     * @var array
+     */
     private $routeParams;
+
+    /**
+     * @var array
+     */
     private $queryParams;
 
     /**
@@ -27,36 +38,59 @@ class Route
         $this->container = $container;
     }
 
+    /**
+     * @return Container
+     */
     public function getContaner()
     {
         return $this->container;
     }
 
+    /**
+     * @param string $locale
+     */
     public function setLocale($locale)
     {
         $this->locale = $locale;
     }
 
+    /**
+     * @param string $name
+     */
     public function setRouteName($name)
     {
         $this->routeName = $name;
     }
 
+    /**
+     * @param array $params
+     */
     public function setRouteParams(array $params)
     {
         $this->routeParams = $params;
     }
 
+    /**
+     * @param array $params
+     */
     public function setQueryParams(array $params)
     {
         $this->queryParams = $params;
     }
 
+    /**
+     * @return string
+     */
     public function getLocale()
     {
         return $this->locale;
     }
 
+    /**
+     * @param array $params
+     * @param bool $absolute
+     * @return mixed
+     */
     public function getCurrentUrl(array $params, $absolute = false)
     {
         $router = $this->service('router');

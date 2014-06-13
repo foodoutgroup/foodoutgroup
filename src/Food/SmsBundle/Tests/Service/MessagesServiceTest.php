@@ -292,9 +292,6 @@ class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
      */
     public function testSendException()
     {
-        /**
-         * @var \Food\SmsBundle\Service\InfobipProvider $infobipProvider
-         */
         $infobipProvider = $this->getMock(
             '\Food\SmsBundle\Service\InfobipProvider',
             array('sendMessage')
@@ -317,9 +314,6 @@ class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testInfobipSend()
     {
-        /**
-         * @var \Food\SmsBundle\Service\InfobipProvider $infobipProvider
-         */
         $infobipProvider = $this->getMock(
             '\Food\SmsBundle\Service\InfobipProvider',
             array('call', 'setApiUrl', 'authenticate', 'parseResponse')
@@ -368,9 +362,6 @@ class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testInfobipSendSpecialChars()
     {
-        /**
-         * @var \Food\SmsBundle\Service\InfobipProvider $infobipProvider
-         */
         $infobipProvider = $this->getMock(
             '\Food\SmsBundle\Service\InfobipProvider',
             array('call', 'setApiUrl', 'authenticate', 'parseResponse')

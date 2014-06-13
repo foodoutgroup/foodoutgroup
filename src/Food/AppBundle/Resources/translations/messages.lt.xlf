@@ -646,6 +646,30 @@
         <source>general.ip_banned_info</source>
         <target><![CDATA[Atsiprašome, tačiau Jūsų IP adresas (%ip%) yra užblokuotas.<br />IP adresai blokuojami, jei: lankytojas kuria melagingus užsakymus; smeižia, įžeidžia ar kita tyčine veikla trikdo kitų lankytojų ar restoranų darbą.<br /><br />Administracijos nurodyta priežastis: "%reason%".<br /><br />Jeigu manote, jog tai įvyko per klaidą - susisiekite su mumis <strong><a href="mailto:info@foodout.lt">info@foodout.lt</a></strong> arba telefonu <strong>+370 687 44359</strong>]]></target>
       </trans-unit>
+      <trans-unit id="general.raty.not_rated_yet" resname="general.raty.not_rated_yet">
+        <source>general.raty.not_rated_yet</source>
+        <target>Restoranas dar neįvertintas</target>
+      </trans-unit>
+      <trans-unit id="general.raty.bad" resname="general.raty.bad">
+        <source>general.raty.bad</source>
+        <target>Blogas</target>
+      </trans-unit>
+      <trans-unit id="general.raty.poor" resname="general.raty.poor">
+        <source>general.raty.poor</source>
+        <target>Prastas</target>
+      </trans-unit>
+      <trans-unit id="general.raty.regular" resname="general.raty.regular">
+        <source>general.raty.regular</source>
+        <target>Vidutiniškas</target>
+      </trans-unit>
+      <trans-unit id="general.raty.good" resname="general.raty.good">
+        <source>general.raty.good</source>
+        <target>Geras</target>
+      </trans-unit>
+      <trans-unit id="general.raty.gorgeous" resname="general.raty.gorgeous">
+        <source>general.raty.gorgeous</source>
+        <target>Nuostabus</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

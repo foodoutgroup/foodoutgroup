@@ -78,18 +78,15 @@ class SlugController extends Controller
         switch($slugRow->getType()) {
             case Slug::TYPE_TEXT:
                 return $this->forward('FoodAppBundle:Static:index', ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]);
-                break;
 
             case Slug::TYPE_KITCHEN:
                 return $this->forward('FoodDishesBundle:Kitchen:index', ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]);
-                break;
 
             case Slug::TYPE_PLACE:
                 return $this->forward(
                     'FoodDishesBundle:Place:index',
                     ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName(), 'categoryId' => '']
                 );
-                break;
 
             case Slug::TYPE_FOOD_CATEGORY:
                 $place = $this->get('food.places')->getPlaceByCategory($slugRow->getItemId());
@@ -105,7 +102,6 @@ class SlugController extends Controller
 //                    'FoodDishesBundle:Place:index',
 //                    ['id' => $place->getId(), 'slug' => $placeSlug, 'categoryId' => $slugRow->getItemId()]
 //                );
-                break;
 
             default:
                 break;

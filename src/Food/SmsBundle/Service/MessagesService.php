@@ -213,7 +213,7 @@ class MessagesService {
     }
 
     /**
-     * @param string|array $dlrData
+     * @param string|array|resource $dlrData
      * @throws \InvalidArgumentException
      * @throws \Exception
      */

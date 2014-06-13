@@ -46,6 +46,16 @@
     <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/selectivizr-min.js') }}"></script><![endif]-->
     <!--[if IE 9]><script src="{{ asset('bundles/foodapp/scripts/pie_ie9.js') }}"></script><![endif]-->
     <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/pie_ie8.js') }}"></script><![endif]-->
+    <script type="text/javascript">
+        $.fn.raty.defaults.noRatedMsg = '{% trans %}general.raty.not_rated_yet{% endtrans %}';
+        $.fn.raty.defaults.hints = [
+            '{% trans %}general.raty.bad{% endtrans %}',
+            '{% trans %}general.raty.poor{% endtrans %}',
+            '{% trans %}general.raty.regular{% endtrans %}',
+            '{% trans %}general.raty.good{% endtrans %}',
+            '{% trans %}general.raty.gorgeous{% endtrans %}'
+        ];
+    </script>
 </head>
 <body>
 <div class="site">

@@ -1,7 +1,7 @@
 <?php
 
 namespace Food\CartBundle\Service;
-use Doctrine\Tests\Common\DataFixtures\ReferenceRepositoryTest;
+
 use Food\DishesBundle\Entity\Dish;
 use Food\CartBundle\Entity\Cart;
 use Food\CartBundle\Entity\CartOption;
@@ -389,7 +389,7 @@ class CartService {
     }
 
     /**
-     * @param Dish $dish
+     * @param Cart $cartItem
      * @return array|\Food\CartBundle\Entity\CartOption[]
      */
     public function getCartDishOptions(Cart $cartItem)

@@ -238,7 +238,6 @@ class SmsBalanceCommandTest extends \PHPUnit_Framework_TestCase
         $expectedCommandReturn = 2;
         $warnLevel = 10;
         $critLevel = 5;
-        $testableBalance = 4.31;
 
         $container = $this->getMock(
             'Symfony\Component\DependencyInjection\Container',

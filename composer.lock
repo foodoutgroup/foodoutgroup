@@ -756,16 +756,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "2.3.5",
+            "version": "v2.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "2c31ec4809a28a549bf22d7cb7504add98156cd6"
+                "reference": "c2135b38216c6c8a410e764792aa368e946f2ae5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/2c31ec4809a28a549bf22d7cb7504add98156cd6",
-                "reference": "2c31ec4809a28a549bf22d7cb7504add98156cd6",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/c2135b38216c6c8a410e764792aa368e946f2ae5",
+                "reference": "c2135b38216c6c8a410e764792aa368e946f2ae5",
                 "shasum": ""
             },
             "require": {
@@ -823,7 +823,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2014-02-08 16:28:24"
+            "time": "2014-06-03 19:53:45"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -1078,22 +1078,23 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "6.1",
+            "version": "6.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "6b307381c601da81849adbb3341d7e9903ac2665"
+                "reference": "e01fa6dc3d89d6717af62140bd053f04f5cbb045"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/6b307381c601da81849adbb3341d7e9903ac2665",
-                "reference": "6b307381c601da81849adbb3341d7e9903ac2665",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/e01fa6dc3d89d6717af62140bd053f04f5cbb045",
+                "reference": "e01fa6dc3d89d6717af62140bd053f04f5cbb045",
                 "shasum": ""
             },
             "require": {
                 "ext-intl": "*"
             },
             "require-dev": {
+                "phing/phing": "~2.7",
                 "phpunit/phpunit": "~4.0",
                 "satooshi/php-coveralls": "~0.6",
                 "symfony/console": "~2.4"
@@ -1130,7 +1131,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2014-05-19 13:03:59"
+            "time": "2014-06-10 11:29:11"
         },
         {
             "name": "imagine/imagine",
@@ -1811,12 +1812,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "8d665ac8ea5a1bd6c13a512faf5f7d90ca065095"
+                "reference": "76204354fc1c4acc2cbf5cfff34a5693c3456132"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/8d665ac8ea5a1bd6c13a512faf5f7d90ca065095",
-                "reference": "8d665ac8ea5a1bd6c13a512faf5f7d90ca065095",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/76204354fc1c4acc2cbf5cfff34a5693c3456132",
+                "reference": "76204354fc1c4acc2cbf5cfff34a5693c3456132",
                 "shasum": ""
             },
             "require": {
@@ -1883,7 +1884,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2014-04-16 10:29:02"
+            "time": "2014-06-12 12:23:06"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -1891,12 +1892,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "87fefbf6deb42a5322654e332a3f470e564f5030"
+                "reference": "ba4888c69745416da8ab0f7e7a64e04401cd2fbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/87fefbf6deb42a5322654e332a3f470e564f5030",
-                "reference": "87fefbf6deb42a5322654e332a3f470e564f5030",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/ba4888c69745416da8ab0f7e7a64e04401cd2fbe",
+                "reference": "ba4888c69745416da8ab0f7e7a64e04401cd2fbe",
                 "shasum": ""
             },
             "require": {
@@ -1947,7 +1948,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-06-05 15:30:32"
+            "time": "2014-06-13 10:26:57"
         },
         {
             "name": "sonata-project/cache",
@@ -2015,12 +2016,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCacheBundle.git",
-                "reference": "3ee7636f2610f324eefd1e49051890825dac3e63"
+                "reference": "aa5c2f0600af8fdd0eecf45c2b6ac34a2e1a8683"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCacheBundle/zipball/3ee7636f2610f324eefd1e49051890825dac3e63",
-                "reference": "3ee7636f2610f324eefd1e49051890825dac3e63",
+                "url": "https://api.github.com/repos/sonata-project/SonataCacheBundle/zipball/aa5c2f0600af8fdd0eecf45c2b6ac34a2e1a8683",
+                "reference": "aa5c2f0600af8fdd0eecf45c2b6ac34a2e1a8683",
                 "shasum": ""
             },
             "require": {
@@ -2076,7 +2077,7 @@
             "keywords": [
                 "cache block"
             ],
-            "time": "2014-06-04 15:46:27"
+            "time": "2014-06-10 21:44:51"
         },
         {
             "name": "sonata-project/core-bundle",
@@ -2084,12 +2085,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "454d8eaea22da0ab63908c85f0267470988ed1a0"
+                "reference": "9c2fc7ed49077024a258419e22d911d255274f4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/454d8eaea22da0ab63908c85f0267470988ed1a0",
-                "reference": "454d8eaea22da0ab63908c85f0267470988ed1a0",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/9c2fc7ed49077024a258419e22d911d255274f4d",
+                "reference": "9c2fc7ed49077024a258419e22d911d255274f4d",
                 "shasum": ""
             },
             "require": {
@@ -2103,6 +2104,7 @@
                 "doctrine/orm": "~2.4",
                 "doctrine/phpcr-odm": "~1.0",
                 "friendsofsymfony/rest-bundle": "~1.1",
+                "jackalope/jackalope-doctrine-dbal": "~1.0",
                 "jms/serializer-bundle": "~0.11",
                 "sensio/framework-extra-bundle": "~2.2",
                 "sonata-project/exporter": "~1.3"
@@ -2138,7 +2140,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-06-04 10:21:44"
+            "time": "2014-06-10 10:25:31"
         },
         {
             "name": "sonata-project/doctrine-extensions",
