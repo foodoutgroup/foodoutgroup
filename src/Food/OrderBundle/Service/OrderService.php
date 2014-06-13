@@ -5,7 +5,6 @@ namespace Food\OrderBundle\Service;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\QueryBuilder;
 use Food\CartBundle\Service\CartService;
-use Food\DishesBundle\Entity\Dish;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
@@ -775,7 +774,7 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @return null
+     * @return LocalBiller
      */
     public function getLocalBiller()
     {
@@ -794,7 +793,7 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @return null
+     * @return PaySera
      */
     public function getPayseraBiller()
     {
@@ -989,7 +988,7 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param $status
+     * @param string|null $status
      * @return bool
      */
     public function isAllowedPaymentStatus($status)

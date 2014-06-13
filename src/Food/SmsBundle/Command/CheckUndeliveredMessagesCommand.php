@@ -47,6 +47,9 @@ class CheckUndeliveredMessagesCommand extends ContainerAwareCommand
         $output->writeln($text);
     }
 
+    /**
+     * @param string $text
+     */
     protected function soundTheAlarm($text)
     {
         $text = str_replace(array('<error>', '</error>'), '', $text);

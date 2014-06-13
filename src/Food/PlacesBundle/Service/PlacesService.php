@@ -3,7 +3,6 @@ namespace Food\PlacesBundle\Service;
 
 use Food\DishesBundle\Entity\Place;
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\HttpFoundation\Response;
 use Food\AppBundle\Traits;
 
 class PlacesService extends ContainerAware {

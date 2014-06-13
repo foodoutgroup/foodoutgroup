@@ -1,7 +1,6 @@
 <?php
 namespace Food\OrderBundle\Tests\Service;
 
-use Food\OrderBundle\Service\OrderService;
 use Food\OrderBundle\Service\PaySera;
 
 require_once dirname(__DIR__).'/../../../../app/AppKernel.php';

@@ -909,7 +909,7 @@ class Order
     /**
      * Get accounting
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return OrderAccounting[]
      */
     public function getAccounting()
     {
@@ -1159,7 +1159,7 @@ class Order
     /**
      * Get paymentLog
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return PaymentLog
      */
     public function getPaymentLog()
     {
