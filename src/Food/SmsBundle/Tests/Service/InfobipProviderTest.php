@@ -308,8 +308,8 @@ class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
         $expectedData = array(
             array(
                 'extId' => '1023012301',
-                'sendDate' => '2013-07-19 22:00:00',
-                'completeDate' => '2013-07-19 22:00:00',
+                'sendDate' => '2013-07-19 23:00:00',
+                'completeDate' => '2013-07-19 23:00:00',
                 'delivered' => false,
                 'error' => 'NOT_SENT',
             )
@@ -322,8 +322,8 @@ class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
         $expectedData2 = array(
             array(
                 'extId' => '1000',
-                'sendDate' => '2010-08-02 14:55:10',
-                'completeDate' => '2010-08-02 14:55:16',
+                'sendDate' => '2010-08-02 15:55:10',
+                'completeDate' => '2010-08-02 15:55:16',
                 'delivered' => true,
                 'error' => null,
             )
@@ -338,22 +338,22 @@ class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
         $expectedData3 = array(
             array(
                 'extId' => '1164134301',
-                'sendDate' => '2013-07-22 10:19:00',
-                'completeDate' => '2013-07-23 10:19:00',
+                'sendDate' => '2013-07-22 11:19:00',
+                'completeDate' => '2013-07-23 11:19:00',
                 'delivered' => false,
                 'error' => 'NOT_ENOUGH_CREDITS',
             ),
             array(
                 'extId' => '1023012682',
-                'sendDate' => '2013-12-21 16:12:15',
-                'completeDate' => '2013-12-22 16:12:15',
+                'sendDate' => '2013-12-21 17:12:15',
+                'completeDate' => '2013-12-22 17:12:15',
                 'delivered' => false,
                 'error' => 'NOT_DELIVERED GSM Error code: 189',
             ),
             array(
                 'extId' => '1023079321',
-                'sendDate' => '2013-12-20 23:00:50',
-                'completeDate' => '2013-12-20 23:00:50',
+                'sendDate' => '2013-12-21 00:00:50',
+                'completeDate' => '2013-12-21 00:00:50',
                 'delivered' => true,
                 'error' => null,
             ),
@@ -366,8 +366,8 @@ class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
         $expectedData4 = array(
             array(
                 'extId' => '1023012301',
-                'sendDate' => '2013-07-19 22:00:00',
-                'completeDate' => '2013-07-19 22:00:00',
+                'sendDate' => '2013-07-19 23:00:00',
+                'completeDate' => '2013-07-19 23:00:00',
                 'delivered' => false,
                 'error' => 'Infobip returned unknown status: NOT_SENT_YOU_FOOL',
             )

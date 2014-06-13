@@ -354,8 +354,8 @@ class InfobipProvider implements SmsProviderInterface {
                     'completeDate' => $node->getAttribute('donedate'),
                 );
 
-                $message['sendDate'] = date("Y-m-d H:i:s", strtotime($message['sendDate']));
-                $message['completeDate'] = date("Y-m-d H:i:s", strtotime($message['completeDate']));
+                $message['sendDate'] = date("Y-m-d H:i:s", strtotime('+1 hour', strtotime($message['sendDate'])));
+                $message['completeDate'] = date("Y-m-d H:i:s", strtotime('+1 hour', strtotime($message['completeDate'])));
 
                 $infoBipStatus = $node->getAttribute('status');
                 $gsmErrorCode = $node->getAttribute('gsmerror');

@@ -31,7 +31,7 @@ class SmsBalanceCommand extends ContainerAwareCommand
         $messagingService = $this->getContainer()->get('food.messages');
         $messagingProviders = $this->getContainer()->getParameter('sms.available_providers');
 
-        $balanceList =array();
+        $balanceList = array();
 
         $warnLimit = $this->getContainer()->getParameter('sms.balance_limit_warn');
         $criticalLimit = $this->getContainer()->getParameter('sms.balance_limit_critical');

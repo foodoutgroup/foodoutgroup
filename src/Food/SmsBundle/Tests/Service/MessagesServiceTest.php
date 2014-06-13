@@ -286,6 +286,35 @@ class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
         $messagesService->sendMessage('aj ne message cia :D');
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Sending failed somehow
+     */
+    public function testSendException()
+    {
+        /**
+         * @var \Food\SmsBundle\Service\InfobipProvider $infobipProvider
+         */
+        $infobipProvider = $this->getMock(
+            '\Food\SmsBundle\Service\InfobipProvider',
+            array('sendMessage')
+        );
+        $messagesService = new MessagesService($this->container, $infobipProvider);
+
+        $message = new Message();
+        $message->setSender('skanu')
+            ->setRecipient('37061514333')
+            ->setMessage('Pica iskepe')
+            ->setCreatedAt(new \DateTime("now"))
+        ;
+
+        $infobipProvider->expects($this->once())
+            ->method('sendMessage')
+            ->will($this->throwException(new \InvalidArgumentException('Sending failed somehow')));
+
+        $messagesService->sendMessage($message);
+    }
+
     public function testInfobipSend()
     {
         /**

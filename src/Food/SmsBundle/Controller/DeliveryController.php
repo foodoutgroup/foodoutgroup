@@ -43,7 +43,7 @@ class DeliveryController extends Controller
     }
 
     /**
-     * @param \Food\SmsBundle\Controller\MessagesService $messagingService
+     * @param \Food\SmsBundle\Service\MessagesService $messagingService
      */
     public function setMessagingService($messagingService)
     {
@@ -51,7 +51,7 @@ class DeliveryController extends Controller
     }
 
     /**
-     * @return \Food\SmsBundle\Controller\MessagesService
+     * @return \Food\SmsBundle\Service\MessagesService
      */
     public function getMessagingService()
     {
