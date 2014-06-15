@@ -104,4 +104,30 @@ class DefaultController extends Controller
     {
         return $this->render('FoodAppBundle:Default:newsletter_subscribtion.html.twig');
     }
+
+    public function sitemapAction()
+    {
+        $availableLocales = $this->container->getParameter('available_locales');
+
+        // TODO kolkas ijungta tik viena, tad..
+        $availableLocales = array($availableLocales[0]);
+
+        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')
+            ->findBy(array('active' => 1));
+
+        $staticPages = $this->get('food.static')->getActivePages(30, false);
+
+        $response = new Response();
+        $response->headers->set('Content-Type', 'xml');
+        return $this->render(
+            'FoodAppBundle:Default:sitemap.xml.twig',
+            array(
+                'domain' => $this->container->getParameter('domain'),
+                'availableLocales' => $availableLocales,
+                'places' => $places,
+                'staticPages' => $staticPages,
+            ),
+            $response
+        );
+    }
 }

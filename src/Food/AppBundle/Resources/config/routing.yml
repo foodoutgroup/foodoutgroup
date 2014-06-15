@@ -146,4 +146,3 @@ food_newsletter_subscribe:
 food_newsletter_thank:
     pattern: /newsletter/thank/
     defaults: { _controller: FoodAppBundle:Default:newsletterThank}
-

@@ -104,6 +104,12 @@ paysera_callback:
     path: /payments/paysera/callback
     defaults: { _controller: FoodOrderBundle:Payments:payseraCallback}
 
+food_sitemap:
+    pattern: /sitemap.xml
+    defaults: { _controller: FoodAppBundle:Default:sitemap}
+    requirements:
+      _method:  GET
+
 food_nagios:
     pattern:  /nagios/
     defaults: { _controller: FoodAppBundle:Monitoring:nagios }
