@@ -215,4 +215,166 @@ class PlacesServiceTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals($expectedCities, $gotCities);
     }
+
+    public function testGetActiveCategories()
+    {
+        $expectedCategories = array('categorie1', 'categorie2');
+        $placeId = 167;
+
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get')
+        );
+
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $entityManager = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $categoryRepository = $this->getMockBuilder('\Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $place = $this->getMockBuilder('Food\DishesBundle\Entity\Place')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $container->expects($this->at(0))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getManager')
+            ->will($this->returnValue($entityManager));
+
+        $entityManager->expects($this->once())
+            ->method('getRepository')
+            ->with('FoodDishesBundle:FoodCategory')
+            ->will($this->returnValue($categoryRepository));
+
+        $place->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue($placeId));
+
+        $categoryRepository->expects($this->once())
+            ->method('findBy')
+            ->with(array(
+                    'place' => $placeId,
+                    'active' => 1,
+                ),
+                array(
+                    'lineup' => 'DESC'
+                ))
+            ->will($this->returnValue($expectedCategories));
+
+        $placesService = new PlacesService();
+        $placesService->setContainer($container);
+
+        $gotCategories = $placesService->getActiveCategories($place);
+        $this->assertEquals($expectedCategories, $gotCategories);
+    }
+
+    public function testGetPlaceByCategory()
+    {
+        $expectedPlace = new Place();
+        $categoryId = 167;
+
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get')
+        );
+
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $entityManager = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $categoryRepository = $this->getMockBuilder('\Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $category = $this->getMockBuilder('Food\DishesBundle\Entity\FoodCategory')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $container->expects($this->at(0))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getManager')
+            ->will($this->returnValue($entityManager));
+
+        $entityManager->expects($this->once())
+            ->method('getRepository')
+            ->with('FoodDishesBundle:FoodCategory')
+            ->will($this->returnValue($categoryRepository));
+
+        $categoryRepository->expects($this->once())
+            ->method('find')
+            ->with($categoryId)
+            ->will($this->returnValue($category));
+
+        $category->expects($this->once())
+            ->method('getPlace')
+            ->will($this->returnValue($expectedPlace));
+
+        $placesService = new PlacesService();
+        $placesService->setContainer($container);
+
+        $gotPlace = $placesService->getPlaceByCategory($categoryId);
+        $this->assertEquals($expectedPlace, $gotPlace);
+    }
+
+    public function testGetPlaceByCategoryNoneFound()
+    {
+        $expectedPlace = false;
+        $categoryId = 167;
+
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get')
+        );
+
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $entityManager = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $categoryRepository = $this->getMockBuilder('\Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $container->expects($this->at(0))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getManager')
+            ->will($this->returnValue($entityManager));
+
+        $entityManager->expects($this->once())
+            ->method('getRepository')
+            ->with('FoodDishesBundle:FoodCategory')
+            ->will($this->returnValue($categoryRepository));
+
+        $categoryRepository->expects($this->once())
+            ->method('find')
+            ->with($categoryId)
+            ->will($this->returnValue(false));
+
+        $placesService = new PlacesService();
+        $placesService->setContainer($container);
+
+        $gotPlace = $placesService->getPlaceByCategory($categoryId);
+        $this->assertEquals($expectedPlace, $gotPlace);
+    }
+
+
 }

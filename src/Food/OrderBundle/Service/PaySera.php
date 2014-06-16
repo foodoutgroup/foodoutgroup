@@ -14,21 +14,6 @@ class PaySera extends ContainerAware implements BillingInterface {
     private $siteDomain = null;
 
     /**
-     * @var string
-     */
-    private $acceptUrl = null;
-
-    /**
-     * @var string
-     */
-    private $cancelUrl = null;
-
-    /**
-     * @var string
-     */
-    private $callbackUrl = null;
-
-    /**
      * @var int
      */
     private $projectId = null;
@@ -134,46 +119,6 @@ class PaySera extends ContainerAware implements BillingInterface {
     }
 
     /**
-     * @param string $acceptUrl
-     */
-    public function setAcceptUrl($acceptUrl)
-    {
-        $this->acceptUrl = $acceptUrl;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAcceptUrl()
-    {
-        return $this->acceptUrl;
-    }
-
-    /**
-     * @param string $callbackUrl
-     */
-    public function setCallbackUrl($callbackUrl)
-    {
-        $this->callbackUrl = $callbackUrl;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCallbackUrl()
-    {
-        return $this->callbackUrl;
-    }
-
-    /**
-     * @param string $cancelUrl
-     */
-    public function setCancelUrl($cancelUrl)
-    {
-        $this->cancelUrl = $cancelUrl;
-    }
-
-    /**
      * @param string $locale
      */
     public function setLocale($locale)
@@ -187,14 +132,6 @@ class PaySera extends ContainerAware implements BillingInterface {
     public function getLocale()
     {
         return $this->locale;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCancelUrl()
-    {
-        return $this->cancelUrl;
     }
 
     /**
@@ -255,41 +192,11 @@ class PaySera extends ContainerAware implements BillingInterface {
 
         return $redirectUrl;
     }
-// TODO lower is useless?
-    /**
-     * @param $request
-     * @throws \Exception
-     * @return mixed
-     */
-    public function parseEvpResponse($request)
-    {
-        try {
-            $callbackValidator = $this->container->get('evp_web_to_pay.callback_validator')
-                ->validateAndParseData($request->query->all());
-            $data = $callbackValidator->validateAndParseData($request->query->all());
-
-            return $data;
-        } catch (\Exception $e) {
-            throw $e;
-        }
-    }
-
-    /**
-     * @param array $data
-     * @return bool
-     */
-    public function validateCallback($data)
-    {
-        if ($data['status'] == 1) {
-            return true;
-        }
-
-        return false;
-    }
 
     public function rollback()
     {
         // TODO how do we rollback?
+        throw new \Exception('Not implemented yet');
     }
 
 }

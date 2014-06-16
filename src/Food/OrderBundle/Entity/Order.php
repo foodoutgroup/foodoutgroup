@@ -978,7 +978,7 @@ class Order
     /**
      * Get total
      *
-     * @return string 
+     * @return float
      */
     public function getTotal()
     {
