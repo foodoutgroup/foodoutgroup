@@ -70,8 +70,23 @@ class GoogleGisService extends ContainerAware
      * @param \stdClass $location
      * @return array
      */
-    public function groupData($location, $address)
+    public function groupData($location, $address, $city)
     {
+        if (sizeof($location->results) > 1) {
+            foreach ($location->results as $key=>$rezRow) {
+                $hasIt = false;
+                foreach ($rezRow->address_components as $addr) {
+                    if (in_array('locality', $addr->types) && in_array('political', $addr->types) && $addr->short_name == $city) {
+                        $hasIt = true;
+                    }
+                }
+                if (!$hasIt) {
+                    unset($location->results[$key]);
+                }
+            }
+            $location->results = array_values($location->results);
+        }
+
         $returner = array();
         $returner['not_found'] = true;
         $returner['street_found'] = false;
