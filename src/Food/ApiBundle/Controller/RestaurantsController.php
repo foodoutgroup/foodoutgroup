@@ -47,4 +47,18 @@ class RestaurantsController extends Controller
     {
 
     }
+
+    public function getMenuAction($id)
+    {
+        $menuItems = array();
+        $response = array(
+            'menu' => array(),
+            '_meta' => array(
+                'total' => sizeof($menuItems),
+                'offset' => 0,
+                'limit' => 50
+            )
+        );
+        return new JsonResponse($response);
+    }
 }

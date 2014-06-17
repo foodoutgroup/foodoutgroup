@@ -342,7 +342,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get categories
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return FoodCategory[]
      */
     public function getCategories()
     {

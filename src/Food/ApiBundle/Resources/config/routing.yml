@@ -16,9 +16,14 @@ food_api_restaurants_filtered:
 
 food_api_restaurants_get:
     pattern: /restaurants/{id}
-    defaults: { _controller: FFoodApiBundle:Restaurants:getRestaurant}
+    defaults: { _controller: FoodApiBundle:Restaurants:getRestaurant}
     methods: [GET]
 
+
+food_api_restaurants_get_menu:
+    pattern: /restaurants/{id}/menu
+    defaults: { _controller: FoodApiBundle:Restaurants:getMenu }
+    methods: [GET]
 
 # Orders Routings :)
 food_api_orders:
