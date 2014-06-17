@@ -50,9 +50,10 @@ class RestaurantsController extends Controller
 
     public function getMenuAction($id)
     {
-        $menuItems = array();
+        $menuItems = $this->get('food_api.api')->createMenuByPlaceId($id);
+
         $response = array(
-            'menu' => array(),
+            'menu' => $menuItems,
             '_meta' => array(
                 'total' => sizeof($menuItems),
                 'offset' => 0,

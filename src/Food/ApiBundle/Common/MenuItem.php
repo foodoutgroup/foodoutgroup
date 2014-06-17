@@ -4,6 +4,7 @@ namespace Food\ApiBundle\Common;
 
 use Food\DishesBundle\Entity\Dish;
 use Food\DishesBundle\Entity\Place;
+use Symfony\Component\DependencyInjection\ContainerAware;
 
 class MenuItem extends ContainerAware
 {
@@ -89,6 +90,7 @@ class MenuItem extends ContainerAware
                     'currency' => 'LTL'
                 )
             )
-            ->set('updated_at', $dish->getEditedAt()->format('YmdHis'));
+            ->set('updated_at', ($dish->getEditedAt() != null ? $dish->getEditedAt()->format('U'): $dish->getCreatedAt()->format('U')));
+        return $this->data;
     }
 }
