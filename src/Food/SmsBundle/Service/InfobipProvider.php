@@ -298,7 +298,9 @@ class InfobipProvider implements SmsProviderInterface {
                 array(
                     array(
                         'sender' => $sender,
-                        'text' => urlencode($message),
+                        'text' => urlencode(
+                            str_replace('"', '\"', $message)
+                        ),
                         'recipients' =>
                             array(
                                 array('gsm' => $recipient),

@@ -50,28 +50,28 @@ class Message
     private $smsc = null;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @ORM\Column(name="submitted_at", type="datetime", nullable=true)
      */
     private $submittedAt;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @ORM\Column(name="received_at", type="datetime", nullable=true)
      */
     private $receivedAt;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @ORM\Column(name="last_error_date", type="datetime", nullable=true)
      */
@@ -111,6 +111,13 @@ class Message
      * @ORM\Column(name="ext_id", type="string", length=45, nullable=true)
      */
     private $extId = null;
+
+    function __construct()
+    {
+        if (!isset($this->createdAt)) {
+            $this->createdAt = new \DateTime("now");
+        }
+    }
 
     /**
      * @return string
