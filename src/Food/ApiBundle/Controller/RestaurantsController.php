@@ -62,4 +62,24 @@ class RestaurantsController extends Controller
         );
         return new JsonResponse($response);
     }
+
+    public function getMenuCategoriesAction($id)
+    {
+        $response = array();
+        $items = $this->getDoctrine()->getRepository('FoodDishesBundle:FoodCategory')->findBy(
+            array(
+                'place' => (int)$id,
+                'active' => 1
+            ),
+            array('lineup'=> 'DESC')
+        );
+        foreach ($items as $key=>$item) {
+            $response[] = array(
+                'id' => $item->getId(),
+                'name' => $item->getName(),
+                'precedence' => ($key+1)
+            );
+        }
+        return new JsonResponse($response);
+    }
 }
