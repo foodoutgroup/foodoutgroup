@@ -1583,11 +1583,15 @@ class OrderService extends ContainerAware
             ."Restoranui issiusta nuoroda: ".$this->container->get('router')
                 ->generate('ordermobile', array('hash' => $order->getOrderHash()), true)
             ."\n";
+        $emailMessageText .= "\n"
+            ."Uzsakymo admin valdymas: ".$this->container->get('router')
+                ->generate('order_support_mobile', array('hash' => $order->getOrderHash()), true)
+            ."\n";
 
         $mailer = $this->container->get('mailer');
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('Naujas uzsakymas restoranui: '.$order->getPlace()->getName())
+            ->setSubject('Naujas uzsakymas restoranui: '.$order->getPlace()->getName().' (#'.$order->getId().')')
             ->setFrom('info@'.$domain)
         ;
 

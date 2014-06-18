@@ -59,6 +59,46 @@ class DefaultController extends Controller
     }
 
     /**
+     * Mobile admin page for order to be monitored and ruined
+     * @param $hash
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function mobileAdminAction($hash)
+    {
+        $order = $this->get('food.order')->getOrderByHash($hash);
+        if ($this->getRequest()->isMethod('post')) {
+            switch($this->getRequest()->get('status')) {
+                case 'confirm':
+                    $this->get('food.order')->statusAccepted('admin_mobile');
+                break;
+
+                case 'delay':
+                    $this->get('food.order')->statusDelayed('admin_mobile', 'delay reason: '.$this->getRequest()->get('delay_reason'));
+                    $this->get('food.order')->getOrder()->setDelayed(true);
+                    $this->get('food.order')->getOrder()->setDelayReason($this->getRequest()->get('delay_reason'));
+                    $this->get('food.order')->getOrder()->setDelayDuration($this->getRequest()->get('delay_duration'));
+                    $this->get('food.order')->saveDelay();
+                    $order = $this->get('food.order')->getOrderByHash($hash);
+                break;
+
+                case 'cancel':
+                    $this->get('food.order')->statusCanceled('admin_mobile');
+                break;
+
+                case 'finish':
+                    $this->get('food.order')->statusFinished('admin_mobile');
+                break;
+
+                case 'completed':
+                    $this->get('food.order')->statusCompleted('admin_mobile');
+                break;
+            }
+            $this->get('food.order')->saveOrder();
+        }
+        return $this->render('FoodOrderBundle:Default:mobile_admin.html.twig', array('order' => $order));
+    }
+
+    /**
      * @param $hash
      * @return \Symfony\Component\HttpFoundation\Response
      */

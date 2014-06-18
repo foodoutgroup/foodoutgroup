@@ -80,6 +80,10 @@ ordermobile:
     path: /o/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~, action: ~ }
 
+order_support_mobile:
+    path: /o-spr/{hash}/
+    defaults: { _controller: FoodOrderBundle:Default:mobileAdmin, hash: ~, action: ~ }
+
 drivermobile:
     path: /d/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:mobileDriver, hash: ~, action: ~ }

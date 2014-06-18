@@ -876,6 +876,10 @@
                 <source>admin.order.status.source.restourant_mobile</source>
                 <target>Restorano mobilus puslapis</target>
             </trans-unit>
+            <trans-unit id="admin.order.status.source.admin_mobile">
+                <source>admin.order.status.source.admin_mobile</source>
+                <target>Uzsakymo mobilus admin puslapis</target>
+            </trans-unit>
             <trans-unit id="admin.order.status.source.driver_mobile">
                 <source>admin.order.status.source.driver_mobile</source>
                 <target>Vairuotojo mobilus puslapis</target>
