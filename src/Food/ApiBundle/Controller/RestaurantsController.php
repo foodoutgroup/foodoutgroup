@@ -63,6 +63,12 @@ class RestaurantsController extends Controller
         return new JsonResponse($response);
     }
 
+    public function getMenuItemAction($placeId, $menuItem)
+    {
+        $response = $this->get('food_api.api')->createMenuItemByPlaceIdAndItemId($placeId, $menuItem);
+        return new JsonResponse($response);
+    }
+
     public function getMenuCategoriesAction($id)
     {
         $response = array();

@@ -375,7 +375,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get options
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return DishOption[]
      */
     public function getOptions()
     {

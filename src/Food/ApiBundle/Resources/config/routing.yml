@@ -30,6 +30,11 @@ food_api_restaurants_get_menu_categories:
     defaults: { _controller: FoodApiBundle:Restaurants:getMenuCategories }
     methods: [GET]
 
+food_api_restaurants_get_menu_item:
+    pattern: /restaurants/{placeId}/menu/{menuItem}
+    defaults: { _controller: FoodApiBundle:Restaurants:getMenuItem }
+    methods: [GET]
+
 # Orders Routings :)
 food_api_orders:
     pattern: /orders

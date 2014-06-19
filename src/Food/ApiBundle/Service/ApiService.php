@@ -26,4 +26,12 @@ class ApiService extends ContainerAware
         }
         return null;
     }
+
+    public function createMenuItemByPlaceIdAndItemId($placeId, $menuItem)
+    {
+        $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find((int)$placeId);
+        $dish = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Dish')->find((int)$menuItem);
+        $menuItem = new MenuItem(null, $this->container);
+        return $menuItem->loadFromEntity($dish, true);
+    }
 }

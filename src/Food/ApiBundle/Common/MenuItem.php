@@ -65,7 +65,7 @@ class MenuItem extends ContainerAware
         }
     }
 
-    public function loadFromEntity(Dish $dish)
+    public function loadFromEntity(Dish $dish, $loadOptions = false)
     {
         if (!$dish->getActive()) {
             return null;
@@ -91,6 +91,41 @@ class MenuItem extends ContainerAware
                 )
             )
             ->set('updated_at', ($dish->getEditedAt() != null ? $dish->getEditedAt()->format('U'): $dish->getCreatedAt()->format('U')));
+
+        if ($loadOptions) {
+            $options = array();
+            foreach($dish->getOptions() as $option) {
+                $name = $option->getGroupName();
+
+                if (empty($name)) {
+                    $name = '_def';
+                }
+                if (!isset($options[$name])) {
+                    $options[$name] = array(
+                        'title' => '',
+                        'items' => array()
+                    );
+                }
+                if ($option->getSingleSelect()) {
+                    $options[$name]['items'][] = array(
+                        'option_id' => $option->getId(),
+                        'title' => $option->getName(),
+                        'type' => 'radio',
+                        'default' => false,
+                        'price_modifier' => $option->getPrice() * 100
+                    );
+                } else {
+                    $options[$name]['items'][] = array(
+                        'option_id' => $option->getId(),
+                        'title' => $option->getName(),
+                        'type' => 'checkbox',
+                        'default' => false,
+                        'price_modifier' => $option->getPrice() * 100
+                    );
+                }
+            }
+            $this->data['options'] = $options;
+        }
         return $this->data;
     }
 }
