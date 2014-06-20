@@ -988,6 +988,47 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param string $from
+     * @param string $to
+     * @return bool
+     */
+    public function isValidOrderStatusChange($from, $to)
+    {
+        $flowLine = array(
+            self::$status_new => 0,
+            self::$status_accepted => 1,
+            self::$status_delayed => 2,
+            self::$status_forwarded => 2,
+            self::$status_finished => 3,
+            self::$status_assiged => 4,
+            self::$status_completed => 5,
+            self::$status_canceled => 5,
+        );
+
+        if (empty($from) && !empty($to)) {
+            return true;
+        }
+
+        if (empty($to)) {
+            return false;
+        }
+
+        if (!isset($flowLine[$from]) || !isset($flowLine[$to])) {
+            return false;
+        }
+
+        if ($from == $to) {
+            return false;
+        }
+
+        if ($flowLine[$from] <= $flowLine[$to]) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @param string|null $status
      * @return bool
      */
