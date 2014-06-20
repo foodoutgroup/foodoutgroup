@@ -1139,12 +1139,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/avalanche123/Imagine.git",
-                "reference": "ff1550c270fe6116cfed778607024125e754899a"
+                "reference": "f100525f4be5c912c4622faed5a1649a9f346b9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/ff1550c270fe6116cfed778607024125e754899a",
-                "reference": "ff1550c270fe6116cfed778607024125e754899a",
+                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/f100525f4be5c912c4622faed5a1649a9f346b9d",
+                "reference": "f100525f4be5c912c4622faed5a1649a9f346b9d",
                 "shasum": ""
             },
             "require": {
@@ -1188,7 +1188,7 @@
                 "image manipulation",
                 "image processing"
             ],
-            "time": "2014-06-13 10:56:49"
+            "time": "2014-06-16 23:35:15"
         },
         {
             "name": "incenteev/composer-parameter-handler",
