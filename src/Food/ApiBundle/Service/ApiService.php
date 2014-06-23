@@ -7,6 +7,9 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 
 class ApiService extends ContainerAware
 {
+    public function getSessionId() {
+        return $this->container->get('session')->getId();
+    }
     public function createRestaurantFromPlace($place, $placePoint)
     {
         $restaurant = new Restaurant(null, $this->container);
