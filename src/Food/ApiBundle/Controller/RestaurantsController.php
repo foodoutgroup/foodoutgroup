@@ -46,7 +46,9 @@ class RestaurantsController extends Controller
 
     public function getRestaurantAction($id)
     {
-
+        $place = $this->get('doctrine')->getRepository('FoodDishesBundle:Place')->find(intval($id));
+        $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, null);
+        return new JsonResponse($restaurant->data);
     }
 
     public function getMenuAction($id)

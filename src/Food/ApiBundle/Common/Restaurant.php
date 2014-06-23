@@ -114,8 +114,8 @@ class Restaurant extends ContainerAware
             ->set(
                 'services',
                 array(
-                    'pickup' => ($placePoint->getPickUp() ? true: false),
-                    'delivery' => ($placePoint->getDelivery() ? true: false)
+                    'pickup' => (isset($placePoint) && $placePoint->getPickUp() ? true: false),
+                    'delivery' => (isset($placePoint) && $placePoint->getDelivery() ? true: false)
                 )
             )
             ->set(
@@ -134,8 +134,8 @@ class Restaurant extends ContainerAware
             )
             ->set('is_working', !$this->container->get('food.order')->isTodayNoOneWantsToWork($place))
             ->set('is_taking_orders', !$this->container->get('food.order')->isTodayNoOneWantsToWork($place))
-            ->set('order_hours', $this->_getWorkHoursOfPlacePoint($placePoint))
-            ->set('work_hours', $this->_getWorkHoursOfPlacePoint($placePoint))
+            ->set('order_hours', (isset($placePoint) ? $this->_getWorkHoursOfPlacePoint($placePoint) : null))
+            ->set('work_hours', (isset($placePoint) ? $this->_getWorkHoursOfPlacePoint($placePoint) : null))
             ->set('locations', $this->_getLocationsForResponse($place, $placePoint));
         return $this;
     }
