@@ -29,4 +29,20 @@ class GeneratorController extends Controller
         }
         return new Response(sizeof($oids));
     }
+
+    public function dropAction()
+    {
+        $upp = realpath($this->container->get('kernel')->getRootDir() . '/../web/uploads');
+        $uppDir = $upp."/csv";
+        $f = opendir($uppDir);
+        $fs = @readdir($f);
+        $fs = @readdir($f);
+        while($fs = @readdir($f)) {
+            echo $fs."<br>";
+            if (eregi("csv", $fs) || eregi("txt", $fs)) {
+                @unlink($uppDir."/".$fs);
+            }
+        }
+        return new Response("DROP THE BASS");
+    }
 }

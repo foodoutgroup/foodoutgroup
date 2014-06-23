@@ -2106,7 +2106,7 @@ class OrderService extends ContainerAware
                 $addRow,
                 $order->getPaymentMethod(),
                 "MAISTAS",
-                $foodTotalLine,
+                str_replace(".", ",", $foodTotalLine),
                 $order->getVat()
             );
         }
@@ -2121,7 +2121,7 @@ class OrderService extends ContainerAware
                 $addRow,
                 $order->getPaymentMethod(),
                 "GERIMAI",
-                $drinksTotalLine,
+                str_replace(".", ",", $drinksTotalLine),
                 $order->getVat()
             );
         }
@@ -2137,7 +2137,7 @@ class OrderService extends ContainerAware
                 $addRow,
                 $order->getPaymentMethod(),
                 "ALKOHOLIS",
-                $alcoholTotalLine,
+                str_replace(".", ",", $alcoholTotalLine),
                 $order->getVat()
             );
         }
@@ -2153,7 +2153,7 @@ class OrderService extends ContainerAware
                 $addRow,
                 $order->getPaymentMethod(),
                 "PRISTATYMAS",
-                $order->getPlace()->getDeliveryPrice(),
+                str_replace(".", ",", $order->getPlace()->getDeliveryPrice()),
                 $order->getVat()
             );
         }
@@ -2164,6 +2164,7 @@ class OrderService extends ContainerAware
                 $someDet = str_replace("'","_", $someDet);
             }
             $ordDet = implode(";", $ordDet);
+            $ordDet = $this->creepyFixer($ordDet);
         }
         $upp = realpath($this->container->get('kernel')->getRootDir() . '/../web/uploads');
         $uppDir = $upp."/csv";
@@ -2178,6 +2179,19 @@ class OrderService extends ContainerAware
         $fresIndex = fopen($findex,"a+");
         fputs($fresIndex, $fname."\r\n");
         fclose($fresIndex);
+    }
+
+    public function creepyFixer($source)
+    {
+        $s1 = array('ą','č','ę','ė','į','š','ų','ū','ž');
+        $s2 = array('Ą','Č','Ę','Ė','Į','Š','Ų','Ū','Ž');
+        $d1 = array('a','c','e','e','i','s','u','u','z');
+        $d2 = array('A','C','E','E','I','S','U','U','Z');
+        foreach($s1 as $k=>$ss) {
+            $source = str_replace($s1[$k], $d1[$k], $source);
+            $source = str_replace($s2[$k], $d2[$k], $source);
+        }
+        return $source;
     }
 
     /**
