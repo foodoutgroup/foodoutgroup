@@ -57,22 +57,22 @@ class ProfileFormType extends BaseType
             ->add('lastname', null, array('required' => true, 'label' => 'form.lastname', 'translation_domain' => 'FOSUserBundle'))
             ->add('email', 'email', array('required' => true, 'label' => 'form.email', 'translation_domain' => 'FOSUserBundle', 'disabled' => true))
             ->add('phone', null, array('required' => true, 'label' => 'form.phone', 'translation_domain' => 'FOSUserBundle', 'attr' => array('placeholder' => '3706xxxxxxx')))
-//            ->add('current_password', 'password', array(
-//                'label' => 'form.current_password',
-//                'translation_domain' => 'FOSUserBundle',
-//                'mapped' => false,
-//                'constraints' => $constraint,
-//                'cascade_validation' => true,
-////                'required' => false,
-//            ))
-//            ->add('plainPassword', 'repeated', array(
-//                'type' => 'password',
-//                'options' => array('translation_domain' => 'FOSUserBundle'),
-//                'first_options' => array('label' => 'form.new_password'),
-//                'second_options' => array('label' => 'form.new_password_confirmation'),
-//                'invalid_message' => 'fos_user.password.mismatch',
-////                'required' => false,
-//            ))
+            ->add('current_password', 'password', array(
+                'label' => 'form.current_password',
+                'translation_domain' => 'FOSUserBundle',
+                'mapped' => false,
+                // 'constraints' => $constraint,
+                'cascade_validation' => true,
+                // 'required' => false,
+            ))
+            ->add('plainPassword', 'repeated', array(
+                'type' => 'password',
+                'options' => array('translation_domain' => 'FOSUserBundle'),
+                'first_options' => array('label' => 'form.new_password'),
+                'second_options' => array('label' => 'form.new_password_confirmation'),
+                'invalid_message' => 'fos_user.password.mismatch',
+                // 'required' => false,
+            ))
         ;
     }
 }

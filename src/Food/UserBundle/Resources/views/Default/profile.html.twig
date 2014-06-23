@@ -65,9 +65,9 @@
                             {{ form_row(addressForm.city) }}
                             {{ form_row(addressForm.address) }}
                             <hr>
-                            {#{{ form_row(form.current_password) }}#}
-                            {#{{ form_row(form.plainPassword.first) }}#}
-                            {#{{ form_row(form.plainPassword.second) }}#}
+                            {{ form_row(form.current_password) }}
+                            {{ form_row(form.plainPassword.first) }}
+                            {{ form_row(form.plainPassword.second) }}
                             <div class="form-controls">
                                 <input type="submit" value="{% trans %}general.profile.button_save{% endtrans %}">
                             </div>
