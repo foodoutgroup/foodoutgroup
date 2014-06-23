@@ -9,9 +9,9 @@ set :model_manager, "doctrine"
 set :branch, "the_rise_of_dark_api"
 
 # multi-stage environment
-set :stages,        %w(production staging sandbox)
+set :stages,        %w(production staging sandbox taurinas)
 # isijungiam kada reik :)
-set :default_stage, "sandbox"
+set :default_stage, "taurinas"
 set :stage_dir,     "app/config/deploy"
 require 'capistrano/ext/multistage'
 
