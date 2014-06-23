@@ -3,6 +3,7 @@
 namespace Food\ApiBundle\Controller;
 
 use Food\ApiBundle\Common\Restaurant;
+use Food\ApiBundle\Common\MenuItem;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

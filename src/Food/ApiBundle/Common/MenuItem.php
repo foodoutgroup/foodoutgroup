@@ -4,6 +4,7 @@ namespace Food\ApiBundle\Common;
 
 use Food\DishesBundle\Entity\Dish;
 use Food\DishesBundle\Entity\Place;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
 class MenuItem extends ContainerAware
@@ -93,10 +94,24 @@ class MenuItem extends ContainerAware
             ->set('updated_at', ($dish->getEditedAt() != null ? $dish->getEditedAt()->format('U'): $dish->getCreatedAt()->format('U')));
 
         if ($loadOptions) {
-            $options = array();
+            $options = array(
+                'sizes' => array(
+                    'title' => $this->container->get('translator')->trans('dish.select_size'),
+                    'items' => array()
+                )
+            );
+            foreach($dish->getSizes() as $k=>$size) {
+                $options['sizes']['items'][] = array(
+                    'option_id' => $size->getId(),
+                    'title' => $size->getUnit()->getName(),
+                    'type' => 'sizes',
+                    'default' => ($k == 0 ? true: false),
+                    'price_modifier' => $size->getPrice() * 100
+                );
+            }
+
             foreach($dish->getOptions() as $option) {
                 $name = $option->getGroupName();
-
                 if (empty($name)) {
                     $name = '_def';
                 }
