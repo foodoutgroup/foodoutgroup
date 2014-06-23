@@ -11,6 +11,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TestController extends Controller
 {
+    /**
+     * @return Response
+     *
+     * @codeCoverageIgnore
+     */
     public function indexAction()
     {
         $ml = $this->get('food.mailer');
@@ -30,6 +35,11 @@ class TestController extends Controller
         return new Response('Uber');
     }
 
+    /**
+     * @return RedirectResponse|Response
+     *
+     * @codeCoverageIgnore
+     */
     public function paymentAction()
     {
         /**
@@ -53,6 +63,11 @@ class TestController extends Controller
         return new Response("Ola, mister payment nothing happened :)");
     }
 
+    /**
+     * @return Response
+     *
+     * @codeCoverageIgnore
+     */
     public function reportAction()
     {
         $orderService = $this->get('food.order');
@@ -73,7 +88,7 @@ class TestController extends Controller
 
         return (
             $this->render(
-                'FoodOrderBundle:Command:accounting_yesterday_report.txt.twig',
+                'FoodOrderBundle:Command:accounting_yesterday_report.html.twig',
                 array(
                     'orders' => $orders,
                     'reportFor' => date("Y-m-d", strtotime('-1 day')),
