@@ -977,3 +977,7 @@ ul.dish-holder {
     padding-left: 10px;
     padding-right: 3px;
 }
+
+.restaurant-item .item-righter .rating-count a {
+    color: #55422e;
+}
