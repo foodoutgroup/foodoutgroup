@@ -1594,6 +1594,8 @@ class OrderService extends ContainerAware
     public function notifyOrderCreate() {
         $order = $this->getOrder();
 
+        $translator = $this->container->get('translator');
+
         $domain = $this->container->getParameter('domain');
         $notifyEmails = $this->container->getParameter('order.notify_emails');
         $cityCoordinators = $this->container->getParameter('order.city_coordinators');
@@ -1605,34 +1607,36 @@ class OrderService extends ContainerAware
             $userAddress = $order->getAddressId()->getAddress().', '.$order->getAddressId()->getCity();
         }
 
-        $emailMessageText = 'Gautas naujas uzsakymas restoranui '.$order->getPlace()->getName()."\n"
+        $newOrderText = $translator->trans('general.new_order.title');
+
+        $emailMessageText = $newOrderText.' '.$order->getPlace()->getName()."\n"
             ."OrderId: " . $order->getId()."\n\n"
-            ."Parinktas gamybos taskas adresu: ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
-            ."Gamybos tasko telefonas:".$order->getPlacePoint()->getPhone()."\n"
+            .$translator->trans('general.new_order.selected_place_point').": ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
+            .$translator->trans('general.new_order.place_point_phone').":".$order->getPlacePoint()->getPhone()."\n"
             ."\n"
-            ."Uzsakovo vardas: ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
-            ."Uzsakovo adresas: ".$userAddress."\n"
-            ."Uzsakovo telefonas: ".$order->getUser()->getPhone()."\n"
-            ."Uzsakovo el.pastas: ".$order->getUser()->getEmail()."\n"
+            .$translator->trans('general.new_order.client_name').": ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
+            .$translator->trans('general.new_order.client_address').": ".$userAddress."\n"
+            .$translator->trans('general.new_order.client_phone').": ".$order->getUser()->getPhone()."\n"
+            .$translator->trans('general.new_order.client_email').": ".$order->getUser()->getEmail()."\n"
             ."\n"
-            ."Pristatymo tipas: ".$order->getDeliveryType()."\n"
-            ."Apmokejimo tipas: ".$order->getPaymentMethod()."\n"
-            ."Apmokejimo bukle: ".$order->getPaymentStatus()."\n"
+            .$translator->trans('general.new_order.delivery_type').": ".$order->getDeliveryType()."\n"
+            .$translator->trans('general.new_order.payment_type').": ".$order->getPaymentMethod()."\n"
+            .$translator->trans('general.new_order.payment_status').": ".$order->getPaymentStatus()."\n"
         ;
 
         $emailMessageText .= "\n"
-            ."Restoranui issiusta nuoroda: ".$this->container->get('router')
+            .$translator->trans('general.new_order.restaurant_link').": ".$this->container->get('router')
                 ->generate('ordermobile', array('hash' => $order->getOrderHash()), true)
             ."\n";
         $emailMessageText .= "\n"
-            ."Uzsakymo admin valdymas: ".$this->container->get('router')
+            .$translator->trans('general.new_order.admin_link').": ".$this->container->get('router')
                 ->generate('order_support_mobile', array('hash' => $order->getOrderHash()), true)
             ."\n";
 
         $mailer = $this->container->get('mailer');
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('Naujas uzsakymas restoranui: '.$order->getPlace()->getName().' (#'.$order->getId().')')
+            ->setSubject($newOrderText.': '.$order->getPlace()->getName().' (#'.$order->getId().')')
             ->setFrom('info@'.$domain)
         ;
 
@@ -1675,6 +1679,8 @@ class OrderService extends ContainerAware
             return;
         }
 
+        $translator = $this->container->get('translator');
+
         $domain = $this->container->getParameter('domain');
         $notifyEmails = $this->container->getParameter('order.accept_notify_emails');
 
@@ -1688,27 +1694,29 @@ class OrderService extends ContainerAware
         $driverUrl = $this->container->get('router')
                 ->generate('drivermobile', array('hash' => $order->getOrderHash()), true);
 
-        $emailMessageText = 'Gautas naujas uzsakymas restoranui '.$order->getPlace()->getName()."\n"
+        $newOrderText = $translator->trans('general.new_order.title');
+
+        $emailMessageText = $newOrderText.' '.$order->getPlace()->getName()."\n"
             ."OrderId: " . $order->getId()."\n\n"
-            ."Parinktas gamybos taskas adresu: ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
-            ."Gamybos tasko telefonas:".$order->getPlacePoint()->getPhone()."\n"
+            .$translator->trans('general.new_order.selected_place_point').": ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
+            .$translator->trans('general.new_order.place_point_phone').":".$order->getPlacePoint()->getPhone()."\n"
             ."\n"
-            ."Uzsakovo vardas: ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
-            ."Uzsakovo adresas: ".$userAddress."\n"
-            ."Uzsakovo telefonas: ".$order->getUser()->getPhone()."\n"
-            ."Uzsakovo el.pastas: ".$order->getUser()->getEmail()."\n"
+            .$translator->trans('general.new_order.client_name').": ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
+            .$translator->trans('general.new_order.client_address').": ".$userAddress."\n"
+            .$translator->trans('general.new_order.client_phone').": ".$order->getUser()->getPhone()."\n"
+            .$translator->trans('general.new_order.client_email').": ".$order->getUser()->getEmail()."\n"
             ."\n"
-            ."Pristatymo tipas: ".$order->getDeliveryType()."\n"
-            ."Apmokejimo tipas: ".$order->getPaymentMethod()."\n"
-            ."Apmokejimo bukle: ".$order->getPaymentStatus()."\n"
+            .$translator->trans('general.new_order.delivery_type').": ".$order->getDeliveryType()."\n"
+            .$translator->trans('general.new_order.payment_type').": ".$order->getPaymentMethod()."\n"
+            .$translator->trans('general.new_order.payment_status').": ".$order->getPaymentStatus()."\n"
             ."\n"
-            ."Vairuotojas gaus nuoroda: ".$driverUrl
+            .$translator->trans('general.new_order.driver_link').": ".$driverUrl
         ;
 
         $mailer = $this->container->get('mailer');
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('Naujas uzsakymas restoranui: '.$order->getPlace()->getName())
+            ->setSubject($newOrderText.': '.$order->getPlace()->getName())
             ->setFrom('info@'.$domain)
         ;
 

@@ -783,6 +783,60 @@
         <source>reporting.daily.yesterday_orders.no_driver</source>
         <target>Nenurodytas??</target>
       </trans-unit>
+      <!-- Start of debug emails on new order -->
+      <trans-unit id="general.new_order.title" resname="general.new_order.title">
+          <source>general.new_order.title</source>
+          <target>Naujas uzsakymas restoranui</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.selected_place_point" resname="general.new_order.selected_place_point">
+          <source>general.new_order.selected_place_point</source>
+          <target>Parinktas gamybos taskas adresu</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.place_point_phone" resname="general.new_order.place_point_phone">
+          <source>general.new_order.place_point_phone</source>
+          <target>Gamybos tasko telefonas</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.client_name" resname="general.new_order.client_name">
+          <source>general.new_order.client_name</source>
+          <target>Uzsakovo vardas</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.client_address" resname="general.new_order.client_address">
+          <source>general.new_order.client_address</source>
+          <target>Uzsakovo adresas</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.client_phone" resname="general.new_order.client_phone">
+          <source>general.new_order.client_phone</source>
+          <target>Uzsakovo telefonas</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.client_email" resname="general.new_order.client_email">
+          <source>general.new_order.client_email</source>
+          <target>Uzsakovo el.pastas</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.delivery_type" resname="general.new_order.delivery_type">
+          <source>general.new_order.delivery_type</source>
+          <target>Pristatymo tipas</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.payment_type" resname="general.new_order.payment_type">
+          <source>general.new_order.payment_type</source>
+          <target>Apmokejimo tipas</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.payment_status" resname="general.new_order.payment_status">
+          <source>general.new_order.payment_status</source>
+          <target>Apmokejimo bukle</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.restaurant_link" resname="general.new_order.restaurant_link">
+          <source>general.new_order.restaurant_link</source>
+          <target>Restoranui issiusta nuoroda</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.admin_link" resname="general.new_order.admin_link">
+          <source>general.new_order.admin_link</source>
+          <target>Uzsakymo admin valdymas</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.driver_link" resname="general.new_order.driver_link">
+          <source>general.new_order.driver_link</source>
+          <target>Vairuotojas gaus nuoroda</target>
+      </trans-unit>
+      <!-- End of debug emails on new order -->
     </body>
   </file>
 </xliff>

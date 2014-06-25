@@ -230,6 +230,7 @@ class CartService {
      * @param int $size
      * @param int $quantity
      * @param array $options
+     * @param array $option
      */
     public function addDishBySizeId($size, $quantity, $options = array(), $option = array())
     {
