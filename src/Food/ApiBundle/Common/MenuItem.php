@@ -86,8 +86,8 @@ class MenuItem extends ContainerAware
             ->set(
                 'price_range',
                 array(
-                    'minimum' => $this->container->get('food.dishes')->getSmallestDishPrice($dish->getId()),
-                    'maximum' => $this->container->get('food.dishes')->getLargestDishPrice($dish->getId()),
+                    'minimum' => $this->container->get('food.dishes')->getSmallestDishPrice($dish->getId()) * 100,
+                    'maximum' => $this->container->get('food.dishes')->getLargestDishPrice($dish->getId()) * 100,
                     'currency' => 'LTL'
                 )
             )
