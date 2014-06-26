@@ -6,3 +6,8 @@ services:
         class: Food\ApiBundle\Service\ApiService
         calls:
             - [setContainer, [@service_container]]
+
+    food_api.basket:
+            class: Food\ApiBundle\Service\BasketService
+            calls:
+                - [setContainer, [@service_container]]

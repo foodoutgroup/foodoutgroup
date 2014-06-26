@@ -52,6 +52,13 @@ class Cart
     private $quantity;
 
     /**
+     * @var string
+     * @ORM\Column(name="comment", type="text", nullable=true)
+     */
+    private $comment;
+
+
+    /**
      * Set quantity
      *
      * @param integer $quantity
@@ -240,5 +247,28 @@ class Cart
     public function getCartId()
     {
         return $this->cart_id;
+    }
+
+    /**
+     * Set comment
+     *
+     * @param string $comment
+     * @return Cart
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+    
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return string 
+     */
+    public function getComment()
+    {
+        return $this->comment;
     }
 }
