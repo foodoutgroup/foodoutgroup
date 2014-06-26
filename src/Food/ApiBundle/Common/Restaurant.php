@@ -180,5 +180,6 @@ class Restaurant extends ContainerAware
                 );
             }
         }
+        return $retData;
     }
 }
