@@ -22,7 +22,7 @@ class MenuItem extends ContainerAware
             "currency" => "LTL"
         ),
         "status" => 'available',
-        "updated_at" => null
+        "updated_at" => ""
     );
     public  $data;
     private $availableFields = array();

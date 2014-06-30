@@ -66,18 +66,23 @@ class ShoppingBasketItem extends ContainerAware
     public function loadFromEntity(Cart $cartItem)
     {
         $this->set('basket_item_id', $cartItem->getCartId()) // @todo - ar tikrai ?? :)
-            ->set('item_id', $cartItem->getDishId())
+            ->set('item_id', $cartItem->getDishId()->getId())
             ->set('count', $cartItem->getQuantity())
-            ->set('options', array())
-            ->set('additional_info', $cartItem->getComment())
+            ->set('options', $this->_getOptions($cartItem))
+            ->set('additional_info', ($cartItem->getComment() == null ? "" : $cartItem->getComment()))
             ->set(
                 'price',
                 array(
-                    'amount' => $this->_contDaPriceOfAll($cartItem) * 100,
+                    'amount' => $this->_contDaPriceOfAll($cartItem) * 100, // @todo
                     'currency' => 'LTL'
                 )
-            )
+            );
         return $this->data;
+    }
+
+    private function _getOptions(Cart $cartItem)
+    {
+
     }
 
     private function _contDaPriceOfAll(Cart $cartItem)
