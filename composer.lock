@@ -1139,12 +1139,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/avalanche123/Imagine.git",
-                "reference": "f100525f4be5c912c4622faed5a1649a9f346b9d"
+                "reference": "fadfb4e494ac502d511a452f324a34831c25262e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/f100525f4be5c912c4622faed5a1649a9f346b9d",
-                "reference": "f100525f4be5c912c4622faed5a1649a9f346b9d",
+                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/fadfb4e494ac502d511a452f324a34831c25262e",
+                "reference": "fadfb4e494ac502d511a452f324a34831c25262e",
                 "shasum": ""
             },
             "require": {
@@ -1161,7 +1161,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-develop": "0.6-dev"
+                    "dev-develop": "0.7-dev"
                 }
             },
             "autoload": {
@@ -1188,7 +1188,7 @@
                 "image manipulation",
                 "image processing"
             ],
-            "time": "2014-06-16 23:35:15"
+            "time": "2014-06-22 18:54:11"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -1732,17 +1732,17 @@
         },
         {
             "name": "sensio/generator-bundle",
-            "version": "v2.3.4",
+            "version": "v2.3.5",
             "target-dir": "Sensio/Bundle/GeneratorBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioGeneratorBundle.git",
-                "reference": "4a7b126e9c22f858e3584b19ddce6e5bdd7677ee"
+                "reference": "8b7a33aa3d22388443b6de0b0cf184122e9f60d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/4a7b126e9c22f858e3584b19ddce6e5bdd7677ee",
-                "reference": "4a7b126e9c22f858e3584b19ddce6e5bdd7677ee",
+                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/8b7a33aa3d22388443b6de0b0cf184122e9f60d2",
+                "reference": "8b7a33aa3d22388443b6de0b0cf184122e9f60d2",
                 "shasum": ""
             },
             "require": {
@@ -1772,11 +1772,13 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 }
             ],
             "description": "This bundle generates code for you",
-            "time": "2013-08-21 18:09:35"
+            "time": "2014-04-28 14:01:06"
         },
         {
             "name": "shuber/curl",
@@ -2021,12 +2023,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCacheBundle.git",
-                "reference": "5dd85ef0b94be804ae7ca029f5ee72a3ca3a7c21"
+                "reference": "edce4fc365c003a294aff739da22bd8cd2d17296"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCacheBundle/zipball/5dd85ef0b94be804ae7ca029f5ee72a3ca3a7c21",
-                "reference": "5dd85ef0b94be804ae7ca029f5ee72a3ca3a7c21",
+                "url": "https://api.github.com/repos/sonata-project/SonataCacheBundle/zipball/edce4fc365c003a294aff739da22bd8cd2d17296",
+                "reference": "edce4fc365c003a294aff739da22bd8cd2d17296",
                 "shasum": ""
             },
             "require": {
@@ -2082,7 +2084,7 @@
             "keywords": [
                 "cache block"
             ],
-            "time": "2014-06-14 12:43:58"
+            "time": "2014-06-19 10:52:42"
         },
         {
             "name": "sonata-project/core-bundle",

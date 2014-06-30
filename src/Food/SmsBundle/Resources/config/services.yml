@@ -6,3 +6,7 @@ services:
   food.infobip:
       class: Food\SmsBundle\Service\InfobipProvider
       arguments: [%infobip_provider.api_url%, %infobip_provider.account_url%, %infobip_provider.login%, %infobip_provider.password%, @logger]
+
+  food.silverstreet:
+      class: Food\SmsBundle\Service\SilverStreetProvider
+      arguments: [%silverstreet_provider.api_url%, %silverstreet_provider.account_url%, %silverstreet_provider.login%, %silverstreet_provider.password%, @logger]

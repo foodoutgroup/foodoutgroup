@@ -11,7 +11,8 @@ parameters:
     available_locales_routing: lt | en | ru
     available_cities: ["Vilnius","Kaunas"]
     time_zone: "Europe/Vilnius"
-    sms.available_providers: [food.infobip]
+    sms.available_providers: [food.infobip, food.silverstreet]
+    sms.main_provider: "food.infobip"
     sms.sender: "Foodout.lt"
     sms.balance_limit_warn: 8
     sms.balance_limit_critical: 5
@@ -19,6 +20,10 @@ parameters:
     infobip_provider.account_url: "http://api2.infobip.com/api"
     infobip_provider.login: "skanu1"
     infobip_provider.password: "119279"
+    silverstreet_provider.api_url: "http://api.silverstreet.com/send.php"
+    silverstreet_provider.account_url: "http://api.silverstreet.com/creditcheck.php"
+    silverstreet_provider.login: "foodout"
+    silverstreet_provider.password: "ZQg5ryLS"
     # Situos gal issikelkime i parametru faila pagal aplinka?
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false

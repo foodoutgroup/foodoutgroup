@@ -343,7 +343,7 @@ class MessagesService {
             ->andWhere('m.submittedAt >= :yesterday')
             ->andWhere('m.submittedAt <= :sentJustNow')
             ->setParameter('yesterday', new \DateTime('-1 days'))
-            ->setParameter('sentJustNow', new \DateTime('-6 minutes'))
+            ->setParameter('sentJustNow', new \DateTime('-5 minutes'))
             ->getQuery();
 
         $messages = $query->getResult();
