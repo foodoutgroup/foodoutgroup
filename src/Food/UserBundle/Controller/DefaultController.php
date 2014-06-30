@@ -201,16 +201,13 @@ class DefaultController extends Controller
             $userManager->updateUser($user);
 
             return $this->redirect($this->generateUrl('user_profile'));
-        } else {
-            $hasErrors = true;
         }
 
         return [
             'form' => $form->createView(),
             'addressForm' => $addressForm->createView(),
             'orders' => $this->get('food.order')->getUserOrders($user),
-            'hasErrors' => $hasErrors,
-            'errors' => $errors
+            'submitted' => true,
         ];
     }
 
@@ -240,7 +237,7 @@ class DefaultController extends Controller
             'addressForm' => $addressForm->createView(),
             'tab' => $tab,
             'orders' => $this->get('food.order')->getUserOrders($user),
-            'hasErrors' => false,
+            'submitted' => false,
         ];
     }
 

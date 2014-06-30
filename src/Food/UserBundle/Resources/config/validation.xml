@@ -24,6 +24,30 @@
                 </option>
             </constraint>
         </property>
+
+        <property name="phone">
+            <constraint name="NotBlank">
+                <option name="message">fos_user.phone.blank</option>
+                <option name="groups">
+                    <value>Profile</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">11</option>
+                <option name="minMessage">fos_user.phone.short</option>
+                <option name="max">11</option>
+                <option name="maxMessage">fos_user.phone.long</option>
+                <option name="groups">
+                    <value>Profile</value>
+                </option>
+            </constraint>
+            <constraint name="Regex">
+                <option name="pattern">/^370\d{8}$/</option>
+                <option name="groups">
+                    <value>Profile</value>
+                </option>
+            </constraint>
+        </property>
     </class>
 
     <class name="FOS\UserBundle\Model\Group">

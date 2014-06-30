@@ -799,6 +799,7 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
 
 .register-form .form-row.error input,
 .login-form .form-row.error input,
+.user-details-form .form-row.error input,
 .review-form .form-row.error span.rate-review {
     border: 1px solid #ff0000;
 }

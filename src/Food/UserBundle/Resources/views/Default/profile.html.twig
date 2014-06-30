@@ -47,27 +47,60 @@
                     </div>
                     <div class="user-righter content-item user">
                         <h2>{% trans %}general.profile.user_data{% endtrans %}</h2>
-                        {% if hasErrors is defined and hasErrors %}
+                        {% if form.vars.valid == false %}
                             <div class="error alert alert-danger">
                                 <ul>
-                                {% for error in errors %}
-                                    <li>{{ error.message|trans() }}</li>
+                                {% for input in form %}
+                                    {% if input.vars.errors is defined %}
+                                        {% for error in input.vars.errors %}
+                                            <li>{{ error.message }}</li>
+                                        {% endfor %}
+                                    {% endif %}
                                 {% endfor %}
                                 </ul>
                             </div>
                         {% endif %}
                         <form class="user-details-form" action="{{ path('user_profile_update') }}" method="POST" novalidate="novalidate">
-                            {{ form_row(form.firstname) }}
-                            {{ form_row(form.lastname) }}
-                            {{ form_row(form.email) }}
-                            {{ form_row(form.phone) }}
+                            <div class="form-row {% if submitted and form.firstname.vars.errors is defined and form.firstname.vars.errors|length > 0 and form.firstname.vars.required %}error{% endif %}">
+                                {{ form_label(form.firstname) }}
+                                {{ form_widget(form.firstname) }}
+                            </div>
+                            <div class="form-row {% if submitted and form.lastname.vars.errors is defined and form.lastname.vars.errors|length > 0 and form.lastname.vars.required %}error{% endif %}">
+                                {{ form_label(form.lastname) }}
+                                {{ form_widget(form.lastname) }}
+                            </div>
+                            <div class="form-row {% if submitted and form.email.vars.errors is defined and form.email.vars.errors|length > 0 and form.email.vars.required %}error{% endif %}">
+                                {{ form_label(form.email) }}
+                                {{ form_widget(form.email) }}
+                            </div>
+                            <div class="form-row {% if submitted and form.phone.vars.errors is defined and form.phone.vars.errors|length > 0 and form.phone.vars.required %}error{% endif %}">
+                                {{ form_label(form.phone) }}
+                                {{ form_widget(form.phone) }}
+                            </div>
+
                             <hr>
-                            {{ form_row(addressForm.city) }}
-                            {{ form_row(addressForm.address) }}
+
+                            <div class="form-row">
+                                {{ form_row(addressForm.city) }}
+                            </div>
+                            <div class="form-row">
+                                {{ form_row(addressForm.address) }}
+                            </div>
+
                             <hr>
-                            {{ form_row(form.current_password) }}
-                            {{ form_row(form.plainPassword.first) }}
-                            {{ form_row(form.plainPassword.second) }}
+
+                            <div class="form-row">
+                                {{ form_row(form.current_password) }}
+                            </div>
+                            <div class="form-row">
+                                {{ form_row(form.plainPassword.first) }}
+                            </div>
+                            <div class="form-row">
+                                {{ form_row(form.plainPassword.second) }}
+                            </div>
+
+                            {{ form_rest(form) }}
+
                             <div class="form-controls">
                                 <input type="submit" value="{% trans %}general.profile.button_save{% endtrans %}">
                             </div>
