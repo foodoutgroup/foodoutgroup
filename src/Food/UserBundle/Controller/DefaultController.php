@@ -95,17 +95,11 @@ class DefaultController extends Controller
             $form->get('email')->addError(new FormError('This user is already registered.'));
         }
 
-        $errors = [];
-
-        foreach ($form->getErrors() as $error) {
-            $errors[] = $error->getMessage();
-        } $errors = array_unique($errors);
-
         return $this->render(
             'FoodUserBundle:Default:register.html.twig',
             [
                 'form' => $form->createView(),
-                'errors' => $errors,
+                'submitted' => true
             ]
         );
     }
@@ -140,7 +134,7 @@ class DefaultController extends Controller
             'FoodUserBundle:Default:register.html.twig',
             [
                 'form' => $form->createView(),
-                'errors' => [],
+                'submitted' => false
             ]
         );
     }

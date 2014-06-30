@@ -54,9 +54,9 @@ class ProfileFormType extends BaseType
 
         $builder
             ->add('firstname', null, array('required' => true, 'label' => 'form.firstname', 'translation_domain' => 'FOSUserBundle'))
-            ->add('lastname', null, array('required' => true, 'label' => 'form.lastname', 'translation_domain' => 'FOSUserBundle'))
+            ->add('lastname', null, array('required' => false, 'label' => 'form.lastname', 'translation_domain' => 'FOSUserBundle'))
             ->add('email', 'email', array('required' => true, 'label' => 'form.email', 'translation_domain' => 'FOSUserBundle', 'disabled' => true))
-            ->add('phone', null, array('required' => true, 'label' => 'form.phone', 'translation_domain' => 'FOSUserBundle', 'attr' => array('placeholder' => '3706xxxxxxx')))
+            ->add('phone', null, array('required' => false, 'label' => 'form.phone', 'translation_domain' => 'FOSUserBundle', 'attr' => array('placeholder' => '3706xxxxxxx')))
             ->add('current_password', 'password', array(
                 'label' => 'form.current_password',
                 'translation_domain' => 'FOSUserBundle',

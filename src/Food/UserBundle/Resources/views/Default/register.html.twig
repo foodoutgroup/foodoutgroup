@@ -2,27 +2,37 @@
     <h3>{% trans %}general.register_title{% endtrans %}</h3>
     <h4>{% trans %}general.register_text{% endtrans %}</h4>
     <div class="registration-errors">
-        {% for error in errors %}
-            <div>{{ error }}</div>
+        {% for input in form %}
+            {% if input.vars.errors is defined %}
+                {% for error in input.vars.errors %}
+                    <div>{{ error.message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            {% if input.vars.form.children.first.vars.errors is defined %}
+                {% for error in input.vars.form.children.first.vars.errors %}
+                    <div>{{ error.message }}</div>
+                {% endfor %}
+            {% endif %}
         {% endfor %}
     </div>
-    <div class="form-row">
+    <div class="form-row {% if submitted and form.firstname.vars.errors is defined and form.firstname.vars.errors|length > 0 and form.firstname.vars.required %}error{% endif %}">
         {{ form_label(form.firstname) }}
         {{ form_widget(form.firstname) }}
     </div>
-    <div class="form-row">
+    <div class="form-row {% if submitted and form.lastname.vars.errors is defined and form.lastname.vars.errors|length > 0 and form.lastname.vars.required %}error{% endif %}">
         {{ form_label(form.lastname) }}
         {{ form_widget(form.lastname) }}
     </div>
-    <div class="form-row">
+    <div class="form-row {% if submitted and form.email.vars.errors is defined and form.email.vars.errors|length > 0 and form.email.vars.required %}error{% endif %}">
         {{ form_label(form.email) }}
         {{ form_widget(form.email) }}
     </div>
-    <div class="form-row">
+    <div class="form-row {% if submitted and form.plainPassword.vars.form.children.first.vars.errors is defined and form.plainPassword.vars.form.children.first.vars.errors|length > 0 and form.plainPassword.vars.required %}error{% endif %}">
         {{ form_label(form.plainPassword.first) }}
         {{ form_widget(form.plainPassword.first) }}
     </div>
-    <div class="form-row">
+    <div class="form-row {% if submitted and form.plainPassword.vars.form.children.first.vars.errors is defined and form.plainPassword.vars.form.children.first.vars.errors|length > 0 and form.plainPassword.vars.required %}error{% endif %}">
         {{ form_label(form.plainPassword.second) }}
         {{ form_widget(form.plainPassword.second) }}
     </div>
