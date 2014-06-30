@@ -23,11 +23,14 @@ class ApiService extends ContainerAware
             $returner = array();
             foreach ($place->getDishes() as $dish) {
                 $menuItem = new MenuItem(null, $this->container);
-                $returner[] = $menuItem->loadFromEntity($dish);
+                $item = $menuItem->loadFromEntity($dish);
+                if (!empty($item)) {
+                    $returner[] = $item;
+                }
             }
             return $returner;
         }
-        return null;
+        return array();
     }
 
     public function createMenuItemByPlaceIdAndItemId($placeId, $menuItem)

@@ -80,7 +80,7 @@ class MenuItem extends ContainerAware
         $this->set('item_id', $dish->getId())
             ->set('restaurant_id', $dish->getPlace()->getId())
             ->set('category_id', $categories)
-            ->set('thumbnail_url','http://www.foodout.lt/'.$dish->getWebPathThumb('type3'))
+            ->set('thumbnail_url',($dish->getWebPathThumb('type3')!="" ? 'http://www.foodout.lt/'.$dish->getWebPathThumb('type3') : ""))
             ->set('title', $dish->getName())
             ->set('ingredients', $dish->getDescription())
             ->set(
