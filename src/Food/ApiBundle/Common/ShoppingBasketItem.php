@@ -73,7 +73,7 @@ class ShoppingBasketItem extends ContainerAware
             ->set(
                 'price',
                 array(
-                    'amount' => $this->_contDaPriceOfAll($cartItem) * 100
+                    'amount' => $this->_contDaPriceOfAll($cartItem) * 100,
                     'currency' => 'LTL'
                 )
             )

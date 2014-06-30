@@ -4,6 +4,7 @@ namespace Food\AppBundle\Controller;
 
 use Sonata\Doctrine\Types\JsonType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -13,18 +14,18 @@ class AjaxController extends Controller
      * @param $action
      * @return Response
      */
-    public function ajaxAction($action)
+    public function ajaxAction($action, Request $request)
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
 
         switch($action) {
             case 'find-address':
-                $this->_ajaxActFindAddress($response,$this->getRequest()->get('city'), $this->getRequest()->get('address'));
+                $this->_ajaxActFindAddress($response,$request->get('city'), $request->get('address'));
                 break;
             case 'find-address-and-recount':
-                $this->_ajaxActFindAddress($response,$this->getRequest()->get('city'), $this->getRequest()->get('address'));
-                $this->_isPlaceInRadius($response, intval($this->getRequest()->get('place')));
+                $this->_ajaxActFindAddress($response,$request->get('city'), $request->get('address'));
+                $this->_isPlaceInRadius($response, intval($request->get('place')));
                 break;
             default:
                 $response->setContent(json_encode(array(
