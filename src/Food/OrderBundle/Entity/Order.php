@@ -212,6 +212,12 @@ class Order
      */
     private $userIp;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="reminded", type="boolean", nullable=true)
+     */
+    private $reminded = false;
+
     public function __toString()
     {
         if ($this->getId()) {
@@ -1164,5 +1170,28 @@ class Order
     public function getPaymentLog()
     {
         return $this->paymentLog;
+    }
+
+    /**
+     * Set reminded
+     *
+     * @param boolean $reminded
+     * @return Order
+     */
+    public function setReminded($reminded)
+    {
+        $this->reminded = $reminded;
+    
+        return $this;
+    }
+
+    /**
+     * Get reminded
+     *
+     * @return boolean 
+     */
+    public function getReminded()
+    {
+        return $this->reminded;
     }
 }

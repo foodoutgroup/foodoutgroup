@@ -182,6 +182,10 @@
         <source>general.email.new_order</source>
         <target>naujas užsakymas</target>
       </trans-unit>
+      <trans-unit id="general.email.order_reminder" resname="general.email.order_reminder">
+        <source>general.email.order_reminder</source>
+        <target>primename, kad turite nepatvirtintą užsakymą</target>
+      </trans-unit>
       <trans-unit id="77c7e784b0de17ca35cb5e6e9b59b207" resname="general.email.accounting_yesterday_report">
         <source>general.email.accounting_yesterday_report</source>
         <target>vakaryksciu uzsakymu ataskaita</target>
@@ -325,6 +329,10 @@
       <trans-unit id="e44e8ff9e4e47e49c926d67bf0112966" resname="general.sms.new_order">
         <source>general.sms.new_order</source>
         <target>Naujas uzsakymas: </target>
+      </trans-unit>
+      <trans-unit id="general.sms.order_reminder" resname="general.sms.order_reminder">
+        <source>general.sms.order_reminder</source>
+        <target>Primename, kad turite nepatvirtinta uzsakyma: </target>
       </trans-unit>
       <trans-unit id="ddd5593d67b30b671c0533a616aa5398" resname="general.sms.new_order_in_mail">
         <source>general.sms.new_order_in_mail</source>

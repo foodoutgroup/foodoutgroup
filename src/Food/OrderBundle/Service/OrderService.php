@@ -1261,40 +1261,38 @@ class OrderService extends ContainerAware
         $stmt->execute();
         $ordersGrouped = $stmt->fetchAll();
 
-//        $filter = array(
-//            'order_status' =>  array(self::$status_completed),
-//            'order_date_between' => array('from' => $dateFrom, 'to' => $dateTo),
-//        );
-//
-//        $orders = $this->getOrdersByFilter($filter, 'list');
-//
-//        if (!$orders) {
-//            return array(
-//                'pickup' => array(),
-//                'self_delivered' => array(),
-//                'our_deliver' => array(),
-//                'total' => 0,
-//            );
-//        }
-//
-//        $ordersGrouped = array(
-//            'pickup' => array(),
-//            'self_delivered' => array(),
-//            'our_deliver' => array(),
-//            'total' => count($orders),
-//        );
-//
-//        foreach ($orders as $order) {
-//            if ($order->getDeliveryType() == 'pickup') {
-//                $ordersGrouped['pickup'][] = $order;
-//            } elseif ($order->getPlacePointSelfDelivery()) {
-//                $ordersGrouped['self_delivered'][] = $order;
-//            } else {
-//                $ordersGrouped['our_deliver'][] = $order;
-//            }
-//        }
-
         return $ordersGrouped;
+    }
+
+    /**
+     * @return array
+     */
+    public function getForgottenOrders()
+    {
+        $dateFrom = date("Y-m-d H:i:00", strtotime('-30 minute'));
+        $dateTo = date("Y-m-d H:i:00", strtotime('-16 minute'));
+
+        $query = "
+            SELECT
+                `id`
+            FROM  `orders`
+            WHERE
+              `order_date` >= '{$dateFrom}'
+              AND `order_date` <=  '{$dateTo}'
+              AND `order_status` =  '".self::$status_new."'
+              AND `payment_status` = '".self::$paymentStatusComplete."'
+              AND (`reminded` != 1 OR `reminded` IS NULL)
+        ";
+
+        $stmt = $this->container->get('doctrine')
+            ->getManager()
+            ->getConnection()
+            ->prepare($query);
+
+        $stmt->execute();
+        $orders = $stmt->fetchAll();
+
+        return $orders;
     }
 
     /**
@@ -1499,11 +1497,14 @@ class OrderService extends ContainerAware
 
     /**
      * Send a message to place about new order
+     *
+     * @param boolean $isReminder Is this a new order or is this a reminder?
      */
-    public function informPlace()
+    public function informPlace($isReminder=false)
     {
-        // @TODO remove after beta! testing puspose only. Inform developers about new order - NOW!
-        $this->notifyOrderCreate();
+        if (!$isReminder) {
+            $this->notifyOrderCreate();
+        }
 
         $messagingService = $this->container->get('food.messages');
         $translator = $this->container->get('translator');
@@ -1523,14 +1524,22 @@ class OrderService extends ContainerAware
         $orderConfirmRoute = $this->container->get('router')
             ->generate('ordermobile', array('hash' => $order->getOrderHash()), true);
 
-        $messageText = $translator->trans('general.sms.new_order')
+        if ($isReminder) {
+            $orderSmsTextTranslation = $translator->trans('general.sms.order_reminder');
+            $orderTextTranslation = $translator->trans('general.email.order_reminder');
+        } else {
+            $orderSmsTextTranslation = $translator->trans('general.sms.new_order');
+            $orderTextTranslation = $translator->trans('general.email.new_order');
+        }
+
+        $messageText = $orderSmsTextTranslation
             .$orderConfirmRoute;
 
         // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
         if (!empty($placePointEmail)) {
             $logger->alert('--- Place asks for email, so we have sent an email about new order to: '.$placePointEmail);
             $emailMessageText = $messageText;
-            $emailMessageText .= "\n" . $translator->trans('general.email.new_order') . ': '
+            $emailMessageText .= "\n" . $orderTextTranslation . ': '
                 . $order->getPlacePoint()->getAddress() . ', ' . $order->getPlacePoint()->getCity();
             // Buvo liepta padaryti, kad sms'u eitu tas pats, kas emailu. Pasiliekam, o maza kas
 //            $messageText = $translator->trans('general.sms.new_order_in_mail');
@@ -1538,7 +1547,7 @@ class OrderService extends ContainerAware
             $mailer = $this->container->get('mailer');
 
             $message = \Swift_Message::newInstance()
-                ->setSubject($this->container->getParameter('title').': '.$translator->trans('general.email.new_order'))
+                ->setSubject($this->container->getParameter('title').': '.$translator->trans('general.sms.new_order'))
                 ->setFrom('info@'.$domain)
             ;
 
