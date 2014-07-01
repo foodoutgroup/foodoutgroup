@@ -82,7 +82,8 @@ class ShoppingBasketItem extends ContainerAware
 
     private function _getOptions(Cart $cartItem)
     {
-
+        $returner = array();
+        return $returner;
     }
 
     private function _contDaPriceOfAll(Cart $cartItem)
