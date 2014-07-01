@@ -70,12 +70,12 @@ class DeliveryController extends Controller
         }
 
         // TODO iskelti i services.yml, kad uzkrautu per ten :) gal :)
-        $provider = $this->getProvider();
+        $providerInstance = $this->getProvider();
         // For debuging only!! TODO turn off this damn thing
-        $provider->setLogger($this->container->get('logger'));
-        $provider->setDebugEnabled(true);
+        $providerInstance->setLogger($this->container->get('logger'));
+        $providerInstance->setDebugEnabled(true);
 
-        $messagingService->setMessagingProvider($provider);
+        $messagingService->setMessagingProvider($providerInstance);
 
         if ($provider == 'silverstreet') {
             $messagingService->updateMessagesDelivery(
@@ -92,6 +92,6 @@ class DeliveryController extends Controller
             $messagingService->updateMessagesDelivery($request->getContent());
         }
 
-        return new Response("OK, response parsed");
+        return new Response("OK");
     }
 }

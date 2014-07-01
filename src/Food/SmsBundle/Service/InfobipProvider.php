@@ -37,7 +37,7 @@ class InfobipProvider implements SmsProviderInterface {
     private $accountApiUrl = null;
 
     /**
-     * @var null
+     * @var object|null
      */
     private $logger = null;
 
@@ -119,7 +119,7 @@ class InfobipProvider implements SmsProviderInterface {
     }
 
     /**
-     * @param null $logger
+     * @param object|null $logger
      */
     public function setLogger($logger)
     {

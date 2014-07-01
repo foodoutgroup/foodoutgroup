@@ -252,22 +252,24 @@ class SilverstreetProviderTest extends \PHPUnit_Framework_TestCase {
         $silverstreetProvider = new SilverStreetProvider();
 
         $empptyDlrData = array();
-        $expectedEmptyData = array();
+        $expectedEmptyData = array(array());
 
         $dlrData = array(
             'reference' => '1023012301',
-            'status' => 'Not delivered',
-            'reason' => 'Provider error',
+            'status' => 'Not Delivered',
+            'reason' => '',
             'destination' => '37061514333',
             'timestamp' => '20130719230000',
             'operator' => '3'
         );
         $expectedData = array(
-            'extId' => '1023012301',
-            'sendDate' => null,
-            'completeDate' => '2013-07-20 00:00:00',
-            'delivered' => false,
-            'error' => 'Provider error',
+            array(
+                'extId' => '1023012301',
+                'sendDate' => null,
+                'completeDate' => '2013-07-20 00:00:00',
+                'delivered' => false,
+                'error' => 'Silverstreet undelivered due to: no reason',
+            )
         );
 
         $dlrData2 = array(
@@ -279,11 +281,13 @@ class SilverstreetProviderTest extends \PHPUnit_Framework_TestCase {
             'operator' => '3'
         );
         $expectedData2 = array(
-            'extId' => 'sil105242323',
-            'sendDate' => null,
-            'completeDate' => '2010-08-02 15:55:16',
-            'delivered' => false,
-            'error' => '',
+            array(
+                'extId' => 'sil105242323',
+                'sendDate' => null,
+                'completeDate' => '2010-08-02 15:55:16',
+                'delivered' => false,
+                'error' => 'Silverstreet undelivered due to: no reason',
+            )
         );
 
         $dlrData3 = array(
@@ -295,11 +299,13 @@ class SilverstreetProviderTest extends \PHPUnit_Framework_TestCase {
             'operator' => '3'
         );
         $expectedData3 = array(
-            'extId' => '10230154701',
-            'sendDate' => null,
-            'completeDate' => '2013-07-20 00:00:00',
-            'delivered' => true,
-            'error' => '',
+            array(
+                'extId' => '10230154701',
+                'sendDate' => null,
+                'completeDate' => '2013-07-20 00:00:00',
+                'delivered' => true,
+                'error' => '',
+            )
         );
 
         $dlrData4 = array(
@@ -311,11 +317,49 @@ class SilverstreetProviderTest extends \PHPUnit_Framework_TestCase {
             'operator' => '3'
         );
         $expectedData4 = array(
-            'extId' => '10230154701',
-            'sendDate' => null,
-            'completeDate' => '2013-07-17 22:00:50',
-            'delivered' => false,
-            'error' => 'Silverstreet returned unknown status: So undelivered',
+            array(
+                'extId' => '10230154701',
+                'sendDate' => null,
+                'completeDate' => '2013-07-17 22:00:50',
+                'delivered' => false,
+                'error' => 'Silverstreet returned unknown status: So undelivered',
+            )
+        );
+
+        $dlrData5 = array(
+            'reference' => '10230154701',
+            'status' => 'Not Delivered',
+            'reason' => '58',
+            'destination' => '37061514333',
+            'timestamp' => '20130717210050',
+            'operator' => '3'
+        );
+        $expectedData5 = array(
+            array(
+                'extId' => '10230154801',
+                'sendDate' => null,
+                'completeDate' => '2013-07-17 12:00:50',
+                'delivered' => false,
+                'error' => 'Silverstreet undelivered due to: Rejected due to flooding',
+            )
+        );
+
+        $dlrData6 = array(
+            'reference' => '10230154801',
+            'status' => 'Not Delivered',
+            'reason' => '100',
+            'destination' => '37061514333',
+            'timestamp' => '20130717110050',
+            'operator' => '3'
+        );
+        $expectedData6 = array(
+            array(
+                'extId' => '10230154701',
+                'sendDate' => null,
+                'completeDate' => '2013-07-17 22:00:50',
+                'delivered' => false,
+                'error' => 'Silverstreet undelivered due to: unknown reason code: 100',
+            )
         );
 
         $parsedEmptyData = $silverstreetProvider->parseDeliveryReport($empptyDlrData);

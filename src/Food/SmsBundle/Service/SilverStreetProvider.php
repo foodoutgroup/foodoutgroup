@@ -37,7 +37,7 @@ class SilverStreetProvider implements SmsProviderInterface {
     private $accountApiUrl = null;
 
     /**
-     * @var null
+     * @var object|null
      */
     private $logger = null;
 
@@ -58,6 +58,48 @@ class SilverStreetProvider implements SmsProviderInterface {
     );
 
     /**
+     * Silverstreet error reason codes to text
+     * @var array
+     */
+    private $reasonStatuses = array(
+        '1' => 'Absent subscriber (network cannot contact recipient)',
+        '2' => 'Handset memory exceeded',
+        '3' => 'Equipment protocol error',
+        '5' => 'Unknown service centre (unknown Destination Operator)',
+        '6' => 'Service centre congestion (congestion at Destination Operator)',
+        '9' => 'Unknown subscriber (Recipient number is unknown in the HLR)',
+        '10' => 'Illegal subscriber (The mobile station failed authentication) ',
+        '12' => 'Illegal equipment (Recipient number check failed, blacklisted or not whitelisted)',
+        '13' => 'Call barred (Operator barred the recipient number)',
+        '16' => 'System failure',
+        '20' => 'Resource limitation at Recipient or Destination Operator',
+        '30' => 'Unidentified recipient',
+        '31' => 'Service temporary not available ',
+        '32' => 'Illegal error code',
+        '33' => 'Network timeout',
+        '35' => 'Delivery failed ',
+        '36' => 'Error in mobile station',
+        '43' => 'Subscriber temporarily unreachable (While roaming)',
+        '46' => 'Closed user group reject',
+        '47' => 'Network failure',
+        '48' => 'Deferred Delivery (Message has not been delivered and is part of a deferred delivery schedule)',
+        '50' => 'Insufficient credit',
+        '51' => 'Rejected Destination',
+        '52' => 'Rejected Unknown Reason',
+        '54' => 'Rejected due to blocking issue',
+        '56' => 'Rejected due to not enough credits',
+        '57' => 'Rejected due to spam filter',
+        '58' => 'Rejected due to flooding ',
+        '66' => 'Error in SMSC',
+        '67' => 'Rejected by operator due to validity period expiry',
+        '68' => 'Intermediate state notification that the message has not yet been delivered due to a phone related problem
+but is being retried.',
+        '69' => 'Cannot determine whether this message has been delivered or has failed due to lack of final delivery state
+information from the operator.',
+        '87' => 'Short Term Denial',
+    );
+
+    /**
      * Message states, assigned by Silverstreet when message is delivered
      * @var array
      */
@@ -72,7 +114,7 @@ class SilverStreetProvider implements SmsProviderInterface {
      * https://portal.silverstreet.com/support/documents/download_file/6
      */
     private $undeliveredStates = array(
-        'Not delivered',
+        'Not Delivered',
         'Buffered',
     );
 
@@ -98,7 +140,7 @@ class SilverStreetProvider implements SmsProviderInterface {
     }
 
     /**
-     * @param null $logger
+     * @param object|null $logger
      */
     public function setLogger($logger)
     {
@@ -181,7 +223,7 @@ class SilverStreetProvider implements SmsProviderInterface {
         $requestData = array(
             'username' => $this->username,
             'password' => $this->password,
-//            'dlr' => 0, ONLY FOR TESTING. Disables deliveries!!!!!!
+            'dlr' => 1,
         );
 
         $requestData = array_merge($requestData, $data);
@@ -300,7 +342,7 @@ class SilverStreetProvider implements SmsProviderInterface {
     {
         $message = array();
 
-        if (!empty($dlrData)) {
+        if (!empty($dlrData) && isset($dlrData['reference'])) {
             $message = array(
                 'extId' => $dlrData['reference'],
                 'sendDate' => null,
@@ -316,14 +358,23 @@ class SilverStreetProvider implements SmsProviderInterface {
                 $message['error'] = null;
             } else if ($this->isUndeliveredStatus($silverstreetStatus)) {
                 $message['delivered'] = false;
-                $message['error'] = $dlrData['reason'];
+
+                if (!empty($dlrData['reason'])) {
+                    $reason = $this->getReasonFromCode($dlrData['reason']);
+                    if (empty($reason)) {
+                        $reason = "unknown reason code: ".$dlrData['reason'];
+                    }
+                } else {
+                    $reason = 'no reason';
+                }
+                $message['error'] = 'Silverstreet undelivered due to: '.$reason;
             } else {
                 $message['delivered'] = false;
                 $message['error'] = 'Silverstreet returned unknown status: '.$silverstreetStatus;
             }
         }
 
-        return $message;
+        return array($message);
     }
 
     /**
@@ -378,6 +429,20 @@ class SilverStreetProvider implements SmsProviderInterface {
             return null;
         } else {
             return $this->errorStatuses[$status];
+        }
+    }
+
+    /**
+     * @param int $reasonCode
+     *
+     * @return null|string
+     */
+    public function getReasonFromCode($reasonCode)
+    {
+        if (!isset($this->reasonStatuses[$reasonCode])) {
+            return null;
+        } else {
+            return $this->reasonStatuses[$reasonCode];
         }
     }
 

@@ -342,6 +342,7 @@ class MessagesService {
         $query = $this->getUndeliveredMessagesQuery()
             ->andWhere('m.submittedAt >= :yesterday')
             ->andWhere('m.submittedAt <= :sentJustNow')
+            ->andWhere('m.timesSent = 1')
             ->setParameter('yesterday', new \DateTime('-1 days'))
             ->setParameter('sentJustNow', new \DateTime('-5 minutes'))
             ->getQuery();
