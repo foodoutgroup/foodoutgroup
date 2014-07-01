@@ -3,6 +3,7 @@ namespace Food\ApiBundle\Common;
 
 use Food\CartBundle\Entity\Cart;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\HttpFoundation\Request;
 
 class ShoppingBasketItem extends ContainerAware
 {
@@ -62,6 +63,15 @@ class ShoppingBasketItem extends ContainerAware
         }
     }
 
+    public function populateFromCreateRequest($requestPart)
+    {
+        $this->set('item_id', $requestPart['item_id'])
+            ->set('count', $requestPart['count'])
+            ->set('additional_info', $requestPart['additional_info'])
+            ->set('options', $requestPart['options']);
+
+        return $this->data;
+    }
 
     public function loadFromEntity(Cart $cartItem)
     {
@@ -83,12 +93,13 @@ class ShoppingBasketItem extends ContainerAware
     private function _getOptions(Cart $cartItem)
     {
         $returner = array();
+        // @todo nera pilnai aisku su optionsais.
         return $returner;
     }
 
     private function _contDaPriceOfAll(Cart $cartItem)
     {
-        $total = 0;
-        return $total;
+        $cartItem->setEm($this->container->get('doctrine'));
+        return $this->container->get('food.cart')->getCartTotal(array($cartItem), $cartItem->getPlaceId());
     }
 }

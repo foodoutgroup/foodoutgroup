@@ -9,8 +9,21 @@ class BasketService extends ContainerAware
 {
     public function createBasketFromRequest(Request $request)
     {
-        $data = array();
+        $data = array(
+            'restaurant_id' => $request->get('restaurant_id'),
+            'items' => $this->_getCreateBasketItems($request)
+        );
         return $this->_createBasket($data);
+    }
+
+    public function _getCreateBasketItems(Request $request)
+    {
+        $returner = array();
+        foreach ( $request->get('items') as $item) {
+            $it = new ShoppingBasketItem(null, $this->container);
+            $returner[] = $it->populateFromCreateRequest($item);
+        }
+        return $returner;
     }
 
     private function _createBasket($data)
