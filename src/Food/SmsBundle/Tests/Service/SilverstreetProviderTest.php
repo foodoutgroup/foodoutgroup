@@ -266,7 +266,7 @@ class SilverstreetProviderTest extends \PHPUnit_Framework_TestCase {
             array(
                 'extId' => '1023012301',
                 'sendDate' => null,
-                'completeDate' => '2013-07-20 00:00:00',
+                'completeDate' => '2013-07-20 03:00:00',
                 'delivered' => false,
                 'error' => 'Silverstreet undelivered due to: no reason',
             )
@@ -284,7 +284,7 @@ class SilverstreetProviderTest extends \PHPUnit_Framework_TestCase {
             array(
                 'extId' => 'sil105242323',
                 'sendDate' => null,
-                'completeDate' => '2010-08-02 15:55:16',
+                'completeDate' => '2010-08-02 18:55:16',
                 'delivered' => false,
                 'error' => 'Silverstreet undelivered due to: no reason',
             )
@@ -302,7 +302,7 @@ class SilverstreetProviderTest extends \PHPUnit_Framework_TestCase {
             array(
                 'extId' => '10230154701',
                 'sendDate' => null,
-                'completeDate' => '2013-07-20 00:00:00',
+                'completeDate' => '2013-07-20 03:00:00',
                 'delivered' => true,
                 'error' => '',
             )
@@ -320,7 +320,7 @@ class SilverstreetProviderTest extends \PHPUnit_Framework_TestCase {
             array(
                 'extId' => '10230154701',
                 'sendDate' => null,
-                'completeDate' => '2013-07-17 22:00:50',
+                'completeDate' => '2013-07-18 01:00:50',
                 'delivered' => false,
                 'error' => 'Silverstreet returned unknown status: So undelivered',
             )
@@ -336,9 +336,9 @@ class SilverstreetProviderTest extends \PHPUnit_Framework_TestCase {
         );
         $expectedData5 = array(
             array(
-                'extId' => '10230154801',
+                'extId' => '10230154701',
                 'sendDate' => null,
-                'completeDate' => '2013-07-17 12:00:50',
+                'completeDate' => '2013-07-18 01:00:50',
                 'delivered' => false,
                 'error' => 'Silverstreet undelivered due to: Rejected due to flooding',
             )
@@ -354,9 +354,9 @@ class SilverstreetProviderTest extends \PHPUnit_Framework_TestCase {
         );
         $expectedData6 = array(
             array(
-                'extId' => '10230154701',
+                'extId' => '10230154801',
                 'sendDate' => null,
-                'completeDate' => '2013-07-17 22:00:50',
+                'completeDate' => '2013-07-17 15:00:50',
                 'delivered' => false,
                 'error' => 'Silverstreet undelivered due to: unknown reason code: 100',
             )
@@ -367,11 +367,15 @@ class SilverstreetProviderTest extends \PHPUnit_Framework_TestCase {
         $parsedData2 = $silverstreetProvider->parseDeliveryReport($dlrData2);
         $parsedData3 = $silverstreetProvider->parseDeliveryReport($dlrData3);
         $parsedData4 = $silverstreetProvider->parseDeliveryReport($dlrData4);
+        $parsedData5 = $silverstreetProvider->parseDeliveryReport($dlrData5);
+        $parsedData6 = $silverstreetProvider->parseDeliveryReport($dlrData6);
 
         $this->assertEquals($expectedEmptyData, $parsedEmptyData);
         $this->assertEquals($expectedData, $parsedData);
         $this->assertEquals($expectedData2, $parsedData2);
         $this->assertEquals($expectedData3, $parsedData3);
         $this->assertEquals($expectedData4, $parsedData4);
+        $this->assertEquals($expectedData5, $parsedData5);
+        $this->assertEquals($expectedData6, $parsedData6);
     }
 }

@@ -68,13 +68,13 @@ class SilverStreetProvider implements SmsProviderInterface {
         '5' => 'Unknown service centre (unknown Destination Operator)',
         '6' => 'Service centre congestion (congestion at Destination Operator)',
         '9' => 'Unknown subscriber (Recipient number is unknown in the HLR)',
-        '10' => 'Illegal subscriber (The mobile station failed authentication) ',
+        '10' => 'Illegal subscriber (The mobile station failed authentication)',
         '12' => 'Illegal equipment (Recipient number check failed, blacklisted or not whitelisted)',
         '13' => 'Call barred (Operator barred the recipient number)',
         '16' => 'System failure',
         '20' => 'Resource limitation at Recipient or Destination Operator',
         '30' => 'Unidentified recipient',
-        '31' => 'Service temporary not available ',
+        '31' => 'Service temporary not available',
         '32' => 'Illegal error code',
         '33' => 'Network timeout',
         '35' => 'Delivery failed ',
@@ -89,13 +89,11 @@ class SilverStreetProvider implements SmsProviderInterface {
         '54' => 'Rejected due to blocking issue',
         '56' => 'Rejected due to not enough credits',
         '57' => 'Rejected due to spam filter',
-        '58' => 'Rejected due to flooding ',
+        '58' => 'Rejected due to flooding',
         '66' => 'Error in SMSC',
         '67' => 'Rejected by operator due to validity period expiry',
-        '68' => 'Intermediate state notification that the message has not yet been delivered due to a phone related problem
-but is being retried.',
-        '69' => 'Cannot determine whether this message has been delivered or has failed due to lack of final delivery state
-information from the operator.',
+        '68' => 'Intermediate state notification that the message has not yet been delivered due to a phone related problem but is being retried.',
+        '69' => 'Cannot determine whether this message has been delivered or has failed due to lack of final delivery state information from the operator.',
         '87' => 'Short Term Denial',
     );
 
@@ -349,7 +347,7 @@ information from the operator.',
                 'completeDate' => $dlrData['timestamp'],
             );
 
-            $message['completeDate'] = date("Y-m-d H:i:s", strtotime('+1 hour', strtotime($message['completeDate'])));
+            $message['completeDate'] = date("Y-m-d H:i:s", strtotime('+4 hour', strtotime($message['completeDate'])));
 
             $silverstreetStatus = $dlrData['status'];
 
