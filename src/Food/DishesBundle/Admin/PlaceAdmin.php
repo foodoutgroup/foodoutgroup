@@ -10,6 +10,7 @@ class PlaceAdmin extends FoodAdmin
 {
     /**
      * @param FormMapper $formMapper
+     * @codeCoverageIgnore
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -75,6 +76,11 @@ class PlaceAdmin extends FoodAdmin
     }
 
 
+    /**
+     * @return array
+     *
+     * @codeCoverageIgnore
+     */
     public function getFormTheme()
     {
         return array_merge(
@@ -85,6 +91,8 @@ class PlaceAdmin extends FoodAdmin
 
     /**
      * @param DatagridMapper $datagridMapper
+     *
+     * @codeCoverageIgnore
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
@@ -97,6 +105,8 @@ class PlaceAdmin extends FoodAdmin
 
     /**
      * @param ListMapper $listMapper
+     *
+     * @codeCoverageIgnore
      */
     protected function configureListFields(ListMapper $listMapper)
     {

@@ -188,7 +188,7 @@
                                 <label class="custom-radio">{% trans %}cart.checkout.cash_on_delivery{% endtrans %}
                                     <input type="radio" name="payment-type" value="local"{% if (order is not null and order.paymentMethod == 'local') or (dataToLoad is not empty and dataToLoad['payment-type'] == 'local') %} checked="checked"{% endif %}>
                                 </label>
-                                {% if place.cardOnDelivery %}
+                                {% if takeAway != true and place.cardOnDelivery %}
                                 <label class="custom-radio">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
                                     <input type="radio" name="payment-type" value="local.card"{% if (order is not null and order.paymentMethod == 'local.card') or (dataToLoad is not empty and dataToLoad['payment-type'] == 'local.card') %} checked="checked"{% endif %}>
                                 </label>
