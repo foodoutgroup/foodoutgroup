@@ -14,21 +14,6 @@ class PaySera extends ContainerAware implements BillingInterface {
     private $siteDomain = null;
 
     /**
-     * @var string
-     */
-    private $acceptUrl = null;
-
-    /**
-     * @var string
-     */
-    private $cancelUrl = null;
-
-    /**
-     * @var string
-     */
-    private $callbackUrl = null;
-
-    /**
      * @var int
      */
     private $projectId = null;
@@ -134,46 +119,6 @@ class PaySera extends ContainerAware implements BillingInterface {
     }
 
     /**
-     * @param string $acceptUrl
-     */
-    public function setAcceptUrl($acceptUrl)
-    {
-        $this->acceptUrl = $acceptUrl;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAcceptUrl()
-    {
-        return $this->acceptUrl;
-    }
-
-    /**
-     * @param string $callbackUrl
-     */
-    public function setCallbackUrl($callbackUrl)
-    {
-        $this->callbackUrl = $callbackUrl;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCallbackUrl()
-    {
-        return $this->callbackUrl;
-    }
-
-    /**
-     * @param string $cancelUrl
-     */
-    public function setCancelUrl($cancelUrl)
-    {
-        $this->cancelUrl = $cancelUrl;
-    }
-
-    /**
      * @param string $locale
      */
     public function setLocale($locale)
@@ -187,14 +132,6 @@ class PaySera extends ContainerAware implements BillingInterface {
     public function getLocale()
     {
         return $this->locale;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCancelUrl()
-    {
-        return $this->cancelUrl;
     }
 
     /**
@@ -218,17 +155,17 @@ class PaySera extends ContainerAware implements BillingInterface {
         $logger->alert('++ Bandom bilinti orderi su Id: '.$order->getId());
         $logger->alert('-------------------------------------');
 
-        $siteDomain = 'http://'.$this->getSiteDomain();
         $router = $this->container->get('router');
-        $acceptUrl = $siteDomain.$router->generate('paysera_accept', array('_locale' => $this->getLocale()));
-        $cancelUrl = $siteDomain.$router->generate(
+        $acceptUrl = $router->generate('paysera_accept', array('_locale' => $this->getLocale()), true);
+        $cancelUrl = $router->generate(
                 'paysera_cancel',
                 array(
                     'hash' => $order->getOrderHash(),
                     '_locale' => $this->getLocale(),
-                )
+                ),
+            true
             );
-        $callbackUrl = $siteDomain.$router->generate('paysera_callback');
+        $callbackUrl = $router->generate('paysera_callback', array(), true);
 
         $evpParams = array(
             'projectid' => $this->getProjectId(),
@@ -255,40 +192,11 @@ class PaySera extends ContainerAware implements BillingInterface {
 
         return $redirectUrl;
     }
-// TODO lower is useless?
-    /**
-     * @param $request
-     * @return mixed
-     */
-    public function parseEvpResponse($request)
-    {
-        try {
-            $callbackValidator = $this->container->get('evp_web_to_pay.callback_validator')
-                ->validateAndParseData($request->query->all());
-            $data = $callbackValidator->validateAndParseData($request->query->all());
-        } catch (\Exception $e) {
-            // refrow :(
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param array $data
-     * @return bool
-     */
-    public function validateCallback($data)
-    {
-        if ($data['status'] == 1) {
-            return true;
-        }
-
-        return false;
-    }
 
     public function rollback()
     {
         // TODO how do we rollback?
+        throw new \Exception('Not implemented yet');
     }
 
 }

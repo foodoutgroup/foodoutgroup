@@ -21,21 +21,21 @@
                 text-align: right;
             }
         </style>
-        <h2>Vakar dienos ({{ reportFor }}) užsakymai:</h2>
+        <h2>{% trans with {'%reportDate%': reportFor} %}reporting.daily.yesterday_orders.title{% endtrans %}:</h2>
 
-        <h3>Užsakymai su mūsų pristatymu</h3>
+        <h3>{% trans %}reporting.daily.yesterday_orders.our_delivery{% endtrans %}</h3>
         <table>
             <tr>
                 <th>#</th>
-                <th>Laikas</th>
-                <th>Restoranas</th>
-                <th>Vairuotojas</th>
-                <th>Atsiskaitymo tipas</th>
-                <th>Pristat.<br />(su PVM)</th>
-                <th>Pristat.<br />(be PVM)</th>
-                <th>Patiekalai<br />(be PVM)</th>
-                <th>PVM</th>
-                <th>Viso<br />(su PVM)</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.time{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.place{% endtrans %}</th>
+                <th>{% trans %}reporting.driver{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.payment_type{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.delivery_with_vat{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.delivery_without_vat{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.dishes_without_vat{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.vat{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.total_with_vat{% endtrans %}</th>
             </tr>
             {% set totalSum = 0 %}
             {% set totalSumBanklink = 0 %}
@@ -51,7 +51,7 @@
                         {% if order.driver is defined and order.driver is not empty %}
                             {{ order.driver.contact }}
                         {% else %}
-                            Nenurodytas??
+                            {% trans %}reporting.daily.yesterday_orders.no_driver{% endtrans %}
                         {% endif %}
                     </td>
                     <td>{{ ('general.email.accounting_report.' ~ order.paymentMethod)|trans() }}</td>
@@ -70,26 +70,26 @@
             {% endfor %}
             <tr>
                 <td colspan="10" class="total">
-                    <strong>Viso internetu (su PVM): </strong><div>{{ totalSumBanklink }} {{ currency_display }}</div><br />
-                    <strong>Viso atsiimant (su PVM): </strong><div>{{ totalSumDriver }} {{ currency_display }}</div><br />
-                    <strong>Viso (su PVM): </strong><div>{{ totalSum }} {{ currency_display }}</div>
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_banklink{% endtrans %}: </strong><div>{{ totalSumBanklink }} {{ currency_display }}</div><br />
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_pickup{% endtrans %}: </strong><div>{{ totalSumDriver }} {{ currency_display }}</div><br />
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_with_vat_no_brake{% endtrans %}: </strong><div>{{ totalSum }} {{ currency_display }}</div>
                 </td>
             </tr>
         </table>
 
         <br />
-        <h3>Užsakymai, kuriuos pristatė pats restoranas</h3>
+        <h3>{% trans %}reporting.daily.yesterday_orders.restourant_delivery{% endtrans %}</h3>
         <table>
             <tr>
                 <th>#</th>
-                <th>Laikas</th>
-                <th>Restoranas</th>
-                <th>Atsiskaitymo tipas</th>
-                <th>Pristat.<br />(su PVM)</th>
-                <th>Pristat.<br />(be PVM)</th>
-                <th>Patiekalai<br />(be PVM)</th>
-                <th>PVM</th>
-                <th>Viso<br />(su PVM)</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.time{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.place{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.payment_type{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.delivery_with_vat{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.delivery_without_vat{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.dishes_without_vat{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.vat{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.total_with_vat{% endtrans %}</th>
             </tr>
             {% set totalSum = 0 %}
             {% set totalSumBanklink = 0 %}
@@ -117,24 +117,24 @@
             {% endfor %}
             <tr>
                 <td colspan="10" class="total">
-                    <strong>Viso internetu (su PVM): </strong><div>{{ totalSumBanklink }} {{ currency_display }}</div><br />
-                    <strong>Viso atsiimant (su PVM): </strong><div>{{ totalSumDriver }} {{ currency_display }}</div><br />
-                    <strong>Viso (su PVM): </strong><div>{{ totalSum }} {{ currency_display }}</div>
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_banklink{% endtrans %}: </strong><div>{{ totalSumBanklink }} {{ currency_display }}</div><br />
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_pickup{% endtrans %}: </strong><div>{{ totalSumDriver }} {{ currency_display }}</div><br />
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_with_vat_no_brake{% endtrans %}: </strong><div>{{ totalSum }} {{ currency_display }}</div>
                 </td>
             </tr>
         </table>
         <br />
 
-        <h3>Restorane asiimti užsakymai</h3>
+        <h3>{% trans %}reporting.daily.yesterday_orders.pickup{% endtrans %}</h3>
         <table>
             <tr>
                 <th>#</th>
-                <th>Laikas</th>
-                <th>Restoranas</th>
-                <th>Atsiskaitymo tipas</th>
-                <th>Patiekalai<br />(be PVM)</th>
-                <th>PVM</th>
-                <th>Viso<br />(su PVM)</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.time{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.place{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.payment_type{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.dishes_without_vat{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.vat{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.total_with_vat{% endtrans %}</th>
             </tr>
             {% set totalSum = 0 %}
             {% set totalSumBanklink = 0 %}
@@ -160,16 +160,16 @@
             {% endfor %}
             <tr>
                 <td colspan="10" class="total">
-                    <strong>Viso internetu (su PVM): </strong><div>{{ totalSumBanklink }} {{ currency_display }}</div><br />
-                    <strong>Viso atsiimant (su PVM): </strong><div>{{ totalSumDriver }} {{ currency_display }}</div><br />
-                    <strong>Viso (su PVM): </strong><div>{{ totalSum }} {{ currency_display }}</div>
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_banklink{% endtrans %}: </strong><div>{{ totalSumBanklink }} {{ currency_display }}</div><br />
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_pickup{% endtrans %}: </strong><div>{{ totalSumDriver }} {{ currency_display }}</div><br />
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_with_vat_no_brake{% endtrans %}: </strong><div>{{ totalSum }} {{ currency_display }}</div>
                 </td>
             </tr>
         </table>
 
         <br />
         <div>
-            <strong>Viso užsakymų: {{ orders.total }}</strong>
+            <strong>{% trans %}reporting.orders_total{% endtrans %}: {{ orders.total }}</strong>
         </div>
     </body>
 </html>

@@ -3,6 +3,7 @@
 namespace Food\SmsBundle\Controller;
 
 use Food\SmsBundle\Service\InfobipProvider;
+use Food\SmsBundle\Service\SilverStreetProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -10,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
  * Controller for sending single message (by id) with enabled debugging
  *
  * @package Food\SmsBundle\Controller
+ *
+ * @codeCoverageIgnore
  */
 class SendController extends Controller
 {
@@ -22,14 +25,25 @@ class SendController extends Controller
             return new Response("Message {$messageId} - NOT FOUND, looser");
         }
 
-        $infobipProvider = new InfobipProvider();
-        $infobipProvider->setApiUrl('http://api.infobip.com/api/v3/sendsms/json');
-        $infobipProvider->authenticate('skanu1', '119279');
+//        $infobipProvider = new InfobipProvider();
+//        $infobipProvider->setApiUrl('http://api.infobip.com/api/v3/sendsms/json');
+//        $infobipProvider->authenticate('skanu1', '119279');
+//
+//        $infobipProvider->setLogger($this->container->get('logger'));
+//        $infobipProvider->setDebugEnabled(true);
+//
+//        $messagingService->setMessagingProvider($infobipProvider);
 
-        $infobipProvider->setLogger($this->container->get('logger'));
-        $infobipProvider->setDebugEnabled(true);
+        $silverstreetProvider = new SilverStreetProvider();
+        $silverstreetProvider->setApiUrl('http://api.silverstreet.com/send.php');
+        $silverstreetProvider->authenticate('foodout', 'ZQg5ryLS');
 
-        $messagingService->setMessagingProvider($infobipProvider);
+        $silverstreetProvider->setLogger($this->container->get('logger'));
+        $silverstreetProvider->setDebugEnabled(true);
+
+        $messagingService->setMessagingProvider($silverstreetProvider);
+
+
         $messagingService->sendMessage($message);
 
         $messagingService->saveMessage($message);

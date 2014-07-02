@@ -26,12 +26,11 @@
         {#</div>#}
         {% if topRatedPlaces is not empty %}
         <div class="col col-3">
-            {# TODO kol nera rewievs bigti - rodome tik viena stulpeli ir jis praplatintas, nes ilgesni pavadinimai netelpa #}
             <h5>{% trans %}general.top_restaurants{% endtrans %}</h5>
             <div class="clearfix">
                 <div class="small-col fl rating-col">
                     {% for place in topRatedPlaces %}
-                        {% if not (loop.index % 2) %}
+                        {% if  (loop.index % 2) %}
                             <div class="clearfix">
                                 <span class="name fl">
                                     <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place')}) }}">
@@ -45,7 +44,7 @@
                 </div>
                 <div class="small-col fr rating-col">
                     {% for place in topRatedPlaces %}
-                        {% if (loop.index % 2) %}
+                        {% if not (loop.index % 2) %}
                             <div class="clearfix">
                                 <span class="name fl">
                                     <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place')}) }}">

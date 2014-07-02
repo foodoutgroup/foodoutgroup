@@ -1,0 +1,52 @@
+<html>
+<head><title></title></head>
+    <body>
+        <style>
+            table tr {
+                border: 1px solid #ACACAC;
+            }
+            table td {
+                border: 1px solid #EFEFEF;
+                padding: 0 10px 0 10px;
+            }
+            td.total div {
+                width: 100px;
+                display: inline-block;
+            }
+            td.sum {
+                text-align: right;
+            }
+        </style>
+        <h2>{% trans with {'%reportDate%': reportFor} %}reporting.monthly.driver_report.title{% endtrans %}:</h2>
+
+        <table>
+            <tr>
+                <th>#</th>
+                <th>{% trans %}reporting.driver{% endtrans %}</th>
+                <th>{% trans %}reporting.orders_total{% endtrans %}</th>
+                <th>{% trans %}reporting.monthly.driver_report.payment_local{% endtrans %}</th>
+                <th>{% trans %}reporting.monthly.driver_report.payment_banklink{% endtrans %}</th>
+                <th>{% trans %}reporting.monthly.driver_report.payment_local_sum{% endtrans %}</th>
+                <th>{% trans %}reporting.monthly.driver_report.payment_banklink_sum{% endtrans %}</th>
+                <th>{% trans %}reporting.monthly.driver_report.total_order_sum{% endtrans %}</th>
+            </tr>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.name }}</td>
+                    <td class="sum">{{ order.total_orders }}</td>
+                    <td class="sum">{{ order.local_payments }}</td>
+                    <td class="sum">{{ order.external_payments }}</td>
+                    <td class="sum">{{ order.total_local }} {{ currency_display }}</td>
+                    <td class="sum">{{ order.total_external }} {{ currency_display }}</td>
+                    <td class="sum">{{ order.order_total_sum }} {{ currency_display }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <br />
+        <div>
+            <strong>{% trans %}reporting.monthly.driver_report.total_drivers{% endtrans %}: {{ orders|length }}</strong>
+        </div>
+    </body>
+</html>

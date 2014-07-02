@@ -49,10 +49,6 @@ class FoodCategoryStrategy extends AbstractStrategy
     {
         // services
         $em = $this->em();
-        $con = $em->getConnection();
-        $slugUtil = $this->service('food.dishes.utils.slug');
-
-        $logger = $this->service('logger');
 
         $slugs = $this->getSlugs($langId);
         $slug = $this->makeSlug($langId, $text);
@@ -94,8 +90,10 @@ class FoodCategoryStrategy extends AbstractStrategy
 
 
     /**
-     * @param $categoryId
-     * @param $langId
+     * @param int $categoryId
+     * @param string $langId
+     *
+     * @return string
      */
     private function getPlaceSlug($categoryId, $langId)
     {
@@ -119,8 +117,10 @@ class FoodCategoryStrategy extends AbstractStrategy
     }
 
     /**
-     * @param $slugs
-     * @param $slug
+     * @param array $slugs
+     * @param string $slug
+     * @param int $textId
+     *
      * @return bool
      */
     private function existsInOrigs($slugs, $slug, $textId)
@@ -134,8 +134,11 @@ class FoodCategoryStrategy extends AbstractStrategy
     }
 
     /**
-     * @param $slugs
-     * @param $slug
+     * @param array $slugs
+     * @param string $slug
+     * @param int $textId
+     *
+     * @return bool
      */
     private function existsIn($slugs, $slug, $textId)
     {
@@ -148,7 +151,7 @@ class FoodCategoryStrategy extends AbstractStrategy
     }
 
     /**
-     * @param $langId
+     * @param string $langId
      * @return mixed
      */
     private function getSlugs($langId)
@@ -165,8 +168,8 @@ class FoodCategoryStrategy extends AbstractStrategy
     }
 
     /**
-     * @param $lang
-     * @param $text
+     * @param string $lang
+     * @param string $text
      * @return mixed
      */
     private function makeSlug($lang, $text)

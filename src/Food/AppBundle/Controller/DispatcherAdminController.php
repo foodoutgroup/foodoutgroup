@@ -3,7 +3,7 @@
 namespace Food\AppBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DispatcherAdminController extends Controller
@@ -81,7 +81,7 @@ class DispatcherAdminController extends Controller
                 $orderService->$method('dispatcher');
             }
             $orderService->saveOrder();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // TODO normalus error return ir ispiesimas popupe
             $this->get('logger')->error('Error happened setting status: '.$e->getMessage());
             return new Response('Error: error occured');
@@ -115,9 +115,8 @@ class DispatcherAdminController extends Controller
         );
     }
 
-    public function assignDriverAction()
+    public function assignDriverAction(Request $request)
     {
-        $request = $this->get('request');
         $driverId = $request->get('driverId');
         $ordersIds = $request->get('orderIds');
 
@@ -125,7 +124,7 @@ class DispatcherAdminController extends Controller
 
         try {
             $logisticsService->assignDriver($driverId, $ordersIds);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // TODO normalus error return ir ispiesimas popupe
             $this->get('logger')->error('Error happened assigning a driver: '.$e->getMessage());
             return new Response('Error: error occured');
@@ -134,9 +133,8 @@ class DispatcherAdminController extends Controller
         return new Response('OK');
     }
 
-    public function checkNewOrdersAction()
+    public function checkNewOrdersAction(Request $request)
     {
-        $request = $this->get('request');
         $orderService = $this->get('food.order');
 
         $orders = $request->get('orders');

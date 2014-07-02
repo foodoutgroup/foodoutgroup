@@ -213,7 +213,7 @@ class MessagesService {
     }
 
     /**
-     * @param string|array $dlrData
+     * @param string|array|resource $dlrData
      * @throws \InvalidArgumentException
      * @throws \Exception
      */
@@ -236,23 +236,23 @@ class MessagesService {
                     if (!$message) {
                         // TODO normalus exceptionas, kuri kitaip handlinsim
                         throw new \InvalidArgumentException('Message not found!');
-                    }
-
-                    $logger->info(print_r($message, true));
-
-                    $message->setDelivered($messageData['delivered']);
-
-                    if ($messageData['delivered'] == true) {
-                        $message->setReceivedAt(new \DateTime($messageData['completeDate']))
-                            ->setLastSendingError($messageData['error'])
-                            ->setLastErrorDate(null);
                     } else {
-                        $message->setDelivered(false)
-                            ->setLastSendingError($messageData['error'])
-                            ->setLastErrorDate(new \DateTime($messageData['completeDate']));
-                    }
+                        $logger->info(print_r($message, true));
 
-                    $this->saveMessage($message);
+                        $message->setDelivered($messageData['delivered']);
+
+                        if ($messageData['delivered'] == true) {
+                            $message->setReceivedAt(new \DateTime($messageData['completeDate']))
+                                ->setLastSendingError($messageData['error'])
+                                ->setLastErrorDate(null);
+                        } else {
+                            $message->setDelivered(false)
+                                ->setLastSendingError($messageData['error'])
+                                ->setLastErrorDate(new \DateTime($messageData['completeDate']));
+                        }
+
+                        $this->saveMessage($message);
+                    }
                 }
             }
 
@@ -342,8 +342,9 @@ class MessagesService {
         $query = $this->getUndeliveredMessagesQuery()
             ->andWhere('m.submittedAt >= :yesterday')
             ->andWhere('m.submittedAt <= :sentJustNow')
+            ->andWhere('m.timesSent = 1')
             ->setParameter('yesterday', new \DateTime('-1 days'))
-            ->setParameter('sentJustNow', new \DateTime('-6 minutes'))
+            ->setParameter('sentJustNow', new \DateTime('-5 minutes'))
             ->getQuery();
 
         $messages = $query->getResult();

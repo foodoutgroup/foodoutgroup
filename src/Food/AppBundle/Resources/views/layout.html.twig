@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="{{ locale }}">
 <head>
     <meta charset="utf-8">
     <meta name="verify-webtopay" content="461551ad8deddc3ad0975adb27d1eff4" />
@@ -31,6 +31,8 @@
     {% stylesheets '@FoodAppBundle/Resources/public/styles/jquery.loadmask.css'  %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
     {% endstylesheets %}
+
+    {% block javascripts %}
     <script src="{{ asset('bundles/foodapp/scripts/jquery-1.10.2.min.js') }}"></script>
     <script src="{{ asset('bundles/foodapp/scripts/jquery.cycle2.min.js') }}"></script>
     <script src="{{ asset('bundles/foodapp/scripts/jquery-ui/jquery-ui-1.10.3.custom.min.js') }}"></script>
@@ -46,6 +48,17 @@
     <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/selectivizr-min.js') }}"></script><![endif]-->
     <!--[if IE 9]><script src="{{ asset('bundles/foodapp/scripts/pie_ie9.js') }}"></script><![endif]-->
     <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/pie_ie8.js') }}"></script><![endif]-->
+    <script type="text/javascript">
+        $.fn.raty.defaults.noRatedMsg = '{% trans %}general.raty.not_rated_yet{% endtrans %}';
+        $.fn.raty.defaults.hints = [
+            '{% trans %}general.raty.bad{% endtrans %}',
+            '{% trans %}general.raty.poor{% endtrans %}',
+            '{% trans %}general.raty.regular{% endtrans %}',
+            '{% trans %}general.raty.good{% endtrans %}',
+            '{% trans %}general.raty.gorgeous{% endtrans %}'
+        ];
+    </script>
+    {% endblock %}
 </head>
 <body>
 <div class="site">

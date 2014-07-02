@@ -222,9 +222,8 @@ class DishAdmin extends FoodAdmin
 
     /**
      * @param \Food\DishesBundle\Entity\Dish $object
-     * @param null $setCreatedAt
      */
-    private function fixRelations($object, $setCreatedAt = null)
+    private function fixRelations($object)
     {
         $dishSizes = $object->getSizes();
         if (!empty($dishSizes)) {

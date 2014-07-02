@@ -111,7 +111,12 @@ class OrderAdmin extends SonataAdmin
                 )
             )
             ->add('paymentMethod', 'string', array('label' => 'admin.order.payment_method'))
-            ->add('paymentStatus', 'string', array('label' => 'admin.order.payment_status'))
+            ->add('paymentStatus', 'sonata_type_collection',
+                array(
+                    'label' => 'admin.order.payment_status',
+                    'template' => 'FoodOrderBundle:Admin:order_payment_status_list.html.twig'
+                )
+            )
             ->add('submittedForPayment', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.submitted_for_payment'))
             ->add('driver.contact', null, array('label' => 'admin.order.driver'))
             ->add('lastUpdate', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.last_update'))

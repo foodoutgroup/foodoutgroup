@@ -1,7 +1,7 @@
 <?php
 
 namespace Food\CartBundle\Service;
-use Doctrine\Tests\Common\DataFixtures\ReferenceRepositoryTest;
+
 use Food\DishesBundle\Entity\Dish;
 use Food\CartBundle\Entity\Cart;
 use Food\CartBundle\Entity\CartOption;
@@ -230,6 +230,7 @@ class CartService {
      * @param int $size
      * @param int $quantity
      * @param array $options
+     * @param array $option
      */
     public function addDishBySizeId($size, $quantity, $options = array(), $option = array())
     {
@@ -389,7 +390,7 @@ class CartService {
     }
 
     /**
-     * @param Dish $dish
+     * @param Cart $cartItem
      * @return array|\Food\CartBundle\Entity\CartOption[]
      */
     public function getCartDishOptions(Cart $cartItem)

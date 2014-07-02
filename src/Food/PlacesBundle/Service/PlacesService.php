@@ -3,7 +3,6 @@ namespace Food\PlacesBundle\Service;
 
 use Food\DishesBundle\Entity\Place;
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\HttpFoundation\Response;
 use Food\AppBundle\Traits;
 
 class PlacesService extends ContainerAware {
@@ -12,6 +11,14 @@ class PlacesService extends ContainerAware {
     public function __construct()
     {
 
+    }
+
+    /**
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
     }
 
     public function getSession()
@@ -27,7 +34,7 @@ class PlacesService extends ContainerAware {
      */
     public function getPlace($placeId) {
         if (empty($placeId)) {
-            throw new \InvalidArgumentException('Cant seach a place without and id. How can you find a house without address?');
+            throw new \InvalidArgumentException('Cant search a place without and id. How can you find a house without address?');
         }
 
         return $this->em()->getRepository('FoodDishesBundle:Place')
@@ -37,7 +44,7 @@ class PlacesService extends ContainerAware {
     public function savePlace($place)
     {
         if (!($place instanceof Place)) {
-            throw new \Exception('Place not given. How should I save it?');
+            throw new \InvalidArgumentException('Place not given. How should I save it?');
         }
         $em = $this->em();
         $em->persist($place);

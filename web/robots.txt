@@ -13,3 +13,7 @@ Disallow: /ru/newsletter/thank/
 Disallow: /lt/cart/
 Disallow: /en/cart/
 Disallow: /ru/cart/
+
+Disallow: /lt/ajax/
+Disallow: /en/ajax/
+Disallow: /ru/ajax/

@@ -2,6 +2,7 @@
 
 namespace Food\DishesBundle\Controller;
 
+use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +21,7 @@ class PlaceController extends Controller
         $categoryList = $this->get('food.places')->getActiveCategories($place);
         $placePoints = $this->get('food.places')->getPublicPoints($place);
         $placePointsAll = $this->get('food.places')->getAllPoints($place);
-        $categoryRepo = $this->getDoctrine()->getRepository('FoodDishesBundle:FoodCategory');
+//        $categoryRepo = $this->getDoctrine()->getRepository('FoodDishesBundle:FoodCategory');
 
         $listType = 'thumbs';
         $cookies = $request->cookies;
@@ -133,7 +134,7 @@ class PlaceController extends Controller
         return new JsonResponse(['success' => false, 'errors' => $errors]);
     }
 
-    private function wasHere(Place $place = null, User $user = null)
+    private function getUserOrderCount(Place $place = null, User $user = null)
     {
         $count = (int) $this
             ->getDoctrine()
@@ -143,30 +144,51 @@ class PlaceController extends Controller
             ->from('FoodOrderBundle:Order', 'o')
             ->where('o.place = :place')
             ->andWhere('o.user = :user')
-            ->setParameters(['place' => $place, 'user' => $user])
+            ->andWhere('o.order_status IN (:statuses)')
+            ->setParameters(
+                [
+                    'place' => $place,
+                    'user' => $user,
+                    'statuses' => array(
+                        OrderService::$status_completed,
+                    )
+                ]
+            )
             ->getQuery()
             ->getSingleScalarResult()
         ;
+
+        return $count;
+    }
+
+    private function wasHere(Place $place = null, User $user = null)
+    {
+        $count = $this->getUserOrderCount($place, $user);
 
         return $count ? true : false;
     }
 
     private function alreadyWrote(Place $place = null, User $user = null)
     {
-        $review = $this
+        $reviews = (int) $this
             ->getDoctrine()
             ->getManager()
             ->createQueryBuilder()
-            ->select('pr')
+            ->select('COUNT(pr)')
             ->from('FoodDishesBundle:PlaceReviews', 'pr')
             ->where('pr.place = :place')
             ->andWhere('pr.createdBy = :user')
             ->setParameters(['place' => $place, 'user' => $user])
             ->getQuery()
-            ->getResult()
+            ->getSingleScalarResult()
         ;
 
-        return $review ? true : false;
+        $orders = $this->getUserOrderCount($place, $user);
+
+        if ($reviews >= $orders) {
+            return true;
+        }
+        return false;
     }
 
     private function user()

@@ -163,12 +163,19 @@ class Order
     private $locale;
 
     /**
+     * @var \Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog
      * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\OrderStatusLog", mappedBy="order")
      **/
     private $orderStatusLog;
 
     /**
-     * @var
+     * @var \Food\OrderBundle\Entity\PaymentLog $paymentLog
+     * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\PaymentLog", mappedBy="order")
+     **/
+    private $paymentLog;
+
+    /**
+     * @var \DateTime
      * @ORM\Column(name="accept_time", type="datetime", nullable=true)
      */
     private $acceptTime;
@@ -204,6 +211,12 @@ class Order
      * @ORM\Column(name="user_ip", type="string", length=32,  nullable=true)
      */
     private $userIp;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="reminded", type="boolean", nullable=true)
+     */
+    private $reminded = false;
 
     public function __toString()
     {
@@ -583,10 +596,16 @@ class Order
             $lastUpdated = null;
         }
 
+        $addressId = null;
+        if ($userAddress = $this->getAddressId()) {
+            $addressId = $userAddress->getAddress().', '.$userAddress->getCity();
+        }
+
         return array(
             'id' => $this->getId(),
             'userId' => $userId,
-            'addressId' => 'TODO', // TODO
+            'addressId' => $addressId,
+            'userIp' => $this->getUserIp(),
             'details' => 'TODO', // TODO
             'orderStatus' => $this->getOrderStatus(),
             'orderDate' => $this->getOrderDate()->format("Y-m-d H:i:s"),
@@ -896,7 +915,7 @@ class Order
     /**
      * Get accounting
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return OrderAccounting[]
      */
     public function getAccounting()
     {
@@ -965,7 +984,7 @@ class Order
     /**
      * Get total
      *
-     * @return string 
+     * @return float
      */
     public function getTotal()
     {
@@ -1118,5 +1137,61 @@ class Order
     public function getUserIp()
     {
         return $this->userIp;
+    }
+
+    /**
+     * Add paymentLog
+     *
+     * @param \Food\OrderBundle\Entity\PaymentLog $paymentLog
+     * @return Order
+     */
+    public function addPaymentLog(\Food\OrderBundle\Entity\PaymentLog $paymentLog)
+    {
+        $this->paymentLog[] = $paymentLog;
+    
+        return $this;
+    }
+
+    /**
+     * Remove paymentLog
+     *
+     * @param \Food\OrderBundle\Entity\PaymentLog $paymentLog
+     */
+    public function removePaymentLog(\Food\OrderBundle\Entity\PaymentLog $paymentLog)
+    {
+        $this->paymentLog->removeElement($paymentLog);
+    }
+
+    /**
+     * Get paymentLog
+     *
+     * @return PaymentLog
+     */
+    public function getPaymentLog()
+    {
+        return $this->paymentLog;
+    }
+
+    /**
+     * Set reminded
+     *
+     * @param boolean $reminded
+     * @return Order
+     */
+    public function setReminded($reminded)
+    {
+        $this->reminded = $reminded;
+    
+        return $this;
+    }
+
+    /**
+     * Get reminded
+     *
+     * @return boolean 
+     */
+    public function getReminded()
+    {
+        return $this->reminded;
     }
 }

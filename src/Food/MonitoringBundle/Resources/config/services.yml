@@ -1,0 +1,8 @@
+parameters:
+
+
+services:
+    food.monitoring:
+        class: Food\MonitoringBundle\Service\MonitoringService
+        calls:
+            - [setContainer, ["@service_container"]]

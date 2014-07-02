@@ -11,7 +11,7 @@
                 <div class="name">{{ dish.dishId.name }}</div>
                 <div class="type">{{ dish.dishSizeId.unit.name }}</div>
                 <div class="clearfix pad">
-                    <div class="count">{{ dish.quantity }} vnt.</div>
+                    <div class="count">{{ dish.quantity }} {% trans %}general.item_quantity{% endtrans %}</div>
                     <div class="sum">x {{ dish.dishSizeId.priceLocalized }} {{ currency_display }}</div>
                 </div>
                 {% if dish.options|length > 0 %}

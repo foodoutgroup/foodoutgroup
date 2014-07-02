@@ -37,7 +37,7 @@ class InfobipProvider implements SmsProviderInterface {
     private $accountApiUrl = null;
 
     /**
-     * @var null
+     * @var object|null
      */
     private $logger = null;
 
@@ -119,7 +119,7 @@ class InfobipProvider implements SmsProviderInterface {
     }
 
     /**
-     * @param null $logger
+     * @param object|null $logger
      */
     public function setLogger($logger)
     {
@@ -298,7 +298,9 @@ class InfobipProvider implements SmsProviderInterface {
                 array(
                     array(
                         'sender' => $sender,
-                        'text' => $message,
+                        'text' => urlencode(
+                            str_replace('"', '\"', $message)
+                        ),
                         'recipients' =>
                             array(
                                 array('gsm' => $recipient),
@@ -333,7 +335,7 @@ class InfobipProvider implements SmsProviderInterface {
     }
 
     /**
-     * @param $dlrData
+     * @param string|array $dlrData
      *
      * @return array
      */
@@ -354,8 +356,8 @@ class InfobipProvider implements SmsProviderInterface {
                     'completeDate' => $node->getAttribute('donedate'),
                 );
 
-                $message['sendDate'] = date("Y-m-d H:i:s", strtotime($message['sendDate']));
-                $message['completeDate'] = date("Y-m-d H:i:s", strtotime($message['completeDate']));
+                $message['sendDate'] = date("Y-m-d H:i:s", strtotime('+1 hour', strtotime($message['sendDate'])));
+                $message['completeDate'] = date("Y-m-d H:i:s", strtotime('+1 hour', strtotime($message['completeDate'])));
 
                 $infoBipStatus = $node->getAttribute('status');
                 $gsmErrorCode = $node->getAttribute('gsmerror');

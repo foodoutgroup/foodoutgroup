@@ -80,7 +80,7 @@ class StaticContentLocalized extends AbstractPersonalTranslation
      * Set locale
      *
      * @param string $locale
-     * @return FoodCategoryLocalized
+     * @return StaticContentLocalized
      */
     public function setLocale($locale)
     {
@@ -103,7 +103,7 @@ class StaticContentLocalized extends AbstractPersonalTranslation
      * Set field
      *
      * @param string $field
-     * @return FoodCategoryLocalized
+     * @return StaticContentLocalized
      */
     public function setField($field)
     {
@@ -148,7 +148,7 @@ class StaticContentLocalized extends AbstractPersonalTranslation
     /**
      * Set object
      *
-     * @param $object
+     * @param StaticContent $object
      * @return StaticContentLocalized
      */
     public function setObject($object)
