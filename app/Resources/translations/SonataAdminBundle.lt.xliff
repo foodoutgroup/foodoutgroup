@@ -348,6 +348,10 @@
                 <source>admin.place.recommended</source>
                 <target>Rekomend.</target>
             </trans-unit>
+            <trans-unit id="admin.place.card_on_delivery">
+                <source>admin.place.card_on_delivery</source>
+                <target>Kortele prist. metu</target>
+            </trans-unit>
 
             <!-- Place points -->
             <trans-unit id="place-point-list">

@@ -845,6 +845,18 @@
           <target>Vairuotojas gaus nuoroda</target>
       </trans-unit>
       <!-- End of debug emails on new order -->
+      <trans-unit id="general.email.placeholder" resname="general.email.placeholder">
+          <source>general.email.placeholder</source>
+          <target>vardenis@pastas.lt</target>
+      </trans-unit>
+      <trans-unit id="general.name.placeholder" resname="general.name.placeholder">
+          <source>general.name.placeholder</source>
+          <target>Vardenis</target>
+      </trans-unit>
+      <trans-unit id="general.lastname.placeholder" resname="general.lastname.placeholder">
+          <source>general.lastname.placeholder</source>
+          <target>Pavardenis</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

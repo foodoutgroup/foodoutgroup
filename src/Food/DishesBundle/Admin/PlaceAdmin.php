@@ -57,6 +57,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('cartMinimum', null, array('label' => 'admin.place.cart_minimum'))
             ->add('selfDelivery', 'checkbox', array('label' => 'admin.place.self_delivery', 'required' => false))
             ->add('minimalOnSelfDel', 'checkbox', array('label' => 'admin.place.minimal_on_self_delivery', 'required' => false))
+            ->add('cardOnDelivery', 'checkbox', array('label' => 'admin.place.card_on_delivery', 'required' => false))
 
             ->add('file', 'file', $options)
             ->add('points', 'sonata_type_collection',

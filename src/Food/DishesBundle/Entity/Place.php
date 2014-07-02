@@ -148,6 +148,14 @@ class Place extends Uploadable implements Translatable
     private $minimalOnSelfDel = false;
 
     /**
+     * Does place accept card on delivery?
+     * @var bool
+     *
+     * @ORM\Column(name="card_on_delivery", type="boolean")
+     */
+    private $cardOnDelivery = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="FoodCategory", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
      *
      * @var ArrayCollection
@@ -1141,5 +1149,28 @@ class Place extends Uploadable implements Translatable
     public function getMinimalOnSelfDel()
     {
         return $this->minimalOnSelfDel;
+    }
+
+    /**
+     * Set cardOnDelivery
+     *
+     * @param boolean $cardOnDelivery
+     * @return Place
+     */
+    public function setCardOnDelivery($cardOnDelivery)
+    {
+        $this->cardOnDelivery = $cardOnDelivery;
+    
+        return $this;
+    }
+
+    /**
+     * Get cardOnDelivery
+     *
+     * @return boolean 
+     */
+    public function getCardOnDelivery()
+    {
+        return $this->cardOnDelivery;
     }
 }

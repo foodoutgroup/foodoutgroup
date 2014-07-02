@@ -155,15 +155,15 @@
                             {% endif %}
                             <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.firstname{% endtrans %}:</label>
-                                <input type="text" name="customer-firstname" value="{% if (dataToLoad is not empty and dataToLoad['customer-firstname'] is not empty) %}{{ dataToLoad['customer-firstname'] }}{% else %}{{ app.user.firstname|default('') }}{% endif %}" />
+                                <input type="text" name="customer-firstname" value="{% if (dataToLoad is not empty and dataToLoad['customer-firstname'] is not empty) %}{{ dataToLoad['customer-firstname'] }}{% else %}{{ app.user.firstname|default('') }}{% endif %}" placeholder="{% trans %}general.name.placeholder{% endtrans %}" />
                             </div>
                             <div class="form-row">
                                 <label>{% trans %}cart.checkout.lastname{% endtrans %}:</label>
-                                <input type="text" name="customer-lastname" value="{% if (dataToLoad is not empty and dataToLoad['customer-lastname'] is not empty) %}{{ dataToLoad['customer-lastname'] }}{% else %}{{ app.user.lastname|default('') }}{% endif %}" />
+                                <input type="text" name="customer-lastname" value="{% if (dataToLoad is not empty and dataToLoad['customer-lastname'] is not empty) %}{{ dataToLoad['customer-lastname'] }}{% else %}{{ app.user.lastname|default('') }}{% endif %}" placeholder="{% trans %}general.lastname.placeholder{% endtrans %}" />
                             </div>
                             <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.email{% endtrans %}:</label>
-                                <input type="text" name="customer-email" value="{% if (dataToLoad is not empty and dataToLoad['customer-email'] is not empty) %}{{ dataToLoad['customer-email'] }}{% else %}{{ app.user.email|default('') }}{% endif %}" />
+                                <input type="text" name="customer-email" value="{% if (dataToLoad is not empty and dataToLoad['customer-email'] is not empty) %}{{ dataToLoad['customer-email'] }}{% else %}{{ app.user.email|default('') }}{% endif %}" placeholder="{% trans %}general.email.placeholder{% endtrans %}" />
                             </div>
                             <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.phone{% endtrans %}: <span title="{% trans %}cart.checkout.phone_tooltip{% endtrans %}" class="tooltip tooltip-icon ui-icon ui-icon-info"></span></label>
@@ -183,15 +183,16 @@
                                 <label>{% trans %}cart.checkout.delivery_comment{% endtrans %}:</label>
                                 <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['customer-comment'] is not empty) %}{{ dataToLoad['customer-comment'] }}{% endif %}</textarea>
                             </div>
-                            {# TODO laikinai viskas pirmam testui paslepta - nuimsim po testo #}
                             <h2 class="section-2">2. {% trans %}cart.checkout.block_title_secure_payment{% endtrans %}</h2>
                             <div class="select-payment clearfix">
                                 <label class="custom-radio">{% trans %}cart.checkout.cash_on_delivery{% endtrans %}
-                                    <input type="radio" name="payment-type" value="local"{#{% if order is not null and order.paymentMethod == 'local' %}#} checked="checked"{#{% endif %}#}>
+                                    <input type="radio" name="payment-type" value="local"{% if (order is not null and order.paymentMethod == 'local') or (dataToLoad is not empty and dataToLoad['payment-type'] == 'local') %} checked="checked"{% endif %}>
                                 </label>
-                                {#<label class="custom-radio">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
-                                    <input type="radio" name="payment-type" value="local.card"{% if order is not null and order.paymentMethod == 'local.card' %} checked="checked"{% endif %}>
-                                </label>#}
+                                {% if place.cardOnDelivery %}
+                                <label class="custom-radio">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
+                                    <input type="radio" name="payment-type" value="local.card"{% if (order is not null and order.paymentMethod == 'local.card') or (dataToLoad is not empty and dataToLoad['payment-type'] == 'local.card') %} checked="checked"{% endif %}>
+                                </label>
+                                {% endif %}
                             </div>
                             {# TODO kolkas viskas rodo i Paysera#}
                             <div class="select-bank clearfix">
