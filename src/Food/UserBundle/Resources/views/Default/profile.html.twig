@@ -58,13 +58,19 @@
                                         {% endif %}
                                     {% endfor %}
 
-                                    {% for error in form.children.plainPassword.children.first.vars.errors %}
-                                        <li>{{ error.message }}</li>
-                                    {% endfor %}
+                                    {% if changePasswordForm.current_password.vars.data|length > 0 %}
+                                        {% for error in changePasswordForm.current_password.vars.errors %}
+                                            <li>{{ error.message }}</li>
+                                        {% endfor %}
 
-                                    {% for error in form.children.plainPassword.children.second.vars.errors %}
-                                        <li>{{ error.message }}</li>
-                                    {% endfor %}
+                                        {% for error in changePasswordForm.plainPassword.first.vars.errors %}
+                                            <li>{{ error.message }}</li>
+                                        {% endfor %}
+
+                                        {% for error in changePasswordForm.plainPassword.second.vars.errors %}
+                                            <li>{{ error.message }}</li>
+                                        {% endfor %}
+                                    {% endif %}
                                 </ul>
                             </div>
                         {% endif %}
@@ -89,22 +95,27 @@
                             <hr>
 
                             <div class="form-row">
-                                {{ form_row(addressForm.city) }}
+                                {{ form_label(addressForm.city) }}
+                                {{ form_widget(addressForm.city) }}
                             </div>
                             <div class="form-row">
-                                {{ form_row(addressForm.address) }}
+                                {{ form_label(addressForm.address) }}
+                                {{ form_widget(addressForm.address) }}
                             </div>
 
                             <hr>
 
-                            <div class="form-row {% if submitted and form.current_password.vars.errors is defined and form.current_password.vars.errors|length > 0 and form.current_password.vars.required %}error{% endif %}">
-                                {{ form_row(form.current_password) }}
+                            <div class="form-row {% if submitted and changePasswordForm.current_password.vars.data|length > 0 and changePasswordForm.current_password.vars.errors is defined and changePasswordForm.current_password.vars.errors|length > 0 and changePasswordForm.current_password.vars.required %}error{% endif %}">
+                                {{ form_label(changePasswordForm.current_password) }}
+                                {{ form_widget(changePasswordForm.current_password) }}
                             </div>
-                            <div class="form-row {% if submitted and form.children.plainPassword.children.first.vars.errors is defined and form.children.plainPassword.children.first.vars.errors|length > 0 and form.children.plainPassword.children.first.vars.required %}error{% endif %}">
-                                {{ form_row(form.plainPassword.first) }}
+                            <div class="form-row {% if submitted and changePasswordForm.current_password.vars.data|length > 0 and changePasswordForm.plainPassword.first.vars.errors is defined and changePasswordForm.plainPassword.first.vars.errors|length > 0 and changePasswordForm.plainPassword.first.vars.required %}error{% endif %}">
+                                {{ form_label(changePasswordForm.plainPassword.first) }}
+                                {{ form_widget(changePasswordForm.plainPassword.first) }}
                             </div>
-                            <div class="form-row {% if submitted and form.children.plainPassword.children.second.vars.errors is defined and form.children.plainPassword.children.second.vars.errors|length > 0 and form.children.plainPassword.form.children.second.required %}error{% endif %}">
-                                {{ form_row(form.plainPassword.second) }}
+                            <div class="form-row {% if submitted and changePasswordForm.current_password.vars.data|length > 0 and changePasswordForm.plainPassword.second.vars.errors is defined and changePasswordForm.plainPassword.second.vars.errors|length > 0 and changePasswordForm.plainPassword.form.second.required %}error{% endif %}">
+                                {{ form_label(changePasswordForm.plainPassword.second) }}
+                                {{ form_widget(changePasswordForm.plainPassword.second) }}
                             </div>
 
                             {{ form_rest(form) }}

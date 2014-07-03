@@ -17,6 +17,7 @@ use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use Food\UserBundle\Form\Type\ProfileFormType;
 use Food\UserBundle\Form\Type\UserAddressFormType;
+use Food\UserBundle\Form\Type\ChangePasswordFormType;
 use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
 
@@ -169,7 +170,6 @@ class DefaultController extends Controller
     public function profileUpdateAction(Request $request)
     {
         $userManager = $this->container->get('fos_user.user_manager');
-        // $passwordFactory = $this->container->get('fos_user.change_password.form.factory');
 
         $em = $this->getDoctrine()->getManager();
 
@@ -185,24 +185,10 @@ class DefaultController extends Controller
         $addressForm->handleRequest($request);
 
         // password form
-        // $passwordForm = $passwordFactory->createForm();
-        // $passwordForm->setData($user);
-        // $passwordForm->handleRequest($request);
+        $changePasswordForm = $this->createForm(new ChangePasswordFormType(get_class($user)), $user);
+        $changePasswordForm->handleRequest($request);
 
-        $validator = $this->get('validator');
-        $errors = $validator->validate($user);
-        $hasErrors = false;
-
-        // if ($passwordForm->isValid()) {
-        //     die('xxx');
-        // } else {
-        //     $a = $form->createView();
-        //     var_dump($a->vars['form']->children['plainPassword']);
-        //     die('yyy');
-        // }
-
-        if ($form->isValid() && $addressForm->isValid() && count($errors) == 0) {
-            // update/create address
+        if ($addressForm->isValid()) {
             $address
                 ->setCity($addressForm->get('city')->getData())
                 ->setAddress($addressForm->get('address')->getData())
@@ -212,18 +198,20 @@ class DefaultController extends Controller
                 $em->persist($address);
                 $user->addAddress($address);
             }
-
-            $userManager->updateUser($user);
-
-            return $this->redirect($this->generateUrl('user_profile'));
         }
 
-        // $a = $form->createView();
-        // var_dump($a->children); die;
+        if ($changePasswordForm->get('current_password')->getData() && $changePasswordForm->isValid()) {
+            $userManager->updateUser($user);
+        }
+
+        if ($form->isValid() && $addressForm->isValid() && ($changePasswordForm->get('current_password')->getData() && $changePasswordForm->isValid())) {
+            return $this->redirect($this->generateUrl('user_profile'));
+        }
 
         return [
             'form' => $form->createView(),
             'addressForm' => $addressForm->createView(),
+            'changePasswordForm' => $changePasswordForm->createView(),
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => true,
         ];
@@ -249,10 +237,12 @@ class DefaultController extends Controller
 
         $form = $this->createForm(new ProfileFormType(get_class($user)), $user);
         $addressForm = $this->createForm(new UserAddressFormType($cities), $address);
+        $changePasswordForm = $this->createForm(new changePasswordFormType(get_class($user)), $user);
 
         return [
             'form' => $form->createView(),
             'addressForm' => $addressForm->createView(),
+            'changePasswordForm' => $changePasswordForm->createView(),
             'tab' => $tab,
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => false,

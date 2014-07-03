@@ -7,7 +7,6 @@ use FOS\UserBundle\Form\Type\ProfileFormType as BaseType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
 class ProfileFormType extends BaseType
 {
@@ -46,22 +45,6 @@ class ProfileFormType extends BaseType
             ->add('lastname', null, array('required' => false, 'error_bubbling' => false, 'label' => 'form.lastname', 'translation_domain' => 'FOSUserBundle'))
             ->add('email', 'email', array('required' => true, 'error_bubbling' => false, 'label' => 'form.email', 'translation_domain' => 'FOSUserBundle', 'disabled' => true))
             ->add('phone', null, array('required' => true, 'error_bubbling' => false, 'label' => 'form.phone', 'translation_domain' => 'FOSUserBundle', 'attr' => array('placeholder' => '3706xxxxxxx')))
-            ->add('current_password', 'password', array(
-                'label' => 'form.current_password',
-                'error_bubbling' => false,
-                'translation_domain' => 'FOSUserBundle',
-                'mapped' => false,
-                'constraints' => new UserPassword(['message' => 'fos_user.form.invalid_current_password'])
-            ))
-            ->add('plainPassword', 'repeated', array(
-                'type' => 'password',
-                'error_bubbling' => false,
-                'options' => array('translation_domain' => 'FOSUserBundle'),
-                'first_options' => array('label' => 'form.new_password'),
-                'second_options' => array('label' => 'form.new_password_confirmation'),
-                'invalid_message' => 'fos_user.password.mismatch',
-                'required' => true
-            ))
         ;
     }
 }
