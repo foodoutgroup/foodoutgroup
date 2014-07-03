@@ -50,13 +50,21 @@
                         {% if form.vars.valid == false %}
                             <div class="error alert alert-danger">
                                 <ul>
-                                {% for input in form %}
-                                    {% if input.vars.errors is defined %}
-                                        {% for error in input.vars.errors %}
-                                            <li>{{ error.message }}</li>
-                                        {% endfor %}
-                                    {% endif %}
-                                {% endfor %}
+                                    {% for input in form %}
+                                        {% if input.vars.errors is defined %}
+                                            {% for inputName, error in input.vars.errors %}
+                                                <li>{{ error.message }}</li>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% for error in form.children.plainPassword.children.first.vars.errors %}
+                                        <li>{{ error.message }}</li>
+                                    {% endfor %}
+
+                                    {% for error in form.children.plainPassword.children.second.vars.errors %}
+                                        <li>{{ error.message }}</li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         {% endif %}
@@ -89,13 +97,13 @@
 
                             <hr>
 
-                            <div class="form-row">
+                            <div class="form-row {% if submitted and form.current_password.vars.errors is defined and form.current_password.vars.errors|length > 0 and form.current_password.vars.required %}error{% endif %}">
                                 {{ form_row(form.current_password) }}
                             </div>
-                            <div class="form-row">
+                            <div class="form-row {% if submitted and form.children.plainPassword.children.first.vars.errors is defined and form.children.plainPassword.children.first.vars.errors|length > 0 and form.children.plainPassword.children.first.vars.required %}error{% endif %}">
                                 {{ form_row(form.plainPassword.first) }}
                             </div>
-                            <div class="form-row">
+                            <div class="form-row {% if submitted and form.children.plainPassword.children.second.vars.errors is defined and form.children.plainPassword.children.second.vars.errors|length > 0 and form.children.plainPassword.form.children.second.required %}error{% endif %}">
                                 {{ form_row(form.plainPassword.second) }}
                             </div>
 

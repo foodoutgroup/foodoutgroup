@@ -30,3 +30,5 @@ fos_user:
         blank: Prašome įvesti pavadinimą
         short: "[-Inf,Inf]Pavadinimas per trumpas"
         long: "[-Inf,Inf]Pavadinimas per trumpas"
+    form:
+        invalid_current_password: Blogas dabartinis slaptažodis

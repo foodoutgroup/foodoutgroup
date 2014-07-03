@@ -7,6 +7,7 @@ use FOS\UserBundle\Form\Type\ProfileFormType as BaseType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
 class ProfileFormType extends BaseType
 {
@@ -27,6 +28,7 @@ class ProfileFormType extends BaseType
             'intention'  => 'profile',
             'csrf_protection' => false,
             'validation_groups' => array(
+                'Default',
                 'Profile'
             )
         ));
@@ -49,9 +51,7 @@ class ProfileFormType extends BaseType
                 'error_bubbling' => false,
                 'translation_domain' => 'FOSUserBundle',
                 'mapped' => false,
-                // 'constraints' => $constraint,
-                'cascade_validation' => true,
-                // 'required' => false,
+                'constraints' => new UserPassword(['message' => 'fos_user.form.invalid_current_password'])
             ))
             ->add('plainPassword', 'repeated', array(
                 'type' => 'password',
@@ -60,7 +60,7 @@ class ProfileFormType extends BaseType
                 'first_options' => array('label' => 'form.new_password'),
                 'second_options' => array('label' => 'form.new_password_confirmation'),
                 'invalid_message' => 'fos_user.password.mismatch',
-                // 'required' => false,
+                'required' => true
             ))
         ;
     }

@@ -28,11 +28,11 @@
         {{ form_label(form.email) }}
         {{ form_widget(form.email) }}
     </div>
-    <div class="form-row {% if submitted and form.plainPassword.vars.form.children.first.vars.errors is defined and form.plainPassword.vars.form.children.first.vars.errors|length > 0 and form.plainPassword.vars.required %}error{% endif %}">
+    <div class="form-row {% if submitted and form.plainPassword.children.first.vars.errors is defined and form.plainPassword.children.first.vars.errors|length > 0 and form.plainPassword.vars.required %}error{% endif %}">
         {{ form_label(form.plainPassword.first) }}
         {{ form_widget(form.plainPassword.first) }}
     </div>
-    <div class="form-row {% if submitted and form.plainPassword.vars.form.children.first.vars.errors is defined and form.plainPassword.vars.form.children.first.vars.errors|length > 0 and form.plainPassword.vars.required %}error{% endif %}">
+    <div class="form-row {% if submitted and form.plainPassword.children.first.vars.errors is defined and form.plainPassword.children.first.vars.errors|length > 0 and form.plainPassword.vars.required %}error{% endif %}">
         {{ form_label(form.plainPassword.second) }}
         {{ form_widget(form.plainPassword.second) }}
     </div>

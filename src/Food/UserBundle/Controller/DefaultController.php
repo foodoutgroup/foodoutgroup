@@ -169,6 +169,8 @@ class DefaultController extends Controller
     public function profileUpdateAction(Request $request)
     {
         $userManager = $this->container->get('fos_user.user_manager');
+        // $passwordFactory = $this->container->get('fos_user.change_password.form.factory');
+
         $em = $this->getDoctrine()->getManager();
 
         $user = $this->user();
@@ -182,9 +184,22 @@ class DefaultController extends Controller
         $addressForm = $this->createForm(new UserAddressFormType($cities), $address);
         $addressForm->handleRequest($request);
 
+        // password form
+        // $passwordForm = $passwordFactory->createForm();
+        // $passwordForm->setData($user);
+        // $passwordForm->handleRequest($request);
+
         $validator = $this->get('validator');
         $errors = $validator->validate($user);
         $hasErrors = false;
+
+        // if ($passwordForm->isValid()) {
+        //     die('xxx');
+        // } else {
+        //     $a = $form->createView();
+        //     var_dump($a->vars['form']->children['plainPassword']);
+        //     die('yyy');
+        // }
 
         if ($form->isValid() && $addressForm->isValid() && count($errors) == 0) {
             // update/create address
@@ -202,6 +217,9 @@ class DefaultController extends Controller
 
             return $this->redirect($this->generateUrl('user_profile'));
         }
+
+        // $a = $form->createView();
+        // var_dump($a->children); die;
 
         return [
             'form' => $form->createView(),
