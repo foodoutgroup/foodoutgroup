@@ -59,6 +59,10 @@ class DefaultController extends Controller
             }
             if ($orderService->isValidOrderStatusChange($currentOrderStatus, $orderService->getOrder()->getOrderStatus())) {
                 $orderService->saveOrder();
+
+                return $this->redirect(
+                    $this->generateUrl('ordermobile', array('hash' => $hash))
+                );
             } else {
                 $errorMessage = sprintf(
                     'Restoranas %s bande uzsakymui #%d bande pakeisti uzsakymo statusa is "%s" i "%s"',
@@ -109,6 +113,10 @@ class DefaultController extends Controller
                 break;
             }
             $this->get('food.order')->saveOrder();
+
+            return $this->redirect(
+                $this->generateUrl('order_support_mobile', array('hash' => $hash))
+            );
         }
         return $this->render('FoodOrderBundle:Default:mobile_admin.html.twig', array('order' => $order));
     }
@@ -127,6 +135,10 @@ class DefaultController extends Controller
                 break;
             }
             $this->get('food.order')->saveOrder();
+
+            return $this->redirect(
+                $this->generateUrl('drivermobile', array('hash' => $hash))
+            );
         }
         return $this->render('FoodOrderBundle:Default:mobile-driver.html.twig', array('order' => $order));
     }
