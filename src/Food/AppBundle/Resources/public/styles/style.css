@@ -985,3 +985,7 @@ ul.dish-holder {
 .ui-dialog.over_fancy_box {
     z-index: 9001;
 }
+
+.restaurant-description a {
+    text-decoration: underline;
+}
