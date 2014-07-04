@@ -97,7 +97,7 @@ class DefaultController extends Controller
                     $this->get('food.order')->getOrder()->setDelayReason($this->getRequest()->get('delay_reason'));
                     $this->get('food.order')->getOrder()->setDelayDuration($this->getRequest()->get('delay_duration'));
                     $this->get('food.order')->saveDelay();
-                    $order = $this->get('food.order')->getOrderByHash($hash);
+                    $this->get('food.order')->getOrderByHash($hash);
                 break;
 
                 case 'cancel':

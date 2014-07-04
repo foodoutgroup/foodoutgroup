@@ -981,3 +981,7 @@ ul.dish-holder {
 .restaurant-item .item-righter .rating-count a {
     color: #55422e;
 }
+
+.ui-dialog.over_fancy_box {
+    z-index: 9001;
+}

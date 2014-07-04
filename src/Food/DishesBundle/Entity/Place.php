@@ -50,6 +50,13 @@ class Place extends Uploadable implements Translatable
 
     /**
      * @var string
+     * @Gedmo\Translatable
+     * @ORM\Column(name="alcohol_rules", type="text", nullable=true)
+     */
+    private $alcoholRules = null;
+
+    /**
+     * @var string
      *
      * @ORM\Column(name="logo", type="string", length=255)
      */
@@ -1172,5 +1179,28 @@ class Place extends Uploadable implements Translatable
     public function getCardOnDelivery()
     {
         return $this->cardOnDelivery;
+    }
+
+    /**
+     * Set alcoholRules
+     *
+     * @param string $alcoholRules
+     * @return Place
+     */
+    public function setAlcoholRules($alcoholRules)
+    {
+        $this->alcoholRules = $alcoholRules;
+    
+        return $this;
+    }
+
+    /**
+     * Get alcoholRules
+     *
+     * @return string 
+     */
+    public function getAlcoholRules()
+    {
+        return $this->alcoholRules;
     }
 }

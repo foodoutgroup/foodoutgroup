@@ -70,13 +70,58 @@
     function addToCart() {
         if (dishBlock.find('.dish-size:checked').length != 0) {
             dishBlock.mask();
-            $.post(addToCartUrl, $('.popup.detailed-dish-popup').serialize(), function(resp) {
-                if (typeof(resp.block) != "undefined") {
-                    $('.check-block').replaceWith(resp.block);
-                }
-                dishBlock.unmask();
-                $.fancybox.close();
-            }, 'json');
+
+            // TODO needs nice refactoring ;)
+            // Is alcohol and needs confirmation
+            if (dishBlock.find('input[name="isAlcohol"]').val() == 1) {
+                $(function() {
+                    dishBlock.find(".alcoholRules div").dialog({
+                        resizable: false,
+                        height: 550,
+                        width: 400,
+                        modal: true,
+                        stack: true,
+                        dialogClass: 'over_fancy_box',
+                        buttons: [
+                            // TODO vertimai
+                            // TODO cookie setas
+                            {
+                                id: 'confirm-button',
+                                text: "Patvirtinu",
+                                disabled: true,
+                                click: function() {
+                                    $( this ).dialog( "close" );
+
+                                    $.post(addToCartUrl, $('.popup.detailed-dish-popup').serialize(), function(resp) {
+                                        if (typeof(resp.block) != "undefined") {
+                                            $('.check-block').replaceWith(resp.block);
+                                        }
+                                        dishBlock.unmask();
+                                        $.fancybox.close();
+                                    }, 'json');
+                                }
+                            },
+                            {
+                                id: 'cancel-button',
+                                text: "Išeiti",
+                                click: function() {
+                                    $( this ).dialog( "close" );
+                                    $.fancybox.close();
+                                }
+                            }
+                        ]
+                    });
+                });
+             // Not alcohol - just add to cart
+            } else {
+                $.post(addToCartUrl, $('.popup.detailed-dish-popup').serialize(), function(resp) {
+                    if (typeof(resp.block) != "undefined") {
+                        $('.check-block').replaceWith(resp.block);
+                    }
+                    dishBlock.unmask();
+                    $.fancybox.close();
+                }, 'json');
+            }
         }
     }
 </script>

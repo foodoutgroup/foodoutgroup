@@ -42,6 +42,7 @@ class PlaceAdmin extends FoodAdmin
                     'fields' => array(
                         'slogan' => array('label' => 'admin.place.slogan', 'required' => false,),
                         'description' => array('label' => 'admin.place.description', 'required' => true,),
+                        'alcoholRules' => array('label' => 'admin.place.alcohol_rules', 'required' => false,),
                 )
             ))
             ->add('kitchens', null, array(
