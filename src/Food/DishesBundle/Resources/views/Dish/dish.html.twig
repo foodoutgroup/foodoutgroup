@@ -5,7 +5,7 @@
         {% endif %}
         <div class="dish-info">
             <p class="name">{{ dish.name }}</p>
-            <p class="desc">{{ dish.description }}</p>
+            <p class="desc">{{ dish.description|nl2br }}</p>
         </div>
         <div class="dish-size">
             <div class="title">{% trans %}dish.select_size{% endtrans %}</div>
