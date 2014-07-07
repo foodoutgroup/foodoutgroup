@@ -26,6 +26,11 @@ class BasketService extends ContainerAware
         return $returner;
     }
 
+    public function updateBasketFromRequest($id, Request $request)
+    {
+        return $returner;
+    }
+
     private function _createBasket($data)
     {
         return $this;

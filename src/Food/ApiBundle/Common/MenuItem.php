@@ -97,6 +97,8 @@ class MenuItem extends ContainerAware
             $options = array(
                 'sizes' => array(
                     'title' => $this->container->get('translator')->trans('dish.select_size'),
+                    'type' => 'sizes',
+                    'default' => null,
                     'items' => array()
                 )
             );
@@ -104,24 +106,30 @@ class MenuItem extends ContainerAware
                 $options['sizes']['items'][] = array(
                     'option_id' => $size->getId(),
                     'title' => $size->getUnit()->getName(),
-                    'type' => 'sizes',
-                    'default' => ($k == 0 ? true: false),
                     'price_modifier' => $size->getPrice() * 100
                 );
             }
+            $options['sizes']['default'] = $options['sizes']['items'][0]['option_id'];
+
+
+            $optionsGroups = array();
 
             foreach($dish->getOptions() as $option) {
                 $name = $option->getGroupName();
                 if (empty($name)) {
                     $name = '_def';
                 }
+                /*
                 if (!isset($options[$name])) {
                     $options[$name] = array(
                         'title' => '',
                         'items' => array()
                     );
                 }
+                */
                 if ($option->getSingleSelect()) {
+                    $optionsGroups[$name]['single'] = $option;
+                    /*
                     $options[$name]['items'][] = array(
                         'option_id' => $option->getId(),
                         'title' => $option->getName(),
@@ -129,7 +137,10 @@ class MenuItem extends ContainerAware
                         'default' => false,
                         'price_modifier' => $option->getPrice() * 100
                     );
+                    */
                 } else {
+                    $optionsGroups[$name]['multi'] = $option;
+                    /*
                     $options[$name]['items'][] = array(
                         'option_id' => $option->getId(),
                         'title' => $option->getName(),
@@ -137,9 +148,11 @@ class MenuItem extends ContainerAware
                         'default' => false,
                         'price_modifier' => $option->getPrice() * 100
                     );
+                    */
                 }
             }
-            $this->data['options'] = $options;
+
+            $this->data['options'] = array_values($options);
         }
         return $this->data;
     }

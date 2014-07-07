@@ -43,6 +43,11 @@ food_api_baskets_create:
     defaults: { _controller: FoodApiBundle:Basket:createBasket }
     methods: [POST]
 
+food_api_basket_update:
+    pattern: /baskets/{id}
+    defaults: { _controller: FoodApiBundle:Basket:updateBasket }
+    methods: [PUT]
+
 food_api_baskets_get:
     pattern: /baskets/{id}
     defaults: { _controller: FoodApiBundle:Basket:getBasket }

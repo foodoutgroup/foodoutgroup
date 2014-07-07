@@ -13,9 +13,8 @@ use Food\UserBundle\Entity\User;
 
 class PlaceController extends Controller
 {
-    public function indexAction($id, $slug, $categoryId)
+    public function indexAction($id, $slug, $categoryId, Request $request)
     {
-        $request = $this->getRequest();
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
         $categoryList = $this->get('food.places')->getActiveCategories($place);
         $placePoints = $this->get('food.places')->getPublicPoints($place);
