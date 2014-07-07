@@ -13,6 +13,12 @@ class SlugController extends Controller
 {
     public function processAction(Request $request, $slug)
     {
+        // Check if user is not banned
+        $ip = $request->getClientIp();
+        // Dude is banned - hit him
+        if ($this->get('food.app.utils.misc')->isIpBanned($ip)) {
+            return $this->redirect($this->generateUrl('banned'), 302);
+        }
 
         // if we have uppercase letters - permanently redirect to lowercase version
         if (preg_match('#[A-Z]#', $slug)) {
@@ -72,29 +78,30 @@ class SlugController extends Controller
         switch($slugRow->getType()) {
             case Slug::TYPE_TEXT:
                 return $this->forward('FoodAppBundle:Static:index', ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]);
-                break;
 
             case Slug::TYPE_KITCHEN:
                 return $this->forward('FoodDishesBundle:Kitchen:index', ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]);
-                break;
 
             case Slug::TYPE_PLACE:
                 return $this->forward(
                     'FoodDishesBundle:Place:index',
                     ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName(), 'categoryId' => '']
                 );
-                break;
 
             case Slug::TYPE_FOOD_CATEGORY:
                 $place = $this->get('food.places')->getPlaceByCategory($slugRow->getItemId());
                 $slugUtele = $this->get('food.dishes.utils.slug');
                 $placeSlug = $slugUtele->getSlugByItem($place->getId(), Slug::TYPE_PLACE);
 
-                return $this->forward(
-                    'FoodDishesBundle:Place:index',
-                    ['id' => $place->getId(), 'slug' => $placeSlug, 'categoryId' => $slugRow->getItemId()]
-                );
-                break;
+                $url = $this->generateUrl('food_slug', ['slug' => $placeSlug], true);
+                $queryString = $request->getQueryString().'#'.$slug;
+                return new RedirectResponse(sprintf('%s%s', $url, !empty($queryString) ? '?' . $queryString : ''), 301);
+
+                // Sena logika, kai kategorijos turejo sub puslapius
+//                return $this->forward(
+//                    'FoodDishesBundle:Place:index',
+//                    ['id' => $place->getId(), 'slug' => $placeSlug, 'categoryId' => $slugRow->getItemId()]
+//                );
 
             default:
                 break;

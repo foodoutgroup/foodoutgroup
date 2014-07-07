@@ -33,6 +33,22 @@ class LocalBiller extends ContainerAware implements BillingInterface {
         return $this->order;
     }
 
+    /**
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
     public function bill()
     {
         /**
@@ -43,12 +59,12 @@ class LocalBiller extends ContainerAware implements BillingInterface {
 
         $order = $this->getOrder();
 
-        $orderService = $this->container->get('food.order');
-        $orderService->setOrder($order);
-
         if (!($order instanceof Order)) {
             throw new \InvalidArgumentException('Sorry, You gave me someting, but not order :(');
         }
+
+        $orderService = $this->container->get('food.order');
+        $orderService->setOrder($order);
 
         $logger->alert('++ Parinktas atsiskaitymas atsiimamt - skipinam bilinga. Uzsakymo ID: '.$order->getId());
         $logger->alert('-------------------------------------');
@@ -66,24 +82,7 @@ class LocalBiller extends ContainerAware implements BillingInterface {
 
     public function rollback()
     {
-
+        throw new \Exception('Not implemented yet');
     }
-
-    /**
-     * @param string $locale
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
 
 }

@@ -18,7 +18,7 @@ class StaticService {
 
     /**
      * @param Container $container
-     * @param $userId
+     * @param integer $userId
      */
     public function __construct($container, $userId)
     {
@@ -53,7 +53,7 @@ class StaticService {
     /**
      * Get static page by id
      *
-     * @param $id
+     * @param null|integer $id
      *
      * @return bool
      *
@@ -77,18 +77,23 @@ class StaticService {
 
     /**
      * @param int $limit
+     * @param boolean $onlyVisible
      * @return array
      */
-    public function getActivePages($limit=10)
+    public function getActivePages($limit=10, $onlyVisible=true)
     {
-        $pagesQuery = $this->em()->getRepository('FoodAppBundle:StaticContent')
+        $pagesQueryBuilder = $this->em()->getRepository('FoodAppBundle:StaticContent')
             ->createQueryBuilder('s')
         // TODO active-not active ir positioning (top, bottom menu, hidden)
             ->where('s.active = 1')
-            ->where('s.visible = 1')
             ->orderBy('s.order', 'ASC')
-            ->setMaxResults($limit)
-            ->getQuery();
+            ->setMaxResults($limit);
+
+        if ($onlyVisible) {
+            $pagesQueryBuilder->where('s.visible = 1');
+        }
+
+        $pagesQuery = $pagesQueryBuilder->getQuery();
 
         return $pagesQuery->getResult();
     }

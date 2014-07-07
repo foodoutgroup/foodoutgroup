@@ -1,3 +1,7 @@
+food_monitoring:
+    resource: "@FoodMonitoringBundle/Resources/config/routing.yml"
+    prefix:   /
+
 food_api:
     resource: "@FoodApiBundle/Resources/config/routing.yml"
     prefix:   /api/v1/
@@ -72,9 +76,17 @@ adminroot:
         route: sonata_admin_dashboard
         permanent: true
 
+banned:
+    path: /banned/
+    defaults: { _controller: FoodAppBundle:Default:banned}
+
 ordermobile:
     path: /o/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~, action: ~ }
+
+order_support_mobile:
+    path: /o-spr/{hash}/
+    defaults: { _controller: FoodOrderBundle:Default:mobileAdmin, hash: ~, action: ~ }
 
 drivermobile:
     path: /d/{hash}/
@@ -103,6 +115,12 @@ paysera_cancel:
 paysera_callback:
     path: /payments/paysera/callback
     defaults: { _controller: FoodOrderBundle:Payments:payseraCallback}
+
+food_sitemap:
+    pattern: /sitemap.xml
+    defaults: { _controller: FoodAppBundle:Default:sitemap}
+    requirements:
+      _method:  GET
 
 food_nagios:
     pattern:  /nagios/

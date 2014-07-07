@@ -211,7 +211,7 @@ class User extends BaseUser
     /**
      * Get address
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return UserAddress[]
      */
     public function getAddress()
     {
@@ -221,7 +221,7 @@ class User extends BaseUser
     /**
      * Get address
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return UserAddress
      */
     public function getDefaultAddress()
     {

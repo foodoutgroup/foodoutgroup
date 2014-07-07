@@ -50,6 +50,13 @@ class Place extends Uploadable implements Translatable
 
     /**
      * @var string
+     * @Gedmo\Translatable
+     * @ORM\Column(name="alcohol_rules", type="text", nullable=true)
+     */
+    private $alcoholRules = null;
+
+    /**
+     * @var string
      *
      * @ORM\Column(name="logo", type="string", length=255)
      */
@@ -146,6 +153,14 @@ class Place extends Uploadable implements Translatable
      * @ORM\Column(name="min_on_self", type="boolean")
      */
     private $minimalOnSelfDel = false;
+
+    /**
+     * Does place accept card on delivery?
+     * @var bool
+     *
+     * @ORM\Column(name="card_on_delivery", type="boolean")
+     */
+    private $cardOnDelivery = false;
 
     /**
      * @ORM\OneToMany(targetEntity="FoodCategory", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
@@ -1141,5 +1156,51 @@ class Place extends Uploadable implements Translatable
     public function getMinimalOnSelfDel()
     {
         return $this->minimalOnSelfDel;
+    }
+
+    /**
+     * Set cardOnDelivery
+     *
+     * @param boolean $cardOnDelivery
+     * @return Place
+     */
+    public function setCardOnDelivery($cardOnDelivery)
+    {
+        $this->cardOnDelivery = $cardOnDelivery;
+    
+        return $this;
+    }
+
+    /**
+     * Get cardOnDelivery
+     *
+     * @return boolean 
+     */
+    public function getCardOnDelivery()
+    {
+        return $this->cardOnDelivery;
+    }
+
+    /**
+     * Set alcoholRules
+     *
+     * @param string $alcoholRules
+     * @return Place
+     */
+    public function setAlcoholRules($alcoholRules)
+    {
+        $this->alcoholRules = $alcoholRules;
+    
+        return $this;
+    }
+
+    /**
+     * Get alcoholRules
+     *
+     * @return string 
+     */
+    public function getAlcoholRules()
+    {
+        return $this->alcoholRules;
     }
 }

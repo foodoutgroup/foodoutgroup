@@ -71,15 +71,15 @@ class MailerRestBaseService
                     $this->executeDelete( $ch, $action );
                     break;
                 default:
-                    throw new InvalidArgumentException('Current verb (' . $this->verb . ') is an invalid REST verb.');
+                    throw new \InvalidArgumentException('Current verb (' . $this->verb . ') is an invalid REST verb.');
             }
         }
-        catch (InvalidArgumentException $e)
+        catch (\InvalidArgumentException $e)
         {
             curl_close($ch);
             throw $e;
         }
-        catch (Exception $e)
+        catch (\Exception $e)
         {
             curl_close($ch);
             throw $e;
@@ -96,7 +96,7 @@ class MailerRestBaseService
 
         if (!is_array($data))
         {
-            throw new InvalidArgumentException('Invalid data input for postBody.  Array expected');
+            throw new \InvalidArgumentException('Invalid data input for postBody.  Array expected');
         }
 
         $data = http_build_query($data, '', '&');

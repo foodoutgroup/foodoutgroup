@@ -348,6 +348,10 @@
                 <source>admin.place.recommended</source>
                 <target>Rekomend.</target>
             </trans-unit>
+            <trans-unit id="admin.place.card_on_delivery">
+                <source>admin.place.card_on_delivery</source>
+                <target>Kortele prist. metu</target>
+            </trans-unit>
 
             <!-- Place points -->
             <trans-unit id="place-point-list">
@@ -708,6 +712,10 @@
                 <source>admin.order.delivery_address</source>
                 <target>Užsak. adresas</target>
             </trans-unit>
+            <trans-unit id="admin.order.user_ip">
+                <source>admin.order.user_ip</source>
+                <target>Užsak. IP</target>
+            </trans-unit>
             <trans-unit id="admin.order.delivery_type_short">
                 <source>admin.order.delivery_type_short</source>
                 <target>Pristat. tipas</target>
@@ -732,6 +740,42 @@
                 <source>admin.order.payment_status</source>
                 <target>Mokėjimo būklė</target>
             </trans-unit>
+            <trans-unit id="admin.order.payment_status.new">
+                <source>admin.order.payment_status.new</source>
+                <target>Naujas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.payment_status.wait">
+                <source>admin.order.payment_status.wait</source>
+                <target>Laukiame pabaigos</target>
+            </trans-unit>
+            <trans-unit id="admin.order.payment_status.wait_funds">
+                <source>admin.order.payment_status.wait_funds</source>
+                <target>Laukiame lesu</target>
+            </trans-unit>
+            <trans-unit id="admin.order.payment_status.cancel">
+                <source>admin.order.payment_status.cancel</source>
+                <target>Nutrauktas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.payment_status.complete">
+                <source>admin.order.payment_status.complete</source>
+                <target>Pabaigtas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.payment_status.error">
+                <source>admin.order.payment_status.error</source>
+                <target>Klaida</target>
+            </trans-unit>
+            <trans-unit id="admin.order.payment_status.event">
+                <source>admin.order.payment_status.event</source>
+                <target>Įvykis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.payment_status.new_status">
+                <source>admin.order.payment_status.new_status</source>
+                <target>Nauja būklė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.order_payemnt_status.log">
+                <source>admin.order.order_payemnt_status.log</source>
+                <target>Mokėjimo būklės istorija</target>
+            </trans-unit>
             <trans-unit id="admin.order.submitted_for_payment">
                 <source>admin.order.submitted_for_payment</source>
                 <target>Mokėjimo pradžia</target>
@@ -743,6 +787,10 @@
             <trans-unit id="admin.order.last_payment_error">
                 <source>admin.order.last_payment_error</source>
                 <target>Paskutinė klaida</target>
+            </trans-unit>
+            <trans-unit id="admin.order.self_delivery">
+                <source>admin.order.self_delivery</source>
+                <target>Pristato patys</target>
             </trans-unit>
             <trans-unit id="admin.order.details">
                 <source>admin.order.details</source>
@@ -832,6 +880,10 @@
                 <source>admin.order.status.source.restourant_mobile</source>
                 <target>Restorano mobilus puslapis</target>
             </trans-unit>
+            <trans-unit id="admin.order.status.source.admin_mobile">
+                <source>admin.order.status.source.admin_mobile</source>
+                <target>Uzsakymo mobilus admin puslapis</target>
+            </trans-unit>
             <trans-unit id="admin.order.status.source.driver_mobile">
                 <source>admin.order.status.source.driver_mobile</source>
                 <target>Vairuotojo mobilus puslapis</target>
@@ -881,6 +933,10 @@
             <trans-unit id="admin.dispatcher.unconfirmed">
                 <source>admin.dispatcher.unconfirmed</source>
                 <target>Nepatvirtinti rest.</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.city_tip">
+                <source>admin.dispatcher.city_tip</source>
+                <target><![CDATA[Nepriskirti: unassignedCount<br />Nepatvirtinti: unconfirmedCount<br />Nepristatyti: notfinishedCount]]></target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.place">
                 <source>admin.dispatcher.place</source>
@@ -1046,6 +1102,36 @@
             <trans-unit id="admin.driver.has_orders">
                 <source>admin.driver.has_orders</source>
                 <target>Turi užsak.</target>
+            </trans-unit>
+
+            <!-- Banned IP listas -->
+            <trans-unit id="admin.banned_ips">
+                <source>admin.banned_ips</source>
+                <target>Blokuoti IP adresai</target>
+            </trans-unit>
+            <trans-unit id="Banned Ip List">
+                <source>Banned Ip List</source>
+                <target>Blokuoti IP adresai</target>
+            </trans-unit>
+            <trans-unit id="admin.banned_ip.ip">
+                <source>admin.banned_ip.ip</source>
+                <target>IP</target>
+            </trans-unit>
+            <trans-unit id="admin.banned_ip.ip_placeholder">
+                <source>admin.banned_ip.ip_placeholder</source>
+                <target>192.168.1.1</target>
+            </trans-unit>
+            <trans-unit id="admin.banned_ip.active">
+                <source>admin.banned_ip.active</source>
+                <target>Aktyvus</target>
+            </trans-unit>
+            <trans-unit id="admin.banned_ip.reason">
+                <source>admin.banned_ip.reason</source>
+                <target>Priežastis</target>
+            </trans-unit>
+            <trans-unit id="admin.banned_ip.id">
+                <source>admin.banned_ip.id</source>
+                <target>ID</target>
             </trans-unit>
         </body>
     </file>

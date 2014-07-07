@@ -2,6 +2,12 @@ message_send:
     path:     /messaging-send/{messageId}
     defaults: { _controller: FoodSmsBundle:Send:send }
     methods:  [GET]
+
+# OMG such hack.. TODO issiaiskinti, kodel meta route not found
+delivery_report_sreet:
+    path:     /messaging-delivery/silverstreet/
+    defaults: { _controller: FoodSmsBundle:Delivery:index, provider: silverstreet }
+
 delivery_report:
     path:     /messaging-delivery/
-    defaults: { _controller: FoodSmsBundle:Delivery:index }
+    defaults: { _controller: FoodSmsBundle:Delivery:index, provider: ~ }

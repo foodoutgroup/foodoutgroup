@@ -17,6 +17,36 @@
                         <img src="/bundles/foodapp/images/tag-new.png">
                     </span>
                     {% endif %}
+
+                    {% if place.is_work == 1 %}
+                        {# IT WORKS. Everything works :) #}
+                    {% elseif place.is_work == 2 %}
+                        {# IT WORKS. Well some of the points do :D :) #}
+                        <span class="tag">
+                            <span class="partial-work"></span>
+                            <div class="time-popup time-popup2">{{ order_service.notWorkingPlacesPoints(place.place)|raw }}
+                                <div class="nip"></div>
+                            </div>
+                        </span>
+                    {% else %}
+                        {# NAH non of it works :) #}
+                        {% if place.pp_count == 1 %}
+                            <span class="tag">
+                                <img src="/bundles/foodapp/images/tag-not-working.png">
+                                <div class="time-popup">{{ order_service.getTodayWork(place.point) }}
+                                    <div class="nip"></div>
+                                </div>
+                            </span>
+                        {% else %}
+                            <span class="tag">
+                                <img src="/bundles/foodapp/images/tag-not-working.png">
+                                <div class="time-popup">{{ order_service.notWorkingPlacesPoints(place.place)|raw }}
+                                    <div class="nip"></div>
+                                </div>
+                            </span>
+                        {% endif %}
+                    {% endif %}
+{#
                     {% if place.pp_count == 1 %}
                         {% if order_service.isTodayWork(place.point) == false %}
                             <span class="tag">
@@ -43,6 +73,7 @@
                             </span>
                         {% endif %}
                     {% endif %}
+#}
 
                 </h2>
                 <p class="desc">
@@ -69,7 +100,7 @@
                 <div class="clearfix">
                     <div data-stars="{{ place.place.rating }}" class="restoran-rating fl"></div>
                     {% if place.place.reviews.count != 0 %}
-                        <div class="rating-count fr">{{ place.place.reviews.count }} {% transchoice place.place.reviews.count %}places.reviews_count{% endtranschoice %}</div>
+                        <div class="rating-count fr"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}#detailed-restaurant-review">{{ place.place.reviews.count }} {% transchoice place.place.reviews.count %}places.reviews_count{% endtranschoice %}</a></div>
                     {% endif %}
                 </div><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}" class="button"><span>{% trans %}places.watch_menu{% endtrans %}</span></a>
             </div>

@@ -151,7 +151,7 @@ class Slug
     {
         $em = $this->em();
         $con = $em->getConnection();
-        $repo = 
+//        $repo =
 
         // get uppercase slugs
         $slugs = $con->fetchAll('

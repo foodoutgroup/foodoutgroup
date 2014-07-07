@@ -35,7 +35,7 @@ class DishOption implements Translatable
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=45)
+     * @ORM\Column(name="name", type="string", length=60)
      */
     private $name;
 
@@ -188,6 +188,14 @@ class DishOption implements Translatable
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPriceLocalized()
+    {
+        return str_replace('.', ',', $this->price);
     }
 
     /**

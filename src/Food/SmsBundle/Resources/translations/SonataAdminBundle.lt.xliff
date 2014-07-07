@@ -3,6 +3,10 @@
     <file source-language="lt" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
             <!-- SMS messaging-->
+            <trans-unit id="Message List">
+                <source>Message List</source>
+                <target>SMS pranešimai</target>
+            </trans-unit>
             <trans-unit id="admin.messages">
                 <source>admin.messages</source>
                 <target>SMS pranešimai</target>

@@ -1,6 +1,7 @@
 <?php
 namespace Food\SmsBundle\Command;
 
+use Food\SmsBundle\Entity\Message;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -29,36 +30,43 @@ class ReSendCommand extends ContainerAwareCommand
         $messagingService = $this->getContainer()->get('food.messages');
         $messagingProviders = $this->getContainer()->getParameter('sms.available_providers');
 
-        // TODO https://basecamp.com/2470154/projects/4420182-skanu-lt-gamyba/todos/72720237-antrinio
         if (count($messagingProviders) < 1) {
-            $output->writeln('<error>No messaging providers configured. Please check Your configuration!</error>');
-            return;
-        }
-        if (count($messagingProviders) > 1) {
-            $output->writeln('<error>Sorry, at the moment we dont support more than one provider!</error>');
-            $output->writeln('Available provider: '.var_export($messagingProviders, true));
-            return;
+            $errMessage = 'No messaging providers configured. Please check Your configuration!';
+            $output->writeln('<error>'.$errMessage.'</error>');
+
+            throw new \Exception($errMessage);
         }
 
         // OMG kaip negrazu, bet cia laikinai, kol tik viena provideri turim
-        /**
-         * @var \Food\SmsBundle\Service\InfobipProvider $provider
-         */
-        $provider = $this->getContainer()->get($messagingProviders[0]);
-
-        if ($input->getOption('debug')) {
-            $provider->setDebugEnabled(true);
-        }
-        $messagingService->setMessagingProvider($provider);
-
         try {
             $unsentMessages = $messagingService->getUndeliveredMessages();
             $unsentMessagesCount = count($unsentMessages);
             $output->writeln(sprintf('<info>%d stuck messages found. Starting to send them now!</info>', $unsentMessagesCount));
 
             if (!empty($unsentMessages) && $unsentMessagesCount > 0) {
+                /**
+                 * @var Message $message
+                 */
                 foreach($unsentMessages as $message) {
-                    $output->writeln(sprintf('<info>Resending message id: %d</info>', $message->getId()));
+                    // TODO laikinas solutionas, po to sutvarkom
+                    if ($message->getSmsc() == 'InfoBip') {
+                        $provider = $this->getContainer()->get('food.silverstreet');
+                    } else {
+                        $provider = $this->getContainer()->get('food.infobip');
+                    }
+
+                    if ($input->getOption('debug')) {
+                        $provider->setDebugEnabled(true);
+                    }
+                    $messagingService->setMessagingProvider($provider);
+
+                    $output->writeln(
+                        sprintf(
+                            '<info>Resending message id: %d through provider: %s</info>',
+                            $message->getId(),
+                            $provider->getProviderName()
+                        )
+                    );
                     $messagingService->sendMessage($message);
                     $messagingService->saveMessage($message);
                     $count++;
@@ -67,11 +75,15 @@ class ReSendCommand extends ContainerAwareCommand
 
             $output->writeln(sprintf('<info>%d messages sent</info>', $count));
         } catch (\InvalidArgumentException $e) {
-                $output->writeln('<error>Sorry, lazy programmer left a bug :(</error>');
-                $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
+            $output->writeln('<error>Sorry, lazy programmer left a bug :(</error>');
+            $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
+
+            throw $e;
         } catch (\Exception $e) {
             $output->writeln('<error>Mayday mayday, an error knocked the process down.</error>');
             $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
+
+            throw $e;
         }
     }
 }

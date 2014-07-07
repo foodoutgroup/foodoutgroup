@@ -70,13 +70,63 @@
     function addToCart() {
         if (dishBlock.find('.dish-size:checked').length != 0) {
             dishBlock.mask();
-            $.post(addToCartUrl, $('.popup.detailed-dish-popup').serialize(), function(resp) {
-                if (typeof(resp.block) != "undefined") {
-                    $('.check-block').replaceWith(resp.block);
-                }
-                dishBlock.unmask();
-                $.fancybox.close();
-            }, 'json');
+
+            var placeId = dishBlock.find('input[name="place"]').val();
+
+            // TODO needs nice refactoring ;)
+            // TODO checkboxas, kad tikrai tikrai perskaiciau
+
+            // Is alcohol and needs confirmation
+            var alcoCookie = getCookie('alco_18_' + placeId);
+
+            if (dishBlock.find('input[name="isAlcohol"]').val() == 1 && alcoCookie == '') {
+                $(function() {
+                    dishBlock.find(".alcoholRules div").dialog({
+                        resizable: false,
+                        height: 600,
+                        width: 545,
+                        modal: true,
+                        stack: true,
+                        dialogClass: 'over_fancy_box',
+                        buttons: [
+                            {
+                                id: 'confirm-button',
+                                text: "{% trans %}general.alcohol_confirmation.confirm{% endtrans %}",
+//                                disabled: true,
+                                click: function() {
+                                    $( this ).dialog( "close" );
+                                    setCookie('alco_18_' + placeId, 'teip'+placeId, 20);
+
+                                    $.post(addToCartUrl, $('.popup.detailed-dish-popup').serialize(), function(resp) {
+                                        if (typeof(resp.block) != "undefined") {
+                                            $('.check-block').replaceWith(resp.block);
+                                        }
+                                        dishBlock.unmask();
+                                        $.fancybox.close();
+                                    }, 'json');
+                                }
+                            },
+                            {
+                                id: 'cancel-button',
+                                text: "{% trans %}general.alcohol_confirmation.exit{% endtrans %}",
+                                click: function() {
+                                    $( this ).dialog( "close" );
+                                    $.fancybox.close();
+                                }
+                            }
+                        ]
+                    }).siblings('.ui-dialog-titlebar').remove();
+                });
+             // Not alcohol - just add to cart
+            } else {
+                $.post(addToCartUrl, $('.popup.detailed-dish-popup').serialize(), function(resp) {
+                    if (typeof(resp.block) != "undefined") {
+                        $('.check-block').replaceWith(resp.block);
+                    }
+                    dishBlock.unmask();
+                    $.fancybox.close();
+                }, 'json');
+            }
         }
     }
 </script>

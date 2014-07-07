@@ -4,9 +4,8 @@ namespace Food\CartBundle\Controller;
 
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Place;
+use Food\OrderBundle\Entity\Order;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -290,8 +289,11 @@ class DefaultController extends Controller
     /**
      * Side cart block
      *
-     * @param \Place $place
+     * @param Place $place
      * @param bool $renderView
+     * @param bool $inCart
+     * @param null|Order $order
+     * @param null|bool $takeAway
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -327,7 +329,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * TODO dabar routas cart/success, bet renaminant kart i kasikelis, reiks ir sita parenamint i kasikelis/apmoketas
+     * TODO dabar routas cart/wait, bet renaminant kart i kasikelis, reiks ir sita parenamint i kasikelis/laukiama
      */
     public function waitAction($orderHash)
     {

@@ -6,7 +6,7 @@ set :repository,  "git@github.com:Foodout/skanu.lt.git"
 set :scm,         :git
 
 set :model_manager, "doctrine"
-set :branch, "the_rise_of_dark_api"
+set :branch, "design"
 
 # multi-stage environment
 set :stages,        %w(production staging sandbox taurinas)

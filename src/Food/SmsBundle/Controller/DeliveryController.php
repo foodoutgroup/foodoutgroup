@@ -4,6 +4,7 @@ namespace Food\SmsBundle\Controller;
 
 use Food\SmsBundle\Service\InfobipProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -42,7 +43,7 @@ class DeliveryController extends Controller
     }
 
     /**
-     * @param \Food\SmsBundle\Controller\MessagesService $messagingService
+     * @param \Food\SmsBundle\Service\MessagesService $messagingService
      */
     public function setMessagingService($messagingService)
     {
@@ -50,7 +51,7 @@ class DeliveryController extends Controller
     }
 
     /**
-     * @return \Food\SmsBundle\Controller\MessagesService
+     * @return \Food\SmsBundle\Service\MessagesService
      */
     public function getMessagingService()
     {
@@ -60,20 +61,37 @@ class DeliveryController extends Controller
         return $this->messagingService;
     }
 
-    public function indexAction()
+    public function indexAction($provider, Request $request)
     {
-        $request = $this->get('request');
         $messagingService = $this->getMessagingService();
 
+        if ($provider == 'silverstreet') {
+            $this->setProvider($this->get('food.silverstreet'));
+        }
+
         // TODO iskelti i services.yml, kad uzkrautu per ten :) gal :)
-        $provider = $this->getProvider();
+        $providerInstance = $this->getProvider();
         // For debuging only!! TODO turn off this damn thing
-        $provider->setLogger($this->container->get('logger'));
-        $provider->setDebugEnabled(true);
+        $providerInstance->setLogger($this->container->get('logger'));
+        $providerInstance->setDebugEnabled(true);
 
-        $messagingService->setMessagingProvider($provider);
-        $messagingService->updateMessagesDelivery($request->getContent());
+        $messagingService->setMessagingProvider($providerInstance);
 
-        return new Response("OK, response parsed");
+        if ($provider == 'silverstreet') {
+            $messagingService->updateMessagesDelivery(
+                array(
+                    'reference' => $request->get('REFERENCE'),
+                    'status' => $request->get('STATUS'),
+                    'reason' => $request->get('REASON'),
+                    'destination' => $request->get('DESTINATION'),
+                    'timestamp' => $request->get('TIMESTAMP'),
+                    'operator' => $request->get('OPERATOR')
+                )
+            );
+        } else {
+            $messagingService->updateMessagesDelivery($request->getContent());
+        }
+
+        return new Response("OK");
     }
 }

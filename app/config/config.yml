@@ -4,25 +4,34 @@ imports:
     - { resource: "@FoodCartBundle/Resources/config/services.yml" }
     - { resource: "@FoodDishesBundle/Resources/config/admin.yml" }
     - { resource: "@FoodSmsBundle/Resources/config/admin.yml" }
+    - { resource: @A2lixTranslationFormBundle/Resources/config/gedmo.xml }
 
 parameters:
     available_locales: [lt, en, ru]
     available_locales_routing: lt | en | ru
-    available_cities: ["Vilnius"]
+    available_cities: ["Vilnius","Kaunas"]
     time_zone: "Europe/Vilnius"
-    sms.available_providers: [food.infobip]
+    sms.available_providers: [food.infobip, food.silverstreet]
+    sms.main_provider: "food.infobip"
     sms.sender: "Foodout.lt"
-    sms.balance_limit_warn: 8
-    sms.balance_limit_critical: 5
+    sms.balance_limit_warn: 5
+    sms.balance_limit_critical: 3
     infobip_provider.api_url: "http://api.infobip.com/api/v3/sendsms/json"
     infobip_provider.account_url: "http://api2.infobip.com/api"
     infobip_provider.login: "skanu1"
     infobip_provider.password: "119279"
+    silverstreet_provider.api_url: "http://api.silverstreet.com/send.php"
+    silverstreet_provider.account_url: "http://api.silverstreet.com/creditcheck.php"
+    silverstreet_provider.login: "foodout"
+    silverstreet_provider.password: "ZQg5ryLS"
     # Situos gal issikelkime i parametru faila pagal aplinka?
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
     order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt]
+    order.city_coordinators:
+        vilnius: []
+        kaunas: [renata@foodout.lt]
     order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
@@ -82,6 +91,7 @@ twig:
         locale:       "%locale%"
         page_title:   "%title%"
         currency_display: "%currency_display%"
+        currency_iso: "%currency_iso%"
         vat_size: "%vat%"
         dish_service: "@food.dishes"
         order_service: "@food.order"
@@ -93,7 +103,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle ]
+    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle, FoodUserBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -180,6 +190,13 @@ services:
     tags:
         - { name: twig.extension }
 
+  kernel.listener.command_dispatch:
+      class: Food\AppBundle\EventListener\ConsoleExceptionListener
+      arguments:
+          logger: "@logger"
+      tags:
+          - { name: kernel.event_listener, event: console.exception }
+
 sonata_doctrine_orm_admin:
     templates:
         form: [ FoodDishesBundle:Forms:form_admin_fields.html.twig ]
@@ -253,6 +270,7 @@ sonata_admin:
                   item_adds:
                       - sonata.admin.users
                       - sonata.admin.newsletter_subscribers
+                      - sonata.admin.banned_ips
                   roles: [ ROLE_ADMIN ]
               admin.support:
                   items: ~

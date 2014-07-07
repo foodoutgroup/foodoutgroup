@@ -24,7 +24,7 @@ food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto|monitoring|nagios).+"
+        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto|monitoring|nagios|banned).+"
 
 food_admin_get_place_categories:
     pattern: /admin/place/get-categories/{placeId}
@@ -146,4 +146,3 @@ food_newsletter_subscribe:
 food_newsletter_thank:
     pattern: /newsletter/thank/
     defaults: { _controller: FoodAppBundle:Default:newsletterThank}
-

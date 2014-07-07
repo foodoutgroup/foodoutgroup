@@ -204,7 +204,7 @@
       </trans-unit>
       <trans-unit id="e9af7214246747e3648fdc0ec367494c" resname="general.places">
         <source>general.places</source>
-        <target>Vietos</target>
+        <target>Restoranai</target>
       </trans-unit>
       <trans-unit id="general.places_found1" resname="general.places_found1">
         <source>general.places_found1</source>

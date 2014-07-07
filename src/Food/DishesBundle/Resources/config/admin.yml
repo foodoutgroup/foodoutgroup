@@ -187,3 +187,14 @@ services:
                     - ~
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.banned_ips:
+                class: Food\AppBundle\Admin\BannedIpAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.banned_ips" }
+                arguments:
+                    - ~
+                    - Food\AppBundle\Entity\BannedIp
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]

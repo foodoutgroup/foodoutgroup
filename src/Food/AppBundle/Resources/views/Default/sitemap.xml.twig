@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>http://{{ domain }}{{ path('food_homepage', {}, false) }}</loc>
+        <changefreq>hourly</changefreq>
+    </url>
+    <url>
+        <loc>http://{{ domain }}{{ path('food_places_lt_recommended', {}, false) }}</loc>
+        <changefreq>hourly</changefreq>
+    </url>
+    {% for locale in availableLocales %}
+        {% for place in places %}
+        <url>
+            <loc>http://{{ domain }}{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place'), '_locale': locale}) }}</loc>
+            <changefreq>daily</changefreq>
+        </url>
+        {% endfor %}
+        {% for page in staticPages %}
+            <url>
+                <loc>http://{{ domain }}{{ path('food_slug', {'slug': slug_util.slugByItem(page.id, 'text'), '_locale': locale}) }}</loc>
+                <changefreq>monthly</changefreq>
+            </url>
+        {% endfor %}
+    {% endfor %}
+</urlset>

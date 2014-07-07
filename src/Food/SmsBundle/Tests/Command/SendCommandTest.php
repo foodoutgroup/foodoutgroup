@@ -5,6 +5,10 @@ use Food\SmsBundle\Command\SendCommand;
 
 class SendCommandTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage No messaging providers configured. Please check Your configuration!
+     */
     public function testNoSmsProviders()
     {
         $container = $this->getMock(
@@ -31,7 +35,7 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('sms.available_providers')
+            ->with('sms.main_provider')
             ->will($this->returnValue(array()));
 
         $commandTester = new CommandTester($command);
@@ -40,43 +44,6 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertRegExp('/No messaging providers configured. Please check Your configuration!/', $commandTester->getDisplay());
-    }
-
-    public function testTooMuchSmsProviders()
-    {
-        $container = $this->getMock(
-            'Symfony\Component\DependencyInjection\Container',
-            array('getParameter', 'get')
-        );
-        $messagingService = $this->getMockBuilder('\Food\SmsBundle\Service\MessagesService')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $application = new Application();
-        $application->add(new SendCommand());
-
-        /**
-         * @var SendCommand $command
-         */
-        $command = $application->find('sms:send');
-        $command->setContainer($container);
-
-        $container->expects($this->at(0))
-            ->method('get')
-            ->with('food.messages')
-            ->will($this->returnValue($messagingService));
-
-        $container->expects($this->once())
-            ->method('getParameter')
-            ->with('sms.available_providers')
-            ->will($this->returnValue(array('infobip', 'gsms')));
-
-        $commandTester = new CommandTester($command);
-        $commandTester->execute(
-            array('command' => $command->getName())
-        );
-
-        $this->assertRegExp('/Sorry, at the moment we dont support more than one provider!/', $commandTester->getDisplay());
     }
 
     public function testNoMessagesToSend()
@@ -116,8 +83,8 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('sms.available_providers')
-            ->will($this->returnValue(array('food.infobip')));
+            ->with('sms.main_provider')
+            ->will($this->returnValue('food.infobip'));
 
         $infobipProvider->expects($this->never())
             ->method('setDebugEnabled');
@@ -181,8 +148,8 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('sms.available_providers')
-            ->will($this->returnValue(array('food.infobip')));
+            ->with('sms.main_provider')
+            ->will($this->returnValue('food.infobip'));
 
         $infobipProvider->expects($this->once())
             ->method('setDebugEnabled')
@@ -252,8 +219,8 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('sms.available_providers')
-            ->will($this->returnValue(array('food.infobip')));
+            ->with('sms.main_provider')
+            ->will($this->returnValue('food.infobip'));
 
         $infobipProvider->expects($this->never())
             ->method('setDebugEnabled');
@@ -329,8 +296,8 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('sms.available_providers')
-            ->will($this->returnValue(array('food.infobip')));
+            ->with('sms.main_provider')
+            ->will($this->returnValue('food.infobip'));
 
         $infobipProvider->expects($this->never())
             ->method('setDebugEnabled');
@@ -370,6 +337,10 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/2 messages sent/', $commandTester->getDisplay());
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Omg test hack
+     */
     public function testMessagesSendException()
     {
         $container = $this->getMock(
@@ -411,8 +382,8 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('sms.available_providers')
-            ->will($this->returnValue(array('food.infobip')));
+            ->with('sms.main_provider')
+            ->will($this->returnValue('food.infobip'));
 
         $infobipProvider->expects($this->never())
             ->method('setDebugEnabled');
@@ -448,6 +419,10 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/Error: Omg test hack/', $commandTester->getDisplay());
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Zis iz not a message
+     */
     public function testMessagesSendInvalidArgumentException()
     {
         $container = $this->getMock(
@@ -489,8 +464,8 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('sms.available_providers')
-            ->will($this->returnValue(array('food.infobip')));
+            ->with('sms.main_provider')
+            ->will($this->returnValue('food.infobip'));
 
         $infobipProvider->expects($this->never())
             ->method('setDebugEnabled');

@@ -18,6 +18,10 @@ class PlaceFilter
 
     private $placeFieldName = 'place';
 
+    /**
+     * @param SecurityContext $securityContext
+     * @param string $placeFieldName
+     */
     public function __construct(SecurityContext $securityContext, $placeFieldName = null)
     {
         $this->securityContext = $securityContext;

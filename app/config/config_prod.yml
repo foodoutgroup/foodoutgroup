@@ -2,7 +2,6 @@ imports:
     - { resource: config.yml }
 
 parameters:
-  # TODO Pries leidima isjungiam!
   evp.test_payments: 0
 
 #framework:

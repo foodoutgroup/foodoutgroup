@@ -1,14 +1,13 @@
 <?php
 
 namespace Food\CartBundle\Service;
-use Doctrine\Tests\Common\DataFixtures\ReferenceRepositoryTest;
+
 use Food\DishesBundle\Entity\Dish;
 use Food\CartBundle\Entity\Cart;
 use Food\CartBundle\Entity\CartOption;
 use Food\DishesBundle\Entity\DishOption;
 use Food\DishesBundle\Entity\DishSize;
 use Food\DishesBundle\Entity\Place;
-use Symfony\Component\DependencyInjection\Container;
 
 
 class CartService {
@@ -68,8 +67,6 @@ class CartService {
 
     /**
      * @return string
-     *
-     * @todo Panaikinti hardcoded dummy sesion id !!!!!
      */
     public function getSessionId()
     {
@@ -119,8 +116,11 @@ class CartService {
     }
 
     /**
-     * @param $dish
-     * @return $this
+     * @param int $dishId
+     * @param int $cartId
+     * @param int $placeId
+     * @internal param $dish
+     * @return CartService
      */
     public function removeDishByIds($dishId, $cartId, $placeId)
     {
@@ -230,6 +230,7 @@ class CartService {
      * @param int $size
      * @param int $quantity
      * @param array $options
+     * @param array $option
      */
     public function addDishBySizeId($size, $quantity, $options = array(), $option = array())
     {
@@ -375,6 +376,7 @@ class CartService {
     /**
      * @param \Food\CartBundle\Entity\Cart[] $cartItems
      * @param \Food\DishesBundle\Entity\Place $place
+     * @return float|int
      */
     public function getCartTotal($cartItems, $place)
     {
@@ -389,7 +391,7 @@ class CartService {
     }
 
     /**
-     * @param Dish $dish
+     * @param Cart $cartItem
      * @return array|\Food\CartBundle\Entity\CartOption[]
      */
     public function getCartDishOptions(Cart $cartItem)
@@ -427,6 +429,7 @@ class CartService {
 
     /**
      * @param Cart $cartItem
+     * @return array
      */
     private function getOptionsForJson(Cart $cartItem)
     {

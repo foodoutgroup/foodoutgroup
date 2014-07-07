@@ -27,21 +27,17 @@ class SendCommand extends ContainerAwareCommand
         $count = 0;
 
         $messagingService = $this->getContainer()->get('food.messages');
-        $messagingProviders = $this->getContainer()->getParameter('sms.available_providers');
+//        $messagingProviders = $this->getContainer()->getParameter('sms.available_providers');
+        $mainProvider = $this->getContainer()->getParameter('sms.main_provider');
+//
+        if (empty($mainProvider)) {
+            $errMessage = 'No messaging providers configured. Please check Your configuration!';
+            $output->writeln('<error>'.$errMessage.'</error>');
 
-        // TODO https://basecamp.com/2470154/projects/4420182-skanu-lt-gamyba/todos/72720237-antrinio
-        if (count($messagingProviders) < 1) {
-            $output->writeln('<error>No messaging providers configured. Please check Your configuration!</error>');
-            return;
-        }
-        if (count($messagingProviders) > 1) {
-            $output->writeln('<error>Sorry, at the moment we dont support more than one provider!</error>');
-            $output->writeln('Available provider: '.var_export($messagingProviders, true));
-            return;
+            throw new \Exception($errMessage);
         }
 
-        // OMG kaip negrazu, bet cia laikinai, kol tik viena provideri turim
-        $provider = $this->getContainer()->get($messagingProviders[0]);
+        $provider = $this->getContainer()->get($mainProvider);
 
         if ($input->getOption('debug')) {
             $provider->setDebugEnabled(true);
@@ -66,9 +62,13 @@ class SendCommand extends ContainerAwareCommand
         } catch (\InvalidArgumentException $e) {
             $output->writeln('<error>Sorry, lazy programmer left a bug :(</error>');
             $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
+
+            throw $e;
         } catch (\Exception $e) {
             $output->writeln('<error>Mayday mayday, an error knocked the process down.</error>');
             $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
+
+            throw $e;
         }
     }
 }

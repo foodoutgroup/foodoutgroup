@@ -11,6 +11,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TestController extends Controller
 {
+    /**
+     * @return Response
+     *
+     * @codeCoverageIgnore
+     */
     public function indexAction()
     {
         $ml = $this->get('food.mailer');
@@ -30,6 +35,11 @@ class TestController extends Controller
         return new Response('Uber');
     }
 
+    /**
+     * @return RedirectResponse|Response
+     *
+     * @codeCoverageIgnore
+     */
     public function paymentAction()
     {
         /**
@@ -42,10 +52,6 @@ class TestController extends Controller
          */
         $paysera = $this->container->get('food.paysera_biller');
 //        $paysera->setTest(1);
-//        $paysera->setAcceptUrl($this->generateUrl('paysera_accept'));
-//        // TODO Paysera negrazina nieko, jei nutrauki mokejima. Gal vertetu order hash perduoti urlu del visa ko? jei sesija nusimustu?
-//        $paysera->setCancelUrl($this->generateUrl('paysera_cancel'));
-//        $paysera->setCallbackUrl($this->generateUrl('paysera_callback'));
         $orderService->setPayseraBiller($paysera);
 
         $redirectUrl = $orderService->billOrder(1, 'paysera');
@@ -57,15 +63,32 @@ class TestController extends Controller
         return new Response("Ola, mister payment nothing happened :)");
     }
 
+    /**
+     * @return Response
+     *
+     * @codeCoverageIgnore
+     */
     public function reportAction()
     {
         $orderService = $this->get('food.order');
+
+//        $orders = $orderService->getDriversMonthlyOrderCount();
+//
+//        return (
+//            $this->render(
+//                'FoodOrderBundle:Command:accounting_monthly_driver_report.html.twig',
+//                array(
+//                    'orders' => $orders,
+//                    'reportFor' => date("Y-m", strtotime('-1 month')),
+//                )
+//            )
+//        );
 
         $orders = $orderService->getYesterdayOrdersGrouped();
 
         return (
             $this->render(
-                'FoodOrderBundle:Command:accounting_yesterday_report.txt.twig',
+                'FoodOrderBundle:Command:accounting_yesterday_report.html.twig',
                 array(
                     'orders' => $orders,
                     'reportFor' => date("Y-m-d", strtotime('-1 day')),

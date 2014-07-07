@@ -3,7 +3,6 @@
 namespace Food\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Food\DishesBundle\Entity\DishOption;
 
 /**
  * @ORM\Table(name="order_details")

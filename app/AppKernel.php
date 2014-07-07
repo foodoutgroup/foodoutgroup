@@ -40,6 +40,7 @@ class AppKernel extends Kernel
             new Food\SupportBundle\FoodSupportBundle(),
             new Trsteel\CkeditorBundle\TrsteelCkeditorBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new Food\MonitoringBundle\FoodMonitoringBundle(),
             new Food\ApiBundle\FoodApiBundle(),
         );
 

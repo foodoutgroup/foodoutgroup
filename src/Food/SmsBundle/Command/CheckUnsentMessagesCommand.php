@@ -40,31 +40,25 @@ class CheckUnsentMessagesCommand extends ContainerAwareCommand
         } catch (\Exception $e) {
             $text = 'Error in unsent messages check: '.$e->getMessage();
             $this->soundTheAlarm($text);
+
+            throw $e;
         }
 
         $output->writeln($text);
     }
 
+    /**
+     * @param string $text
+     */
     protected function soundTheAlarm($text)
     {
         $text = str_replace(array('<error>', '</error>'), '', $text);
-        // TODO po merge su cart branchu - ijungiam domain pasiimima
-//        $domain = $this->getContainer()->getParameter('domain');
-        $domain = 'skanu.lt';
+        $domain = $this->getContainer()->getParameter('domain');
         $adminEmails = $this->getContainer()->getParameter('admin.emails');
         $mailer = $this->getContainer()->get('mailer');
 
         $sendMonitoringMessages = $this->getContainer()->getParameter('admin.send_monitoring_message');
         $adminPhones = array();
-        if ($sendMonitoringMessages) {
-            $messagingService = $this->getContainer()->get('food.messages');
-            // Rizikuojam siusdami per ji, nes jis stabiliausias, o luzis greiciausiai musu crono :(
-            $provider = $this->getContainer()->get('food.infobip');
-            $messagingService->setMessagingProvider($provider);
-
-            $adminPhones = $this->getContainer()->getParameter('admin.phones');
-            $sender = $this->getContainer()->getParameter('sms.sender');
-        }
 
         if (!empty($adminEmails)) {
             $message = \Swift_Message::newInstance()
@@ -81,6 +75,14 @@ class CheckUnsentMessagesCommand extends ContainerAwareCommand
         }
 
         if ($sendMonitoringMessages && !empty($adminPhones)) {
+            $messagingService = $this->getContainer()->get('food.messages');
+            // Rizikuojam siusdami per ji, nes jis stabiliausias, o luzis greiciausiai musu crono :(
+            $provider = $this->getContainer()->get('food.infobip');
+            $messagingService->setMessagingProvider($provider);
+
+            $adminPhones = $this->getContainer()->getParameter('admin.phones');
+            $sender = $this->getContainer()->getParameter('sms.sender');
+
             foreach ($adminPhones as $phone) {
                 $textMessage = $messagingService->createMessage($sender, $phone, $text);
                 $messagingService->sendMessage($textMessage);
