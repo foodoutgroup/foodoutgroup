@@ -74,9 +74,7 @@
             var placeId = dishBlock.find('input[name="place"]').val();
 
             // TODO needs nice refactoring ;)
-            // TODO vertimai
             // TODO checkboxas, kad tikrai tikrai perskaiciau
-            // TODO css'a patvarkyt, kad nebutu grynas jQueris
 
             // Is alcohol and needs confirmation
             var alcoCookie = getCookie('alco_18_' + placeId);
@@ -93,7 +91,7 @@
                         buttons: [
                             {
                                 id: 'confirm-button',
-                                text: "Patvirtinu",
+                                text: "{% trans %}general.alcohol_confirmation.confirm{% endtrans %}",
 //                                disabled: true,
                                 click: function() {
                                     $( this ).dialog( "close" );
@@ -110,14 +108,14 @@
                             },
                             {
                                 id: 'cancel-button',
-                                text: "Išeiti",
+                                text: "{% trans %}general.alcohol_confirmation.exit{% endtrans %}",
                                 click: function() {
                                     $( this ).dialog( "close" );
                                     $.fancybox.close();
                                 }
                             }
                         ]
-                    });
+                    }).siblings('.ui-dialog-titlebar').remove();
                 });
              // Not alcohol - just add to cart
             } else {
