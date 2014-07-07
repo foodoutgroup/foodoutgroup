@@ -128,7 +128,7 @@ class MenuItem extends ContainerAware
                 }
                 */
                 if ($option->getSingleSelect()) {
-                    $optionsGroups[$name]['single'] = $option;
+                    $optionsGroups[$name]['single'][] = $option;
                     /*
                     $options[$name]['items'][] = array(
                         'option_id' => $option->getId(),
@@ -139,7 +139,7 @@ class MenuItem extends ContainerAware
                     );
                     */
                 } else {
-                    $optionsGroups[$name]['multi'] = $option;
+                    $optionsGroups[$name]['multi'][] = $option;
                     /*
                     $options[$name]['items'][] = array(
                         'option_id' => $option->getId(),
@@ -149,6 +149,50 @@ class MenuItem extends ContainerAware
                         'price_modifier' => $option->getPrice() * 100
                     );
                     */
+                }
+            }
+
+            foreach ($optionsGroups as $key=>$optionsRow) {
+                if (!empty($optionsRow['single'])) {
+                    $optionList = array(
+                        'title' => "",
+                        'default' => null,
+                        'type' => 'radio',
+                        'items' => array()
+                    );
+                    $items = array();
+                    foreach ($optionsRow['single'] as $opt) {
+                        $items[] = array(
+                            'option_id' => $opt->getId(),
+                            'title' => $option->getName(),
+                            'price_modifier' => $option->getPrice() * 100
+                        );
+                    }
+                    $optionList['default'] = $items[0]['option_id'];
+                    $optionList['items'] = $items;
+                    $options[($key.'single')] = $optionList;
+                }
+
+                if (!empty($optionsRow['multi'])) {
+                    $optionList = array(
+                        'title' => "",
+                        'items' => array()
+                    );
+                    $items = array();
+
+                    foreach ($optionsRow['multi'] as $opt) {
+                        $items[] = array(
+                            'option_id' => $opt->getId(),
+                            'title' => $opt->getName(),
+                            'type' => 'checkbox',
+                            'default' => false,
+                            'price_modifier' => $opt->getPrice() * 100
+
+                        );
+                    }
+                    $optionList['default'] = $items[0]['option_id'];
+                    $optionList['items'] = $items;
+                    $options[($key.'multi')] = $optionList;
                 }
             }
 
