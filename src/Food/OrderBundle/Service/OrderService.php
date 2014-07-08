@@ -2051,6 +2051,10 @@ class OrderService extends ContainerAware
             }
         }
 
+        if ($request->get('cart_rules') != 'on') {
+            $formErrors[] = 'order.form.errors.cart_rules';
+        }
+
         if (!empty($formErrors)) {
             $formHasErrors = true;
         }

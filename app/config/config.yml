@@ -95,6 +95,7 @@ twig:
         vat_size: "%vat%"
         dish_service: "@food.dishes"
         order_service: "@food.order"
+        static_service: "@food.static"
         google_maps_api: "%google.maps_api%"
         language_utils: "@food.app.utils.language"
 

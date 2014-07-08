@@ -183,14 +183,19 @@
                                 <label>{% trans %}cart.checkout.delivery_comment{% endtrans %}:</label>
                                 <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['customer-comment'] is not empty) %}{{ dataToLoad['customer-comment'] }}{% endif %}</textarea>
                             </div>
+                            <div class="form-row form-row-required custom-checkbox cart-rules">
+                                <label>{% trans %}cart.checkout.cart_rules{% endtrans %}</label>
+                                <input type="checkbox" name="cart_rules" {% if (dataToLoad is not empty and dataToLoad['cart_rules'] is defined and dataToLoad['cart_rules'] is not empty) %}checked="checked"{% endif %} />
+                            </div>
+                            <div class="clearfix"></div>
                             <h2 class="section-2">2. {% trans %}cart.checkout.block_title_secure_payment{% endtrans %}</h2>
                             <div class="select-payment clearfix">
                                 <label class="custom-radio">{% trans %}cart.checkout.cash_on_delivery{% endtrans %}
-                                    <input type="radio" name="payment-type" value="local"{% if (order is not null and order.paymentMethod == 'local') or (dataToLoad is not empty and dataToLoad['payment-type'] == 'local') %} checked="checked"{% endif %}>
+                                    <input type="radio" name="payment-type" value="local"{% if (order is not null and order.paymentMethod == 'local') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local') or (dataToLoad is empty) %} checked="checked"{% endif %}>
                                 </label>
                                 {% if takeAway != true and place.cardOnDelivery %}
                                 <label class="custom-radio">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
-                                    <input type="radio" name="payment-type" value="local.card"{% if (order is not null and order.paymentMethod == 'local.card') or (dataToLoad is not empty and dataToLoad['payment-type'] == 'local.card') %} checked="checked"{% endif %}>
+                                    <input type="radio" name="payment-type" value="local.card"{% if (order is not null and order.paymentMethod == 'local.card') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local.card') %} checked="checked"{% endif %}>
                                 </label>
                                 {% endif %}
                             </div>
@@ -215,7 +220,6 @@
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
                             </div>
-
                             {# <div class="cupon-info">Jei turite kuponą, įveskite <a href="#">jo kodą čia</a></div> #}
                         </div>
                         <div class="form-controls clearfix"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button-back">{% trans %}cart.checkout.button_get_back{% endtrans %}</a><a href="#" class="submit-button"><span>{% trans %}cart.checkout.button_order{% endtrans %}</span></a></div>
@@ -249,6 +253,11 @@
                 <b>{% trans %}cart.checkout.place_point_not_in_radius{% endtrans %}</b><br />
                 <p>{% trans %}cart.checkout.no_delivery_choose_what_to_do{% endtrans %}</p>
             </div>
+        </div>
+    </div>
+    <div class="hidden">
+        <div id="rules" class="cart_rules_content">
+            <div class="cart_rules_inner">{{ static_service.getPage(slug_util.oneByName('ordering_rules', locale).itemId).content|raw }}</div>
         </div>
     </div>
 {% endblock %}
