@@ -252,12 +252,16 @@ class DefaultController extends Controller
     public function loginButtonAction()
     {
         // due to mystery I will do stuff my way
-        $user = $this
-            ->getDoctrine()
-            ->getRepository('FoodUserBundle:User')
-            ->find($this->user()->getId())
-        ;
-        $this->getDoctrine()->getManager()->refresh($user);
+        $user = $this->user();
+
+        if ($user) {
+            $user = $this
+                ->getDoctrine()
+                ->getRepository('FoodUserBundle:User')
+                ->find($user->getId())
+            ;
+            $this->getDoctrine()->getManager()->refresh($user);
+        }
 
 
         if ($this->get('security.context')->isGranted('ROLE_USER')) {
