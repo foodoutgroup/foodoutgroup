@@ -25,6 +25,12 @@ class BasketController extends Controller
         return new JsonResponse($basket);
     }
 
+    public function deleteBasketAction($id)
+    {
+        $this->get('food_api.basket')->deleteBasket($id);
+        return new Response();
+    }
+
      /**
      * JSON beautifier
      *

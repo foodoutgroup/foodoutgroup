@@ -2,6 +2,7 @@
 namespace Food\ApiBundle\Service;
 
 use Food\ApiBundle\Common\ShoppingBasketItem;
+use Food\CartBundle\Entity\Cart;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -28,7 +29,40 @@ class BasketService extends ContainerAware
 
     public function updateBasketFromRequest($id, Request $request)
     {
-        return $returner;
+        /**
+        {
+            "restaurant_id": 1,
+            "items": [
+                {
+                "item_id": 2,
+                "count": 3,
+                "options": [],
+                "additional_info": ""
+                }
+            ]
+        }
+         */
+        $basket = $this->container->get('doctrine')->getRepository('FoodApiBundle:ShoppingBasketRelation')->find(itnval($id));
+        foreach ($request->get('items') as $item) {
+            $cartItem = new Cart();
+            $cartItem->setDishId($item['item_id'])
+                ->setComment($item['additional_info'])
+                ->setQuantity($item['count'])
+                ->setPlaceId($basket->getPlaceId())
+                ->setSession($basket->getSession());
+
+            $this->container->get('doctrine')->getManager()->persist($cartItem);
+            $this->container->get('doctrine')->getManager()->flush();
+        }
+        return $this->getBasket($id);
+    }
+
+    public function deleteBasket($id)
+    {
+        $doc = $this->container->get('doctrine');
+        $ent = $doc->getManager()->getRepository('FoodApiBundle:ShoppingBasketRelation')->find(itnval($id));
+        $doc->getManager()->remove($ent);
+        $doc->getManager()->flush();
     }
 
     private function _createBasket($data)

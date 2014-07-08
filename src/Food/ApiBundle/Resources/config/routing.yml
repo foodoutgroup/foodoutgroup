@@ -53,7 +53,10 @@ food_api_baskets_get:
     defaults: { _controller: FoodApiBundle:Basket:getBasket }
     methods: [GET]
 
-
+food_api_baskets_delete:
+    pattern: /baskets/{id}
+    defaults: { _controller: FoodApiBundle:Basket:deleteBasket }
+    methods: [DELETE]
 
 # Orders Routings :)
 food_api_orders:
