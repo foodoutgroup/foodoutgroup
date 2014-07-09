@@ -83,3 +83,8 @@ food_api_order_status:
     pattern: /orders/{id}/status
     defaults: { _controller: FoodApiBundle:Orders:getOrderStatus}
     methods: [GET]
+
+food_api_find_street:
+    pattern: /address/street
+    defaults: { _controller: FoodApiBundle:Address:findStreet}
+    methods: [GET]
