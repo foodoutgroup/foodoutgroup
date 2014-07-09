@@ -71,6 +71,18 @@ class DefaultController extends Controller
             // finally update user
             $userManager->updateUser($user);
 
+            // set noty notification for successful user registration
+            $this
+                ->container
+                ->get('food.app.utils.notifications')
+                ->setSuccessMessage(
+                    $this
+                        ->container
+                        ->get('translator')
+                        ->trans('general.noty.successful_user_registration')
+                )
+            ;
+
             $d = $request->get('fos_user_registration_form');
 
             $this->_notifyNewUser($user, $d['plainPassword']['first']);

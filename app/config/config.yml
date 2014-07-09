@@ -92,6 +92,7 @@ twig:
         order_service: "@food.order"
         google_maps_api: "%google.maps_api%"
         language_utils: "@food.app.utils.language"
+        notifications: "@food.app.utils.notifications"
 
 
 # Assetic Configuration

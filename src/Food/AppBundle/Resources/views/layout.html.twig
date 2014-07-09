@@ -56,8 +56,10 @@
             '{% trans %}general.raty.gorgeous{% endtrans %}'
         ];
     </script>
+    <script src="{{ asset('bundles/foodapp/scripts/noty/packaged/jquery.noty.packaged.min.js') }}"></script>
 </head>
 <body>
+{{ notifications.init|raw }}
 <div class="site">
     <div class="site-top">
         <div class="site-block clearfix"><a href="{{ path('food_lang_homepage') }}" class="main-logo"><img alt="{{ page_title }}" src="{{ asset('bundles/foodapp/images/logo_food.png') }}"></a>
