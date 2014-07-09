@@ -39,7 +39,7 @@ food_api_restaurants_get_menu_item:
 
 #basketszzzz
 food_api_baskets_create:
-    pattern: /baskets/{id}
+    pattern: /baskets
     defaults: { _controller: FoodApiBundle:Basket:createBasket }
     methods: [POST]
 

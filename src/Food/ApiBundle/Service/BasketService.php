@@ -10,7 +10,7 @@ class BasketService extends ContainerAware
 {
     public function createBasketFromRequest(Request $request)
     {
-        mail("paulius@foodout.lt", "Rquest create basket", print_r($request->request->all(), true), "FROM: testas@foodout.lt");
+        @mail("paulius@foodout.lt", "Rquest create basket", print_r($request->request->all(), true), "FROM: testas@foodout.lt");
         $data = array(
             'restaurant_id' => $request->get('restaurant_id'),
             'items' => $this->_getCreateBasketItems($request)
@@ -21,16 +21,22 @@ class BasketService extends ContainerAware
     public function _getCreateBasketItems(Request $request)
     {
         $returner = array();
-        foreach ( $request->get('items') as $item) {
+        $items = array();
+        if (!empty($request->get('items'))) {
+            $items = $request->get('items');
+        }
+        foreach ( $items as $item) {
             $it = new ShoppingBasketItem(null, $this->container);
-            $returner[] = $it->populateFromCreateRequest($item);
+            $tmpItem =  $it->populateFromCreateRequest($item);
+
+            $returner[] = $tmpItem;
         }
         return $returner;
     }
 
     public function updateBasketFromRequest($id, Request $request)
     {
-        mail("paulius@foodout.lt", "Update basket", print_r($request->request->all(), true), "FROM: testas@foodout.lt");
+        @mail("paulius@foodout.lt", "Update basket", print_r($request->request->all(), true), "FROM: testas@foodout.lt");
         /**
         {
             "restaurant_id": 1,
