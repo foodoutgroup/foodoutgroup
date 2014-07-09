@@ -176,6 +176,7 @@ class MenuItem extends ContainerAware
                 if (!empty($optionsRow['multi'])) {
                     $optionList = array(
                         'title' => "",
+                        'type' => 'checkbox',
                         'items' => array()
                     );
                     $items = array();
@@ -184,7 +185,6 @@ class MenuItem extends ContainerAware
                         $items[] = array(
                             'option_id' => $opt->getId(),
                             'title' => $opt->getName(),
-                            'type' => 'checkbox',
                             'default' => false,
                             'price_modifier' => $opt->getPrice() * 100
 
