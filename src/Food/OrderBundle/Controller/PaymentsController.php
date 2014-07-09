@@ -4,23 +4,24 @@ namespace Food\OrderBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Acl\Exception\Exception;
 
 class PaymentsController extends Controller
 {
-    public function payseraAcceptAction()
+    public function payseraAcceptAction(Request $request)
     {
         $logger = $this->container->get("logger");
         $logger->alert("==========================\naccept payment action for paysera came\n====================================\n");
-        $logger->alert("Request data: ".var_export($this->getRequest()->query->all(), true));
+        $logger->alert("Request data: ".var_export($request->query->all(), true));
         $logger->alert('-----------------------------------------------------------');
 
         $orderService = $this->container->get('food.order');
 
         try {
             $callbackValidator = $this->get('evp_web_to_pay.callback_validator');
-            $data = $callbackValidator->validateAndParseData($this->getRequest()->query->all());
+            $data = $callbackValidator->validateAndParseData($request->query->all());
 
             $logger->alert("Parsed accept data: ".var_export($data, true));
             $logger->alert('-----------------------------------------------------------');
@@ -82,11 +83,11 @@ class PaymentsController extends Controller
         return new RedirectResponse($this->generateUrl('food_cart_success', array('orderHash' => $order->getOrderHash())));
     }
 
-    public function payseraCancelAction($hash)
+    public function payseraCancelAction($hash, Request $request)
     {
         $logger = $this->container->get("logger");
         $logger->alert("==========================\ncancel payment action for paysera came\n====================================\n");
-        $logger->alert("Request data: ".var_export($this->getRequest()->query->all(), true));
+        $logger->alert("Request data: ".var_export($request->query->all(), true));
         $logger->alert('-----------------------------------------------------------');
 
         try {
@@ -123,7 +124,7 @@ class PaymentsController extends Controller
         );
     }
 
-    public function payseraCallbackAction()
+    public function payseraCallbackAction(Request $request)
     {
         $logger = $this->container->get("logger");
         $logger->alert("==========================\ncallback payment action for paysera came\n====================================\n");
@@ -132,7 +133,7 @@ class PaymentsController extends Controller
 
         try {
             $callbackValidator = $this->get('evp_web_to_pay.callback_validator');
-            $data = $callbackValidator->validateAndParseData($this->getRequest()->query->all());
+            $data = $callbackValidator->validateAndParseData($request->query->all());
             $logger->alert('-- parsing data');
             $logger->alert('Parsed data: '.var_export($data, true));
 
