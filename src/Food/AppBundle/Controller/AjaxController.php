@@ -21,10 +21,10 @@ class AjaxController extends Controller
 
         switch($action) {
             case 'find-address':
-                $this->_ajaxActFindAddress($response,$request->get('city'), $this->getRequest()->get('address'));
+                $this->_ajaxActFindAddress($response,$request->get('city'), $request->get('address'));
                 break;
             case 'find-address-and-recount':
-                $this->_ajaxActFindAddress($response,$request->get('city'), $this->getRequest()->get('address'));
+                $this->_ajaxActFindAddress($response,$request->get('city'), $request->get('address'));
                 $this->_isPlaceInRadius($response, intval($request->get('place')));
                 break;
             default:

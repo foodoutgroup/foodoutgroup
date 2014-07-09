@@ -40,7 +40,7 @@ class BannedIp
     private $active = true;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
