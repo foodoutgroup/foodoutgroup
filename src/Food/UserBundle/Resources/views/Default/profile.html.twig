@@ -47,7 +47,7 @@
                     </div>
                     <div class="user-righter content-item user">
                         <h2>{% trans %}general.profile.user_data{% endtrans %}</h2>
-                        {% if form.vars.valid == false %}
+                        {% if form.vars.valid == false or changePasswordForm.vars.valid == false %}
                             <div class="error alert alert-danger">
                                 <ul>
                                     {% for input in form %}
