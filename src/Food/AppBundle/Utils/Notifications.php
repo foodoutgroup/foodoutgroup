@@ -10,15 +10,14 @@ class Notifications
 
     public function init()
     {
-        $flashBag = $this->service('session')->getFlashBag();
-        $templating = $this->service('templating');
-
-        return $templating->render(
-            'FoodAppBundle:Notifications:init.html.twig',
-            [
-                'noty_success_message' => $this->getSuccessMessage()
-            ]
-        );
+        return $this
+            ->service('templating')
+            ->render(
+                'FoodAppBundle:Notifications:init.html.twig',
+                [
+                    'noty_success_message' => $this->getSuccessMessage()
+                ]
+            );
     }
 
     public function setSuccessMessage($message)
