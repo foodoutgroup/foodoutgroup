@@ -24,7 +24,6 @@ class ProfileFormType extends BaseType
     {
         $resolver->setDefaults(array(
             'data_class' => $this->class,
-            'intention'  => 'profile',
             'csrf_protection' => false,
             'validation_groups' => array(
                 'Default',

@@ -6,13 +6,6 @@
 
     <class name="Food\UserBundle\Entity\User">
         <property name="firstname">
-            <constraint name="NotBlank">
-                <option name="message">fos_user.firstname.blank</option>
-                <option name="groups">
-                    <value>Registration</value>
-                    <value>Profile</value>
-                </option>
-            </constraint>
             <constraint name="Length">
                 <option name="min">2</option>
                 <option name="minMessage">fos_user.firstname.short</option>
@@ -23,15 +16,38 @@
                     <value>Profile</value>
                 </option>
             </constraint>
-        </property>
-
-        <property name="phone">
-            <constraint name="NotBlank">
-                <option name="message">fos_user.phone.blank</option>
+            <constraint name="Regex">
+                <option name="pattern">/^[a-zA-Zą-žĄ-Ž\s]*$/</option>
+                <option name="message">fos_user.firstname.letters_spaces_only</option>
                 <option name="groups">
+                    <value>Registration</value>
                     <value>Profile</value>
                 </option>
             </constraint>
+        </property>
+
+        <property name="lastname">
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">fos_user.lastname.short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">fos_user.lastname.long</option>
+                <option name="groups">
+                    <value>Registration</value>
+                    <value>Profile</value>
+                </option>
+            </constraint>
+            <constraint name="Regex">
+                <option name="pattern">/^[a-zA-Zą-žĄ-Ž\s]*$/</option>
+                <option name="message">fos_user.lastname.letters_spaces_only</option>
+                <option name="groups">
+                    <value>Registration</value>
+                    <value>Profile</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="phone">
             <constraint name="Length">
                 <option name="min">11</option>
                 <option name="minMessage">fos_user.phone.short</option>

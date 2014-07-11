@@ -3,10 +3,12 @@ fos_user:
         blank: Prašome įvesti vardą
         short: "[-Inf,Inf]Vardas per trumpas"
         long: "[-Inf,Inf]Vardas per ilgas"
+        letters_spaces_only: "Vardą turi sudaryti tik raidės arba tarpelio simbolis"
     lastname:
         blank: Prašome įvesti pavardę
         short: "[-Inf,Inf]Pavardė per trumpa"
         long: "[-Inf,Inf]Pavardė per ilga"
+        letters_spaces_only: "Pavardę turi sudaryti tik raidės arba tarpelio simbolis"
     phone:
         blank: Prašome įvesti telefono numerį
         short: "[-Inf,Inf]Numeris per trumpas"

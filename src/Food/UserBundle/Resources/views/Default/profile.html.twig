@@ -1,7 +1,7 @@
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
-{% form_theme form _self %}
-{% form_theme addressForm _self %}
+{% form_theme form.profile _self %}
+{% form_theme form.address _self %}
 
 {% block form_row %}
 {% spaceless %}
@@ -47,10 +47,10 @@
                     </div>
                     <div class="user-righter content-item user">
                         <h2>{% trans %}general.profile.user_data{% endtrans %}</h2>
-                        {% if form.vars.valid == false or changePasswordForm.vars.valid == false %}
+                        {% if form.profile.vars.valid == false or form.change_password.vars.valid == false %}
                             <div class="error alert alert-danger">
                                 <ul>
-                                    {% for input in form %}
+                                    {% for input in form.profile %}
                                         {% if input.vars.errors is defined %}
                                             {% for inputName, error in input.vars.errors %}
                                                 <li>{{ error.message }}</li>
@@ -58,64 +58,64 @@
                                         {% endif %}
                                     {% endfor %}
 
-                                    {% if changePasswordForm.current_password.vars.data|length > 0 %}
-                                        {% for error in changePasswordForm.current_password.vars.errors %}
+                                    {#% if form.change_password.current_password.vars.data|length > 0 %#}
+                                        {% for error in form.change_password.current_password.vars.errors %}
                                             <li>{{ error.message }}</li>
                                         {% endfor %}
 
-                                        {% for error in changePasswordForm.plainPassword.first.vars.errors %}
+                                        {% for error in form.change_password.plainPassword.first.vars.errors %}
                                             <li>{{ error.message }}</li>
                                         {% endfor %}
 
-                                        {% for error in changePasswordForm.plainPassword.second.vars.errors %}
+                                        {% for error in form.change_password.plainPassword.second.vars.errors %}
                                             <li>{{ error.message }}</li>
                                         {% endfor %}
-                                    {% endif %}
+                                    {#% endif %#}
                                 </ul>
                             </div>
                         {% endif %}
                         <form class="user-details-form" action="{{ path('user_profile_update') }}" method="POST" novalidate="novalidate">
-                            <div class="form-row {% if submitted and form.firstname.vars.errors is defined and form.firstname.vars.errors|length > 0 and form.firstname.vars.required %}error{% endif %}">
-                                {{ form_label(form.firstname) }}
-                                {{ form_widget(form.firstname) }}
+                            <div class="form-row {% if submitted and form.profile.firstname.vars.errors is defined and form.profile.firstname.vars.errors|length > 0 %}error{% endif %}">
+                                {{ form_label(form.profile.firstname) }}
+                                {{ form_widget(form.profile.firstname) }}
                             </div>
-                            <div class="form-row {% if submitted and form.lastname.vars.errors is defined and form.lastname.vars.errors|length > 0 and form.lastname.vars.required %}error{% endif %}">
-                                {{ form_label(form.lastname) }}
-                                {{ form_widget(form.lastname) }}
+                            <div class="form-row {% if submitted and form.profile.lastname.vars.errors is defined and form.profile.lastname.vars.errors|length > 0 %}error{% endif %}">
+                                {{ form_label(form.profile.lastname) }}
+                                {{ form_widget(form.profile.lastname) }}
                             </div>
-                            <div class="form-row {% if submitted and form.email.vars.errors is defined and form.email.vars.errors|length > 0 and form.email.vars.required %}error{% endif %}">
-                                {{ form_label(form.email) }}
-                                {{ form_widget(form.email) }}
+                            <div class="form-row {% if submitted and form.profile.email.vars.errors is defined and form.profile.email.vars.errors|length > 0 %}error{% endif %}">
+                                {{ form_label(form.profile.email) }}
+                                {{ form_widget(form.profile.email) }}
                             </div>
-                            <div class="form-row {% if submitted and form.phone.vars.errors is defined and form.phone.vars.errors|length > 0 and form.phone.vars.required %}error{% endif %}">
-                                {{ form_label(form.phone) }}
-                                {{ form_widget(form.phone) }}
+                            <div class="form-row {% if submitted and form.profile.phone.vars.errors is defined and form.profile.phone.vars.errors|length > 0 %}error{% endif %}">
+                                {{ form_label(form.profile.phone) }}
+                                {{ form_widget(form.profile.phone) }}
                             </div>
 
                             <hr>
 
                             <div class="form-row">
-                                {{ form_label(addressForm.city) }}
-                                {{ form_widget(addressForm.city) }}
+                                {{ form_label(form.address.city) }}
+                                {{ form_widget(form.address.city) }}
                             </div>
                             <div class="form-row">
-                                {{ form_label(addressForm.address) }}
-                                {{ form_widget(addressForm.address) }}
+                                {{ form_label(form.address.address) }}
+                                {{ form_widget(form.address.address) }}
                             </div>
 
                             <hr>
 
-                            <div class="form-row {% if submitted and changePasswordForm.current_password.vars.data|length > 0 and changePasswordForm.current_password.vars.errors is defined and changePasswordForm.current_password.vars.errors|length > 0 and changePasswordForm.current_password.vars.required %}error{% endif %}">
-                                {{ form_label(changePasswordForm.current_password) }}
-                                {{ form_widget(changePasswordForm.current_password) }}
+                            <div class="form-row {% if submitted and form.change_password.current_password.vars.data|length > 0 and form.change_password.current_password.vars.errors is defined and form.change_password.current_password.vars.errors|length > 0 %}error{% endif %}">
+                                {{ form_label(form.change_password.current_password) }}
+                                {{ form_widget(form.change_password.current_password) }}
                             </div>
-                            <div class="form-row {% if submitted and changePasswordForm.current_password.vars.data|length > 0 and changePasswordForm.plainPassword.first.vars.errors is defined and changePasswordForm.plainPassword.first.vars.errors|length > 0 and changePasswordForm.plainPassword.first.vars.required %}error{% endif %}">
-                                {{ form_label(changePasswordForm.plainPassword.first) }}
-                                {{ form_widget(changePasswordForm.plainPassword.first) }}
+                            <div class="form-row {% if submitted and form.change_password.current_password.vars.data|length > 0 and form.change_password.plainPassword.first.vars.errors is defined and form.change_password.plainPassword.first.vars.errors|length > 0 %}error{% endif %}">
+                                {{ form_label(form.change_password.plainPassword.first) }}
+                                {{ form_widget(form.change_password.plainPassword.first) }}
                             </div>
-                            <div class="form-row {% if submitted and changePasswordForm.current_password.vars.data|length > 0 and changePasswordForm.plainPassword.second.vars.errors is defined and changePasswordForm.plainPassword.second.vars.errors|length > 0 and changePasswordForm.plainPassword.form.second.required %}error{% endif %}">
-                                {{ form_label(changePasswordForm.plainPassword.second) }}
-                                {{ form_widget(changePasswordForm.plainPassword.second) }}
+                            <div class="form-row {% if submitted and form.change_password.current_password.vars.data|length > 0 and form.change_password.plainPassword.first.vars.errors is defined and form.change_password.plainPassword.first.vars.errors|length > 0 %}error{% endif %}">
+                                {{ form_label(form.change_password.plainPassword.second) }}
+                                {{ form_widget(form.change_password.plainPassword.second) }}
                             </div>
 
                             {{ form_rest(form) }}

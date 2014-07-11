@@ -16,6 +16,7 @@ use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use Food\UserBundle\Form\Type\ProfileFormType;
+use Food\UserBundle\Form\Type\ProfileMegaFormType;
 use Food\UserBundle\Form\Type\UserAddressFormType;
 use Food\UserBundle\Form\Type\ChangePasswordFormType;
 use Food\UserBundle\Entity\User;
@@ -181,29 +182,27 @@ class DefaultController extends Controller
      */
     public function profileUpdateAction(Request $request)
     {
+        // services
         $userManager = $this->container->get('fos_user.user_manager');
-
         $em = $this->getDoctrine()->getManager();
 
+        // data
         $user = $this->user();
         $address = $this->address($user);
+        $cities = array('Vilnius' => 'Vilnius', 'Kaunas' => 'Kaunas');
 
-        $form = $this->createForm(new ProfileFormType(get_class($user)), $user);
+        // embedded form
+        $requestData = $request->request->get('food_user_profile');
+
+        // mega form containts 3 embedded forms
+        $form = $this->createProfileMegaForm($user, $address, $cities, $requestData['change_password']['current_password']);
         $form->handleRequest($request);
 
-        // @TODO tikejaus, kad tituliniam nebeliko hardkodo :| Deja.. Palieku ir cia, iki rankos issities padaryt tvarka
-        $cities = array('Vilnius' => 'Vilnius', 'Kaunas' => 'Kaunas');
-        $addressForm = $this->createForm(new UserAddressFormType($cities), $address);
-        $addressForm->handleRequest($request);
-
-        // password form
-        $changePasswordForm = $this->createForm(new ChangePasswordFormType(get_class($user)), $user);
-        $changePasswordForm->handleRequest($request);
-
-        if ($addressForm->isValid()) {
+        // address validation
+        if ($form->get('address')->isValid()) {
             $address
-                ->setCity($addressForm->get('city')->getData())
-                ->setAddress($addressForm->get('address')->getData())
+                ->setCity($form->get('address')->get('city')->getData())
+                ->setAddress($form->get('address')->get('address')->getData())
             ;
 
             if (!$user->getDefaultAddress()) {
@@ -212,18 +211,20 @@ class DefaultController extends Controller
             }
         }
 
-        if ($changePasswordForm->get('current_password')->getData() && $changePasswordForm->isValid()) {
+        // password validation
+        if ($form->get('change_password')->isValid()) {
             $userManager->updateUser($user);
         }
 
-        if ($form->isValid() && $addressForm->isValid() && ($changePasswordForm->get('current_password')->getData() && $changePasswordForm->isValid())) {
+        // main profile validation
+        if ($form->isValid()) {
+            $em->flush();
+
             return $this->redirect($this->generateUrl('user_profile'));
         }
 
         return [
             'form' => $form->createView(),
-            'addressForm' => $addressForm->createView(),
-            'changePasswordForm' => $changePasswordForm->createView(),
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => true,
         ];
@@ -235,26 +236,24 @@ class DefaultController extends Controller
      */
     public function profileAction($tab)
     {
+        // services
         $security = $this->get('security.context');
 
+        // page is accessible only to signed in users
         if (!$security->isGranted('ROLE_USER')) {
             return $this->redirect($this->generateUrl('food_lang_homepage'));
         }
 
+        // data
         $user = $this->user();
         $address = $this->address($user);
-
-        // @TODO tikejaus, kad tituliniam nebeliko hardkodo :| Deja.. Palieku ir cia, iki rankos issities padaryt tvarka
         $cities = array('Vilnius' => 'Vilnius', 'Kaunas' => 'Kaunas');
 
-        $form = $this->createForm(new ProfileFormType(get_class($user)), $user);
-        $addressForm = $this->createForm(new UserAddressFormType($cities), $address);
-        $changePasswordForm = $this->createForm(new changePasswordFormType(get_class($user)), $user);
+        // mega form containts 3 embedded forms
+        $form = $this->createProfileMegaForm($user, $address, $cities, '');
 
         return [
             'form' => $form->createView(),
-            'addressForm' => $addressForm->createView(),
-            'changePasswordForm' => $changePasswordForm->createView(),
             'tab' => $tab,
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => false,
@@ -324,5 +323,21 @@ class DefaultController extends Controller
         ;
 
         return $address;
+    }
+
+    private function createProfileMegaForm($user, $address, $cities, $currentPassword)
+    {
+        $type = new ProfileMegaFormType(
+            new ProfileFormType(get_class($user)),
+            new UserAddressFormType($cities),
+            new ChangePasswordFormType(get_class($user), $currentPassword)
+        );
+        $data = array(
+            'profile' => $user,
+            'address' => $address,
+            'change_password' => $user
+        );
+
+        return $this->createForm($type, $data);
     }
 }
