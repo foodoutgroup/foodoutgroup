@@ -88,3 +88,13 @@ food_api_find_street:
     pattern: /address/street
     defaults: { _controller: FoodApiBundle:Address:findStreet}
     methods: [GET]
+
+food_api_users_login:
+    pattern: /users/login
+    defaults: { _controller: FoodApiBundle:Users:login}
+    methods: [POST]
+
+food_api_test_token_auth:
+    pattern: /users/test_token_auth
+    defaults: { _controller: FoodApiBundle:Users:testTokenAuth}
+    methods: [GET]
