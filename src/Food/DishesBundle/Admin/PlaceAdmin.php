@@ -10,6 +10,7 @@ class PlaceAdmin extends FoodAdmin
 {
     /**
      * @param FormMapper $formMapper
+     * @codeCoverageIgnore
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -41,6 +42,7 @@ class PlaceAdmin extends FoodAdmin
                     'fields' => array(
                         'slogan' => array('label' => 'admin.place.slogan', 'required' => false,),
                         'description' => array('label' => 'admin.place.description', 'required' => true,),
+                        'alcoholRules' => array('label' => 'admin.place.alcohol_rules', 'required' => false,),
                 )
             ))
             ->add('kitchens', null, array(
@@ -57,6 +59,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('cartMinimum', null, array('label' => 'admin.place.cart_minimum'))
             ->add('selfDelivery', 'checkbox', array('label' => 'admin.place.self_delivery', 'required' => false))
             ->add('minimalOnSelfDel', 'checkbox', array('label' => 'admin.place.minimal_on_self_delivery', 'required' => false))
+            ->add('cardOnDelivery', 'checkbox', array('label' => 'admin.place.card_on_delivery', 'required' => false))
 
             ->add('file', 'file', $options)
             ->add('points', 'sonata_type_collection',
@@ -74,6 +77,11 @@ class PlaceAdmin extends FoodAdmin
     }
 
 
+    /**
+     * @return array
+     *
+     * @codeCoverageIgnore
+     */
     public function getFormTheme()
     {
         return array_merge(
@@ -84,6 +92,8 @@ class PlaceAdmin extends FoodAdmin
 
     /**
      * @param DatagridMapper $datagridMapper
+     *
+     * @codeCoverageIgnore
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
@@ -96,6 +106,8 @@ class PlaceAdmin extends FoodAdmin
 
     /**
      * @param ListMapper $listMapper
+     *
+     * @codeCoverageIgnore
      */
     protected function configureListFields(ListMapper $listMapper)
     {

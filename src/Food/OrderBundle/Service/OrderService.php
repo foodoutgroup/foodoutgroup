@@ -1521,13 +1521,18 @@ class OrderService extends ContainerAware
         $domain = $this->container->getParameter('domain');
 
         // Inform restourant about new order
-        $orderConfirmRoute = $this->container->get('router')
-            ->generate('ordermobile', array('hash' => $order->getOrderHash()), true);
 
         if ($isReminder) {
+            $orderConfirmRoute = 'http://'.$domain
+                .$this->container->get('router')
+                    ->generate('ordermobile', array('hash' => $order->getOrderHash()));
+
             $orderSmsTextTranslation = $translator->trans('general.sms.order_reminder');
             $orderTextTranslation = $translator->trans('general.email.order_reminder');
         } else {
+            $orderConfirmRoute = $this->container->get('router')
+                ->generate('ordermobile', array('hash' => $order->getOrderHash()), true);
+
             $orderSmsTextTranslation = $translator->trans('general.sms.new_order');
             $orderTextTranslation = $translator->trans('general.email.new_order');
         }
@@ -2044,6 +2049,10 @@ class OrderService extends ContainerAware
             } else if ($isValid && !in_array($numberType, array(\libphonenumber\PhoneNumberType::MOBILE, \libphonenumber\PhoneNumberType::FIXED_LINE_OR_MOBILE))) {
                 $formErrors[] = 'order.form.errors.customerphone_not_mobile';
             }
+        }
+
+        if ($request->get('cart_rules') != 'on') {
+            $formErrors[] = 'order.form.errors.cart_rules';
         }
 
         if (!empty($formErrors)) {

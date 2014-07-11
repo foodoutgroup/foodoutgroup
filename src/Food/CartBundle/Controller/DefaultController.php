@@ -40,9 +40,10 @@ class DefaultController extends Controller
      * Daz proxy for ajax requests :)
      *
      * @param string $action
+     * @param Request $request
      * @return Response
      */
-    public function actionAction($action)
+    public function actionAction($action, Request $request)
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
@@ -50,12 +51,12 @@ class DefaultController extends Controller
 
         switch($action) {
             case 'add':
-                $this->_actonAddItem($jsonResponseData, $this->getRequest());
+                $this->_actonAddItem($jsonResponseData, $request);
                 break;
             case 'add-option':
                 break;
             case 'remove':
-                $this->_actonRemoveItem($jsonResponseData, $this->getRequest());
+                $this->_actonRemoveItem($jsonResponseData, $request);
                 break;
             case 'remove-option':
                 break;
@@ -69,7 +70,7 @@ class DefaultController extends Controller
         */
         $jsonResponseData['block'] = $this->sideBlockAction(
             $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(
-                $this->getRequest()->get('place')
+                $request->get('place')
             ),
             true
         );
@@ -128,10 +129,8 @@ class DefaultController extends Controller
         $this->getCartService()->removeOptionById($dishId, $optionId);
     }
 
-    public function indexAction($placeId, $takeAway = null)
+    public function indexAction($placeId, $takeAway = null, Request $request)
     {
-        $request = $this->getRequest();
-
         $orderService = $this->get('food.order');
         $placeService = $this->get('food.places');
         $miscUtils = $this->get('food.app.utils.misc');
@@ -166,7 +165,7 @@ class DefaultController extends Controller
         }
 
         if ($formHasErrors) {
-            $dataToLoad = $this->getRequest()->request->all();
+            $dataToLoad = $request->request->all();
         }
 
         if ($request->getMethod() == 'POST' && !$formHasErrors) {
@@ -212,7 +211,7 @@ class DefaultController extends Controller
                     $fosUserManager->updateUser($user);
                 }
 
-                $selfDelivery = ($this->getRequest()->get('delivery-type') == "pickup" ? true : false);
+                $selfDelivery = ($request->get('delivery-type') == "pickup" ? true : false);
 
                 $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery);
                 $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());

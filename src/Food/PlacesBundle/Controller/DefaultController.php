@@ -3,6 +3,7 @@
 namespace Food\PlacesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -24,14 +25,14 @@ class DefaultController extends Controller
         );
     }
 
-    public function listAction($recommended = false)
+    public function listAction($recommended = false, Request $request)
     {
         if ($recommended) {
             $recommended = true;
         }
 
-        $kitchens = $this->getRequest()->get('kitchens', "");
-        $filters = $this->getRequest()->get('filters');
+        $kitchens = $request->get('kitchens', "");
+        $filters = $request->get('filters');
         if (empty($kitchens)) {
             $kitchens = array();
         } else {
@@ -70,7 +71,6 @@ class DefaultController extends Controller
             )
         );
     }
-
 
     public function citiesAction()
     {

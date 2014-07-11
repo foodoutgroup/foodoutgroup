@@ -30,10 +30,9 @@ class Dish extends Uploadable implements Translatable
      * @var string
      *
      * @Gedmo\Translatable
-     * @ORM\Column(name="name", type="string", length=65)
+     * @ORM\Column(name="name", type="string", length=80)
      */
     private $name;
-
 
     /**
      * @var string
@@ -342,7 +341,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get categories
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Food\DishesBundle\Entity\FoodCategory[]
      */
     public function getCategories()
     {
@@ -375,7 +374,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get options
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Food\DishesBundle\Entity\DishOption[]
      */
     public function getOptions()
     {
@@ -417,7 +416,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get translations
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Food\DishesBundle\Entity\DishLocalized[]
      */
     public function getTranslations()
     {
@@ -618,11 +617,17 @@ class Dish extends Uploadable implements Translatable
         return $this->photo;
     }
 
+    /**
+     * @return string
+     */
     public function getUploadableField()
     {
         return 'photo';
     }
 
+    /**
+     * @return string
+     */
     public function getUploadDir()
     {
         if (empty($this->uploadDir)) {
@@ -668,5 +673,21 @@ class Dish extends Uploadable implements Translatable
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAlcohol()
+    {
+        $categories = $this->getCategories();
+
+        foreach ($categories as $category) {
+            if ($category->getAlcohol()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

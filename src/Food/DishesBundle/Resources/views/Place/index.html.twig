@@ -144,7 +144,7 @@
                                     </ul>
                                 </div>
                                 <div class="restaurant-info-righter simple-content">
-                                    <p>{{ place.description }}</p>
+                                    <p class="restaurant-description">{{ place.description|raw|nl2br }}</p>
                                     {% if placePoints is not empty %}
                                         <select class="custom-select">
                                             {% for point in placePoints%}

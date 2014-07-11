@@ -74,6 +74,10 @@
         <source>cart.checkout.delivery_comment</source>
         <target>Papildoma info</target>
       </trans-unit>
+      <trans-unit id="cart.checkout.cart_rules" resname="cart.checkout.cart_rules">
+        <source>cart.checkout.cart_rules</source>
+        <target><![CDATA[Susipažinau ir sutinku su <a href="#rules" name="order_rules" class="fancy-box">taisyklėmis</a>]]></target>
+      </trans-unit>
       <trans-unit id="58234b47f3f611cffbbd19bbaaa7dd73" resname="cart.checkout.delivery_comment_placeholder">
         <source>cart.checkout.delivery_comment_placeholder</source>
         <target>Įveskite laiptinės kodą, aukštą ir kitą kurjeriui naudingą informaciją...</target>
@@ -198,6 +202,14 @@
         <trans-unit id="order.form.errors.is_already_close" resname="order.form.errors.is_already_close">
             <source>order.form.errors.is_already_close</source>
             <target>Restoranas šiandien jau nebedirba.</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.cart_rules" resname="order.form.errors.cart_rules">
+            <source>order.form.errors.cart_rules</source>
+            <target>Privalote sutikti su svetainės taisyklėmis</target>
+        </trans-unit>
+        <trans-unit id="general.cart_rules_slug" resname="general.cart_rules_slug">
+            <source>general.cart_rules_slug</source>
+            <target>ordering_rules</target>
         </trans-unit>
     </body>
   </file>

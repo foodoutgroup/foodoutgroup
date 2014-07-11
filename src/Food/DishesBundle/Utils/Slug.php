@@ -100,7 +100,6 @@ class Slug
         return $item;
     }
 
-
     /**
      * Convert string to slug.
      *

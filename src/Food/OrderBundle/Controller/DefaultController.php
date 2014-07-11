@@ -39,8 +39,8 @@ class DefaultController extends Controller
                 case 'delay':
                     $orderService->statusDelayed('restourant_mobile', 'delay reason: '.$request->get('delay_reason'));
                     $orderService->getOrder()->setDelayed(true);
-                    $orderService->getOrder()->setDelayReason($this->getRequest()->get('delay_reason'));
-                    $orderService->getOrder()->setDelayDuration($this->getRequest()->get('delay_duration'));
+                    $orderService->getOrder()->setDelayReason($request->get('delay_reason'));
+                    $orderService->getOrder()->setDelayDuration($request->get('delay_duration'));
                     $orderService->saveDelay();
                     $order = $orderService->getOrderByHash($hash);
                 break;
@@ -59,6 +59,10 @@ class DefaultController extends Controller
             }
             if ($orderService->isValidOrderStatusChange($currentOrderStatus, $orderService->getOrder()->getOrderStatus())) {
                 $orderService->saveOrder();
+
+                return $this->redirect(
+                    $this->generateUrl('ordermobile', array('hash' => $hash))
+                );
             } else {
                 $errorMessage = sprintf(
                     'Restoranas %s bande uzsakymui #%d bande pakeisti uzsakymo statusa is "%s" i "%s"',
@@ -76,24 +80,25 @@ class DefaultController extends Controller
     /**
      * Mobile admin page for order to be monitored and ruined
      * @param $hash
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function mobileAdminAction($hash)
+    public function mobileAdminAction($hash, Request $request)
     {
         $order = $this->get('food.order')->getOrderByHash($hash);
-        if ($this->getRequest()->isMethod('post')) {
-            switch($this->getRequest()->get('status')) {
+        if ($request->isMethod('post')) {
+            switch($request->get('status')) {
                 case 'confirm':
                     $this->get('food.order')->statusAccepted('admin_mobile');
                 break;
 
                 case 'delay':
-                    $this->get('food.order')->statusDelayed('admin_mobile', 'delay reason: '.$this->getRequest()->get('delay_reason'));
+                    $this->get('food.order')->statusDelayed('admin_mobile', 'delay reason: '.$request->get('delay_reason'));
                     $this->get('food.order')->getOrder()->setDelayed(true);
-                    $this->get('food.order')->getOrder()->setDelayReason($this->getRequest()->get('delay_reason'));
-                    $this->get('food.order')->getOrder()->setDelayDuration($this->getRequest()->get('delay_duration'));
+                    $this->get('food.order')->getOrder()->setDelayReason($request->get('delay_reason'));
+                    $this->get('food.order')->getOrder()->setDelayDuration($request->get('delay_duration'));
                     $this->get('food.order')->saveDelay();
-                    $order = $this->get('food.order')->getOrderByHash($hash);
+                    $this->get('food.order')->getOrderByHash($hash);
                 break;
 
                 case 'cancel':
@@ -109,24 +114,33 @@ class DefaultController extends Controller
                 break;
             }
             $this->get('food.order')->saveOrder();
+
+            return $this->redirect(
+                $this->generateUrl('order_support_mobile', array('hash' => $hash))
+            );
         }
         return $this->render('FoodOrderBundle:Default:mobile_admin.html.twig', array('order' => $order));
     }
 
     /**
      * @param $hash
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function mobileDriverAction($hash)
+    public function mobileDriverAction($hash, Request $request)
     {
         $order = $this->get('food.order')->getOrderByHash($hash);
-        if ($this->getRequest()->isMethod('post')) {
-            switch($this->getRequest()->get('status')) {
+        if ($request->isMethod('post')) {
+            switch($request->get('status')) {
                 case 'finish':
                     $this->get('food.order')->statusCompleted('driver_mobile');
                 break;
             }
             $this->get('food.order')->saveOrder();
+
+            return $this->redirect(
+                $this->generateUrl('drivermobile', array('hash' => $hash))
+            );
         }
         return $this->render('FoodOrderBundle:Default:mobile-driver.html.twig', array('order' => $order));
     }
