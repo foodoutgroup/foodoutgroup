@@ -68,6 +68,8 @@ class ApiService extends ContainerAware
         $um = $this->container->get('fos_user.user_manager');
         $security = $this->container->get('security.context');
 
+        $currentUser = $security->getToken()->getUser();
+
         $user = $um->findUserBy(array('apiToken' => $hash));
 
         if (!$user instanceof User) {
@@ -78,9 +80,16 @@ class ApiService extends ContainerAware
             throw new NotFoundHttpException('User token has expired');
         }
 
-        $providerKey = $this->container->getParameter('fos_user.firewall_name');
-        $roles = $user->getRoles();
-        $token = new UsernamePasswordToken($user, null, $providerKey, $roles);
-        $security->setToken($token);
+        // Refresh the token
+        $user->setApiTokenValidity(new \DateTime('+1 week'));
+        $um->updateUser($user);
+
+        // User not in security session - set him
+        if (!$currentUser instanceof User || $currentUser->getId() != $user->getId()) {
+            $providerKey = $this->container->getParameter('fos_user.firewall_name');
+            $roles = $user->getRoles();
+            $token = new UsernamePasswordToken($user, null, $providerKey, $roles);
+            $security->setToken($token);
+        }
     }
 }

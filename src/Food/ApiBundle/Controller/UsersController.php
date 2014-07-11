@@ -27,14 +27,6 @@ class UsersController extends Controller
         $security->setToken($token);
     }
 
-    protected function logoutUser()
-    {
-        $security = $this->get('security.context');
-        $token = new AnonymousToken(null, new User());
-        $security->setToken($token);
-        $this->get('session')->invalidate();
-    }
-
     protected function checkUserPassword(User $user, $password)
     {
         $factory = $this->get('security.encoder_factory');
@@ -47,27 +39,17 @@ class UsersController extends Controller
 
     public function loginAction(Request $request)
     {
-        $logger = $this->get('logger');
         $username = $request->get('email');
         $password = $request->get('password');
         $phone = $request->get('phone');
 
-        $logger->alert('+++++++++++++++++++');
-        $logger->alert('Username: '.$username);
-        $logger->alert('Password: '.$password);
-        $logger->alert('Phone: '.$phone);
-        $logger->alert('--------------------');
-
         $um = $this->getUserManager();
         $user = $um->findUserByUsername($username);
         if(!$user){
-            $logger->alert('-+ not found by username');
             $user = $um->findUserByEmail($username);
         }
         if(!$user){
-            $logger->alert('-+ not found by email');
             $user = $um->findUserBy(array('phone' => $phone));
-            $logger->alert('-+ After search by phone: '.var_export($user, true));
         }
 
         if(!$user instanceof User){
@@ -95,15 +77,28 @@ class UsersController extends Controller
         return new JsonResponse($response);
     }
 
-    /**
-     * TODO implement me
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
-    public function logoutAction()
+    public function logoutAction(Request $request)
     {
-        throw new NotFoundHttpException('Not implemented yet!');
-//        $this->logoutUser();
-//        return array('success'=>true);
+        $token = $request->headers->get('X-API-Authorization');
+        $this->get('food_api.api')->loginByHash($token);
+
+        $um = $this->getUserManager();
+        $security = $this->get('security.context');
+
+        $user = $security->getToken()->getUser();
+        $this->get('logger')->alert('++ bandom is sesijos gaut useri');
+        if ($user instanceof User) {
+            $this->get('logger')->alert('++ yr useris :)');
+            $user->setApiTokenValidity(new \DateTime('-1 week'));
+            $user->setApiToken('');
+            $um->updateUser($user);
+        }
+
+        $token = new AnonymousToken(null, new User());
+        $security->setToken($token);
+        $this->get('session')->invalidate();
+
+        return new JsonResponse(array('success' => true));
     }
 
     /**
@@ -114,9 +109,11 @@ class UsersController extends Controller
     public function testTokenAuthAction(Request $request)
     {
         $token = $request->headers->get('X-API-Authorization');
-
         $this->get('food_api.api')->loginByHash($token);
 
-        return new JsonResponse(array('success' => true, 'headersPassed' => $request->headers->all()));
+        $security = $this->get('security.context');
+        $user = $security->getToken()->getUser();
+
+        return new JsonResponse(array('success' => true, 'userId' => $user->getId()));
     }
 }
