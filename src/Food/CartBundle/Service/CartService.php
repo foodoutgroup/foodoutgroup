@@ -331,7 +331,7 @@ class CartService {
 
 
     /**
-     * @param Place $place
+     * @param int $place
      * @return array|\Food\CartBundle\Entity\Cart[]
      */
     public function getCartDishes($place)

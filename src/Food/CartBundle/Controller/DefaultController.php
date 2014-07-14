@@ -72,7 +72,8 @@ class DefaultController extends Controller
             $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(
                 $request->get('place')
             ),
-            true
+            true,
+            $request->get('in_cart', false)
         );
 
         $response->setContent(json_encode($jsonResponseData));
@@ -317,7 +318,7 @@ class DefaultController extends Controller
             'place' => $place,
             'total_cart' => $total_cart,
             'total_with_delivery' => $total_cart + $place->getDeliveryPrice(),
-            'inCart' => $inCart,
+            'inCart' => (int)$inCart,
             'hide_delivery' => (($order!=null AND $order->getDeliveryType() == 'pickup') || $takeAway == true ? 1: 0)
         );
         if ($renderView) {
