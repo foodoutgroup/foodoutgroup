@@ -2026,6 +2026,10 @@ class OrderService extends ContainerAware
             $formErrors[] = 'order.form.errors.customeremail';
         }
 
+        if (0 === strlen($request->get('payment-type'))) {
+            $formErrors[] = 'order.form.errors.payment_type';
+        }
+
         // Validate das phone number :)
         if (0 != strlen($phone)) {
             $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();

@@ -211,6 +211,10 @@
             <source>general.cart_rules_slug</source>
             <target>ordering_rules</target>
         </trans-unit>
+        <trans-unit id="order.form.errors.payment_type" resname="order.form.errors.payment_type">
+            <source>order.form.errors.payment_type</source>
+            <target>Pasirinkite atsiskaitymo būdą</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>
