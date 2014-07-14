@@ -198,3 +198,14 @@ services:
                     - ~
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.street:
+                class: Food\AppBundle\Admin\StreetAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.street" }
+                arguments:
+                    - ~
+                    - Food\AppBundle\Entity\Street
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]

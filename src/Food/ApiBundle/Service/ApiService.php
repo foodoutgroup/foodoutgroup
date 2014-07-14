@@ -3,7 +3,10 @@ namespace Food\ApiBundle\Service;
 
 use Food\ApiBundle\Common\MenuItem;
 use Food\ApiBundle\Common\Restaurant;
+use Food\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ApiService extends ContainerAware
 {
@@ -39,5 +42,54 @@ class ApiService extends ContainerAware
         $dish = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Dish')->find((int)$menuItem);
         $menuItem = new MenuItem(null, $this->container);
         return $menuItem->loadFromEntity($dish, true);
+    }
+
+    /**
+     * @param User $user
+     * @return string
+     */
+    public function generateUserHash(User $user)
+    {
+        $hash = md5($user->getId().'-'.time());
+        return $hash;
+    }
+
+    /**
+     * @param string $hash
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function loginByHash($hash)
+    {
+        /**
+         * TODO
+         *  - tikrinam ar joks useris nepriloginas. Jei prilogintas - sulyginam tokenus ir be reikalo antra karta logino nevykdom
+         */
+
+        $um = $this->container->get('fos_user.user_manager');
+        $security = $this->container->get('security.context');
+
+        $currentUser = $security->getToken()->getUser();
+
+        $user = $um->findUserBy(array('apiToken' => $hash));
+
+        if (!$user instanceof User) {
+            throw new NotFoundHttpException('Token does not exist');
+        }
+
+        if ($user->getApiTokenValidity()->getTimestamp() < time() ) {
+            throw new NotFoundHttpException('User token has expired');
+        }
+
+        // Refresh the token
+        $user->setApiTokenValidity(new \DateTime('+1 week'));
+        $um->updateUser($user);
+
+        // User not in security session - set him
+        if (!$currentUser instanceof User || $currentUser->getId() != $user->getId()) {
+            $providerKey = $this->container->getParameter('fos_user.firewall_name');
+            $roles = $user->getRoles();
+            $token = new UsernamePasswordToken($user, null, $providerKey, $roles);
+            $security->setToken($token);
+        }
     }
 }

@@ -67,6 +67,10 @@
                 <source>batch</source>
                 <target></target>
             </trans-unit>
+            <trans-unit id="admin.system">
+                <source>admin.system</source>
+                <target>Sistema</target>
+            </trans-unit>
 
             <!-- Kitchen -->
             <trans-unit id="admin.kitchens.list.title">
@@ -1132,6 +1136,32 @@
             <trans-unit id="admin.banned_ip.id">
                 <source>admin.banned_ip.id</source>
                 <target>ID</target>
+            </trans-unit>
+
+            <!-- Street admin -->
+            <trans-unit id="admin.street">
+                <source>admin.street</source>
+                <target>Gatvės</target>
+            </trans-unit>
+            <trans-unit id="Street List">
+                <source>Street List</source>
+                <target>Gatvės</target>
+            </trans-unit>
+            <trans-unit id="admin.street.city">
+                <source>admin.street.city</source>
+                <target>Miestas</target>
+            </trans-unit>
+            <trans-unit id="admin.street.city_placeholder">
+                <source>admin.street.city_placeholder</source>
+                <target>Vilnius</target>
+            </trans-unit>
+            <trans-unit id="admin.street.street">
+                <source>admin.street.street</source>
+                <target>Gatvė</target>
+            </trans-unit>
+            <trans-unit id="admin.street.street_placeholder">
+                <source>admin.street.street_placeholder</source>
+                <target>Laisvės pr.</target>
             </trans-unit>
         </body>
     </file>
