@@ -40,7 +40,7 @@ class BasketController extends Controller
 
     public function deleteBasketItemAction($id, $basket_item_id)
     {
-        $this->get('food_api.basket')->updateBasketItem($id, $basket_item_id, $request);
+        $this->get('food_api.basket')->deleteBasketItem($id, $basket_item_id, $request);
         $basket = $this->get('food_api.basket')->getBasket($id);
         return new JsonResponse('', 204);
     }

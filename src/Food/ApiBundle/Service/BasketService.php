@@ -176,7 +176,7 @@ class BasketService extends ContainerAware
         return $basket->getData();
     }
 
-    public function updateBasketItem($id, $basket_item_id, Request $request)
+    public function deleteBasketItem($id, $basket_item_id, Request $request)
     {
         $ent = $doc->getManager()->getRepository('FoodApiBundle:ShoppingBasketRelation')->find(intval($id));
         $itemInCart = $doc->getManager()->getRepository('FoodCartBundle:Cart')->find($basket_item_id);
