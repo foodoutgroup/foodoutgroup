@@ -935,12 +935,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "ba3e09980f348be691915ce0dc63964033162e6c"
+                "reference": "ef7ca325929ff102fff521653a2e3b88c7a40361"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/ba3e09980f348be691915ce0dc63964033162e6c",
-                "reference": "ba3e09980f348be691915ce0dc63964033162e6c",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/ef7ca325929ff102fff521653a2e3b88c7a40361",
+                "reference": "ef7ca325929ff102fff521653a2e3b88c7a40361",
                 "shasum": ""
             },
             "require": {
@@ -995,7 +995,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2014-07-04 14:20:21"
+            "time": "2014-07-09 10:33:42"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -1079,16 +1079,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "6.2",
+            "version": "6.2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "cecc7b729f24a96898109711cb9af462ec7f5935"
+                "reference": "f9e60e33ceab33ad6f5f24c2581b18b4db4798a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/cecc7b729f24a96898109711cb9af462ec7f5935",
-                "reference": "cecc7b729f24a96898109711cb9af462ec7f5935",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/f9e60e33ceab33ad6f5f24c2581b18b4db4798a3",
+                "reference": "f9e60e33ceab33ad6f5f24c2581b18b4db4798a3",
                 "shasum": ""
             },
             "require": {
@@ -1132,7 +1132,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2014-07-01 09:41:50"
+            "time": "2014-07-11 08:46:05"
         },
         {
             "name": "imagine/imagine",
@@ -1249,12 +1249,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jdorn/sql-formatter.git",
-                "reference": "ebeb18ffd93454572a829bb43c5ca8c3318c3d63"
+                "reference": "017b6628e7a3a96cfd9f96ec1531b974d1dea2b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jdorn/sql-formatter/zipball/ebeb18ffd93454572a829bb43c5ca8c3318c3d63",
-                "reference": "ebeb18ffd93454572a829bb43c5ca8c3318c3d63",
+                "url": "https://api.github.com/repos/jdorn/sql-formatter/zipball/017b6628e7a3a96cfd9f96ec1531b974d1dea2b7",
+                "reference": "017b6628e7a3a96cfd9f96ec1531b974d1dea2b7",
                 "shasum": ""
             },
             "require": {
@@ -1294,7 +1294,7 @@
                 "highlight",
                 "sql"
             ],
-            "time": "2014-06-05 15:00:04"
+            "time": "2014-07-08 22:36:13"
         },
         {
             "name": "jquery/jquery",
@@ -2093,12 +2093,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "08a37ea2dae40aafadbe9587090723059a06645f"
+                "reference": "82daabfa9ea48158e6f57cb703fe9a32011b9358"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/08a37ea2dae40aafadbe9587090723059a06645f",
-                "reference": "08a37ea2dae40aafadbe9587090723059a06645f",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/82daabfa9ea48158e6f57cb703fe9a32011b9358",
+                "reference": "82daabfa9ea48158e6f57cb703fe9a32011b9358",
                 "shasum": ""
             },
             "require": {
@@ -2148,7 +2148,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-07-01 10:55:39"
+            "time": "2014-07-10 12:21:27"
         },
         {
             "name": "sonata-project/doctrine-extensions",
@@ -2604,12 +2604,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/stof/StofDoctrineExtensionsBundle.git",
-                "reference": "3825a4a1a56805b6adcaf6df1f9ec892a653d377"
+                "reference": "085cda7ce5dc12b807a5a7856f178c93725a9166"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/3825a4a1a56805b6adcaf6df1f9ec892a653d377",
-                "reference": "3825a4a1a56805b6adcaf6df1f9ec892a653d377",
+                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/085cda7ce5dc12b807a5a7856f178c93725a9166",
+                "reference": "085cda7ce5dc12b807a5a7856f178c93725a9166",
                 "shasum": ""
             },
             "require": {
@@ -2657,7 +2657,7 @@
                 "translatable",
                 "tree"
             ],
-            "time": "2014-05-24 12:33:49"
+            "time": "2014-07-08 17:06:10"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2945,16 +2945,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.4.6",
+            "version": "v2.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "ebf1be8a9217eb5911102a522eb2bd500923297d"
+                "reference": "e72f9ebfdf0041e810652f8e893bd3f5e11abfed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/ebf1be8a9217eb5911102a522eb2bd500923297d",
-                "reference": "ebf1be8a9217eb5911102a522eb2bd500923297d",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/e72f9ebfdf0041e810652f8e893bd3f5e11abfed",
+                "reference": "e72f9ebfdf0041e810652f8e893bd3f5e11abfed",
                 "shasum": ""
             },
             "require": {
@@ -2962,7 +2962,7 @@
                 "php": ">=5.3.3",
                 "psr/log": "~1.0",
                 "symfony/icu": "~1.0",
-                "twig/twig": "~1.11"
+                "twig/twig": "~1.12"
             },
             "replace": {
                 "symfony/browser-kit": "self.version",
@@ -3056,7 +3056,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-05-31 18:42:13"
+            "time": "2014-07-08 11:54:27"
         },
         {
             "name": "trsteel/ckeditor-bundle",
