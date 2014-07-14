@@ -182,4 +182,9 @@ class BasketService extends ContainerAware
         $itemInCart = $doc->getManager()->getRepository('FoodCartBundle:Cart')->find($basket_item_id);
         $this->_removeItem($ent, $itemInCart);
     }
+
+    public function updateBasketItem($id, $basket_item_id, Request $request)
+    {
+
+    }
 }
