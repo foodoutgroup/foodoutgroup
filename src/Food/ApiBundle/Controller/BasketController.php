@@ -28,7 +28,21 @@ class BasketController extends Controller
     public function deleteBasketAction($id)
     {
         $this->get('food_api.basket')->deleteBasket($id);
-        return new Response();
+        return new Response('', 204);
+    }
+
+    public function updateBasketItemAction($id, $basket_item_id, Request $request)
+    {
+        $this->get('food_api.basket')->updateBasketItem($id, $basket_item_id, $request);
+        $basket = $this->get('food_api.basket')->getBasket($id);
+        return new JsonResponse($basket);
+    }
+
+    public function deleteBasketItemAction($id, $basket_item_id)
+    {
+        $this->get('food_api.basket')->updateBasketItem($id, $basket_item_id, $request);
+        $basket = $this->get('food_api.basket')->getBasket($id);
+        return new JsonResponse('', 204);
     }
 
      /**

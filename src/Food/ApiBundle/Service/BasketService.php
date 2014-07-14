@@ -1,7 +1,9 @@
 <?php
 namespace Food\ApiBundle\Service;
 
+use Food\ApiBundle\Common\ShoppingBasket;
 use Food\ApiBundle\Common\ShoppingBasketItem;
+use Food\ApiBundle\Entity\ShoppingBasketRelation;
 use Food\CartBundle\Entity\Cart;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,12 +12,7 @@ class BasketService extends ContainerAware
 {
     public function createBasketFromRequest(Request $request)
     {
-        @mail("paulius@foodout.lt", "Rquest create basket", print_r($request->request->all(), true), "FROM: testas@foodout.lt");
-        $data = array(
-            'restaurant_id' => $request->get('restaurant_id'),
-            'items' => $this->_getCreateBasketItems($request)
-        );
-        return $this->_createBasket($data);
+        return $this->_createBasket($request->get('restaurant_id'), $request);
     }
 
     public function _getCreateBasketItems(Request $request)
@@ -34,53 +31,112 @@ class BasketService extends ContainerAware
         return $returner;
     }
 
-    public function updateBasketFromRequest($id, Request $request)
+    public function updateBasketFromRequest($id, Request $request, $remove = false)
     {
-        @mail("paulius@foodout.lt", "Update basket", print_r($request->request->all(), true), "FROM: testas@foodout.lt");
-        /**
-        {
-            "restaurant_id": 1,
-            "items": [
-                {
-                "item_id": 2,
-                "count": 3,
-                "options": [],
-                "additional_info": ""
-                }
-            ]
-        }
-         */
-        $basket = $this->container->get('doctrine')->getRepository('FoodApiBundle:ShoppingBasketRelation')->find(itnval($id));
-        foreach ($request->get('items') as $item) {
-            $cartItem = new Cart();
-            $cartItem->setDishId($item['item_id'])
-                ->setComment($item['additional_info'])
-                ->setQuantity($item['count'])
-                ->setPlaceId($basket->getPlaceId())
-                ->setSession($basket->getSession());
+        $dc = $this->container->get('doctrine');
+        $basket = $dc->getRepository('FoodApiBundle:ShoppingBasketRelation')->find(intval($id));
 
-            $this->container->get('doctrine')->getManager()->persist($cartItem);
-            $this->container->get('doctrine')->getManager()->flush();
+
+        if ($remove) {
+            $items1 = $dc->getRepository('FoodCartBundle:CartOption')->findBy(
+                array(
+                    'session' => $basket->getSession()
+                )
+            );
+
+            $items2 = $dc->getRepository('FoodCartBundle:Cart')->findBy(
+                array(
+                    'session' => $basket->getSession()
+                )
+            );
+
+            foreach ($items1 as $itm) {
+                $dc->getManager()->remove($itm);
+            }
+            foreach ($items2 as $itm) {
+                $dc->getManager()->remove($itm);
+            }
+            $dc->getManager()->flush();
+            $dc->getManager()->clear();
+        }
+
+        $cartService = $this->container->get('food.cart');
+
+        foreach ($request->get('items') as $item) {
+            $options = array();
+            if (isset($item['options']) && !empty($item['options'])) {
+                foreach ($item['options'] as $opt) {
+                    $options[] = $dc->getRepository('FoodDishesBundle:DishOption')->find($opt['option_id']);
+                }
+            }
+            $cartService->addDish(
+                $dc->getRepository('FoodDishesBundle:Dish')->find(intval($item['item_id'])),
+                $dc->getRepository('FoodDishesBundle:DishSize')->find(intval($item['size_id'])),
+                $item['count'],
+                $options,//$item['options'] // @todo,
+                $item['additional_info'],
+                $basket->getSession()
+            );
         }
         return $this->getBasket($id);
     }
 
+    /**
+     * @param $id
+     */
     public function deleteBasket($id)
     {
         $doc = $this->container->get('doctrine');
-        $ent = $doc->getManager()->getRepository('FoodApiBundle:ShoppingBasketRelation')->find(itnval($id));
+        $ent = $doc->getManager()->getRepository('FoodApiBundle:ShoppingBasketRelation')->find(intval($id));
+
+        $itemsInCart = $doc->getManager()->getRepository('FoodCartBundle:Cart')->findBy(
+            array(
+                'session' => $ent->getSession(),
+                'place_id' => $ent->getPlaceId()
+            )
+        );
+
+        foreach ($itemsInCart as $itemToRemove) {
+           $this->_removeItem($ent, $itemToRemove);
+        }
+
         $doc->getManager()->remove($ent);
         $doc->getManager()->flush();
     }
 
-    private function _createBasket($data)
+    private function _removeItem(ShoppingBasketRelation $basket, Cart $cartItem)
     {
-        return $this;
+        $doc = $this->container->get('doctrine');
+        $optionsInCart = $doc->getManager()->getRepository('FoodCartBundle:CartOption')->findBy(
+            array(
+                'cart_id' => $cartItem->getCartId(),
+                'session' => $cartItem->getSession()
+            )
+        );
+        foreach ($optionsInCart as $optionToRemove) {
+            $doc->getManager()->remove($optionToRemove);
+            $doc->getManager()->flush();
+        }
+        $doc->getManager()->remove($cartItem);
+        $doc->getManager()->flush();
+    }
+
+    private function _createBasket($restaurantId, Request $request)
+    {
+        $sessionId = $this->container->get('session')->getId();
+        $newBasketRel = new ShoppingBasketRelation();
+        $newBasketRel->setSession($sessionId)
+            ->setPlaceId($this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($restaurantId));
+
+        $this->container->get('doctrine')->getManager()->persist($newBasketRel);
+        $this->container->get('doctrine')->getManager()->flush();
+
+        return $this->updateBasketFromRequest($newBasketRel->getId(), $request, true);
     }
 
     public function getBasket($id)
     {
-        $returner = array();
+        $items = array();
         $basketInfo = $this->container->get('doctrine')->getRepository('FoodApiBundle:ShoppingBasketRelation')->find(intval($id));
         $cartItems = $this->container->get('doctrine')->getRepository('FoodCartBundle:Cart')->findBy(
             array(
@@ -90,8 +146,40 @@ class BasketService extends ContainerAware
         );
         foreach ($cartItems as $cartItem) {
             $basketItem = new ShoppingBasketItem(null, $this->container);
-            $returner[] = $basketItem->loadFromEntity($cartItem);
+            $items[] = $basketItem->loadFromEntity($cartItem);
         }
-        return $returner;
+        /**
+        "basket_id": 1,
+        "restaurant_id": 1,
+        "expires": 1400170980,
+        "payment_options": {
+        "cash": true,
+        "credit_card": false
+        },
+        "total_price": {
+        "amount": 3500,
+        "currency": "LTL"
+        },
+         */
+        $basket = new ShoppingBasket();
+        $basket->set('basket_id', $basketInfo->getId());
+        $basket->set('restaurant_id', $basketInfo->getPlaceId()->getId());
+        $basket->set('expires', (date("U") + (3600 * 24 * 7)));
+        $basket->set(
+            'total_price',
+            array(
+                'amount' => $this->container->get('food.cart')->getCartTotal($cartItems, $basketInfo->getPlaceId()) * 100,
+                'currency' => 'LTL'
+            )
+        );
+        $basket->set('items', $items);
+        return $basket->getData();
+    }
+
+    public function updateBasketItem($id, $basket_item_id, Request $request)
+    {
+        $ent = $doc->getManager()->getRepository('FoodApiBundle:ShoppingBasketRelation')->find(intval($id));
+        $itemInCart = $doc->getManager()->getRepository('FoodCartBundle:Cart')->find($basket_item_id);
+        $this->_removeItem($ent, $itemInCart);
     }
 }

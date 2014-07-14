@@ -66,4 +66,9 @@ class ShoppingBasket extends ContainerAware{
     {
 
     }
+
+    public function getData()
+    {
+        return $this->data;
+    }
 }

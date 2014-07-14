@@ -10,6 +10,7 @@ class ShoppingBasketItem extends ContainerAware
     private $block = array(
         "basket_item_id" => null,
         "item_id" => null,
+        "size_id" => null,
         "count" => null,
         "options"=> array(
             //"option_id": 1,
@@ -78,6 +79,7 @@ class ShoppingBasketItem extends ContainerAware
         $this->set('basket_item_id', $cartItem->getCartId()) // @todo - ar tikrai ?? :)
             ->set('item_id', $cartItem->getDishId()->getId())
             ->set('count', $cartItem->getQuantity())
+            ->set('size_id', $cartItem->getDishSizeId()->getId())
             ->set('options', $this->_getOptions($cartItem))
             ->set('additional_info', ($cartItem->getComment() == null ? "" : $cartItem->getComment()))
             ->set(
@@ -93,7 +95,12 @@ class ShoppingBasketItem extends ContainerAware
     private function _getOptions(Cart $cartItem)
     {
         $returner = array();
-        // @todo nera pilnai aisku su optionsais.
+        $cartItem->setEm($this->container->get('doctrine')->getManager());
+        foreach($cartItem->getOptions() as $opt) {
+            $returner[] = array(
+                'option_id' => $opt->getDishOptionId()->getId()
+            );
+        }
         return $returner;
     }
 
