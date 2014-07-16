@@ -6,6 +6,9 @@
 
     <class name="Food\UserBundle\Entity\User">
         <property name="firstname">
+            <constraint name="NotBlank">
+                <option name="message">fos_user.firstname.blank</option>
+            </constraint>
             <constraint name="Length">
                 <option name="min">2</option>
                 <option name="minMessage">fos_user.firstname.short</option>
@@ -48,6 +51,9 @@
         </property>
 
         <property name="phone">
+            <constraint name="NotBlank">
+                <option name="message">fos_user.phone.blank</option>
+            </constraint>
             <constraint name="Length">
                 <option name="min">11</option>
                 <option name="minMessage">fos_user.phone.short</option>
