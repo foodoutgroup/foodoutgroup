@@ -1,20 +1,17 @@
 <?php
 
-namespace Food\AppBundle\Entity;
+namespace Food\OrderBundle\Entity;
 
+use Food\DishesBundle\Entity\Place;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Translatable\Translatable;
 
 /**
- * Static page content
- *
- * @ORM\Table(name="static_content")
+ * @ORM\Table(name="coupons")
  * @ORM\Entity
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- * @Gedmo\TranslationEntity(class="Food\AppBundle\Entity\StaticContentLocalized")
  */
-class StaticContent implements Translatable
+class Coupon
 {
     /**
      * @var integer
@@ -28,25 +25,29 @@ class StaticContent implements Translatable
     /**
      * @var string
      *
-     * @Gedmo\Translatable
-     * @ORM\Column(name="title", type="string", length=45)
+     * @ORM\Column(name="name", type="string", length=255)
      */
-    private $title;
+    private $name;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="discount", type="decimal", precision=8, scale=2, nullable=false)
+     */
+    private $discount;
 
     /**
      * @var string
      *
-     * @Gedmo\Translatable
-     * @ORM\Column(name="content", type="text")
+     * @ORM\Column(name="code", type="string", length=255)
      */
-    private $content;
+    private $code;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="visible", type="boolean")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place")
+     * @ORM\JoinColumn(name="place", referencedColumnName="id")
      */
-    private $visible = true;
+    private $place;
 
     /**
      * @var bool
@@ -56,11 +57,11 @@ class StaticContent implements Translatable
     private $active = false;
 
     /**
-     * @var int
+     * @var bool
      *
-     * @ORM\Column(name="order_no", type="integer")
+     * @ORM\Column(name="single_use", type="boolean")
      */
-    private $order = 1;
+    private $singleUse = false;
 
     /**
      * @var \DateTime
@@ -107,53 +108,42 @@ class StaticContent implements Translatable
      */
     private $deletedBy;
 
-    /**
-     * @var \Food\AppBundle\Entity\StaticContentLocalized
-     *
-     * @ORM\OneToMany(targetEntity="StaticContentLocalized", mappedBy="object", cascade={"persist", "remove"})
-     **/
-    private $translations;
-
-    /**
-     * @Gedmo\Locale
-     * Used locale to override Translation listener`s locale
-     * this is not a mapped field of entity metadata, just a simple property
-     */
-    private $locale;
-
-    /**
-     * @return string
-     */
     public function __toString()
     {
-        if (!$this->getId()) {
-            return '';
+        if ($this->getId()) {
+            if ($this->getPlace() && $this->getPlace() instanceof Place) {
+                $place = $this->getPlace()->getName();
+            } else {
+                $place = 'global';
+            }
+            return $this->getId().'-'.$this->getName().'-'.$place;
         }
-        return $this->getTitle();
+
+        return '';
     }
 
     /**
-     * @param mixed $locale
+     * @return array
      */
-    public function setLocale($locale)
+    public function __toArray()
     {
-        $this->locale = $locale;
-    }
+        if ($this->getId()) {
+            $placeId = null;
+            if ($this->getPlace()) {
+                $placeId = $this->getPlace()->getId();
+            }
 
-    /**
-     * @return mixed
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
+            return array(
+                'id' => $this->getId(),
+                'code' => $this->getCode(),
+                'place_id' => $placeId,
+                'discount' => $this->getDiscount(),
+                'active' => $this->getActive(),
+                'single_use' => $this->getSingleUse(),
+            );
+        }
 
-    /**
-     * @param $locale
-     */
-    public function setTranslatableLocale($locale)
-    {
-        $this->locale = $locale;
+        return array();
     }
 
     /**
@@ -167,56 +157,79 @@ class StaticContent implements Translatable
     }
 
     /**
-     * Set title
+     * Set name
      *
-     * @param string $title
-     * @return StaticContent
+     * @param string $name
+     * @return Coupon
      */
-    public function setTitle($title)
+    public function setName($name)
     {
-        $this->title = $title;
+        $this->name = $name;
     
         return $this;
     }
 
     /**
-     * Get title
+     * Get name
      *
      * @return string 
      */
-    public function getTitle()
+    public function getName()
     {
-        return $this->title;
+        return $this->name;
     }
 
     /**
-     * Set content
+     * Set discount
      *
-     * @param string $content
-     * @return StaticContent
+     * @param string $discount
+     * @return Coupon
      */
-    public function setContent($content)
+    public function setDiscount($discount)
     {
-        $this->content = $content;
+        $this->discount = $discount;
     
         return $this;
     }
 
     /**
-     * Get content
+     * Get discount
      *
      * @return string 
      */
-    public function getContent()
+    public function getDiscount()
     {
-        return $this->content;
+        return $this->discount;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     * @return Coupon
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 
     /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return StaticContent
+     * @return Coupon
      */
     public function setCreatedAt($createdAt)
     {
@@ -239,7 +252,7 @@ class StaticContent implements Translatable
      * Set editedAt
      *
      * @param \DateTime $editedAt
-     * @return StaticContent
+     * @return Coupon
      */
     public function setEditedAt($editedAt)
     {
@@ -262,7 +275,7 @@ class StaticContent implements Translatable
      * Set deletedAt
      *
      * @param \DateTime $deletedAt
-     * @return StaticContent
+     * @return Coupon
      */
     public function setDeletedAt($deletedAt)
     {
@@ -282,10 +295,33 @@ class StaticContent implements Translatable
     }
 
     /**
+     * Set place
+     *
+     * @param \Food\DishesBundle\Entity\Place $place
+     * @return Coupon
+     */
+    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
+    {
+        $this->place = $place;
+    
+        return $this;
+    }
+
+    /**
+     * Get place
+     *
+     * @return \Food\DishesBundle\Entity\Place 
+     */
+    public function getPlace()
+    {
+        return $this->place;
+    }
+
+    /**
      * Set createdBy
      *
      * @param \Food\UserBundle\Entity\User $createdBy
-     * @return StaticContent
+     * @return Coupon
      */
     public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
     {
@@ -308,7 +344,7 @@ class StaticContent implements Translatable
      * Set editedBy
      *
      * @param \Food\UserBundle\Entity\User $editedBy
-     * @return StaticContent
+     * @return Coupon
      */
     public function setEditedBy(\Food\UserBundle\Entity\User $editedBy = null)
     {
@@ -331,7 +367,7 @@ class StaticContent implements Translatable
      * Set deletedBy
      *
      * @param \Food\UserBundle\Entity\User $deletedBy
-     * @return StaticContent
+     * @return Coupon
      */
     public function setDeletedBy(\Food\UserBundle\Entity\User $deletedBy = null)
     {
@@ -351,113 +387,48 @@ class StaticContent implements Translatable
     }
 
     /**
-     * Add translations
+     * Set code
      *
-     * @param \Food\AppBundle\Entity\StaticContentLocalized $translations
-     * @return StaticContent
+     * @param string $code
+     * @return Coupon
      */
-    public function addTranslation(\Food\AppBundle\Entity\StaticContentLocalized $translations)
+    public function setCode($code)
     {
-        if (!$this->translations->contains($translations)) {
-            $this->translations[] = $translations;
-            $translations->setObject($this);
-        }
-    }
-
-    /**
-     * Remove translations
-     *
-     * @param \Food\AppBundle\Entity\StaticContentLocalized $translations
-     */
-    public function removeTranslation(\Food\AppBundle\Entity\StaticContentLocalized $translations)
-    {
-        $this->translations->removeElement($translations);
-    }
-
-    /**
-     * Get translations
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
-
-    /**
-     * Set order
-     *
-     * @param integer $order
-     * @return StaticContent
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
+        $this->code = $code;
     
         return $this;
     }
 
     /**
-     * Get order
+     * Get code
      *
-     * @return integer 
+     * @return string 
      */
-    public function getOrder()
+    public function getCode()
     {
-        return $this->order;
+        return $this->code;
     }
 
     /**
-     * Set active
+     * Set singleUse
      *
-     * @param boolean $active
-     * @return StaticContent
+     * @param boolean $singleUse
+     * @return Coupon
      */
-    public function setActive($active)
+    public function setSingleUse($singleUse)
     {
-        $this->active = $active;
+        $this->singleUse = $singleUse;
     
         return $this;
     }
 
     /**
-     * Get active
+     * Get singleUse
      *
      * @return boolean 
      */
-    public function getActive()
+    public function getSingleUse()
     {
-        return $this->active;
-    }
-
-    /**
-     * Set visible
-     *
-     * @param boolean $visible
-     * @return StaticContent
-     */
-    public function setVisible($visible)
-    {
-        $this->visible = $visible;
-    
-        return $this;
-    }
-
-    /**
-     * Get visible
-     *
-     * @return boolean 
-     */
-    public function getVisible()
-    {
-        return $this->visible;
+        return $this->singleUse;
     }
 }

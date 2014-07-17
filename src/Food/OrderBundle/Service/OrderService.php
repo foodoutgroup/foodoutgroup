@@ -7,6 +7,7 @@ use Doctrine\ORM\QueryBuilder;
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
+use Food\OrderBundle\Entity\Coupon;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Food\OrderBundle\Entity\OrderDetailsOptions;
@@ -2319,5 +2320,24 @@ class OrderService extends ContainerAware
             );
 
         return $orders;
+    }
+
+    /**
+     * @param string $code
+     * @return Coupon|null
+     */
+    public function getCouponByCode($code)
+    {
+        $em = $this->container->get('doctrine')->getManager();
+        /**
+         * @var ObjectManager $em
+         */
+        $coupon = $em->getRepository('Food\OrderBundle\Entity\Coupon')
+            ->findOneBy(array(
+                'code' => $code,
+                'active' => 1,
+            ));
+
+        return $coupon;
     }
 }

@@ -248,6 +248,7 @@ sonata_admin:
                       #- sonata.admin.food.category
                       - sonata.admin.static
                       - sonata.admin.sms
+                      - sonata.admin.coupon
                       #- sonata.admin.dish.unit.category
                   roles: [ ROLE_ADMIN ]
               acme.admin.group.formanagers:
