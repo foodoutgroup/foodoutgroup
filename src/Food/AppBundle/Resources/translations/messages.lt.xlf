@@ -418,8 +418,8 @@
         <source>mobile.order.coupon_code</source>
         <target>Nuolaidos kodas</target>
       </trans-unit>
-      <trans-unit id="mobile.order.coupon__discount_sum" resname="mobile.order.coupon__discount_sum">
-        <source>mobile.order.coupon__discount_sum</source>
+      <trans-unit id="mobile.order.coupon_discount_sum" resname="mobile.order.coupon_discount_sum">
+        <source>mobile.order.coupon_discount_sum</source>
         <target>Nuolaidos suma</target>
       </trans-unit>
       <trans-unit id="c4893f3e3a9f9062ea893935c75c4724" resname="mobile.order.sum">

@@ -99,14 +99,12 @@
                 url: '{{ path('food_ajax', {'action': 'check-coupon'}) }}',
                 data:  { place_id: '{{ place.id }}', coupon_code: couponField.val()},
                 success:  function(resp){
-                    console.log('Response: ');
-                    console.log(resp);
                     if (resp.status == 1) {
                         var takeAway = 0;
                         if ($('input[name="delivery-type"]:checked').val() == 'pickup') {
                             takeAway = 1;
                         }
-                        $.post('{{ path('food_cart_action', {'action' : 'refresh'}) }}', { place: {{ place.id }}, in_cart: true, coupon_code: couponField.val(), take_away: takeAway }, function(response) {
+                        $.post('{{ path('food_cart_action', {'action' : 'refresh'}) }}', { place: {{ place.id }}, in_cart: 1, coupon_code: couponField.val(), take_away: takeAway }, function(response) {
                             if (typeof(response.block) != "undefined") {
                                 $('.check-block').replaceWith(response.block);
                             }
@@ -131,7 +129,6 @@
         });
     });
 {% endblock %}
-
 
 
 {% block body %}
@@ -239,7 +236,7 @@
                             <div class="clearfix"></div>
                             <div class="cupon-info">
                                 {% trans %}general.coupon.popup_link{% endtrans %}
-                                <input type="hidden" name="coupon_code" id="coupon_code" value="" />
+                                <input type="hidden" name="coupon_code" id="coupon_code" value="{% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{{ dataToLoad['coupon_code'] }}{% endif %}" />
                             </div>
                             <h2 class="section-2">2. {% trans %}cart.checkout.block_title_secure_payment{% endtrans %}</h2>
                             <div class="select-payment clearfix">
@@ -278,7 +275,8 @@
                     </form>
                 </div>
                 <div class="content-righter-small">
-                    {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': true, 'order': order, 'takeAway': takeAway })) }}
+                    {% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{% set couponCode = dataToLoad['coupon_code'] %}{% else %}{% set couponCode = null %}{% endif %}
+                    {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': true, 'order': order, 'takeAway': takeAway, 'couponCode': couponCode })) }}
                 </div>
             </div>
         </div>

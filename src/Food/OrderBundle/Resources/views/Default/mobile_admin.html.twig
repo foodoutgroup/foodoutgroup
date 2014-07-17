@@ -53,7 +53,7 @@
                 </td>
             </tr>
         {% endfor %}
-        {% if order.coupon_code is not empty %}
+        {% if order.couponCode is not empty %}
             <tr>
                 <td colspan="5">
                     <b>
@@ -64,7 +64,7 @@
             <tr>
                 <td colspan="5">
                     <b>
-                        {% trans %}mobile.order.coupon__discount_sum{% endtrans %}
+                        {% trans %}mobile.order.coupon_discount_sum{% endtrans %}
                     </b> {{ order.discountSum }} {{ currency_display }}
                 </td>
             </tr>

@@ -237,7 +237,7 @@ class DefaultController extends Controller
 
                 $selfDelivery = ($request->get('delivery-type') == "pickup" ? true : false);
 
-                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery);
+                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon);
                 $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
             } else {
                 $orderService->setOrder($order);

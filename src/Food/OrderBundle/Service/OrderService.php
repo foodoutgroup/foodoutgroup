@@ -711,7 +711,7 @@ class OrderService extends ContainerAware
                 ->setCouponCode($coupon->getCode());
 
             $discountSize = $coupon->getDiscount();
-            $discountSum = ($sumTotal * $discountSize) * 100;
+            $discountSum = ($sumTotal * $discountSize) / 100;
             $sumTotal = $sumTotal - $discountSum;
 
             $order->setDiscountSize($discountSize)
