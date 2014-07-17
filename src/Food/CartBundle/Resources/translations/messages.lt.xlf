@@ -191,6 +191,10 @@
             <source>order.form.errors.cartlessthanminimum_on_pickup</source>
             <target><![CDATA[<b>Užsakymas nesiekia minimalios krepšelio sumos.</b>]]></target>
         </trans-unit>
+        <trans-unit id="order.form.errors.emptycart" resname="order.form.errors.emptycart">
+            <source>order.form.errors.emptycart</source>
+            <target>Jūsų krepšelis tuščias. Pasirinkite patiekalus iš valgiaraščio</target>
+        </trans-unit>
         <trans-unit id="order.form.errors.today_no_work" resname="order.form.errors.today_no_work">
             <source>order.form.errors.today_no_work</source>
             <target>Restoranas šiandien nedirba.</target>
@@ -210,6 +214,10 @@
         <trans-unit id="general.cart_rules_slug" resname="general.cart_rules_slug">
             <source>general.cart_rules_slug</source>
             <target>ordering_rules</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.payment_type" resname="order.form.errors.payment_type">
+            <source>order.form.errors.payment_type</source>
+            <target>Pasirinkite atsiskaitymo būdą</target>
         </trans-unit>
         <trans-unit id="general.coupon.text" resname="general.coupon.text">
             <source>general.coupon.text</source>

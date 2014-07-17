@@ -72,7 +72,8 @@ class DefaultController extends Controller
             $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(
                 $request->get('place')
             ),
-            true
+            true,
+            $request->get('in_cart', false)
         );
 
         $response->setContent(json_encode($jsonResponseData));
@@ -149,6 +150,7 @@ class DefaultController extends Controller
         if (!empty($orderHash)) {
             $order = $orderService->getOrderByHash($orderHash);
             $place = $order->getPlace();
+            $takeAway = ($order->getDeliveryType() == 'pickup');
         } else {
             $place = $placeService->getPlace($placeId);
         }
@@ -162,6 +164,17 @@ class DefaultController extends Controller
         // Validate only if post happened
         if ($request->getMethod() == 'POST') {
             $this->get('food.order')->validateDaGiantForm($place, $request, $formHasErrors, $formErrors, ($takeAway ? true : false), $request->get('place_point'));
+        }
+
+        // Empty dish protection
+        if (empty($order)) {
+            $dishes = $this->getCartService()->getCartDishes($place);
+        } else {
+            $dishes = $order->getDetails();
+        }
+        if (count($dishes) < 1) {
+            $formErrors[] = 'order.form.errors.emptycart';
+            $formHasErrors = true;
         }
 
         if ($formHasErrors) {
@@ -305,7 +318,7 @@ class DefaultController extends Controller
             'place' => $place,
             'total_cart' => $total_cart,
             'total_with_delivery' => $total_cart + $place->getDeliveryPrice(),
-            'inCart' => $inCart,
+            'inCart' => (int)$inCart,
             'hide_delivery' => (($order!=null AND $order->getDeliveryType() == 'pickup') || $takeAway == true ? 1: 0)
         );
         if ($renderView) {
