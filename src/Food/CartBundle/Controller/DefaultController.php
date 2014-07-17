@@ -191,6 +191,8 @@ class DefaultController extends Controller
             $couponCode = $request->get('coupon_code');
             if (!empty($couponCode)) {
                 $coupon = $orderService->getCouponByCode($couponCode);
+            } else {
+                $coupon = null;
             }
 
             // Jeigu atsiima pats - dedam gamybos taska, kuri jis pats pasirinko, o ne mes Pauliaus magic find funkcijoje
