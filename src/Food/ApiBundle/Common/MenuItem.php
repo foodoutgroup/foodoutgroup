@@ -195,8 +195,11 @@ class MenuItem extends ContainerAware
                     $options[($key.'multi')] = $optionList;
                 }
             }
-
-            $this->data['options'] = array_values($options);
+            $options = array_values($options);
+            if(!empty($options[1]) && $options[0]['type'] == "sizes") {
+                $options[1]['title'] =  $this->container->get('translator')->trans('dish.select_options');
+            }
+            $this->data['options'] = $options;
         }
         return $this->data;
     }
