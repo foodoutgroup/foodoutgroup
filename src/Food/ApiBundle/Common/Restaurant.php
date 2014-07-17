@@ -16,7 +16,7 @@ class Restaurant extends ContainerAware
         'cuisine' => array(),
         'tags' => array(),
         'thumbnail_url' => '',
-        'photos_urls' => array(),
+        'photo_urls' => array(),
         'menu_photos_enabled' => true,
         'payment_options' => array(
             // 'cash' => true,
@@ -109,7 +109,7 @@ class Restaurant extends ContainerAware
             ->set('description', $place->getDescription())
             ->set('cuisine', $kitchensForResp)
             ->set('tags', array()) // @todo FILL IT !!
-            ->set('photos_urls', $photos)
+            ->set('photo_urls', $photos)
             ->set('thumbnail_url', 'http://www.foodout.lt/uploads/places/thumb_'.$place->getLogo())
             ->set(
                 'payment_options',
