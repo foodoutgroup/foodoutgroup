@@ -96,6 +96,12 @@ class Restaurant extends ContainerAware
             );
         }
 
+        $photos = array();
+        foreach ($place->getPhotos() as $photo) {
+            if ($photo->getActive()) {
+                $photos[] = 'http://taurinas.foodout.lt/uploads/covers/'.$photo->getPhoto();
+            }
+        }
 
         $this
             ->set('restaurant_id', $place->getId())
@@ -103,6 +109,7 @@ class Restaurant extends ContainerAware
             ->set('description', $place->getDescription())
             ->set('cuisine', $kitchensForResp)
             ->set('tags', array()) // @todo FILL IT !!
+            ->set('photos_urls', $photos)
             ->set('thumbnail_url', 'http://www.foodout.lt/uploads/places/thumb_'.$place->getLogo())
             ->set(
                 'payment_options',

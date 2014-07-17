@@ -242,6 +242,7 @@ sonata_admin:
                       #- sonata.admin.kitchen
                       - sonata.admin.place
                       - sonata.admin.place.reviews
+                      - sonata.admin.place.coverphoto
                       #- sonata.admin.dish.unit
                       #- sonata.admin.dish.size
                       #- sonata.admin.food.category
