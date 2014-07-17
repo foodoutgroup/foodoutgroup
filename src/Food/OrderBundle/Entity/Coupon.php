@@ -30,9 +30,9 @@ class Coupon
     private $name;
 
     /**
-     * @var float
+     * @var int
      *
-     * @ORM\Column(name="discount", type="decimal", precision=8, scale=2, nullable=false)
+     * @ORM\Column(name="discount", type="integer",  nullable=false)
      */
     private $discount;
 
@@ -177,29 +177,6 @@ class Coupon
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set discount
-     *
-     * @param string $discount
-     * @return Coupon
-     */
-    public function setDiscount($discount)
-    {
-        $this->discount = $discount;
-    
-        return $this;
-    }
-
-    /**
-     * Get discount
-     *
-     * @return string 
-     */
-    public function getDiscount()
-    {
-        return $this->discount;
     }
 
     /**
@@ -430,5 +407,28 @@ class Coupon
     public function getSingleUse()
     {
         return $this->singleUse;
+    }
+
+    /**
+     * Set discount
+     *
+     * @param integer $discount
+     * @return Coupon
+     */
+    public function setDiscount($discount)
+    {
+        $this->discount = $discount;
+    
+        return $this;
+    }
+
+    /**
+     * Get discount
+     *
+     * @return integer 
+     */
+    public function getDiscount()
+    {
+        return $this->discount;
     }
 }

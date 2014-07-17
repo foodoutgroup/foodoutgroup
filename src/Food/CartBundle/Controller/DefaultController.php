@@ -60,6 +60,8 @@ class DefaultController extends Controller
                 break;
             case 'remove-option':
                 break;
+            case 'refresh':
+                break;
         }
         /*
         $jsonResponseData['items'] = $this->getCartService()->getCartDishesForJson(
@@ -73,7 +75,10 @@ class DefaultController extends Controller
                 $request->get('place')
             ),
             true,
-            $request->get('in_cart', false)
+            $request->get('in_cart', false),
+            null,
+            $request->get('take_away', false),
+            $request->get('coupon_code', null)
         );
 
         $response->setContent(json_encode($jsonResponseData));
@@ -182,6 +187,12 @@ class DefaultController extends Controller
         }
 
         if ($request->getMethod() == 'POST' && !$formHasErrors) {
+            // Jei vede kupona - uzsikraunam
+            $couponCode = $request->get('coupon_code');
+            if (!empty($couponCode)) {
+                $coupon = $orderService->getCouponByCode($couponCode);
+            }
+
             // Jeigu atsiima pats - dedam gamybos taska, kuri jis pats pasirinko, o ne mes Pauliaus magic find funkcijoje
             if ($takeAway) {
                 $placePointId = $request->get('place_point');
@@ -306,20 +317,41 @@ class DefaultController extends Controller
      * @param bool $inCart
      * @param null|Order $order
      * @param null|bool $takeAway
+     * @param null|string $couponCode
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function sideBlockAction(Place $place, $renderView = false, $inCart = false, $order = null, $takeAway = null)
+    public function sideBlockAction(Place $place, $renderView = false, $inCart = false, $order = null, $takeAway = null, $couponCode = null)
     {
         $list = $this->getCartService()->getCartDishes($place);
         $total_cart = $this->getCartService()->getCartTotal($list, $place);
+
+        // If coupon in use
+        $applyDiscount = false;
+        $discountSize = null;
+        $discountSum = null;
+        if (!empty($couponCode)) {
+            $coupon = $this->get('food.order')->getCouponByCode($couponCode);
+
+            if ($coupon) {
+                $applyDiscount = true;
+                $discountSize = $coupon->getDiscount();
+                $discountSum = ($total_cart * $coupon->getDiscount()) / 100;
+
+                $total_cart = $total_cart - $discountSum;
+            }
+        }
+
         $params = array(
             'list'  => $list,
             'place' => $place,
             'total_cart' => $total_cart,
             'total_with_delivery' => $total_cart + $place->getDeliveryPrice(),
             'inCart' => (int)$inCart,
-            'hide_delivery' => (($order!=null AND $order->getDeliveryType() == 'pickup') || $takeAway == true ? 1: 0)
+            'hide_delivery' => (($order!=null AND $order->getDeliveryType() == 'pickup') || $takeAway == true ? 1: 0),
+            'applyDiscount' => $applyDiscount,
+            'discountSize' => $discountSize,
+            'discountSum' => $discountSum,
         );
         if ($renderView) {
             return $this->renderView('FoodCartBundle:Default:side_block.html.twig', $params);

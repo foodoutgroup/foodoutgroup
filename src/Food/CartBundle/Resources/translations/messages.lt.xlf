@@ -231,6 +231,10 @@
             <source>general.coupon.wrong_place</source>
             <target>Jūsų pateiktas nuolaidos kuponas galioja tik %place_name% restorane</target>
         </trans-unit>
+        <trans-unit id="general.coupon.wrong_place_simple" resname="general.coupon.wrong_place_simple">
+            <source>general.coupon.wrong_place_simple</source>
+            <target>Jūsų pateiktas nuolaidos kuponas šiame restorane negalioja. Pasitikrinkite kupono kodą</target>
+        </trans-unit>
         <trans-unit id="general.coupon.not_active" resname="general.coupon.not_active">
             <source>general.coupon.not_active</source>
             <target>Jūsų pateiktas nuolaidos kuponas negalioja</target>
@@ -238,6 +242,10 @@
         <trans-unit id="general.coupon.popup_link" resname="general.coupon.popup_link">
             <source>general.coupon.popup_link</source>
             <target><![CDATA[Jei turite kuponą, įveskite <a href="#coupon" class="fancy-box">jo kodą čia</a>]]></target>
+        </trans-unit>
+        <trans-unit id="cart.block.discount_sum" resname="cart.block.discount_sum">
+            <source>cart.block.discount_sum</source>
+            <target>Nuolaida</target>
         </trans-unit>
     </body>
   </file>

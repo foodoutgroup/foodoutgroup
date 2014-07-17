@@ -23,7 +23,11 @@ class OrderAdmin extends SonataAdmin
         }
     }
 
-    // Fields to be shown on filter forms
+    /**
+     * @param DatagridMapper $datagridMapper
+     *
+     * @codeCoverageIgnore
+     */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $statusChoices = array();
@@ -55,10 +59,15 @@ class OrderAdmin extends SonataAdmin
                     '1' => $this->trans('label_type_yes'),
                 )
             ))
+            ->add('coupon_code', null, array('label' => 'admin.order.coupon_code'))
         ;
     }
 
-    // Fields to be shown on lists
+    /**
+     * @param ListMapper $listMapper
+     *
+     * @codeCoverageIgnore
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -82,6 +91,8 @@ class OrderAdmin extends SonataAdmin
 
     /**
      * {@inheritdoc}
+     *
+     * @codeCoverageIgnore
      */
     protected function configureShowFields(\Sonata\AdminBundle\Show\ShowMapper $showMapper)
     {
@@ -102,6 +113,9 @@ class OrderAdmin extends SonataAdmin
             )
             ->add('vat', 'string', array('label' => 'admin.order.vat'))
             ->add('total', 'string', array('label' => 'admin.order.total'))
+            ->add('couponCode', 'string', array('label' => 'admin.order.coupon_code'))
+            ->add('discountSize', 'string', array('label' => 'admin.order.discount_size'))
+            ->add('discountSum', 'string', array('label' => 'admin.order.discount_sum'))
             ->add('comment', 'string', array('label' => 'admin.order.comment'))
             ->add('place_comment', 'string', array('label' => 'admin.order.place_comment'))
             ->add('order_status', 'sonata_type_collection',
@@ -127,6 +141,8 @@ class OrderAdmin extends SonataAdmin
     /**
      * @param \Sonata\AdminBundle\Route\RouteCollection $collection
      * @inheritdoc
+     *
+     * @codeCoverageIgnore
      */
     public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
     {

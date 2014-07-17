@@ -25,6 +25,12 @@
             </div>
         {% endfor %}
         <div class="check-bottom">
+            {% if applyDiscount %}
+                <div class="discount-sum clearfix">
+                    <div class="fl">{% trans %}cart.block.discount_sum{% endtrans %}:</div>
+                    <div class="fr">{{ discountSum }} {{ currency_display }}</div>
+                </div>
+            {% endif %}
             <div class="total-sum clearfix">
                 <div class="fl">{% trans %}cart.block.total_cart{% endtrans %}:</div>
                 <div class="fr">{{ total_cart|replace({'.': ','}) }} {{ currency_display }}</div>

@@ -2,7 +2,6 @@
 
 
 {% block jscode %}
-<script type="application/javascript">
     /**
      * @todo Migrate to JS file
      */
@@ -85,6 +84,11 @@
         }
         $('.tooltip').tooltip();
 
+        $('#coupon_form').bind('submit', function() {
+            $('.coupon_form_popup .button-submit').trigger('click');
+            return false;
+        });
+
         $('.coupon_form_popup .button-submit').bind('click', function() {
             var couponField = $('input#coupon_code_popup');
             var popupInner = $(this).closest('.coupon_inner');
@@ -98,9 +102,13 @@
                     console.log('Response: ');
                     console.log(resp);
                     if (resp.status == 1) {
-                        $.post('{{ path('food_cart_action', {'action' : 'refresh'}) }}', {{ place: place.id }}, function(resp) {
-                            if (typeof(resp.block) != "undefined") {
-                                $('.check-block').replaceWith(resp.block);
+                        var takeAway = 0;
+                        if ($('input[name="delivery-type"]:checked').val() == 'pickup') {
+                            takeAway = 1;
+                        }
+                        $.post('{{ path('food_cart_action', {'action' : 'refresh'}) }}', { place: {{ place.id }}, in_cart: true, coupon_code: couponField.val(), take_away: takeAway }, function(response) {
+                            if (typeof(response.block) != "undefined") {
+                                $('.check-block').replaceWith(response.block);
                             }
                             popupInner.unmask();
                             // move data to main form

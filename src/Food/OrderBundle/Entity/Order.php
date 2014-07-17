@@ -107,6 +107,32 @@ class Order
      * @ORM\Column(name="total", type="decimal", precision=8, scale=2, nullable=true)
      */
     private $total;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Food\OrderBundle\Entity\Coupon")
+     * @ORM\JoinColumn(name="coupon", referencedColumnName="id")
+     **/
+    private $coupon;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="coupon_code", type="string", length=255, nullable=true)
+     */
+    private $couponCode;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="discount_size", type="integer",  nullable=true)
+     */
+    private $discountSize;
+
+    /**
+     * @var decimal
+     * @ORM\Column(name="discount_sum", type="decimal", precision=8, scale=2, nullable=true)
+     */
+    private $discountSum;
     
     /**
      * @var integer
@@ -421,15 +447,6 @@ class Order
     }
 
     /**
-     * @return float
-     */
-    public function getAmount()
-    {
-        // TODO susumuoti visu detailsu kainas ir grazinti ;)
-        return '1.5';
-    }
-
-    /**
      * Set paymentStatus
      *
      * @param string $paymentStatus
@@ -609,7 +626,11 @@ class Order
             'details' => 'TODO', // TODO
             'orderStatus' => $this->getOrderStatus(),
             'orderDate' => $this->getOrderDate()->format("Y-m-d H:i:s"),
+            'total' => $this->getTotal(),
             'vat' => $this->getVat(),
+            'coupon_code' => $this->getCouponCode(),
+            'discount_size' => $this->getDiscountSize(),
+            'discount_sum' => $this->getDiscountSum(),
             'orderHash' => $this->getOrderHash(),
             'comment' => $this->getComment(),
             'placeComent' => $this->getPlaceComment(),
@@ -1193,5 +1214,97 @@ class Order
     public function getReminded()
     {
         return $this->reminded;
+    }
+
+    /**
+     * Set couponCode
+     *
+     * @param string $couponCode
+     * @return Order
+     */
+    public function setCouponCode($couponCode)
+    {
+        $this->couponCode = $couponCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get couponCode
+     *
+     * @return string 
+     */
+    public function getCouponCode()
+    {
+        return $this->couponCode;
+    }
+
+    /**
+     * Set discountSize
+     *
+     * @param integer $discountSize
+     * @return Order
+     */
+    public function setDiscountSize($discountSize)
+    {
+        $this->discountSize = $discountSize;
+    
+        return $this;
+    }
+
+    /**
+     * Get discountSize
+     *
+     * @return integer 
+     */
+    public function getDiscountSize()
+    {
+        return $this->discountSize;
+    }
+
+    /**
+     * Set discountSum
+     *
+     * @param string $discountSum
+     * @return Order
+     */
+    public function setDiscountSum($discountSum)
+    {
+        $this->discountSum = $discountSum;
+    
+        return $this;
+    }
+
+    /**
+     * Get discountSum
+     *
+     * @return string 
+     */
+    public function getDiscountSum()
+    {
+        return $this->discountSum;
+    }
+
+    /**
+     * Set coupon
+     *
+     * @param \Food\OrderBundle\Entity\Coupon $coupon
+     * @return Order
+     */
+    public function setCoupon(\Food\OrderBundle\Entity\Coupon $coupon = null)
+    {
+        $this->coupon = $coupon;
+    
+        return $this;
+    }
+
+    /**
+     * Get coupon
+     *
+     * @return \Food\OrderBundle\Entity\Coupon 
+     */
+    public function getCoupon()
+    {
+        return $this->coupon;
     }
 }

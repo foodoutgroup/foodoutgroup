@@ -150,6 +150,9 @@ class PaymentsController extends Controller
                 $orderService->saveOrder();
                 $orderService->informPlace();
 
+                // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
+                $orderService->deactivateCoupon();
+
                 return new Response('OK');
             }
         } catch (\Exception $e) {

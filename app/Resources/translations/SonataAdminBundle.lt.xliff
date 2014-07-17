@@ -804,6 +804,18 @@
                 <source>admin.order.total</source>
                 <target>Viso (su PVM)</target>
             </trans-unit>
+            <trans-unit id="admin.order.coupon_code">
+                <source>admin.order.coupon_code</source>
+                <target>Nuolaidos kupono kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.discount_size">
+                <source>admin.order.discount_size</source>
+                <target>Nuolaida %</target>
+            </trans-unit>
+            <trans-unit id="admin.order.discount_sum">
+                <source>admin.order.discount_sum</source>
+                <target>Nuolaidos suma</target>
+            </trans-unit>
             <trans-unit id="admin.order.comment">
                 <source>admin.order.comment</source>
                 <target>Užsakovo komentaras</target>
