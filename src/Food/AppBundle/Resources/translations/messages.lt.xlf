@@ -414,6 +414,18 @@
         <source>mobile.order.sum_with_delivery</source>
         <target>Suma su pristatymu (su PVM)</target>
       </trans-unit>
+      <trans-unit id="mobile.order.coupon_code" resname="mobile.order.coupon_code">
+        <source>mobile.order.coupon_code</source>
+        <target>Nuolaidos kodas</target>
+      </trans-unit>
+      <trans-unit id="mobile.order.coupon_used" resname="mobile.order.coupon_used">
+        <source>mobile.order.coupon_used</source>
+        <target>Pritaikyta nuolaida</target>
+      </trans-unit>
+      <trans-unit id="mobile.order.coupon_discount_sum" resname="mobile.order.coupon_discount_sum">
+        <source>mobile.order.coupon_discount_sum</source>
+        <target>Nuolaidos suma</target>
+      </trans-unit>
       <trans-unit id="c4893f3e3a9f9062ea893935c75c4724" resname="mobile.order.sum">
         <source>mobile.order.sum</source>
         <target>Suma (su PVM)</target>

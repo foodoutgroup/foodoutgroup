@@ -7,6 +7,7 @@ use Doctrine\ORM\QueryBuilder;
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
+use Food\OrderBundle\Entity\Coupon;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Food\OrderBundle\Entity\OrderDetailsOptions;
@@ -655,8 +656,9 @@ class OrderService extends ContainerAware
      * @param \Food\UserBundle\Entity\User $user
      * @param PlacePoint $placePoint - placePoint, jei atsiima pats
      * @param bool $selfDelivery - ar restoranas pristato pats
+     * @param Coupon|null $coupon
      */
-    public function createOrderFromCart($place, $locale='lt', $user, $placePoint=null, $selfDelivery = false)
+    public function createOrderFromCart($place, $locale='lt', $user, $placePoint=null, $selfDelivery = false, $coupon = null)
     {
         $this->createOrder($place, $placePoint);
         $this->getOrder()->setDeliveryType(
@@ -701,6 +703,21 @@ class OrderService extends ContainerAware
                 $sumTotal += $cartDish->getQuantity() * $opt->getDishOptionId()->getPrice();
             }
         }
+
+        // Pritaikom nuolaida
+        if (!empty($coupon) && $coupon instanceof Coupon) {
+            $order = $this->getOrder();
+            $order->setCoupon($coupon)
+                ->setCouponCode($coupon->getCode());
+
+            $discountSize = $coupon->getDiscount();
+            $discountSum = ($sumTotal * $discountSize) / 100;
+            $sumTotal = $sumTotal - $discountSum;
+
+            $order->setDiscountSize($discountSize)
+                ->setDiscountSum($discountSum);
+        }
+
         if(!$selfDelivery) {
             $sumTotal+= $this->getOrder()->getPlace()->getDeliveryPrice();
         }
@@ -709,10 +726,13 @@ class OrderService extends ContainerAware
 
     }
 
+    /**
+     * @throws \Exception
+     */
     public function saveOrder()
     {
         if (empty($this->order) || $this->order == null) {
-            throw new Exception("Yah whatever... seivinam orderi neturedami jo ?:)");
+            throw new \Exception("Yah whatever... seivinam orderi neturedami jo ?:)");
         } else {
             //Update the last update time ;)
             $this->order->setLastUpdated(new \DateTime("now"));
@@ -1970,8 +1990,9 @@ class OrderService extends ContainerAware
      * @param $formErrors
      * @param $takeAway
      * @param null|int $placePointId
+     * @param Coupon|null $coupon
      */
-    public function validateDaGiantForm(Place $place, Request $request, &$formHasErrors, &$formErrors, $takeAway, $placePointId = null)
+    public function validateDaGiantForm(Place $place, Request $request, &$formHasErrors, &$formErrors, $takeAway, $placePointId = null, $coupon = null)
     {
         if (!$takeAway) {
             $list = $this->getCartService()->getCartDishes($place);
@@ -2024,6 +2045,18 @@ class OrderService extends ContainerAware
 
         if (0 === strlen($request->get('customer-email'))) {
             $formErrors[] = 'order.form.errors.customeremail';
+        }
+
+        if (0 === strlen($request->get('payment-type'))) {
+            $formErrors[] = 'order.form.errors.payment_type';
+        }
+
+        if (!empty($coupon) && $coupon instanceof Coupon) {
+            if ($coupon->getActive() == false) {
+                $formErrors[] = 'general.coupon.not_active';
+            } else if ($coupon->getPlace() && $coupon->getPlace()->getId() != $place->getId()) {
+                $formErrors[] = 'general.coupon.wrong_place_simple';
+            }
         }
 
         // Validate das phone number :)
@@ -2319,5 +2352,58 @@ class OrderService extends ContainerAware
             );
 
         return $orders;
+    }
+
+    /**
+     * @param string $code
+     * @return Coupon|null
+     */
+    public function getCouponByCode($code)
+    {
+        $em = $this->container->get('doctrine')->getManager();
+        /**
+         * @var ObjectManager $em
+         */
+        $coupon = $em->getRepository('Food\OrderBundle\Entity\Coupon')
+            ->findOneBy(array(
+                'code' => $code,
+                'active' => 1,
+            ));
+
+        return $coupon;
+    }
+
+    /**
+     * @param Coupon $coupon
+     * @throws \Exception
+     */
+    public function saveCoupon($coupon)
+    {
+        if (empty($coupon) || $coupon == null) {
+            throw new \Exception("No coupon - no saving");
+        } else {
+            $coupon->setEditedAt(new \DateTime("now"));
+            $this->getEm()->persist($coupon);
+            $this->getEm()->flush();
+        }
+    }
+
+    /**
+     * If coupon is for single use - deactivate it after purchase
+     *
+     * @throws \Exception
+     */
+    public function deactivateCoupon()
+    {
+        $order = $this->getOrder();
+        if (!$order instanceof Order) {
+            throw new \Exception('Cannot deactivate coupon if no order is given');
+        }
+
+        $coupon = $order->getCoupon();
+        if ($coupon && $coupon instanceof Coupon && $coupon->getSingleUse()) {
+            $coupon->setActive(false);
+            $this->saveCoupon($coupon);
+        }
     }
 }

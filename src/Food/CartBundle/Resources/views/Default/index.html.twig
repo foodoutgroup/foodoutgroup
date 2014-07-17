@@ -2,6 +2,9 @@
 
 
 {% block jscode %}
+    /**
+     * @todo Migrate to JS file
+     */
     $(document).ready(function(){
         $('.site-center').delegate('.delivery-info-form .submit-button', 'click', function(event){
             Cart.submitOrder($(this).closest(".delivery-info-form"));
@@ -80,9 +83,52 @@
             }).siblings('.ui-dialog-titlebar').remove();
         }
         $('.tooltip').tooltip();
+
+        $('#coupon_form').bind('submit', function() {
+            $('.coupon_form_popup .button-submit').trigger('click');
+            return false;
+        });
+
+        $('.coupon_form_popup .button-submit').bind('click', function() {
+            var couponField = $('input#coupon_code_popup');
+            var popupInner = $(this).closest('.coupon_inner');
+            popupInner.mask();
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ path('food_ajax', {'action': 'check-coupon'}) }}',
+                data:  { place_id: '{{ place.id }}', coupon_code: couponField.val()},
+                success:  function(resp){
+                    if (resp.status == 1) {
+                        var takeAway = 0;
+                        if ($('input[name="delivery-type"]:checked').val() == 'pickup') {
+                            takeAway = 1;
+                        }
+                        $.post('{{ path('food_cart_action', {'action' : 'refresh'}) }}', { place: {{ place.id }}, in_cart: 1, coupon_code: couponField.val(), take_away: takeAway }, function(response) {
+                            if (typeof(response.block) != "undefined") {
+                                $('.check-block').replaceWith(response.block);
+                            }
+                            popupInner.unmask();
+                            // move data to main form
+                            $('#coupon_code').val(couponField.val());
+                            couponField.val('');
+                            popupInner.find('.alert.alert-danger').remove();
+                            $.fancybox.close();
+                        }, 'json');
+                    } else {
+                        var dangerAlert = popupInner.find('.alert.alert-danger');
+                        if (dangerAlert.length > 0) {
+                            dangerAlert.html(resp.data.error);
+                        } else {
+                            popupInner.prepend('<div class="alert alert-danger">'+resp.data.error+'</div>');
+                        }
+                        popupInner.unmask();
+                    }
+                }
+            });
+        });
     });
 {% endblock %}
-
 
 
 {% block body %}
@@ -188,6 +234,10 @@
                                 <input type="checkbox" name="cart_rules" {% if (dataToLoad is not empty and dataToLoad['cart_rules'] is defined and dataToLoad['cart_rules'] is not empty) %}checked="checked"{% endif %} />
                             </div>
                             <div class="clearfix"></div>
+                            <div class="cupon-info">
+                                {% trans %}general.coupon.popup_link{% endtrans %}
+                                <input type="hidden" name="coupon_code" id="coupon_code" value="{% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{{ dataToLoad['coupon_code'] }}{% endif %}" />
+                            </div>
                             <h2 class="section-2">2. {% trans %}cart.checkout.block_title_secure_payment{% endtrans %}</h2>
                             <div class="select-payment clearfix">
                                 <label class="custom-radio">{% trans %}cart.checkout.cash_on_delivery{% endtrans %}
@@ -220,13 +270,13 @@
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
                             </div>
-                            {# <div class="cupon-info">Jei turite kuponą, įveskite <a href="#">jo kodą čia</a></div> #}
                         </div>
                         <div class="form-controls clearfix"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button-back">{% trans %}cart.checkout.button_get_back{% endtrans %}</a><a href="#" class="submit-button"><span>{% trans %}cart.checkout.button_order{% endtrans %}</span></a></div>
                     </form>
                 </div>
                 <div class="content-righter-small">
-                    {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': true, 'order': order, 'takeAway': takeAway })) }}
+                    {% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{% set couponCode = dataToLoad['coupon_code'] %}{% else %}{% set couponCode = null %}{% endif %}
+                    {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': true, 'order': order, 'takeAway': takeAway, 'couponCode': couponCode })) }}
                 </div>
             </div>
         </div>
@@ -258,6 +308,19 @@
     <div class="hidden">
         <div id="rules" class="cart_rules_content">
             <div class="cart_rules_inner">{{ static_service.getPage(slug_util.oneByName('ordering_rules', locale).itemId).content|raw }}</div>
+        </div>
+        <div id="coupon" class="coupon_form_popup">
+            <div class="coupon_inner">
+                <form id="coupon_form">
+                    <div>
+                        <div class="the_text">{% trans %}general.coupon.text{% endtrans %}:</div>
+                        <div class="the_input"><input type="text" name="coupon_code_popup" id="coupon_code_popup" /></div>
+                    </div>
+                    <div class="popup-controls">
+                        <a href="#" class="button-submit"><span>{% trans %}general.coupon.submit_button{% endtrans %}</span></a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -6,7 +6,7 @@
             <div class="check-item">
                 <div class="edit">
                     {# <a href="{{ path('food_ajax_edit_dish', {'dish': dish.dishId.id, 'cartId':dish.cartId}) }}" href2="#detailed-dish-popup" class="fancybox.ajax fancy-box">{% trans %}cart.block.edit_row{% endtrans %}</a> #}
-                    <a href="{{ path('food_ajax_remove_dish', {'dish': dish.dishId.id, 'cartId':dish.cartId}) }}" class="fancybox.ajax fancy-box remove">{% trans %}cart.block.remove_row{% endtrans %}</a>
+                    <a href="{{ path('food_ajax_remove_dish', {'dish': dish.dishId.id, 'cartId':dish.cartId, 'inCart':inCart}) }}" class="fancybox.ajax fancy-box remove">{% trans %}cart.block.remove_row{% endtrans %}</a>
                 </div>
                 <div class="name">{{ dish.dishId.name }}</div>
                 <div class="type">{{ dish.dishSizeId.unit.name }}</div>
@@ -25,6 +25,12 @@
             </div>
         {% endfor %}
         <div class="check-bottom">
+            {% if applyDiscount %}
+                <div class="discount-sum clearfix">
+                    <div class="fl">{% trans %}cart.block.discount_sum{% endtrans %}:</div>
+                    <div class="fr">{{ discountSum }} {{ currency_display }}</div>
+                </div>
+            {% endif %}
             <div class="total-sum clearfix">
                 <div class="fl">{% trans %}cart.block.total_cart{% endtrans %}:</div>
                 <div class="fr">{{ total_cart|replace({'.': ','}) }} {{ currency_display }}</div>
