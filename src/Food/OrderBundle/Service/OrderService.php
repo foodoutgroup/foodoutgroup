@@ -2004,7 +2004,7 @@ class OrderService extends ContainerAware
     {
         if (!$takeAway) {
             $list = $this->getCartService()->getCartDishes($place);
-            $total_cart = $this->getCartService()->getCartTotal($list, $place);
+            $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
             if ($total_cart < $place->getCartMinimum()) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum';
             }
@@ -2015,7 +2015,7 @@ class OrderService extends ContainerAware
             }
         } elseif ($place->getMinimalOnSelfDel()) {
             $list = $this->getCartService()->getCartDishes($place);
-            $total_cart = $this->getCartService()->getCartTotal($list, $place);
+            $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
             if ($total_cart < $place->getCartMinimum()) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }

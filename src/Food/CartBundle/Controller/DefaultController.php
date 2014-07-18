@@ -326,7 +326,7 @@ class DefaultController extends Controller
     public function sideBlockAction(Place $place, $renderView = false, $inCart = false, $order = null, $takeAway = null, $couponCode = null)
     {
         $list = $this->getCartService()->getCartDishes($place);
-        $total_cart = $this->getCartService()->getCartTotal($list, $place);
+        $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
 
         // If coupon in use
         $applyDiscount = false;

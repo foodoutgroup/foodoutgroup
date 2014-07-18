@@ -71,14 +71,14 @@ class Coupon
     private $createdAt;
 
     /**
-     * @var DateTime|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="edited_at", type="datetime", nullable=true)
      */
     private $editedAt;
 
     /**
-     * @var DateTime|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
