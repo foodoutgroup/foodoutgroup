@@ -669,7 +669,9 @@ class OrderService extends ContainerAware
         $this->saveOrder();
         $sumTotal = 0;
 
-        foreach ($this->getCartService()->getCartDishes($place) as $cartDish) {
+        $placeObject = $this->container->get('food.places')->getPlace($place);
+
+        foreach ($this->getCartService()->getCartDishes($placeObject) as $cartDish) {
             $options = $this->getCartService()->getCartDishOptions($cartDish);
             $dish = new OrderDetails();
             $dish->setDishId($cartDish->getDishId())
@@ -1205,12 +1207,18 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @var string|null $date
      * @return array
      */
-    public function getYesterdayOrdersGrouped()
+    public function getYesterdayOrdersGrouped($date = null)
     {
-        $dateFrom = new \DateTime(date("Y-m-d 00:00:00", strtotime('-1 day')));
-        $dateTo = new \DateTime(date("Y-m-d 23:59:59", strtotime('-1 day')));
+        if (empty($date)) {
+            $dateFrom = new \DateTime(date("Y-m-d 00:00:00", strtotime('-1 day')));
+            $dateTo = new \DateTime(date("Y-m-d 23:59:59", strtotime('-1 day')));
+        } else {
+            $dateFrom = new \DateTime(date("Y-m-d 00:00:00", strtotime($date)));
+            $dateTo = new \DateTime(date("Y-m-d 23:59:59", strtotime($date)));
+        }
 
         $filter = array(
             'order_status' =>  array(self::$status_completed),

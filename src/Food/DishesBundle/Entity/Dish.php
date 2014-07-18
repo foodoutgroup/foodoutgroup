@@ -58,14 +58,14 @@ class Dish extends Uploadable implements Translatable
     private $sizes;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
@@ -80,7 +80,7 @@ class Dish extends Uploadable implements Translatable
     private $createdBy;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="edited_at", type="datetime", nullable=true)
      */
@@ -249,7 +249,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Set editedAt
      *
-     * @param \DateTime $editedAt
+     * @param \DateTime|null $editedAt
      * @return Dish
      */
     public function setEditedAt($editedAt)
@@ -262,7 +262,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get editedAt
      *
-     * @return \DateTime 
+     * @return \DateTime|null
      */
     public function getEditedAt()
     {
@@ -272,7 +272,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Set deletedAt
      *
-     * @param \DateTime $deletedAt
+     * @param \DateTime|null $deletedAt
      * @return Dish
      */
     public function setDeletedAt($deletedAt)
@@ -285,7 +285,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get deletedAt
      *
-     * @return \DateTime 
+     * @return \DateTime|null
      */
     public function getDeletedAt()
     {

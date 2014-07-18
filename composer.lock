@@ -2945,16 +2945,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.4.7",
+            "version": "v2.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "e72f9ebfdf0041e810652f8e893bd3f5e11abfed"
+                "reference": "3da923989cce41c149c6f20b7723c052ac251b16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/e72f9ebfdf0041e810652f8e893bd3f5e11abfed",
-                "reference": "e72f9ebfdf0041e810652f8e893bd3f5e11abfed",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/3da923989cce41c149c6f20b7723c052ac251b16",
+                "reference": "3da923989cce41c149c6f20b7723c052ac251b16",
                 "shasum": ""
             },
             "require": {
@@ -3056,7 +3056,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-07-08 11:54:27"
+            "time": "2014-07-15 14:52:02"
         },
         {
             "name": "trsteel/ckeditor-bundle",

@@ -14,10 +14,16 @@ class DailyOrdersCommand extends ContainerAwareCommand
             ->setName('order:report:accounting_email')
             ->setDescription('Send yesterdays order report to accounting')
             ->addOption(
-                'debug',
+                'force-email',
                 null,
-                InputOption::VALUE_NONE,
-                'If set, debug information will be logged'
+                InputOption::VALUE_OPTIONAL,
+                'If set, email from config will be ignored and given will be used'
+            )
+            ->addOption(
+                'force-date',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'If set, the report will be generated for a given date'
             )
             ->addOption(
                 'dry-run',
@@ -34,30 +40,45 @@ class DailyOrdersCommand extends ContainerAwareCommand
             $orderService = $this->getContainer()->get('food.order');
             $translator = $this->getContainer()->get('translator');
 
-            $orders = $orderService->getYesterdayOrdersGrouped();
+            $date = null;
+            if ($input->getOption('force-date')) {
+                $date = $input->getOption('force-date');
+            } else {
+                $date = date("Y-m-d", strtotime('-1 day'));
+            }
+            $orders = $orderService->getYesterdayOrdersGrouped($date);
 
 
             $mailer = $this->getContainer()->get('mailer');
 
             $message = \Swift_Message::newInstance()
                 ->setSubject($this->getContainer()->getParameter('title').': '.$translator->trans('general.email.accounting_yesterday_report'))
-                ->setFrom('info@'.$this->getContainer()->getParameter('domain'))
-            ;
+                ->setFrom('info@'.$this->getContainer()->getParameter('domain'));
 
-            $message->addTo($this->getContainer()->getParameter('accounting_email'));
+            if ($input->getOption('force-email')) {
+                $email = $input->getOption('force-email');
+            } else {
+                $email = $this->getContainer()->getParameter('accounting_email');
+            }
+
+            $message->addTo($email);
 
             $message->setBody($this->getContainer()->get('templating')
                 ->render(
                     'FoodOrderBundle:Command:accounting_yesterday_report.html.twig',
                     array(
                         'orders' => $orders,
-                        'reportFor' => date("Y-m-d", strtotime('-1 day')),
+                        'reportFor' => $date,
                     )
                 ), 'text/html');
 
-            $mailer->send($message);
+            // Dont send if dry-run
+            if (!$input->getOption('dry-run')) {
+                $mailer->send($message);
+            }
 
-            $output->writeln('Message sent to: '.$this->getContainer()->getParameter('accounting_email'));
+            $output->writeln('Report generated for date: '.$date);
+            $output->writeln('Message sent to: '.$email);
         } catch (\Exception $e) {
             $output->writeln('Error generating report');
             $output->writeln('Error: '.$e->getMessage());

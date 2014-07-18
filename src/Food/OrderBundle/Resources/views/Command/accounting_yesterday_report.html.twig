@@ -31,6 +31,9 @@
                 <th>{% trans %}reporting.daily.yesterday_orders.place{% endtrans %}</th>
                 <th>{% trans %}reporting.driver{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.payment_type{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.coupon_code{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.discount_size{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.discount_sum{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.delivery_with_vat{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.delivery_without_vat{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.dishes_without_vat{% endtrans %}</th>
@@ -55,6 +58,9 @@
                         {% endif %}
                     </td>
                     <td>{{ ('general.email.accounting_report.' ~ order.paymentMethod)|trans() }}</td>
+                    <td>{{ order.couponCode }}</td>
+                    <td>{{ order.discountSize }}</td>
+                    <td>{{ order.discountSum }}</td>
                     <td class="sum">{{ order.place.deliveryPrice }}</td>
                     <td class="sum">{{ delivery_no_vat }}</td>
                     <td class="sum">{{ sum_no_vat }}</td>
@@ -69,7 +75,7 @@
                 {% endif %}
             {% endfor %}
             <tr>
-                <td colspan="10" class="total">
+                <td colspan="13" class="total">
                     <strong>{% trans %}reporting.daily.yesterday_orders.total_banklink{% endtrans %}: </strong><div>{{ totalSumBanklink }} {{ currency_display }}</div><br />
                     <strong>{% trans %}reporting.daily.yesterday_orders.total_pickup{% endtrans %}: </strong><div>{{ totalSumDriver }} {{ currency_display }}</div><br />
                     <strong>{% trans %}reporting.daily.yesterday_orders.total_with_vat_no_brake{% endtrans %}: </strong><div>{{ totalSum }} {{ currency_display }}</div>
@@ -85,6 +91,9 @@
                 <th>{% trans %}reporting.daily.yesterday_orders.time{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.place{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.payment_type{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.coupon_code{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.discount_size{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.discount_sum{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.delivery_with_vat{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.delivery_without_vat{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.dishes_without_vat{% endtrans %}</th>
@@ -102,6 +111,9 @@
                     <td>{{ order.orderDate|date("H:i") }}</td>
                     <td>{{ order.placeName }}</td>
                     <td>{{ ('general.email.accounting_report.' ~ order.paymentMethod)|trans() }}</td>
+                    <td>{{ order.couponCode }}</td>
+                    <td>{{ order.discountSize }}</td>
+                    <td>{{ order.discountSum }}</td>
                     <td class="sum">{{ order.place.deliveryPrice }}</td>
                     <td class="sum">{{ delivery_no_vat }}</td>
                     <td class="sum">{{ sum_no_vat }}</td>
@@ -116,7 +128,7 @@
                 {% endif %}
             {% endfor %}
             <tr>
-                <td colspan="10" class="total">
+                <td colspan="13" class="total">
                     <strong>{% trans %}reporting.daily.yesterday_orders.total_banklink{% endtrans %}: </strong><div>{{ totalSumBanklink }} {{ currency_display }}</div><br />
                     <strong>{% trans %}reporting.daily.yesterday_orders.total_pickup{% endtrans %}: </strong><div>{{ totalSumDriver }} {{ currency_display }}</div><br />
                     <strong>{% trans %}reporting.daily.yesterday_orders.total_with_vat_no_brake{% endtrans %}: </strong><div>{{ totalSum }} {{ currency_display }}</div>
@@ -132,6 +144,9 @@
                 <th>{% trans %}reporting.daily.yesterday_orders.time{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.place{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.payment_type{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.coupon_code{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.discount_size{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.discount_sum{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.dishes_without_vat{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.vat{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.total_with_vat{% endtrans %}</th>
@@ -147,6 +162,9 @@
                     <td>{{ order.orderDate|date("H:i") }}</td>
                     <td>{{ order.placeName }}</td>
                     <td>{{ ('mobile.payment.' ~ order.paymentMethod)|trans() }}</td>
+                    <td>{{ order.couponCode }}</td>
+                    <td>{{ order.discountSize }}</td>
+                    <td>{{ order.discountSum }}</td>
                     <td class="sum">{{ sum_no_vat }}</td>
                     <td class="sum">{{ order.total - (sum_no_vat) }}</td>
                     <td class="sum">{{ order.total }}</td>
@@ -159,7 +177,7 @@
                 {% endif %}
             {% endfor %}
             <tr>
-                <td colspan="10" class="total">
+                <td colspan="13" class="total">
                     <strong>{% trans %}reporting.daily.yesterday_orders.total_banklink{% endtrans %}: </strong><div>{{ totalSumBanklink }} {{ currency_display }}</div><br />
                     <strong>{% trans %}reporting.daily.yesterday_orders.total_pickup{% endtrans %}: </strong><div>{{ totalSumDriver }} {{ currency_display }}</div><br />
                     <strong>{% trans %}reporting.daily.yesterday_orders.total_with_vat_no_brake{% endtrans %}: </strong><div>{{ totalSum }} {{ currency_display }}</div>

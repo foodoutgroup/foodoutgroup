@@ -80,21 +80,21 @@ class DishOption implements Translatable
     private $place;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="edited_at", type="datetime", nullable=true)
      */
     private $editedAt;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
@@ -131,7 +131,7 @@ class DishOption implements Translatable
     private $singleSelect = false;
 
     /**
-     * @var bool
+     * @var string
      * @ORM\Column(name="group_name", type="string", length=45, nullable=true)
      */
     private $groupName;
@@ -270,7 +270,7 @@ class DishOption implements Translatable
     /**
      * Set editedAt
      *
-     * @param \DateTime $editedAt
+     * @param \DateTime|null $editedAt
      * @return DishOption
      */
     public function setEditedAt($editedAt)
@@ -283,7 +283,7 @@ class DishOption implements Translatable
     /**
      * Get editedAt
      *
-     * @return \DateTime 
+     * @return \DateTime|null
      */
     public function getEditedAt()
     {
@@ -293,7 +293,7 @@ class DishOption implements Translatable
     /**
      * Set deletedAt
      *
-     * @param \DateTime $deletedAt
+     * @param \DateTime|null $deletedAt
      * @return DishOption
      */
     public function setDeletedAt($deletedAt)
@@ -306,7 +306,7 @@ class DishOption implements Translatable
     /**
      * Get deletedAt
      *
-     * @return \DateTime 
+     * @return \DateTime|null
      */
     public function getDeletedAt()
     {
