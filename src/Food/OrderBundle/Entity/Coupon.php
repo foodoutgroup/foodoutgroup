@@ -228,7 +228,7 @@ class Coupon
     /**
      * Set editedAt
      *
-     * @param \DateTime $editedAt
+     * @param \DateTime|null $editedAt
      * @return Coupon
      */
     public function setEditedAt($editedAt)
@@ -241,7 +241,7 @@ class Coupon
     /**
      * Get editedAt
      *
-     * @return \DateTime 
+     * @return \DateTime|null
      */
     public function getEditedAt()
     {
@@ -251,7 +251,7 @@ class Coupon
     /**
      * Set deletedAt
      *
-     * @param \DateTime $deletedAt
+     * @param \DateTime|null $deletedAt
      * @return Coupon
      */
     public function setDeletedAt($deletedAt)
@@ -264,7 +264,7 @@ class Coupon
     /**
      * Get deletedAt
      *
-     * @return \DateTime 
+     * @return \DateTime|null
      */
     public function getDeletedAt()
     {

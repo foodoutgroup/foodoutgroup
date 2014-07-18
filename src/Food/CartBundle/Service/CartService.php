@@ -331,7 +331,7 @@ class CartService {
 
 
     /**
-     * @param int $place
+     * @param Place $place
      * @return array|\Food\CartBundle\Entity\Cart[]
      */
     public function getCartDishes($place)
@@ -339,7 +339,7 @@ class CartService {
         $list = $this->getEm()->getRepository('FoodCartBundle:Cart')->findBy(
             array(
                 'session' => $this->getSessionId(),
-                'place_id' => $place
+                'place_id' => $place->getId()
             )
         );
         foreach($list as $k => &$item) {
@@ -375,10 +375,12 @@ class CartService {
 
     /**
      * @param \Food\CartBundle\Entity\Cart[] $cartItems
-     * @param \Food\DishesBundle\Entity\Place $place
+     * param \Food\DishesBundle\Entity\Place $place
      * @return float|int
+     *
+     * TODO Pauliau, ar cia dar reikalingas place'as?
      */
-    public function getCartTotal($cartItems, $place)
+    public function getCartTotal($cartItems/*, $place*/)
     {
         $total = 0;
         foreach ($cartItems as $cartItem) {

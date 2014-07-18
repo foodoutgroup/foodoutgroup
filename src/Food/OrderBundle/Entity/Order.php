@@ -129,7 +129,7 @@ class Order
     private $discountSize;
 
     /**
-     * @var decimal
+     * @var float
      * @ORM\Column(name="discount_sum", type="decimal", precision=8, scale=2, nullable=true)
      */
     private $discountSum;
@@ -1265,7 +1265,7 @@ class Order
     /**
      * Set discountSum
      *
-     * @param string $discountSum
+     * @param float $discountSum
      * @return Order
      */
     public function setDiscountSum($discountSum)
@@ -1278,7 +1278,7 @@ class Order
     /**
      * Get discountSum
      *
-     * @return string 
+     * @return float
      */
     public function getDiscountSum()
     {
