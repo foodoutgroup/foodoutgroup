@@ -1,42 +1,59 @@
 <form class="righter register-form" action="{{ url('user_register_create') }}" method="post" novalidate>
     <h3>{% trans %}general.register_title{% endtrans %}</h3>
     <h4>{% trans %}general.register_text{% endtrans %}</h4>
-    <div class="registration-errors">
-        {% for input in form %}
-            {% if input.vars.errors is defined %}
-                {% for error in input.vars.errors %}
-                    <div>{{ error.message }}</div>
-                {% endfor %}
-            {% endif %}
-
-            {% if input.vars.form.children.first.vars.errors is defined %}
-                {% for error in input.vars.form.children.first.vars.errors %}
-                    <div>{{ error.message }}</div>
-                {% endfor %}
-            {% endif %}
+    <div  class="form-row {% if submitted and form.firstname.vars.errors is defined and form.firstname.vars.errors|length > 0 and form.firstname.vars.required %}error{% endif %}">
+        {% set error = '' %}
+        {% for e in form.firstname.vars.errors %}
+            {% set error = error ~ e.message ~ '. ' %}
         {% endfor %}
-    </div>
-    <div class="form-row {% if submitted and form.firstname.vars.errors is defined and form.firstname.vars.errors|length > 0 and form.firstname.vars.required %}error{% endif %}">
+
         {{ form_label(form.firstname) }}
-        {{ form_widget(form.firstname) }}
+        {{ form_widget(form.firstname, {'attr': {'rel': 'tooltip', 'data-toggle': 'tooltip', 'data-placement': 'top', 'title': error}}) }}
     </div>
     <div class="form-row {% if submitted and form.lastname.vars.errors is defined and form.lastname.vars.errors|length > 0 and form.lastname.vars.required %}error{% endif %}">
+        {% set error = '' %}
+        {% for e in form.lastname.vars.errors %}
+            {% set error = error ~ e.message ~ '. ' %}
+        {% endfor %}
+
         {{ form_label(form.lastname) }}
-        {{ form_widget(form.lastname) }}
+        {{ form_widget(form.lastname, {'attr': {'rel': 'tooltip', 'data-toggle': 'tooltip', 'data-placement': 'top', 'title': error}}) }}
     </div>
     <div class="form-row {% if submitted and form.email.vars.errors is defined and form.email.vars.errors|length > 0 and form.email.vars.required %}error{% endif %}">
+        {% set error = '' %}
+        {% for e in form.email.vars.errors %}
+            {% set error = error ~ e.message ~ '. ' %}
+        {% endfor %}
+
         {{ form_label(form.email) }}
-        {{ form_widget(form.email) }}
+        {{ form_widget(form.email, {'attr': {'rel': 'tooltip', 'data-toggle': 'tooltip', 'data-placement': 'top', 'title': error}}) }}
     </div>
     <div class="form-row {% if submitted and form.plainPassword.children.first.vars.errors is defined and form.plainPassword.children.first.vars.errors|length > 0 and form.plainPassword.vars.required %}error{% endif %}">
+        {% set error = '' %}
+        {% for e in form.plainPassword.children.first.vars.errors %}
+            {% set error = error ~ e.message ~ '. ' %}
+        {% endfor %}
+
         {{ form_label(form.plainPassword.first) }}
-        {{ form_widget(form.plainPassword.first) }}
+        {{ form_widget(form.plainPassword.first, {'attr': {'rel': 'tooltip', 'data-toggle': 'tooltip', 'data-placement': 'top', 'title': error}}) }}
     </div>
     <div class="form-row {% if submitted and form.plainPassword.children.first.vars.errors is defined and form.plainPassword.children.first.vars.errors|length > 0 and form.plainPassword.vars.required %}error{% endif %}">
+        {% set error = '' %}
+        {% for e in form.plainPassword.children.first.vars.errors %}
+            {% set error = error ~ e.message ~ '. ' %}
+        {% endfor %}
+
         {{ form_label(form.plainPassword.second) }}
-        {{ form_widget(form.plainPassword.second) }}
+        {{ form_widget(form.plainPassword.second, {'attr': {'rel': 'tooltip', 'data-toggle': 'tooltip', 'data-placement': 'top', 'title': error}}) }}
     </div>
     <div class="form-controls clearfix">
         <input type="submit" value="{% trans %}general.register_register_button{% endtrans %}" class="fr">
     </div>
 </form>
+<script type="text/javascript">
+// <![CDATA[
+$(document).ready(function() {
+    $('.register-form:visible .form-row input').tooltip('hide');
+});
+// ]]>
+</script>
