@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\Form;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\FOSUserEvents;
@@ -113,7 +114,8 @@ class DefaultController extends Controller
             'FoodUserBundle:Default:register.html.twig',
             [
                 'form' => $form->createView(),
-                'submitted' => true
+                'errors' => $this->formErrors($form),
+                'submitted' => $form->isSubmitted()
             ]
         );
     }
@@ -148,7 +150,8 @@ class DefaultController extends Controller
             'FoodUserBundle:Default:register.html.twig',
             [
                 'form' => $form->createView(),
-                'submitted' => false
+                'errors' => $this->formErrors($form),
+                'submitted' => $form->isSubmitted()
             ]
         );
     }
@@ -339,5 +342,23 @@ class DefaultController extends Controller
         );
 
         return $this->createForm($type, $data);
+    }
+
+    private function formErrors(Form $form)
+    {
+        $errors = array();
+
+        foreach ($form->all() as $element) {
+            $array = $element->getName() != 'plainPassword' ? $element->getErrors() : $element->get('first')->getErrors();
+            $callback = function($carry, $item) {
+                $carry[] = $item->getMessage();
+                return $carry;
+            };
+            $initial = [];
+
+            $errors[$element->getName()] = implode('. ', array_reduce($array, $callback, $initial));
+        }
+
+        return $errors;
     }
 }

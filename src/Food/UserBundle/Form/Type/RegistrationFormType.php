@@ -20,20 +20,48 @@ class RegistrationFormType extends BaseType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $attributes = array('rel' => 'tooltip',
+                            'data-toggle' => 'tooltip',
+                            'data-placement' => 'top');
+
         $builder
-            ->add('firstname', null, array('error_bubbling' => false, 'required' => true, 'label' => 'form.firstname', 'translation_domain' => 'FOSUserBundle'))
-            ->add('lastname', null, array('error_bubbling' => false, 'required' => false, 'label' => 'form.lastname', 'translation_domain' => 'FOSUserBundle'))
-            ->add('email', 'email', array('error_bubbling' => false, 'label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
-            ->add('username', null, array('error_bubbling' => false, 'label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))
-            ->add('plainPassword', 'repeated', array(
-                'error_bubbling' => false,
-                'type' => 'password',
-                'options' => array('translation_domain' => 'FOSUserBundle'),
-                'first_options' => array('label' => 'form.password'),
-                'second_options' => array('label' => 'form.password_confirmation'),
-                'invalid_message' => 'fos_user.password.mismatch',
-            ))
+            ->add('firstname',
+                  null,
+                  array('error_bubbling' => false,
+                        'required' => true,
+                        'label' => 'form.firstname',
+                        'translation_domain' => 'FOSUserBundle',
+                        'attr' => $attributes))
+            ->add('lastname',
+                  null,
+                  array('error_bubbling' => false,
+                        'required' => false,
+                        'label' => 'form.lastname',
+                        'translation_domain' => 'FOSUserBundle',
+                        'attr' => $attributes))
+            ->add('email',
+                  'email',
+                  array('error_bubbling' => false,
+                        'label' => 'form.email',
+                        'translation_domain' => 'FOSUserBundle',
+                        'attr' => $attributes))
+            ->add('username',
+                  null,
+                  array('error_bubbling' => false,
+                        'label' => 'form.username',
+                        'translation_domain' => 'FOSUserBundle',
+                        'attr' => $attributes))
+            ->add('plainPassword',
+                  'repeated',
+                  array('error_bubbling' => false,
+                        'type' => 'password',
+                        'options' => array('translation_domain' => 'FOSUserBundle'),
+                        'first_options' => array('label' => 'form.password'),
+                        'second_options' => array('label' => 'form.password_confirmation'),
+                        'invalid_message' => 'fos_user.password.mismatch',
+                        'attr' => $attributes))
             ->remove('username')
+            ->remove('phone')
         ;
     }
 
