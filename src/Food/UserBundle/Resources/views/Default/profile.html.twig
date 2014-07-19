@@ -47,76 +47,10 @@
                     </div>
                     <div class="user-righter content-item user">
                         <h2>{% trans %}general.profile.user_data{% endtrans %}</h2>
-                        {% if form.profile.vars.valid == false or form.change_password.vars.valid == false %}
-                            <div class="error alert alert-danger">
-                                <ul>
-                                    {% for input in form.profile %}
-                                        {% if input.vars.errors is defined %}
-                                            {% for inputName, error in input.vars.errors %}
-                                                <li>{{ error.message }}</li>
-                                            {% endfor %}
-                                        {% endif %}
-                                    {% endfor %}
-
-                                    {#% if form.change_password.current_password.vars.data|length > 0 %#}
-                                        {% for error in form.change_password.current_password.vars.errors %}
-                                            <li>{{ error.message }}</li>
-                                        {% endfor %}
-
-                                        {% for error in form.change_password.plainPassword.first.vars.errors %}
-                                            <li>{{ error.message }}</li>
-                                        {% endfor %}
-
-                                        {% for error in form.change_password.plainPassword.second.vars.errors %}
-                                            <li>{{ error.message }}</li>
-                                        {% endfor %}
-                                    {#% endif %#}
-                                </ul>
-                            </div>
-                        {% endif %}
                         <form class="user-details-form" action="{{ path('user_profile_update') }}" method="POST" novalidate="novalidate">
-                            <div class="form-row {% if submitted and form.profile.firstname.vars.errors is defined and form.profile.firstname.vars.errors|length > 0 %}error{% endif %}">
-                                {{ form_label(form.profile.firstname) }}
-                                {{ form_widget(form.profile.firstname) }}
-                            </div>
-                            <div class="form-row {% if submitted and form.profile.lastname.vars.errors is defined and form.profile.lastname.vars.errors|length > 0 %}error{% endif %}">
-                                {{ form_label(form.profile.lastname) }}
-                                {{ form_widget(form.profile.lastname) }}
-                            </div>
-                            <div class="form-row {% if submitted and form.profile.email.vars.errors is defined and form.profile.email.vars.errors|length > 0 %}error{% endif %}">
-                                {{ form_label(form.profile.email) }}
-                                {{ form_widget(form.profile.email) }}
-                            </div>
-                            <div class="form-row {% if submitted and form.profile.phone.vars.errors is defined and form.profile.phone.vars.errors|length > 0 %}error{% endif %}">
-                                {{ form_label(form.profile.phone) }}
-                                {{ form_widget(form.profile.phone) }}
-                            </div>
-
-                            <hr>
-
-                            <div class="form-row">
-                                {{ form_label(form.address.city) }}
-                                {{ form_widget(form.address.city) }}
-                            </div>
-                            <div class="form-row">
-                                {{ form_label(form.address.address) }}
-                                {{ form_widget(form.address.address) }}
-                            </div>
-
-                            <hr>
-
-                            <div class="form-row {% if submitted and form.change_password.current_password.vars.data|length > 0 and form.change_password.current_password.vars.errors is defined and form.change_password.current_password.vars.errors|length > 0 %}error{% endif %}">
-                                {{ form_label(form.change_password.current_password) }}
-                                {{ form_widget(form.change_password.current_password) }}
-                            </div>
-                            <div class="form-row {% if submitted and form.change_password.current_password.vars.data|length > 0 and form.change_password.plainPassword.first.vars.errors is defined and form.change_password.plainPassword.first.vars.errors|length > 0 %}error{% endif %}">
-                                {{ form_label(form.change_password.plainPassword.first) }}
-                                {{ form_widget(form.change_password.plainPassword.first) }}
-                            </div>
-                            <div class="form-row {% if submitted and form.change_password.current_password.vars.data|length > 0 and form.change_password.plainPassword.first.vars.errors is defined and form.change_password.plainPassword.first.vars.errors|length > 0 %}error{% endif %}">
-                                {{ form_label(form.change_password.plainPassword.second) }}
-                                {{ form_widget(form.change_password.plainPassword.second) }}
-                            </div>
+                            {% include 'FoodUserBundle:Default:profile/profile.html.twig' %}
+                            {% include 'FoodUserBundle:Default:profile/address.html.twig' %}
+                            {% include 'FoodUserBundle:Default:profile/change_password.html.twig' %}
 
                             {{ form_rest(form) }}
 
@@ -124,6 +58,13 @@
                                 <input type="submit" value="{% trans %}general.profile.button_save{% endtrans %}">
                             </div>
                         </form>
+                        <script type="text/javascript">
+                        // <![CDATA[
+                        $(document).ready(function() {
+                            $('.user-details-form:visible .form-row input').tooltip('hide');
+                        });
+                        // ]]>
+                        </script>
                     </div>
                     <div class="user-righter content-item cart">
                         <h2>{% trans %}general.profile.cart_history{% endtrans %}</h2>

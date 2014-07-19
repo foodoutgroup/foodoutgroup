@@ -18,6 +18,22 @@ class RegistrationFormType extends BaseType
         $this->class = $class;
     }
 
+    public function getName()
+    {
+        return 'food_user_registration';
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => $this->class,
+            'csrf_protection' => false,
+            'validation_groups' => array(
+                'Registration'
+            )
+        ));
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $attributes = array('rel' => 'tooltip',
@@ -63,19 +79,5 @@ class RegistrationFormType extends BaseType
             ->remove('username')
             ->remove('phone')
         ;
-    }
-
-    public function getName()
-    {
-        return 'food_user_registration';
-    }
-
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => $this->class,
-            'intention'  => 'registration',
-            'csrf_protection' => false,
-        ));
     }
 }

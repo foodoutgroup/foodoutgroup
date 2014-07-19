@@ -34,7 +34,6 @@ class ChangePasswordFormType extends BaseType
             'data_class' => $this->class,
             'csrf_protection' => false,
             'validation_groups' => array(
-                'Default',
                 'Profile'
             )
         ));
@@ -47,29 +46,24 @@ class ChangePasswordFormType extends BaseType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // do not enable UserPasswordConstraint if current_password input
-        // had no data. form will be invalid otherwise if user hasn't even
-        // entered anything into current_password field.
         $builder
             ->add('current_password', 'password', array(
-                'required' => false,
-                'label' => 'form.current_password',
-                'error_bubbling' => false,
-                'translation_domain' => 'FOSUserBundle',
-                'mapped' => false,
-                'constraints' => $this->isCurrentPassword() ?
-                                 new UserPassword(['message' => 'fos_user.form.invalid_current_password']) :
-                                 null
-            ))
+                  'required' => false,
+                  'label' => 'form.current_password',
+                  'error_bubbling' => false,
+                  'translation_domain' => 'FOSUserBundle',
+                  'mapped' => false,
+                  'constraints' => $this->isCurrentPassword() ?
+                                   new UserPassword(['message' => 'fos_user.form.invalid_current_password']) :
+                                   null))
             ->add('plainPassword', 'repeated', array(
-                'type' => 'password',
-                'error_bubbling' => false,
-                'options' => array('translation_domain' => 'FOSUserBundle'),
-                'first_options' => array('label' => 'form.new_password'),
-                'second_options' => array('label' => 'form.new_password_confirmation'),
-                'invalid_message' => 'fos_user.password.mismatch',
-                'required' => false
-            ))
+                  'type' => 'password',
+                  'error_bubbling' => false,
+                  'options' => array('translation_domain' => 'FOSUserBundle'),
+                  'first_options' => array('label' => 'form.new_password'),
+                  'second_options' => array('label' => 'form.new_password_confirmation'),
+                  'invalid_message' => 'fos_user.password.mismatch',
+                  'required' => false))
         ;
     }
 }

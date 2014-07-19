@@ -20,30 +20,58 @@ class ProfileFormType extends BaseType
         $this->class = $class;
     }
 
+    public function getName()
+    {
+        return 'food_user_profile';
+    }
+
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => $this->class,
             'csrf_protection' => false,
             'validation_groups' => array(
-                'Default',
                 'Profile'
             )
         ));
     }
 
-    public function getName()
-    {
-        return 'food_user_profile';
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $attributes = array('rel' => 'tooltip',
+                            'data-toggle' => 'tooltip',
+                            'data-placement' => 'top');
+
         $builder
-            ->add('firstname', null, array('required' => true, 'error_bubbling' => false, 'label' => 'form.firstname', 'translation_domain' => 'FOSUserBundle'))
-            ->add('lastname', null, array('required' => false, 'error_bubbling' => false, 'label' => 'form.lastname', 'translation_domain' => 'FOSUserBundle'))
-            ->add('email', 'email', array('required' => true, 'error_bubbling' => false, 'label' => 'form.email', 'translation_domain' => 'FOSUserBundle', 'disabled' => true))
-            ->add('phone', null, array('required' => true, 'error_bubbling' => false, 'label' => 'form.phone', 'translation_domain' => 'FOSUserBundle', 'attr' => array('placeholder' => '3706xxxxxxx')))
+            ->add('firstname',
+                  null,
+                  array('required' => true,
+                        'error_bubbling' => false,
+                        'label' => 'form.firstname',
+                        'translation_domain' => 'FOSUserBundle',
+                        'attr' => $attributes))
+            ->add('lastname',
+                  null,
+                  array('required' => false,
+                        'error_bubbling' => false,
+                        'label' => 'form.lastname',
+                        'translation_domain' => 'FOSUserBundle',
+                        'attr' => $attributes))
+            ->add('email',
+                  'email',
+                  array('required' => true,
+                        'error_bubbling' => false,
+                        'label' => 'form.email',
+                        'translation_domain' => 'FOSUserBundle',
+                        'disabled' => true,
+                        'attr' => $attributes))
+            ->add('phone',
+                  null,
+                  array('required' => true,
+                        'error_bubbling' => false,
+                        'label' => 'form.phone',
+                        'translation_domain' => 'FOSUserBundle',
+                        'attr' => array_merge(array('placeholder' => '3706xxxxxxx'), $attributes)))
         ;
     }
 }

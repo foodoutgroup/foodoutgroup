@@ -228,8 +228,11 @@ class DefaultController extends Controller
 
         return [
             'form' => $form->createView(),
+            'profile_errors' => $this->formErrors($form->get('profile')),
+            'address_errors' => $this->formErrors($form->get('address')),
+            'change_password_errors' => $this->formErrors($form->get('change_password')),
             'orders' => $this->get('food.order')->getUserOrders($user),
-            'submitted' => true,
+            'submitted' => $form->isSubmitted()
         ];
     }
 
@@ -257,9 +260,12 @@ class DefaultController extends Controller
 
         return [
             'form' => $form->createView(),
+            'profile_errors' => $this->formErrors($form->get('profile')),
+            'address_errors' => $this->formErrors($form->get('address')),
+            'change_password_errors' => $this->formErrors($form->get('change_password')),
             'tab' => $tab,
             'orders' => $this->get('food.order')->getUserOrders($user),
-            'submitted' => false,
+            'submitted' => $form->isSubmitted()
         ];
     }
 
