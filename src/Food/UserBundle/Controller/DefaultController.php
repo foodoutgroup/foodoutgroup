@@ -188,6 +188,8 @@ class DefaultController extends Controller
         // services
         $userManager = $this->container->get('fos_user.user_manager');
         $em = $this->getDoctrine()->getManager();
+        $translator = $this->get('translator');
+        $notifications = $this->get('food.app.utils.notifications');
 
         // data
         $user = $this->user();
@@ -222,6 +224,8 @@ class DefaultController extends Controller
         // main profile validation
         if ($form->isValid()) {
             $em->flush();
+
+            $notifications->setSuccessMessage($translator->trans('general.noty.profile_updated'));
 
             return $this->redirect($this->generateUrl('user_profile'));
         }

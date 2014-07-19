@@ -34,6 +34,7 @@ class ChangePasswordFormType extends BaseType
             'data_class' => $this->class,
             'csrf_protection' => false,
             'validation_groups' => array(
+                'Default',
                 'Profile'
             )
         ));
