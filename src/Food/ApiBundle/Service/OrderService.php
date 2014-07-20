@@ -50,7 +50,7 @@ class OrderService extends ContainerAware
 
 
         $paymentMethod = $request->get('payment-type');
-        $customerComment = $serviceVar['address']['comments']
+        $customerComment = $serviceVar['address']['comments'];
         $os->setPaymentMethod($paymentMethod);
         if ($serviceVar['type'] == "pickup") {
             $os->setDeliveryType($os::$deliveryPickup);
