@@ -11,3 +11,8 @@ services:
             class: Food\ApiBundle\Service\BasketService
             calls:
                 - [setContainer, [@service_container]]
+
+    food_api.order:
+            class: Food\ApiBundle\Service\OrderService
+            calls:
+                - [setContainer, [@service_container]]
