@@ -160,6 +160,12 @@ doctrine:
                 rand: DoctrineExtensions\Query\Mysql\Rand
                 power: Food\AppBundle\DQL\PowerFunction
 
+# Doctrine migrations
+doctrine_migrations:
+    dir_name: %kernel.root_dir%/DoctrineMigrations
+    namespace: Application\Migrations
+    table_name: migration_versions
+    name: Application Migrations
 
 # Swiftmailer Configuration
 swiftmailer:
