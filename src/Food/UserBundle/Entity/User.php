@@ -112,8 +112,9 @@ class User extends BaseUser
 
         $fullUserName = $this->getFirstname();
 
-        if (!empty($this->getLastname())) {
-            $fullUserName .= ' '.$this->getLastname();
+        $lastname = $this->getLastname();
+        if (!empty($lastname)) {
+            $fullUserName .= ' '.$lastname;
         }
 
         return $fullUserName;
