@@ -208,6 +208,7 @@ class DefaultController extends Controller
                     // TODO gal cia normaliai generuosim desra-sasyskos-random krap ir siusim useriui emailu ir dar iloginsim
                     $user->setPlainPassword('new-user');
                     $user->addRole('ROLE_USER');
+                    $user->setEnabled(true);
 
                     $fosUserManager->updateUser($user);
                 }

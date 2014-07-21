@@ -3,6 +3,9 @@
 namespace Food\ApiBundle\Controller;
 
 use Food\UserBundle\Entity\User;
+use FOS\UserBundle\Event\FormEvent;
+use FOS\UserBundle\Event\UserEvent;
+use FOS\UserBundle\FOSUserEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,10 +40,72 @@ class UsersController extends Controller
         return $encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt());
     }
 
+    public function registerAction(Request $request)
+    {
+        $um = $this->getUserManager();
+        $dispatcher = $this->container->get('event_dispatcher');
+        /**
+         * @var User $user
+         */
+        $user = $um->createUser();
+        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, new UserEvent($user, $request));
+
+        // TODO validation
+        $phone = $request->get('phone');
+        $name = $request->get('name');
+        $email = $request->get('email');
+        $password = $request->get('password');
+
+        if (strpos($name, ' ') === false) {
+            $user->setFirstname($name);
+        } else {
+            $names = explode(' ', $name);
+            $user->setFirstname($names[0])
+                ->setLastname($names[1]);
+        }
+
+        $user->setEmail($email);
+        $user->setPhone($phone);
+        $user->setRoles(array('ROLE_USER'));
+        $user->setEnabled(true);
+
+        if (!empty($password)) {
+            $user->setPlainPassword($password)
+                ->setFullyRegistered(true);
+
+            // TODO turi ateiti emailas apie registracija - kolkas neeina :(
+            $event = new UserEvent($user, $request);
+            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
+        } else {
+            $user->setPlainPassword('new-user')
+                ->setFullyRegistered(false);
+        }
+
+        // User hash generation action
+        $hash = $this->get('food_api.api')->generateUserHash($user);
+        $user->setApiToken($hash);
+        $user->setApiTokenValidity(new \DateTime('+1 week'));
+
+        $um->updateUser($user);
+
+        $this->loginUser($user);
+
+        $response = array(
+            'user_id' => $user->getId(),
+            'phone' => $user->getPhone(),
+            'name' => $user->getFullName(),
+            'email' => $user->getEmail(),
+            'session_token' => $hash,
+            'refresh_token' => ''
+        );
+
+        return new JsonResponse($response);
+    }
+
     public function loginAction(Request $request)
     {
         $username = $request->get('email');
-        $password = $request->get('password');
+        $password = $request->get('password', 'new-user');
         $phone = $request->get('phone');
 
         $um = $this->getUserManager();

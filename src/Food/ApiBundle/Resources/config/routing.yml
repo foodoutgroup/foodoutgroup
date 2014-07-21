@@ -102,6 +102,12 @@ food_api_find_street:
     defaults: { _controller: FoodApiBundle:Address:findStreet}
     methods: [GET]
 
+# Users part
+food_api_users_register:
+    pattern: /users
+    defaults: { _controller: FoodApiBundle:Users:register}
+    methods: [POST]
+
 food_api_users_login:
     pattern: /users/login
     defaults: { _controller: FoodApiBundle:Users:login}
