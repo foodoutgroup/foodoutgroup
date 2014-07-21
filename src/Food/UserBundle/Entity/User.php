@@ -75,6 +75,9 @@ class User extends BaseUser
         parent::__construct();
     }
 
+    /**
+     * @return string
+     */
     public function getContact()
     {
         if (!$this->getId()) {
@@ -96,6 +99,24 @@ class User extends BaseUser
         }
 
         return $userContactData;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        if (!$this->getId()) {
+            return '';
+        }
+
+        $fullUserName = $this->getFirstname();
+
+        if (!empty($this->getLastname())) {
+            $fullUserName .= ' '.$this->getLastname();
+        }
+
+        return $fullUserName;
     }
 
     /**

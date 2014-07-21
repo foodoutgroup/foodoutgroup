@@ -102,6 +102,30 @@ class UsersController extends Controller
     }
 
     /**
+     * User information
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function meAction(Request $request)
+    {
+        $token = $request->headers->get('X-API-Authorization');
+        $this->get('food_api.api')->loginByHash($token);
+
+        $security = $this->get('security.context');
+        $user = $security->getToken()->getUser();
+
+        $userData = array(
+            'user_id' => $user->getId(),
+            'phone' => $user->getPhone(),
+            'name' => $user->getFullName(),
+            'email' => $user->getEmail(),
+        );
+
+        return new JsonResponse($userData);
+    }
+
+    /**
      * PVZ kaip identifikuoti vartotoja pagal Authorization tokena
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
