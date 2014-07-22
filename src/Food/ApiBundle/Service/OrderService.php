@@ -5,31 +5,35 @@ namespace Food\ApiBundle\Service;
 use Food\OrderBundle\Entity\Order;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
+use Food\OrderBundle\Service\OrderService as FO;
 
 class OrderService extends ContainerAware
 {
     public function getPendingOrders(Request $request)
     {
         $returner = array();
+
         $token = $request->headers->get('X-API-Authorization');
         $this->container->get('food_api.api')->loginByHash($token);
         $security = $this->container->get('security.context');
         $user = $security->getToken()->getUser();
+
+        /*
         $orders = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->findBy(
             array(
                 'user' => $user,
                 ''
             )
         );
-
-        $q = $this->container->get('doctrine')->getManager()->createQuery("SELECT o from Food\OrderBundle\Entity\Order o where o.user_id=?1 AND o.order_status IN (?2)")
+        */
+        $q = $this->container->get('doctrine')->getEntityManager()->createQuery("SELECT o from Food\OrderBundle\Entity\Order o where o.user=?1 AND o.order_status IN (?2)")
             ->setParameter(1, $user->getId())
             ->setParameter(2,
                 array(
-                    $this->container->get('food.order')::$status_new,
-                    $this->container->get('food.order')::$status_accepted,
-                    $this->container->get('food.order')::$status_delayed,
-                    $this->container->get('food.order')::$status_assiged
+                    FO::$status_new,
+                    FO::$status_accepted,
+                    FO::$status_delayed,
+                    FO::$status_assiged
                 )
             );
 

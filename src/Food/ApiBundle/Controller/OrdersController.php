@@ -10,7 +10,6 @@ class OrdersController extends Controller
 {
     public function getOrdersAction(Request $request)
     {
-        // @todo Implement me :D
         return new JsonResponse($this->get('food_api.order')->getPendingOrders($request));
     }
 
