@@ -40,6 +40,17 @@ class UsersController extends Controller
         return $encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt());
     }
 
+    /**
+     * User register
+     *
+     * TODO:
+     *  - validation
+     *  - success email
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
     public function registerAction(Request $request)
     {
         $um = $this->getUserManager();
@@ -102,6 +113,57 @@ class UsersController extends Controller
         return new JsonResponse($response);
     }
 
+    /**
+     * User update action
+     * TODO:
+     *  - validation
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateAction(Request $request)
+    {
+        $token = $request->headers->get('X-API-Authorization');
+        $this->get('food_api.api')->loginByHash($token);
+
+        $um = $this->getUserManager();
+        $security = $this->get('security.context');
+        $user = $security->getToken()->getUser();
+
+        $phone = $request->get('phone');
+        if (!empty($phone)) {
+            $user->setPhone($phone);
+        }
+        $name = $request->get('name');
+        if (!empty($name)) {
+            if (strpos($name, ' ') === false) {
+                $user->setFirstname($name);
+            } else {
+                $names = explode(' ', $name);
+                $user->setFirstname($names[0])
+                    ->setLastname($names[1]);
+            }
+        }
+
+        $um->updateUser($user);
+
+        $response = array(
+            'user_id' => $user->getId(),
+            'phone' => $user->getPhone(),
+            'name' => $user->getFullName(),
+            'email' => $user->getEmail(),
+        );
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * User login action
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
     public function loginAction(Request $request)
     {
         $username = $request->get('email');

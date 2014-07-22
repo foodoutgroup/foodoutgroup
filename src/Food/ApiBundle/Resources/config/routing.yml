@@ -108,6 +108,11 @@ food_api_users_register:
     defaults: { _controller: FoodApiBundle:Users:register}
     methods: [POST]
 
+food_api_users_update:
+    pattern: /users
+    defaults: { _controller: FoodApiBundle:Users:update}
+    methods: [PUT]
+
 food_api_users_login:
     pattern: /users/login
     defaults: { _controller: FoodApiBundle:Users:login}
