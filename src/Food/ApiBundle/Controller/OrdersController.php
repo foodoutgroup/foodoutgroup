@@ -20,7 +20,11 @@ class OrdersController extends Controller
 
     public function getOrderDetailsAction($id)
     {
-
+        return new JsonResponse(
+            $this->get('food_api.order')->getOrderForResponse(
+                $this->get('food.order')->getOrderById($id)
+            )
+        );
     }
 
     public function confirmOrderAction($id)
