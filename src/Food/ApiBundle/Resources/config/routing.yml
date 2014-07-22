@@ -118,6 +118,11 @@ food_api_users_login:
     defaults: { _controller: FoodApiBundle:Users:login}
     methods: [POST]
 
+food_api_users_change_password:
+    pattern: /users/change_password
+    defaults: { _controller: FoodApiBundle:Users:changePassword}
+    methods: [POST]
+
 food_api_users_information:
     pattern: /users/me
     defaults: { _controller: FoodApiBundle:Users:me}

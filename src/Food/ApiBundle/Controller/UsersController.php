@@ -7,6 +7,7 @@ use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\UserEvent;
 use FOS\UserBundle\FOSUserEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -155,6 +156,54 @@ class UsersController extends Controller
         );
 
         return new JsonResponse($response);
+    }
+
+    /**
+     * TODO:
+     *  - pasword lenght validation
+     *
+     * @param Request $request
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function changePasswordAction(Request $request)
+    {
+        $token = $request->headers->get('X-API-Authorization');
+        $this->get('food_api.api')->loginByHash($token);
+
+        $um = $this->getUserManager();
+        $security = $this->get('security.context');
+        $user = $security->getToken()->getUser();
+
+        $userId = $request->get('user_id');
+        $password = $request->get('passwors');
+
+        if (empty($password)) {
+            throw new NotFoundHttpException('Empty password');
+        }
+        if ($userId != $user->getId()) {
+            throw new NotFoundHttpException('User id does not match');
+        }
+
+        $user->setPlainPasseword($password);
+
+        $um->updateUser($user);
+
+        return new Response('', 204);
+    }
+
+    /**
+     * TODO - make this work :)
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function resetPasswordAction(/*Request $request*/)
+    {
+        throw new NotFoundHttpException('Not implemented yet');
+//        return new Response('', 204);
     }
 
     /**
