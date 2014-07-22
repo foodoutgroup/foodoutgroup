@@ -18,15 +18,7 @@ class OrderService extends ContainerAware
         $security = $this->container->get('security.context');
         $user = $security->getToken()->getUser();
 
-        /*
-        $orders = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->findBy(
-            array(
-                'user' => $user,
-                ''
-            )
-        );
-        */
-        $q = $this->container->get('doctrine')->getEntityManager()->createQuery("SELECT o from Food\OrderBundle\Entity\Order o where o.user=?1 AND o.order_status IN (?2)")
+        $q = $this->container->get('doctrine')->getManager()->createQuery("SELECT o from Food\OrderBundle\Entity\Order o where o.user=?1 AND o.order_status IN (?2)")
             ->setParameter(1, $user->getId())
             ->setParameter(2,
                 array(
