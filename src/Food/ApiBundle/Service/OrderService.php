@@ -2,6 +2,7 @@
 
 namespace Food\ApiBundle\Service;
 
+use Food\OrderBundle\Entity\Order;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -29,6 +30,13 @@ class OrderService extends ContainerAware
             }
         }
          */
+
+        $token = $request->headers->get('X-API-Authorization');
+        $this->container->get('food_api.api')->loginByHash($token);
+        $security = $this->container->get('security.context');
+        $user = $security->getToken()->getUser();
+
+
         $em = $this->container->get('doctrine')->getManager();
         $serviceVar = $request->get('service');
         $pp = null; // placePoint :D - jei automatu - tai NULL :D
@@ -42,7 +50,7 @@ class OrderService extends ContainerAware
         $os->createOrderFromCart(
             $basket->getPlaceId()->getId(),
             $request->getLocale(),
-            null, //@todo User - holy... is kur parauci ?:) - flow klausimai
+            $user,
             $pp,
             $basket->getPlaceId()->getSelfDelivery()
         );
@@ -77,6 +85,66 @@ class OrderService extends ContainerAware
         }
         $os->saveOrder();
         $billingUrl = $os->billOrder();
+        return $this->getOrderForResponse($os->getOrder());
+    }
 
+    /**
+     * @todo - FIX TO THE EPIC COMMON LEVEL
+     */
+    public function getOrderForResponse(Order $order)
+    {
+        $returner = array(
+            'order_id' => $order->getId(),
+            'total_price' => array(
+                'amount' => $order->getTotal()*100,
+                'currency' => 'LTL'
+            ),
+            'state' => array(
+                'title' => $order->getOrderStatus(),
+                'info_number' => $order->getUser()->getPhone()
+            ),
+            'details' => array(
+                'restaurant_id' => $order->getPlace()->getId(),
+                'payment_options' => array(
+                    'cach' => true,
+                    'credit_card' => $order->getPlace()->getCardOnDelivery()
+                ),
+                'items' => $this->_getItemsForResponse($order)
+            ),
+            'service' => $this->_getServiceForResponse($order)
+        );
+    }
+
+    /**
+     * @param Order $order
+     */
+    private function _getItemsForResponse(Order $order)
+    {
+        $returner = array();
+        foreach ($order->getDetails() as $detail) {
+            $sum = 0;
+            $sum+= $detail->getPrice() * $detail->getQuantity();
+            foreach ($detail->getOptions() as $option) {
+                $sum+= $option->getPrice() * $option->getQuantity();
+            }
+            $returner[] = array(
+                'title' => $detail->getDishName().', '.$detail->getDishUnitName(),
+                'count' => $detail->getQuantity(),
+                'price' => array(
+                    'amount' => $sum * 100,
+                    'currency' => 'LTL'
+                )
+            );
+        }
+        return $returner;
+    }
+
+    /**
+     * @param Order $order
+     */
+    private function _getServiceForResponse(Order $order)
+    {
+        $returner = array();
+        return $returner;
     }
 }
