@@ -8,9 +8,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class OrdersController extends Controller
 {
-    public function getOrdersAction()
+    public function getOrdersAction(Request $request)
     {
         // @todo Implement me :D
+        return new JsonResponse($this->get('food_api.order')->getPendingOrders($request));
     }
 
     public function createOrderAction(Request $request)

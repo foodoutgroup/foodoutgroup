@@ -8,6 +8,40 @@ use Symfony\Component\HttpFoundation\Request;
 
 class OrderService extends ContainerAware
 {
+    public function getPendingOrders(Request $request)
+    {
+        $returner = array();
+        $token = $request->headers->get('X-API-Authorization');
+        $this->container->get('food_api.api')->loginByHash($token);
+        $security = $this->container->get('security.context');
+        $user = $security->getToken()->getUser();
+        $orders = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->findBy(
+            array(
+                'user' => $user,
+                ''
+            )
+        );
+
+        $q = $this->container->get('doctrine')->getManager()->createQuery("SELECT o from Food\OrderBundle\Entity\Order o where o.user_id=?1 AND o.order_status IN (?2)")
+            ->setParameter(1, $user->getId())
+            ->setParameter(2,
+                array(
+                    $this->container->get('food.order')::$status_new,
+                    $this->container->get('food.order')::$status_accepted,
+                    $this->container->get('food.order')::$status_delayed,
+                    $this->container->get('food.order')::$status_assiged
+                )
+            );
+
+        $results = $q->execute();
+
+        foreach ($results as $row) {
+            $returner[] = $row->getId();
+        }
+
+        return $returner;
+    }
+
     public function createOrder(Request $request)
     {
         /**
