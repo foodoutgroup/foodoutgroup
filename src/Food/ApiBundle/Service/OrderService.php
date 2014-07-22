@@ -128,7 +128,7 @@ class OrderService extends ContainerAware
                 $sum+= $option->getPrice() * $option->getQuantity();
             }
             $returner[] = array(
-                'title' => $detail->getDishName().', '.$detail->getDishUnitName(),
+                'title' => $detail->getDishName(), //.', '.$detail->getDishUnitName(), Po pokalbio su shernu - laikinai skipinam papildoma info.
                 'count' => $detail->getQuantity(),
                 'price' => array(
                     'amount' => $sum * 100,
