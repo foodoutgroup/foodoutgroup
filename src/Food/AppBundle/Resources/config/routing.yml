@@ -20,6 +20,30 @@ food_review_create:
     requirements:
         _method: POST
 
+food_slug_locale:
+    pattern:  /{redirLocale}/
+    defaults: { _controller: FoodAppBundle:Redirector:index, redirLocale: ~ }
+    requirements:
+        redirLocale:  "[a-z]{2}"
+
+food_slug_locale2:
+    pattern:  /{redirLocale}
+    defaults: { _controller: FoodAppBundle:Redirector:index, redirLocale: ~ }
+    requirements:
+        redirLocale:  "[a-z]{2}"
+
+food_slug_locale_slug:
+    pattern:  /{redirLocale}/{slug}/
+    defaults: { _controller: FoodAppBundle:Redirector:slug, redirLocale: ~ , slug: ~}
+    requirements:
+        redirLocale:  "[a-z]{2}"
+
+food_slug_locale_slug2:
+    pattern:  /{redirLocale}/{slug}
+    defaults: { _controller: FoodAppBundle:Redirector:slug, redirLocale: ~ , slug: ~}
+    requirements:
+        redirLocale:  "[a-z]{2}"
+
 food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
