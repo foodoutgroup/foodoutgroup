@@ -881,6 +881,10 @@
           <source>general.lastname.placeholder</source>
           <target>Pavardenis</target>
       </trans-unit>
+      <trans-unit id="general.homepage.meta_title" resname="general.homepage.meta_title">
+          <source>general.homepage.meta_title</source>
+          <target>maisto pristatymas į namus ir biurą</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

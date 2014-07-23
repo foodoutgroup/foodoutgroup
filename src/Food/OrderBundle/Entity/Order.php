@@ -642,13 +642,6 @@ class Order
             'deliveryType' => $this->getDeliveryType(),
         );
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->place_point = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Set place_name

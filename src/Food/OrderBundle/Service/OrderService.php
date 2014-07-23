@@ -834,12 +834,10 @@ class OrderService extends ContainerAware
         switch($type) {
             case 'local':
                 return $this->getLocalBiller();
-                break;
 
             case 'paysera':
             default:
                 return $this->getPayseraBiller();
-                break;
         }
     }
 
@@ -847,6 +845,7 @@ class OrderService extends ContainerAware
      * @param int|null $orderId [optional] Order ID if should be loading a new one
      * @param string|null $billingType [optional] Billing type if should use another then saved in order
      *
+     * @throws \InvalidArgumentException
      * @return string
      */
     public function billOrder($orderId = null, $billingType = null)
@@ -855,6 +854,11 @@ class OrderService extends ContainerAware
             $order = $this->getOrder();
         } else {
             $order = $this->getOrderById($orderId);
+            if (!$order) {
+                throw new \InvalidArgumentException(
+                    sprintf('Order %d not found. Can not bill without an order', $orderId)
+                );
+            }
         }
 
         if (empty($billingType)) {
@@ -2023,7 +2027,7 @@ class OrderService extends ContainerAware
 
         $pointRecord = null;
 
-        if (empty($placePoint)) {
+        if (empty($placePointId)) {
             $placePointMap = $this->container->get('session')->get('point_data');
             if (!empty($placePointMap[$place->getId()])) {
                 $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
@@ -2107,7 +2111,10 @@ class OrderService extends ContainerAware
     public function generateCsvById($orderId)
     {
         $order = $this->getOrderById($orderId);
-        $this->generateCsv($order);
+
+        if ($order) {
+            $this->generateCsv($order);
+        }
     }
 
     /**
