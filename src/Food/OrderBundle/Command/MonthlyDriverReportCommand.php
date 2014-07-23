@@ -37,12 +37,11 @@ class MonthlyDriverReportCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $orderService = $this->getContainer()->get('food.order');
+            $repo = $this->getContainer()->get('doctrine')->getRepository('FoodOrderBundle:Order');
             $translator = $this->getContainer()->get('translator');
-
-            $orders = $orderService->getDriversMonthlyOrderCount();
-
             $mailer = $this->getContainer()->get('mailer');
+
+            $orders = $repo->getDriversMonthlyOrderCount();
 
             $message = \Swift_Message::newInstance()
                 ->setSubject($this->getContainer()->getParameter('title').': '.$translator->trans('general.email.driver_monthly_report'))

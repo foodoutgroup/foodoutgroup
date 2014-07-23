@@ -37,8 +37,9 @@ class DailyOrdersCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $orderService = $this->getContainer()->get('food.order');
             $translator = $this->getContainer()->get('translator');
+            $mailer = $this->getContainer()->get('mailer');
+            $em = $this->getContainer()->get('doctrine')->getManager();
 
             $date = null;
             if ($input->getOption('force-date')) {
@@ -46,10 +47,7 @@ class DailyOrdersCommand extends ContainerAwareCommand
             } else {
                 $date = date("Y-m-d", strtotime('-1 day'));
             }
-            $orders = $orderService->getYesterdayOrdersGrouped($date);
-
-
-            $mailer = $this->getContainer()->get('mailer');
+            $orders = $em->getRepository('FoodOrderBundle:Order')->getYesterdayOrdersGrouped($date);
 
             $message = \Swift_Message::newInstance()
                 ->setSubject($this->getContainer()->getParameter('title').': '.$translator->trans('general.email.accounting_yesterday_report'))

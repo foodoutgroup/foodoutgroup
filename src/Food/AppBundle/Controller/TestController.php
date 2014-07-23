@@ -70,7 +70,7 @@ class TestController extends Controller
      */
     public function reportAction()
     {
-        $orderService = $this->get('food.order');
+        $em = $this->get('doctrine')->getManager();
 
 //        $orders = $orderService->getDriversMonthlyOrderCount();
 //
@@ -84,7 +84,7 @@ class TestController extends Controller
 //            )
 //        );
 
-        $orders = $orderService->getYesterdayOrdersGrouped();
+        $orders = $em->getRepository('FoodOrderBundle:Order')->getYesterdayOrdersGrouped();
 
         return (
             $this->render(

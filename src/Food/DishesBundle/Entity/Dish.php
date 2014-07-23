@@ -174,7 +174,6 @@ class Dish extends Uploadable implements Translatable
         $this->setCreatedAt(new \DateTime('now'));
 
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->place = new \Doctrine\Common\Collections\ArrayCollection();
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 

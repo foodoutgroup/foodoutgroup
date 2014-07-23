@@ -35,6 +35,11 @@ var Dispatcher = {
             placement: 'right'
         });
 
+        // Vairuotojo papildoma info :)
+        $(".restourant-phones").tooltip({
+            placement: 'right'
+        });
+
         $(".city-tab a").tooltip({});
 
         $(".order_list.unassigned .order_checkbox").bind('click', function(){

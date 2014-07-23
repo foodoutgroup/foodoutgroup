@@ -60,7 +60,7 @@ class Cart
      */
 
     /**
-     * @var EntityManager
+     * @var ObjectManager
      */
     private $em;
 
