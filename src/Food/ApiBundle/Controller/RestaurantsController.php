@@ -24,9 +24,8 @@ class RestaurantsController extends Controller
         $lat = $request->get('lat');
         $lng = $request->get('lng');
 
-        $kitchens = $request->get('cuisines');
-
-        if (empty($kitchens)) {
+        $kitchens = explode(", ", $request->get('cuisines', ''));
+        if (empty($kitchens) || (sizeof($kitchens) == 1 && empty($kitchens[0]))) {
             $kitchens = array();
         }
         if (!empty($address)) {
