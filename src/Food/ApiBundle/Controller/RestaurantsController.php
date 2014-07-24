@@ -6,23 +6,55 @@ use Food\ApiBundle\Common\Restaurant;
 use Food\ApiBundle\Common\MenuItem;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class RestaurantsController extends Controller
 {
-    public function getRestaurantsAction()
+    public function getRestaurantsAction(Request $request)
     {
-        $address = "Vivulskio 21";
-        $city = "Vilnius";
-        $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
-        $locationInfo = $this->get('food.googlegis')->groupData($location, $address);
+        /**
+         * address,city,lat,lng,cuisines,keyword,offset,limit
+         *
+         */
 
-        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
-            array(),
-            array(),
-            false,
-            $this->get('food.googlegis')->getLocationFromSession()
-        );
+
+        $address = $request->get('address');
+        $city = $request->get('city');
+        $lat = $request->get('lat');
+        $lng = $request->get('lng');
+
+        $kitchens = $request->get('cuisines');
+        if (empty($kitchens)) {
+            $kitchens = array();
+        }
+        if (!empty($address)) {
+
+            $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
+            $locationInfo = $this->get('food.googlegis')->groupData($location, $address, $city);
+
+            $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
+                $kitchens,
+                array(),
+                false,
+                $this->get('food.googlegis')->getLocationFromSession()
+            );
+        } elseif (!empty($lat) && !empty($lng)) {
+            $this->get('food.googlegis')->setLocationToSession(
+                array(
+                    'lat' => $lat,
+                    'lng' => $lng
+                )
+            );
+            $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
+                $kitchens,
+                array(),
+                false,
+                $this->get('food.googlegis')->getLocationFromSession()
+            );
+        } else {
+            $places = array();
+        }
 
         $response = array(
             'restaurants' => array(),
@@ -36,6 +68,7 @@ class RestaurantsController extends Controller
             $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place['place'], $place['point']);
             $response['restaurants'][] = $restaurant->data;
         }
+
         return new JsonResponse($response);
     }
 
