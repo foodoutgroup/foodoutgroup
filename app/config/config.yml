@@ -32,8 +32,8 @@ parameters:
     order.city_coordinators:
         vilnius: []
         kaunas: [renata@foodout.lt]
-    order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
-    accounting_email: "buhalterija@foodout.lt"
+    order.accept_notify_emails: [paulius@foodout.lt]
+    accounting_email: "paulius@foodout.lt"
     title: "Foodout"
     domain: "foodout.lt"
     arc_gis_user: "skanulabai"
