@@ -25,6 +25,7 @@ class RestaurantsController extends Controller
         $lng = $request->get('lng');
 
         $kitchens = $request->get('cuisines');
+
         if (empty($kitchens)) {
             $kitchens = array();
         }
@@ -72,9 +73,37 @@ class RestaurantsController extends Controller
         return new JsonResponse($response);
     }
 
+    /**
+     * @return JsonResponse
+     *
+     * @todo Countingas pagal objektus kurie netoli yra :D
+     */
     public function getRestaurantsFilteredAction()
     {
+        $cuisines = array();
 
+        $repository = $this->getDoctrine()->getRepository('FoodDishesBundle:Kitchen');
+        $qb = $repository->createQueryBuilder('k');
+
+        $query = $qb
+            ->leftJoin('k.places', 'p', \Doctrine\ORM\Query\Expr\Join::WITH, 'p.active = 1')
+            ->addSelect('k.id, k.name, COUNT(p.id) AS placeCount')
+            ->where('k.visible = 1')
+            ->groupBy('k.id')
+            ->orderBy('placeCount', 'DESC')
+            ->having('placeCount > 0')
+            ->getQuery();
+
+        $allKitchens = $query->getResult();
+        foreach ($allKitchens as $kitchenRow) {
+            $cuisines[] = array(
+                'id' => $kitchenRow['id'],
+                'name' => $kitchenRow['name'],
+                'count' => $kitchenRow['placeCount']
+            );
+        }
+
+        return new JsonResponse($cuisines);
     }
 
     public function getRestaurantAction($id)
