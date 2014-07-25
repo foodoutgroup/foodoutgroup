@@ -54,6 +54,8 @@ class UsersController extends Controller
      */
     public function registerAction(Request $request)
     {
+        // TODO after testing - remove!
+        $this->logActionParams('Register user action', $request->request->all());
         $um = $this->getUserManager();
         $dispatcher = $this->container->get('event_dispatcher');
         /**
@@ -124,6 +126,8 @@ class UsersController extends Controller
      */
     public function updateAction(Request $request)
     {
+        // TODO after testing - remove!
+        $this->logActionParams('Update user action', $request->request->all());
         $token = $request->headers->get('X-API-Authorization');
         $this->get('food_api.api')->loginByHash($token);
 
@@ -170,6 +174,8 @@ class UsersController extends Controller
      */
     public function changePasswordAction(Request $request)
     {
+        // TODO after testing - remove!
+        $this->logActionParams('Change password action', $request->request->all());
         $token = $request->headers->get('X-API-Authorization');
         $this->get('food_api.api')->loginByHash($token);
 
@@ -215,6 +221,8 @@ class UsersController extends Controller
      */
     public function loginAction(Request $request)
     {
+        // TODO after testing - remove!
+        $this->logActionParams('Login action', $request->request->all());
         $username = $request->get('email');
         $password = $request->get('password', 'new-user');
         $phone = $request->get('phone');
@@ -315,5 +323,19 @@ class UsersController extends Controller
         $user = $security->getToken()->getUser();
 
         return new JsonResponse(array('success' => true, 'userId' => $user->getId()));
+    }
+
+    /**
+     * @param string $action
+     * @param string $params
+     */
+    protected function logActionParams($action, $params)
+    {
+        $logger = $this->get('logger');
+
+        $logger->alert('=============================== '.$action.' =====================================');
+        $logger->alert('Request params:');
+        $logger->alert(var_export($params, true));
+        $logger->alert('=========================================================');
     }
 }
