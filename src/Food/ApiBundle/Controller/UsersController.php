@@ -3,11 +3,11 @@
 namespace Food\ApiBundle\Controller;
 
 use Food\UserBundle\Entity\User;
-use FOS\UserBundle\Event\FormEvent;
+//use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\UserEvent;
 use FOS\UserBundle\FOSUserEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -17,6 +17,11 @@ use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 
 class UsersController extends Controller
 {
+    /**
+     * @var array
+     */
+    private $requestParams = array();
+
     protected function getUserManager()
     {
         return $this->get('fos_user.user_manager');
@@ -54,66 +59,78 @@ class UsersController extends Controller
      */
     public function registerAction(Request $request)
     {
-        // TODO after testing - remove!
-        $this->logActionParams('Register user action', $request->request->all());
-        $um = $this->getUserManager();
-        $dispatcher = $this->container->get('event_dispatcher');
-        /**
-         * @var User $user
-         */
-        $user = $um->createUser();
-        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, new UserEvent($user, $request));
+        try {
+            $this->parseRequestBody($request);
+            $um = $this->getUserManager();
+            $dispatcher = $this->container->get('event_dispatcher');
 
-        // TODO validation
-        $phone = $request->get('phone');
-        $name = $request->get('name');
-        $email = $request->get('email');
-        $password = $request->get('password');
+            // TODO after testing - remove!
+            $this->logActionParams('Register user action', $this->requestParams);
 
-        if (strpos($name, ' ') === false) {
-            $user->setFirstname($name);
-        } else {
-            $names = explode(' ', $name);
-            $user->setFirstname($names[0])
-                ->setLastname($names[1]);
+            /**
+             * @var User $user
+             */
+            $user = $um->createUser();
+            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, new UserEvent($user, $request));
+
+            // TODO validation
+            $phone = $this->getRequestParam('phone');
+            $name = $this->getRequestParam('name');
+            $email = $this->getRequestParam('email');
+            $password = $this->getRequestParam('password');
+
+            if (strpos($name, ' ') === false) {
+                $user->setFirstname($name);
+            } else {
+                $names = explode(' ', $name);
+                $user->setFirstname($names[0])
+                    ->setLastname($names[1]);
+            }
+
+            $user->setEmail($email);
+            $user->setPhone($phone);
+            $user->setRoles(array('ROLE_USER'));
+            $user->setEnabled(true);
+
+            if (!empty($password)) {
+                $user->setPlainPassword($password)
+                    ->setFullyRegistered(true);
+
+                // TODO turi ateiti emailas apie registracija - kolkas neeina :(
+                $event = new UserEvent($user, $request);
+                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
+            } else {
+                $user->setPlainPassword('new-user')
+                    ->setFullyRegistered(false);
+            }
+
+            // User hash generation action
+            $hash = $this->get('food_api.api')->generateUserHash($user);
+            $user->setApiToken($hash);
+            $user->setApiTokenValidity(new \DateTime('+1 week'));
+
+            $um->updateUser($user);
+
+            $this->loginUser($user);
+
+            $response = array(
+                'user_id' => $user->getId(),
+                'phone' => $user->getPhone(),
+                'name' => $user->getFullName(),
+                'email' => $user->getEmail(),
+                'session_token' => $hash,
+                'refresh_token' => ''
+            );
+
+            return new JsonResponse($response);
+        } catch (\ShownApiException $e) {
+            return new Response($e->getMessage(), 404);
+        } catch (\Exception $e) {
+            return new Response(
+                $this->get('translator')->trans('general.error_happened'),
+                404
+            );
         }
-
-        $user->setEmail($email);
-        $user->setPhone($phone);
-        $user->setRoles(array('ROLE_USER'));
-        $user->setEnabled(true);
-
-        if (!empty($password)) {
-            $user->setPlainPassword($password)
-                ->setFullyRegistered(true);
-
-            // TODO turi ateiti emailas apie registracija - kolkas neeina :(
-            $event = new UserEvent($user, $request);
-            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
-        } else {
-            $user->setPlainPassword('new-user')
-                ->setFullyRegistered(false);
-        }
-
-        // User hash generation action
-        $hash = $this->get('food_api.api')->generateUserHash($user);
-        $user->setApiToken($hash);
-        $user->setApiTokenValidity(new \DateTime('+1 week'));
-
-        $um->updateUser($user);
-
-        $this->loginUser($user);
-
-        $response = array(
-            'user_id' => $user->getId(),
-            'phone' => $user->getPhone(),
-            'name' => $user->getFullName(),
-            'email' => $user->getEmail(),
-            'session_token' => $hash,
-            'refresh_token' => ''
-        );
-
-        return new JsonResponse($response);
     }
 
     /**
@@ -326,8 +343,36 @@ class UsersController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return array|mixed
+     */
+    public function parseRequestBody(Request $request)
+    {
+        $body = $request->getContent();
+
+        if (!empty($body)) {
+            $this->requestParams = json_decode($body, true);
+        } else {
+            $this->requestParams = array();
+        }
+    }
+
+    /**
+     * @param string $key
+     * @return mixed|null
+     */
+    public function getRequestParam($key)
+    {
+        if (isset($this->requestParams[$key])) {
+            return $this->requestParams[$key];
+        }
+
+        return null;
+    }
+
+    /**
      * @param string $action
-     * @param string $params
+     * @param array $params
      */
     protected function logActionParams($action, $params)
     {
