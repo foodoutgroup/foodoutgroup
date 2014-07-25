@@ -12,13 +12,13 @@
                 <div class="type">{{ dish.dishSizeId.unit.name }}</div>
                 <div class="clearfix pad">
                     <div class="count">{{ dish.quantity }} {% trans %}general.item_quantity{% endtrans %}</div>
-                    <div class="sum">x {{ dish.dishSizeId.priceLocalized }} {{ currency_display }}</div>
+                    <div class="sum">x {{ dish.dishSizeId.priceLocalized|number_format(2, ',', ' ') }} {{ currency_display }}</div>
                 </div>
                 {% if dish.options|length > 0 %}
                     {% for option in dish.options %}
                         <div class="clearfix">
                             <div class="extra" title="{{ option.dishOptionId.name }}">{{ option.dishOptionId.name }}</div>
-                            <div class="extra sum">{{ option.dishOptionId.priceLocalized }} {{ currency_display }}</div>
+                            <div class="extra sum">{{ option.dishOptionId.priceLocalized|number_format(2, ',', ' ') }} {{ currency_display }}</div>
                         </div>
                     {% endfor %}
                 {% endif %}
@@ -28,21 +28,21 @@
             {% if applyDiscount %}
                 <div class="discount-sum clearfix">
                     <div class="fl">{% trans %}cart.block.discount_sum{% endtrans %}:</div>
-                    <div class="fr">{{ discountSum }} {{ currency_display }}</div>
+                    <div class="fr">{{ discountSum|number_format(2, ',', ' ') }} {{ currency_display }}</div>
                 </div>
             {% endif %}
             <div class="total-sum clearfix">
                 <div class="fl">{% trans %}cart.block.total_cart{% endtrans %}:</div>
-                <div class="fr">{{ total_cart|replace({'.': ','}) }} {{ currency_display }}</div>
+                <div class="fr">{{ total_cart|number_format(2, ',', ' ') }} {{ currency_display }}</div>
             </div>
             {% if hide_delivery == 0 %}
                 <div class="delivery-price clearfix">
                     <div class="fl">{% trans %}cart.block.delivery_price{% endtrans %}:</div>
-                    <div class="fr">{{ place.deliveryPrice }} {{ currency_display }}</div>
+                    <div class="fr">{{ place.deliveryPrice|number_format(2, ',', ' ') }} {{ currency_display }}</div>
                 </div>
                 <div class="total-sum clearfix">
                     <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
-                    <div class="fr">{{ total_with_delivery|replace({'.': ','}) }} {{ currency_display }}</div>
+                    <div class="fr">{{ total_with_delivery|number_format(2, ',', ' ') }} {{ currency_display }}</div>
                 </div>
             {% endif %}
         </div>
