@@ -2,8 +2,8 @@
 
 namespace Food\ApiBundle\Controller;
 
+use Food\ApiBundle\Exceptions\ApiException;
 use Food\UserBundle\Entity\User;
-//use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\UserEvent;
 use FOS\UserBundle\FOSUserEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 
@@ -63,6 +62,7 @@ class UsersController extends Controller
             $this->parseRequestBody($request);
             $um = $this->getUserManager();
             $dispatcher = $this->container->get('event_dispatcher');
+            $translator = $this->get('translator');
 
             // TODO after testing - remove!
             $this->logActionParams('Register user action', $this->requestParams);
@@ -73,24 +73,74 @@ class UsersController extends Controller
             $user = $um->createUser();
             $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, new UserEvent($user, $request));
 
-            // TODO validation
             $phone = $this->getRequestParam('phone');
             $name = $this->getRequestParam('name');
             $email = $this->getRequestParam('email');
             $password = $this->getRequestParam('password');
 
+            // Parse names
             if (strpos($name, ' ') === false) {
-                $user->setFirstname($name);
+                $firstname = $name;
+                $lastname = null;
             } else {
                 $names = explode(' ', $name);
-                $user->setFirstname($names[0])
-                    ->setLastname($names[1]);
+                $firstname = $names[0];
+                $lastname = $names[1];
             }
 
-            $user->setEmail($email);
-            $user->setPhone($phone);
+            $error = array();
+            // Validation omg..
+            if (empty($firstname)) {
+                $error = array(
+                    'error' => 'Firsname empty',
+                    'description' => $translator->trans('registration.firstname.is_empty')
+                );
+            }
+            if (empty($email)) {
+                $error = array(
+                    'error' => 'Email empty',
+                    'description' => $translator->trans('registration.email.is_empty')
+                );
+            }
+            if (empty($phone)) {
+                $error = array(
+                    'error' => 'Phone empty',
+                    'description' => $translator->trans('registration.phone.is_empty')
+                );
+            }
+            if (!empty($password) && mb_strlen($password) < 6) {
+                $error = array(
+                    'error' => 'Password too short',
+                    'description' => $translator->trans('registration.password.too_short')
+                );
+            }
+
+            if (!empty($error)) {
+                throw new ApiException('Validation exception', 400, $error);
+            }
+
+            // User exists???
+            $existingUser = $um->findUserByEmail($email);
+            if ($existingUser) {
+                throw new ApiException(
+                    'User '.$email.' exists',
+                    409,
+                    array(
+                        'error' => 'User exists',
+                        'description' => $translator->trans('registration.user.exists'),
+                    )
+                );
+            }
+
+            $user->setFirstname($firstname)
+                ->setPhone($phone)
+                ->setEmail($email);
             $user->setRoles(array('ROLE_USER'));
             $user->setEnabled(true);
+
+            if (!empty($lastname)) {
+                $user->setLastname($lastname);
+            }
 
             if (!empty($password)) {
                 $user->setPlainPassword($password)
@@ -123,8 +173,8 @@ class UsersController extends Controller
             );
 
             return new JsonResponse($response);
-        } catch (\ShownApiException $e) {
-            return new Response($e->getMessage(), 404);
+        } catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
             return new Response(
                 $this->get('translator')->trans('general.error_happened'),
@@ -143,40 +193,66 @@ class UsersController extends Controller
      */
     public function updateAction(Request $request)
     {
-        // TODO after testing - remove!
-        $this->logActionParams('Update user action', $request->request->all());
-        $token = $request->headers->get('X-API-Authorization');
-        $this->get('food_api.api')->loginByHash($token);
+        try {
+            $this->parseRequestBody($request);
+            // TODO after testing - remove!
+            $this->logActionParams('Update user action', $this->requestParams);
+            $token = $request->headers->get('X-API-Authorization');
+            $this->get('food_api.api')->loginByHash($token);
+            $translator = $this->get('translator');
 
-        $um = $this->getUserManager();
-        $security = $this->get('security.context');
-        $user = $security->getToken()->getUser();
+            $um = $this->getUserManager();
+            $security = $this->get('security.context');
+            $user = $security->getToken()->getUser();
 
-        $phone = $request->get('phone');
-        if (!empty($phone)) {
-            $user->setPhone($phone);
-        }
-        $name = $request->get('name');
-        if (!empty($name)) {
-            if (strpos($name, ' ') === false) {
-                $user->setFirstname($name);
+            $phone = $this->getRequestParam('phone');
+            if (!empty($phone)) {
+                $user->setPhone($phone);
             } else {
-                $names = explode(' ', $name);
-                $user->setFirstname($names[0])
-                    ->setLastname($names[1]);
+                throw new ApiException(
+                    'Validation failed', 400,
+                    array(
+                        'error' => 'Phone empty',
+                        'description' => $translator->trans('registration.phone.is_empty'))
+                );
             }
+            $name = $this->getRequestParam('name');
+            if (!empty($name)) {
+                if (strpos($name, ' ') === false) {
+                    $user->setFirstname($name);
+                } else {
+                    $names = explode(' ', $name);
+                    $user->setFirstname($names[0])
+                        ->setLastname($names[1]);
+                }
+            } else {
+                throw new ApiException(
+                    'Validation failed', 400,
+                    array(
+                        'error' => 'Firsname empty',
+                        'description' => $translator->trans('registration.firstname.is_empty')
+                    )
+                );
+            }
+
+            $um->updateUser($user);
+
+            $response = array(
+                'user_id' => $user->getId(),
+                'phone' => $user->getPhone(),
+                'name' => $user->getFullName(),
+                'email' => $user->getEmail(),
+            );
+
+            return new JsonResponse($response);
+        }  catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new Response(
+                $this->get('translator')->trans('general.error_happened'),
+                404
+            );
         }
-
-        $um->updateUser($user);
-
-        $response = array(
-            'user_id' => $user->getId(),
-            'phone' => $user->getPhone(),
-            'name' => $user->getFullName(),
-            'email' => $user->getEmail(),
-        );
-
-        return new JsonResponse($response);
     }
 
     /**
@@ -191,30 +267,62 @@ class UsersController extends Controller
      */
     public function changePasswordAction(Request $request)
     {
-        // TODO after testing - remove!
-        $this->logActionParams('Change password action', $request->request->all());
-        $token = $request->headers->get('X-API-Authorization');
-        $this->get('food_api.api')->loginByHash($token);
+        try {
+            $this->parseRequestBody($request);
+            // TODO after testing - remove!
+            $this->logActionParams('Change password action', $this->requestParams);
+            $token = $request->headers->get('X-API-Authorization');
+            $this->get('food_api.api')->loginByHash($token);
+            $translator = $this->get('translator');
 
-        $um = $this->getUserManager();
-        $security = $this->get('security.context');
-        $user = $security->getToken()->getUser();
+            $um = $this->getUserManager();
+            $security = $this->get('security.context');
+            $user = $security->getToken()->getUser();
 
-        $userId = $request->get('user_id');
-        $password = $request->get('passwors');
+            $userId = $this->getRequestParam('user_id');
+            $password = $this->getRequestParam('password');
 
-        if (empty($password)) {
-            throw new NotFoundHttpException('Empty password');
+            if (empty($password)) {
+                throw new ApiException(
+                    'Validation failed', 400,
+                    array(
+                        'error' => 'Empty password',
+                        'description' => $translator->trans('mobile.change_password.password.is_empty')
+                    )
+                );
+            }
+            if (mb_strlen($password) < 6) {
+                throw new ApiException(
+                    'Validation failed', 400,
+                    array(
+                        'error' => 'Ppassword too short',
+                        'description' => $translator->trans('registration.password.too_short')
+                    )
+                );
+            }
+            if ($userId != $user->getId()) {
+                throw new ApiException(
+                    'Validation failed', 400,
+                    array(
+                        'error' => 'User id does not match',
+                        'description' => $translator->trans('mobile.change_password.user.id_dont_match')
+                    )
+                );
+            }
+
+            $user->setPlainPassword($password);
+
+            $um->updateUser($user);
+
+            return new Response('', 204);
+        }  catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new Response(
+                $this->get('translator')->trans('general.error_happened'),
+                404
+            );
         }
-        if ($userId != $user->getId()) {
-            throw new NotFoundHttpException('User id does not match');
-        }
-
-        $user->setPlainPasseword($password);
-
-        $um->updateUser($user);
-
-        return new Response('', 204);
     }
 
     /**
@@ -238,44 +346,49 @@ class UsersController extends Controller
      */
     public function loginAction(Request $request)
     {
-        // TODO after testing - remove!
-        $this->logActionParams('Login action', $request->request->all());
-        $username = $request->get('email');
-        $password = $request->get('password', 'new-user');
-        $phone = $request->get('phone');
+        try {
+            $this->parseRequestBody($request);
+            // TODO after testing - remove!
+            $this->logActionParams('Login action', $this->requestParams);
+            $username = $this->getRequestParam('email');
+            $password = $this->getRequestParam('password', 'new-user');
+            $phone = $this->getRequestParam('phone');
 
-        $um = $this->getUserManager();
-        $user = $um->findUserByUsername($username);
-        if(!$user){
-            $user = $um->findUserByEmail($username);
+            $um = $this->getUserManager();
+            $user = $um->findUserByUsername($username);
+            if(!$user){
+                $user = $um->findUserByEmail($username);
+            }
+            if(!$user){
+                $user = $um->findUserBy(array('phone' => $phone));
+            }
+
+            if(!$user instanceof User){
+                throw new NotFoundHttpException("User not found");
+            }
+            if(!$this->checkUserPassword($user, $password)){
+                throw new NotFoundHttpException("Wrong password");
+            }
+
+            $this->loginUser($user);
+
+            // User hash verfy action
+            $hash = $this->get('food_api.api')->generateUserHash($user);
+            $user->setApiToken($hash);
+            $user->setApiTokenValidity(new \DateTime('+1 week'));
+
+            $um->updateUser($user);
+
+            $response = array(
+                "user_id" => $user->getId(),
+                "session_token" => $hash,
+                "refresh_token" => ""
+            );
+
+            return new JsonResponse($response);
+        }  catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         }
-        if(!$user){
-            $user = $um->findUserBy(array('phone' => $phone));
-        }
-
-        if(!$user instanceof User){
-            throw new NotFoundHttpException("User not found");
-        }
-        if(!$this->checkUserPassword($user, $password)){
-            throw new NotFoundHttpException("Wrong password");
-        }
-
-        $this->loginUser($user);
-
-        // User hash verfy action
-        $hash = $this->get('food_api.api')->generateUserHash($user);
-        $user->setApiToken($hash);
-        $user->setApiTokenValidity(new \DateTime('+1 week'));
-
-        $um->updateUser($user);
-
-        $response = array(
-            "user_id" => $user->getId(),
-            "session_token" => $hash,
-            "refresh_token" => ""
-        );
-
-        return new JsonResponse($response);
     }
 
     public function logoutAction(Request $request)
@@ -287,9 +400,7 @@ class UsersController extends Controller
         $security = $this->get('security.context');
 
         $user = $security->getToken()->getUser();
-        $this->get('logger')->alert('++ bandom is sesijos gaut useri');
         if ($user instanceof User) {
-            $this->get('logger')->alert('++ yr useris :)');
             $user->setApiTokenValidity(new \DateTime('-1 week'));
             $user->setApiToken('');
             $um->updateUser($user);
@@ -299,7 +410,7 @@ class UsersController extends Controller
         $security->setToken($token);
         $this->get('session')->invalidate();
 
-        return new JsonResponse(array('success' => true));
+        return new Response('', 204);
     }
 
     /**
@@ -359,15 +470,16 @@ class UsersController extends Controller
 
     /**
      * @param string $key
+     * @param null $default
      * @return mixed|null
      */
-    public function getRequestParam($key)
+    public function getRequestParam($key, $default=null)
     {
         if (isset($this->requestParams[$key])) {
             return $this->requestParams[$key];
         }
 
-        return null;
+        return $default;
     }
 
     /**

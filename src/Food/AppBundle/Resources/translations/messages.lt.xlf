@@ -857,6 +857,34 @@
           <source>general.lastname.placeholder</source>
           <target>Pavardenis</target>
       </trans-unit>
+      <trans-unit id="registration.user.exists" resname="registration.user.exists">
+          <source>registration.user.exists</source>
+          <target>Vartotojas tokiu el. paštu jau egzistuoja</target>
+      </trans-unit>
+      <trans-unit id="registration.phone.is_empty" resname="registration.phone.is_empty">
+          <source>registration.phone.is_empty</source>
+          <target>Nenurodytas telefono numeris</target>
+      </trans-unit>
+      <trans-unit id="registration.firstname.is_empty" resname="registration.firstname.is_empty">
+          <source>registration.firstname.is_empty</source>
+          <target>Nenurodytas Vardas</target>
+      </trans-unit>
+      <trans-unit id="registration.email.is_empty" resname="registration.email.is_empty">
+          <source>registration.email.is_empty</source>
+          <target>Nenurodytas el.pašto adresas</target>
+      </trans-unit>
+      <trans-unit id="registration.password.too_short" resname="registration.password.too_short">
+          <source>registration.password.too_short</source>
+          <target>Slaptažodis negali būti trumpesnis, nei 6 simboliai</target>
+      </trans-unit>
+      <trans-unit id="mobile.change_password.password.is_empty" resname="mobile.change_password.password.is_empty">
+          <source>mobile.change_password.password.is_empty</source>
+          <target>Tučias slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="mobile.change_password.user.id_dont_match" resname="mobile.change_password.user.id_dont_match">
+          <source>mobile.change_password.user.id_dont_match</source>
+          <target>Nesutampa prijungtas vartotojas ir paduotas ID</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
