@@ -1300,4 +1300,14 @@ class Order
     {
         return $this->coupon;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->details = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->orderStatusLog = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->paymentLog = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
 }
