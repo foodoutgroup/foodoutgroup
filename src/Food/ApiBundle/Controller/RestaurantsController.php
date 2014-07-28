@@ -77,31 +77,62 @@ class RestaurantsController extends Controller
      *
      * @todo Countingas pagal objektus kurie netoli yra :D
      */
-    public function getRestaurantsFilteredAction()
+    public function getRestaurantsFilteredAction(Request $request)
     {
-        $cuisines = array();
 
-        $repository = $this->getDoctrine()->getRepository('FoodDishesBundle:Kitchen');
-        $qb = $repository->createQueryBuilder('k');
 
-        $query = $qb
-            ->leftJoin('k.places', 'p', \Doctrine\ORM\Query\Expr\Join::WITH, 'p.active = 1')
-            ->addSelect('k.id, k.name, COUNT(p.id) AS placeCount')
-            ->where('k.visible = 1')
-            ->groupBy('k.id')
-            ->orderBy('placeCount', 'DESC')
-            ->having('placeCount > 0')
-            ->getQuery();
 
-        $allKitchens = $query->getResult();
-        foreach ($allKitchens as $kitchenRow) {
-            $cuisines[] = array(
-                'id' => $kitchenRow['id'],
-                'name' => $kitchenRow['name'],
-                'count' => $kitchenRow['placeCount']
+
+        $address = $request->get('address');
+        $city = $request->get('city');
+        $lat = $request->get('lat');
+        $lng = $request->get('lng');
+
+        if (!empty($address)) {
+
+            $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
+            $locationInfo = $this->get('food.googlegis')->groupData($location, $address, $city);
+
+            $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
+                array(),
+                array(),
+                false,
+                $this->get('food.googlegis')->getLocationFromSession()
             );
+        } elseif (!empty($lat) && !empty($lng)) {
+            $this->get('food.googlegis')->setLocationToSession(
+                array(
+                    'lat' => $lat,
+                    'lng' => $lng
+                )
+            );
+            $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
+                array(),
+                array(),
+                false,
+                $this->get('food.googlegis')->getLocationFromSession()
+            );
+        } else {
+            $places = array();
         }
 
+        $cuisines = array();
+        if (!empty($places)) {
+            foreach ($places as $place) {
+                foreach ($place['place']->getKitchens() as $kit) {
+                    if (empty($cuisines[$kit->getId()])) {
+                        $cuisines[$kit->getId()] = array(
+                            'id' => $kit->getId(),
+                            'name' => $kit->getName(),
+                            'count' => 1
+                        );
+                    } else {
+                        $cuisines[$kit->getId()]['count']++;
+                    }
+                }
+            }
+        }
+        $cuisines = array_values($cuisines);
         return new JsonResponse($cuisines);
     }
 
