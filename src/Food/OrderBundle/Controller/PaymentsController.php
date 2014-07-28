@@ -206,4 +206,30 @@ class PaymentsController extends Controller
 
         return $this->render($view, $params);
     }
+
+    public function swedbankGatewaySuccessAction(Request $request)
+    {
+        // services
+        $orderService = $this->container->get('food.order');
+        $gateway = $this->container->get('pirminis_gateway');
+
+        // get order
+        $orderId = $gateway->order_id('swedbank', $request);
+        $order = $orderService->getOrderById($orderId);
+
+        if (!$order) {
+            throw new \Exception('Order not found. Order id: '.$data['orderid']);
+        }
+
+        if ($gateway->is_successful_payment('swedbank', $request)) {
+            //
+        } else {
+            // failure
+        }
+    }
+
+    public function swedbankGatewayFailureAction(Request $request)
+    {
+        # code...
+    }
 }
