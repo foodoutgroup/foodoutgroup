@@ -35,6 +35,8 @@ class DefaultController extends Controller
         $formFactory = $this->container->get('fos_user.registration.form.factory');
         $userManager = $this->container->get('fos_user.user_manager');
         $dispatcher = $this->container->get('event_dispatcher');
+        $translator = $this->container->get('translator');
+        $notifications = $this->container->get('food.app.utils.notifications');
 
         $user = $userManager->createUser();
         $user->setUsername(uniqid('', true));
@@ -74,16 +76,7 @@ class DefaultController extends Controller
             $userManager->updateUser($user);
 
             // set noty notification for successful user registration
-            $this
-                ->container
-                ->get('food.app.utils.notifications')
-                ->setSuccessMessage(
-                    $this
-                        ->container
-                        ->get('translator')
-                        ->trans('general.noty.successful_user_registration')
-                )
-            ;
+            $notifications->setSuccessMessage($translator->trans('general.successful_user_registration'));
 
             $d = $request->get('fos_user_registration_form');
 

@@ -1,16 +1,9 @@
-{% if noty_success_message is not empty %}
+{#% if success_messages is not empty %#}
     <script type="text/javascript">
-        {% for message in noty_success_message %}
+        {#% for message in success_messages %#}
             $(document).ready(function() {
-                var options = {
-                    text: '{{ message }}',
-                    timeout: 3000,
-                    modal: true,
-                    layout: 'center',
-                    type: 'success'
-                };
-                var n = noty(options);
+                $('.profile-button').popover('show');
             });
-        {% endfor %}
+        {#% endfor %#}
     </script>
-{% endif %}
+{#% endif %#}

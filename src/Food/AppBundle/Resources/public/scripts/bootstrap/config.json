@@ -370,10 +370,12 @@
     "@hr-border": "@gray-lighter"
   },
   "css": [
-    "tooltip.less"
+    "tooltip.less",
+    "popovers.less"
   ],
   "js": [
-    "tooltip.js"
+    "tooltip.js",
+    "popover.js"
   ],
-  "customizerUrl": "http://getbootstrap.com/customize/?id=fad0aab6d429923cd94e"
+  "customizerUrl": "http://getbootstrap.com/customize/?id=1db684ea646631177338"
 }

@@ -15,7 +15,7 @@ class Notifications
             ->render(
                 'FoodAppBundle:Notifications:init.html.twig',
                 [
-                    'noty_success_message' => $this->getSuccessMessage()
+                    'success_messages' => $this->getSuccessMessage()
                 ]
             );
     }
@@ -25,7 +25,7 @@ class Notifications
         $this
             ->service('session')
             ->getFlashBag()
-            ->set('noty_success_message', $message)
+            ->set('success_messages', $message)
         ;
     }
 
@@ -34,7 +34,7 @@ class Notifications
         return $this
             ->service('session')
             ->getFlashBag()
-            ->get('noty_success_message')
+            ->get('success_messages')
         ;
     }
 }

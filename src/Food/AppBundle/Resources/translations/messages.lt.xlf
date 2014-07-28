@@ -670,8 +670,8 @@
         <source>general.raty.gorgeous</source>
         <target>Nuostabus</target>
       </trans-unit>
-      <trans-unit id="general.noty.successful_user_registration" resname="general.noty.successful_user_registration">
-        <source>general.noty.successful_user_registration</source>
+      <trans-unit id="general.successful_user_registration" resname="general.successful_user_registration">
+        <source>general.successful_user_registration</source>
         <target>Jūs sėkmingai užsiregistravote!</target>
       </trans-unit>
       <trans-unit id="general.noty.profile_updated" resname="general.noty.profile_updated">
