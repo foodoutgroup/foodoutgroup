@@ -179,6 +179,8 @@ class PaymentsController extends Controller
         $order = $em->getRepository('FoodOrderBundle:Order')
                     ->find($id);
 
+        $locale = $locale ? $locale : 'lt';
+
         // configuration
         $successUrl = $router->generate('swedbank_gateway_success',
                                         array('_locale' => $locale),
@@ -196,7 +198,7 @@ class PaymentsController extends Controller
                          'comment' => 'no comment',
                          'success_url' => $successUrl,
                          'failure_url' => $failureUrl,
-                         'language' => $locale ? $locale : 'lt');
+                         'language' => $locale);
         $gateway->set_options($options);
 
         $form = $gateway->form_for('swedbank');

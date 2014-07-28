@@ -1631,11 +1631,11 @@
         },
         {
             "name": "pirminis/gateway-bundle",
-            "version": "1.0.8",
+            "version": "1.0.9",
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:pirminis/gateway-bundle.git",
-                "reference": "5cd36a5038b06f8fe65476bbc468c21fe6f8f12c"
+                "reference": "308b648fbf460fbd492977ef28d6b2025f184427"
             },
             "require": {
                 "php": "~5.4",
@@ -1658,7 +1658,7 @@
                 }
             ],
             "description": "Swedbank Gateway Integration Library for Symfony 2",
-            "time": "2014-07-28 20:47:06"
+            "time": "2014-07-28 22:32:20"
         },
         {
             "name": "psr/log",
