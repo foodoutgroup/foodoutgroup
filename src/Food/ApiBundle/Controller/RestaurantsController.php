@@ -79,10 +79,6 @@ class RestaurantsController extends Controller
      */
     public function getRestaurantsFilteredAction(Request $request)
     {
-
-
-
-
         $address = $request->get('address');
         $city = $request->get('city');
         $lat = $request->get('lat');

@@ -8,6 +8,16 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AddressController extends Controller
 {
+
+    public function findAddressAction(Request $request)
+    {
+        $returner = $this->get('food.googlegis')->findAddressByCoords(
+            $request->get('lat'),
+            $request->get('lng')
+        );
+        return new JsonResponse($returner);
+    }
+
     public function findStreetAction(Request $request)
     {
         $queryPart = $request->get('query');
