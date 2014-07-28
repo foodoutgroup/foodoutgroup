@@ -470,15 +470,16 @@ class UsersController extends Controller
 
     /**
      * @param string $key
+     * @param null $default
      * @return mixed|null
      */
-    public function getRequestParam($key)
+    public function getRequestParam($key, $default=null)
     {
         if (isset($this->requestParams[$key])) {
             return $this->requestParams[$key];
         }
 
-        return null;
+        return $default;
     }
 
     /**
