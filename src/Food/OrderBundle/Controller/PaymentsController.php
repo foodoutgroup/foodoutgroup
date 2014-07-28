@@ -168,4 +168,42 @@ class PaymentsController extends Controller
             return new Response($e->getTraceAsString(), 500);
         }
     }
+
+    public function swedbankGatewayRedirectAction($id, $locale)
+    {
+        $router = $this->container->get('router');
+        $gateway = $this->container->get('pirminis_gateway');
+        $em = $this->container->get('doctrine.orm.entity_manager');
+
+        // get order
+        $order = $em->getRepository('FoodOrderBundle:Order')
+                    ->find($id);
+
+        // configuration
+        $successUrl = $router->generate('swedbank_gateway_success',
+                                        array('_locale' => $locale),
+                                        true);
+        $failureUrl = $router->generate('swedbank_gateway_failure',
+                                        array('_locale' => $locale),
+                                        true);
+
+        $options = array('order_id' => substr($order->getId() . '_' . time(),
+                                              0,
+                                              16),
+                         'price' => (string)round($order->getTotal() * 100),
+                         'email' => $order->getUser()->getEmail(),
+                         'transaction_datetime' => date('Y-m-d H:i:s'),
+                         'comment' => 'no comment',
+                         'success_url' => $successUrl,
+                         'failure_url' => $failureUrl,
+                         'language' => $locale ? $locale : 'lt');
+        $gateway->set_options($options);
+
+        $form = $gateway->form_for('swedbank');
+
+        $view = 'FoodOrderBundle:Payments:swedbankGatewayRedirect.html.twig';
+        $params = ['form' => $form->createView()];
+
+        return $this->render($view, $params);
+    }
 }

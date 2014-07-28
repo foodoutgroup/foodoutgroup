@@ -112,6 +112,21 @@ paysera_callback:
     path: /payments/paysera/callback
     defaults: { _controller: FoodOrderBundle:Payments:payseraCallback}
 
+swedbank_gateway_redirect:
+    pattern: /payments/swedbank/gateway/redirect/{id}/{locale}
+    defaults: { _controller: FoodOrderBundle:Payments:swedbankGatewayRedirect, id: ~, locale: ~ }
+    requirements:
+        _method: GET
+        id: "[0-9]+"
+
+swedbank_gateway_success:
+    pattern: /payments/swedbank/gateway/success
+    defaults: { _controller: FoodOrderBundle:Payments:swedbankGatewaySuccess }
+
+swedbank_gateway_failure:
+    pattern: /payments/swedbank/gateway/failure
+    defaults: { _controller: FoodOrderBundle:Payments:swedbankGatewayFailure }
+
 food_sitemap:
     pattern: /sitemap.xml
     defaults: { _controller: FoodAppBundle:Default:sitemap}
@@ -133,5 +148,3 @@ fos_user_resetting:
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /change-password
-
-
