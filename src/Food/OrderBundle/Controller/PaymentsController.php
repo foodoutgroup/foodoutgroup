@@ -210,11 +210,6 @@ class PaymentsController extends Controller
 
     public function swedbankGatewaySuccessAction(Request $request)
     {
-        // for testing purposes
-        // $fake_data = array('DPGReferenceId' => '151802',
-        //                    'TransactionId' => '489_4fd6dedd0');
-        // $request->query->replace($fake_data);
-
         // services
         $orderService = $this->container->get('food.order');
         $gateway = $this->container->get('pirminis_gateway');
@@ -227,6 +222,7 @@ class PaymentsController extends Controller
 
         if (empty($transactionId)) return $this->render($view);
 
+        // extract actual order id. say thanks to swedbank requirements
         $transactionIdSplit = explode('_', $transactionId);
         $orderId = !empty($transactionIdSplit[0]) ? $transactionIdSplit[0] : 0;
         $order = $orderService->getOrderById($orderId);
@@ -237,44 +233,56 @@ class PaymentsController extends Controller
             return $this->render($view);
         }
 
-        if ($gateway->is_authorized('swedbank', $request)) {
-            $orderService->setPaymentStatus($orderService::$paymentStatusComplete, 'Swedbank gateway billed payment');
-            $orderService->saveOrder();
-            $orderService->informPlace();
+        // is this event (callback from bank) or just ordinary customer?
+        $isEvent = $gateway->is_event('swedbank', $request);
 
-            // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
-            $orderService->deactivateCoupon();
+        // is order paid? let's find out!
+        if ((!$isEvent &&
+             $gateway->is_authorized('swedbank', $request)) ||
+            ($isEvent &&
+             $gateway->is_event_authorized('swedbank', $request))
+        ) {
+            $this->markOrderPaid($orderService);
 
-            $view = 'FoodOrderBundle:Payments:' .
-                    'swedbank_gateway/success.html.twig';
-        } elseif ($gateway->requires_investigation('swedbank', $request)) {
-            $orderService->logPayment(
-                $order,
-                'Swedbank Gateway wallet payment started',
-                'Swedbank Gateway wallet payment accepted. Waiting for funds to be billed',
-                $order
-            );
+            if ($isEvent) {
+                return new Response('<Response>OK</Response>');
+            } else {
+                $view = 'FoodOrderBundle:Payments:' .
+                        'swedbank_gateway/success.html.twig';
+            }
+        // is order payment accepted and is currently processing?
+        } elseif ((!$isEvent &&
+                   $gateway->requires_investigation('swedbank', $request)) ||
+                  ($isEvent &&
+                   $gateway->event_requires_investigation('swedbank', $request))
+        ) {
+            $this->markOrderProcessing($orderService, $order);
 
-            usleep(400000);
-            $order = $orderService->getOrderById($orderId);
+            if ($isEvent) {
+                return new Response('<Response>OK</Response>');
+            } else {
+                $view = 'FoodOrderBundle:Payments:' .
+                        'swedbank_gateway/processing.html.twig';
+            }
+        // is payment cancelled due to reasons?
+        } elseif ((!$isEvent &&
+                   $gateway->is_cancelled('swedbank', $request)) ||
+                  ($isEvent &&
+                   $gateway->is_event_cancelled('swedbank', $request))
+        ) {
+            $this->markOrderCancelled($orderService, $order);
 
-            $view = 'FoodOrderBundle:Payments:' .
-                    'swedbank_gateway/processing.html.twig';
+            if ($isEvent) {
+                return new Response('<Response>OK</Response>');
+            } else {
+                $view = 'FoodOrderBundle:Payments:' .
+                        'swedbank_gateway/cancelled.html.twig';
+            }
+        // did we get error from the bank? :(
         } elseif ($gateway->is_error('swedbank', $request)) {
             $view = 'FoodOrderBundle:Payments:' .
                     'swedbank_gateway/error.html.twig';
-        } elseif ($gateway->is_cancelled('swedbank', $request)) {
-            $orderService->logPayment(
-                $order,
-                'Swedbank gateway payment canceled',
-                'Swedbank gateway canceled in Swedbank',
-                $order
-            );
-
-            $orderService->setPaymentStatus($orderService::$paymentStatusCanceled, 'User canceled payment in Swedbank gateway');
-
-            $view = 'FoodOrderBundle:Payments:' .
-                    'swedbank_gateway/cancelled.html.twig';
+        // was there a communication error with/in bank?
         } elseif ($gateway->communication_error('swedbank', $request)) {
             $view = 'FoodOrderBundle:Payments:' .
                     'swedbank_gateway/communication_error.html.twig';
@@ -286,5 +294,42 @@ class PaymentsController extends Controller
     public function swedbankGatewayFailureAction(Request $request)
     {
         return $this->swedbankGatewaySuccessAction($request);
+    }
+
+    protected function markOrderPaid($orderService)
+    {
+        $orderService->setPaymentStatus(
+            $orderService::$paymentStatusComplete,
+            'Swedbank gateway billed payment');
+        $orderService->saveOrder();
+        $orderService->informPlace();
+
+        // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
+        $orderService->deactivateCoupon();
+    }
+
+    protected function markOrderProcessing($orderService, $order)
+    {
+        $orderService->logPayment(
+            $order,
+            'Swedbank Gateway wallet payment started',
+            'Swedbank Gateway wallet payment accepted. Waiting for funds to be billed',
+            $order
+        );
+
+        usleep(400000);
+        $order = $orderService->getOrderById($orderId);
+    }
+
+    protected function markOrderCancelled($orderService, $order)
+    {
+        $orderService->logPayment(
+            $order,
+            'Swedbank gateway payment canceled',
+            'Swedbank gateway canceled in Swedbank',
+            $order
+        );
+
+        $orderService->setPaymentStatus($orderService::$paymentStatusCanceled, 'User canceled payment in Swedbank gateway');
     }
 }

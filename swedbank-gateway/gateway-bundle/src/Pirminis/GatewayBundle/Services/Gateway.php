@@ -110,6 +110,34 @@ class Gateway
         return $response ? $response->order_id() : null;
     }
 
+    public function is_event($bank, SymfonyRequest $request)
+    {
+        $response = $this->transaction_query_response($bank, $request);
+
+        return $response->is_event();
+    }
+
+    public function is_event_authorized($bank, SymfonyRequest $request)
+    {
+        $response = $this->transaction_query_response($bank, $request);
+
+        return $response->is_event_authorized();
+    }
+
+    public function event_requires_investigation($bank, SymfonyRequest $request)
+    {
+        $response = $this->transaction_query_response($bank, $request);
+
+        return $response->event_requires_investigation();
+    }
+
+    public function is_event_cancelled($bank, SymfonyRequest $request)
+    {
+        $response = $this->transaction_query_response($bank, $request);
+
+        return $response->is_event_cancelled();
+    }
+
     protected function form(array $config, array $options)
     {
         // create request

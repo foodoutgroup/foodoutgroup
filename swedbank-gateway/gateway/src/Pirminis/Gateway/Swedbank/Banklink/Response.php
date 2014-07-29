@@ -7,7 +7,7 @@ class Response
     const TRANSACTION_ID = 'TransactionId';
 
     // when you make successful payment
-    const AUTHORIZED_STATUS = 1;
+    const AUTHORISED_STATUS = 1;
 
     // when you must redirect user
     const REDIRECT_STATUS = 2053;
@@ -24,11 +24,17 @@ class Response
     // when there is a communication error
     const COMMUNICATION_ERROR_STATUS = 2062;
 
+    // event: authorized
+    const EVENT_AUTHORISED = 'AUTHORISED';
+    const EVENT_REQUIRES_INVESTIGATION = 'REQUIRES_INVESTIGATION';
+    const EVENT_CANCELLED = 'CANCELLED';
+
     // xpaths
     const REDIRECT_URL_XPATH = '//APMTxn//Purchase//RedirectURL';
     const STATUS_XPATH = '//status';
     const MERCHANT_REFERENCE_XPATH = '//merchantreference';
     const PURCHASE_XPATH = '//APMTxn//Purchase';
+    const EVENT_STATUS_XPATH = '//Event//Purchase//Status';
 
     protected $xml;
     protected $dom;
@@ -60,7 +66,7 @@ class Response
      */
     public function is_authorized()
     {
-        return $this->status() === static::AUTHORIZED_STATUS;
+        return $this->status() === static::AUTHORISED_STATUS;
     }
 
     /**
@@ -138,6 +144,42 @@ class Response
         if (empty($transaction_id)) return null;
 
         return $transaction_id;
+    }
+
+    public function is_event()
+    {
+        $status = $this->event_status();
+
+        return empty($status) ? false : true;
+    }
+
+    protected function event_status()
+    {
+        $statuses = $this->dom()
+                       ->xpath(static::EVENT_STATUS_XPATH);
+
+        if (empty($statuses)) return null;
+
+        $status = (string)reset($statuses);
+
+        if (empty($status)) return null;
+
+        return $status;
+    }
+
+    public function is_event_authorized()
+    {
+        return $this->event_status() === static::EVENT_AUTHORISED;
+    }
+
+    public function event_requires_investigation()
+    {
+        return $this->event_status() === static::EVENT_REQUIRES_INVESTIGATION;
+    }
+
+    public function is_event_cancelled()
+    {
+        return $this->event_status() === static::EVENT_CANCELLED;
     }
 
     /**
