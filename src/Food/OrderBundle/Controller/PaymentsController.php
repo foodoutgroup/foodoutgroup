@@ -202,37 +202,56 @@ class PaymentsController extends Controller
         $gateway->set_options($options);
 
         $form = $gateway->form_for('swedbank');
-        $view = 'FoodOrderBundle:Payments:swedbank_gateway/redirect.html.twig';
+        $view = 'FoodOrderBundle:Payments:' .
+                'swedbank_gateway/redirect.html.twig';
 
         return $this->render($view, ['form' => $form->createView()]);
     }
 
     public function swedbankGatewaySuccessAction(Request $request)
     {
-        $fake_data = array('DPGReferenceId' => '152088',
-                           'TransactionId' => '53ce4fd6dedd0');
-        $request->query->replace($fake_data);
+        // for testing purposes
+        // $fake_data = array('DPGReferenceId' => '151802',
+        //                    'TransactionId' => '489_4fd6dedd0');
+        // $request->query->replace($fake_data);
 
         // services
         $orderService = $this->container->get('food.order');
         $gateway = $this->container->get('pirminis_gateway');
 
+        $view = 'FoodOrderBundle:Payments:' .
+                'swedbank_gateway/something_wrong.html.twig';
+
         // get order
-        $orderId = $gateway->order_id('swedbank', $request);
+        $transactionId = $gateway->order_id('swedbank', $request);
+
+        if (empty($transactionId)) return $this->render($view);
+
+        $transactionIdSplit = explode('_', $transactionId);
+        $orderId = !empty($transactionIdSplit[0]) ? $transactionIdSplit[0] : 0;
         $order = $orderService->getOrderById($orderId);
-        $view = '';
 
         if (!$order) {
-            $view = 'FoodOrderBundle:Payments:swedbank_gateway/order_not_found.html.twig';
+            $view = 'FoodOrderBundle:Payments:' .
+                    'swedbank_gateway/order_not_found.html.twig';
             return $this->render($view);
         }
 
         if ($gateway->requires_investigation('swedbank', $request)) {
-            $view = 'FoodOrderBundle:Payments:swedbank_gateway/processing.html.twig';
-        } elseif ($gateway->is_authorized()) {
-            $view = 'FoodOrderBundle:Payments:swedbank_gateway/success.html.twig';
-        } else {
-            $view = 'FoodOrderBundle:Payments:swedbank_gateway/something_wrong.html.twig';
+            $view = 'FoodOrderBundle:Payments:' .
+                    'swedbank_gateway/processing.html.twig';
+        } elseif ($gateway->is_authorized('swedbank', $request)) {
+            $view = 'FoodOrderBundle:Payments:' .
+                    'swedbank_gateway/success.html.twig';
+        } elseif ($gateway->is_error('swedbank', $request)) {
+            $view = 'FoodOrderBundle:Payments:' .
+                    'swedbank_gateway/error.html.twig';
+        } elseif ($gateway->is_cancelled('swedbank', $request)) {
+            $view = 'FoodOrderBundle:Payments:' .
+                    'swedbank_gateway/cancelled.html.twig';
+        } elseif ($gateway->communication_error('swedbank', $request)) {
+            $view = 'FoodOrderBundle:Payments:' .
+                    'swedbank_gateway/communication_error.html.twig';
         }
 
         return $this->render($view, ['order' => $order]);
@@ -240,29 +259,6 @@ class PaymentsController extends Controller
 
     public function swedbankGatewayFailureAction(Request $request)
     {
-        // services
-        $orderService = $this->container->get('food.order');
-        $gateway = $this->container->get('pirminis_gateway');
-
-        // get order
-        $orderId = $gateway->order_id('swedbank', $request);
-        $order = $orderService->getOrderById($orderId);
-
-        if (!$order) {
-            $view = 'FoodOrderBundle:Payments:swedbank_gateway/order_not_found.html.twig';
-            return $this->render($view);
-        }
-
-        $view = '';
-
-        if ($gateway->is_error()) {
-            $view = 'FoodOrderBundle:Payments:swedbank_gateway/error.html.twig';
-        } elseif ($gateway->is_cancelled()) {
-            $view = 'FoodOrderBundle:Payments:swedbank_gateway/cancelled.html.twig';
-        } elseif ($gateway->communication_error()) {
-            $view = 'FoodOrderBundle:Payments:swedbank_gateway/communication_error.html.twig';
-        }
-
-        return $this->render($view, ['order' => $order]);
+        return $this->swedbankGatewaySuccessAction($request);
     }
 }

@@ -4,6 +4,8 @@ namespace Pirminis\Gateway\Swedbank\Banklink;
 
 class Response
 {
+    const TRANSACTION_ID = 'TransactionId';
+
     // when you make successful payment
     const AUTHORIZED_STATUS = 1;
 
@@ -26,6 +28,7 @@ class Response
     const REDIRECT_URL_XPATH = '//APMTxn//Purchase//RedirectURL';
     const STATUS_XPATH = '//status';
     const MERCHANT_REFERENCE_XPATH = '//merchantreference';
+    const PURCHASE_XPATH = '//APMTxn//Purchase';
 
     protected $xml;
     protected $dom;
@@ -120,14 +123,21 @@ class Response
      */
     public function order_id()
     {
-        $merchant_references = $this->dom()
-                                    ->xpath(static::MERCHANT_REFERENCE_XPATH);
+        $purchases = $this->dom()
+                          ->xpath(static::PURCHASE_XPATH);
 
-        if (empty($merchant_references)) return null;
+        if (empty($purchases)) return null;
 
-        $merchant_reference = (string)reset($merchant_references);
+        $purchase = reset($purchases);
 
-        return $merchant_reference;
+        if (empty($purchase)) return null;
+
+        $attributes = (array)$purchase->attributes();
+        $transaction_id = $attributes['@attributes'][static::TRANSACTION_ID];
+
+        if (empty($transaction_id)) return null;
+
+        return $transaction_id;
     }
 
     /**

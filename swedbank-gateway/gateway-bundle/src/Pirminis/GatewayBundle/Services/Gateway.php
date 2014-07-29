@@ -107,7 +107,7 @@ class Gateway
     {
         $response = $this->transaction_query_response($bank, $request);
 
-        return $response->order_id();
+        return $response ? $response->order_id() : null;
     }
 
     protected function form(array $config, array $options)
@@ -144,14 +144,9 @@ class Gateway
     protected function transaction_query_response($bank,
                                                   SymfonyRequest $request)
     {
-        if (empty($this->config[$bank])) {
-            throw \InvalidArgumentException('Please specify $bank.');
-        }
-
+        if (empty($this->config[$bank])) return $null;
         if (null === $request->query->get(static::DPG_REFERENCE_ID)) {
-            throw \InvalidArgumentException('Missing key ' .
-                                            static::DPG_REFERENCE_ID .
-                                            '.');
+            return null;
         }
 
         $config = $this->config[$bank];
