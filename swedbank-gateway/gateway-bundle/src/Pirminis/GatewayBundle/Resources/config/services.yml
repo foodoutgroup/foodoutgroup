@@ -1,0 +1,4 @@
+services:
+    pirminis_gateway:
+        class: Pirminis\GatewayBundle\Services\Gateway
+        arguments: ["%pirminis_gateway%"]
