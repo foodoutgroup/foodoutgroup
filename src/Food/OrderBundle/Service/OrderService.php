@@ -1831,7 +1831,7 @@ class OrderService extends ContainerAware
 
             //$cats = $this->get
             $query = "SELECT foodcategory_id FROM `food_category_dish_map` WHERE dish_id = ".$detail->getDishId()->getId();
-            $stmt = $this->container->get('doctrine')->getEntityManager()->getConnection()->prepare($query);
+            $stmt = $this->container->get('doctrine')->getManager()->getConnection()->prepare($query);
             $stmt->execute();
             $map = $stmt->fetchAll();
             $cat = null;

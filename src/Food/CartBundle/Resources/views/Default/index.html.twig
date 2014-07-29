@@ -182,6 +182,7 @@
                                 <select class="custom-select" disabled="true">
                                     <option {% if location and location.city is defined and location.city == 'Vilnius' %}#}selected{% endif %}>Vilnius</option>
                                     <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
+                                    <option {% if location and location.city is defined and location.city == 'Klaipėda' %}selected{% endif %}>Klaipėda</option>
                                 </select>
                             </div>
                             <div class="form-row form-row-required address-change">
@@ -294,6 +295,7 @@
                 <select class="custom-select">
                     <option {% if location and location.city is defined and location.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
                     <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
+                    <option {% if location and location.city is defined and location.city == 'Klaipėda' %}selected{% endif %}>Klaipėda</option>
                 </select>
             </div>
             <div class="form-row form-row-required address-row">
