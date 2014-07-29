@@ -100,7 +100,7 @@ class OrderRepository extends EntityRepository
             'order_date_between' => array('from' => $dateFrom, 'to' => $dateTo),
         );
 
-        $orders = $this->getOrdersByFilter($filter, 'list', true);
+        $orders = $this->getOrdersByFilter($filter, 'list');
 
         if (!$orders) {
             return array(
@@ -122,7 +122,9 @@ class OrderRepository extends EntityRepository
             // Spajunam i tai, kad vairuotojas deleted ir gaunam ji, jop sikt mat, skant..
             $driverRepo = $this->getEntityManager()->getRepository('FoodAppBundle:Driver');
 
-            $order->driverSafe = $driverRepo->getDriverPxIfDeleted($order->getId());
+            $order->setDriverSafe(
+                $driverRepo->getDriverPxIfDeleted($order->getId())
+            );
 
             if ($order->getDeliveryType() == 'pickup') {
                 $ordersGrouped['pickup'][] = $order;
