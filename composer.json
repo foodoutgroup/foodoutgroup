@@ -4,7 +4,11 @@
     "type": "project",
     "description": "The \"Symfony Standard Edition\" distribution",
     "autoload": {
-        "psr-0": { "": "src/" }
+        "psr-0": { "": "src/" },
+        "classmap": [
+            "swedbank-gateway/gateway/src",
+            "swedbank-gateway/gateway-bundle/src"
+        ]
     },
     "repositories": [
 
@@ -22,14 +26,6 @@
                     "type": "file"
                 }
             }
-        },
-        {
-            "type": "git",
-            "url": "git@bitbucket.org:pirminis/gateway.git"
-        },
-        {
-            "type": "git",
-            "url": "git@bitbucket.org:pirminis/gateway-bundle.git"
         }
     ],
     "require": {
@@ -71,8 +67,7 @@
         "imagine/Imagine": "dev-master",
         "trsteel/ckeditor-bundle": "~1.4@dev",
         "friendsofsymfony/jsrouting-bundle": "@stable",
-        "giggsey/libphonenumber-for-php": "6.*",
-        "pirminis/gateway-bundle": "~1.0"
+        "giggsey/libphonenumber-for-php": "6.*"
     },
     "scripts": {
         "post-install-cmd": [

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cde9028ef355740978645e2db396304e",
+    "hash": "bc172b12245741db1b61b9b427fed41c",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -1079,16 +1079,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "6.2.0.1",
+            "version": "6.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "f9e60e33ceab33ad6f5f24c2581b18b4db4798a3"
+                "reference": "4d23cbe855811c3770ebc278754c7d2a31ce2763"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/f9e60e33ceab33ad6f5f24c2581b18b4db4798a3",
-                "reference": "f9e60e33ceab33ad6f5f24c2581b18b4db4798a3",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/4d23cbe855811c3770ebc278754c7d2a31ce2763",
+                "reference": "4d23cbe855811c3770ebc278754c7d2a31ce2763",
                 "shasum": ""
             },
             "require": {
@@ -1132,7 +1132,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2014-07-11 08:46:05"
+            "time": "2014-07-29 07:58:26"
         },
         {
             "name": "imagine/imagine",
@@ -1599,66 +1599,6 @@
                 "psr-3"
             ],
             "time": "2014-06-04 16:30:04"
-        },
-        {
-            "name": "pirminis/gateway",
-            "version": "1.0.5",
-            "source": {
-                "type": "git",
-                "url": "git@bitbucket.org:pirminis/gateway.git",
-                "reference": "ca2ac38d98a9ab0af5f15945b2a580bd46464af1"
-            },
-            "require": {
-                "php": "~5.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jonas Staškevičius",
-                    "email": "pirminis@gmail.com"
-                }
-            ],
-            "description": "Swedbank Gateway Integration Library",
-            "time": "2014-07-28 22:21:11"
-        },
-        {
-            "name": "pirminis/gateway-bundle",
-            "version": "1.0.9",
-            "source": {
-                "type": "git",
-                "url": "git@bitbucket.org:pirminis/gateway-bundle.git",
-                "reference": "308b648fbf460fbd492977ef28d6b2025f184427"
-            },
-            "require": {
-                "php": "~5.4",
-                "pirminis/gateway": "~1.0",
-                "symfony/form": "~2.3"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-4": {
-                    "": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jonas Staškevičius",
-                    "email": "pirminis@gmail.com"
-                }
-            ],
-            "description": "Swedbank Gateway Integration Library for Symfony 2",
-            "time": "2014-07-28 22:32:20"
         },
         {
             "name": "psr/log",
