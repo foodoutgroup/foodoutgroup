@@ -256,7 +256,7 @@ class PaymentsController extends Controller
             );
 
             usleep(400000);
-            $order = $orderService->getOrderById($data['orderid']);
+            $order = $orderService->getOrderById($orderId);
 
             $view = 'FoodOrderBundle:Payments:' .
                     'swedbank_gateway/processing.html.twig';
