@@ -237,16 +237,42 @@ class PaymentsController extends Controller
             return $this->render($view);
         }
 
-        if ($gateway->requires_investigation('swedbank', $request)) {
-            $view = 'FoodOrderBundle:Payments:' .
-                    'swedbank_gateway/processing.html.twig';
-        } elseif ($gateway->is_authorized('swedbank', $request)) {
+        if ($gateway->is_authorized('swedbank', $request)) {
+            $orderService->setPaymentStatus($orderService::$paymentStatusComplete, 'Swedbank gateway billed payment');
+            $orderService->saveOrder();
+            $orderService->informPlace();
+
+            // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
+            $orderService->deactivateCoupon();
+
             $view = 'FoodOrderBundle:Payments:' .
                     'swedbank_gateway/success.html.twig';
+        } elseif ($gateway->requires_investigation('swedbank', $request)) {
+            $orderService->logPayment(
+                $order,
+                'Swedbank Gateway wallet payment started',
+                'Swedbank Gateway wallet payment accepted. Waiting for funds to be billed',
+                $order
+            );
+
+            usleep(400000);
+            $order = $orderService->getOrderById($data['orderid']);
+
+            $view = 'FoodOrderBundle:Payments:' .
+                    'swedbank_gateway/processing.html.twig';
         } elseif ($gateway->is_error('swedbank', $request)) {
             $view = 'FoodOrderBundle:Payments:' .
                     'swedbank_gateway/error.html.twig';
         } elseif ($gateway->is_cancelled('swedbank', $request)) {
+            $orderService->logPayment(
+                $order,
+                'Swedbank gateway payment canceled',
+                'Swedbank gateway canceled in Swedbank',
+                $order
+            );
+
+            $orderService->setPaymentStatus($orderService::$paymentStatusCanceled, 'User canceled payment in Swedbank gateway');
+
             $view = 'FoodOrderBundle:Payments:' .
                     'swedbank_gateway/cancelled.html.twig';
         } elseif ($gateway->communication_error('swedbank', $request)) {
