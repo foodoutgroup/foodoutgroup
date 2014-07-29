@@ -166,9 +166,46 @@ class GoogleGisService extends ContainerAware
         $resp = $this->getCli()->get(
             $this->container->getParameter('google.maps_geocode'),
             array(
-                'latlng' => $lat.','.$lng
+                'latlng' => $lat.','.$lng,
+                'key' => $this->container->getParameter('google.maps_server_api')
             )
         );
+        $data = json_decode($resp->body);
+        $matchIsFound = null;
+        foreach ($data->results as $rezRow) {
+            if(in_array('street_address', $rezRow->types)) {
+                $matchIsFound = $rezRow;
+                break;
+            }
+        }
+        $returner = array();
+        if ($matchIsFound!==null) {
+            foreach ($matchIsFound->address_components as $cmp) {
+                if (in_array('street_number', $cmp->types)) {
+                    $returner['house_number'] = $cmp->long_name;
+                }
+                if (in_array('route', $cmp->types)) {
+                    $returner['street'] = $cmp->short_name;
+                }
+                if (in_array('locality', $cmp->types) && in_array('political', $cmp->types)) {
+                    $returner['city'] = $cmp->short_name;
+                }
+            }
+        }
+        return $returner;
+    }
+
+    public function findAddressByCoordsByStuff($city, $street, $houseNumber)
+    {
+        $resp = $this->getCli()->get(
+            $this->container->getParameter('google.maps_geocode'),
+            array(
+                'address' => $street." ".$houseNumber." ".$city.', Lithuania',
+                'sensor' => 'true',
+                'key' => $this->container->getParameter('google.maps_server_api')
+            )
+        );
+
         $data = json_decode($resp->body);
         $matchIsFound = null;
         foreach ($data->results as $rezRow) {
