@@ -346,14 +346,17 @@ class UsersController extends Controller
             // User hash verfy action
             $hash = $this->get('food_api.api')->generateUserHash($user);
             $user->setApiToken($hash);
-            $user->setApiTokenValidity(new \DateTime('+1 week'));
+            $user->setApiTokenValidity(new \DateTime('+1 year'));
 
             $um->updateUser($user);
 
             $response = array(
-                "user_id" => $user->getId(),
-                "session_token" => $hash,
-                "refresh_token" => ""
+                'user_id' => $user->getId(),
+                'phone' => $user->getPhone(),
+                'name' => $user->getFullName(),
+                'email' => $user->getEmail(),
+                'session_token' => $hash,
+                'refresh_token' => ''
             );
 
             return new JsonResponse($response);

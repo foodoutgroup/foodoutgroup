@@ -81,7 +81,7 @@ class ApiService extends ContainerAware
         }
 
         // Refresh the token
-        $user->setApiTokenValidity(new \DateTime('+1 week'));
+        $user->setApiTokenValidity(new \DateTime('+1 year'));
         $um->updateUser($user);
 
         // User not in security session - set him
