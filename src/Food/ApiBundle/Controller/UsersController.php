@@ -78,46 +78,16 @@ class UsersController extends Controller
             $email = $this->getRequestParam('email');
             $password = $this->getRequestParam('password');
 
-            // Parse names
-            if (strpos($name, ' ') === false) {
-                $firstname = $name;
-                $lastname = null;
-            } else {
-                $names = explode(' ', $name);
-                $firstname = $names[0];
-                $lastname = $names[1];
-            }
+            $nameParsed = $this->parseName($name);
 
-            $error = array();
-            // Validation omg..
-            if (empty($firstname)) {
-                $error = array(
-                    'error' => 'Firsname empty',
-                    'description' => $translator->trans('registration.firstname.is_empty')
-                );
-            }
-            if (empty($email)) {
-                $error = array(
-                    'error' => 'Email empty',
-                    'description' => $translator->trans('registration.email.is_empty')
-                );
-            }
-            if (empty($phone)) {
-                $error = array(
-                    'error' => 'Phone empty',
-                    'description' => $translator->trans('registration.phone.is_empty')
-                );
-            }
-            if (!empty($password) && mb_strlen($password) < 6) {
-                $error = array(
-                    'error' => 'Password too short',
-                    'description' => $translator->trans('registration.password.too_short')
-                );
-            }
-
-            if (!empty($error)) {
-                throw new ApiException('Validation exception', 400, $error);
-            }
+            $this->validateUserRegister(
+                array(
+                    'firstname' => $nameParsed['firstname'],
+                    'email' => $email,
+                    'phone' => $phone,
+                    'password' => $password
+                )
+            );
 
             // User exists???
             $existingUser = $um->findUserByEmail($email);
@@ -132,14 +102,14 @@ class UsersController extends Controller
                 );
             }
 
-            $user->setFirstname($firstname)
+            $user->setFirstname($nameParsed['firstname'])
                 ->setPhone($phone)
                 ->setEmail($email);
             $user->setRoles(array('ROLE_USER'));
             $user->setEnabled(true);
 
-            if (!empty($lastname)) {
-                $user->setLastname($lastname);
+            if (!empty($nameParsed['lastname'])) {
+                $user->setLastname($nameParsed['lastname']);
             }
 
             if (!empty($password)) {
@@ -206,33 +176,24 @@ class UsersController extends Controller
             $user = $security->getToken()->getUser();
 
             $phone = $this->getRequestParam('phone');
+            $name = $this->getRequestParam('name');
+
+            $nameParsed = $this->parseName($name);
+            $this->validateUserCommon(
+                array(
+                    'firstname' => $nameParsed['firstname'],
+                    'phone' => $phone,
+                )
+            );
             if (!empty($phone)) {
                 $user->setPhone($phone);
-            } else {
-                throw new ApiException(
-                    'Validation failed', 400,
-                    array(
-                        'error' => 'Phone empty',
-                        'description' => $translator->trans('registration.phone.is_empty'))
-                );
             }
-            $name = $this->getRequestParam('name');
+
             if (!empty($name)) {
-                if (strpos($name, ' ') === false) {
-                    $user->setFirstname($name);
-                } else {
-                    $names = explode(' ', $name);
-                    $user->setFirstname($names[0])
-                        ->setLastname($names[1]);
+                $user->setFirstname($nameParsed['firstname']);
+                if (!empty($nameParsed['lastname'])) {
+                    $user->setLastname($nameParsed['lastname']);
                 }
-            } else {
-                throw new ApiException(
-                    'Validation failed', 400,
-                    array(
-                        'error' => 'Firsname empty',
-                        'description' => $translator->trans('registration.firstname.is_empty')
-                    )
-                );
             }
 
             $um->updateUser($user);
@@ -295,7 +256,7 @@ class UsersController extends Controller
                 throw new ApiException(
                     'Validation failed', 400,
                     array(
-                        'error' => 'Ppassword too short',
+                        'error' => 'Password too short',
                         'description' => $translator->trans('registration.password.too_short')
                     )
                 );
@@ -333,8 +294,7 @@ class UsersController extends Controller
      */
     public function resetPasswordAction(/*Request $request*/)
     {
-        throw new NotFoundHttpException('Not implemented yet');
-//        return new Response('', 204);
+        return new Response('Not implemented yet', 400);
     }
 
     /**
@@ -480,6 +440,85 @@ class UsersController extends Controller
         }
 
         return $default;
+    }
+
+    /**
+     * @var array $data
+     * @throws ApiException
+     */
+    public function validateUserCommon($data)
+    {
+        $translator = $this->get('translator');
+
+        $error = array();
+
+        if (empty($data['firstname'])) {
+            $error = array(
+                'error' => 'Firsname empty',
+                'description' => $translator->trans('registration.firstname.is_empty')
+            );
+        }
+
+        if (empty($data['phone'])) {
+            $error = array(
+                'error' => 'Phone empty',
+                'description' => $translator->trans('registration.phone.is_empty')
+            );
+        }
+
+        if (!empty($error)) {
+            throw new ApiException('Validation exception', 400, $error);
+        }
+    }
+
+    /**
+     * @var array $data
+     * @throws ApiException
+     */
+    public function validateUserRegister($data)
+    {
+        $translator = $this->get('translator');
+        $this->validateUserCommon($data);
+
+        $error = array();
+
+        if (empty($data['email'])) {
+            $error = array(
+                'error' => 'Email empty',
+                'description' => $translator->trans('registration.email.is_empty')
+            );
+        }
+        if (!empty($data['password']) && mb_strlen($data['password']) < 6) {
+            $error = array(
+                'error' => 'Password too short',
+                'description' => $translator->trans('registration.password.too_short')
+            );
+        }
+
+        if (!empty($error)) {
+            throw new ApiException('Validation exception', 400, $error);
+        }
+    }
+
+    /**
+     * @param string $name
+     * @return array
+     */
+    protected function parseName($name)
+    {
+        $firstname = $name;
+        $lastname = null;
+
+        if (strpos($name, ' ') !== false) {
+            $names = explode(' ', $name);
+            $firstname = $names[0];
+            $lastname = $names[1];
+        }
+
+        return array(
+            'firsname' => $firstname,
+            'lastname' => $lastname,
+        );
     }
 
     /**

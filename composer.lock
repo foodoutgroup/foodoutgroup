@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ce8213f0a75721af45854aef9881d6be",
+    "hash": "d22c1c19d3430f763b7f5027c9c14eff",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -1200,16 +1200,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "6.2.0.1",
+            "version": "6.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "f9e60e33ceab33ad6f5f24c2581b18b4db4798a3"
+                "reference": "4d23cbe855811c3770ebc278754c7d2a31ce2763"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/f9e60e33ceab33ad6f5f24c2581b18b4db4798a3",
-                "reference": "f9e60e33ceab33ad6f5f24c2581b18b4db4798a3",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/4d23cbe855811c3770ebc278754c7d2a31ce2763",
+                "reference": "4d23cbe855811c3770ebc278754c7d2a31ce2763",
                 "shasum": ""
             },
             "require": {
@@ -1253,7 +1253,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2014-07-11 08:46:05"
+            "time": "2014-07-29 07:58:26"
         },
         {
             "name": "imagine/imagine",
@@ -1370,12 +1370,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jdorn/sql-formatter.git",
-                "reference": "017b6628e7a3a96cfd9f96ec1531b974d1dea2b7"
+                "reference": "ff0515fa8ce7d97d6cba279e8ed9d51d3eaa0316"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jdorn/sql-formatter/zipball/017b6628e7a3a96cfd9f96ec1531b974d1dea2b7",
-                "reference": "017b6628e7a3a96cfd9f96ec1531b974d1dea2b7",
+                "url": "https://api.github.com/repos/jdorn/sql-formatter/zipball/ff0515fa8ce7d97d6cba279e8ed9d51d3eaa0316",
+                "reference": "ff0515fa8ce7d97d6cba279e8ed9d51d3eaa0316",
                 "shasum": ""
             },
             "require": {
@@ -1415,7 +1415,7 @@
                 "highlight",
                 "sql"
             ],
-            "time": "2014-07-08 22:36:13"
+            "time": "2014-07-28 13:45:38"
         },
         {
             "name": "jquery/jquery",
@@ -3183,12 +3183,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/trsteel88/TrsteelCkeditorBundle.git",
-                "reference": "837c4f7b1832228dcbe11c8a7d7377db8c1da912"
+                "reference": "2b84cc98708dc88b5baefc153e8b0545792ea6bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trsteel88/TrsteelCkeditorBundle/zipball/837c4f7b1832228dcbe11c8a7d7377db8c1da912",
-                "reference": "837c4f7b1832228dcbe11c8a7d7377db8c1da912",
+                "url": "https://api.github.com/repos/trsteel88/TrsteelCkeditorBundle/zipball/2b84cc98708dc88b5baefc153e8b0545792ea6bb",
+                "reference": "2b84cc98708dc88b5baefc153e8b0545792ea6bb",
                 "shasum": ""
             },
             "require": {
@@ -3205,7 +3205,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4.x-dev"
+                    "dev-master": "1.5.x-dev"
                 }
             },
             "autoload": {
@@ -3229,7 +3229,7 @@
                 "editor",
                 "wysiwyg"
             ],
-            "time": "2014-06-04 05:55:53"
+            "time": "2014-07-28 10:58:02"
         },
         {
             "name": "twig/extensions",
