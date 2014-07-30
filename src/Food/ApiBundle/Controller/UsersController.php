@@ -157,9 +157,10 @@ class UsersController extends Controller
         } catch (ApiException $e) {
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
-            return new Response(
+            return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
-                400
+                500,
+                array('error' => 'server error', 'description' => null)
             );
         }
     }
@@ -217,9 +218,10 @@ class UsersController extends Controller
         }  catch (ApiException $e) {
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
-            return new Response(
+            return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
-                400
+                500,
+                array('error' => 'server error', 'description' => null)
             );
         }
     }
@@ -284,9 +286,10 @@ class UsersController extends Controller
         }  catch (ApiException $e) {
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
-            return new Response(
+            return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
-                400
+                500,
+                array('error' => 'server error', 'description' => null)
             );
         }
     }
@@ -299,7 +302,11 @@ class UsersController extends Controller
      */
     public function resetPasswordAction(/*Request $request*/)
     {
-        return new Response('Not implemented yet', 400);
+        return new JsonResponse(
+            'Not implemented yet',
+            500,
+            array('error' => 'Not implemented yet', 'description' => null)
+        );
     }
 
     /**
@@ -353,9 +360,10 @@ class UsersController extends Controller
         }  catch (ApiException $e) {
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
-            return new Response(
+            return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
-                400
+                500,
+                array('error' => 'server error', 'description' => null)
             );
         }
     }
@@ -390,9 +398,10 @@ class UsersController extends Controller
         } catch (ApiException $e) {
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
-            return new Response(
+            return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
-                400
+                500,
+                array('error' => 'server error', 'description' => null)
             );
         }
     }
@@ -423,9 +432,10 @@ class UsersController extends Controller
         }  catch (ApiException $e) {
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
-            return new Response(
+            return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
-                400
+                500,
+                array('error' => 'server error', 'description' => null)
             );
         }
     }
@@ -448,9 +458,10 @@ class UsersController extends Controller
         }  catch (ApiException $e) {
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
-            return new Response(
+            return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
-                400
+                500,
+                array('error' => 'server error', 'description' => null)
             );
         }
     }
@@ -496,7 +507,7 @@ class UsersController extends Controller
 
         if (empty($data['firstname'])) {
             $error = array(
-                'error' => 'Firsname empty',
+                'error' => 'Firstname empty',
                 'description' => $translator->trans('registration.firstname.is_empty')
             );
         }
@@ -558,7 +569,7 @@ class UsersController extends Controller
         }
 
         return array(
-            'firsname' => $firstname,
+            'firstname' => $firstname,
             'lastname' => $lastname,
         );
     }
