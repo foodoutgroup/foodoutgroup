@@ -48,6 +48,30 @@ class Misc
     }
 
     /**
+     * @param string $phone
+     * @param string $country
+     *
+     * @return bool
+     */
+    public function isMobilePhone($phone, $country)
+    {
+        $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+        try {
+            $numberProto = $phoneUtil->parse($phone, $country);
+        } catch (\libphonenumber\NumberParseException $e) {
+            return false;
+        }
+
+        $numberType = $phoneUtil->getNumberType($numberProto);
+
+        if (in_array($numberType, array(\libphonenumber\PhoneNumberType::MOBILE, \libphonenumber\PhoneNumberType::FIXED_LINE_OR_MOBILE))) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @param string $ip
      * @return bool
      */
