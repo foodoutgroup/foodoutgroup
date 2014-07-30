@@ -2,6 +2,7 @@
 
 namespace Food\OrderBundle\Entity;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Filter\SQLFilter;
 use Food\OrderBundle\Service\OrderService;
 
 class OrderRepository extends EntityRepository
@@ -118,6 +119,13 @@ class OrderRepository extends EntityRepository
         );
 
         foreach ($orders as $order) {
+            // Spajunam i tai, kad vairuotojas deleted ir gaunam ji, jop sikt mat, skant..
+            $driverRepo = $this->getEntityManager()->getRepository('FoodAppBundle:Driver');
+
+            $order->setDriverSafe(
+                $driverRepo->getDriverPxIfDeleted($order->getId())
+            );
+
             if ($order->getDeliveryType() == 'pickup') {
                 $ordersGrouped['pickup'][] = $order;
             } elseif ($order->getPlacePointSelfDelivery()) {
@@ -201,9 +209,6 @@ class OrderRepository extends EntityRepository
         if ($type == 'list') {
             $qb = $this->createQueryBuilder('o');
 
-            /**
-             * @var QueryBuilder $qb
-             */
             $qb->where('1 = 1');
 
             foreach ($filter as $filterName => $filterValue) {

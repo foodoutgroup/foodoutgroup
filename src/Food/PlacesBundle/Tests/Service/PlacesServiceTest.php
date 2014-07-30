@@ -171,10 +171,11 @@ class PlacesServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetAvailableCities()
     {
-        $expectedCities = array('Vilnius', 'Kaunas');
+        $expectedCities = array('Vilnius', 'Kaunas', 'Klaipėda');
         $dbCities = array(
             array('city' => 'Vilnius'),
             array('city' => 'Kaunas'),
+            array('city' => 'Klaipėda'),
         );
         $container = $this->getMock(
             'Symfony\Component\DependencyInjection\Container',

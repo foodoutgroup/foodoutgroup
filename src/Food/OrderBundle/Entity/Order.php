@@ -182,6 +182,11 @@ class Order
     private $driver;
 
     /**
+     * @var mixed
+     */
+    private $driverSafe = array();
+
+    /**
      * @var string $locale
      *
      * @ORM\Column(name="locale", type="string", length=4)
@@ -1300,14 +1305,20 @@ class Order
     {
         return $this->coupon;
     }
+
     /**
-     * Constructor
+     * @param mixed $driverSafe
      */
-    public function __construct()
+    public function setDriverSafe($driverSafe)
     {
-        $this->details = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->orderStatusLog = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->paymentLog = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->driverSafe = $driverSafe;
     }
-    
+
+    /**
+     * @return mixed
+     */
+    public function getDriverSafe()
+    {
+        return $this->driverSafe;
+    }
 }

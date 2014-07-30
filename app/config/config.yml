@@ -9,7 +9,7 @@ imports:
 parameters:
     available_locales: [lt, en, ru]
     available_locales_routing: lt | en | ru
-    available_cities: ["Vilnius","Kaunas"]
+    available_cities: ["Vilnius","Kaunas","Klaipėda"]
     time_zone: "Europe/Vilnius"
     sms.available_providers: [food.infobip, food.silverstreet]
     sms.main_provider: "food.infobip"
@@ -32,6 +32,7 @@ parameters:
     order.city_coordinators:
         vilnius: []
         kaunas: [renata@foodout.lt]
+        klaipeda: []
     order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"

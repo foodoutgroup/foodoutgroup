@@ -30,7 +30,7 @@
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "doctrine/doctrine-bundle": "1.2.*",
         "beberlei/DoctrineExtensions": "dev-master",
-        "twig/extensions": "1.0.*",
+        "twig/extensions": "1.1.*",
         "symfony/assetic-bundle": "2.3.*",
         "symfony/icu": "1.1.*",
         "symfony/swiftmailer-bundle": "2.3.*",
@@ -61,7 +61,7 @@
         "webtopay/webtopay-bundle": "dev-master",
         "shuber/curl": "dev-master",
         "imagine/Imagine": "dev-master",
-        "trsteel/ckeditor-bundle": "1.4.x-dev",
+        "trsteel/ckeditor-bundle": "1.5.x-dev",
         "friendsofsymfony/jsrouting-bundle": "@stable",
         "giggsey/libphonenumber-for-php": "6.*"
     },

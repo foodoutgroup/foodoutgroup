@@ -51,8 +51,8 @@
                     <td>{{ order.orderDate|date("H:i") }}</td>
                     <td>{{ order.placeName }}</td>
                     <td>
-                        {% if order.driver is defined and order.driver is not empty %}
-                            {{ order.driver.contact }}
+                        {% if order.driverSafe is defined and order.driverSafe is not empty %}
+                            {{ order.driverSafe.name }}{% if order.driverSafe.phone %}, {{ order.driverSafe.phone }}{% endif %}{% if order.driverSafe.provider %}, {{ order.driverSafe.provider }}{% endif %}
                         {% else %}
                             {% trans %}reporting.daily.yesterday_orders.no_driver{% endtrans %}
                         {% endif %}

@@ -145,9 +145,10 @@ class CartService {
                     "ACTION: removeDishByIds, options removal",
                     $context
                 );
+            } else {
+                $this->getEm()->remove($opt);
+                $this->getEm()->flush();
             }
-            $this->getEm()->remove($opt);
-            $this->getEm()->flush();
         }
 
         $cartDish = $this->getEm()->getRepository('FoodCartBundle:Cart')
@@ -169,10 +170,10 @@ class CartService {
                 "ACTION: removeDishByIds, Dish removal removal",
                 $context
             );
+        } else {
+            $this->getEm()->remove($cartDish);
+            $this->getEm()->flush();
         }
-
-        $this->getEm()->remove($cartDish);
-        $this->getEm()->flush();
 
         return $this;
     }

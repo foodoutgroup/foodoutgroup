@@ -1240,6 +1240,8 @@ class OrderService extends ContainerAware
         $messagingService = $this->container->get('food.messages');
         $translator = $this->container->get('translator');
         $logger = $this->container->get('logger');
+        $miscUtils = $this->container->get('food.app.utils.misc');
+        $country = $this->container->getParameter('country');
 
         $order = $this->getOrder();
         $placePoint = $order->getPlacePoint();
@@ -1303,6 +1305,7 @@ class OrderService extends ContainerAware
         // Siunciam sms'a
         $logger->alert("Sending message for order to be accepted to number: ".$placePoint->getPhone().' with text "'.$messageText.'"');
 
+        // I pagrindini nr siunciam net jei landline, kad gautume errorus jei ka..
         $message = $messagingService->createMessage(
             $this->container->getParameter('sms.sender'),
             $placePoint->getPhone(),
@@ -1311,7 +1314,7 @@ class OrderService extends ContainerAware
         $messagingService->saveMessage($message);
 
         // Informuojame papildomais numeriais (del visa ko)
-        if (!empty($placePointAltPhone1)) {
+        if (!empty($placePointAltPhone1) && $miscUtils->isMobilePhone($placePointAltPhone1, $country)) {
             $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone1.' with text "'.$messageText.'"');
 
             $message = $messagingService->createMessage(
@@ -1321,7 +1324,7 @@ class OrderService extends ContainerAware
             );
             $messagingService->saveMessage($message);
         }
-        if (!empty($placePointAltPhone2)) {
+        if (!empty($placePointAltPhone2) && $miscUtils->isMobilePhone($placePointAltPhone2, $country)) {
             $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone2.' with text "'.$messageText.'"');
 
             $message = $messagingService->createMessage(
@@ -1831,7 +1834,7 @@ class OrderService extends ContainerAware
 
             //$cats = $this->get
             $query = "SELECT foodcategory_id FROM `food_category_dish_map` WHERE dish_id = ".$detail->getDishId()->getId();
-            $stmt = $this->container->get('doctrine')->getEntityManager()->getConnection()->prepare($query);
+            $stmt = $this->container->get('doctrine')->getManager()->getConnection()->prepare($query);
             $stmt->execute();
             $map = $stmt->fetchAll();
             $cat = null;
