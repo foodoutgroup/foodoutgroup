@@ -3,9 +3,9 @@ namespace Food\ApiBundle\Service;
 
 use Food\ApiBundle\Common\MenuItem;
 use Food\ApiBundle\Common\Restaurant;
+use Food\ApiBundle\Exceptions\ApiException;
 use Food\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ApiService extends ContainerAware
@@ -56,7 +56,7 @@ class ApiService extends ContainerAware
 
     /**
      * @param string $hash
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws \Food\ApiBundle\Exceptions\ApiException
      */
     public function loginByHash($hash)
     {
@@ -73,11 +73,11 @@ class ApiService extends ContainerAware
         $user = $um->findUserBy(array('apiToken' => $hash));
 
         if (!$user instanceof User) {
-            throw new NotFoundHttpException('Token does not exist');
+            throw new ApiException('Token does not exist', 400, array('error' => 'Token does not exist', 'description' => null));
         }
 
         if ($user->getApiTokenValidity()->getTimestamp() < time() ) {
-            throw new NotFoundHttpException('User token has expired');
+            throw new ApiException('User token has expired', 400, array('error' => 'User token has expired', 'description' => null));
         }
 
         // Refresh the token

@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 
@@ -21,11 +20,18 @@ class UsersController extends Controller
      */
     private $requestParams = array();
 
+    /**
+     * @return \FOS\UserBundle\Doctrine\UserManager
+     */
     protected function getUserManager()
     {
         return $this->get('fos_user.user_manager');
     }
 
+    /**
+     * Logs in user
+     * @param User $user
+     */
     protected function loginUser(User $user)
     {
         $security = $this->get('security.context');
@@ -35,6 +41,13 @@ class UsersController extends Controller
         $security->setToken($token);
     }
 
+    /**
+     * Is user password correct
+     *
+     * @param User $user
+     * @param string $password
+     * @return bool
+     */
     protected function checkUserPassword(User $user, $password)
     {
         $factory = $this->get('security.encoder_factory');
@@ -49,12 +62,10 @@ class UsersController extends Controller
      * User register
      *
      * TODO:
-     *  - validation
      *  - success email
      *
      * @param Request $request
      * @return JsonResponse
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function registerAction(Request $request)
     {
@@ -148,15 +159,13 @@ class UsersController extends Controller
         } catch (\Exception $e) {
             return new Response(
                 $this->get('translator')->trans('general.error_happened'),
-                404
+                400
             );
         }
     }
 
     /**
      * User update action
-     * TODO:
-     *  - validation
      *
      * @param Request $request
      * @return JsonResponse
@@ -169,7 +178,6 @@ class UsersController extends Controller
             $this->logActionParams('Update user action', $this->requestParams);
             $token = $request->headers->get('X-API-Authorization');
             $this->get('food_api.api')->loginByHash($token);
-            $translator = $this->get('translator');
 
             $um = $this->getUserManager();
             $security = $this->get('security.context');
@@ -211,18 +219,15 @@ class UsersController extends Controller
         } catch (\Exception $e) {
             return new Response(
                 $this->get('translator')->trans('general.error_happened'),
-                404
+                400
             );
         }
     }
 
     /**
-     * TODO:
-     *  - pasword lenght validation
+     * Chane
      *
      * @param Request $request
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
      * @return Response
      */
@@ -281,7 +286,7 @@ class UsersController extends Controller
         } catch (\Exception $e) {
             return new Response(
                 $this->get('translator')->trans('general.error_happened'),
-                404
+                400
             );
         }
     }
@@ -302,7 +307,6 @@ class UsersController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function loginAction(Request $request)
     {
@@ -324,10 +328,10 @@ class UsersController extends Controller
             }
 
             if(!$user instanceof User){
-                throw new NotFoundHttpException("User not found");
+                throw new ApiException("User not found", 400, array('error' => 'User not found', 'description' => null));
             }
             if(!$this->checkUserPassword($user, $password)){
-                throw new NotFoundHttpException("Wrong password");
+                throw new ApiException("Wrong password", 400, array('error' => 'Wrong password', 'description' => null));
             }
 
             $this->loginUser($user);
@@ -348,29 +352,49 @@ class UsersController extends Controller
             return new JsonResponse($response);
         }  catch (ApiException $e) {
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new Response(
+                $this->get('translator')->trans('general.error_happened'),
+                400
+            );
         }
     }
 
+    /**
+     * Logout a user
+     *
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
     public function logoutAction(Request $request)
     {
-        $token = $request->headers->get('X-API-Authorization');
-        $this->get('food_api.api')->loginByHash($token);
+        try {
+            $token = $request->headers->get('X-API-Authorization');
+            $this->get('food_api.api')->loginByHash($token);
 
-        $um = $this->getUserManager();
-        $security = $this->get('security.context');
+            $um = $this->getUserManager();
+            $security = $this->get('security.context');
 
-        $user = $security->getToken()->getUser();
-        if ($user instanceof User) {
-            $user->setApiTokenValidity(new \DateTime('-1 week'));
-            $user->setApiToken('');
-            $um->updateUser($user);
+            $user = $security->getToken()->getUser();
+            if ($user instanceof User) {
+                $user->setApiTokenValidity(new \DateTime('-1 week'));
+                $user->setApiToken('');
+                $um->updateUser($user);
+            }
+
+            $token = new AnonymousToken(null, new User());
+            $security->setToken($token);
+            $this->get('session')->invalidate();
+
+            return new Response('', 204);
+        } catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new Response(
+                $this->get('translator')->trans('general.error_happened'),
+                400
+            );
         }
-
-        $token = new AnonymousToken(null, new User());
-        $security->setToken($token);
-        $this->get('session')->invalidate();
-
-        return new Response('', 204);
     }
 
     /**
@@ -381,20 +405,29 @@ class UsersController extends Controller
      */
     public function meAction(Request $request)
     {
-        $token = $request->headers->get('X-API-Authorization');
-        $this->get('food_api.api')->loginByHash($token);
+        try {
+            $token = $request->headers->get('X-API-Authorization');
+            $this->get('food_api.api')->loginByHash($token);
 
-        $security = $this->get('security.context');
-        $user = $security->getToken()->getUser();
+            $security = $this->get('security.context');
+            $user = $security->getToken()->getUser();
 
-        $userData = array(
-            'user_id' => $user->getId(),
-            'phone' => $user->getPhone(),
-            'name' => $user->getFullName(),
-            'email' => $user->getEmail(),
-        );
+            $userData = array(
+                'user_id' => $user->getId(),
+                'phone' => $user->getPhone(),
+                'name' => $user->getFullName(),
+                'email' => $user->getEmail(),
+            );
 
-        return new JsonResponse($userData);
+            return new JsonResponse($userData);
+        }  catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new Response(
+                $this->get('translator')->trans('general.error_happened'),
+                400
+            );
+        }
     }
 
     /**
@@ -404,13 +437,22 @@ class UsersController extends Controller
      */
     public function testTokenAuthAction(Request $request)
     {
-        $token = $request->headers->get('X-API-Authorization');
-        $this->get('food_api.api')->loginByHash($token);
+        try {
+            $token = $request->headers->get('X-API-Authorization');
+            $this->get('food_api.api')->loginByHash($token);
 
-        $security = $this->get('security.context');
-        $user = $security->getToken()->getUser();
+            $security = $this->get('security.context');
+            $user = $security->getToken()->getUser();
 
-        return new JsonResponse(array('success' => true, 'userId' => $user->getId()));
+            return new JsonResponse(array('success' => true, 'userId' => $user->getId()));
+        }  catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new Response(
+                $this->get('translator')->trans('general.error_happened'),
+                400
+            );
+        }
     }
 
     /**
@@ -430,7 +472,7 @@ class UsersController extends Controller
 
     /**
      * @param string $key
-     * @param null $default
+     * @param string|null $default
      * @return mixed|null
      */
     public function getRequestParam($key, $default=null)
@@ -522,6 +564,8 @@ class UsersController extends Controller
     }
 
     /**
+     * For debuging purpose only - log request data and action name for easy debug
+     *
      * @param string $action
      * @param array $params
      */
