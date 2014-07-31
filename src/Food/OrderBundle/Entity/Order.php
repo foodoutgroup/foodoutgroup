@@ -103,7 +103,7 @@ class Order
     private $vat;
 
     /**
-     * @var decimal
+     * @var float
      * @ORM\Column(name="total", type="decimal", precision=8, scale=2, nullable=true)
      */
     private $total;
@@ -990,7 +990,7 @@ class Order
     /**
      * Set total
      *
-     * @param string $total
+     * @param float $total
      * @return Order
      */
     public function setTotal($total)

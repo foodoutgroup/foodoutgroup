@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Service;
 
 use Food\AppBundle\Entity\Driver;
+use Food\OrderBundle\Entity\Order;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
 /**
@@ -23,6 +24,16 @@ class LogisticsService extends ContainerAware
      */
     private $orderService = null;
 
+    /**
+     * Convert order payment method to external logistics method
+     * @var array
+     */
+    private $paymentMethodMap = array(
+        'local' => 'local',
+        'local.card' => 'local.card',
+        'paysera' => 'prepaid',
+        'banklink' => 'prepaid',
+    );
     /**
      * @param string $logisticSystem
      */
@@ -165,5 +176,112 @@ class LogisticsService extends ContainerAware
 //            default:
 //                break;
 //        }
+    }
+
+    /**
+     * Prepares xml of order for external system
+     * @param Order $order
+     *
+     * @throws \InvalidArgumentException
+     * @return string
+     */
+    public function generateOrderXml($order)
+    {
+        if (!$order instanceof Order) {
+            throw new \InvalidArgumentException('Cannot generate xml with no order. The road to Mordor is closed');
+        }
+
+        $writer = new \XMLWriter();
+        $writer->openMemory();
+        $writer->startDocument('1.0','UTF-8');
+        $writer->setIndent(true);
+
+        $writer->startElement('Order');
+        $writer->writeElement('OrderId', $order->getId());
+
+        // Pickup block
+        $writer->startElement("PickUp");
+        $writer->writeElement('Address', $order->getPlacePointAddress());
+        $writer->writeElement('City', $order->getPlacePointCity());
+        $writer->startElement("Coordinates");
+        $writer->writeElement('Long', $order->getPlacePoint()->getLon());
+        $writer->writeElement('Lat', $order->getPlacePoint()->getLat());
+        //End coordinates block
+        $writer->endElement();
+        $writer->writeElement('PointName', $order->getPlaceName());
+        $writer->writeElement('PointId', $order->getPlacePoint()->getId());
+        $writer->writeElement('Phone', $order->getPlacePoint()->getPhone());
+        // End pickup block
+        $writer->endElement();
+
+        // Delivery block
+        $writer->startElement("Delivery");
+        $writer->writeElement('Address', $order->getAddressId()->getAddress());
+        $writer->writeElement('City', $order->getAddressId()->getCity());
+        $writer->writeElement('AddressId', $order->getAddressId()->getId());
+        $writer->startElement("Coordinates");
+        $writer->writeElement('Long', $order->getAddressId()->getLon());
+        $writer->writeElement('Lat', $order->getAddressId()->getLat());
+        //End coordinates block
+        $writer->endElement();
+        $writer->writeElement('CustomerName', $order->getUser()->getFirstname());
+        $writer->writeElement('Phone', $order->getUser()->getPhone());
+        $writer->writeElement('CustomerComment', $order->getComment());
+        // End delivery block
+        $writer->endElement();
+
+        // Pickup time block
+        $pickupToTime = clone $order->getAcceptTime();
+        $writer->startElement("PickUpTime");
+        $writer->writeElement('From', $order->getAcceptTime()->format("Y-m-d H:i"));
+        $writer->writeElement('To', $pickupToTime->add(new \DateInterval('PT20M'))->format("Y-m-d H:i"));
+        // End pickup time block
+        $writer->endElement();
+
+        // Delivery time block
+        $deliveryToTime = clone $order->getAcceptTime();
+        $writer->startElement("DeliveryTime");
+        $writer->writeElement('From', $order->getAcceptTime()->format("Y-m-d H:i"));
+        $writer->writeElement('To', $deliveryToTime->add(new \DateInterval('PT1H'))->format("Y-m-d H:i"));
+        // End delivery time block
+        $writer->endElement();
+
+        $writer->writeElement('PaymentMethod', $this->convertPaymentMethod($order->getPaymentMethod()));
+        $writer->writeElement('Price', $order->getTotal());
+        $writer->writeElement('Status', $order->getOrderStatus());
+
+        // Content block
+        $writer->startElement("Content");
+        foreach ($order->getDetails() as $dish) {
+            $writer->startElement("Item");
+            $writer->writeElement('Id', $dish->getId());
+            $writer->writeElement('Name', $dish->getDishName());
+            $writer->writeElement('Qty', $dish->getQuantity());
+            $writer->endElement();
+        }
+        // End content block
+        $writer->endElement();
+
+        // End order block
+        $writer->endElement();
+
+        $writer->endDocument();
+        $xml = $writer->outputMemory(true);
+
+        return $xml;
+    }
+
+    /**
+     * @param string $orderMethod
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public function convertPaymentMethod($orderMethod)
+    {
+        if (!isset($this->paymentMethodMap[$orderMethod])) {
+            throw new \InvalidArgumentException('Unknown payment method: '.$orderMethod);
+        }
+
+        return $this->paymentMethodMap[$orderMethod];
     }
 }

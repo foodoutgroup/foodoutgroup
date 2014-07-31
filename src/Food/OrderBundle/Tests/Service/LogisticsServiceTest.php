@@ -3,8 +3,13 @@ namespace Food\OrderBundle\Tests\Service;
 
 
 use Food\AppBundle\Entity\Driver;
+use Food\DishesBundle\Entity\PlacePoint;
+use Food\OrderBundle\Entity\Order;
+use Food\OrderBundle\Entity\OrderDetails;
 use Food\OrderBundle\Service\LogisticsService;
 use Food\OrderBundle\Service\OrderService;
+use Food\UserBundle\Entity\User;
+use Food\UserBundle\Entity\UserAddress;
 
 require_once dirname(__DIR__).'/../../../../app/AppKernel.php';
 
@@ -443,5 +448,212 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
             ->method('saveOrder');
 
         $logisticsService->assignDriver($driverId, $orderIds);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Cannot generate xml with no order
+     */
+    public function testGenerateOrderXmlException()
+    {
+        $logisticsService = new LogisticsService();
+
+        $logisticsService->generateOrderXml(null);
+    }
+
+    public function testGenerateOrderXml()
+    {
+        $logisticsService = new LogisticsService();
+        $logisticsService->setLogisticSystem('external');
+
+        $expectedXml =
+'<?xml version="1.0" encoding="UTF-8"?>
+<Order>
+ <OrderId>215</OrderId>
+ <PickUp>
+  <Address>Laisvės pr. 125</Address>
+  <City>Vilnius</City>
+  <Coordinates>
+   <Long>25.236428</Long>
+   <Lat>54.728609</Lat>
+  </Coordinates>
+  <PointName>Super kebai</PointName>
+  <PointId>24</PointId>
+  <Phone>37063177771</Phone>
+ </PickUp>
+ <Delivery>
+  <Address>Laisvės 77c-58</Address>
+  <City>Vilnius</City>
+  <AddressId>5</AddressId>
+  <Coordinates>
+   <Long>25.2352689</Long>
+   <Lat>54.722515</Lat>
+  </Coordinates>
+  <CustomerName>Mantas</CustomerName>
+  <Phone>37061514333</Phone>
+  <CustomerComment>3 aukstas</CustomerComment>
+ </Delivery>
+ <PickUpTime>
+  <From>2014-07-02 15:25</From>
+  <To>2014-07-02 15:45</To>
+ </PickUpTime>
+ <DeliveryTime>
+  <From>2014-07-02 15:25</From>
+  <To>2014-07-02 16:25</To>
+ </DeliveryTime>
+ <PaymentMethod>local.card</PaymentMethod>
+ <Price>14.7</Price>
+ <Status>accepted</Status>
+ <Content>
+  <Item>
+   <Id>6</Id>
+   <Name>Kebabo kompleksas</Name>
+   <Qty>2</Qty>
+  </Item>
+  <Item>
+   <Id>9</Id>
+   <Name>Mesainio kompleksas</Name>
+   <Qty>1</Qty>
+  </Item>
+ </Content>
+</Order>
+';
+
+        /**
+         * @var Order $order
+         */
+        $order = $this->getMock(
+            'Food\OrderBundle\Entity\Order',
+            array('getId')
+        );
+        $order->setPlaceName('Super kebai')
+            ->setPlacePointAddress('Laisvės pr. 125')
+            ->setPlacePointCity('Vilnius')
+            ->setComment('3 aukstas')
+            ->setPaymentMethod('local.card')
+            ->setAcceptTime(new \DateTime("2014-07-02 15:25"))
+            ->setTotal(14.7)
+            ->setOrderStatus(OrderService::$status_accepted);
+
+        /**
+         * @var PlacePoint $placePoint
+         */
+        $placePoint = $this->getMock(
+            'Food\DishesBundle\Entity\PlacePoint',
+            array('getId')
+        );
+        $placePoint->setPhone('37063177771')
+            ->setLat('54.728609')
+            ->setLon('25.236428');
+
+        $user = new User();
+        $user->setFirstname('Mantas')
+            ->setPhone('37061514333');
+
+        /**
+         * @var UserAddress $userAddress
+         */
+        $userAddress = $this->getMock(
+            'Food\UserBundle\Entity\UserAddress',
+            array('getId')
+        );
+        $userAddress->setAddress('Laisvės 77c-58')
+            ->setCity('Vilnius')
+            ->setLat('54.722515')
+            ->setLon('25.2352689')
+            ->setUser($user);
+
+        /**
+         * @var OrderDetails $detail
+         */
+        $detail = $this->getMock(
+            'Food\OrderBundle\Entity\OrderDetails',
+            array('getId', 'getDishName', 'getQuantity')
+        );
+
+        $order->setPlacePoint($placePoint)
+            ->setAddressId($userAddress)
+            ->setUser($user)
+            ->addDetail($detail)
+            ->addDetail($detail);
+
+        $order->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(215));
+
+        $placePoint->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(24));
+
+        $userAddress->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(5));
+
+        $detail->expects($this->at(0))
+            ->method('getId')
+            ->will($this->returnValue(6));
+
+        $detail->expects($this->at(1))
+            ->method('getDishName')
+            ->will($this->returnValue('Kebabo kompleksas'));
+
+        $detail->expects($this->at(2))
+            ->method('getQuantity')
+            ->will($this->returnValue(2));
+
+        $detail->expects($this->at(3))
+            ->method('getId')
+            ->will($this->returnValue(9));
+
+        $detail->expects($this->at(4))
+            ->method('getDishName')
+            ->will($this->returnValue('Mesainio kompleksas'));
+
+        $detail->expects($this->at(5))
+            ->method('getQuantity')
+            ->will($this->returnValue(1));
+
+        $xmlReturn = $logisticsService->generateOrderXml($order);
+
+        // Suvienodinam line endus pries palyginima. Negrazu, bet the way it is
+        $xmlReturn = preg_replace('~(*BSR_ANYCRLF)\R~', "\r\n", $xmlReturn);
+        $expectedXml = preg_replace('~(*BSR_ANYCRLF)\R~', "\r\n", $expectedXml);
+
+
+        $this->assertEquals($expectedXml, $xmlReturn);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Unknown payment method: kreditnaja kartacka
+     */
+    public function testConvertPaymentMethodException()
+    {
+        $logisticsService = new LogisticsService();
+
+        $logisticsService->convertPaymentMethod('kreditnaja kartacka');
+    }
+
+    /**
+     * @depends testConvertPaymentMethodException
+     */
+    public function testConvertPaymentMethod()
+    {
+        $logisticsService = new LogisticsService();
+
+        $expectedMethod1 = 'local';
+        $expectedMethod2 = 'local.card';
+        $expectedMethod3 = 'prepaid';
+        $expectedMethod4 = 'prepaid';
+
+        $actualMethod1 = $logisticsService->convertPaymentMethod('local');
+        $actualMethod2 = $logisticsService->convertPaymentMethod('local.card');
+        $actualMethod3 = $logisticsService->convertPaymentMethod('banklink');
+        $actualMethod4 = $logisticsService->convertPaymentMethod('paysera');
+
+        $this->assertEquals($expectedMethod1, $actualMethod1);
+        $this->assertEquals($expectedMethod2, $actualMethod2);
+        $this->assertEquals($expectedMethod3, $actualMethod3);
+        $this->assertEquals($expectedMethod4, $actualMethod4);
     }
 }
