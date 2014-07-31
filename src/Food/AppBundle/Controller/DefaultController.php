@@ -6,11 +6,35 @@ use Food\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+// use Pirminis\Gateway\Swedbank\FullHps\Request as FullHpsRequest;
+// use Pirminis\Gateway\Swedbank\FullHps\Response as FullHpsResponse;
+// use Pirminis\Gateway\Swedbank\FullHps\Request\Parameters;
+// use Pirminis\Gateway\Swedbank\Banklink\Sender;
 
 class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
+        // --------------------------------
+        // $params = new Parameters();
+        // $params->set('client', '88185002')
+        //        ->set('password', 'aXVdnHfZSJmz')
+        //        ->set('order_id', uniqid())
+        //        ->set('price', '1')
+        //        ->set('transaction_datetime', date('Ymd H:i:s'))
+        //        ->set('comment', 'TEST')
+        //        ->set('return_url', 'http://foodout.lt/return')
+        //        ->set('expiry_url', 'http://foodout.lt/expire');
+        //
+        // $request = new FullHpsRequest($params);
+        // var_dump($request->xml());
+        // $sender = new Sender($request->xml());
+        // $response = new FullHpsResponse($sender->send());
+        //
+        // var_dump($response->xml());
+        // var_dump($response->redirect_url());
+        //
+        // die('xxx');
         // Check if user is not banned
         $ip = $request->getClientIp();
         // Dude is banned - hit him
