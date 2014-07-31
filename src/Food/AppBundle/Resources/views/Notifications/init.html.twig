@@ -1,9 +1,16 @@
-{#% if success_messages is not empty %#}
-    <script type="text/javascript">
-        {#% for message in success_messages %#}
-            $(document).ready(function() {
-                $('.profile-button').popover('show');
-            });
-        {#% endfor %#}
-    </script>
-{#% endif %#}
+{% if success_messages is not empty %}
+<script type="text/javascript">
+    {% for message in success_messages %}
+        $(document).ready(function() {
+            var popover_container = $('.menu.top-menu');
+
+            popover_container.attr('data-content', '{{ message }}')
+                             .popover('show');
+
+            if (popover_container.attr('data-position-fix')) {
+                $('.popover').css('left', popover_container.attr('data-position-fix') + 'px');
+            }
+        });
+    {% endfor %}
+</script>
+{% endif %}
