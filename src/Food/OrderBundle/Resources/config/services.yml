@@ -29,6 +29,13 @@ services:
         calls:
             - [setContainer, ["@service_container"]]
 
+    food.nav:
+        class: Food\OrderBundle\Service\NavService
+        arguments: []
+        calls:
+            - [setContainer, ["@service_container"]]
+
+
     food.logistics:
         class: Food\OrderBundle\Service\LogisticsService
         arguments: []

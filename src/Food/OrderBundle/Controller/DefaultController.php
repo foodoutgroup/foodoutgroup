@@ -204,4 +204,16 @@ class DefaultController extends Controller
 
         return $statusTable[$formStatus];
     }
+
+    public function testNav1Action()
+    {
+        $this->get('food.nav')->testInsertOrder();
+        die("TEST NAV");
+    }
+
+    public function testNav2Action()
+    {
+        $this->get('food.nav')->getLastOrders();
+        die("TEST NAV");
+    }
 }

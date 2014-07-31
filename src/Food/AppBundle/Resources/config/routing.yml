@@ -24,7 +24,16 @@ food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto|monitoring|nagios|banned).+"
+        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto|monitoring|nagios|banned|order).+"
+
+food_order_nav_test1:
+    pattern: /order/nav_test1
+    defaults: { _controller: FoodOrderBundle:Default:testNav1 }
+
+food_order_nav_test2:
+    pattern: /order/nav_test2
+    defaults: { _controller: FoodOrderBundle:Default:testNav2 }
+
 
 food_admin_get_place_categories:
     pattern: /admin/place/get-categories/{placeId}
