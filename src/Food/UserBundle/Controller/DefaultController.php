@@ -182,7 +182,7 @@ class DefaultController extends Controller
         $userManager = $this->container->get('fos_user.user_manager');
         $em = $this->getDoctrine()->getManager();
         $translator = $this->get('translator');
-        $notifications = $this->get('food.app.utils.notifications');
+        $flashbag = $this->get('session')->getFlashBag();
 
         // data
         $user = $this->user();
@@ -218,7 +218,7 @@ class DefaultController extends Controller
         if ($form->isValid()) {
             $em->flush();
 
-            $notifications->setSuccessMessage($translator->trans('general.noty.profile_updated'));
+            $flashbag->set('profile_updated', $translator->trans('general.noty.profile_updated'));
 
             return $this->redirect($this->generateUrl('user_profile'));
         }
@@ -241,6 +241,7 @@ class DefaultController extends Controller
     {
         // services
         $security = $this->get('security.context');
+        $flashbag = $this->get('session')->getFlashBag();
 
         // page is accessible only to signed in users
         if (!$security->isGranted('ROLE_USER')) {
@@ -262,7 +263,8 @@ class DefaultController extends Controller
             'change_password_errors' => $this->formErrors($form->get('change_password')),
             'tab' => $tab,
             'orders' => $this->get('food.order')->getUserOrders($user),
-            'submitted' => $form->isSubmitted()
+            'submitted' => $form->isSubmitted(),
+            'profile_updated' => $flashbag->get('profile_updated')
         ];
     }
 

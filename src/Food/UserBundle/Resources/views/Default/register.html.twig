@@ -1,6 +1,27 @@
 <form class="righter register-form" action="{{ url('user_register_create') }}" method="post" novalidate>
     <h3>{% trans %}general.register_title{% endtrans %}</h3>
     <h4>{% trans %}general.register_text{% endtrans %}</h4>
+
+    {% if submitted %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for input in form %}
+                    {% if input.vars.errors is defined %}
+                        {% for error in input.vars.errors %}
+                            <li>{{ error.message }}</li>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if input.vars.form.children.first.vars.errors is defined %}
+                        {% for error in input.vars.form.children.first.vars.errors %}
+                            <li>{{ error.message }}</li>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
     <div  class="form-row {% if submitted and errors.firstname is not empty %}error{% endif %}">
         {{ form_label(form.firstname) }}
         {{ form_widget(form.firstname, {'attr': {'title': errors.firstname}}) }}

@@ -47,6 +47,42 @@
                     </div>
                     <div class="user-righter content-item user">
                         <h2>{% trans %}general.profile.user_data{% endtrans %}</h2>
+
+                        {% if profile_updated is not empty %}
+                            <div class="alert alert-success">
+                                <ul>
+                                    <li>{{ profile_updated.0 }}</li>
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        {% if form.profile.vars.valid == false or form.change_password.vars.valid == false %}
+                            <div class="error alert alert-danger">
+                                <ul>
+                                    {% for input in form.profile %}
+                                        {% if input.vars.errors is defined %}
+                                            {% for inputName, error in input.vars.errors %}
+                                                <li>{{ error.message }}</li>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {#% if form.change_password.current_password.vars.data|length > 0 %#}
+                                        {% for error in form.change_password.current_password.vars.errors %}
+                                            <li>{{ error.message }}</li>
+                                        {% endfor %}
+
+                                        {% for error in form.change_password.plainPassword.first.vars.errors %}
+                                            <li>{{ error.message }}</li>
+                                        {% endfor %}
+
+                                        {% for error in form.change_password.plainPassword.second.vars.errors %}
+                                            <li>{{ error.message }}</li>
+                                        {% endfor %}
+                                    {#% endif %#}
+                                </ul>
+                            </div>
+                        {% endif %}
                         <form class="user-details-form" action="{{ path('user_profile_update') }}" method="POST" novalidate="novalidate">
                             {% include 'FoodUserBundle:Default:profile/profile.html.twig' %}
                             {% include 'FoodUserBundle:Default:profile/address.html.twig' %}
