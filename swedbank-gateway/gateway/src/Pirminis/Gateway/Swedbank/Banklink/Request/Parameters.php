@@ -18,10 +18,8 @@ class Parameters
 
     public function set($name, $value)
     {
-        if (false === array_search($name, $this->mandatory_params, true) ||
-            empty($value)
-        ) {
-            throw \InvalidArgumentException('Cannot set parameter.');
+        if (false === array_search($name, $this->mandatory_params, true)) {
+            throw new \InvalidArgumentException('Cannot set parameter.');
         }
 
         $this->params[$name] = $value;
@@ -31,11 +29,8 @@ class Parameters
 
     public function get($name)
     {
-        if (false === array_search($name, $this->mandatory_params, true) ||
-            !isset($this->params[$name]) ||
-            empty($this->params[$name])
-        ) {
-            throw \InvalidArgumentException('Cannot get parameter.');
+        if (false === array_search($name, $this->mandatory_params, true)) {
+            throw new \InvalidArgumentException('Cannot get parameter.');
         }
 
         return $this->params[$name];
