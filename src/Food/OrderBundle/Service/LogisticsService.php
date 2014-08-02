@@ -4,7 +4,9 @@ namespace Food\OrderBundle\Service;
 
 use Food\AppBundle\Entity\Driver;
 use Food\OrderBundle\Entity\Order;
+use Food\OrderBundle\Entity\OrderToLogistics;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Curl;
 
 /**
  * Class LogisticsService
@@ -34,6 +36,12 @@ class LogisticsService extends ContainerAware
         'paysera' => 'prepaid',
         'banklink' => 'prepaid',
     );
+
+    /**
+     * @var Curl
+     */
+    private $_cli;
+
     /**
      * @param string $logisticSystem
      */
@@ -64,6 +72,27 @@ class LogisticsService extends ContainerAware
     public function getOrderService()
     {
         return $this->orderService;
+    }
+
+    /**
+     * @param \Curl $cli
+     */
+    public function setCli($cli)
+    {
+        $this->_cli = $cli;
+    }
+
+    /**
+     * @return \Curl
+     */
+    public function getCli()
+    {
+        if (empty($this->_cli)) {
+            $this->_cli = new Curl;
+            $this->_cli->options['CURLOPT_SSL_VERIFYPEER'] = false;
+            $this->_cli->options['CURLOPT_SSL_VERIFYHOST'] = false;
+        }
+        return $this->_cli;
     }
 
     /**
@@ -283,5 +312,55 @@ class LogisticsService extends ContainerAware
         }
 
         return $this->paymentMethodMap[$orderMethod];
+    }
+
+    /**
+     * Add order to sending stack
+     *
+     * @param Order $order
+     * @throws \InvalidArgumentException
+     */
+    public function putOrderForSend($order)
+    {
+        if (!$order instanceof Order) {
+            throw new \InvalidArgumentException('Cannot put order to logistis when its not order. Dafuk?');
+        }
+
+        $om = $this->container->get('doctrine')->getManager();
+        $orderToLogistics = new OrderToLogistics();
+
+        $orderToLogistics->setOrder($order)
+            ->setDateAdded(new \DateTime("now"))
+            ->setStatus('unsent');
+
+        $om->persist($orderToLogistics);
+        $om->flush();
+    }
+
+    /**
+     * Send Order to Logistics system
+     *
+     * @param string $url
+     * @param string $xml
+     * @return array
+     */
+    public function sendToLogistics($url, $xml)
+    {
+        $resp = $this->getCli()->post(
+            $url,
+            $xml
+        );
+
+        if ($resp->headers['Status-Code'] == 200) {
+            return array(
+                'status' => 'sent',
+                'error' => '',
+            );
+        } else {
+            return array(
+                'status' => 'error',
+                'error' => 'Status code: '.$resp->headers['Status-Code']."\n".'Error:'."\n".$resp->body,
+            );
+        }
     }
 }

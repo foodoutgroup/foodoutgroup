@@ -346,6 +346,11 @@ class OrderService extends ContainerAware
 
             // Notify Dispatchers
             $this->notifyOrderAccept();
+
+            // Put for logistics
+            if ($this->getOrder()->getDeliveryType() == 'deliver') {
+                $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
+            }
             // Kitais atvejais tik keiciam statusa, nes gal taip reikia
         } else {
             $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
@@ -583,6 +588,10 @@ class OrderService extends ContainerAware
     public function statusDelayed($source=null, $statusMessage=null)
     {
         $this->chageOrderStatus(self::$status_delayed, $source, $statusMessage);
+
+        if ($this->getOrder()->getDeliveryType() == 'deliver') {
+            $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
+        }
         return $this;
     }
 

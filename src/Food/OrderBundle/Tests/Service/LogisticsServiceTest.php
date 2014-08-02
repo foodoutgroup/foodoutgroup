@@ -6,6 +6,7 @@ use Food\AppBundle\Entity\Driver;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
+use Food\OrderBundle\Entity\OrderToLogistics;
 use Food\OrderBundle\Service\LogisticsService;
 use Food\OrderBundle\Service\OrderService;
 use Food\UserBundle\Entity\User;
@@ -14,38 +15,6 @@ use Food\UserBundle\Entity\UserAddress;
 require_once dirname(__DIR__).'/../../../../app/AppKernel.php';
 
 class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
-    /**
-     * @var \Symfony\Component\HttpKernel\AppKernel
-     */
-    protected $kernel;
-
-    /**
-     * @var \Symfony\Component\DependencyInjection\Container
-     */
-    protected $container;
-
-    /**
-     * @return null
-     */
-    public function setUp()
-    {
-        $this->kernel = new \AppKernel('test', true);
-        $this->kernel->boot();
-
-        $this->container = $this->kernel->getContainer();
-
-        parent::setUp();
-    }
-
-    /**
-     * @return null
-     */
-    public function tearDown()
-    {
-        $this->kernel->shutdown();
-
-        parent::tearDown();
-    }
 
     public function testSettersGetters()
     {
@@ -67,6 +36,22 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $gotOrderService = $logisticsService->getOrderService();
 
         $this->assertEquals($orderService, $gotOrderService);
+
+        // Test Curl getters
+        $curl = new \Curl();
+
+        $curl2 = new \Curl();
+        $curl2->options['CURLOPT_SSL_VERIFYPEER'] = false;
+        $curl2->options['CURLOPT_SSL_VERIFYHOST'] = false;
+
+        $logisticsService->setCli($curl);
+        $gotCurl = $logisticsService->getCli();
+
+        $this->assertEquals($curl, $gotCurl);
+
+        $logisticsService->setCli(null);
+        $gotCurl2 = $logisticsService->getCli();
+        $this->assertEquals($curl2, $gotCurl2);
     }
 
     public function testGetDrivers()
@@ -655,5 +640,100 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expectedMethod2, $actualMethod2);
         $this->assertEquals($expectedMethod3, $actualMethod3);
         $this->assertEquals($expectedMethod4, $actualMethod4);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Cannot put order to logistis when its not order. Dafuk?
+     */
+    public function testPutOrderForSendException()
+    {
+        $logisticsService = new LogisticsService();
+        $logisticsService->putOrderForSend(null);
+    }
+
+    public function testPutOrderForSend()
+    {
+        $logisticsService = new LogisticsService();
+
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get')
+        );
+
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $entityManager = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $logisticsService->setContainer($container);
+
+        $order = new Order();
+        $expectedOrderSendObject = new OrderToLogistics();
+        $expectedOrderSendObject->setOrder($order)
+            ->setStatus('unsent')
+            ->setDateAdded(new \DateTime("now"));
+
+        $container->expects($this->at(0))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getManager')
+            ->will($this->returnValue($entityManager));
+
+        $entityManager->expects($this->once())
+            ->method('persist')
+            ->with($expectedOrderSendObject);
+
+        $entityManager->expects($this->once())
+            ->method('flush');
+
+        $logisticsService->putOrderForSend($order);
+    }
+
+    public function testSendOrderToLogistics()
+    {
+        $this->markTestSkipped('Issispresti su response mockinimu');
+        $logisticsService = new LogisticsService();
+
+        $curl = $this->getMockBuilder('\Curl')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $logisticsService->setCli($curl);
+
+        $url = 'http://test-url.foodout.lt';
+        $xml = '<so xml>';
+
+        /**
+         * @var \CurlResponse $curlResponse
+         */
+        $curlResponse = $curl = $this->getMockBuilder('\CurlResponse')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $curlResponse->headers = array(
+            'Status-Code' => 200,
+        );
+        $curlResponse->body = '';
+
+        $expectedResponse = array(
+            'status' => 'sent',
+            'error' => '',
+        );
+
+        $curl->expects($this->once())
+            ->method('post')
+            ->with($url, $xml)
+            ->will($this->returnValue($curlResponse));
+
+        $response = $logisticsService->sendToLogistics(
+            $url,
+            $xml
+        );
+
+        $this->assertEquals($expectedResponse, $response);
     }
 }

@@ -62,6 +62,8 @@ parameters:
     evp.test_payments: 0
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
     cloudfront_url: images.foodout.lt
+    logtime.order_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitOrders"
+    logtime.driver_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitDrivers"
 
 framework:
     #esi:             ~
