@@ -76,6 +76,14 @@ banned:
     path: /banned/
     defaults: { _controller: FoodAppBundle:Default:banned}
 
+logistics_order_status:
+    path: /logistics/status-update/
+    defaults: { _controller: FoodOrderBundle:Logistics:orderStatus}
+
+logistics_driver_assign:
+    path: /logistics/driver-assign/
+    defaults: { _controller: FoodOrderBundle:Logistics:driverAssign}
+
 ordermobile:
     path: /o/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~, action: ~ }

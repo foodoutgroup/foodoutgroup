@@ -797,7 +797,7 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param null $localBiller
+     * @param null|LocalBiller $localBiller
      */
     public function setLocalBiller($localBiller)
     {
@@ -816,7 +816,7 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param null $payseraBiller
+     * @param null|PaySera $payseraBiller
      */
     public function setPayseraBiller($payseraBiller)
     {

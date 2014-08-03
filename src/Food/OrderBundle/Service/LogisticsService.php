@@ -192,6 +192,7 @@ class LogisticsService extends ContainerAware
                 $order = $orderService->getOrderById($orderId);
                 $order->setDriver($driver);
 
+                // TODO kolkas visad vairuotoja informuojam SMS'u, bet su LogTimeApi nutart ar dubliuojam
                 $orderService->statusAssigned('logistics_service');
                 $orderService->saveOrder();
             }
@@ -362,5 +363,64 @@ class LogisticsService extends ContainerAware
                 'error' => 'Status code: '.$resp->headers['Status-Code']."\n".'Error:'."\n".$resp->body,
             );
         }
+    }
+
+    /**
+     * Parse driver assignment in logistics
+     * @param string $xml
+     * @return array
+     */
+    public function parseDriverAssignXml($xml)
+    {
+        $driverData = array();
+
+        $dom = new \DOMDocument();
+        $dom->loadXML($xml);
+        $orderElements = $dom->getElementsByTagName('OrderAssigned');
+
+        // Kolkas tik vienas. Jei po kelis nores perduot - reiksapglebt gaubianciu tagu, kitaip nevalidu
+        foreach ($orderElements as $order)
+        {
+            $driverData = array(
+                'order_id' => $order->getElementsByTagName('Order_id')->item(0)->nodeValue,
+                'driver_id' => $order->getElementsByTagName('Driver_id')->item(0)->nodeValue,
+                'vehicle_no' => $order->getElementsByTagName('Vehicle_no')->item(0)->nodeValue,
+                'planned_delivery_time' => new \DateTime(
+                        $order->getElementsByTagName('Planned_delivery_time')->item(0)->nodeValue
+                    ),
+            );
+        }
+
+        return $driverData;
+    }
+
+    /**
+     * Parse Order status change in logistics
+     *
+     * @param string $xml
+     * @return mixed
+     */
+    public function parseOrderStatusXml($xml)
+    {
+        $statusData = array();
+
+        $dom = new \DOMDocument();
+        $dom->loadXML($xml);
+        $orderStatusElement = $dom->getElementsByTagName('OrderStatus');
+
+        // Vienas elementas. Jei po kelis nores perduot - reiksapglebt gaubianciu tagu, kitaip nevalidu
+        foreach ($orderStatusElement as $order)
+        {
+            $statusData = array(
+                'order_id' => $order->getElementsByTagName('Order_id')->item(0)->nodeValue,
+                'event_date' => new \DateTime(
+                        $order->getElementsByTagName('Event_Date')->item(0)->nodeValue
+                    ),
+                'status' => $order->getElementsByTagName('Status')->item(0)->nodeValue,
+                'fail_reason' => $order->getElementsByTagName('FailReason')->item(0)->nodeValue,
+            );
+        }
+
+        return $statusData;
     }
 }

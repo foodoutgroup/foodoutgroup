@@ -736,4 +736,76 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals($expectedResponse, $response);
     }
+
+    public function testDriverXmlParse()
+    {
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>
+<OrderAssigned>
+<Order_id>324169</Order_id>
+<Driver_id>165</Driver_id>
+<Vehicle_no>FCU 819</Vehicle_no>
+<Planned_delivery_time>2014-07-02 11:43</Planned_delivery_time>
+</OrderAssigned>';
+
+        $expectedDriverData = array(
+            'order_id' => 324169,
+            'driver_id' => 165,
+            'vehicle_no' => 'FCU 819',
+            'planned_delivery_time' => new \DateTime("2014-07-02 11:43"),
+        );
+
+        $logisticsService = new LogisticsService();
+
+        $driverData = $logisticsService->parseDriverAssignXml($xml);
+
+        $this->assertEquals($expectedDriverData, $driverData);
+    }
+
+    public function testOrderStatusXmlParse()
+    {
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>
+<OrderStatus>
+	<Order_id>324169</Order_id>
+	<Event_Date>2014-07-02 11:43</Event_Date>
+	<Status>finished</Status>
+	<FailReason></FailReason>
+</OrderStatus>';
+
+        $expectedStatusData = array(
+            'order_id' => 324169,
+            'event_date' => new \DateTime("2014-07-02 11:43"),
+            'status' => 'finished',
+            'fail_reason' => '',
+        );
+
+        $logisticsService = new LogisticsService();
+
+        $statusData = $logisticsService->parseOrderStatusXml($xml);
+
+        $this->assertEquals($expectedStatusData, $statusData);
+    }
+
+    public function testOrderStatusXmlParse2()
+    {
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>
+<OrderStatus>
+	<Order_id>3241</Order_id>
+	<Event_Date>2014-07-02 17:15</Event_Date>
+	<Status>failed</Status>
+	<FailReason>Client rejected</FailReason>
+</OrderStatus>';
+
+        $expectedStatusData = array(
+            'order_id' => 3241,
+            'event_date' => new \DateTime("2014-07-02 17:15"),
+            'status' => 'failed',
+            'fail_reason' => 'Client rejected',
+        );
+
+        $logisticsService = new LogisticsService();
+
+        $statusData = $logisticsService->parseOrderStatusXml($xml);
+
+        $this->assertEquals($expectedStatusData, $statusData);
+    }
 }
