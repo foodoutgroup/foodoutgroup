@@ -6,15 +6,22 @@ use Food\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-// use Pirminis\Gateway\Swedbank\FullHps\Request as FullHpsRequest;
-// use Pirminis\Gateway\Swedbank\FullHps\Response as FullHpsResponse;
-// use Pirminis\Gateway\Swedbank\FullHps\Request\Parameters;
-// use Pirminis\Gateway\Swedbank\Banklink\Sender;
+use Pirminis\Gateway\Swedbank\FullHps\Request as FullHpsRequest;
+use Pirminis\Gateway\Swedbank\FullHps\Response as FullHpsResponse;
+use Pirminis\Gateway\Swedbank\FullHps\Request\Parameters;
+use Pirminis\Gateway\Swedbank\Banklink\Sender;
+use Pirminis\Gateway\Swedbank\FullHps\TransactionQuery\Request as FullHpsTransRequest;
 
 class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
+        $request = new FullHpsTransRequest('88185002', 'aXVdnHfZSJmz', '3100900010001911');
+        $sender = new Sender($request->xml());
+        $response = new FullHpsResponse($sender->send());
+        var_dump($response);
+        // var_dump($request->query->all());
+        // var_dump($request->request->all());
         // --------------------------------
         // $params = new Parameters();
         // $params->set('client', '88185002')
@@ -23,18 +30,19 @@ class DefaultController extends Controller
         //        ->set('price', '1')
         //        ->set('transaction_datetime', date('Ymd H:i:s'))
         //        ->set('comment', 'TEST')
-        //        ->set('return_url', 'http://foodout.lt/return')
-        //        ->set('expiry_url', 'http://foodout.lt/expire');
+        //     //    ->set('return_url', 'http://foodout.lt/return')
+        //        ->set('return_url', 'http://localhost:3000/')
+        //     //    ->set('expiry_url', 'http://foodout.lt/expire');
+        //        ->set('expiry_url', 'http://localhost:3000/');
         //
         // $request = new FullHpsRequest($params);
-        // var_dump($request->xml());
         // $sender = new Sender($request->xml());
         // $response = new FullHpsResponse($sender->send());
         //
         // var_dump($response->xml());
         // var_dump($response->redirect_url());
-        //
-        // die('xxx');
+
+        die('xxx');
         // Check if user is not banned
         $ip = $request->getClientIp();
         // Dude is banned - hit him
