@@ -601,8 +601,8 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $xmlReturn = $logisticsService->generateOrderXml($order);
 
         // Suvienodinam line endus pries palyginima. Negrazu, bet the way it is
-        $xmlReturn = preg_replace('~(*BSR_ANYCRLF)\R~', "\r\n", $xmlReturn);
-        $expectedXml = preg_replace('~(*BSR_ANYCRLF)\R~', "\r\n", $expectedXml);
+        $xmlReturn = $this->cleanXmlBeforeAssert($xmlReturn);
+        $expectedXml = $this->cleanXmlBeforeAssert($expectedXml);
 
 
         $this->assertEquals($expectedXml, $xmlReturn);
@@ -807,5 +807,83 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $statusData = $logisticsService->parseOrderStatusXml($xml);
 
         $this->assertEquals($expectedStatusData, $statusData);
+    }
+
+    public function testGenerateDriversXml()
+    {
+        $logisticsService = new LogisticsService();
+
+        $expectedXml = '<?xml version="1.0" encoding="UTF-8"?>
+<Drivers>
+ <Driver>
+  <Id>16</Id>
+  <Phone>37061274411</Phone>
+  <Name>Vardenis Pavardenis</Name>
+  <City>Vilnius</City>
+  <Active>Y</Active>
+ </Driver>
+ <Driver>
+  <Id>301</Id>
+  <Phone>37149931555</Phone>
+  <Name>Pūkis Baisoklis</Name>
+  <City>Rīga</City>
+  <Active>N</Active>
+ </Driver>
+</Drivers>
+';
+
+        /**
+         * @var Driver $driver1
+         */
+        $driver1 = $this->getMock(
+            'Food\AppBundle\Entity\Driver',
+            array('getId')
+        );
+        $driver1->setPhone('37061274411')
+            ->setName('Vardenis Pavardenis')
+            ->setCity('Vilnius')
+            ->setActive(true);
+
+        /**
+         * @var Driver $driver2
+         */
+        $driver2 = $this->getMock(
+            'Food\AppBundle\Entity\Driver',
+            array('getId')
+        );
+        $driver2->setPhone('37149931555')
+            ->setName('Pūkis Baisoklis')
+            ->setCity('Rīga')
+            ->setActive(false);
+
+        $driver1->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(16));
+
+        $driver2->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(301));
+
+        $drivers = array(
+            $driver1, $driver2
+        );
+
+        $gotXml = $logisticsService->generateDriverXml($drivers);
+
+        // Suvienodinam line endus pries palyginima. Negrazu, bet the way it is
+        $gotXml = $this->cleanXmlBeforeAssert($gotXml);
+        $expectedXml = $this->cleanXmlBeforeAssert($expectedXml);
+
+        $this->assertEquals($expectedXml, $gotXml);
+    }
+
+    /**
+     * Clean xml that PhpUnit wont fail because of new lines...
+     * @param string $xml
+     * @return string
+     */
+    private function cleanXmlBeforeAssert($xml)
+    {
+        return  preg_replace('~(*BSR_ANYCRLF)\R~', "\r\n", $xml);
     }
 }

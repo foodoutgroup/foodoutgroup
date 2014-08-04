@@ -209,6 +209,21 @@ class LogisticsService extends ContainerAware
     }
 
     /**
+     * Get preconfigured Xml writer
+     *
+     * @return \XMLWriter
+     */
+    private function getDefaultXmlWriter()
+    {
+        $writer = new \XMLWriter();
+        $writer->openMemory();
+        $writer->startDocument('1.0','UTF-8');
+        $writer->setIndent(true);
+
+        return $writer;
+    }
+
+    /**
      * Prepares xml of order for external system
      * @param Order $order
      *
@@ -221,10 +236,7 @@ class LogisticsService extends ContainerAware
             throw new \InvalidArgumentException('Cannot generate xml with no order. The road to Mordor is closed');
         }
 
-        $writer = new \XMLWriter();
-        $writer->openMemory();
-        $writer->startDocument('1.0','UTF-8');
-        $writer->setIndent(true);
+        $writer = $this->getDefaultXmlWriter();
 
         $writer->startElement('Order');
         $writer->writeElement('OrderId', $order->getId());
@@ -293,6 +305,35 @@ class LogisticsService extends ContainerAware
         $writer->endElement();
 
         // End order block
+        $writer->endElement();
+
+        $writer->endDocument();
+        $xml = $writer->outputMemory(true);
+
+        return $xml;
+    }
+
+    /**
+     * @param Driver[] $drivers
+     * @return string
+     */
+    public function generateDriverXml($drivers)
+    {
+        $writer = $this->getDefaultXmlWriter();
+
+        $writer->startElement('Drivers');
+
+        foreach ($drivers as $driver) {
+            $writer->startElement('Driver');
+            $writer->writeElement('Id', $driver->getId());
+            $writer->writeElement('Phone', $driver->getPhone());
+            $writer->writeElement('Name', $driver->getName());
+            $writer->writeElement('City', $driver->getCity());
+            $writer->writeElement('Active', ($driver->getActive() ? 'Y' : 'N'));
+            $writer->endElement();
+        }
+
+        // End drivers block
         $writer->endElement();
 
         $writer->endDocument();
