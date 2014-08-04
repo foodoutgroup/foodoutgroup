@@ -19,7 +19,7 @@ class Parameters
         if (false === array_search($name, $this->mandatory_params, true) ||
             empty($value)
         ) {
-            throw \InvalidArgumentException('Cannot set parameter.');
+            throw new \InvalidArgumentException('Cannot set parameter.');
         }
 
         $this->params[$name] = $value;
@@ -33,7 +33,7 @@ class Parameters
             !isset($this->params[$name]) ||
             empty($this->params[$name])
         ) {
-            throw \InvalidArgumentException('Cannot get parameter.');
+            throw new \InvalidArgumentException('Cannot get parameter.');
         }
 
         return $this->params[$name];
