@@ -7,6 +7,7 @@ class Response
     const HPS_URL_XPATH = '//HpsTxn//hps_url';
     const SESSION_ID_XPATH = '//HpsTxn//session_id';
     const STATUS_XPATH = '//status';
+    const HPS_STATUS = '//HpsTxn//AuthAttempts//Attempt//dc_response';
 
     protected $xml;
     protected $dom;
@@ -36,6 +37,25 @@ class Response
     public function dom()
     {
         return $this->dom;
+    }
+
+    public function is_successful_payment()
+    {
+        return $this->dc_response() === static::DC_SUCCESS_RESPONSE;
+    }
+
+    protected function dc_response()
+    {
+        $dc_responses = $this->dom()
+                             ->xpath(static::HPS_STATUS);
+
+        if (empty($dc_responses)) return false;
+
+        $dc_response = (string)reset($dc_responses);
+
+        if (empty($dc_response)) return false;
+
+        return (int)$dc_response;
     }
 
     protected function hps_url()

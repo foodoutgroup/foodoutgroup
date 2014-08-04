@@ -22,7 +22,7 @@ class DefaultController extends Controller
         var_dump($response);
         // var_dump($request->query->all());
         // var_dump($request->request->all());
-        // --------------------------------
+        //
         // $params = new Parameters();
         // $params->set('client', '88185002')
         //        ->set('password', 'aXVdnHfZSJmz')
