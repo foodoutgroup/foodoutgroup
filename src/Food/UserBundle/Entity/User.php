@@ -84,6 +84,23 @@ class User extends BaseUser
         return $userContactData;
     }
 
+    public function getNameForOrder()
+    {
+        $theName = "";
+        $name = $this->getFirstname();
+        $surname = $this->getLastname();
+        if (!empty($name)) {
+            $theName = $name;
+        }
+        if (!empty($surname)) {
+            if (!empty($theName)) {
+                $theName.=" ";
+            }
+            $theName.= $surname;
+        }
+        return $theName;
+    }
+
     /**
      * Get id
      *

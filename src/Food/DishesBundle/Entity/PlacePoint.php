@@ -86,6 +86,14 @@ class PlacePoint
      */
     private $city;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="internal_code", type="string", length=10, nullable=true)
+     */
+    private $internal_code;
+
     /**
      * @var string
      *
@@ -1360,5 +1368,28 @@ class PlacePoint
         } else {
             return '';
         }
+    }
+
+    /**
+     * Set internal_code
+     *
+     * @param string $internalCode
+     * @return PlacePoint
+     */
+    public function setInternalCode($internalCode)
+    {
+        $this->internal_code = $internalCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get internal_code
+     *
+     * @return string 
+     */
+    public function getInternalCode()
+    {
+        return $this->internal_code;
     }
 }

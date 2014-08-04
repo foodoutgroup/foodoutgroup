@@ -50,6 +50,13 @@ class Place extends Uploadable implements Translatable
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="chain", type="string", length=10, nullable=true)
+     */
+    private $chain;
+
+    /**
+     * @var string
      * @Gedmo\Translatable
      * @ORM\Column(name="alcohol_rules", type="text", nullable=true)
      */
@@ -1233,5 +1240,28 @@ class Place extends Uploadable implements Translatable
     public function getDisabledOnlinePayment()
     {
         return $this->disabledOnlinePayment;
+    }
+
+    /**
+     * Set chain
+     *
+     * @param string $chain
+     * @return Place
+     */
+    public function setChain($chain)
+    {
+        $this->chain = $chain;
+    
+        return $this;
+    }
+
+    /**
+     * Get chain
+     *
+     * @return string 
+     */
+    public function getChain()
+    {
+        return $this->chain;
     }
 }
