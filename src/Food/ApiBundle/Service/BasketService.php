@@ -18,9 +18,9 @@ class BasketService extends ContainerAware
     public function _getCreateBasketItems(Request $request)
     {
         $returner = array();
-        $items = array();
-        if (!empty($request->get('items'))) {
-            $items = $request->get('items');
+        $items = $request->get('items', array());
+        if (empty($items) && !is_array($items)) {
+            $items = array();
         }
         foreach ( $items as $item) {
             $it = new ShoppingBasketItem(null, $this->container);
