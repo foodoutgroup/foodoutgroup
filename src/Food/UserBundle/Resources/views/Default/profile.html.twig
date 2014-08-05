@@ -20,15 +20,15 @@
                 <a href="{{ path('user_profile') }}"> {% trans %}general.profile{% endtrans %}</a>
             </div>
             <div class="page-title">
-                <h1 class="clearfix"><span>{% trans %}general.greating{% endtrans %}, {{ language_utils.name(app.user.firstname, locale) }}!</span></h1>
+                <h1 class="clearfix"><span>{% trans %}general.greating{% endtrans %}, {{ language_utils.name(user.firstname, locale) }}!</span></h1>
             </div>
             <div class="clearfix">
                 <div class="full-content user-page clearfix">
                     <div class="user-lefter">
                         <div class="active-user"><img src="{{ asset('bundles/foodapp/images/person.png') }}">
                             {#<a href="#" class="edit"></a>#}
-                            <div class="user-name">{{ app.user.firstname }}</div>
-                            <div class="user-location">{% if app.user.defaultAddress %}{{ app.user.defaultAddress.city }}{% endif %}</div>
+                            <div class="user-name">{{ user.firstname }}</div>
+                            <div class="user-location">{% if user.defaultAddress %}{{ user.defaultAddress.city }}{% endif %}</div>
                         </div>
                         <ul class="menu user-menu">
                             <li class="menu-item user-ico active" data-target=".user-page .content-item.user">
@@ -54,7 +54,7 @@
                             </div>
                         {% endif %}
 
-                        <form class="user-details-form" action="{{ path('user_profile_update') }}" method="POST" novalidate="novalidate">
+                        <form class="user-details-form" action="{{ path('user_profile_update') }}" method="POST" novalidate="novalidate" autocomplete="off">
                             {% include 'FoodUserBundle:Default:profile/profile.html.twig' %}
                             {% include 'FoodUserBundle:Default:profile/address.html.twig' %}
                             {% include 'FoodUserBundle:Default:profile/change_password.html.twig' %}
@@ -68,7 +68,9 @@
                         <script type="text/javascript">
                         // <![CDATA[
                         $(document).ready(function() {
-                            $('.user-details-form:visible .form-row input').tooltip('show');
+                            var options = {'trigger': 'focus'};
+
+                            $('.user-details-form:visible .form-row input').tooltip(options).tooltip('show');
                         });
                         // ]]>
                         </script>

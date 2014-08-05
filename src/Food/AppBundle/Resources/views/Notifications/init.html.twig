@@ -7,7 +7,7 @@
             popover_container.attr('data-content', '{{ message }}')
                              .popover('show');
 
-            setTimeout(function() { popover_container.popover('hide'); }, 30 * 1000);
+            setTimeout(function() { popover_container.popover('destroy'); }, 30 * 1000);
 
             if (popover_container.attr('data-position-fix')) {
                 $('.popover').css('left', popover_container.attr('data-position-fix') + 'px');

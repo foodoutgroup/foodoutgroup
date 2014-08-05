@@ -29,7 +29,9 @@
 <script type="text/javascript">
 // <![CDATA[
 $(document).ready(function() {
-    $('.register-form:visible .form-row input').tooltip('show');
+    var options = {'trigger': 'focus'};
+
+    $('.register-form:visible .form-row input').tooltip(options).tooltip('show');
 });
 // ]]>
 </script>

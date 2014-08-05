@@ -210,7 +210,7 @@ class DefaultController extends Controller
         }
 
         // password validation
-        if ($form->get('change_password')->isValid()) {
+        if ($form->get('change_password')->isValid() && $form->isValid()) {
             $userManager->updateUser($user);
         }
 
@@ -229,7 +229,8 @@ class DefaultController extends Controller
             'address_errors' => $this->formErrors($form->get('address')),
             'change_password_errors' => $this->formErrors($form->get('change_password')),
             'orders' => $this->get('food.order')->getUserOrders($user),
-            'submitted' => $form->isSubmitted()
+            'submitted' => $form->isSubmitted(),
+            'user' => $this->user()
         ];
     }
 
@@ -264,7 +265,8 @@ class DefaultController extends Controller
             'tab' => $tab,
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => $form->isSubmitted(),
-            'profile_updated' => $flashbag->get('profile_updated')
+            'profile_updated' => $flashbag->get('profile_updated'),
+            'user' => $this->user()
         ];
     }
 
@@ -272,16 +274,6 @@ class DefaultController extends Controller
     {
         // due to mystery I will do stuff my way
         $user = $this->user();
-
-        if ($user) {
-            $user = $this
-                ->getDoctrine()
-                ->getRepository('FoodUserBundle:User')
-                ->find($user->getId())
-            ;
-            $this->getDoctrine()->getManager()->refresh($user);
-        }
-
 
         if ($this->get('security.context')->isGranted('ROLE_USER')) {
             return $this->render(
@@ -313,7 +305,16 @@ class DefaultController extends Controller
             return null;
         }
 
-        return $sc->getToken()->getUser();
+        $user = $sc->getToken()->getUser();
+
+        // this conditional is mandatory
+        if ($user) {
+            $this->getDoctrine()
+                 ->getManager()
+                 ->refresh($user);
+        }
+
+        return $user;
     }
 
     private function address(User $user)

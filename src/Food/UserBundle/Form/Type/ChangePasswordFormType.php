@@ -54,6 +54,7 @@ class ChangePasswordFormType extends BaseType
                   'error_bubbling' => false,
                   'translation_domain' => 'FOSUserBundle',
                   'mapped' => false,
+                  'attr' => ['autocomplete' => 'off'],
                   'constraints' => $this->isCurrentPassword() ?
                                    new UserPassword(['message' => 'fos_user.form.invalid_current_password']) :
                                    null))
@@ -61,8 +62,8 @@ class ChangePasswordFormType extends BaseType
                   'type' => 'password',
                   'error_bubbling' => false,
                   'options' => array('translation_domain' => 'FOSUserBundle'),
-                  'first_options' => array('label' => 'form.new_password'),
-                  'second_options' => array('label' => 'form.new_password_confirmation'),
+                  'first_options' => array('label' => 'form.new_password', 'attr' => ['autocomplete' => 'off']),
+                  'second_options' => array('label' => 'form.new_password_confirmation', 'attr' => ['autocomplete' => 'off']),
                   'invalid_message' => 'fos_user.password.mismatch',
                   'required' => false))
         ;
