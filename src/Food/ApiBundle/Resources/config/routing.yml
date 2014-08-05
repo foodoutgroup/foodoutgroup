@@ -113,6 +113,11 @@ food_api_users_register:
     defaults: { _controller: FoodApiBundle:Users:register}
     methods: [POST]
 
+food_api_users_reset_password:
+    pattern: /users/reset_password
+    defaults: { _controller: FoodApiBundle:Users:resetPassword}
+    methods: [POST]
+
 food_api_users_update:
     pattern: /users
     defaults: { _controller: FoodApiBundle:Users:update}
