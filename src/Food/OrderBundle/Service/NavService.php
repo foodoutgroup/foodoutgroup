@@ -142,13 +142,21 @@ class NavService extends ContainerAware
     public function putTheOrderToTheNAV(Order $order)
     {
         $orderNewId = $this->getNavOrderId($order);
+
+        $target = $order->getAddressId()->getAddress();
+
+        preg_match('/(([0-9]{1,3})[-|\s]{0,4}([0-9]{0,3}))$/i', $target, $errz);
+        $street = trim(str_replace($errz[0], '', $target));
+        $houseNr = (!empty($errz[2]) ? $errz[2] : '');
+        $flatNr = (!empty($errz[3]) ? $errz[3] : '');
+
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Phone' => $order->getUser()->getPhone(),
             'ZipCode' => '',
             'City' => $order->getAddressId()->getCity(),
-            'Street' => $order->getAddressId()->getAddress(),
-            'Street No_' => $order->getAddressId()->getAddress(),
+            'Street' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $street: ''),
+            'Street No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $houseNr: ''),
             'Floor' => '',
             'Grid' => '',
             'Chain' => $order->getPlace()->getChain(),
@@ -156,14 +164,14 @@ class NavService extends ContainerAware
             'Delivery Type' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? 1 : 4),
             'Restaurant No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? '' : $order->getPlacePoint()->getInternalCode()),
             'Order Date' => $order->getOrderDate()->format("Y-m-d"),
-            'Order Time' => $order->getOrderDate()->format("H:i:s"),
-            'Takeout Time' => $order->getDeliveryTime()->format("H:i:s"),
-            'Directions' => '',
+            'Order Time' => '1754-01-01 '.$order->getOrderDate()->format("H:i:s"),
+            'Takeout Time' => $order->getDeliveryTime()->format("Y-m-d H:i:s"),
+            'Directions' => $order->getComment(),
             'Discount Card No_' => '',
             'Order Status' => 0,
             'Delivery Order No_' => '',
             'Error Description' => '',
-            'Flat No_' => '',
+            'Flat No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $flatNr: ''),,
             'Entrance Code' => '',
             'Region Code' => '',
             'Delivery Status' => '',
