@@ -40,7 +40,8 @@ class ProfileFormType extends BaseType
     {
         $attributes = array('rel' => 'tooltip',
                             'data-toggle' => 'tooltip',
-                            'data-placement' => 'top');
+                            'data-placement' => 'top',
+                            'data-trigger' => 'focus');
 
         $builder
             ->add('firstname',

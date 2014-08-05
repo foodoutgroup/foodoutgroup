@@ -67,10 +67,10 @@
                         </form>
                         <script type="text/javascript">
                         // <![CDATA[
-                        $(document).ready(function() {
-                            var options = {'trigger': 'focus'};
+                        $(window).load(function() {
+                            var inputs = $('.user-details-form:visible .form-row input');
 
-                            $('.user-details-form:visible .form-row input').tooltip(options).tooltip('show');
+                            inputs.tooltip('show');
                         });
                         // ]]>
                         </script>

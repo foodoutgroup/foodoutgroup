@@ -38,7 +38,8 @@ class RegistrationFormType extends BaseType
     {
         $attributes = array('rel' => 'tooltip',
                             'data-toggle' => 'tooltip',
-                            'data-placement' => 'top');
+                            'data-placement' => 'top',
+                            'data-trigger' => 'focus');
 
         $builder
             ->add('firstname',
@@ -75,7 +76,8 @@ class RegistrationFormType extends BaseType
                         'first_options' => array('label' => 'form.password'),
                         'second_options' => array('label' => 'form.password_confirmation'),
                         'invalid_message' => 'fos_user.password.mismatch',
-                        'attr' => $attributes))
+                        'first_options' => ['attr' => $attributes],
+                        'second_options' => ['attr' => $attributes]))
             ->remove('username')
             ->remove('phone')
         ;
