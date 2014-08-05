@@ -46,6 +46,7 @@ class PlaceAdmin extends FoodAdmin
                 )
             ))
             ->add('chain', null, array('label' => 'admin.place.chain', 'required' => false,))
+            ->add('navision', 'checkbox', array('label' => 'admin.place.navision', 'required' => false,))
             ->add('kitchens', null, array(
                 'query_builder' => $kitchenQuery,
                 'multiple' => true,

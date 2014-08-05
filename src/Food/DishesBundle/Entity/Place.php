@@ -56,6 +56,13 @@ class Place extends Uploadable implements Translatable
     private $chain;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="navision", type="boolean")
+     */
+    private $navision = false;
+
+    /**
      * @var string
      * @Gedmo\Translatable
      * @ORM\Column(name="alcohol_rules", type="text", nullable=true)
@@ -1263,5 +1270,28 @@ class Place extends Uploadable implements Translatable
     public function getChain()
     {
         return $this->chain;
+    }
+
+    /**
+     * Set navision
+     *
+     * @param boolean $navision
+     * @return Place
+     */
+    public function setNavision($navision)
+    {
+        $this->navision = $navision;
+    
+        return $this;
+    }
+
+    /**
+     * Get navision
+     *
+     * @return boolean 
+     */
+    public function getNavision()
+    {
+        return $this->navision;
     }
 }

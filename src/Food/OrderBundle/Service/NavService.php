@@ -144,7 +144,6 @@ class NavService extends ContainerAware
         $orderNewId = $this->getNavOrderId($order);
 
         $target = $order->getAddressId()->getAddress();
-
         preg_match('/(([0-9]{1,3})[-|\s]{0,4}([0-9]{0,3}))$/i', $target, $errz);
         $street = trim(str_replace($errz[0], '', $target));
         $houseNr = (!empty($errz[2]) ? $errz[2] : '');
@@ -160,18 +159,18 @@ class NavService extends ContainerAware
             'Floor' => '',
             'Grid' => '',
             'Chain' => $order->getPlace()->getChain(),
-            'Name' => $order->getUser()->getNameForOrder(),
+            'Name' => 'NEGAMINTI !! Foodout. '.$order->getUser()->getNameForOrder(),
             'Delivery Type' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? 1 : 4),
             'Restaurant No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? '' : $order->getPlacePoint()->getInternalCode()),
             'Order Date' => $order->getOrderDate()->format("Y-m-d"),
             'Order Time' => '1754-01-01 '.$order->getOrderDate()->format("H:i:s"),
-            'Takeout Time' => $order->getDeliveryTime()->format("Y-m-d H:i:s"),
+            'Takeout Time' => '2014-08-05 23:30:00', //$order->getDeliveryTime()->format("Y-m-d H:i:s"),
             'Directions' => $order->getComment(),
             'Discount Card No_' => '',
             'Order Status' => 0,
             'Delivery Order No_' => '',
             'Error Description' => '',
-            'Flat No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $flatNr: ''),,
+            'Flat No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $flatNr: ''),
             'Entrance Code' => '',
             'Region Code' => '',
             'Delivery Status' => '',
