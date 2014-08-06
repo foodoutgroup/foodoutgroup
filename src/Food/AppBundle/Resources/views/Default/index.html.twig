@@ -65,6 +65,7 @@
         });
     {% endblock %}
 
+{% block title %}{{ page_title }} - {% trans %}general.homepage.meta_title{% endtrans %}{% endblock %}
 
 {% block body %}
 
@@ -79,6 +80,7 @@
                         <option value="" disabled {% if formDefaults.city == '' %}selected{% endif %}>{% trans %}index.city{% endtrans %}</option>
                         <option value="Vilnius" {% if formDefaults.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
                         <option value="Kaunas" {% if formDefaults.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
+                        <option value="Klaipėda" {% if formDefaults.city == 'Klaipėda' %}selected{% endif %}>Klaipėda</option>
                     </select>
 
                     {# <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}"  autocomplete="off" > #}

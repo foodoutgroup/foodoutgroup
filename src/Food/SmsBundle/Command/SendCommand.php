@@ -27,24 +27,17 @@ class SendCommand extends ContainerAwareCommand
         $count = 0;
 
         $messagingService = $this->getContainer()->get('food.messages');
-        $messagingProviders = $this->getContainer()->getParameter('sms.available_providers');
-
-        if (count($messagingProviders) < 1) {
+//        $messagingProviders = $this->getContainer()->getParameter('sms.available_providers');
+        $mainProvider = $this->getContainer()->getParameter('sms.main_provider');
+//
+        if (empty($mainProvider)) {
             $errMessage = 'No messaging providers configured. Please check Your configuration!';
             $output->writeln('<error>'.$errMessage.'</error>');
 
             throw new \Exception($errMessage);
         }
-        if (count($messagingProviders) > 1) {
-            $errMessage = 'Sorry, at the moment we dont support more than one provider!';
-            $output->writeln('<error>'.$errMessage.'</error>');
-            $output->writeln('Available provider: '.var_export($messagingProviders, true));
 
-            throw new \Exception($errMessage);
-        }
-
-        // OMG kaip negrazu, bet cia laikinai, kol tik viena provideri turim
-        $provider = $this->getContainer()->get($messagingProviders[0]);
+        $provider = $this->getContainer()->get($mainProvider);
 
         if ($input->getOption('debug')) {
             $provider->setDebugEnabled(true);

@@ -13,12 +13,12 @@
                 {% set smallImgClass = '' %}
             {% endif %}
         <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" href2="#detailed-dish-popup" class="fancybox.ajax fancy-box">
-            <img src="/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}">
-            <img src="/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
+            <img src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}">
+            <img src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
         </a>
         {% endif %}
         <h3 class="name">{{ loop.index }}. {{ dish.name }}</h3>
-        <p class="desc">{{ dish.description }}</p>
+        <p class="desc">{{ dish.description|nl2br }}</p>
         <div class="menu-item-bottom clearfix">
             {% if smallestPrice and largestPrice %}
             <span class="price">

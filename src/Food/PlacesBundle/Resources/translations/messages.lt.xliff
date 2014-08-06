@@ -47,6 +47,10 @@
                 <source>admin.place.description</source>
                 <target>Aprašymas</target>
             </trans-unit>
+            <trans-unit id="admin.place.alcohol_rules">
+                <source>admin.place.alcohol_rules</source>
+                <target>Alkoh. taisyklės</target>
+            </trans-unit>
             <trans-unit id="admin.place.recommended">
                 <source>admin.place.recommended</source>
                 <target>Rekomend.</target>

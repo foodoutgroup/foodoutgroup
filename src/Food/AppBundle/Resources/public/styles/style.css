@@ -55,6 +55,8 @@
 .dish-ingredients .custom-checkbox strong,
 .detailed-dish-popup .button-submit,
 .delivery-info-form .submit-button span,
+.coupon_form_popup .button-submit,
+.coupon_form_popup .button-submit span,
 .cupon-page p strong,
 .fb-button,
 .order-history-item .desc strong,
@@ -673,8 +675,8 @@ input.button {}
 
 .detailed-dish-popup .popup-controls {padding: 16px 21px;}
 
-.detailed-dish-popup .button-submit {display: block; height: 48px; line-height: 48px; font-size: 20px; text-align: center; color: #86560d; border-radius: 4px; background: url(/bundles/foodapp/images/button-rep.png) repeat-x left top; box-shadow: 0 1px 1px #c0c0c0; text-transform: uppercase; letter-spacing: 1.7px; text-shadow: 0 1px 0 #fde99a;}
-.detailed-dish-popup .button-submit span {display: inline-block; line-height: 48px; padding: 0 29px; background: url(/bundles/foodapp/images/button-arrow.png) no-repeat right center; text-shadow: 0 0 0 #fff;}
+.detailed-dish-popup .button-submit, .coupon_form_popup .button-submit {display: block; height: 48px; line-height: 48px; font-size: 20px; text-align: center; color: #86560d; border-radius: 4px; background: url(/bundles/foodapp/images/button-rep.png) repeat-x left top; box-shadow: 0 1px 1px #c0c0c0; text-transform: uppercase; letter-spacing: 1.7px; text-shadow: 0 1px 0 #fde99a;}
+.detailed-dish-popup .button-submit span, .coupon_form_popup .button-submit span {display: inline-block; line-height: 48px; padding: 0 29px; background: url(/bundles/foodapp/images/button-arrow.png) no-repeat right center; text-shadow: 0 0 0 #fff;}
 
 /*Login regsiter popup*/
 .login-register-popup {width: 860px; border-radius: 10px; background: #fff url(/bundles/foodapp/images/dot.png) repeat-y center top;}
@@ -799,7 +801,6 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
 
 .register-form .form-row.error input,
 .login-form .form-row.error input,
-.user-details-form .form-row.error input,
 .review-form .form-row.error span.rate-review {
     border: 1px solid #ff0000;
 }
@@ -969,6 +970,69 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
     display: inline-block;
     vertical-align: sub;
 }
+
+.restautrant-logo-wrap {
+   padding-left: 2px;
+}
+
+ul.dish-holder {
+    padding-left: 10px;
+    padding-right: 3px;
+}
+
+.restaurant-item .item-righter .rating-count a {
+    color: #55422e;
+}
+
+.ui-dialog.over_fancy_box {
+    z-index: 9001;
+}
+
+.restaurant-description a {
+    text-decoration: underline;
+}
+
+.delivery-info-form .cart-rules {
+    margin-top: 20px;
+    /*float: right;*/
+    margin-left: 175px;
+}
+
+.delivery-info-form .cart-rules label {
+    width: auto;
+    margin-top: -8px;
+    padding-bottom: 5px;
+}
+
+div.cart_rules_content {
+    display: block;
+    padding: 5px;
+    width: 700px;
+}
+
+.cart_rules_content .cart_rules_inner {
+    height: 590px;
+    padding-right: 5px;
+    overflow-x: scroll;
+    overflow: auto;
+}
+
+div.coupon_form_popup {
+    padding: 5px;
+    width: 350px;
+}
+.coupon_form_popup .coupon_inner {
+    padding-bottom: 5px;
+}
+.coupon_form_popup .the_text {
+    font-size: 14px;
+    padding-bottom: 5px;
+}
+.coupon_form_popup .the_input {
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.coupon_form_popup input[type="text"] {width: 324px; height: 17px; font-size: 15px; padding: 9px 12px; border: 1px solid #d8d8d8; border-radius: 3px; box-shadow: 0 0 1px #f2f2f2; box-shadow: 0 0 2px #d0c8c1;}}
 
 .tooltip {
   position: absolute;

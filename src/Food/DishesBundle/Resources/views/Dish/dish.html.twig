@@ -1,11 +1,11 @@
 <div id="detailed-dish-popup">
     <form class="popup detailed-dish-popup">
         {% if dish.getWebPathThumb('type3') is not empty %}
-            <img src="/{{ dish.getWebPathThumb('type3') }}" class="popup-header" />
+            <img src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type3') }}" class="popup-header" />
         {% endif %}
         <div class="dish-info">
             <p class="name">{{ dish.name }}</p>
-            <p class="desc">{{ dish.description }}</p>
+            <p class="desc">{{ dish.description|nl2br }}</p>
         </div>
         <div class="dish-size">
             <div class="title">{% trans %}dish.select_size{% endtrans %}</div>
@@ -51,7 +51,14 @@
         <div class="dish-size">
             <div class="title">{% trans %}dish.select_quantity{% endtrans %} <input class="counter" name="counter" value="{% if cart %}{{ cart.quantity }}{% else %}1{% endif %}" /></div>
         </div>
-        <input type="hidden" name="place" value="{{ dish.place.id }}">
+        <input type="hidden" name="place" value="{{ dish.place.id }}" />
+        <input type="hidden" name="isAlcohol" value="{% if dish.isAlcohol %}1{% else %}0{% endif %}" />
+
+        <div class="hidden alcoholRules">
+            <div>
+                {{ dish.place.alcoholRules|nl2br }}
+            </div>
+        </div>
 
         <div class="popup-controls"><a href="#" class="button-submit add-to-cart"><span>{% trans %}dish.add_to_cart{% endtrans %}</span></a></div>
     </form>

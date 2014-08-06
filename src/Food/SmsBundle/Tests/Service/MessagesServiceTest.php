@@ -809,6 +809,11 @@ class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
             ->with('m.submittedAt <= :sentJustNow')
             ->will($this->returnValue($queryBuilder));
 
+        $queryBuilder->expects($this->at(5))
+            ->method('andWhere')
+            ->with('m.timesSent = 1')
+            ->will($this->returnValue($queryBuilder));
+
         $queryBuilder->expects($this->once())
             ->method('orderBy')
             ->with('m.createdAt', 'ASC')
@@ -887,6 +892,11 @@ class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
         $queryBuilder->expects($this->at(4))
             ->method('andWhere')
             ->with('m.submittedAt <= :sentJustNow')
+            ->will($this->returnValue($queryBuilder));
+
+        $queryBuilder->expects($this->at(5))
+            ->method('andWhere')
+            ->with('m.timesSent = 1')
             ->will($this->returnValue($queryBuilder));
 
         $queryBuilder->expects($this->once())

@@ -38,14 +38,14 @@ class DishUnitCategory
     private $place;
 
     /**
-    * @var string
+    * @var \DateTime
     *
     * @ORM\Column(name="created_at", type="datetime")
     */
     private $createdAt;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
@@ -60,7 +60,7 @@ class DishUnitCategory
     private $createdBy;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="edited_at", type="datetime", nullable=true)
      */
@@ -180,7 +180,7 @@ class DishUnitCategory
     /**
      * Set deletedAt
      *
-     * @param \DateTime $deletedAt
+     * @param \DateTime|null $deletedAt
      * @return DishUnitCategory
      */
     public function setDeletedAt($deletedAt)
@@ -193,7 +193,7 @@ class DishUnitCategory
     /**
      * Get deletedAt
      *
-     * @return \DateTime 
+     * @return \DateTime|null
      */
     public function getDeletedAt()
     {
@@ -203,7 +203,7 @@ class DishUnitCategory
     /**
      * Set editedAt
      *
-     * @param \DateTime $editedAt
+     * @param \DateTime|null $editedAt
      * @return DishUnitCategory
      */
     public function setEditedAt($editedAt)
@@ -216,7 +216,7 @@ class DishUnitCategory
     /**
      * Get editedAt
      *
-     * @return \DateTime 
+     * @return \DateTime|null
      */
     public function getEditedAt()
     {

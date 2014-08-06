@@ -166,6 +166,14 @@
         <source>general.rating</source>
         <target>Įvertinimas</target>
       </trans-unit>
+      <trans-unit id="general.alcohol_confirmation.confirm" resname="general.alcohol_confirmation.confirm">
+        <source>general.alcohol_confirmation.confirm</source>
+        <target>Patvirtinu</target>
+      </trans-unit>
+      <trans-unit id="general.alcohol_confirmation.exit" resname="general.alcohol_confirmation.exit">
+        <source>general.alcohol_confirmation.exit</source>
+        <target>Išeiti</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

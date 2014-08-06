@@ -1,5 +1,31 @@
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
+{% block  javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/foodapp/scripts/jquery-qtip/jquery.qtip.min.js') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.dishes-tip').qtip({
+                position: {
+                    my: 'center left',
+                    at: 'center right',
+                    adjust: {
+//                        y: -10,
+                        resize: true,
+                        scroll: true
+                    }
+                },
+                style: {
+                    tip: {
+                        corner: 'center left'
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
 {% form_theme form.profile _self %}
 {% form_theme form.address _self %}
 
@@ -13,6 +39,27 @@
 {% endblock form_row %}
 
 {% block body %}
+    {% macro orderDishes(order) %}
+        <ul class='dish-holder'>
+            {% for dish in order.details %}
+                    <li>
+                        {{ dish.dishName }} - {{ dish.dishUnitName }} ({{ dish.quantity }} {% trans %}general.item_quantity{% endtrans %})
+                        {% if dish.options|length > 0 %}
+                            <ul>
+                            {% for dishOption in dish.options %}
+                                <li>{{ dishOption.dishOptionName }}</li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+            {% endfor %}
+        </ul>
+    {% endmacro %}
+    {% import _self as tip %}
+
+    {% stylesheets 'bundles/foodapp/scripts/jquery-qtip/jquery.qtip.min.css' filter="cssrewrite" %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    {% endstylesheets %}
     <div class="site-center">
         <div class="site-block">
             <div class="page-path clearfix">
@@ -85,7 +132,7 @@
                                 <div class="order-history-item clearfix">
                                     <div class="restautrant-logo">
                                         <div class="restautrant-logo-wrap">
-                                            <img src="/uploads/places/thumb_{{ order.place.logo }}" alt="{{ order.placeName }}" />
+                                            <img src="http://{{ cloudfront_url }}/uploads/places/thumb_{{ order.place.logo }}" alt="{{ order.placeName }}" />
                                         </div>
                                     </div>
                                     <div class="history-item-middle">
@@ -102,7 +149,10 @@
                                             {% else %}
                                                 {% trans %}general.order.making{% endtrans %}
                                             {% endif %}
-                                            <strong>{{ order.details.count }} {% trans %}general.order.dishes{% endtrans %}</strong> {% trans %}general.for{% endtrans %} {{ order.total }} {{ currency_display }}
+                                            <div title="{{ tip.orderDishes(order) }}" class="dishes-tip" style="display: inline-block;">
+                                                <strong>{{ order.details.count }} {% trans %}general.order.dishes{% endtrans %}</strong>
+                                            </div>
+                                            {% trans %}general.for{% endtrans %} {{ order.total }} {{ currency_display }}
                                             {% if order.deliveryType == 'deliver' %}
                                                 {% trans %}general.to{% endtrans %} {{ order.addressId.address }}.
                                             {% else %}

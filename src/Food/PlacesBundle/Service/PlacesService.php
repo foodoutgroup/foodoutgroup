@@ -34,7 +34,7 @@ class PlacesService extends ContainerAware {
      */
     public function getPlace($placeId) {
         if (empty($placeId)) {
-            throw new \InvalidArgumentException('Cant seach a place without and id. How can you find a house without address?');
+            throw new \InvalidArgumentException('Cant search a place without and id. How can you find a house without address?');
         }
 
         return $this->em()->getRepository('FoodDishesBundle:Place')

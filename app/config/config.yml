@@ -9,16 +9,21 @@ imports:
 parameters:
     available_locales: [lt, en, ru]
     available_locales_routing: lt | en | ru
-    available_cities: ["Vilnius","Kaunas"]
+    available_cities: ["Vilnius","Kaunas","Klaipėda"]
     time_zone: "Europe/Vilnius"
-    sms.available_providers: [food.infobip]
+    sms.available_providers: [food.infobip, food.silverstreet]
+    sms.main_provider: "food.infobip"
     sms.sender: "Foodout.lt"
-    sms.balance_limit_warn: 8
-    sms.balance_limit_critical: 5
+    sms.balance_limit_warn: 5
+    sms.balance_limit_critical: 3
     infobip_provider.api_url: "http://api.infobip.com/api/v3/sendsms/json"
     infobip_provider.account_url: "http://api2.infobip.com/api"
     infobip_provider.login: "skanu1"
     infobip_provider.password: "119279"
+    silverstreet_provider.api_url: "http://api.silverstreet.com/send.php"
+    silverstreet_provider.account_url: "http://api.silverstreet.com/creditcheck.php"
+    silverstreet_provider.login: "foodout"
+    silverstreet_provider.password: "ZQg5ryLS"
     # Situos gal issikelkime i parametru faila pagal aplinka?
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
@@ -27,6 +32,7 @@ parameters:
     order.city_coordinators:
         vilnius: []
         kaunas: [renata@foodout.lt]
+        klaipeda: []
     order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
@@ -55,6 +61,7 @@ parameters:
     vat: 21
     evp.test_payments: 0
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
+    cloudfront_url: images.foodout.lt
 
 framework:
     #esi:             ~
@@ -90,16 +97,18 @@ twig:
         vat_size: "%vat%"
         dish_service: "@food.dishes"
         order_service: "@food.order"
+        static_service: "@food.static"
         google_maps_api: "%google.maps_api%"
         language_utils: "@food.app.utils.language"
         notifications: "@food.app.utils.notifications"
+        cloudfront_url: "%cloudfront_url%"
 
 
 # Assetic Configuration
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle ]
+    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle, FoodUserBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -243,6 +252,7 @@ sonata_admin:
                       #- sonata.admin.food.category
                       - sonata.admin.static
                       - sonata.admin.sms
+                      - sonata.admin.coupon
                       #- sonata.admin.dish.unit.category
                   roles: [ ROLE_ADMIN ]
               acme.admin.group.formanagers:

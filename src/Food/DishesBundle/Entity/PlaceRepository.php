@@ -8,9 +8,9 @@ class PlaceRepository extends EntityRepository
 {
     /**
      * @param $kitchens
-     * @param $city
-     * @param $long
-     * @param $lat
+     * @param $filters
+     * @param bool $recommended
+     * @param null $locationData
      * @return array
      */
     public function magicFindByKitchensIds($kitchens, $filters, $recommended = false, $locationData = null)//, $city, $lat, $long)

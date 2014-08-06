@@ -50,11 +50,12 @@ class DishController extends Controller
     /**
      * Disho editas carte.
      *
-     * @param $dish
-     * @param $cartId
+     * @param int $dish
+     * @param int $cartId
+     * @param int $inCart
      * @return Response
      */
-    public function removeDishInCartAction($dish, $cartId)
+    public function removeDishInCartAction($dish, $cartId, $inCart)
     {
         $dishEnt = $this->getDoctrine()->getRepository('FoodDishesBundle:Dish')->find((int)$dish);
         $cartEnt = $this->get('food.cart')->getCartDish(intval($dish), intval($cartId));
@@ -62,7 +63,8 @@ class DishController extends Controller
             'FoodDishesBundle:Dish:dish_remove.html.twig',
             array(
                 'dish' => $dishEnt,
-                'cart' => $cartEnt
+                'cart' => $cartEnt,
+                'inCart' => $inCart,
             )
         );
     }

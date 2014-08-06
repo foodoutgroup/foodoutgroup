@@ -61,19 +61,37 @@ class DeliveryController extends Controller
         return $this->messagingService;
     }
 
-    public function indexAction(Request $request)
+    public function indexAction($provider, Request $request)
     {
         $messagingService = $this->getMessagingService();
 
+        if ($provider == 'silverstreet') {
+            $this->setProvider($this->get('food.silverstreet'));
+        }
+
         // TODO iskelti i services.yml, kad uzkrautu per ten :) gal :)
-        $provider = $this->getProvider();
+        $providerInstance = $this->getProvider();
         // For debuging only!! TODO turn off this damn thing
-        $provider->setLogger($this->container->get('logger'));
-        $provider->setDebugEnabled(true);
+        $providerInstance->setLogger($this->container->get('logger'));
+        $providerInstance->setDebugEnabled(true);
 
-        $messagingService->setMessagingProvider($provider);
-        $messagingService->updateMessagesDelivery($request->getContent());
+        $messagingService->setMessagingProvider($providerInstance);
 
-        return new Response("OK, response parsed");
+        if ($provider == 'silverstreet') {
+            $messagingService->updateMessagesDelivery(
+                array(
+                    'reference' => $request->get('REFERENCE'),
+                    'status' => $request->get('STATUS'),
+                    'reason' => $request->get('REASON'),
+                    'destination' => $request->get('DESTINATION'),
+                    'timestamp' => $request->get('TIMESTAMP'),
+                    'operator' => $request->get('OPERATOR')
+                )
+            );
+        } else {
+            $messagingService->updateMessagesDelivery($request->getContent());
+        }
+
+        return new Response("OK");
     }
 }

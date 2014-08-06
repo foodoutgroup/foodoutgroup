@@ -187,12 +187,10 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * TODO useles test?
      * @depends testGetPaymentSystemByMethod
      */
     public function testGetBillingInterface()
     {
-        $this->markTestIncomplete();
         $localBiller = new LocalBiller();
         $payseraBiller = new PaySera();
 
@@ -595,6 +593,208 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expected18, $gotValidity18);
         $this->assertEquals($expected19, $gotValidity19);
         $this->assertEquals($expected20, $gotValidity20);
+    }
+
+    public function testIsAllowedOrderStatusChange()
+    {
+        $expectedValidity1 = true;
+        $expectedValidity2 = true;
+        $expectedValidity3 = true;
+        $expectedValidity4 = true;
+        $expectedValidity5 = true;
+        $expectedValidity6 = true;
+        $expectedValidity7 = true;
+        $expectedValidity8 = true;
+        $expectedValidity9 = true;
+        $expectedValidity10 = true;
+        $expectedValidity11 = true;
+        $expectedValidity12 = false;
+        $expectedValidity13 = false;
+        $expectedValidity14 = false;
+        $expectedValidity15 = true;
+        $expectedValidity16 = true;
+        $expectedValidity17 = false;
+        $expectedValidity18 = true;
+        $expectedValidity19 = true;
+        $expectedValidity20 = false;
+        $expectedValidity21 = false;
+        $expectedValidity22 = false;
+        $expectedValidity23 = false;
+        $expectedValidity24 = false;
+        $expectedValidity25 = false;
+        $expectedValidity26 = true;
+        $expectedValidity27 = false;
+        $expectedValidity28 = false;
+        $expectedValidity29 = false;
+        $expectedValidity30 = false;
+        $expectedValidity31 = true;
+        $expectedValidity32 = true;
+        $expectedValidity33 = true;
+        $expectedValidity34 = false;
+        $expectedValidity35 = true;
+        $expectedValidity36 = false;
+        $expectedValidity37 = false;
+        $expectedValidity38 = false;
+
+        $orderService = new OrderService();
+
+        $gotValidity1 = $orderService->isValidOrderStatusChange('new', 'accepted');
+        $gotValidity2 = $orderService->isValidOrderStatusChange('new', 'canceled');
+        $gotValidity3 = $orderService->isValidOrderStatusChange('new', 'finished');
+        $gotValidity4 = $orderService->isValidOrderStatusChange('new', 'assigned');
+        $gotValidity5 = $orderService->isValidOrderStatusChange('new', 'completed');
+        $gotValidity6 = $orderService->isValidOrderStatusChange('new', 'delayed');
+        $gotValidity7 = $orderService->isValidOrderStatusChange('accepted', 'canceled');
+        $gotValidity8 = $orderService->isValidOrderStatusChange('accepted', 'assigned');
+        $gotValidity9 = $orderService->isValidOrderStatusChange('accepted', 'finished');
+        $gotValidity10 = $orderService->isValidOrderStatusChange('accepted', 'delayed');
+        $gotValidity11 = $orderService->isValidOrderStatusChange('accepted', 'completed');
+        $gotValidity12 = $orderService->isValidOrderStatusChange('accepted', 'new');
+        $gotValidity13 = $orderService->isValidOrderStatusChange('accepted', 'accepted');
+        $gotValidity14 = $orderService->isValidOrderStatusChange('finished', 'accepted');
+        $gotValidity15 = $orderService->isValidOrderStatusChange('finished', 'assigned');
+        $gotValidity16 = $orderService->isValidOrderStatusChange('finished', 'canceled');
+        $gotValidity17 = $orderService->isValidOrderStatusChange('finished', 'new');
+        $gotValidity18 = $orderService->isValidOrderStatusChange('assigned', 'canceled');
+        $gotValidity19 = $orderService->isValidOrderStatusChange('assigned', 'completed');
+        $gotValidity20 = $orderService->isValidOrderStatusChange('assigned', 'accepted');
+        $gotValidity21 = $orderService->isValidOrderStatusChange('assigned', 'finished');
+        $gotValidity22 = $orderService->isValidOrderStatusChange('completed', 'new');
+        $gotValidity23 = $orderService->isValidOrderStatusChange('completed', 'accepted');
+        $gotValidity24 = $orderService->isValidOrderStatusChange('completed', 'assigned');
+        $gotValidity25 = $orderService->isValidOrderStatusChange('completed', 'finished');
+        $gotValidity26 = $orderService->isValidOrderStatusChange('completed', 'canceled');
+        $gotValidity27 = $orderService->isValidOrderStatusChange('canceled', 'new');
+        $gotValidity28 = $orderService->isValidOrderStatusChange('canceled', 'assigned');
+        $gotValidity29 = $orderService->isValidOrderStatusChange('canceled', 'accepted');
+        $gotValidity30 = $orderService->isValidOrderStatusChange('canceled', 'finished');
+        $gotValidity31 = $orderService->isValidOrderStatusChange('delayed', 'finished');
+        $gotValidity32 = $orderService->isValidOrderStatusChange('delayed', 'assigned');
+        $gotValidity33 = $orderService->isValidOrderStatusChange('delayed', 'completed');
+        $gotValidity34 = $orderService->isValidOrderStatusChange('delayed', 'accepted');
+        $gotValidity35 = $orderService->isValidOrderStatusChange('', 'new');
+        $gotValidity36 = $orderService->isValidOrderStatusChange('delayed', '');
+        $gotValidity37 = $orderService->isValidOrderStatusChange('', '');
+        $gotValidity38 = $orderService->isValidOrderStatusChange('omg', 'accepted');
+
+        $this->assertEquals($expectedValidity1, $gotValidity1);
+        $this->assertEquals($expectedValidity2, $gotValidity2);
+        $this->assertEquals($expectedValidity3, $gotValidity3);
+        $this->assertEquals($expectedValidity4, $gotValidity4);
+        $this->assertEquals($expectedValidity5, $gotValidity5);
+        $this->assertEquals($expectedValidity6, $gotValidity6);
+        $this->assertEquals($expectedValidity7, $gotValidity7);
+        $this->assertEquals($expectedValidity8, $gotValidity8);
+        $this->assertEquals($expectedValidity9, $gotValidity9);
+        $this->assertEquals($expectedValidity10, $gotValidity10);
+        $this->assertEquals($expectedValidity11, $gotValidity11);
+        $this->assertEquals($expectedValidity12, $gotValidity12);
+        $this->assertEquals($expectedValidity13, $gotValidity13);
+        $this->assertEquals($expectedValidity14, $gotValidity14);
+        $this->assertEquals($expectedValidity15, $gotValidity15);
+        $this->assertEquals($expectedValidity16, $gotValidity16);
+        $this->assertEquals($expectedValidity17, $gotValidity17);
+        $this->assertEquals($expectedValidity18, $gotValidity18);
+        $this->assertEquals($expectedValidity19, $gotValidity19);
+        $this->assertEquals($expectedValidity20, $gotValidity20);
+        $this->assertEquals($expectedValidity21, $gotValidity21);
+        $this->assertEquals($expectedValidity22, $gotValidity22);
+        $this->assertEquals($expectedValidity23, $gotValidity23);
+        $this->assertEquals($expectedValidity24, $gotValidity24);
+        $this->assertEquals($expectedValidity25, $gotValidity25);
+        $this->assertEquals($expectedValidity26, $gotValidity26);
+        $this->assertEquals($expectedValidity27, $gotValidity27);
+        $this->assertEquals($expectedValidity28, $gotValidity28);
+        $this->assertEquals($expectedValidity29, $gotValidity29);
+        $this->assertEquals($expectedValidity30, $gotValidity30);
+        $this->assertEquals($expectedValidity31, $gotValidity31);
+        $this->assertEquals($expectedValidity32, $gotValidity32);
+        $this->assertEquals($expectedValidity33, $gotValidity33);
+        $this->assertEquals($expectedValidity34, $gotValidity34);
+        $this->assertEquals($expectedValidity35, $gotValidity35);
+        $this->assertEquals($expectedValidity36, $gotValidity36);
+        $this->assertEquals($expectedValidity37, $gotValidity37);
+        $this->assertEquals($expectedValidity38, $gotValidity38);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGenerateOrderHashException()
+    {
+        $orderService = new OrderService();
+        $orderService->generateOrderHash('aa');
+    }
+
+    public function testIsValidDeliveryType()
+    {
+        $expectedValidity1 = true;
+        $expectedValidity2 = true;
+        $expectedValidity3 = false;
+        $expectedValidity4 = false;
+
+        $orderService = new OrderService();
+
+        $gotValidity1 = $orderService->isValidDeliveryType('deliver');
+        $gotValidity2 = $orderService->isValidDeliveryType('pickup');
+        $gotValidity3 = $orderService->isValidDeliveryType('send');
+        $gotValidity4 = $orderService->isValidDeliveryType('');
+
+        $this->assertEquals($expectedValidity1, $gotValidity1);
+        $this->assertEquals($expectedValidity2, $gotValidity2);
+        $this->assertEquals($expectedValidity3, $gotValidity3);
+        $this->assertEquals($expectedValidity4, $gotValidity4);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Delivery type must be set
+     */
+    public function testSetDeliveryTypeNoTypeException()
+    {
+        $orderService = new OrderService();
+        $orderService->setDeliveryType('');
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage is unknown or not allowed
+     */
+    public function testSetDeliveryTypeInvalidTypeException()
+    {
+        $order = $this->getMockBuilder('Food\OrderBundle\Entity\Order')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $orderService = new OrderService();
+        $orderService->setOrder($order);
+        $orderService->setDeliveryType('atnesk');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage no order here
+     */
+    public function testSetDeliveryTypeNoOrderException()
+    {
+        $orderService = new OrderService();
+        $orderService->setDeliveryType('deliver');
+    }
+
+    public function testSetDeliveryType()
+    {
+        $order = $this->getMockBuilder('Food\OrderBundle\Entity\Order')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $order->expects($this->once())
+            ->method('setDeliveryType')
+            ->with('deliver');
+
+        $orderService = new OrderService();
+        $orderService->setOrder($order);
+
+        $orderService->setDeliveryType('deliver');
     }
 
     private function cleanOrderForCompare($orderArray)

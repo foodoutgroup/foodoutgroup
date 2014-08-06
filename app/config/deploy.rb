@@ -6,7 +6,7 @@ set :repository,  "git@github.com:Foodout/skanu.lt.git"
 set :scm,         :git
 
 set :model_manager, "doctrine"
-set :branch, "design"
+set :branch, "master"
 
 # multi-stage environment
 set :stages,        %w(production staging sandbox)
@@ -53,7 +53,6 @@ namespace :deploy do
     end
 end
 
-# Kolkas nevalom kol hostexas nesutvarke mums teisiu!
 after "deploy", "deploy:cleanup"
 after "deploy", "deploy:chmod_things"
 # Uncomment kai bus airbrake

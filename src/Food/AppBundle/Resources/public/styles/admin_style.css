@@ -51,6 +51,7 @@ h4.padded {
 
 .order_list td.order_status {
     text-align: right;
+    white-space: nowrap;
 }
 
 .order_list td.driver {

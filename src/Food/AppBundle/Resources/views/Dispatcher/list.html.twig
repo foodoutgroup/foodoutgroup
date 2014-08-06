@@ -65,7 +65,17 @@
                         {% endif %}
                     </td>
                     <td>{{ order.id }}</td>
-                    <td>{{ order.placeName }}</td>
+                    <td>
+                        {{ order.placeName }}
+                        {% set placePointPhones = '+'~order.placePoint.phone %}
+                        {% if order.placePoint.altPhone1 is not empty%}
+                            {% set placePointPhones = placePointPhones ~ '<br />' ~ '+' ~ order.placePoint.altPhone1 %}
+                        {% endif %}
+                        {% if order.placePoint.altPhone2 is not empty%}
+                            {% set placePointPhones = placePointPhones ~ '<br />' ~ '+' ~ order.placePoint.altPhone2 %}
+                        {% endif %}
+                        <span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ placePointPhones }}"></span>
+                    </td>
                     <td>{{ order.placePoint.address }}</td>
                     <td>{{ order.addressId.address }}</td>
                     <td class="self_delivery">

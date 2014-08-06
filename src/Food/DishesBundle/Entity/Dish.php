@@ -30,10 +30,9 @@ class Dish extends Uploadable implements Translatable
      * @var string
      *
      * @Gedmo\Translatable
-     * @ORM\Column(name="name", type="string", length=65)
+     * @ORM\Column(name="name", type="string", length=80)
      */
     private $name;
-
 
     /**
      * @var string
@@ -59,14 +58,14 @@ class Dish extends Uploadable implements Translatable
     private $sizes;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
@@ -81,7 +80,7 @@ class Dish extends Uploadable implements Translatable
     private $createdBy;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="edited_at", type="datetime", nullable=true)
      */
@@ -175,7 +174,6 @@ class Dish extends Uploadable implements Translatable
         $this->setCreatedAt(new \DateTime('now'));
 
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->place = new \Doctrine\Common\Collections\ArrayCollection();
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -250,7 +248,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Set editedAt
      *
-     * @param \DateTime $editedAt
+     * @param \DateTime|null $editedAt
      * @return Dish
      */
     public function setEditedAt($editedAt)
@@ -263,7 +261,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get editedAt
      *
-     * @return \DateTime 
+     * @return \DateTime|null
      */
     public function getEditedAt()
     {
@@ -273,7 +271,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Set deletedAt
      *
-     * @param \DateTime $deletedAt
+     * @param \DateTime|null $deletedAt
      * @return Dish
      */
     public function setDeletedAt($deletedAt)
@@ -286,7 +284,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get deletedAt
      *
-     * @return \DateTime 
+     * @return \DateTime|null
      */
     public function getDeletedAt()
     {
@@ -342,7 +340,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get categories
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Food\DishesBundle\Entity\FoodCategory[]
      */
     public function getCategories()
     {
@@ -375,7 +373,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get options
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Food\DishesBundle\Entity\DishOption[]
      */
     public function getOptions()
     {
@@ -417,7 +415,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get translations
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Food\DishesBundle\Entity\DishLocalized[]
      */
     public function getTranslations()
     {
@@ -618,11 +616,17 @@ class Dish extends Uploadable implements Translatable
         return $this->photo;
     }
 
+    /**
+     * @return string
+     */
     public function getUploadableField()
     {
         return 'photo';
     }
 
+    /**
+     * @return string
+     */
     public function getUploadDir()
     {
         if (empty($this->uploadDir)) {
@@ -668,5 +672,21 @@ class Dish extends Uploadable implements Translatable
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAlcohol()
+    {
+        $categories = $this->getCategories();
+
+        foreach ($categories as $category) {
+            if ($category->getAlcohol()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

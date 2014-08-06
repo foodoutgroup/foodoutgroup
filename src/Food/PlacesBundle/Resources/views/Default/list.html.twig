@@ -2,7 +2,7 @@
     {% for place in places %}
         <div class="restaurant-item clearfix">
             <div class="logo">
-                <div class="logo-wrap"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}"><img src="/uploads/places/thumb_{{ place.place.logo }}"></a></div>
+                <div class="logo-wrap"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}"><img src="http://{{ cloudfront_url }}/uploads/places/thumb_{{ place.place.logo }}"></a></div>
             </div>
             <div class="item-center">
                 <h2 class="name clearfix">
@@ -100,7 +100,7 @@
                 <div class="clearfix">
                     <div data-stars="{{ place.place.rating }}" class="restoran-rating fl"></div>
                     {% if place.place.reviews.count != 0 %}
-                        <div class="rating-count fr">{{ place.place.reviews.count }} {% transchoice place.place.reviews.count %}places.reviews_count{% endtranschoice %}</div>
+                        <div class="rating-count fr"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}#detailed-restaurant-review">{{ place.place.reviews.count }} {% transchoice place.place.reviews.count %}places.reviews_count{% endtranschoice %}</a></div>
                     {% endif %}
                 </div><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}" class="button"><span>{% trans %}places.watch_menu{% endtrans %}</span></a>
             </div>

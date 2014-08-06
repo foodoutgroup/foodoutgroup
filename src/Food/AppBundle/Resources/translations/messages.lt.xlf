@@ -182,6 +182,10 @@
         <source>general.email.new_order</source>
         <target>naujas užsakymas</target>
       </trans-unit>
+      <trans-unit id="general.email.order_reminder" resname="general.email.order_reminder">
+        <source>general.email.order_reminder</source>
+        <target>primename, kad turite nepatvirtintą užsakymą</target>
+      </trans-unit>
       <trans-unit id="77c7e784b0de17ca35cb5e6e9b59b207" resname="general.email.accounting_yesterday_report">
         <source>general.email.accounting_yesterday_report</source>
         <target>vakaryksciu uzsakymu ataskaita</target>
@@ -326,6 +330,10 @@
         <source>general.sms.new_order</source>
         <target>Naujas uzsakymas: </target>
       </trans-unit>
+      <trans-unit id="general.sms.order_reminder" resname="general.sms.order_reminder">
+        <source>general.sms.order_reminder</source>
+        <target>Primename, kad turite nepatvirtinta uzsakyma: </target>
+      </trans-unit>
       <trans-unit id="ddd5593d67b30b671c0533a616aa5398" resname="general.sms.new_order_in_mail">
         <source>general.sms.new_order_in_mail</source>
         <target>Prasome pasitikrinti savo el.pasta, gavote nauja uzsakyma</target>
@@ -405,6 +413,18 @@
       <trans-unit id="ca4d1fefea4fd64c121dbd0e8fa2819c" resname="mobile.order.sum_with_delivery">
         <source>mobile.order.sum_with_delivery</source>
         <target>Suma su pristatymu (su PVM)</target>
+      </trans-unit>
+      <trans-unit id="mobile.order.coupon_code" resname="mobile.order.coupon_code">
+        <source>mobile.order.coupon_code</source>
+        <target>Nuolaidos kodas</target>
+      </trans-unit>
+      <trans-unit id="mobile.order.coupon_used" resname="mobile.order.coupon_used">
+        <source>mobile.order.coupon_used</source>
+        <target>Pritaikyta nuolaida</target>
+      </trans-unit>
+      <trans-unit id="mobile.order.coupon_discount_sum" resname="mobile.order.coupon_discount_sum">
+        <source>mobile.order.coupon_discount_sum</source>
+        <target>Nuolaidos suma</target>
       </trans-unit>
       <trans-unit id="c4893f3e3a9f9062ea893935c75c4724" resname="mobile.order.sum">
         <source>mobile.order.sum</source>
@@ -669,6 +689,201 @@
       <trans-unit id="general.raty.gorgeous" resname="general.raty.gorgeous">
         <source>general.raty.gorgeous</source>
         <target>Nuostabus</target>
+      </trans-unit>
+      <trans-unit id="general.item_quantity" resname="general.item_quantity">
+        <source>general.item_quantity</source>
+        <target>vnt.</target>
+      </trans-unit>
+      <trans-unit id="general.cart.success" resname="general.cart.success">
+        <source>general.cart.success</source>
+        <target><![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitumų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 687 44359</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="general.cart.wait" resname="general.cart.wait">
+        <source>general.cart.wait</source>
+        <target><![CDATA[Jūsų užsakymas priimtas ir bus perduotas restoranui, kai tik baigsite mokėjimą. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitumų, prašome susisiekite <br/> su <strong>"Foodout.lt"</strong> telefonu <strong>+370 687 44359</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="reporting.monthly.driver_report.title" resname="reporting.monthly.driver_report.title">
+        <source>reporting.monthly.driver_report.title</source>
+        <target>Praėjusio mėnesio (%reportDate%) vairuotojų vežti užsakymai</target>
+      </trans-unit>
+      <trans-unit id="reporting.driver" resname="reporting.driver">
+        <source>reporting.driver</source>
+        <target>Vairuotojas</target>
+      </trans-unit>
+      <trans-unit id="reporting.orders_total" resname="reporting.orders_total">
+        <source>reporting.orders_total</source>
+        <target>Viso užsakymų</target>
+      </trans-unit>
+      <trans-unit id="reporting.monthly.driver_report.payment_local" resname="reporting.monthly.driver_report.payment_local">
+        <source>reporting.monthly.driver_report.payment_local</source>
+        <target>Apmokėti vietoje</target>
+      </trans-unit>
+      <trans-unit id="reporting.monthly.driver_report.payment_banklink" resname="reporting.monthly.driver_report.payment_banklink">
+        <source>reporting.monthly.driver_report.payment_banklink</source>
+        <target>Apmokėti internetu</target>
+      </trans-unit>
+      <trans-unit id="reporting.monthly.driver_report.payment_local_sum" resname="reporting.monthly.driver_report.payment_local_sum">
+        <source>reporting.monthly.driver_report.payment_local_sum</source>
+        <target><![CDATA[Suma apmokėta vietoje<br />(su PVM)]]></target>
+      </trans-unit>
+      <trans-unit id="reporting.monthly.driver_report.payment_banklink_sum" resname="reporting.monthly.driver_report.payment_banklink_sum">
+        <source>reporting.monthly.driver_report.payment_banklink_sum</source>
+        <target><![CDATA[Suma apmokėta internetu<br />(su PVM)]]></target>
+      </trans-unit>
+      <trans-unit id="reporting.monthly.driver_report.total_order_sum" resname="reporting.monthly.driver_report.total_order_sum">
+        <source>reporting.monthly.driver_report.total_order_sum</source>
+        <target><![CDATA[Visų užsakymų suma<br />(su PVM)]]></target>
+      </trans-unit>
+      <trans-unit id="reporting.monthly.driver_report.total_drivers" resname="reporting.monthly.driver_report.total_drivers">
+        <source>reporting.monthly.driver_report.total_drivers</source>
+        <target>Viso vežusių vairuotojų</target>
+      </trans-unit>
+
+      <trans-unit id="reporting.daily.yesterday_orders.title" resname="reporting.daily.yesterday_orders.title">
+        <source>reporting.daily.yesterday_orders.title</source>
+        <target>Vakar dienos (%reportDate%) užsakymai</target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.our_delivery" resname="reporting.daily.yesterday_orders.our_delivery">
+        <source>reporting.daily.yesterday_orders.our_delivery</source>
+        <target>Užsakymai su mūsų pristatymu</target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.restourant_delivery" resname="reporting.daily.yesterday_orders.restourant_delivery">
+        <source>reporting.daily.yesterday_orders.restourant_delivery</source>
+        <target>Užsakymai, kuriuos pristatė pats restoranas</target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.pickup" resname="reporting.daily.yesterday_orders.pickup">
+        <source>reporting.daily.yesterday_orders.pickup</source>
+        <target>Restorane asiimti užsakymai</target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.time" resname="reporting.daily.yesterday_orders.time">
+        <source>reporting.daily.yesterday_orders.time</source>
+        <target>Laikas</target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.place" resname="reporting.daily.yesterday_orders.place">
+        <source>reporting.daily.yesterday_orders.place</source>
+        <target>Restoranas</target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.payment_type" resname="reporting.daily.yesterday_orders.payment_type">
+        <source>reporting.daily.yesterday_orders.payment_type</source>
+        <target>Atsiskaitymo tipas</target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.delivery_with_vat" resname="reporting.daily.yesterday_orders.delivery_with_vat">
+        <source>reporting.daily.yesterday_orders.delivery_with_vat</source>
+        <target><![CDATA[Pristat.<br />(su PVM)]]></target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.delivery_without_vat" resname="reporting.daily.yesterday_orders.delivery_without_vat">
+        <source>reporting.daily.yesterday_orders.delivery_without_vat</source>
+        <target><![CDATA[Pristat.<br />(be PVM)]]></target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.dishes_without_vat" resname="reporting.daily.yesterday_orders.dishes_without_vat">
+        <source>reporting.daily.yesterday_orders.dishes_without_vat</source>
+        <target><![CDATA[Patiekalai<br />(be PVM)]]></target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.vat" resname="reporting.daily.yesterday_orders.vat">
+        <source>reporting.daily.yesterday_orders.vat</source>
+        <target>PVM</target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.total_with_vat" resname="reporting.daily.yesterday_orders.total_with_vat">
+        <source>reporting.daily.yesterday_orders.total_with_vat</source>
+        <target><![CDATA[Viso<br />(su PVM)]]></target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.total_with_vat_no_brake" resname="reporting.daily.yesterday_orders.total_with_vat_no_brake">
+        <source>reporting.daily.yesterday_orders.total_with_vat_no_brake</source>
+        <target><![CDATA[Viso (su PVM)]]></target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.total_pickup" resname="reporting.daily.yesterday_orders.total_pickup">
+        <source>reporting.daily.yesterday_orders.total_pickup</source>
+        <target>Viso atsiimant (su PVM)</target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.total_banklink" resname="reporting.daily.yesterday_orders.total_banklink">
+        <source>reporting.daily.yesterday_orders.total_banklink</source>
+        <target>Viso internetu (su PVM)</target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.no_driver" resname="reporting.daily.yesterday_orders.no_driver">
+        <source>reporting.daily.yesterday_orders.no_driver</source>
+        <target>Nenurodytas??</target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.coupon_code" resname="reporting.daily.yesterday_orders.coupon_code">
+        <source>reporting.daily.yesterday_orders.coupon_code</source>
+        <target><![CDATA[Nuolaidos<br />kodas]]></target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.discount_size" resname="reporting.daily.yesterday_orders.discount_size">
+        <source>reporting.daily.yesterday_orders.discount_size</source>
+        <target><![CDATA[Nuolaidos<br />dydis (%)]]></target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.discount_sum" resname="reporting.daily.yesterday_orders.discount_sum">
+        <source>reporting.daily.yesterday_orders.discount_sum</source>
+        <target><![CDATA[Nuolaidos<br />suma]]></target>
+      </trans-unit>
+      <!-- Start of debug emails on new order -->
+      <trans-unit id="general.new_order.title" resname="general.new_order.title">
+          <source>general.new_order.title</source>
+          <target>Naujas uzsakymas restoranui</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.selected_place_point" resname="general.new_order.selected_place_point">
+          <source>general.new_order.selected_place_point</source>
+          <target>Parinktas gamybos taskas adresu</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.place_point_phone" resname="general.new_order.place_point_phone">
+          <source>general.new_order.place_point_phone</source>
+          <target>Gamybos tasko telefonas</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.client_name" resname="general.new_order.client_name">
+          <source>general.new_order.client_name</source>
+          <target>Uzsakovo vardas</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.client_address" resname="general.new_order.client_address">
+          <source>general.new_order.client_address</source>
+          <target>Uzsakovo adresas</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.client_phone" resname="general.new_order.client_phone">
+          <source>general.new_order.client_phone</source>
+          <target>Uzsakovo telefonas</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.client_email" resname="general.new_order.client_email">
+          <source>general.new_order.client_email</source>
+          <target>Uzsakovo el.pastas</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.delivery_type" resname="general.new_order.delivery_type">
+          <source>general.new_order.delivery_type</source>
+          <target>Pristatymo tipas</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.payment_type" resname="general.new_order.payment_type">
+          <source>general.new_order.payment_type</source>
+          <target>Apmokejimo tipas</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.payment_status" resname="general.new_order.payment_status">
+          <source>general.new_order.payment_status</source>
+          <target>Apmokejimo bukle</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.restaurant_link" resname="general.new_order.restaurant_link">
+          <source>general.new_order.restaurant_link</source>
+          <target>Restoranui issiusta nuoroda</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.admin_link" resname="general.new_order.admin_link">
+          <source>general.new_order.admin_link</source>
+          <target>Uzsakymo admin valdymas</target>
+      </trans-unit>
+      <trans-unit id="general.new_order.driver_link" resname="general.new_order.driver_link">
+          <source>general.new_order.driver_link</source>
+          <target>Vairuotojas gaus nuoroda</target>
+      </trans-unit>
+      <!-- End of debug emails on new order -->
+      <trans-unit id="general.email.placeholder" resname="general.email.placeholder">
+          <source>general.email.placeholder</source>
+          <target>vardenis@pastas.lt</target>
+      </trans-unit>
+      <trans-unit id="general.name.placeholder" resname="general.name.placeholder">
+          <source>general.name.placeholder</source>
+          <target>Vardenis</target>
+      </trans-unit>
+      <trans-unit id="general.lastname.placeholder" resname="general.lastname.placeholder">
+          <source>general.lastname.placeholder</source>
+          <target>Pavardenis</target>
+      </trans-unit>
+      <trans-unit id="general.homepage.meta_title" resname="general.homepage.meta_title">
+          <source>general.homepage.meta_title</source>
+          <target>maisto pristatymas į namus ir biurą</target>
       </trans-unit>
       <trans-unit id="general.successful_user_registration" resname="general.successful_user_registration">
         <source>general.successful_user_registration</source>

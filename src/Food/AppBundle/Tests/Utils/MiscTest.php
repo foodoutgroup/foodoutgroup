@@ -41,6 +41,35 @@ class MiscTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(null, $formatedPhone5);
     }
 
+    public function testIsMobilePhone()
+    {
+        $util = new Misc();
+
+        $phoneToFormat1 = '37061514333';
+        $phoneToFormat2 = '861514333';
+        $phoneToFormat3 = '+37061514333';
+        $phoneToFormat4 = '0037061514333';
+        $phoneToFormat5 = '00';
+        $phoneToFormat6 = '852440593';
+        $phoneToFormat7 = '37052440593';
+
+        $formatedPhone1 = $util->isMobilePhone($phoneToFormat1, 'LT');
+        $formatedPhone2 = $util->isMobilePhone($phoneToFormat2, 'LT');
+        $formatedPhone3 = $util->isMobilePhone($phoneToFormat3, 'LT');
+        $formatedPhone4 = $util->isMobilePhone($phoneToFormat4, 'LT');
+        $formatedPhone5 = $util->isMobilePhone($phoneToFormat5, 'LT');
+        $formatedPhone6 = $util->isMobilePhone($phoneToFormat6, 'LT');
+        $formatedPhone7 = $util->isMobilePhone($phoneToFormat7, 'LT');
+
+        $this->assertTrue($formatedPhone1);
+        $this->assertTrue($formatedPhone2);
+        $this->assertTrue($formatedPhone3);
+        $this->assertTrue($formatedPhone4);
+        $this->assertFalse($formatedPhone5);
+        $this->assertFalse($formatedPhone6);
+        $this->assertFalse($formatedPhone7);
+    }
+
     public function testIpBanned()
     {
         $container = $this->getMock(
