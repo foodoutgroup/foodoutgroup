@@ -38,7 +38,7 @@ class RegistrationFormType extends BaseType
     {
         $attributes = array('rel' => 'tooltip',
                             'data-toggle' => 'tooltip',
-                            'data-placement' => 'left',
+                            'data-placement' => 'right',
                             'data-trigger' => 'focus');
 
         $builder
