@@ -7,15 +7,16 @@ use Food\ApiBundle\Entity\ShoppingBasketRelation;
 use Food\CartBundle\Entity\Cart;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
+use Food\ApiBundle\Common\JsonRequest;
 
 class BasketService extends ContainerAware
 {
-    public function createBasketFromRequest(Request $request)
+    public function createBasketFromRequest(JsonRequest $request)
     {
         return $this->_createBasket($request->get('restaurant_id'), $request);
     }
 
-    public function _getCreateBasketItems(Request $request)
+    public function _getCreateBasketItems(JsonRequest $request)
     {
         $returner = array();
         $items = $request->get('items', array());
@@ -31,7 +32,7 @@ class BasketService extends ContainerAware
         return $returner;
     }
 
-    public function updateBasketFromRequest($id, Request $request, $remove = false)
+    public function updateBasketFromRequest($id, JsonRequest $request, $remove = false)
     {
         $dc = $this->container->get('doctrine');
         $basket = $dc->getRepository('FoodApiBundle:ShoppingBasketRelation')->find(intval($id));
@@ -121,7 +122,7 @@ class BasketService extends ContainerAware
         $doc->getManager()->flush();
     }
 
-    private function _createBasket($restaurantId, Request $request)
+    private function _createBasket($restaurantId, JsonRequest $request)
     {
         $sessionId = $this->container->get('session')->getId();
         $newBasketRel = new ShoppingBasketRelation();
@@ -176,14 +177,14 @@ class BasketService extends ContainerAware
         return $basket->getData();
     }
 
-    public function deleteBasketItem($id, $basket_item_id, Request $request)
+    public function deleteBasketItem($id, $basket_item_id, JsonRequest $request)
     {
         $ent = $doc->getManager()->getRepository('FoodApiBundle:ShoppingBasketRelation')->find(intval($id));
         $itemInCart = $doc->getManager()->getRepository('FoodCartBundle:Cart')->find($basket_item_id);
         $this->_removeItem($ent, $itemInCart);
     }
 
-    public function updateBasketItem($id, $basket_item_id, Request $request)
+    public function updateBasketItem($id, $basket_item_id, JsonRequest $request)
     {
 
     }

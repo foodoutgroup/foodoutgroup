@@ -3,6 +3,7 @@
 namespace Food\ApiBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Food\ApiBundle\Common\JsonRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,12 +12,14 @@ class BasketController extends Controller
 {
     public function createBasketAction(Request $request)
     {
-        return new JsonResponse($this->get('food_api.basket')->createBasketFromRequest($request));
+        $requestJson = new JsonRequest($request);
+        return new JsonResponse($this->get('food_api.basket')->createBasketFromRequest($requestJson));
     }
 
     public function updateBasketAction($id, Request $request)
     {
-        return new JsonResponse($this->get('food_api.basket')->updateBasketFromRequest($id, $request));
+        $requestJson = new JsonRequest($request);
+        return new JsonResponse($this->get('food_api.basket')->updateBasketFromRequest($id, $requestJson));
     }
 
     public function getBasketAction($id)
@@ -33,14 +36,16 @@ class BasketController extends Controller
 
     public function updateBasketItemAction($id, $basket_item_id, Request $request)
     {
-        $this->get('food_api.basket')->updateBasketItem($id, $basket_item_id, $request);
+        $requestJson = new JsonRequest($request);
+        $this->get('food_api.basket')->updateBasketItem($id, $basket_item_id, $requestJson);
         $basket = $this->get('food_api.basket')->getBasket($id);
         return new JsonResponse($basket);
     }
 
-    public function deleteBasketItemAction($id, $basket_item_id)
+    public function deleteBasketItemAction($id, $basket_item_id,Request $request)
     {
-        $this->get('food_api.basket')->deleteBasketItem($id, $basket_item_id, $request);
+        $requestJson = new JsonRequest($request);
+        $this->get('food_api.basket')->deleteBasketItem($id, $basket_item_id, $requestJson);
         $basket = $this->get('food_api.basket')->getBasket($id);
         return new JsonResponse('', 204);
     }

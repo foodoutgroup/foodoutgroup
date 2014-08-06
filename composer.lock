@@ -1056,12 +1056,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "ef7ca325929ff102fff521653a2e3b88c7a40361"
+                "reference": "27a84cec3ea4daa32cd6fe308c0847ca9644f588"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/ef7ca325929ff102fff521653a2e3b88c7a40361",
-                "reference": "ef7ca325929ff102fff521653a2e3b88c7a40361",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/27a84cec3ea4daa32cd6fe308c0847ca9644f588",
+                "reference": "27a84cec3ea4daa32cd6fe308c0847ca9644f588",
                 "shasum": ""
             },
             "require": {
@@ -1102,13 +1102,12 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Thibault Duplessis",
-                    "email": "thibault.duplessis@gmail.com",
-                    "homepage": "http://ornicar.github.com"
-                },
-                {
                     "name": "FriendsOfSymfony Community",
                     "homepage": "https://github.com/friendsofsymfony/FOSUserBundle/contributors"
+                },
+                {
+                    "name": "Thibault Duplessis",
+                    "email": "thibault.duplessis@gmail.com"
                 }
             ],
             "description": "Symfony FOSUserBundle",
@@ -1116,7 +1115,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2014-07-09 10:33:42"
+            "time": "2014-08-04 23:04:17"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -1261,12 +1260,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/avalanche123/Imagine.git",
-                "reference": "6a28b654540e2f23058079327464b858494ca595"
+                "reference": "81c4da35d9df123d186df0c1106ee4e88cc3446b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/6a28b654540e2f23058079327464b858494ca595",
-                "reference": "6a28b654540e2f23058079327464b858494ca595",
+                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/81c4da35d9df123d186df0c1106ee4e88cc3446b",
+                "reference": "81c4da35d9df123d186df0c1106ee4e88cc3446b",
                 "shasum": ""
             },
             "require": {
@@ -1310,7 +1309,7 @@
                 "image manipulation",
                 "image processing"
             ],
-            "time": "2014-07-21 21:26:21"
+            "time": "2014-08-04 08:44:31"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -2021,12 +2020,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "772b830c2cf9d34cd3471f41c08270aec8db6032"
+                "reference": "4c2241900df15a16a10b32ce61769e1e790418c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/772b830c2cf9d34cd3471f41c08270aec8db6032",
-                "reference": "772b830c2cf9d34cd3471f41c08270aec8db6032",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/4c2241900df15a16a10b32ce61769e1e790418c8",
+                "reference": "4c2241900df15a16a10b32ce61769e1e790418c8",
                 "shasum": ""
             },
             "require": {
@@ -2077,7 +2076,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-07-25 09:07:35"
+            "time": "2014-08-05 11:36:37"
         },
         {
             "name": "sonata-project/cache",
@@ -2214,12 +2213,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "d0519c3f0d26d68df1c2c38196ab735d898a73ca"
+                "reference": "e781255d0b6ab661f9e041b01ff8d943ae70ebc0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/d0519c3f0d26d68df1c2c38196ab735d898a73ca",
-                "reference": "d0519c3f0d26d68df1c2c38196ab735d898a73ca",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/e781255d0b6ab661f9e041b01ff8d943ae70ebc0",
+                "reference": "e781255d0b6ab661f9e041b01ff8d943ae70ebc0",
                 "shasum": ""
             },
             "require": {
@@ -2268,7 +2267,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-07-23 07:47:18"
+            "time": "2014-08-01 09:50:50"
         },
         {
             "name": "sonata-project/doctrine-extensions",
@@ -2389,16 +2388,16 @@
         },
         {
             "name": "sonata-project/easy-extends-bundle",
-            "version": "2.1.6",
+            "version": "2.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataEasyExtendsBundle.git",
-                "reference": "63f2d9c99c94548fed1257c9503ac6efb39d73f0"
+                "reference": "dbc23253c740a2c14d91ddd72e2dcf9e538179f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataEasyExtendsBundle/zipball/63f2d9c99c94548fed1257c9503ac6efb39d73f0",
-                "reference": "63f2d9c99c94548fed1257c9503ac6efb39d73f0",
+                "url": "https://api.github.com/repos/sonata-project/SonataEasyExtendsBundle/zipball/dbc23253c740a2c14d91ddd72e2dcf9e538179f4",
+                "reference": "dbc23253c740a2c14d91ddd72e2dcf9e538179f4",
                 "shasum": ""
             },
             "require": {
@@ -2442,7 +2441,7 @@
                 "Easy Extends",
                 "sonata"
             ],
-            "time": "2014-02-17 17:07:24"
+            "time": "2014-08-04 08:03:56"
         },
         {
             "name": "sonata-project/exporter",
