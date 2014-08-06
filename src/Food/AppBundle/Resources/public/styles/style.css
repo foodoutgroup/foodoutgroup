@@ -801,6 +801,7 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
 
 .register-form .form-row.error input,
 .login-form .form-row.error input,
+.user-details-form .form-row.error input,
 .review-form .form-row.error span.rate-review {
     border: 1px solid #ff0000;
 }
@@ -1032,7 +1033,7 @@ div.coupon_form_popup {
     padding-bottom: 10px;
     padding-top: 10px;
 }
-.coupon_form_popup input[type="text"] {width: 324px; height: 17px; font-size: 15px; padding: 9px 12px; border: 1px solid #d8d8d8; border-radius: 3px; box-shadow: 0 0 1px #f2f2f2; box-shadow: 0 0 2px #d0c8c1;}}
+.coupon_form_popup input[type="text"] {width: 324px; height: 17px; font-size: 15px; padding: 9px 12px; border: 1px solid #d8d8d8; border-radius: 3px; box-shadow: 0 0 1px #f2f2f2; box-shadow: 0 0 2px #d0c8c1;}
 
 .tooltip {
   position: absolute;
