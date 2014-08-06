@@ -1,13 +1,11 @@
 <?php
 namespace Food\AppBundle\Service;
 
-use Doctrine\Tests\Common\Annotations\Ticket\Doctrine\ORM\Mapping\Entity;
-
 class UploadService
 {
 
     /**
-     * @var Entity
+     * @var \Food\AppBundle\Entity\Uploadable
      */
     protected $object;
 

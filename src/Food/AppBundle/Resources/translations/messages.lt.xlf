@@ -414,6 +414,18 @@
         <source>mobile.order.sum_with_delivery</source>
         <target>Suma su pristatymu (su PVM)</target>
       </trans-unit>
+      <trans-unit id="mobile.order.coupon_code" resname="mobile.order.coupon_code">
+        <source>mobile.order.coupon_code</source>
+        <target>Nuolaidos kodas</target>
+      </trans-unit>
+      <trans-unit id="mobile.order.coupon_used" resname="mobile.order.coupon_used">
+        <source>mobile.order.coupon_used</source>
+        <target>Pritaikyta nuolaida</target>
+      </trans-unit>
+      <trans-unit id="mobile.order.coupon_discount_sum" resname="mobile.order.coupon_discount_sum">
+        <source>mobile.order.coupon_discount_sum</source>
+        <target>Nuolaidos suma</target>
+      </trans-unit>
       <trans-unit id="c4893f3e3a9f9062ea893935c75c4724" resname="mobile.order.sum">
         <source>mobile.order.sum</source>
         <target>Suma (su PVM)</target>
@@ -791,6 +803,18 @@
         <source>reporting.daily.yesterday_orders.no_driver</source>
         <target>Nenurodytas??</target>
       </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.coupon_code" resname="reporting.daily.yesterday_orders.coupon_code">
+        <source>reporting.daily.yesterday_orders.coupon_code</source>
+        <target><![CDATA[Nuolaidos<br />kodas]]></target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.discount_size" resname="reporting.daily.yesterday_orders.discount_size">
+        <source>reporting.daily.yesterday_orders.discount_size</source>
+        <target><![CDATA[Nuolaidos<br />dydis (%)]]></target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.discount_sum" resname="reporting.daily.yesterday_orders.discount_sum">
+        <source>reporting.daily.yesterday_orders.discount_sum</source>
+        <target><![CDATA[Nuolaidos<br />suma]]></target>
+      </trans-unit>
       <!-- Start of debug emails on new order -->
       <trans-unit id="general.new_order.title" resname="general.new_order.title">
           <source>general.new_order.title</source>
@@ -856,6 +880,18 @@
       <trans-unit id="general.lastname.placeholder" resname="general.lastname.placeholder">
           <source>general.lastname.placeholder</source>
           <target>Pavardenis</target>
+      </trans-unit>
+      <trans-unit id="general.homepage.meta_title" resname="general.homepage.meta_title">
+          <source>general.homepage.meta_title</source>
+          <target>maisto pristatymas į namus ir biurą</target>
+      </trans-unit>
+      <trans-unit id="general.successful_user_registration" resname="general.successful_user_registration">
+        <source>general.successful_user_registration</source>
+        <target>Jūs sėkmingai užsiregistravote!</target>
+      </trans-unit>
+      <trans-unit id="general.noty.profile_updated" resname="general.noty.profile_updated">
+        <source>general.noty.profile_updated</source>
+        <target>Duomenys sėkmingai atnaujinti.</target>
       </trans-unit>
       <trans-unit id="registration.user.exists" resname="registration.user.exists">
           <source>registration.user.exists</source>

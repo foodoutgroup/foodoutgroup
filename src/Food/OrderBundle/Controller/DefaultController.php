@@ -2,6 +2,7 @@
 
 namespace Food\OrderBundle\Controller;
 
+use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -31,33 +32,35 @@ class DefaultController extends Controller
         $currentOrderStatus = $orderService->getOrder()->getOrderStatus();
 
         if ($request->isMethod('post')) {
-            switch($request->get('status')) {
-                case 'confirm':
-                    $orderService->statusAccepted('restourant_mobile');
-                break;
+            // Validate stats change, and then perform :P
+            $formStatus = $request->get('status');
+            if ($orderService->isValidOrderStatusChange($currentOrderStatus, $this->formToEntityStatus($formStatus))) {
+                switch($formStatus) {
+                    case 'confirm':
+                        $orderService->statusAccepted('restourant_mobile');
+                    break;
 
-                case 'delay':
-                    $orderService->statusDelayed('restourant_mobile', 'delay reason: '.$request->get('delay_reason'));
-                    $orderService->getOrder()->setDelayed(true);
-                    $orderService->getOrder()->setDelayReason($this->getRequest()->get('delay_reason'));
-                    $orderService->getOrder()->setDelayDuration($this->getRequest()->get('delay_duration'));
-                    $orderService->saveDelay();
-                    $order = $orderService->getOrderByHash($hash);
-                break;
+                    case 'delay':
+                        $orderService->statusDelayed('restourant_mobile', 'delay reason: '.$request->get('delay_reason'));
+                        $orderService->getOrder()->setDelayed(true);
+                        $orderService->getOrder()->setDelayReason($request->get('delay_reason'));
+                        $orderService->getOrder()->setDelayDuration($request->get('delay_duration'));
+                        $orderService->saveDelay();
+                    break;
 
-                case 'cancel':
-                    $orderService->statusCanceled('restourant_mobile');
-                break;
+                    case 'cancel':
+                        $orderService->statusCanceled('restourant_mobile');
+                    break;
 
-                case 'finish':
-                    $orderService->statusFinished('restourant_mobile');
-                break;
+                    case 'finish':
+                        $orderService->statusFinished('restourant_mobile');
+                    break;
 
-                case 'completed':
-                    $orderService->statusCompleted('restourant_mobile');
-                break;
-            }
-            if ($orderService->isValidOrderStatusChange($currentOrderStatus, $orderService->getOrder()->getOrderStatus())) {
+                    case 'completed':
+                        $orderService->statusCompleted('restourant_mobile');
+                    break;
+                }
+
                 $orderService->saveOrder();
 
                 return $this->redirect(
@@ -65,7 +68,7 @@ class DefaultController extends Controller
                 );
             } else {
                 $errorMessage = sprintf(
-                    'Restoranas %s bande uzsakymui #%d bande pakeisti uzsakymo statusa is "%s" i "%s"',
+                    'Restoranas %s bande uzsakymui #%d pakeisti uzsakymo statusa is "%s" i "%s"',
                     $orderService->getOrder()->getPlaceName(),
                     $orderService->getOrder()->getId(),
                     $currentOrderStatus,
@@ -80,22 +83,23 @@ class DefaultController extends Controller
     /**
      * Mobile admin page for order to be monitored and ruined
      * @param $hash
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function mobileAdminAction($hash)
+    public function mobileAdminAction($hash, Request $request)
     {
         $order = $this->get('food.order')->getOrderByHash($hash);
-        if ($this->getRequest()->isMethod('post')) {
-            switch($this->getRequest()->get('status')) {
+        if ($request->isMethod('post')) {
+            switch($request->get('status')) {
                 case 'confirm':
                     $this->get('food.order')->statusAccepted('admin_mobile');
                 break;
 
                 case 'delay':
-                    $this->get('food.order')->statusDelayed('admin_mobile', 'delay reason: '.$this->getRequest()->get('delay_reason'));
+                    $this->get('food.order')->statusDelayed('admin_mobile', 'delay reason: '.$request->get('delay_reason'));
                     $this->get('food.order')->getOrder()->setDelayed(true);
-                    $this->get('food.order')->getOrder()->setDelayReason($this->getRequest()->get('delay_reason'));
-                    $this->get('food.order')->getOrder()->setDelayDuration($this->getRequest()->get('delay_duration'));
+                    $this->get('food.order')->getOrder()->setDelayReason($request->get('delay_reason'));
+                    $this->get('food.order')->getOrder()->setDelayDuration($request->get('delay_duration'));
                     $this->get('food.order')->saveDelay();
                     $this->get('food.order')->getOrderByHash($hash);
                 break;
@@ -123,22 +127,39 @@ class DefaultController extends Controller
 
     /**
      * @param $hash
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function mobileDriverAction($hash)
+    public function mobileDriverAction($hash, Request $request)
     {
-        $order = $this->get('food.order')->getOrderByHash($hash);
-        if ($this->getRequest()->isMethod('post')) {
-            switch($this->getRequest()->get('status')) {
-                case 'finish':
-                    $this->get('food.order')->statusCompleted('driver_mobile');
-                break;
-            }
-            $this->get('food.order')->saveOrder();
+        $orderService =  $this->get('food.order');
+        $order = $orderService->getOrderByHash($hash);
+        $currentOrderStatus = $orderService->getOrder()->getOrderStatus();
 
-            return $this->redirect(
-                $this->generateUrl('drivermobile', array('hash' => $hash))
-            );
+        if ($request->isMethod('post')) {
+            // Validate stats change, and then perform :P
+            $formStatus = $request->get('status');
+            if ($orderService->isValidOrderStatusChange($currentOrderStatus, $this->formToEntityStatus($formStatus))) {
+                switch($formStatus) {
+                    case 'completed':
+                        $this->get('food.order')->statusCompleted('driver_mobile');
+                    break;
+                }
+                $this->get('food.order')->saveOrder();
+
+                return $this->redirect(
+                    $this->generateUrl('drivermobile', array('hash' => $hash))
+                );
+            } else {
+                $errorMessage = sprintf(
+                    'Vairuotojas %s bande uzsakymui #%d pakeisti uzsakymo statusa is "%s" i "%s"',
+                    $orderService->getOrder()->getDriver()->getName(),
+                    $orderService->getOrder()->getId(),
+                    $currentOrderStatus,
+                    $orderService->getOrder()->getOrderStatus()
+                );
+                $this->get('logger')->error($errorMessage);
+            }
         }
         return $this->render('FoodOrderBundle:Default:mobile-driver.html.twig', array('order' => $order));
     }
@@ -161,5 +182,26 @@ class DefaultController extends Controller
     {
         $order = $this->get('food.order')->getOrderByHash($hash);
         return $this->render('FoodOrderBundle:Default:restaurant-invoice.html.twig', array('order' => $order));
+    }
+
+    /**
+     * @param string$formStatus
+     * @return string
+     */
+    public function formToEntityStatus($formStatus)
+    {
+        $statusTable = array(
+            'confirm' => OrderService::$status_accepted,
+            'delay' => OrderService::$status_delayed,
+            'cancel' => OrderService::$status_canceled,
+            'finish' => OrderService::$status_finished,
+            'completed' => OrderService::$status_completed,
+        );
+
+        if (!isset($statusTable[$formStatus])) {
+            return '';
+        }
+
+        return $statusTable[$formStatus];
     }
 }

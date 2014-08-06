@@ -54,21 +54,21 @@ class DishSize
     private $price;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="edited_at", type="datetime", nullable=true)
      */
     private $editedAt;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
@@ -178,7 +178,7 @@ class DishSize
     /**
      * Set editedAt
      *
-     * @param \DateTime $editedAt
+     * @param \DateTime|null $editedAt
      * @return DishSize
      */
     public function setEditedAt($editedAt)
@@ -191,7 +191,7 @@ class DishSize
     /**
      * Get editedAt
      *
-     * @return \DateTime 
+     * @return \DateTime|null
      */
     public function getEditedAt()
     {
@@ -201,7 +201,7 @@ class DishSize
     /**
      * Set deletedAt
      *
-     * @param \DateTime $deletedAt
+     * @param \DateTime|null $deletedAt
      * @return DishSize
      */
     public function setDeletedAt($deletedAt)
@@ -214,7 +214,7 @@ class DishSize
     /**
      * Get deletedAt
      *
-     * @return \DateTime 
+     * @return \DateTime|null
      */
     public function getDeletedAt()
     {

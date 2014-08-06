@@ -20,8 +20,9 @@ class OrderReminderCommand extends ContainerAwareCommand
     {
         try {
             $orderService = $this->getContainer()->get('food.order');
+            $repo = $this->getContainer()->get('doctrine')->getRepository('FoodOrderBundle:Order');
 
-            $orders = $orderService->getForgottenOrders();
+            $orders = $repo->getForgottenOrders();
 
             if ($orders) {
                 foreach($orders as $forgottenOrder) {

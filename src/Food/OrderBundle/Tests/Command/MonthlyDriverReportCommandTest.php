@@ -7,14 +7,19 @@ class MonthlyDriverReportCommandTest extends \PHPUnit_Framework_TestCase
     public function testSuccessfulReport()
     {
         $accountingEmail = 'dev@foodout.lt';
-        $orders = array('1', array('2'));
+        $orders = array(array('1'), array('2'));
         $lastMonthDate = date("Y-m", strtotime('-1 month'));
 
         $container = $this->getMock(
             'Symfony\Component\DependencyInjection\Container',
             array('getParameter', 'get')
         );
-        $orderService = $this->getMockBuilder('\Food\OrderBundle\Service\OrderService')
+
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $orderRepository = $this->getMockBuilder('\Food\OrderBundle\Entity\OrderRepository')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -41,15 +46,20 @@ class MonthlyDriverReportCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->at(0))
             ->method('get')
-            ->with('food.order')
-            ->will($this->returnValue($orderService));
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getRepository')
+            ->with('FoodOrderBundle:Order')
+            ->will($this->returnValue($orderRepository));
 
         $container->expects($this->at(1))
             ->method('get')
             ->with('translator')
             ->will($this->returnValue($translatorService));
 
-        $orderService->expects($this->once())
+        $orderRepository->expects($this->once())
             ->method('getDriversMonthlyOrderCount')
             ->will($this->returnValue($orders));
 
@@ -115,7 +125,11 @@ class MonthlyDriverReportCommandTest extends \PHPUnit_Framework_TestCase
             'Symfony\Component\DependencyInjection\Container',
             array('getParameter', 'get')
         );
-        $orderService = $this->getMockBuilder('\Food\OrderBundle\Service\OrderService')
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $orderRepository = $this->getMockBuilder('\Food\OrderBundle\Entity\OrderRepository')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -134,15 +148,20 @@ class MonthlyDriverReportCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->at(0))
             ->method('get')
-            ->with('food.order')
-            ->will($this->returnValue($orderService));
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getRepository')
+            ->with('FoodOrderBundle:Order')
+            ->will($this->returnValue($orderRepository));
 
         $container->expects($this->at(1))
             ->method('get')
             ->with('translator')
             ->will($this->returnValue($translatorService));
 
-        $orderService->expects($this->once())
+        $orderRepository->expects($this->once())
             ->method('getDriversMonthlyOrderCount')
             ->will($this->throwException(new \Exception('I failed')));
 

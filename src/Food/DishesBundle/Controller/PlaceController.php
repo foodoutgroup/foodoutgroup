@@ -57,7 +57,7 @@ class PlaceController extends Controller
         return $this->render('FoodDishesBundle:Place:filter_list.html.twig');
     }
 
-    public function placePointAction($point_id)
+    public function placePointAction($point_id, Request $request)
     {
         $placeService = $this->get('food.places');
 
@@ -70,7 +70,7 @@ class PlaceController extends Controller
         $response = new JsonResponse($placePointData);
         $response->setCharset('UTF-8');
 
-        $response->prepare($this->getRequest());
+        $response->prepare($request);
         return $response;
     }
 

@@ -15,12 +15,14 @@ class Language
     private $container;
 
     private $nameInflection = array(
-        'a' => 'a',
-        'as' => 'ai',
-        'ė' => 'e',
-        'is' => 'i',
-        'us' => 'au',
-        'ys' => 'y'
+        'lt' => array(
+            'a' => 'a',
+            'as' => 'ai',
+            'ė' => 'e',
+            'is' => 'i',
+            'us' => 'au',
+            'ys' => 'y',
+        ),
     ) ;
 
     /**
@@ -155,11 +157,6 @@ class Language
      */
     public function getName ($name, $lang = null)
     {
-        // TODO - multilingual
-        if ($lang != 'lt') {
-            return $name;
-        }
-
         $names = explode( ' ', $this->cleanName($name, $lang) ) ;
         $namesConv = array() ;
         foreach ( $names as $v ) {
@@ -178,7 +175,19 @@ class Language
      */
     protected function cleanName ($name, $lang = null)
     {
-        $name = mb_eregi_replace('[^a-ž]', ' ', $name) ;
+        switch ($lang) {
+            case 'lt':
+                $countryPreg = '[^a-ž]';
+                break;
+
+            default:
+                $countryPreg = '';
+                break;
+        }
+
+        if (!empty($countryPreg)) {
+            $name = mb_eregi_replace($countryPreg, ' ', $name);
+        }
         $name = mb_eregi_replace('\s+', ' ', $name) ;
         $name = trim($name) ;
         $name = mb_convert_case($name, MB_CASE_TITLE, "UTF-8") ;
@@ -197,11 +206,13 @@ class Language
     {
         $return = $name ;
 
-        foreach ( $this->nameInflection as $from=>$to ) {
-            if ( mb_substr( $return, -mb_strlen($from) ) == $from ) {
-                $return = mb_substr( $return, 0, -mb_strlen($from) ) ;
-                $return .= $to ;
-                break ;
+        if (isset($this->nameInflection[$lang])) {
+            foreach ( $this->nameInflection[$lang] as $from=>$to ) {
+                if ( mb_substr( $return, -mb_strlen($from) ) == $from ) {
+                    $return = mb_substr( $return, 0, -mb_strlen($from) ) ;
+                    $return .= $to ;
+                    break ;
+                }
             }
         }
 

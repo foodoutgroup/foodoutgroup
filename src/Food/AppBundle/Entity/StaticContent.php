@@ -63,21 +63,21 @@ class StaticContent implements Translatable
     private $order = 1;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="edited_at", type="datetime", nullable=true)
      */
     private $editedAt;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
@@ -238,7 +238,7 @@ class StaticContent implements Translatable
     /**
      * Set editedAt
      *
-     * @param \DateTime $editedAt
+     * @param \DateTime|null $editedAt
      * @return StaticContent
      */
     public function setEditedAt($editedAt)
@@ -251,7 +251,7 @@ class StaticContent implements Translatable
     /**
      * Get editedAt
      *
-     * @return \DateTime 
+     * @return \DateTime|null
      */
     public function getEditedAt()
     {
@@ -261,7 +261,7 @@ class StaticContent implements Translatable
     /**
      * Set deletedAt
      *
-     * @param \DateTime $deletedAt
+     * @param \DateTime|null $deletedAt
      * @return StaticContent
      */
     public function setDeletedAt($deletedAt)
@@ -274,7 +274,7 @@ class StaticContent implements Translatable
     /**
      * Get deletedAt
      *
-     * @return \DateTime 
+     * @return \DateTime|null
      */
     public function getDeletedAt()
     {

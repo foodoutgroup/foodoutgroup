@@ -221,3 +221,14 @@ services:
                     - ~
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.coupon:
+                class: Food\OrderBundle\Admin\CouponAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.coupons" }
+                arguments:
+                    - ~
+                    - Food\OrderBundle\Entity\Coupon
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]

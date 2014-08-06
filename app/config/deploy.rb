@@ -53,7 +53,6 @@ namespace :deploy do
     end
 end
 
-# Kolkas nevalom kol hostexas nesutvarke mums teisiu!
 after "deploy", "deploy:cleanup"
 after "deploy", "deploy:chmod_things"
 # Uncomment kai bus airbrake

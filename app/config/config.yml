@@ -9,7 +9,7 @@ imports:
 parameters:
     available_locales: [lt, en, ru]
     available_locales_routing: lt | en | ru
-    available_cities: ["Vilnius","Kaunas"]
+    available_cities: ["Vilnius","Kaunas","Klaipėda"]
     time_zone: "Europe/Vilnius"
     sms.available_providers: [food.infobip, food.silverstreet]
     sms.main_provider: "food.infobip"
@@ -60,6 +60,7 @@ parameters:
     vat: 21
     evp.test_payments: 0
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
+    cloudfront_url: images.foodout.lt
 
 framework:
     #esi:             ~
@@ -95,8 +96,11 @@ twig:
         vat_size: "%vat%"
         dish_service: "@food.dishes"
         order_service: "@food.order"
+        static_service: "@food.static"
         google_maps_api: "%google.maps_api%"
         language_utils: "@food.app.utils.language"
+        notifications: "@food.app.utils.notifications"
+        cloudfront_url: "%cloudfront_url%"
 
 
 # Assetic Configuration
@@ -253,6 +257,7 @@ sonata_admin:
                       #- sonata.admin.dish.size
                       #- sonata.admin.food.category
                       #- sonata.admin.dish.unit.category
+                      - sonata.admin.coupon
                   roles: [ ROLE_ADMIN ]
               acme.admin.group.formanagers:
                   label: admin.group.formanagers

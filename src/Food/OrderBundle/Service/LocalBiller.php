@@ -73,6 +73,9 @@ class LocalBiller extends ContainerAware implements BillingInterface {
         $order->setPaymentStatus($orderService::$paymentStatusComplete);
         $orderService->saveOrder();
 
+        // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
+        $orderService->deactivateCoupon();
+
         $this->container->get('food.cart')->clearCart($order->getPlace());
         $orderService->informPlace();
 

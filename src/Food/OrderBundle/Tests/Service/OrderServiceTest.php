@@ -187,12 +187,10 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * TODO useles test?
      * @depends testGetPaymentSystemByMethod
      */
     public function testGetBillingInterface()
     {
-        $this->markTestIncomplete();
         $localBiller = new LocalBiller();
         $payseraBiller = new PaySera();
 
