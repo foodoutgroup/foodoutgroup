@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bb5090564877ebf46a1be06afd157089",
+    "hash": "cbdf915ac69347753023ba257a39880c",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -69,6 +69,63 @@
             "time": "2013-12-17 18:40:49"
         },
         {
+            "name": "ass/xmlsecurity",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aschamberger/XmlSecurity.git",
+                "reference": "d0bb2ec4cab4c203629cb4310f73bb1492525773"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aschamberger/XmlSecurity/zipball/d0bb2ec4cab4c203629cb4310f73bb1492525773",
+                "reference": "d0bb2ec4cab4c203629cb4310f73bb1492525773",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*",
+                "lib-openssl": ">=0.9.0",
+                "php": ">=5.3.0"
+            },
+            "suggest": {
+                "ext-mcrypt": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "ass\\XmlSecurity": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Robert Richards",
+                    "email": "rrichards@cdatazone.org"
+                },
+                {
+                    "name": "Andreas Schamberger",
+                    "email": "mail@andreass.net"
+                }
+            ],
+            "description": "The XmlSecurity library is written in PHP for working with XML Encryption and Signatures",
+            "homepage": "https://github.com/aschamberger/XmlSecurity",
+            "keywords": [
+                "encryption",
+                "security",
+                "signature",
+                "xml"
+            ],
+            "time": "2014-03-23 16:59:35"
+        },
+        {
             "name": "beberlei/DoctrineExtensions",
             "version": "dev-master",
             "source": {
@@ -93,6 +150,79 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "time": "2013-12-20 22:02:19"
+        },
+        {
+            "name": "besimple/soap",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BeSimple/BeSimpleSoap.git",
+                "reference": "ccc4d57501d0eaa573e3906f756dd92cf8ba9699"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoap/zipball/ccc4d57501d0eaa573e3906f756dd92cf8ba9699",
+                "reference": "ccc4d57501d0eaa573e3906f756dd92cf8ba9699",
+                "shasum": ""
+            },
+            "require": {
+                "ass/xmlsecurity": "~1.0",
+                "ext-curl": "*",
+                "ext-soap": "*",
+                "php": ">=5.3.0",
+                "symfony/framework-bundle": "~2.0",
+                "symfony/twig-bundle": "~2.0",
+                "zendframework/zend-mime": "2.1.*"
+            },
+            "replace": {
+                "besimple/soap-bundle": "self.version",
+                "besimple/soap-client": "self.version",
+                "besimple/soap-common": "self.version",
+                "besimple/soap-server": "self.version",
+                "besimple/soap-wsdl": "self.version"
+            },
+            "require-dev": {
+                "ext-mcrypt": "*",
+                "mikey179/vfsstream": "dev-master",
+                "symfony/filesystem": "~2.3",
+                "symfony/process": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "BeSimple\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Francis Besset",
+                    "email": "francis.besset@gmail.com",
+                    "homepage": "http://www.apercite.fr"
+                },
+                {
+                    "name": "Andreas Schamberger",
+                    "email": "mail@andreass.net"
+                },
+                {
+                    "name": "Christian Kerl",
+                    "email": "christian-kerl@web.de"
+                }
+            ],
+            "description": "Build and consume SOAP and WSDL based web services",
+            "homepage": "http://besim.pl",
+            "keywords": [
+                "soap"
+            ],
+            "time": "2014-07-10 14:16:27"
         },
         {
             "name": "doctrine/annotations",
@@ -935,12 +1065,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "ef7ca325929ff102fff521653a2e3b88c7a40361"
+                "reference": "27a84cec3ea4daa32cd6fe308c0847ca9644f588"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/ef7ca325929ff102fff521653a2e3b88c7a40361",
-                "reference": "ef7ca325929ff102fff521653a2e3b88c7a40361",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/27a84cec3ea4daa32cd6fe308c0847ca9644f588",
+                "reference": "27a84cec3ea4daa32cd6fe308c0847ca9644f588",
                 "shasum": ""
             },
             "require": {
@@ -981,13 +1111,12 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Thibault Duplessis",
-                    "email": "thibault.duplessis@gmail.com",
-                    "homepage": "http://ornicar.github.com"
-                },
-                {
                     "name": "FriendsOfSymfony Community",
                     "homepage": "https://github.com/friendsofsymfony/FOSUserBundle/contributors"
+                },
+                {
+                    "name": "Thibault Duplessis",
+                    "email": "thibault.duplessis@gmail.com"
                 }
             ],
             "description": "Symfony FOSUserBundle",
@@ -995,7 +1124,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2014-07-09 10:33:42"
+            "time": "2014-08-04 23:04:17"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -1140,12 +1269,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/avalanche123/Imagine.git",
-                "reference": "6a28b654540e2f23058079327464b858494ca595"
+                "reference": "81c4da35d9df123d186df0c1106ee4e88cc3446b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/6a28b654540e2f23058079327464b858494ca595",
-                "reference": "6a28b654540e2f23058079327464b858494ca595",
+                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/81c4da35d9df123d186df0c1106ee4e88cc3446b",
+                "reference": "81c4da35d9df123d186df0c1106ee4e88cc3446b",
                 "shasum": ""
             },
             "require": {
@@ -1189,7 +1318,7 @@
                 "image manipulation",
                 "image processing"
             ],
-            "time": "2014-07-21 21:26:21"
+            "time": "2014-08-04 08:44:31"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -1900,12 +2029,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "772b830c2cf9d34cd3471f41c08270aec8db6032"
+                "reference": "4c2241900df15a16a10b32ce61769e1e790418c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/772b830c2cf9d34cd3471f41c08270aec8db6032",
-                "reference": "772b830c2cf9d34cd3471f41c08270aec8db6032",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/4c2241900df15a16a10b32ce61769e1e790418c8",
+                "reference": "4c2241900df15a16a10b32ce61769e1e790418c8",
                 "shasum": ""
             },
             "require": {
@@ -1956,7 +2085,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-07-25 09:07:35"
+            "time": "2014-08-05 11:36:37"
         },
         {
             "name": "sonata-project/cache",
@@ -2093,12 +2222,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "d0519c3f0d26d68df1c2c38196ab735d898a73ca"
+                "reference": "e781255d0b6ab661f9e041b01ff8d943ae70ebc0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/d0519c3f0d26d68df1c2c38196ab735d898a73ca",
-                "reference": "d0519c3f0d26d68df1c2c38196ab735d898a73ca",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/e781255d0b6ab661f9e041b01ff8d943ae70ebc0",
+                "reference": "e781255d0b6ab661f9e041b01ff8d943ae70ebc0",
                 "shasum": ""
             },
             "require": {
@@ -2147,7 +2276,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-07-23 07:47:18"
+            "time": "2014-08-01 09:50:50"
         },
         {
             "name": "sonata-project/doctrine-extensions",
@@ -2268,16 +2397,16 @@
         },
         {
             "name": "sonata-project/easy-extends-bundle",
-            "version": "2.1.6",
+            "version": "2.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataEasyExtendsBundle.git",
-                "reference": "63f2d9c99c94548fed1257c9503ac6efb39d73f0"
+                "reference": "dbc23253c740a2c14d91ddd72e2dcf9e538179f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataEasyExtendsBundle/zipball/63f2d9c99c94548fed1257c9503ac6efb39d73f0",
-                "reference": "63f2d9c99c94548fed1257c9503ac6efb39d73f0",
+                "url": "https://api.github.com/repos/sonata-project/SonataEasyExtendsBundle/zipball/dbc23253c740a2c14d91ddd72e2dcf9e538179f4",
+                "reference": "dbc23253c740a2c14d91ddd72e2dcf9e538179f4",
                 "shasum": ""
             },
             "require": {
@@ -2321,7 +2450,7 @@
                 "Easy Extends",
                 "sonata"
             ],
-            "time": "2014-02-17 17:07:24"
+            "time": "2014-08-04 08:03:56"
         },
         {
             "name": "sonata-project/exporter",
@@ -3321,6 +3450,91 @@
             ],
             "description": "JSONP callback validator.",
             "time": "2014-01-20 22:35:06"
+        },
+        {
+            "name": "zendframework/zend-mime",
+            "version": "2.1.6",
+            "target-dir": "Zend/Mime",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendMime.git",
+                "reference": "35ae58792d036828122a168f2e3fc5bd9f3f38c2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendMime/zipball/35ae58792d036828122a168f2e3fc5bd9f3f38c2",
+                "reference": "35ae58792d036828122a168f2e3fc5bd9f3f38c2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "zendframework/zend-stdlib": "self.version"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev",
+                    "dev-develop": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zend\\Mime\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "keywords": [
+                "mime",
+                "zf2"
+            ],
+            "time": "2014-03-03 23:00:16"
+        },
+        {
+            "name": "zendframework/zend-stdlib",
+            "version": "2.1.6",
+            "target-dir": "Zend/Stdlib",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendStdlib.git",
+                "reference": "e646729f2274f4552b6a92e38d8e458efe08ebc5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendStdlib/zipball/e646729f2274f4552b6a92e38d8e458efe08ebc5",
+                "reference": "e646729f2274f4552b6a92e38d8e458efe08ebc5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "suggest": {
+                "zendframework/zend-eventmanager": "To support aggregate hydrator usage",
+                "zendframework/zend-servicemanager": "To support hydrator plugin manager usage"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev",
+                    "dev-develop": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zend\\Stdlib\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "keywords": [
+                "stdlib",
+                "zf2"
+            ],
+            "time": "2014-01-04 13:00:28"
         }
     ],
     "packages-dev": [
@@ -3362,7 +3576,8 @@
         "shuber/curl": 20,
         "imagine/imagine": 20,
         "trsteel/ckeditor-bundle": 20,
-        "friendsofsymfony/jsrouting-bundle": 0
+        "friendsofsymfony/jsrouting-bundle": 0,
+        "besimple/soap": 20
     },
     "prefer-stable": false,
     "platform": {

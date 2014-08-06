@@ -34,6 +34,14 @@ food_order_nav_test2:
     pattern: /order/nav_test2
     defaults: { _controller: FoodOrderBundle:Default:testNav2 }
 
+food_order_nav_post:
+    pattern: /order/post/{id}
+    defaults: { _controller: FoodOrderBundle:Default:postToNav }
+
+food_order_nav_update_prices:
+    pattern: /order/update_prices/{id}
+    defaults: { _controller: FoodOrderBundle:Default:updatePricesNav }
+
 
 food_admin_get_place_categories:
     pattern: /admin/place/get-categories/{placeId}

@@ -5,6 +5,7 @@ namespace Food\OrderBundle\Service;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use SoapClient;
 
 class NavService extends ContainerAware
 {
@@ -139,6 +140,16 @@ class NavService extends ContainerAware
         );
     }
 
+    private function generateQueryPartNoQuotes($data)
+    {
+        $arrayKeys = array_keys($data);
+        $values = array_values($data);
+        return array(
+            'keys' => '"'.implode('","', $arrayKeys).'"',
+            'values' => implode(',', $values)
+        );
+    }
+
     public function putTheOrderToTheNAV(Order $order)
     {
         $orderNewId = $this->getNavOrderId($order);
@@ -159,7 +170,7 @@ class NavService extends ContainerAware
             'Floor' => '',
             'Grid' => '',
             'Chain' => $order->getPlace()->getChain(),
-            'Name' => 'NEGAMINTI !! Foodout. '.$order->getUser()->getNameForOrder(),
+            'Name' => 'FO:'.$order->getUser()->getNameForOrder(),
             'Delivery Type' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? 1 : 4),
             'Restaurant No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? '' : $order->getPlacePoint()->getInternalCode()),
             'Order Date' => $order->getOrderDate()->format("Y-m-d"),
@@ -180,7 +191,10 @@ class NavService extends ContainerAware
         );
         $queryPart = $this->generateQueryPart($dataToPut);
 
-        $rez = sqlsrv_query ( $this->getConnection() , 'INSERT INTO '.$this->getHeaderTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')');
+        $query = 'INSERT INTO '.$this->getHeaderTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
+        echo $query."<br>\n";
+
+        $rez = sqlsrv_query ( $this->getConnection() , $query);
         if( $rez === false) {
             die( print_r( sqlsrv_errors(), true) );
         }
@@ -190,31 +204,32 @@ class NavService extends ContainerAware
     private function _processLines(Order $order, $orderNewId)
     {
         foreach ($order->getDetails() as $key=>$detail) {
-            $this->_processLine($order, $orderNewId, ($key + 1));
+            $this->_processLine($detail, $orderNewId, ($key + 1));
         }
     }
 
     private function _processLine(OrderDetails $detail, $orderNewId, $key)
     {
-        $dishSize = $this->getContainer()->get('doctrine')->getRepository('FoodDishesBundle:DishSize')->find($detail->getDishSizeCode());
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Line No_' => $key,
             'Entry Type' => 0,
-            'No_' => $dishSize->getCode(),
-            'Description' => '',
+            'No_' => "'".$detail->getDishSizeCode()."'",
+            'Description' => "'".mb_substr($detail->getDishName(), 0, 29)."'",
             'Quantity' => $detail->getQuantity(),
             'Price' => $detail->getPrice(), // @todo test the price. Kaip gula. Total ar ne.
-            'Parent Line' => '', // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
-            'Amount' => '',// @todo test the price. Kaip gula. Total ar ne.
-            'Discount Amount' => '',
-            'Payment' => '',
-            'Value' => ''
+            'Parent Line' => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
+            'Amount' => $detail->getPrice() * $detail->getQuantity(),// @todo test the price. Kaip gula. Total ar ne.
+            'Discount Amount' => 0,
+            'Payment' => $detail->getPrice() * $detail->getQuantity(),
+            'Value' => "''"
         );
 
-        $queryPart = $this->generateQueryPart($dataToPut);
+        $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
-        $rez = sqlsrv_query ( $this->getConnection() , 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')');
+        $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
+        echo $query."<br>\n";
+        $rez = sqlsrv_query ( $this->getConnection() , $query);
         if( $rez === false) {
             die( print_r( sqlsrv_errors(), true) );
         }
@@ -223,6 +238,42 @@ class NavService extends ContainerAware
     public function getNavOrderId(Order $order)
     {
         return $this->_orderIdModifier + $order->getId();
+
+    }
+
+    private function getWSConnection()
+    {
+
+        $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
+        $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
+
+        if(is_array($soapResult) && isset($soapResult['someFunctionResult'])) {
+            // Process result.
+        } else {
+            // Unexpected result
+            if(function_exists("debug_message")) {
+                debug_message("Unexpected soapResult for {$soapFunction}: ".print_r($soapResult, TRUE)) ;
+            }
+        }
+
+
+       //$client = new SoapClient($clientUrl);
+        try {
+            $client = new SoapClient($clientUrl, array('login' => 'cilija/nas', 'password' => "c1l1j@"));
+        } catch (Exception $e) {
+            printf("Error:SOAPCON: %s\n",$e->__toString());
+            return false;
+        }
+
+
+        return $client;
+    }
+
+    public function updatePricesNAV(Order $order)
+    {
+        $orderId = $this->getNavOrderId($order);
+        $con = $this->getWSConnection();
+        //$soapC =
     }
 }
 ?>

@@ -216,4 +216,20 @@ class DefaultController extends Controller
         $this->get('food.nav')->getLastOrders();
         die("TEST NAV");
     }
+
+    public function postToNavAction($id)
+    {
+        echo "<pre>";
+        $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($id);
+        $this->get('food.nav')->putTheOrderToTheNAV($order);
+        die("THE END");
+    }
+
+    public function updatePricesNavAction($id)
+    {
+        echo "<pre>";
+        $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($id);
+        $this->get('food.nav')->updatePricesNAV($order);
+        die("THE END UPDATE PRC NAV");
+    }
 }
