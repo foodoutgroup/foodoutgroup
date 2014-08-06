@@ -2,6 +2,7 @@
 
 namespace Food\OrderBundle\Common;
 
+use SoapClient;
 /**
  * Soap Client using Microsoft's NTLM Authentication
  *
@@ -469,6 +470,8 @@ class NTLMSoapClient extends SoapClient {
             'SOAPAction: "'.$action.'"',
         ); // end $headers
         $this->__last_request_headers = $headers;
+        var_dump($headers);
+        var_dump($request);
         $ch = curl_init($location);
 
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->validate);
@@ -482,7 +485,7 @@ class NTLMSoapClient extends SoapClient {
         curl_setopt($ch, CURLOPT_USERPWD, $this->user.':'.$this->password);
 
         $response = curl_exec($ch);
-        //print_r($response); die();
+
         return $response;
     } // end function __doRequest()
 

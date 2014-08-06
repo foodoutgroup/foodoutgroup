@@ -5,7 +5,7 @@ namespace Food\OrderBundle\Service;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Symfony\Component\DependencyInjection\ContainerAware;
-use SoapClient;
+use Food\OrderBundle\Common;
 
 class NavService extends ContainerAware
 {
@@ -247,32 +247,28 @@ class NavService extends ContainerAware
         $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
         $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
 
-        if(is_array($soapResult) && isset($soapResult['someFunctionResult'])) {
-            // Process result.
-        } else {
-            // Unexpected result
-            if(function_exists("debug_message")) {
-                debug_message("Unexpected soapResult for {$soapFunction}: ".print_r($soapResult, TRUE)) ;
-            }
-        }
-
-
-       //$client = new SoapClient($clientUrl);
-        try {
-            $client = new SoapClient($clientUrl, array('login' => 'cilija/nas', 'password' => "c1l1j@"));
-        } catch (Exception $e) {
-            printf("Error:SOAPCON: %s\n",$e->__toString());
-            return false;
-        }
-
-
+        stream_wrapper_unregister('http');
+        stream_wrapper_register('http', '\Food\OrderBundle\Common\FoNTLMStream') or die("Failed to register protocol");
+        $url = $clientUrl2; //"http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
+        $options = array();
+        $client = new Common\FoNTLMSoapClient($url, $options);
+        stream_wrapper_restore('http');
         return $client;
     }
 
     public function updatePricesNAV(Order $order)
     {
         $orderId = $this->getNavOrderId($order);
-        $con = $this->getWSConnection();
+        $client = $this->getWSConnection();
+        $return = $client->__soapCall("UpdatePrices", array($orderId));
+        var_dump($return);
+        $return = $client->__soapCall("ProcessOrder", array($orderId));
+        var_dump($return);
+        var_dump('DA');
+
+        //$con = $this->getWSConnection();
+
+
         //$soapC =
     }
 }
