@@ -47,6 +47,11 @@ class ChangePasswordFormType extends BaseType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $attributes = array('rel' => 'tooltip',
+                            'data-toggle' => 'tooltip',
+                            'data-placement' => 'top',
+                            'data-trigger' => 'focus');
+
         $builder
             ->add('current_password', 'password', array(
                   'required' => false,
@@ -54,7 +59,7 @@ class ChangePasswordFormType extends BaseType
                   'error_bubbling' => false,
                   'translation_domain' => 'FOSUserBundle',
                   'mapped' => false,
-                  'attr' => ['autocomplete' => 'off'],
+                  'attr' => array_merge(['autocomplete' => 'off'], $attributes),
                   'constraints' => $this->isCurrentPassword() ?
                                    new UserPassword(['message' => 'fos_user.form.invalid_current_password']) :
                                    null))
@@ -62,8 +67,8 @@ class ChangePasswordFormType extends BaseType
                   'type' => 'password',
                   'error_bubbling' => false,
                   'options' => array('translation_domain' => 'FOSUserBundle'),
-                  'first_options' => array('label' => 'form.new_password', 'attr' => ['autocomplete' => 'off']),
-                  'second_options' => array('label' => 'form.new_password_confirmation', 'attr' => ['autocomplete' => 'off']),
+                  'first_options' => array('label' => 'form.new_password', 'attr' => array_merge(['autocomplete' => 'off'], $attributes)),
+                  'second_options' => array('label' => 'form.new_password_confirmation', 'attr' => array_merge(['autocomplete' => 'off'], $attributes)),
                   'invalid_message' => 'fos_user.password.mismatch',
                   'required' => false))
         ;
