@@ -5,6 +5,11 @@ services:
             - [container, [@service_container]]
         arguments: [@service_container]
 
+    food.app.utils.notifications:
+        class: Food\AppBundle\Utils\Notifications
+        calls:
+            - [container, [@service_container]]
+
     food.app.utils.misc:
         class: Food\AppBundle\Utils\Misc
         calls:

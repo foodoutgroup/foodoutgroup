@@ -18,27 +18,6 @@ class RegistrationFormType extends BaseType
         $this->class = $class;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        parent::buildForm($builder, $options);
-
-        $builder
-            ->add('firstname', null, array('error_bubbling' => true, 'required' => true, 'label' => 'form.firstname', 'translation_domain' => 'FOSUserBundle'))
-            ->add('lastname', null, array('error_bubbling' => true, 'required' => true, 'label' => 'form.lastname', 'translation_domain' => 'FOSUserBundle'))
-            ->add('email', 'email', array('error_bubbling' => true, 'label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
-            ->add('username', null, array('error_bubbling' => true, 'label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))
-            ->add('plainPassword', 'repeated', array(
-                'error_bubbling' => true,
-                'type' => 'password',
-                'options' => array('translation_domain' => 'FOSUserBundle'),
-                'first_options' => array('label' => 'form.password'),
-                'second_options' => array('label' => 'form.password_confirmation'),
-                'invalid_message' => 'fos_user.password.mismatch',
-            ))
-            ->remove('username')
-        ;
-    }
-
     public function getName()
     {
         return 'food_user_registration';
@@ -48,8 +27,57 @@ class RegistrationFormType extends BaseType
     {
         $resolver->setDefaults(array(
             'data_class' => $this->class,
-            'intention'  => 'registration',
             'csrf_protection' => false,
+            'validation_groups' => array(
+                'Registration'
+            )
         ));
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $attributes = array('rel' => 'tooltip',
+                            'data-toggle' => 'tooltip',
+                            'data-placement' => 'right',
+                            'data-trigger' => 'focus');
+
+        $builder
+            ->add('firstname',
+                  null,
+                  array('error_bubbling' => false,
+                        'required' => true,
+                        'label' => 'form.firstname',
+                        'translation_domain' => 'FOSUserBundle',
+                        'attr' => $attributes))
+            ->add('lastname',
+                  null,
+                  array('error_bubbling' => false,
+                        'required' => false,
+                        'label' => 'form.lastname',
+                        'translation_domain' => 'FOSUserBundle',
+                        'attr' => $attributes))
+            ->add('email',
+                  'email',
+                  array('error_bubbling' => false,
+                        'label' => 'form.email',
+                        'translation_domain' => 'FOSUserBundle',
+                        'attr' => $attributes))
+            ->add('username',
+                  null,
+                  array('error_bubbling' => false,
+                        'label' => 'form.username',
+                        'translation_domain' => 'FOSUserBundle',
+                        'attr' => $attributes))
+            ->add('plainPassword',
+                  'repeated',
+                  array('error_bubbling' => false,
+                        'type' => 'password',
+                        'options' => array('translation_domain' => 'FOSUserBundle'),
+                        'first_options' => array('label' => 'form.password', 'attr' => $attributes),
+                        'second_options' => array('label' => 'form.password_confirmation', 'attr' => $attributes),
+                        'invalid_message' => 'fos_user.password.mismatch'))
+            ->remove('username')
+            ->remove('phone')
+        ;
     }
 }
