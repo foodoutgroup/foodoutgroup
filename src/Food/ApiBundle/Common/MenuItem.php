@@ -164,8 +164,8 @@ class MenuItem extends ContainerAware
                     foreach ($optionsRow['single'] as $opt) {
                         $items[] = array(
                             'option_id' => $opt->getId(),
-                            'title' => $option->getName(),
-                            'price_modifier' => $option->getPrice() * 100
+                            'title' => $opt->getName(),
+                            'price_modifier' => $opt->getPrice() * 100
                         );
                     }
                     $optionList['default'] = $items[0]['option_id'];
