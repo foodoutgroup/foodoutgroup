@@ -73,11 +73,9 @@ class RegistrationFormType extends BaseType
                   array('error_bubbling' => false,
                         'type' => 'password',
                         'options' => array('translation_domain' => 'FOSUserBundle'),
-                        'first_options' => array('label' => 'form.password'),
-                        'second_options' => array('label' => 'form.password_confirmation'),
-                        'invalid_message' => 'fos_user.password.mismatch',
-                        'first_options' => ['attr' => $attributes],
-                        'second_options' => ['attr' => $attributes]))
+                        'first_options' => array('label' => 'form.password', 'attr' => $attributes),
+                        'second_options' => array('label' => 'form.password_confirmation', 'attr' => $attributes),
+                        'invalid_message' => 'fos_user.password.mismatch'))
             ->remove('username')
             ->remove('phone')
         ;
