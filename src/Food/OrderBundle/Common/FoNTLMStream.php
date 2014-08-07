@@ -2,7 +2,7 @@
 
 namespace Food\OrderBundle\Common;
 
-class FoNTLMSoapClient extends NTLMSoapClient {
+class FONTLMStream extends NTLMStream {
     protected $user = 'fo_order';
     protected $password = 'peH=waGe?zoOs69';
 }

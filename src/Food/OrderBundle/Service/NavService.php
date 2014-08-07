@@ -260,10 +260,11 @@ class NavService extends ContainerAware
     {
         $orderId = $this->getNavOrderId($order);
         $client = $this->getWSConnection();
-        $return = $client->__soapCall("UpdatePrices", array($orderId));
+        //$return = $client->UpdatePrices(array('pInt'=>$orderId));
+        $return = $client->ProcessOrder($orderId);
         var_dump($return);
-        $return = $client->__soapCall("ProcessOrder", array($orderId));
-        var_dump($return);
+        //$return = $client->__soapCall("ProcessOrder", array($orderId));
+        //var_dump($return);
         var_dump('DA');
 
         //$con = $this->getWSConnection();
