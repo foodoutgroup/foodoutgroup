@@ -2,12 +2,23 @@
 
 namespace Pirminis\Gateway\Swedbank\FullHps;
 
+use Pirminis\XPath;
+
 class Response
 {
+    use XPath;
+
+    const QUERY_STATUS_SUCCESS = '1';
+    const DC_RESPONSE_SUCCESS = '1';
+
     const HPS_URL_XPATH = '//HpsTxn//hps_url';
     const SESSION_ID_XPATH = '//HpsTxn//session_id';
     const STATUS_XPATH = '//status';
-    const HPS_STATUS = '//HpsTxn//AuthAttempts//Attempt//dc_response';
+    const HPS_STATUS_XPATH = '//HpsTxn//AuthAttempts//Attempt//dc_response';
+    const HPS_AUTH_ATTEMPT_DC_RESPONSE_XPATH = '//HpsTxn//AuthAttempts//Attempt//datacash_reference';
+    const QUERY_STATUS_XPATH = '//status';
+    const QUERY_HPS_DC_REFERENCE_XPATH = '//HpsTxn//datacash_reference';
+    const QUERY_PAYMENT_STATUS_XPATH = '//QueryTxnResult//status';
 
     protected $xml;
     protected $dom;
@@ -39,67 +50,89 @@ class Response
         return $this->dom;
     }
 
-    public function is_successful_payment()
+    /**
+     * One important note here: QUERY_STATUS_SUCCESS marks
+     * succes of query, not payment transaction.
+     * 
+     * @return boolean
+     */
+    public function query_succeeded()
     {
-        return $this->dc_response() === static::DC_SUCCESS_RESPONSE;
+        $status = $this->xpath_first($this->dom(), static::QUERY_STATUS_XPATH);
+        return $status === static::QUERY_STATUS_SUCCESS;
     }
 
+    /**
+     * @return string
+     */
+    public function dc_reference()
+    {
+        $dc_ref = $this->xpath_first($this->dom(),
+                                     static::QUERY_HPS_DC_REFERENCE_XPATH);
+        return $dc_ref;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function is_authenticated()
+    {
+        $dc_response = $this->dc_response();
+        $dc_reference = $this->dc_reference();
+        $dc_attempt_reference = $this->dc_attempt_reference();
+
+        var_dump($dc_response);
+        var_dump($dc_reference);
+        var_dump($dc_attempt_reference);
+
+        return $dc_response === static::DC_RESPONSE_SUCCESS &&
+               $dc_reference === $dc_attempt_reference &&
+               !empty($dc_reference) &&
+               !empty($dc_attempt_reference)
+        ;
+    }
+
+    /**
+     * @return integer
+     */
     protected function dc_response()
     {
-        $dc_responses = $this->dom()
-                             ->xpath(static::HPS_STATUS);
-
-        if (empty($dc_responses)) return false;
-
-        $dc_response = (string)reset($dc_responses);
-
-        if (empty($dc_response)) return false;
-
-        return (int)$dc_response;
+        $dc_response = $this->xpath_first($this->dom(),
+                                          static::HPS_STATUS_XPATH);
+        return $dc_response;
     }
 
+    /**
+     * @return string
+     */
+    protected function dc_attempt_reference()
+    {
+        $a_ref = $this->xpath_first($this->dom(),
+                                    static::HPS_AUTH_ATTEMPT_DC_RESPONSE_XPATH);
+        return $a_ref;
+    }
+
+    /**
+     * @return string
+     */
     protected function hps_url()
     {
-        $hps_urls = $this->dom()
-                         ->xpath(static::HPS_URL_XPATH);
-
-        if (empty($hps_urls)) return null;
-
-        $hps_url = (string)reset($hps_urls);
-
-        if (empty($hps_url)) return null;
-
+        $hps_url = $this->xpath_first($this->dom(), static::HPS_URL_XPATH);
         return $hps_url;
     }
 
+    /**
+     * @return string
+     */
     protected function session_id()
     {
-        $session_ids = $this->dom()
-                            ->xpath(static::SESSION_ID_XPATH);
-
-        if (empty($session_ids)) return null;
-
-        $session_id = (string)reset($session_ids);
-
-        if (empty($session_id)) return null;
-
-        return $session_id;
+        $id = $this->xpath_first($this->dom(), static::SESSION_ID_XPATH);
+        return $id;
     }
 
-    protected function status()
-    {
-        $statuses = $this->dom()
-                         ->xpath(static::HPS_URL_XPATH);
-
-        if (empty($statuses)) return null;
-
-        $status = (string)reset($statuses);
-
-        if (empty($status)) return null;
-
-        return $status;
-    }
-
+    /**
+     * @return string
+     */
     public function redirect_url()
     {
         return sprintf('%s%s%s',

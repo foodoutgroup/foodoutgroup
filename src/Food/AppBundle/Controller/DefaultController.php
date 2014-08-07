@@ -16,10 +16,15 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
-        $request = new FullHpsTransRequest('88185002', 'aXVdnHfZSJmz', '3100900010001911');
+        $request = new FullHpsTransRequest('88185002', 'aXVdnHfZSJmz', '3700900010001927');
         $sender = new Sender($request->xml());
         $response = new FullHpsResponse($sender->send());
-        var_dump($response);
+
+        if ($response->is_authenticated()) {
+            $request = new FullHpsTransRequest('88185002', 'aXVdnHfZSJmz', '3700900010001927');
+            $sender = new Sender($request->xml());
+            $response = new FullHpsResponse($sender->send());
+        }
         // var_dump($request->query->all());
         // var_dump($request->request->all());
         //
@@ -31,9 +36,11 @@ class DefaultController extends Controller
         //        ->set('transaction_datetime', date('Ymd H:i:s'))
         //        ->set('comment', 'TEST')
         //     //    ->set('return_url', 'http://foodout.lt/return')
-        //        ->set('return_url', 'http://localhost:3000/')
+        //     //    ->set('return_url', 'http://localhost:3000/')
+        //        ->set('return_url', 'http://kofeinas.foodout.lt/swedbank-gateway-test/log.php')
         //     //    ->set('expiry_url', 'http://foodout.lt/expire');
-        //        ->set('expiry_url', 'http://localhost:3000/');
+        //     //    ->set('expiry_url', 'http://localhost:3000/');
+        //        ->set('expiry_url', 'http://kofeinas.foodout.lt/swedbank-gateway-test/log.php');
         //
         // $request = new FullHpsRequest($params);
         // $sender = new Sender($request->xml());
