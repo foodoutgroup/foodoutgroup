@@ -1,0 +1,17 @@
+<div class="form-row {% if submitted and profile_errors.firstname is not empty %}error{% endif %}">
+    {{ form_label(form.profile.firstname) }}
+    {{ form_widget(form.profile.firstname, {'attr': {'title': profile_errors.firstname}}) }}
+</div>
+<div class="form-row {% if submitted and profile_errors.lastname is not empty %}error{% endif %}">
+    {{ form_label(form.profile.lastname) }}
+    {{ form_widget(form.profile.lastname, {'attr': {'title': profile_errors.lastname}}) }}
+</div>
+<div class="form-row {% if submitted and profile_errors.email is not empty %}error{% endif %}">
+    {{ form_label(form.profile.email) }}
+    {{ form_widget(form.profile.email, {'attr': {'title': profile_errors.email}}) }}
+</div>
+<div class="form-row {% if submitted and profile_errors.phone is not empty %}error{% endif %}">
+    {{ form_label(form.profile.phone) }}
+    {{ form_widget(form.profile.phone, {'attr': {'title': profile_errors.phone}}) }}
+</div>
+<hr/>

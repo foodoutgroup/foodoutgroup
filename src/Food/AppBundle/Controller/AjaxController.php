@@ -11,6 +11,7 @@ class AjaxController extends Controller
 {
     /**
      * @param $action
+     * @param Request $request
      * @return Response
      */
     public function ajaxAction($action, Request $request)
@@ -25,6 +26,9 @@ class AjaxController extends Controller
             case 'find-address-and-recount':
                 $this->_ajaxActFindAddress($response,$request->get('city'), $request->get('address'));
                 $this->_isPlaceInRadius($response, intval($request->get('place')));
+                break;
+            case 'check-coupon':
+                $this->_ajaxCheckCoupon($response, $request->get('place_id'), $request->get('coupon_code'));
                 break;
             default:
                 $response->setContent(json_encode(array(
@@ -83,6 +87,33 @@ class AjaxController extends Controller
         );
         $this->get('food.places')->saveRelationPlaceToPointSingle($placeId, $pointId);
         $cont->data->{'nodelivery'} = (!empty($pointId) ? 0: 1);
+        $response->setContent(json_encode($cont));
+    }
+
+    private function _ajaxCheckCoupon(Response $response, $placeId, $couponCode)
+    {
+        $trans = $this->get('translator');
+        $cont = array(
+            'status' => true,
+            'data' => array()
+        );
+
+        $coupon = $this->get('food.order')->getCouponByCode($couponCode);
+
+        if (!$coupon) {
+            $cont['status'] = false;
+            $cont['data']['error'] = $trans->trans('general.coupon.not_active');
+        } else if ($coupon->getPlace() && $coupon->getPlace()->getId() != $placeId) {
+            $cont['status'] = false;
+            $cont['data']['error'] = $trans->trans(
+                'general.coupon.wrong_place',
+                array('%place_name%' => $coupon->getPlace()->getName())
+            );
+        } else {
+            $cont['data'] = $coupon->__toArray();
+        }
+
+
         $response->setContent(json_encode($cont));
     }
 }

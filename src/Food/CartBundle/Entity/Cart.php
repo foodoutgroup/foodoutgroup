@@ -2,6 +2,7 @@
 
 namespace Food\CartBundle\Entity;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
@@ -66,12 +67,12 @@ class Cart
      */
 
     /**
-     * @var EntityManager
+     * @var ObjectManager
      */
     private $em;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $em
+     * @param ObjectManager $em
      */
     public function setEm($em)
     {

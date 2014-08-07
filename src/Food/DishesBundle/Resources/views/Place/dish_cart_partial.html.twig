@@ -14,28 +14,30 @@
             scrolling: 'visible',
             afterShow: function(e) {
                 dishBlock = $('#detailed-dish-popup');
-                dishBlock.find('input').iCheck();
-                dishBlock.find('.counter').foodCounter(0, 50, 1);
-                dishBlock.find('.button-submit.add-to-cart:not(.has-bind)').addClass('has-bind').bind('click', function() {
-                    addToCart();
-                });
-                var inputs = $('.dish-ingredients').find('input[type="radio"]');
-                var groupNames = [];
-                var groupElements = [];
-                for (i = 0; i < inputs.length; i++) {
-                    var inp = $(inputs[i]);
-                    inp.attr('selected', null);
-                    inp.closest('.iradio').removeClass('checked');
-                    var name = inp.attr('name');
-                    name = name.replace("option[", "").replace("]", "");
-                    if (groupNames.indexOf(name) == -1) {
-                        groupNames.push(name);
-                        groupElements.push(inp);
+                if (dishBlock.length > 0) {
+                    dishBlock.find('input').iCheck();
+                    dishBlock.find('.counter').foodCounter(0, 50, 1);
+                    dishBlock.find('.button-submit.add-to-cart:not(.has-bind)').addClass('has-bind').bind('click', function() {
+                        addToCart();
+                    });
+                    var inputs = $('.dish-ingredients').find('input[type="radio"]');
+                    var groupNames = [];
+                    var groupElements = [];
+                    for (i = 0; i < inputs.length; i++) {
+                        var inp = $(inputs[i]);
+                        inp.attr('selected', null);
+                        inp.closest('.iradio').removeClass('checked');
+                        var name = inp.attr('name');
+                        name = name.replace("option[", "").replace("]", "");
+                        if (groupNames.indexOf(name) == -1) {
+                            groupNames.push(name);
+                            groupElements.push(inp);
+                        }
                     }
-                }
-                for(i = 0; i < groupElements.length; i++) {
-                    groupElements[i].attr('checked', 'checked');
-                    groupElements[i].closest('.iradio').addClass('checked');
+                    for(i = 0; i < groupElements.length; i++) {
+                        groupElements[i].attr('checked', 'checked');
+                        groupElements[i].closest('.iradio').addClass('checked');
+                    }
                 }
             }
         });

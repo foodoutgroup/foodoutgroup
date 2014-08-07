@@ -13,10 +13,10 @@ var Cart = {
      */
     submitOrder: function(formObject) {
         if (Cart.isValidOrder(formObject)) {
-            console.log('I are valid, submit');
+//            console.log('I are valid, submit');
             formObject.submit();
         } else {
-            console.log('I are idiot, do nothing');
+//            console.log('I are idiot, do nothing');
             return false;
         }
     },

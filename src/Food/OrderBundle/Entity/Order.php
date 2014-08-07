@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="orders")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Food\OrderBundle\Entity\OrderRepository")
  */
 class Order
 {
@@ -107,6 +107,32 @@ class Order
      * @ORM\Column(name="total", type="decimal", precision=8, scale=2, nullable=true)
      */
     private $total;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Food\OrderBundle\Entity\Coupon")
+     * @ORM\JoinColumn(name="coupon", referencedColumnName="id")
+     **/
+    private $coupon;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="coupon_code", type="string", length=255, nullable=true)
+     */
+    private $couponCode;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="discount_size", type="integer",  nullable=true)
+     */
+    private $discountSize;
+
+    /**
+     * @var float
+     * @ORM\Column(name="discount_sum", type="decimal", precision=8, scale=2, nullable=true)
+     */
+    private $discountSum;
     
     /**
      * @var integer
@@ -154,6 +180,11 @@ class Order
      * @ORM\JoinColumn(name="driver_id", referencedColumnName="id")
      **/
     private $driver;
+
+    /**
+     * @var mixed
+     */
+    private $driverSafe = array();
 
     /**
      * @var string $locale
@@ -421,15 +452,6 @@ class Order
     }
 
     /**
-     * @return float
-     */
-    public function getAmount()
-    {
-        // TODO susumuoti visu detailsu kainas ir grazinti ;)
-        return '1.5';
-    }
-
-    /**
      * Set paymentStatus
      *
      * @param string $paymentStatus
@@ -609,7 +631,11 @@ class Order
             'details' => 'TODO', // TODO
             'orderStatus' => $this->getOrderStatus(),
             'orderDate' => $this->getOrderDate()->format("Y-m-d H:i:s"),
+            'total' => $this->getTotal(),
             'vat' => $this->getVat(),
+            'coupon_code' => $this->getCouponCode(),
+            'discount_size' => $this->getDiscountSize(),
+            'discount_sum' => $this->getDiscountSum(),
             'orderHash' => $this->getOrderHash(),
             'comment' => $this->getComment(),
             'placeComent' => $this->getPlaceComment(),
@@ -620,13 +646,6 @@ class Order
             'lastPaymentError' => $this->getLastPaymentError(),
             'deliveryType' => $this->getDeliveryType(),
         );
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->place_point = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -1193,5 +1212,113 @@ class Order
     public function getReminded()
     {
         return $this->reminded;
+    }
+
+    /**
+     * Set couponCode
+     *
+     * @param string $couponCode
+     * @return Order
+     */
+    public function setCouponCode($couponCode)
+    {
+        $this->couponCode = $couponCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get couponCode
+     *
+     * @return string 
+     */
+    public function getCouponCode()
+    {
+        return $this->couponCode;
+    }
+
+    /**
+     * Set discountSize
+     *
+     * @param integer $discountSize
+     * @return Order
+     */
+    public function setDiscountSize($discountSize)
+    {
+        $this->discountSize = $discountSize;
+    
+        return $this;
+    }
+
+    /**
+     * Get discountSize
+     *
+     * @return integer 
+     */
+    public function getDiscountSize()
+    {
+        return $this->discountSize;
+    }
+
+    /**
+     * Set discountSum
+     *
+     * @param float $discountSum
+     * @return Order
+     */
+    public function setDiscountSum($discountSum)
+    {
+        $this->discountSum = $discountSum;
+    
+        return $this;
+    }
+
+    /**
+     * Get discountSum
+     *
+     * @return float
+     */
+    public function getDiscountSum()
+    {
+        return $this->discountSum;
+    }
+
+    /**
+     * Set coupon
+     *
+     * @param \Food\OrderBundle\Entity\Coupon $coupon
+     * @return Order
+     */
+    public function setCoupon(\Food\OrderBundle\Entity\Coupon $coupon = null)
+    {
+        $this->coupon = $coupon;
+    
+        return $this;
+    }
+
+    /**
+     * Get coupon
+     *
+     * @return \Food\OrderBundle\Entity\Coupon 
+     */
+    public function getCoupon()
+    {
+        return $this->coupon;
+    }
+
+    /**
+     * @param mixed $driverSafe
+     */
+    public function setDriverSafe($driverSafe)
+    {
+        $this->driverSafe = $driverSafe;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDriverSafe()
+    {
+        return $this->driverSafe;
     }
 }

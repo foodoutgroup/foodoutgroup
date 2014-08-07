@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Food\AppBundle\Entity\Driver
  *
  * @ORM\Table(name="drivers")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Food\AppBundle\Entity\DriverRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class Driver
@@ -67,21 +67,21 @@ class Driver
     private $active = true;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="edited_at", type="datetime", nullable=true)
      */
     private $editedAt;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
@@ -297,7 +297,7 @@ class Driver
     /**
      * Set createdAt
      *
-     * @param \DateTime $createdAt
+     * @param \DateTime|null $createdAt
      * @return Driver
      */
     public function setCreatedAt($createdAt)
@@ -320,7 +320,7 @@ class Driver
     /**
      * Set editedAt
      *
-     * @param \DateTime $editedAt
+     * @param \DateTime|null $editedAt
      * @return Driver
      */
     public function setEditedAt($editedAt)
@@ -333,7 +333,7 @@ class Driver
     /**
      * Get editedAt
      *
-     * @return \DateTime 
+     * @return \DateTime|null
      */
     public function getEditedAt()
     {

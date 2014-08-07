@@ -117,7 +117,6 @@ class Place extends Uploadable implements Translatable
      */
     private $photos;
 
-
     /**
      * @var int
      *
@@ -168,6 +167,14 @@ class Place extends Uploadable implements Translatable
      * @ORM\Column(name="card_on_delivery", type="boolean")
      */
     private $cardOnDelivery = false;
+
+    /**
+     * This place does not accet online payments
+     * @var bool
+     *
+     * @ORM\Column(name="disabled_online_payment", type="boolean")
+     */
+    private $disabledOnlinePayment = false;
 
     /**
      * @ORM\OneToMany(targetEntity="FoodCategory", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
@@ -1243,5 +1250,28 @@ class Place extends Uploadable implements Translatable
     public function getPhotos()
     {
         return $this->photos;
+    }
+
+    /**
+     * Set disabledOnlinePayment
+     *
+     * @param boolean $disabledOnlinePayment
+     * @return Place
+     */
+    public function setDisabledOnlinePayment($disabledOnlinePayment)
+    {
+        $this->disabledOnlinePayment = $disabledOnlinePayment;
+    
+        return $this;
+    }
+
+    /**
+     * Get disabledOnlinePayment
+     *
+     * @return boolean 
+     */
+    public function getDisabledOnlinePayment()
+    {
+        return $this->disabledOnlinePayment;
     }
 }

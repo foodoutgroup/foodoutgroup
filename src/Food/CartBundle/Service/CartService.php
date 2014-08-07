@@ -145,9 +145,10 @@ class CartService {
                     "ACTION: removeDishByIds, options removal",
                     $context
                 );
+            } else {
+                $this->getEm()->remove($opt);
+                $this->getEm()->flush();
             }
-            $this->getEm()->remove($opt);
-            $this->getEm()->flush();
         }
 
         $cartDish = $this->getEm()->getRepository('FoodCartBundle:Cart')
@@ -169,10 +170,10 @@ class CartService {
                 "ACTION: removeDishByIds, Dish removal removal",
                 $context
             );
+        } else {
+            $this->getEm()->remove($cartDish);
+            $this->getEm()->flush();
         }
-
-        $this->getEm()->remove($cartDish);
-        $this->getEm()->flush();
 
         return $this;
     }
@@ -332,7 +333,7 @@ class CartService {
 
 
     /**
-     * @param \Place $place
+     * @param Place $place
      * @return array|\Food\CartBundle\Entity\Cart[]
      */
     public function getCartDishes($place)
@@ -340,7 +341,7 @@ class CartService {
         $list = $this->getEm()->getRepository('FoodCartBundle:Cart')->findBy(
             array(
                 'session' => $this->getSessionId(),
-                'place_id' => $place
+                'place_id' => $place->getId()
             )
         );
         foreach($list as $k => &$item) {
@@ -376,10 +377,12 @@ class CartService {
 
     /**
      * @param \Food\CartBundle\Entity\Cart[] $cartItems
-     * @param \Food\DishesBundle\Entity\Place $place
+     * param \Food\DishesBundle\Entity\Place $place
      * @return float|int
+     *
+     * TODO Pauliau, ar cia dar reikalingas place'as?
      */
-    public function getCartTotal($cartItems, $place)
+    public function getCartTotal($cartItems/*, $place*/)
     {
         $total = 0;
         foreach ($cartItems as $cartItem) {

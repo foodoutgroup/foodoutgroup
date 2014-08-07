@@ -2,6 +2,7 @@
 
 namespace Food\CartBundle\Entity;
 
+use Food\UserBundle\Entity\User;
 use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -36,6 +37,11 @@ class CartOption
      * @ORM\Id
      */
     private $dish_option_id;
+
+    /**
+     * @var User|null
+     */
+    private $user;
 
     /**
      * Set user

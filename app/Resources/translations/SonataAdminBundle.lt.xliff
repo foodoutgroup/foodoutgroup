@@ -356,6 +356,10 @@
                 <source>admin.place.card_on_delivery</source>
                 <target>Kortele prist. metu</target>
             </trans-unit>
+            <trans-unit id="admin.place.disabled_online_payment">
+                <source>admin.place.disabled_online_payment</source>
+                <target>Neleisti atsiskaityti internetu</target>
+            </trans-unit>
 
             <!-- Place points -->
             <trans-unit id="place-point-list">
@@ -808,6 +812,18 @@
                 <source>admin.order.total</source>
                 <target>Viso (su PVM)</target>
             </trans-unit>
+            <trans-unit id="admin.order.coupon_code">
+                <source>admin.order.coupon_code</source>
+                <target>Nuolaidos kupono kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.discount_size">
+                <source>admin.order.discount_size</source>
+                <target>Nuolaida %</target>
+            </trans-unit>
+            <trans-unit id="admin.order.discount_sum">
+                <source>admin.order.discount_sum</source>
+                <target>Nuolaidos suma</target>
+            </trans-unit>
             <trans-unit id="admin.order.comment">
                 <source>admin.order.comment</source>
                 <target>Užsakovo komentaras</target>
@@ -1162,6 +1178,44 @@
             <trans-unit id="admin.street.street_placeholder">
                 <source>admin.street.street_placeholder</source>
                 <target>Laisvės pr.</target>
+            </trans-unit>
+
+            <!-- Kuponu listas -->
+            <trans-unit id="Coupon List">
+                <source>Coupon List</source>
+                <target>Nuolaidos kuponai</target>
+            </trans-unit>
+            <trans-unit id="admin.coupons">
+                <source>admin.coupons</source>
+                <target>Nuolaidos kuponai</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.id">
+                <source>admin.coupon.id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.name">
+                <source>admin.coupon.name</source>
+                <target>Pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.discount">
+                <source>admin.coupon.discount</source>
+                <target>Nuolaida (%)</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.place">
+                <source>admin.coupon.place</source>
+                <target>Restoranas</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.active">
+                <source>admin.coupon.active</source>
+                <target>Aktyvus</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.single_use">
+                <source>admin.coupon.single_use</source>
+                <target>Vienkartinis</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.code">
+                <source>admin.coupon.code</source>
+                <target>Kodas</target>
             </trans-unit>
         </body>
     </file>

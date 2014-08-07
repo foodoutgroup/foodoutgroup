@@ -40,14 +40,14 @@ class BannedIp
     private $active = true;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="edited_at", type="datetime", nullable=true)
      */
@@ -186,7 +186,7 @@ class BannedIp
     /**
      * Set editedAt
      *
-     * @param \DateTime $editedAt
+     * @param \DateTime|null $editedAt
      * @return BannedIp
      */
     public function setEditedAt($editedAt)
@@ -199,7 +199,7 @@ class BannedIp
     /**
      * Get editedAt
      *
-     * @return \DateTime 
+     * @return \DateTime|null
      */
     public function getEditedAt()
     {
