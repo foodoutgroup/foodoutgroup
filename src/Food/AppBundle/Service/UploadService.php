@@ -306,7 +306,6 @@ class UploadService
 
         $resizedImage->save($webPath.$newName);
 
-
         return $newName;
     }
 
