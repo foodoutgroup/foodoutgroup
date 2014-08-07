@@ -147,3 +147,9 @@ food_api_test_token_auth:
     pattern: /users/test_token_auth
     defaults: { _controller: FoodApiBundle:Users:testTokenAuth}
     methods: [GET]
+
+# Images and stuff
+food_api_test_token_auth:
+    pattern: /images/
+    defaults: { _controller: FoodApiBundle:Images:image}
+    methods: [GET]
