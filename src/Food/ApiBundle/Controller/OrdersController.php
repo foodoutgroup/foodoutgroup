@@ -5,17 +5,20 @@ namespace Food\ApiBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Food\ApiBundle\Common\JsonRequest;
 
 class OrdersController extends Controller
 {
     public function getOrdersAction(Request $request)
     {
-        return new JsonResponse($this->get('food_api.order')->getPendingOrders($request));
+        $requestJson = new JsonRequest($request);
+        return new JsonResponse($this->get('food_api.order')->getPendingOrders($request, $requestJson));
     }
 
     public function createOrderAction(Request $request)
     {
-        return new JsonResponse($this->get('food_api.order')->createOrder($request));
+        $requestJson = new JsonRequest($request);
+        return new JsonResponse($this->get('food_api.order')->createOrder($request, $requestJson));
     }
 
     public function getOrderDetailsAction($id)
