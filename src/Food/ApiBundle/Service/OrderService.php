@@ -2,6 +2,7 @@
 
 namespace Food\ApiBundle\Service;
 
+use Food\ApiBundle\Common\JsonRequest;
 use Food\OrderBundle\Entity\Order;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,11 +10,11 @@ use Food\OrderBundle\Service\OrderService as FO;
 
 class OrderService extends ContainerAware
 {
-    public function getPendingOrders(Request $request)
+    public function getPendingOrders(Request $requestOrig, JsonRequest $request)
     {
         $returner = array();
 
-        $token = $request->headers->get('X-API-Authorization');
+        $token = $requestOrig->headers->get('X-API-Authorization');
         $this->container->get('food_api.api')->loginByHash($token);
         $security = $this->container->get('security.context');
         $user = $security->getToken()->getUser();
@@ -38,7 +39,7 @@ class OrderService extends ContainerAware
         return $returner;
     }
 
-    public function createOrder(Request $request)
+    public function createOrder(Request $requestOrig, JsonRequest $request)
     {
         /**
          * {
@@ -61,7 +62,7 @@ class OrderService extends ContainerAware
         }
          */
 
-        $token = $request->headers->get('X-API-Authorization');
+        $token = $requestOrig->headers->get('X-API-Authorization');
         $this->container->get('food_api.api')->loginByHash($token);
         $security = $this->container->get('security.context');
         $user = $security->getToken()->getUser();
