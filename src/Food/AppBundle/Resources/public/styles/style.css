@@ -1265,3 +1265,8 @@ div.coupon_form_popup {
 .register-form .tooltip {
     white-space: nowrap;
 }
+
+/* User password resetting form */
+.resetting_form_wrapper {
+    display: none;
+}

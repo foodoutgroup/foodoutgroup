@@ -56,6 +56,7 @@
         bind_login_form();
         bind_review_form();
         bind_profile_menu_items();
+        bind_show_password_resetting_form();
     });
 })(jQuery, window);
 
@@ -67,6 +68,7 @@ init_raty = function() {
 
     $(selector).raty(options);
 }
+
 bind_registration_form = function() {
     $('body').on('submit', '.righter.register-form', function(e) {
         var callback, data, form, url;
@@ -170,3 +172,21 @@ bind_review_form = function() {
         return false;
     });
 }
+
+bind_show_password_resetting_form = function() {
+    $('body').on('click', '.reset_password_btn', function(e) {
+        $('.login_form_wrapper').hide();
+        $('.resetting_form_wrapper').show();
+
+        return false;
+    });
+
+    $('body').on('click', '.back_to_login', function(e) {
+        $('.resetting_form_wrapper').hide();
+        $('.login_form_wrapper').show();
+
+        return false;
+    });
+
+    return true;
+};

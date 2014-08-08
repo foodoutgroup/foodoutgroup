@@ -16,6 +16,11 @@ food_user:
     type:     annotation
     prefix:   /
 
+food_user_reset_password:
+    resource: "@FoodUserBundle/Controller/ResetPasswordController.php"
+    type: annotation
+    prefix: /resetting
+
 food_order:
     resource: "@FoodOrderBundle/Controller/"
     type:     annotation

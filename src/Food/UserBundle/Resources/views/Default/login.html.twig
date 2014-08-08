@@ -13,7 +13,9 @@
         <input type="password" id="password" name="_password" required="required" />
     </div>
     <input type="checkbox" id="remember_me" name="_remember_me" checked class="hidden" />
-    {# <div class="tar"><a href="#">{% trans %}general.login_forgot_password{% endtrans %}</a></div> #}
+    <div class="tar">
+        <a href="#" class="reset_password_btn">{% trans %}general.login_forgot_password{% endtrans %}</a>
+    </div>
     <div class="form-controls clearfix">
         <input type="submit" value="{% trans %}general.login_login_button{% endtrans %}" class="fr">
     </div>
