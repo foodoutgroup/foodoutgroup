@@ -45,7 +45,9 @@ class LogisticsController extends Controller
 
             $driverData = $logisticsService->parseDriverAssignXml($request->getContent());
 
-            $logisticsService->assignDriver($driverData['driver_id'], array($driverData['order_id']));
+            foreach ($driverData as $driver) {
+                $logisticsService->assignDriver($driver['driver_id'], array($driver['order_id']));
+            }
 
             return new Response('OK', 200);
         } catch (\Exception $e) {

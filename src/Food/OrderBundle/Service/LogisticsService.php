@@ -422,7 +422,7 @@ class LogisticsService extends ContainerAware
         // Kolkas tik vienas. Jei po kelis nores perduot - reiksapglebt gaubianciu tagu, kitaip nevalidu
         foreach ($orderElements as $order)
         {
-            $driverData = array(
+            $driverData[] = array(
                 'order_id' => $order->getElementsByTagName('Order_id')->item(0)->nodeValue,
                 'driver_id' => $order->getElementsByTagName('Driver_id')->item(0)->nodeValue,
                 'vehicle_no' => $order->getElementsByTagName('Vehicle_no')->item(0)->nodeValue,

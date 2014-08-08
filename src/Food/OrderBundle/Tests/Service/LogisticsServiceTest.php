@@ -740,18 +740,62 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
     public function testDriverXmlParse()
     {
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
+<OrderAssignments>
 <OrderAssigned>
 <Order_id>324169</Order_id>
 <Driver_id>165</Driver_id>
 <Vehicle_no>FCU 819</Vehicle_no>
 <Planned_delivery_time>2014-07-02 11:43</Planned_delivery_time>
-</OrderAssigned>';
+</OrderAssigned>
+</OrderAssignments>';
 
         $expectedDriverData = array(
-            'order_id' => 324169,
-            'driver_id' => 165,
-            'vehicle_no' => 'FCU 819',
-            'planned_delivery_time' => new \DateTime("2014-07-02 11:43"),
+            array(
+                'order_id' => 324169,
+                'driver_id' => 165,
+                'vehicle_no' => 'FCU 819',
+                'planned_delivery_time' => new \DateTime("2014-07-02 11:43"),
+            ),
+        );
+
+        $logisticsService = new LogisticsService();
+
+        $driverData = $logisticsService->parseDriverAssignXml($xml);
+
+        $this->assertEquals($expectedDriverData, $driverData);
+    }
+
+    public function testMultipleDriverXmlParse()
+    {
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>
+<OrderAssignments>
+<OrderAssigned>
+<Order_id>324169</Order_id>
+<Driver_id>165</Driver_id>
+<Vehicle_no>FCU 819</Vehicle_no>
+<Planned_delivery_time>2014-07-02 11:43</Planned_delivery_time>
+</OrderAssigned>
+<OrderAssigned>
+<Order_id>3242</Order_id>
+<Driver_id>123</Driver_id>
+<Vehicle_no>ABC 232</Vehicle_no>
+<Planned_delivery_time>2014-07-31 21:22</Planned_delivery_time>
+</OrderAssigned>
+</OrderAssignments>';
+
+        $expectedDriverData = array(
+            array(
+                'order_id' => 324169,
+                'driver_id' => 165,
+                'vehicle_no' => 'FCU 819',
+                'planned_delivery_time' => new \DateTime("2014-07-02 11:43"),
+            ),
+            array(
+                'order_id' => 3242,
+                'driver_id' => 123,
+                'vehicle_no' => 'ABC 232',
+                'planned_delivery_time' => new \DateTime("2014-07-31 21:22"),
+            ),
         );
 
         $logisticsService = new LogisticsService();
