@@ -62,10 +62,6 @@ class GoogleGisService extends ContainerAware
                 'key' => $this->container->getParameter('google.maps_server_api')
             )
         );
-        echo "<pre>";
-        print_r(json_decode($resp->body));
-        echo "</pre>";
-        die();
         return json_decode($resp->body);
     }
 

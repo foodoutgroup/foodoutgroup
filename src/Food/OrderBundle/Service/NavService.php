@@ -159,13 +159,13 @@ class NavService extends ContainerAware
         $street = trim(str_replace($errz[0], '', $target));
         $houseNr = (!empty($errz[2]) ? $errz[2] : '');
         $flatNr = (!empty($errz[3]) ? $errz[3] : '');
-
+        $orderNewId = $orderNewId + 2;
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Phone' => $order->getUser()->getPhone(),
             'ZipCode' => '',
             'City' => $order->getAddressId()->getCity(),
-            'Street' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $street: ''),
+            'Street' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? iconv('utf-8', 'cp1257',$street): ''),
             'Street No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $houseNr: ''),
             'Floor' => '',
             'Grid' => '',
@@ -175,16 +175,16 @@ class NavService extends ContainerAware
             'Restaurant No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? '' : $order->getPlacePoint()->getInternalCode()),
             'Order Date' => $order->getOrderDate()->format("Y-m-d"),
             'Order Time' => '1754-01-01 '.$order->getOrderDate()->format("H:i:s"),
-            'Takeout Time' => '2014-08-05 23:30:00', //$order->getDeliveryTime()->format("Y-m-d H:i:s"),
-            'Directions' => $order->getComment(),
+            'Takeout Time' => $order->getDeliveryTime()->format("Y-m-d H:i:s"),
+            'Directions' => 'NEGAMINTI.TEST.'.$order->getComment(),
             'Discount Card No_' => '',
-            'Order Status' => 0,
+            'Order Status' => 4,
             'Delivery Order No_' => '',
             'Error Description' => '',
             'Flat No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $flatNr: ''),
             'Entrance Code' => '',
             'Region Code' => '',
-            'Delivery Status' => '',
+            'Delivery Status' => 12,
             'In Use By User' => '',
             'Loyalty Card No_' => '',
             'Order with Alcohol' => '0'
@@ -215,7 +215,7 @@ class NavService extends ContainerAware
             'Line No_' => $key,
             'Entry Type' => 0,
             'No_' => "'".$detail->getDishSizeCode()."'",
-            'Description' => "'".mb_substr($detail->getDishName(), 0, 29)."'",
+            'Description' => "'".iconv('utf-8', 'cp1257', mb_substr($detail->getDishName(), 0, 29))."'",
             'Quantity' => $detail->getQuantity(),
             'Price' => $detail->getPrice(), // @todo test the price. Kaip gula. Total ar ne.
             'Parent Line' => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
@@ -249,9 +249,10 @@ class NavService extends ContainerAware
 
         stream_wrapper_unregister('http');
         stream_wrapper_register('http', '\Food\OrderBundle\Common\FoNTLMStream') or die("Failed to register protocol");
-        $url = $clientUrl2; //"http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
-        $options = array();
+        $url = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS Skambuciu Centras/Codeunit/WEB_Service2";
+        $options = array('trace'=>1, 'login' =>'CILIJA\fo_order', 'password' => 'peH=waGe?zoOs69');
         $client = new Common\FoNTLMSoapClient($url, $options);
+        //$client->authenticate(array('fo_order', 'peH=waGe?zoOs69', 'CILIJA'));
         stream_wrapper_restore('http');
         return $client;
     }
@@ -260,17 +261,22 @@ class NavService extends ContainerAware
     {
         $orderId = $this->getNavOrderId($order);
         $client = $this->getWSConnection();
-        //$return = $client->UpdatePrices(array('pInt'=>$orderId));
-        $return = $client->ProcessOrder($orderId);
-        var_dump($return);
-        //$return = $client->__soapCall("ProcessOrder", array($orderId));
-        //var_dump($return);
-        var_dump('DA');
+        $return = $client->UpdatePrices(array('pInt' =>(int)$orderId));
+    }
 
-        //$con = $this->getWSConnection();
+    public function processOrderNAV(Order $order)
+    {
+        $orderId = $this->getNavOrderId($order);
 
+        $query = 'UPDATE '.$this->getHeaderTable().' SET [Delivery Type]=0, [Delivery Status]=0 WHERE [Order No_] = '.$orderId;
 
-        //$soapC =
+        $rez = sqlsrv_query ( $this->getConnection() , $query);
+        if( $rez === false) {
+            die( print_r( sqlsrv_errors(), true) );
+        }
+
+        $client = $this->getWSConnection();
+        $return = $client->ProcessOrder(array('pInt' =>(int)$orderId));
     }
 }
 ?>
