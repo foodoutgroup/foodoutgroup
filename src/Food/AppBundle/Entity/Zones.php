@@ -21,6 +21,12 @@ class Zones {
 
     /**
      * @var string
+     * @ORM\Column(name="timestamp", type="string", length=30, nullable=true)
+     */
+    private $timestamp;
+
+    /**
+     * @var string
      * @ORM\Column(name="grid", type="string", length=50, nullable=true)
      */
     private $grid;
