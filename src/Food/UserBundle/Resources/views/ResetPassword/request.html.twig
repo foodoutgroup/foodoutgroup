@@ -1,6 +1,6 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-<form action="{{ url('food_user_resetting_send_email') }}" method="POST" class="lefter login-form">
+<form action="{{ url('food_user_resetting_send_email') }}" method="POST" class="lefter" novalidate>
     <h3>{% trans %}general.reset_password{% endtrans %}</h3>
     <h4></h4>
     <div class="form-row login-form-row">
@@ -8,7 +8,7 @@
             <p>{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}) }}</p>
         {% endif %}
         <label for="username">{{ 'resetting.request.email'|trans }}</label>
-        <input type="text" id="username" name="username" required="required" />
+        <input type="text" id="username" name="email" required="required" />
     </div>
     <div class="tar">
         <a href="#" class="back_to_login">{% trans %}general.back_to_login{% endtrans %}</a>

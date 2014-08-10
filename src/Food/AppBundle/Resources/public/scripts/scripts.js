@@ -57,6 +57,7 @@
         bind_review_form();
         bind_profile_menu_items();
         bind_show_password_resetting_form();
+        bind_password_resetting_form();
     });
 })(jQuery, window);
 
@@ -149,13 +150,13 @@ bind_profile_menu_items = function() {
 
 bind_review_form = function() {
     $('body').on('submit', '.review-form', function(e) {
-        var callback, data, form, url, form_rows, dataType;
+        var callback, data, form, url, form_rows, data_type;
 
         form = $(this);
         url = form.attr('action');
         data = form.serialize();
-        form_rows = $('.review-form .form-row')
-        dataType = 'json';
+        form_rows = $('.review-form .form-row');
+        data_type = 'json';
 
         form_rows.removeClass('error');
 
@@ -167,7 +168,7 @@ bind_review_form = function() {
             }
         };
 
-        $.post(url, data, callback, dataType);
+        $.post(url, data, callback, data_type);
 
         return false;
     });
@@ -190,3 +191,29 @@ bind_show_password_resetting_form = function() {
 
     return true;
 };
+
+bind_password_resetting_form = function() {
+    $('body').on('submit', '.resetting_form_wrapper form', function(e) {
+        var callback, data, form, url, form_rows, data_type;
+
+        form = $(this);
+        url = form.attr('action');
+        data = form.serialize();
+        form_rows = $('.resetting_form_wrapper form .form-row');
+        data_type = 'json';
+
+        form_rows.removeClass('error');
+
+        callback = function(response) {
+            if (response.success == 1) {
+                top.location.reload();
+            } else {
+                form_rows.addClass('error');
+            }
+        };
+
+        $.post(url, data, callback, data_type);
+
+        return false;
+    });
+}
