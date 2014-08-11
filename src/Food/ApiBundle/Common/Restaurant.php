@@ -136,6 +136,10 @@ class Restaurant extends ContainerAware
                     'minimal_order' => array(
                         'amount' => $place->getCartMinimum() * 100,
                         'currency' => 'LTL'
+                    ),
+                    'minimal_order_pickup' => array(
+                        'amount' => ($place->getMinimalOnSelfDel() ?  $place->getCartMinimum() * 100 : 0),
+                        'currency' => 'LTL'
                     )
                 )
             )
