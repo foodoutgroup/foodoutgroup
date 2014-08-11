@@ -2,38 +2,11 @@
 
 Gateway is a newest way to integrate payments in baltic countries Lithuania, Latvia and Estonia.
 
-### Installation ###
-
-Use composer.
-
-#### 1. add third party repository: ####
-```
-"repositories": [
-    {
-        "type": "git",
-        "url": "https://bitbucket.org/pirminis/gateway"
-    }
-]
-```
-
-#### 2. require it: ####
-stable:
-```
-"require": {
-    "pirminis/gateway": "~1.0"
-}
-```
-
-development:
-```
-"require": {
-    "pirminis/gateway": "@dev"
-}
-```
-
-### How to use ###
+## How to use ##
 
 Currently there are 2 use cases:
+
+### A. classic banklink ###
 
 #### 1. redirect user to the bank ####
 ```
@@ -122,4 +95,47 @@ $response->redirect_url()
 
 // get order id
 $response->order_id()
+```
+
+### B. credit card banklink ###
+
+#### 1. redirect user to the bank ####
+
+```
+use Pirminis\Gateway\Swedbank\FullHps\Request as FullHpsRequest;
+use Pirminis\Gateway\Swedbank\FullHps\Response as FullHpsResponse;
+use Pirminis\Gateway\Swedbank\FullHps\Request\Parameters;
+use Pirminis\Gateway\Swedbank\Banklink\Sender;
+
+$params = new Parameters();
+$params->set('client', '123')
+       ->set('password', 'wasd')
+       ->set('order_id', uniqid())
+       ->set('price', '10') // ten cents
+       ->set('transaction_datetime', date('Ymd H:i:s'))
+       ->set('comment', 'TEST')
+       ->set('return_url', 'http://localhost:3000/return')
+       ->set('expiry_url', 'http://localhost:3000/expiry');
+
+$request = new FullHpsRequest($params);
+$sender = new Sender($request->xml());
+$response = new FullHpsResponse($sender->send());
+
+// redirect user to this url: $response->redirect_url()
+```
+
+#### 2. query bank for information about payment ####
+
+```
+$request = new FullHpsTransRequest('123', 'abc', $_REQUEST['dc_reference']);
+$sender = new Sender($request->xml());
+$response = new FullHpsResponse($sender->send());
+
+if ($response->is_authenticated()) {
+    $request = new FullHpsTransRequest('123', 'abc', $response->dc_reference());
+    $sender = new Sender($request->xml());
+    $response = new FullHpsResponse($sender->send());
+
+    // payment succeeded if true === $response->query_succeeded()
+}
 ```
