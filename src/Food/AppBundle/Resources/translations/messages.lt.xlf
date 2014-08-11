@@ -893,6 +893,10 @@
         <source>general.noty.profile_updated</source>
         <target>Duomenys sėkmingai atnaujinti.</target>
       </trans-unit>
+      <trans-unit id="general.resetting" resname="general.resetting">
+        <source>general.resetting</source>
+        <target>Slaptažodžio priminimas</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

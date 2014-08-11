@@ -3,7 +3,7 @@
 <form action="{{ url('food_user_resetting_send_email') }}"
       method="POST"
       class="lefter"
-      data-redirect-target="{{ url(food_user_resetting_check_email) }}"
+      data-redirect-target="{{ url('food_user_resetting_check_email') }}"
       novalidate>
     <h3>{% trans %}general.reset_password{% endtrans %}</h3>
     <h4></h4>

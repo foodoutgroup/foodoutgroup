@@ -14,6 +14,8 @@ class ResetPassword
      */
     public function sendEmail($email)
     {
+        return true;
+
         $user = $this->service('fos_user.user_manager')
                      ->findUserByUsernameOrEmail($email);
 
