@@ -14,7 +14,7 @@ class ImagesController extends Controller
             $filename = $request->get('imagename');
             $size = $request->get('size');
             $box = (bool)$request->get('box', false);
-            $webPath = $this->get('kernel')->getRootDir() . '/../web';
+            $webPath = $this->get('kernel')->getRootDir() . '/../web/';
             $uploadService = $this->get('food.upload');
 
             if (!file_exists($webPath.$filename)) {
