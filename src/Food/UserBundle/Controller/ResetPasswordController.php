@@ -34,6 +34,7 @@ class ResetPasswordController extends Controller
         if ($form->isValid() &&
             $this->service('food.reset_password')
                  ->sendEmail($form->get('email')->getData())) {
+
             return new Response(json_encode(['success' => true]));
         }
 

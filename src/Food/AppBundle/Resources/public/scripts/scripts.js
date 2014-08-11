@@ -208,7 +208,7 @@ bind_password_resetting_form = function() {
 
         callback = function(response) {
             if (response.success == 1) {
-                top.location.reload();
+                top.location = form.attr('data-redirect-target');
             } else {
                 form_rows.addClass('error');
                 popup.unmask();

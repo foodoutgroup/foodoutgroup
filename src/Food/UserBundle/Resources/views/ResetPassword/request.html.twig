@@ -1,6 +1,10 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-<form action="{{ url('food_user_resetting_send_email') }}" method="POST" class="lefter" novalidate>
+<form action="{{ url('food_user_resetting_send_email') }}"
+      method="POST"
+      class="lefter"
+      data-redirect-target="{{ url(food_user_resetting_check_email) }}"
+      novalidate>
     <h3>{% trans %}general.reset_password{% endtrans %}</h3>
     <h4></h4>
     <div class="form-row login-form-row">
