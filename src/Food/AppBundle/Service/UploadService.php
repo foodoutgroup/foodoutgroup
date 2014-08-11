@@ -1,6 +1,10 @@
 <?php
 namespace Food\AppBundle\Service;
 
+use Imagine\Gd\Imagine;
+use Imagine\Image\Box;
+use Imagine\Image\ImageInterface;
+
 class UploadService
 {
 
@@ -28,6 +32,11 @@ class UploadService
      * @var int
      */
     private $userId;
+
+    /**
+     * @var Imagine
+     */
+    private $imagine;
 
     /**
      * @param Container $container
@@ -85,6 +94,25 @@ class UploadService
     public function getObject()
     {
         return $this->object;
+    }
+
+    /**
+     * @param \Imagine\Gd\Imagine $imagine
+     */
+    public function setImagine($imagine)
+    {
+        $this->imagine = $imagine;
+    }
+
+    /**
+     * @return \Imagine\Gd\Imagine
+     */
+    public function getImagine()
+    {
+        if (empty($this->imagine)) {
+            $this->imagine = new Imagine();
+        }
+        return $this->imagine;
     }
 
     /**
@@ -209,8 +237,8 @@ class UploadService
      */
     private function saveThumb($uploadDir, $origName, $newName, $w, $h, $mode)
     {
-        $imagine = new \Imagine\Gd\Imagine();
-        $size = new \Imagine\Image\Box($w, $h);
+        $imagine = $this->getImagine();
+        $size = new Box($w, $h);
 
         $imagine->open($uploadDir."/".$origName)
             ->thumbnail($size, $mode)
@@ -222,11 +250,88 @@ class UploadService
      */
     public function generateFileName()
     {
+        $id = $this->object->getId();
+
+        // If it is a new object and has no ID - generate a more unique one
+        if (empty($id) || $id == 0) {
+            $id = 'noid_'.date("ymdhis");
+        }
+
         return sprintf(
-            '%d_%s.%s',
-            $this->object->getId(),
+            '%s_%s.%s',
+            $id,
             md5($this->object->getFile()->getClientOriginalName()),
             $this->object->getFile()->guessClientExtension()
         );
+    }
+
+    /**
+     * Resize an image, return its contents and mime type
+     *
+     * @param string $file
+     * @param int $width
+     * @param bool $box
+     * @return string
+     * @throws \Exception
+     */
+    public function resizePhoto($file, $width, $box=false)
+    {
+        if (empty($file)) {
+            throw new \Exception('File can not be empty');
+        }
+        if (empty($width)) {
+            throw new \Exception('I can not resize ir width is not specified');
+        }
+
+        $rootPath = $this->container->get('kernel')->getRootDir();
+        $webPath = $rootPath.'/../web';
+
+        $newName = $this->getMobileImageName($file, $width, $box);
+
+        $imagine = $this->getImagine();
+        $imageObject = $imagine->open($webPath.$file);
+
+        if (!$box) {
+            $resizedImage = $imageObject->resize(
+                $imageObject->getSize()->widen($width)
+            );
+        } else {
+            $size = new Box($width, $width);
+
+            $resizedImage = $imageObject->thumbnail(
+                $size,
+                ImageInterface::THUMBNAIL_OUTBOUND
+            );
+        }
+
+        $resizedImage->save($webPath.$newName);
+
+        return $newName;
+    }
+
+    /**
+     * @param string $file
+     * @param int $width
+     * @param bool $box
+     * @return string
+     */
+    public function getMobileImageName($file, $width, $box)
+    {
+        $filename = basename($file);
+        $pathInfo = pathinfo($file);
+        if (!empty($pathInfo['dirname']) && $pathInfo['dirname'] != '.') {
+            $thePath = $pathInfo['dirname'].'/';
+        } else {
+            $thePath = '';
+        }
+
+        $newName = sprintf(
+            'mobile_%d_%s_%s',
+            $width,
+            ($box ? 'box' : 'aspect'),
+            $filename
+        );
+
+        return $thePath.$newName;
     }
 }
