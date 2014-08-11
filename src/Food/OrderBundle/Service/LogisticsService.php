@@ -272,8 +272,20 @@ class LogisticsService extends ContainerAware
         // End delivery block
         $writer->endElement();
 
-        // Pickup time block
-        $pickupToTime = clone $order->getAcceptTime();
+        // Pickup time
+        $acceptTime = $order->getAcceptTime();
+
+        // If delayed - add delay duration
+        if ($order->getDelayed()) {
+            $delay = $order->getDelayDuration();
+            $acceptTime->add(
+                new \DateInterval(sprintf('PT%dM', $delay))
+            );
+        }
+
+        $pickupToTime = clone $acceptTime;
+        $deliveryToTime = clone $acceptTime;
+
         $writer->startElement("PickUpTime");
         $writer->writeElement('From', $order->getAcceptTime()->format("Y-m-d H:i"));
         $writer->writeElement('To', $pickupToTime->add(new \DateInterval('PT20M'))->format("Y-m-d H:i"));
@@ -281,7 +293,6 @@ class LogisticsService extends ContainerAware
         $writer->endElement();
 
         // Delivery time block
-        $deliveryToTime = clone $order->getAcceptTime();
         $writer->startElement("DeliveryTime");
         $writer->writeElement('From', $order->getAcceptTime()->format("Y-m-d H:i"));
         $writer->writeElement('To', $deliveryToTime->add(new \DateInterval('PT1H'))->format("Y-m-d H:i"));
