@@ -41,3 +41,8 @@ services:
     food.mailer:
         class: Food\AppBundle\Service\MailerMessagesService
         arguments: [%mailer_api_key%]
+
+    food.reset_password:
+        class: Food\AppBundle\Utils\ResetPassword
+        calls:
+            - [container, [@service_container]]

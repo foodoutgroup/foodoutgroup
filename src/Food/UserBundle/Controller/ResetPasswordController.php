@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ResetPasswordController extends Controller
 {
@@ -30,7 +31,9 @@ class ResetPasswordController extends Controller
         $form = $this->form();
         $form->submit($request);
 
-        if ($form->isValid()) {
+        if ($form->isValid() &&
+            $this->service('food.reset_password')
+                 ->sendEmail($form->get('email')->getData())) {
             return new Response(json_encode(['success' => true]));
         }
 
@@ -65,7 +68,8 @@ class ResetPasswordController extends Controller
                      ->add('email',
                            'email',
                            ['required' => true,
-                            'constraints' => [new Email()]])
+                            'constraints' => [new Email(),
+                                              new NotBlank()]])
                      ->getForm()
         ;
 

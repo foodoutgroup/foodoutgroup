@@ -194,21 +194,24 @@ bind_show_password_resetting_form = function() {
 
 bind_password_resetting_form = function() {
     $('body').on('submit', '.resetting_form_wrapper form', function(e) {
-        var callback, data, form, url, form_rows, data_type;
+        var callback, data, form, popup, url, form_rows, data_type;
 
         form = $(this);
+        popup = $('.popup.login-register-popup')
         url = form.attr('action');
         data = form.serialize();
         form_rows = $('.resetting_form_wrapper form .form-row');
         data_type = 'json';
 
         form_rows.removeClass('error');
+        popup.mask();
 
         callback = function(response) {
             if (response.success == 1) {
                 top.location.reload();
             } else {
                 form_rows.addClass('error');
+                popup.unmask();
             }
         };
 
