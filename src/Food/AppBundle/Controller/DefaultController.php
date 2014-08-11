@@ -21,9 +21,11 @@ class DefaultController extends Controller
         $response = new FullHpsResponse($sender->send());
 
         if ($response->is_authenticated()) {
-            $request = new FullHpsTransRequest('88185002', 'aXVdnHfZSJmz', '3700900010001927');
+            $request = new FullHpsTransRequest('88185002', 'aXVdnHfZSJmz', $response->dc_reference());
             $sender = new Sender($request->xml());
             $response = new FullHpsResponse($sender->send());
+
+            var_dump($response->query_succeeded());
         }
         // var_dump($request->query->all());
         // var_dump($request->request->all());
