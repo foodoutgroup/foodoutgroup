@@ -47,7 +47,7 @@ class BasketController extends Controller
         $requestJson = new JsonRequest($request);
         $this->get('food_api.basket')->deleteBasketItem($id, $basket_item_id, $requestJson);
         $basket = $this->get('food_api.basket')->getBasket($id);
-        return new JsonResponse('', 204);
+        return new JsonResponse($basket);
     }
 
      /**
