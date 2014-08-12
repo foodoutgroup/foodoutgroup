@@ -53,7 +53,7 @@ class Response
     /**
      * One important note here: QUERY_STATUS_SUCCESS marks
      * succes of query, not payment transaction.
-     * 
+     *
      * @return boolean
      */
     public function query_succeeded()
@@ -80,10 +80,6 @@ class Response
         $dc_response = $this->dc_response();
         $dc_reference = $this->dc_reference();
         $dc_attempt_reference = $this->dc_attempt_reference();
-
-        var_dump($dc_response);
-        var_dump($dc_reference);
-        var_dump($dc_attempt_reference);
 
         return $dc_response === static::DC_RESPONSE_SUCCESS &&
                $dc_reference === $dc_attempt_reference &&

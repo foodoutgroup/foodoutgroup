@@ -53,15 +53,20 @@ class DefaultController extends Controller
 
         $service = $this->get('pirminis_credit_card_gateway');
 
-        // set options
-        $service->set_options(['order_id' => uniqid(),
-                               'price' => 1,
-                               'transaction_datetime' => date('Y-m-d H:i:s'),
-                               'comment' => 'TEST',
-                               'return_url' => 'http://kofeinas.foodout.lt/swedbank-gateway-test/log.php',
-                               'expiry_url' => 'http://kofeinas.foodout.lt/swedbank-gateway-test/log.php']);
+        $request->query->replace(['dts_reference' => '3700900010001927']);
+        $a = $service->is_successful_payment('swedbank', $request);
 
-        var_dump($service->redirect_url('swedbank'));
+        var_dump($a);
+
+        // set options
+        // $service->set_options(['order_id' => uniqid(),
+        //                        'price' => 1,
+        //                        'transaction_datetime' => date('Y-m-d H:i:s'),
+        //                        'comment' => 'TEST',
+        //                        'return_url' => 'http://kofeinas.foodout.lt/swedbank-gateway-test/log.php',
+        //                        'expiry_url' => 'http://kofeinas.foodout.lt/swedbank-gateway-test/log.php']);
+        //
+        // var_dump($service->redirect_url('swedbank'));
 
         die('xxx');
         // Check if user is not banned

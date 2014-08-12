@@ -94,6 +94,7 @@ public function successAction(Request $request)
 
 #### 1. redirect user to the bank ####
 
+```
 public function indexAction()
 {
     $service = $this->get('pirminis_credit_card_gateway');
@@ -107,3 +108,16 @@ public function indexAction()
                            'expiry_url' => 'http://localhost:3000/expiry']);
 
     // redirect user to $service->redirect_url('swedbank')
+}
+```
+
+#### 2. query bank for information about payment ####
+
+```
+public function indexAction(Request $request)
+{
+    $service = $this->get('pirminis_credit_card_gateway');
+
+    $is_successful_payment = $service->is_successful_payment('swedbank', $request);
+}
+```
