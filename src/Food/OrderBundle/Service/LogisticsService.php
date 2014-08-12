@@ -379,6 +379,8 @@ class LogisticsService extends ContainerAware
             throw new \InvalidArgumentException('Cannot put order to logistis when its not order. Dafuk?');
         }
 
+        $this->container->get('food.order')->logOrder($order, 'schedule_logistics_api_send', 'Order scheduled to send to logistics');
+
         $om = $this->container->get('doctrine')->getManager();
         $orderToLogistics = new OrderToLogistics();
 

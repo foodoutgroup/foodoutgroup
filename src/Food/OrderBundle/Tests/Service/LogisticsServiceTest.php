@@ -825,6 +825,10 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
             array('get')
         );
 
+        $orderService = $this->getMockBuilder('Food\OrderBundle\Service\OrderService')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
             ->disableOriginalConstructor()
             ->getMock();
@@ -841,6 +845,19 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
             ->setDateAdded(new \DateTime("now"));
 
         $container->expects($this->at(0))
+            ->method('get')
+            ->with('food.order')
+            ->will($this->returnValue($orderService));
+
+        $orderService->expects($this->once())
+            ->method('logOrder')
+            ->with(
+                $order,
+                'schedule_logistics_api_send',
+                'Order scheduled to send to logistics'
+            );
+
+        $container->expects($this->at(1))
             ->method('get')
             ->with('doctrine')
             ->will($this->returnValue($doctrine));

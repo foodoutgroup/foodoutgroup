@@ -38,6 +38,7 @@ class OrderToLogisticCommand extends ContainerAwareCommand
     {
         try {
             $logisticsService = $this->getContainer()->get('food.logistics');
+            $orderService = $this->getContainer()->get('food.order');
             $em = $this->getContainer()->get('doctrine')->getManager();
             $logger = $this->getContainer()->get('logger');
             $systemUrl = $input->getOption('force-url');
@@ -85,6 +86,12 @@ class OrderToLogisticCommand extends ContainerAwareCommand
                             )
                         );
                     }
+
+                    $orderService->logOrder(
+                        $orderToSend->getorder(),
+                        'sent_to_logistics_api',
+                        sprintf('Order sent to logistics system. Send status: %s', $response['status'])
+                    );
 
                     $output->writeln(' -- status: '.$response['status']);
                 }

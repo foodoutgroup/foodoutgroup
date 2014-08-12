@@ -17,6 +17,11 @@ class LogisticsController extends Controller
             $statusData = $logisticsService->parseOrderStatusXml($request->getContent());
 
             $orderService->getOrderById($statusData['order_id']);
+            $orderService->logOrder(
+                $orderService->getOrder(),
+                'logistics_api_status_update',
+                'Order status updated from logistics. Logstics status: '.$statusData['status']
+            );
 
             if ($statusData['status'] == 'finished') {
                 $orderService->statusCompleted('LogisticsAPI');
@@ -42,11 +47,17 @@ class LogisticsController extends Controller
     {
         try {
             $logisticsService = $this->get('food.logistics');
+            $orderService = $this->get('food.order');
 
             $driverData = $logisticsService->parseDriverAssignXml($request->getContent());
 
             foreach ($driverData as $driver) {
                 $logisticsService->assignDriver($driver['driver_id'], array($driver['order_id']));
+                $orderService->logOrder(
+                    $orderService->getOrderById($driver['order_id']),
+                    'logistics_api_driver_assign',
+                    sprintf('Driver #%d assigned to order #%d from logitics', $driver['driver_id'], $driver['order_id'])
+                );
             }
 
             return new Response('OK', 200);
