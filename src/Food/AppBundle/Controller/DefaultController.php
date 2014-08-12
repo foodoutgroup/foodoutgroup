@@ -16,17 +16,17 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
-        $request = new FullHpsTransRequest('88185002', 'aXVdnHfZSJmz', '3700900010001927');
-        $sender = new Sender($request->xml());
-        $response = new FullHpsResponse($sender->send());
-
-        if ($response->is_authenticated()) {
-            $request = new FullHpsTransRequest('88185002', 'aXVdnHfZSJmz', $response->dc_reference());
-            $sender = new Sender($request->xml());
-            $response = new FullHpsResponse($sender->send());
-
-            var_dump($response->query_succeeded());
-        }
+        // $request = new FullHpsTransRequest('88185002', 'aXVdnHfZSJmz', '3700900010001927');
+        // $sender = new Sender($request->xml());
+        // $response = new FullHpsResponse($sender->send());
+        //
+        // if ($response->is_authenticated()) {
+        //     $request = new FullHpsTransRequest('88185002', 'aXVdnHfZSJmz', $response->dc_reference());
+        //     $sender = new Sender($request->xml());
+        //     $response = new FullHpsResponse($sender->send());
+        //
+        //     var_dump($response->query_succeeded());
+        // }
         // var_dump($request->query->all());
         // var_dump($request->request->all());
         //
@@ -50,6 +50,18 @@ class DefaultController extends Controller
         //
         // var_dump($response->xml());
         // var_dump($response->redirect_url());
+
+        $service = $this->get('pirminis_credit_card_gateway');
+
+        // set options
+        $service->set_options(['order_id' => uniqid(),
+                               'price' => 1,
+                               'transaction_datetime' => date('Y-m-d H:i:s'),
+                               'comment' => 'TEST',
+                               'return_url' => 'http://kofeinas.foodout.lt/swedbank-gateway-test/log.php',
+                               'expiry_url' => 'http://kofeinas.foodout.lt/swedbank-gateway-test/log.php']);
+
+        var_dump($service->redirect_url('swedbank'));
 
         die('xxx');
         // Check if user is not banned

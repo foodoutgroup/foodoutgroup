@@ -11,7 +11,7 @@ use Pirminis\Gateway\Swedbank\Banklink\Sender;
 use Pirminis\Gateway\Swedbank\Banklink\Response;
 use Pirminis\Gateway\Swedbank\Banklink\Form;
 
-class Gateway
+class BanklinkGateway
 {
     const DPG_REFERENCE_ID = 'DPGReferenceId';
 

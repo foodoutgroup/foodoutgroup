@@ -1,4 +1,8 @@
 services:
-    pirminis_gateway:
-        class: Pirminis\GatewayBundle\Services\Gateway
+    pirminis_banklink_gateway:
+        class: Pirminis\GatewayBundle\Services\BanklinkGateway
+        arguments: ["%pirminis_gateway%"]
+
+    pirminis_credit_card_gateway:
+        class: Pirminis\GatewayBundle\Services\CreditCardGateway
         arguments: ["%pirminis_gateway%"]

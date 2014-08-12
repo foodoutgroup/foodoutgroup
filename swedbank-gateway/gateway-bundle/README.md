@@ -2,40 +2,10 @@
 
 Gateway is a newest way to integrate payments in baltic countries Lithuania, Latvia and Estonia using Symfony 2.
 
-### Installation ###
 
-Use composer.
+## Configuration ##
 
-#### 1. add third party repository: ####
-```
-"repositories": [
-    {
-        "type": "git",
-        "url": "https://bitbucket.org/pirminis/gateway"
-    },
-    {
-        "type": "git",
-        "url": "https://bitbucket.org/pirminis/gateway-bundle"
-    }
-]
-```
-
-#### 2. require it: ####
-stable:
-```
-"require": {
-    "pirminis/gateway-bundle": "~1.0"
-}
-```
-
-development:
-```
-"require": {
-    "pirminis/gateway-bundle": "@dev"
-}
-```
-
-#### 3. configure Symfony ####
+#### 1. setup config ####
 Add configuration options to `app/config/config.yml`:
 ```
 # Payment gateway
@@ -45,7 +15,7 @@ pirminis_gateway:
         password: "your_password_here"
 ```
 
-#### 4. update AppKernel ####
+#### 2. update AppKernel ####
 ```
 class AppKernel extends Kernel
 {
@@ -61,9 +31,11 @@ class AppKernel extends Kernel
 }
 ```
 
-### How to use ###
+## How to use ##
 
 Currently there are 2 use cases:
+
+### A. classic banklink ###
 
 #### 1. redirect user to the bank ####
 
@@ -117,3 +89,21 @@ public function successAction(Request $request)
     $service->communication_error('swedbank', $request);
 }
 ```
+
+### B. credit card banklink ###
+
+#### 1. redirect user to the bank ####
+
+public function indexAction()
+{
+    $service = $this->get('pirminis_credit_card_gateway');
+
+    // set options
+    $service->set_options(['order_id' => uniqid(),
+                           'price' => 1,
+                           'transaction_datetime' => date('Y-m-d H:i:s'),
+                           'comment' => 'TEST',
+                           'return_url' => 'http://localhost:3000/return',
+                           'expiry_url' => 'http://localhost:3000/expiry']);
+
+    // redirect user to $service->redirect_url('swedbank')
