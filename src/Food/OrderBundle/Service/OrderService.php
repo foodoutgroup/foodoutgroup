@@ -19,6 +19,7 @@ use Food\UserBundle\Entity\UserAddress;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Security\Acl\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class OrderService extends ContainerAware
 {
@@ -1149,7 +1150,12 @@ class OrderService extends ContainerAware
             $order = $this->getOrder();
         }
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $token = $this->container->get('security.context')->getToken();
+        if ($token instanceof TokenInterface) {
+            $user = $token->getUser();
+        } else {
+            $user = 'anon.';
+        }
 
         if ($user == 'anon.') {
             $user = null;
