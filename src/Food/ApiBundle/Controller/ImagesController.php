@@ -17,6 +17,11 @@ class ImagesController extends Controller
             $webPath = $this->get('kernel')->getRootDir() . '/../web/';
             $uploadService = $this->get('food.upload');
 
+            if (!empty($filename)) {
+                // So sesurity
+                $filename = '/'.$filename;
+            }
+
             if (!file_exists($webPath.$filename)) {
                 throw new \InvalidArgumentException(
                     sprintf('Image "%s" could not be found. No resize will take place', $filename)
