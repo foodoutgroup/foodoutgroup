@@ -102,14 +102,14 @@ class OrderService extends ContainerAware
         $cartService = $this->getCartService();
         $cartService->setNewSessionId($basket->getSession());
 
+        $place = $basket->getPlaceId();
         if ($serviceVar['type'] != "pickup") {
-            $place = $basket->getPlaceId();
             $list = $cartService->getCartDishes($basket->getPlaceId());
             $total_cart = $cartService->getCartTotal($list/*, $place*/);
             if ($total_cart < $place->getCartMinimum()) {
                 throw new ApiException(
                     'Order Too Small',
-                    404,
+                    0,
                     array(
                         'error' => 'Order Too Small',
                         'description' => $this->container->get('translator')->_('api.orders.order_to_small')
@@ -119,13 +119,27 @@ class OrderService extends ContainerAware
 
             $addrData = $this->container->get('food.googlegis')->getLocationFromSession();
             if (empty($addrData['address_orig'])) {
-                $formErrors[] = 'order.form.errors.customeraddr';
+                throw new ApiException(
+                    'Unavailable Address',
+                    400,
+                    array(
+                        'error' => 'Unavailable Address',
+                        'description' => ''
+                    )
+                );
             }
         } elseif ($basket->getPlaceId()->getMinimalOnSelfDel()) {
-            $list  =$cartService->getCartDishes($basket->getPlaceId());
+            $list = $cartService->getCartDishes($basket->getPlaceId());
             $total_cart = $cartService->getCartTotal($list/*, $place*/);
             if ($total_cart < $place->getCartMinimum()) {
-                $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
+                throw new ApiException(
+                    'Order Too Small',
+                    0,
+                    array(
+                        'error' => 'Order Too Small',
+                        'description' => $this->container->get('translator')->_('api.orders.order_to_small')
+                    )
+                );
             }
         }
 
