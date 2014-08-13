@@ -7,47 +7,108 @@ use Food\ApiBundle\Common\JsonRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Food\ApiBundle\Exceptions\ApiException;
 
 class BasketController extends Controller
 {
     public function createBasketAction(Request $request)
     {
-        $requestJson = new JsonRequest($request);
-        return new JsonResponse($this->get('food_api.basket')->createBasketFromRequest($requestJson));
+        try {
+            $requestJson = new JsonRequest($request);
+            return new JsonResponse($this->get('food_api.basket')->createBasketFromRequest($requestJson));
+        }  catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
     }
 
     public function updateBasketAction($id, Request $request)
     {
-        $requestJson = new JsonRequest($request);
-        return new JsonResponse($this->get('food_api.basket')->updateBasketFromRequest($id, $requestJson));
+        try{
+            $requestJson = new JsonRequest($request);
+            return new JsonResponse($this->get('food_api.basket')->updateBasketFromRequest($id, $requestJson));
+        }  catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
     }
 
     public function getBasketAction($id)
     {
-        $basket = $this->get('food_api.basket')->getBasket($id);
-        return new JsonResponse($basket);
+        try {
+            $basket = $this->get('food_api.basket')->getBasket($id);
+            return new JsonResponse($basket);
+        }  catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
     }
 
     public function deleteBasketAction($id)
     {
-        $this->get('food_api.basket')->deleteBasket($id);
-        return new Response('', 204);
+        try {
+            $this->get('food_api.basket')->deleteBasket($id);
+            return new Response('', 204);
+        }  catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
     }
 
     public function updateBasketItemAction($id, $basket_item_id, Request $request)
     {
-        $requestJson = new JsonRequest($request);
-        $this->get('food_api.basket')->updateBasketItem($id, $basket_item_id, $requestJson);
-        $basket = $this->get('food_api.basket')->getBasket($id);
-        return new JsonResponse($basket);
+        try{
+            $requestJson = new JsonRequest($request);
+            $this->get('food_api.basket')->updateBasketItem($id, $basket_item_id, $requestJson);
+            $basket = $this->get('food_api.basket')->getBasket($id);
+            return new JsonResponse($basket);
+        }  catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
     }
 
     public function deleteBasketItemAction($id, $basket_item_id,Request $request)
     {
-        $requestJson = new JsonRequest($request);
-        $this->get('food_api.basket')->deleteBasketItem($id, $basket_item_id, $requestJson);
-        $basket = $this->get('food_api.basket')->getBasket($id);
-        return new JsonResponse($basket);
+        try {
+            $requestJson = new JsonRequest($request);
+            $this->get('food_api.basket')->deleteBasketItem($id, $basket_item_id, $requestJson);
+            $basket = $this->get('food_api.basket')->getBasket($id);
+            return new JsonResponse($basket);
+        }  catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
     }
 
      /**
@@ -129,6 +190,5 @@ class BasketController extends Controller
         }
 
         return $beauty_json;
-
     }
 }

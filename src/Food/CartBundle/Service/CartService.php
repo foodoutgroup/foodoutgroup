@@ -18,6 +18,8 @@ class CartService {
      */
     private $em;
 
+    public $newSessionId = null;
+
     public function __construct()
     {
 
@@ -64,13 +66,26 @@ class CartService {
         return $this->em;
     }
 
+    /**
+     * @param null $newSessionId
+     */
+    public function setNewSessionId($newSessionId)
+    {
+        $this->newSessionId = $newSessionId;
+    }
+
+
 
     /**
      * @return string
      */
     public function getSessionId()
     {
-        return $this->getContainer()->get('session')->getId();
+        if (empty($this->newSessionId)) {
+            return $this->getContainer()->get('session')->getId();
+        } else {
+            return $this->newSessionId;
+        }
     }
 
     public function migrateCartBetweenSessionIds($oldSid, $newSid)

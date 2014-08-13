@@ -4,6 +4,7 @@ namespace Food\ApiBundle\Service;
 use Food\ApiBundle\Common\ShoppingBasket;
 use Food\ApiBundle\Common\ShoppingBasketItem;
 use Food\ApiBundle\Entity\ShoppingBasketRelation;
+use Food\ApiBundle\Exceptions\ApiException;
 use Food\CartBundle\Entity\Cart;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
@@ -139,6 +140,16 @@ class BasketService extends ContainerAware
     {
         $items = array();
         $basketInfo = $this->container->get('doctrine')->getRepository('FoodApiBundle:ShoppingBasketRelation')->find(intval($id));
+        if (!$basketInfo) {
+            throw new ApiException(
+                'Basket Not Found',
+                401,
+                array(
+                    'error' => 'Basket Not Found',
+                    'description' => ''
+                )
+            );
+        }
         $cartItems = $this->container->get('doctrine')->getRepository('FoodCartBundle:Cart')->findBy(
             array(
                 'place_id' => $basketInfo->getPlaceId(),

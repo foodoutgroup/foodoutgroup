@@ -4,9 +4,11 @@ namespace Food\ApiBundle\Service;
 
 use Food\ApiBundle\Common\JsonRequest;
 use Food\OrderBundle\Entity\Order;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
 use Food\OrderBundle\Service\OrderService as FO;
+use Food\ApiBundle\Exceptions\ApiException;
 
 class OrderService extends ContainerAware
 {
@@ -66,7 +68,16 @@ class OrderService extends ContainerAware
         $this->container->get('food_api.api')->loginByHash($token);
         $security = $this->container->get('security.context');
         $user = $security->getToken()->getUser();
-
+        if (!$user) {
+            throw new ApiException(
+                'Unauthorized',
+                401,
+                array(
+                    'error' => 'Request requires a sesion_token',
+                    'description' => $this->container->get('translator')->_('api.orders.user_not_authorized')
+                )
+            );
+        }
 
         $em = $this->container->get('doctrine')->getManager();
         $serviceVar = $request->get('service');
@@ -76,6 +87,55 @@ class OrderService extends ContainerAware
         }
 
         $basket = $em->getRepository('FoodApiBundle:ShoppingBasketRelation')->find($request->get('basket_id'));
+        if (!$basket) {
+            throw new ApiException(
+                'Basket Not found',
+                404,
+                array(
+                    'error' => 'Basket Not found',
+                    'description' => $this->container->get('translator')->_('api.orders.basket_does_not_exists')
+                )
+            );
+        }
+
+
+        $cartService = $this->getCartService();
+        $cartService->setNewSessionId($basket->getSession());
+
+        if ($serviceVar['type'] != "pickup") {
+            $place = $basket->getPlaceId();
+            $list = $cartService->getCartDishes($basket->getPlaceId());
+            $total_cart = $cartService->getCartTotal($list/*, $place*/);
+            if ($total_cart < $place->getCartMinimum()) {
+                throw new ApiException(
+                    'Order Too Small',
+                    404,
+                    array(
+                        'error' => 'Order Too Small',
+                        'description' => $this->container->get('translator')->_('api.orders.order_to_small')
+                    )
+                );
+            }
+
+            $addrData = $this->container->get('food.googlegis')->getLocationFromSession();
+            if (empty($addrData['address_orig'])) {
+                $formErrors[] = 'order.form.errors.customeraddr';
+            }
+        } elseif ($basket->getPlaceId()->getMinimalOnSelfDel()) {
+            $list  =$cartService->getCartDishes($basket->getPlaceId());
+            $total_cart = $cartService->getCartTotal($list/*, $place*/);
+            if ($total_cart < $place->getCartMinimum()) {
+                $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
+            }
+        }
+
+
+
+
+
+
+
+
         $os = $this->container->get('food.order');
         $googleGisService = $this->container->get('food.googlegis');
         $os->createOrderFromCart(
@@ -85,8 +145,6 @@ class OrderService extends ContainerAware
             $pp,
             $basket->getPlaceId()->getSelfDelivery()
         );
-
-
 
         $paymentMethod = $request->get('payment-type');
         $customerComment = $serviceVar['address']['comments'];
@@ -117,6 +175,11 @@ class OrderService extends ContainerAware
         $os->saveOrder();
         $billingUrl = $os->billOrder();
         return $this->getOrderForResponse($os->getOrder());
+    }
+
+    public function getCartService()
+    {
+        return $this->container->get('food.cart');
     }
 
     /**

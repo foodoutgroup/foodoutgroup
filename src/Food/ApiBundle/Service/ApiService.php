@@ -75,7 +75,9 @@ class ApiService extends ContainerAware
         if (!$user instanceof User) {
             throw new ApiException('Token does not exist', 400, array('error' => 'Token does not exist', 'description' => null));
         }
-
+        if (!$user->getApiTokenValidity()) {
+            throw new ApiException('Token does not exist', 400, array('error' => 'Token does not exist', 'description' => null));
+        }
         if ($user->getApiTokenValidity()->getTimestamp() < time() ) {
             throw new ApiException('User token has expired', 400, array('error' => 'User token has expired', 'description' => null));
         }
