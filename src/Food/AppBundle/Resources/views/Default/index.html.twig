@@ -63,6 +63,8 @@
 
             });
         });
+        initStreetSearch();
+        initStreetHouseSearch();
     {% endblock %}
 
 {% block title %}{{ page_title }} - {% trans %}general.homepage.meta_title{% endtrans %}{% endblock %}
@@ -85,6 +87,7 @@
 
                     {# <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}"  autocomplete="off" > #}
                     <input type="text" id="index_address" placeholder="{% trans %}index.street{% endtrans %}" class="input-street" autocomplete="off" value="{{ formDefaults.address }}" />
+                    <input type="text" id="index_house" placeholder="{% trans %}index.house{% endtrans %}" class="input-house" autocomplete="off" value="{{ formDefaults.address }}" />
                     <input type="submit" id="index_submit" value="{% trans %}index.findfood{% endtrans %}" />
                 </div>
             </form>

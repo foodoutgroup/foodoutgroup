@@ -20,6 +20,12 @@ class AjaxController extends Controller
         $response->headers->set('Content-Type', 'application/json');
 
         switch($action) {
+            case 'find-street':
+                $this->_ajaxFindStreet($response,$request->get('city'), $request->get('street'));
+                break;
+            case 'find-street-house':
+                $this->_ajaxFindStreetHouse($response,$request->get('city'), $request->get('street'), $request->get('house'));
+                break;
             case 'find-address':
                 $this->_ajaxActFindAddress($response,$request->get('city'), $request->get('address'));
                 break;
@@ -69,6 +75,47 @@ class AjaxController extends Controller
         $response->setContent(json_encode(array(
             'data' => $respData
         )));
+    }
+
+
+    public function _ajaxFindStreet(Response $response, $city, $street)
+    {
+        $respData = array();
+        $street = mb_strtoupper($street, 'utf-8');
+        $street = str_replace("S", "[S|Š]", $street);
+        $street = str_replace("A", "[A|Ą]", $street);
+        $street = str_replace("C", "[C|Č]", $street);
+        $street = str_replace("E", "[E|Ę|Ė]", $street);
+        $street = str_replace("I", "[I|Į|Y]", $street);
+        $street = str_replace("U", "[U|Ų|Ū]", $street);
+        $street = str_replace("Z", "[Z|Ž]", $street);
+        $conn = $this->get('database_connection');
+        $sql = "SELECT DISTINCT(street_name) FROM nav_streets WHERE delivery_region='".$city."' AND street_name REGEXP '(".$street.")'";
+        $rows = $conn->query($sql);
+        $streets = $rows->fetchAll();
+
+        foreach ($streets as $str) {
+            $respData[] = array('value' => $str['street_name']);
+        }
+        $response->setContent(json_encode($respData));
+    }
+
+    public function _ajaxFindStreetHouse(Response $response, $city, $street, $house)
+    {
+        $respData = array();
+        $street = mb_strtoupper($street, 'utf-8');
+        $house = htmlentities(addslashes(strip_tags($house)));
+        $street = htmlentities(addslashes(strip_tags($street)));
+        $city = htmlentities(addslashes(strip_tags($city)));
+        $sql = "SELECT DISTINCT(number_from) FROM nav_streets WHERE delivery_region='".$city."' AND street_name ='".$street."' AND number_from LIKE '".$house."%'";
+        $conn = $this->get('database_connection');
+        $rows = $conn->query($sql);
+        $streets = $rows->fetchAll();
+
+        foreach ($streets as $str) {
+            $respData[] = array('value' => $str['number_from']);
+        }
+        $response->setContent(json_encode($respData));
     }
 
     /**

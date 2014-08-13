@@ -5,7 +5,7 @@ namespace Food\AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="nav_streets")
+ * @ORM\Table(name="nav_streets", options={"engine"="MyISAM"})
  * @ORM\Entity
  */
 class Streets {
@@ -114,6 +114,12 @@ class Streets {
      * @ORM\Column(name="delivery_price_code", type="string", length=100, nullable=true)
      */
     private $deliveryPriceCode;
+
+    /**
+     * @var string
+     * @ORM\Column(name="delivery_region", type="string", length=12, nullable=true)
+     */
+    private $deliveryRegion;
 
     /**
      * Get id

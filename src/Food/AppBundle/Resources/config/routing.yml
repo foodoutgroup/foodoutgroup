@@ -121,6 +121,8 @@ food_ajax_remove_dish:
 food_ajax:
     pattern: /ajax/{action}/
     defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~}
+    options:
+        expose: true
 
 
 food_place_en:
