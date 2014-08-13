@@ -64,6 +64,8 @@ class OrderService extends ContainerAware
         }
          */
 
+        mail("paulius@foodout.lt","[API TEST] - order location", print_r($googleGisService->getLocationFromSession(), 1),"FROM: info@foodout.lt");
+
         $token = $requestOrig->headers->get('X-API-Authorization');
         $this->container->get('food_api.api')->loginByHash($token);
         $security = $this->container->get('security.context');
