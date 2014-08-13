@@ -223,7 +223,11 @@ class UploadService
             }
         } else {
             $boxSize = $this->object->getBoxSize();
-            $this->saveThumb($uploadDir, $filename, $filename, $boxSize['w'], $boxSize['h'], $this->object->getResizeMode());
+            if ($boxSize == null && $this->object->getResizeMode() == null) {
+                $this->saveThumb($uploadDir, $filename, $filename);
+            } else {
+                $this->saveThumb($uploadDir, $filename, $filename, $boxSize['w'], $boxSize['h'], $this->object->getResizeMode());
+            }
         }
     }
 
@@ -235,14 +239,18 @@ class UploadService
      * @param integer $h
      * @param string $mode
      */
-    private function saveThumb($uploadDir, $origName, $newName, $w, $h, $mode)
+    private function saveThumb($uploadDir, $origName, $newName, $w = null, $h = null, $mode = null)
     {
         $imagine = $this->getImagine();
-        $size = new Box($w, $h);
-
-        $imagine->open($uploadDir."/".$origName)
-            ->thumbnail($size, $mode)
-            ->save($uploadDir."/thumb_".$newName);
+        if($w == null && $h == null && $mode == null) {
+            $imagine->open($uploadDir."/".$origName)
+                ->save($uploadDir."/thumb_".$newName);
+        } else {
+            $size = new Box($w, $h);
+            $imagine->open($uploadDir."/".$origName)
+                ->thumbnail($size, $mode)
+                ->save($uploadDir."/thumb_".$newName);
+        }
     }
 
     /**

@@ -51,8 +51,10 @@ class PlaceCoverPhoto extends Uploadable
      */
     private $active;
 
-    protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
-    protected $boxSize = array('w' => 1280, 'h' => 800);
+    protected $resizeMode = null;
+    protected $boxSize = null;
+    //protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
+    //protected $boxSize = array('w' => 1280, 'h' => 800);
 
     /**
      * Get id
