@@ -140,6 +140,7 @@ class BasketService extends ContainerAware
     {
         $items = array();
         $basketInfo = $this->container->get('doctrine')->getRepository('FoodApiBundle:ShoppingBasketRelation')->find(intval($id));
+
         if (!$basketInfo) {
             throw new ApiException(
                 'Basket Not Found',
@@ -192,7 +193,27 @@ class BasketService extends ContainerAware
     {
         $doc = $this->container->get('doctrine');
         $ent = $doc->getManager()->getRepository('FoodApiBundle:ShoppingBasketRelation')->find(intval($id));
+        if (!$ent) {
+            throw new ApiException(
+                'Basket not found',
+                404,
+                array(
+                    'error' => 'Basket not found',
+                    'description' => ''
+                )
+            );
+        }
         $itemInCart = $doc->getManager()->getRepository('FoodCartBundle:Cart')->find($basket_item_id);
+        if (!$itemInCart) {
+            throw new ApiException(
+                'Item not found',
+                404,
+                array(
+                    'error' => 'Item not found',
+                    'description' => ''
+                )
+            );
+        }
         $this->_removeItem($ent, $itemInCart);
     }
 
