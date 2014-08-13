@@ -6,6 +6,7 @@ use Food\ApiBundle\Common\Restaurant;
 use Food\ApiBundle\Exceptions\ApiException;
 use Food\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ApiService extends ContainerAware
@@ -60,15 +61,19 @@ class ApiService extends ContainerAware
      */
     public function loginByHash($hash)
     {
-        /**
-         * TODO
-         *  - tikrinam ar joks useris nepriloginas. Jei prilogintas - sulyginam tokenus ir be reikalo antra karta logino nevykdom
-         */
+        if (empty($hash)) {
+            throw new ApiException('Empty token', 400, array('error' => 'Token is empty', 'description' => null));
+        }
 
         $um = $this->container->get('fos_user.user_manager');
         $security = $this->container->get('security.context');
 
-        $currentUser = $security->getToken()->getUser();
+        $token = $security->getToken();
+        if ($token instanceof TokenInterface) {
+            $currentUser = $token->getUser();
+        } else {
+            $currentUser = null;
+        }
 
         $user = $um->findUserBy(array('apiToken' => $hash));
 
