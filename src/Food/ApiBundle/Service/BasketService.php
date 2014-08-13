@@ -190,6 +190,7 @@ class BasketService extends ContainerAware
 
     public function deleteBasketItem($id, $basket_item_id, JsonRequest $request)
     {
+        $doc = $this->container->get('doctrine');
         $ent = $doc->getManager()->getRepository('FoodApiBundle:ShoppingBasketRelation')->find(intval($id));
         $itemInCart = $doc->getManager()->getRepository('FoodCartBundle:Cart')->find($basket_item_id);
         $this->_removeItem($ent, $itemInCart);
