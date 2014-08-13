@@ -917,6 +917,24 @@
                 <target>Logistika</target>
             </trans-unit>
 
+            <!-- Order logas pas sonata admina -->
+            <trans-unit id="admin.order.order_log">
+                <source>admin.order.order_log</source>
+                <target>Užsakymo sisteminis logas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.oder_log.order_status">
+                <source>admin.order.oder_log.order_status</source>
+                <target>Užsak. būklė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.oder_log.event">
+                <source>admin.order.oder_log.event</source>
+                <target>Įvykis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.order_log.message">
+                <source>admin.order.order_log.message</source>
+                <target>Pranešimas</target>
+            </trans-unit>
+
             <!-- Dispatcher window -->
             <trans-unit id="admin.order.dispatcher">
                 <source>admin.order.dispatcher</source>

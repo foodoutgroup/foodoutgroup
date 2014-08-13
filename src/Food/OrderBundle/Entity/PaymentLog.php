@@ -20,7 +20,7 @@ class PaymentLog
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Order")
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="paymentLog")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      */
     private $order;

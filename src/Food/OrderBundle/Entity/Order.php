@@ -206,6 +206,12 @@ class Order
     private $paymentLog;
 
     /**
+     * @var \Food\OrderBundle\Entity\OrderLog $orderLog
+     * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\OrderLog", mappedBy="order")
+     **/
+    private $orderLog;
+
+    /**
      * @var \DateTime
      * @ORM\Column(name="accept_time", type="datetime", nullable=true)
      */
@@ -1320,5 +1326,48 @@ class Order
     public function getDriverSafe()
     {
         return $this->driverSafe;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->details = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->orderStatusLog = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->paymentLog = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->orderLog = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add orderLog
+     *
+     * @param \Food\OrderBundle\Entity\OrderLog $orderLog
+     * @return Order
+     */
+    public function addOrderLog(\Food\OrderBundle\Entity\OrderLog $orderLog)
+    {
+        $this->orderLog[] = $orderLog;
+    
+        return $this;
+    }
+
+    /**
+     * Remove orderLog
+     *
+     * @param \Food\OrderBundle\Entity\OrderLog $orderLog
+     */
+    public function removeOrderLog(\Food\OrderBundle\Entity\OrderLog $orderLog)
+    {
+        $this->orderLog->removeElement($orderLog);
+    }
+
+    /**
+     * Get orderLog
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrderLog()
+    {
+        return $this->orderLog;
     }
 }

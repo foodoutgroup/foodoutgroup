@@ -73,6 +73,13 @@ class OrderToLogisticCommand extends ContainerAwareCommand
 
                     $em->persist($orderToSend);
 
+                    // Log the fack of the send and response
+                    $orderService->logOrder(
+                        $orderToSend->getorder(),
+                        'sent_to_logistics_api',
+                        sprintf('Order sent to logistics system. Send status: %s', $response['status'])
+                    );
+
                     if ($response['status'] != 'sent') {
                         $logisticsService->putOrderForSend($orderToSend->getOrder());
                     }
@@ -86,12 +93,6 @@ class OrderToLogisticCommand extends ContainerAwareCommand
                             )
                         );
                     }
-
-                    $orderService->logOrder(
-                        $orderToSend->getorder(),
-                        'sent_to_logistics_api',
-                        sprintf('Order sent to logistics system. Send status: %s', $response['status'])
-                    );
 
                     $output->writeln(' -- status: '.$response['status']);
                 }
