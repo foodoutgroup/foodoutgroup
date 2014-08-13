@@ -86,7 +86,7 @@ class UsersControllerTest extends WebTestCase
 
         $this->assertEquals('Food\ApiBundle\Controller\UsersController::meAction', $client->getRequest()->attributes->get('_controller'));
         $this->assertEquals(400 , $client->getResponse()->getStatusCode());
-        $this->assertTrue((strpos($client->getResponse()->getContent(), 'Token does not exist') !== false));
+        $this->assertTrue((strpos($client->getResponse()->getContent(), 'Token is empty') !== false));
 
         // User update action
         $client->request(
@@ -96,7 +96,7 @@ class UsersControllerTest extends WebTestCase
 
         $this->assertEquals('Food\ApiBundle\Controller\UsersController::updateAction', $client->getRequest()->attributes->get('_controller'));
         $this->assertEquals(400 , $client->getResponse()->getStatusCode());
-        $this->assertTrue((strpos($client->getResponse()->getContent(), 'Token does not exist') !== false));
+        $this->assertTrue((strpos($client->getResponse()->getContent(), 'Token is empty') !== false));
 
         // changePassword action
         $client->request(
@@ -106,6 +106,6 @@ class UsersControllerTest extends WebTestCase
 
         $this->assertEquals('Food\ApiBundle\Controller\UsersController::changePasswordAction', $client->getRequest()->attributes->get('_controller'));
         $this->assertEquals(400 , $client->getResponse()->getStatusCode());
-        $this->assertTrue((strpos($client->getResponse()->getContent(), 'Token does not exist') !== false));
+        $this->assertTrue((strpos($client->getResponse()->getContent(), 'Token is empty') !== false));
     }
 }
