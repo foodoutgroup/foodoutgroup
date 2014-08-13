@@ -102,7 +102,7 @@ class UsersController extends Controller
 
             // User exists???
             $existingUser = $um->findUserByEmail($email);
-            if ($existingUser) {
+            if ($existingUser && $existingUser->getFullyRegistered()) {
                 throw new ApiException(
                     'User '.$email.' exists',
                     409,
@@ -111,6 +111,8 @@ class UsersController extends Controller
                         'description' => $translator->trans('registration.user.exists'),
                     )
                 );
+            } elseif ($existingUser && !$existingUser->getFullyRegistered()) {
+                $user = $existingUser;
             }
 
             $user->setFirstname($nameParsed['firstname'])
