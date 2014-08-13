@@ -28,7 +28,7 @@ parameters:
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
-    order.notify_emails: [paulius@foodout.lt]
+    order.notify_emails: [paulius@foodout.lt, foodout@lemonlabs.lt]
     order.city_coordinators:
         vilnius: []
         kaunas: [renata@foodout.lt]
