@@ -507,8 +507,12 @@ input.button {}
 .delivery-info-form label {float: left; padding-top: 9px; width: 173px; padding-right: 5px; font-size: 15px;}
 .delivery-info-form .custom-radio {padding-top: 0px;}
 .delivery-info-form input[type="text"],
+.delivery-info-form input[type="password"],
+.delivery-info-form input[type="email"],
 .delivery-info-form textarea {width: 310px; font-size: 15px; padding: 9px 12px; border: 1px solid #d8d8d8; border-radius: 3px; box-shadow: 0 0 1px #f2f2f2; box-shadow: 0 0 2px #d0c8c1;}
-.delivery-info-form input[type="text"] {height: 17px;}
+.delivery-info-form input[type="text"],
+.delivery-info-form input[type="password"],
+.delivery-info-form input[type="email"] {height: 17px;}
 .delivery-info-form textarea {height: 93px;}
 .delivery-info-form select {width: 335px;}
 

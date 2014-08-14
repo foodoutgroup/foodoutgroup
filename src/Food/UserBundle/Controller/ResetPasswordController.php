@@ -5,6 +5,7 @@ namespace Food\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -50,12 +51,36 @@ class ResetPasswordController extends Controller
     }
 
     /**
-     * @Route("/reset-password", name="food_user_resetting_reset_password")
+     * @Route("/reset-password/{token}", name="food_user_resetting_reset_password")
      * @Template("FoodUserBundle:ResetPassword:reset.html.twig")
      */
-    public function resetAction($token)
+    public function resetAction(Request $request, $token)
     {
-        return [];
+        $formFactory = $this->container->get('fos_user.resetting.form.factory');
+        $userManager = $this->container->get('fos_user.user_manager');
+        $dispatcher = $this->container->get('event_dispatcher');
+
+        $user = $userManager->findUserByConfirmationToken($token);
+        $form = $formFactory->createForm();
+        $form->setData($user);
+
+        if ('POST' === $request->getMethod()) {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $userManager->updateUser($user);
+
+                $url = $this->container
+                            ->get('router')
+                            ->generate('user_profile');
+
+                $response = new RedirectResponse($url);
+
+                return $response;
+            }
+        }
+
+        return ['token' => $token, 'form' => $form->createView(), 'submitted' => $form->isSubmitted()];
     }
 
     private function form()
