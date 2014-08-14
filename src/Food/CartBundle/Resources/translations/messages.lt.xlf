@@ -179,6 +179,10 @@
             <source>order.form.errors.customeremail</source>
             <target>Neįvestas el.pašto adresas</target>
         </trans-unit>
+        <trans-unit id="order.form.errors.customeremail_invalid" resname="order.form.errors.customeremail_invalid">
+            <source>order.form.errors.customeremail_invalid</source>
+            <target>Negaliojantis el.paštas. Įveskite savo el.paštą formatu: vardenis@pastas.lt</target>
+        </trans-unit>
         <trans-unit id="order.form.errors.customeraddr" resname="order.form.errors.customeraddr">
             <source>order.form.errors.customeraddr</source>
             <target>Nenurodytas adresas</target>

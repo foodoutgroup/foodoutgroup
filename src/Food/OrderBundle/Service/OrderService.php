@@ -3,7 +3,6 @@
 namespace Food\OrderBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\QueryBuilder;
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
@@ -17,8 +16,8 @@ use Food\OrderBundle\Entity\PaymentLog;
 use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\Security\Acl\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
 
 class OrderService extends ContainerAware
 {
@@ -1757,8 +1756,21 @@ class OrderService extends ContainerAware
             $formErrors[] = 'order.form.errors.customercomment';
         }
 
-        if (0 === strlen($request->get('customer-email'))) {
+        $customerEmail = $request->get('customer-email');
+        if (0 === strlen($customerEmail)) {
             $formErrors[] = 'order.form.errors.customeremail';
+        } else {
+            $emailConstraint = new EmailConstraint();
+            $emailConstraint->message = 'Email invalid';
+
+            $emailErrors = $this->container->get('validator')->validateValue(
+                $customerEmail,
+                $emailConstraint
+            );
+
+            if ($emailErrors->count() > 0) {
+                $formErrors[] = 'order.form.errors.customeremail_invalid';
+            }
         }
 
         if (0 === strlen($request->get('payment-type'))) {
