@@ -1957,6 +1957,10 @@ class OrderService extends ContainerAware
         fclose($fresIndex);
     }
 
+    /**
+     * @param string $source
+     * @return string mixed
+     */
     public function creepyFixer($source)
     {
         $s1 = array('ą','č','ę','ė','į','š','ų','ū','ž');
