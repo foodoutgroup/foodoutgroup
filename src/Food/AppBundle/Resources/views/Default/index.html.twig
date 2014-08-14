@@ -19,7 +19,10 @@
                 addrXhr = $.ajax({
                     type: 'GET',
                     url: '{{ path('food_ajax', {'action': 'find-address'}) }}',
-                    data:  {city: $('#index_city').val(), address: $('#index_address').val()},
+                    data:  {
+                        city: $('#index_city').val(),
+                        address: $('#index_address').val() + ' ' + $('#index_house').val()
+                    },
                     success:  function(resp){
                         if (resp.data.success == 1) {
                             $('.search-food-form').trigger('submit');

@@ -209,4 +209,27 @@ class Zones {
     {
         return $this->deliveryRegion;
     }
+
+    /**
+     * Set timestamp
+     *
+     * @param string $timestamp
+     * @return Zones
+     */
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
+    
+        return $this;
+    }
+
+    /**
+     * Get timestamp
+     *
+     * @return string 
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
+    }
 }

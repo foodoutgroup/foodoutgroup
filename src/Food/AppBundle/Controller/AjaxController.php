@@ -80,8 +80,10 @@ class AjaxController extends Controller
 
     public function _ajaxFindStreet(Response $response, $city, $street)
     {
+
         $respData = array();
         $street = mb_strtoupper($street, 'utf-8');
+        /*
         $street = str_replace("S", "[S|Š]", $street);
         $street = str_replace("A", "[A|Ą]", $street);
         $street = str_replace("C", "[C|Č]", $street);
@@ -89,13 +91,27 @@ class AjaxController extends Controller
         $street = str_replace("I", "[I|Į|Y]", $street);
         $street = str_replace("U", "[U|Ų|Ū]", $street);
         $street = str_replace("Z", "[Z|Ž]", $street);
+        */
         $conn = $this->get('database_connection');
-        $sql = "SELECT DISTINCT(street_name) FROM nav_streets WHERE delivery_region='".$city."' AND street_name REGEXP '(".$street.")'";
+        $street = mysql_real_escape_string(strip_tags($street));
+        //$sql = "SELECT DISTINCT(street_name), `name` FROM nav_streets WHERE delivery_region='".$city."' AND street_name REGEXP '(".$street.")' LIMIT 5";
+        $sql = "SELECT DISTINCT(street_name), `name` FROM nav_streets WHERE delivery_region='".$city."' AND street_name LIKE '%".$street."%' LIMIT 5";
         $rows = $conn->query($sql);
         $streets = $rows->fetchAll();
+        $gs = $this->get('food.googlegis');
+
+        foreach ($streets as $key=>&$streetRow) {
+            if (empty($street['name'])) {
+                $data = $gs->getPlaceData($streetRow['street_name'].",".$city.",".$city);
+                $gdata = $gs->groupData($data, $streetRow['street_name'], $city);
+                $streetRow['name'] = $gdata['street_short'];
+                $sql = "UPDATE nav_streets SET `name`='".$streetRow['name']."' WHERE delivery_region='".$city."' AND street_name='".$streetRow['street_name']."'";
+                $conn->query($sql);
+            }
+        }
 
         foreach ($streets as $str) {
-            $respData[] = array('value' => $str['street_name']);
+            $respData[] = array('value' => $str['name']);
         }
         $response->setContent(json_encode($respData));
     }

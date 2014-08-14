@@ -122,6 +122,12 @@ class Streets {
     private $deliveryRegion;
 
     /**
+     * @var string
+     * @ORM\Column(name="name", type="string", length=100, nullable=true)
+     */
+    private $name;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -497,5 +503,51 @@ class Streets {
     public function getDeliveryPriceCode()
     {
         return $this->deliveryPriceCode;
+    }
+
+    /**
+     * Set deliveryRegion
+     *
+     * @param string $deliveryRegion
+     * @return Streets
+     */
+    public function setDeliveryRegion($deliveryRegion)
+    {
+        $this->deliveryRegion = $deliveryRegion;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryRegion
+     *
+     * @return string 
+     */
+    public function getDeliveryRegion()
+    {
+        return $this->deliveryRegion;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Streets
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }

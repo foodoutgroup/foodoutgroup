@@ -169,10 +169,6 @@ bind_review_form = function() {
 }
 
 initStreetSearch = function(){
-    $(function() {
-        $('#index_address').css('text-transform','uppercase');
-    });
-
     var streetsUrl = Routing.generate('food_ajax', { '_locale': 'lt', 'action' : 'find-street' });
     var streets = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
