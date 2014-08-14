@@ -212,6 +212,7 @@ class OrderService extends ContainerAware
             ),
             'details' => array(
                 'restaurant_id' => $order->getPlace()->getId(),
+                'restaurant_title' => $order->getPlace()->getName(),
                 'payment_options' => array(
                     'cach' => true,
                     'credit_card' => $order->getPlace()->getCardOnDelivery()
