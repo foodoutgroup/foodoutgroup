@@ -84,13 +84,14 @@ class BasketController extends Controller
             return new JsonResponse($basket);
         }  catch (ApiException $e) {
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
-        } catch (\Exception $e) {
+        } /**  catch (\Exception $e) {
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+         */
     }
 
     public function deleteBasketItemAction($id, $basket_item_id,Request $request)

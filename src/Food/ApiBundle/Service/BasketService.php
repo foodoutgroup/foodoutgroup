@@ -219,6 +219,20 @@ class BasketService extends ContainerAware
 
     public function updateBasketItem($id, $basket_item_id, JsonRequest $request)
     {
-
+        $doc = $this->container->get('doctrine');
+        $basket = $doc->getManager()->getRepository('FoodApiBundle:ShoppingBasketRelation')->find(intval($id));
+        $itemInCart = $doc->getManager()->getRepository('FoodCartBundle:Cart')->findOneBy(
+            array(
+                'cart_id'=> $basket_item_id,
+                'place_id' => $basket->getPlaceId(),
+                'session' => $basket->getSession()
+            )
+        );
+        $itemInCart->setQuantity($request->get('count'));
+        $dishSize = $doc->getManager()->getRepository('FoodDishesBundle:DishSize')->find($request->get('size_id'));
+        $itemInCart->setDishSizeId($dishSize);
+        $itemInCart->setComment($request->get('additional_info'));
+        $doc->getManager()->persist($itemInCart);
+        $doc->getManager()->flush();
     }
 }
