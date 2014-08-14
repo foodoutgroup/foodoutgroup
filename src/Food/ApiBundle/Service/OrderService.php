@@ -64,7 +64,6 @@ class OrderService extends ContainerAware
         }
          */
         $googleGisService = $this->container->get('food.googlegis');
-        mail("paulius@foodout.lt","[API TEST] - order location", print_r($googleGisService->getLocationFromSession(), 1),"FROM: info@foodout.lt");
 
         $token = $requestOrig->headers->get('X-API-Authorization');
         $this->container->get('food_api.api')->loginByHash($token);
@@ -89,6 +88,7 @@ class OrderService extends ContainerAware
         }
 
         $basket = $em->getRepository('FoodApiBundle:ShoppingBasketRelation')->find($request->get('basket_id'));
+
         if (!$basket) {
             throw new ApiException(
                 'Basket Not found',
@@ -145,39 +145,35 @@ class OrderService extends ContainerAware
             }
         }
 
-
-
-
-
-
-
-
         $os = $this->container->get('food.order');
+        $os->getCartService()->setNewSessionId($cartService->getSessionId());
         $googleGisService = $this->container->get('food.googlegis');
+
         $os->createOrderFromCart(
             $basket->getPlaceId()->getId(),
-            $request->getLocale(),
+            $requestOrig->getLocale(),
             $user,
             $pp,
             $basket->getPlaceId()->getSelfDelivery()
         );
 
         $paymentMethod = $request->get('payment-type');
-        $customerComment = $serviceVar['address']['comments'];
-        $os->setPaymentMethod($paymentMethod);
+        $customerComment = (!empty($serviceVar['address']) ? $serviceVar['address']['comments'] : "");
+
+        $os->setPaymentMethod('local');
         if ($serviceVar['type'] == "pickup") {
             $os->setDeliveryType($os::$deliveryPickup);
         } else {
             $os->setDeliveryType($os::$deliveryDeliver);
         }
-        $os->setLocale($request->getLocale());
+        $os->setLocale($requestOrig->getLocale());
         if (!empty($customerComment)) {
             $os->getOrder()->setComment($customerComment);
         }
         $os->setPaymentStatus($os::$paymentStatusWait);
 
         // Update order with recent address information. but only if we need to deliver
-        if ($deliveryType == $os::$deliveryDeliver) {
+        if ($serviceVar['type']!="pickup") {
             $locationData = $googleGisService->getLocationFromSession();
             $address = $os->createAddressMagic(
                 $user,
@@ -190,7 +186,8 @@ class OrderService extends ContainerAware
         }
         $os->saveOrder();
         $billingUrl = $os->billOrder();
-        return $this->getOrderForResponse($os->getOrder());
+        $order = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($os->getOrder()->getId());
+        return $this->getOrderForResponse($order);
     }
 
     public function getCartService()
@@ -223,6 +220,7 @@ class OrderService extends ContainerAware
             ),
             'service' => $this->_getServiceForResponse($order)
         );
+        return $returner;
     }
 
     /**
