@@ -6,6 +6,27 @@ use Pirminis\Gateway\Swedbank\Banklink\Request\Parameters;
 
 class Request
 {
+    public function __construct(Parameters $params)
+    {
+        $subject = $this->purchaseRequestXml;
+        $replacements = [];
+
+        foreach ($params->mandatory_params() as $param) {
+            $replacements["%{$param}%"] = $params->get($param);
+        }
+
+        foreach ($replacements as $search => $replace) {
+            $subject = str_replace($search, $replace, $subject);
+        }
+
+        $this->finalXml = $subject;
+    }
+
+    public function xml()
+    {
+        return $this->finalXml;
+    }
+
     protected $finalXml = '';
     protected $purchaseRequestXml = <<<PURCHASE_REQUEST
 <?xml version="1.0" encoding="UTF-8"?>
@@ -47,25 +68,4 @@ class Request
     </Transaction>
 </Request>
 PURCHASE_REQUEST;
-
-    public function __construct(Parameters $params)
-    {
-        $subject = $this->purchaseRequestXml;
-        $replacements = [];
-
-        foreach ($params->mandatory_params() as $param) {
-            $replacements["%{$param}%"] = $params->get($param);
-        }
-
-        foreach ($replacements as $search => $replace) {
-            $subject = str_replace($search, $replace, $subject);
-        }
-
-        $this->finalXml = $subject;
-    }
-
-    public function xml()
-    {
-        return $this->finalXml;
-    }
 }

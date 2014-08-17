@@ -2,30 +2,18 @@
 
 namespace Pirminis\Gateway\Swedbank\FullHps;
 
+use Pirminis\Gateway\Swedbank\FullHps\Request\Parameters;
+
 class Request
 {
-    public function __construct($client,
-                                $password,
-                                $merchant_reference,
-                                $transaction_datetime,
-                                $comment,
-                                $return_url,
-                                $expire_url,
-                                $success_url,
-                                $failure_url)
+    public function __construct(Parameters $params)
     {
         $subject = $this->fullHPSRequestXml;
-        $replacements = array(
-            '%client%' => $client,
-            '%password%' => $password,
-            '%merchant_reference%' => $merchant_reference,
-            '%transaction_datetime%' => $transaction_datetime,
-            '%comment%' => $comment,
-            '%return_url%' => $return_url,
-            '%expire_url%' => $expire_url,
-            '%success_url%' => $success_url,
-            '%failure_url%' => $failure_url
-        );
+        $replacements = [];
+
+        foreach ($params->mandatory_params() as $param) {
+            $replacements["%{$param}%"] = $params->get($param);
+        }
 
         foreach ($replacements as $search => $replace) {
             $subject = str_replace($search, $replace, $subject);
@@ -49,19 +37,15 @@ class Request
     </Authentication>
     <Transaction>
         <TxnDetails>
-            <merchantreference>%merchant_reference%</merchantreference>
+            <merchantreference>%order_id%</merchantreference>
             <ThreeDSecure>
-                <Browser>
-                    <accept_headers>*/*</accept_headers>
-                    <user_agent>IE/6.0</user_agent>
-                </Browser>
                 <merchant_url>http://foodout.lt</merchant_url>
                 <purchase_datetime>%transaction_datetime%</purchase_datetime>
                 <purchase_desc>%comment%</purchase_desc>
                 <verify>yes</verify>
             </ThreeDSecure>
             <capturemethod>ecomm</capturemethod>
-            <amount currency="EUR">10.00</amount>
+            <amount currency="LTL">%price%</amount>
         </TxnDetails>
         <HpsTxn>
             <page_set_id>4</page_set_id>
