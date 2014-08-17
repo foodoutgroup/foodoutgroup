@@ -5,10 +5,10 @@
     "description": "The \"Symfony Standard Edition\" distribution",
     "autoload": {
         "psr-0": { "": "src/" },
-        "classmap": [
+        "psr-4": { "": [
             "swedbank-gateway/gateway/src",
             "swedbank-gateway/gateway-bundle/src"
-        ]
+        ]}
     },
     "repositories": [
         {
