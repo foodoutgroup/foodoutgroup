@@ -58,7 +58,6 @@ class ResetPasswordController extends Controller
     {
         $formFactory = $this->container->get('fos_user.resetting.form.factory');
         $userManager = $this->container->get('fos_user.user_manager');
-        $dispatcher = $this->container->get('event_dispatcher');
 
         $user = $userManager->findUserByConfirmationToken($token);
         $form = $formFactory->createForm();

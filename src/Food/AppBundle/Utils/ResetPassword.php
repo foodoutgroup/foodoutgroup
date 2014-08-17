@@ -21,11 +21,6 @@ class ResetPassword
 
         if (empty($user)) return false;
 
-        $tokenTtl = $this->container()
-                         ->getParameter('fos_user.resetting.token_ttl');
-
-        // if ($user->isPasswordRequestNonExpired($tokenTtl)) return false;
-
         // send mail through mailer
         $this->sendMailerEmail($user);
 
