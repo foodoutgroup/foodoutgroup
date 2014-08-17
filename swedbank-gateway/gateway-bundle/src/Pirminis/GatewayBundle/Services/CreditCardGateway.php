@@ -73,4 +73,28 @@ class CreditCardGateway
 
         return false;
     }
+
+    public function order_id($bank, SymfonyRequest $request)
+    {
+        $config = $this->config[$bank];
+
+        $request = new TransRequest($config['vtid'],
+                                    $config['password'],
+                                    $request->query
+                                            ->get(static::DTS_REFERENCE));
+        $sender = new Sender($request->xml());
+        $response = new Response($sender->send());
+
+        if ($response->is_authenticated()) {
+            $request = new TransRequest($config['vtid'],
+                                        $config['password'],
+                                        $response->dc_reference());
+            $sender = new Sender($request->xml());
+            $response = new Response($sender->send());
+
+            return $response->query_merchant_reference();
+        }
+
+        return null;
+    }
 }

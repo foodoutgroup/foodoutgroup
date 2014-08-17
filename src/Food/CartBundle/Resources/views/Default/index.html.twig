@@ -273,6 +273,9 @@
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-swb.png">
                                     <input type="radio" name="payment-type" value="swedbank-gateway"{% if order is not null and order.paymentMethod == 'swedbank-gateway' %} checked="checked"{% endif %}>
                                 </label>
+                                <label class="custom-radio"><img src="/bundles/foodapp/images/bank-swb.png">
+                                    <input type="radio" name="payment-type" value="swedbank-credit-card-gateway"{% if order is not null and order.paymentMethod == 'swedbank-credit-card-gateway' %} checked="checked"{% endif %}>
+                                </label>
                                 {% endif %}
                             </div>
                         </div>

@@ -19,6 +19,7 @@ class Response
     const QUERY_STATUS_XPATH = '//status';
     const QUERY_HPS_DC_REFERENCE_XPATH = '//HpsTxn//datacash_reference';
     const QUERY_PAYMENT_STATUS_XPATH = '//QueryTxnResult//status';
+    const QUERY_MERCHANT_REFERENCE = '//QueryTxnResult//merchant_reference';
 
     protected $xml;
     protected $dom;
@@ -60,6 +61,14 @@ class Response
     {
         $status = $this->xpath_first($this->dom(), static::QUERY_STATUS_XPATH);
         return $status === static::QUERY_STATUS_SUCCESS;
+    }
+
+    public function query_merchant_reference()
+    {
+        $merchant_reference = $this->xpath_first(
+            $this->dom(),
+            static::QUERY_MERCHANT_REFERENCE);
+        return $merchant_reference;
     }
 
     /**

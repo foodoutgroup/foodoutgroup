@@ -172,7 +172,7 @@ class PaymentsController extends Controller
     public function swedbankGatewayRedirectAction($id, $locale)
     {
         $router = $this->container->get('router');
-        $gateway = $this->container->get('pirminis_gateway');
+        $gateway = $this->container->get('pirminis_banklink_gateway');
         $em = $this->container->get('doctrine.orm.entity_manager');
 
         // get order
@@ -209,7 +209,80 @@ class PaymentsController extends Controller
         return $this->render($view, ['form' => $form->createView()]);
     }
 
+    public function swedbankCreditCardGatewayRedirectAction($id)
+    {
+        $router = $this->container->get('router');
+        $gateway = $this->container->get('pirminis_credit_card_gateway');
+        $em = $this->container->get('doctrine.orm.entity_manager');
+
+        // get order
+        $order = $em->getRepository('FoodOrderBundle:Order')
+                    ->find($id);
+
+        // configuration
+        $returnUrl = $router->generate('swedbank_credit_card_gateway_success',
+                                        [],
+                                        true);
+        $expiryUrl = $router->generate('swedbank_credit_card_gateway_failure',
+                                        [],
+                                        true);
+
+        $options = array('order_id' => substr($order->getId() . '_' . time(),
+                                              0,
+                                              16),
+                         //  'price' => (string)round($order->getTotal() * 100),
+                         'price' => '1',
+                         'transaction_datetime' => date('Y-m-d H:i:s'),
+                         'comment' => 'no comment',
+                         'return_url' => $returnUrl,
+                         'expiry_url' => $expiryUrl);
+        $gateway->set_options($options);
+
+        return new RedirectResponse($gateway->redirect_url('swedbank'));
+    }
+
     public function swedbankGatewaySuccessAction(Request $request)
+    {
+        // services
+        $orderService = $this->container->get('food.order');
+        $gateway = $this->container->get('pirminis_credit_card_gateway');
+
+        $view = 'FoodOrderBundle:Payments:' .
+                'swedbank_gateway/something_wrong.html.twig';
+
+        // get order
+        $transactionId = $gateway->order_id('swedbank', $request);
+
+        if (empty($transactionId)) return $this->render($view);
+
+        // extract actual order id. say thanks to swedbank requirements
+        $transactionIdSplit = explode('_', $transactionId);
+        $orderId = !empty($transactionIdSplit[0]) ? $transactionIdSplit[0] : 0;
+        $order = $orderService->getOrderById($orderId);
+
+        if (!$order) {
+            $view = 'FoodOrderBundle:Payments:' .
+                    'swedbank_gateway/order_not_found.html.twig';
+            return $this->render($view);
+        }
+
+        // is order paid? let's find out!
+        if ($service->is_successful_payment('swedbank', $request)) {
+            $this->markOrderPaid($orderService);
+
+            $view = 'FoodOrderBundle:Payments:' .
+                    'swedbank_gateway/success.html.twig';
+        }
+
+        return $this->render($view, ['order' => $order]);
+    }
+
+    public function swedbankGatewayFailureAction(Request $request)
+    {
+        return $this->swedbankGatewaySuccessAction($request);
+    }
+
+    public function swedbankCreditCardGatewaySuccessAction(Request $request)
     {
         // services
         $orderService = $this->container->get('food.order');
@@ -292,9 +365,9 @@ class PaymentsController extends Controller
         return $this->render($view, ['order' => $order]);
     }
 
-    public function swedbankGatewayFailureAction(Request $request)
+    public function swedbankCreditCardGatewayFailureAction(Request $request)
     {
-        return $this->swedbankGatewaySuccessAction($request);
+        return $this->swedbankCreditCardGatewaySuccessAction($request);
     }
 
     protected function markOrderPaid($orderService)
