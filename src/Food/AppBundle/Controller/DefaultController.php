@@ -16,59 +16,6 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
-        // $request = new FullHpsTransRequest('88185002', 'aXVdnHfZSJmz', '3700900010001927');
-        // $sender = new Sender($request->xml());
-        // $response = new FullHpsResponse($sender->send());
-        //
-        // if ($response->is_authenticated()) {
-        //     $request = new FullHpsTransRequest('88185002', 'aXVdnHfZSJmz', $response->dc_reference());
-        //     $sender = new Sender($request->xml());
-        //     $response = new FullHpsResponse($sender->send());
-        //
-        //     var_dump($response->query_succeeded());
-        // }
-        // var_dump($request->query->all());
-        // var_dump($request->request->all());
-        //
-        // $params = new Parameters();
-        // $params->set('client', '88185002')
-        //        ->set('password', 'aXVdnHfZSJmz')
-        //        ->set('order_id', uniqid())
-        //        ->set('price', '1')
-        //        ->set('transaction_datetime', date('Ymd H:i:s'))
-        //        ->set('comment', 'TEST')
-        //     //    ->set('return_url', 'http://foodout.lt/return')
-        //     //    ->set('return_url', 'http://localhost:3000/')
-        //        ->set('return_url', 'http://kofeinas.foodout.lt/swedbank-gateway-test/log.php')
-        //     //    ->set('expiry_url', 'http://foodout.lt/expire');
-        //     //    ->set('expiry_url', 'http://localhost:3000/');
-        //        ->set('expiry_url', 'http://kofeinas.foodout.lt/swedbank-gateway-test/log.php');
-        //
-        // $request = new FullHpsRequest($params);
-        // $sender = new Sender($request->xml());
-        // $response = new FullHpsResponse($sender->send());
-        //
-        // var_dump($response->xml());
-        // var_dump($response->redirect_url());
-
-        $service = $this->get('pirminis_credit_card_gateway');
-
-        $request->query->replace(['dts_reference' => '3700900010001927']);
-        $a = $service->is_successful_payment('swedbank', $request);
-
-        var_dump($a);
-
-        // set options
-        // $service->set_options(['order_id' => uniqid(),
-        //                        'price' => 1,
-        //                        'transaction_datetime' => date('Y-m-d H:i:s'),
-        //                        'comment' => 'TEST',
-        //                        'return_url' => 'http://kofeinas.foodout.lt/swedbank-gateway-test/log.php',
-        //                        'expiry_url' => 'http://kofeinas.foodout.lt/swedbank-gateway-test/log.php']);
-        //
-        // var_dump($service->redirect_url('swedbank'));
-
-        die('xxx');
         // Check if user is not banned
         $ip = $request->getClientIp();
         // Dude is banned - hit him
