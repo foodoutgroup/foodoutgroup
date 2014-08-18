@@ -40,8 +40,10 @@ class RestaurantsController extends Controller
                 $this->get('food.googlegis')->getLocationFromSession()
             );
         } elseif (!empty($lat) && !empty($lng)) {
+            $data = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
             $this->get('food.googlegis')->setLocationToSession(
                 array(
+                    'city' => $data['city'],
                     'lat' => $lat,
                     'lng' => $lng
                 )
