@@ -1342,6 +1342,27 @@ class OrderService extends ContainerAware
     public function notifyOrderCreate() {
         $order = $this->getOrder();
 
+
+        if ($order->getPlace()->getNavision()) {
+            $nav = $this->container->get('food.nav');
+            $orderRenew = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($order->getId());
+            var_dump(sizeof($orderRenew->getDetails()));
+            var_dump("--ZZ--");
+            $nav->putTheOrderToTheNAV($orderRenew);
+            sleep(1);
+            $returner = $nav->updatePricesNAV($orderRenew);
+            echo "----\n";
+            var_dump($returner);
+            sleep(1);
+            if($returner) {
+                $returner = $nav->processOrderNAV($orderRenew);
+                echo "----\n";
+                var_dump($returner);
+            }
+        }
+        die('THE END');
+
+
         $translator = $this->container->get('translator');
 
         $domain = $this->container->getParameter('domain');

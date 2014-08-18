@@ -225,10 +225,19 @@ class DefaultController extends Controller
         die("THE END");
     }
 
-    public function updatePricesNavAction($id)
+    public function updatePricesNavAction($id, Request $req)
     {
-        echo "<pre>";
         $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($id);
+        var_dump($order->getId());
+
+        echo "<pre>";
+        if ($req->get('process', 0) == 1) {
+            echo "PROCESS:";
+            $ret = $this->get('food.nav')->processOrderNAV($order);
+            var_dump($ret);
+        }
+
+
         $this->get('food.nav')->updatePricesNAV($order);
         die("THE END UPDATE PRC NAV");
     }

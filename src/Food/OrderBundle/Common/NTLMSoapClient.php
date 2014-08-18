@@ -471,7 +471,6 @@ class NTLMSoapClient extends SoapClient {
         ); // end $headers
         $this->__last_request_headers = $headers;
         $ch = curl_init($location);
-        echo $location;
 
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->validate);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $this->validate);
@@ -484,9 +483,6 @@ class NTLMSoapClient extends SoapClient {
         curl_setopt($ch, CURLOPT_USERPWD, $this->user.':'.$this->password);
 
         $response = curl_exec($ch);
-        echo "::";
-        var_dump($response);
-        die();
         return $response;
     } // end function __doRequest()
 

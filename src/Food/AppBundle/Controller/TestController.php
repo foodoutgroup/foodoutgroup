@@ -18,6 +18,7 @@ class TestController extends Controller
      */
     public function indexAction()
     {
+        /*
         $ml = $this->get('food.mailer');
 
         $variables = array(
@@ -30,7 +31,19 @@ class TestController extends Controller
         );
 
         $ml->setVariables( $variables )->setRecipient( 'paulius@foodout.lt', 'Sample Client')->setId( 30009269 )->send();
+        */
 
+        $ord = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find(1006);
+
+        //$nav = $this->get('food.nav')->putTheOrderToTheNAV($ord);
+        $returner = $this->get('food.nav')->updatePricesNAV($ord);
+        var_dump($returner);
+        echo '-- NEXT --';
+        die();
+        if($returner) {
+            $returner = $this->get('food.nav')->updatePricesNAV($ord);
+            var_dump($returner);
+        }
 
         return new Response('Uber');
     }
