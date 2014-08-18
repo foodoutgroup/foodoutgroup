@@ -1276,3 +1276,7 @@ div.coupon_form_popup {
 .resetting_form_wrapper {
     display: none;
 }
+
+.reset-password-form-content label {
+    text-align: left;
+}
