@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a4ae671d712a116ae3eeec13e7b887d3",
+    "hash": "8f4994a6ab31c83c26785857e2679a70",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/a2lix/TranslationFormBundle.git",
-                "reference": "7f0f33af0863275791c96b18f7c1d78bf5a290c0"
+                "reference": "b8dc383672671e502df63e90e653565924194672"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/7f0f33af0863275791c96b18f7c1d78bf5a290c0",
-                "reference": "7f0f33af0863275791c96b18f7c1d78bf5a290c0",
+                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/b8dc383672671e502df63e90e653565924194672",
+                "reference": "b8dc383672671e502df63e90e653565924194672",
                 "shasum": ""
             },
             "require": {
@@ -46,11 +46,11 @@
             ],
             "authors": [
                 {
-                    "name": "A2lix",
-                    "homepage": "http://a2lix.fr"
+                    "name": "David ALLIX"
                 },
                 {
-                    "name": "David ALLIX"
+                    "name": "A2lix",
+                    "homepage": "http://www.a2lix.fr"
                 }
             ],
             "description": "Translate your doctrine objects easily with a custom form field",
@@ -66,7 +66,7 @@
                 "translatable",
                 "translation"
             ],
-            "time": "2013-12-17 18:40:49"
+            "time": "2014-08-15 15:49:37"
         },
         {
             "name": "beberlei/DoctrineExtensions",
@@ -646,12 +646,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineMigrationsBundle.git",
-                "reference": "f7138381aa884c0f679da4de41e369b94ead9cd3"
+                "reference": "81575a4316951125ce408c70f30547c77d98f78a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/f7138381aa884c0f679da4de41e369b94ead9cd3",
-                "reference": "f7138381aa884c0f679da4de41e369b94ead9cd3",
+                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/81575a4316951125ce408c70f30547c77d98f78a",
+                "reference": "81575a4316951125ce408c70f30547c77d98f78a",
                 "shasum": ""
             },
             "require": {
@@ -677,18 +677,16 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
                 },
                 {
                     "name": "Doctrine Project",
                     "homepage": "http://www.doctrine-project.org"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony DoctrineMigrationsBundle",
@@ -698,7 +696,7 @@
                 "migrations",
                 "schema"
             ],
-            "time": "2014-03-20 14:48:55"
+            "time": "2014-08-17 07:53:47"
         },
         {
             "name": "doctrine/inflector",
@@ -1940,12 +1938,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "a617dfa69b53c88b933ffdeee23f802c2515ad22"
+                "reference": "7c3f0a3e4b7ce97d5ba0e627eb83ae93aacf6715"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/a617dfa69b53c88b933ffdeee23f802c2515ad22",
-                "reference": "a617dfa69b53c88b933ffdeee23f802c2515ad22",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/7c3f0a3e4b7ce97d5ba0e627eb83ae93aacf6715",
+                "reference": "7c3f0a3e4b7ce97d5ba0e627eb83ae93aacf6715",
                 "shasum": ""
             },
             "require": {
@@ -2012,7 +2010,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2014-07-03 09:23:02"
+            "time": "2014-08-15 21:01:45"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -2020,12 +2018,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "4c2241900df15a16a10b32ce61769e1e790418c8"
+                "reference": "e4195582740d0e26346761be9cf5f4aa6fc26238"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/4c2241900df15a16a10b32ce61769e1e790418c8",
-                "reference": "4c2241900df15a16a10b32ce61769e1e790418c8",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/e4195582740d0e26346761be9cf5f4aa6fc26238",
+                "reference": "e4195582740d0e26346761be9cf5f4aa6fc26238",
                 "shasum": ""
             },
             "require": {
@@ -2036,11 +2034,11 @@
                 "symfony/http-kernel": "~2.2"
             },
             "require-dev": {
-                "knplabs/knp-menu-bundle": "~1.1",
+                "knplabs/knp-menu-bundle": "~2.0",
                 "sonata-project/admin-bundle": "~2.2"
             },
             "suggest": {
-                "knplabs/knp-menu-bundle": "~1.1",
+                "knplabs/knp-menu-bundle": "~2.0",
                 "sonata-project/admin-bundle": "~2.2",
                 "sonata-project/cache-bundle": "~2.1"
             },
@@ -2076,7 +2074,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-08-05 11:36:37"
+            "time": "2014-08-14 12:40:45"
         },
         {
             "name": "sonata-project/cache",
@@ -2213,12 +2211,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "e781255d0b6ab661f9e041b01ff8d943ae70ebc0"
+                "reference": "78c0ed0270997c1d1b8b23fc378edcb30ede7e5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/e781255d0b6ab661f9e041b01ff8d943ae70ebc0",
-                "reference": "e781255d0b6ab661f9e041b01ff8d943ae70ebc0",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/78c0ed0270997c1d1b8b23fc378edcb30ede7e5b",
+                "reference": "78c0ed0270997c1d1b8b23fc378edcb30ede7e5b",
                 "shasum": ""
             },
             "require": {
@@ -2267,7 +2265,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-08-01 09:50:50"
+            "time": "2014-08-18 08:07:33"
         },
         {
             "name": "sonata-project/doctrine-extensions",

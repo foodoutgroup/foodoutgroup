@@ -297,17 +297,47 @@ class UsersController extends Controller
     }
 
     /**
-     * TODO - make this work :)
+     * User password reset action
      *
      * @param Request $request
      * @return Response
      */
-    public function resetPasswordAction(/*Request $request*/)
+    public function resetPasswordAction(Request $request)
     {
-        return new JsonResponse(
-            'Not implemented yet',
-            500,
-            array('error' => 'Not implemented yet', 'description' => null)
+        $this->parseRequestBody($request);
+        // TODO after testing - remove!
+        $this->logActionParams('Reset password action', $this->requestParams);
+
+        $email = $this->getRequestParam('email');
+
+        try {
+            $sendResult = $this->get('food.reset_password')->sendEmail($email);
+
+            if (!$sendResult) {
+                throw new ApiException(
+                    'User does not exist',
+                    404,
+                    array(
+                        'error' => 'User does not exist',
+                        'description' => null
+                    )
+                );
+            }
+
+        }  catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Error in API password reset: '.$e->getMessage());
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        return new Response(
+            '',
+            200
         );
     }
 
