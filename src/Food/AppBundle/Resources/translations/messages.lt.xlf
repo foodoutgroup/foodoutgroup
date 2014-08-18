@@ -922,6 +922,22 @@
         <source>general.noty.profile_updated</source>
         <target>Duomenys sėkmingai atnaujinti.</target>
       </trans-unit>
+      <trans-unit id="general.resetting" resname="general.resetting">
+        <source>general.resetting</source>
+        <target>Slaptažodžio priminimas</target>
+      </trans-unit>
+      <trans-unit id="general.resetting.continue" resname="general.resetting.continue">
+        <source>general.resetting.continue</source>
+        <target>Tęsti</target>
+      </trans-unit>
+      <trans-unit id="general.resetting.email_sent" resname="general.resetting.email_sent">
+        <source>general.resetting.email_sent</source>
+        <target>Jums buvo išsiųstas jūsų sąskaitos slaptažodžio priminimo laiškas. Jame yra nuoroda, kuria nuėję galėsite pasikeisti slaptažodį.</target>
+      </trans-unit>
+      <trans-unit id="general.resetting.password_must_match" resname="general.resetting.password_must_match">
+        <source>general.resetting.password_must_match</source>
+        <target>Slaptažodžiai turi sutapti.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

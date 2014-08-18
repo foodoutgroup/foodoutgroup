@@ -56,6 +56,8 @@
         bind_login_form();
         bind_review_form();
         bind_profile_menu_items();
+        bind_show_password_resetting_form();
+        bind_password_resetting_form();
     });
 })(jQuery, window);
 
@@ -67,6 +69,7 @@ init_raty = function() {
 
     $(selector).raty(options);
 }
+
 bind_registration_form = function() {
     $('body').on('submit', '.righter.register-form', function(e) {
         var callback, data, form, url;
@@ -147,13 +150,13 @@ bind_profile_menu_items = function() {
 
 bind_review_form = function() {
     $('body').on('submit', '.review-form', function(e) {
-        var callback, data, form, url, form_rows, dataType;
+        var callback, data, form, url, form_rows, data_type;
 
         form = $(this);
         url = form.attr('action');
         data = form.serialize();
-        form_rows = $('.review-form .form-row')
-        dataType = 'json';
+        form_rows = $('.review-form .form-row');
+        data_type = 'json';
 
         form_rows.removeClass('error');
 
@@ -165,7 +168,54 @@ bind_review_form = function() {
             }
         };
 
-        $.post(url, data, callback, dataType);
+        $.post(url, data, callback, data_type);
+
+        return false;
+    });
+}
+
+bind_show_password_resetting_form = function() {
+    $('body').on('click', '.reset_password_btn', function(e) {
+        $('.login_form_wrapper').hide();
+        $('.resetting_form_wrapper').show();
+
+        return false;
+    });
+
+    $('body').on('click', '.back_to_login', function(e) {
+        $('.resetting_form_wrapper').hide();
+        $('.login_form_wrapper').show();
+
+        return false;
+    });
+
+    return true;
+};
+
+bind_password_resetting_form = function() {
+    $('body').on('submit', '.resetting_form_wrapper form', function(e) {
+        var callback, data, form, popup, url, form_rows, data_type;
+
+        form = $(this);
+        popup = $('.popup.login-register-popup')
+        url = form.attr('action');
+        data = form.serialize();
+        form_rows = $('.resetting_form_wrapper form .form-row');
+        data_type = 'json';
+
+        form_rows.removeClass('error');
+        popup.mask();
+
+        callback = function(response) {
+            if (response.success == 1) {
+                top.location = form.attr('data-redirect-target');
+            } else {
+                form_rows.addClass('error');
+                popup.unmask();
+            }
+        };
+
+        $.post(url, data, callback, data_type);
 
         return false;
     });
