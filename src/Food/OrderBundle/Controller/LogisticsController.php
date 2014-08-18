@@ -10,6 +10,10 @@ class LogisticsController extends Controller
 {
     public function orderStatusAction(Request $request)
     {
+        // TODO isimti sita bruda
+        $this->get('logger')->alert(
+            sprintf('Kreipinys is logistikos i orderStatusAction su XML: %s', $request->getContent())
+        );
         try {
             $logisticsService = $this->get('food.logistics');
             $orderService = $this->get('food.order');
@@ -45,6 +49,10 @@ class LogisticsController extends Controller
 
     public function driverAssignAction(Request $request)
     {
+        // TODO isimti sita bruda
+        $this->get('logger')->alert(
+            sprintf('Kreipinys is logistikos i driverAssignAction su XML: %s', $request->getContent())
+        );
         try {
             $logisticsService = $this->get('food.logistics');
             $orderService = $this->get('food.order');
