@@ -21,13 +21,13 @@ class ResetPassword
 
         if (empty($user)) return false;
 
-        // send mail through mailer
-        $this->sendMailerEmail($user);
-
         if (null === $user->getConfirmationToken()) {
             $tokenGenerator = $this->service('fos_user.util.token_generator');
             $user->setConfirmationToken($tokenGenerator->generateToken());
         }
+
+        // send mail through mailer
+        $this->sendMailerEmail($user);
 
         $user->setPasswordRequestedAt(new \DateTime());
         $this->service('fos_user.user_manager')->updateUser($user);
