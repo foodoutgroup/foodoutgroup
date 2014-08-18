@@ -2,7 +2,7 @@
     <h3>{% trans %}general.register_title{% endtrans %}</h3>
     <h4>{% trans %}general.register_text{% endtrans %}</h4>
 
-    <div  class="form-row {% if submitted and errors.firstname is not empty %}error{% endif %}">
+    <div class="form-row {% if submitted and errors.firstname is not empty %}error{% endif %}">
         {{ form_label(form.firstname) }}
         {{ form_widget(form.firstname, {'attr': {'title': errors.firstname}}) }}
     </div>

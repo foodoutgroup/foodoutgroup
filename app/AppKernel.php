@@ -58,6 +58,7 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Food\MonitoringBundle\FoodMonitoringBundle(),
             new Food\ApiBundle\FoodApiBundle(),
+            new Pirminis\GatewayBundle\PirminisGatewayBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

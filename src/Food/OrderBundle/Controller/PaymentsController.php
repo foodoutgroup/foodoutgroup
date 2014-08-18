@@ -168,4 +168,242 @@ class PaymentsController extends Controller
             return new Response($e->getTraceAsString(), 500);
         }
     }
+
+    public function swedbankGatewayRedirectAction($id, $locale)
+    {
+        $router = $this->container->get('router');
+        $gateway = $this->container->get('pirminis_banklink_gateway');
+        $em = $this->container->get('doctrine.orm.entity_manager');
+
+        // get order
+        $order = $em->getRepository('FoodOrderBundle:Order')
+                    ->find($id);
+
+        $locale = $locale ? $locale : 'lt';
+
+        // configuration
+        $successUrl = $router->generate('swedbank_gateway_success',
+                                        array('_locale' => $locale),
+                                        true);
+        $failureUrl = $router->generate('swedbank_gateway_failure',
+                                        array('_locale' => $locale),
+                                        true);
+
+        $options = array('order_id' => substr($order->getId() . '_' . time(),
+                                              0,
+                                              16),
+                         //  'price' => (string)round($order->getTotal() * 100),
+                         'price' => '1',
+                         'email' => $order->getUser()->getEmail(),
+                         'transaction_datetime' => date('Y-m-d H:i:s'),
+                         'comment' => 'no comment',
+                         'success_url' => $successUrl,
+                         'failure_url' => $failureUrl,
+                         'language' => $locale);
+        $gateway->set_options($options);
+
+        $form = $gateway->form_for('swedbank');
+        $view = 'FoodOrderBundle:Payments:' .
+                'swedbank_gateway/redirect.html.twig';
+
+        return $this->render($view, ['form' => $form->createView()]);
+    }
+
+    public function swedbankCreditCardGatewayRedirectAction($id)
+    {
+        $router = $this->container->get('router');
+        $gateway = $this->container->get('pirminis_credit_card_gateway');
+        $em = $this->container->get('doctrine.orm.entity_manager');
+
+        // get order
+        $order = $em->getRepository('FoodOrderBundle:Order')
+                    ->find($id);
+
+        // configuration
+        $returnUrl = $router->generate('swedbank_credit_card_gateway_success',
+                                        [],
+                                        true);
+        $expiryUrl = $router->generate('swedbank_credit_card_gateway_failure',
+                                        [],
+                                        true);
+
+        $options = array('order_id' => substr($order->getId() . '_' . time(),
+                                              0,
+                                              16),
+                         //  'price' => (string)round($order->getTotal() * 100),
+                         'price' => '1',
+                         'transaction_datetime' => date('Y-m-d H:i:s'),
+                         'comment' => 'no comment',
+                         'return_url' => $returnUrl,
+                         'expiry_url' => $expiryUrl);
+        $gateway->set_options($options);
+
+        return new RedirectResponse($gateway->redirect_url('swedbank'));
+    }
+
+    public function swedbankGatewaySuccessAction(Request $request)
+    {
+        // services
+        $orderService = $this->container->get('food.order');
+        $gateway = $this->container->get('pirminis_credit_card_gateway');
+
+        $view = 'FoodOrderBundle:Payments:' .
+                'swedbank_gateway/something_wrong.html.twig';
+
+        // get order
+        $transactionId = $gateway->order_id('swedbank', $request);
+
+        if (empty($transactionId)) return $this->render($view);
+
+        // extract actual order id. say thanks to swedbank requirements
+        $transactionIdSplit = explode('_', $transactionId);
+        $orderId = !empty($transactionIdSplit[0]) ? $transactionIdSplit[0] : 0;
+        $order = $orderService->getOrderById($orderId);
+
+        if (!$order) {
+            $view = 'FoodOrderBundle:Payments:' .
+                    'swedbank_gateway/order_not_found.html.twig';
+            return $this->render($view);
+        }
+
+        // is order paid? let's find out!
+        if ($service->is_successful_payment('swedbank', $request)) {
+            $this->markOrderPaid($orderService);
+
+            $view = 'FoodOrderBundle:Payments:' .
+                    'swedbank_gateway/success.html.twig';
+        }
+
+        return $this->render($view, ['order' => $order]);
+    }
+
+    public function swedbankGatewayFailureAction(Request $request)
+    {
+        return $this->swedbankGatewaySuccessAction($request);
+    }
+
+    public function swedbankCreditCardGatewaySuccessAction(Request $request)
+    {
+        // services
+        $orderService = $this->container->get('food.order');
+        $gateway = $this->container->get('pirminis_gateway');
+
+        $view = 'FoodOrderBundle:Payments:' .
+                'swedbank_gateway/something_wrong.html.twig';
+
+        // get order
+        $transactionId = $gateway->order_id('swedbank', $request);
+
+        if (empty($transactionId)) return $this->render($view);
+
+        // extract actual order id. say thanks to swedbank requirements
+        $transactionIdSplit = explode('_', $transactionId);
+        $orderId = !empty($transactionIdSplit[0]) ? $transactionIdSplit[0] : 0;
+        $order = $orderService->getOrderById($orderId);
+
+        if (!$order) {
+            $view = 'FoodOrderBundle:Payments:' .
+                    'swedbank_gateway/order_not_found.html.twig';
+            return $this->render($view);
+        }
+
+        // is this event (callback from bank) or just ordinary customer?
+        $isEvent = $gateway->is_event('swedbank', $request);
+
+        // is order paid? let's find out!
+        if ((!$isEvent &&
+             $gateway->is_authorized('swedbank', $request)) ||
+            ($isEvent &&
+             $gateway->is_event_authorized('swedbank', $request))
+        ) {
+            $this->markOrderPaid($orderService);
+
+            if ($isEvent) {
+                return new Response('<Response>OK</Response>');
+            } else {
+                $view = 'FoodOrderBundle:Payments:' .
+                        'swedbank_gateway/success.html.twig';
+            }
+        // is order payment accepted and is currently processing?
+        } elseif ((!$isEvent &&
+                   $gateway->requires_investigation('swedbank', $request)) ||
+                  ($isEvent &&
+                   $gateway->event_requires_investigation('swedbank', $request))
+        ) {
+            $this->markOrderProcessing($orderService, $order);
+
+            if ($isEvent) {
+                return new Response('<Response>OK</Response>');
+            } else {
+                $view = 'FoodOrderBundle:Payments:' .
+                        'swedbank_gateway/processing.html.twig';
+            }
+        // is payment cancelled due to reasons?
+        } elseif ((!$isEvent &&
+                   $gateway->is_cancelled('swedbank', $request)) ||
+                  ($isEvent &&
+                   $gateway->is_event_cancelled('swedbank', $request))
+        ) {
+            $this->markOrderCancelled($orderService, $order);
+
+            if ($isEvent) {
+                return new Response('<Response>OK</Response>');
+            } else {
+                $view = 'FoodOrderBundle:Payments:' .
+                        'swedbank_gateway/cancelled.html.twig';
+            }
+        // did we get error from the bank? :(
+        } elseif ($gateway->is_error('swedbank', $request)) {
+            $view = 'FoodOrderBundle:Payments:' .
+                    'swedbank_gateway/error.html.twig';
+        // was there a communication error with/in bank?
+        } elseif ($gateway->communication_error('swedbank', $request)) {
+            $view = 'FoodOrderBundle:Payments:' .
+                    'swedbank_gateway/communication_error.html.twig';
+        }
+
+        return $this->render($view, ['order' => $order]);
+    }
+
+    public function swedbankCreditCardGatewayFailureAction(Request $request)
+    {
+        return $this->swedbankCreditCardGatewaySuccessAction($request);
+    }
+
+    protected function markOrderPaid($orderService)
+    {
+        $orderService->setPaymentStatus(
+            $orderService::$paymentStatusComplete,
+            'Swedbank gateway billed payment');
+        $orderService->saveOrder();
+        $orderService->informPlace();
+
+        // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
+        $orderService->deactivateCoupon();
+    }
+
+    protected function markOrderProcessing($orderService, $order)
+    {
+        $orderService->logPayment(
+            $order,
+            'Swedbank Gateway wallet payment started',
+            'Swedbank Gateway wallet payment accepted. Waiting for funds to be billed',
+            $order
+        );
+
+        usleep(400000);
+        $order = $orderService->getOrderById($orderId);
+    }
+
+    protected function markOrderCancelled($orderService, $order)
+    {
+        $orderService->logPayment(
+            $order,
+            'Swedbank gateway payment canceled',
+            'Swedbank gateway canceled in Swedbank',
+            $order
+        );
+
+        $orderService->setPaymentStatus($orderService::$paymentStatusCanceled, 'User canceled payment in Swedbank gateway');
+    }
 }
