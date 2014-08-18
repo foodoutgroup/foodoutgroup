@@ -1,5 +1,5 @@
 set :application, "skanu"
-set :deploy_to,   "/home/labai.skanu.lt/"
+set :deploy_to,   "/home/kofeinas.skanu.lt/"
 set :app_path,    "app"
 
 set :repository,  "git@github.com:Foodout/skanu.lt.git"
@@ -9,7 +9,7 @@ set :model_manager, "doctrine"
 set :branch, "master"
 
 # multi-stage environment
-set :stages,        %w(production staging sandbox)
+set :stages,        %w(production staging sandbox kofeinas)
 # isijungiam kada reik :)
 set :default_stage, "staging"
 set :stage_dir,     "app/config/deploy"
