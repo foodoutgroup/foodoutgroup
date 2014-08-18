@@ -22,8 +22,8 @@ use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
 class OrderService extends ContainerAware
 {
     private $localBiller = null;
-
     private $payseraBiller = null;
+    private $swedbankGatewayBiller = null;
 
     // TODO statusu paaiskinimai
     /**
@@ -47,7 +47,9 @@ class OrderService extends ContainerAware
     private $paymentSystemByMethod = array(
         'local' => 'food.local_biller',
         'local.card' => 'food.local_biller',
-        'paysera' => 'food.paysera_biller'
+        'paysera' => 'food.paysera_biller',
+        'swedbank-gateway' => 'food.swedbank_gateway_biller',
+        'swedbank-credit-card-gateway' => 'food.swedbank_credit_card_gateway_biller'
     );
 
     public static $deliveryTrans = array(
@@ -824,6 +826,14 @@ class OrderService extends ContainerAware
         return $this->payseraBiller;
     }
 
+    public function getSwedbankGatewayBiller()
+    {
+        if (empty($this->swedbankGatewayBiller)) {
+            $this->swedbankGatewayBiller = new SwedbankGatewayBiller();
+        }
+        return $this->swedbankGatewayBiller;
+    }
+
     /**
      * @param string $type
      * @return BillingInterface
@@ -833,6 +843,9 @@ class OrderService extends ContainerAware
         switch($type) {
             case 'local':
                 return $this->getLocalBiller();
+
+            case 'swedbank-gateway':
+                return $this->getSwedbankGatewayBiller();
 
             case 'paysera':
             default:

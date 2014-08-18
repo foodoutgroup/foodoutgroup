@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bb5090564877ebf46a1be06afd157089",
+    "hash": "c9ef6dcac5da97d191615bd0fbb5750f",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -154,7 +154,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -208,7 +208,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan H. Wage",
+                    "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/",
                     "role": "Creator"
@@ -229,7 +229,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -296,7 +296,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -372,7 +372,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -689,7 +689,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -743,7 +743,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -935,12 +935,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "27a84cec3ea4daa32cd6fe308c0847ca9644f588"
+                "reference": "ef7ca325929ff102fff521653a2e3b88c7a40361"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/27a84cec3ea4daa32cd6fe308c0847ca9644f588",
-                "reference": "27a84cec3ea4daa32cd6fe308c0847ca9644f588",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/ef7ca325929ff102fff521653a2e3b88c7a40361",
+                "reference": "ef7ca325929ff102fff521653a2e3b88c7a40361",
                 "shasum": ""
             },
             "require": {
@@ -981,12 +981,13 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "FriendsOfSymfony Community",
-                    "homepage": "https://github.com/friendsofsymfony/FOSUserBundle/contributors"
+                    "name": "Thibault Duplessis",
+                    "email": "thibault.duplessis@gmail.com",
+                    "homepage": "http://ornicar.github.com"
                 },
                 {
-                    "name": "Thibault Duplessis",
-                    "email": "thibault.duplessis@gmail.com"
+                    "name": "FriendsOfSymfony Community",
+                    "homepage": "https://github.com/friendsofsymfony/FOSUserBundle/contributors"
                 }
             ],
             "description": "Symfony FOSUserBundle",
@@ -994,19 +995,19 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2014-08-04 23:04:17"
+            "time": "2014-07-09 10:33:42"
         },
         {
             "name": "gedmo/doctrine-extensions",
             "version": "v2.3.9",
             "source": {
                 "type": "git",
-                "url": "https://github.com/l3pp4rd/DoctrineExtensions.git",
+                "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
                 "reference": "35adcaae1a3f50d0d5b73aa50ed8fd28ee35ce54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/35adcaae1a3f50d0d5b73aa50ed8fd28ee35ce54",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/35adcaae1a3f50d0d5b73aa50ed8fd28ee35ce54",
                 "reference": "35adcaae1a3f50d0d5b73aa50ed8fd28ee35ce54",
                 "shasum": ""
             },
@@ -1139,12 +1140,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/avalanche123/Imagine.git",
-                "reference": "81c4da35d9df123d186df0c1106ee4e88cc3446b"
+                "reference": "6a28b654540e2f23058079327464b858494ca595"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/81c4da35d9df123d186df0c1106ee4e88cc3446b",
-                "reference": "81c4da35d9df123d186df0c1106ee4e88cc3446b",
+                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/6a28b654540e2f23058079327464b858494ca595",
+                "reference": "6a28b654540e2f23058079327464b858494ca595",
                 "shasum": ""
             },
             "require": {
@@ -1188,7 +1189,7 @@
                 "image manipulation",
                 "image processing"
             ],
-            "time": "2014-08-04 08:44:31"
+            "time": "2014-07-21 21:26:21"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -1405,7 +1406,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -1673,7 +1674,9 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 }
             ],
             "description": "The base bundle for the Symfony Distributions",
@@ -1720,7 +1723,9 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 }
             ],
             "description": "This bundle provides a way to configure your controllers with annotations",
@@ -1819,12 +1824,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "0277a79697dbefba9ca836fefe9c3c9d8aa957d6"
+                "reference": "a617dfa69b53c88b933ffdeee23f802c2515ad22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/0277a79697dbefba9ca836fefe9c3c9d8aa957d6",
-                "reference": "0277a79697dbefba9ca836fefe9c3c9d8aa957d6",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/a617dfa69b53c88b933ffdeee23f802c2515ad22",
+                "reference": "a617dfa69b53c88b933ffdeee23f802c2515ad22",
                 "shasum": ""
             },
             "require": {
@@ -1891,7 +1896,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2014-08-13 13:52:10"
+            "time": "2014-07-03 09:23:02"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -1899,12 +1904,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "49dbfbfdd0838c735c0a65a6fa80032cc9dacd6f"
+                "reference": "772b830c2cf9d34cd3471f41c08270aec8db6032"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/49dbfbfdd0838c735c0a65a6fa80032cc9dacd6f",
-                "reference": "49dbfbfdd0838c735c0a65a6fa80032cc9dacd6f",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/772b830c2cf9d34cd3471f41c08270aec8db6032",
+                "reference": "772b830c2cf9d34cd3471f41c08270aec8db6032",
                 "shasum": ""
             },
             "require": {
@@ -1915,11 +1920,11 @@
                 "symfony/http-kernel": "~2.2"
             },
             "require-dev": {
-                "knplabs/knp-menu-bundle": "~2.0",
+                "knplabs/knp-menu-bundle": "~1.1",
                 "sonata-project/admin-bundle": "~2.2"
             },
             "suggest": {
-                "knplabs/knp-menu-bundle": "~2.0",
+                "knplabs/knp-menu-bundle": "~1.1",
                 "sonata-project/admin-bundle": "~2.2",
                 "sonata-project/cache-bundle": "~2.1"
             },
@@ -1955,7 +1960,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-08-13 08:03:41"
+            "time": "2014-07-25 09:07:35"
         },
         {
             "name": "sonata-project/cache",
@@ -2092,12 +2097,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "c93d8ec92687ec4efe0d981737bfa2dbeb76c4be"
+                "reference": "d0519c3f0d26d68df1c2c38196ab735d898a73ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/c93d8ec92687ec4efe0d981737bfa2dbeb76c4be",
-                "reference": "c93d8ec92687ec4efe0d981737bfa2dbeb76c4be",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/d0519c3f0d26d68df1c2c38196ab735d898a73ca",
+                "reference": "d0519c3f0d26d68df1c2c38196ab735d898a73ca",
                 "shasum": ""
             },
             "require": {
@@ -2146,7 +2151,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-08-13 17:27:05"
+            "time": "2014-07-23 07:47:18"
         },
         {
             "name": "sonata-project/doctrine-extensions",
@@ -3275,7 +3280,7 @@
             "authors": [
                 {
                     "name": "EVP International",
-                    "homepage": "https://www.paysera.com/"
+                    "homepage": "http://www.webtopay.com/"
                 }
             ],
             "description": "Symfony2 bundle for WebToPay provided services",
@@ -3322,9 +3327,7 @@
             "time": "2014-01-20 22:35:06"
         }
     ],
-    "packages-dev": [
-
-    ],
+    "packages-dev": [],
     "aliases": [
         {
             "alias": "1.3.2",
@@ -3367,7 +3370,5 @@
     "platform": {
         "php": ">=5.3.3"
     },
-    "platform-dev": [
-
-    ]
+    "platform-dev": []
 }
