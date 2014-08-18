@@ -914,6 +914,14 @@
           <source>payment.swedbank_gateway.success</source>
           <target>Užsakymas sėkmingai apmokėtas.</target>
       </trans-unit>
+      <trans-unit id="general.successful_user_registration" resname="general.successful_user_registration">
+        <source>general.successful_user_registration</source>
+        <target>Jūs sėkmingai užsiregistravote!</target>
+      </trans-unit>
+      <trans-unit id="general.noty.profile_updated" resname="general.noty.profile_updated">
+        <source>general.noty.profile_updated</source>
+        <target>Duomenys sėkmingai atnaujinti.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

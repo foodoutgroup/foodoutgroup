@@ -26,8 +26,8 @@
     </script>
 {% endblock %}
 
-{% form_theme form _self %}
-{% form_theme addressForm _self %}
+{% form_theme form.profile _self %}
+{% form_theme form.address _self %}
 
 {% block form_row %}
 {% spaceless %}
@@ -67,15 +67,15 @@
                 <a href="{{ path('user_profile') }}"> {% trans %}general.profile{% endtrans %}</a>
             </div>
             <div class="page-title">
-                <h1 class="clearfix"><span>{% trans %}general.greating{% endtrans %}, {{ language_utils.name(app.user.firstname, locale) }}!</span></h1>
+                <h1 class="clearfix"><span>{% trans %}general.greating{% endtrans %}, {{ language_utils.name(user.firstname, locale) }}!</span></h1>
             </div>
             <div class="clearfix">
                 <div class="full-content user-page clearfix">
                     <div class="user-lefter">
                         <div class="active-user"><img src="{{ asset('bundles/foodapp/images/person.png') }}">
                             {#<a href="#" class="edit"></a>#}
-                            <div class="user-name">{{ app.user.firstname }}</div>
-                            <div class="user-location">{% if app.user.defaultAddress %}{{ app.user.defaultAddress.city }}{% endif %}</div>
+                            <div class="user-name">{{ user.firstname }}</div>
+                            <div class="user-location">{% if user.defaultAddress %}{{ user.defaultAddress.city }}{% endif %}</div>
                         </div>
                         <ul class="menu user-menu">
                             <li class="menu-item user-ico active" data-target=".user-page .content-item.user">
@@ -94,31 +94,33 @@
                     </div>
                     <div class="user-righter content-item user">
                         <h2>{% trans %}general.profile.user_data{% endtrans %}</h2>
-                        {% if hasErrors is defined and hasErrors %}
-                            <div class="error alert alert-danger">
-                                <ul>
-                                {% for error in errors %}
-                                    <li>{{ error.message|trans() }}</li>
-                                {% endfor %}
-                                </ul>
+
+                        {% if profile_updated is defined and profile_updated is not empty %}
+                            <div class="alert alert-success">
+                                {{ profile_updated.0 }}
                             </div>
                         {% endif %}
-                        <form class="user-details-form" action="{{ path('user_profile_update') }}" method="POST" novalidate="novalidate">
-                            {{ form_row(form.firstname) }}
-                            {{ form_row(form.lastname) }}
-                            {{ form_row(form.email) }}
-                            {{ form_row(form.phone) }}
-                            <hr>
-                            {{ form_row(addressForm.city) }}
-                            {{ form_row(addressForm.address) }}
-                            <hr>
-                            {#{{ form_row(form.current_password) }}#}
-                            {#{{ form_row(form.plainPassword.first) }}#}
-                            {#{{ form_row(form.plainPassword.second) }}#}
+
+                        <form class="user-details-form" action="{{ path('user_profile_update') }}" method="POST" novalidate="novalidate" autocomplete="off">
+                            {% include 'FoodUserBundle:Default:profile/profile.html.twig' %}
+                            {% include 'FoodUserBundle:Default:profile/address.html.twig' %}
+                            {% include 'FoodUserBundle:Default:profile/change_password.html.twig' %}
+
+                            {{ form_rest(form) }}
+
                             <div class="form-controls">
                                 <input type="submit" value="{% trans %}general.profile.button_save{% endtrans %}">
                             </div>
                         </form>
+                        <script type="text/javascript">
+                        // <![CDATA[
+                        $(window).load(function() {
+                            var inputs = $('.user-details-form:visible .form-row input');
+
+                            inputs.tooltip('show');
+                        });
+                        // ]]>
+                        </script>
                     </div>
                     <div class="user-righter content-item cart">
                         <h2>{% trans %}general.profile.cart_history{% endtrans %}</h2>
@@ -130,7 +132,7 @@
                                 <div class="order-history-item clearfix">
                                     <div class="restautrant-logo">
                                         <div class="restautrant-logo-wrap">
-                                            <img src="/uploads/places/thumb_{{ order.place.logo }}" alt="{{ order.placeName }}" />
+                                            <img src="http://{{ cloudfront_url }}/uploads/places/thumb_{{ order.place.logo }}" alt="{{ order.placeName }}" />
                                         </div>
                                     </div>
                                     <div class="history-item-middle">

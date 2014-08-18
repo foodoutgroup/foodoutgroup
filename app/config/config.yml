@@ -9,7 +9,7 @@ imports:
 parameters:
     available_locales: [lt, en, ru]
     available_locales_routing: lt | en | ru
-    available_cities: ["Vilnius","Kaunas"]
+    available_cities: ["Vilnius","Kaunas","Klaipėda"]
     time_zone: "Europe/Vilnius"
     sms.available_providers: [food.infobip, food.silverstreet]
     sms.main_provider: "food.infobip"
@@ -32,6 +32,7 @@ parameters:
     order.city_coordinators:
         vilnius: []
         kaunas: [renata@foodout.lt]
+        klaipeda: []
     order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
@@ -60,6 +61,7 @@ parameters:
     vat: 21
     evp.test_payments: 0
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
+    cloudfront_url: images.foodout.lt
 
 framework:
     #esi:             ~
@@ -98,6 +100,8 @@ twig:
         static_service: "@food.static"
         google_maps_api: "%google.maps_api%"
         language_utils: "@food.app.utils.language"
+        notifications: "@food.app.utils.notifications"
+        cloudfront_url: "%cloudfront_url%"
 
 
 # Assetic Configuration

@@ -352,6 +352,10 @@
                 <source>admin.place.card_on_delivery</source>
                 <target>Kortele prist. metu</target>
             </trans-unit>
+            <trans-unit id="admin.place.disabled_online_payment">
+                <source>admin.place.disabled_online_payment</source>
+                <target>Neleisti atsiskaityti internetu</target>
+            </trans-unit>
 
             <!-- Place points -->
             <trans-unit id="place-point-list">

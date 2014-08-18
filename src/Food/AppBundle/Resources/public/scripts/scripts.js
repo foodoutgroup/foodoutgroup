@@ -82,6 +82,9 @@ bind_registration_form = function() {
             if (response.length > 0) {
                 $('.registration_form_wrapper:visible').html(response);
                 form.unmask();
+
+                var inputs = $('.register-form:visible .form-row input');
+                inputs.tooltip('show');
             } else {
                 top.location.href = top.location.href;
             }

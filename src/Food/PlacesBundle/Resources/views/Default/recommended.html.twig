@@ -5,7 +5,7 @@
     {% for place in places %}
         <div class="items-list-col">
             <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="restoran-item">
-                <div class="restoran-item-top"><img alt="{{ place.name }}" src="/uploads/places/thumb_{{ place.logo }}" /></div>
+                <div class="restoran-item-top"><img alt="{{ place.name }}" src="http://{{ cloudfront_url }}/uploads/places/thumb_{{ place.logo }}" /></div>
                 <p class="restoran-name">{{ place.name }}</p>
                 <div data-stars="{{ place.averageRating }}" class="restoran-rating"></div>
             </a>

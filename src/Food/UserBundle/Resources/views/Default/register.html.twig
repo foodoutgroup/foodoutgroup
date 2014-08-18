@@ -1,30 +1,26 @@
 <form class="righter register-form" action="{{ url('user_register_create') }}" method="post" novalidate>
     <h3>{% trans %}general.register_title{% endtrans %}</h3>
     <h4>{% trans %}general.register_text{% endtrans %}</h4>
-    <div class="registration-errors">
-        {% for error in errors %}
-            <div>{{ error }}</div>
-        {% endfor %}
-    </div>
-    <div class="form-row">
+
+    <div  class="form-row {% if submitted and errors.firstname is not empty %}error{% endif %}">
         {{ form_label(form.firstname) }}
-        {{ form_widget(form.firstname) }}
+        {{ form_widget(form.firstname, {'attr': {'title': errors.firstname}}) }}
     </div>
-    <div class="form-row">
+    <div class="form-row {% if submitted and errors.lastname is not empty %}error{% endif %}">
         {{ form_label(form.lastname) }}
-        {{ form_widget(form.lastname) }}
+        {{ form_widget(form.lastname, {'attr': {'title': errors.lastname}}) }}
     </div>
-    <div class="form-row">
+    <div class="form-row {% if submitted and errors.email is not empty %}error{% endif %}">
         {{ form_label(form.email) }}
-        {{ form_widget(form.email) }}
+        {{ form_widget(form.email, {'attr': {'title': errors.email}}) }}
     </div>
-    <div class="form-row">
+    <div class="form-row {% if submitted and errors.plainPassword is not empty %}error{% endif %}">
         {{ form_label(form.plainPassword.first) }}
-        {{ form_widget(form.plainPassword.first) }}
+        {{ form_widget(form.plainPassword.first, {'attr': {'title': errors.plainPassword}}) }}
     </div>
-    <div class="form-row">
+    <div class="form-row {% if submitted and errors.plainPassword is not empty %}error{% endif %}">
         {{ form_label(form.plainPassword.second) }}
-        {{ form_widget(form.plainPassword.second) }}
+        {{ form_widget(form.plainPassword.second, {'attr': {'title': errors.plainPassword}}) }}
     </div>
     <div class="form-controls clearfix">
         <input type="submit" value="{% trans %}general.register_register_button{% endtrans %}" class="fr">
