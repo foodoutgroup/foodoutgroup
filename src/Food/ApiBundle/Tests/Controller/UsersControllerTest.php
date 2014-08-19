@@ -390,7 +390,8 @@ class UsersControllerTest extends WebTestCase
         $now = $now->format("Y-m-d");
         $validity = $newUserUpdated->getApiTokenValidity()->format("Y-m-d");
 
-        $this->assertTrue(empty($newUserUpdated->getApiToken()));
+        $apiToken = $newUserUpdated->getApiToken();
+        $this->assertTrue(empty($apiToken));
         $this->assertTrue(($validity < $now));
     }
 
