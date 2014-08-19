@@ -69,6 +69,38 @@ class OrdersController extends Controller
 
     public function getOrderStatusAction($id)
     {
+        try {
+            $order = $this->get('food.order')->getOrderById($id);
 
+            if (!$order) {
+                throw new ApiException(
+                    "Order not found",
+                    404,
+                    array(
+                        'error' => 'Order not found',
+                        'description' => null,
+                    )
+                );
+            }
+
+            return new JsonResponse(
+                array(
+                    "order_id" => $order->getId(),
+                    "status" => array(
+                        "state" => $order->getOrderStatus(),
+                        "phone" => "+".$order->getPlacePoint()->getPhone(),
+                        "message" => $order->getPlaceComment()
+                    )
+                )
+            );
+        }  catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
     }
 }
