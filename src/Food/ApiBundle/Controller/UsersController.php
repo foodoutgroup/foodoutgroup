@@ -179,8 +179,7 @@ class UsersController extends Controller
             $this->parseRequestBody($request);
             // TODO after testing - remove!
             $this->logActionParams('Update user action', $this->requestParams);
-            $token = $request->headers->get('X-API-Authorization');
-            $this->get('food_api.api')->loginByHash($token);
+            $this->get('food_api.api')->loginByHash($this->getApiToken($request));
 
             $um = $this->getUserManager();
             $security = $this->get('security.context');
@@ -241,8 +240,7 @@ class UsersController extends Controller
             $this->parseRequestBody($request);
             // TODO after testing - remove!
             $this->logActionParams('Change password action', $this->requestParams);
-            $token = $request->headers->get('X-API-Authorization');
-            $this->get('food_api.api')->loginByHash($token);
+            $this->get('food_api.api')->loginByHash($this->getApiToken($request));
             $translator = $this->get('translator');
 
             $um = $this->getUserManager();
@@ -412,8 +410,7 @@ class UsersController extends Controller
     public function logoutAction(Request $request)
     {
         try {
-            $token = $request->headers->get('X-API-Authorization');
-            $this->get('food_api.api')->loginByHash($token);
+            $this->get('food_api.api')->loginByHash($this->getApiToken($request));
 
             $um = $this->getUserManager();
             $security = $this->get('security.context');
@@ -450,8 +447,7 @@ class UsersController extends Controller
     public function meAction(Request $request)
     {
         try {
-            $token = $request->headers->get('X-API-Authorization');
-            $this->get('food_api.api')->loginByHash($token);
+            $this->get('food_api.api')->loginByHash($this->getApiToken($request));
 
             $security = $this->get('security.context');
             $user = $security->getToken()->getUser();
@@ -464,32 +460,6 @@ class UsersController extends Controller
             );
 
             return new JsonResponse($userData);
-        }  catch (ApiException $e) {
-            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
-        } catch (\Exception $e) {
-            return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
-                500,
-                array('error' => 'server error', 'description' => null)
-            );
-        }
-    }
-
-    /**
-     * PVZ kaip identifikuoti vartotoja pagal Authorization tokena
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function testTokenAuthAction(Request $request)
-    {
-        try {
-            $token = $request->headers->get('X-API-Authorization');
-            $this->get('food_api.api')->loginByHash($token);
-
-            $security = $this->get('security.context');
-            $user = $security->getToken()->getUser();
-
-            return new JsonResponse(array('success' => true, 'userId' => $user->getId()));
         }  catch (ApiException $e) {
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
@@ -623,5 +593,20 @@ class UsersController extends Controller
         $logger->alert('Request params:');
         $logger->alert(var_export($params, true));
         $logger->alert('=========================================================');
+    }
+
+    /**
+     * @param Request $request
+     * @return array|string
+     */
+    protected function getApiToken(Request $request)
+    {
+        $token = $request->headers->get('X-API-Authorization');
+
+        if (empty($token)) {
+            $token = $request->headers->get('x-api-authorization');
+        }
+
+        return $token;
     }
 }

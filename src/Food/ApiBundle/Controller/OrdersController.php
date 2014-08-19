@@ -2,6 +2,7 @@
 
 namespace Food\ApiBundle\Controller;
 
+use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,6 +70,47 @@ class OrdersController extends Controller
 
     public function getOrderStatusAction($id)
     {
+        try {
+            $order = $this->get('food.order')->getOrderById($id);
 
+            if (!$order) {
+                throw new ApiException(
+                    "Order not found",
+                    404,
+                    array(
+                        'error' => 'Order not found',
+                        'description' => null,
+                    )
+                );
+            }
+
+            $message = '';
+
+            if ($order->getDelayed()) {
+                $message = $this->get('translator')->trans(
+                    'mobile.order_status.order_delayed',
+                    array('%delayTime%' => $order->getDelayDuration())
+                );
+            }
+
+            return new JsonResponse(
+                array(
+                    "order_id" => $order->getId(),
+                    "status" => array(
+                        "state" => $order->getOrderStatus(),
+                        "phone" => "+".$order->getPlacePoint()->getPhone(),
+                        "message" => $message
+                    )
+                )
+            );
+        }  catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
     }
 }
