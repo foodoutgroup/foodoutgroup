@@ -63,7 +63,7 @@ class BasketService extends ContainerAware
         }
 
         $cartService = $this->container->get('food.cart');
-
+        $cartService->setNewSessionId($basket->getSession());
         foreach ($request->get('items') as $item) {
             $options = array();
             if (isset($item['options']) && !empty($item['options'])) {
@@ -127,6 +127,7 @@ class BasketService extends ContainerAware
     {
         $sessionId = $this->container->get('session')->getId();
         $newBasketRel = new ShoppingBasketRelation();
+
         $newBasketRel->setSession($sessionId)
             ->setPlaceId($this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($restaurantId));
 

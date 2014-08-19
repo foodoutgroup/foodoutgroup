@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class JsonRequest
 {
-    private $requestParams;
+    public $requestParams;
     public function __construct(Request $request)
     {
         $body = $request->getContent();
