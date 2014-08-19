@@ -797,6 +797,18 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
         $orderService->setDeliveryType('deliver');
     }
 
+    public function testCreapyFixer()
+    {
+        $orderService = new OrderService();
+
+        $expectedString = 'Sesios zasys su sesiais zasyciais. Gerve gyrune gyresi gera gira geroj girioj gerai gerusi.';
+        $testedString = 'Šešios žąsys su šešiais žąsyčiais. Gervė gyrūnė gyrėsi gerą girą geroj girioj gerai gėrusi.';
+
+        $reality = $orderService->creepyFixer($testedString);
+
+        $this->assertEquals($expectedString, $reality);
+    }
+
     private function cleanOrderForCompare($orderArray)
     {
         unset($orderArray['orderDate']);

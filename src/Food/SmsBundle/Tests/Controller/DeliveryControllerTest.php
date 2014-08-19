@@ -5,53 +5,17 @@ namespace Food\SmsBundle\Tests\Controller;
 require_once dirname(__DIR__).'/../../../../app/AppKernel.php';
 
 use Food\SmsBundle\Controller\DeliveryController;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Request;
 
 class DeliveryControllerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var \Symfony\Component\HttpKernel\AppKernel
-     */
-    protected $kernel;
-
-    /**
-     * @var \Symfony\Component\DependencyInjection\Container
-     */
-    protected $container;
-
-    /**
-     * @return null
-     */
-    public function setUp()
-    {
-        $this->kernel = new \AppKernel('test', true);
-        $this->kernel->boot();
-
-        $this->container = $this->kernel->getContainer();
-
-        parent::setUp();
-    }
-
-    /**
-     * @return null
-     */
-    public function tearDown()
-    {
-        $this->kernel->shutdown();
-
-        parent::tearDown();
-    }
-
     public function testIndex()
     {
-        $this->markTestSkipped(
-            'Pakeista, kad requestas imamas is containerio. reikia pataisyti testa uzmockinant requesta'
-        );
         $dlrData =
 '<DeliveryReport>
  <message id="023120308155716708" sentdate="2010/8/2 14:55:10" donedate="2010/8/2 14:55:16" status="DELIVERED" gsmerror="0" />
 </DeliveryReport>';
-        $request = new Request('/messaging-delivery/', 'POST', array(), array(), array(), array(), $dlrData);
+        $request = new Request(array(), array(), array(), array(), array(), array(), $dlrData);
 
         $messagingService = $this->getMockBuilder('\Food\SmsBundle\Service\MessagesService')
             ->disableOriginalConstructor()
@@ -60,9 +24,13 @@ class DeliveryControllerTest extends \PHPUnit_Framework_TestCase
             '\Food\SmsBundle\Service\InfobipProvider',
             array('setDebugEnabled', 'setLogger')
         );
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get', 'getParameter')
+        );
 
         $controller = new DeliveryController();
-        $controller->setContainer($this->container);
+        $controller->setContainer($container);
         $controller->setMessagingService($messagingService);
         $controller->setProvider($infobipProvider);
 
@@ -80,6 +48,6 @@ class DeliveryControllerTest extends \PHPUnit_Framework_TestCase
         $messagingService->expects($this->once())
             ->method('updateMessagesDelivery');
 
-        $controller->indexAction();
+        $controller->indexAction('infobip', $request);
     }
 }
