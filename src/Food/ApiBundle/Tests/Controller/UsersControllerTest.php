@@ -380,7 +380,8 @@ class UsersControllerTest extends WebTestCase
 
         $this->assertEquals('Food\ApiBundle\Controller\UsersController::logoutAction', $this->client->getRequest()->attributes->get('_controller'));
         $this->assertEquals(204 , $this->client->getResponse()->getStatusCode());
-        $this->assertTrue(empty($this->client->getResponse()->getContent()));
+        $content = $this->client->getResponse()->getContent();
+        $this->assertTrue(empty($content));
 
         //Reload the user to know newest data
         $newUserUpdated = $this->getContainer()->get('fos_user.user_manager')->findUserByEmail($newUser->getEmail());
