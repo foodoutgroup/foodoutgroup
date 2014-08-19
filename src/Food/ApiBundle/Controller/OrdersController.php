@@ -2,6 +2,7 @@
 
 namespace Food\ApiBundle\Controller;
 
+use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -83,13 +84,22 @@ class OrdersController extends Controller
                 );
             }
 
+            $message = '';
+
+            if ($order->getDelayed()) {
+                $message = $this->get('translator')->trans(
+                    'mobile.order_status.order_delayed',
+                    array('%delayTime%' => $order->getDelayDuration())
+                );
+            }
+
             return new JsonResponse(
                 array(
                     "order_id" => $order->getId(),
                     "status" => array(
                         "state" => $order->getOrderStatus(),
                         "phone" => "+".$order->getPlacePoint()->getPhone(),
-                        "message" => $order->getPlaceComment()
+                        "message" => $message
                     )
                 )
             );

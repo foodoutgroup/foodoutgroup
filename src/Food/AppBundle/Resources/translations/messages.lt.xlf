@@ -966,6 +966,10 @@
           <source>mobile.change_password.user.id_dont_match</source>
           <target>Nesutampa prijungtas vartotojas ir paduotas ID</target>
       </trans-unit>
+      <trans-unit id="mobile.order_status.order_delayed" resname="mobile.order_status.order_delayed">
+          <source>mobile.order_status.order_delayed</source>
+          <target>Užsakymas vėluos %delayTime% min.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
