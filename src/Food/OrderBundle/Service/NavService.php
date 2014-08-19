@@ -21,9 +21,13 @@ class NavService extends ContainerAware
      */
     private $conn = null;
 
-    private $headerTable = 'prototipas6.dbo."PROTOTIPAS Skambuciu Centras$Web ORDER Header"';
+    //private $headerTable = 'prototipas6.dbo."PROTOTIPAS Skambuciu Centras$Web ORDER Header"';
 
-    private $lineTable = 'prototipas6.dbo."PROTOTIPAS Skambuciu Centras$Web ORDER Lines"';
+    //private $lineTable = 'prototipas6.dbo."PROTOTIPAS Skambuciu Centras$Web ORDER Lines"';
+
+    private $headerTable = 'skamb_centras.dbo."Čilija Skambučių Centras$Web ORDER Header"';
+
+    private $lineTable = 'skamb_centras.dbo."Čilija Skambučių Centras$Web ORDER Lines"';
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
@@ -58,7 +62,9 @@ class NavService extends ContainerAware
     {
         if ($this->conn == null) {
             $serverName = "213.190.40.38, 5566"; //serverName\instanceName, portNumber (default is 1433)
-            $connectionInfo = array( "Database"=>"prototipas6", "UID"=>"fo_order", "PWD"=>"peH=waGe?zoOs69");
+            //$connectionInfo = array( "Database"=>"prototipas6", "UID"=>"fo_order", "PWD"=>"peH=waGe?zoOs69");
+            //$connectionInfo = array( "Database"=>"skamb_centras", "UID"=>"nas", "PWD"=>"c1l1j@");
+            $connectionInfo = array( "Database"=>"skamb_centras", "UID"=>"fo_order", "PWD"=>"peH=waGe?zoOs69");
             $this->conn = sqlsrv_connect( $serverName, $connectionInfo);
 
             if( $this->conn === false ) {
@@ -215,7 +221,7 @@ class NavService extends ContainerAware
         );
         $queryPart = $this->generateQueryPart($dataToPut);
 
-        $query = 'INSERT INTO '.$this->getHeaderTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
+        $query = 'INSERT INTO '.iconv('utf-8', 'cp1257',$this->getHeaderTable()).' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
         echo $query."\n\n";
 
         $rez = sqlsrv_query ( $this->getConnection() , $query);
@@ -255,7 +261,7 @@ class NavService extends ContainerAware
 
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
-        $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
+        $query = 'INSERT INTO '.iconv('utf-8', 'cp1257',$this->getLineTable()).' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
         echo $query."\n";
         $rez = sqlsrv_query ( $this->getConnection() , $query);
         if( $rez === false) {
@@ -273,7 +279,8 @@ class NavService extends ContainerAware
     {
 
         $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
-        $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
+        //$clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
+        $clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija Skambučių Centras/Codeunit/WEB_Service2";
 
         stream_wrapper_unregister('http');
         stream_wrapper_register('http', '\Food\OrderBundle\Common\FoNTLMStream') or die("Failed to register protocol");

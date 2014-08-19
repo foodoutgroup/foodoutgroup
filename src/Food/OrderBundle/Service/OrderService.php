@@ -44,6 +44,8 @@ class OrderService extends ContainerAware
     public static $status_finished = "finished";
     public static $status_canceled = "canceled";
 
+    public static $status_nav_problems = "nav_problems";
+
     // TODO o gal sita mapa i configa? What do You think?
     private $paymentSystemByMethod = array(
         'local' => 'food.local_biller',
@@ -1342,26 +1344,44 @@ class OrderService extends ContainerAware
     public function notifyOrderCreate() {
         $order = $this->getOrder();
 
-
         if ($order->getPlace()->getNavision()) {
             $nav = $this->container->get('food.nav');
             $orderRenew = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($order->getId());
-            var_dump(sizeof($orderRenew->getDetails()));
-            var_dump("--ZZ--");
+
+
+
+            $query = "SELECT * FROM order_details WHERE order_id=".$order->getId();
+            $stmt = $this->container->get('doctrine')->getConnection()->prepare($query);
+            $stmt->execute();
+            $details = $stmt->fetchAll();
+            foreach ($details as $det) {
+                $orderRenew->addDetail(
+                    $this->container->get('doctrine')->getRepository('FoodOrderBundle:OrderDetails')->find($det['id'])
+                );
+            }
+
             $nav->putTheOrderToTheNAV($orderRenew);
             sleep(1);
             $returner = $nav->updatePricesNAV($orderRenew);
-            echo "----\n";
-            var_dump($returner);
             sleep(1);
-            if($returner) {
+            if($returner->return_value == "TRUE") {
                 $returner = $nav->processOrderNAV($orderRenew);
-                echo "----\n";
+                if($returner->return_value == "TRUE") {
+
+                } else {
+                    $order->setOrderStatus(self::$status_nav_problems);
+                    $this->getEm()->merge($order);
+                    $this->getEm()->flush();
+                    var_dump($returner);
+                }
+            } else {
+                $order->setOrderStatus(self::$status_nav_problems);
+                $this->getEm()->merge($order);
+                $this->getEm()->flush();
                 var_dump($returner);
             }
         }
-        die('THE END');
-
+        die();
 
         $translator = $this->container->get('translator');
 
