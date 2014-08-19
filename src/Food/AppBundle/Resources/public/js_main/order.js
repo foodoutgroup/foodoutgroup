@@ -29,19 +29,47 @@ var Cart = {
         return true;
     },
 
+    // deliveryTypeChanged: function(deliveryType) {
+    //     $('.content-lefter-big').mask();
+    //     switch (deliveryType) {
+    //         case 'pickup':
+    //             var url = Routing.generate('food_cart', { '_locale': Cart.locale, 'placeId': Cart.placeId, takeAway: 1 });
+    //             break;
+
+    //         default:
+    //         case 'deliver':
+    //             var url = Routing.generate('food_cart', { '_locale': Cart.locale, 'placeId': Cart.placeId });
+    //             break;
+    //     }
+
+    //     window.location = url;
+    // }
+
     deliveryTypeChanged: function(deliveryType) {
-        $('.content-lefter-big').mask();
+        var content_lefter, takeaway_not, takeaway_yep;
+
+        takeaway_not = $('.takeaway-not');
+        takeaway_yep = $('.takeaway_yep');
+        content_lefter = $('.content-lefter-big');
+
+        // get ready
+        content_lefter.mask();
+
+        // do
         switch (deliveryType) {
             case 'pickup':
-                var url = Routing.generate('food_cart', { '_locale': Cart.locale, 'placeId': Cart.placeId, takeAway: 1 });
+                takeaway_yep.hide();
+                takeaway_not.show();
                 break;
 
-            default:
             case 'deliver':
-                var url = Routing.generate('food_cart', { '_locale': Cart.locale, 'placeId': Cart.placeId });
+            default:
+                takeaway_not.hide();
+                takeaway_yep.show();
                 break;
         }
 
-        window.location = url;
+        // cleanup
+        content_lefter.unmask();
     }
 };

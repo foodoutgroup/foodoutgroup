@@ -176,30 +176,34 @@
                                 </div>
                             </div>
                             {# Pristatysime i namus - duodam susitvarkyti adresus #}
-                            {% if takeAway == false %}
-                            <div class="form-row form-row-required address-change">
-                                <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
-                                <select class="custom-select" disabled="true">
-                                    <option {% if location and location.city is defined and location.city == 'Vilnius' %}#}selected{% endif %}>Vilnius</option>
-                                    <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
-                                    <option {% if location and location.city is defined and location.city == 'Klaipėda' %}selected{% endif %}>Klaipėda</option>
-                                </select>
-                            </div>
-                            <div class="form-row form-row-required address-change">
-                                <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
-                                <input type="text" id="address" value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% endif %}" readonly>
+                            {#% if takeAway == false %#}
+                            <div class="takeaway-not {% if takeAway == true %}hide{% endif %}">
+                                <div class="form-row form-row-required address-change">
+                                    <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
+                                    <select class="custom-select" disabled="true">
+                                        <option {% if location and location.city is defined and location.city == 'Vilnius' %}#}selected{% endif %}>Vilnius</option>
+                                        <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
+                                        <option {% if location and location.city is defined and location.city == 'Klaipėda' %}selected{% endif %}>Klaipėda</option>
+                                    </select>
+                                </div>
+                                <div class="form-row form-row-required address-change">
+                                    <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
+                                    <input type="text" id="address" value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% endif %}" readonly>
+                                </div>
                             </div>
                             {# Atsiims pats - leidziame pasirinkti padalini #}
-                            {% else %}
-                            <div class="form-row form-row-required">
-                                <label>{% trans %}cart.checkout.place_point{% endtrans %}:</label>
-                                <select class="custom-select" name="place_point">
-                                    {% for point in place.points %}
-                                    <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}</option>
-                                    {% endfor %}
-                                </select>
+                            {#% else %#}
+                            <div class="takeaway-yep {% if takeAway == true %}show{% endif %}">
+                                <div class="form-row form-row-required">
+                                    <label>{% trans %}cart.checkout.place_point{% endtrans %}:</label>
+                                    <select class="custom-select" name="place_point">
+                                        {% for point in place.points %}
+                                        <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
-                            {% endif %}
+                            {#% endif %#}
                             <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.firstname{% endtrans %}:</label>
                                 <input type="text" name="customer-firstname" value="{% if (dataToLoad is not empty and dataToLoad['customer-firstname'] is not empty) %}{{ dataToLoad['customer-firstname'] }}{% else %}{{ app.user.firstname|default('') }}{% endif %}" placeholder="{% trans %}general.name.placeholder{% endtrans %}" />
