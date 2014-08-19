@@ -204,7 +204,13 @@ class BasketService extends ContainerAware
                 )
             );
         }
-        $itemInCart = $doc->getManager()->getRepository('FoodCartBundle:Cart')->find($basket_item_id);
+        $itemInCart = $doc->getManager()->getRepository('FoodCartBundle:Cart')->findOneBy(
+            array(
+                'cart_id' => $basket_item_id,
+                'session' => $ent->getSession(),
+                'place_id' => $ent->getPlaceId()
+            )
+        );
         if (!$itemInCart) {
             throw new ApiException(
                 'Item not found',
