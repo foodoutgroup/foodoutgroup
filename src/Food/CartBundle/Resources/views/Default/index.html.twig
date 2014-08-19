@@ -272,7 +272,7 @@
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-dnb.png">
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
-                                {% if app.request.server.get("REMOTE_ADDR") in ['84.240.14.80', '127.0.0.1', '::1', '88.119.87.158', '178.236.207.146', '78.56.64.71'] %}
+                                {% if app.request.server.get("REMOTE_ADDR") in ['84.240.14.80', '127.0.0.1', '::1', '88.119.87.158', '178.236.207.146', '78.56.64.71', '213.159.53.74'] %}
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-swb.png">
                                     <input type="radio" name="payment-type" value="swedbank-gateway"{% if order is not null and order.paymentMethod == 'swedbank-gateway' %} checked="checked"{% endif %}>
                                 </label>
