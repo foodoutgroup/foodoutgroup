@@ -6,6 +6,7 @@ use Food\ApiBundle\Common\ShoppingBasketItem;
 use Food\ApiBundle\Entity\ShoppingBasketRelation;
 use Food\ApiBundle\Exceptions\ApiException;
 use Food\CartBundle\Entity\Cart;
+use Food\CartBundle\Entity\CartOption;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
 use Food\ApiBundle\Common\JsonRequest;
@@ -235,6 +236,29 @@ class BasketService extends ContainerAware
                 'session' => $basket->getSession()
             )
         );
+
+        $oldOptions = $doc->getRepository('FoodCartBundle:CartOption')->findBy(
+            array(
+                'session' => $basket->getSession(),
+                'cart_id' => $basket_item_id,
+                'dish_id' => $itemInCart->getDishId()
+            )
+        );
+        foreach ($oldOptions as $opt) {
+            $doc->getManager()->remove($opt);
+            $doc->getManager()->flush();
+        }
+        $newOptions = $request->get('options');
+        foreach ($newOptions as $optNew) {
+            $cartOpt = new CartOption();
+            $cartOpt->setCartId($itemInCart->getCartId())
+                ->setDishId($itemInCart->getDishId())
+                ->setSession($basket->getSession())
+                ->setDishOptionId($doc->getRepository('FoodDishesBundle:DishOption')->find($optNew['option_id']));
+            $doc->getManager()->persist($cartOpt);
+            $doc->getManager()->flush();
+        }
+
         $itemInCart->setQuantity($request->get('count'));
         $dishSize = $doc->getManager()->getRepository('FoodDishesBundle:DishSize')->find($request->get('size_id'));
         $itemInCart->setDishSizeId($dishSize);
