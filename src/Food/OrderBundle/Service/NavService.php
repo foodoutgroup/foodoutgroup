@@ -76,7 +76,7 @@ class NavService extends ContainerAware
 
     public function getLastOrders()
     {
-        $rez = sqlsrv_query ( $this->getConnection() , 'SELECT TOP 1 * FROM '.$this->getHeaderTable().' ORDER BY timestamp DESC');
+        $rez = sqlsrv_query ( $this->getConnection() , 'SELECT TOP 1 * FROM '.iconv('utf-8', 'cp1257',$this->getHeaderTable()).' ORDER BY timestamp DESC');
 
         if( $rez === false) {
             die( print_r( sqlsrv_errors(), true) );
@@ -89,7 +89,7 @@ class NavService extends ContainerAware
         }
         echo '</pre>';
 
-        $rez = sqlsrv_query ( $this->getConnection() , 'SELECT TOP 5 * FROM '.$this->getLineTable().' ORDER BY timestamp DESC');
+        $rez = sqlsrv_query ( $this->getConnection() , 'SELECT TOP 5 * FROM '.iconv('utf-8', 'cp1257',$this->getLineTable()).' ORDER BY timestamp DESC');
 
         if( $rez === false) {
             die( print_r( sqlsrv_errors(), true) );
@@ -206,7 +206,7 @@ class NavService extends ContainerAware
             'Order Date' => $order->getOrderDate()->format("Y-m-d"),
             'Order Time' => '1754-01-01 '.$order->getOrderDate()->format("H:i:s"),
             'Takeout Time' => $order->getDeliveryTime()->format("Y-m-d H:i:s"),
-            'Directions' => 'NEGAMINTI.TEST.'.$order->getComment(),
+            'Directions' => 'NEGAMINTI.TEST.'.iconv('utf-8', 'cp1257',$order->getComment()),
             'Discount Card No_' => '',
             'Order Status' => 4,
             'Delivery Order No_' => '',
@@ -306,7 +306,7 @@ class NavService extends ContainerAware
     {
         $orderId = $this->getNavOrderId($order);
 
-        $query = 'UPDATE '.$this->getHeaderTable().' SET [Order Status]=0, [Delivery Status]=0 WHERE [Order No_] = '.$orderId;
+        $query = 'UPDATE '.iconv('utf-8', 'cp1257',$this->getHeaderTable()).' SET [Order Status]=0, [Delivery Status]=0 WHERE [Order No_] = '.$orderId;
 
         $rez = sqlsrv_query ( $this->getConnection() , $query);
         if( $rez === false) {
