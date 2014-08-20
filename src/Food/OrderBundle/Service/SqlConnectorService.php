@@ -42,6 +42,7 @@ class SqlConnectorService extends ContainerAware
 
     public function query($query)
     {
+        $query = iconv('UTF-8', 'windows-1257', $query);
         if ($this->isWin) {
             return $this->_queryWin($query);
         } else {
