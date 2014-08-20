@@ -97,7 +97,7 @@ class Misc
     public function parseAddress($address)
     {
         if (!empty($address)) {
-            preg_match('/\s(([0-9a-z]{1,4})[-|\s]{0,4}([0-9]{0,3}))$/i', $address, $addrData);
+            preg_match('/\s(([0-9]{1,3}\s?[a-z]?)[-|\s]{0,4}([0-9]{0,3}))$/i', $address, $addrData);
 
             if (isset($addrData[0])) {
                 $street = trim(str_replace($addrData[0], '', $address));
