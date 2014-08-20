@@ -25,9 +25,9 @@ class NavService extends ContainerAware
 
     //private $lineTable = 'prototipas6.dbo."PROTOTIPAS Skambuciu Centras$Web ORDER Lines"';
 
-    private $headerTable = 'skamb_centras.dbo."Čilija Skambučių Centras$Web ORDER Header"';
+    private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
 
-    private $lineTable = 'skamb_centras.dbo."Čilija Skambučių Centras$Web ORDER Lines"';
+    private $lineTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Lines]';
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
@@ -209,7 +209,7 @@ class NavService extends ContainerAware
             'Phone' => str_replace('370', '8', $order->getUser()->getPhone()),
             'ZipCode' => $orderRow->getZipCode(),
             'City' => $order->getAddressId()->getCity(),
-            'Street' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? iconv('utf-8', 'cp1257',$orderRow->getStreetName()): ''),
+            'Street' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getStreetName(): ''),
             'Street No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getNumberFrom(): ''),
             'Floor' => '',
             'Grid' => $orderRow->getGrid(),
@@ -220,7 +220,7 @@ class NavService extends ContainerAware
             'Order Date' => $order->getOrderDate()->format("Y-m-d"),
             'Order Time' => '1754-01-01 '.$order->getOrderDate()->format("H:i:s"),
             'Takeout Time' => $order->getDeliveryTime()->format("Y-m-d H:i:s"),
-            'Directions' => iconv('utf-8', 'cp1257',$order->getComment()),
+            'Directions' => $order->getComment(),
             'Discount Card No_' => '',
             'Order Status' => 4,
             'Delivery Order No_' => '',
@@ -235,7 +235,7 @@ class NavService extends ContainerAware
         );
         $queryPart = $this->generateQueryPart($dataToPut);
 
-        $query = 'INSERT INTO '.iconv('utf-8', 'cp1257',$this->getHeaderTable()).' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
+        $query = 'INSERT INTO '.$this->getHeaderTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
         $sqlSS = $this->initSqlConn()->query($query);
 
         $this->_processLines($order, $orderNewId);
@@ -255,7 +255,7 @@ class NavService extends ContainerAware
             'Line No_' => $key,
             'Entry Type' => 0,
             'No_' => "'".$detail->getDishSizeCode()."'",
-            'Description' => "'".substr(iconv('utf-8', 'cp1257', $detail->getDishName()), 0, 29)."'",
+            'Description' => "'".substr($detail->getDishName(), 0, 29)."'",
             'Quantity' => $detail->getQuantity(),
             'Price' => $detail->getPrice(), // @todo test the price. Kaip gula. Total ar ne.
             'Parent Line' => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
@@ -267,7 +267,7 @@ class NavService extends ContainerAware
 
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
-        $query = 'INSERT INTO '.iconv('utf-8', 'cp1257',$this->getLineTable()).' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
+        $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
@@ -307,7 +307,7 @@ class NavService extends ContainerAware
     {
         $orderId = $this->getNavOrderId($order);
 
-        $query = 'UPDATE '.iconv('utf-8', 'cp1257',$this->getHeaderTable()).' SET [Order Status]=0, [Delivery Status]=0 WHERE [Order No_] = '.$orderId;
+        $query = 'UPDATE '.$this->getHeaderTable().' SET [Order Status]=0, [Delivery Status]=0 WHERE [Order No_] = '.$orderId;
 
         $sqlSS = $this->initSqlConn()->query($query);
 
