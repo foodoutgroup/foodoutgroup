@@ -108,6 +108,7 @@ class PlacesService extends ContainerAware {
             ->findBy(array(
                 'place' => $place->getId(),
                 'public' => 1,
+                'active' => 1,
             ));
     }
 
