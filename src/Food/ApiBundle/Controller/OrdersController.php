@@ -97,7 +97,7 @@ class OrdersController extends Controller
                 array(
                     "order_id" => $order->getId(),
                     "status" => array(
-                        "state" => $order->getOrderStatus(),
+                        "state" => $this->get('food_api.order')->convertOrderStatus($order->getOrderStatus()),
                         "phone" => "+".$order->getPlacePoint()->getPhone(),
                         "message" => $message
                     )

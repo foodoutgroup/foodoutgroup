@@ -4,7 +4,6 @@ namespace Food\ApiBundle\Service;
 
 use Food\ApiBundle\Common\JsonRequest;
 use Food\OrderBundle\Entity\Order;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
 use Food\OrderBundle\Service\OrderService as FO;
@@ -197,6 +196,10 @@ class OrderService extends ContainerAware
 
     /**
      * @todo - FIX TO THE EPIC COMMON LEVEL
+     *
+     * @param Order $order
+     *
+     * @return array
      */
     public function getOrderForResponse(Order $order)
     {
@@ -226,6 +229,8 @@ class OrderService extends ContainerAware
 
     /**
      * @param Order $order
+     *
+     * @return array
      */
     private function _getItemsForResponse(Order $order)
     {
@@ -250,10 +255,38 @@ class OrderService extends ContainerAware
 
     /**
      * @param Order $order
+     *
+     * @return array
      */
     private function _getServiceForResponse(Order $order)
     {
         $returner = array();
         return $returner;
+    }
+
+    /**
+     * @param string $status
+     * @return mixed
+     * @throws \InvalidArgumentException
+     */
+    public function convertOrderStatus($status)
+    {
+        $statusMap = array(
+            FO::$status_new => 'accepted',
+            FO::$status_accepted => 'preparing',
+            FO::$status_assiged => 'preparing',
+            FO::$status_forwarded => 'preparing',
+            FO::$status_delayed => 'delayed',
+            FO::$status_completed => 'completed',
+            FO::$status_failed => 'failed',
+            FO::$status_finished => 'finished',
+            FO::$status_canceled => 'canceled',
+        );
+
+        if (!isset($statusMap[$status])) {
+            throw new \InvalidArgumentException('Unknown status: '.$status);
+        }
+
+        return $statusMap[$status];
     }
 }
