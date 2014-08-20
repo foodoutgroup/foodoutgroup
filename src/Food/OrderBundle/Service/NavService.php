@@ -21,7 +21,7 @@ class NavService extends ContainerAware
      */
     private $conn = null;
 
-    private $headerTable = '[prototipas6.[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Header]';
+    private $headerTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Header]';
 
     private $lineTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Lines]';
 
@@ -172,7 +172,7 @@ class NavService extends ContainerAware
         $arrayKeys = array_keys($data);
         $values = array_values($data);
         return array(
-            'keys' => '"'.implode('","', $arrayKeys).'"',
+            'keys' => '['.implode('],[', $arrayKeys).']',
             'values' => "'".implode("','", $values)."'",
         );
     }
@@ -182,7 +182,7 @@ class NavService extends ContainerAware
         $arrayKeys = array_keys($data);
         $values = array_values($data);
         return array(
-            'keys' => '"'.implode('","', $arrayKeys).'"',
+            'keys' => '['.implode('],[', $arrayKeys).']',
             'values' => implode(',', $values)
         );
     }
