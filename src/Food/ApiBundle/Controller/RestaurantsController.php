@@ -134,10 +134,56 @@ class RestaurantsController extends Controller
         return new JsonResponse($cuisines);
     }
 
-    public function getRestaurantAction($id)
+    public function getRestaurantAction($id, Request $request)
     {
+        $city = $request->get('city');
+        $address = $request->get('address');
+        $lat = $request->get('lat');
+        $lng = $request->get('lng');
+        $searchCrit = array(
+            'city' => null,
+            'lat' => null,
+            'lng' => null
+        );
+        if (!empty($city) && !empty($address)) {
+            $placeData = $this->get('food.googlegis')->getPlaceData($address.",", $city);
+            $locationInfo = $this->get('food.googlegis')->groupData($placeData, $address, $city);
+            $searchCrit = array(
+                'city' => $locationInfo['city'],
+                'lat' => $locationInfo['lat'],
+                'lng' => $locationInfo['lng']
+            );
+        } elseif (!empty($lat) && !empty($lng)) {
+            $data = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
+            $searchCrit = array(
+                'city' => $data['city'],
+                'lat' => $lat,
+                'lng' => $lng
+            );
+        }
+
         $place = $this->get('doctrine')->getRepository('FoodDishesBundle:Place')->find(intval($id));
-        $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, null);
+        $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
+            $place->getId(),
+            $searchCrit,
+            true
+        );
+        if (!empty($pointId)) {
+            $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
+            $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, $placePoint);
+        } else {
+            $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
+                $place->getId(),
+                $searchCrit
+            );
+            if (!empty($pointId)) {
+                $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
+                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, $placePoint, true);
+            } else {
+                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, null);
+            }
+        }
+
         return new JsonResponse($restaurant->data);
     }
 

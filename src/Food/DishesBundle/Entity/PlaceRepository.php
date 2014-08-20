@@ -121,7 +121,7 @@ class PlaceRepository extends EntityRepository
      * @param $locationData
      * @return null
      */
-    public function getPlacePointNear($placeId, $locationData)
+    public function getPlacePointNear($placeId, $locationData, $ignoreSelfDelivery = false)
     {
         if (empty($locationData['city']) || empty($locationData['lat'])) {
             return null;
@@ -134,8 +134,7 @@ class PlaceRepository extends EntityRepository
         $subQuery = "SELECT pp.id FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND pp.deleted_at IS NULL AND p.active=1 AND pp.city='".$city."' AND pp.place = $placeId
             AND (
                 (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <= 7
-                OR
-                p.self_delivery = 1
+                ".(!$ignoreSelfDelivery ? " OR p.self_delivery = 1":"")."
             )
             ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
 

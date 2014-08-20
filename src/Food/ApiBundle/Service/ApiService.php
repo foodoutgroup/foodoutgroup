@@ -14,10 +14,10 @@ class ApiService extends ContainerAware
     public function getSessionId() {
         return $this->container->get('session')->getId();
     }
-    public function createRestaurantFromPlace($place, $placePoint)
+    public function createRestaurantFromPlace($place, $placePoint, $pickUpOnly = false)
     {
         $restaurant = new Restaurant(null, $this->container);
-        return $restaurant->loadFromEntity($place, $placePoint);
+        return $restaurant->loadFromEntity($place, $placePoint, $pickUpOnly);
     }
 
     public function createMenuByPlaceId($placeId)

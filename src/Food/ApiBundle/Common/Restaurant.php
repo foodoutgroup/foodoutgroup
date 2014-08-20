@@ -85,7 +85,7 @@ class Restaurant extends ContainerAware
         }
     }
 
-    public function loadFromEntity(Place $place, PlacePoint $placePoint = null)
+    public function loadFromEntity(Place $place, PlacePoint $placePoint = null, $pickUpOnly = false)
     {
         $kitchens = $place->getKitchens();
         $kitchensForResp = array();
@@ -103,6 +103,14 @@ class Restaurant extends ContainerAware
             }
         }
 
+
+
+        $pickUp = (isset($placePoint) && $placePoint->getPickUp() ? true: false);
+        $delivery = (isset($placePoint) && $placePoint->getDelivery() ? true: false);
+        if ($pickUpOnly) {
+            $pickUp = true;
+            $delivery = false;
+        }
         $this
             ->set('restaurant_id', $place->getId())
             ->set('title', $place->getName())
@@ -121,8 +129,8 @@ class Restaurant extends ContainerAware
             ->set(
                 'services',
                 array(
-                    'pickup' => (isset($placePoint) && $placePoint->getPickUp() ? true: false),
-                    'delivery' => (isset($placePoint) && $placePoint->getDelivery() ? true: false)
+                    'pickup' => $pickUp,
+                    'delivery' => $delivery,
                 )
             )
             ->set(
