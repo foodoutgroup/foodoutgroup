@@ -74,8 +74,24 @@ class NavService extends ContainerAware
         return $this->conn;
     }
 
+    /**
+     * @return SqlConnectorService
+     */
+    public function initSqlConn() {
+        $sqlSS = $this->container->get('food.mssql');
+        $sqlSS->init(
+            '213.190.40.38',
+            5566,
+            'skamb_centras',
+            'fo_order',
+            'peH=waGe?zoOs69'
+        );
+        return $sqlSS;
+    }
+
     public function getLastOrders()
     {
+        $sqlSS = $this->initSqlConn();
         $rez = sqlsrv_query ( $this->getConnection() , 'SELECT TOP 1 * FROM '.iconv('utf-8', 'cp1257',$this->getHeaderTable()).' ORDER BY timestamp DESC');
 
         if( $rez === false) {
@@ -220,12 +236,8 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPart($dataToPut);
 
         $query = 'INSERT INTO '.iconv('utf-8', 'cp1257',$this->getHeaderTable()).' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
-        //echo $query."\n\n";
+        $sqlSS = $this->initSqlConn()->query($query);
 
-        $rez = sqlsrv_query ( $this->getConnection() , $query);
-        if( $rez === false) {
-            mail("paulius@foodout.lt", "NAV INSERT FAIL", print_r( sqlsrv_errors(), true), "FROM: info@foodout");
-        }
         $this->_processLines($order, $orderNewId);
     }
 
@@ -256,12 +268,7 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
         $query = 'INSERT INTO '.iconv('utf-8', 'cp1257',$this->getLineTable()).' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
-
-        $rez = sqlsrv_query ( $this->getConnection() , $query);
-        if( $rez === false) {
-            //die( print_r( sqlsrv_errors(), true) );
-            mail("paulius@foodout.lt", "NAV INSERT FAIL", print_r( sqlsrv_errors(), true), "FROM: info@foodout");
-        }
+        $sqlSS = $this->initSqlConn()->query($query);
     }
 
     public function getNavOrderId(Order $order)
@@ -302,10 +309,7 @@ class NavService extends ContainerAware
 
         $query = 'UPDATE '.iconv('utf-8', 'cp1257',$this->getHeaderTable()).' SET [Order Status]=0, [Delivery Status]=0 WHERE [Order No_] = '.$orderId;
 
-        $rez = sqlsrv_query ( $this->getConnection() , $query);
-        if( $rez === false) {
-            die( print_r( sqlsrv_errors(), true) );
-        }
+        $sqlSS = $this->initSqlConn()->query($query);
 
         $client = $this->getWSConnection();
         $return = $client->ProcessOrder(array('pInt' =>(int)$orderId));

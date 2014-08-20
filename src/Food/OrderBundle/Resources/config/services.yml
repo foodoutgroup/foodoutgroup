@@ -45,6 +45,13 @@ services:
         calls:
             - [setContainer, ["@service_container"]]
 
+    food.mssql:
+        class: Food\OrderBundle\Service\SqlConnectorService
+        arguments: []
+        calls:
+            - [setContainer, ["@service_container"]]
+
+
 
     food.logistics:
         class: Food\OrderBundle\Service\LogisticsService
