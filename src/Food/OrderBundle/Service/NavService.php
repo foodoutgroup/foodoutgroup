@@ -171,7 +171,6 @@ class NavService extends ContainerAware
 
     public function putTheOrderToTheNAV(Order $order)
     {
-        echo "<pre>";
         $orderNewId = $this->getNavOrderId($order);
 
         $target = $order->getAddressId()->getAddress();
@@ -189,7 +188,6 @@ class NavService extends ContainerAware
         );
 
 
-        echo $order->getPlacePoint()->getAddress();
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Phone' => str_replace('370', '8', $order->getUser()->getPhone()),
@@ -222,22 +220,18 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPart($dataToPut);
 
         $query = 'INSERT INTO '.iconv('utf-8', 'cp1257',$this->getHeaderTable()).' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
-        echo $query."\n\n";
+        //echo $query."\n\n";
 
         $rez = sqlsrv_query ( $this->getConnection() , $query);
         if( $rez === false) {
-            echo "\n\n\nKLAIDA:\n";
-            die( print_r( sqlsrv_errors(), true) );
+            mail("paulius@foodout.lt", "NAV INSERT FAIL", print_r( sqlsrv_errors(), true), "FROM: info@foodout");
         }
         $this->_processLines($order, $orderNewId);
     }
 
     private function _processLines(Order $order, $orderNewId)
     {
-        echo "\nIN PROCESS LINES\n-----------------\n";
-        echo "SIZE: ".sizeof($order->getDetails())."\n";
         foreach ($order->getDetails() as $key=>$detail) {
-            echo "Process: ".$key."\n";
             $this->_processLine($detail, $orderNewId, ($key + 1));
         }
     }
@@ -262,10 +256,11 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
         $query = 'INSERT INTO '.iconv('utf-8', 'cp1257',$this->getLineTable()).' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
-        echo $query."\n";
+
         $rez = sqlsrv_query ( $this->getConnection() , $query);
         if( $rez === false) {
-            die( print_r( sqlsrv_errors(), true) );
+            //die( print_r( sqlsrv_errors(), true) );
+            mail("paulius@foodout.lt", "NAV INSERT FAIL", print_r( sqlsrv_errors(), true), "FROM: info@foodout");
         }
     }
 

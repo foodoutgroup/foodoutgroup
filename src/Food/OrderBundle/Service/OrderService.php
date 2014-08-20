@@ -1364,7 +1364,7 @@ class OrderService extends ContainerAware
             sleep(1);
             $returner = $nav->updatePricesNAV($orderRenew);
             sleep(1);
-            var_dump($returner);
+
             if($returner->return_value == "TRUE") {
                 $returner = $nav->processOrderNAV($orderRenew);
                 if($returner->return_value == "TRUE") {
@@ -1373,16 +1373,13 @@ class OrderService extends ContainerAware
                     $order->setOrderStatus(self::$status_nav_problems);
                     $this->getEm()->merge($order);
                     $this->getEm()->flush();
-                    var_dump($returner);
                 }
             } else {
                 $order->setOrderStatus(self::$status_nav_problems);
                 $this->getEm()->merge($order);
                 $this->getEm()->flush();
-                var_dump($returner);
             }
         }
-        die('--END 2--');
 
         $translator = $this->container->get('translator');
 
