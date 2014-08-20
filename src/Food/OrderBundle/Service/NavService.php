@@ -21,9 +21,9 @@ class NavService extends ContainerAware
      */
     private $conn = null;
 
-    private $headerTable = 'prototipas6.dbo."PROTOTIPAS Skambuciu Centras$Web ORDER Header"';
+    private $headerTable = '[prototipas6.[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Header]';
 
-    private $lineTable = 'prototipas6.dbo."PROTOTIPAS Skambuciu Centras$Web ORDER Lines"';
+    private $lineTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Lines]';
 
     //private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
     //private $headerTable = '[Čilija Skambučių Centras$Web ORDER Header]';
