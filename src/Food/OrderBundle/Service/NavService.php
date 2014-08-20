@@ -204,7 +204,7 @@ class NavService extends ContainerAware
             'Order Date' => $order->getOrderDate()->format("Y-m-d"),
             'Order Time' => '1754-01-01 '.$order->getOrderDate()->format("H:i:s"),
             'Takeout Time' => $order->getDeliveryTime()->format("Y-m-d H:i:s"),
-            'Directions' => 'NEGAMINTI.TEST.'.iconv('utf-8', 'cp1257',$order->getComment()),
+            'Directions' => iconv('utf-8', 'cp1257',$order->getComment()),
             'Discount Card No_' => '',
             'Order Status' => 4,
             'Delivery Order No_' => '',
@@ -291,7 +291,6 @@ class NavService extends ContainerAware
     public function updatePricesNAV(Order $order)
     {
         $orderId = $this->getNavOrderId($order);
-        var_dump($orderId);
         $client = $this->getWSConnection();
         $return = $client->UpdatePrices(array('pInt' =>(int)$orderId));
         return $return;

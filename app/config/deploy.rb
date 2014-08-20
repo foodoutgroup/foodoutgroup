@@ -11,7 +11,7 @@ set :branch, "nav_backdoor"
 # multi-stage environment
 set :stages,        %w(production staging sandbox kofeinas pipiras)
 # isijungiam kada reik :)
-set :default_stage, "pipiras"
+set :default_stage, "production"
 set :stage_dir,     "app/config/deploy"
 require 'capistrano/ext/multistage'
 
