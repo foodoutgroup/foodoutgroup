@@ -93,7 +93,7 @@ class AjaxController extends Controller
         $street = str_replace("Z", "[Z|Ž]", $street);
         */
         $conn = $this->get('database_connection');
-        $street = mysql_real_escape_string(strip_tags($street));
+        $street = strip_tags($street);
         //$sql = "SELECT DISTINCT(street_name), `name` FROM nav_streets WHERE delivery_region='".$city."' AND street_name REGEXP '(".$street.")' LIMIT 5";
         $sql = "SELECT DISTINCT(street_name), `name` FROM nav_streets WHERE delivery_region='".$city."' AND street_name LIKE '%".$street."%' LIMIT 5";
         $rows = $conn->query($sql);
