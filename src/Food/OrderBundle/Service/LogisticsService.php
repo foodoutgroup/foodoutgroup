@@ -422,10 +422,15 @@ class LogisticsService extends ContainerAware
     /**
      * Parse driver assignment in logistics
      * @param string $xml
+     * @throws \InvalidArgumentException
      * @return array
      */
     public function parseDriverAssignXml($xml)
     {
+        if (empty($xml)) {
+            throw new \InvalidArgumentException('No xml given');
+        }
+
         $driverData = array();
 
         $dom = new \DOMDocument();
@@ -452,10 +457,15 @@ class LogisticsService extends ContainerAware
      * Parse Order status change in logistics
      *
      * @param string $xml
+     * @throws \InvalidArgumentException
      * @return mixed
      */
     public function parseOrderStatusXml($xml)
     {
+        if (empty($xml)) {
+            throw new \InvalidArgumentException('No xml given');
+        }
+
         $statusData = array();
 
         $dom = new \DOMDocument();

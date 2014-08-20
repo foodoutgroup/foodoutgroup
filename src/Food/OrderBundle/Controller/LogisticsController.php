@@ -14,6 +14,9 @@ class LogisticsController extends Controller
         $this->get('logger')->alert(
             sprintf('Kreipinys is logistikos i orderStatusAction su XML: %s', $request->getContent())
         );
+        $this->get('logger')->alert(
+            sprintf('Requesto paramsai: %s', var_export($request->request->all(), true))
+        );
         try {
             $logisticsService = $this->get('food.logistics');
             $orderService = $this->get('food.order');
@@ -52,6 +55,9 @@ class LogisticsController extends Controller
         // TODO isimti sita bruda
         $this->get('logger')->alert(
             sprintf('Kreipinys is logistikos i driverAssignAction su XML: %s', $request->getContent())
+        );
+        $this->get('logger')->alert(
+            sprintf('Requesto paramsai: %s', var_export($request->request->all(), true))
         );
         try {
             $logisticsService = $this->get('food.logistics');
