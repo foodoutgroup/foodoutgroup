@@ -48,6 +48,21 @@ class TestController extends Controller
         return new Response('Uber');
     }
 
+    public function mssqlAction()
+    {
+        echo "<pre>";
+        $link = mssql_pconnect('213.190.40.38:5566', 'fo_order', 'peH=waGe?zoOs69');
+        if (!$link) {
+            echo mssql_get_last_message();
+            die();
+        }
+        if(!mssql_select_db('skamb_centras', $link)) {
+            echo mssql_get_last_message();
+            die();
+        }
+        return new Response();
+    }
+
     /**
      * @return RedirectResponse|Response
      *
