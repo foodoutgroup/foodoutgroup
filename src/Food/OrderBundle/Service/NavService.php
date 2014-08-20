@@ -140,8 +140,8 @@ class NavService extends ContainerAware
             'Delivery Type' => '1',
             'Restaurant No_' => '64',
             'Order Date' => date("Y-m-d H:i:s"),
-            'Order Time' => '1754-01-01 '.date("H:i:s"),
-            'Takeout Time' => date("Y-m-d H:i:s", strtotime('+20 minutes')),
+            'Order Time' => '1754-01-01 '.date("H:i:s", strtotime('-3 hours')),
+            'Takeout Time' => date("Y-m-d H:i:s", (strtotime('+20 minutes') - (3600 * 3))),
             'Directions' => 'Negaminti',
             'Discount Card No_' => '',
             'Order Status' => '',
@@ -205,7 +205,10 @@ class NavService extends ContainerAware
             )
         );
 
-
+        $orderDate = $order->getOrderDate();
+        $orderDate->sub(new DateInterval('P3H'));
+        $deliveryDate = $order->getDeliveryTime();
+        $deliveryDate->sub(new DateInterval('P3H'));
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Phone' => str_replace('370', '8', $order->getUser()->getPhone()),
@@ -219,9 +222,9 @@ class NavService extends ContainerAware
             'Name' => 'FO:'.$order->getUser()->getNameForOrder(),
             'Delivery Type' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? 1 : 4),
             'Restaurant No_' => '', //$order->getPlacePoint()->getInternalCode(),
-            'Order Date' => $order->getOrderDate()->format("Y-m-d"),
-            'Order Time' => '1754-01-01 '.$order->getOrderDate()->format("H:i:s"),
-            'Takeout Time' => $order->getDeliveryTime()->format("Y-m-d H:i:s"),
+            'Order Date' => $orderDate->format("Y-m-d"),
+            'Order Time' => '1754-01-01 '.$orderDate->format("H:i:s"),
+            'Takeout Time' => $deliveryDate->format("Y-m-d H:i:s"),
             'Directions' => $order->getComment(),
             'Discount Card No_' => '',
             'Order Status' => 4,
