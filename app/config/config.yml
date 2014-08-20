@@ -28,8 +28,8 @@ parameters:
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
+    #order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt, renata@foodout.lt, z.birbiliene@maistoralis.lt]
     order.notify_emails: [mantas@foodout.lt]
-    #order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt]
     order.city_coordinators:
         vilnius: []
         kaunas: [mantas@foodout.lt]
@@ -56,7 +56,7 @@ parameters:
     # Possible values: "local", "etaxi"
     active_logistics: "local"
     # Todo situos gal ir iskelsime i paramsus - dependant on install?
-    payment.methods: [local, local.card, paysera]
+    payment.methods: [local, local.card, paysera, "swedbank-gateway", "swedbank-credit-card-gateway"]
     currency_display: Lt
     currency_iso: LTL
     # naudojam telefonu validacijoms
@@ -105,6 +105,7 @@ twig:
         static_service: "@food.static"
         google_maps_api: "%google.maps_api%"
         language_utils: "@food.app.utils.language"
+        notifications: "@food.app.utils.notifications"
         cloudfront_url: "%cloudfront_url%"
 
 
@@ -339,3 +340,9 @@ trsteel_ckeditor:
 #        route: route_name
 #        route_parameters:
 #            type: image
+
+# Payment gateway
+pirminis_gateway:
+    swedbank:
+        vtid: "21911859"
+        password: "rMUhc7p7"

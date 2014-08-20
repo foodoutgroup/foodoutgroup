@@ -58,14 +58,17 @@
             '{% trans %}general.raty.gorgeous{% endtrans %}'
         ];
     </script>
+    <script src="{{ asset('bundles/foodapp/scripts/noty/packaged/jquery.noty.packaged.min.js') }}"></script>
+    <script src="{{ asset('bundles/foodapp/scripts/bootstrap/js/bootstrap.min.js') }}"></script>
     {% endblock %}
 </head>
 <body>
+{{ notifications.init|raw }}
 <div class="site">
     <div class="site-top">
         <div class="site-block clearfix"><a href="{{ path('food_lang_homepage') }}" class="main-logo"><img alt="{{ page_title }}" src="{{ asset('bundles/foodapp/images/logo_food.png') }}"></a>
             {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
-            <ul class="menu top-menu clearfix">
+            <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
                 <li><a href="{{ path('food_slug', {'slug': ('general.help_slug'|trans())}) }}"><span>{% trans %}general.help_button{% endtrans %}</span></a></li>
                 <li class="login-ico">
                     {% render(controller('FoodUserBundle:Default:loginButton')) %}

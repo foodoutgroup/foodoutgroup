@@ -885,6 +885,59 @@
           <source>general.homepage.meta_title</source>
           <target>maisto pristatymas į namus ir biurą</target>
       </trans-unit>
+      <!-- Swedbank gateway payments -->
+      <trans-unit id="payment.swedbank_gateway.cancelled" resname="payment.swedbank_gateway.cancelled">
+          <source>payment.swedbank_gateway.cancelled</source>
+          <target>Užsakymas atšauktas.</target>
+      </trans-unit>
+      <trans-unit id="payment.swedbank_gateway.communication_error" resname="payment.swedbank_gateway.communication_error">
+          <source>payment.swedbank_gateway.communication_error</source>
+          <target>Įvyko komunikacijos su banku klaida. Pabandykite atnaujinti šį puslapį po kelių minučių.</target>
+      </trans-unit>
+      <trans-unit id="payment.swedbank_gateway.error" resname="payment.swedbank_gateway.error">
+          <source>payment.swedbank_gateway.error</source>
+          <target>Įvyko klaida.</target>
+      </trans-unit>
+      <trans-unit id="payment.swedbank_gateway.order_not_found" resname="payment.swedbank_gateway.order_not_found">
+          <source>payment.swedbank_gateway.order_not_found</source>
+          <target>Užsakymas nerastas.</target>
+      </trans-unit>
+      <trans-unit id="payment.swedbank_gateway.processing" resname="payment.swedbank_gateway.processing">
+          <source>payment.swedbank_gateway.processing</source>
+          <target>Užsakymas priimtas bako apdorojimui.</target>
+      </trans-unit>
+      <trans-unit id="payment.swedbank_gateway.something_wrong" resname="payment.swedbank_gateway.something_wrong">
+          <source>payment.swedbank_gateway.something_wrong</source>
+          <target>Įvyko nenustatyto tipo klaida.</target>
+      </trans-unit>
+      <trans-unit id="payment.swedbank_gateway.success" resname="payment.swedbank_gateway.success">
+          <source>payment.swedbank_gateway.success</source>
+          <target>Užsakymas sėkmingai apmokėtas.</target>
+      </trans-unit>
+      <trans-unit id="general.successful_user_registration" resname="general.successful_user_registration">
+        <source>general.successful_user_registration</source>
+        <target>Jūs sėkmingai užsiregistravote!</target>
+      </trans-unit>
+      <trans-unit id="general.noty.profile_updated" resname="general.noty.profile_updated">
+        <source>general.noty.profile_updated</source>
+        <target>Duomenys sėkmingai atnaujinti.</target>
+      </trans-unit>
+      <trans-unit id="general.resetting" resname="general.resetting">
+        <source>general.resetting</source>
+        <target>Slaptažodžio priminimas</target>
+      </trans-unit>
+      <trans-unit id="general.resetting.continue" resname="general.resetting.continue">
+        <source>general.resetting.continue</source>
+        <target>Tęsti</target>
+      </trans-unit>
+      <trans-unit id="general.resetting.email_sent" resname="general.resetting.email_sent">
+        <source>general.resetting.email_sent</source>
+        <target>Jums buvo išsiųstas jūsų sąskaitos slaptažodžio priminimo laiškas. Jame yra nuoroda, kuria nuėję galėsite pasikeisti slaptažodį.</target>
+      </trans-unit>
+      <trans-unit id="general.resetting.password_must_match" resname="general.resetting.password_must_match">
+        <source>general.resetting.password_must_match</source>
+        <target>Slaptažodžiai turi sutapti.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

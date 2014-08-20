@@ -10,13 +10,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\Form;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use Food\UserBundle\Form\Type\ProfileFormType;
+use Food\UserBundle\Form\Type\ProfileMegaFormType;
 use Food\UserBundle\Form\Type\UserAddressFormType;
+use Food\UserBundle\Form\Type\ChangePasswordFormType;
 use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
 
@@ -32,6 +35,8 @@ class DefaultController extends Controller
         $formFactory = $this->container->get('fos_user.registration.form.factory');
         $userManager = $this->container->get('fos_user.user_manager');
         $dispatcher = $this->container->get('event_dispatcher');
+        $translator = $this->container->get('translator');
+        $notifications = $this->container->get('food.app.utils.notifications');
 
         $user = $userManager->createUser();
         $user->setUsername(uniqid('', true));
@@ -70,6 +75,9 @@ class DefaultController extends Controller
             // finally update user
             $userManager->updateUser($user);
 
+            // set noty notification for successful user registration
+            $notifications->setSuccessMessage($translator->trans('general.successful_user_registration'));
+
             $d = $request->get('fos_user_registration_form');
 
             $this->_notifyNewUser($user, $d['plainPassword']['first']);
@@ -95,17 +103,12 @@ class DefaultController extends Controller
             $form->get('email')->addError(new FormError('This user is already registered.'));
         }
 
-        $errors = [];
-
-        foreach ($form->getErrors() as $error) {
-            $errors[] = $error->getMessage();
-        } $errors = array_unique($errors);
-
         return $this->render(
             'FoodUserBundle:Default:register.html.twig',
             [
                 'form' => $form->createView(),
-                'errors' => $errors,
+                'errors' => $this->formErrors($form),
+                'submitted' => $form->isSubmitted()
             ]
         );
     }
@@ -140,7 +143,8 @@ class DefaultController extends Controller
             'FoodUserBundle:Default:register.html.twig',
             [
                 'form' => $form->createView(),
-                'errors' => [],
+                'errors' => $this->formErrors($form),
+                'submitted' => $form->isSubmitted()
             ]
         );
     }
@@ -174,49 +178,60 @@ class DefaultController extends Controller
      */
     public function profileUpdateAction(Request $request)
     {
+        // services
         $userManager = $this->container->get('fos_user.user_manager');
         $em = $this->getDoctrine()->getManager();
+        $translator = $this->get('translator');
+        $flashbag = $this->get('session')->getFlashBag();
 
+        // data
         $user = $this->user();
         $address = $this->address($user);
-
-        $form = $this->createForm(new ProfileFormType(get_class($user)), $user);
-        $form->handleRequest($request);
-
         // @TODO tikejaus, kad tituliniam nebeliko hardkodo :| Deja.. Palieku ir cia, iki rankos issities padaryt tvarka
         $cities = array('Vilnius' => 'Vilnius', 'Kaunas' => 'Kaunas', 'Klaipėda' => 'Klaipėda');
-        $addressForm = $this->createForm(new UserAddressFormType($cities), $address);
-        $addressForm->handleRequest($request);
 
-        $validator = $this->get('validator');
-        $errors = $validator->validate($user);
-        $hasErrors = false;
+        // embedded form
+        $requestData = $request->request->get('food_user_profile');
 
-        if ($form->isValid() && $addressForm->isValid() && count($errors) == 0) {
-            // update/create address
+        // mega form containts 3 embedded forms
+        $form = $this->createProfileMegaForm($user, $address, $cities, $requestData['change_password']['current_password']);
+        $form->handleRequest($request);
+
+        // address validation
+        if ($form->get('address')->isValid()) {
             $address
-                ->setCity($addressForm->get('city')->getData())
-                ->setAddress($addressForm->get('address')->getData())
+                ->setCity($form->get('address')->get('city')->getData())
+                ->setAddress($form->get('address')->get('address')->getData())
             ;
 
             if (!$user->getDefaultAddress()) {
                 $em->persist($address);
                 $user->addAddress($address);
             }
+        }
 
+        // password validation
+        if ($form->get('change_password')->isValid() && $form->isValid()) {
             $userManager->updateUser($user);
+        }
+
+        // main profile validation
+        if ($form->isValid()) {
+            $em->flush();
+
+            $flashbag->set('profile_updated', $translator->trans('general.noty.profile_updated'));
 
             return $this->redirect($this->generateUrl('user_profile'));
-        } else {
-            $hasErrors = true;
         }
 
         return [
             'form' => $form->createView(),
-            'addressForm' => $addressForm->createView(),
+            'profile_errors' => $this->formErrors($form->get('profile')),
+            'address_errors' => $this->formErrors($form->get('address')),
+            'change_password_errors' => $this->formErrors($form->get('change_password')),
             'orders' => $this->get('food.order')->getUserOrders($user),
-            'hasErrors' => $hasErrors,
-            'errors' => $errors
+            'submitted' => $form->isSubmitted(),
+            'user' => $this->user()
         ];
     }
 
@@ -226,34 +241,48 @@ class DefaultController extends Controller
      */
     public function profileAction($tab)
     {
+        // services
         $security = $this->get('security.context');
+        $flashbag = $this->get('session')->getFlashBag();
 
+        // page is accessible only to signed in users
         if (!$security->isGranted('ROLE_USER')) {
             return $this->redirect($this->generateUrl('food_lang_homepage'));
         }
 
+        // data
         $user = $this->user();
         $address = $this->address($user);
 
         // @TODO tikejaus, kad tituliniam nebeliko hardkodo :| Deja.. Palieku ir cia, iki rankos issities padaryt tvarka
         $cities = array('Vilnius' => 'Vilnius', 'Kaunas' => 'Kaunas', 'Klaipėda' => 'Klaipėda');
 
-        $form = $this->createForm(new ProfileFormType(get_class($user)), $user);
-        $addressForm = $this->createForm(new UserAddressFormType($cities), $address);
+        // mega form containts 3 embedded forms
+        $form = $this->createProfileMegaForm($user, $address, $cities, '');
 
         return [
             'form' => $form->createView(),
-            'addressForm' => $addressForm->createView(),
+            'profile_errors' => $this->formErrors($form->get('profile')),
+            'address_errors' => $this->formErrors($form->get('address')),
+            'change_password_errors' => $this->formErrors($form->get('change_password')),
             'tab' => $tab,
             'orders' => $this->get('food.order')->getUserOrders($user),
-            'hasErrors' => false,
+            'submitted' => $form->isSubmitted(),
+            'profile_updated' => $flashbag->get('profile_updated'),
+            'user' => $this->user()
         ];
     }
 
     public function loginButtonAction()
     {
+        // due to mystery I will do stuff my way
+        $user = $this->user();
+
         if ($this->get('security.context')->isGranted('ROLE_USER')) {
-            return $this->render('FoodUserBundle:Default:profile_button.html.twig');
+            return $this->render(
+                'FoodUserBundle:Default:profile_button.html.twig',
+                array('user' => $user)
+            );
         }
 
         return $this->render('FoodUserBundle:Default:login_button.html.twig');
@@ -279,7 +308,16 @@ class DefaultController extends Controller
             return null;
         }
 
-        return $sc->getToken()->getUser();
+        $user = $sc->getToken()->getUser();
+
+        // this conditional is mandatory
+        if ($user) {
+            $this->getDoctrine()
+                 ->getManager()
+                 ->refresh($user);
+        }
+
+        return $user;
     }
 
     private function address(User $user)
@@ -297,5 +335,39 @@ class DefaultController extends Controller
         ;
 
         return $address;
+    }
+
+    private function createProfileMegaForm($user, $address, $cities, $currentPassword)
+    {
+        $type = new ProfileMegaFormType(
+            new ProfileFormType(get_class($user)),
+            new UserAddressFormType($cities),
+            new ChangePasswordFormType(get_class($user), $currentPassword)
+        );
+        $data = array(
+            'profile' => $user,
+            'address' => $address,
+            'change_password' => $user
+        );
+
+        return $this->createForm($type, $data);
+    }
+
+    private function formErrors(Form $form)
+    {
+        $errors = array();
+
+        foreach ($form->all() as $element) {
+            $array = $element->getName() != 'plainPassword' ? $element->getErrors() : $element->get('first')->getErrors();
+            $callback = function($carry, $item) {
+                $carry[] = $item->getMessage();
+                return $carry;
+            };
+            $initial = [];
+
+            $errors[$element->getName()] = implode('. ', array_reduce($array, $callback, $initial));
+        }
+
+        return $errors;
     }
 }

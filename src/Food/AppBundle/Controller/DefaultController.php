@@ -6,6 +6,11 @@ use Food\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Pirminis\Gateway\Swedbank\FullHps\Request as FullHpsRequest;
+use Pirminis\Gateway\Swedbank\FullHps\Response as FullHpsResponse;
+use Pirminis\Gateway\Swedbank\FullHps\Request\Parameters;
+use Pirminis\Gateway\Swedbank\Banklink\Sender;
+use Pirminis\Gateway\Swedbank\FullHps\TransactionQuery\Request as FullHpsTransRequest;
 
 class DefaultController extends Controller
 {

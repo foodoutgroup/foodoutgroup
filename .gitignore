@@ -26,3 +26,9 @@
 
 # ctags
 /tags
+/.tags
+/.tags_sorted_by_file
+
+# other
+.ruby-version
+
