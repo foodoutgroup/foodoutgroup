@@ -25,9 +25,11 @@ class NavService extends ContainerAware
 
     //private $lineTable = 'prototipas6.dbo."PROTOTIPAS Skambuciu Centras$Web ORDER Lines"';
 
-    private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
+    //private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
+    private $headerTable = '[Čilija Skambučių Centras$Web ORDER Header]';
 
-    private $lineTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Lines]';
+    //private $lineTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Lines]';
+    private $lineTable = '[Čilija Skambučių Centras$Web ORDER Lines]';
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
