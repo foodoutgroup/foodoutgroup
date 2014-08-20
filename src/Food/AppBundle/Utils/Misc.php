@@ -87,4 +87,37 @@ class Misc
 
         return false;
     }
+
+    /**
+     * Parses address string to street, house, flat numbers
+     *
+     * @param string $address
+     * @return array
+     */
+    public function parseAddress($address)
+    {
+        if (!empty($address)) {
+            preg_match('/\s(([0-9a-z]{1,4})[-|\s]{0,4}([0-9]{0,3}))$/i', $address, $addrData);
+
+            if (isset($addrData[0])) {
+                $street = trim(str_replace($addrData[0], '', $address));
+                $house = (!empty($addrData[2]) ? $addrData[2] : '');
+                $flat = (!empty($addrData[3]) ? $addrData[3] : '');
+            } else {
+                $street = $address;
+                $house = '';
+                $flat = '';
+            }
+        } else {
+            $street = '';
+            $house = '';
+            $flat = '';
+        }
+
+        return array(
+            'street' => $street,
+            'house' => $house,
+            'flat' => $flat,
+        );
+    }
 }
