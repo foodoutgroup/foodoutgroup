@@ -66,8 +66,7 @@
         "imagine/Imagine": "dev-master",
         "trsteel/ckeditor-bundle": "1.5.x-dev",
         "friendsofsymfony/jsrouting-bundle": "@stable",
-        "giggsey/libphonenumber-for-php": "6.*",
-
+        "giggsey/libphonenumber-for-php": "6.*"
     },
     "scripts": {
         "post-install-cmd": [
