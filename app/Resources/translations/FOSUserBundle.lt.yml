@@ -63,6 +63,7 @@ resetting:
         invalid_username: Naudotojo vardas arba el. paštas "%username%" neegzistuoja.
         username: "Naudotojo vardas arba el. paštas:"
         submit: Tęsti
+        email: El. paštas
     reset:
         submit: Pakeisti slaptažodį
     flash:
@@ -99,3 +100,7 @@ form:
     password_confirmation: "Pakartoti slaptažodį"
     new_password: "Naujas slaptažodis"
     new_password_confirmation: "Naujas slaptažodis (pakartoti)"
+
+general:
+    reset_password: Keisti slaptažodį
+    back_to_login: Grįžti į prisijungimo formą

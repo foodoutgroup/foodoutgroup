@@ -4,10 +4,13 @@
     "type": "project",
     "description": "The \"Symfony Standard Edition\" distribution",
     "autoload": {
-        "psr-0": { "": "src/" }
+        "psr-0": { "": "src/" },
+        "psr-4": { "": [
+            "swedbank-gateway/gateway/src",
+            "swedbank-gateway/gateway-bundle/src"
+        ]}
     },
     "repositories": [
-
         {
             "type": "git",
             "url": "https://github.com/drawgas/SonataUserBundle.git"

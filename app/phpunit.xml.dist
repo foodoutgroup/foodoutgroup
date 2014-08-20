@@ -11,12 +11,13 @@
     processIsolation            = "false"
     stopOnFailure               = "false"
     syntaxCheck                 = "false"
-    bootstrap                   = "bootstrap.php.cache" >
+    bootstrap                   = "tests.bootstrap.php" >
 
     <testsuites>
         <testsuite name="Skanu Test Suite">
             <directory>../src/*/*Bundle/Tests</directory>
             <directory>../src/*/Bundle/*Bundle/Tests</directory>
+            <directory>../swedbank-gateway/gateway/src/Pirminis/Gateway/Tests</directory>
         </testsuite>
     </testsuites>
 

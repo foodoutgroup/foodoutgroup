@@ -5,6 +5,11 @@ services:
             - [container, [@service_container]]
         arguments: [@service_container]
 
+    food.app.utils.notifications:
+        class: Food\AppBundle\Utils\Notifications
+        calls:
+            - [container, [@service_container]]
+
     food.app.utils.misc:
         class: Food\AppBundle\Utils\Misc
         calls:
@@ -36,3 +41,8 @@ services:
     food.mailer:
         class: Food\AppBundle\Service\MailerMessagesService
         arguments: [%mailer_api_key%]
+
+    food.reset_password:
+        class: Food\AppBundle\Utils\ResetPassword
+        calls:
+            - [container, [@service_container]]
