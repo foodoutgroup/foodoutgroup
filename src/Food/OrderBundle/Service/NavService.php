@@ -256,6 +256,7 @@ class NavService extends ContainerAware
 
     private function _processLine(OrderDetails $detail, $orderNewId, $key)
     {
+        $this->container->get('doctrine')->getManager()->refresh($detail);
         $code = $detail->getDishSizeCode();
         if (empty($code)) {
             $detailOptions = $detail->getOptions();
