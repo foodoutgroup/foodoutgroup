@@ -43,7 +43,7 @@ set :composer_options, "--verbose"
 # Testing purpose
 # set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader --no-progress"
 
-#set :keep_releases, 5
+set :keep_releases, 5
 
 namespace :deploy do
     desc "chmod things"
@@ -53,7 +53,7 @@ namespace :deploy do
     end
 end
 
-after "deploy", "deploy:cleanup"
+#after "deploy", "deploy:cleanup"
 after "deploy", "deploy:chmod_things"
 # Uncomment kai bus airbrake
 # after "deploy:cleanup", "deploy:airbrake_notify"
