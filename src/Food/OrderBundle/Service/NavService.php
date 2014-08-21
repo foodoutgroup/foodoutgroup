@@ -21,14 +21,14 @@ class NavService extends ContainerAware
      */
     private $conn = null;
 
-    //private $headerTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Header]';
+    private $headerTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Header]';
 
-    //private $lineTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Lines]';
+    private $lineTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Lines]';
 
-    private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
+    //private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
     //private $headerTable = '[Čilija Skambučių Centras$Web ORDER Header]';
 
-    private $lineTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Lines]';
+    //private $lineTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Lines]';
     //private $lineTable = '[Čilija Skambučių Centras$Web ORDER Lines]';
 
     /**
@@ -255,11 +255,18 @@ class NavService extends ContainerAware
 
     private function _processLine(OrderDetails $detail, $orderNewId, $key)
     {
+        $code = $detail->getDishSizeCode();
+        if (empty($code)) {
+            $detailOptions = $detail->getOptions();
+            if (!empty($detailOptions)) {
+                $code = $detailOptions[0]->getDishOptionCode();
+            }
+        }
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Line No_' => $key,
             'Entry Type' => 0,
-            'No_' => "'".$detail->getDishSizeCode()."'",
+            'No_' => "'".$code."'",
             'Description' => "'".substr($detail->getDishName(), 0, 29)."'",
             'Quantity' => $detail->getQuantity(),
             'Price' => $detail->getPrice(), // @todo test the price. Kaip gula. Total ar ne.
@@ -286,8 +293,8 @@ class NavService extends ContainerAware
     {
 
         $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
-        //$clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
-        $clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija Skambučių Centras/Codeunit/WEB_Service2";
+        $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
+        //$clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija Skambučių Centras/Codeunit/WEB_Service2";
 
         stream_wrapper_unregister('http');
         stream_wrapper_register('http', '\Food\OrderBundle\Common\FoNTLMStream') or die("Failed to register protocol");
