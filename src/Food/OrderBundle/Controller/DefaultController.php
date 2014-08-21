@@ -204,4 +204,41 @@ class DefaultController extends Controller
 
         return $statusTable[$formStatus];
     }
+
+    public function testNav1Action()
+    {
+        $this->get('food.nav')->testInsertOrder();
+        die("TEST NAV");
+    }
+
+    public function testNav2Action()
+    {
+        $this->get('food.nav')->getLastOrders();
+        die("TEST NAV");
+    }
+
+    public function postToNavAction($id)
+    {
+        echo "<pre>";
+        $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($id);
+        $this->get('food.nav')->putTheOrderToTheNAV($order);
+        die("THE END");
+    }
+
+    public function updatePricesNavAction($id, Request $req)
+    {
+        $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($id);
+        var_dump($order->getId());
+
+        echo "<pre>";
+        if ($req->get('process', 0) == 1) {
+            echo "PROCESS:";
+            $ret = $this->get('food.nav')->processOrderNAV($order);
+            var_dump($ret);
+        }
+
+
+        $this->get('food.nav')->updatePricesNAV($order);
+        die("THE END UPDATE PRC NAV");
+    }
 }

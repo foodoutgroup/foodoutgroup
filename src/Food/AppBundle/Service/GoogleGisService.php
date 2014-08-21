@@ -62,7 +62,6 @@ class GoogleGisService extends ContainerAware
                 'key' => $this->container->getParameter('google.maps_server_api')
             )
         );
-
         return json_decode($resp->body);
     }
 
@@ -98,6 +97,7 @@ class GoogleGisService extends ContainerAware
             $returner['address_found'] = true;
             $returner['street_nr'] =  $location->results[0]->address_components[0]->long_name;
             $returner['street'] =  $this->__getStreet($location->results[0]->address_components);
+            $returner['street_short'] =  $this->__getStreet($location->results[0]->address_components, true);
             $returner['city'] =  $this->__getCity($location->results[0]->address_components);
             $returner['address'] = $returner['street']." ".$returner['street_nr'];
             $returner['address_orig'] = $address;
@@ -115,6 +115,7 @@ class GoogleGisService extends ContainerAware
             if ($res == 0 || $res==1 && $resIs == 1) {
                 $returner['street_found'] = true;
                 $returner['street'] =  $location->results[0]->address_components[0]->long_name;
+                $returner['street_short'] =  $location->results[0]->address_components[0]->short_name;
                 $returner['city'] =  $location->results[0]->address_components[1]->long_name;
                 $returner['address'] = $returner['street'];
                 $returner['lat'] = $location->results[0]->geometry->location->lat;
@@ -135,11 +136,15 @@ class GoogleGisService extends ContainerAware
         return "";
     }
 
-    private function __getStreet($results)
+    private function __getStreet($results, $shortVersion = false)
     {
         foreach ($results as $res) {
             if (in_array('route', $res->types)) {
-                return $res->long_name;
+                if ($shortVersion) {
+                    return $res->short_name;
+                } else {
+                    return $res->long_name;
+                }
             }
         }
         return "";

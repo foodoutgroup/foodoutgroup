@@ -9,7 +9,7 @@ set :model_manager, "doctrine"
 set :branch, "the_rise_of_dark_api"
 
 # multi-stage environment
-set :stages,        %w(production staging sandbox taurinas)
+set :stages,        %w(production staging sandbox taurinas kofeinas pipiras)
 # isijungiam kada reik :)
 set :default_stage, "taurinas"
 set :stage_dir,     "app/config/deploy"
@@ -43,7 +43,7 @@ set :composer_options, "--verbose"
 # Testing purpose
 # set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader --no-progress"
 
-# set :keep_releases, 5
+set :keep_releases, 5
 
 namespace :deploy do
     desc "chmod things"
@@ -53,7 +53,7 @@ namespace :deploy do
     end
 end
 
-# after "deploy", "deploy:cleanup"
+after "deploy", "deploy:cleanup"
 after "deploy", "deploy:chmod_things"
 # Uncomment kai bus airbrake
 # after "deploy:cleanup", "deploy:airbrake_notify"

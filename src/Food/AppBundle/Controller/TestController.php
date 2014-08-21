@@ -18,6 +18,7 @@ class TestController extends Controller
      */
     public function indexAction()
     {
+        /*
         $ml = $this->get('food.mailer');
 
         $variables = array(
@@ -30,9 +31,36 @@ class TestController extends Controller
         );
 
         $ml->setVariables( $variables )->setRecipient( 'paulius@foodout.lt', 'Sample Client')->setId( 30009269 )->send();
+        */
 
+        $ord = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find(1006);
+
+        //$nav = $this->get('food.nav')->putTheOrderToTheNAV($ord);
+        $returner = $this->get('food.nav')->updatePricesNAV($ord);
+        var_dump($returner);
+        echo '-- NEXT --';
+        die();
+        if($returner) {
+            $returner = $this->get('food.nav')->updatePricesNAV($ord);
+            var_dump($returner);
+        }
 
         return new Response('Uber');
+    }
+
+    public function mssqlAction()
+    {
+        echo "<pre>";
+        $link = mssql_pconnect('213.190.40.38:5566', 'fo_order', 'peH=waGe?zoOs69');
+        if (!$link) {
+            echo mssql_get_last_message();
+            die();
+        }
+        if(!mssql_select_db('skamb_centras', $link)) {
+            echo mssql_get_last_message();
+            die();
+        }
+        return new Response();
     }
 
     /**
