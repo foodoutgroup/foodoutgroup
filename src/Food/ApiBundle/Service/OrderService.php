@@ -190,6 +190,9 @@ class OrderService extends ContainerAware
                 'id' => $os->getOrder()->getId()
             )
         );
+        var_dump($order->getId());
+        var_dump(sizeof($order->getDetails()));
+        die();
         return $this->getOrderForResponse($order);
     }
 
