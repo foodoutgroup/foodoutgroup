@@ -266,7 +266,43 @@ class OrderService extends ContainerAware
      */
     private function _getServiceForResponse(Order $order)
     {
-        $returner = array();
+        $miscUtil = $this->container->get('food.app.utils.misc');
+
+        switch($order->getDeliveryType()) {
+            case FO::$deliveryPickup:
+                $deliveryType = 'pickup';
+                $parsedAddress = $miscUtil->parseAddress(
+                    $order->getPlacePointAddress()
+                );
+                break;
+
+            case FO::$deliveryDeliver:
+            default:
+                $deliveryType = 'delivery';
+                $parsedAddress = $miscUtil->parseAddress(
+                    $order->getAddressId()->getAddress()
+                );
+                break;
+        }
+
+        $returner = array(
+            "type" => $deliveryType,
+            "address" => array(
+                "street" => $parsedAddress['street'],
+                "house_number" => $parsedAddress['house'],
+                "flat_number" => $parsedAddress['flat'],
+                "city" => $order->getPlacePointCity(),
+                "comments" => $order->getComment()
+            ),
+        );
+
+        if ($order->getDeliveryType() == FO::$deliveryDeliver) {
+            $returner['price'] = array(
+                'amount' => $order->getPlace()->getDeliveryPrice()*100,
+                'currency' => $this->container->getParameter('currency_iso'),
+            );
+        }
+
         return $returner;
     }
 
