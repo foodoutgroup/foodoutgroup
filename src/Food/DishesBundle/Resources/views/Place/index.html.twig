@@ -141,6 +141,7 @@
                                         <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>{{ place.deliveryPrice }} {{ currency_display }}</li>
                                         <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>{{ place.cartMinimum }} {{ currency_display }}</li>
                                         <li class="ico-payments hidden"><strong>{% trans %}places.payment_types{% endtrans %}:</strong><span class="payments-data"></span></li>
+                                        <li class="ico-delivery"><strong>{% trans %}places.card_on_delivery{% endtrans %}:</strong>{% if place.cardOnDelivery == 1 %}{{ 'yes'|trans }}{% else %}{{ 'no'|trans }}{% endif %}</li>
                                     </ul>
                                 </div>
                                 <div class="restaurant-info-righter simple-content">
