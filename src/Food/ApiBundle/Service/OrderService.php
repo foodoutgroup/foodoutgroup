@@ -185,7 +185,11 @@ class OrderService extends ContainerAware
         }
         $os->saveOrder();
         $billingUrl = $os->billOrder();
-        $order = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($os->getOrder()->getId());
+        $order = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->findOneBy(
+            array(
+                'id' => $os->getOrder()->getId()
+            )
+        );
         return $this->getOrderForResponse($order);
     }
 
