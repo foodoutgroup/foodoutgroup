@@ -1316,37 +1316,43 @@ class OrderService extends ContainerAware
             $mailer->send($message);
         }
 
-        // Siunciam sms'a
-        $logger->alert("Sending message for order to be accepted to number: ".$placePoint->getPhone().' with text "'.$messageText.'"');
+        // Siunciam SMS tik tuo atveju, jei neperduodam per Nav'a
+        if (!$order->getPlace()->getNavision()) {
+            // Siunciam sms'a
+            $logger->alert("Sending message for order to be accepted to number: ".$placePoint->getPhone().' with text "'.$messageText.'"');
+            $smsSenderNumber = $this->container->getParameter('sms.sender');
 
-        // I pagrindini nr siunciam net jei landline, kad gautume errorus jei ka..
-        $message = $messagingService->createMessage(
-            $this->container->getParameter('sms.sender'),
-            $placePoint->getPhone(),
-            $messageText
-        );
-        $messagingService->saveMessage($message);
-
-        // Informuojame papildomais numeriais (del visa ko)
-        if (!empty($placePointAltPhone1) && $miscUtils->isMobilePhone($placePointAltPhone1, $country)) {
-            $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone1.' with text "'.$messageText.'"');
-
-            $message = $messagingService->createMessage(
-                $this->container->getParameter('sms.sender'),
-                $placePointAltPhone1,
-                $messageText
+            // I pagrindini nr siunciam net jei landline, kad gautume errorus jei ka..
+            $messagesToSend = array(
+                array(
+                    'sender' => $smsSenderNumber,
+                    'recipient' => $placePoint->getPhone(),
+                    'text' => $messageText
+                )
             );
-            $messagingService->saveMessage($message);
-        }
-        if (!empty($placePointAltPhone2) && $miscUtils->isMobilePhone($placePointAltPhone2, $country)) {
-            $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone2.' with text "'.$messageText.'"');
 
-            $message = $messagingService->createMessage(
-                $this->container->getParameter('sms.sender'),
-                $placePointAltPhone2,
-                $messageText
-            );
-            $messagingService->saveMessage($message);
+            // Informuojame papildomais numeriais (del visa ko)
+            if (!empty($placePointAltPhone1) && $miscUtils->isMobilePhone($placePointAltPhone1, $country)) {
+                $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone1.' with text "'.$messageText.'"');
+
+                $messagesToSend[] = array(
+                    'sender' => $smsSenderNumber,
+                    'recipient' => $placePointAltPhone1,
+                    'text' => $messageText
+                );
+            }
+            if (!empty($placePointAltPhone2) && $miscUtils->isMobilePhone($placePointAltPhone2, $country)) {
+                $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone2.' with text "'.$messageText.'"');
+
+                $messagesToSend[] = array(
+                    'sender' => $smsSenderNumber,
+                    'recipient' => $placePointAltPhone2,
+                    'text' => $messageText
+                );
+            }
+
+            //send multiple messages
+            $messagingService->addMultipleMessagesToSend($messagesToSend);
         }
     }
 
