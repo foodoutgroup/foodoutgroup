@@ -49,7 +49,7 @@ var Cart = {
         var content_lefter, takeaway_not, takeaway_yep;
 
         takeaway_not = $('.takeaway-not');
-        takeaway_yep = $('.takeaway_yep');
+        takeaway_yep = $('.takeaway-yep');
         content_lefter = $('.content-lefter-big');
 
         // get ready
@@ -58,14 +58,14 @@ var Cart = {
         // do
         switch (deliveryType) {
             case 'pickup':
-                takeaway_yep.hide();
-                takeaway_not.show();
+                takeaway_not.hide();
+                takeaway_yep.show();
                 break;
 
             case 'deliver':
             default:
-                takeaway_not.hide();
-                takeaway_yep.show();
+                takeaway_yep.hide();
+                takeaway_not.show();
                 break;
         }
 
