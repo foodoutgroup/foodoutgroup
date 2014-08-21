@@ -190,6 +190,7 @@ class OrderService extends ContainerAware
                 'id' => $os->getOrder()->getId()
             )
         );
+        $this->container->get('doctrine')->getManager()->refresh($order);
         var_dump($order->getId());
         var_dump(sizeof($order->getDetails()));
         die();
