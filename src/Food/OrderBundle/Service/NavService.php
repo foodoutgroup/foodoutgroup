@@ -205,6 +205,8 @@ class NavService extends ContainerAware
             )
         );
 
+        $this->container->get('doctrine')->getManager()->refresh($orderRow);
+
         $orderDate = $order->getOrderDate();
         $orderDate->sub(new \DateInterval('P0DT3H'));
         $deliveryDate = $order->getDeliveryTime();
@@ -239,9 +241,10 @@ class NavService extends ContainerAware
             'Order with Alcohol' => '0'
         );
         $queryPart = $this->generateQueryPart($dataToPut);
-
+        echo "<pre>";
         $query = 'INSERT INTO '.$this->getHeaderTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
-        $sqlSS = $this->initSqlConn()->query($query);
+        echo $query."\n";
+        //$sqlSS = $this->initSqlConn()->query($query);
 
         $this->_processLines($order, $orderNewId);
     }
@@ -258,10 +261,12 @@ class NavService extends ContainerAware
         $code = $detail->getDishSizeCode();
         if (empty($code)) {
             $detailOptions = $detail->getOptions();
+            var_dump(sizeof($detailOptions));
             if (!empty($detailOptions)) {
                 $code = $detailOptions[0]->getDishOptionCode();
             }
         }
+        die();
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Line No_' => $key,
@@ -280,7 +285,8 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
         $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
-        $sqlSS = $this->initSqlConn()->query($query);
+        echo $query."\n";
+        //$sqlSS = $this->initSqlConn()->query($query);
     }
 
     public function getNavOrderId(Order $order)
