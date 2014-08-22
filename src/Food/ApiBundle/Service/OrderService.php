@@ -144,18 +144,18 @@ class OrderService extends ContainerAware
                 );
             } else {
                 $placeData = $googleGisService->getPlaceData(
-                    $serviceVar['address']['street']." ".$serviceVar['address']['street']['house_number'].",".$serviceVar['address']['city']
+                    $serviceVar['address']['street']." ".$serviceVar['address']['house_number'].",".$serviceVar['address']['city']
                 );
                 $locationInfo = $googleGisService->groupData(
                     $placeData,
-                    $serviceVar['address']['street']." ".$serviceVar['address']['street']['house_number'],
+                    $serviceVar['address']['street']." ".$serviceVar['address']['house_number'],
                     $serviceVar['address']['city']
                 );
                 $searchCrit = array(
                     'city' => $locationInfo['city'],
                     'lat' => $locationInfo['lat'],
                     'lng' => $locationInfo['lng'],
-                    'address_orig' => $serviceVar['address']['street']." ".$serviceVar['address']['street']['house_number']
+                    'address_orig' => $serviceVar['address']['street']." ".$serviceVar['address']['house_number']
                 );
             }
         } elseif ($basket->getPlaceId()->getMinimalOnSelfDel()) {
