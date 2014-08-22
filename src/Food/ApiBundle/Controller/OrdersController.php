@@ -93,14 +93,7 @@ class OrdersController extends Controller
                 );
             }
 
-            $message = '';
-
-            if ($order->getDelayed()) {
-                $message = $this->get('translator')->trans(
-                    'mobile.order_status.order_delayed',
-                    array('%delayTime%' => $order->getDelayDuration())
-                );
-            }
+            $message = $this->get('food_api.order')->getOrderStatusMessage($order);
 
             return new JsonResponse(
                 array(

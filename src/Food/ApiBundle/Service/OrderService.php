@@ -209,14 +209,7 @@ class OrderService extends ContainerAware
      */
     public function getOrderForResponse(Order $order)
     {
-        $message = '';
-
-        if ($order->getDelayed()) {
-            $message = $this->container->get('translator')->trans(
-                'mobile.order_status.order_delayed',
-                array('%delayTime%' => $order->getDelayDuration())
-            );
-        }
+        $message = $this->getOrderStatusMessage($order);
 
         $returner = array(
             'order_id' => $order->getId(),
@@ -241,6 +234,24 @@ class OrderService extends ContainerAware
             'service' => $this->_getServiceForResponse($order)
         );
         return $returner;
+    }
+
+    /**
+     * @param Order $order
+     * @return string
+     */
+    public function getOrderStatusMessage(Order $order)
+    {
+        $message = '';
+
+        if ($order->getDelayed()) {
+            $message = $this->container->get('translator')->trans(
+                'mobile.order_status.order_delayed',
+                array('%delayTime%' => $order->getDelayDuration())
+            );
+        }
+
+        return $message;
     }
 
     /**
