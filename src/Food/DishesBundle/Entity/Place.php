@@ -50,6 +50,20 @@ class Place extends Uploadable implements Translatable
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="chain", type="string", length=10, nullable=true)
+     */
+    private $chain;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="navision", type="boolean")
+     */
+    private $navision = false;
+
+    /**
+     * @var string
      * @Gedmo\Translatable
      * @ORM\Column(name="alcohol_rules", type="text", nullable=true)
      */
@@ -110,6 +124,12 @@ class Place extends Uploadable implements Translatable
      */
     private $points;
 
+    /**
+     * @ORM\OneToMany(targetEntity="PlaceCoverPhoto", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @var ArrayCollection
+     */
+    private $photos;
 
     /**
      * @var int
@@ -278,6 +298,7 @@ class Place extends Uploadable implements Translatable
         $this->localized = new \Doctrine\Common\Collections\ArrayCollection();
         $this->points = new \Doctrine\Common\Collections\ArrayCollection();
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->photos = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -1213,6 +1234,39 @@ class Place extends Uploadable implements Translatable
     }
 
     /**
+     * Add photos
+     *
+     * @param \Food\DishesBundle\Entity\PlaceCoverPhoto $photos
+     * @return Place
+     */
+    public function addPhoto(\Food\DishesBundle\Entity\PlaceCoverPhoto $photos)
+    {
+        $this->photos[] = $photos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove photos
+     *
+     * @param \Food\DishesBundle\Entity\PlaceCoverPhoto $photos
+     */
+    public function removePhoto(\Food\DishesBundle\Entity\PlaceCoverPhoto $photos)
+    {
+        $this->photos->removeElement($photos);
+    }
+
+    /**
+     * Get photos
+     *
+     * @return PlaceCoverPhoto[]
+     */
+    public function getPhotos()
+    {
+        return $this->photos;
+    }
+
+    /**
      * Set disabledOnlinePayment
      *
      * @param boolean $disabledOnlinePayment
@@ -1233,5 +1287,51 @@ class Place extends Uploadable implements Translatable
     public function getDisabledOnlinePayment()
     {
         return $this->disabledOnlinePayment;
+    }
+
+    /**
+     * Set chain
+     *
+     * @param string $chain
+     * @return Place
+     */
+    public function setChain($chain)
+    {
+        $this->chain = $chain;
+    
+        return $this;
+    }
+
+    /**
+     * Get chain
+     *
+     * @return string 
+     */
+    public function getChain()
+    {
+        return $this->chain;
+    }
+
+    /**
+     * Set navision
+     *
+     * @param boolean $navision
+     * @return Place
+     */
+    public function setNavision($navision)
+    {
+        $this->navision = $navision;
+    
+        return $this;
+    }
+
+    /**
+     * Get navision
+     *
+     * @return boolean 
+     */
+    public function getNavision()
+    {
+        return $this->navision;
     }
 }

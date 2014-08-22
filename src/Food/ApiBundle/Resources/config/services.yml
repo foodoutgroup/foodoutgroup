@@ -1,0 +1,18 @@
+parameters:
+#    food_api.example.class: Food\ApiBundle\Example
+
+services:
+    food_api.api:
+        class: Food\ApiBundle\Service\ApiService
+        calls:
+            - [setContainer, [@service_container]]
+
+    food_api.basket:
+            class: Food\ApiBundle\Service\BasketService
+            calls:
+                - [setContainer, [@service_container]]
+
+    food_api.order:
+            class: Food\ApiBundle\Service\OrderService
+            calls:
+                - [setContainer, [@service_container]]

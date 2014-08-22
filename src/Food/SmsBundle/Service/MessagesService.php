@@ -155,6 +155,42 @@ class MessagesService {
     }
 
     /**
+     * @param string|null $sender
+     * @param string|null $recipient
+     * @param string|null $text
+     * @return Message
+     */
+    public function addMessageToSend($sender=null, $recipient=null, $text=null)
+    {
+        $message = $this->createMessage($sender, $recipient, $text);
+        $this->saveMessage($message);
+
+        return $message;
+    }
+
+    /**
+     * @param array $messages
+     * @return Message[]
+     * @throws \InvalidArgumentException
+     */
+    public function addMultipleMessagesToSend($messages)
+    {
+        if (!is_array($messages)) {
+            throw new \InvalidArgumentException('Messages must be in array');
+        }
+
+        $addedMessages = array();
+
+        if (!empty($messages)) {
+            foreach($messages as $message) {
+                $addedMessages[] = $this->addMessageToSend($message['sender'], $message['recipient'], $message['text']);
+            }
+        }
+
+        return $addedMessages;
+    }
+
+    /**
      * Get message by ext id
      *
      * @param int|string $extId

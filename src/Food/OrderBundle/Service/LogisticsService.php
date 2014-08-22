@@ -487,4 +487,35 @@ class LogisticsService extends ContainerAware
 
         return $statusData;
     }
+
+
+
+    /**
+     * @param string $part
+     * @param int $limit
+     * @return mixed
+     */
+    public function findStreet($part, $limit=15)
+    {
+        // TODO language force panaikint
+        $part_stripped = $this->container->get('food.app.utils.language')->removeChars('lt', $part, false);
+
+        $queryBuilder = $this->container->get('doctrine')->getManager()
+            ->getRepository('FoodAppBundle:Street')
+            ->createQueryBuilder('s')
+            ->where('s.street LIKE :street_orig')
+            ->orWhere('s.street LIKE :street_stripped')
+            ->setParameters(
+                array(
+                    'street_orig' => '%'.$part.'%',
+                    'street_stripped' => '%'.$part_stripped.'%',
+                )
+            )
+            ->orderBy('s.street', 'ASC')
+            ->setMaxResults($limit);
+
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
+    }
 }

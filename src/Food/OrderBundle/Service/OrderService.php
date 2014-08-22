@@ -45,6 +45,8 @@ class OrderService extends ContainerAware
     public static $status_finished = "finished";
     public static $status_canceled = "canceled";
 
+    public static $status_nav_problems = "nav_problems";
+
     // TODO o gal sita mapa i configa? What do You think?
     private $paymentSystemByMethod = array(
         'local' => 'food.local_biller',
@@ -1330,37 +1332,43 @@ class OrderService extends ContainerAware
             $mailer->send($message);
         }
 
-        // Siunciam sms'a
-        $logger->alert("Sending message for order to be accepted to number: ".$placePoint->getPhone().' with text "'.$messageText.'"');
+        // Siunciam SMS tik tuo atveju, jei neperduodam per Nav'a
+        if (!$order->getPlace()->getNavision()) {
+            // Siunciam sms'a
+            $logger->alert("Sending message for order to be accepted to number: ".$placePoint->getPhone().' with text "'.$messageText.'"');
+            $smsSenderNumber = $this->container->getParameter('sms.sender');
 
-        // I pagrindini nr siunciam net jei landline, kad gautume errorus jei ka..
-        $message = $messagingService->createMessage(
-            $this->container->getParameter('sms.sender'),
-            $placePoint->getPhone(),
-            $messageText
-        );
-        $messagingService->saveMessage($message);
-
-        // Informuojame papildomais numeriais (del visa ko)
-        if (!empty($placePointAltPhone1) && $miscUtils->isMobilePhone($placePointAltPhone1, $country)) {
-            $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone1.' with text "'.$messageText.'"');
-
-            $message = $messagingService->createMessage(
-                $this->container->getParameter('sms.sender'),
-                $placePointAltPhone1,
-                $messageText
+            // I pagrindini nr siunciam net jei landline, kad gautume errorus jei ka..
+            $messagesToSend = array(
+                array(
+                    'sender' => $smsSenderNumber,
+                    'recipient' => $placePoint->getPhone(),
+                    'text' => $messageText
+                )
             );
-            $messagingService->saveMessage($message);
-        }
-        if (!empty($placePointAltPhone2) && $miscUtils->isMobilePhone($placePointAltPhone2, $country)) {
-            $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone2.' with text "'.$messageText.'"');
 
-            $message = $messagingService->createMessage(
-                $this->container->getParameter('sms.sender'),
-                $placePointAltPhone2,
-                $messageText
-            );
-            $messagingService->saveMessage($message);
+            // Informuojame papildomais numeriais (del visa ko)
+            if (!empty($placePointAltPhone1) && $miscUtils->isMobilePhone($placePointAltPhone1, $country)) {
+                $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone1.' with text "'.$messageText.'"');
+
+                $messagesToSend[] = array(
+                    'sender' => $smsSenderNumber,
+                    'recipient' => $placePointAltPhone1,
+                    'text' => $messageText
+                );
+            }
+            if (!empty($placePointAltPhone2) && $miscUtils->isMobilePhone($placePointAltPhone2, $country)) {
+                $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone2.' with text "'.$messageText.'"');
+
+                $messagesToSend[] = array(
+                    'sender' => $smsSenderNumber,
+                    'recipient' => $placePointAltPhone2,
+                    'text' => $messageText
+                );
+            }
+
+            //send multiple messages
+            $messagingService->addMultipleMessagesToSend($messagesToSend);
         }
     }
 
@@ -1369,6 +1377,43 @@ class OrderService extends ContainerAware
      */
     public function notifyOrderCreate() {
         $order = $this->getOrder();
+
+        if ($order->getPlace()->getNavision()) {
+            $nav = $this->container->get('food.nav');
+            $orderRenew = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($order->getId());
+
+
+
+            $query = "SELECT * FROM order_details WHERE order_id=".$order->getId();
+            $stmt = $this->container->get('doctrine')->getConnection()->prepare($query);
+            $stmt->execute();
+            $details = $stmt->fetchAll();
+            foreach ($details as $det) {
+                $orderRenew->addDetail(
+                    $this->container->get('doctrine')->getRepository('FoodOrderBundle:OrderDetails')->find($det['id'])
+                );
+            }
+
+            $nav->putTheOrderToTheNAV($orderRenew);
+            sleep(1);
+            $returner = $nav->updatePricesNAV($orderRenew);
+            sleep(1);
+
+            if($returner->return_value == "TRUE") {
+                $returner = $nav->processOrderNAV($orderRenew);
+                if($returner->return_value == "TRUE") {
+
+                } else {
+                    $order->setOrderStatus(self::$status_nav_problems);
+                    $this->getEm()->merge($order);
+                    $this->getEm()->flush();
+                }
+            } else {
+                $order->setOrderStatus(self::$status_nav_problems);
+                $this->getEm()->merge($order);
+                $this->getEm()->flush();
+            }
+        }
 
         $translator = $this->container->get('translator');
 

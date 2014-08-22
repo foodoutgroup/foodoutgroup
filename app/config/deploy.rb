@@ -6,12 +6,12 @@ set :repository,  "git@github.com:Foodout/skanu.lt.git"
 set :scm,         :git
 
 set :model_manager, "doctrine"
-set :branch, "master"
+set :branch, "the_rise_of_dark_api"
 
 # multi-stage environment
-set :stages,        %w(production staging sandbox kofeinas)
+set :stages,        %w(production staging sandbox taurinas kofeinas pipiras)
 # isijungiam kada reik :)
-set :default_stage, "staging"
+set :default_stage, "taurinas"
 set :stage_dir,     "app/config/deploy"
 require 'capistrano/ext/multistage'
 
@@ -53,7 +53,7 @@ namespace :deploy do
     end
 end
 
-after "deploy", "deploy:cleanup"
+#after "deploy", "deploy:cleanup"
 after "deploy", "deploy:chmod_things"
 # Uncomment kai bus airbrake
 # after "deploy:cleanup", "deploy:airbrake_notify"

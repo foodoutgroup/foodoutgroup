@@ -89,6 +89,18 @@ services:
             - [ setTranslationDomain, [SonataAdminBundle]]
             - [ setTemplate, [edit, FoodDishesBundle:Place:place_point_admin.html.twig]]
 
+    sonata.admin.place.coverphoto:
+        class: Food\DishesBundle\Admin\PlaceCoverPhotoAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.place_cover_photo" }
+        arguments:
+            - ~
+            - Food\DishesBundle\Entity\PlaceCoverPhoto
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
+
     sonata.admin.place.reviews:
         class: Food\DishesBundle\Admin\PlaceReviewsAdmin
         tags:
@@ -195,6 +207,17 @@ services:
                 arguments:
                     - ~
                     - Food\AppBundle\Entity\BannedIp
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.street:
+                class: Food\AppBundle\Admin\StreetAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.street" }
+                arguments:
+                    - ~
+                    - Food\AppBundle\Entity\Street
                     - ~
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
