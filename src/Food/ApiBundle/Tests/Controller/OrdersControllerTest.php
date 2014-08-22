@@ -60,7 +60,7 @@ class OrdersControllerTest extends WebTestCase
         $expectedFinishedOrderData = array(
             "order_id" => $orderFinished->getId(),
             "status" => array(
-                "state" => $orderFinished->getOrderStatus(),
+                "state" => 'prepared',
                 "phone" => "+".$orderFinished->getPlacePoint()->getPhone(),
                 "message" => ''
             )
