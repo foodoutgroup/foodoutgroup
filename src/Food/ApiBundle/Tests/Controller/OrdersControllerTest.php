@@ -148,8 +148,9 @@ class OrdersControllerTest extends WebTestCase
                 'currency' => 'LTL'
             ),
             'state' => array(
-                'title' => OrderService::$status_new,
-                'info_number' => '37061234567'
+                'title' => 'accepted',
+                'info_number' => '37061212122',
+                'message' => ''
             ),
             'details' => array(
                 'restaurant_id' => $order->getPlace()->getId(),
@@ -205,8 +206,9 @@ class OrdersControllerTest extends WebTestCase
                 'currency' => 'LTL'
             ),
             'state' => array(
-                'title' => OrderService::$status_new,
-                'info_number' => '37061234567'
+                'title' => 'accepted',
+                'info_number' => '37061212122',
+                'message' => ''
             ),
             'details' => array(
                 'restaurant_id' => $order->getPlace()->getId(),

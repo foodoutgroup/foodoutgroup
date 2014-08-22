@@ -209,6 +209,15 @@ class OrderService extends ContainerAware
      */
     public function getOrderForResponse(Order $order)
     {
+        $message = '';
+
+        if ($order->getDelayed()) {
+            $message = $this->container->get('translator')->trans(
+                'mobile.order_status.order_delayed',
+                array('%delayTime%' => $order->getDelayDuration())
+            );
+        }
+
         $returner = array(
             'order_id' => $order->getId(),
             'total_price' => array(
@@ -216,8 +225,9 @@ class OrderService extends ContainerAware
                 'currency' => 'LTL'
             ),
             'state' => array(
-                'title' => $order->getOrderStatus(),
-                'info_number' => $order->getUser()->getPhone()
+                'title' => $this->convertOrderStatus($order->getOrderStatus()),
+                'info_number' => $order->getPlacePoint()->getPhone(),
+                'message' => $message
             ),
             'details' => array(
                 'restaurant_id' => $order->getPlace()->getId(),
