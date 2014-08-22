@@ -70,7 +70,6 @@ class OrderService extends ContainerAware
         );
         $googleGisService = $this->container->get('food.googlegis');
 
-
         $token = $requestOrig->headers->get('X-API-Authorization');
         $this->container->get('food_api.api')->loginByHash($token);
         $security = $this->container->get('security.context');
@@ -147,7 +146,11 @@ class OrderService extends ContainerAware
                 $placeData = $googleGisService->getPlaceData(
                     $serviceVar['address']['street']." ".$serviceVar['address']['street']['house_number'].",".$serviceVar['address']['city']
                 );
-                $locationInfo = $this->get('food.googlegis')->groupData($placeData, $address, $city);
+                $locationInfo = $googleGisService->groupData(
+                    $placeData,
+                    $serviceVar['address']['street']." ".$serviceVar['address']['street']['house_number'],
+                    $serviceVar['address']['city']
+                );
                 $searchCrit = array(
                     'city' => $locationInfo['city'],
                     'lat' => $locationInfo['lat'],
@@ -172,7 +175,6 @@ class OrderService extends ContainerAware
 
         $os = $this->container->get('food.order');
         $os->getCartService()->setNewSessionId($cartService->getSessionId());
-        $googleGisService = $this->container->get('food.googlegis');
 
         $os->createOrderFromCart(
             $basket->getPlaceId()->getId(),
