@@ -157,6 +157,11 @@ class OrderService extends ContainerAware
                     'lng' => $locationInfo['lng'],
                     'address_orig' => $serviceVar['address']['street']." ".$serviceVar['address']['house_number']
                 );
+                $pp = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
+                    $basket->getPlaceId(),
+                    $searchCrit,
+                    true
+                );
             }
         } elseif ($basket->getPlaceId()->getMinimalOnSelfDel()) {
             $list = $cartService->getCartDishes($basket->getPlaceId());
