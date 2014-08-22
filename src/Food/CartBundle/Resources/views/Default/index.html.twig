@@ -152,7 +152,7 @@
             </div>
             <div class="clearfix">
                 <div class="content-lefter-big">
-                    <form class="delivery-info-form" method="post">
+                    <form class="delivery-info-form" method="post" action="" data-delivery-action="{{ url('food_cart', {placeId: place.id}) }}" data-pickup-action="{{ url('food_cart', {placeId: place.id, takeAway: 1})}}">
                         <div class="delivery-info-form-content">
                             <h2>1. {% trans %}cart.checkout.block_title_delivery{% endtrans %}</h2>
                             {% if formHasErrors %}

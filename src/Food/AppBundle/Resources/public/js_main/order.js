@@ -12,11 +12,27 @@ var Cart = {
      * @var Object formObject
      */
     submitOrder: function(formObject) {
+        var isPickup,
+            deliveryAction,
+            pickupAction,
+            takeaway_not,
+            takeaway_yep;
+
         if (Cart.isValidOrder(formObject)) {
-//            console.log('I are valid, submit');
-            formObject.submit();
+            isPickup = $('.delivery-info-form input[name="delivery-type"]:checked').val() == 'pickup';
+            deliveryAction = formObject.attr('data-delivery-action');
+            pickupAction = formObject.attr('data-pickup-action');
+            takeaway_not = $('.takeaway-not');
+            takeaway_yep = $('.takeaway-yep');
+
+            if (isPickup) {
+                takeaway_not.find('input, select').prop('disabled', true);
+                takeaway_yep.find('input, select').prop('disabled', false);
+            }
+
+            formObject.attr('action', isPickup ? pickupAction : deliveryAction)
+                      .submit();
         } else {
-//            console.log('I are idiot, do nothing');
             return false;
         }
     },
