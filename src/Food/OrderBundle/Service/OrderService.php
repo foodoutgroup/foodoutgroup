@@ -661,7 +661,7 @@ class OrderService extends ContainerAware
      * @param bool $selfDelivery - ar restoranas pristato pats
      * @param Coupon|null $coupon
      */
-    public function createOrderFromCart($place, $locale='lt', $user, $placePoint=null, $selfDelivery = false, $coupon = null)
+    public function createOrderFromCart($place, $locale='lt', $user, PlacePoint $placePoint=null, $selfDelivery = false, $coupon = null)
     {
         $this->createOrder($place, $placePoint);
         $this->getOrder()->setDeliveryType(
