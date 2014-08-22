@@ -190,19 +190,23 @@ class NavService extends ContainerAware
     {
         $orderNewId = $this->getNavOrderId($order);
 
-        $target = $order->getAddressId()->getAddress();
-        preg_match('/(([0-9]{1,3})[-|\s]{0,4}([0-9]{0,3}))$/i', $target, $errz);
-        $street = trim(str_replace($errz[0], '', $target));
-        $houseNr = (!empty($errz[2]) ? $errz[2] : '');
-        $flatNr = (!empty($errz[3]) ? $errz[3] : '');
+        $orderRow = null;
+        if ($order->getAddressId()) {
+            $target = $order->getAddressId()->getAddress();
+            preg_match('/(([0-9]{1,3})[-|\s]{0,4}([0-9]{0,3}))$/i', $target, $errz);
+            $street = trim(str_replace($errz[0], '', $target));
+            $houseNr = (!empty($errz[2]) ? $errz[2] : '');
+            $flatNr = (!empty($errz[3]) ? $errz[3] : '');
+            $orderRow = $this->container->get('doctrine')->getRepository('FoodAppBundle:Streets')->findOneBy(
+                array(
+                    'name' => $street,
+                    'numberFrom' => $houseNr,
+                    'deliveryRegion' => $order->getAddressId()->getCity()
+                )
+            );
+        }
 
-        $orderRow = $this->container->get('doctrine')->getRepository('FoodAppBundle:Streets')->findOneBy(
-            array(
-                'name' => $street,
-                'numberFrom' => $houseNr,
-                'deliveryRegion' => $order->getAddressId()->getCity()
-            )
-        );
+
 
         $this->container->get('doctrine')->getManager()->refresh($orderRow);
 
