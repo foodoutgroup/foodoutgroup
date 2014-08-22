@@ -222,7 +222,7 @@ class NavService extends ContainerAware
             'Chain' => $order->getPlace()->getChain(),
             'Name' => 'FO:'.$order->getUser()->getNameForOrder(),
             'Delivery Type' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? 1 : 4),
-            'Restaurant No_' => '', //$order->getPlacePoint()->getInternalCode(),
+            'Restaurant No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? '': $order->getPlacePoint()->getInternalCode()),
             'Order Date' => $orderDate->format("Y-m-d"),
             'Order Time' => '1754-01-01 '.$orderDate->format("H:i:s"),
             'Takeout Time' => $deliveryDate->format("Y-m-d H:i:s"),
