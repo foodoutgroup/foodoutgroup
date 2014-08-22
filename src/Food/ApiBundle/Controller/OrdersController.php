@@ -47,11 +47,20 @@ class OrdersController extends Controller
     public function getOrderDetailsAction($id)
     {
         try {
-            return new JsonResponse(
-                $this->get('food_api.order')->getOrderForResponse(
-                    $this->get('food.order')->getOrderById($id)
-                )
-            );
+            $order = $this->get('food.order')->getOrderById($id);
+
+            if (!$order) {
+                throw new ApiException(
+                    "Order not found",
+                    404,
+                    array(
+                        'error' => 'Order not found',
+                        'description' => null,
+                    )
+                );
+            }
+
+            return new JsonResponse($this->get('food_api.order')->getOrderForResponse($order));
         }  catch (ApiException $e) {
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
@@ -84,14 +93,7 @@ class OrdersController extends Controller
                 );
             }
 
-            $message = '';
-
-            if ($order->getDelayed()) {
-                $message = $this->get('translator')->trans(
-                    'mobile.order_status.order_delayed',
-                    array('%delayTime%' => $order->getDelayDuration())
-                );
-            }
+            $message = $this->get('food_api.order')->getOrderStatusMessage($order);
 
             return new JsonResponse(
                 array(

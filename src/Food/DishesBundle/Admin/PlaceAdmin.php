@@ -45,6 +45,8 @@ class PlaceAdmin extends FoodAdmin
                         'alcoholRules' => array('label' => 'admin.place.alcohol_rules', 'required' => false,),
                 )
             ))
+            ->add('chain', null, array('label' => 'admin.place.chain', 'required' => false,))
+            ->add('navision', 'checkbox', array('label' => 'admin.place.navision', 'required' => false,))
             ->add('kitchens', null, array(
                 'query_builder' => $kitchenQuery,
                 'multiple' => true,

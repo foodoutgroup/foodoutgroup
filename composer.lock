@@ -586,12 +586,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineFixturesBundle.git",
-                "reference": "ccd69d9ec90013955a412a21125672afc09738dc"
+                "reference": "3ffa2184c94d94477d5bb625b94597ed0d44ebe0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/ccd69d9ec90013955a412a21125672afc09738dc",
-                "reference": "ccd69d9ec90013955a412a21125672afc09738dc",
+                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/3ffa2184c94d94477d5bb625b94597ed0d44ebe0",
+                "reference": "3ffa2184c94d94477d5bb625b94597ed0d44ebe0",
                 "shasum": ""
             },
             "require": {
@@ -617,18 +617,16 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
                 },
                 {
                     "name": "Doctrine Project",
                     "homepage": "http://www.doctrine-project.org"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony DoctrineFixturesBundle",
@@ -637,7 +635,7 @@
                 "Fixture",
                 "persistence"
             ],
-            "time": "2014-03-05 01:11:31"
+            "time": "2014-08-20 20:34:54"
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
@@ -2209,12 +2207,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "78c0ed0270997c1d1b8b23fc378edcb30ede7e5b"
+                "reference": "88c530177f1784f9628d247c7fcfbcb91353b07f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/78c0ed0270997c1d1b8b23fc378edcb30ede7e5b",
-                "reference": "78c0ed0270997c1d1b8b23fc378edcb30ede7e5b",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/88c530177f1784f9628d247c7fcfbcb91353b07f",
+                "reference": "88c530177f1784f9628d247c7fcfbcb91353b07f",
                 "shasum": ""
             },
             "require": {
@@ -2263,7 +2261,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-08-18 08:07:33"
+            "time": "2014-08-21 08:31:30"
         },
         {
             "name": "sonata-project/doctrine-extensions",

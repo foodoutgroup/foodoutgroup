@@ -36,7 +36,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
         $expectedStatus3 = 'delayed';
         $expectedStatus4 = 'completed';
         $expectedStatus5 = 'failed';
-        $expectedStatus6 = 'finished';
+        $expectedStatus6 = 'prepared';
         $expectedStatus7 = 'canceled';
 
         $orderStatus1 = 'new';

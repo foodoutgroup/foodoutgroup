@@ -16,16 +16,18 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
+        $miscUtils = $this->get('food.app.utils.misc');
         // Check if user is not banned
         $ip = $request->getClientIp();
         // Dude is banned - hit him
-        if ($this->get('food.app.utils.misc')->isIpBanned($ip)) {
+        if ($miscUtils->isIpBanned($ip)) {
             return $this->redirect($this->generateUrl('banned'), 302);
         }
 
         $formDefaults = array(
             'city' => '',
             'address' => '',
+            'house' => '',
         );
 
         $user = $this->getUser();
@@ -33,9 +35,12 @@ class DefaultController extends Controller
         if ($user instanceof User) {
             $defaultUserAddress = $user->getDefaultAddress();
             if (!empty($defaultUserAddress)) {
+                $addressData = $miscUtils->parseAddress($defaultUserAddress->getAddress());
+
                 $formDefaults = array(
                     'city' => $defaultUserAddress->getCity(),
-                    'address' => $defaultUserAddress->getAddress(),
+                    'address' => $addressData['street'],
+                    'house' => $addressData['house']
                 );
             }
         }
@@ -44,9 +49,12 @@ class DefaultController extends Controller
         $sessionLocation = $this->get('food.googlegis')->getLocationFromSession();
         if (!empty($sessionLocation)
             && !empty($sessionLocation['city']) && !empty($sessionLocation['address_orig'])) {
+            $addressData = $miscUtils->parseAddress($sessionLocation['address_orig']);
+
             $formDefaults = array(
                 'city' => $sessionLocation['city'],
-                'address' => $sessionLocation['address_orig'],
+                'address' => $addressData['street'],
+                'house' => $addressData['house']
             );
         }
 

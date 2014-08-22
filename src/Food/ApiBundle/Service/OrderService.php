@@ -235,6 +235,8 @@ class OrderService extends ContainerAware
      */
     public function getOrderForResponse(Order $order)
     {
+        $message = $this->getOrderStatusMessage($order);
+
         $returner = array(
             'order_id' => $order->getId(),
             'total_price' => array(
@@ -242,8 +244,9 @@ class OrderService extends ContainerAware
                 'currency' => 'LTL'
             ),
             'state' => array(
-                'title' => $order->getOrderStatus(),
-                'info_number' => $order->getUser()->getPhone()
+                'title' => $this->convertOrderStatus($order->getOrderStatus()),
+                'info_number' => $order->getPlacePoint()->getPhone(),
+                'message' => $message
             ),
             'details' => array(
                 'restaurant_id' => $order->getPlace()->getId(),
@@ -257,6 +260,24 @@ class OrderService extends ContainerAware
             'service' => $this->_getServiceForResponse($order)
         );
         return $returner;
+    }
+
+    /**
+     * @param Order $order
+     * @return string
+     */
+    public function getOrderStatusMessage(Order $order)
+    {
+        $message = '';
+
+        if ($order->getDelayed()) {
+            $message = $this->container->get('translator')->trans(
+                'mobile.order_status.order_delayed',
+                array('%delayTime%' => $order->getDelayDuration())
+            );
+        }
+
+        return $message;
     }
 
     /**
@@ -292,7 +313,43 @@ class OrderService extends ContainerAware
      */
     private function _getServiceForResponse(Order $order)
     {
-        $returner = array();
+        $miscUtil = $this->container->get('food.app.utils.misc');
+
+        switch($order->getDeliveryType()) {
+            case FO::$deliveryPickup:
+                $deliveryType = 'pickup';
+                $parsedAddress = $miscUtil->parseAddress(
+                    $order->getPlacePointAddress()
+                );
+                break;
+
+            case FO::$deliveryDeliver:
+            default:
+                $deliveryType = 'delivery';
+                $parsedAddress = $miscUtil->parseAddress(
+                    $order->getAddressId()->getAddress()
+                );
+                break;
+        }
+
+        $returner = array(
+            "type" => $deliveryType,
+            "address" => array(
+                "street" => $parsedAddress['street'],
+                "house_number" => $parsedAddress['house'],
+                "flat_number" => $parsedAddress['flat'],
+                "city" => $order->getPlacePointCity(),
+                "comments" => $order->getComment()
+            ),
+        );
+
+        if ($order->getDeliveryType() == FO::$deliveryDeliver) {
+            $returner['price'] = array(
+                'amount' => $order->getPlace()->getDeliveryPrice()*100,
+                'currency' => $this->container->getParameter('currency_iso'),
+            );
+        }
+
         return $returner;
     }
 
@@ -311,7 +368,7 @@ class OrderService extends ContainerAware
             FO::$status_delayed => 'delayed',
             FO::$status_completed => 'completed',
             FO::$status_failed => 'failed',
-            FO::$status_finished => 'finished',
+            FO::$status_finished => 'prepared',
             FO::$status_canceled => 'canceled',
         );
 

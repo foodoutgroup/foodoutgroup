@@ -19,7 +19,10 @@
                 addrXhr = $.ajax({
                     type: 'GET',
                     url: '{{ path('food_ajax', {'action': 'find-address'}) }}',
-                    data:  {city: $('#index_city').val(), address: $('#index_address').val()},
+                    data:  {
+                        city: $('#index_city').val(),
+                        address: $('#index_address').val() + ' ' + $('#index_house').val()
+                    },
                     success:  function(resp){
                         if (resp.data.success == 1) {
                             $('.search-food-form').trigger('submit');
@@ -63,6 +66,8 @@
 
             });
         });
+        initStreetSearch();
+        initStreetHouseSearch();
     {% endblock %}
 
 {% block title %}{{ page_title }} - {% trans %}general.homepage.meta_title{% endtrans %}{% endblock %}
@@ -85,6 +90,7 @@
 
                     {# <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}"  autocomplete="off" > #}
                     <input type="text" id="index_address" placeholder="{% trans %}index.street{% endtrans %}" class="input-street" autocomplete="off" value="{{ formDefaults.address }}" />
+                    <input type="text" id="index_house" placeholder="{% trans %}index.house{% endtrans %}" class="input-house" autocomplete="off" value="{{ formDefaults.house }}" />
                     <input type="submit" id="index_submit" value="{% trans %}index.findfood{% endtrans %}" />
                 </div>
             </form>

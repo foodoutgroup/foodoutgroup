@@ -24,7 +24,11 @@
       </trans-unit>
       <trans-unit id="44f58adead70171ab653c725c9abf0c3" resname="index.street">
         <source>index.street</source>
-        <target>Adresas (pvz. Laisvės pr. 77)</target>
+        <target>Adresas (pvz. Laisvės pr.)</target>
+      </trans-unit>
+      <trans-unit id="index.house" resname="index.house">
+        <source>index.house</source>
+        <target>Namas</target>
       </trans-unit>
       <trans-unit id="bb1fb2fdfdba48c2b3d2ec83e968729c" resname="index.findfood">
         <source>index.findfood</source>
