@@ -475,13 +475,20 @@ class LogisticsService extends ContainerAware
         // Vienas elementas. Jei po kelis nores perduot - reiksapglebt gaubianciu tagu, kitaip nevalidu
         foreach ($orderStatusElement as $order)
         {
+            $failReason = '';
+            $failElement = $order->getElementsByTagName('FailReason');
+
+            if (!empty($failElement)) {
+                $failReason = $failElement->item(0)->nodeValue;
+            }
+
             $statusData = array(
                 'order_id' => $order->getElementsByTagName('Order_id')->item(0)->nodeValue,
                 'event_date' => new \DateTime(
                         $order->getElementsByTagName('Event_Date')->item(0)->nodeValue
                     ),
                 'status' => $order->getElementsByTagName('Status')->item(0)->nodeValue,
-                'fail_reason' => $order->getElementsByTagName('FailReason')->item(0)->nodeValue,
+                'fail_reason' => $failReason,
             );
         }
 
