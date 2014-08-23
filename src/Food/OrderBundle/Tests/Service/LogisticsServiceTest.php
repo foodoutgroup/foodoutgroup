@@ -989,19 +989,21 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
     public function testOrderStatusXmlParse()
     {
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
-<OrderStatus>
-	<Order_id>324169</Order_id>
-	<Event_Date>2014-07-02 11:43</Event_Date>
-	<Status>finished</Status>
-	<FailReason></FailReason>
-</OrderStatus>';
+<OrderStatuses>
+    <OrderStatus>
+        <Order_id>324169</Order_id>
+        <Event_Date>2014-07-02 11:43</Event_Date>
+        <Status>finished</Status>
+        <FailReason></FailReason>
+    </OrderStatus>
+</OrderStatuses>';
 
-        $expectedStatusData = array(
+        $expectedStatusData = array(array(
             'order_id' => 324169,
             'event_date' => new \DateTime("2014-07-02 11:43"),
             'status' => 'finished',
             'fail_reason' => '',
-        );
+        ));
 
         $logisticsService = new LogisticsService();
 
@@ -1013,18 +1015,60 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
     public function testOrderStatusXmlParse2()
     {
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
-<OrderStatus>
-	<Order_id>3241</Order_id>
-	<Event_Date>2014-07-02 17:15</Event_Date>
-	<Status>failed</Status>
-	<FailReason>Client rejected</FailReason>
-</OrderStatus>';
+<OrderStatuses>
+    <OrderStatus>
+        <Order_id>3241</Order_id>
+        <Event_Date>2014-07-02 17:15</Event_Date>
+        <Status>failed</Status>
+        <FailReason>Client rejected</FailReason>
+    </OrderStatus>
+</OrderStatuses>';
 
-        $expectedStatusData = array(
+        $expectedStatusData = array(array(
             'order_id' => 3241,
             'event_date' => new \DateTime("2014-07-02 17:15"),
             'status' => 'failed',
             'fail_reason' => 'Client rejected',
+        ));
+
+        $logisticsService = new LogisticsService();
+
+        $statusData = $logisticsService->parseOrderStatusXml($xml);
+
+        $this->assertEquals($expectedStatusData, $statusData);
+    }
+
+    public function testOrderStatusXmlParseMultiple()
+    {
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>
+<OrderStatuses>
+    <OrderStatus>
+        <Order_id>3231</Order_id>
+        <Event_Date>2014-07-02 17:15</Event_Date>
+        <Status>failed</Status>
+        <FailReason>Client rejected order</FailReason>
+    </OrderStatus>
+    <OrderStatus>
+        <Order_id>3243</Order_id>
+        <Event_Date>2014-07-02 17:16</Event_Date>
+        <Status>finished</Status>
+        <FailReason/>
+    </OrderStatus>
+</OrderStatuses>';
+
+        $expectedStatusData = array(
+            array(
+                'order_id' => 3231,
+                'event_date' => new \DateTime("2014-07-02 17:15"),
+                'status' => 'failed',
+                'fail_reason' => 'Client rejected order',
+            ),
+            array(
+                'order_id' => 3243,
+                'event_date' => new \DateTime("2014-07-02 17:16"),
+                'status' => 'finished',
+                'fail_reason' => '',
+            )
         );
 
         $logisticsService = new LogisticsService();

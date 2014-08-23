@@ -75,12 +75,14 @@ class LogisticsControllerTest extends WebTestCase
         $order = $this->getOrder($place, $placePoint, OrderService::$status_new);
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
-<OrderStatus>
-	<Order_id>'.$order->getId().'</Order_id>
-	<Event_Date>2014-07-02 11:43</Event_Date>
-	<Status>finished</Status>
-	<FailReason/>
-</OrderStatus>';
+<OrderStatuses>
+    <OrderStatus>
+        <Order_id>'.$order->getId().'</Order_id>
+        <Event_Date>2014-07-02 11:43</Event_Date>
+        <Status>finished</Status>
+        <FailReason/>
+    </OrderStatus>
+</OrderStatuses>';
 
         $this->client->request(
             'POST',
@@ -101,19 +103,20 @@ class LogisticsControllerTest extends WebTestCase
 
     public function testLogisticsOrderStatusXmlFailedStatus()
     {
-        $this->markTestSkipped('Skipinam kolkas - luzta del FailReason, tipo nerado tokio indekso.. Success sitos bedos nebuvo. Pabaigsime veliau');
         // Prepare order and driver
         $place = $this->getPlace('Logistics test3');
         $placePoint = $this->getPlacePoint($place);
         $order = $this->getOrder($place, $placePoint, OrderService::$status_new);
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
-<OrderStatus>
-	<Order_id>'.$order->getId().'</Order_id>
-	<Event_Date>2014-07-02 11:43</Event_Date>
-	<Status>failed</Status>
-	<FailReason>Omg</FailReason>
-</OrderStatus>';
+<OrderStatuses>
+    <OrderStatus>
+        <Order_id>'.$order->getId().'</Order_id>
+        <Event_Date>2014-07-02 11:43</Event_Date>
+        <Status>failed</Status>
+        <FailReason>Omg</FailReason>
+    </OrderStatus>
+</OrderStatuses>';
 
         $this->client->request(
             'POST',
@@ -130,6 +133,55 @@ class LogisticsControllerTest extends WebTestCase
         $reloadedOrder = $this->getContainer()->get('food.order')->getOrderById($order->getId());
 
         $this->assertEquals(OrderService::$status_failed, $reloadedOrder->getOrderStatus());
+    }
+
+    public function testLogisticsOrderStatusXmlMultipleOrders()
+    {
+        // Prepare order and driver
+        $place = $this->getPlace('Logistics test3');
+        $placePoint = $this->getPlacePoint($place);
+        $order = $this->getOrder($place, $placePoint, OrderService::$status_new);
+        $order2 = $this->getOrder($place, $placePoint, OrderService::$status_new);
+
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>
+<OrderStatuses>
+    <OrderStatus>
+        <Order_id>'.$order->getId().'</Order_id>
+        <Event_Date>2014-07-02 11:43</Event_Date>
+        <Status>failed</Status>
+        <FailReason>Omg</FailReason>
+    </OrderStatus>
+    <OrderStatus>
+        <Order_id>123447</Order_id>
+        <Event_Date>2014-07-02 11:43</Event_Date>
+        <Status>failed</Status>
+        <FailReason>Omg2</FailReason>
+    </OrderStatus>
+    <OrderStatus>
+        <Order_id>'.$order2->getId().'</Order_id>
+        <Event_Date>2014-07-02 11:43</Event_Date>
+        <Status>failed</Status>
+        <FailReason>Omg3</FailReason>
+    </OrderStatus>
+</OrderStatuses>';
+
+        $this->client->request(
+            'POST',
+            '/logistics/status-update/',
+            array(),
+            array(),
+            array(),
+            $xml
+        );
+
+        $this->assertEquals('Food\OrderBundle\Controller\LogisticsController::orderStatusAction', $this->client->getRequest()->attributes->get('_controller'));
+        $this->assertEquals(200 , $this->client->getResponse()->getStatusCode());
+
+        $reloadedOrder = $this->getContainer()->get('food.order')->getOrderById($order->getId());
+        $reloadedOrder2 = $this->getContainer()->get('food.order')->getOrderById($order2->getId());
+
+        $this->assertEquals(OrderService::$status_failed, $reloadedOrder->getOrderStatus());
+        $this->assertEquals(OrderService::$status_failed, $reloadedOrder2->getOrderStatus());
     }
 
     /**

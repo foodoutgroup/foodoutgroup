@@ -482,7 +482,7 @@ class LogisticsService extends ContainerAware
                 $failReason = $failElement->item(0)->nodeValue;
             }
 
-            $statusData = array(
+            $statusData[] = array(
                 'order_id' => $order->getElementsByTagName('Order_id')->item(0)->nodeValue,
                 'event_date' => new \DateTime(
                         $order->getElementsByTagName('Event_Date')->item(0)->nodeValue
