@@ -48,7 +48,7 @@ class Request
             <amount currency="LTL">%price%</amount>
         </TxnDetails>
         <HpsTxn>
-            <page_set_id>4</page_set_id>
+            <page_set_id>1360</page_set_id>
             <method>setup_full</method>
             <return_url>%return_url%</return_url>
             <expiry_url>%expiry_url%</expiry_url>
