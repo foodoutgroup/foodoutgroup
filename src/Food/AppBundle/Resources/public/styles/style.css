@@ -1280,3 +1280,15 @@ div.coupon_form_popup {
 .reset-password-form-content label {
     text-align: left;
 }
+
+.takeaway-yep {
+    display: none;
+}
+
+.takeaway-yep.show {
+    display: block;
+}
+
+.takeaway-not.hide {
+    display: none;
+}
