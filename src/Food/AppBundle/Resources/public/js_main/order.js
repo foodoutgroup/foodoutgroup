@@ -45,24 +45,8 @@ var Cart = {
         return true;
     },
 
-    // deliveryTypeChanged: function(deliveryType) {
-    //     $('.content-lefter-big').mask();
-    //     switch (deliveryType) {
-    //         case 'pickup':
-    //             var url = Routing.generate('food_cart', { '_locale': Cart.locale, 'placeId': Cart.placeId, takeAway: 1 });
-    //             break;
-
-    //         default:
-    //         case 'deliver':
-    //             var url = Routing.generate('food_cart', { '_locale': Cart.locale, 'placeId': Cart.placeId });
-    //             break;
-    //     }
-
-    //     window.location = url;
-    // }
-
     deliveryTypeChanged: function(deliveryType) {
-        var content_lefter, takeaway_not, takeaway_yep;
+        var content_lefter, takeaway_not, takeaway_yep, takeAway;
 
         takeaway_not = $('.takeaway-not');
         takeaway_yep = $('.takeaway-yep');
@@ -76,16 +60,33 @@ var Cart = {
             case 'pickup':
                 takeaway_not.hide();
                 takeaway_yep.show();
+                takeAway = 1;
                 break;
 
             case 'deliver':
             default:
                 takeaway_yep.hide();
                 takeaway_not.show();
+                takeAway = 0;
                 break;
         }
 
         // cleanup
         content_lefter.unmask();
+
+        var couponField = $('.cupon-info #coupon_code');
+        var sideBlock = $('.check-block');
+
+        sideBlock.mask();
+
+        // Reload cart
+        var url = Routing.generate('food_cart_action', { '_locale': Cart.locale, 'place': Cart.placeId, in_cart: 1, coupon_code: couponField.val(), take_away: takeAway  });
+
+        $.get(url, function(response) {
+            if (typeof(response.block) != "undefined") {
+                sideBlock.replaceWith(response.block);
+            }
+            sideBlock.unmask()
+        }, 'json');
     }
 };
