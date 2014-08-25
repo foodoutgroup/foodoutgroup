@@ -62,6 +62,12 @@ class OrderService extends ContainerAware
             }
         }
          */
+        $searchCrit = array(
+            'city' => null,
+            'lat' => null,
+            'lng' => null,
+            'address' => null
+        );
         $googleGisService = $this->container->get('food.googlegis');
 
         $token = $requestOrig->headers->get('X-API-Authorization');
@@ -118,14 +124,44 @@ class OrderService extends ContainerAware
                 );
             }
 
-            $addrData = $this->container->get('food.googlegis')->getLocationFromSession();
-            if (empty($addrData['address_orig'])) {
+            //if ($serviceVar)
+            /**
+             *         "address": {
+            "street": "Vokieciu g",
+            "house_number": 3,
+            "flat_number": 2,
+            "city": "Vilnius",
+            "comments": "Duru kodas 1234"
+             */
+            if (empty($serviceVar['address']) ||  empty($serviceVar['address']['street'])) {
                 throw new ApiException(
                     'Unavailable Address',
                     400,
                     array(
                         'error' => 'Unavailable Address',
                         'description' => ''
+                    )
+                );
+            } else {
+                $placeData = $googleGisService->getPlaceData(
+                    $serviceVar['address']['street']." ".$serviceVar['address']['house_number'].",".$serviceVar['address']['city']
+                );
+                $locationInfo = $googleGisService->groupData(
+                    $placeData,
+                    $serviceVar['address']['street']." ".$serviceVar['address']['house_number'],
+                    $serviceVar['address']['city']
+                );
+                $searchCrit = array(
+                    'city' => $locationInfo['city'],
+                    'lat' => $locationInfo['lat'],
+                    'lng' => $locationInfo['lng'],
+                    'address_orig' => $serviceVar['address']['street']." ".$serviceVar['address']['house_number']
+                );
+                $pp = $em->getRepository('FoodDishesBundle:PlacePoint')->find(
+                    $em->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
+                        $basket->getPlaceId(),
+                        $searchCrit,
+                        true
                     )
                 );
             }
@@ -146,7 +182,6 @@ class OrderService extends ContainerAware
 
         $os = $this->container->get('food.order');
         $os->getCartService()->setNewSessionId($cartService->getSessionId());
-        $googleGisService = $this->container->get('food.googlegis');
 
         $os->createOrderFromCart(
             $basket->getPlaceId()->getId(),
@@ -173,13 +208,13 @@ class OrderService extends ContainerAware
 
         // Update order with recent address information. but only if we need to deliver
         if ($serviceVar['type']!="pickup") {
-            $locationData = $googleGisService->getLocationFromSession();
+            // $locationData = $googleGisService->getLocationFromSession();
             $address = $os->createAddressMagic(
                 $user,
-                $locationData['city'],
-                $locationData['address_orig'],
-                (string)$locationData['lat'],
-                (string)$locationData['lng']
+                $searchCrit['city'],
+                $searchCrit['address_orig'],
+                (string)$searchCrit['lat'],
+                (string)$searchCrit['lng']
             );
             $os->getOrder()->setAddressId($address);
         }
