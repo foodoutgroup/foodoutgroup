@@ -259,4 +259,33 @@ class MiscTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedResult11, $gotResult11);
         $this->assertEquals($expectedResult12, $gotResult12);
     }
+
+    public function testEuro()
+    {
+        $util = new Misc();
+
+        $expectedPrice1 = 4.34;
+        $expectedPrice2 = 10.59;
+        $expectedPrice3 = 0;
+        $expectedPrice4 = 30.22;
+        $expectedPrice5 = 23.35;
+
+        $testPrice1 = 15;
+        $testPrice2 = 36.58;
+        $testPrice3 = 0;
+        $testPrice4 = 104.36;
+        $testPrice5 = 80.61;
+
+        $gotPrice1 = $util->getEuro($testPrice1);
+        $gotPrice2 = $util->getEuro($testPrice2);
+        $gotPrice3 = $util->getEuro($testPrice3);
+        $gotPrice4 = $util->getEuro($testPrice4);
+        $gotPrice5 = $util->getEuro($testPrice5);
+
+        $this->assertEquals($expectedPrice1, $gotPrice1);
+        $this->assertEquals($expectedPrice2, $gotPrice2);
+        $this->assertEquals($expectedPrice3, $gotPrice3);
+        $this->assertEquals($expectedPrice4, $gotPrice4);
+        $this->assertEquals($expectedPrice5, $gotPrice5);
+    }
 }
