@@ -108,8 +108,12 @@ class PaymentsController extends Controller
             $logger->alert("trace: ".$e->getTraceAsString());
 
             if (isset($order) && $order) {
-                $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());
-                $orderService->saveOrder();
+                if ($order->getPaymentStatus() != $orderService::$paymentStatusComplete) {
+                    $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());
+                    $orderService->saveOrder();
+                } else {
+                    $logger->error('Payment status was completed. Can not cancel it. Its final!');
+                }
             }
 
             return new Response($e->getTraceAsString(), 500);
