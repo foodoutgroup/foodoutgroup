@@ -102,6 +102,8 @@ twig:
         language_utils: "@food.app.utils.language"
         notifications: "@food.app.utils.notifications"
         cloudfront_url: "%cloudfront_url%"
+        misc_utils: "@food.app.utils.misc"
+
 
 
 # Assetic Configuration
