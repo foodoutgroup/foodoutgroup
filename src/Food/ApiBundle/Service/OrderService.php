@@ -188,7 +188,7 @@ class OrderService extends ContainerAware
             $requestOrig->getLocale(),
             $user,
             $pp,
-            $basket->getPlaceId()->getSelfDelivery()
+            ($serviceVar['type'] == "pickup" ? true : false)
         );
 
         $paymentMethod = $request->get('payment-type');
