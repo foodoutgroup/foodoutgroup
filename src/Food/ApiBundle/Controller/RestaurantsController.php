@@ -23,6 +23,7 @@ class RestaurantsController extends Controller
         $city = $request->get('city');
         $lat = $request->get('lat');
         $lng = $request->get('lng');
+        $keyword = $request->get('keyword', '');
 
         $kitchens = explode(", ", $request->get('cuisines', ''));
         if (empty($kitchens) || (sizeof($kitchens) == 1 && empty($kitchens[0]))) {
@@ -31,11 +32,13 @@ class RestaurantsController extends Controller
         if (!empty($address)) {
 
             $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
-            $locationInfo = $this->get('food.googlegis')->groupData($location, $address, $city);
+            $this->get('food.googlegis')->groupData($location, $address, $city);
 
             $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
                 $kitchens,
-                array(),
+                array(
+                    'keyword' => $keyword,
+                ),
                 false,
                 $this->get('food.googlegis')->getLocationFromSession()
             );
@@ -50,7 +53,9 @@ class RestaurantsController extends Controller
             );
             $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
                 $kitchens,
-                array(),
+                array(
+                    'keyword' => $keyword
+                ),
                 false,
                 $this->get('food.googlegis')->getLocationFromSession()
             );
