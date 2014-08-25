@@ -83,4 +83,9 @@ class DefaultController extends Controller
         $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getRecommendedForTitle();
         return $this->render('FoodPlacesBundle:Default:recommended.html.twig', array('places' => $places));
     }
+
+    public function changeLocation()
+    {
+        return new Response('OK');
+    }
 }

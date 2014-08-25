@@ -58,10 +58,13 @@
         bind_profile_menu_items();
         bind_show_password_resetting_form();
         bind_password_resetting_form();
+        bind_change_location();
     });
 })(jQuery, window);
 
 init_raty = function() {
+    var selector, options;
+
     selector = '.place-review-popup-wrapper .rate-review:empty';
     options = {
         path: '/bundles/foodapp/images/'
@@ -216,6 +219,18 @@ bind_password_resetting_form = function() {
         };
 
         $.post(url, data, callback, data_type);
+
+        return false;
+    });
+}
+
+bind_change_location = function() {
+    $('.change-location-link').click(function() {
+        $('.change-location-box').fancybox({
+            padding: 0,
+            scrolling: 'visible',
+            
+        });
 
         return false;
     });
