@@ -159,7 +159,7 @@ class OrderService extends ContainerAware
                 );
                 $pp = $em->getRepository('FoodDishesBundle:PlacePoint')->find(
                     $em->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
-                        $basket->getPlaceId(),
+                        $basket->getPlaceId()->getId(),
                         $searchCrit,
                         true
                     )
