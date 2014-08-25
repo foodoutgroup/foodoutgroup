@@ -254,7 +254,7 @@ class OrderService extends ContainerAware
             ),
             'state' => array(
                 'title' => $this->convertOrderStatus($order->getOrderStatus()),
-                'info_number' => $order->getPlacePoint()->getPhone(),
+                'info_number' => '+'.$order->getPlacePoint()->getPhone(),
                 'message' => $message
             ),
             'details' => array(
