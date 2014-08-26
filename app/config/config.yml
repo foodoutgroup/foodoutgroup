@@ -35,7 +35,7 @@ parameters:
         kaunas: [renata@foodout.lt]
         klaipeda: []
 #    order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
-    order.accept_notify_emails: [paulius@foodout.lt
+    order.accept_notify_emails: [paulius@foodout.lt]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
     domain: "foodout.lt"
