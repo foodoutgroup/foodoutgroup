@@ -45,6 +45,7 @@ class LogisticsController extends Controller
                             sprintf('Order id: %d status change SKIPPED - Status unkown: %s', $orderStatus['order_id'], $orderStatus['status'])
                         );
                     }
+                    $orderService->saveOrder();
                 } else {
                     $logger->error(
                         sprintf('Order id: %d status change SKIPPED - Order does not exist', $orderStatus['order_id'])
