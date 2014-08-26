@@ -1,6 +1,8 @@
 food_cart_action:
     pattern:  /action/{action}/
     defaults: { _controller: FoodCartBundle:Default:action, action: empty }
+    options:
+            expose: true
 
 food_cart_success:
     pattern:  /success/{orderHash}
