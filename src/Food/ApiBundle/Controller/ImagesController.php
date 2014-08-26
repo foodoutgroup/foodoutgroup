@@ -61,6 +61,7 @@ class ImagesController extends Controller
             $response->setStatusCode(Response::HTTP_OK);
             $response->headers->set('Content-Type', $type);
             $response->headers->set('Content-Length', $imageLength);
+            $response->headers->set('Cache-Control', 'max-age=432000');
 
             return $response;
         } catch (\InvalidArgumentException $e) {
