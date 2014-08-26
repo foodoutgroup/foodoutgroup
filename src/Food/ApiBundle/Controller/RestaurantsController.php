@@ -71,6 +71,9 @@ class RestaurantsController extends Controller
                 'limit' => 50
             )
         );
+
+        $places = $this->get('food.places')->placesPlacePointsWorkInformation($places);
+
         foreach ($places as $place) {
             $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place['place'], $place['point']);
             $response['restaurants'][] = $restaurant->data;
@@ -80,6 +83,7 @@ class RestaurantsController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return JsonResponse
      *
      * @todo Countingas pagal objektus kurie netoli yra :D
