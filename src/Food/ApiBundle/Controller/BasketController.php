@@ -15,6 +15,14 @@ class BasketController extends Controller
     {
         try {
             $requestJson = new JsonRequest($request);
+
+            // Check if session is started. Start if not started
+            $session = $this->container->get('session');
+            $sessionId = $session->getId();
+            if (empty($sessionId)) {
+                $session->start();
+            }
+
             return new JsonResponse($this->get('food_api.basket')->createBasketFromRequest($requestJson));
         }  catch (ApiException $e) {
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());

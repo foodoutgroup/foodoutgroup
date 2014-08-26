@@ -669,10 +669,10 @@ class OrderService extends ContainerAware
      * @param string $locale
      * @param \Food\UserBundle\Entity\User $user
      * @param PlacePoint $placePoint - placePoint, jei atsiima pats
-     * @param bool $selfDelivery - ar restoranas pristato pats
+     * @param bool $selfDelivery - ar klientas atsiims pats?
      * @param Coupon|null $coupon
      */
-    public function createOrderFromCart($place, $locale='lt', $user, $placePoint=null, $selfDelivery = false, $coupon = null)
+    public function createOrderFromCart($place, $locale='lt', $user, PlacePoint $placePoint=null, $selfDelivery = false, $coupon = null)
     {
         $this->createOrder($place, $placePoint);
         $this->getOrder()->setDeliveryType(

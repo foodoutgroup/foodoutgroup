@@ -28,8 +28,8 @@ class OrdersControllerTest extends WebTestCase
         $expectedNewOrderData = array(
             "order_id" => $orderNew->getId(),
             "status" => array(
-                "state" => 'accepted',
-                "phone" => "+".$orderNew->getPlacePoint()->getPhone(),
+                "title" => 'accepted',
+                "info_number" => "+".$orderNew->getPlacePoint()->getPhone(),
                 "message" => ''
             )
         );
@@ -55,8 +55,8 @@ class OrdersControllerTest extends WebTestCase
         $expectedFinishedOrderData = array(
             "order_id" => $orderFinished->getId(),
             "status" => array(
-                "state" => 'prepared',
-                "phone" => "+".$orderFinished->getPlacePoint()->getPhone(),
+                "title" => 'prepared',
+                "info_number" => "+".$orderFinished->getPlacePoint()->getPhone(),
                 "message" => ''
             )
         );
@@ -89,8 +89,8 @@ class OrdersControllerTest extends WebTestCase
         $expectedDelayedOrderData = array(
             "order_id" => $orderDelayed->getId(),
             "status" => array(
-                "state" => $orderDelayed->getOrderStatus(),
-                "phone" => "+".$orderDelayed->getPlacePoint()->getPhone(),
+                "title" => $orderDelayed->getOrderStatus(),
+                "info_number" => "+".$orderDelayed->getPlacePoint()->getPhone(),
                 "message" => $this->getContainer()->get('translator')->trans(
                         'mobile.order_status.order_delayed',
                         array('%delayTime%' => $orderDelayed->getDelayDuration())

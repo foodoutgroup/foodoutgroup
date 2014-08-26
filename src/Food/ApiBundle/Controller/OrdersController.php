@@ -29,6 +29,7 @@ class OrdersController extends Controller
 
     public function createOrderAction(Request $request)
     {
+        mail("paulius@foodout.lt", "FOO LOGS", print_r($request->getContent(), true), "FROM: test@foodout.lt");
         try {
             $requestJson = new JsonRequest($request);
             return new JsonResponse($this->get('food_api.order')->createOrder($request, $requestJson));
@@ -99,8 +100,8 @@ class OrdersController extends Controller
                 array(
                     "order_id" => $order->getId(),
                     "status" => array(
-                        "state" => $this->get('food_api.order')->convertOrderStatus($order->getOrderStatus()),
-                        "phone" => "+".$order->getPlacePoint()->getPhone(),
+                        "title" => $this->get('food_api.order')->convertOrderStatus($order->getOrderStatus()),
+                        "info_number" => "+".$order->getPlacePoint()->getPhone(),
                         "message" => $message
                     )
                 )

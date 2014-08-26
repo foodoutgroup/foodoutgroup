@@ -80,7 +80,7 @@ class OrderService extends ContainerAware
                 401,
                 array(
                     'error' => 'Request requires a sesion_token',
-                    'description' => $this->container->get('translator')->_('api.orders.user_not_authorized')
+                    'description' => $this->container->get('translator')->trans('api.orders.user_not_authorized')
                 )
             );
         }
@@ -100,7 +100,7 @@ class OrderService extends ContainerAware
                 404,
                 array(
                     'error' => 'Basket Not found',
-                    'description' => $this->container->get('translator')->_('api.orders.basket_does_not_exists')
+                    'description' => $this->container->get('translator')->trans('api.orders.basket_does_not_exists')
                 )
             );
         }
@@ -116,10 +116,10 @@ class OrderService extends ContainerAware
             if ($total_cart < $place->getCartMinimum()) {
                 throw new ApiException(
                     'Order Too Small',
-                    0,
+                    400,
                     array(
                         'error' => 'Order Too Small',
-                        'description' => $this->container->get('translator')->_('api.orders.order_to_small')
+                        'description' => $this->container->get('translator')->trans('api.orders.order_to_small')
                     )
                 );
             }
@@ -157,6 +157,13 @@ class OrderService extends ContainerAware
                     'lng' => $locationInfo['lng'],
                     'address_orig' => $serviceVar['address']['street']." ".$serviceVar['address']['house_number']
                 );
+                $pp = $em->getRepository('FoodDishesBundle:PlacePoint')->find(
+                    $em->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
+                        $basket->getPlaceId()->getId(),
+                        $searchCrit,
+                        true
+                    )
+                );
             }
         } elseif ($basket->getPlaceId()->getMinimalOnSelfDel()) {
             $list = $cartService->getCartDishes($basket->getPlaceId());
@@ -167,7 +174,7 @@ class OrderService extends ContainerAware
                     0,
                     array(
                         'error' => 'Order Too Small',
-                        'description' => $this->container->get('translator')->_('api.orders.order_to_small')
+                        'description' => $this->container->get('translator')->trans('api.orders.order_to_small')
                     )
                 );
             }
@@ -181,7 +188,7 @@ class OrderService extends ContainerAware
             $requestOrig->getLocale(),
             $user,
             $pp,
-            $basket->getPlaceId()->getSelfDelivery()
+            ($serviceVar['type'] == "pickup" ? true : false)
         );
 
         $paymentMethod = $request->get('payment-type');
@@ -247,7 +254,7 @@ class OrderService extends ContainerAware
             ),
             'state' => array(
                 'title' => $this->convertOrderStatus($order->getOrderStatus()),
-                'info_number' => $order->getPlacePoint()->getPhone(),
+                'info_number' => '+'.$order->getPlacePoint()->getPhone(),
                 'message' => $message
             ),
             'details' => array(

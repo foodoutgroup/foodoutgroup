@@ -7,13 +7,13 @@ use Doctrine\ORM\Query\ResultSetMapping;
 class PlaceRepository extends EntityRepository
 {
     /**
-     * @param $kitchens
-     * @param $filters
+     * @param array $kitchens
+     * @param array $filters
      * @param bool $recommended
-     * @param null $locationData
+     * @param array|null $locationData
      * @return array
      */
-    public function magicFindByKitchensIds($kitchens, $filters, $recommended = false, $locationData = null)//, $city, $lat, $long)
+    public function magicFindByKitchensIds($kitchens, $filters=array(), $recommended = false, $locationData = null)//, $city, $lat, $long)
     {
         /*
             SET @lat1 = 54.680437, @lon1 = 25.261236, @lat2 = 54.681914, @lon2 = 25.268156;
@@ -87,6 +87,20 @@ class PlaceRepository extends EntityRepository
             $kitchensQuery = "AND p.id IN (SELECT place_id FROM place_kitchen WHERE kitchen_id IN(".implode(",", $kitchens)."))";
         }
 
+        // Place filters
+        $placeFilter = '';
+        if (is_array($filters) && !empty($filters)) {
+            foreach ($filters as $filterName => $filterValue) {
+                switch($filterName) {
+                    case 'keyword':
+                        $placeFilter .= ' AND p.name LIKE "%'.$filterValue.'%"';
+                        break;
+
+                    default:
+                }
+            }
+        }
+
         if ($recommended) {
             if (!empty($kitchensQuery)) {
                 $kitchensQuery.= "AND recommended=1";
@@ -94,15 +108,14 @@ class PlaceRepository extends EntityRepository
                 $kitchensQuery.= " recommended=1";
             }
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND ".$kitchensQuery." GROUP BY p.id";
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 ".$placeFilter." AND ".$kitchensQuery." GROUP BY p.id";
         } elseif ($lat == null || $lon == null) {
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 ".$kitchensQuery." GROUP BY p.id";
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 ".$placeFilter.$kitchensQuery." GROUP BY p.id";
         } else {
-            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.city='".$city."' AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.city='".$city."' AND pp.id =  (". $subQuery .") ".$kitchensQuery;
+            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city='".$city."' AND ppc.place = p.id";
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.city='".$city."' ".$placeFilter." AND pp.id =  (". $subQuery .") ".$kitchensQuery;
         }
-
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
@@ -117,8 +130,9 @@ class PlaceRepository extends EntityRepository
     }
 
     /**
-     * @param $placeId
-     * @param $locationData
+     * @param int $placeId
+     * @param array|null $locationData
+     * @param bool $ignoreSelfDelivery
      * @return null
      */
     public function getPlacePointNear($placeId, $locationData, $ignoreSelfDelivery = false)
