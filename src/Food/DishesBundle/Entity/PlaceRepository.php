@@ -93,7 +93,9 @@ class PlaceRepository extends EntityRepository
             foreach ($filters as $filterName => $filterValue) {
                 switch($filterName) {
                     case 'keyword':
-                        $placeFilter .= ' AND p.name LIKE "%'.$filterValue.'%"';
+                        if (!empty($filterValue)) {
+                            $placeFilter .= ' AND p.name LIKE "%'.$filterValue.'%"';
+                        }
                         break;
 
                     default:
@@ -108,13 +110,13 @@ class PlaceRepository extends EntityRepository
                 $kitchensQuery.= " recommended=1";
             }
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 ".$placeFilter." AND ".$kitchensQuery." GROUP BY p.id";
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL ".$placeFilter." AND ".$kitchensQuery." GROUP BY p.id";
         } elseif ($lat == null || $lon == null) {
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 ".$placeFilter.$kitchensQuery." GROUP BY p.id";
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL ".$placeFilter.$kitchensQuery." GROUP BY p.id";
         } else {
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city='".$city."' AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.city='".$city."' ".$placeFilter." AND pp.id =  (". $subQuery .") ".$kitchensQuery;
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL AND pp.city='".$city."' ".$placeFilter." AND pp.id =  (". $subQuery .") ".$kitchensQuery;
         }
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
