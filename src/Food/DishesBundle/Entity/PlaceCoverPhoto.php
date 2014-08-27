@@ -57,6 +57,18 @@ class PlaceCoverPhoto extends Uploadable
     //protected $boxSize = array('w' => 1280, 'h' => 800);
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        if (!$this->getId()) {
+            return '';
+        }
+
+        return $this->getId().'-'.$this->getPlace()->getName().'-'.$this->getPhoto();
+    }
+
+    /**
      * Get id
      *
      * @return integer 
