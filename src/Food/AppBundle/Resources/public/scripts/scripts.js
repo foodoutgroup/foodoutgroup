@@ -225,13 +225,14 @@ bind_password_resetting_form = function() {
 }
 
 bind_change_location = function() {
-    $('.change-location-link').click(function() {
-        $('.change-location-box').fancybox({
-            padding: 0,
-            scrolling: 'visible',
-            
-        });
+    var link;
 
-        return false;
+    link = $('.change-location-link');
+
+    if (link.length == 0) return;
+
+    link.fancybox({
+        padding: 0,
+        scrolling: 'visible'
     });
 }

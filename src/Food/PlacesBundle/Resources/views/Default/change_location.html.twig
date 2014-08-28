@@ -1,0 +1,28 @@
+<div id="detailed-dish-popup">
+    <form class="popup detailed-dish-popup">
+        <div class="dish-info">
+            <p class="name">aaa</p>
+            <p class="desc">bbb</p>
+        </div>
+        <div class="dish-size">
+            <div class="title">{% trans %}dish.select_size{% endtrans %}</div>
+            <div class="clearfix">
+                <label class="custom-radio">zzz<strong class="price">dsdsdassda</strong>
+                    <input type="radio" value="x" class="dish-size" name="dish-size">
+                </label>
+            </div>
+        </div>
+        <div class="dish-size">
+            <div class="title">{% trans %}dish.select_quantity{% endtrans %} <input class="counter" name="counter" value="z" /></div>
+        </div>
+        <input type="hidden" name="place" value="" />
+        <input type="hidden" name="isAlcohol" value="" />
+
+        <div class="hidden alcoholRules">
+            <div>
+            </div>
+        </div>
+
+        <div class="popup-controls"><a href="#" class="button-submit add-to-cart"><span>{% trans %}dish.add_to_cart{% endtrans %}</span></a></div>
+    </form>
+</div>

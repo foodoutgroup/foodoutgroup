@@ -84,8 +84,8 @@ class DefaultController extends Controller
         return $this->render('FoodPlacesBundle:Default:recommended.html.twig', array('places' => $places));
     }
 
-    public function changeLocation()
+    public function changeLocationAction()
     {
-        return new Response('OK');
+        return $this->render('FoodPlacesBundle:Default:change_location.html.twig');
     }
 }
