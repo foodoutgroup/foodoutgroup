@@ -11,8 +11,8 @@ class StatsController extends Controller
     {
         if ($this->getUser() && $this->getUser()->hasRole('ROLE_ADMIN')) {
             $reportService = $this->get('food.report');
-            $dateFrom = new \DateTime("-3 month");
-            $dateTo = new \DateTime("-2 month");
+            $dateFrom = new \DateTime("-1 week");
+            $dateTo = new \DateTime("now");
 
             $orderCountGraph = $reportService->prepareOrderCountByDayGraph($dateFrom, $dateTo);
             $smsCountGraph = $reportService->prepareSmsCountByDayGraph($dateFrom, $dateTo);
