@@ -2,7 +2,6 @@
 
 namespace Food\OrderBundle\Entity;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Filter\SQLFilter;
 use Food\OrderBundle\Service\OrderService;
 
 class OrderRepository extends EntityRepository
@@ -362,6 +361,34 @@ class OrderRepository extends EntityRepository
             {$placesFilter}
           GROUP BY o.place_id{$groupByMonth}
           ORDER BY {$groupByMonthOrder}order_count DESC
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * @param \DateTime $dateFrom
+     * @param \DateTime $dateTo
+     * @return array
+     */
+    public function getOrderCountByDay($dateFrom, $dateTo)
+    {
+        $orderStatus = OrderService::$status_completed;
+        $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 00:00:01");
+
+        $query = "
+          SELECT
+            DATE_FORMAT(o.order_date, '%m-%d') AS report_day,
+            COUNT(o.id) AS order_count
+          FROM orders o
+          WHERE
+            o.order_status = '{$orderStatus}'
+            AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
+          GROUP BY DATE_FORMAT(o.order_date, '%m-%d')
+          ORDER BY DATE_FORMAT(o.order_date, '%m-%d') ASC
         ";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);

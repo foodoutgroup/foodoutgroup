@@ -1,7 +1,7 @@
 parameters:
-#    food_report.example.class: Food\ReportBundle\Example
 
 services:
-#    food_report.example:
-#        class: %food_report.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    food.report:
+        class: Food\ReportBundle\Service\ReportService
+        calls:
+            - [setContainer, [@service_container]]

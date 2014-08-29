@@ -87,3 +87,9 @@ h4.padded {
 .reports_list td.narrow {
     width: 90px;
 }
+.dashboardGraph {
+    min-width: 400px;
+    height: 400px;
+    margin: 0 auto;
+    margin-bottom: 5px;
+}

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Food category
  *
  * @ORM\Table(name="sms_message")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Food\SmsBundle\Entity\MessageRepository")
  */
 class Message
 {
