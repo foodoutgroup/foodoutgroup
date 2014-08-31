@@ -61,7 +61,7 @@ class DefaultController extends Controller
                     $orderService->getOrder()->getPlaceName(),
                     $orderService->getOrder()->getId(),
                     $currentOrderStatus,
-                    $orderService->getOrder()->getOrderStatus()
+                    $this->formToEntityStatus($formStatus)
                 );
                 $this->get('logger')->error($errorMessage);
             }
@@ -145,7 +145,7 @@ class DefaultController extends Controller
                     $orderService->getOrder()->getDriver()->getName(),
                     $orderService->getOrder()->getId(),
                     $currentOrderStatus,
-                    $orderService->getOrder()->getOrderStatus()
+                    $this->formToEntityStatus($formStatus)
                 );
                 $this->get('logger')->error($errorMessage);
             }

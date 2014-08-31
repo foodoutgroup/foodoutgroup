@@ -141,7 +141,7 @@ class LogisticsControllerTest extends WebTestCase
         $place = $this->getPlace('Logistics test3');
         $placePoint = $this->getPlacePoint($place);
         $order = $this->getOrder($place, $placePoint, OrderService::$status_new);
-        $order2 = $this->getOrder($place, $placePoint, OrderService::$status_new);
+        $order2 = $this->getOrder($place, $placePoint, OrderService::$status_accepted);
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
 <OrderStatuses>

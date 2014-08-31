@@ -29,23 +29,43 @@ class LogisticsController extends Controller
             foreach($statusData as $orderStatus) {
                 $order = $orderService->getOrderById($orderStatus['order_id']);
 
-                if ($order instanceof Order) {
-                    $orderService->logOrder(
-                        $order,
-                        'logistics_api_status_update',
-                        'Order status updated from logistics. Logstics status: '.$orderStatus['status']
+                if ($orderStatus['status'] == 'finished') {
+                    $newOrderStatus = $orderService::$status_completed;
+                } else if ($orderStatus['status'] == 'failed') {
+                    $newOrderStatus = $orderService::$status_failed;
+                } else {
+                    $logger->error(
+                        sprintf('Order id: %d status change SKIPPED - Status unkown: %s', $orderStatus['order_id'], $orderStatus['status'])
                     );
 
-                    if ($orderStatus['status'] == 'finished') {
-                        $orderService->statusCompleted('LogisticsAPI');
-                    } else if ($orderStatus['status'] == 'failed') {
-                        $orderService->statusFailed('LogisticsAPI', $orderStatus['fail_reason']);
+                    continue;
+                }
+
+                if ($order instanceof Order) {
+                    if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), $newOrderStatus)
+                        && $order->getOrderStatus() != $newOrderStatus) {
+                        $orderService->logOrder(
+                            $order,
+                            'logistics_api_status_update',
+                            'Order status updated from logistics. Logstics status: '.$orderStatus['status']
+                        );
+
+                        if ($newOrderStatus == $orderService::$status_completed) {
+                            $orderService->statusCompleted('LogisticsAPI');
+                        } else if ($newOrderStatus == $orderService::$status_failed) {
+                            $orderService->statusFailed('LogisticsAPI', $orderStatus['fail_reason']);
+                        }
+                        $orderService->saveOrder();
                     } else {
                         $logger->error(
-                            sprintf('Order id: %d status change SKIPPED - Status unkown: %s', $orderStatus['order_id'], $orderStatus['status'])
+                            sprintf(
+                                'Order id: %d status change SKIPPED - Invalid status change. From: %s To: %s',
+                                $orderStatus['order_id'],
+                                $order->getOrderStatus(),
+                                $newOrderStatus
+                            )
                         );
                     }
-                    $orderService->saveOrder();
                 } else {
                     $logger->error(
                         sprintf('Order id: %d status change SKIPPED - Order does not exist', $orderStatus['order_id'])
@@ -85,28 +105,32 @@ class LogisticsController extends Controller
 
             foreach ($driverData as $driver) {
                 $order = $orderService->getOrderById($driver['order_id']);
+                $errorReason = '';
 
                 // Skip non existant and completed orders
-                if ($order instanceof Order && $order->getOrderStatus() != OrderService::$status_completed) {
-                    $logisticsService->assignDriver($driver['driver_id'], array($driver['order_id']));
-                    $orderService->logOrder(
-                        $order,
-                        'logistics_api_driver_assign',
-                        sprintf('Driver #%d assigned to order #%d from logitics', $driver['driver_id'], $driver['order_id'])
-                    );
-                } else {
-                    // Log error
-                    if (!$order) {
-                        $reason = 'Order does not exist';
+                if ($order instanceof Order) {
+                    if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), $orderService::$status_assiged)
+                        && $order->getOrderStatus() != $orderService::$status_assiged) {
+                        $logisticsService->assignDriver($driver['driver_id'], array($driver['order_id']));
+                        $orderService->logOrder(
+                            $order,
+                            'logistics_api_driver_assign',
+                            sprintf('Driver #%d assigned to order #%d from logitics', $driver['driver_id'], $driver['order_id'])
+                        );
                     } else {
-                        $reason = 'Order already completed';
+                        $errorReason = 'Invalid status change. From: '.$order->getOrderStatus().' To: '.$orderService::$status_assiged;
                     }
+                } else {
+                    $errorReason = 'Order does not exist';
+                }
+
+                if (!empty($errorReason)) {
                     $logger->error(
                         sprintf(
                             'Driver id: %d assign to order id: %d SKIPPED - %s',
                             $driver['driver_id'],
                             $driver['order_id']),
-                            $reason
+                            $errorReason
                     );
                 }
             }
