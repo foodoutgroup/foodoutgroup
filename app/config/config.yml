@@ -28,8 +28,7 @@ parameters:
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
-    #order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt, renata@foodout.lt, z.birbiliene@maistoralis.lt]
-    #order.notify_emails: [paulius@foodout.lt,foodout@lemonlabs.lt]
+    #order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt]
     order.notify_emails: [mantas@foodout.lt]
     order.city_coordinators:
         vilnius: []
@@ -238,6 +237,7 @@ sonata_admin:
       #layout: SonataAdminBundle::standard_layout.html.twig
       layout: FoodAppBundle::admin_layout.html.twig
       ajax:   SonataAdminBundle::ajax_layout.html.twig
+      dashboard: FoodAppBundle::dashboard.html.twig
 
       list: SonataAdminBundle:CRUD:list.html.twig
       show: SonataAdminBundle:CRUD:show.html.twig
@@ -298,11 +298,16 @@ sonata_admin:
                       - sonata.admin.newsletter_subscribers
                       - sonata.admin.banned_ips
                   roles: [ ROLE_ADMIN ]
-              admin.support:
+#              admin.support:
+#                  items: ~
+#                  item_adds:
+#                      - sonata.admin.support
+#                  roles: [ ROLE_SUPPORT ]
+              admin.reports:
                   items: ~
                   item_adds:
-                      - sonata.admin.support
-                  roles: [ ROLE_SUPPORT ]
+                      - sonata.admin.restaurant_orders
+                  roles: [ ROLE_ADMIN ]
               admin.dispatcher:
                   items: ~
                   item_adds:

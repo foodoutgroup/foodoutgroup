@@ -157,6 +157,11 @@ class OrderService extends ContainerAware
                     'lng' => $locationInfo['lng'],
                     'address_orig' => $serviceVar['address']['street']." ".$serviceVar['address']['house_number']
                 );
+                // Append flat if given
+                if (isset($serviceVar['address']['flat_number']) && !empty($serviceVar['address']['flat_number'])) {
+                    $searchCrit['address_orig'] .= ' - '.$serviceVar['address']['flat_number'];
+                }
+
                 $pp = $em->getRepository('FoodDishesBundle:PlacePoint')->find(
                     $em->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
                         $basket->getPlaceId()->getId(),
