@@ -129,8 +129,9 @@ class LogisticsController extends Controller
                         sprintf(
                             'Driver id: %d assign to order id: %d SKIPPED - %s',
                             $driver['driver_id'],
-                            $driver['order_id']),
+                            $driver['order_id'],
                             $errorReason
+                        )
                     );
                 }
             }
