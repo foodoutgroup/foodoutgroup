@@ -1292,3 +1292,22 @@ div.coupon_form_popup {
 .takeaway-not.hide {
     display: none;
 }
+
+.change-address-form {background: #fff; border-radius: 4px;}
+.change-address-form-content {padding: 11px 29px;}
+.change-address-form .form-row {margin-bottom: 13px;}
+.change-address-form label {float: left; padding-top: 9px; width: 173px; padding-right: 5px; font-size: 15px;}
+.change-address-form .custom-radio {padding-top: 0px;}
+.change-address-form input[type="text"],
+.change-address-form input[type="password"],
+.change-address-form input[type="email"],
+.change-address-form textarea {width: 310px; font-size: 15px; padding: 9px 12px; border: 1px solid #d8d8d8; border-radius: 3px; box-shadow: 0 0 1px #f2f2f2; box-shadow: 0 0 2px #d0c8c1;}
+.change-address-form input[type="text"],
+.change-address-form input[type="password"],
+.change-address-form input[type="email"] {height: 17px;}
+.change-address-form textarea {height: 93px;}
+.change-address-form select {width: 335px;}
+
+#change-location-error {
+    display: none;
+}

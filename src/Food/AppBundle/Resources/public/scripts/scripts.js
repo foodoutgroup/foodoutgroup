@@ -20,7 +20,7 @@
 
         // Boxer lightbox plugin
 
-        $('.custom-select').selectmenu();
+        bind_custom_select();
 
         $("input").iCheck();
 
@@ -59,8 +59,16 @@
         bind_show_password_resetting_form();
         bind_password_resetting_form();
         bind_change_location();
+        bind_change_location_form();
     });
 })(jQuery, window);
+
+bind_custom_select = function() {
+    var custom_select;
+
+    custom_select = $('.custom-select');
+    custom_select.selectmenu();
+}
 
 init_raty = function() {
     var selector, options;
@@ -233,6 +241,46 @@ bind_change_location = function() {
 
     link.fancybox({
         padding: 0,
-        scrolling: 'visible'
+        scrolling: 'visible',
+        afterShow: function() {
+            bind_custom_select();
+        }
     });
+}
+
+bind_change_location_form = function() {
+    $('body').on('submit', '#change-location-form', function() {
+        $('#change-location-form-link').click();
+        return false;
+    });
+}
+
+change_location = function(url, city, address, error, form) {
+    var options;
+
+    city = $(city).val();
+    address = $(address).val();
+    error = $(error);
+    form = $(form);
+
+    form.mask();
+
+    options = {
+        url: url,
+        type: 'GET',
+        data: {city: city, address: address},
+        success: function(response) {
+            if (response.data.success == 1) {
+                error.hide();
+                location.href = form.attr('action');
+            } else {
+                error.show();
+                form.unmask();
+            }
+        }
+    };
+
+    $.ajax(options);
+
+    return false;
 }
