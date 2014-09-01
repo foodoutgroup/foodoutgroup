@@ -71,40 +71,38 @@
             <div class="alert alert2 alert-warning"><li>{% trans %}places.is_not_detailed_search{% endtrans %}</li></div>
         {% endif %}
     </div>
-    <div style="display: none">
-        <div id="places-change-address" class="delivery-info-form">
-            <div class="alert alert-danger" style="display: none;">
-                {% trans %}cart.checkout.address_not_found{% endtrans %}
-            </div>
-            <div class="form-row form-row-required city-row">
-                <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
-                <select class="custom-select">
-                    <option {% if location and location.city is defined and location.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
-                    <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
-                    <option {% if location and location.city is defined and location.city == 'Klaipėda' %}selected{% endif %}>Klaipėda</option>
-                </select>
-            </div>
-            <div class="form-row form-row-required address-row">
-                <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
-                <input type="text" id="address" value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}">
-            </div>
-        </div>
-        <div id="place-point-not-found">
-            <div class="alert alert-danger">
-                <b>{% trans %}cart.checkout.place_point_not_in_radius{% endtrans %}</b><br />
-                <p>{% trans %}cart.checkout.no_delivery_choose_what_to_do{% endtrans %}</p>
-            </div>
-        </div>
-    </div>
+    {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'places-change-address'} %}
     <script type="text/javascript">
         // <![CDATA[
             $(document).ready(function() {
                 $('#places-change-location-link').click(function() {
+                    var data_callback, data_callback;
+
+                    click_callback = function(options) {
+                        if (options.response.data.success == 1) {
+                            window.location = '{{ url('food_places_lt_main') }}';
+                        } else {
+                            options.dialog.parent().unmask();
+                            options.alert.show();
+
+                            setTimeout(function(){
+                                options.alert.hide();
+                            }, 5000);
+                        }
+                    }
+
+                    data_callback = function() {
+                        return { city: $('.city-row select').val(),
+                                 address: $('.address-row input').val() };
+                    }
+
                     change_location($('#places-change-address'),
+                                    click_callback,
+                                    data_callback,
                                     '{% trans %}cart.checkout.address_change_change{% endtrans %}',
                                     '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
-                                    '{{ url('food_ajax', {'action': 'find-address'}) }}',
-                                    '{{ url('food_places_lt_main') }}');
+                                    '{{ url('food_ajax', {'action': 'find-address'}) }}');
+
                     return false;
                 })
             });

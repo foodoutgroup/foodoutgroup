@@ -230,48 +230,40 @@ bind_password_resetting_form = function() {
     });
 }
 
+// 'click_callback' is needed since it's function may differ from page to page.
+// 'data_callback' is needed since we need to lazy evaluate data from inputs at
+// the very last moment.
 change_location = function(element,
+                           click_callback,
+                           data_callback,
                            change_text,
                            cancel_text,
-                           request_url,
-                           success_url) {
+                           request_url)
+{
     var dialog_options,
         change_options,
-        cancel_options,
-        city_select,
-        address_select;
-
-    city_select = $('.city-row select');
-    address_select = $('.address-row input');
+        cancel_options;
 
     change_options = {
         text: change_text,
         click: function() {
-            var thisDialog,
+            var dialog,
                 options,
                 alert;
 
-            thisDialog = $(this);
-            thisDialog.parent().mask();
+            dialog = $(this);
+            dialog.parent().mask();
 
             alert = element.find('.alert');
 
             options = {
                 type: 'GET',
                 url: request_url,
-                data: { city: city_select.val(),
-                        address: address_select.val() },
+                data: data_callback(),
                 success: function(response){
-                    if (response.data.success == 1) {
-                        window.location = success_url;
-                    } else {
-                        thisDialog.parent().unmask();
-                        alert.show();
-
-                        setTimeout(function(){
-                            alert.hide();
-                        }, 5000);
-                    }
+                    click_callback({response: response,
+                                    dialog: dialog,
+                                    alert: alert});
                 }
             }
 
