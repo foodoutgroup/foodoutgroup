@@ -58,8 +58,6 @@
         bind_profile_menu_items();
         bind_show_password_resetting_form();
         bind_password_resetting_form();
-        bind_change_location();
-        bind_change_location_form();
     });
 })(jQuery, window);
 
@@ -232,55 +230,73 @@ bind_password_resetting_form = function() {
     });
 }
 
-bind_change_location = function() {
-    var link;
+change_location = function(element,
+                           change_text,
+                           cancel_text,
+                           request_url,
+                           success_url) {
+    var dialog_options,
+        change_options,
+        cancel_options,
+        city_select,
+        address_select;
 
-    link = $('.change-location-link');
+    city_select = $('.city-row select');
+    address_select = $('.address-row input');
 
-    if (link.length == 0) return;
+    change_options = {
+        text: change_text,
+        click: function() {
+            var thisDialog,
+                options,
+                alert;
 
-    link.fancybox({
-        padding: 0,
-        scrolling: 'visible',
-        afterShow: function() {
-            bind_custom_select();
-        }
-    });
-}
+            thisDialog = $(this);
+            thisDialog.parent().mask();
 
-bind_change_location_form = function() {
-    $('body').on('submit', '#change-location-form', function() {
-        $('#change-location-form-link').click();
-        return false;
-    });
-}
+            alert = element.find('.alert');
 
-change_location = function(url, city, address, error, form) {
-    var options;
+            options = {
+                type: 'GET',
+                url: request_url,
+                data: { city: city_select.val(),
+                        address: address_select.val() },
+                success: function(response){
+                    if (response.data.success == 1) {
+                        window.location = success_url;
+                    } else {
+                        thisDialog.parent().unmask();
+                        alert.show();
 
-    city = $(city).val();
-    address = $(address).val();
-    error = $(error);
-    form = $(form);
-
-    form.mask();
-
-    options = {
-        url: url,
-        type: 'GET',
-        data: {city: city, address: address},
-        success: function(response) {
-            if (response.data.success == 1) {
-                error.hide();
-                location.href = form.attr('action');
-            } else {
-                error.show();
-                form.unmask();
+                        setTimeout(function(){
+                            alert.hide();
+                        }, 5000);
+                    }
+                }
             }
+
+            $.ajax(options);
         }
     };
 
-    $.ajax(options);
+    cancel_options = {
+        text: cancel_text,
+        click: function() {
+            $(this).dialog('close');
+        }
+    };
 
-    return false;
+    dialog_options = {
+        modal: true,
+        resizeable: false,
+        width: 360,
+        buttons: {
+            'change': change_options,
+            'cancel': cancel_options
+        }
+    };
+
+    element.dialog(dialog_options)
+           .siblings('.ui-dialog-titlebar')
+           .remove();
 }

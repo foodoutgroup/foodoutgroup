@@ -65,12 +65,51 @@
     <div class="page-title">
         <h1 class="clearfix">
             <span class="place-counter"></span>
-            <a href="{{ url('food_change_location') }}" href2="#detailed-dish-popup" class="change-location-link fancy-box fancybox.ajax">{% trans %}places.change_address{% endtrans %}</a>
+            <a href="#" id="places-change-location-link">{% trans %}places.change_address{% endtrans %}</a>
         </h1>
         {% if recommended==0 and ( location == null or (location.not_found == true and location.street_found==true)) %}
             <div class="alert alert2 alert-warning"><li>{% trans %}places.is_not_detailed_search{% endtrans %}</li></div>
         {% endif %}
     </div>
+    <div style="display: none">
+        <div id="places-change-address" class="delivery-info-form">
+            <div class="alert alert-danger" style="display: none;">
+                {% trans %}cart.checkout.address_not_found{% endtrans %}
+            </div>
+            <div class="form-row form-row-required city-row">
+                <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
+                <select class="custom-select">
+                    <option {% if location and location.city is defined and location.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
+                    <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
+                    <option {% if location and location.city is defined and location.city == 'Klaipėda' %}selected{% endif %}>Klaipėda</option>
+                </select>
+            </div>
+            <div class="form-row form-row-required address-row">
+                <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
+                <input type="text" id="address" value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}">
+            </div>
+        </div>
+        <div id="place-point-not-found">
+            <div class="alert alert-danger">
+                <b>{% trans %}cart.checkout.place_point_not_in_radius{% endtrans %}</b><br />
+                <p>{% trans %}cart.checkout.no_delivery_choose_what_to_do{% endtrans %}</p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        // <![CDATA[
+            $(document).ready(function() {
+                $('#places-change-location-link').click(function() {
+                    change_location($('#places-change-address'),
+                                    '{% trans %}cart.checkout.address_change_change{% endtrans %}',
+                                    '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
+                                    '{{ url('food_ajax', {'action': 'find-address'}) }}',
+                                    '{{ url('food_places_lt_main') }}');
+                    return false;
+                })
+            });
+        // ]]>
+    </script>
     <div class="clearfix">
         <div class="content-lefter">
             {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {})) }}
