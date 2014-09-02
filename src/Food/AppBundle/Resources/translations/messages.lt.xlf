@@ -767,6 +767,10 @@
         <source>reporting.daily.yesterday_orders.place</source>
         <target>Restoranas</target>
       </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.place_point" resname="reporting.daily.yesterday_orders.place_point">
+        <source>reporting.daily.yesterday_orders.place_point</source>
+        <target>Gam.taškas</target>
+      </trans-unit>
       <trans-unit id="reporting.daily.yesterday_orders.payment_type" resname="reporting.daily.yesterday_orders.payment_type">
         <source>reporting.daily.yesterday_orders.payment_type</source>
         <target>Atsiskaitymo tipas</target>
