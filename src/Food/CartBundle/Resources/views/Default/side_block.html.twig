@@ -60,7 +60,7 @@
             {% endif %}
         </div>
         {% if not hide_delivery or (hide_delivery and place.minimalOnSelfDel != false) %}
-        <div class="delivery-time tac">{% trans %}cart.block.order_sum_minimum{% endtrans %}<br />{{ place.cartMinimum }} {{ currency_display }} <span class="euro">/ &euro;{{  misc_utils.getEuro(place.cartMinimum)|number_format(2, ',', ' ') }}</span>.
+        <div class="delivery-time tac alert alert-warning bolder-warning-alert" style="text-width">{% trans %}cart.block.order_sum_minimum{% endtrans %}<br />{{ place.cartMinimum }} {{ currency_display }} <span class="euro">/ &euro;{{  misc_utils.getEuro(place.cartMinimum)|number_format(2, ',', ' ') }}</span>.
             {% if place.minimalOnSelfDel == false %}<br />{% trans %}cart.block.order_sum_minimum_take_myself{% endtrans %}{% endif %}
         </div>
         {% endif %}

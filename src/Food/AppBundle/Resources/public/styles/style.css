@@ -1438,3 +1438,7 @@ div.coupon_form_popup {
     width: 70%;
 }
 /** EURO show end **/
+
+.bolder-warning-alert {
+    color: #9c878a !important;
+}
