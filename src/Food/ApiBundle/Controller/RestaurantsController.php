@@ -23,6 +23,7 @@ class RestaurantsController extends Controller
         $city = $request->get('city');
         $lat = $request->get('lat');
         $lng = $request->get('lng');
+        $keyword = $request->get('keyword', '');
 
         $kitchens = explode(", ", $request->get('cuisines', ''));
         if (empty($kitchens) || (sizeof($kitchens) == 1 && empty($kitchens[0]))) {
@@ -30,15 +31,26 @@ class RestaurantsController extends Controller
         }
         if (!empty($address)) {
 
-            $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
-            $locationInfo = $this->get('food.googlegis')->groupData($location, $address, $city);
+            // TODO Pauliau, istrink sita gabala, kai isspresi GIS'a
+            $availableCities = $this->container->getParameter('available_cities');
+            $availableCities = array_map("mb_strtolower", $availableCities);
+            if (!in_array(mb_strtolower($city), $availableCities)) {
+                $places = array();
+            } else {
+                // TODO HACK pabaiga :)
 
-            $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
-                $kitchens,
-                array(),
-                false,
-                $this->get('food.googlegis')->getLocationFromSession()
-            );
+                $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
+                $this->get('food.googlegis')->groupData($location, $address, $city);
+
+                $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
+                    $kitchens,
+                    array(
+                        'keyword' => $keyword,
+                    ),
+                    false,
+                    $this->get('food.googlegis')->getLocationFromSession()
+                );
+            }
         } elseif (!empty($lat) && !empty($lng)) {
             $data = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
             $this->get('food.googlegis')->setLocationToSession(
@@ -50,7 +62,9 @@ class RestaurantsController extends Controller
             );
             $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
                 $kitchens,
-                array(),
+                array(
+                    'keyword' => $keyword
+                ),
                 false,
                 $this->get('food.googlegis')->getLocationFromSession()
             );
@@ -66,6 +80,9 @@ class RestaurantsController extends Controller
                 'limit' => 50
             )
         );
+
+        $places = $this->get('food.places')->placesPlacePointsWorkInformation($places);
+
         foreach ($places as $place) {
             $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place['place'], $place['point']);
             $response['restaurants'][] = $restaurant->data;
@@ -75,6 +92,7 @@ class RestaurantsController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return JsonResponse
      *
      * @todo Countingas pagal objektus kurie netoli yra :D

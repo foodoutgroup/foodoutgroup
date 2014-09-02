@@ -24,8 +24,14 @@
             <span class="price">
                 {% if smallestPrice == largestPrice %}
                     {{ smallestPrice|replace({'.': ','}) }} {{ currency_display }}
+                    <span class="euro">
+                        &euro;{{ misc_utils.getEuro(smallestPrice)|number_format(2, ',', ' ') }}
+                    </span>
                 {% else %}
-                    {{ smallestPrice|replace({'.': ','}) }} {{ currency_display }} - {{ largestPrice|replace({'.': ','}) }} {{ currency_display }}
+                    {{ smallestPrice|replace({'.': ','}) }} - {{ largestPrice|replace({'.': ','}) }} {{ currency_display }}
+                    <span class="euro">
+                        &euro;{{  misc_utils.getEuro(smallestPrice)|number_format(2, ',', ' ') }} - &euro;{{  misc_utils.getEuro(largestPrice)|number_format(2, ',', ' ') }}
+                    </span>
                 {% endif %}
             </span>
             {% endif %}

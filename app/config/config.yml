@@ -28,13 +28,15 @@ parameters:
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
+#    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt]
     order.notify_emails: [paulius@foodout.lt,foodout@lemonlabs.lt]
     order.city_coordinators:
         vilnius: []
         kaunas: [renata@foodout.lt]
         klaipeda: []
+#    order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
     order.accept_notify_emails: [paulius@foodout.lt]
-    accounting_email: "paulius@foodout.lt"
+    accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
     domain: "foodout.lt"
     arc_gis_user: "skanulabai"
@@ -102,6 +104,8 @@ twig:
         language_utils: "@food.app.utils.language"
         notifications: "@food.app.utils.notifications"
         cloudfront_url: "%cloudfront_url%"
+        misc_utils: "@food.app.utils.misc"
+
 
 
 # Assetic Configuration

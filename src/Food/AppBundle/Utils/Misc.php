@@ -120,4 +120,16 @@ class Misc
             'flat' => $flat,
         );
     }
+
+    /**
+     * @param float $price
+     * @return float
+     */
+    public function getEuro($price)
+    {
+        $accountingEuroRate = 3.4528;
+        $euroPrice = $price / $accountingEuroRate;
+
+        return round($euroPrice, 2);
+    }
 }

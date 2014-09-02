@@ -21,15 +21,14 @@ class NavService extends ContainerAware
      */
     private $conn = null;
 
-    private $headerTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Header]';
+    // private $headerTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Header]';
 
-    private $lineTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Lines]';
+    // private $lineTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Lines]';
 
-    //private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
-    //private $headerTable = '[Čilija Skambučių Centras$Web ORDER Header]';
+    private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
 
-    //private $lineTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Lines]';
-    //private $lineTable = '[Čilija Skambučių Centras$Web ORDER Lines]';
+    private $lineTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Lines]';
+
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
@@ -191,19 +190,23 @@ class NavService extends ContainerAware
     {
         $orderNewId = $this->getNavOrderId($order);
 
-        $target = $order->getAddressId()->getAddress();
-        preg_match('/(([0-9]{1,3})[-|\s]{0,4}([0-9]{0,3}))$/i', $target, $errz);
-        $street = trim(str_replace($errz[0], '', $target));
-        $houseNr = (!empty($errz[2]) ? $errz[2] : '');
-        $flatNr = (!empty($errz[3]) ? $errz[3] : '');
+        $orderRow = null;
+        if ($order->getAddressId()) {
+            $target = $order->getAddressId()->getAddress();
+            preg_match('/(([0-9]{1,3})[-|\s]{0,4}([0-9]{0,3}))$/i', $target, $errz);
+            $street = trim(str_replace($errz[0], '', $target));
+            $houseNr = (!empty($errz[2]) ? $errz[2] : '');
+            $flatNr = (!empty($errz[3]) ? $errz[3] : '');
+            $orderRow = $this->container->get('doctrine')->getRepository('FoodAppBundle:Streets')->findOneBy(
+                array(
+                    'name' => $street,
+                    'numberFrom' => $houseNr,
+                    'deliveryRegion' => $order->getAddressId()->getCity()
+                )
+            );
+        }
 
-        $orderRow = $this->container->get('doctrine')->getRepository('FoodAppBundle:Streets')->findOneBy(
-            array(
-                'name' => $street,
-                'numberFrom' => $houseNr,
-                'deliveryRegion' => $order->getAddressId()->getCity()
-            )
-        );
+
 
         $this->container->get('doctrine')->getManager()->refresh($orderRow);
 
@@ -214,16 +217,16 @@ class NavService extends ContainerAware
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Phone' => str_replace('370', '8', $order->getUser()->getPhone()),
-            'ZipCode' => $orderRow->getZipCode(),
-            'City' => $order->getAddressId()->getCity(),
+            'ZipCode' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getZipCode() : ''),
+            'City' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $order->getAddressId()->getCity() : ''),
             'Street' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getStreetName(): ''),
             'Street No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getNumberFrom(): ''),
             'Floor' => '',
-            'Grid' => $orderRow->getGrid(),
+            'Grid' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getGrid(): ''),
             'Chain' => $order->getPlace()->getChain(),
             'Name' => 'FO:'.$order->getUser()->getNameForOrder(),
             'Delivery Type' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? 1 : 4),
-            'Restaurant No_' => '', //$order->getPlacePoint()->getInternalCode(),
+            'Restaurant No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? '':  $order->getPlacePoint()->getInternalCode()),
             'Order Date' => $orderDate->format("Y-m-d"),
             'Order Time' => '1754-01-01 '.$orderDate->format("H:i:s"),
             'Takeout Time' => $deliveryDate->format("Y-m-d H:i:s"),
@@ -234,17 +237,15 @@ class NavService extends ContainerAware
             'Error Description' => '',
             'Flat No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $flatNr: ''),
             'Entrance Code' => '',
-            'Region Code' => $orderRow->getDeliveryRegion(),
+            'Region Code' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getDeliveryRegion() : ''),
             'Delivery Status' => 12,
             'In Use By User' => '',
             'Loyalty Card No_' => '',
             'Order with Alcohol' => '0'
         );
         $queryPart = $this->generateQueryPart($dataToPut);
-        echo "<pre>";
         $query = 'INSERT INTO '.$this->getHeaderTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
-        echo $query."\n";
-        //$sqlSS = $this->initSqlConn()->query($query);
+        $sqlSS = $this->initSqlConn()->query($query);
 
         $this->_processLines($order, $orderNewId);
     }
@@ -258,15 +259,15 @@ class NavService extends ContainerAware
 
     private function _processLine(OrderDetails $detail, $orderNewId, $key)
     {
+        $this->container->get('doctrine')->getManager()->refresh($detail);
         $code = $detail->getDishSizeCode();
         if (empty($code)) {
             $detailOptions = $detail->getOptions();
-            var_dump(sizeof($detailOptions));
             if (!empty($detailOptions)) {
                 $code = $detailOptions[0]->getDishOptionCode();
             }
         }
-        die();
+
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Line No_' => $key,
@@ -285,8 +286,7 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
         $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
-        echo $query."\n";
-        //$sqlSS = $this->initSqlConn()->query($query);
+        $sqlSS = $this->initSqlConn()->query($query);
     }
 
     public function getNavOrderId(Order $order)
@@ -299,12 +299,12 @@ class NavService extends ContainerAware
     {
 
         $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
-        $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
-        //$clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija Skambučių Centras/Codeunit/WEB_Service2";
+        // $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
+        $clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija Skambučių Centras/Codeunit/WEB_Service2";
 
         stream_wrapper_unregister('http');
         stream_wrapper_register('http', '\Food\OrderBundle\Common\FoNTLMStream') or die("Failed to register protocol");
-        //$url = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS Skambuciu Centras/Codeunit/WEB_Service2";
+
         $url = $clientUrl2;
         $options = array('trace'=>1, 'login' =>'CILIJA\fo_order', 'password' => 'peH=waGe?zoOs69');
         //$options = array('login' =>'CILIJA\nas', 'password' => 'c1l1j@');

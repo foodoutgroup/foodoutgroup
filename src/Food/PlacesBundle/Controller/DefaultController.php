@@ -49,7 +49,7 @@ class DefaultController extends Controller
 
         $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
             $kitchens,
-            $filter,
+            $filters,
             $recommended,
             $this->get('food.googlegis')->getLocationFromSession()
         );

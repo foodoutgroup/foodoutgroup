@@ -371,6 +371,13 @@ class UsersController extends Controller
                 throw new ApiException("Wrong password", 400, array('error' => 'Wrong password', 'description' => null));
             }
 
+            // Check if session is started. Start if not started
+            $session = $this->container->get('session');
+            $sessionId = $session->getId();
+            if (empty($sessionId)) {
+                $session->start();
+            }
+
             $this->loginUser($user);
 
             // User hash verfy action

@@ -1367,3 +1367,74 @@ div.coupon_form_popup {
 .reset-password-form-content label {
     text-align: left;
 }
+
+.takeaway-yep {
+    display: none;
+}
+
+.takeaway-yep.show {
+    display: block;
+}
+
+.takeaway-not.hide {
+    display: none;
+}
+
+
+/** EURO show start **/
+.restaurant-menu .euro {
+    font-size: 12px;
+    color: #a78f92;
+    display: block;
+    line-height: 12px;
+}
+.restaurant-menu-item .price {
+    line-height: 20px;
+}
+.detailed-dish-popup .euro {
+    font-size: 11px;
+    color: #a78f92;
+    padding-left: 7px;
+}
+.check-item .euro {
+    font-size: 11px;
+    padding-left: 4px;
+}
+.check-item .count.item {
+    width: 30%;
+}
+.check-item .sum.item {
+    width: 70%;
+}
+.check-item .clearfix.pad {
+    padding-left: 0px;
+}
+.check-item .extra {
+    width: 45%;
+}
+.check-item .extra.sum{
+    width: 55%;
+}
+.check-item .extra.sum .euro {
+    font-size: 10px;
+    padding-left: 3px;
+}
+.check-bottom .total-sum.cart {
+    font-size: 12px;
+}
+.check-bottom .total-sum.cart .fl {
+    width: 40%;
+}
+.check-bottom .total-sum.cart .fr {
+    width: 60%;
+}
+.check-bottom .euro {
+    font-size: 80%;
+}
+.check-bottom .total-sum.final .fl {
+    width: 30%;
+}
+.check-bottom .total-sum.final .fr {
+    width: 70%;
+}
+/** EURO show end **/

@@ -1217,6 +1217,24 @@
                 <source>admin.coupon.code</source>
                 <target>Kodas</target>
             </trans-unit>
+
+            <!-- Cover photo admin -->
+            <trans-unit id="admin.place_cover_photo">
+                <source>admin.place_cover_photo</source>
+                <target>Vietų coveriai</target>
+            </trans-unit>
+            <trans-unit id="Place Cover Photo List">
+                <source>Place Cover Photo List</source>
+                <target>Vietų coveriai</target>
+            </trans-unit>
+            <trans-unit id="admin.place_cover_photo.place">
+                <source>admin.place_cover_photo.place</source>
+                <target>Vieta</target>
+            </trans-unit>
+            <trans-unit id="admin.place_cover_photo.photo">
+                <source>admin.place_cover_photo.photo</source>
+                <target>Nuotrauka</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
