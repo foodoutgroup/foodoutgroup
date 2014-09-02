@@ -53,7 +53,7 @@ namespace :deploy do
     end
 end
 
-after "deploy", "deploy:cleanup"
+#after "deploy", "deploy:cleanup"
 after "deploy", "deploy:chmod_things"
 # Uncomment kai bus airbrake
 # after "deploy:cleanup", "deploy:airbrake_notify"

@@ -2,6 +2,7 @@
 
 namespace Food\MonitoringBundle\Service;
 
+use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
@@ -62,6 +63,37 @@ class MonitoringService extends ContainerAware {
                     'payment_status' => OrderService::$paymentStatusComplete,
                     'from_date' => $from,
                     'to_date' => $to
+                ]
+            )
+            ->getQuery();
+
+        $orders = $query->getResult();
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
+
+    /**
+     * @return Order[]|array
+     */
+    public function getUnacceptedOrders()
+    {
+        $repository = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order');
+
+        $query = $repository->createQueryBuilder('o')
+            ->where('o.order_status = :order_status')
+            ->andWhere('o.paymentStatus = :payment_status')
+            ->andWhere('o.order_date <= :date')
+            ->andWhere('o.order_date > :oldest_date')
+            ->orderBy('o.order_date', 'ASC')
+            ->setParameters(
+                [
+                    'order_status' => OrderService::$status_new,
+                    'payment_status' => OrderService::$paymentStatusComplete,
+                    'date' => new \DateTime("-22 minute"),
+                    'oldest_date' => new \DateTime("-1 day")
                 ]
             )
             ->getQuery();
