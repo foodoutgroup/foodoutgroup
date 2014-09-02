@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="lt" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="admin.report.orders" resname="admin.report.orders">
+                <source>admin.report.orders</source>
+                <target>Užsakymai</target>
+            </trans-unit>
+            <trans-unit id="admin.report.daily_orders_graph" resname="admin.report.daily_orders_graph">
+                <source>admin.report.daily_orders_graph</source>
+                <target>Užsakymų per dieną</target>
+            </trans-unit>
+            <trans-unit id="admin.report.order_amount" resname="admin.report.order_amount">
+                <source>admin.report.order_amount</source>
+                <target>Kiekis</target>
+            </trans-unit>
+            <trans-unit id="admin.report.sms" resname="admin.report.sms">
+                <source>admin.report.sms</source>
+                <target>Pristatyti SMS</target>
+            </trans-unit>
+            <trans-unit id="admin.report.daily_sms_graph" resname="admin.report.daily_sms_graph">
+                <source>admin.report.daily_sms_graph</source>
+                <target>SMS pranešimų per dieną</target>
+            </trans-unit>
+            <trans-unit id="admin.report.amount" resname="admin.report.amount">
+                <source>admin.report.amount</source>
+                <target>Kiekis</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

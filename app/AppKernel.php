@@ -59,6 +59,8 @@ class AppKernel extends Kernel
             new Food\MonitoringBundle\FoodMonitoringBundle(),
             new Food\ApiBundle\FoodApiBundle(),
             new Pirminis\GatewayBundle\PirminisGatewayBundle(),
+            new Food\ReportBundle\FoodReportBundle(),
+            new Ob\HighchartsBundle\ObHighchartsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

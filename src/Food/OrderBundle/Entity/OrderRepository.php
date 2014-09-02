@@ -2,7 +2,6 @@
 
 namespace Food\OrderBundle\Entity;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Filter\SQLFilter;
 use Food\OrderBundle\Service\OrderService;
 
 class OrderRepository extends EntityRepository
@@ -312,8 +311,88 @@ class OrderRepository extends EntityRepository
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
-        $ordersGrouped = $stmt->fetchAll();
+        return $stmt->fetchAll();
+    }
 
-        return $ordersGrouped;
+    /**
+     * @param \DateTime $dateFrom
+     * @param \DateTime $dateTo
+     * @param array $placeIds
+     * @param bool $groupMonth
+     *
+     * @return array
+     */
+    public function getPlacesOrderCountForRange($dateFrom, $dateTo, $placeIds = array(), $groupMonth=false)
+    {
+        $orderStatus = OrderService::$status_completed;
+        $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 00:00:01");
+
+        $placesFilter = '';
+        if (!empty($placeIds)) {
+            $placesFilter = ' AND o.place_id IN ('.implode(', ', $placeIds).')';
+        }
+
+        $groupByMonthDate = $groupByMonth = $groupByMonthOrder = '';
+        if ($groupMonth) {
+            $groupByMonthDate = ', DATE_FORMAT(o.order_date, "%Y-%m") AS month';
+            $groupByMonth = ', DATE_FORMAT(o.order_date, "%Y-%m")';
+            $groupByMonthOrder = 'DATE_FORMAT(o.order_date, "%Y-%m") DESC, ';
+        }
+
+        $query = "
+          SELECT
+            o.place_id,
+            p.name AS place_name,
+            COUNT(o.id) AS order_count,
+            SUM(o.total) AS order_sum,
+            SUM(
+              IF(o.delivery_type = 'deliver', 1, 0)
+            ) AS deliver_count,
+            SUM(
+              IF(o.delivery_type = 'pickup', 1, 0)
+            ) AS pickup_count
+            {$groupByMonthDate}
+          FROM orders o
+          LEFT JOIN place p ON p.id = o.place_id
+          WHERE
+            o.order_status = '{$orderStatus}'
+            AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
+            {$placesFilter}
+          GROUP BY o.place_id{$groupByMonth}
+          ORDER BY {$groupByMonthOrder}order_count DESC
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * @param \DateTime $dateFrom
+     * @param \DateTime $dateTo
+     * @return array
+     */
+    public function getOrderCountByDay($dateFrom, $dateTo)
+    {
+        $orderStatus = OrderService::$status_completed;
+        $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 00:00:01");
+
+        $query = "
+          SELECT
+            DATE_FORMAT(o.order_date, '%m-%d') AS report_day,
+            COUNT(o.id) AS order_count
+          FROM orders o
+          WHERE
+            o.order_status = '{$orderStatus}'
+            AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
+          GROUP BY DATE_FORMAT(o.order_date, '%m-%d')
+          ORDER BY DATE_FORMAT(o.order_date, '%m-%d') ASC
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 }
