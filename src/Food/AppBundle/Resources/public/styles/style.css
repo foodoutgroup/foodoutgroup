@@ -54,6 +54,7 @@
 .dish-size .custom-radio strong,
 .dish-ingredients .custom-checkbox strong,
 .detailed-dish-popup .button-submit,
+.change-location-popup .button-submit,
 .delivery-info-form .submit-button span,
 .coupon_form_popup .button-submit,
 .coupon_form_popup .button-submit span,
@@ -661,6 +662,9 @@ input.button {}
 .detailed-dish-popup {width: 550px; border-radius: 10px; background: #fff;}
 .detailed-dish-popup img {border-radius: 10px 10px 0 0;}
 
+.change-location-popup {width: 380px; border-radius: 10px; background: #fff;}
+.change-location-popup img {border-radius: 10px 10px 0 0;}
+
 .dish-info {text-align: center; padding: 16px; border-bottom: 1px solid #ebe2d9;}
 .dish-info .name {font-size: 27px; color: #55422e; margin: 0;}
 .dish-info .desc {color: #cfb4b8; font-size: 12px; line-height: 17px; margin: 0;}
@@ -681,6 +685,10 @@ input.button {}
 
 .detailed-dish-popup .button-submit, .coupon_form_popup .button-submit {display: block; height: 48px; line-height: 48px; font-size: 20px; text-align: center; color: #86560d; border-radius: 4px; background: url(/bundles/foodapp/images/button-rep.png) repeat-x left top; box-shadow: 0 1px 1px #c0c0c0; text-transform: uppercase; letter-spacing: 1.7px; text-shadow: 0 1px 0 #fde99a;}
 .detailed-dish-popup .button-submit span, .coupon_form_popup .button-submit span {display: inline-block; line-height: 48px; padding: 0 29px; background: url(/bundles/foodapp/images/button-arrow.png) no-repeat right center; text-shadow: 0 0 0 #fff;}
+
+.change-location-popup .popup-controls {padding: 16px 21px;}
+.change-location-popup .button-submit, .coupon_form_popup .button-submit {display: block; height: 48px; line-height: 48px; font-size: 20px; text-align: center; color: #86560d; border-radius: 4px; background: url(/bundles/foodapp/images/button-rep.png) repeat-x left top; box-shadow: 0 1px 1px #c0c0c0; text-transform: uppercase; letter-spacing: 1.7px; text-shadow: 0 1px 0 #fde99a;}
+.change-location-popup .button-submit span, .coupon_form_popup .button-submit span {display: inline-block; line-height: 48px; padding: 0 29px; background: url(/bundles/foodapp/images/button-arrow.png) no-repeat right center; text-shadow: 0 0 0 #fff;}
 
 /*Login regsiter popup*/
 .login-register-popup {width: 860px; border-radius: 10px; background: #fff url(/bundles/foodapp/images/dot.png) repeat-y center top;}
@@ -721,8 +729,10 @@ input.button {}
 
 /** Uuuuuuuhhh - cant touch it **/
 .detailed-dish-popup .theCounter {width: 40px; text-align: center; border-radius: 5px; border: 1px solid #cccccc;}
+.change-location-popup .theCounter {width: 40px; text-align: center; border-radius: 5px; border: 1px solid #cccccc;}
 .theCounter-dec, .theCounter-inc {border: none; background-color: transparent;}
 #change-address { margin-bottom: 0px;}
+#places-change-address { margin-bottom: 0px;}
 .alert {padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px;}
 .alert.alert2 { margin-bottom: 0px }
 .alert-danger { background-color: #f2dede; border-color: #ebccd1; color: #a94442; }
@@ -1040,8 +1050,6 @@ div.coupon_form_popup {
     padding-top: 10px;
 }
 .coupon_form_popup input[type="text"] {width: 324px; height: 17px; font-size: 15px; padding: 9px 12px; border: 1px solid #d8d8d8; border-radius: 3px; box-shadow: 0 0 1px #f2f2f2; box-shadow: 0 0 2px #d0c8c1;}
-
-
 
 /** EPIC AUTOCOMPLETE START **/
 .typeahead,
@@ -1377,6 +1385,25 @@ div.coupon_form_popup {
 }
 
 .takeaway-not.hide {
+    display: none;
+}
+
+.change-address-form {background: #fff; border-radius: 4px;}
+.change-address-form-content {padding: 11px 29px;}
+.change-address-form .form-row {margin-bottom: 13px;}
+.change-address-form label {float: left; padding-top: 9px; width: 173px; padding-right: 5px; font-size: 15px;}
+.change-address-form .custom-radio {padding-top: 0px;}
+.change-address-form input[type="text"],
+.change-address-form input[type="password"],
+.change-address-form input[type="email"],
+.change-address-form textarea {width: 310px; font-size: 15px; padding: 9px 12px; border: 1px solid #d8d8d8; border-radius: 3px; box-shadow: 0 0 1px #f2f2f2; box-shadow: 0 0 2px #d0c8c1;}
+.change-address-form input[type="text"],
+.change-address-form input[type="password"],
+.change-address-form input[type="email"] {height: 17px;}
+.change-address-form textarea {height: 93px;}
+.change-address-form select {width: 335px;}
+
+#change-location-error {
     display: none;
 }
 
