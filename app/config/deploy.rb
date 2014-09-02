@@ -53,8 +53,8 @@ namespace :deploy do
     end
 end
 
-#after "deploy", "deploy:cleanup"
 after "deploy", "deploy:chmod_things"
+after "deploy:chmod_things", "deploy:cleanup"
 # Uncomment kai bus airbrake
 # after "deploy:cleanup", "deploy:airbrake_notify"
 after "deploy:rollback", "symfony:cache:clear"
