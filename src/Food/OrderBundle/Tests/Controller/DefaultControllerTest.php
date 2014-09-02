@@ -3,19 +3,10 @@
 namespace Food\OrderBundle\Tests\Controller;
 
 use Food\OrderBundle\Controller\DefaultController;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Food\AppBundle\Test\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
 {
-    /*public function testIndex()
-    {
-        $client = static::createClient();
-
-        $crawler = $client->request('GET', '/hello/Fabien');
-
-        $this->assertTrue($crawler->filter('html:contains("Hello Fabien")')->count() > 0);
-    }*/
-
     public function testFormStatusConversion()
     {
         $controller = new DefaultController();
@@ -42,5 +33,28 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals($expectedStatus3, $statusGot3);
         $this->assertEquals($expectedStatus4, $statusGot4);
         $this->assertEquals($expectedStatus5, $statusGot5);
+    }
+
+    public function testRestaurantMobileOrder()
+    {
+        $orderService = $this->getContainer()->get('food.order');
+
+        $place = $this->getPlace('restaurantMobileTest');
+        $placePoint = $this->getPlacePoint($place);
+        $order = $this->getOrder($place, $placePoint, $orderService::$status_new);
+
+        $orderService->setOrder($order);
+        $hash = $orderService->generateOrderHash($order);
+        $order->setOrderHash($hash);
+        $order->setUser($this->getUser());
+        $orderService->saveOrder();
+
+        $this->client->request('GET', '/o/'.$hash.'/');
+        $this->assertTrue(
+            strpos($this->client->getResponse()->getContent(), 'name="status" value="confirm"') > 0
+        );
+        $this->assertTrue(
+            strpos($this->client->getResponse()->getContent(), 'name="status" value="cancel"') > 0
+        );
     }
 }
