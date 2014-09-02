@@ -56,11 +56,28 @@ class User extends BaseUser
      */
     private $phone = null;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="api_token", type="string", length=64, nullable=true)
+     */
+    private $apiToken = null;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="api_token_validity", type="datetime", nullable=true)
+     */
+    private $apiTokenValidity = null;
+
     public function __construct()
     {
         parent::__construct();
     }
 
+    /**
+     * @return string
+     */
     public function getContact()
     {
         if (!$this->getId()) {
@@ -82,6 +99,42 @@ class User extends BaseUser
         }
 
         return $userContactData;
+    }
+
+    public function getNameForOrder()
+    {
+        $theName = "";
+        $name = $this->getFirstname();
+        $surname = $this->getLastname();
+        if (!empty($name)) {
+            $theName = $name;
+        }
+        if (!empty($surname)) {
+            if (!empty($theName)) {
+                $theName.=" ";
+            }
+            $theName.= $surname;
+        }
+        return $theName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        if (!$this->getId()) {
+            return '';
+        }
+
+        $fullUserName = $this->getFirstname();
+
+        $lastname = $this->getLastname();
+        if (!empty($lastname)) {
+            $fullUserName .= ' '.$lastname;
+        }
+
+        return $fullUserName;
     }
 
     /**
@@ -305,5 +358,51 @@ class User extends BaseUser
     public function getFullyRegistered()
     {
         return $this->fully_registered;
+    }
+
+    /**
+     * Set apiToken
+     *
+     * @param string $apiToken
+     * @return User
+     */
+    public function setApiToken($apiToken)
+    {
+        $this->apiToken = $apiToken;
+    
+        return $this;
+    }
+
+    /**
+     * Get apiToken
+     *
+     * @return string 
+     */
+    public function getApiToken()
+    {
+        return $this->apiToken;
+    }
+
+    /**
+     * Set apiTokenValidity
+     *
+     * @param \DateTime $apiTokenValidity
+     * @return User
+     */
+    public function setApiTokenValidity($apiTokenValidity)
+    {
+        $this->apiTokenValidity = $apiTokenValidity;
+    
+        return $this;
+    }
+
+    /**
+     * Get apiTokenValidity
+     *
+     * @return \DateTime 
+     */
+    public function getApiTokenValidity()
+    {
+        return $this->apiTokenValidity;
     }
 }

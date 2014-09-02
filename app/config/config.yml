@@ -102,6 +102,8 @@ twig:
         language_utils: "@food.app.utils.language"
         notifications: "@food.app.utils.notifications"
         cloudfront_url: "%cloudfront_url%"
+        misc_utils: "@food.app.utils.misc"
+
 
 
 # Assetic Configuration
@@ -165,6 +167,12 @@ doctrine:
                 rand: DoctrineExtensions\Query\Mysql\Rand
                 power: Food\AppBundle\DQL\PowerFunction
 
+# Doctrine migrations
+doctrine_migrations:
+    dir_name: %kernel.root_dir%/DoctrineMigrations
+    namespace: Application\Migrations
+    table_name: migration_versions
+    name: Application Migrations
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -224,6 +232,7 @@ sonata_admin:
       #layout: SonataAdminBundle::standard_layout.html.twig
       layout: FoodAppBundle::admin_layout.html.twig
       ajax:   SonataAdminBundle::ajax_layout.html.twig
+      dashboard: FoodAppBundle::dashboard.html.twig
 
       list: SonataAdminBundle:CRUD:list.html.twig
       show: SonataAdminBundle:CRUD:show.html.twig
@@ -247,13 +256,12 @@ sonata_admin:
                       #- sonata.admin.kitchen
                       - sonata.admin.place
                       - sonata.admin.place.reviews
+                      - sonata.admin.place.coverphoto
                       #- sonata.admin.dish.unit
                       #- sonata.admin.dish.size
                       #- sonata.admin.food.category
-                      - sonata.admin.static
-                      - sonata.admin.sms
-                      - sonata.admin.coupon
                       #- sonata.admin.dish.unit.category
+                      - sonata.admin.coupon
                   roles: [ ROLE_ADMIN ]
               acme.admin.group.formanagers:
                   label: admin.group.formanagers
@@ -271,6 +279,13 @@ sonata_admin:
                 label_catalogue: SonataAdminBundle
                 items:
                       - sonata.admin.order
+              admin.system:
+                  items: ~
+                  item_adds:
+                      - sonata.admin.sms
+                      - sonata.admin.street
+                      - sonata.admin.static
+                  roles: [ ROLE_ADMIN ]
               admin.users:
                   items: ~
                   item_adds:
@@ -278,11 +293,16 @@ sonata_admin:
                       - sonata.admin.newsletter_subscribers
                       - sonata.admin.banned_ips
                   roles: [ ROLE_ADMIN ]
-              admin.support:
+#              admin.support:
+#                  items: ~
+#                  item_adds:
+#                      - sonata.admin.support
+#                  roles: [ ROLE_SUPPORT ]
+              admin.reports:
                   items: ~
                   item_adds:
-                      - sonata.admin.support
-                  roles: [ ROLE_SUPPORT ]
+                      - sonata.admin.restaurant_orders
+                  roles: [ ROLE_ADMIN ]
               admin.dispatcher:
                   items: ~
                   item_adds:

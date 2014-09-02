@@ -682,6 +682,7 @@ input.button {}
 .dish-ingredients .custom-checkbox strong {display: block; font-weight: normal;}
 
 .detailed-dish-popup .popup-controls {padding: 16px 21px;}
+
 .detailed-dish-popup .button-submit, .coupon_form_popup .button-submit {display: block; height: 48px; line-height: 48px; font-size: 20px; text-align: center; color: #86560d; border-radius: 4px; background: url(/bundles/foodapp/images/button-rep.png) repeat-x left top; box-shadow: 0 1px 1px #c0c0c0; text-transform: uppercase; letter-spacing: 1.7px; text-shadow: 0 1px 0 #fde99a;}
 .detailed-dish-popup .button-submit span, .coupon_form_popup .button-submit span {display: inline-block; line-height: 48px; padding: 0 29px; background: url(/bundles/foodapp/images/button-arrow.png) no-repeat right center; text-shadow: 0 0 0 #fff;}
 
@@ -1050,6 +1051,91 @@ div.coupon_form_popup {
 }
 .coupon_form_popup input[type="text"] {width: 324px; height: 17px; font-size: 15px; padding: 9px 12px; border: 1px solid #d8d8d8; border-radius: 3px; box-shadow: 0 0 1px #f2f2f2; box-shadow: 0 0 2px #d0c8c1;}
 
+/** EPIC AUTOCOMPLETE START **/
+.typeahead,
+.tt-query,
+.tt-hint {
+    width: 396px;
+    height: 30px;
+    padding: 8px 12px;
+    font-size: 24px;
+    line-height: 30px;
+    border: 2px solid #ccc;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    outline: none;
+}
+
+.typeahead {
+    background-color: #fff;
+}
+
+.typeahead:focus {
+    border: 2px solid #0097cf;
+}
+
+.tt-query {
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+    color: #999
+}
+
+.tt-dropdown-menu {
+    width: 422px;
+    margin-top: 12px;
+    padding: 8px 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+    padding: 3px 20px;
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.tt-suggestion.tt-cursor {
+    color: #fff;
+    background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+    margin: 0;
+}
+.search-food-form .twitter-typeahead {
+    float: left;
+}
+/** Epic autocomplete end **/
+/** Search update **/
+.search-food-form span a { width: 130px !important; }
+#index_city-menu, #index_city-menu li { width: 162px !important; }
+.search-food-form input.input-street[type="text"] {
+    width: 190px;
+    margin-right: 0;
+    border-radius: 0;
+}
+.search-food-form input.input-house[type="text"] {
+    border-left: medium none;
+    border-radius: 0 5px 5px 0;
+    margin-right: 13px;
+    width: 91px;
+}
+
+.coupon_form_popup input[type="text"] {width: 324px; height: 17px; font-size: 15px; padding: 9px 12px; border: 1px solid #d8d8d8; border-radius: 3px; box-shadow: 0 0 1px #f2f2f2; box-shadow: 0 0 2px #d0c8c1;}
+
 .tooltip {
   position: absolute;
   z-index: 1070;
@@ -1320,3 +1406,62 @@ div.coupon_form_popup {
 #change-location-error {
     display: none;
 }
+
+
+/** EURO show start **/
+.restaurant-menu .euro {
+    font-size: 12px;
+    color: #a78f92;
+    display: block;
+    line-height: 12px;
+}
+.restaurant-menu-item .price {
+    line-height: 20px;
+}
+.detailed-dish-popup .euro {
+    font-size: 11px;
+    color: #a78f92;
+    padding-left: 7px;
+}
+.check-item .euro {
+    font-size: 11px;
+    padding-left: 4px;
+}
+.check-item .count.item {
+    width: 30%;
+}
+.check-item .sum.item {
+    width: 70%;
+}
+.check-item .clearfix.pad {
+    padding-left: 0px;
+}
+.check-item .extra {
+    width: 45%;
+}
+.check-item .extra.sum{
+    width: 55%;
+}
+.check-item .extra.sum .euro {
+    font-size: 10px;
+    padding-left: 3px;
+}
+.check-bottom .total-sum.cart {
+    font-size: 12px;
+}
+.check-bottom .total-sum.cart .fl {
+    width: 40%;
+}
+.check-bottom .total-sum.cart .fr {
+    width: 60%;
+}
+.check-bottom .euro {
+    font-size: 80%;
+}
+.check-bottom .total-sum.final .fl {
+    width: 30%;
+}
+.check-bottom .total-sum.final .fr {
+    width: 70%;
+}
+/** EURO show end **/

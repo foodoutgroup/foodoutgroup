@@ -27,6 +27,20 @@ class LoadFirstData implements FixtureInterface
         $admin->setRoles( array('ROLE_ADMIN') ) ;
         $admin->setSuperAdmin(true) ;
         $manager->persist($admin);
+
+        $apiUser = new User();
+        $apiUser->setFirstname('ApiTester')
+            ->setPhone('37061111111')
+            ->setEmail('api_tester@foodout.lt');
+        $apiUser->setPlainPassword('api_tester')
+            ->setApiToken('superApiTokenas')
+            ->setApiTokenValidity(new \DateTime('+1 day'))
+            ->setRoles(array('ROLE_USER'))
+            ->setEnabled(true)
+            ->setFullyRegistered(1);
+        $manager->persist($apiUser);
+
+        // Flush users
         $manager->flush();
 
 

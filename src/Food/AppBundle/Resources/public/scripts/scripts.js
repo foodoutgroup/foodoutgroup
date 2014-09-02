@@ -292,3 +292,51 @@ change_location = function(element,
            .siblings('.ui-dialog-titlebar')
            .remove();
 }
+
+initStreetSearch = function(){
+    var streetsUrl = Routing.generate('food_ajax', { '_locale': 'lt', 'action' : 'find-street' });
+    var streets = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+            url: '?city=%CITY&street=%QUERY',
+            replace: function(url, query) {
+                url = url.replace('%CITY', $('#index_city').val());
+                url = url.replace('%QUERY', query);
+                return streetsUrl + url;
+            }
+        }
+    });
+
+    streets.initialize();
+
+    $('#index_address').typeahead(null, {
+        name: 'streets',
+        displayKey: 'value',
+        source: streets.ttAdapter()
+    });
+}
+initStreetHouseSearch = function(){
+    var streetsUrl = Routing.generate('food_ajax', { '_locale': 'lt', 'action' : 'find-street-house' });
+    var streets = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+            url: '?city=%CITY&street=%STREET&house=%QUERY',
+            replace: function(url, query) {
+                url = url.replace('%CITY', $('#index_city').val());
+                url = url.replace('%STREET', $('#index_address').val());
+                url = url.replace('%QUERY', query);
+                return streetsUrl + url;
+            }
+        }
+    });
+
+    streets.initialize();
+
+    $('#index_house').typeahead(null, {
+        name: 'houses',
+        displayKey: 'value',
+        source: streets.ttAdapter()
+    });
+}

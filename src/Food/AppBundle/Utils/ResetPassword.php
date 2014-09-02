@@ -3,7 +3,7 @@
 namespace Food\AppBundle\Utils;
 
 use Food\AppBundle\Traits;
-use Symfony\Component\DependencyInjection\Container;
+use Food\UserBundle\Entity\User;
 
 class ResetPassword
 {
@@ -12,6 +12,10 @@ class ResetPassword
     const RESET_USER_PASSWORD_MAILER_ID = '30013949';
 
     /**
+     * Confirmation email
+     *
+     * @param string $email
+     *
      * @return boolean Return true on success, false on failure to send email.
      */
     public function sendEmail($email)
@@ -35,6 +39,11 @@ class ResetPassword
         return true;
     }
 
+    /**
+     * Send password reset email
+     *
+     * @param User $user
+     */
     protected function sendMailerEmail($user)
     {
         $mailer = $this->container->get('food.mailer');

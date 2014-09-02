@@ -173,6 +173,51 @@ class UploadServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($filename, $fileNameGot);
     }
 
+    /**
+     * Test when a new object and has no ID
+     * @depends testGenerateFileName
+     */
+    public function testGenerateFileNameNoId()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\Container');
+
+        $theObject = $this->getMock(
+            '\Food\AppBundle\Entity\Uploadable',
+            array('getId', 'getFile')
+        );
+
+        $theFile = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $userId = 11;
+        $filename = 'noid_'.date('ymdhis').'_9d02c80338e3f7d43ea73f6c4c1fcf95.jpg';
+
+        $uploadableService = new UploadService($container, $userId);
+        $uploadableService->setObject($theObject);
+        $uploadableService->setUploadableFieldGetter('getLogo');
+
+        $theObject->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(0));
+
+        $theObject->expects($this->exactly(2))
+            ->method('getFile')
+            ->will($this->returnValue($theFile));
+
+        $theFile->expects($this->once())
+            ->method('getClientOriginalName')
+            ->will($this->returnValue('superTurboLogotipas'));
+
+        $theFile->expects($this->once())
+            ->method('guessClientExtension')
+            ->will($this->returnValue('jpg'));
+
+        $fileNameGot = $uploadableService->generateFileName();
+
+        $this->assertEquals($filename, $fileNameGot);
+    }
+
     public function testUpload()
     {
         $this->markTestSkipped(
@@ -304,5 +349,50 @@ class UploadServiceTest extends \PHPUnit_Framework_TestCase
             ->method('getId');
 
         $uploadableService->upload(null);
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage File can not be empty
+     */
+    public function testResizePhotoNoFile()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\Container');
+        $userId = 24;
+
+        $uploadService = new UploadService($container, $userId);
+        $uploadService->resizePhoto('', 1234);
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage I can not resize ir width is not specified
+     */
+    public function testResizePhotoNoSize()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\Container');
+        $userId = 24;
+
+        $uploadService = new UploadService($container, $userId);
+        $uploadService->resizePhoto('abcd.jpg', null);
+    }
+
+    public function testGetMobileImageName()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\Container');
+        $userId = 24;
+        $expectedFileName1 = '/uploads/dishes/mobile_235_aspect_omfgwhatimage.jpg';
+        $expectedFileName2 = '/uploads/places/mobile_1024_box_so_place.jpg';
+        $expectedFileName3 = 'mobile_32_aspect_wow_icon.ico';
+
+        $uploadService = new UploadService($container, $userId);
+
+        $gotFileName1 = $uploadService->getMobileImageName('/uploads/dishes/omfgwhatimage.jpg', 235, false);
+        $gotFileName2 = $uploadService->getMobileImageName('/uploads/places/so_place.jpg', 1024, true);
+        $gotFileName3 = $uploadService->getMobileImageName('wow_icon.ico', 32, false);
+
+        $this->assertEquals($expectedFileName1, $gotFileName1);
+        $this->assertEquals($expectedFileName2, $gotFileName2);
+        $this->assertEquals($expectedFileName3, $gotFileName3);
     }
 }

@@ -161,6 +161,105 @@ class MiscTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($isBannedExpected, $isBanned);
     }
 
+    public function testParseAddress()
+    {
+        $util = new Misc();
+
+        $expectedResult1 = array(
+            'street' => '',
+            'house' => '',
+            'flat' => '',
+        );
+
+        $expectedResult2 = array(
+            'street' => 'Laisvės pr.',
+            'house' => '77',
+            'flat' => '',
+        );
+
+        $expectedResult3 = array(
+            'street' => 'Laisves pr.',
+            'house' => '77c',
+            'flat' => '',
+        );
+
+        $expectedResult4_5_6_7 = array(
+            'street' => 'Laisves pr.',
+            'house' => '77c',
+            'flat' => '58',
+        );
+
+        $expectedResult8 = array(
+            'street' => 'Architektu',
+            'house' => '53',
+            'flat' => '',
+        );
+
+        $expectedResult9 = array(
+            'street' => 'Architektų',
+            'house' => '53',
+            'flat' => '',
+        );
+
+        $expectedResult10 = array(
+            'street' => 'Architektų g.',
+            'house' => '53',
+            'flat' => '',
+        );
+
+        $expectedResult11 = array(
+            'street' => 'Architektų g',
+            'house' => '53',
+            'flat' => '',
+        );
+
+        $expectedResult12 = array(
+            'street' => 'Laisves pr.',
+            'house' => '77 c',
+            'flat' => '',
+        );
+
+        // Empty test
+        $address1 = '';
+        $address2 = 'Laisvės pr. 77';
+        $address3 = 'Laisves pr. 77c';
+        $address4 = 'Laisves pr. 77c-58';
+        $address5 = 'Laisves pr. 77c -58';
+        $address6 = 'Laisves pr. 77c - 58';
+        $address7 = 'Laisves pr. 77c 58';
+        $address8 = 'Architektu 53';
+        $address9 = 'Architektų 53';
+        $address10 = 'Architektų g. 53';
+        $address11 = 'Architektų g 53';
+        $address12 = 'Laisves pr. 77 c';
+
+        $gotResult1 = $util->parseAddress($address1);
+        $gotResult2 = $util->parseAddress($address2);
+        $gotResult3 = $util->parseAddress($address3);
+        $gotResult4 = $util->parseAddress($address4);
+        $gotResult5 = $util->parseAddress($address5);
+        $gotResult6 = $util->parseAddress($address6);
+        $gotResult7 = $util->parseAddress($address7);
+        $gotResult8 = $util->parseAddress($address8);
+        $gotResult9 = $util->parseAddress($address9);
+        $gotResult10 = $util->parseAddress($address10);
+        $gotResult11 = $util->parseAddress($address11);
+        $gotResult12 = $util->parseAddress($address12);
+
+        $this->assertEquals($expectedResult1, $gotResult1);
+        $this->assertEquals($expectedResult2, $gotResult2);
+        $this->assertEquals($expectedResult3, $gotResult3);
+        $this->assertEquals($expectedResult4_5_6_7, $gotResult4);
+        $this->assertEquals($expectedResult4_5_6_7, $gotResult5);
+        $this->assertEquals($expectedResult4_5_6_7, $gotResult6);
+        $this->assertEquals($expectedResult4_5_6_7, $gotResult7);
+        $this->assertEquals($expectedResult8, $gotResult8);
+        $this->assertEquals($expectedResult9, $gotResult9);
+        $this->assertEquals($expectedResult10, $gotResult10);
+        $this->assertEquals($expectedResult11, $gotResult11);
+        $this->assertEquals($expectedResult12, $gotResult12);
+    }
+
     public function testEuro()
     {
         $util = new Misc();

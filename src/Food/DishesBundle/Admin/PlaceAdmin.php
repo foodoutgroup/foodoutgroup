@@ -45,6 +45,8 @@ class PlaceAdmin extends FoodAdmin
                         'alcoholRules' => array('label' => 'admin.place.alcohol_rules', 'required' => false,),
                 )
             ))
+            ->add('chain', null, array('label' => 'admin.place.chain', 'required' => false,))
+            ->add('navision', 'checkbox', array('label' => 'admin.place.navision', 'required' => false,))
             ->add('kitchens', null, array(
                 'query_builder' => $kitchenQuery,
                 'multiple' => true,
@@ -63,6 +65,19 @@ class PlaceAdmin extends FoodAdmin
             ->add('disabledOnlinePayment', 'checkbox', array('label' => 'admin.place.disabled_online_payment', 'required' => false))
 
             ->add('file', 'file', $options)
+        /*
+            ->add('photos', 'sonata_type_collection',
+                array(
+                    //'by_reference' => true,
+                    'max_length' => 2,
+                    'label' => 'admin.place_cover_photos',
+                ),
+                array(
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                )
+            )
+        */
             ->add('points', 'sonata_type_collection',
                 array(
                     //'by_reference' => false,
@@ -146,6 +161,7 @@ class PlaceAdmin extends FoodAdmin
         $securityContext = $this->getContainer()->get('security.context');
         $user = $securityContext->getToken()->getUser();
         $this->_fixPoints($object, $user);
+        $this->_fixPhotos($object);
         $this->saveFile($object);
         parent::prePersist($object);
     }
@@ -158,6 +174,7 @@ class PlaceAdmin extends FoodAdmin
         $container = $this->getConfigurationPool()->getContainer();
         $securityContext = $container->get('security.context');
         $this->_fixPoints($object, $securityContext->getToken()->getUser());
+        $this->_fixPhotos($object);
         $this->saveFile($object);
         parent::preUpdate($object);
     }
@@ -179,6 +196,16 @@ class PlaceAdmin extends FoodAdmin
                 $point->setCreatedBy($user);
             }
         }
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Place $object
+     */
+    private function _fixPhotos($object)
+    {
+       // foreach($object->getPhotos() as $photo) {
+       //     $photo->setPlace($object);
+       // }
     }
 
     /**

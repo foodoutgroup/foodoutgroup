@@ -2,6 +2,10 @@ food_monitoring:
     resource: "@FoodMonitoringBundle/Resources/config/routing.yml"
     prefix:   /
 
+food_api:
+    resource: "@FoodApiBundle/Resources/config/routing.yml"
+    prefix:   /api/v1/
+
 food_sms:
     resource: "@FoodSmsBundle/Resources/config/routing.yml"
     prefix:   /

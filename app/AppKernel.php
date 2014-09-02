@@ -5,6 +5,21 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
+
+    /**
+     * Constructor.
+     *
+     * @param string  $environment The environment
+     * @param bool    $debug       Whether to enable debugging or not
+     *
+     * @api
+     */
+    public function __construct($environment, $debug)
+    {
+        date_default_timezone_set( 'Europe/Vilnius' );
+        parent::__construct($environment, $debug);
+    }
+
     public function registerBundles()
     {
         $bundles = array(
@@ -15,6 +30,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Food\DishesBundle\FoodDishesBundle(),
             new Food\AppBundle\FoodAppBundle(),
@@ -41,7 +57,10 @@ class AppKernel extends Kernel
             new Trsteel\CkeditorBundle\TrsteelCkeditorBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Food\MonitoringBundle\FoodMonitoringBundle(),
+            new Food\ApiBundle\FoodApiBundle(),
             new Pirminis\GatewayBundle\PirminisGatewayBundle(),
+            new Food\ReportBundle\FoodReportBundle(),
+            new Ob\HighchartsBundle\ObHighchartsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

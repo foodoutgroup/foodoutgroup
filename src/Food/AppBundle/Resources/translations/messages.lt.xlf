@@ -24,7 +24,11 @@
       </trans-unit>
       <trans-unit id="44f58adead70171ab653c725c9abf0c3" resname="index.street">
         <source>index.street</source>
-        <target>Adresas (pvz. Laisvės pr. 77)</target>
+        <target>Adresas (pvz. Laisvės pr.)</target>
+      </trans-unit>
+      <trans-unit id="index.house" resname="index.house">
+        <source>index.house</source>
+        <target>Namas</target>
       </trans-unit>
       <trans-unit id="bb1fb2fdfdba48c2b3d2ec83e968729c" resname="index.findfood">
         <source>index.findfood</source>
@@ -937,6 +941,38 @@
       <trans-unit id="general.resetting.password_must_match" resname="general.resetting.password_must_match">
         <source>general.resetting.password_must_match</source>
         <target>Slaptažodžiai turi sutapti.</target>
+      </trans-unit>
+      <trans-unit id="registration.user.exists" resname="registration.user.exists">
+          <source>registration.user.exists</source>
+          <target>Vartotojas tokiu el. paštu jau egzistuoja</target>
+      </trans-unit>
+      <trans-unit id="registration.phone.is_empty" resname="registration.phone.is_empty">
+          <source>registration.phone.is_empty</source>
+          <target>Nenurodytas telefono numeris</target>
+      </trans-unit>
+      <trans-unit id="registration.firstname.is_empty" resname="registration.firstname.is_empty">
+          <source>registration.firstname.is_empty</source>
+          <target>Nenurodytas Vardas</target>
+      </trans-unit>
+      <trans-unit id="registration.email.is_empty" resname="registration.email.is_empty">
+          <source>registration.email.is_empty</source>
+          <target>Nenurodytas el.pašto adresas</target>
+      </trans-unit>
+      <trans-unit id="registration.password.too_short" resname="registration.password.too_short">
+          <source>registration.password.too_short</source>
+          <target>Slaptažodis negali būti trumpesnis, nei 6 simboliai</target>
+      </trans-unit>
+      <trans-unit id="mobile.change_password.password.is_empty" resname="mobile.change_password.password.is_empty">
+          <source>mobile.change_password.password.is_empty</source>
+          <target>Tučias slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="mobile.change_password.user.id_dont_match" resname="mobile.change_password.user.id_dont_match">
+          <source>mobile.change_password.user.id_dont_match</source>
+          <target>Nesutampa prijungtas vartotojas ir paduotas ID</target>
+      </trans-unit>
+      <trans-unit id="mobile.order_status.order_delayed" resname="mobile.order_status.order_delayed">
+          <source>mobile.order_status.order_delayed</source>
+          <target>Užsakymas vėluos %delayTime% min.</target>
       </trans-unit>
     </body>
   </file>

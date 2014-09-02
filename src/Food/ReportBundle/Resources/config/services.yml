@@ -1,0 +1,7 @@
+parameters:
+
+services:
+    food.report:
+        class: Food\ReportBundle\Service\ReportService
+        calls:
+            - [setContainer, [@service_container]]

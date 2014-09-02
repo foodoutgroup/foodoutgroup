@@ -40,7 +40,7 @@ class Uploadable {
 
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getImageSetted()
     {
@@ -52,8 +52,13 @@ class Uploadable {
      */
     public function getWebPath()
     {
-        $getter = 'get'.ucfirst($this->getUploadableField());
-        return null === $this->$getter() ? null : $this->getUploadDir().'/'.$this->getImageSetted();
+        $image  = $this->getImageSetted();
+        // If no image is set - dont return just the path You little bastard!
+        if (empty($image)) {
+            return null;
+        }
+
+        return null === $image ? null : $this->getUploadDir().'/'.$image;
     }
 
     /**
@@ -68,8 +73,7 @@ class Uploadable {
             return null;
         }
 
-        $getter = 'get'.ucfirst($this->getUploadableField());
-        return null === $this->$getter() ? null : $this->getUploadDir().'/thumb_'.($type!="" ? $type."_" : "") .$image;
+        return null === $image ? null : $this->getUploadDir().'/thumb_'.($type!="" ? $type."_" : "") .$image;
     }
 
     /**

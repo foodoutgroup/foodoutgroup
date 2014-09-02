@@ -67,6 +67,10 @@
                 <source>batch</source>
                 <target></target>
             </trans-unit>
+            <trans-unit id="admin.system">
+                <source>admin.system</source>
+                <target>Sistema</target>
+            </trans-unit>
 
             <!-- Kitchen -->
             <trans-unit id="admin.kitchens.list.title">
@@ -1150,6 +1154,32 @@
                 <target>ID</target>
             </trans-unit>
 
+            <!-- Street admin -->
+            <trans-unit id="admin.street">
+                <source>admin.street</source>
+                <target>Gatvės</target>
+            </trans-unit>
+            <trans-unit id="Street List">
+                <source>Street List</source>
+                <target>Gatvės</target>
+            </trans-unit>
+            <trans-unit id="admin.street.city">
+                <source>admin.street.city</source>
+                <target>Miestas</target>
+            </trans-unit>
+            <trans-unit id="admin.street.city_placeholder">
+                <source>admin.street.city_placeholder</source>
+                <target>Vilnius</target>
+            </trans-unit>
+            <trans-unit id="admin.street.street">
+                <source>admin.street.street</source>
+                <target>Gatvė</target>
+            </trans-unit>
+            <trans-unit id="admin.street.street_placeholder">
+                <source>admin.street.street_placeholder</source>
+                <target>Laisvės pr.</target>
+            </trans-unit>
+
             <!-- Kuponu listas -->
             <trans-unit id="Coupon List">
                 <source>Coupon List</source>
@@ -1186,6 +1216,70 @@
             <trans-unit id="admin.coupon.code">
                 <source>admin.coupon.code</source>
                 <target>Kodas</target>
+            </trans-unit>
+
+            <!-- Cover photo admin -->
+            <trans-unit id="admin.place_cover_photo">
+                <source>admin.place_cover_photo</source>
+                <target>Vietų coveriai</target>
+            </trans-unit>
+            <trans-unit id="Place Cover Photo List">
+                <source>Place Cover Photo List</source>
+                <target>Vietų coveriai</target>
+            </trans-unit>
+            <trans-unit id="admin.place_cover_photo.place">
+                <source>admin.place_cover_photo.place</source>
+                <target>Vieta</target>
+            </trans-unit>
+            <trans-unit id="admin.place_cover_photo.photo">
+                <source>admin.place_cover_photo.photo</source>
+                <target>Nuotrauka</target>
+            </trans-unit>
+
+            <!-- Reports -->
+            <trans-unit id="admin.reports">
+                <source>admin.reports</source>
+                <target>Ataskaitos</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.place">
+                <source>admin.reports.place</source>
+                <target>Restoranas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.order_count">
+                <source>admin.reports.order_count</source>
+                <target>Kiekis</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.devliver_count">
+                <source>admin.reports.devliver_count</source>
+                <target>Su pristatymu</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.pickup_count">
+                <source>admin.reports.pickup_count</source>
+                <target>Atsiėmė vietoje</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.order_sum">
+                <source>admin.reports.order_sum</source>
+                <target>Užsakymų suma</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.month">
+                <source>admin.reports.month</source>
+                <target>Mėnuo</target>
+            </trans-unit>
+            <trans-unit id="admin.report.restaurant_orders">
+                <source>admin.report.restaurant_orders</source>
+                <target>Restorano užsakymų kiekis</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.order_count.period">
+                <source>admin.reports.order_count.period</source>
+                <target>Periodas: </target>
+            </trans-unit>
+            <trans-unit id="admin.reports.group_by_month">
+                <source>admin.reports.group_by_month</source>
+                <target>Grupuoti pagal mėnesį</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.date_range">
+                <source>admin.reports.date_range</source>
+                <target>Laikotarpis (nuo - iki)</target>
             </trans-unit>
         </body>
     </file>
