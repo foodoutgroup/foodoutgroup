@@ -974,6 +974,10 @@
           <source>mobile.order_status.order_delayed</source>
           <target>Užsakymas vėluos %delayTime% min.</target>
       </trans-unit>
+      <trans-unit id="cart.didnt_reach_min_cart" resname="cart.didnt_reach_min_cart">
+          <source>cart.didnt_reach_min_cart</source>
+          <target>Nepasiekta minimali krepšelio suma!</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
