@@ -90,7 +90,7 @@ class StaticService {
             ->setMaxResults($limit);
 
         if ($onlyVisible) {
-            $pagesQueryBuilder->where('s.visible = 1');
+            $pagesQueryBuilder->andWhere('s.visible = 1');
         }
 
         $pagesQuery = $pagesQueryBuilder->getQuery();
