@@ -43,6 +43,7 @@ class OrderService extends ContainerAware
     public static $status_finished = "finished";
     public static $status_canceled = "canceled";
 
+    public static $status_pre = "pre";
     public static $status_nav_problems = "nav_problems";
 
     // TODO o gal sita mapa i configa? What do You think?
@@ -1247,6 +1248,10 @@ class OrderService extends ContainerAware
      */
     public function informPlace($isReminder=false)
     {
+        $order = $this->getOrder();
+        if ($order->getOrderStatus()== OrderService::$status_pre) {
+            return;
+        }
         if (!$isReminder) {
             $this->notifyOrderCreate();
         }
@@ -1257,7 +1262,6 @@ class OrderService extends ContainerAware
         $miscUtils = $this->container->get('food.app.utils.misc');
         $country = $this->container->getParameter('country');
 
-        $order = $this->getOrder();
         $placePoint = $order->getPlacePoint();
         $placePointEmail = $placePoint->getEmail();
         $placePointAltEmail1 = $placePoint->getAltEmail1();

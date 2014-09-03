@@ -40,7 +40,7 @@ class OrderService extends ContainerAware
         return $returner;
     }
 
-    public function createOrder(Request $requestOrig, JsonRequest $request)
+    public function createOrder(Request $requestOrig, JsonRequest $request, $isThisPre = false)
     {
         /**
          * {
@@ -222,6 +222,11 @@ class OrderService extends ContainerAware
                 (string)$searchCrit['lng']
             );
             $os->getOrder()->setAddressId($address);
+        }
+        if ($isThisPre) {
+            $os->getOrder()->setOrderStatus(
+                \Food\OrderBundle\Service\OrderService::$status_pre
+            );
         }
         $os->saveOrder();
         $billingUrl = $os->billOrder();

@@ -49,15 +49,65 @@
     });
 {% endblock %}
 {% block body %}
+    {% javascripts '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.pack.js'
+                   '@FoodAppBundle/Resources/public/scripts/fancy/helpers/jquery.fancybox-media.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% stylesheets '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    {% endstylesheets %}
+
+    <div class="change-location-box"></div>
     <div class="site-center">
     <div class="site-block">
     <div class="page-path clearfix">{#<a href="{{ path('food_homepage') }}">Pradžia</a>#}</div>{# TODO breadcrumbs <a href="#">Restoranai arti Žirmūnų</a>#}
     <div class="page-title">
-        <h1 class="clearfix"><span class="place-counter"></span><a href="{{ path('food_homepage') }}" class="change-location-link">{% trans %}places.change_address{% endtrans %}</a></h1>
+        <h1 class="clearfix">
+            <span class="place-counter"></span>
+            <a href="#" id="places-change-location-link">{% trans %}places.change_address{% endtrans %}</a>
+        </h1>
         {% if recommended==0 and ( location == null or (location.not_found == true and location.street_found==true)) %}
             <div class="alert alert2 alert-warning"><li>{% trans %}places.is_not_detailed_search{% endtrans %}</li></div>
         {% endif %}
     </div>
+    {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'places-change-address'} %}
+    <script type="text/javascript">
+        // <![CDATA[
+            $(document).ready(function() {
+                $('#places-change-location-link').click(function() {
+                    var data_callback, data_callback;
+
+                    click_callback = function(options) {
+                        if (options.response.data.success == 1) {
+                            window.location = '{{ url('food_places_lt_main') }}';
+                        } else {
+                            options.dialog.parent().unmask();
+                            options.alert.show();
+
+                            setTimeout(function(){
+                                options.alert.hide();
+                            }, 5000);
+                        }
+                    }
+
+                    data_callback = function() {
+                        return { city: $('.city-row select').val(),
+                                 address: $('.address-row input').val() };
+                    }
+
+                    change_location($('#places-change-address'),
+                                    click_callback,
+                                    data_callback,
+                                    '{% trans %}cart.checkout.address_change_change{% endtrans %}',
+                                    '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
+                                    '{{ url('food_ajax', {'action': 'find-address'}) }}');
+
+                    return false;
+                })
+            });
+        // ]]>
+    </script>
     <div class="clearfix">
         <div class="content-lefter">
             {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {})) }}

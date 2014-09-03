@@ -59,7 +59,8 @@ h4.padded {
 }
 
 .order_list tr.even,
-.drivers_list tr.even {
+.drivers_list tr.even,
+.reports_list tr.even {
     background-color: #e7e7e7;
 }
 
@@ -73,3 +74,22 @@ h4.padded {
     /*height: 26px;*/
     /*width: 26px;*/
 /*}*/
+
+.reports_list {
+
+}
+.reports_list td {
+    padding: 5px;
+}
+.reports_list td.center {
+    text-align: center;
+}
+.reports_list td.narrow {
+    width: 90px;
+}
+.dashboardGraph {
+    min-width: 400px;
+    height: 400px;
+    margin: 0 auto;
+    margin-bottom: 5px;
+}
