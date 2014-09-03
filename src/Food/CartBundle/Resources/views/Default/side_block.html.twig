@@ -50,6 +50,9 @@
                 </div>
             {% endif %}
         </div>
+        {% if total_cart < place.cartMinimum %}
+            <div class="alert alert-warning text-center">{{ 'cart.didnt_reach_min_cart'|trans }}</div>
+        {% endif %}
         {% if inCart == false %}
             <a href="{{ path('food_cart', { 'placeId' : place.id }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
         {% endif %}
