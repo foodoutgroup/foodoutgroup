@@ -174,10 +174,7 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testTwoMessagesToResend()
     {
-        $this->markTestSkipped(
-            'Pakeisti routai, nebeturim default actionu mokomuju. Reikia pakeisti i veikianti testa'
-        );
-
+        // TODO persidarom i zmoniska testa su DB
         $container = $this->getMock(
             'Symfony\Component\DependencyInjection\Container',
             array('getParameter', 'get')
@@ -215,6 +212,11 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
             ->with('food.infobip')
             ->will($this->returnValue($infobipProvider));
 
+        $container->expects($this->at(3))
+            ->method('get')
+            ->with('food.infobip')
+            ->will($this->returnValue($infobipProvider));
+
         $container->expects($this->once())
             ->method('getParameter')
             ->with('sms.available_providers')
@@ -223,7 +225,7 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
         $infobipProvider->expects($this->never())
             ->method('setDebugEnabled');
 
-        $messagingService->expects($this->once())
+        $messagingService->expects($this->exactly(2))
             ->method('setMessagingProvider')
             ->with($infobipProvider);
 
@@ -239,6 +241,10 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getId')
             ->will($this->returnValue(9));
 
+        $message->expects($this->any(0))
+            ->method('getSmsc')
+            ->will($this->returnValue('Silverstreet'));
+
         $messagingService->expects($this->exactly(2))
             ->method('sendMessage')
             ->with($message);
@@ -253,7 +259,6 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertRegExp('/2 stuck messages found./', $commandTester->getDisplay());
-        $this->assertRegExp('/Resending message id: 5/', $commandTester->getDisplay());
         $this->assertRegExp('/Resending message id: 9/', $commandTester->getDisplay());
         $this->assertRegExp('/2 messages sent/', $commandTester->getDisplay());
     }

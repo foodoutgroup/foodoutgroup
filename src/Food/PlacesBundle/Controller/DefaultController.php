@@ -56,8 +56,6 @@ class DefaultController extends Controller
         $this->get('food.places')->saveRelationPlaceToPoint($places);
         $places = $this->get('food.places')->placesPlacePointsWorkInformation($places);
 
-
-
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
 
         return $this->render(
@@ -70,12 +68,6 @@ class DefaultController extends Controller
 
             )
         );
-    }
-
-    public function citiesAction()
-    {
-        $cities = $this->get('food.places')->getAvailableCities();
-        return new Response(json_encode($cities));
     }
 
     public function recommendedAction()
