@@ -1051,6 +1051,16 @@ div.coupon_form_popup {
 }
 .coupon_form_popup input[type="text"] {width: 324px; height: 17px; font-size: 15px; padding: 9px 12px; border: 1px solid #d8d8d8; border-radius: 3px; box-shadow: 0 0 1px #f2f2f2; box-shadow: 0 0 2px #d0c8c1;}
 
+
+.disabled_dish img { display: block; }
+
+.disabled_dish img,
+.disabled_dish .disabled {
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+}
+
+
 /** EPIC AUTOCOMPLETE START **/
 .typeahead,
 .tt-query,

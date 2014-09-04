@@ -132,4 +132,7 @@ class Misc
 
         return round($euroPrice, 2);
     }
+
+
+
 }

@@ -206,7 +206,14 @@
                 <source>admin.dishes.sizes</source>
                 <target>Dydžiai/porcijos</target>
             </trans-unit>
-
+            <trans-unit id="admin.dishes.time_from">
+                <source>admin.dishes.time_from</source>
+                <target>Gamyba nuo</target>
+            </trans-unit>
+            <trans-unit id="admin.dishes.time_to">
+                <source>admin.dishes.time_to</source>
+                <target>Gamyba iki</target>
+            </trans-unit>
             <!-- Dish options -->
             <trans-unit id="admin.dish_options">
                 <source>admin.dish_options</source>
@@ -359,6 +366,10 @@
             <trans-unit id="admin.place.disabled_online_payment">
                 <source>admin.place.disabled_online_payment</source>
                 <target>Neleisti atsiskaityti internetu</target>
+            </trans-unit>
+            <trans-unit id="admin.place.priority">
+                <source>admin.place.priority</source>
+                <target>Prioritetas</target>
             </trans-unit>
 
             <!-- Place points -->

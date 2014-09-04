@@ -191,6 +191,13 @@ class Place extends Uploadable implements Translatable
     private $disabledOnlinePayment = false;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="priority", type="smallint", options={"default":0})
+     */
+    private $priority;
+
+    /**
      * @ORM\OneToMany(targetEntity="FoodCategory", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
      *
      * @var ArrayCollection
@@ -1333,5 +1340,28 @@ class Place extends Uploadable implements Translatable
     public function getNavision()
     {
         return $this->navision;
+    }
+
+    /**
+     * Set priority
+     *
+     * @param integer $priority
+     * @return Place
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
+    
+        return $this;
+    }
+
+    /**
+     * Get priority
+     *
+     * @return integer 
+     */
+    public function getPriority()
+    {
+        return $this->priority;
     }
 }

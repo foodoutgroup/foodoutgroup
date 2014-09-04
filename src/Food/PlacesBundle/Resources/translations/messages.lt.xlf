@@ -38,6 +38,17 @@
         <source>admin.dish.recomended</source>
         <target>Rekomenduojama</target>
       </trans-unit>
+
+      <trans-unit id="admin.dish.time_from" resname="admin.dish.time_from">
+              <source>admin.dish.time_from</source>
+              <target>Laikas nuo</target>
+      </trans-unit>
+
+      <trans-unit id="admin.dish.time_to" resname="admin.dish.time_to">
+        <source>admin.dish.time_to</source>
+        <target>Laikas iki</target>
+      </trans-unit>
+
       <trans-unit id="2c33fa8aaa15d65cb09a1d95fc568389" resname="admin.place.point.weekdays_worktime">
         <source>admin.place.point.weekdays_worktime</source>
         <target>Darbo laikas</target>

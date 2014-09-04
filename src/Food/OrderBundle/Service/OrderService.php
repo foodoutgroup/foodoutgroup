@@ -4,6 +4,7 @@ namespace Food\OrderBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Food\CartBundle\Service\CartService;
+use Food\DishesBundle\Entity\Dish;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Coupon;
@@ -1771,6 +1772,14 @@ class OrderService extends ContainerAware
     {
         if (!$takeAway) {
             $list = $this->getCartService()->getCartDishes($place);
+            foreach ($list as $itm) {
+                if (!$this->isOrderableByTime($itm->getDishId())) {
+                    $formErrors[] = array(
+                        'message' => 'order.form.errors.dont_make_item',
+                        'text' => $itm->getDishId()->getName()
+                    );
+                }
+            }
             $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
             if ($total_cart < $place->getCartMinimum()) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum';
@@ -1782,11 +1791,21 @@ class OrderService extends ContainerAware
             }
         } elseif ($place->getMinimalOnSelfDel()) {
             $list = $this->getCartService()->getCartDishes($place);
+            foreach ($list as $itm) {
+                if (!$this->isOrderableByTime($itm->getDishId())) {
+                    $formErrors[] = array(
+                        'message' => 'order.form.errors.dont_make_item',
+                        'text' => $itm->getDishId()->getName()
+                    );
+                }
+            }
             $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
             if ($total_cart < $place->getCartMinimum()) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }
         }
+
+
 
         $pointRecord = null;
 
@@ -2199,6 +2218,40 @@ class OrderService extends ContainerAware
         if ($coupon && $coupon instanceof Coupon && $coupon->getSingleUse()) {
             $coupon->setActive(false);
             $this->saveCoupon($coupon);
+        }
+    }
+
+    /**
+     * @param Dish $dish
+     * @return bool
+     */
+    public function isOrderableByTime(Dish $dish)
+    {
+        $timeFrom = $dish->getTimeFrom();
+        $timeTo = $dish->getTimeTo();
+        if (empty($timeFrom) && empty($timeTo)) {
+            return true;
+        } else {
+            if (!empty($timeFrom) && !empty($timeTo)) {
+                if (date("H:i") >= $timeFrom && date("H:i") <= $timeTo) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } elseif (!empty($timeFrom)) {
+                if (date("H:i") >= $timeFrom) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                // !empty($timeTo);
+                if (date("H:i") <= $timeTo) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
     }
 }

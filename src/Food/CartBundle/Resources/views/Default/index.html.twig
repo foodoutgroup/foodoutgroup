@@ -151,7 +151,11 @@
                             <div class="form-row">
                                 <div class="alert alert-warning">
                                     {% for err in formErrors %}
-                                        <li>{{ err|trans|raw }}</li>
+                                        {% if err is iterable %}
+                                            <li>{{ err.message|trans({'%text%': err.text})|raw }}</li>
+                                        {% else %}
+                                            <li>{{ err|trans|raw }}</li>
+                                        {% endif %}
                                     {% endfor %}
                                 </div>
                             </div>
