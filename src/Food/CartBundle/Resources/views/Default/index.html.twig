@@ -180,7 +180,11 @@
                                 </div>
                                 <div class="form-row form-row-required address-change">
                                     <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
-                                    <input type="text" id="address" value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% endif %}" readonly>
+                                    <input type="text"
+                                           id="address"
+                                           value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% endif %}"
+                                           placeholder="{{ 'index.street'|trans }}"
+                                           readonly>
                                 </div>
                             </div>
                             {# Atsiims pats - leidziame pasirinkti padalini #}
