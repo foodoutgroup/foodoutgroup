@@ -81,7 +81,11 @@ class UserAdmin extends SonataUserAdmin {
             ->add('lastname', 'text', array('label' => 'admin.users.lastname', 'required' => false))
             ->add('username', 'text', array('label' => 'admin.users.username'))
             ->add('email', 'text', array('label' => 'admin.users.email'))
-            ->add('phone', 'text', array('label' => 'admin.users.phone', 'attr' => array('placeholder' => '+370xxxxxxx')))
+            ->add('phone',
+                  'text',
+                  array('label' => 'admin.users.phone',
+                        'attr' => array('placeholder' => '+370xxxxxxx'),
+                        'required' => false))
             ->add('place', 'entity', array(
                 'class' => 'Food\DishesBundle\Entity\Place',
                 'multiple' => false,

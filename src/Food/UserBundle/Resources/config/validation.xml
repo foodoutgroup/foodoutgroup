@@ -16,6 +16,7 @@
                 <option name="maxMessage">fos_user.firstname.long</option>
                 <option name="groups">
                     <value>Registration</value>
+                    <value>FoodProfile</value>
                     <value>Profile</value>
                 </option>
             </constraint>
@@ -24,6 +25,7 @@
                 <option name="message">fos_user.firstname.letters_spaces_only</option>
                 <option name="groups">
                     <value>Registration</value>
+                    <value>FoodProfile</value>
                     <value>Profile</value>
                 </option>
             </constraint>
@@ -37,6 +39,7 @@
                 <option name="maxMessage">fos_user.lastname.long</option>
                 <option name="groups">
                     <value>Registration</value>
+                    <value>FoodProfile</value>
                     <value>Profile</value>
                 </option>
             </constraint>
@@ -45,6 +48,7 @@
                 <option name="message">fos_user.lastname.letters_spaces_only</option>
                 <option name="groups">
                     <value>Registration</value>
+                    <value>FoodProfile</value>
                     <value>Profile</value>
                 </option>
             </constraint>
@@ -54,7 +58,7 @@
             <constraint name="NotBlank">
                 <option name="message">fos_user.phone.blank</option>
                 <option name="groups">
-                    <value>Profile</value>
+                    <value>FoodProfile</value>
                 </option>
             </constraint>
             <constraint name="Length">
@@ -63,12 +67,14 @@
                 <option name="max">11</option>
                 <option name="maxMessage">fos_user.phone.long</option>
                 <option name="groups">
+                    <value>FoodProfile</value>
                     <value>Profile</value>
                 </option>
             </constraint>
             <constraint name="Regex">
                 <option name="pattern">/^370\d{8}$/</option>
                 <option name="groups">
+                    <value>FoodProfile</value>
                     <value>Profile</value>
                 </option>
             </constraint>
