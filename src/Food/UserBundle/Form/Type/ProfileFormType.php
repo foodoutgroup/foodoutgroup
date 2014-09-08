@@ -31,7 +31,7 @@ class ProfileFormType extends BaseType
             'data_class' => $this->class,
             'csrf_protection' => false,
             'validation_groups' => array(
-                'Profile'
+                'FoodProfile'
             )
         ));
     }
