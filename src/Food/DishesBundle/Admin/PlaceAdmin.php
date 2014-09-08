@@ -2,6 +2,7 @@
 namespace Food\DishesBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
+use Food\DishesBundle\Entity\Place;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -32,6 +33,12 @@ class PlaceAdmin extends FoodAdmin
             $options['help'] = '<img src="/' . $pl->getWebPathThumb() . '" />';
         }
 
+        $deliveryOptionChoices = array(
+            Place::OPT_DELIVERY_AND_PICKUP => 'admin.place.delivery_option.delivery_and_pickup',
+            Place::OPT_ONLY_DELIVERY => 'admin.place.delivery_option.delivery',
+            Place::OPT_ONLY_PICKUP => 'admin.place.delivery_option.pickup',
+        );
+
         $formMapper
             ->add('name', 'text', array('label' => 'admin.place.name'))
             ->add(
@@ -55,6 +62,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('active', 'checkbox', array('label' => 'admin.active', 'required' => false,))
             ->add('new', 'checkbox', array('label' => 'admin.is_new', 'required' => false,))
             ->add('recommended', 'checkbox', array('label' => 'admin.place.recommended', 'required' => false,))
+            ->add('deliveryOptions', 'choice', array('label' => 'admin.place.delivery_options', 'required' => true, 'choices' => $deliveryOptionChoices))
             ->add('deliveryTime', null, array('label' => 'admin.place.delivery_time'))
             ->add('deliveryTimeInfo', null, array('label' => 'admin.place.delivery_time_info', 'required' => false))
             ->add('deliveryPrice', null, array('label' => 'admin.place.delivery_price'))

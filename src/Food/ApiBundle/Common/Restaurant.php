@@ -107,7 +107,7 @@ class Restaurant extends ContainerAware
 
         $pickUp = (isset($placePoint) && $placePoint->getPickUp() ? true: false);
         $delivery = (isset($placePoint) && $placePoint->getDelivery() ? true: false);
-        if ($pickUpOnly) {
+        if ($pickUpOnly || $place->getDeliveryOptions() == $place::OPT_ONLY_PICKUP) {
             $pickUp = true;
             $delivery = false;
         }

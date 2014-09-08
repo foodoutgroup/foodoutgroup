@@ -272,6 +272,7 @@ input.button {}
 .restaurant-item .delivery,
 .restaurant-item .min-cart-size {padding-left: 20px;}
 .restaurant-item .delivery {background: url(/bundles/foodapp/images/delivery-ico.png) no-repeat left 2px; margin-right: 36px;}
+.restaurant-item .pickup {background: url(/bundles/foodapp/images/pickup-ico.png) no-repeat left 2px; margin-right: 36px; color: #55422e; padding-left: 13px; letter-spacing: 0.5px;}
 .restaurant-item .min-cart-size {background: url(/bundles/foodapp/images/cart-ico.png) no-repeat left 1px;}
 
 .restaurant-item .delivery span,
@@ -390,6 +391,7 @@ input.button {}
 .restaurant-info-lefter .ico-kitchen {background: url(/bundles/foodapp/images/kitchen-ico.png) no-repeat left top;}
 .restaurant-info-lefter .ico-time {background: url(/bundles/foodapp/images/time-ico.png) no-repeat left top;}
 .restaurant-info-lefter .ico-delivery {background: url(/bundles/foodapp/images/delivery-ico.png) no-repeat left top;}
+.restaurant-info-lefter .ico-pickup {background: url(/bundles/foodapp/images/pickup-ico.png) no-repeat left top;}
 .restaurant-info-lefter .ico-cart {background: url(/bundles/foodapp/images/cart-ico.png) no-repeat left top;}
 .restaurant-info-lefter .ico-payments {background: url(/bundles/foodapp/images/payment-ico.png) no-repeat left top;}
 

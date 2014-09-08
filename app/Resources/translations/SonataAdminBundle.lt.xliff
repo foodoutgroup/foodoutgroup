@@ -360,6 +360,10 @@
                 <source>admin.place.disabled_online_payment</source>
                 <target>Neleisti atsiskaityti internetu</target>
             </trans-unit>
+            <trans-unit id="admin.place.delivery_options">
+                <source>admin.place.delivery_options</source>
+                <target>Pristatymo galimyb.</target>
+            </trans-unit>
 
             <!-- Place points -->
             <trans-unit id="place-point-list">

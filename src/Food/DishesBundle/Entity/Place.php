@@ -18,6 +18,10 @@ use Gedmo\Translatable\Translatable;
  */
 class Place extends Uploadable implements Translatable
 {
+    const OPT_DELIVERY_AND_PICKUP = 'delivery_and_pickup';
+    const OPT_ONLY_DELIVERY = 'delivery';
+    const OPT_ONLY_PICKUP = 'pickup';
+
     /**
      * @var integer
      *
@@ -191,6 +195,13 @@ class Place extends Uploadable implements Translatable
     private $disabledOnlinePayment = false;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="delivery_options", type="string", length=64)
+     */
+    private $deliveryOptions;
+
+    /**
      * @ORM\OneToMany(targetEntity="FoodCategory", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
      *
      * @var ArrayCollection
@@ -299,6 +310,7 @@ class Place extends Uploadable implements Translatable
         $this->points = new \Doctrine\Common\Collections\ArrayCollection();
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->photos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->deliveryOptions = self::OPT_DELIVERY_AND_PICKUP;
     }
 
     /**
@@ -1287,6 +1299,34 @@ class Place extends Uploadable implements Translatable
     public function getDisabledOnlinePayment()
     {
         return $this->disabledOnlinePayment;
+    }
+
+    /**
+     * Set deliveryOptions
+     *
+     * @param string $deliveryOptions
+     *
+     * @throws \InvalidArgumentException
+     * @return Place
+     */
+    public function setDeliveryOptions($deliveryOptions)
+    {
+        if (!in_array($deliveryOptions, array(self::OPT_DELIVERY_AND_PICKUP, self::OPT_ONLY_DELIVERY, self::OPT_ONLY_PICKUP))) {
+            throw new \InvalidArgumentException('Unknown delivery opion: '.$deliveryOptions);
+        }
+        $this->deliveryOptions = $deliveryOptions;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryOptions
+     *
+     * @return string 
+     */
+    public function getDeliveryOptions()
+    {
+        return $this->deliveryOptions;
     }
 
     /**

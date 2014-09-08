@@ -346,13 +346,22 @@ class DefaultController extends Controller
             }
         }
 
+        // Jei restorane galima tik atsiimti arba, jei zmogus rinkosi, kad jis atsiimas, arba jei yra uzsakymas ir fiksuotas atsiemimas vietoje - neskaiciuojam pristatymo
+        if ($place->getDeliveryOptions() == Place::OPT_ONLY_PICKUP ||
+            ($order!=null && $order->getDeliveryType() == 'pickup')
+            || $takeAway == true) {
+            $hideDelivery = true;
+        } else {
+            $hideDelivery = false;
+        }
+
         $params = array(
             'list'  => $list,
             'place' => $place,
             'total_cart' => $total_cart,
             'total_with_delivery' => $total_cart + $place->getDeliveryPrice(),
             'inCart' => (int)$inCart,
-            'hide_delivery' => (($order!=null AND $order->getDeliveryType() == 'pickup') || $takeAway == true ? 1: 0),
+            'hide_delivery' => $hideDelivery,
             'applyDiscount' => $applyDiscount,
             'discountSize' => $discountSize,
             'discountSum' => $discountSum,
