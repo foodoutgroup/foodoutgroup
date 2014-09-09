@@ -74,6 +74,7 @@ class UsersController extends Controller
             $um = $this->getUserManager();
             $dispatcher = $this->container->get('event_dispatcher');
             $translator = $this->get('translator');
+            $miscUtil = $this->get('food.app.utils.misc');
 
             // TODO after testing - remove!
             $this->logActionParams('Register user action', $this->requestParams);
@@ -116,7 +117,7 @@ class UsersController extends Controller
             }
 
             $user->setFirstname($nameParsed['firstname'])
-                ->setPhone($phone)
+                ->setPhone($miscUtil->formatPhone($phone, $this->container->getParameter('country')))
                 ->setEmail($email);
             $user->setRoles(array('ROLE_USER'));
             $user->setEnabled(true);
@@ -180,6 +181,7 @@ class UsersController extends Controller
             // TODO after testing - remove!
             $this->logActionParams('Update user action', $this->requestParams);
             $this->get('food_api.api')->loginByHash($this->getApiToken($request));
+            $miscUtil = $this->get('food.app.utils.misc');
 
             $um = $this->getUserManager();
             $security = $this->get('security.context');
@@ -196,7 +198,7 @@ class UsersController extends Controller
                 )
             );
             if (!empty($phone)) {
-                $user->setPhone($phone);
+                $user->setPhone($miscUtil->formatPhone($phone, $this->container->getParameter('country')));
             }
 
             if (!empty($name)) {
