@@ -13,7 +13,10 @@
         </div>
         <div class="form-row form-row-required address-row">
             <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
-            <input type="text" id="address" value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}">
+            <input type="text"
+                   id="address"
+                   value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}"
+                   placeholder="{{ 'index.street'|trans }}" />
         </div>
     </div>
     <div id="place-point-not-found">
