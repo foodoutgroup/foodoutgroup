@@ -3,24 +3,29 @@
     <h4>{% trans %}general.register_text{% endtrans %}</h4>
 
     <div class="form-row {% if submitted and errors.firstname is not empty %}error{% endif %}">
+        {% set placeholder = 'registration.firstname_placeholder'|trans %}
         {{ form_label(form.firstname) }}
-        {{ form_widget(form.firstname, {'attr': {'title': errors.firstname}}) }}
+        {{ form_widget(form.firstname, {'attr': {'title': errors.firstname, 'placeholder': placeholder}}) }}
     </div>
     <div class="form-row {% if submitted and errors.lastname is not empty %}error{% endif %}">
+        {% set placeholder = 'registration.lastname_placeholder'|trans %}
         {{ form_label(form.lastname) }}
-        {{ form_widget(form.lastname, {'attr': {'title': errors.lastname}}) }}
+        {{ form_widget(form.lastname, {'attr': {'title': errors.lastname, 'placeholder': placeholder}}) }}
     </div>
     <div class="form-row {% if submitted and errors.email is not empty %}error{% endif %}">
+        {% set placeholder = 'registration.email_placeholder'|trans %}
         {{ form_label(form.email) }}
-        {{ form_widget(form.email, {'attr': {'title': errors.email}}) }}
+        {{ form_widget(form.email, {'attr': {'title': errors.email, 'placeholder': placeholder}}) }}
     </div>
     <div class="form-row {% if submitted and errors.plainPassword is not empty %}error{% endif %}">
+        {% set placeholder = 'registration.password_placeholder'|trans %}
         {{ form_label(form.plainPassword.first) }}
-        {{ form_widget(form.plainPassword.first, {'attr': {'title': errors.plainPassword}}) }}
+        {{ form_widget(form.plainPassword.first, {'attr': {'title': errors.plainPassword, 'placeholder': placeholder}}) }}
     </div>
     <div class="form-row {% if submitted and errors.plainPassword is not empty %}error{% endif %}">
+        {% set placeholder = 'registration.repeat_password_placeholder'|trans %}
         {{ form_label(form.plainPassword.second) }}
-        {{ form_widget(form.plainPassword.second, {'attr': {'title': errors.plainPassword}}) }}
+        {{ form_widget(form.plainPassword.second, {'attr': {'title': errors.plainPassword, 'placeholder': placeholder}}) }}
     </div>
     <div class="form-controls clearfix">
         <input type="submit" value="{% trans %}general.register_register_button{% endtrans %}" class="fr">

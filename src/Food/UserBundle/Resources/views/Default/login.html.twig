@@ -2,21 +2,40 @@
     <h3>{% trans %}general.login_title{% endtrans %}</h3>
     <h4>{% trans %}general.login_text{% endtrans %}</h4>
     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-    <div class="login-error alert alert-danger">{% trans from "FOSUserBundle" %}Bad credentials{% endtrans %}</div>
+    <div class="login-error alert alert-danger">
+        {% trans from "FOSUserBundle" %}Bad credentials{% endtrans %}
+    </div>
     <div class="form-row login-form-row">
-        <label for="username">{% trans from 'FOSUserBundle' %}security.login.username{% endtrans %}</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+        <label for="username">
+            {% trans from 'FOSUserBundle' %}security.login.username{% endtrans %}
+        </label>
+        <input type="text"
+               id="username"
+               name="_username"
+               value="{{ last_username }}"
+               required="required"
+               placeholder="{{ 'login.username_placeholder'|trans }}" />
     </div>
 
     <div class="form-row small-margin login-form-row">
-        <label for="password">{% trans from 'FOSUserBundle' %}security.login.password{% endtrans %}</label>
-        <input type="password" id="password" name="_password" required="required" />
+        <label for="password">
+            {% trans from 'FOSUserBundle' %}security.login.password{% endtrans %}
+        </label>
+        <input type="password"
+               id="password"
+               name="_password"
+               required="required"
+               placeholder="{{ 'login.password_placeholder'|trans }}" />
     </div>
     <input type="checkbox" id="remember_me" name="_remember_me" checked class="hidden" />
     <div class="tar">
-        <a href="#" class="reset_password_btn">{% trans %}general.login_forgot_password{% endtrans %}</a>
+        <a href="#" class="reset_password_btn">
+            {% trans %}general.login_forgot_password{% endtrans %}
+        </a>
     </div>
     <div class="form-controls clearfix">
-        <input type="submit" value="{% trans %}general.login_login_button{% endtrans %}" class="fr">
+        <input type="submit"
+               value="{% trans %}general.login_login_button{% endtrans %}"
+               class="fr" />
     </div>
 </form>
