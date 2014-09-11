@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Acl\Exception\Exception;
+use Food\OrderBundle\Form\SebBanklinkType;
 
 class PaymentsController extends Controller
 {
@@ -374,6 +375,45 @@ class PaymentsController extends Controller
         return $this->swedbankCreditCardGatewaySuccessAction($request);
     }
 
+    public function sebBanklinkRedirect($id)
+    {
+        $router = $this->container->get('router');
+        $em = $this->container->get('doctrine.orm.entity_manager');
+        $factory = $this->container->get('form.factory');
+
+        // get order
+        $order = $this->findOrder($id);
+
+        // configuration
+        $successUrl = $router->generate('seb_banklink_success', [], true);
+        $failureUrl = $router->generate('seb_banklink_failure', [], true);
+
+        // seb banklink type
+        $options = ['snd_id' => '',
+                    'curr' => 'LTL',
+                    'acc' => '',
+                    'name' => '',
+                    'lang' => 'LIT'];
+        $type = new SebBanklinkType($options);
+        $form = $factory->createNamed($type, '');
+
+        // template
+        $view = 'FoodOrderBundle:Payments:' .
+                'seb_banklink/redirect.html.twig';
+
+        return $this->render($view, ['form' => $form->createView()]);
+    }
+
+    public function seb_banklink_success()
+    {
+        # code...
+    }
+
+    public function seb_banklink_failure()
+    {
+        # code...
+    }
+
     protected function markOrderPaid($orderService)
     {
         $orderService->setPaymentStatus(
@@ -409,5 +449,13 @@ class PaymentsController extends Controller
         );
 
         $orderService->setPaymentStatus($orderService::$paymentStatusCanceled, 'User canceled payment in Swedbank gateway');
+    }
+
+    protected function findOrder($id)
+    {
+        $order = $em->getRepository('FoodOrderBundle:Order')
+                    ->find($id);
+
+        return $order;
     }
 }

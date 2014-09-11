@@ -1,0 +1,9 @@
+{% extends 'FoodAppBundle::jquery_layout.html.twig' %}
+{% block body %}
+    {{ form(form) }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // $('form').submit();
+        });
+    </script>
+{% endblock %}

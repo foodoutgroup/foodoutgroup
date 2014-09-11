@@ -94,6 +94,10 @@
         <source>cart.checkout.card_on_delivery</source>
         <target>Kredito kortele po pristatymo</target>
       </trans-unit>
+      <trans-unit id="cart.checkout.classic_seb" resname="cart.checkout.classic_seb">
+        <source>cart.checkout.classic_seb</source>
+        <target>SEB banklinkas</target>
+      </trans-unit>
       <trans-unit id="e03c0471e61e194d66faffb54af1ce45" resname="cart.checkout.button_get_back">
         <source>cart.checkout.button_get_back</source>
         <target>GRĮŽTI ATGAL</target>

@@ -153,6 +153,22 @@ swedbank_credit_card_gateway_failure:
     pattern: /payments/swedbank/ccgateway/failure
     defaults: { _controller: FoodOrderBundle:Payments:swedbankCreditCardGatewayFailure }
 
+# classic SEB banklink
+seb_banklink_redirect:
+    pattern: /payments/seb/banklink/redirect/{id}
+    defaults: { _controller: FoodOrderBundle:Payments:sebBanklinkRedirect, id: ~ }
+    requirements:
+        _method: GET
+        id: "[0-9]+"
+
+seb_banklink_success:
+    pattern: /payments/seb/banklink/success
+    defaults: { _controller: FoodOrderBundle:Payments:sebBanklinkSuccess }
+
+seb_banklink_failure:
+    pattern: /payments/seb/banklink/success
+    defaults: { _controller: FoodOrderBundle:Payments:sebBanklinkFailure }
+
 # other
 food_sitemap:
     pattern: /sitemap.xml
