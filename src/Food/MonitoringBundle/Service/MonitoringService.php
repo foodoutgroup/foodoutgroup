@@ -105,4 +105,39 @@ class MonitoringService extends ContainerAware {
 
         return $orders;
     }
+
+    /**
+     * @return Order[]|array
+     */
+    public function getUnassigneddOrders()
+    {
+        $repository = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order');
+
+        $query = $repository->createQueryBuilder('o')
+            ->where('o.order_status IN (:order_status)')
+            ->andWhere('o.paymentStatus = :payment_status')
+            ->andWhere('o.deliveryTime <= :date')
+            ->andWhere('o.deliveryTime > :oldest_date')
+            ->orderBy('o.order_date', 'ASC')
+            ->setParameters(
+                [
+                    'order_status' => array(
+                        OrderService::$status_accepted,
+                        OrderService::$status_delayed,
+                        OrderService::$status_forwarded,
+                    ),
+                    'payment_status' => OrderService::$paymentStatusComplete,
+                    'date' => new \DateTime("+25 minute"),
+                    'oldest_date' => new \DateTime("-1 day")
+                ]
+            )
+            ->getQuery();
+
+        $orders = $query->getResult();
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
 }
