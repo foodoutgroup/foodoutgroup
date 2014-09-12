@@ -166,6 +166,10 @@
         <source>place.delivery_info</source>
         <target>Pristatymas</target>
       </trans-unit>
+      <trans-unit id="place.pickup_info" resname="place.pickup_info">
+        <source>place.pickup_info</source>
+        <target>Tik atsiimti vietoje</target>
+      </trans-unit>
       <trans-unit id="de03d40f9e854231164bfbbfdbfa52f9" resname="place.min_cart_amount">
         <source>place.min_cart_amount</source>
         <target>Min. krepšelis</target>

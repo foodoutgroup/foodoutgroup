@@ -12,54 +12,46 @@
             event.preventDefault();
             return false;
         });
+
         $('.address-change').click(function(e){
             if($(e.target).is('span') || $(e.target).is('input')) {
-                $("#change-address").dialog(
+                var click_callback, data_callback;
+
+                click_callback = function(options) {
+                    if (options.response.data.success == 1 &&
+                        options.response.data.adr == 1)
                     {
-                        modal: true,
-                        resizable:false,
-                        width:360,
-                        buttons: {
-                            'change': {
-                                text: '{% trans %}cart.checkout.address_change_change{% endtrans %}',
-                                click: function() {
-                                    var thisDialog = $(this);
-                                    thisDialog.parent().mask();
-                                    $.ajax({
-                                        type: 'GET',
-                                        url: '{{ path('food_ajax', {'action': 'find-address-and-recount'}) }}',
-                                        data:  {city: $('.city-row select').val(), address: $('.address-row input').val(), place: {{ place.id }} },
-                                        success:  function(resp){
-                                            if (resp.data.success == 1 && resp.data.adr == 1) {
-                                                if (resp.data.nodelivery == 1) {
-                                                    thisDialog.parent().unmask();
-                                                    thisDialog.dialog('close');
-                                                    toTakeOrNotToTake();
-                                                } else {
-                                                    window.location.reload();
-                                                }
-                                            } else {
-                                                thisDialog.parent().unmask();
-                                                $('#change-address .alert').show();
-                                                setTimeout(function(){
-                                                    $('#change-address .alert').hide();
-                                                }, 5000);
-                                            }
-                                        }
-                                    });
-                                }
-                            },
-                            'cancel': {
-                                text: '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
-                                click: function() {
-                                    $(this).dialog('close');
-                                }
-                            }
+                        if (options.response.data.nodelivery == 1) {
+                            options.dialog.parent().unmask();
+                            options.dialog.dialog('close');
+                            toTakeOrNotToTake();
+                        } else {
+                            window.location.reload();
                         }
+                    } else {
+                        options.dialog.parent().unmask();
+                        options.alert.show();
+                        setTimeout(function(){
+                            options.alert.hide();
+                        }, 5000);
                     }
-                ).siblings('.ui-dialog-titlebar').remove();
+                }
+
+                data_callback = function() {
+                    return { city: $('.city-row select').val(),
+                             address: $('.address-row input').val(),
+                             place: {{ place.id }} };
+                }
+
+                change_location($('#change-address'),
+                                click_callback,
+                                data_callback,
+                                '{% trans %}cart.checkout.address_change_change{% endtrans %}',
+                                '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
+                                '{{ url('food_ajax', {'action': 'find-address-and-recount'}) }}');
             }
         });
+
         function toTakeOrNotToTake() {
             $('#place-point-not-found').dialog({
                 modal: true,
@@ -167,12 +159,16 @@
                             <div class="form-row">
                                 <label><br></label>
                                 <div class="delivery-type-radios clearfix">
-                                    <label class="custom-radio">{% trans %}cart.checkout.delivery_to_home{% endtrans %}
-                                        <input type="radio" name="delivery-type" value="deliver"{% if ((order is not null and order.deliveryType == 'deliver') or order is null) and takeAway == false %} checked="checked"{% endif %}>
-                                    </label>
-                                    <label class="custom-radio">{% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
-                                        <input type="radio" name="delivery-type" value="pickup"{% if (order is not null and order.deliveryType == 'pickup') or takeAway == true %} checked="checked"{% endif %}>
-                                    </label>
+                                    {% if place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'delivery' %}
+                                        <label class="custom-radio">{% trans %}cart.checkout.delivery_to_home{% endtrans %}
+                                            <input type="radio" name="delivery-type" value="deliver"{% if ((order is not null and order.deliveryType == 'deliver') or order is null) and takeAway == false %} checked="checked"{% endif %}>
+                                        </label>
+                                    {% endif %}
+                                    {% if place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'pickup' %}
+                                        <label class="custom-radio">{% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
+                                            <input type="radio" name="delivery-type" value="pickup"{% if (order is not null and order.deliveryType == 'pickup') or takeAway == true %} checked="checked"{% endif %}>
+                                        </label>
+                                    {% endif %}
                                 </div>
                             </div>
                             {# Pristatysime i namus - duodam susitvarkyti adresus #}
@@ -188,7 +184,11 @@
                                 </div>
                                 <div class="form-row form-row-required address-change">
                                     <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
-                                    <input type="text" id="address" value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% endif %}" readonly>
+                                    <input type="text"
+                                           id="address"
+                                           value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% endif %}"
+                                           placeholder="{{ 'index.street'|trans }}"
+                                           readonly>
                                 </div>
                             </div>
                             {# Atsiims pats - leidziame pasirinkti padalini #}
@@ -297,31 +297,7 @@
             </div>
         </div>
     </div>
-    <div style="display: none">
-        <div id="change-address" class="delivery-info-form">
-            <div class="alert alert-danger" style="display: none;">
-                {% trans %}cart.checkout.address_not_found{% endtrans %}
-            </div>
-            <div class="form-row form-row-required city-row">
-                <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
-                <select class="custom-select">
-                    <option {% if location and location.city is defined and location.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
-                    <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
-                    <option {% if location and location.city is defined and location.city == 'Klaipėda' %}selected{% endif %}>Klaipėda</option>
-                </select>
-            </div>
-            <div class="form-row form-row-required address-row">
-                <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
-                <input type="text" id="address" value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}">
-            </div>
-        </div>
-        <div id="place-point-not-found">
-            <div class="alert alert-danger">
-                <b>{% trans %}cart.checkout.place_point_not_in_radius{% endtrans %}</b><br />
-                <p>{% trans %}cart.checkout.no_delivery_choose_what_to_do{% endtrans %}</p>
-            </div>
-        </div>
-    </div>
+    {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'change-address'} %}
     <div class="hidden">
         <div id="rules" class="cart_rules_content">
             <div class="cart_rules_inner">{{ static_service.getPage(slug_util.oneByName('ordering_rules', locale).itemId).content|raw }}</div>

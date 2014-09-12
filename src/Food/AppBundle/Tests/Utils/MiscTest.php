@@ -52,6 +52,7 @@ class MiscTest extends \PHPUnit_Framework_TestCase
         $phoneToFormat5 = '00';
         $phoneToFormat6 = '852440593';
         $phoneToFormat7 = '37052440593';
+        $phoneToFormat8 = '37052138069'; // Focus pica
 
         $formatedPhone1 = $util->isMobilePhone($phoneToFormat1, 'LT');
         $formatedPhone2 = $util->isMobilePhone($phoneToFormat2, 'LT');
@@ -60,6 +61,7 @@ class MiscTest extends \PHPUnit_Framework_TestCase
         $formatedPhone5 = $util->isMobilePhone($phoneToFormat5, 'LT');
         $formatedPhone6 = $util->isMobilePhone($phoneToFormat6, 'LT');
         $formatedPhone7 = $util->isMobilePhone($phoneToFormat7, 'LT');
+        $formatedPhone8 = $util->isMobilePhone($phoneToFormat8, 'LT');
 
         $this->assertTrue($formatedPhone1);
         $this->assertTrue($formatedPhone2);
@@ -68,6 +70,7 @@ class MiscTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($formatedPhone5);
         $this->assertFalse($formatedPhone6);
         $this->assertFalse($formatedPhone7);
+        $this->assertFalse($formatedPhone8);
     }
 
     public function testIpBanned()

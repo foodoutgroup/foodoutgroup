@@ -115,7 +115,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle, FoodUserBundle ]
+    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle, FoodUserBundle, FoodPlacesBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

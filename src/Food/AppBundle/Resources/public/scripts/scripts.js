@@ -20,7 +20,7 @@
 
         // Boxer lightbox plugin
 
-        $('.custom-select').selectmenu();
+        bind_custom_select();
 
         $("input").iCheck();
 
@@ -61,7 +61,16 @@
     });
 })(jQuery, window);
 
+bind_custom_select = function() {
+    var custom_select;
+
+    custom_select = $('.custom-select');
+    custom_select.selectmenu();
+}
+
 init_raty = function() {
+    var selector, options;
+
     selector = '.place-review-popup-wrapper .rate-review:empty';
     options = {
         path: '/bundles/foodapp/images/'
@@ -219,6 +228,69 @@ bind_password_resetting_form = function() {
 
         return false;
     });
+}
+
+// 'click_callback' is needed since it's function may differ from page to page.
+// 'data_callback' is needed since we need to lazy evaluate data from inputs at
+// the very last moment.
+change_location = function(element,
+                           click_callback,
+                           data_callback,
+                           change_text,
+                           cancel_text,
+                           request_url)
+{
+    var dialog_options,
+        change_options,
+        cancel_options;
+
+    change_options = {
+        text: change_text,
+        click: function() {
+            var dialog,
+                options,
+                alert;
+
+            dialog = $(this);
+            dialog.parent().mask();
+
+            alert = element.find('.alert');
+
+            options = {
+                type: 'GET',
+                url: request_url,
+                data: data_callback(),
+                success: function(response){
+                    click_callback({response: response,
+                                    dialog: dialog,
+                                    alert: alert});
+                }
+            }
+
+            $.ajax(options);
+        }
+    };
+
+    cancel_options = {
+        text: cancel_text,
+        click: function() {
+            $(this).dialog('close');
+        }
+    };
+
+    dialog_options = {
+        modal: true,
+        resizeable: false,
+        width: 360,
+        buttons: {
+            'change': change_options,
+            'cancel': cancel_options
+        }
+    };
+
+    element.dialog(dialog_options)
+           .siblings('.ui-dialog-titlebar')
+           .remove();
 }
 
 initStreetSearch = function(){

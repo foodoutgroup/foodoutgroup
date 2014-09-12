@@ -5,3 +5,7 @@ food_places_lt_main:
 food_places_lt_recommended:
     pattern: /rekomenduojama/
     defaults: { _controller: FoodPlacesBundle:Default:index, recommended: 1}
+
+food_change_location:
+    pattern: /keisti
+    defaults: { _controller: FoodPlacesBundle:Default:changeLocation }

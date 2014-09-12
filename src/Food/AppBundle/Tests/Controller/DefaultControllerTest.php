@@ -2,23 +2,45 @@
 
 namespace Food\AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Food\AppBundle\Entity\BannedIp;
+use Food\AppBundle\Test\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
 {
-    public function setUp()
+    public function testBanInAction()
     {
-        $this->markTestSkipped(
-            'Pakeisti routai, nebeturim default actionu mokomuju. Reikia pakeisti i veikianti testa'
+        $em = $this->getDoctrine()->getManager();
+        $client = $this->client;
+        $client->followRedirects();
+
+        $ipBan = new BannedIp();
+        $ipBan->setActive(true)
+            ->setCreatedAt(new \DateTime("now"))
+            ->setIp('127.0.0.1')
+            ->setReason('test purpose');
+        $em->persist($ipBan);
+        $em->flush();
+
+        // Test ban in action
+        $crawler = $client->request('GET', '/lt/');
+        $this->assertTrue(
+            $crawler->filter('html:contains("test purpose")')->count() > 0
         );
-    }
 
-    public function testIndex()
-    {
-        $client = static::createClient();
+        // Test ban in action for diferent url
+        $crawler = $client->request('GET', '/lt/pagalba/');
+        $this->assertTrue(
+            $crawler->filter('html:contains("test purpose")')->count() > 0
+        );
 
-        $crawler = $client->request('GET', '/hello/Fabien');
+        // Test - ban is lifted
+        $em->remove($ipBan);
+        $em->flush();
 
-        $this->assertTrue($crawler->filter('html:contains("Hello Fabien")')->count() > 0);
+        $crawler = $client->request('GET', '/lt/');
+
+        $this->assertTrue(
+            $crawler->filter('html:contains("test purpose")')->count() == 0
+        );
     }
 }
