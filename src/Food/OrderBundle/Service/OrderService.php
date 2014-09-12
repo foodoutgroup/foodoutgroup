@@ -1540,6 +1540,42 @@ class OrderService extends ContainerAware
         $mailer->send($message);
     }
 
+
+    public function sendUserInvoice()
+    {
+
+    }
+
+    public function generateUserInvoice()
+    {
+        if (!$this->getOrder() instanceof Order) {
+            throw new \InvalidArgumentException('Cannot generate invoice PDF without order');
+        }
+
+        $filename = __DIR__.'/../../../../web/test.pdf';
+
+        $this->container->get('knp_snappy.pdf')->generateFromHtml(
+            $this->container->get('templating')->render(
+                'FoodOrderBundle:Default:invoice.html.twig',
+                array(
+                    'order'  => $this->getOrder()
+                )
+            ),
+            $filename
+        );
+
+        return $filename;
+    }
+
+    protected function removeUserInvoice($filename)
+    {
+        if (file_exists($filename)) {
+            unlink($filename);
+        } else {
+            throw new \InvalidArgumentException('User Invoice does not exist. Can not delete');
+        }
+    }
+
     /**
      * @param Order $order
      * @param string $newStatus

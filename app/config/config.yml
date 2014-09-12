@@ -62,6 +62,7 @@ parameters:
     evp.test_payments: 0
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
     cloudfront_url: images.foodout.lt
+    invoice.series: FOE
 
 framework:
     #esi:             ~
@@ -89,19 +90,22 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
-        slug_util:    "@food.dishes.utils.slug"
+#       Vars
         locale:       "%locale%"
         page_title:   "%title%"
         currency_display: "%currency_display%"
         currency_iso: "%currency_iso%"
         vat_size: "%vat%"
+        google_maps_api: "%google.maps_api%"
+        cloudfront_url: "%cloudfront_url%"
+        invoice_series: "%invoice.series%"
+#       Services
+        slug_util:    "@food.dishes.utils.slug"
         dish_service: "@food.dishes"
         order_service: "@food.order"
         static_service: "@food.static"
-        google_maps_api: "%google.maps_api%"
         language_utils: "@food.app.utils.language"
         notifications: "@food.app.utils.notifications"
-        cloudfront_url: "%cloudfront_url%"
         misc_utils: "@food.app.utils.misc"
 
 
@@ -361,3 +365,14 @@ pirminis_gateway:
     swedbank:
         vtid: "21911859"
         password: "rMUhc7p7"
+
+knp_snappy:
+    pdf:
+        enabled:    true
+#        binary:     /usr/local/bin/wkhtmltopdf
+        binary:     'C:\wkhtmltopdf\bin\wkhtmltopdf.exe'
+        options:    []
+    image:
+        enabled:    false
+#        binary:     /usr/local/bin/wkhtmltoimage
+#        options:    []

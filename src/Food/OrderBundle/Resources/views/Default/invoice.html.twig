@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <style type="text/css">
+        .data-table {
+            width: 100%; border: none;
+            border-spacing: 1px;
+        }
+        .data-table td {
+            border: 1px solid #000000;;
+        }
+        .data-table td.no-border {
+            border: none;
+        }
+    </style>
+</head>
+<body>
+<div style="text-align: center">
+    <h1>PVM SĄSKAITA-FAKTŪRA</h1>
+    <br />
+    <h3>Serija {{ invoice_series }} Nr. 00342</h3>
+</div>
+<br />
+<br />
+<div style="width: 100%;">
+    <div style="display: inline-block; width: 49%;">
+        PARDAVĖJAS<br />
+        UAB FOODOUT.LT<br />
+        <br />
+        Laisvės pr. 77, Vilnius<br />
+        Įmonės kodas ******<br />
+        PVM mok.kodas ******<br />
+        Swedbank AB<br />
+        Banko kodas 73000<br />
+        A/s ************************<br />
+    </div>
+    <div style="display: inline-block; width: 49%;">
+        PIRKĖJAS<br />
+        Jonas Jonaitis<br />
+        <br />
+        Vytenio g. 15<br />
+        Vilnius<br />
+        <br />
+        Dok.data: {{ order.orderDate|date("Y m d") }}<br />
+    </div>
+</div>
+<br />
+<table class="data-table">
+    <tr>
+        <td>Eil. Nr.</td>
+        <td>Pavadinimas</td>
+        <td>Mato vnt.</td>
+        <td>Kiekis</td>
+        <td>Kaina</td>
+        <td>Suma, Lt</td>
+        <td class="no-border"></td>
+    </tr>
+    {% for dish in order.details %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ dish.dishName }}</td>
+        <td>{{ dish.dishUnitName }}</td>
+        <td>{{ dish.quantity }}</td>
+        <td>{{ dish.price }}</td>
+        <td>{{ dish.price * dish.quantity }}</td>
+        <td class="no-border"></td>
+    </tr>
+    {% endfor %}
+    {# TODO Itraukti pristatymo kaina #}
+    {% set sum_no_vat = ((order.total) / (( vat_size / 100 ) + 1))|round(2) %}
+    <tr>
+        <td colspan="2">Iš viso:</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{{ sum_no_vatl|number_format(2, ',', ' ') }}</td>{# TODO - su ir be pristatymo turi skirtis :) #}
+        <td>354 &euro;</td>
+    </tr>
+    <tr>
+        <td colspan="2">PVM {{ vat_size }}%</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>220,98</td>
+        <td>70 &euro;</td>
+    </tr>
+    <tr>
+        <td colspan="2">Moėti viso:</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{{ order.total|number_format(2, ',', ' ') }}</td>
+        <td>&euro;{{  misc_utils.getEuro(order.total)|number_format(2, ',', ' ')}}</td>
+    </tr>
+</table>
+<br />
+<br />
+<div>Suma žodžiais: {{ misc_utils.priceToText(order.total)|capitalize }}</div>
+<br />
+<div>Sąskaitą išrašė: </div>
+<br />
+<br />
+<br />
+<div>Sąskaitą gavo: __________________________________________________________</div>
+</body>
+</html>
