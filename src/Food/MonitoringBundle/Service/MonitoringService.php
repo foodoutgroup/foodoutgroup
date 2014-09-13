@@ -109,7 +109,7 @@ class MonitoringService extends ContainerAware {
     /**
      * @return Order[]|array
      */
-    public function getUnassigneddOrders()
+    public function getUnassignedOrders()
     {
         $repository = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order');
 

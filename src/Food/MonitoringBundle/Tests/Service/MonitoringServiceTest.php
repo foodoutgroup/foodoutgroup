@@ -63,7 +63,7 @@ class MonitoringServiceTest extends WebTestCase
         echo "Order 2 id: ".$order2->getId()."\n";
         echo "Order 3 id: ".$order3->getId()."\n";
 
-        $unacceptedOrders = $monitoringService->getUnassigneddOrders();
+        $unacceptedOrders = $monitoringService->getUnassignedOrders();
 
         $this->assertTrue(
             count($unacceptedOrders) == 1
