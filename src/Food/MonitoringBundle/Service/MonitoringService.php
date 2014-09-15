@@ -118,6 +118,8 @@ class MonitoringService extends ContainerAware {
             ->andWhere('o.paymentStatus = :payment_status')
             ->andWhere('o.deliveryTime <= :date')
             ->andWhere('o.deliveryTime > :oldest_date')
+            ->andWhere('o.place_point_self_delivery != 1')
+            ->andWhere('o.deliveryType != :delivery_type')
             ->orderBy('o.order_date', 'ASC')
             ->setParameters(
                 [
@@ -128,7 +130,8 @@ class MonitoringService extends ContainerAware {
                     ),
                     'payment_status' => OrderService::$paymentStatusComplete,
                     'date' => new \DateTime("+25 minute"),
-                    'oldest_date' => new \DateTime("-1 day")
+                    'oldest_date' => new \DateTime("-1 day"),
+                    'delivery_type' => OrderService::$deliveryPickup,
                 ]
             )
             ->getQuery();

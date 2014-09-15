@@ -46,17 +46,35 @@ class MonitoringServiceTest extends WebTestCase
         $order1 = $this->getOrder($place, $placePoint, OrderService::$status_assiged);
         $order2 = $this->getOrder($place, $placePoint, OrderService::$status_accepted);
         $order3 = $this->getOrder($place, $placePoint, OrderService::$status_delayed);
+        $order4 = $this->getOrder($place, $placePoint, OrderService::$status_assiged);
+        $order5 = $this->getOrder($place, $placePoint, OrderService::$status_assiged);
 
         $order1->setOrderDate(new \DateTime("now"))
-            ->setDeliveryTime(new \DateTime("+45 minute"));
+            ->setDeliveryTime(new \DateTime("+45 minute"))
+            ->setPlacePointSelfDelivery(false)
+            ->setDeliveryType(OrderService::$deliveryDeliver);
         $order2->setOrderDate(new \DateTime("now"))
-            ->setDeliveryTime(new \DateTime("+15 minute"));
+            ->setDeliveryTime(new \DateTime("+15 minute"))
+            ->setPlacePointSelfDelivery(false)
+            ->setDeliveryType(OrderService::$deliveryDeliver);
         $order3->setOrderDate(new \DateTime("now"))
-            ->setDeliveryTime(new \DateTime("+28 minute"));
+            ->setDeliveryTime(new \DateTime("+28 minute"))
+            ->setPlacePointSelfDelivery(false)
+            ->setDeliveryType(OrderService::$deliveryDeliver);
+        $order4->setOrderDate(new \DateTime("now"))
+            ->setDeliveryTime(new \DateTime("+45 minute"))
+            ->setPlacePointSelfDelivery(true)
+            ->setDeliveryType(OrderService::$deliveryDeliver);
+        $order5->setOrderDate(new \DateTime("now"))
+            ->setDeliveryTime(new \DateTime("+45 minute"))
+            ->setPlacePointSelfDelivery(false)
+            ->setDeliveryType(OrderService::$deliveryPickup);
 
         $em->persist($order1);
         $em->persist($order2);
         $em->persist($order3);
+        $em->persist($order4);
+        $em->persist($order5);
         $em->flush();
 
         echo "Order 1 id: ".$order1->getId()."\n";
