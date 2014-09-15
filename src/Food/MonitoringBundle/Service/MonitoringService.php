@@ -51,6 +51,7 @@ class MonitoringService extends ContainerAware {
             ->andWhere('o.paymentStatus = :payment_status')
             ->andWhere('o.order_date >= :from_date')
             ->andWhere('o.order_date <= :to_date')
+            ->andWhere('o.order_date < :max_close_date')
             ->orderBy('o.order_date', 'ASC')
             ->setParameters(
                 [
@@ -62,7 +63,8 @@ class MonitoringService extends ContainerAware {
                     ),
                     'payment_status' => OrderService::$paymentStatusComplete,
                     'from_date' => $from,
-                    'to_date' => $to
+                    'to_date' => $to,
+                    'max_delivery_date' => new \DateTime('-4 hour')
                 ]
             )
             ->getQuery();
