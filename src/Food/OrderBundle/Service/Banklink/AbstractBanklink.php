@@ -1,11 +1,30 @@
 <?php
 
-namespace Food\AppBundle\Service\Banklink;
+namespace Food\OrderBundle\Service\Banklink;
 
 abstract class AbstractBanklink
 {
     abstract public function getBankUrl();
     abstract public function mac($data = array(), $vkService = 0);
+
+    private $privateKey;
+    private $bankKey;
+
+    public function __construct($privateKeyPath, $bankKeyPath)
+    {
+        $this->privateKey = file_get_contents($privateKeyPath);
+        $this->bankKey = file_get_contents($bankKeyPath);
+    }
+
+    public function getPrivateKey()
+    {
+        return $this->privateKey;
+    }
+
+    public function getBankKey()
+    {
+        return $this->bankKey;
+    }
 
     public function sign($mac, $privateKey)
     {

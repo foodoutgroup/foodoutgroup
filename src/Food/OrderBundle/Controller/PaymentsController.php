@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Acl\Exception\Exception;
 use Food\OrderBundle\Form\SebBanklinkType;
+use Food\OrderBundle\Service\Banklink\Seb;
 
 class PaymentsController extends Controller
 {
@@ -375,27 +376,35 @@ class PaymentsController extends Controller
         return $this->swedbankCreditCardGatewaySuccessAction($request);
     }
 
-    public function sebBanklinkRedirect($id)
+    public function sebBanklinkRedirectAction($id)
     {
         $router = $this->container->get('router');
-        $em = $this->container->get('doctrine.orm.entity_manager');
         $factory = $this->container->get('form.factory');
+        $seb = $this->container->get('food.seb_banklink');
 
         // get order
         $order = $this->findOrder($id);
 
-        // configuration
-        $successUrl = $router->generate('seb_banklink_success', [], true);
-        $failureUrl = $router->generate('seb_banklink_failure', [], true);
-
         // seb banklink type
-        $options = ['snd_id' => '',
+        $options = ['snd_id' => 'snd_id',
                     'curr' => 'LTL',
-                    'acc' => '',
-                    'name' => '',
-                    'lang' => 'LIT'];
+                    'acc' => 'acc',
+                    'name' => 'name',
+                    'lang' => 'LIT',
+                    'stamp' => $order->getId(),
+                    'amount' => (string)round($order->getTotal() * 100),
+                    'ref' => $order->getId(),
+                    'msg' => 'no seb banklink message',
+                    'return_url' => $router->generate('seb_banklink_return',
+                                                      [],
+                                                      true)];
         $type = new SebBanklinkType($options);
-        $form = $factory->createNamed($type, '');
+
+        // redirect form
+        $options = ['action' => $seb->getBankUrl(), 'method' => 'POST'];
+        $form = $factory->createNamed('', $type, null, $options);
+
+        $this->updateFormWithMAC($form);
 
         // template
         $view = 'FoodOrderBundle:Payments:' .
@@ -404,12 +413,7 @@ class PaymentsController extends Controller
         return $this->render($view, ['form' => $form->createView()]);
     }
 
-    public function seb_banklink_success()
-    {
-        # code...
-    }
-
-    public function seb_banklink_failure()
+    public function sebBanklinkReturnAction()
     {
         # code...
     }
@@ -453,9 +457,28 @@ class PaymentsController extends Controller
 
     protected function findOrder($id)
     {
-        $order = $em->getRepository('FoodOrderBundle:Order')
+        return $this->container
+                    ->get('doctrine.orm.entity_manager')
+                    ->getRepository('FoodOrderBundle:Order')
                     ->find($id);
+    }
 
-        return $order;
+    protected function updateFormWithMAC($form)
+    {
+        $seb = $this->container->get('food.seb_banklink');
+
+        // fill array with form data
+        $data = [];
+
+        foreach ($form->all() as $child) {
+            $data[$child->getName()] = $child->getData();
+        }
+
+        // generate encoded MAC
+        $mac = $seb->sign($seb->mac($data, Seb::REDIRECT_SERVICE),
+                          $seb->getPrivateKey());
+
+        // finally update form
+        $form->get('VK_MAC')->setData($mac);
     }
 }
