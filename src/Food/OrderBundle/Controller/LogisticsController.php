@@ -17,9 +17,6 @@ class LogisticsController extends Controller
         $logger->alert(
             sprintf('Kreipinys is logistikos i orderStatusAction su XML: %s', $request->getContent())
         );
-        $logger->alert(
-            sprintf('Requesto paramsai: %s', var_export($request->request->all(), true))
-        );
         try {
             $logisticsService = $this->get('food.logistics');
             $orderService = $this->get('food.order');
@@ -34,7 +31,7 @@ class LogisticsController extends Controller
                 } else if ($orderStatus['status'] == 'failed') {
                     $newOrderStatus = $orderService::$status_failed;
                 } else {
-                    $logger->error(
+                    $logger->warning(
                         sprintf('Order id: %d status change SKIPPED - Status unkown: %s', $orderStatus['order_id'], $orderStatus['status'])
                     );
 
@@ -57,7 +54,7 @@ class LogisticsController extends Controller
                         }
                         $orderService->saveOrder();
                     } else {
-                        $logger->error(
+                        $logger->warning(
                             sprintf(
                                 'Order id: %d status change SKIPPED - Invalid status change. From: %s To: %s',
                                 $orderStatus['order_id'],
@@ -94,9 +91,6 @@ class LogisticsController extends Controller
         $logger->alert(
             sprintf('Kreipinys is logistikos i driverAssignAction su XML: %s', $request->getContent())
         );
-        $logger->alert(
-            sprintf('Requesto paramsai: %s', var_export($request->request->all(), true))
-        );
         try {
             $logisticsService = $this->get('food.logistics');
             $orderService = $this->get('food.order');
@@ -125,7 +119,7 @@ class LogisticsController extends Controller
                 }
 
                 if (!empty($errorReason)) {
-                    $logger->error(
+                    $logger->warning(
                         sprintf(
                             'Driver id: %d assign to order id: %d SKIPPED - %s',
                             $driver['driver_id'],
