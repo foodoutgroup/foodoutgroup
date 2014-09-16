@@ -87,6 +87,29 @@ class MonitoringServiceTest extends WebTestCase
         $this->assertEquals($order2->getId(), $unacceptedOrders[0]->getId());
     }
 
+    public function testGetLogisticsProblemsNone()
+    {
+        // Clear table
+        $stmt = $this->getDoctrine()->getManager()->getConnection()
+            ->prepare('DELETE FROM orders_to_logistics');
+        $stmt->execute();
+
+        $monitoringService = $this->getContainer()->get('food.monitoring');
+
+        $expectedResult = array(
+            'unsent' => 0,
+            'error' =>
+                array(
+                    'count' => 0,
+                    'lastError' => '',
+                )
+        );
+
+        $result = $monitoringService->getLogisticsSyncProblems();
+
+        $this->assertEquals($expectedResult, $result);
+    }
+
     public function testGetLogisticsProblems()
     {
         $em = $this->getDoctrine()->getManager();

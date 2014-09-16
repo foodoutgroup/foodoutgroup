@@ -169,7 +169,7 @@ class MonitoringService extends ContainerAware {
         $query = "SELECT
           SUM(IF (status = 'unsent', 1, 0)) AS unsent,
           SUM(IF (status = 'error', 1, 0)) AS error,
-          last_error
+          MAX(last_error) AS last_error
         FROM orders_to_logistics
         WHERE
           status IN ('unsent', 'error')
@@ -192,8 +192,8 @@ class MonitoringService extends ContainerAware {
             return $return;
         }
 
-        $return['unsent'] = $problems['unsent'];
-        $return['error']['count'] = $problems['error'];
+        $return['unsent'] = (int)$problems['unsent'];
+        $return['error']['count'] = (int)$problems['error'];
         if ($problems['error'] > 0) {
             $return['error']['lastError'] = $problems['last_error'];
         }
