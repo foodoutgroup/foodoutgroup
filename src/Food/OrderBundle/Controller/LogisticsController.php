@@ -103,8 +103,16 @@ class LogisticsController extends Controller
 
                 // Skip non existant and completed orders
                 if ($order instanceof Order) {
-                    if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), $orderService::$status_assiged)
-                        && $order->getOrderStatus() != $orderService::$status_assiged) {
+                    if (
+                        // Jei is validaus statuso i assigned, arba yra ssigned ir keiciamas vairuotojas
+                        (
+                            $orderService->isValidOrderStatusChange($order->getOrderStatus(), $orderService::$status_assiged)
+                            && $order->getOrderStatus() != $orderService::$status_assiged
+                        )
+                        || (
+                            $order->getOrderStatus() == $orderService::$status_assiged
+                            && $order->getDriver()->getId() != $driver['driver_id'])
+                        ) {
                         $logisticsService->assignDriver($driver['driver_id'], array($driver['order_id']));
                         $orderService->logOrder(
                             $order,

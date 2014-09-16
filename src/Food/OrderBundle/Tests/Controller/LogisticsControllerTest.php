@@ -33,10 +33,25 @@ class LogisticsControllerTest extends WebTestCase
     public function testLogisticsAssignDriverXml()
     {
         // Prepare order and driver
+        $em = $this->getDoctrine()->getManager();
         $place = $this->getPlace('Logistics test1');
         $placePoint = $this->getPlacePoint($place);
         $order = $this->getOrder($place, $placePoint, OrderService::$status_new);
+        $order2 = $this->getOrder($place, $placePoint, OrderService::$status_assiged);
+        $order3 = $this->getOrder($place, $placePoint, OrderService::$status_assiged);
         $driver = $this->getDriver('Vairuotojas1');
+        $driver2 = $this->getDriver('Vairuotojas2');
+
+        $order2->setDriver($driver);
+        $order3->setDriver($driver2);
+        $em->persist($order2);
+        $em->persist($order3);
+        $em->flush();
+
+        $reloadedOrder2 = $this->getContainer()->get('food.order')->getOrderById($order2->getId());
+
+        // Be sure first driver is assigned
+        $this->assertEquals($driver->getId(), $reloadedOrder2->getDriver()->getId());
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
 <OrderAssignments>
@@ -45,6 +60,18 @@ class LogisticsControllerTest extends WebTestCase
 <Driver_id>'.$driver->getId().'</Driver_id>
 <Vehicle_no>FCU 819</Vehicle_no>
 <Planned_delivery_time>2014-07-02 11:43</Planned_delivery_time>
+</OrderAssigned>
+<OrderAssigned>
+<Order_id>'.$order2->getId().'</Order_id>
+<Driver_id>'.$driver2->getId().'</Driver_id>
+<Vehicle_no>FCU 152</Vehicle_no>
+<Planned_delivery_time>2014-07-02 11:44</Planned_delivery_time>
+</OrderAssigned>
+<OrderAssigned>
+<Order_id>'.$order3->getId().'</Order_id>
+<Driver_id>'.$driver2->getId().'</Driver_id>
+<Vehicle_no>FCU 156</Vehicle_no>
+<Planned_delivery_time>2014-07-02 11:46</Planned_delivery_time>
 </OrderAssigned>
 </OrderAssignments>';
 
@@ -61,9 +88,17 @@ class LogisticsControllerTest extends WebTestCase
         $this->assertEquals(200 , $this->client->getResponse()->getStatusCode());
 
         $reloadedOrder = $this->getContainer()->get('food.order')->getOrderById($order->getId());
+        $reloadedOrder2 = $this->getContainer()->get('food.order')->getOrderById($order2->getId());
+        $reloadedOrder3 = $this->getContainer()->get('food.order')->getOrderById($order3->getId());
 
         $this->assertEquals(OrderService::$status_assiged, $reloadedOrder->getOrderStatus());
         $this->assertEquals($driver->getId(), $reloadedOrder->getDriver()->getId());
+
+        $this->assertEquals(OrderService::$status_assiged, $reloadedOrder2->getOrderStatus());
+        $this->assertEquals($driver2->getId(), $reloadedOrder2->getDriver()->getId());
+
+        $this->assertEquals(OrderService::$status_assiged, $reloadedOrder3->getOrderStatus());
+        $this->assertEquals($driver2->getId(), $reloadedOrder3->getDriver()->getId());
     }
 
     public function testLogisticsOrderStatusXml()

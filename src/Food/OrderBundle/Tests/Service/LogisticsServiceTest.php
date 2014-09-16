@@ -878,10 +878,9 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testSendOrderToLogistics()
     {
-        $this->markTestSkipped('Issispresti su response mockinimu');
         $logisticsService = new LogisticsService();
 
-        $curl = $this->getMockBuilder('\Curl')
+        $curl = $this->getMockBuilder('Curl')
             ->disableOriginalConstructor()
             ->getMock();
         $logisticsService->setCli($curl);
@@ -892,7 +891,7 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         /**
          * @var \CurlResponse $curlResponse
          */
-        $curlResponse = $curl = $this->getMockBuilder('\CurlResponse')
+        $curlResponse  = $this->getMockBuilder('CurlResponse')
             ->disableOriginalConstructor()
             ->getMock();
         $curlResponse->headers = array(

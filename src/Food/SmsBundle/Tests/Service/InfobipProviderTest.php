@@ -6,7 +6,7 @@ use \Food\SmsBundle\Service\InfobipProvider;
 class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testAuthentification()
     {
@@ -15,7 +15,7 @@ class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testAccountBalanceException1()
     {
@@ -25,7 +25,7 @@ class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testAccountBalanceException2()
     {
@@ -34,20 +34,57 @@ class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Cia integration testas..
-     * TODO - jo cia netures buti, naudosiu gamybai.. Ji iskelsime i serviso testa, kur mockinsim providerio metoda
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage We have got an error while decoding response from Curl lib
      */
-    public function testAccountBalanceTemp()
+    public function testAccountBalanceCrapResponse()
     {
         $infobipProvider = new InfobipProvider(null, 'http://api2.infobip.com/api');
-        $infobipProvider->authenticate('skanu1', '119279');
+        $infobipProvider->authenticate('skanu1', '119271');
+        $curl = $messageRepository = $this->getMockBuilder('Curl')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $infobipProvider->setCli($curl);
+
+        $response = $messageRepository = $this->getMockBuilder('CurlResponse')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $response->body = '{/"';
+
+        $curl->expects($this->once())
+            ->method('get')
+            ->with('http://api2.infobip.com/api/command?username=skanu1&password=119271&cmd=CREDITS')
+            ->will($this->returnValue($response));
+
+        $infobipProvider->getAccountBalance();
+    }
+
+    public function testAccountBalance()
+    {
+        $infobipProvider = new InfobipProvider(null, 'http://api2.infobip.com/api');
+        $infobipProvider->authenticate('skanu1', '119272');
+        $curl = $messageRepository = $this->getMockBuilder('Curl')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $infobipProvider->setCli($curl);
+
+        $response = $messageRepository = $this->getMockBuilder('CurlResponse')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $response->body = '"7.16"';
+
+        $curl->expects($this->once())
+            ->method('get')
+            ->with('http://api2.infobip.com/api/command?username=skanu1&password=119272&cmd=CREDITS')
+            ->will($this->returnValue($response));
         $balance = $infobipProvider->getAccountBalance();
 
         $this->assertTrue(is_float($balance));
+        $this->assertEquals(7.16, $balance);
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testSendMessageEmptySender()
     {
@@ -56,7 +93,7 @@ class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testSendMessageEmptyRecipient()
     {
@@ -65,7 +102,7 @@ class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testSendMessageEmptyMessage()
     {
