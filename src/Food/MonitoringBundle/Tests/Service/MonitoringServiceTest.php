@@ -2,6 +2,7 @@
 
 namespace Food\MonitoringBundle\Tests\Service;
 
+use Food\OrderBundle\Entity\OrderToLogistics;
 use Food\OrderBundle\Service\OrderService;
 use Food\AppBundle\Test\WebTestCase;
 
@@ -77,10 +78,6 @@ class MonitoringServiceTest extends WebTestCase
         $em->persist($order5);
         $em->flush();
 
-        echo "Order 1 id: ".$order1->getId()."\n";
-        echo "Order 2 id: ".$order2->getId()."\n";
-        echo "Order 3 id: ".$order3->getId()."\n";
-
         $unacceptedOrders = $monitoringService->getUnassignedOrders();
 
         $this->assertTrue(
@@ -88,5 +85,63 @@ class MonitoringServiceTest extends WebTestCase
         );
 
         $this->assertEquals($order2->getId(), $unacceptedOrders[0]->getId());
+    }
+
+    public function testGetLogisticsProblems()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $monitoringService = $this->getContainer()->get('food.monitoring');
+
+        $expectedResult = array(
+            'unsent' => 2,
+            'error' =>
+             array(
+                 'count' => 1,
+                 'lastError' => 'Some error',
+             )
+        );
+
+        $place = $this->getPlace('logisticsSyncProblemsTest');
+        $placePoint = $this->getPlacePoint($place);
+        $order = $this->getOrder($place, $placePoint, OrderService::$status_accepted);
+
+        $orderToLogistics1 = new OrderToLogistics();
+        $orderToLogistics2 = new OrderToLogistics();
+        $orderToLogistics3 = new OrderToLogistics();
+        $orderToLogistics4 = new OrderToLogistics();
+        $orderToLogistics5 = new OrderToLogistics();
+
+        $orderToLogistics1->setOrder($order)
+            ->setDateAdded(new \DateTime("-5 minute"))
+            ->setDateSent(new \DateTime("-2 mintue"))
+            ->setStatus('sent');
+
+        $orderToLogistics2->setOrder($order)
+            ->setDateAdded(new \DateTime("-7 minute"))
+            ->setStatus('unsent');
+
+        $orderToLogistics3->setOrder($order)
+            ->setDateAdded(new \DateTime("-5 minute"))
+            ->setStatus('unsent');
+
+        $orderToLogistics4->setOrder($order)
+            ->setDateAdded(new \DateTime("-5 minute"))
+            ->setStatus('error')
+            ->setLastError('Some error');
+
+        $orderToLogistics5->setOrder($order)
+            ->setDateAdded(new \DateTime("now"))
+            ->setStatus('unsent');
+
+        $em->persist($orderToLogistics1);
+        $em->persist($orderToLogistics2);
+        $em->persist($orderToLogistics3);
+        $em->persist($orderToLogistics4);
+        $em->persist($orderToLogistics5);
+        $em->flush();
+
+        $result = $monitoringService->getLogisticsSyncProblems();
+
+        $this->assertEquals($expectedResult, $result);
     }
 }
