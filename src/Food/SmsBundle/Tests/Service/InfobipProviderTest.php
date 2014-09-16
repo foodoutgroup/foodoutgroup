@@ -41,12 +41,12 @@ class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
     {
         $infobipProvider = new InfobipProvider(null, 'http://api2.infobip.com/api');
         $infobipProvider->authenticate('skanu1', '119271');
-        $curl = $messageRepository = $this->getMockBuilder('Curl')
+        $curl = $this->getMockBuilder('Curl')
             ->disableOriginalConstructor()
             ->getMock();
         $infobipProvider->setCli($curl);
 
-        $response = $messageRepository = $this->getMockBuilder('CurlResponse')
+        $response = $this->getMockBuilder('CurlResponse')
             ->disableOriginalConstructor()
             ->getMock();
         $response->body = '{/"';
@@ -63,12 +63,12 @@ class InfobipProviderTest extends \PHPUnit_Framework_TestCase {
     {
         $infobipProvider = new InfobipProvider(null, 'http://api2.infobip.com/api');
         $infobipProvider->authenticate('skanu1', '119272');
-        $curl = $messageRepository = $this->getMockBuilder('Curl')
+        $curl = $this->getMockBuilder('Curl')
             ->disableOriginalConstructor()
             ->getMock();
         $infobipProvider->setCli($curl);
 
-        $response = $messageRepository = $this->getMockBuilder('CurlResponse')
+        $response = $this->getMockBuilder('CurlResponse')
             ->disableOriginalConstructor()
             ->getMock();
         $response->body = '"7.16"';
