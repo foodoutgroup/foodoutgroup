@@ -92,6 +92,11 @@ food_api_order_confirm:
     defaults: { _controller: FoodApiBundle:Orders:confirmOrder }
     methods: [POST]
 
+food_api_order_confirm2:
+    pattern: /orders2/{id}
+    defaults: { _controller: FoodApiBundle:Orders:confirmOrder }
+    methods: [POST]
+
 food_api_order_status:
     pattern: /orders/{id}/status
     defaults: { _controller: FoodApiBundle:Orders:getOrderStatus}

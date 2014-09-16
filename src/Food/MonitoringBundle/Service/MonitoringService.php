@@ -51,6 +51,7 @@ class MonitoringService extends ContainerAware {
             ->andWhere('o.paymentStatus = :payment_status')
             ->andWhere('o.order_date >= :from_date')
             ->andWhere('o.order_date <= :to_date')
+            ->andWhere('o.order_date < :max_close_date')
             ->orderBy('o.order_date', 'ASC')
             ->setParameters(
                 [
@@ -62,7 +63,8 @@ class MonitoringService extends ContainerAware {
                     ),
                     'payment_status' => OrderService::$paymentStatusComplete,
                     'from_date' => $from,
-                    'to_date' => $to
+                    'to_date' => $to,
+                    'max_delivery_date' => new \DateTime('-4 hour')
                 ]
             )
             ->getQuery();
@@ -94,6 +96,44 @@ class MonitoringService extends ContainerAware {
                     'payment_status' => OrderService::$paymentStatusComplete,
                     'date' => new \DateTime("-22 minute"),
                     'oldest_date' => new \DateTime("-1 day")
+                ]
+            )
+            ->getQuery();
+
+        $orders = $query->getResult();
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
+
+    /**
+     * @return Order[]|array
+     */
+    public function getUnassignedOrders()
+    {
+        $repository = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order');
+
+        $query = $repository->createQueryBuilder('o')
+            ->where('o.order_status IN (:order_status)')
+            ->andWhere('o.paymentStatus = :payment_status')
+            ->andWhere('o.deliveryTime <= :date')
+            ->andWhere('o.deliveryTime > :oldest_date')
+            ->andWhere('o.place_point_self_delivery != 1')
+            ->andWhere('o.deliveryType != :delivery_type')
+            ->orderBy('o.order_date', 'ASC')
+            ->setParameters(
+                [
+                    'order_status' => array(
+                        OrderService::$status_accepted,
+                        OrderService::$status_delayed,
+                        OrderService::$status_forwarded,
+                    ),
+                    'payment_status' => OrderService::$paymentStatusComplete,
+                    'date' => new \DateTime("+25 minute"),
+                    'oldest_date' => new \DateTime("-1 day"),
+                    'delivery_type' => OrderService::$deliveryPickup,
                 ]
             )
             ->getQuery();
