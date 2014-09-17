@@ -32,7 +32,7 @@ class ProfileMegaFormType extends AbstractType
             'csrf_protection' => false,
             'validation_groups' => array(
                 'Default',
-                'Profile'
+                'FoodProfile'
             )
         ));
     }

@@ -9,3 +9,9 @@ food_places_lt_recommended:
 food_change_location:
     pattern: /keisti
     defaults: { _controller: FoodPlacesBundle:Default:changeLocation }
+
+food_places_lt_city:
+    pattern:  /{city}/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: ~}
+    requirements:
+        city : "^(?!rekomenduojama|keisti).+"

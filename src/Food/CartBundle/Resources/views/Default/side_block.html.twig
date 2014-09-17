@@ -1,5 +1,5 @@
 <div class="check-block" id="cartmnu">
-    <div class="restaurant-logo tac"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"><img src="http://{{ cloudfront_url }}/{{place.getWebPathThumb}}"></a></div>
+    <div class="restaurant-logo tac"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"><img src="/{{place.getWebPathThumb}}"></a></div>
     <h5 class="tac">{% trans %}cart.block.your_order{% endtrans %}</h5>
     {% if list|length > 0 %}
         {% for dish in list %}
@@ -50,19 +50,21 @@
                 </div>
             {% endif %}
         </div>
-        {% if total_cart < place.cartMinimum %}
+        {% if total_cart < place.cartMinimum and hide_delivery == false %}
             <div class="alert alert-warning text-center">{{ 'cart.didnt_reach_min_cart'|trans }}</div>
         {% endif %}
         {% if inCart == false %}
-            <a href="{{ path('food_cart', { 'placeId' : place.id }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
+            <a href="{{ path('food_cart', { 'placeId' : place.id, 'takeAway': hide_delivery }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
         {% endif %}
+        {% if hide_delivery == false %}
         <div class="delivery-time tac">
             {% trans %}cart.block.delivery_time{% endtrans %} {{ place.deliveryTime }}
             {% if place.deliveryTimeInfo is not empty %}
                 <span class="delivery-time-info-cart ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
             {% endif %}
         </div>
-        {% if not hide_delivery or (hide_delivery and place.minimalOnSelfDel != false) %}
+        {% endif %}
+        {% if hide_delivery == false or place.minimalOnSelfDel %}
         <div class="delivery-time tac">{% trans %}cart.block.order_sum_minimum{% endtrans %}<br />{{ place.cartMinimum }} {{ currency_display }} <span class="euro">/ &euro;{{  misc_utils.getEuro(place.cartMinimum)|number_format(2, ',', ' ') }}</span>.
             {% if place.minimalOnSelfDel == false %}<br />{% trans %}cart.block.order_sum_minimum_take_myself{% endtrans %}{% endif %}
         </div>

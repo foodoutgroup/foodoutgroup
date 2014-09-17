@@ -371,6 +371,10 @@
                 <source>admin.place.priority</source>
                 <target>Prioritetas</target>
             </trans-unit>
+            <trans-unit id="admin.place.delivery_options">
+                <source>admin.place.delivery_options</source>
+                <target>Pristatymo galimyb.</target>
+            </trans-unit>
 
             <!-- Place points -->
             <trans-unit id="place-point-list">

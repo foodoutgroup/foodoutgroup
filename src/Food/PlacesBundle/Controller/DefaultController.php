@@ -25,6 +25,21 @@ class DefaultController extends Controller
         );
     }
 
+    public function indexCityAction($city)
+    {
+        $city = ucfirst($city);
+        $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", $city);
+        $this->get('food.googlegis')->setCityOnlyToSession($city);
+        $locData =  $this->get('food.googlegis')->getLocationFromSession();
+        return $this->render(
+            'FoodPlacesBundle:Default:index.html.twig',
+            array(
+                'recommended' => false,
+                'location' => $locData
+            )
+        );
+    }
+
     public function listAction($recommended = false, Request $request)
     {
         if ($recommended) {

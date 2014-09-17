@@ -126,6 +126,18 @@ class GoogleGisService extends ContainerAware
         return $returner;
     }
 
+    public function setCityOnlyToSession($city)
+    {
+        $returner = array();
+        $returner['not_found'] = true;
+        $returner['street_found'] = false;
+        $returner['address_found'] = false;
+        $returner['city'] =  $city;
+        $returner['address'] = $returner['city'];
+        $returner['city_only'] = true;
+        $this->setLocationToSession($returner);
+    }
+
     private function __getCity($results)
     {
         foreach ($results as $res) {

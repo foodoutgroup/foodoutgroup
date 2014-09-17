@@ -132,6 +132,7 @@
                                                 {% if loop.index != 1 %}, {% endif %}{{ kitchen.name }}
                                             {% endfor %}
                                         </li>
+                                        {% if place.deliveryOptions != 'pickup' %}
                                         <li class="ico-time">
                                             <strong>{% trans %}places.delivery_time{% endtrans %}:</strong>{{ place.deliveryTime }}
                                             {% if place.deliveryTimeInfo is not empty %}
@@ -140,8 +141,11 @@
                                         </li>
                                         <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>{{ place.deliveryPrice }} {{ currency_display }}</li>
                                         <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>{{ place.cartMinimum }} {{ currency_display }}</li>
+                                        {% endif %}
                                         <li class="ico-payments hidden"><strong>{% trans %}places.payment_types{% endtrans %}:</strong><span class="payments-data"></span></li>
+                                        {% if place.deliveryOptions != 'pickup' %}
                                         <li class="ico-delivery"><strong>{% trans %}places.card_on_delivery{% endtrans %}:</strong>{% if place.cardOnDelivery == 1 %}{{ 'yes'|trans }}{% else %}{{ 'no'|trans }}{% endif %}</li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                                 <div class="restaurant-info-righter simple-content">

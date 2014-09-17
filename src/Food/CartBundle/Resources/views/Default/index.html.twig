@@ -163,12 +163,16 @@
                             <div class="form-row">
                                 <label><br></label>
                                 <div class="delivery-type-radios clearfix">
-                                    <label class="custom-radio">{% trans %}cart.checkout.delivery_to_home{% endtrans %}
-                                        <input type="radio" name="delivery-type" value="deliver"{% if ((order is not null and order.deliveryType == 'deliver') or order is null) and takeAway == false %} checked="checked"{% endif %}>
-                                    </label>
-                                    <label class="custom-radio">{% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
-                                        <input type="radio" name="delivery-type" value="pickup"{% if (order is not null and order.deliveryType == 'pickup') or takeAway == true %} checked="checked"{% endif %}>
-                                    </label>
+                                    {% if place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'delivery' %}
+                                        <label class="custom-radio">{% trans %}cart.checkout.delivery_to_home{% endtrans %}
+                                            <input type="radio" name="delivery-type" value="deliver"{% if ((order is not null and order.deliveryType == 'deliver') or order is null) and takeAway == false %} checked="checked"{% endif %}>
+                                        </label>
+                                    {% endif %}
+                                    {% if place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'pickup' %}
+                                        <label class="custom-radio">{% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
+                                            <input type="radio" name="delivery-type" value="pickup"{% if (order is not null and order.deliveryType == 'pickup') or takeAway == true %} checked="checked"{% endif %}>
+                                        </label>
+                                    {% endif %}
                                 </div>
                             </div>
                             {# Pristatysime i namus - duodam susitvarkyti adresus #}
@@ -184,7 +188,11 @@
                                 </div>
                                 <div class="form-row form-row-required address-change">
                                     <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
-                                    <input type="text" id="address" value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% endif %}" readonly>
+                                    <input type="text"
+                                           id="address"
+                                           value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% endif %}"
+                                           placeholder="{{ 'index.street'|trans }}"
+                                           readonly>
                                 </div>
                             </div>
                             {# Atsiims pats - leidziame pasirinkti padalini #}

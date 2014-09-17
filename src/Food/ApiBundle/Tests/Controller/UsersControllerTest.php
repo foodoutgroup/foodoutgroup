@@ -395,6 +395,61 @@ class UsersControllerTest extends WebTestCase
         $this->assertTrue(($validity < $now));
     }
 
+    public function testRegistrationUnformatedPhoneSuccessful()
+    {
+        $expectedUserData = array(
+            "phone" => "37060000001",
+            "name" => "Testas testuoklis2",
+            "email" => "api_register2@foodout.lt",
+            "refresh_token" => '',
+        );
+
+        $this->client->request(
+            'POST',
+            '/api/v1/users',
+            array(),
+            array(),
+            array(),
+            json_encode(
+                array(
+                    "phone" => "860000001",
+                    "name" => "Testas testuoklis2",
+                    "email" => "api_register2@foodout.lt",
+                    'password' => 'new_user',
+                )
+            )
+        );
+
+        $this->assertEquals('Food\ApiBundle\Controller\UsersController::registerAction', $this->client->getRequest()->attributes->get('_controller'));
+        $this->assertEquals(200 , $this->client->getResponse()->getStatusCode());
+
+        $userData = json_decode($this->client->getResponse()->getContent(), true);
+        $newUser = $this->getContainer()->get('fos_user.user_manager')->findUserByEmail($userData['email']);
+        $expectedUserData['user_id'] = $newUser->getId();
+
+        // Hash is dynamic - dont compare it - just check if not empty
+        $this->assertTrue(!empty($userData['session_token']));
+        unset($userData['session_token']);
+        $this->assertEquals($expectedUserData, $userData);
+
+        $this->assertEquals('Testas', $newUser->getFirstname());
+        $this->assertEquals('testuoklis2', $newUser->getLastname());
+        $this->assertEquals('api_register2@foodout.lt', $newUser->getEmail());
+        $this->assertEquals('37060000001', $newUser->getPhone());
+
+
+        // And now log out the new user
+        $this->client->request(
+            'DELETE',
+            '/api/v1/users/session',
+            array(),
+            array(),
+            array(
+                'HTTP_X-API-Authorization' => $newUser->getApiToken(),
+            )
+        );
+    }
+
     public function testMeAction()
     {
         $expectedUserData = array(

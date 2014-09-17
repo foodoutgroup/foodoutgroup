@@ -982,6 +982,50 @@
           <source>cart.didnt_reach_min_cart</source>
           <target>Krepšelis nesiekia minimalios sumos</target>
       </trans-unit>
+      <trans-unit id="login.username_placeholder" resname="login.username_placeholder">
+          <source>login.username_placeholder</source>
+          <target>vardenis@pastas.lt</target>
+      </trans-unit>
+      <trans-unit id="login.password_placeholder" resname="login.password_placeholder">
+          <source>login.password_placeholder</source>
+          <target>Slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="registration.firstname_placeholder" resname="registration.firstname_placeholder">
+          <source>registration.firstname_placeholder</source>
+          <target>Vardenis</target>
+      </trans-unit>
+      <trans-unit id="registration.lastname_placeholder" resname="registration.lastname_placeholder">
+          <source>registration.lastname_placeholder</source>
+          <target>Pavardenis</target>
+      </trans-unit>
+      <trans-unit id="registration.email_placeholder" resname="registration.email_placeholder">
+          <source>registration.email_placeholder</source>
+          <target>vardenis@pastas.lt</target>
+      </trans-unit>
+      <trans-unit id="registration.password_placeholder" resname="registration.password_placeholder">
+          <source>registration.password_placeholder</source>
+          <target>Slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="registration.repeat_password_placeholder" resname="registration.repeat_password_placeholder">
+          <source>registration.repeat_password_placeholder</source>
+          <target>Pakartokite slaptažodį</target>
+      </trans-unit>
+      <trans-unit id="profile.phone_placeholder" resname="profile.phone_placeholder">
+          <source>profile.phone_placeholder</source>
+          <target>37060000000</target>
+      </trans-unit>
+      <trans-unit id="profile.current_password" resname="profile.current_password">
+          <source>profile.current_password</source>
+          <target>Dabartinis slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="profile.new_password" resname="profile.new_password">
+          <source>profile.new_password</source>
+          <target>Naujas slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="profile.repeat_new_password" resname="profile.repeat_new_password">
+          <source>profile.repeat_new_password</source>
+          <target>Pakartokite naują slaptažodis</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
