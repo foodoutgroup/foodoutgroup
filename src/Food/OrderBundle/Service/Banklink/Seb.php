@@ -8,6 +8,7 @@ class Seb extends AbstractBanklink
 {
     const REDIRECT_SERVICE = 1001;
     const SUCCESS_SERVICE = 1101;
+    const WAITING_SERVICE = 1201;
     const FAILURE_SERVICE = 1901;
 
     private $fields = [

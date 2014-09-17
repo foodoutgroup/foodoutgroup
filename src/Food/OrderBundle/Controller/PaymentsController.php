@@ -413,9 +413,85 @@ class PaymentsController extends Controller
         return $this->render($view, ['form' => $form->createView()]);
     }
 
-    public function sebBanklinkReturnAction()
+    public function sebBanklinkReturnAction(Request $request)
     {
-        # code...
+        // services
+        $orderService = $this->container->get('food.order');
+        $seb = $this->container->get('food.seb_banklink');
+
+        // preparation
+        $orderId = max(0, (int)$request->get('VK_REF'));
+        $service = max(0, $request->get('VK_SERVICE', 0));
+        $mac = $request->get('VK_MAC', '');
+        $data = [];
+
+        // template
+        $view = 'FoodOrderBundle:Payments:' .
+                'seb_banklink/something_wrong.html.twig';
+
+        // order
+        $order = $orderService->getOrderById($orderId);
+
+        // verify
+        try {
+            $request = 
+            foreach ($request->all() as $child) {
+                $data[$child->getName()] = $child->getData();
+            }
+
+            $mac = $seb->mac($data, $service);
+            $verified = $seb->verify($mac, Arr::getOrElse($data, 'VK_MAC', ''), $publicKey);
+        } catch (\Exception $e) {
+            $api->status($cart, 'rejected');
+
+            return new RedirectResponse($this->generateUrl('fish_parado_unsuccess'));
+        }
+
+        if (Seb::WAITING_SERVICE == $service) {
+            // template
+            $view = 'FoodOrderBundle:Payments:' .
+                    'seb_banklink/waiting.html.twig';
+
+            // log
+            $orderService->logPayment(
+                $order,
+                'SEB banklink payment started',
+                'SEB banklink payment accepted. Waiting for funds to be billed',
+                $order
+            );
+        } elseif (Seb::FAILURE_SERVICE == $service) {
+            // template
+            $view = 'FoodOrderBundle:Payments:' .
+                    'seb_banklink/failure.html.twig';
+
+            // log
+            $orderService->logPayment(
+                $order,
+                'SEB banklink payment canceled',
+                'SEB banklink canceled in SEB',
+                $order
+            );
+
+            $orderService->setPaymentStatus(
+                $orderService::$paymentStatusCanceled,
+                'User canceled payment in SEB banklink');
+        } elseif (Seb::SUCCESS_SERVICE == $service) {
+            // template
+            $view = 'FoodOrderBundle:Payments:' .
+                    'seb_banklink/success.html.twig';
+
+            // log
+            $orderService->setPaymentStatus(
+                $orderService::$paymentStatusComplete,
+                'SEB banklink billed payment');
+            $orderService->saveOrder();
+            $orderService->informPlace();
+
+            // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
+            $orderService->deactivateCoupon();
+        }
+
+        return $this->render($view);
     }
 
     protected function markOrderPaid($orderService)
