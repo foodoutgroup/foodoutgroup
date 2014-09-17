@@ -51,7 +51,7 @@ class MonitoringService extends ContainerAware {
             ->andWhere('o.paymentStatus = :payment_status')
             ->andWhere('o.order_date >= :from_date')
             ->andWhere('o.order_date <= :to_date')
-            ->andWhere('o.order_date < :max_close_date')
+            ->andWhere('o.order_date < :max_delivery_date')
             ->orderBy('o.order_date', 'ASC')
             ->setParameters(
                 [
