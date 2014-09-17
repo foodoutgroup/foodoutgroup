@@ -46,7 +46,12 @@
             }
 
             $('#index_submit').click(function(e){
-                getCrds();
+                if ($('#index_city').val() !="" && $('#index_address').val()=="") {
+                    var url = '{{ path('food_places_lt_main') }}' + $('#index_city').val();
+                    window.location.href = url;
+                } else {
+                    getCrds();
+                }
                 e.stopPropagation();
                 e.preventDefault();
             });
