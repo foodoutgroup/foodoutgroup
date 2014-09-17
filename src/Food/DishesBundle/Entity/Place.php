@@ -318,6 +318,7 @@ class Place extends Uploadable implements Translatable
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->photos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->deliveryOptions = self::OPT_DELIVERY_AND_PICKUP;
+        $this->priority = 0;
     }
 
     /**

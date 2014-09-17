@@ -241,7 +241,7 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getId')
             ->will($this->returnValue(9));
 
-        $message->expects($this->any(0))
+        $message->expects($this->any())
             ->method('getSmsc')
             ->will($this->returnValue('Silverstreet'));
 
