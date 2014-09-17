@@ -386,13 +386,13 @@ class PaymentsController extends Controller
         $order = $this->findOrder($id);
 
         // seb banklink type
-        $options = ['snd_id' => 'snd_id',
+        $options = ['snd_id' => 'EM9999',
                     'curr' => 'LTL',
-                    'acc' => 'acc',
+                    'acc' => 'LT417044060001223597',
                     'name' => 'name',
                     'lang' => 'LIT',
                     'stamp' => $order->getId(),
-                    'amount' => (string)round($order->getTotal() * 100),
+                    'amount' => sprintf('%.2f', $order->getTotal()),
                     'ref' => $order->getId(),
                     'msg' => 'no seb banklink message',
                     'return_url' => $router->generate('seb_banklink_return',
@@ -434,7 +434,6 @@ class PaymentsController extends Controller
 
         // verify
         try {
-            $request = 
             foreach ($request->all() as $child) {
                 $data[$child->getName()] = $child->getData();
             }
