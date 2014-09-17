@@ -67,6 +67,8 @@ parameters:
     cloudfront_url: images.foodout.lt
     logtime.order_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitOrders"
     logtime.driver_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitDrivers"
+    # Ar siusti uzsakyma i isorine (TMS) sistema
+    logistics.send_to_external: true
 
 framework:
     #esi:             ~

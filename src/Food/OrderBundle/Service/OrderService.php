@@ -353,7 +353,9 @@ class OrderService extends ContainerAware
             $this->notifyOrderAccept();
 
             // Put for logistics
-            if ($this->getOrder()->getDeliveryType() == 'deliver') {
+            if ($this->container->getParameter('logistics.send_to_external') == true
+                && $this->getOrder()->getDeliveryType() == 'deliver'
+                && $this->getOrder()->getPlacePointSelfDelivery() == false) {
                 $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
             }
             // Kitais atvejais tik keiciam statusa, nes gal taip reikia
