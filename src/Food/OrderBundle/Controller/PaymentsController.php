@@ -423,7 +423,6 @@ class PaymentsController extends Controller
         $orderService = $this->container->get('food.order');
         $seb = $this->container->get('food.seb_banklink');
         $dispatcher = $this->container->get('event_dispatcher');
-        $logger = $this->container->get('logger');
 
         // preparation
         $orderId = max(0, (int)$request->get('VK_REF'));
@@ -454,7 +453,6 @@ class PaymentsController extends Controller
             }
 
             // generate encoded MAC
-            $logger->err($seb->getPrivateKey());
             $myMac = $seb->sign($seb->mac($data, $service),
                               $seb->getPrivateKey());
 
@@ -559,7 +557,9 @@ class PaymentsController extends Controller
 
     protected function updateFormWithMAC($form)
     {
+        // services
         $seb = $this->container->get('food.seb_banklink');
+        $logger = $this->constant->get('logger');
 
         // fill array with form data
         $data = [];
@@ -569,6 +569,8 @@ class PaymentsController extends Controller
         }
 
         // generate encoded MAC
+        $logger->crit($seb->getPrivateKey());
+
         $mac = $seb->sign($seb->mac($data, Seb::REDIRECT_SERVICE),
                           $seb->getPrivateKey());
 
