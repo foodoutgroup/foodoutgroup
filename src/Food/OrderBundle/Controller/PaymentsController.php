@@ -423,6 +423,7 @@ class PaymentsController extends Controller
         $orderService = $this->container->get('food.order');
         $seb = $this->container->get('food.seb_banklink');
         $dispatcher = $this->container->get('event_dispatcher');
+        $logger = $this->container->get('logger');
 
         // preparation
         $orderId = max(0, (int)$request->get('VK_REF'));
@@ -453,6 +454,7 @@ class PaymentsController extends Controller
             }
 
             // generate encoded MAC
+            $logger->err($seb->getPrivateKey());
             $myMac = $seb->sign($seb->mac($data, $service),
                               $seb->getPrivateKey());
 
