@@ -559,7 +559,7 @@ class PaymentsController extends Controller
     {
         // services
         $seb = $this->container->get('food.seb_banklink');
-        $logger = $this->constant->get('logger');
+        $logger = $this->container->get('logger');
 
         // fill array with form data
         $data = [];
