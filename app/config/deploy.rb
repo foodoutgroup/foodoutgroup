@@ -18,7 +18,7 @@ require 'capistrano/ext/multistage'
 #role :web,        domain                         # Your HTTP server, Apache/etc
 #role :app,        domain, :primary => true       # This may be the same as your `Web` server
 
-set :deploy_via, :remote_cache
+set :deploy_via, :copy
 
 set :use_composer, true
 # share vendors files
