@@ -12,14 +12,12 @@ abstract class AbstractBanklink
 
     public function __construct($privateKeyPath, $bankKeyPath)
     {
-        var_dump($privateKeyPath); die('zzz');
         $this->privateKey = file_get_contents($privateKeyPath);
         $this->bankKey = file_get_contents($bankKeyPath);
     }
 
     public function getPrivateKey()
     {
-        var_dump($this->privateKey); die('xxx');
         return $this->privateKey;
     }
 
