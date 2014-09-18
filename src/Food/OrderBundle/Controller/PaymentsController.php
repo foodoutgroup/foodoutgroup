@@ -557,9 +557,7 @@ class PaymentsController extends Controller
 
     protected function updateFormWithMAC($form)
     {
-        // services
         $seb = $this->container->get('food.seb_banklink');
-        $logger = $this->container->get('logger');
 
         // fill array with form data
         $data = [];
@@ -569,8 +567,6 @@ class PaymentsController extends Controller
         }
 
         // generate encoded MAC
-        $logger->crit($seb->getPrivateKey());
-
         $mac = $seb->sign($seb->mac($data, Seb::REDIRECT_SERVICE),
                           $seb->getPrivateKey());
 

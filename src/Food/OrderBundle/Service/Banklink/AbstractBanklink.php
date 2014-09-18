@@ -18,6 +18,7 @@ abstract class AbstractBanklink
 
     public function getPrivateKey()
     {
+        var_dump($this->privateKey); die('xxx');
         return $this->privateKey;
     }
 
