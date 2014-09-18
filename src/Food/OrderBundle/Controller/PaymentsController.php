@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Acl\Exception\Exception;
 use Food\OrderBundle\Form\SebBanklinkType;
 use Food\OrderBundle\Service\Banklink\Seb;
+use Food\OrderBundle\Service\Events\BanklinkEvent;
 
 class PaymentsController extends Controller
 {
@@ -415,14 +416,19 @@ class PaymentsController extends Controller
 
     public function sebBanklinkReturnAction(Request $request)
     {
+        // a hack
+        $request->request->replace($request->query->all());
+
         // services
         $orderService = $this->container->get('food.order');
         $seb = $this->container->get('food.seb_banklink');
+        $dispatcher = $this->container->get('event_dispatcher');
 
         // preparation
         $orderId = max(0, (int)$request->get('VK_REF'));
         $service = max(0, $request->get('VK_SERVICE', 0));
         $mac = $request->get('VK_MAC', '');
+        $verified = false;
         $data = [];
 
         // template
@@ -432,62 +438,73 @@ class PaymentsController extends Controller
         // order
         $order = $orderService->getOrderById($orderId);
 
+        // banklink log
+        $event = new BanklinkEvent();
+        $event->setOrderId($order ? $order->getId() : 0);
+        $event->setQuery(var_export($request->query->all(), true));
+        $event->setRequest(var_export($request->request->all(), true));
+
+        $dispatcher->dispatch(BanklinkEvent::BANKLINK_RESPONSE, $event);
+
         // verify
         try {
-            foreach ($request->all() as $child) {
+            foreach ($request->request->all() as $child) {
                 $data[$child->getName()] = $child->getData();
             }
 
-            $mac = $seb->mac($data, $service);
-            $verified = $seb->verify($mac, Arr::getOrElse($data, 'VK_MAC', ''), $publicKey);
-        } catch (\Exception $e) {
-            $api->status($cart, 'rejected');
+            // generate encoded MAC
+            $myMac = $seb->sign($seb->mac($data, $service),
+                              $seb->getPrivateKey());
 
-            return new RedirectResponse($this->generateUrl('fish_parado_unsuccess'));
+            // finally update form
+            $verified = $seb->verify($myMac, $mac, $seb->getBankKey());
+        } catch (\Exception $e) {
         }
 
-        if (Seb::WAITING_SERVICE == $service) {
-            // template
-            $view = 'FoodOrderBundle:Payments:' .
-                    'seb_banklink/waiting.html.twig';
+        if ($verified) {
+            if (Seb::WAITING_SERVICE == $service) {
+                // template
+                $view = 'FoodOrderBundle:Payments:' .
+                        'seb_banklink/waiting.html.twig';
 
-            // log
-            $orderService->logPayment(
-                $order,
-                'SEB banklink payment started',
-                'SEB banklink payment accepted. Waiting for funds to be billed',
-                $order
-            );
-        } elseif (Seb::FAILURE_SERVICE == $service) {
-            // template
-            $view = 'FoodOrderBundle:Payments:' .
-                    'seb_banklink/failure.html.twig';
+                // log
+                $orderService->logPayment(
+                    $order,
+                    'SEB banklink payment started',
+                    'SEB banklink payment accepted. Waiting for funds to be billed',
+                    $order
+                );
+            } elseif (Seb::FAILURE_SERVICE == $service) {
+                // template
+                $view = 'FoodOrderBundle:Payments:' .
+                        'seb_banklink/failure.html.twig';
 
-            // log
-            $orderService->logPayment(
-                $order,
-                'SEB banklink payment canceled',
-                'SEB banklink canceled in SEB',
-                $order
-            );
+                // log
+                $orderService->logPayment(
+                    $order,
+                    'SEB banklink payment canceled',
+                    'SEB banklink canceled in SEB',
+                    $order
+                );
 
-            $orderService->setPaymentStatus(
-                $orderService::$paymentStatusCanceled,
-                'User canceled payment in SEB banklink');
-        } elseif (Seb::SUCCESS_SERVICE == $service) {
-            // template
-            $view = 'FoodOrderBundle:Payments:' .
-                    'seb_banklink/success.html.twig';
+                $orderService->setPaymentStatus(
+                    $orderService::$paymentStatusCanceled,
+                    'User canceled payment in SEB banklink');
+            } elseif (Seb::SUCCESS_SERVICE == $service) {
+                // template
+                $view = 'FoodOrderBundle:Payments:' .
+                        'seb_banklink/success.html.twig';
 
-            // log
-            $orderService->setPaymentStatus(
-                $orderService::$paymentStatusComplete,
-                'SEB banklink billed payment');
-            $orderService->saveOrder();
-            $orderService->informPlace();
+                // log
+                $orderService->setPaymentStatus(
+                    $orderService::$paymentStatusComplete,
+                    'SEB banklink billed payment');
+                $orderService->saveOrder();
+                $orderService->informPlace();
 
-            // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
-            $orderService->deactivateCoupon();
+                // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
+                $orderService->deactivateCoupon();
+            }
         }
 
         return $this->render($view);

@@ -69,3 +69,14 @@ services:
             - [setContainer, ["@service_container"]]
             - [setLogisticSystem, [%active_logistics%]]
             - [setOrderService, ["@food.order"]]
+
+    # this is not part of gateway-bundle. it is part of main app.
+    # we simply register banklink event listener that handles third party
+    # loggin of banklink activity.
+    food.banklink_listener:
+        class: Food\OrderBundle\Service\BanklinkListener
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: kernel.event_listener, event: banklink.request, method: onBanklinkRequest }
+            - { name: kernel.event_listener, event: banklink.response, method: onBanklinkResponse }
