@@ -20,7 +20,12 @@ class ApiService extends ContainerAware
         return $restaurant->loadFromEntity($place, $placePoint, $pickUpOnly);
     }
 
-    public function createMenuByPlaceId($placeId)
+    /**
+     * @param $placeId
+     * @param streing $updated_at
+     * @return array
+     */
+    public function createMenuByPlaceId($placeId, $updated_at = null)
     {
         $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find((int)$placeId);
         if ($place) {
@@ -29,6 +34,7 @@ class ApiService extends ContainerAware
                 $menuItem = new MenuItem(null, $this->container);
                 $item = $menuItem->loadFromEntity($dish);
                 if (!empty($item)) {
+                    if ($updated_at == null || $item['updated_at'] > $updated_at)
                     $returner[] = $item;
                 }
             }
