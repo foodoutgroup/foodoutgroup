@@ -48,8 +48,7 @@ class Seb extends AbstractBanklink
 
     public function getBankUrl()
     {
-        return 'http://fin.seb.lt/vbfin/banklink/check.fw';
-        // return 'https://ebankas.seb.lt/cgi-bin/vbint.sh/vbnet.w';
+        return 'https://ebankas.seb.lt/cgi-bin/vbint.sh/vbnet.w';
     }
 
     public function mac($data = array(), $vkService = 0)

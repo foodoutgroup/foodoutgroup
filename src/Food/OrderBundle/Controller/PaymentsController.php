@@ -387,15 +387,16 @@ class PaymentsController extends Controller
         $order = $this->findOrder($id);
 
         // seb banklink type
-        $options = ['snd_id' => 'EM9999',
+        $options = ['snd_id' => 'EM0489',
                     'curr' => 'LTL',
-                    'acc' => 'LT417044060001223597',
-                    'name' => 'name',
+                    'acc' => 'LT197044060007974514',
+                    'name' => 'UAB Foodout.lt',
                     'lang' => 'LIT',
                     'stamp' => $order->getId(),
-                    'amount' => sprintf('%.2f', $order->getTotal()),
+                    // 'amount' => sprintf('%.2f', $order->getTotal()),
+                    'amount' => sprintf('%.2f', 1.0),
                     'ref' => $order->getId(),
-                    'msg' => 'no seb banklink message',
+                    'msg' => 'Foodout.lt uzsakymas #' . $order->getId(),
                     'return_url' => $router->generate('seb_banklink_return',
                                                       [],
                                                       true)];
