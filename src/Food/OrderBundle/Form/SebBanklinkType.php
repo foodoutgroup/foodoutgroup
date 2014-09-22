@@ -18,7 +18,7 @@ class SebBanklinkType extends AbstractType
      * 'name' => string (e.g.: 'UAB SAU.LT')
      * 'lang' => string (e.g.: 'LIT')
      * 'stamp' => string (e.g.: '8856')
-     * 'amount' => string (e.g.: '9999')
+     * 'amount' => string (e.g.: '99.99')
      * 'ref' => string (e.g.: '8856')
      * 'msg' => string
      * 'return_url' => string

@@ -1,0 +1,22 @@
+nordea_banklink_redirect:
+    pattern: /redirect/{id}
+    default:
+        _controller: FoodOrderBundle:Payments/Banklinks:redirect, id: ~, rcvId: "%nordea.banklink.rcv_id%"
+    requirements:
+        _method: GET
+        id: "[0-9]+"
+
+nordea_banklink_return:
+    pattern: /return
+    default:
+        _controller: FoodOrderBundle:Payments/Banklinks:return
+
+nordea_banklink_cancel:
+    pattern: /cancel
+    default:
+        _controller: FoodOrderBundle:Payments/Banklinks:cancel
+
+nordea_banklink_reject:
+    pattern: /reject
+    default:
+        _controller: FoodOrderBundle:Payments/Banklinks:reject

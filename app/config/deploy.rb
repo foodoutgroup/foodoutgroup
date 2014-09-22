@@ -6,7 +6,7 @@ set :repository,  "git@github.com:Foodout/skanu.lt.git"
 set :scm,         :git
 
 set :model_manager, "doctrine"
-set :branch, "seb-renaissance-era-banklink"
+set :branch, "nordea-banklink"
 
 # multi-stage environment
 set :stages,        %w(production staging sandbox taurinas kofeinas pipiras)

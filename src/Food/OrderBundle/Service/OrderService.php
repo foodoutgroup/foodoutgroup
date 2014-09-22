@@ -52,7 +52,8 @@ class OrderService extends ContainerAware
         'paysera' => 'food.paysera_biller',
         'swedbank-gateway' => 'food.swedbank_gateway_biller',
         'swedbank-credit-card-gateway' => 'food.swedbank_credit_card_gateway_biller',
-        'seb-banklink' => 'food.seb_banklink_biller'
+        'seb-banklink' => 'food.seb_banklink_biller',
+        'nordea-banklink' => 'food.nordea_banklink_biller'
     );
 
     public static $deliveryTrans = array(
