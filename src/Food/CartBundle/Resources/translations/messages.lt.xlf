@@ -98,6 +98,10 @@
         <source>cart.checkout.classic_seb</source>
         <target>SEB banklinkas</target>
       </trans-unit>
+      <trans-unit id="cart.checkout.classic_nordea" resname="cart.checkout.classic_nordea">
+        <source>cart.checkout.classic_nordea</source>
+        <target>Nordea banklinkas</target>
+      </trans-unit>
       <trans-unit id="e03c0471e61e194d66faffb54af1ce45" resname="cart.checkout.button_get_back">
         <source>cart.checkout.button_get_back</source>
         <target>GRĮŽTI ATGAL</target>

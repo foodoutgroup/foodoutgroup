@@ -1,23 +1,24 @@
 <?php
 
-namespace Food\OrderBundle\Controller\Banklinks\Traits;
+namespace Food\OrderBundle\Controller\Traits;
 
-use Food\OrderBundle\Form\NordeaBanklinkType;
 use Symfony\Component\Form\Form;
+use Food\OrderBundle\Form\NordeaBanklinkType;
 
-trait NordeaControllerDecorator
+trait NordeaDecorator
 {
     public function handleRedirectAction($id, $rcvId)
     {
         // services
         $nordea = $this->get('food.nordea_banklink');
+        $factory = $this->get('form.factory');
 
         // get order
         $order = $this->findOrder($id);
 
         // nordea banklink type
         $options = ['stamp' => $order->getId(),
-                    'rcv_id' => $rcv_id,
+                    'rcv_id' => $rcvId,
                     'amount' => sprintf('%.2f', $order->getTotal()),
                     'ref' => $order->getId(),
                     'msg' => 'Foodout.lt uzsakymas #' . $order->getId(),
@@ -34,20 +35,23 @@ trait NordeaControllerDecorator
         $type = new NordeaBanklinkType($options);
 
         // redirect form
-        $options = ['action' => $seb->getTestBankUrl(), 'method' => 'POST'];
+        $options = ['action' => $nordea->getTestBankUrl(), 'method' => 'POST'];
         $form = $factory->createNamed('', $type, null, $options);
 
         // update form with MAC
-        $this->updateFormWithMAC($form);
+        $this->updateFormWithMAC($form, $nordea);
 
         // template
         $view = 'FoodOrderBundle:Payments:' .
                 'nordea_banklink/redirect.html.twig';
 
+        // data
+        $data['form'] = $form->createView();
+
         return [$view, $data];
     }
 
-    protected function updateFormWithMAC(Form $form)
+    protected function updateFormWithMAC(Form $form, $nordea)
     {
         // fill array with form data
         $data = [];
