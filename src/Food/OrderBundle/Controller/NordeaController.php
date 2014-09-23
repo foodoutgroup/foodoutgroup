@@ -21,13 +21,13 @@ class NordeaController extends Controller
         $rcvId = $this->container->getParameter('nordea.banklink.rcv_id');
 
         list($view, $data) = $this->handleRedirectAction($id, $rcvId);
-
         return $this->render($view, $data);
     }
 
     public function returnAction(Request $request)
     {
-        # code...
+        list($view, $data) = $this->handleReturnAction($request);
+        return $this->render($view, $data);
     }
 
     public function cancelAction(Request $request)

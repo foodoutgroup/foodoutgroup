@@ -55,12 +55,13 @@ class Nordea
      * @param  array  $data Request data.
      * @return boolean
      */
-    public function verify(Request $request)
+    public function verify(array $data)
     {
-        $signature = $this->encode($this->generateMac($request,
+        $returnMac = !empty($data['RETURN_MAC']) ? $data['RETURN_MAC'] : '';
+        $signature = $this->encode($this->generateMac($data,
                                                       $this->responseFields));
 
-        return $signature === $request->request->get('RETURN_MAC', '');
+        return $signature === $returnMac;
     }
 
     public function getMacSignature(array $data)

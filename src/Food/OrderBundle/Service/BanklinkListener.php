@@ -3,7 +3,7 @@
 namespace Food\OrderBundle\Service;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Pirminis\GatewayBundle\Services\Events\BanklinkEvent;
+use Food\OrderBundle\Service\Events\BanklinkEvent;
 use Food\OrderBundle\Entity\BanklinkLog;
 use Food\OrderBundle\Entity\Order;
 
