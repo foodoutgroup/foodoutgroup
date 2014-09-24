@@ -6,7 +6,7 @@ set :repository,  "git@github.com:Foodout/skanu.lt.git"
 set :scm,         :git
 
 set :model_manager, "doctrine"
-set :branch, "nordea-banklink"
+set :branch, "master"
 
 # multi-stage environment
 set :stages,        %w(production staging sandbox taurinas kofeinas pipiras)
@@ -18,7 +18,7 @@ require 'capistrano/ext/multistage'
 #role :web,        domain                         # Your HTTP server, Apache/etc
 #role :app,        domain, :primary => true       # This may be the same as your `Web` server
 
-set :deploy_via, :copy
+set :deploy_via, :remote_cache
 
 set :use_composer, true
 # share vendors files
@@ -60,8 +60,8 @@ after "deploy:chmod_things", "deploy:cleanup"
 after "deploy:rollback", "symfony:cache:clear"
 
 # Be more verbose by uncommenting the following line
-logger.level = Logger::MAX_LEVEL
-# logger.level = 0
+# logger.level = Logger::MAX_LEVEL
+logger.level = 0
 
 # copy parameters.yml to specific env
 set :parameters_dir, "app/config/parameters"

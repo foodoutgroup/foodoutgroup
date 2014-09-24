@@ -28,12 +28,12 @@ parameters:
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
-    order.notify_emails: [pirminis@gmail.com]
+    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt]
     order.city_coordinators:
         vilnius: []
         kaunas: [renata@foodout.lt]
         klaipeda: []
-    order.accept_notify_emails: [pirminis@gmail.com]
+    order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
     domain: "foodout.lt"
@@ -57,9 +57,9 @@ parameters:
         - local
         - local.card
         - paysera
-        - swedbank-gateway
-        - swedbank-credit-card-gateway
-        - seb-banklink
+        # - swedbank-gateway
+        # - swedbank-credit-card-gateway
+        # - seb-banklink
         - nordea-banklink
     currency_display: Lt
     currency_iso: LTL
@@ -71,10 +71,8 @@ parameters:
     cloudfront_url: images.foodout.lt
     # nordea banklink
     nordea.banklink.rcv_id: 303134580
-    # nordea.banklink.rcv_id: 12345678LT
     nordea.banklink.rcv_account: LT822140030003348066
     nordea.banklink.mac: C5IUBtC5eriCYGbIYhhIV4v830k14uSn
-    # nordea.banklink.mac: LEHTI
 
 framework:
     #esi:             ~
