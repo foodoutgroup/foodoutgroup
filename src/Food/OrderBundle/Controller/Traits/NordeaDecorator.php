@@ -56,16 +56,70 @@ trait NordeaDecorator
     public function handleReturnAction(Request $request)
     {
         // services
-        $nordea = $this->get('food.nordea_banklink');
-        $dispatcher = $this->get('event_dispatcher');
         $orderService = $this->container->get('food.order');
-
-        // prepare data
-        $data = array_merge($request->request->all(), $request->query->all());
 
         // get order. we must use $orderService to find order
         $orderId = (int)$request->query->get('RETURN_REF', 0);
         $order = $orderService->getOrderById($orderId);
+
+        // verify
+        $verified = $this->verify($request, $orderService, $order);
+
+        // template
+        $view = 'FoodOrderBundle:Payments:' .
+                'nordea_banklink/something_wrong.html.twig';
+
+
+        if ($verified) {
+            $view = 'FoodOrderBundle:Payments:' .
+                    'nordea_banklink/success.html.twig';
+
+            // success log
+            $orderService->setPaymentStatus(
+                $orderService::$paymentStatusComplete,
+                'Nordea banklink billed payment');
+            $orderService->saveOrder();
+            $orderService->informPlace();
+            $orderService->deactivateCoupon();
+        } else {
+            $view = 'FoodOrderBundle:Payments:' .
+                    'nordea_banklink/fail.html.twig';
+
+            // fail log
+            $orderService->logPayment(
+                $order,
+                'Nordea banklink payment failed',
+                'Nordea banklink failed in Nordea',
+                $order
+            );
+
+            $orderService->setPaymentStatus(
+                $orderService::$paymentStatusCanceled,
+                'User failed payment in Nordea banklink');
+        }
+
+        $data = [];
+        return [$view, $data];
+    }
+
+    public function handleCancelAction(Request $request)
+    {
+        return $this->handleReturnAction($request);
+    }
+
+    public function handleRejectAction(Request $request)
+    {
+        return $this->handleCancelAction($request);
+    }
+
+    protected function verify(Request $request, $orderService, $order)
+    {
+        // services
+        $nordea = $this->get('food.nordea_banklink');
+        $dispatcher = $this->get('event_dispatcher');
+
+        // prepare data
+        $data = array_merge($request->request->all(), $request->query->all());
 
         // banklink log
         $event = new BanklinkEvent();
@@ -78,26 +132,7 @@ trait NordeaDecorator
         // verify
         $verified = $nordea->verify($data);
 
-        // template
-        $view = 'FoodOrderBundle:Payments:' .
-                'nordea_banklink/something_wrong.html.twig';
-
-
-        if (!empty($data['RETURN_PAID'])) {
-            $view = 'FoodOrderBundle:Payments:' .
-                    'nordea_banklink/success.html.twig';
-
-            // success log
-            $orderService->setPaymentStatus(
-                $orderService::$paymentStatusComplete,
-                'Nordea banklink billed payment');
-            $orderService->saveOrder();
-            $orderService->informPlace();
-            $orderService->deactivateCoupon();
-        }
-
-        $data = [];
-        return [$view, $data];
+        return $verified && !empty($data['RETURN_PAID']);
     }
 
     protected function updateFormWithMAC(Form $form, $nordea)

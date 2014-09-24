@@ -32,11 +32,13 @@ class NordeaController extends Controller
 
     public function cancelAction(Request $request)
     {
-        # code...
+        list($view, $data) = $this->handleCancelAction($request);
+        return $this->render($view, $data);
     }
 
     public function rejectAction(Request $request)
     {
-        # code...
+        list($view, $data) = $this->handleRejectAction($request);
+        return $this->render($view, $data);
     }
 }
