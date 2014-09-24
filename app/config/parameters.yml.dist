@@ -12,5 +12,5 @@ parameters:
     locale: lt
     secret: f6180a0fb30e99a1da1e364412f96c3f98cbaa1f
 
-    seb.banklink.private_key: "%kernel.root_dir%/../shared/banklinks/seb/private.key"
-    seb.banklink.bank_key: "%kernel.root_dir%/../shared/banklinks/seb/bank.key"
+    seb.banklink.private_key: "/home/labai.skanu.lt/shared/banklinks/seb/private.key"
+    seb.banklink.bank_key: "/home/labai.skanu.lt/shared/banklinks/seb/bank.key"
