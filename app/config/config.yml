@@ -70,10 +70,11 @@ parameters:
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
     cloudfront_url: images.foodout.lt
     # nordea banklink
-    # nordea.banklink.rcv_id: 303134580
-    nordea.banklink.rcv_id: 12345678LT
-    # nordea.banklink.mac: C5IUBtC5eriCYGbIYhhIV4v830k14uSn
-    nordea.banklink.mac: LEHTI
+    nordea.banklink.rcv_id: 303134580
+    # nordea.banklink.rcv_id: 12345678LT
+    nordea.banklink.rcv_account: LT822140030003348066
+    nordea.banklink.mac: C5IUBtC5eriCYGbIYhhIV4v830k14uSn
+    # nordea.banklink.mac: LEHTI
 
 framework:
     #esi:             ~

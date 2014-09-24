@@ -32,7 +32,7 @@ class NordeaBanklinkType extends AbstractType
             ->add('VERSION', 'hidden', ['data' => '0003'])
             ->add('STAMP', 'hidden', ['data' => $this->options['stamp']])
             ->add('RCV_ID', 'hidden', ['data' => $this->options['rcv_id']])
-            ->add('RCV_ACCOUNT', 'hidden')
+            ->add('RCV_ACCOUNT', 'hidden', ['data' => $this->options['rcv_account']])
             ->add('LANGUAGE', 'hidden', ['data' => '7'])
             ->add('AMOUNT', 'hidden', ['data' => $this->options['amount']])
             ->add('REF', 'hidden', ['data' => $this->options['ref']])

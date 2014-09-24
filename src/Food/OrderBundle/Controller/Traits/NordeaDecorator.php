@@ -9,7 +9,7 @@ use Food\OrderBundle\Service\Events\BanklinkEvent;
 
 trait NordeaDecorator
 {
-    public function handleRedirectAction($id, $rcvId)
+    public function handleRedirectAction($id, $rcvId, $rcvAccount)
     {
         // services
         $nordea = $this->get('food.nordea_banklink');
@@ -21,7 +21,9 @@ trait NordeaDecorator
         // nordea banklink type
         $options = ['stamp' => $order->getId(),
                     'rcv_id' => $rcvId,
-                    'amount' => sprintf('%.2f', $order->getTotal()),
+                    'rcv_account' => $rcvAccount,
+                    // 'amount' => sprintf('%.2f', $order->getTotal()),
+                    'amount' => sprintf('%.2f', 0.01),
                     'ref' => $order->getId(),
                     'msg' => 'Foodout.lt uzsakymas #' . $order->getId(),
                     'return_url' => $this->generateUrl('nordea_banklink_return',
@@ -37,7 +39,7 @@ trait NordeaDecorator
         $type = new NordeaBanklinkType($options);
 
         // redirect form
-        $options = ['action' => $nordea->getTestBankUrl(), 'method' => 'POST'];
+        $options = ['action' => $nordea->getBankUrl(), 'method' => 'POST'];
         $form = $factory->createNamed('', $type, null, $options);
 
         // update form with MAC
