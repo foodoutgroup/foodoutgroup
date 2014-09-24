@@ -253,11 +253,13 @@
                                     <input type="radio" name="payment-type" value="local.card"{% if (order is not null and order.paymentMethod == 'local.card') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local.card') %} checked="checked"{% endif %}>
                                 </label>
                                 {% endif %}
-                                <label class="custom-radio">{{ 'cart.checkout.classic_seb'|trans }}
+                                {#<label class="custom-radio">{{ 'cart.checkout.classic_seb'|trans }}
                                     <input type="radio" name="payment-type" value="seb-banklink"{% if (order is not null and order.paymentMethod == 'seb-banklink') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'seb-banklink') or (dataToLoad is empty) %} checked="checked"{% endif %}>
-                                </label>
+                                </label>#}
+                            </div>
+                            <div class="select-payment clearfix">
                                 <label class="custom-radio">{{ 'cart.checkout.classic_nordea'|trans }}
-                                    <input type="radio" name="payment-type" value="nordea-banklink"{% if (order is not null and order.paymentMethod == 'nordea-banklink') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'nordea-banklink') or (dataToLoad is empty) %} checked="checked"{% endif %}>
+                                    <input type="radio" name="payment-type" value="nordea-banklink"/>
                                 </label>
                             </div>
 
