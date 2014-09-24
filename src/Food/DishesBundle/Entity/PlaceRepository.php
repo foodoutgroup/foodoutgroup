@@ -72,6 +72,8 @@ class PlaceRepository extends EntityRepository
             $city = (!empty($locationData['city']) ? $locationData['city'] : null);
             $lat = str_replace(",", ".", $locationData['lat']);
             $lon = str_replace(",", ".", $locationData['lng']);
+        } elseif (!empty($locationData) && !empty($locationData['city']) && isset($locationData['city_only']) && $locationData['city_only'] === true) {
+            $city = $locationData['city'];
         }
 
         $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id
@@ -112,8 +114,13 @@ class PlaceRepository extends EntityRepository
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
             $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL ".$placeFilter." AND ".$kitchensQuery." GROUP BY p.id";
         } elseif ($lat == null || $lon == null) {
-            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL ".$placeFilter.$kitchensQuery." GROUP BY p.id";
+            if ($city == null) {
+                $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
+                $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL ".$placeFilter.$kitchensQuery." GROUP BY p.id";
+            } else {
+                $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city='".$city."' AND ppc.place = p.id";
+                $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL AND pp.city='".$city."' ".$placeFilter.$kitchensQuery." GROUP BY p.id";
+            }
         } else {
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city='".$city."' AND ppc.place = p.id";
             $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL AND pp.city='".$city."' ".$placeFilter." AND pp.id =  (". $subQuery .") ".$kitchensQuery;

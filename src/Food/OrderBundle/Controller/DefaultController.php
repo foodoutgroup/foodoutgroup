@@ -77,35 +77,38 @@ class DefaultController extends Controller
      */
     public function mobileAdminAction($hash, Request $request)
     {
-        $order = $this->get('food.order')->getOrderByHash($hash);
+        $orderService = $this->get('food.order');
+        $order = $orderService->getOrderByHash($hash);
         if ($request->isMethod('post')) {
             switch($request->get('status')) {
                 case 'confirm':
-                    $this->get('food.order')->statusAccepted('admin_mobile');
+                    $orderService->statusAccepted('admin_mobile');
                 break;
 
                 case 'delay':
-                    $this->get('food.order')->statusDelayed('admin_mobile', 'delay reason: '.$request->get('delay_reason'));
-                    $this->get('food.order')->getOrder()->setDelayed(true);
-                    $this->get('food.order')->getOrder()->setDelayReason($request->get('delay_reason'));
-                    $this->get('food.order')->getOrder()->setDelayDuration($request->get('delay_duration'));
-                    $this->get('food.order')->saveDelay();
-                    $this->get('food.order')->getOrderByHash($hash);
+                    $orderService->statusDelayed('admin_mobile', 'delay reason: '.$request->get('delay_reason'));
+                    $orderService->getOrder()->setDelayed(true);
+                    $orderService->getOrder()->setDelayReason($request->get('delay_reason'));
+                    $orderService->getOrder()->setDelayDuration($request->get('delay_duration'));
+                    $orderService->saveDelay();
+                    $orderService->getOrderByHash($hash);
                 break;
 
                 case 'cancel':
-                    $this->get('food.order')->statusCanceled('admin_mobile');
+                    $orderService->statusCanceled('admin_mobile');
+                    // Order has been canceled by admins - inform restourant
+                    $orderService->informPlaceCancelAction();
                 break;
 
                 case 'finish':
-                    $this->get('food.order')->statusFinished('admin_mobile');
+                    $orderService->statusFinished('admin_mobile');
                 break;
 
                 case 'completed':
-                    $this->get('food.order')->statusCompleted('admin_mobile');
+                    $orderService->statusCompleted('admin_mobile');
                 break;
             }
-            $this->get('food.order')->saveOrder();
+            $orderService->saveOrder();
 
             return $this->redirect(
                 $this->generateUrl('order_support_mobile', array('hash' => $hash))
