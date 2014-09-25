@@ -19,12 +19,9 @@ class NordeaController extends Controller
     public function redirectAction($id)
     {
         $rcvId = $this->container->getParameter('nordea.banklink.rcv_id');
-        $rcvAccount = $this->container
-                           ->getParameter('nordea.banklink.rcv_account');
 
         list($view, $data) = $this->handleRedirectAction($id,
-                                                         $rcvId,
-                                                         $rcvAccount);
+                                                         $rcvId);
         return $this->render($view, $data);
     }
 

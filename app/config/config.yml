@@ -71,7 +71,6 @@ parameters:
     cloudfront_url: images.foodout.lt
     # nordea banklink
     nordea.banklink.rcv_id: 303134580
-    nordea.banklink.rcv_account: LT822140030003348066
     nordea.banklink.mac: C5IUBtC5eriCYGbIYhhIV4v830k14uSn
 
 framework:
