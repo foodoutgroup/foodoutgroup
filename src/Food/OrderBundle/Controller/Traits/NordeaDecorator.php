@@ -27,19 +27,19 @@ trait NordeaDecorator
                     'msg' => 'Foodout.lt uzsakymas #' . $order->getId(),
                     'return_url' => str_replace(
                         'http://',
-                        'https://www.',
+                        'https://',
                         $this->generateUrl('nordea_banklink_return',
                                            [],
                                            true)),
                     'cancel_url' => str_replace(
                         'http://',
-                        'https://www.',
+                        'https://',
                         $this->generateUrl('nordea_banklink_cancel',
                                            [],
                                            true)),
                     'reject_url' => str_replace(
                         'http://',
-                        'https://www.',
+                        'https://',
                         $this->generateUrl('nordea_banklink_reject',
                                            [],
                                            true)),
