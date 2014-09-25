@@ -21,8 +21,8 @@ trait NordeaDecorator
         // nordea banklink type
         $options = ['stamp' => $order->getId(),
                     'rcv_id' => $rcvId,
-                    'amount' => sprintf('%.2f', $order->getTotal()),
-                    // 'amount' => sprintf('%.2f', 0.01),
+                    // 'amount' => sprintf('%.2f', $order->getTotal()),
+                    'amount' => sprintf('%.2f', 0.01),
                     'ref' => $order->getId(),
                     'msg' => 'Foodout.lt uzsakymas #' . $order->getId(),
                     'return_url' => str_replace(
