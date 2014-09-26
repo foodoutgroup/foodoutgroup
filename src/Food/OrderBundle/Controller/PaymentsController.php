@@ -397,9 +397,12 @@ class PaymentsController extends Controller
                     // 'amount' => sprintf('%.2f', 1.0),
                     'ref' => $order->getId(),
                     'msg' => 'Foodout.lt uzsakymas #' . $order->getId(),
-                    'return_url' => $router->generate('seb_banklink_return',
-                                                      [],
-                                                      true)];
+                    'return_url' => str_replace('http://',
+                                                'https://',
+                                                $router->generate(
+                                                    'seb_banklink_return',
+                                                    [],
+                                                    true))];
         $type = new SebBanklinkType($options);
 
         // redirect form

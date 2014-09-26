@@ -164,7 +164,6 @@ seb_banklink_redirect:
 seb_banklink_return:
     pattern: /payments/seb/banklink/return
     defaults: { _controller: FoodOrderBundle:Payments:sebBanklinkReturn }
-    schemes: [https]
 
 # NORDEA banklink
 nordea_banklink:
