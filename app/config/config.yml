@@ -59,7 +59,7 @@ parameters:
         - paysera
         # - swedbank-gateway
         # - swedbank-credit-card-gateway
-        # - seb-banklink
+        - seb-banklink
         - nordea-banklink
     currency_display: Lt
     currency_iso: LTL
@@ -69,6 +69,11 @@ parameters:
     evp.test_payments: 0
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
     cloudfront_url: images.foodout.lt
+    # seb banklink
+    seb.banklink.private_key: "/home/skanu.lt/shared/banklinks/seb/private.key"
+    # seb.banklink.private_key: "/Users/odd/www/seb-certificates/private.key"
+    seb.banklink.bank_key: "/home/skanu.lt/shared/banklinks/seb/bank.key"
+    # seb.banklink.bank_key: "/Users/odd/www/seb-certificates/bank.key"
     # nordea banklink
     nordea.banklink.rcv_id: 303134580
     nordea.banklink.mac: C5IUBtC5eriCYGbIYhhIV4v830k14uSn
