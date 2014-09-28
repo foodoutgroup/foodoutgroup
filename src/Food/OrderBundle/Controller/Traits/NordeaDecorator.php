@@ -15,6 +15,9 @@ trait NordeaDecorator
         $nordea = $this->get('food.nordea_banklink');
         $factory = $this->get('form.factory');
 
+        // params from config
+        $rcvId = $this->container->getParameter('nordea.banklink.rcv_id');
+
         // get order
         $order = $this->findOrder($id);
 

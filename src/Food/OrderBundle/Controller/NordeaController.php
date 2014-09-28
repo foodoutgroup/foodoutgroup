@@ -9,19 +9,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Food\OrderBundle\Form\NordeaBanklinkType;
 use Food\OrderBundle\Service\Banklink\Nordea;
 use Food\OrderBundle\Service\Events\BanklinkEvent;
-use Food\OrderBundle\Controller\Traits\NordeaDecorator;
+use Food\OrderBundle\Controller\Traits\Nordea as NordeaTraits;
 
 class NordeaController extends Controller
 {
-    // this trait adds methods that handle logic for this controller
-    use NordeaDecorator;
+    use NordeaTraits\RedirectTrait;
+    use NordeaTraits\ReturnTrait;
+    use NordeaTraits\CancelTrait;
+    use NordeaTraits\RejectTrait;
 
     public function redirectAction($id)
     {
-        $rcvId = $this->container->getParameter('nordea.banklink.rcv_id');
-
-        list($view, $data) = $this->handleRedirectAction($id,
-                                                         $rcvId);
+        list($view, $data) = $this->handleRedirectAction($id);
         return $this->render($view, $data);
     }
 
