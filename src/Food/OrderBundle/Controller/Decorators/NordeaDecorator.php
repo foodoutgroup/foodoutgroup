@@ -124,47 +124,4 @@ trait NordeaDecorator
     {
         return $this->handleCancelAction($request);
     }
-
-    protected function verify(Request $request, $orderService, $order)
-    {
-        // services
-        $nordea = $this->get('food.nordea_banklink');
-        $dispatcher = $this->get('event_dispatcher');
-
-        // prepare data
-        $data = array_merge($request->request->all(), $request->query->all());
-
-        // banklink log
-        $event = new BanklinkEvent();
-        $event->setOrderId($order ? $order->getId() : 0);
-        $event->setQuery(var_export($request->query->all(), true));
-        $event->setRequest(var_export($request->request->all(), true));
-
-        $dispatcher->dispatch(BanklinkEvent::BANKLINK_RESPONSE, $event);
-
-        // verify
-        $verified = $nordea->verify($data);
-
-        return $verified && !empty($data['RETURN_PAID']);
-    }
-
-    protected function updateFormWithMAC(Form $form, $nordea)
-    {
-        // fill array with form data
-        $data = [];
-
-        foreach ($form->all() as $child) {
-            $data[$child->getName()] = $child->getData();
-        }
-
-        // finally update form
-        $form->get('MAC')->setData($nordea->getMacSignature($data));
-    }
-
-    protected function findOrder($id)
-    {
-        return $this->get('doctrine.orm.entity_manager')
-                    ->getRepository('FoodOrderBundle:Order')
-                    ->find($id);
-    }
 }
