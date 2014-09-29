@@ -238,7 +238,7 @@ class PaymentsController extends Controller
                                               0,
                                               16),
                          //  'price' => (string)round($order->getTotal() * 100),
-                         'price' => '1',
+                         'price' => '0.01',
                          'transaction_datetime' => date('Y-m-d H:i:s'),
                          'comment' => 'no comment',
                          'return_url' => $returnUrl,
