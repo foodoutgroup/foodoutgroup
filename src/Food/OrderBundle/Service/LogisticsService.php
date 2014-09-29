@@ -435,7 +435,7 @@ class LogisticsService extends ContainerAware
 
         $dom = new \DOMDocument();
         $dom->loadXML($xml);
-        $orderElements = $dom->getElementsByTagName('OrderAssigned');
+        $orderElements = $dom->getElementsByTagName('RouteAssigned');
 
         // Kolkas tik vienas. Jei po kelis nores perduot - reiksapglebt gaubianciu tagu, kitaip nevalidu
         foreach ($orderElements as $order)
@@ -470,7 +470,7 @@ class LogisticsService extends ContainerAware
 
         $dom = new \DOMDocument();
         $dom->loadXML($xml);
-        $orderStatusElement = $dom->getElementsByTagName('OrderStatus');
+        $orderStatusElement = $dom->getElementsByTagName('ShipmentStatus');
 
         // Vienas elementas. Jei po kelis nores perduot - reiksapglebt gaubianciu tagu, kitaip nevalidu
         foreach ($orderStatusElement as $order)

@@ -54,26 +54,26 @@ class LogisticsControllerTest extends WebTestCase
         $this->assertEquals($driver->getId(), $reloadedOrder2->getDriver()->getId());
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
-<OrderAssignments>
-<OrderAssigned>
+<RoutesAssigned>
+<RouteAssigned>
 <Order_id>'.$order->getId().'</Order_id>
 <Driver_id>'.$driver->getId().'</Driver_id>
 <Vehicle_no>FCU 819</Vehicle_no>
 <Planned_delivery_time>2014-07-02 11:43</Planned_delivery_time>
-</OrderAssigned>
-<OrderAssigned>
+</RouteAssigned>
+<RouteAssigned>
 <Order_id>'.$order2->getId().'</Order_id>
 <Driver_id>'.$driver2->getId().'</Driver_id>
 <Vehicle_no>FCU 152</Vehicle_no>
 <Planned_delivery_time>2014-07-02 11:44</Planned_delivery_time>
-</OrderAssigned>
-<OrderAssigned>
+</RouteAssigned>
+<RouteAssigned>
 <Order_id>'.$order3->getId().'</Order_id>
 <Driver_id>'.$driver2->getId().'</Driver_id>
 <Vehicle_no>FCU 156</Vehicle_no>
 <Planned_delivery_time>2014-07-02 11:46</Planned_delivery_time>
-</OrderAssigned>
-</OrderAssignments>';
+</RouteAssigned>
+</RoutesAssigned>';
 
         $this->client->request(
             'POST',
@@ -110,14 +110,14 @@ class LogisticsControllerTest extends WebTestCase
         $order = $this->getOrder($place, $placePoint, OrderService::$status_new);
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
-<OrderStatuses>
-    <OrderStatus>
+<ShipmentStatuses>
+    <ShipmentStatus>
         <Order_id>'.$order->getId().'</Order_id>
         <Event_Date>2014-07-02 11:43</Event_Date>
         <Status>finished</Status>
         <FailReason/>
-    </OrderStatus>
-</OrderStatuses>';
+    </ShipmentStatus>
+</ShipmentStatuses>';
 
         $this->client->request(
             'POST',
@@ -144,14 +144,14 @@ class LogisticsControllerTest extends WebTestCase
         $order = $this->getOrder($place, $placePoint, OrderService::$status_new);
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
-<OrderStatuses>
-    <OrderStatus>
+<ShipmentStatuses>
+    <ShipmentStatus>
         <Order_id>'.$order->getId().'</Order_id>
         <Event_Date>2014-07-02 11:43</Event_Date>
         <Status>failed</Status>
         <FailReason>Omg</FailReason>
-    </OrderStatus>
-</OrderStatuses>';
+    </ShipmentStatus>
+</ShipmentStatuses>';
 
         $this->client->request(
             'POST',
@@ -179,26 +179,26 @@ class LogisticsControllerTest extends WebTestCase
         $order2 = $this->getOrder($place, $placePoint, OrderService::$status_accepted);
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
-<OrderStatuses>
-    <OrderStatus>
+<ShipmentStatuses>
+    <ShipmentStatus>
         <Order_id>'.$order->getId().'</Order_id>
         <Event_Date>2014-07-02 11:43</Event_Date>
         <Status>failed</Status>
         <FailReason>Omg</FailReason>
-    </OrderStatus>
-    <OrderStatus>
+    </ShipmentStatus>
+    <ShipmentStatus>
         <Order_id>123447</Order_id>
         <Event_Date>2014-07-02 11:43</Event_Date>
         <Status>failed</Status>
         <FailReason>Omg2</FailReason>
-    </OrderStatus>
-    <OrderStatus>
+    </ShipmentStatus>
+    <ShipmentStatus>
         <Order_id>'.$order2->getId().'</Order_id>
         <Event_Date>2014-07-02 11:43</Event_Date>
         <Status>failed</Status>
         <FailReason>Omg3</FailReason>
-    </OrderStatus>
-</OrderStatuses>';
+    </ShipmentStatus>
+</ShipmentStatuses>';
 
         $this->client->request(
             'POST',

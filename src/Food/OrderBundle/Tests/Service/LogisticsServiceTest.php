@@ -920,14 +920,14 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
     public function testDriverXmlParse()
     {
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
-<OrderAssignments>
-<OrderAssigned>
+<RoutesAssigned>
+<RouteAssigned>
 <Order_id>324169</Order_id>
 <Driver_id>165</Driver_id>
 <Vehicle_no>FCU 819</Vehicle_no>
 <Planned_delivery_time>2014-07-02 11:43</Planned_delivery_time>
-</OrderAssigned>
-</OrderAssignments>';
+</RouteAssigned>
+</RoutesAssigned>';
 
         $expectedDriverData = array(
             array(
@@ -948,20 +948,20 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
     public function testMultipleDriverXmlParse()
     {
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
-<OrderAssignments>
-<OrderAssigned>
+<RoutesAssigned>
+<RouteAssigned>
 <Order_id>324169</Order_id>
 <Driver_id>165</Driver_id>
 <Vehicle_no>FCU 819</Vehicle_no>
 <Planned_delivery_time>2014-07-02 11:43</Planned_delivery_time>
-</OrderAssigned>
-<OrderAssigned>
+</RouteAssigned>
+<RouteAssigned>
 <Order_id>3242</Order_id>
 <Driver_id>123</Driver_id>
 <Vehicle_no>ABC 232</Vehicle_no>
 <Planned_delivery_time>2014-07-31 21:22</Planned_delivery_time>
-</OrderAssigned>
-</OrderAssignments>';
+</RouteAssigned>
+</RoutesAssigned>';
 
         $expectedDriverData = array(
             array(
@@ -988,14 +988,14 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
     public function testOrderStatusXmlParse()
     {
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
-<OrderStatuses>
-    <OrderStatus>
+<ShipmentStatuses>
+    <ShipmentStatus>
         <Order_id>324169</Order_id>
         <Event_Date>2014-07-02 11:43</Event_Date>
         <Status>finished</Status>
         <FailReason></FailReason>
-    </OrderStatus>
-</OrderStatuses>';
+    </ShipmentStatus>
+</ShipmentStatuses>';
 
         $expectedStatusData = array(array(
             'order_id' => 324169,
@@ -1014,14 +1014,14 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
     public function testOrderStatusXmlParse2()
     {
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
-<OrderStatuses>
-    <OrderStatus>
+<ShipmentStatuses>
+    <ShipmentStatus>
         <Order_id>3241</Order_id>
         <Event_Date>2014-07-02 17:15</Event_Date>
         <Status>failed</Status>
         <FailReason>Client rejected</FailReason>
-    </OrderStatus>
-</OrderStatuses>';
+    </ShipmentStatus>
+</ShipmentStatuses>';
 
         $expectedStatusData = array(array(
             'order_id' => 3241,
@@ -1040,20 +1040,20 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
     public function testOrderStatusXmlParseMultiple()
     {
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
-<OrderStatuses>
-    <OrderStatus>
+<ShipmentStatuses>
+    <ShipmentStatus>
         <Order_id>3231</Order_id>
         <Event_Date>2014-07-02 17:15</Event_Date>
         <Status>failed</Status>
         <FailReason>Client rejected order</FailReason>
-    </OrderStatus>
-    <OrderStatus>
+    </ShipmentStatus>
+    <ShipmentStatus>
         <Order_id>3243</Order_id>
         <Event_Date>2014-07-02 17:16</Event_Date>
         <Status>finished</Status>
         <FailReason/>
-    </OrderStatus>
-</OrderStatuses>';
+    </ShipmentStatus>
+</ShipmentStatuses>';
 
         $expectedStatusData = array(
             array(
