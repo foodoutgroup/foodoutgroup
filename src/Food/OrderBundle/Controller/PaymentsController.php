@@ -199,8 +199,8 @@ class PaymentsController extends Controller
         $options = array('order_id' => substr($order->getId() . '_' . time(),
                                               0,
                                               16),
-                         //  'price' => (string)round($order->getTotal() * 100),
-                         'price' => '1',
+                         'price' => (string)round($order->getTotal() * 100),
+                         //  'price' => '1',
                          'email' => $order->getUser()->getEmail(),
                          'transaction_datetime' => date('Y-m-d H:i:s'),
                          'comment' => 'no comment',
@@ -237,8 +237,7 @@ class PaymentsController extends Controller
         $options = array('order_id' => substr($order->getId() . '_' . time(),
                                               0,
                                               16),
-                         //  'price' => (string)round($order->getTotal() * 100),
-                         'price' => '0.01',
+                         'price' => sprintf('%.2f', $order->getTotal()),
                          'transaction_datetime' => date('Y-m-d H:i:s'),
                          'comment' => 'no comment',
                          'return_url' => $returnUrl,
@@ -248,7 +247,7 @@ class PaymentsController extends Controller
         return new RedirectResponse($gateway->redirect_url('swedbank'));
     }
 
-    public function swedbankGatewaySuccessAction(Request $request)
+    public function swedbankCreditCardGatewaySuccessAction(Request $request)
     {
         // services
         $orderService = $this->container->get('food.order');
@@ -274,7 +273,7 @@ class PaymentsController extends Controller
         }
 
         // is order paid? let's find out!
-        if ($service->is_successful_payment('swedbank', $request)) {
+        if ($gateway->is_successful_payment('swedbank', $request)) {
             $this->markOrderPaid($orderService);
 
             $view = 'FoodOrderBundle:Payments:' .
@@ -289,11 +288,11 @@ class PaymentsController extends Controller
         return $this->swedbankGatewaySuccessAction($request);
     }
 
-    public function swedbankCreditCardGatewaySuccessAction(Request $request)
+    public function swedbankGatewaySuccessAction(Request $request)
     {
         // services
         $orderService = $this->container->get('food.order');
-        $gateway = $this->container->get('pirminis_gateway');
+        $gateway = $this->container->get('pirminis_banklink_gateway');
 
         $view = 'FoodOrderBundle:Payments:' .
                 'swedbank_gateway/something_wrong.html.twig';
