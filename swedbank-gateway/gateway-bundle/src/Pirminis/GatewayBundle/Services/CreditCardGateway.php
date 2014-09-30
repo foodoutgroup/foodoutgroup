@@ -40,7 +40,7 @@ class CreditCardGateway
                ->set('order_id', $this->options['order_id'])
                ->set('price', $this->options['price'])
                ->set('transaction_datetime',
-                     $this->options['transaction_datetime'])
+                     str_replace('-', '', $this->options['transaction_datetime']))
                ->set('comment', $this->options['comment'])
                ->set('return_url', $this->options['return_url'])
                ->set('expiry_url', $this->options['expiry_url'])
