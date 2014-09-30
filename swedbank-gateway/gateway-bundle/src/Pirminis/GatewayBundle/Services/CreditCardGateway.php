@@ -8,18 +8,21 @@ use Pirminis\Gateway\Swedbank\FullHps\Request;
 use Pirminis\Gateway\Swedbank\FullHps\Response;
 use Pirminis\Gateway\Swedbank\FullHps\TransactionQuery\Request as TransRequest;
 use Pirminis\Gateway\Swedbank\Banklink\Sender;
+use Food\OrderBundle\Service\Events\BanklinkEvent;
 
 class CreditCardGateway
 {
     const DTS_REFERENCE = 'dts_reference';
 
+    protected $dispatcher;
     protected $config;
     protected $options;
     protected $redirect_url;
 
-    public function __construct(array $config)
+    public function __construct(array $config, $dispatcher)
     {
         $this->config = $config;
+        $this->dispatcher = $dispatcher;
     }
 
     public function set_options(array $options)
@@ -47,6 +50,10 @@ class CreditCardGateway
         $sender = new Sender($request->xml());
         $response = new Response($sender->send());
 
+        // log
+        $this->logRequest($request->xml());
+        $this->logResponse($response->xml());
+
         return $response->redirect_url();
     }
 
@@ -61,12 +68,20 @@ class CreditCardGateway
         $sender = new Sender($request->xml());
         $response = new Response($sender->send());
 
+        // log
+        $this->logRequest($request->xml());
+        $this->logResponse($response->xml());
+
         if ($response->is_authenticated()) {
             $request = new TransRequest($config['vtid'],
                                         $config['password'],
                                         $response->dc_reference());
             $sender = new Sender($request->xml());
             $response = new Response($sender->send());
+
+            // log
+            $this->logRequest($request->xml());
+            $this->logResponse($response->xml());
 
             return $response->query_succeeded();
         }
@@ -85,6 +100,10 @@ class CreditCardGateway
         $sender = new Sender($request->xml());
         $response = new Response($sender->send());
 
+        // log
+        $this->logRequest($request->xml());
+        $this->logResponse($response->xml());
+
         if ($response->is_authenticated()) {
             $request = new TransRequest($config['vtid'],
                                         $config['password'],
@@ -92,9 +111,29 @@ class CreditCardGateway
             $sender = new Sender($request->xml());
             $response = new Response($sender->send());
 
+            // log
+            $this->logRequest($request->xml());
+            $this->logResponse($response->xml());
+
             return $response->query_merchant_reference();
         }
 
         return null;
+    }
+
+    protected function logRequest($xml)
+    {
+        $event = new BanklinkEvent();
+        $event->setXml($xml);
+
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST, $event);
+    }
+
+    protected function logResponse($xml)
+    {
+        $event = new BanklinkEvent();
+        $event->setXml($xml);
+
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_RESPONSE, $event);
     }
 }

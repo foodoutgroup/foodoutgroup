@@ -5,4 +5,4 @@ services:
 
     pirminis_credit_card_gateway:
         class: Pirminis\GatewayBundle\Services\CreditCardGateway
-        arguments: ["%pirminis_gateway%"]
+        arguments: ["%pirminis_gateway%", @event_dispatcher]
