@@ -2,6 +2,8 @@
 
 namespace Food\OrderBundle\Controller\Decorators\SwedbankCreditCardGateway;
 
+use Symfony\Component\HttpFoundation\Request;
+
 trait ReturnDecorator
 {
     public function handleReturn(Request $request)
@@ -37,6 +39,6 @@ trait ReturnDecorator
         }
 
         $data = ['order' => $order];
-        return [$view, $order];
+        return [$view, $data];
     }
 }
