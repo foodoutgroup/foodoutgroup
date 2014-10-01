@@ -78,7 +78,7 @@ class CreditCardGateway
             null,
             null,
             $request->xml());
-        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_QUERY_REQUEST,
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST,
                                     $event);
 
         $sender = new Sender($request->xml());
@@ -89,7 +89,7 @@ class CreditCardGateway
             null,
             null,
             $response->xml());
-        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_QUERY_RESPONSE,
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_RESPONSE,
                                     $event);
 
         if ($response->is_authenticated()) {
@@ -102,7 +102,7 @@ class CreditCardGateway
                 null,
                 null,
                 $request->xml());
-            $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_QUERY_REQUEST,
+            $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST,
                                         $event);
 
             $sender = new Sender($request->xml());
@@ -113,7 +113,7 @@ class CreditCardGateway
                 null,
                 null,
                 $response->xml());
-            $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_QUERY_RESPONSE,
+            $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_RESPONSE,
                                         $event);
 
             return $response->query_succeeded();
@@ -136,7 +136,7 @@ class CreditCardGateway
             null,
             null,
             $request->xml());
-        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_QUERY_REQUEST,
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST,
                                     $event);
 
         $sender = new Sender($request->xml());
@@ -147,7 +147,7 @@ class CreditCardGateway
             null,
             null,
             $response->xml());
-        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_QUERY_RESPONSE,
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_RESPONSE,
                                     $event);
 
         if ($response->is_authenticated()) {
@@ -160,7 +160,7 @@ class CreditCardGateway
                 null,
                 null,
                 $request->xml());
-            $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_QUERY_REQUEST,
+            $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST,
                                         $event);
 
             $sender = new Sender($request->xml());
@@ -171,7 +171,7 @@ class CreditCardGateway
                 null,
                 null,
                 $response->xml());
-            $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_QUERY_RESPONSE,
+            $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_RESPONSE,
                                         $event);
 
             return $response->query_merchant_reference();
