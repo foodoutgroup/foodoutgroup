@@ -3,8 +3,6 @@
 namespace Food\OrderBundle\Controller\Decorators\SwedbankCreditCardGateway;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 trait ReturnDecorator
 {
@@ -21,7 +19,7 @@ trait ReturnDecorator
         // get order
         $transactionId = $gateway->order_id('swedbank', $request);
 
-        if (empty($transactionId)) return [$view, []];
+        if (empty($transactionId)) return $this->render($view);
 
         // extract actual order id. say thanks to swedbank requirements
         $transactionIdSplit = explode('_', $transactionId);
@@ -39,6 +37,8 @@ trait ReturnDecorator
             $view = 'FoodCartBundle:Default:payment_success.html.twig';
 
             $this->logPaidAndFinish($orderService, $order, $cartService);
+
+            return $this->render($view, ['order' => $order]);
         }
 
         $url = $this->generateUrl('food_cart',
