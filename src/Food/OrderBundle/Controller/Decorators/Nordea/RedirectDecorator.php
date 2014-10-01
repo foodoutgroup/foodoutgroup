@@ -34,7 +34,7 @@ trait RedirectDecorator
                 'nordea_banklink/redirect.html.twig';
 
         // data
-        $data['form'] = $form->createView();
+        $data = ['form' => $form->createView()];
 
         return [$view, $data];
     }

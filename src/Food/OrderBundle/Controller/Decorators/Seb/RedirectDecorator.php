@@ -29,7 +29,7 @@ trait RedirectDecorator
         $view = 'FoodOrderBundle:Payments:' .
                 'seb_banklink/redirect.html.twig';
 
-        $data['form'] = $form->createView();
+        $data = ['form' => $form->createView()];
 
         return [$view, $data];
     }

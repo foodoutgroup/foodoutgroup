@@ -22,7 +22,6 @@ trait ReturnDecorator
         $service = max(0, $request->get('VK_SERVICE', 0));
         $mac = $request->get('VK_MAC', '');
         $verified = false;
-        $data = [];
 
         // template
         $view = 'FoodOrderBundle:Payments:' .
@@ -35,6 +34,8 @@ trait ReturnDecorator
         $this->logBanklink($dispatcher, $request, $order);
 
         // verify
+        $data = [];
+
         try {
             foreach ($request->request->all() as $child) {
                 $data[$child->getName()] = $child->getData();
@@ -75,7 +76,7 @@ trait ReturnDecorator
             }
         }
 
-        $data['order'] = $order;
+        $data = ['order' => $order];
         return [$view, $data];
     }
 }
