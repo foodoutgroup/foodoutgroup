@@ -23,7 +23,7 @@ trait RedirectDecorator
         $type = new NordeaBanklinkType($options);
 
         // redirect form
-        $options = ['action' => $nordea->getTestBankUrl(), 'method' => 'POST'];
+        $options = ['action' => $nordea->getBankUrl(), 'method' => 'POST'];
         $form = $factory->createNamed('', $type, null, $options);
 
         // update form with MAC
