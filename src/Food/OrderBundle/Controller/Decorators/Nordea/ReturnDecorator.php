@@ -24,8 +24,9 @@ trait ReturnDecorator
 
 
         if ($verified) {
-            $view = 'FoodOrderBundle:Payments:' .
-                    'nordea_banklink/success.html.twig';
+            // $view = 'FoodOrderBundle:Payments:' .
+            //         'nordea_banklink/success.html.twig';
+            $view = 'FoodCartBundle:Default:payment_success.html.twig';
 
             // success
             $this->logSuccessAndFinish($orderService);
@@ -37,7 +38,7 @@ trait ReturnDecorator
             $this->logFailureAndFinish($orderService, $order);
         }
 
-        $data = [];
+        $data = ['order' => $order];
         return [$view, $data];
     }
 }

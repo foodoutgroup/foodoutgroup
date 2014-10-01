@@ -66,15 +66,16 @@ trait ReturnDecorator
                 $this->logFailureAndFinish($orderService, $order);
             } elseif (Seb::SUCCESS_SERVICE == $service) {
                 // template
-                $view = 'FoodOrderBundle:Payments:' .
-                        'seb_banklink/success.html.twig';
+                // $view = 'FoodOrderBundle:Payments:' .
+                //         'seb_banklink/success.html.twig';
+                $view = 'FoodCartBundle:Default:payment_success.html.twig';
 
                 // success
                 $this->logSuccessAndFinish($orderService);
             }
         }
 
-        $data = [$view, $data];
-        return $data;
+        $data['order'] = $order;
+        return [$view, $data];
     }
 }

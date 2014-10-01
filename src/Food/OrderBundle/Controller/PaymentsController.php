@@ -277,8 +277,9 @@ class PaymentsController extends Controller
         if ($gateway->is_successful_payment('swedbank', $request)) {
             $this->markOrderPaid($orderService);
 
-            $view = 'FoodOrderBundle:Payments:' .
-                    'swedbank_gateway/success.html.twig';
+            // $view = 'FoodOrderBundle:Payments:' .
+            //         'swedbank_gateway/success.html.twig';
+            $view = 'FoodCartBundle:Default:payment_success.html.twig';
         }
 
         return $this->render($view, ['order' => $order]);
