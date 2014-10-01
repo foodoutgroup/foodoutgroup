@@ -25,7 +25,7 @@ trait SharedDecorator
                                   true);
     }
 
-    protected function logPaidAndFinish($orderService)
+    protected function logPaidAndFinish($orderService, $order, $cartService)
     {
         $orderService->setPaymentStatus(
             $orderService::$paymentStatusComplete,
@@ -35,5 +35,8 @@ trait SharedDecorator
 
         // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
         $orderService->deactivateCoupon();
+
+        // clear cart after success
+        $cartService->clearCart($order->getPlace());
     }
 }

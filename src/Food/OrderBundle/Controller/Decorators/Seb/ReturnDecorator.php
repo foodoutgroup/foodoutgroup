@@ -16,6 +16,7 @@ trait ReturnDecorator
         $orderService = $this->container->get('food.order');
         $seb = $this->container->get('food.seb_banklink');
         $dispatcher = $this->container->get('event_dispatcher');
+        $cartService = $this->get('food.cart');
 
         // preparation
         $orderId = max(0, (int)$request->get('VK_REF'));
@@ -57,7 +58,9 @@ trait ReturnDecorator
                         'seb_banklink/waiting.html.twig';
 
                 // processing
-                $this->logProcessingAndFinish($orderService, $order);
+                $this->logProcessingAndFinish($orderService,
+                                              $order,
+                                              $cartService);
             } elseif (SebService::FAILURE_SERVICE == $service) {
                 // template
                 $view = 'FoodOrderBundle:Payments:' .
@@ -72,7 +75,7 @@ trait ReturnDecorator
                 $view = 'FoodCartBundle:Default:payment_success.html.twig';
 
                 // success
-                $this->logSuccessAndFinish($orderService);
+                $this->logPaidAndFinish($orderService, $order, $cartService);
             }
         }
 

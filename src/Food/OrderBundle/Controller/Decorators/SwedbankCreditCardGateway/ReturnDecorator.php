@@ -10,6 +10,7 @@ trait ReturnDecorator
     {
         // services
         $orderService = $this->get('food.order');
+        $cartService = $this->get('food.cart');
         $gateway = $this->get('pirminis_credit_card_gateway');
 
         $view = 'FoodOrderBundle:Payments:' .
@@ -35,7 +36,7 @@ trait ReturnDecorator
         if ($gateway->is_successful_payment('swedbank', $request)) {
             $view = 'FoodCartBundle:Default:payment_success.html.twig';
 
-            $this->logPaidAndFinish($orderService);
+            $this->logPaidAndFinish($orderService, $order, $cartService);
         }
 
         $data = ['order' => $order];
