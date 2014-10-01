@@ -22,8 +22,8 @@ class SwedbankCreditCardGatewayController extends Controller
 
     public function successAction(Request $request)
     {
-        list($view, $data) = $this->handleReturn($request);
-        return $this->render($view, $data);
+        $response = $this->handleReturn($request);
+        return $response;
     }
 
     public function failureAction(Request $request)
