@@ -28,12 +28,12 @@ parameters:
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
-    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt]
+    order.notify_emails: [pirminis@gmail.com]
     order.city_coordinators:
         vilnius: []
         kaunas: [renata@foodout.lt]
         klaipeda: []
-    order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
+    order.accept_notify_emails: [pirminis@gmail.com]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
     domain: "foodout.lt"
@@ -57,7 +57,7 @@ parameters:
         - local
         - local.card
         - paysera
-        # - swedbank-gateway
+        - swedbank-gateway
         - swedbank-credit-card-gateway
         - seb-banklink
         - nordea-banklink
@@ -372,5 +372,7 @@ trsteel_ckeditor:
 # Payment gateway
 pirminis_gateway:
     swedbank:
-        vtid: "21911859"
-        password: "rMUhc7p7"
+        # vtid: "21911859"
+        # password: "rMUhc7p7"
+        vtid: "88185002"
+        password: "aXVdnHfZSJmz"

@@ -266,6 +266,9 @@
                                 <label class="custom-radio">{{ 'cart.checkout.gateway_cc'|trans }}
                                     <input type="radio" name="payment-type" value="swedbank-credit-card-gateway"/>
                                 </label>
+                                <label class="custom-radio">{{ 'cart.checkout.gateway_banklink'|trans }}
+                                    <input type="radio" name="payment-type" value="swedbank-gateway"/>
+                                </label>
                             </div>
 
                             {% if not place.disabledOnlinePayment %}
