@@ -29,9 +29,9 @@ trait SharedDecorator
     {
         $orderService->setPaymentStatus(
             $orderService::$paymentStatusComplete,
-            'SEB banklink billed payment');
+            'Swedbank Credit Card Gateway billed payment');
         $orderService->saveOrder();
-        // $orderService->informPlace();
+        $orderService->informPlace();
 
         // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
         $orderService->deactivateCoupon();
