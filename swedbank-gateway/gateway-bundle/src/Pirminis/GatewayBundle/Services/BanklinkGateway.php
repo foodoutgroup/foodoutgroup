@@ -4,23 +4,29 @@ namespace Pirminis\GatewayBundle\Services;
 
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\Form\Forms;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Pirminis\Gateway\Swedbank\Banklink\Request;
 use Pirminis\Gateway\Swedbank\Banklink\Request\Parameters;
 use Pirminis\Gateway\Swedbank\Banklink\TransactionQuery\Request as TransQuery;
 use Pirminis\Gateway\Swedbank\Banklink\Sender;
 use Pirminis\Gateway\Swedbank\Banklink\Response;
 use Pirminis\Gateway\Swedbank\Banklink\Form;
+use Food\OrderBundle\Service\Events\BanklinkEvent;
 
 class BanklinkGateway
 {
     const DPG_REFERENCE_ID = 'DPGReferenceId';
+    const TRANSACTION_ID = 'TransactionId';
 
+    protected $dispatcher;
     protected $config;
     protected $options;
     protected $redirect_url;
 
-    public function __construct(array $config)
+    public function __construct(EventDispatcherInterface $dispatcher,
+                                array $config)
     {
+        $this->dispatcher = $dispatcher;
         $this->config = $config;
     }
 
@@ -155,11 +161,19 @@ class BanklinkGateway
 
         $request = new Request($params);
 
+        // for logging purposes
+        $event = new BanklinkEvent((int)$params->get('order_id'), null, $request->xml());
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST, $event);
+
         // create sender
         $sender = new Sender($request->xml());
 
         // send request and create response
         $response = new Response($sender->send());
+
+        // for logging purposes
+        $event = new BanklinkEvent((int)$params->get('order_id'), null, $response->xml());
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_RESPONSE, $event);
 
         if (!$response->is_redirect()) return null;
 
@@ -170,10 +184,10 @@ class BanklinkGateway
     }
 
     protected function transaction_query_response($bank,
-                                                  SymfonyRequest $request)
+                                                  SymfonyRequest $symfonyRequest)
     {
         if (empty($this->config[$bank])) return $null;
-        if (null === $request->query->get(static::DPG_REFERENCE_ID)) {
+        if (null === $symfonyRequest->query->get(static::DPG_REFERENCE_ID)) {
             return null;
         }
 
@@ -182,14 +196,30 @@ class BanklinkGateway
         // create transaction query request
         $request = new TransQuery($config['vtid'],
                                   $config['password'],
-                                  $request->query
+                                  $symfonyRequest->query
                                           ->get(static::DPG_REFERENCE_ID));
+
+        // for logging purposes
+        $event = new BanklinkEvent(
+            (int)$symfonyRequest->query->get(static::TRANSACTION_ID),
+            null,
+            $request->xml());
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_QUERY_REQUEST,
+                                    $event);
 
         // create sender
         $sender = new Sender($request->xml());
 
         // send request and create response
         $response = new Response($sender->send());
+
+        // for logging purposes
+        $event = new BanklinkEvent(
+            (int)$symfonyRequest->query->get(static::TRANSACTION_ID),
+            null,
+            $response->xml());
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_QUERY_RESPONSE,
+                                    $event);
 
         return $response;
     }

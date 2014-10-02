@@ -35,7 +35,7 @@ trait SharedDecorator
         return str_replace('http://', 'https://', $value);
     }
 
-    protected function logPaidAndFinish($orderService)
+    protected function logPaidAndFinish($orderService, $order, $cartService)
     {
         $orderService->setPaymentStatus(
             $orderService::$paymentStatusComplete,
@@ -45,9 +45,14 @@ trait SharedDecorator
 
         // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
         $orderService->deactivateCoupon();
+
+        // clear cart after success
+        $cartService->clearCart($order->getPlace());
     }
 
-    protected function logProcessingAndFinish($orderService, $order)
+    protected function logProcessingAndFinish($orderService,
+                                              $order,
+                                              $cartService)
     {
         $orderService->logPayment(
             $order,
@@ -55,6 +60,9 @@ trait SharedDecorator
             'SEB banklink payment accepted. Waiting for funds to be billed',
             $order
         );
+
+        // clear cart after success
+        $cartService->clearCart($order->getPlace());
     }
 
     protected function logFailureAndFinish($orderService, $order)

@@ -16,13 +16,13 @@ trait ReturnDecorator
         $orderService = $this->container->get('food.order');
         $seb = $this->container->get('food.seb_banklink');
         $dispatcher = $this->container->get('event_dispatcher');
+        $cartService = $this->get('food.cart');
 
         // preparation
         $orderId = max(0, (int)$request->get('VK_REF'));
         $service = max(0, $request->get('VK_SERVICE', 0));
         $mac = $request->get('VK_MAC', '');
         $verified = false;
-        $data = [];
 
         // template
         $view = 'FoodOrderBundle:Payments:' .
@@ -35,6 +35,8 @@ trait ReturnDecorator
         $this->logBanklink($dispatcher, $request, $order);
 
         // verify
+        $data = [];
+
         try {
             foreach ($request->request->all() as $child) {
                 $data[$child->getName()] = $child->getData();
@@ -56,7 +58,9 @@ trait ReturnDecorator
                         'seb_banklink/waiting.html.twig';
 
                 // processing
-                $this->logProcessingAndFinish($orderService, $order);
+                $this->logProcessingAndFinish($orderService,
+                                              $order,
+                                              $cartService);
             } elseif (SebService::FAILURE_SERVICE == $service) {
                 // template
                 $view = 'FoodOrderBundle:Payments:' .
@@ -66,15 +70,16 @@ trait ReturnDecorator
                 $this->logFailureAndFinish($orderService, $order);
             } elseif (Seb::SUCCESS_SERVICE == $service) {
                 // template
-                $view = 'FoodOrderBundle:Payments:' .
-                        'seb_banklink/success.html.twig';
+                // $view = 'FoodOrderBundle:Payments:' .
+                //         'seb_banklink/success.html.twig';
+                $view = 'FoodCartBundle:Default:payment_success.html.twig';
 
                 // success
-                $this->logSuccessAndFinish($orderService);
+                $this->logPaidAndFinish($orderService, $order, $cartService);
             }
         }
 
-        $data = [$view, $data];
-        return $data;
+        $data = ['order' => $order];
+        return [$view, $data];
     }
 }

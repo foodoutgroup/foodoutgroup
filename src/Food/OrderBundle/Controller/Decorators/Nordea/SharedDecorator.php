@@ -51,7 +51,7 @@ trait SharedDecorator
                     ->find($id);
     }
 
-    protected function logSuccessAndFinish($orderService)
+    protected function logPaidAndFinish($orderService, $order, $cartService)
     {
         $orderService->setPaymentStatus(
             $orderService::$paymentStatusComplete,
@@ -59,6 +59,9 @@ trait SharedDecorator
         $orderService->saveOrder();
         $orderService->informPlace();
         $orderService->deactivateCoupon();
+
+        // clear cart after success
+        $cartService->clearCart($order->getPlace());
     }
 
     protected function logFailureAndFinish($orderService, $order)

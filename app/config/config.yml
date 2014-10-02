@@ -58,7 +58,7 @@ parameters:
         - local.card
         - paysera
         # - swedbank-gateway
-        # - swedbank-credit-card-gateway
+        - swedbank-credit-card-gateway
         - seb-banklink
         - nordea-banklink
     currency_display: Lt

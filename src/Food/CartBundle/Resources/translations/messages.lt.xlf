@@ -102,6 +102,10 @@
         <source>cart.checkout.classic_nordea</source>
         <target>Nordea banklinkas</target>
       </trans-unit>
+      <trans-unit id="cart.checkout.gateway_cc" resname="cart.checkout.gateway_cc">
+        <source>cart.checkout.gateway_cc</source>
+        <target>Kortele per internetą</target>
+      </trans-unit>
       <trans-unit id="e03c0471e61e194d66faffb54af1ce45" resname="cart.checkout.button_get_back">
         <source>cart.checkout.button_get_back</source>
         <target>GRĮŽTI ATGAL</target>

@@ -9,7 +9,8 @@ trait ReturnDecorator
     public function handleReturn(Request $request)
     {
         // services
-        $orderService = $this->container->get('food.order');
+        $orderService = $this->get('food.order');
+        $cartService = $this->get('food.cart');
 
         // get order. we must use $orderService to find order
         $orderId = (int)$request->query->get('RETURN_REF', 0);
@@ -24,11 +25,12 @@ trait ReturnDecorator
 
 
         if ($verified) {
-            $view = 'FoodOrderBundle:Payments:' .
-                    'nordea_banklink/success.html.twig';
+            // $view = 'FoodOrderBundle:Payments:' .
+            //         'nordea_banklink/success.html.twig';
+            $view = 'FoodCartBundle:Default:payment_success.html.twig';
 
             // success
-            $this->logSuccessAndFinish($orderService);
+            $this->logPaidAndFinish($orderService, $order, $cartService);
         } else {
             $view = 'FoodOrderBundle:Payments:' .
                     'nordea_banklink/fail.html.twig';
@@ -37,7 +39,7 @@ trait ReturnDecorator
             $this->logFailureAndFinish($orderService, $order);
         }
 
-        $data = [];
+        $data = ['order' => $order];
         return [$view, $data];
     }
 }
