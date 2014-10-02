@@ -43,6 +43,7 @@ trait ReturnDecorator
 
         $url = $this->generateUrl('food_cart',
                                   ['placeId' => $order->getPlace()->getId()]);
+        $url .= '?hash=' . $order->getOrderHash();
 
         return $this->redirect($url);
     }
