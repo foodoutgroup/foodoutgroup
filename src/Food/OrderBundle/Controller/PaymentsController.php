@@ -310,7 +310,7 @@ class PaymentsController extends Controller
             $orderService::$paymentStatusComplete,
             'Swedbank gateway billed payment');
         $orderService->saveOrder();
-        // $orderService->informPlace();
+        $orderService->informPlace();
 
         // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
         $orderService->deactivateCoupon();
