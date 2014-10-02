@@ -14,9 +14,9 @@ class SwedbankBanklinkGatewayController extends Controller
     use RedirectDecorator;
     use ReturnDecorator;
 
-    public function redirectAction($id)
+    public function redirectAction($id, $locale)
     {
-        $response = $this->handleRedirect($id);
+        $response = $this->handleRedirect($id, $locale);
         return $response;
     }
 

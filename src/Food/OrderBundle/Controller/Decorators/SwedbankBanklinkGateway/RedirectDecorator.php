@@ -17,13 +17,13 @@ trait RedirectDecorator
         $options = array('order_id' => substr($order->getId() . '_' . time(),
                                               0,
                                               16),
-                         //  'price' => (string)round($order->getTotal() * 100),
+                         // 'price' => (string)round($order->getTotal() * 100),
                          'price' => '1',
                          'email' => $order->getUser()->getEmail(),
                          'transaction_datetime' => date('Y-m-d H:i:s'),
                          'comment' => 'no comment',
-                         'success_url' => $this->getSuccessUrl(),
-                         'failure_url' => $this->getFailureUrl(),
+                         'success_url' => $this->getSuccessUrl($locale),
+                         'failure_url' => $this->getFailureUrl($locale),
                          'language' => $locale);
         $gateway->set_options($options);
 
