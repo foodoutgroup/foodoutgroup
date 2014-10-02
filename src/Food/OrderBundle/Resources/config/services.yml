@@ -23,6 +23,24 @@ services:
         calls:
             - [setContainer, ["@service_container"]]
 
+    food.seb_banklink_biller:
+        class: Food\OrderBundle\Service\SebBanklinkBiller
+        calls:
+            - [setContainer, [@service_container]]
+
+    food.nordea_banklink_biller:
+        class: Food\OrderBundle\Service\NordeaBanklinkBiller
+        calls:
+            - [setContainer, [@service_container]]
+
+    food.seb_banklink:
+        class: Food\OrderBundle\Service\Banklink\Seb
+        arguments: ["%seb.banklink.private_key%", "%seb.banklink.bank_key%"]
+
+    food.nordea_banklink:
+        class: Food\OrderBundle\Service\Banklink\Nordea
+        arguments: ["%nordea.banklink.mac%", @router, @form.factory]
+
     food.order:
         class: Food\OrderBundle\Service\OrderService
         arguments: []
@@ -60,3 +78,14 @@ services:
             - [setContainer, ["@service_container"]]
             - [setLogisticSystem, [%active_logistics%]]
             - [setOrderService, ["@food.order"]]
+
+    # this is not part of gateway-bundle. it is part of main app.
+    # we simply register banklink event listener that handles third party
+    # loggin of banklink activity.
+    food.banklink_listener:
+        class: Food\OrderBundle\Service\BanklinkListener
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: kernel.event_listener, event: banklink.request, method: onBanklinkRequest }
+            - { name: kernel.event_listener, event: banklink.response, method: onBanklinkResponse }

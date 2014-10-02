@@ -934,6 +934,14 @@
           <source>payment.swedbank_gateway.success</source>
           <target>Užsakymas sėkmingai apmokėtas.</target>
       </trans-unit>
+      <trans-unit id="payment.nordea.success" resname="payment.nordea.success">
+          <source>payment.nordea.success</source>
+          <target>Užsakymas sėkmingai apmokėtas.</target>
+      </trans-unit>
+      <trans-unit id="payment.nordea.failed" resname="payment.nordea.failed">
+          <source>payment.nordea.failed</source>
+          <target>Užsakymas nebuvo apmokėtas.</target>
+      </trans-unit>
       <trans-unit id="general.successful_user_registration" resname="general.successful_user_registration">
         <source>general.successful_user_registration</source>
         <target>Jūs sėkmingai užsiregistravote!</target>

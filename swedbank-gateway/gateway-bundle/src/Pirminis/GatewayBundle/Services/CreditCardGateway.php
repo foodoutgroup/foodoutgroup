@@ -3,22 +3,27 @@
 namespace Pirminis\GatewayBundle\Services;
 
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Pirminis\Gateway\Swedbank\FullHps\Request\Parameters;
 use Pirminis\Gateway\Swedbank\FullHps\Request;
 use Pirminis\Gateway\Swedbank\FullHps\Response;
 use Pirminis\Gateway\Swedbank\FullHps\TransactionQuery\Request as TransRequest;
 use Pirminis\Gateway\Swedbank\Banklink\Sender;
+use Food\OrderBundle\Service\Events\BanklinkEvent;
 
 class CreditCardGateway
 {
     const DTS_REFERENCE = 'dts_reference';
 
+    protected $dispatcher;
     protected $config;
     protected $options;
     protected $redirect_url;
 
-    public function __construct(array $config)
+    public function __construct(EventDispatcherInterface $dispatcher,
+                                array $config)
     {
+        $this->dispatcher = $dispatcher;
         $this->config = $config;
     }
 
@@ -44,8 +49,17 @@ class CreditCardGateway
         ;
 
         $request = new Request($params);
+
+        // for logging purposes
+        $event = new BanklinkEvent((int)$params->get('order_id'), null, $request->xml());
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST, $event);
+
         $sender = new Sender($request->xml());
         $response = new Response($sender->send());
+
+        // for logging purposes
+        $event = new BanklinkEvent((int)$params->get('order_id'), null, $response->xml());
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_RESPONSE, $event);
 
         return $response->redirect_url();
     }
@@ -58,15 +72,49 @@ class CreditCardGateway
                                     $config['password'],
                                     $request->query
                                             ->get(static::DTS_REFERENCE));
+
+        // for logging purposes
+        $event = new BanklinkEvent(
+            null,
+            null,
+            $request->xml());
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST,
+                                    $event);
+
         $sender = new Sender($request->xml());
         $response = new Response($sender->send());
+
+        // for logging purposes
+        $event = new BanklinkEvent(
+            null,
+            null,
+            $response->xml());
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_RESPONSE,
+                                    $event);
 
         if ($response->is_authenticated()) {
             $request = new TransRequest($config['vtid'],
                                         $config['password'],
                                         $response->dc_reference());
+
+            // for logging purposes
+            $event = new BanklinkEvent(
+                null,
+                null,
+                $request->xml());
+            $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST,
+                                        $event);
+
             $sender = new Sender($request->xml());
             $response = new Response($sender->send());
+
+            // for logging purposes
+            $event = new BanklinkEvent(
+                null,
+                null,
+                $response->xml());
+            $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_RESPONSE,
+                                        $event);
 
             return $response->query_succeeded();
         }
@@ -82,15 +130,49 @@ class CreditCardGateway
                                     $config['password'],
                                     $request->query
                                             ->get(static::DTS_REFERENCE));
+
+        // for logging purposes
+        $event = new BanklinkEvent(
+            null,
+            null,
+            $request->xml());
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST,
+                                    $event);
+
         $sender = new Sender($request->xml());
         $response = new Response($sender->send());
+
+        // for logging purposes
+        $event = new BanklinkEvent(
+            null,
+            null,
+            $response->xml());
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_RESPONSE,
+                                    $event);
 
         if ($response->is_authenticated()) {
             $request = new TransRequest($config['vtid'],
                                         $config['password'],
                                         $response->dc_reference());
+
+            // for logging purposes
+            $event = new BanklinkEvent(
+                null,
+                null,
+                $request->xml());
+            $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST,
+                                        $event);
+
             $sender = new Sender($request->xml());
             $response = new Response($sender->send());
+
+            // for logging purposes
+            $event = new BanklinkEvent(
+                null,
+                null,
+                $response->xml());
+            $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_RESPONSE,
+                                        $event);
 
             return $response->query_merchant_reference();
         }

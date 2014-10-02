@@ -1,0 +1,18 @@
+nordea_banklink_redirect:
+    pattern: /redirect/{id}
+    defaults: { _controller: FoodOrderBundle:Nordea:redirect, id: ~ }
+    requirements:
+        _method: GET
+        id: "[0-9]+"
+
+nordea_banklink_return:
+    pattern: /return
+    defaults: { _controller: FoodOrderBundle:Nordea:return }
+
+nordea_banklink_cancel:
+    pattern: /cancel
+    defaults: { _controller: FoodOrderBundle:Nordea:cancel }
+
+nordea_banklink_reject:
+    pattern: /reject
+    defaults: { _controller: FoodOrderBundle:Nordea:reject }
