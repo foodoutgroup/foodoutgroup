@@ -372,7 +372,7 @@ trsteel_ckeditor:
 # Payment gateway
 pirminis_gateway:
     swedbank:
-        # vtid: "21911859"
-        # password: "rMUhc7p7"
-        vtid: "88185002"
-        password: "aXVdnHfZSJmz"
+        vtid: "21911859"
+        password: "rMUhc7p7"
+        # vtid: "88185002"
+        # password: "aXVdnHfZSJmz"
