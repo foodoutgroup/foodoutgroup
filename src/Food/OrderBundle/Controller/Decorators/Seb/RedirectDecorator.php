@@ -8,7 +8,6 @@ trait RedirectDecorator
 {
     protected function handleRedirect($id)
     {
-        $router = $this->container->get('router');
         $factory = $this->container->get('form.factory');
         $seb = $this->container->get('food.seb_banklink');
 

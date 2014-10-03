@@ -290,22 +290,28 @@
                                 </label>
                                 {% endif %}
                             </div>
+
+                            {% if not place.disabledOnlinePayment %}
+                            {# TODO kolkas viskas rodo i Paysera#}
                             <div class="select-payment clearfix">
-                                <label class="custom-radio">{{ 'cart.checkout.classic_seb'|trans }}
+                                {#<label class="custom-radio">{{ 'cart.checkout.classic_seb'|trans }}
                                     <input type="radio" name="payment-type" value="seb-banklink"/>
-                                </label>
-                                <label class="custom-radio">{{ 'cart.checkout.classic_nordea'|trans }}
+                                </label>#}
+                                <label class="custom-radio">
+                                    <img src="/bundles/foodapp/images/nordea-small.png">
                                     <input type="radio" name="payment-type" value="nordea-banklink"/>
                                 </label>
                             </div>
                             <div class="select-payment clearfix">
-                                <label class="custom-radio">{{ 'cart.checkout.gateway_cc'|trans }}
+                                <label class="custom-radio wider-radio">
+                                    {{ 'cart.checkout.gateway_cc'|trans }}:
+                                    <img src="/bundles/foodapp/images/maestro-small.png">
+                                    <img src="/bundles/foodapp/images/visa-electron-small.png">
+                                    <img src="/bundles/foodapp/images/master-card-small.png">
+                                    <img src="/bundles/foodapp/images/visa-small.png">
                                     <input type="radio" name="payment-type" value="swedbank-credit-card-gateway"/>
                                 </label>
                             </div>
-
-                            {% if not place.disabledOnlinePayment %}
-                            {# TODO kolkas viskas rodo i Paysera#}
                             <div class="select-bank clearfix">
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-sb.png">
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
@@ -320,7 +326,7 @@
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-swb.png">
-                                    <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                    <input type="radio" name="payment-type" value="swedbank-gateway"/>
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-dnb.png">
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>

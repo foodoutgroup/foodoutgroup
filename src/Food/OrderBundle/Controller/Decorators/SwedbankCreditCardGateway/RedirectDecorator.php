@@ -9,7 +9,6 @@ trait RedirectDecorator
     protected function handleRedirect($id)
     {
         // services
-        $router = $this->get('router');
         $gateway = $this->get('pirminis_credit_card_gateway');
 
         // get order

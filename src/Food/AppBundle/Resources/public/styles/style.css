@@ -1480,3 +1480,6 @@ div.coupon_form_popup {
 .text-right {
     text-align: right;
 }
+.wider-radio {
+    width: 400px !important;
+}

@@ -204,7 +204,7 @@ class BanklinkGateway
             (int)$symfonyRequest->query->get(static::TRANSACTION_ID),
             null,
             $request->xml());
-        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_QUERY_REQUEST,
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST,
                                     $event);
 
         // create sender
@@ -218,7 +218,7 @@ class BanklinkGateway
             (int)$symfonyRequest->query->get(static::TRANSACTION_ID),
             null,
             $response->xml());
-        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_QUERY_RESPONSE,
+        $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_RESPONSE,
                                     $event);
 
         return $response;
