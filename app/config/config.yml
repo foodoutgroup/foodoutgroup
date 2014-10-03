@@ -59,7 +59,7 @@ parameters:
         - paysera
         - swedbank-gateway
         - swedbank-credit-card-gateway
-        - seb-banklink
+        # - seb-banklink
         - nordea-banklink
     currency_display: Lt
     currency_iso: LTL
@@ -374,5 +374,3 @@ pirminis_gateway:
     swedbank:
         vtid: "21911859"
         password: "rMUhc7p7"
-        # vtid: "88185002"
-        # password: "aXVdnHfZSJmz"
