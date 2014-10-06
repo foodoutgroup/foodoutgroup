@@ -21,7 +21,7 @@ trait RedirectDecorator
                         //  'price' => '1',
                          'email' => $order->getUser()->getEmail(),
                          'transaction_datetime' => date('Y-m-d H:i:s'),
-                         'comment' => 'no comment',
+                         'comment' => 'Foodout.lt uzsakymas #' . $order->getId(),
                          'success_url' => $this->getSuccessUrl($locale),
                          'failure_url' => $this->getFailureUrl($locale),
                          'language' => $locale);
