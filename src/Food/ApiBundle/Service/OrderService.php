@@ -256,6 +256,11 @@ class OrderService extends ContainerAware
     {
         $message = $this->getOrderStatusMessage($order);
 
+        $title = $this->convertOrderStatus($order->getOrderStatus());
+        if ($title == "pre") {
+            $title = "waiting_user_confirmation";
+        }
+
         $returner = array(
             'order_id' => $order->getId(),
             'total_price' => array(
@@ -263,7 +268,7 @@ class OrderService extends ContainerAware
                 'currency' => 'LTL'
             ),
             'state' => array(
-                'title' => $this->convertOrderStatus($order->getOrderStatus()),
+                'title' => $title,
                 'info_number' => '+'.$order->getPlacePoint()->getPhone(),
                 'message' => $message
             ),

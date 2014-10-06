@@ -112,14 +112,13 @@ class OrdersController extends Controller
             return new JsonResponse($this->get('food_api.order')->getOrderForResponse($order));
         }  catch (ApiException $e) {
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
-        } /* catch (\Exception $e) {
+        }  catch (\Exception $e) {
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
- */
     }
 
     public function getOrderStatusAction($id)
