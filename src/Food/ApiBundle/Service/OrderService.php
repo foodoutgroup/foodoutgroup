@@ -389,6 +389,7 @@ class OrderService extends ContainerAware
             FO::$status_failed => 'failed',
             FO::$status_finished => 'prepared',
             FO::$status_canceled => 'canceled',
+            FO::$status_pre => 'pre'
         );
 
         if (!isset($statusMap[$status])) {
