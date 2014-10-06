@@ -53,7 +53,14 @@ parameters:
     # Possible values: "local", "etaxi"
     active_logistics: "local"
     # Todo situos gal ir iskelsime i paramsus - dependant on install?
-    payment.methods: [local, local.card, paysera, "swedbank-gateway", "swedbank-credit-card-gateway"]
+    payment.methods:
+        - local
+        - local.card
+        - paysera
+        - swedbank-gateway
+        - swedbank-credit-card-gateway
+        # - seb-banklink
+        - nordea-banklink
     currency_display: Lt
     currency_iso: LTL
     # naudojam telefonu validacijoms
@@ -62,6 +69,12 @@ parameters:
     evp.test_payments: 0
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
     cloudfront_url: images.foodout.lt
+    # seb banklink
+    seb.banklink.private_key: "/home/skanu.lt/shared/banklinks/seb/private.key"
+    seb.banklink.bank_key: "/home/skanu.lt/shared/banklinks/seb/bank.key"
+    # nordea banklink
+    nordea.banklink.rcv_id: 303134580
+    nordea.banklink.mac: C5IUBtC5eriCYGbIYhhIV4v830k14uSn
 
 framework:
     #esi:             ~

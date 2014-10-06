@@ -53,7 +53,9 @@ class OrderService extends ContainerAware
         'local.card' => 'food.local_biller',
         'paysera' => 'food.paysera_biller',
         'swedbank-gateway' => 'food.swedbank_gateway_biller',
-        'swedbank-credit-card-gateway' => 'food.swedbank_credit_card_gateway_biller'
+        'swedbank-credit-card-gateway' => 'food.swedbank_credit_card_gateway_biller',
+        'seb-banklink' => 'food.seb_banklink_biller',
+        'nordea-banklink' => 'food.nordea_banklink_biller'
     );
 
     public static $deliveryTrans = array(
@@ -1349,6 +1351,92 @@ class OrderService extends ContainerAware
             if (!empty($placePointAltPhone2) && $miscUtils->isMobilePhone($placePointAltPhone2, $country)) {
                 $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone2.' with text "'.$messageText.'"');
 
+                $messagesToSend[] = array(
+                    'sender' => $smsSenderNumber,
+                    'recipient' => $placePointAltPhone2,
+                    'text' => $messageText
+                );
+            }
+
+            //send multiple messages
+            $messagingService->addMultipleMessagesToSend($messagesToSend);
+        }
+    }
+
+    public function informPlaceCancelAction()
+    {
+        $messagingService = $this->container->get('food.messages');
+        $translator = $this->container->get('translator');
+        $logger = $this->container->get('logger');
+        $miscUtils = $this->container->get('food.app.utils.misc');
+        $country = $this->container->getParameter('country');
+
+        $order = $this->getOrder();
+        $placePoint = $order->getPlacePoint();
+        $placePointEmail = $placePoint->getEmail();
+        $placePointAltEmail1 = $placePoint->getAltEmail1();
+        $placePointAltEmail2 = $placePoint->getAltEmail2();
+        $placePointAltPhone1 = $placePoint->getAltPhone1();
+        $placePointAltPhone2 = $placePoint->getAltPhone2();
+
+        $domain = $this->container->getParameter('domain');
+
+        $orderConfirmRoute = $this->container->get('router')
+            ->generate('ordermobile', array('hash' => $order->getOrderHash()), true);
+
+        $orderSmsTextTranslation = $translator->trans('general.sms.canceled_order', array('%order_number%' => $order->getId()));
+        $orderTextTranslation = $translator->trans('general.email.canceled_order');
+
+        $messageText = $orderSmsTextTranslation
+            .$orderConfirmRoute;
+
+        // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
+        if (!empty($placePointEmail)) {
+            $logger->alert('--- Place asks for email, so we have sent an email about canceled order to: '.$placePointEmail);
+            $emailMessageText = $messageText;
+            $emailMessageText .= "\n" . $orderTextTranslation . ': '
+                . $order->getPlacePoint()->getAddress() . ', ' . $order->getPlacePoint()->getCity();
+            $mailer = $this->container->get('mailer');
+
+            $message = \Swift_Message::newInstance()
+                ->setSubject($this->container->getParameter('title').': '.$translator->trans('general.sms.new_order'))
+                ->setFrom('info@'.$domain)
+            ;
+
+            $message->addTo($placePointEmail);
+
+            if (!empty($placePointAltEmail1)) {
+                $message->addCc($placePointAltEmail1);
+            }
+            if (!empty($placePointAltEmail2)) {
+                $message->addCc($placePointAltEmail2);
+            }
+
+            $message->setBody($emailMessageText);
+            $mailer->send($message);
+        }
+
+        if (!$order->getPlace()->getNavision()) {
+            // Siunciam sms'a
+            $logger->alert("Sending message for order to be accepted to number: ".$placePoint->getPhone().' with text "'.$messageText.'"');
+            $smsSenderNumber = $this->container->getParameter('sms.sender');
+
+            $messagesToSend = array(
+                array(
+                    'sender' => $smsSenderNumber,
+                    'recipient' => $placePoint->getPhone(),
+                    'text' => $messageText
+                )
+            );
+
+            if (!empty($placePointAltPhone1) && $miscUtils->isMobilePhone($placePointAltPhone1, $country)) {
+                $messagesToSend[] = array(
+                    'sender' => $smsSenderNumber,
+                    'recipient' => $placePointAltPhone1,
+                    'text' => $messageText
+                );
+            }
+            if (!empty($placePointAltPhone2) && $miscUtils->isMobilePhone($placePointAltPhone2, $country)) {
                 $messagesToSend[] = array(
                     'sender' => $smsSenderNumber,
                     'recipient' => $placePointAltPhone2,

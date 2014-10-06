@@ -1,0 +1,10 @@
+seb_banklink_redirect:
+    pattern: /redirect/{id}
+    defaults: { _controller: FoodOrderBundle:Seb:redirect, id: ~ }
+    requirements:
+        _method: GET
+        id: "[0-9]+"
+
+seb_banklink_return:
+    pattern: /return
+    defaults: { _controller: FoodOrderBundle:Seb:return }

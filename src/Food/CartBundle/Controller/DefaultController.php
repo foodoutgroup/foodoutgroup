@@ -308,7 +308,8 @@ class DefaultController extends Controller
                 'takeAway' => ($takeAway ? true : false),
                 'location' => $this->get('food.googlegis')->getLocationFromSession(),
                 'dataToLoad' => $dataToLoad,
-                'submitted' => $request->isMethod('POST')
+                'submitted' => $request->isMethod('POST'),
+                'testNordea' => $request->query->get('test_nordea')
             )
         );
     }

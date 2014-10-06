@@ -143,4 +143,20 @@ class DefaultController extends Controller
             $response
         );
     }
+
+    public function showVideoAction(Request $request)
+    {
+        $cookies = $request->cookies;
+        $cookie = $cookies->get('i_saw_video');
+        if(empty($cookie) || $cookie!=1) {
+            return $this->render(
+                'FoodAppBundle:Default:videopopup.js.twig',
+                array(
+                    'video' => 'https://www.youtube.com/v/3zFW6hnuvJY?fs=1&amp;autoplay=1'
+                )
+            );
+        } else {
+            return new Response();
+        }
+    }
 }

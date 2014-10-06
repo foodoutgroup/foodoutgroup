@@ -79,6 +79,10 @@ class DispatcherAdminController extends Controller
             $method = 'status'.ucfirst($status);
             if (method_exists($orderService, $method)) {
                 $orderService->$method('dispatcher');
+
+                if ($method == 'statusCanceled') {
+                    $orderService->informPlaceCancelAction();
+                }
             }
             $orderService->saveOrder();
         } catch (\Exception $e) {

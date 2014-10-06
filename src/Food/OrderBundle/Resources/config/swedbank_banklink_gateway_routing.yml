@@ -1,0 +1,14 @@
+swedbank_gateway_redirect:
+    pattern: /redirect/{id}/{locale}
+    defaults: { _controller: FoodOrderBundle:SwedbankBanklinkGateway:redirect, id: ~, locale: ~ }
+    requirements:
+        _method: GET
+        id: "[0-9]+"
+
+swedbank_gateway_success:
+    pattern: /success
+    defaults: { _controller: FoodOrderBundle:SwedbankBanklinkGateway:success }
+
+swedbank_gateway_failure:
+    pattern: /failure
+    defaults: { _controller: FoodOrderBundle:SwedbankBanklinkGateway:failure }
