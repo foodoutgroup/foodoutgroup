@@ -27,6 +27,10 @@ trait SharedDecorator
 
     protected function logPaidAndFinish($orderService, $order, $cartService)
     {
+        // is order already 'complete'? well then.. we have nothing to do here.
+        if ($order->getPaymentStatus() ==
+            $orderService::$paymentStatusComplete) return;
+
         $orderService->setPaymentStatus(
             $orderService::$paymentStatusComplete,
             'Swedbank Banklink Gateway billed payment');
