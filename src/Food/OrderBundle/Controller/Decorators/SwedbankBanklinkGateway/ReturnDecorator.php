@@ -42,7 +42,10 @@ trait ReturnDecorator
             ($isEvent &&
              $gateway->is_event_authorized('swedbank', $request))
         ) {
-            $this->logPaidAndFinish($orderService, $order, $cartService);
+            $this->logPaidAndFinish($orderService,
+                                    $order,
+                                    $cartService,
+                                    $isEvent);
 
             if ($isEvent) {
                 return new Response('<Response>OK</Response>');
