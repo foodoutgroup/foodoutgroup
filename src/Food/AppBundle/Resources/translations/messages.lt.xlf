@@ -422,6 +422,22 @@
         <source>mobile.payment.paysera</source>
         <target>Apmokėta internetu</target>
       </trans-unit>
+      <trans-unit id="mobile.payment.nordea-banklink" resname="mobile.payment.nordea-banklink">
+        <source>mobile.payment.nordea-banklink</source>
+        <target>Apmokėta internetu (Nordea)</target>
+      </trans-unit>
+      <trans-unit id="mobile.payment.seb-banklink" resname="mobile.payment.seb-banklink">
+        <source>mobile.payment.seb-banklink</source>
+        <target>Apmokėta internetu (SEB)</target>
+      </trans-unit>
+      <trans-unit id="mobile.payment.swedbank-credit-card-gateway" resname="mobile.payment.swedbank-credit-card-gateway">
+        <source>mobile.payment.swedbank-credit-card-gateway</source>
+        <target>Apmokėta internetu (Swed CC)</target>
+      </trans-unit>
+      <trans-unit id="mobile.payment.swedbank-gateway" resname="mobile.payment.swedbank-gateway">
+        <source>mobile.payment.swedbank-gateway</source>
+        <target>Apmokėta internetu (Swedbank)</target>
+      </trans-unit>
       <trans-unit id="ca4d1fefea4fd64c121dbd0e8fa2819c" resname="mobile.order.sum_with_delivery">
         <source>mobile.order.sum_with_delivery</source>
         <target>Suma su pristatymu (su PVM)</target>
@@ -664,7 +680,23 @@
       </trans-unit>
       <trans-unit id="6ff5d01a17890ac3a904f3340c591192" resname="general.email.accounting_report.paysera">
         <source>general.email.accounting_report.paysera</source>
-        <target>Internetu</target>
+        <target>Internetu (Paysera)</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.nordea-banklink" resname="general.email.accounting_report.nordea-banklink">
+        <source>general.email.accounting_report.nordea-banklink</source>
+        <target>Internetu (Nordea)</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.seb-banklink" resname="general.email.accounting_report.seb-banklink">
+        <source>general.email.accounting_report.seb-banklink</source>
+        <target>Internetu (SEB)</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.swedbank-credit-card-gateway" resname="general.email.accounting_report.swedbank-credit-card-gateway">
+        <source>general.email.accounting_report.swedbank-credit-card-gateway</source>
+        <target>Internetu (Swedbank kreditinė)</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.swedbank-gateway" resname="general.email.accounting_report.swedbank-gateway">
+        <source>general.email.accounting_report.swedbank-gateway</source>
+        <target>Internetu (Swedbank banklink)</target>
       </trans-unit>
       <trans-unit id="2a27b06725260bba699dd331a49827d8" resname="index.title_page_header">
         <source>index.title_page_header</source>
