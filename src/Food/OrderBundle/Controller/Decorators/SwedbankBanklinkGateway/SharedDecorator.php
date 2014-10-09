@@ -25,11 +25,20 @@ trait SharedDecorator
                                   true);
     }
 
-    protected function logPaidAndFinish($orderService, $order, $cartService)
+    protected function logPaidAndFinish($orderService,
+                                        $order,
+                                        $cartService,
+                                        $isEvent)
     {
+        // is order already 'complete'? well then.. we have nothing to do here.
+        if ($order->getPaymentStatus() ==
+            $orderService::$paymentStatusComplete) return;
+
         $orderService->setPaymentStatus(
             $orderService::$paymentStatusComplete,
-            'Swedbank Banklink Gateway billed payment');
+            'Swedbank Banklink Gateway billed payment (' .
+            ($isEvent ? 'is event' : 'is NOT event') .
+            ')');
         $orderService->saveOrder();
         $orderService->informPlace();
 

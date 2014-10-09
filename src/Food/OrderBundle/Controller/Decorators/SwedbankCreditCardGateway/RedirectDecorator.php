@@ -21,7 +21,7 @@ trait RedirectDecorator
                     'price' => sprintf('%.2f', $order->getTotal()),
                     // 'price' => sprintf('%.2f', '0.01'),
                     'transaction_datetime' => date('Y-m-d H:i:s'),
-                    'comment' => 'no comment',
+                    'comment' => 'Foodout.lt uzsakymas #' . $order->getId(),
                     'return_url' => $this->getReturnUrl(),
                     'expiry_url' => $this->getExpiryUrl()];
         $gateway->set_options($options);
