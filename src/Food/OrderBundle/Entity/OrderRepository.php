@@ -371,11 +371,15 @@ class OrderRepository extends EntityRepository
     /**
      * @param \DateTime $dateFrom
      * @param \DateTime $dateTo
+     * @param string $orderStatus
      * @return array
      */
-    public function getOrderCountByDay($dateFrom, $dateTo)
+    public function getOrderCountByDay($dateFrom, $dateTo, $orderStatus=null)
     {
-        $orderStatus = OrderService::$status_completed;
+        if (empty($orderStatus)) {
+            $orderStatus = OrderService::$status_completed;
+        }
+
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
         $dateTo = $dateTo->format("Y-m-d 00:00:01");
 

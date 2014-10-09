@@ -1,6 +1,7 @@
 <?php
 namespace Food\ReportBundle\Service;
 
+use Food\OrderBundle\Service\OrderService;
 use Ob\HighchartsBundle\Highcharts\Highchart;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
@@ -28,16 +29,33 @@ class ReportService extends ContainerAware
 
         $translator = $this->container->get('translator');
 
-        $orderData = $this->getDoctrine()->getRepository('FoodOrderBundle:Order')
-            ->getOrderCountByDay($dateFrom, $dateTo);
+        $orderRepo = $this->getDoctrine()->getRepository('FoodOrderBundle:Order');
 
-        $orderGraphData = $this->remapDataForGraph($orderData, 'report_day', 'order_count');
+        $orderData = $orderRepo->getOrderCountByDay($dateFrom, $dateTo);
+        $orderCanceledData = $orderRepo->getOrderCountByDay($dateFrom, $dateTo, OrderService::$status_canceled);
+
+        $orderGraphData = $this->fillEmptyDays(
+            $this->remapDataForGraph($orderData, 'report_day', 'order_count'),
+            $dateFrom,
+            $dateTo
+        );
+        $orderCancelGraphData = $this->fillEmptyDays(
+            $this->remapDataForGraph($orderCanceledData, 'report_day', 'order_count'),
+            $dateFrom,
+            $dateTo
+        );
+
         $series = array(
             array(
                 "name" => $translator->trans('admin.report.orders'),
                 "data" => array_values($orderGraphData),
                 'type' => 'spline',
-            )
+            ),
+            array(
+                "name" => $translator->trans('admin.report.orders_canceled'),
+                "data" => array_values($orderCancelGraphData),
+                'type' => 'spline',
+            ),
         );
 
         $ob = new Highchart();
@@ -67,7 +85,12 @@ class ReportService extends ContainerAware
         $smsData = $this->getDoctrine()->getRepository('FoodSmsBundle:Message')
             ->getSmsCountByDay($dateFrom, $dateTo);
 
-        $smsGraphData = $this->remapDataForGraph($smsData, 'report_day', 'message_count');
+        $smsGraphData = $this->fillEmptyDays(
+                $this->remapDataForGraph($smsData, 'report_day', 'message_count'),
+                $dateFrom,
+                $dateTo
+            );
+
         $series = array(
             array(
                 "name" => $translator->trans('admin.report.sms'),
@@ -101,5 +124,30 @@ class ReportService extends ContainerAware
         }
 
         return $remapedData;
+    }
+
+    /**
+     * @param array $data
+     * @param \DateTime $dateFrom
+     * @param \DateTime $dateTo
+     *
+     * @return array
+     */
+    protected function fillEmptyDays($data, $dateFrom, $dateTo)
+    {
+        $currentDate = clone $dateFrom;
+
+        while($currentDate->format("m-d") < $dateTo->format("m-d"))
+        {
+            $formatedDate = $currentDate->format("m-d");
+            if (!isset($data[$formatedDate])) {
+                $data[$formatedDate] = 0;
+            }
+
+            $currentDate->add(new \DateInterval('P1D'));
+        }
+
+        ksort($data);
+        return $data;
     }
 }
