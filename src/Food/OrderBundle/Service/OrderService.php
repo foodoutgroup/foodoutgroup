@@ -520,11 +520,13 @@ class OrderService extends ContainerAware
             // TODO upload accounting
         }
         $ml = $this->container->get('food.mailer');
+        $slugUtil = $this->container->get('food.dishes.utils.slug');
+        $slugUtil->setLocale($this->getOrder()->getLocale());
 
         $variables = array(
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
             'miestas' => $this->getOrder()->getPlacePoint()->getCity(),
-            'maisto_review_url' => 'http://www.foodout.lt/lt/'.$this->container->get('food.dishes.utils.slug')->getSlugByItem(
+            'maisto_review_url' => 'http://www.foodout.lt/lt/'.$slugUtil->getSlugByItem(
                     $this->getOrder()->getPlace()->getId(),
                     'place'
             ).'/#detailed-restaurant-review'

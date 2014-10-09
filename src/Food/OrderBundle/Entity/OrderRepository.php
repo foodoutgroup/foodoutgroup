@@ -395,4 +395,47 @@ class OrderRepository extends EntityRepository
         $stmt->execute();
         return $stmt->fetchAll();
     }
+
+    /**
+     * @return Order[]|array
+     */
+    public function getUnclosedOrders()
+    {
+        $orderStatus = OrderService::$status_completed;
+        $paymentStatus = OrderService::$paymentStatusComplete;
+        $pickup = OrderService::$deliveryPickup;
+        $deliver = OrderService::$deliveryDeliver;
+
+        $dateFrom = new \DateTime("-12 hour");
+        $dateToPickup = new \DateTime("-90 minute");
+        $dateToDeliver = new \DateTime("-2 hour");
+        $dateFrom = $dateFrom->format("Y-m-d h:i:s");
+        $dateToPickup = $dateToPickup->format("Y-m-d h:i:s");
+        $dateToDeliver = $dateToDeliver->format("Y-m-d h:i:s");
+
+        $query = "
+          SELECT
+            o.id,
+            o.delivery_time
+          FROM orders o
+          WHERE
+            o.order_status != '{$orderStatus}'
+            AND o.payment_status = '{$paymentStatus}'
+            AND (
+              (
+                o.delivery_type = '{$pickup}'
+                AND o.delivery_time BETWEEN '{$dateFrom}' AND '{$dateToPickup}'
+              )
+              OR
+              (
+               o.delivery_type = '{$deliver}'
+                AND o.delivery_time BETWEEN '{$dateFrom}' AND '{$dateToDeliver}'
+              )
+            )
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }
