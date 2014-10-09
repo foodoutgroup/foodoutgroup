@@ -21,13 +21,14 @@ class NavService extends ContainerAware
      */
     private $conn = null;
 
-    // private $headerTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Header]';
 
-    // private $lineTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Lines]';
+    private $headerTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Header]';
 
-    private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
+    private $lineTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Lines]';
 
-    private $lineTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Lines]';
+    //private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
+
+    //private $lineTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Lines]';
 
 
     /**
@@ -64,8 +65,8 @@ class NavService extends ContainerAware
         if ($this->conn == null) {
             $serverName = "213.190.40.38, 5566"; //serverName\instanceName, portNumber (default is 1433)
             //$connectionInfo = array( "Database"=>"prototipas6", "UID"=>"fo_order", "PWD"=>"peH=waGe?zoOs69");
-            //$connectionInfo = array( "Database"=>"skamb_centras", "UID"=>"nas", "PWD"=>"c1l1j@");
-            $connectionInfo = array( "Database"=>"skamb_centras", "UID"=>"fo_order", "PWD"=>"peH=waGe?zoOs69");
+            $connectionInfo = array( "Database"=>"prototipas6", "UID"=>"nas", "PWD"=>"c1l1j@");
+            //$connectionInfo = array( "Database"=>"skamb_centras", "UID"=>"fo_order", "PWD"=>"peH=waGe?zoOs69");
             $this->conn = sqlsrv_connect( $serverName, $connectionInfo);
 
             if( $this->conn === false ) {
@@ -83,7 +84,7 @@ class NavService extends ContainerAware
         $sqlSS->init(
             '213.190.40.38',
             5566,
-            'skamb_centras',
+            'prototipas6', //'skamb_centras',
             'fo_order',
             'peH=waGe?zoOs69'
         );
