@@ -15,6 +15,7 @@ class Parameters
                                    'success_url',
                                    'failure_url',
                                    'language'];
+    protected $exceptional_params = ['price'];
 
     public function set($name, $value)
     {
@@ -22,7 +23,17 @@ class Parameters
             throw new \InvalidArgumentException('Cannot set parameter.');
         }
 
-        $this->params[$name] = $value;
+        if (in_array($name, $this->exceptional_params)) {
+            if ($name == 'transaction_datetime') {
+                $this->params[$name] = date('Ymd H:i:s', strtotime($value));
+            }
+
+            if ($name == 'price') {
+                $this->params[$name] = str_replace('00.', '0.', $value);
+            }
+        } else {
+            $this->params[$name] = $value;
+        }
 
         return $this;
     }
