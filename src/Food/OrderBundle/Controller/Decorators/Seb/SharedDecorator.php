@@ -17,8 +17,8 @@ trait SharedDecorator
                 'name' => 'UAB Foodout.lt',
                 'lang' => 'LIT',
                 'stamp' => $order->getId(),
-                'amount' => sprintf('%.2f', $order->getTotal()),
-                // 'amount' => sprintf('%.2f', 1.0),
+                // 'amount' => sprintf('%.2f', $order->getTotal()),
+                'amount' => sprintf('%.2f', 1.0),
                 'ref' => $order->getId(),
                 'msg' => 'Foodout.lt uzsakymas #' . $order->getId(),
                 'return_url' => $this->getReturnUrl()];
@@ -45,7 +45,7 @@ trait SharedDecorator
             $orderService::$paymentStatusComplete,
             'SEB banklink billed payment');
         $orderService->saveOrder();
-        $orderService->informPlace();
+        // $orderService->informPlace();
 
         // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
         $orderService->deactivateCoupon();
