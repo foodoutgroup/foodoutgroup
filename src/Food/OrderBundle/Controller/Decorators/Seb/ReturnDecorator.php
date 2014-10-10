@@ -46,10 +46,6 @@ trait ReturnDecorator
         } catch (\Exception $e) {
         }
 
-        var_dump($orderId);
-        var_dump($service);
-        var_dump($verified);
-
         if ($verified) {
             if (SebService::WAITING_SERVICE == $service) {
                 // template
