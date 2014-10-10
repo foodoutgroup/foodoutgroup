@@ -54,7 +54,11 @@ trait ReturnDecorator
         }
 
         if ($verified) {
+            var_dump($orderId);
+            var_dump($service);
+            var_dump($verified);
             if (SebService::WAITING_SERVICE == $service) {
+                var_dump('111');
                 // template
                 $view = 'FoodOrderBundle:Payments:' .
                         'seb_banklink/waiting.html.twig';
@@ -64,6 +68,7 @@ trait ReturnDecorator
                                               $order,
                                               $cartService);
             } elseif (SebService::FAILURE_SERVICE == $service) {
+                var_dump('222');
                 // template
                 $view = 'FoodOrderBundle:Payments:' .
                         'seb_banklink/failure.html.twig';
@@ -71,6 +76,7 @@ trait ReturnDecorator
                 // failure
                 $this->logFailureAndFinish($orderService, $order);
             } elseif (Seb::SUCCESS_SERVICE == $service) {
+                var_dump('333');
                 // template
                 // $view = 'FoodOrderBundle:Payments:' .
                 //         'seb_banklink/success.html.twig';
@@ -78,6 +84,8 @@ trait ReturnDecorator
 
                 // success
                 $this->logPaidAndFinish($orderService, $order, $cartService);
+            } else {
+                var_dump('333');
             }
         }
 
