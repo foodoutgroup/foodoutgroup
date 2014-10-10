@@ -21,11 +21,10 @@ trait ReturnDecorator
         $cartService = $this->get('food.cart');
 
         // preparation
-        $orderId = max(0, (int)$request->request->get('VK_REF'));
-        $service = max(0, $request->request->get('VK_SERVICE', 0));
-        $mac = $request->request->get('VK_MAC', '');
+        $orderId = max(0, (int)$request->get('VK_REF'));
+        $service = max(0, $request->get('VK_SERVICE', 0));
+        $mac = $request->get('VK_MAC', '');
         $verified = false;
-        var_dump('111');
 
         // template
         $view = 'FoodOrderBundle:Payments:' .
@@ -36,28 +35,24 @@ trait ReturnDecorator
 
         // banklink log
         $this->logBanklink($dispatcher, $request, $order);
-        var_dump('222');
+
         // verify
         $data = [];
 
-        //try {
-            foreach ($request->request as $child) {
-                $data[$child->getName()] = $child->getData();
+        try {
+            foreach ($request->request->all() as $key => $value) {
+                $data[$key] = $value;
             }
-            var_dump('333');
 
             // generate encoded MAC
             $myMac = $seb->sign($seb->mac($data, $service),
                               $seb->getPrivateKey());
-            var_dump('444');
 
             // finally update form
             $verified = $seb->verify($myMac, $mac, $seb->getBankKey());
-            var_dump('555');
-        //} catch (\Exception $e) {
-            var_dump($e);
-        //}
-        var_dump('zzz');
+        } catch (\Exception $e) {
+        }
+
         if ($verified) {
             if (SebService::WAITING_SERVICE == $service) {
                 // template
@@ -85,8 +80,6 @@ trait ReturnDecorator
                 $this->logPaidAndFinish($orderService, $order, $cartService);
             }
         }
-
-        var_dump('hhh');
 
         $data = ['order' => $order];
         return [$view, $data];
