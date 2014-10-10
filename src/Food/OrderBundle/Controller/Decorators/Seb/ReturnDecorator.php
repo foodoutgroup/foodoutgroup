@@ -10,7 +10,8 @@ trait ReturnDecorator
     protected function handleReturn(Request $request)
     {
         // a hack
-        $request->request->replace($request->query->all());
+        $request->request->add($request->query->all());
+        var_dump($request->request->all());
 
         // services
         $orderService = $this->container->get('food.order');
@@ -19,9 +20,9 @@ trait ReturnDecorator
         $cartService = $this->get('food.cart');
 
         // preparation
-        $orderId = max(0, (int)$request->get('VK_REF'));
-        $service = max(0, $request->get('VK_SERVICE', 0));
-        $mac = $request->get('VK_MAC', '');
+        $orderId = max(0, (int)$request->request->get('VK_REF'));
+        $service = max(0, $request->request->get('VK_SERVICE', 0));
+        $mac = $request->request->get('VK_MAC', '');
         $verified = false;
 
         // template
