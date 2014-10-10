@@ -948,7 +948,7 @@
       </trans-unit>
       <trans-unit id="payment.swedbank_gateway.error" resname="payment.swedbank_gateway.error">
           <source>payment.swedbank_gateway.error</source>
-          <target>Įvyko klaida.</target>
+          <target>Užsakymas atšauktas.</target>
       </trans-unit>
       <trans-unit id="payment.swedbank_gateway.order_not_found" resname="payment.swedbank_gateway.order_not_found">
           <source>payment.swedbank_gateway.order_not_found</source>
