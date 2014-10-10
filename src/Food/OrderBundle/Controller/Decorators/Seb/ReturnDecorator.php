@@ -10,7 +10,7 @@ trait ReturnDecorator
     protected function handleReturn(Request $request)
     {
         // a hack
-        $request->request->add($request->query->all());
+        // $request->request->add($request->query->all());
 
         // services
         $orderService = $this->container->get('food.order');
@@ -48,10 +48,7 @@ trait ReturnDecorator
 
             // finally update form
             $verified = $seb->verify($myMac, $mac, $seb->getBankKey());
-            var_dump($verified);
-            die('yyy');
         } catch (\Exception $e) {
-            die('xxx');
         }
 
         if ($verified) {
