@@ -48,7 +48,10 @@ trait ReturnDecorator
 
             // finally update form
             $verified = $seb->verify($myMac, $mac, $seb->getBankKey());
+            var_dump($verified);
+            die('yyy');
         } catch (\Exception $e) {
+            die('xxx');
         }
 
         if ($verified) {
