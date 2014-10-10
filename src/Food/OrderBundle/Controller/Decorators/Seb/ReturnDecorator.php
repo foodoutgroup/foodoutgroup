@@ -41,7 +41,7 @@ trait ReturnDecorator
         $data = [];
 
         //try {
-            foreach ($request->request->all() as $child) {
+            foreach ($request->request as $child) {
                 $data[$child->getName()] = $child->getData();
             }
             var_dump('333');
