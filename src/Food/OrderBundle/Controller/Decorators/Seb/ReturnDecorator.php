@@ -10,7 +10,9 @@ trait ReturnDecorator
     protected function handleReturn(Request $request)
     {
         // a hack
-        // $request->request->add($request->query->all());
+        ini_set('display_errors', true);
+        error_reporting(E_ALL);
+        $request->request->add($request->query->all());
 
         // services
         $orderService = $this->container->get('food.order');
