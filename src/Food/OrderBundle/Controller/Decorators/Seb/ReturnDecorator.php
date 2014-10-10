@@ -50,7 +50,7 @@ trait ReturnDecorator
             $verified = $seb->verify($myMac, $mac, $seb->getBankKey());
         } catch (\Exception $e) {
         }
-
+        var_dump('zzz');
         if ($verified) {
             if (SebService::WAITING_SERVICE == $service) {
                 // template
@@ -78,6 +78,8 @@ trait ReturnDecorator
                 $this->logPaidAndFinish($orderService, $order, $cartService);
             }
         }
+
+        var_dump('hhh');
 
         $data = ['order' => $order];
         return [$view, $data];
