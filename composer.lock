@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2c61ea4df09129661fe534610183a2ea",
+    "hash": "4ae83fc79292b4e4e6f2be923b379e1b",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -154,7 +154,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -208,7 +208,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan H. Wage",
+                    "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/",
                     "role": "Creator"
@@ -229,7 +229,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -296,7 +296,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -372,7 +372,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -746,7 +746,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -800,7 +800,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -1116,12 +1116,12 @@
             "version": "v2.3.9",
             "source": {
                 "type": "git",
-                "url": "https://github.com/l3pp4rd/DoctrineExtensions.git",
+                "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
                 "reference": "35adcaae1a3f50d0d5b73aa50ed8fd28ee35ce54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/35adcaae1a3f50d0d5b73aa50ed8fd28ee35ce54",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/35adcaae1a3f50d0d5b73aa50ed8fd28ee35ce54",
                 "reference": "35adcaae1a3f50d0d5b73aa50ed8fd28ee35ce54",
                 "shasum": ""
             },
@@ -1520,7 +1520,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -1770,6 +1770,32 @@
             "time": "2014-06-26 19:18:50"
         },
         {
+            "name": "pirminis/maybe-monad",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pirminis/maybe-monad.git",
+                "reference": "db3218d2b0d363e48483a74ba2098ba763d1c750"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "lib/"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonas Staškevičius",
+                    "homepage": "https://github.com/pirminis/maybe-monad"
+                }
+            ],
+            "description": "PHP monad library",
+            "time": "2014-10-09 22:56:45"
+        },
+        {
             "name": "psr/log",
             "version": "1.0.0",
             "source": {
@@ -1890,7 +1916,9 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 }
             ],
             "description": "This bundle provides a way to configure your controllers with annotations",
@@ -2259,16 +2287,16 @@
         },
         {
             "name": "sonata-project/core-bundle",
-            "version": "2.2.x-dev",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "7f0bcdbd1947f9e2a1143da03ea789cdab4714d4"
+                "reference": "6f36419ad655ee8d396a7d31237e52ec0b1f3ff4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/7f0bcdbd1947f9e2a1143da03ea789cdab4714d4",
-                "reference": "7f0bcdbd1947f9e2a1143da03ea789cdab4714d4",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/6f36419ad655ee8d396a7d31237e52ec0b1f3ff4",
+                "reference": "6f36419ad655ee8d396a7d31237e52ec0b1f3ff4",
                 "shasum": ""
             },
             "require": {
@@ -2317,7 +2345,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2014-09-08 07:54:11"
+            "time": "2014-09-01 21:20:34"
         },
         {
             "name": "sonata-project/doctrine-extensions",
@@ -3418,7 +3446,7 @@
                 }
             ],
             "description": "PHP Library for WebToPay provided services",
-            "time": "2013-09-24 09:03:04"
+            "time": "2013-09-24 11:03:04"
         },
         {
             "name": "webtopay/webtopay-bundle",
@@ -3448,7 +3476,7 @@
             "authors": [
                 {
                     "name": "EVP International",
-                    "homepage": "https://www.paysera.com/"
+                    "homepage": "http://www.webtopay.com/"
                 }
             ],
             "description": "Symfony2 bundle for WebToPay provided services",
@@ -3595,9 +3623,7 @@
             "time": "2014-03-14 16:22:22"
         }
     ],
-    "packages-dev": [
-
-    ],
+    "packages-dev": [],
     "aliases": [
         {
             "alias": "1.3.2",
@@ -3642,7 +3668,5 @@
     "platform": {
         "php": ">=5.3.3"
     },
-    "platform-dev": [
-
-    ]
+    "platform-dev": []
 }

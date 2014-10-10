@@ -6,9 +6,11 @@ use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\OrderBundle\Common;
+use Food\OrderBundle\Service\NavService\OrderDataForNavDecorator;
 
 class NavService extends ContainerAware
 {
+    use OrderDataForNavDecorator;
 
     /**
      * Modifajeris. NELIESTI. Patys galesite tada rankutemis issirankioti is Cili DB savo uzsakymus.
