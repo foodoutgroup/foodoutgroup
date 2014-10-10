@@ -23,6 +23,7 @@ trait ReturnDecorator
         $service = max(0, $request->request->get('VK_SERVICE', 0));
         $mac = $request->request->get('VK_MAC', '');
         $verified = false;
+        var_dump('111');
 
         // template
         $view = 'FoodOrderBundle:Payments:' .
@@ -33,7 +34,7 @@ trait ReturnDecorator
 
         // banklink log
         $this->logBanklink($dispatcher, $request, $order);
-
+        var_dump('222');
         // verify
         $data = [];
 
@@ -41,14 +42,18 @@ trait ReturnDecorator
             foreach ($request->request->all() as $child) {
                 $data[$child->getName()] = $child->getData();
             }
+            var_dump('333');
 
             // generate encoded MAC
             $myMac = $seb->sign($seb->mac($data, $service),
                               $seb->getPrivateKey());
+            var_dump('444');
 
             // finally update form
             $verified = $seb->verify($myMac, $mac, $seb->getBankKey());
+            var_dump('555');
         } catch (\Exception $e) {
+            var_dump($e);
         }
         var_dump('zzz');
         if ($verified) {
