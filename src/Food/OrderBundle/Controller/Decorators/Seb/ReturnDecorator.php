@@ -11,7 +11,6 @@ trait ReturnDecorator
     {
         // a hack
         $request->request->add($request->query->all());
-        var_dump($request->request->all());
 
         // services
         $orderService = $this->container->get('food.order');
