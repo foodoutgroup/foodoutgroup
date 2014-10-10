@@ -58,6 +58,8 @@ class Seb extends AbstractBanklink
         $mac = '';
         $fields = $this->fields[$vkService];
 
+        var_dump($fields);
+
         foreach ($fields as $field) {
             if (!array_key_exists($field, $data)) {
                 throw new \Exception("Cannot generate MAC, because data array has no `$field` field.");

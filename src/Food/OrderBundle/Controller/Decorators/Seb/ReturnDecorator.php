@@ -45,6 +45,7 @@ trait ReturnDecorator
             }
 
             // generate encoded MAC
+            var_dump($data);
             $myMac = $seb->sign($seb->mac($data, $service),
                               $seb->getPrivateKey());
 
