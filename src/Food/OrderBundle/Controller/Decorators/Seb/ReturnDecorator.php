@@ -37,17 +37,11 @@ trait ReturnDecorator
         $this->logBanklink($dispatcher, $request, $order);
 
         // verify
-        $data = [];
+        $data = $request->request->all();
 
         try {
-            foreach ($request->request->all() as $key => $value) {
-                $data[$key] = $value;
-            }
-
             // generate encoded MAC
-            var_dump($data);
-            $myMac = $seb->sign($seb->mac($data, $service),
-                              $seb->getPrivateKey());
+            $myMac = $seb->mac($data, $service);
 
             // finally update form
             $verified = $seb->verify($myMac, $mac, $seb->getBankKey());
@@ -56,6 +50,7 @@ trait ReturnDecorator
 
         var_dump($orderId);
         var_dump($service);
+        var_dump($mac);
         var_dump($verified);
 
         if ($verified) {
