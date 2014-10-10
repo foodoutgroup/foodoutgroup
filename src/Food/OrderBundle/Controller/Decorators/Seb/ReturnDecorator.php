@@ -38,7 +38,7 @@ trait ReturnDecorator
         // verify
         $data = [];
 
-        try {
+        //try {
             foreach ($request->request->all() as $child) {
                 $data[$child->getName()] = $child->getData();
             }
@@ -52,9 +52,9 @@ trait ReturnDecorator
             // finally update form
             $verified = $seb->verify($myMac, $mac, $seb->getBankKey());
             var_dump('555');
-        } catch (\Exception $e) {
+        //} catch (\Exception $e) {
             var_dump($e);
-        }
+        //}
         var_dump('zzz');
         if ($verified) {
             if (SebService::WAITING_SERVICE == $service) {
