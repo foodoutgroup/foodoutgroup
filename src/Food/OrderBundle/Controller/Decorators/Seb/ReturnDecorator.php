@@ -63,7 +63,7 @@ trait ReturnDecorator
 
                 // failure
                 $this->logFailureAndFinish($orderService, $order);
-            } elseif (Seb::SUCCESS_SERVICE == $service) {
+            } elseif (SebService::SUCCESS_SERVICE == $service) {
                 // template
                 $view = 'FoodCartBundle:Default:payment_success.html.twig';
 
