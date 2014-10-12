@@ -4,7 +4,7 @@ namespace Food\OrderBundle\Service\NavService;
 
 class OrderDataForNav
 {
-    protected $targetEncoding = 'cp1257';
+    protected $targetEncoding = 'ISO-8859-13';
     protected $sourceEncoding = 'utf-8';
     protected $lengthRestrictions = [
         'staff' => 250,
@@ -123,17 +123,19 @@ class OrderDataForNav
             throw new \InvalidArgumentException("'$property' does not exist.");
         }
 
-        $this->imposeLengthRestrictions($property,
-                                        $this->encode($this->property));
+        return $this->imposeLengthRestrictions(
+            $property,
+            $this->encode($this->{$property}));
     }
 
     protected function imposeLengthRestrictions($property, $value)
     {
         if (isset($this->lengthRestrictions[$property])) {
-            return mb_substr(0,
-                             $this->lengthRestrictions[$property],
-                             $value,
-                             $this->targetEncoding);
+            return iconv_substr(
+                $value,
+                0,
+                $this->lengthRestrictions[$property],
+                $this->targetEncoding);
         }
 
         return $value;
@@ -141,8 +143,6 @@ class OrderDataForNav
 
     protected function encode($value)
     {
-        return mb_convert_encoding($value,
-                                   $this->targetEncoding,
-                                   $this->sourceEncoding);
+        return iconv($this->sourceEncoding, $this->targetEncoding, $value);
     }
 }
