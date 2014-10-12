@@ -17,46 +17,46 @@ trait OrderDataForNavDecorator
         $maybeOrder = new Maybe($order);
         $maybeDriver = $maybeOrder->getDriver();
         $maybeUser = $maybeOrder->getUser();
-        $maybeAddress = $maybeOrder->getAddress();
+        $maybeAddress = $maybeOrder->getAddressId();
         $maybePlace = $maybeOrder->getPlace();
 
         // values for convenience
-        $vat = (double) (1.0 + $maybeOrder->getVat()->value(0.0) / 100.0);
-        $total = $maybeOrder->getTotal()->value(0.0);
-        $discountTotal = $maybeOrder->getTotal()->value(0.0);
-        $deliveryTotal = $maybePlace->getDeliveryPrice(0.0);
+        $vat = (double) (1.0 + $maybeOrder->getVat()->val(0.0) / 100.0);
+        $total = $maybeOrder->getTotal()->val(0.0);
+        $discountTotal = $maybeOrder->getDiscountSum()->val(0.0);
+        $deliveryTotal = $maybePlace->getDeliveryPrice()->val(0.0);
         $foodTotal = $total - $discountTotal - $deliveryTotal;
 
         // ok so now we fill this handy data structure, nothing special
         $data = new OrderDataForNav();
-        $data->id = (int) $maybeOrder->getId()->value(0);
-        $data->date = $maybeOrder->getOrderDate()->format('Y-m-d')->value();
-        $data->time = $maybeOrder->getOrderDate()->format('H:i:s')->value();
+        $data->id = (int) $maybeOrder->getId()->val(0);
+        $data->date = $maybeOrder->getOrderDate()->format('Y-m-d')->val();
+        $data->time = $maybeOrder->getOrderDate()->format('H:i:s')->val();
         $data->deliveryDate = $maybeOrder->getDeliveryTime()
                                          ->format('Y-m-d')
-                                         ->value();
+                                         ->val();
         $data->deliveryTime = $maybeOrder->getDeliveryTime()
-                                         ->format('Y-m-d')
-                                         ->value();
+                                         ->format('H:i:s')
+                                         ->val();
         $data->staff = 'auto';
         $data->chain = '';
-        $data->restaurant = $maybeOrder->getPlaceName()->value();
-        $data->restaurantAddress = $maybeOrder->getPlacePointAddress()->value();
-        $data->driver = $maybeDriver->getName()->value();
-        $data->deliveryType = $maybeOrder->getDeliveryType()->value();
+        $data->restaurant = $maybeOrder->getPlaceName()->val();
+        $data->restaurantAddress = $maybeOrder->getPlacePointAddress()->val();
+        $data->driver = $maybeDriver->getName()->val();
+        $data->deliveryType = $maybeOrder->getDeliveryType()->val();
         $data->clientName = sprintf("%s %s",
-                                    $maybeUser->getFirstname()->value(),
-                                    $maybeUser->getLastname()->value());
-        $data->isDelivered = $maybeOrder->getDeliveryTime()->value() == '' ?
+                                    $maybeUser->getFirstname()->val(),
+                                    $maybeUser->getLastname()->val());
+        $data->isDelivered = $maybeOrder->getDeliveryTime()->val() == '' ?
                              'no' :
                              'yes';
-        $data->deliveryAddress = $maybeAddress->getAddress()->value();
-        $data->city = $maybeAddress->getCity()->value();
+        $data->deliveryAddress = $maybeAddress->getAddress()->val();
+        $data->city = $maybeAddress->getCity()->val();
         $data->country = '';
-        $data->paymentType = $maybeOrder->getPaymentMethod()->value();
+        $data->paymentType = $maybeOrder->getPaymentMethod()->val();
         $data->foodAmount = (double) $foodTotal;
         $data->foodAmountEUR = (double) $misc->getEuro($foodTotal);
-        $data->foodVAT = (double) ($foodTotal / $vat);
+        $data->foodVAT = (double) ($foodTotal - $foodTotal / $vat);
         $data->drinksAmount = 0.0;
         $data->drinksAmountEUR = 0.0;
         $data->drinksVAT = 0.0;
@@ -65,7 +65,7 @@ trait OrderDataForNavDecorator
         $data->alcoholVAT = 0.0;
         $data->deliveryAmount = (double) $deliveryTotal;
         $data->deliveryAmountEUR = (double) $misc->getEuro($deliveryTotal);
-        $data->deliveryVAT = (double) ($deliveryTotal / $vat);
+        $data->deliveryVAT = (double) ($deliveryTotal - $deliveryTotal / $vat);
         $data->giftCardAmount = 0.0;
         $data->giftCardAmountEUR = 0.0;
         $data->discountType = '';

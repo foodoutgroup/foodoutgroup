@@ -23,7 +23,7 @@ class OrderDataForNav
     ];
     protected $dataTypeRestrictions = [
         'id' => 'integer',
-        'data' => 'string',
+        'date' => 'string',
         'time' => 'string',
         'deliveryDate' => 'string',
         'deliveryTime' => 'string',
