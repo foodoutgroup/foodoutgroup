@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4ae83fc79292b4e4e6f2be923b379e1b",
+    "hash": "891b5591c04fd1a784616459b74600f2",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -1771,29 +1771,44 @@
         },
         {
             "name": "pirminis/maybe-monad",
-            "version": "1.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pirminis/maybe-monad.git",
-                "reference": "db3218d2b0d363e48483a74ba2098ba763d1c750"
+                "reference": "1d21c2e430ca2cd9155c2f25291d36a2aec375a3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pirminis/maybe-monad/zipball/1d21c2e430ca2cd9155c2f25291d36a2aec375a3",
+                "reference": "1d21c2e430ca2cd9155c2f25291d36a2aec375a3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
             },
             "type": "library",
             "autoload": {
-                "classmap": [
-                    "lib/"
-                ]
+                "psr-0": {
+                    "": "lib"
+                }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
                     "name": "Jonas Staškevičius",
-                    "homepage": "https://github.com/pirminis/maybe-monad"
+                    "homepage": "https://github.com/pirminis"
                 }
             ],
             "description": "PHP monad library",
-            "time": "2014-10-09 22:56:45"
+            "homepage": "https://github.com/pirminis/maybe-monad",
+            "keywords": [
+                "monad",
+                "safe"
+            ],
+            "time": "2014-10-12 17:10:51"
         },
         {
             "name": "psr/log",
@@ -3662,7 +3677,8 @@
         "shuber/curl": 20,
         "imagine/imagine": 20,
         "trsteel/ckeditor-bundle": 20,
-        "friendsofsymfony/jsrouting-bundle": 0
+        "friendsofsymfony/jsrouting-bundle": 0,
+        "pirminis/maybe-monad": 20
     },
     "prefer-stable": false,
     "platform": {

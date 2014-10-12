@@ -25,10 +25,6 @@
                     "type": "file"
                 }
             }
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/pirminis/maybe-monad.git"
         }
     ],
     "require": {
@@ -74,7 +70,7 @@
         "friendsofsymfony/jsrouting-bundle": "@stable",
         "giggsey/libphonenumber-for-php": "6.*",
         "ob/highcharts-bundle": "1.1.*",
-        "pirminis/maybe-monad": "1.0"
+        "pirminis/maybe-monad": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
