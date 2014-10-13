@@ -472,9 +472,11 @@ class NTLMSoapClient extends SoapClient {
         $this->__last_request_headers = $headers;
         $ch = curl_init($location);
 
-        var_dump($request);
-        var_dump("=-============");
-
+        // @hack
+        // @epic-fail
+        // @omg-hack
+        // @todo Fix shita geeeda. Manau geriau kad WSDL'a susitvarkytu NVB
+        $request = str_replace("ns1:", "", $request);
 
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->validate);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $this->validate);

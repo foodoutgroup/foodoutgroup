@@ -420,7 +420,7 @@ class NavService extends ContainerAware
                 'ParentLineNo' => 0,
                 'EntryType' => 0,
                 'ItemNo' => $code,
-                'Description' => $cart->getDishId()->getName(),
+                'Description' => mb_substr($cart->getDishId()->getName(), 0, 30),
                 'Quantity' => $cart->getQuantity(),
                 'Price' => $cart->getDishSizeId()->getPrice(),
                 'Amount' => $cart->getDishSizeId()->getPrice() * $cart->getQuantity()
@@ -458,7 +458,7 @@ class NavService extends ContainerAware
                         'ParentLineNo' => $origLineNo,
                         'EntryType' => 1,
                         'ItemNo' => $optionCode,
-                        'Description' => $description,
+                        'Description' => mb_substr($description, 0, 30),
                         'Quantity' => $cart->getQuantity(),
                         'Price' => $option->getDishOptionId()->getPrice(),
                         'Amount' => $option->getDishOptionId()->getPrice() * $cart->getQuantity()
