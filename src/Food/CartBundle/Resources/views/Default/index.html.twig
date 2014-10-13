@@ -262,9 +262,6 @@
                             {% if not place.disabledOnlinePayment %}
                             {# TODO kolkas viskas rodo i Paysera#}
                             <div class="select-payment clearfix">
-                                {#<label class="custom-radio">{{ 'cart.checkout.classic_seb'|trans }}
-                                    <input type="radio" name="payment-type" value="seb-banklink"/>
-                                </label>#}
                                 <label class="custom-radio">
                                     <img src="/bundles/foodapp/images/nordea-small.png">
                                     <input type="radio" name="payment-type" value="nordea-banklink"/>
@@ -285,7 +282,7 @@
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-seb.png">
-                                    <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                    <input type="radio" name="payment-type" value="seb-banklink"/>
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-db.png">
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>

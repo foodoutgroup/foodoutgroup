@@ -10,7 +10,7 @@ trait ReturnDecorator
     protected function handleReturn(Request $request)
     {
         // a hack
-        $request->request->replace($request->query->all());
+        $request->request->add($request->query->all());
 
         // services
         $orderService = $this->container->get('food.order');
@@ -35,16 +35,11 @@ trait ReturnDecorator
         $this->logBanklink($dispatcher, $request, $order);
 
         // verify
-        $data = [];
+        $data = $request->request->all();
 
         try {
-            foreach ($request->request->all() as $child) {
-                $data[$child->getName()] = $child->getData();
-            }
-
             // generate encoded MAC
-            $myMac = $seb->sign($seb->mac($data, $service),
-                              $seb->getPrivateKey());
+            $myMac = $seb->mac($data, $service);
 
             // finally update form
             $verified = $seb->verify($myMac, $mac, $seb->getBankKey());
@@ -68,10 +63,8 @@ trait ReturnDecorator
 
                 // failure
                 $this->logFailureAndFinish($orderService, $order);
-            } elseif (Seb::SUCCESS_SERVICE == $service) {
+            } elseif (SebService::SUCCESS_SERVICE == $service) {
                 // template
-                // $view = 'FoodOrderBundle:Payments:' .
-                //         'seb_banklink/success.html.twig';
                 $view = 'FoodCartBundle:Default:payment_success.html.twig';
 
                 // success
