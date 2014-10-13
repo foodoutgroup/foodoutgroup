@@ -405,7 +405,7 @@ class OrderRepository extends EntityRepository
      */
     public function getUnclosedOrders()
     {
-        $orderStatus = OrderService::$status_completed;
+        $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_canceled."'";
         $paymentStatus = OrderService::$paymentStatusComplete;
         $pickup = OrderService::$deliveryPickup;
         $deliver = OrderService::$deliveryDeliver;
@@ -423,7 +423,7 @@ class OrderRepository extends EntityRepository
             o.delivery_time
           FROM orders o
           WHERE
-            o.order_status != '{$orderStatus}'
+            o.order_status NOT IN ({$orderStatus})
             AND o.payment_status = '{$paymentStatus}'
             AND (
               (
