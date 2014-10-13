@@ -125,7 +125,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * @var string
      *
-     * @ORM\Column(name="time_to", type="string", length=5)
+     * @ORM\Column(name="time_to", type="string", length=5, nullable=true)
      */
     private $timeTo;
 
