@@ -124,4 +124,9 @@ class TestController extends Controller
             )
         );
     }
+
+    public function nav1Action()
+    {
+        return new Response("\n\n<br><br>THIS IS THE END");
+    }
 }

@@ -2,6 +2,8 @@
 
 namespace Food\OrderBundle\Service;
 
+use Food\CartBundle\Entity\Cart;
+use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Symfony\Component\DependencyInjection\ContainerAware;
@@ -25,6 +27,8 @@ class NavService extends ContainerAware
     private $headerTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Header]';
 
     private $lineTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Lines]';
+
+    private $orderTable = '[prototipas6].[dbo].[PROTOTIPAS$FoodOut Order]';
 
     //private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
 
@@ -55,6 +59,13 @@ class NavService extends ContainerAware
         return $this->lineTable;
     }
 
+    /**
+     * @return string
+     */
+    public function getOrderTable()
+    {
+        return $this->orderTable;
+    }
 
 
     /**
@@ -300,15 +311,15 @@ class NavService extends ContainerAware
     {
 
         $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
-        // $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
-        $clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija Skambučių Centras/Codeunit/WEB_Service2";
+         $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
+        //$clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija Skambučių Centras/Codeunit/WEB_Service2";
 
         stream_wrapper_unregister('http');
         stream_wrapper_register('http', '\Food\OrderBundle\Common\FoNTLMStream') or die("Failed to register protocol");
 
         $url = $clientUrl2;
-        $options = array('trace'=>1, 'login' =>'CILIJA\fo_order', 'password' => 'peH=waGe?zoOs69');
-        //$options = array('login' =>'CILIJA\nas', 'password' => 'c1l1j@');
+        //$options = array('trace'=>1, 'login' =>'CILIJA\fo_order', 'password' => 'peH=waGe?zoOs69');
+        $options = array('login' =>'CILIJA\nas', 'password' => 'c1l1j@');
         $client = new Common\FoNTLMSoapClient($url, $options);
         stream_wrapper_restore('http');
         return $client;
@@ -333,6 +344,91 @@ class NavService extends ContainerAware
         $client = $this->getWSConnection();
         $return = $client->ProcessOrder(array('pInt' =>(int)$orderId));
         return $return;
+    }
+
+    /**
+     * @param String $phone
+     * @param PlacePoint $restaurant
+     * @param String $orderDate
+     * @param String $orderTime
+     * @param String $deliveryType
+     * @param Cart[] $dishes
+     */
+    public function validateCartInNav($phone, $restaurant, $orderDate, $orderTime, $deliveryType, $dishes)
+    {
+        $requestXml = "<Phone>".str_replace("370", "8", $phone)."</Phone>";
+        $requestXml.= "<RestaurantNo>".$restaurant->getInternalCode()."</RestaurantNo>";
+        $requestXml.= "<OrderDate>".str_replace("-", ".", $orderDate)."</OrderDate>";
+        $requestXml.= "<OrderTime>".$orderTime."</OrderTime>";
+        $requestXml.= "<DeliveryType>".($deliveryType == OrderService::$deliveryDeliver ? 1: 4)."</DeliveryType>";
+        $requestXml.= "<Lines>";
+        $lineNo = 0;
+        foreach ($dishes as $detailKey=>$cart) {
+            $lineNo = $lineNo + 1;
+            $code = $cart->getDishSizeId()->getCode();
+            $disFromOptions = false;
+            if (empty($code)) {
+                $detailOptions = $cart->getOptions();
+                if (!empty($detailOptions)) {
+                    $code = $detailOptions[0]->getDishOptionId()->getCode();
+                    $disFromOptions = true;
+                }
+            }
+
+            $requestXml.= "\t<Line>";
+            $requestXml.= "\t\t<LineNo>".$lineNo."</LineNo>";
+            $requestXml.= "\t\t<ParentLineNo>0</ParentLineNo>";
+            $requestXml.= "\t\t<EntryType>0</EntryType>";
+            $requestXml.= "\t\t<ItemNo>".$code."</ItemNo>";
+            $requestXml.= "\t\t<Description></Description>";
+            $requestXml.= "\t\t<Quantity>".$cart->getQuantity()."</Quantity>";
+            $requestXml.= "\t\t<Price>".$cart->getDishSizeId()->getPrice()."</Price>";
+            $requestXml.= "\t\t<Amount>".$cart->getDishSizeId()->getPrice() * $cart->getQuantity()."</Amount>";
+            $requestXml.= "\t</Line>";
+
+            $origLineNo = $lineNo;
+            foreach ( $detailOptions = $cart->getOptions() as $optKey => $option) {
+                if ($disFromOptions) {
+                    continue;
+                } else {
+                    $optionCode = $option->getDishOptionId()->getCode();
+                    $desctiption = "";
+                    if(str)
+                    $lineNo = $lineNo + 1;
+                    $requestXml.= "\t<Line>";
+                    $requestXml.= "\t\t<LineNo>".$lineNo."</LineNo>";
+                    $requestXml.= "\t\t<ParentLineNo>".$origLineNo."</ParentLineNo>";
+                    $requestXml.= "\t\t<EntryType>1</EntryType>";
+                    $requestXml.= "\t\t<ItemNo>".$optionCode."</ItemNo>";
+                    $requestXml.= "\t\t<Description></Description>";
+                    $requestXml.= "\t\t<Quantity>".$cart->getQuantity()."</Quantity>";
+                    $requestXml.= "\t\t<Price>".$option->getDishOptionId()->getPrice()."</Price>";
+                    $requestXml.= "\t\t<Amount>".$option->getDishOptionId()->getPrice() * $cart->getQuantity()."</Amount>";
+                    $requestXml.= "\t</Line>";
+                }
+            }
+        }
+        $requestXml.= "</Lines>";
+
+
+        echo "<pre>";
+        var_dump($response);
+        $response = $this->getWSConnection()->FoodOutValidateOrder(
+            $requestXml,
+            array()
+        );
+        var_dump($response);
+        die("THE END");
+
+        /*
+				<Line>
+					<LineNo>2</LineNo>
+		               <ItemNo>DIS0021488</ItemNo>
+		               <Quantity>1</Quantity>
+		               <Price>14.99</Price>
+		               <Amount>14.99</Amount>
+		           </Line>
+        */
     }
 }
 ?>
