@@ -602,7 +602,8 @@ class OrderService extends ContainerAware
     {
         $this->chageOrderStatus(self::$status_delayed, $source, $statusMessage);
 
-        if ($this->getOrder()->getDeliveryType() == 'deliver') {
+        if ($this->container->getParameter('logistics.send_to_external') == true
+            && $this->getOrder()->getDeliveryType() == 'deliver') {
             $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
         }
         return $this;
