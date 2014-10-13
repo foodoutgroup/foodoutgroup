@@ -8,6 +8,7 @@ use Pirminis\Maybe;
 
 trait OrderDataForNavDecorator
 {
+    // $connectionInfo = array( "Database"=>"prototipas6", "UID"=>"nas", "PWD"=>"c1l1j@");
     public function getOrderDataForNav(Order $order)
     {
         // services. we only need 'misc' service for converting totals to euros
@@ -76,6 +77,12 @@ trait OrderDataForNavDecorator
         $data->totalAmountEUR = (double) $misc->getEuro($total);
 
         return $data;
+    }
+
+    public function insertOrder(OrderDataForNav $data)
+    {
+        $query = $this->constructInsertOrderQuery($data);
+        $result = $this->initSqlConn()->query($query);
     }
 }
 

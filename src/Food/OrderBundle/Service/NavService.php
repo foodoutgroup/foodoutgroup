@@ -336,4 +336,3 @@ class NavService extends ContainerAware
         return $return;
     }
 }
-?>

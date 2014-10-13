@@ -117,6 +117,12 @@ class OrderDataForNav
         return $this;
     }
 
+    /**
+     * Wonder why this magic method works? Well because our properties
+     * are inaccessible from outside (they are protected).
+     * @param  string $property
+     * @return string|double
+     */
     public function __get($property)
     {
         if (!property_exists($this, $property)) {
