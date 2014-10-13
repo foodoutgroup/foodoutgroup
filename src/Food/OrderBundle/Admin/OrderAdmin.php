@@ -131,6 +131,12 @@ class OrderAdmin extends SonataAdmin
                     'template' => 'FoodOrderBundle:Admin:order_payment_status_list.html.twig'
                 )
             )
+            ->add('orderLog', 'sonata_type_collection',
+                array(
+                    'label' => 'admin.order.order_log',
+                    'template' => 'FoodOrderBundle:Admin:order_log.html.twig'
+                )
+            )
             ->add('submittedForPayment', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.submitted_for_payment'))
             ->add('driver.contact', null, array('label' => 'admin.order.driver'))
             ->add('lastUpdate', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.last_update'))
