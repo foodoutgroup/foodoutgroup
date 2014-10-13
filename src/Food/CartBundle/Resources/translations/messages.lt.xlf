@@ -94,6 +94,22 @@
         <source>cart.checkout.card_on_delivery</source>
         <target>Kredito kortele po pristatymo</target>
       </trans-unit>
+      <trans-unit id="cart.checkout.classic_seb" resname="cart.checkout.classic_seb">
+        <source>cart.checkout.classic_seb</source>
+        <target>SEB banklinkas</target>
+      </trans-unit>
+      <trans-unit id="cart.checkout.classic_nordea" resname="cart.checkout.classic_nordea">
+        <source>cart.checkout.classic_nordea</source>
+        <target>Nordea banklinkas</target>
+      </trans-unit>
+      <trans-unit id="cart.checkout.gateway_cc" resname="cart.checkout.gateway_cc">
+        <source>cart.checkout.gateway_cc</source>
+        <target>Kortele per internetą</target>
+      </trans-unit>
+      <trans-unit id="cart.checkout.gateway_banklink" resname="cart.checkout.gateway_banklink">
+        <source>cart.checkout.gateway_banklink</source>
+        <target>Swedbank banklinkas</target>
+      </trans-unit>
       <trans-unit id="e03c0471e61e194d66faffb54af1ce45" resname="cart.checkout.button_get_back">
         <source>cart.checkout.button_get_back</source>
         <target>GRĮŽTI ATGAL</target>
@@ -194,6 +210,10 @@
         <trans-unit id="order.form.errors.cartlessthanminimum_on_pickup" resname="order.form.errors.cartlessthanminimum_on_pickup">
             <source>order.form.errors.cartlessthanminimum_on_pickup</source>
             <target><![CDATA[<b>Užsakymas nesiekia minimalios krepšelio sumos.</b>]]></target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.dont_make_item" resname="order.form.errors.dont_make_item">
+            <source>order.form.errors.cartlessthanminimum_on_pickup</source>
+            <target><![CDATA[Patiekalas šiuo metu negaminamas: %text%]]></target>
         </trans-unit>
         <trans-unit id="order.form.errors.emptycart" resname="order.form.errors.emptycart">
             <source>order.form.errors.emptycart</source>

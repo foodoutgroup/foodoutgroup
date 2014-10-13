@@ -82,8 +82,18 @@ food_api_order_create:
     defaults: { _controller: FoodApiBundle:Orders:createOrder}
     methods: [POST]
 
+food_api_order_create_wcon:
+    pattern: /orders2
+    defaults: { _controller: FoodApiBundle:Orders:createOrderPre}
+    methods: [POST]
+
 food_api_order_details:
     pattern: /orders/{id}
+    defaults: { _controller: FoodApiBundle:Orders:getOrderDetails }
+    methods: [GET]
+
+food_api_order_details2:
+    pattern: /orders2/{id}
     defaults: { _controller: FoodApiBundle:Orders:getOrderDetails }
     methods: [GET]
 
@@ -99,6 +109,11 @@ food_api_order_confirm2:
 
 food_api_order_status:
     pattern: /orders/{id}/status
+    defaults: { _controller: FoodApiBundle:Orders:getOrderStatus}
+    methods: [GET]
+
+food_api_order_status2:
+    pattern: /orders2/{id}/status
     defaults: { _controller: FoodApiBundle:Orders:getOrderStatus}
     methods: [GET]
 

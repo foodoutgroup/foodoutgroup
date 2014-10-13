@@ -28,15 +28,12 @@ parameters:
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
-    #order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt]
-    order.notify_emails: [mantas@foodout.lt]
+    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt]
     order.city_coordinators:
         vilnius: []
-        kaunas: [mantas@foodout.lt]
-        #kaunas: [renata@foodout.lt]
+        kaunas: [renata@foodout.lt]
         klaipeda: []
-    order.accept_notify_emails: [mantas@foodout.lt]
-    #order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
+    order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
     domain: "foodout.lt"
@@ -56,7 +53,14 @@ parameters:
     # Possible values: "local", "etaxi"
     active_logistics: "local"
     # Todo situos gal ir iskelsime i paramsus - dependant on install?
-    payment.methods: [local, local.card, paysera, "swedbank-gateway", "swedbank-credit-card-gateway"]
+    payment.methods:
+        - local
+        - local.card
+        - paysera
+        - swedbank-gateway
+        - swedbank-credit-card-gateway
+        - seb-banklink
+        - nordea-banklink
     currency_display: Lt
     currency_iso: LTL
     # naudojam telefonu validacijoms
@@ -68,7 +72,13 @@ parameters:
     logtime.order_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitOrders"
     logtime.driver_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitDrivers"
     # Ar siusti uzsakyma i isorine (TMS) sistema
-    logistics.send_to_external: true
+    logistics.send_to_external: false
+    # seb banklink
+    seb.banklink.private_key: "/home/skanu.lt/shared/banklinks/seb/private.key"
+    seb.banklink.bank_key: "/home/skanu.lt/shared/banklinks/seb/bank.key"
+    # nordea banklink
+    nordea.banklink.rcv_id: 303134580
+    nordea.banklink.mac: C5IUBtC5eriCYGbIYhhIV4v830k14uSn
 
 framework:
     #esi:             ~

@@ -50,11 +50,69 @@ class DefaultControllerTest extends WebTestCase
         $orderService->saveOrder();
 
         $this->client->request('GET', '/o/'.$hash.'/');
+
+        $this->assertEquals('Food\OrderBundle\Controller\DefaultController::mobileAction', $this->client->getRequest()->attributes->get('_controller'));
         $this->assertTrue(
             strpos($this->client->getResponse()->getContent(), 'name="status" value="confirm"') > 0
         );
         $this->assertTrue(
             strpos($this->client->getResponse()->getContent(), 'name="status" value="cancel"') > 0
+        );
+    }
+
+    public function testAdminMobileOrder()
+    {
+        $orderService = $this->getContainer()->get('food.order');
+
+        $place = $this->getPlace('adminMobileTest');
+        $placePoint = $this->getPlacePoint($place);
+        $order = $this->getOrder($place, $placePoint, $orderService::$status_new);
+
+        $orderService->setOrder($order);
+        $hash = $orderService->generateOrderHash($order);
+        $order->setOrderHash($hash);
+        $order->setUser($this->getUser());
+        $orderService->saveOrder();
+
+        $this->client->request('GET', '/o-spr/'.$hash.'/');
+
+        $this->assertEquals('Food\OrderBundle\Controller\DefaultController::mobileAdminAction', $this->client->getRequest()->attributes->get('_controller'));
+        $this->assertTrue(
+            strpos($this->client->getResponse()->getContent(), 'name="status" value="confirm"') > 0
+        );
+        $this->assertTrue(
+            strpos($this->client->getResponse()->getContent(), 'name="status" value="cancel"') > 0
+        );
+        $this->assertTrue(
+            strpos($this->client->getResponse()->getContent(), 'collapsable-row') > 1
+        );
+    }
+
+    public function testDriverMobileOrder()
+    {
+        $orderService = $this->getContainer()->get('food.order');
+
+        $place = $this->getPlace('adminMobileTest');
+        $placePoint = $this->getPlacePoint($place);
+        $order = $this->getOrder($place, $placePoint, $orderService::$status_new);
+
+        $orderService->setOrder($order);
+        $hash = $orderService->generateOrderHash($order);
+        $order->setOrderHash($hash);
+        $order->setUser($this->getUser());
+        $orderService->saveOrder();
+
+        $this->client->request('GET', '/d/'.$hash.'/');
+
+        $this->assertEquals('Food\OrderBundle\Controller\DefaultController::mobileDriverAction', $this->client->getRequest()->attributes->get('_controller'));
+        $this->assertTrue(
+            strpos($this->client->getResponse()->getContent(), 'name="status" value="confirm"') == 0
+        );
+        $this->assertTrue(
+            strpos($this->client->getResponse()->getContent(), 'name="status" value="cancel"') == 0
+        );
+        $this->assertTrue(
+            strpos($this->client->getResponse()->getContent(), 'collapsable-row') == 0
         );
     }
 }

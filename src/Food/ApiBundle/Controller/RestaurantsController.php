@@ -31,17 +31,26 @@ class RestaurantsController extends Controller
         }
         if (!empty($address)) {
 
-            $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
-            $this->get('food.googlegis')->groupData($location, $address, $city);
+            // TODO Pauliau, istrink sita gabala, kai isspresi GIS'a
+            $availableCities = $this->container->getParameter('available_cities');
+            $availableCities = array_map("mb_strtolower", $availableCities);
+            if (!in_array(mb_strtolower($city), $availableCities)) {
+                $places = array();
+            } else {
+                // TODO HACK pabaiga :)
 
-            $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
-                $kitchens,
-                array(
-                    'keyword' => $keyword,
-                ),
-                false,
-                $this->get('food.googlegis')->getLocationFromSession()
-            );
+                $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
+                $this->get('food.googlegis')->groupData($location, $address, $city);
+
+                $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
+                    $kitchens,
+                    array(
+                        'keyword' => $keyword,
+                    ),
+                    false,
+                    $this->get('food.googlegis')->getLocationFromSession()
+                );
+            }
         } elseif (!empty($lat) && !empty($lng)) {
             $data = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
             $this->get('food.googlegis')->setLocationToSession(
@@ -196,9 +205,10 @@ class RestaurantsController extends Controller
         return new JsonResponse($restaurant->data);
     }
 
-    public function getMenuAction($id)
+    public function getMenuAction($id, Request $request)
     {
-        $menuItems = $this->get('food_api.api')->createMenuByPlaceId($id);
+        $updated_at = $request->get('updated_at');
+        $menuItems = $this->get('food_api.api')->createMenuByPlaceId($id, $updated_at);
 
         $response = array(
             'menu' => $menuItems,

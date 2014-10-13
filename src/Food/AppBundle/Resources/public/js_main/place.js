@@ -90,6 +90,7 @@ var Place = {
         $('.delivery-time-info').tooltip();
 
         init_raty();
+        $('.got-title').tooltip();
     },
     /**
      * Change restaurant menu layout

@@ -15,4 +15,11 @@ trait XPath
         list($first) = $this->xpath($dom, $path) + array(null);
         return (string)$first;
     }
+
+    public function xpath_last(\SimpleXMLElement $dom, $path)
+    {
+        $elements = $this->xpath($dom, $path) + array(null);
+        $last = end($elements);
+        return (string)$last;
+    }
 }

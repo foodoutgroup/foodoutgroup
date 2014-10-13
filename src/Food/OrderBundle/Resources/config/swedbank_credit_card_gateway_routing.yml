@@ -1,0 +1,14 @@
+swedbank_credit_card_gateway_redirect:
+    pattern: /redirect/{id}
+    defaults: { _controller: FoodOrderBundle:SwedbankCreditCardGateway:redirect, id: ~ }
+    requirements:
+        _method: GET
+        id: "[0-9]+"
+
+swedbank_credit_card_gateway_success:
+    pattern: /success
+    defaults: { _controller: FoodOrderBundle:SwedbankCreditCardGateway:success }
+
+swedbank_credit_card_gateway_failure:
+    pattern: /failure
+    defaults: { _controller: FoodOrderBundle:SwedbankCreditCardGateway:failure }

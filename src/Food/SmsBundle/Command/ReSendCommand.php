@@ -50,7 +50,12 @@ class ReSendCommand extends ContainerAwareCommand
                 foreach($unsentMessages as $message) {
                     // TODO laikinas solutionas, po to sutvarkom
                     if ($message->getSmsc() == 'InfoBip') {
-                        $provider = $this->getContainer()->get('food.silverstreet');
+                        // Pasitikrinam as Silverstreet isvis ijungtas
+                        if (in_array('food.silverstreet', $messagingProviders)) {
+                            $provider = $this->getContainer()->get('food.silverstreet');
+                        } else {
+                            $provider = $this->getContainer()->get('food.infobip');
+                        }
                     } else {
                         $provider = $this->getContainer()->get('food.infobip');
                     }

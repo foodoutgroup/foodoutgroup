@@ -186,6 +186,10 @@
         <source>general.email.new_order</source>
         <target>naujas užsakymas</target>
       </trans-unit>
+      <trans-unit id="general.email.canceled_order" resname="general.email.canceled_order">
+        <source>general.email.canceled_order</source>
+        <target>atšauktas užsakymas</target>
+      </trans-unit>
       <trans-unit id="general.email.order_reminder" resname="general.email.order_reminder">
         <source>general.email.order_reminder</source>
         <target>primename, kad turite nepatvirtintą užsakymą</target>
@@ -334,6 +338,10 @@
         <source>general.sms.new_order</source>
         <target>Naujas uzsakymas: </target>
       </trans-unit>
+      <trans-unit id="general.sms.canceled_order" resname="general.sms.canceled_order">
+        <source>general.sms.canceled_order</source>
+        <target>Uzsakymas #%order_number% atsauktas: </target>
+      </trans-unit>
       <trans-unit id="general.sms.order_reminder" resname="general.sms.order_reminder">
         <source>general.sms.order_reminder</source>
         <target>Primename, kad turite nepatvirtinta uzsakyma: </target>
@@ -413,6 +421,22 @@
       <trans-unit id="ff990e97a34ed6619f88da89f1555dd1" resname="mobile.payment.paysera">
         <source>mobile.payment.paysera</source>
         <target>Apmokėta internetu</target>
+      </trans-unit>
+      <trans-unit id="mobile.payment.nordea-banklink" resname="mobile.payment.nordea-banklink">
+        <source>mobile.payment.nordea-banklink</source>
+        <target>Apmokėta internetu (Nordea)</target>
+      </trans-unit>
+      <trans-unit id="mobile.payment.seb-banklink" resname="mobile.payment.seb-banklink">
+        <source>mobile.payment.seb-banklink</source>
+        <target>Apmokėta internetu (SEB)</target>
+      </trans-unit>
+      <trans-unit id="mobile.payment.swedbank-credit-card-gateway" resname="mobile.payment.swedbank-credit-card-gateway">
+        <source>mobile.payment.swedbank-credit-card-gateway</source>
+        <target>Apmokėta internetu (Swed CC)</target>
+      </trans-unit>
+      <trans-unit id="mobile.payment.swedbank-gateway" resname="mobile.payment.swedbank-gateway">
+        <source>mobile.payment.swedbank-gateway</source>
+        <target>Apmokėta internetu (Swedbank)</target>
       </trans-unit>
       <trans-unit id="ca4d1fefea4fd64c121dbd0e8fa2819c" resname="mobile.order.sum_with_delivery">
         <source>mobile.order.sum_with_delivery</source>
@@ -534,6 +558,10 @@
         <source>mobile.invoice.total_with_vat</source>
         <target>Viso</target>
       </trans-unit>
+      <trans-unit id="mobile.invoice.total_with_vat_eur" resname="mobile.invoice.total_with_vat_eur">
+        <source>mobile.invoice.total_with_vat_eur</source>
+        <target>Viso EUR</target>
+      </trans-unit>
       <trans-unit id="16e198a6b48257e47d9ce572ab7ce655" resname="mobile.deliver_time">
         <source>mobile.deliver_time</source>
         <target>Pristatyti iki</target>
@@ -652,7 +680,23 @@
       </trans-unit>
       <trans-unit id="6ff5d01a17890ac3a904f3340c591192" resname="general.email.accounting_report.paysera">
         <source>general.email.accounting_report.paysera</source>
-        <target>Internetu</target>
+        <target>Internetu (Paysera)</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.nordea-banklink" resname="general.email.accounting_report.nordea-banklink">
+        <source>general.email.accounting_report.nordea-banklink</source>
+        <target>Internetu (Nordea)</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.seb-banklink" resname="general.email.accounting_report.seb-banklink">
+        <source>general.email.accounting_report.seb-banklink</source>
+        <target>Internetu (SEB)</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.swedbank-credit-card-gateway" resname="general.email.accounting_report.swedbank-credit-card-gateway">
+        <source>general.email.accounting_report.swedbank-credit-card-gateway</source>
+        <target>Internetu (Swedbank kreditinė)</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.swedbank-gateway" resname="general.email.accounting_report.swedbank-gateway">
+        <source>general.email.accounting_report.swedbank-gateway</source>
+        <target>Internetu (Swedbank banklink)</target>
       </trans-unit>
       <trans-unit id="2a27b06725260bba699dd331a49827d8" resname="index.title_page_header">
         <source>index.title_page_header</source>
@@ -904,7 +948,7 @@
       </trans-unit>
       <trans-unit id="payment.swedbank_gateway.error" resname="payment.swedbank_gateway.error">
           <source>payment.swedbank_gateway.error</source>
-          <target>Įvyko klaida.</target>
+          <target>Užsakymas atšauktas.</target>
       </trans-unit>
       <trans-unit id="payment.swedbank_gateway.order_not_found" resname="payment.swedbank_gateway.order_not_found">
           <source>payment.swedbank_gateway.order_not_found</source>
@@ -921,6 +965,14 @@
       <trans-unit id="payment.swedbank_gateway.success" resname="payment.swedbank_gateway.success">
           <source>payment.swedbank_gateway.success</source>
           <target>Užsakymas sėkmingai apmokėtas.</target>
+      </trans-unit>
+      <trans-unit id="payment.nordea.success" resname="payment.nordea.success">
+          <source>payment.nordea.success</source>
+          <target>Užsakymas sėkmingai apmokėtas.</target>
+      </trans-unit>
+      <trans-unit id="payment.nordea.failed" resname="payment.nordea.failed">
+          <source>payment.nordea.failed</source>
+          <target>Užsakymas nebuvo apmokėtas.</target>
       </trans-unit>
       <trans-unit id="general.successful_user_registration" resname="general.successful_user_registration">
         <source>general.successful_user_registration</source>
