@@ -51,6 +51,7 @@ trait ReturnDecorator
                 return new Response('<Response>OK</Response>');
             } else {
                 $view = 'FoodCartBundle:Default:payment_success.html.twig';
+                return $this->render($view, ['order' => $order]);
             }
         // is order payment accepted and is currently processing?
         } elseif ((!$isEvent &&
@@ -65,6 +66,7 @@ trait ReturnDecorator
             } else {
                 $view = 'FoodOrderBundle:Payments:' .
                         'swedbank_gateway/processing.html.twig';
+                return $this->render($view, ['order' => $order]);
             }
         // is payment cancelled due to reasons?
         } elseif ((!$isEvent &&
@@ -88,10 +90,12 @@ trait ReturnDecorator
         } elseif ($gateway->is_error('swedbank', $request)) {
             $view = 'FoodOrderBundle:Payments:' .
                     'swedbank_gateway/error.html.twig';
+            return $this->render($view, ['order' => $order]);
         // was there a communication error with/in bank?
         } elseif ($gateway->communication_error('swedbank', $request)) {
             $view = 'FoodOrderBundle:Payments:' .
                     'swedbank_gateway/communication_error.html.twig';
+            return $this->render($view, ['order' => $order]);
         }
 
         return $this->render($view, ['order' => $order]);
