@@ -202,7 +202,9 @@
                                     <label>{% trans %}cart.checkout.place_point{% endtrans %}:</label>
                                     <select class="custom-select" name="place_point">
                                         {% for point in place.points %}
-                                        <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}</option>
+                                            {% if point.active and point.public and point.pickUp %}
+                                                <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}</option>
+                                            {% endif %}
                                         {% endfor %}
                                     </select>
                                 </div>
