@@ -81,6 +81,8 @@ trait OrderDataForNavDecorator
 
     public function insertOrder(OrderDataForNav $data)
     {
+        error_reporting(E_ALL);
+        ini_set('display_errors', true);
         $query = $this->constructInsertOrderQuery($data);
         $result = $this->initTestSqlConn()->query($query);
         var_dump($result);
