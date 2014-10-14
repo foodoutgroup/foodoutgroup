@@ -163,3 +163,6 @@ fos_user_resetting:
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /change-password
+mssql_test:
+    pattern: /mssql-test
+    defaults: { _controller: FoodOrderBundle:MssqlTest:insertOrder }

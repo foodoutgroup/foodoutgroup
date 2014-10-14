@@ -82,11 +82,118 @@ trait OrderDataForNavDecorator
     public function insertOrder(OrderDataForNav $data)
     {
         $query = $this->constructInsertOrderQuery($data);
-        $result = $this->initSqlConn()->query($query);
+        $result = $this->initTestSqlConn()->query($query);
+        var_dump($result);
+    }
+
+    protected function constructInsertOrderQuery(OrderDataForNav $data)
+    {
+        $query = sprintf('INSERT INTO %s %s VALUES %s',
+                         $this->getOrderTableName(),
+                         sprintf(
+                            "([%s])",
+                            implode('], [', $this->getOrderFieldNames())),
+                         sprintf(
+                            "('%s')",
+                            implode("', '", $this->getOrderValues($data))));
+        var_dump($query);
+        return $query;
+    }
+
+    protected function getOrderTableName()
+    {
+        return '[prototipas6].[dbo].[PROTOTIPAS$FoodOut Order]';
+    }
+
+    protected function getOrderFieldNames()
+    {
+        return ['timestamp',
+                'Order ID',
+                'Order Date',
+                'Order Time',
+                'Delivery Date',
+                'Delivery Time',
+                'Staff Description',
+                'Chain',
+                'Restaurant',
+                'Restaurant Address',
+                'Driver',
+                'Delivery Type',
+                'Client Name',
+                'Delivered',
+                'Delivery Address',
+                'City',
+                'Country',
+                'Payment Type',
+                'Food Amount',
+                'Food Amount EUR',
+                'Food VAT',
+                'Drinks Amount',
+                'Drinks Amount EUR',
+                'Drinks VAT',
+                'Alcohol Amount',
+                'Alcohol Amount EUR',
+                'Alcohol VAT',
+                'Delivery Amount',
+                'Delivery Amount EUR',
+                'Delivery VAT',
+                'Gift Card Amount',
+                'Gift Card Amount EUR',
+                'Discount Type',
+                'Discount Amount',
+                'Discount Amount EUR',
+                'Discount Percent',
+                'Total Amount',
+                'Total Amount EUR'];
+    }
+
+    protected function getOrderValues(OrderDataForNav $data)
+    {
+        $result = [(string)time(),
+                   $data->id,
+                   $data->date,
+                   $data->time,
+                   $data->deliveryDate,
+                   $data->deliveryTime,
+                   $data->staff,
+                   $data->chain,
+                   $data->restaurant,
+                   $data->restaurantAddress,
+                   $data->driver,
+                   $data->deliveryType,
+                   $data->clientName,
+                   $data->isDelivered,
+                   $data->deliveryAddress,
+                   $data->city,
+                   $data->country,
+                   $data->paymentType,
+                   $data->foodAmount,
+                   $data->foodAmountEUR,
+                   $data->foodVAT,
+                   $data->drinksAmount,
+                   $data->drinksAmountEUR,
+                   $data->drinksVAT,
+                   $data->alcoholAmount,
+                   $data->alcoholAmountEUR,
+                   $data->alcoholVAT,
+                   $data->deliveryAmount,
+                   $data->deliveryAmountEUR,
+                   $data->deliveryVAT,
+                   $data->giftCardAmount,
+                   $data->giftCardAmountEUR,
+                   $data->discountType,
+                   $data->discountAmount,
+                   $data->discountAmountEUR,
+                   $data->discountPercent,
+                   $data->totalAmount,
+                   $data->totalAmountEUR];
+        return $this->escapeSingleQuotes($result);
+    }
+
+    protected function escapeSingleQuotes(array $data)
+    {
+        return array_map(
+            function($val) { return str_replace("'", "\\'", $val); },
+            $data);
     }
 }
-
-// order 982:
-//     total: 85.9
-//     dish_total: 80.9
-//     delivery_price: 5.0
