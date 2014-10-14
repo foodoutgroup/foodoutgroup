@@ -462,6 +462,7 @@ class NTLMSoapClient extends SoapClient {
                                 $one_way = 0) {
         //for debugging: output generated XML preior to making the call
         //print_r($request); die();
+
         $headers = array(
             'Method: POST',
             'Connection: Keep-Alive',

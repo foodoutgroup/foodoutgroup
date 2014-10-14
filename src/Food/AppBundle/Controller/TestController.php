@@ -143,10 +143,10 @@ class TestController extends Controller
             $cds
         );
 
-        $ss = $navs->initSqlConn();
-        $querys=$ss->query("SELECT TOP 10 * FROM ".$navs->getMessagesTable());
-        var_dump($ss->fetchArray($querys));
-        die('E');
+        //$ss = $navs->initSqlConn();
+        //$querys=$ss->query("SELECT TOP 10 * FROM ".$navs->getMessagesTable());
+        //var_dump($ss->fetchArray($querys));
+        //die('E');
         return new Response("\n\n<br><br>THIS IS THE END");
     }
 }

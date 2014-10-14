@@ -216,6 +216,9 @@ class NavService extends ContainerAware
         $orderNewId = $this->getNavOrderId($order);
 
         $orderRow = null;
+        $street = "";
+        $houseNr = "";
+        $flatNr = "";
         if ($order->getAddressId()) {
             $target = $order->getAddressId()->getAddress();
             preg_match('/(([0-9]{1,3})[-|\s]{0,4}([0-9]{0,3}))$/i', $target, $errz);
@@ -231,8 +234,6 @@ class NavService extends ContainerAware
             );
         }
 
-
-
         $this->container->get('doctrine')->getManager()->refresh($orderRow);
 
         $orderDate = $order->getOrderDate();
@@ -242,12 +243,12 @@ class NavService extends ContainerAware
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Phone' => str_replace('370', '8', $order->getUser()->getPhone()),
-            'ZipCode' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getZipCode() : ''),
+            'ZipCode' => '', // ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getZipCode() : ''),
             'City' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $order->getAddressId()->getCity() : ''),
-            'Street' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getStreetName(): ''),
-            'Street No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getNumberFrom(): ''),
+            'Street' => $street, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getStreetName(): ''),
+            'Street No_' => $houseNr, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getNumberFrom(): ''),
             'Floor' => '',
-            'Grid' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getGrid(): ''),
+            'Grid' => '', // ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getGrid(): ''),
             'Chain' => $order->getPlace()->getChain(),
             'Name' => 'FO:'.$order->getUser()->getNameForOrder(),
             'Delivery Type' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? 1 : 4),
@@ -260,9 +261,9 @@ class NavService extends ContainerAware
             'Order Status' => 4,
             'Delivery Order No_' => '',
             'Error Description' => '',
-            'Flat No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $flatNr: ''),
+            'Flat No_' => $flatNr, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $flatNr: ''),
             'Entrance Code' => '',
-            'Region Code' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getDeliveryRegion() : ''),
+            'Region Code' => $order->getPlacePoint()->getCity(), //$order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getDeliveryRegion() : ''),
             'Delivery Status' => 12,
             'In Use By User' => '',
             'Loyalty Card No_' => '',
@@ -332,7 +333,7 @@ class NavService extends ContainerAware
 
         $url = $clientUrl2;
         //$options = array('trace'=>1, 'login' =>'CILIJA\fo_order', 'password' => 'peH=waGe?zoOs69');
-        $options = array('trace'=>1, 'cache_wsdl' => WSDL_CACHE_NONE, 'login' =>'CILIJA\nas', 'password' => 'c1l1j@');
+        $options = array('cache_wsdl' => WSDL_CACHE_NONE, 'login' =>'CILIJA\nas', 'password' => 'c1l1j@');
         $client = new Common\FoNTLMSoapClient($url, $options);
         stream_wrapper_restore('http');
         return $client;
@@ -342,7 +343,7 @@ class NavService extends ContainerAware
     {
         $orderId = $this->getNavOrderId($order);
         $client = $this->getWSConnection();
-        $return = $client->UpdatePrices(array('pInt' =>(int)$orderId));
+        $return = $client->FoodOutUpdatePrices(array('pInt' =>(int)$orderId));
         return $return;
     }
 
@@ -355,7 +356,7 @@ class NavService extends ContainerAware
         $sqlSS = $this->initSqlConn()->query($query);
 
         $client = $this->getWSConnection();
-        $return = $client->ProcessOrder(array('pInt' =>(int)$orderId));
+        $return = $client->FoodOutProcessOrder(array('pInt' =>(int)$orderId));
         return $return;
     }
 
@@ -370,12 +371,11 @@ class NavService extends ContainerAware
     public function validateCartInNav($phone, $restaurant, $orderDate, $orderTime, $deliveryType, $dishes)
     {
         $rcCode = $restaurant->getInternalCode();
-        $rcCode = 'C09';
 
         $requestData = array(
             array('Lines' => array())
         );
-        $requestXml = "<Phone>".str_replace("370", "8", $phone)."</Phone>\n";
+        $requestXml = "<Phone>".str_replace("+", "", str_replace("370", "8", $phone))."</Phone>\n";
         $requestXml.= "<RestaurantNo>".$rcCode."</RestaurantNo>\n";
         $requestXml.= "<OrderDate>".str_replace("-", ".", $orderDate)."</OrderDate>\n";
         $requestXml.= "<OrderTime>".$orderTime."</OrderTime>\n";
@@ -383,7 +383,7 @@ class NavService extends ContainerAware
         $requestXml.= "<Lines>\n";
 
         $requestData = array(
-            'Phone'=> str_replace("370", "8", $phone),
+            'Phone'=> str_replace("+", "", str_replace("370", "8", $phone)),
             'RestaurantNo' => $rcCode,
             'OrderDate' => str_replace("-", ".", $orderDate),
             'OrderTime' => $orderTime,
@@ -391,6 +391,7 @@ class NavService extends ContainerAware
         );
 
         $lineNo = 0;
+        $lineMap = array();
         foreach ($dishes as $detailKey=>$cart) {
             $lineNo = $lineNo + 1;
             $code = $cart->getDishSizeId()->getCode();
@@ -425,6 +426,11 @@ class NavService extends ContainerAware
                 'Price' => $cart->getDishSizeId()->getPrice(),
                 'Amount' => $cart->getDishSizeId()->getPrice() * $cart->getQuantity()
             ));
+
+            $lineMap[$lineNo] = array(
+                'parent' => 0,
+                'name' => $cart->getDishId()->getName()
+            );
 
             $origLineNo = $lineNo;
             foreach ( $detailOptions = $cart->getOptions() as $optKey => $option) {
@@ -464,38 +470,45 @@ class NavService extends ContainerAware
                         'Amount' => $option->getDishOptionId()->getPrice() * $cart->getQuantity()
                     ));
 
+                    $lineMap[$lineNo] = array(
+                        'parent' => $origLineNo,
+                        'name' => $description
+                    );
+
+
                 }
             }
         }
         $requestXml.= "</Lines>\n";
 
         $requestXml = iconv('utf-8', 'cp1257', $requestXml);
-
-
+        ob_start();
         $response = $this->getWSConnection()->FoodOutValidateOrder(
                 array(
                     'params' => $requestData,
                     'errors' => array()
                 )
         );
+        ob_end_clean();
 
-
-
-        var_dump($response);
-        var_dump($this->getWSConnection()->__getLastResponse());
-        var_dump($this->getWSConnection()->__getLastRequest());
-
-        die("THE END");
-
-        /*
-				<Line>
-					<LineNo>2</LineNo>
-		               <ItemNo>DIS0021488</ItemNo>
-		               <Quantity>1</Quantity>
-		               <Price>14.99</Price>
-		               <Amount>14.99</Amount>
-		           </Line>
-        */
+        $prbDish = "";
+        if ($response->return_value == 2) {
+            if ($lineMap[$response->errors->Error->SubCode]['parent'] == 0) {
+                $prbDish = $lineMap[$response->errors->Error->SubCode]['name'];
+            } else {
+                $prbDish = $lineMap[$lineMap[$response->errors->Error->SubCode]['parent']]['name'];
+            }
+        }
+        $returner = array(
+            'valid' => ($response->return_value == 0 ? true: false),
+            'errcode' => array(
+                'code' => ($response->return_value != 0 ? $response->errors->Error->Code : ''),
+                'line' => ($response->return_value != 0 ? $response->errors->Error->SubCode : ''),
+                'msg' => ($response->return_value != 0 ? $response->errors->Error->Description : ''),
+                'problem_dish' => $prbDish
+            )
+        );
+        return $returner;
     }
 }
 ?>

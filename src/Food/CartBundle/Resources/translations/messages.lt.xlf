@@ -235,6 +235,18 @@
             <source>order.form.errors.cart_rules</source>
             <target>Privalote sutikti su svetainės taisyklėmis</target>
         </trans-unit>
+        <trans-unit id="order.form.errors.problems_with_dish" resname="order.form.errors.problems_with_dish">
+            <source>order.form.errors.problems_with_dish</source>
+            <target><![CDATA[Šiuo metu negalime jums pagaminti patiekalo - <b>%text%</b>. Pašalinkite jį ir pasirinkite iš meniu kitą patiekalą]]></target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.nav_restaurant_no_work" resname="order.form.errors.nav_restaurant_no_work">
+            <source>order.form.errors.nav_restaurant_no_work</source>
+            <target><![CDATA[<b>Restoranas šiuo metu negali priimti jūsų užsakymo</b>]]></target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.nav_restaurant_no_setted" resname="order.form.errors.nav_restaurant_no_setted">
+            <source>order.form.errors.nav_restaurant_no_setted</source>
+            <target><![CDATA[<b>Restoranas šiuo metu nepasiekiamas.</b>]]></target>
+        </trans-unit>
         <trans-unit id="general.cart_rules_slug" resname="general.cart_rules_slug">
             <source>general.cart_rules_slug</source>
             <target>ordering_rules</target>
