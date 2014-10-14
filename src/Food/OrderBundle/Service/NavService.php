@@ -2,6 +2,8 @@
 
 namespace Food\OrderBundle\Service;
 
+use Food\CartBundle\Entity\Cart;
+use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Symfony\Component\DependencyInjection\ContainerAware;
@@ -25,6 +27,10 @@ class NavService extends ContainerAware
     private $headerTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Header]';
 
     private $lineTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Lines]';
+
+    private $orderTable = '[prototipas6].[dbo].[PROTOTIPAS$FoodOut Order]';
+
+    private $messagesTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web Order Messages]';
 
     //private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
 
@@ -55,6 +61,23 @@ class NavService extends ContainerAware
         return $this->lineTable;
     }
 
+    /**
+     * @return string
+     */
+    public function getOrderTable()
+    {
+        return $this->orderTable;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessagesTable()
+    {
+        return $this->messagesTable;
+    }
+
+
 
 
     /**
@@ -65,7 +88,8 @@ class NavService extends ContainerAware
         if ($this->conn == null) {
             $serverName = "213.190.40.38, 5566"; //serverName\instanceName, portNumber (default is 1433)
             //$connectionInfo = array( "Database"=>"prototipas6", "UID"=>"fo_order", "PWD"=>"peH=waGe?zoOs69");
-            $connectionInfo = array( "Database"=>"prototipas6", "UID"=>"nas", "PWD"=>"c1l1j@");
+            //$connectionInfo = array( "Database"=>"prototipas6", "UID"=>"nas", "PWD"=>"c1l1j@");
+            $connectionInfo = array( "Database"=>"prototipas6", "UID"=>"CILIJA\Neotest", "PWD"=>"NewNeo@123");
             //$connectionInfo = array( "Database"=>"skamb_centras", "UID"=>"fo_order", "PWD"=>"peH=waGe?zoOs69");
             $this->conn = sqlsrv_connect( $serverName, $connectionInfo);
 
@@ -307,15 +331,15 @@ class NavService extends ContainerAware
     {
 
         $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
-        // $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
-        $clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija Skambučių Centras/Codeunit/WEB_Service2";
+         $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
+        //$clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija Skambučių Centras/Codeunit/WEB_Service2";
 
         stream_wrapper_unregister('http');
         stream_wrapper_register('http', '\Food\OrderBundle\Common\FoNTLMStream') or die("Failed to register protocol");
 
         $url = $clientUrl2;
-        $options = array('trace'=>1, 'login' =>'CILIJA\fo_order', 'password' => 'peH=waGe?zoOs69');
-        //$options = array('login' =>'CILIJA\nas', 'password' => 'c1l1j@');
+        //$options = array('trace'=>1, 'login' =>'CILIJA\fo_order', 'password' => 'peH=waGe?zoOs69');
+        $options = array('trace'=>1, 'cache_wsdl' => WSDL_CACHE_NONE, 'login' =>'CILIJA\nas', 'password' => 'c1l1j@');
         $client = new Common\FoNTLMSoapClient($url, $options);
         stream_wrapper_restore('http');
         return $client;
@@ -340,6 +364,145 @@ class NavService extends ContainerAware
         $client = $this->getWSConnection();
         $return = $client->ProcessOrder(array('pInt' =>(int)$orderId));
         return $return;
+    }
+
+    /**
+     * @param String $phone
+     * @param PlacePoint $restaurant
+     * @param String $orderDate
+     * @param String $orderTime
+     * @param String $deliveryType
+     * @param Cart[] $dishes
+     */
+    public function validateCartInNav($phone, $restaurant, $orderDate, $orderTime, $deliveryType, $dishes)
+    {
+        $rcCode = $restaurant->getInternalCode();
+        $rcCode = 'C09';
+
+        $requestData = array(
+            array('Lines' => array())
+        );
+        $requestXml = "<Phone>".str_replace("370", "8", $phone)."</Phone>\n";
+        $requestXml.= "<RestaurantNo>".$rcCode."</RestaurantNo>\n";
+        $requestXml.= "<OrderDate>".str_replace("-", ".", $orderDate)."</OrderDate>\n";
+        $requestXml.= "<OrderTime>".$orderTime."</OrderTime>\n";
+        $requestXml.= "<DeliveryType>".($deliveryType == OrderService::$deliveryDeliver ? 1: 4)."</DeliveryType>\n";
+        $requestXml.= "<Lines>\n";
+
+        $requestData = array(
+            'Phone'=> str_replace("370", "8", $phone),
+            'RestaurantNo' => $rcCode,
+            'OrderDate' => str_replace("-", ".", $orderDate),
+            'OrderTime' => $orderTime,
+            'DeliveryType' => ($deliveryType == OrderService::$deliveryDeliver ? 1: 4)
+        );
+
+        $lineNo = 0;
+        foreach ($dishes as $detailKey=>$cart) {
+            $lineNo = $lineNo + 1;
+            $code = $cart->getDishSizeId()->getCode();
+            $disFromOptions = false;
+            if (empty($code)) {
+                $detailOptions = $cart->getOptions();
+                if (!empty($detailOptions)) {
+                    $code = $detailOptions[0]->getDishOptionId()->getCode();
+                    $disFromOptions = true;
+                }
+            }
+
+            $requestXml.= "\t<Line>\n";
+            $requestXml.= "\t\t<LineNo>".$lineNo."</LineNo>\n";
+            $requestXml.= "\t\t<ParentLineNo>0</ParentLineNo>\n";
+            $requestXml.= "\t\t<EntryType>0</EntryType>\n";
+            $requestXml.= "\t\t<ItemNo>".$code."</ItemNo>\n";
+            $requestXml.= "\t\t<Description>za</Description>\n";
+            $requestXml.= "\t\t<Quantity>".$cart->getQuantity()."</Quantity>\n";
+            $requestXml.= "\t\t<Price>".$cart->getDishSizeId()->getPrice()."</Price>\n";
+            $requestXml.= "\t\t<Amount>".$cart->getDishSizeId()->getPrice() * $cart->getQuantity()."</Amount>\n";
+            $requestXml.= "\t</Line>\n";
+
+
+            $requestData['Lines'][] = array('Line' => array(
+                'LineNo' => $lineNo,
+                'ParentLineNo' => 0,
+                'EntryType' => 0,
+                'ItemNo' => $code,
+                'Description' => mb_substr($cart->getDishId()->getName(), 0, 30),
+                'Quantity' => $cart->getQuantity(),
+                'Price' => $cart->getDishSizeId()->getPrice(),
+                'Amount' => $cart->getDishSizeId()->getPrice() * $cart->getQuantity()
+            ));
+
+            $origLineNo = $lineNo;
+            foreach ( $detailOptions = $cart->getOptions() as $optKey => $option) {
+                if ($disFromOptions) {
+                    continue;
+                } else {
+                    $optionCode = $option->getDishOptionId()->getCode();
+                    $description = "";
+                    if(strpos($optionCode, '--') !== false) {
+                        list($preCode, $posCode) = explode("--", $optionCode);
+                        $optionCode = $preCode;
+                        $description = $posCode;
+                    } else {
+                        $description = $option->getDishOptionId()->getName();
+                    }
+                    $lineNo = $lineNo + 1;
+                    $requestXml.= "\t<Line>\n";
+                    $requestXml.= "\t\t<LineNo>".$lineNo."</LineNo>\n";
+                    $requestXml.= "\t\t<ParentLineNo>".$origLineNo."</ParentLineNo>\n";
+                    $requestXml.= "\t\t<EntryType>1</EntryType>\n";
+                    $requestXml.= "\t\t<ItemNo>".$optionCode."</ItemNo>\n";
+                    $requestXml.= "\t\t<Description></Description>\n";
+                    $requestXml.= "\t\t<Quantity>".$cart->getQuantity()."</Quantity>\n";
+                    $requestXml.= "\t\t<Price>".$option->getDishOptionId()->getPrice()."</Price>\n";
+                    $requestXml.= "\t\t<Amount>".$option->getDishOptionId()->getPrice() * $cart->getQuantity()."</Amount>\n";
+                    $requestXml.= "\t</Line>\n";
+
+
+                    $requestData['Lines'][] = array('Line' => array(
+                        'LineNo' => $lineNo,
+                        'ParentLineNo' => $origLineNo,
+                        'EntryType' => 1,
+                        'ItemNo' => $optionCode,
+                        'Description' => mb_substr($description, 0, 30),
+                        'Quantity' => $cart->getQuantity(),
+                        'Price' => $option->getDishOptionId()->getPrice(),
+                        'Amount' => $option->getDishOptionId()->getPrice() * $cart->getQuantity()
+                    ));
+
+                }
+            }
+        }
+        $requestXml.= "</Lines>\n";
+
+        $requestXml = iconv('utf-8', 'cp1257', $requestXml);
+
+
+        $response = $this->getWSConnection()->FoodOutValidateOrder(
+                array(
+                    'params' => $requestData,
+                    'errors' => array()
+                )
+        );
+
+
+
+        var_dump($response);
+        var_dump($this->getWSConnection()->__getLastResponse());
+        var_dump($this->getWSConnection()->__getLastRequest());
+
+        die("THE END");
+
+        /*
+				<Line>
+					<LineNo>2</LineNo>
+		               <ItemNo>DIS0021488</ItemNo>
+		               <Quantity>1</Quantity>
+		               <Price>14.99</Price>
+		               <Amount>14.99</Amount>
+		           </Line>
+        */
     }
 
     /**
