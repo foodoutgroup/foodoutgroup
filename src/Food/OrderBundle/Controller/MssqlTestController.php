@@ -15,7 +15,7 @@ class MssqlTestController extends Controller
         $order = $this->getDoctrine()
                       ->getManager()
                       ->getRepository('FoodOrderBundle:Order')
-                      ->find(911);
+                      ->find(624);
         $data = $nav->getOrderDataForNav($order);
         $result = $nav->insertOrder($data);
 
