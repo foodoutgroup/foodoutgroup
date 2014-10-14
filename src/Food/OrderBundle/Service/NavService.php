@@ -205,11 +205,9 @@ class NavService extends ContainerAware
                     'deliveryRegion' => $order->getAddressId()->getCity()
                 )
             );
+
+            $this->container->get('doctrine')->getManager()->refresh($orderRow);
         }
-
-
-
-        $this->container->get('doctrine')->getManager()->refresh($orderRow);
 
         $orderDate = $order->getOrderDate();
         $orderDate->sub(new \DateInterval('P0DT3H'));
@@ -296,6 +294,15 @@ class NavService extends ContainerAware
 
     }
 
+    /**
+     * @param int $navId
+     * @return int
+     */
+    public function getOrderIdFromNavId($navId)
+    {
+        return $navId - $this->_orderIdModifier;
+    }
+
     private function getWSConnection()
     {
 
@@ -333,6 +340,148 @@ class NavService extends ContainerAware
         $client = $this->getWSConnection();
         $return = $client->ProcessOrder(array('pInt' =>(int)$orderId));
         return $return;
+    }
+
+    /**
+     * @param Order[] $orders
+     *
+     * @return mixed
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getRecentNavOrders($orders)
+    {
+        $orderIds = $this->getNavIdsFromOrders($orders);
+
+        $query = sprintf(
+            'SELECT [Order No_], [Order Status], [Delivery Status]
+            FROM %s
+            WHERE
+                [Order No_] IN (%s)
+            ORDER BY [Order No_] DESC',
+            $this->getHeaderTable(),
+            implode(', ', $orderIds)
+        );
+
+        $result = $this->initSqlConn()->query($query);
+        if( $result === false) {
+            throw new \InvalidArgumentException('No wanted orders found in Nav. How is that even possible?');
+        }
+
+        $return = array();
+        while ($rowRez = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+            $return[$this->getOrderIdFromNavId($rowRez['Order No_'])] = $rowRez;
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param Order $order
+     * @param array $navOrder
+     */
+    public function changeOrderStatusByNav($order, $navOrder)
+    {
+        $orderService = $this->container->get('food.order');
+        $orderService->setOrder($order);
+        $logger = $this->container->get('logger');
+        /*
+        Nav statusai:
+        0-Naujas,
+        1-Priimtas,
+        2-Persiųstas,
+        3-Pakeistas,
+        4-Atspausdintas,
+        5-Gaminamas,
+        6-Pagamintas,
+        7-Išvežtas,
+        8-Pristatytas,
+        9-Baigtas,
+        10-Atšauktas,
+        11-Grąžintas,
+        12-Problemos uzsakymo perdavimo metu
+         */
+        switch ($navOrder['Delivery Status'])
+        {
+            case 1:
+            case 4:
+            case 5:
+                if ($order->getOrderStatus() == OrderService::$status_new) {
+                    $orderService->statusAccepted('cili_nav');
+                }
+                break;
+
+            case 2:
+                // TODO persiuntimas
+                $logger->error('Order #'.$order->getId().' was marked as redirected in Cili Nav');
+                break;
+
+            case 6:
+                if ($order->getOrderStatus() == OrderService::$status_new) {
+                    // First mark as accepted, for user information
+                    $orderService->statusAccepted('cili_nav');
+                    $orderService->statusFinished('cili_nav');
+                } else if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), OrderService::$status_finished)) {
+                    $orderService->statusFinished('cili_nav');
+                } else {
+                    $logger->error(sprintf(
+                        'Invalid status change detected: Order #%d was marked as "finished" in Cili Nav. His current status: %s',
+                        $order->getId(),
+                        $order->getOrderStatus()
+                    ));
+                }
+                break;
+
+            case 8:
+            case 9:
+                if ($order->getDeliveryType() == OrderService::$deliveryPickup
+                    && $orderService->isValidOrderStatusChange($order->getOrderStatus(), OrderService::$status_completed)) {
+                        $orderService->statusCompleted('cili_nav');
+                }
+                break;
+
+            case 10:
+            case 11:
+                if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), OrderService::$status_canceled)) {
+                    $orderService->statusCanceled('cili_nav');
+                } else {
+                    $logger->error(sprintf(
+                        'Invalid status change detected: Order #%d was marked as "canceled" in Cili Nav. His current status: %s',
+                        $order->getId(),
+                        $order->getOrderStatus()
+                    ));
+                }
+                break;
+
+            case 0:
+            default:
+                // do nothing
+                break;
+        }
+    }
+
+    /**
+     * @param Order[] $orders
+     * @return array
+     * @throws \InvalidArgumentException
+     */
+    public function getNavIdsFromOrders($orders)
+    {
+        if (!is_array($orders)) {
+            throw new \InvalidArgumentException('Not an array given. Can not extract Nav ids');
+        }
+
+        $navIds = array();
+
+        foreach ($orders as $order) {
+            if (!$order instanceof Order) {
+                throw new \InvalidArgumentException('Got a non order object when extracting Nav ids');
+            }
+
+            $navIds[] = $this->getNavOrderId($order);
+        }
+
+        return $navIds;
     }
 }
 ?>

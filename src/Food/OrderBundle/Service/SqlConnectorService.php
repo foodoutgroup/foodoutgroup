@@ -2,7 +2,6 @@
 
 namespace Food\OrderBundle\Service;
 
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
 class SqlConnectorService extends ContainerAware
@@ -12,7 +11,10 @@ class SqlConnectorService extends ContainerAware
     private $conn = null;
     public function init($server, $port, $database, $user, $password)
     {
-        if(strpos($_SERVER["SERVER_SOFTWARE"], 'Win')) {
+        if (
+            (isset($_SERVER["SERVER_SOFTWARE"]) && strpos($_SERVER["SERVER_SOFTWARE"], 'Win') !== false)
+            || (isset($_SERVER["OS"]) && strpos($_SERVER["OS"], 'Win') !== false)
+        ) {
             $this->isWin = true;
             $this->isNx = false;
             $this->_initWin($server, $port, $database, $user, $password);

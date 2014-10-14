@@ -395,4 +395,29 @@ class OrderRepository extends EntityRepository
         $stmt->execute();
         return $stmt->fetchAll();
     }
+
+    /**
+     * @return array
+     */
+    public function getCurrentNavOrders()
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb->leftJoin('o.place', 'p')
+            ->where('o.order_date >= :order_date')
+            ->andWhere('p.navision = :navision')
+            ->andWhere('o.order_status NOT IN (:order_status)')
+            ->setParameters(array(
+                'order_date' => new \DateTime('-1 day'),
+                'order_status' => array(
+                    OrderService::$status_completed,
+                    OrderService::$status_canceled,
+                    OrderService::$status_nav_problems,
+                ),
+                'navision' => 1,
+            ));
+
+        return $qb->getQuery()
+            ->getResult();
+    }
 }
