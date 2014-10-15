@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Controller\Decorators\Nordea;
 
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\DBAL\LockMode;
 
 trait ReturnDecorator
 {

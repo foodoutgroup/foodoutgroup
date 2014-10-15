@@ -5,7 +5,6 @@ namespace Food\OrderBundle\Controller\Decorators\Nordea;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Form;
 use Doctrine\ORM\OptimisticLockException;
-use Doctrine\DBAL\LockMode;
 use Food\OrderBundle\Service\Events\BanklinkEvent;
 
 trait SharedDecorator
@@ -59,6 +58,7 @@ trait SharedDecorator
                                         $em)
     {
         $orderService->setPaymentStatusWithoutSave(
+            $order,
             $orderService::$paymentStatusComplete,
             'Nordea banklink billed payment');
         $order->setLastUpdated(new \DateTime('now'));
@@ -69,12 +69,11 @@ trait SharedDecorator
 
             // $orderService->informPlace();
             $orderService->deactivateCoupon();
-            $cartService->clearCart($order->getPlace());
-            var_dump('success');
         } catch (OptimisticLockException $e) {
             // actually do nothing, it's okay. it's okay...
-            var_dump('failure');
         }
+
+        $cartService->clearCart($order->getPlace());
     }
 
     protected function logFailureAndFinish($orderService, $order)
