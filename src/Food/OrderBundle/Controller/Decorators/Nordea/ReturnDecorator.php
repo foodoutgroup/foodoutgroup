@@ -11,10 +11,13 @@ trait ReturnDecorator
         // services
         $orderService = $this->get('food.order');
         $cartService = $this->get('food.cart');
+        $em = $this->get('doctrine')->getManager();
 
-        // get order. we must use $orderService to find order
+        // get order with an optimistic lock
         $orderId = (int)$request->query->get('RETURN_REF', 0);
-        $order = $orderService->getOrderById($orderId);
+        $order = $em->getRepository('FoodOrderBundle:Order')
+                    ->find($orderId, LockMode::OPTIMISTIC);
+        $orderService->setOrder($order);
 
         // verify
         $verified = $this->verify($request, $orderService, $order);
@@ -25,12 +28,10 @@ trait ReturnDecorator
 
 
         if ($verified) {
-            // $view = 'FoodOrderBundle:Payments:' .
-            //         'nordea_banklink/success.html.twig';
             $view = 'FoodCartBundle:Default:payment_success.html.twig';
 
             // success
-            $this->logPaidAndFinish($orderService, $order, $cartService);
+            $this->logPaidAndFinish($orderService, $order, $cartService, $em);
         } else {
             $view = 'FoodOrderBundle:Payments:' .
                     'nordea_banklink/fail.html.twig';

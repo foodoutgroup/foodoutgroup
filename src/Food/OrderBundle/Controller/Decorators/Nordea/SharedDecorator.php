@@ -4,6 +4,8 @@ namespace Food\OrderBundle\Controller\Decorators\Nordea;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Form;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\DBAL\LockMode;
 use Food\OrderBundle\Service\Events\BanklinkEvent;
 
 trait SharedDecorator
@@ -51,21 +53,28 @@ trait SharedDecorator
                     ->find($id);
     }
 
-    protected function logPaidAndFinish($orderService, $order, $cartService)
+    protected function logPaidAndFinish($orderService,
+                                        $order,
+                                        $cartService,
+                                        $em)
     {
-        // is order already 'complete'? well then.. we have nothing to do here.
-        if ($order->getPaymentStatus() ==
-            $orderService::$paymentStatusComplete) return;
-
-        $orderService->setPaymentStatus(
+        $orderService->setPaymentStatusWithoutSave(
             $orderService::$paymentStatusComplete,
             'Nordea banklink billed payment');
-        $orderService->saveOrder();
-        $orderService->informPlace();
-        $orderService->deactivateCoupon();
+        $order->setLastUpdated(new \DateTime('now'));
 
-        // clear cart after success
-        $cartService->clearCart($order->getPlace());
+        // try saving with optimistic lock
+        try {
+            $em->flush();
+
+            // $orderService->informPlace();
+            $orderService->deactivateCoupon();
+            $cartService->clearCart($order->getPlace());
+            var_dump('success');
+        } catch (OptimisticLockException $e) {
+            // actually do nothing, it's okay. it's okay...
+            var_dump('failure');
+        }
     }
 
     protected function logFailureAndFinish($orderService, $order)

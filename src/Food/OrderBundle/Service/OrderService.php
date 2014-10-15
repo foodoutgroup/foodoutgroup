@@ -971,8 +971,12 @@ class OrderService extends ContainerAware
      */
     public function setPaymentStatus($status, $message=null)
     {
-        $order = $this->getOrder();
+        $this->setPaymentStatusWithoutSave($status, $message);
+        $this->saveOrder();
+    }
 
+    public function setPaymentStatusWithoutSave($order, $status, $message = null)
+    {
         if (!$this->isAllowedPaymentStatus($status)) {
             throw new \InvalidArgumentException('Status: "'.$status.'" is not a valid order payment status');
         }
@@ -988,13 +992,11 @@ class OrderService extends ContainerAware
             $order->setLastPaymentError($message);
         }
 
-        $this->logPayment(
+        $this->logPaymentWithoutSave(
             $order,
             'payement status change',
             sprintf('Status changed from "%s" to "%s" with message %s', $oldStatus, $status, $message)
         );
-
-        $this->saveOrder();
     }
 
     /**
@@ -1216,6 +1218,12 @@ class OrderService extends ContainerAware
      */
     public function logPayment($order=null, $event, $message=null, $debugData=null)
     {
+        $this->logPaymentWithoutSave($order, $event, $message, $debugData);
+        $this->getEm()->flush();
+    }
+
+    public function logPaymentWithoutSave($order=null, $event, $message=null, $debugData=null)
+    {
         $log = new PaymentLog();
 
         if (empty($order) && !($order instanceof Order)) {
@@ -1247,7 +1255,6 @@ class OrderService extends ContainerAware
         $log->setDebugData($debugData);
 
         $this->getEm()->persist($log);
-        $this->getEm()->flush();
     }
 
     public function getOrdersForDriver($driver)
