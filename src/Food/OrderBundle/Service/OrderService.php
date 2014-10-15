@@ -1472,6 +1472,9 @@ class OrderService extends ContainerAware
             }
 
             $nav->putTheOrderToTheNAV($orderRenew);
+
+            $this->container->get('doctrine')->getManager()->refresh($orderRenew);
+
             sleep(1);
             $returner = $nav->updatePricesNAV($orderRenew);
             sleep(1);

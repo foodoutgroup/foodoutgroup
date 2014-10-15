@@ -478,6 +478,7 @@ class NTLMSoapClient extends SoapClient {
         // @omg-hack
         // @todo Fix shita geeeda. Manau geriau kad WSDL'a susitvarkytu NVB
         $request = str_replace("ns1:", "", $request);
+        $request = str_replace("pInt>", "ns1:pInt>", $request);
 
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->validate);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $this->validate);

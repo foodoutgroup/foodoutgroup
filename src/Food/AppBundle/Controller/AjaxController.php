@@ -55,7 +55,7 @@ class AjaxController extends Controller
     {
         $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
         $locationInfo = $this->get('food.googlegis')->groupData($location, $address, $city);
-        var_dump($locationInfo);
+
         $respData = array(
             'success' => 0,
             'message' => $this->get('translator')->trans('index.address_not_found'),

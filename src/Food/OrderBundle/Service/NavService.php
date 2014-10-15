@@ -164,7 +164,9 @@ class NavService extends ContainerAware
             'Delivery Type' => '1',
             'Restaurant No_' => '64',
             'Order Date' => date("Y-m-d H:i:s"),
-            'Order Time' => '1754-01-01 '.date("H:i:s", strtotime('-3 hours')),
+            //'Order Time' => '1754-01-01 '.date("H:i:s", strtotime('-3 hours')),
+            //'Takeout Time' => date("Y-m-d H:i:s", (strtotime('+20 minutes') - (3600 * 3))),
+            'Order Time' => '1754-01-01 '.date("H:i:s"),
             'Takeout Time' => date("Y-m-d H:i:s", (strtotime('+20 minutes') - (3600 * 3))),
             'Directions' => 'Negaminti',
             'Discount Card No_' => '',
@@ -225,6 +227,7 @@ class NavService extends ContainerAware
             $street = trim(str_replace($errz[0], '', $target));
             $houseNr = (!empty($errz[2]) ? $errz[2] : '');
             $flatNr = (!empty($errz[3]) ? $errz[3] : '');
+            /*
             $orderRow = $this->container->get('doctrine')->getRepository('FoodAppBundle:Streets')->findOneBy(
                 array(
                     'name' => $street,
@@ -232,8 +235,8 @@ class NavService extends ContainerAware
                     'deliveryRegion' => $order->getAddressId()->getCity()
                 )
             );
-
-            $this->container->get('doctrine')->getManager()->refresh($orderRow);
+            */
+            //$this->container->get('doctrine')->getManager()->refresh($orderRow);
         }
 
         
@@ -254,7 +257,8 @@ class NavService extends ContainerAware
             'Chain' => $order->getPlace()->getChain(),
             'Name' => 'FO:'.$order->getUser()->getNameForOrder(),
             'Delivery Type' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? 1 : 4),
-            'Restaurant No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? '':  $order->getPlacePoint()->getInternalCode()),
+            //'Restaurant No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? '':  $order->getPlacePoint()->getInternalCode()),
+            'Restaurant No_' => $order->getPlacePoint()->getInternalCode(),
             'Order Date' => $orderDate->format("Y-m-d"),
             'Order Time' => '1754-01-01 '.$orderDate->format("H:i:s"),
             'Takeout Time' => $deliveryDate->format("Y-m-d H:i:s"),
@@ -265,7 +269,7 @@ class NavService extends ContainerAware
             'Error Description' => '',
             'Flat No_' => $flatNr, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $flatNr: ''),
             'Entrance Code' => '',
-            'Region Code' => $order->getPlacePoint()->getCity(), //$order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getDeliveryRegion() : ''),
+            'Region Code' => mb_strtoupper($order->getPlacePoint()->getCity()), //$order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getDeliveryRegion() : ''),
             'Delivery Status' => 12,
             'In Use By User' => '',
             'Loyalty Card No_' => '',
@@ -332,7 +336,7 @@ class NavService extends ContainerAware
         return $navId - $this->_orderIdModifier;
     }
 
-    private function getWSConnection()
+    public function getWSConnection()
     {
 
         $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
@@ -354,7 +358,7 @@ class NavService extends ContainerAware
     {
         $orderId = $this->getNavOrderId($order);
         $client = $this->getWSConnection();
-        $return = $client->UpdatePrices(array('pInt' =>(int)$orderId));
+        $return = $client->FoodOutUpdatePrices(array('pInt' =>(int)$orderId));
         return $return;
     }
 
@@ -367,7 +371,7 @@ class NavService extends ContainerAware
         $sqlSS = $this->initSqlConn()->query($query);
 
         $client = $this->getWSConnection();
-        $return = $client->ProcessOrder(array('pInt' =>(int)$orderId));
+        $return = $client->FoodOutProcessOrder(array('pInt' =>(int)$orderId));
         return $return;
     }
 
@@ -482,14 +486,14 @@ class NavService extends ContainerAware
         $requestXml.= "</Lines>\n";
 
         $requestXml = iconv('utf-8', 'cp1257', $requestXml);
-        ob_start();
+        //ob_start();
         $response = $this->getWSConnection()->FoodOutValidateOrder(
                 array(
                     'params' => $requestData,
                     'errors' => array()
                 )
         );
-        ob_end_clean();
+        //ob_end_clean();
 
         $prbDish = "";
         if ($response->return_value == 2) {
@@ -508,6 +512,11 @@ class NavService extends ContainerAware
                 'problem_dish' => $prbDish
             )
         );
+        echo "<pre>";
+        var_dump($returner);
+        var_dump($requestData);
+        var_dump($response);
+        echo "</pre>";
         return $returner;
     }
 
