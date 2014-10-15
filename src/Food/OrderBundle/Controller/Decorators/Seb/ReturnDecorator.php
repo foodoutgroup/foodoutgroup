@@ -58,7 +58,8 @@ trait ReturnDecorator
                         'seb_banklink/waiting.html.twig';
 
                 // processing
-                $this->logProcessingAndFinish($orderService,
+                $this->logProcessingAndFinish('SEB banklink payment started',
+                                              $orderService,
                                               $order,
                                               $cartService);
             } elseif (SebService::FAILURE_SERVICE == $service) {
@@ -67,15 +68,18 @@ trait ReturnDecorator
                         'seb_banklink/failure.html.twig';
 
                 // failure
-                $this->logFailureAndFinish($orderService, $order);
+                $this->logFailureAndFinish('SEB banklink canceled payment',
+                                           $orderService,
+                                           $order);
             } elseif (Seb::SUCCESS_SERVICE == $service) {
                 // template
-                // $view = 'FoodOrderBundle:Payments:' .
-                //         'seb_banklink/success.html.twig';
                 $view = 'FoodCartBundle:Default:payment_success.html.twig';
 
                 // success
-                $this->logPaidAndFinish($orderService, $order, $cartService);
+                $this->logPaidAndFinish('SEB banklink billed payment',
+                                        $orderService,
+                                        $order,
+                                        $cartService);
             }
         }
 

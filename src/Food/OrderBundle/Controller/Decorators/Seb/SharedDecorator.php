@@ -35,54 +35,6 @@ trait SharedDecorator
         return str_replace('http://', 'https://', $value);
     }
 
-    protected function logPaidAndFinish($orderService, $order, $cartService)
-    {
-        // is order already 'complete'? well then.. we have nothing to do here.
-        if ($order->getPaymentStatus() ==
-            $orderService::$paymentStatusComplete) return;
-
-        $orderService->setPaymentStatus(
-            $orderService::$paymentStatusComplete,
-            'SEB banklink billed payment');
-        $orderService->saveOrder();
-        $orderService->informPlace();
-
-        // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
-        $orderService->deactivateCoupon();
-
-        // clear cart after success
-        $cartService->clearCart($order->getPlace());
-    }
-
-    protected function logProcessingAndFinish($orderService,
-                                              $order,
-                                              $cartService)
-    {
-        $orderService->logPayment(
-            $order,
-            'SEB banklink payment started',
-            'SEB banklink payment accepted. Waiting for funds to be billed',
-            $order
-        );
-
-        // clear cart after success
-        $cartService->clearCart($order->getPlace());
-    }
-
-    protected function logFailureAndFinish($orderService, $order)
-    {
-        $orderService->logPayment(
-            $order,
-            'SEB banklink payment canceled',
-            'SEB banklink canceled in SEB',
-            $order
-        );
-
-        $orderService->setPaymentStatus(
-            $orderService::$paymentStatusCanceled,
-            'User canceled payment in SEB banklink');
-    }
-
     protected function findOrder($id)
     {
         return $this->container

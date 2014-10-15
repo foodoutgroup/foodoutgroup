@@ -24,23 +24,4 @@ trait SharedDecorator
                                   [],
                                   true);
     }
-
-    protected function logPaidAndFinish($orderService, $order, $cartService)
-    {
-        // is order already 'complete'? well then.. we have nothing to do here.
-        if ($order->getPaymentStatus() ==
-            $orderService::$paymentStatusComplete) return;
-
-        $orderService->setPaymentStatus(
-            $orderService::$paymentStatusComplete,
-            'Swedbank Credit Card Gateway billed payment');
-        $orderService->saveOrder();
-        $orderService->informPlace();
-
-        // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
-        $orderService->deactivateCoupon();
-
-        // clear cart after success
-        $cartService->clearCart($order->getPlace());
-    }
 }

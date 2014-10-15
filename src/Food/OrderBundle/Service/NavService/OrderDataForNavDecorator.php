@@ -8,7 +8,6 @@ use Pirminis\Maybe;
 
 trait OrderDataForNavDecorator
 {
-    // $connectionInfo = array( "Database"=>"prototipas6", "UID"=>"nas", "PWD"=>"c1l1j@");
     public function getOrderDataForNav(Order $order)
     {
         // services. we only need 'misc' service for converting totals to euros
@@ -22,7 +21,7 @@ trait OrderDataForNavDecorator
         $maybePlace = $maybeOrder->getPlace();
 
         // values for convenience
-        $vat = (double) (1.0 + $maybeOrder->getVat()->val(0.0) / 100.0);
+        $vat = $maybeOrder->getVat()->val(0.0);
         $total = $maybeOrder->getTotal()->val(0.0);
         $discountTotal = $maybeOrder->getDiscountSum()->val(0.0);
         $deliveryTotal = $maybePlace->getDeliveryPrice()->val(0.0);
@@ -57,7 +56,7 @@ trait OrderDataForNavDecorator
         $data->paymentType = $maybeOrder->getPaymentMethod()->val();
         $data->foodAmount = (double) $foodTotal;
         $data->foodAmountEUR = (double) $misc->getEuro($foodTotal);
-        $data->foodVAT = (double) ($foodTotal - $foodTotal / $vat);
+        $data->foodVAT = (double) $vat;
         $data->drinksAmount = 0.0;
         $data->drinksAmountEUR = 0.0;
         $data->drinksVAT = 0.0;
@@ -66,7 +65,7 @@ trait OrderDataForNavDecorator
         $data->alcoholVAT = 0.0;
         $data->deliveryAmount = (double) $deliveryTotal;
         $data->deliveryAmountEUR = (double) $misc->getEuro($deliveryTotal);
-        $data->deliveryVAT = (double) ($deliveryTotal - $deliveryTotal / $vat);
+        $data->deliveryVAT = (double) $vat;
         $data->giftCardAmount = 0.0;
         $data->giftCardAmountEUR = 0.0;
         $data->discountType = '';
@@ -81,11 +80,8 @@ trait OrderDataForNavDecorator
 
     public function insertOrder(OrderDataForNav $data)
     {
-        error_reporting(E_ALL);
-        ini_set('display_errors', true);
         $query = $this->constructInsertOrderQuery($data);
-        $result = $this->initTestSqlConn()->query($query);
-        var_dump($result);
+        return $this->initTestSqlConn()->query($query);
     }
 
     protected function constructInsertOrderQuery(OrderDataForNav $data)

@@ -25,18 +25,21 @@ trait ReturnDecorator
 
 
         if ($verified) {
-            // $view = 'FoodOrderBundle:Payments:' .
-            //         'nordea_banklink/success.html.twig';
             $view = 'FoodCartBundle:Default:payment_success.html.twig';
 
             // success
-            $this->logPaidAndFinish($orderService, $order, $cartService);
+            $this->logPaidAndFinish('Nordea banklink billed payment',
+                                    $orderService,
+                                    $order,
+                                    $cartService);
         } else {
             $view = 'FoodOrderBundle:Payments:' .
                     'nordea_banklink/fail.html.twig';
 
             // fail
-            $this->logFailureAndFinish($orderService, $order);
+            $this->logFailureAndFinish('Nordea banklink failed payment',
+                                       $orderService,
+                                       $order);
         }
 
         $data = ['order' => $order];

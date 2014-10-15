@@ -36,7 +36,11 @@ trait ReturnDecorator
         if ($gateway->is_successful_payment('swedbank', $request)) {
             $view = 'FoodCartBundle:Default:payment_success.html.twig';
 
-            $this->logPaidAndFinish($orderService, $order, $cartService);
+            $this->logPaidAndFinish(
+                'Swedbank Credit Card Gateway billed payment',
+                $orderService,
+                $order,
+                $cartService);
 
             return $this->render($view, ['order' => $order]);
         }

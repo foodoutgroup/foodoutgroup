@@ -42,10 +42,10 @@ trait ReturnDecorator
             ($isEvent &&
              $gateway->is_event_authorized('swedbank', $request))
         ) {
-            $this->logPaidAndFinish($orderService,
+            $this->logPaidAndFinish('Swedbank Banklink Gateway billed payment',
+                                    $orderService,
                                     $order,
-                                    $cartService,
-                                    $isEvent);
+                                    $cartService);
 
             if ($isEvent) {
                 return new Response('<Response>OK</Response>');
@@ -58,7 +58,11 @@ trait ReturnDecorator
                   ($isEvent &&
                    $gateway->event_requires_investigation('swedbank', $request))
         ) {
-            $this->logProcessingAndFinish($orderService, $order, $cartService);
+            $this->logProcessingAndFinish(
+                'Swedbank Banklink Gateway payment started',
+                $orderService,
+                $order,
+                $cartService);
 
             if ($isEvent) {
                 return new Response('<Response>OK</Response>');
@@ -72,7 +76,10 @@ trait ReturnDecorator
                   ($isEvent &&
                    $gateway->is_event_cancelled('swedbank', $request))
         ) {
-            $this->logFailureAndFinish($orderService, $order);
+            $this->logFailureAndFinish(
+                'Swedbank Banklink Gateway payment canceled',
+                $orderService,
+                $order);
 
             if ($isEvent) {
                 return new Response('<Response>OK</Response>');

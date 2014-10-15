@@ -51,37 +51,6 @@ trait SharedDecorator
                     ->find($id);
     }
 
-    protected function logPaidAndFinish($orderService, $order, $cartService)
-    {
-        // is order already 'complete'? well then.. we have nothing to do here.
-        if ($order->getPaymentStatus() ==
-            $orderService::$paymentStatusComplete) return;
-
-        $orderService->setPaymentStatus(
-            $orderService::$paymentStatusComplete,
-            'Nordea banklink billed payment');
-        $orderService->saveOrder();
-        $orderService->informPlace();
-        $orderService->deactivateCoupon();
-
-        // clear cart after success
-        $cartService->clearCart($order->getPlace());
-    }
-
-    protected function logFailureAndFinish($orderService, $order)
-    {
-        $orderService->logPayment(
-            $order,
-            'Nordea banklink payment failed',
-            'Nordea banklink failed in Nordea',
-            $order
-        );
-
-        $orderService->setPaymentStatus(
-            $orderService::$paymentStatusCanceled,
-            'User failed payment in Nordea banklink');
-    }
-
     protected function getOptions($order, $rcvId)
     {
         return ['stamp' => $order->getId(),
