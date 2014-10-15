@@ -109,8 +109,7 @@ trait OrderDataForNavDecorator
 
     protected function getOrderFieldNames()
     {
-        return ['timestamp',
-                'Order ID',
+        return ['Order ID',
                 'Order Date',
                 'Order Time',
                 'Delivery Date',
@@ -151,8 +150,7 @@ trait OrderDataForNavDecorator
 
     protected function getOrderValues(OrderDataForNav $data)
     {
-        $result = [(string)time(),
-                   $data->id,
+        $result = [$data->id,
                    $data->date,
                    $data->time,
                    $data->deliveryDate,
