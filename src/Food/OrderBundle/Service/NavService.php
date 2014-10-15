@@ -98,8 +98,8 @@ class NavService extends ContainerAware
             '213.190.40.38',
             5566,
             'prototipas6',
-            'nas',
-            'c1l1j@'
+            'fo_order',
+            'peH=waGe?zoOs69'
         );
         return $sqlSS;
     }
