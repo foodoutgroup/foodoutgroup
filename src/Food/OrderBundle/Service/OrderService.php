@@ -971,7 +971,8 @@ class OrderService extends ContainerAware
      */
     public function setPaymentStatus($status, $message=null)
     {
-        $this->setPaymentStatusWithoutSave($status, $message);
+        $order = $this->getOrder();
+        $this->setPaymentStatusWithoutSave($order, $status, $message);
         $this->saveOrder();
     }
 
