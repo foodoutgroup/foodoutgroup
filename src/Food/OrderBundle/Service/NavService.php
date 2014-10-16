@@ -24,17 +24,21 @@ class NavService extends ContainerAware
     private $conn = null;
 
 
-    private $headerTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Header]';
+    //private $headerTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Header]';
 
-    private $lineTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Lines]';
+    //private $lineTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Lines]';
 
-    private $orderTable = '[prototipas6].[dbo].[PROTOTIPAS$FoodOut Order]';
+    //private $orderTable = '[prototipas6].[dbo].[PROTOTIPAS$FoodOut Order]';
 
-    private $messagesTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web Order Messages]';
+    //private $messagesTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web Order Messages]';
 
-    //private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
+    private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
 
-    //private $lineTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Lines]';
+    private $lineTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Lines]';
+
+    private $orderTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$FoodOut Order]';
+
+    private $messagesTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web Order Messages]';
 
 
     /**
@@ -108,7 +112,7 @@ class NavService extends ContainerAware
         $sqlSS->init(
             '213.190.40.38',
             5566,
-            'prototipas6', //'skamb_centras',
+            'skamb_centras',
             'fo_order',
             'peH=waGe?zoOs69'
         );
