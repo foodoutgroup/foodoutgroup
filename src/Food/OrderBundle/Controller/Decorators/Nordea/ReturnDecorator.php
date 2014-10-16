@@ -9,6 +9,8 @@ trait ReturnDecorator
 {
     public function handleReturn(Request $request)
     {
+        error_reporting(E_ALL);
+        ini_set('display_errors', true);
         // services
         $orderService = $this->get('food.order');
         $cartService = $this->get('food.cart');
