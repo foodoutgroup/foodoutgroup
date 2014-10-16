@@ -9,26 +9,28 @@ trait ReturnDecorator
 {
     public function handleReturn(Request $request)
     {
-        error_reporting(E_ALL);
-        ini_set('display_errors', true);
         // services
         $orderService = $this->get('food.order');
         $cartService = $this->get('food.cart');
         $navService = $this->get('food.nav');
         $em = $this->get('doctrine')->getManager();
 
+        // template
+        $view = 'FoodOrderBundle:Payments:nordea_banklink/fail.html.twig';
+
+        // order id
         $orderId = (int)$request->query->get('RETURN_REF', 0);
-        $order = $em->getRepository('FoodOrderBundle:Order')
-                    ->find($orderId, LockMode::OPTIMISTIC);
-        $orderService->setOrder($order);
+
+        try {
+            $order = $em->getRepository('FoodOrderBundle:Order')
+                        ->find($orderId, LockMode::OPTIMISTIC);
+            $orderService->setOrder($order);
+        } catch (\Exception $e) {
+            return [$view, []];
+        }
 
         // verify
         $verified = $this->verify($request, $orderService, $order);
-
-        // template
-        $view = 'FoodOrderBundle:Payments:' .
-                'nordea_banklink/something_wrong.html.twig';
-
 
         if ($verified) {
             $view = 'FoodCartBundle:Default:payment_success.html.twig';
@@ -41,9 +43,6 @@ trait ReturnDecorator
                                     $em,
                                     $navService);
         } else {
-            $view = 'FoodOrderBundle:Payments:' .
-                    'nordea_banklink/fail.html.twig';
-
             // fail
             $this->logFailureAndFinish('Nordea banklink failed payment',
                                        $orderService,

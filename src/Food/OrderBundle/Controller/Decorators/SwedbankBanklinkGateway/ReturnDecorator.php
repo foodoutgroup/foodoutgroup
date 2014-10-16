@@ -17,8 +17,9 @@ trait ReturnDecorator
         $navService = $this->get('food.nav');
         $em = $this->get('doctrine')->getManager();
 
+        // default template
         $view = 'FoodOrderBundle:Payments:' .
-                'swedbank_gateway/something_wrong.html.twig';
+                'swedbank_gateway/order_not_found.html.twig';
 
         // get order
         $transactionId = $gateway->order_id('swedbank', $request);
@@ -28,13 +29,12 @@ trait ReturnDecorator
         // extract actual order id. say thanks to swedbank requirements
         $transactionIdSplit = explode('_', $transactionId);
         $orderId = !empty($transactionIdSplit[0]) ? $transactionIdSplit[0] : 0;
-        $order = $em->getRepository('FoodOrderBundle:Order')
-                    ->find($orderId, LockMode::OPTIMISTIC);
-        $orderService->setOrder($order);
 
-        if (!$order) {
-            $view = 'FoodOrderBundle:Payments:' .
-                    'swedbank_gateway/order_not_found.html.twig';
+        try {
+            $order = $em->getRepository('FoodOrderBundle:Order')
+                        ->find($orderId, LockMode::OPTIMISTIC);
+            $orderService->setOrder($order);
+        } catch (\Exception $e) {
             return $this->render($view);
         }
 
@@ -110,6 +110,9 @@ trait ReturnDecorator
             $view = 'FoodOrderBundle:Payments:' .
                     'swedbank_gateway/communication_error.html.twig';
             return $this->render($view, ['order' => $order]);
+        } else {
+            $view = 'FoodOrderBundle:Payments:' .
+                    'swedbank_gateway/something_wrong.html.twig';
         }
 
         return $this->render($view, ['order' => $order]);

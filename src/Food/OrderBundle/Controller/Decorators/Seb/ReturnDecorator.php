@@ -28,13 +28,16 @@ trait ReturnDecorator
         $verified = false;
 
         // template
-        $view = 'FoodOrderBundle:Payments:' .
-                'seb_banklink/something_wrong.html.twig';
+        $view = 'FoodOrderBundle:Payments:seb_banklink/failure.html.twig';
 
         // order
-        $order = $em->getRepository('FoodOrderBundle:Order')
-                    ->find($orderId, LockMode::OPTIMISTIC);
-        $orderService->setOrder($order);
+        try {
+            $order = $em->getRepository('FoodOrderBundle:Order')
+                        ->find($orderId, LockMode::OPTIMISTIC);
+            $orderService->setOrder($order);
+        } catch (\Exception $e) {
+            return [$view, []];
+        }
 
         // banklink log
         $this->logBanklink($dispatcher, $request, $order);
@@ -63,10 +66,6 @@ trait ReturnDecorator
                                               $order,
                                               $cartService);
             } elseif (SebService::FAILURE_SERVICE == $service) {
-                // template
-                $view = 'FoodOrderBundle:Payments:' .
-                        'seb_banklink/failure.html.twig';
-
                 // failure
                 $this->logFailureAndFinish('SEB banklink canceled payment',
                                            $orderService,
