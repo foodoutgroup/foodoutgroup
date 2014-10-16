@@ -38,7 +38,7 @@ trait ReturnDecorator
                                     $order,
                                     $cartService,
                                     $em,
-                                    $nav);
+                                    $navService);
         } else {
             $view = 'FoodOrderBundle:Payments:' .
                     'nordea_banklink/fail.html.twig';
