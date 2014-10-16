@@ -37,8 +37,7 @@ class Nordea
      */
     public function getBankUrl()
     {
-        // return 'https://netbank.nordea.com/pnbepay/epayn.jsp';
-        return 'https://netbank.nordea.com/pnbepaytest/epayn.jsp';
+        return 'https://netbank.nordea.com/pnbepay/epayn.jsp';
     }
 
     /**

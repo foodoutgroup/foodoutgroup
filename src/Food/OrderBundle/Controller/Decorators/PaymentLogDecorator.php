@@ -13,8 +13,6 @@ trait PaymentLogDecorator
                                         $em,
                                         $navService)
     {
-        error_reporting(E_ALL);
-        ini_set('display_errors', true);
         $orderService->setPaymentStatusWithoutSave(
             $order,
             $orderService::$paymentStatusComplete,
@@ -26,15 +24,13 @@ trait PaymentLogDecorator
             $em->flush();
 
             // inform stuff
-            // $orderService->informPlace();
+            $orderService->informPlace();
             $orderService->deactivateCoupon();
 
             // insert order into nav
             $navService->insertOrder($navService->getOrderDataForNav($order));
-            var_dump('success');
         } catch (OptimisticLockException $e) {
             // actually do nothing
-            var_dump('failure');
         }
 
         $cartService->clearCart($order->getPlace());

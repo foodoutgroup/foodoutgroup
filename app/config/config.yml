@@ -28,14 +28,12 @@ parameters:
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
-    # order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt]
-    order.notify_emails: [pirminis@gmail.com]
+    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt]
     order.city_coordinators:
         vilnius: []
         kaunas: [renata@foodout.lt]
         klaipeda: []
-    # order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
-    order.accept_notify_emails: [pirminis@gmail.com]
+    order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
     domain: "foodout.lt"
@@ -79,10 +77,8 @@ parameters:
     seb.banklink.private_key: "/home/skanu.lt/shared/banklinks/seb/private.key"
     seb.banklink.bank_key: "/home/skanu.lt/shared/banklinks/seb/bank.key"
     # nordea banklink
-    # nordea.banklink.rcv_id: 303134580
-    nordea.banklink.rcv_id: 12345678LT
-    # nordea.banklink.mac: C5IUBtC5eriCYGbIYhhIV4v830k14uSn
-    nordea.banklink.mac: LEHTI
+    nordea.banklink.rcv_id: 303134580
+    nordea.banklink.mac: C5IUBtC5eriCYGbIYhhIV4v830k14uSn
 
 framework:
     #esi:             ~
