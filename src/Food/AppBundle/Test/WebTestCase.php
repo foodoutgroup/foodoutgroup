@@ -2,13 +2,13 @@
 
 namespace Food\AppBundle\Test;
 
-use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as SymfonyWebTestCase;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
+use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as SymfonyWebTestCase;
 
 class WebTestCase extends SymfonyWebTestCase
 {
@@ -33,6 +33,10 @@ class WebTestCase extends SymfonyWebTestCase
         return $this->getContainer()->get('doctrine');
     }
 
+    /**
+     * @param string $placeName
+     * @return Place
+     */
     protected function getPlace($placeName)
     {
         $om = $this->getDoctrine()->getManager();
@@ -55,6 +59,10 @@ class WebTestCase extends SymfonyWebTestCase
         return $place;
     }
 
+    /**
+     * @param Place $place
+     * @return PlacePoint
+     */
     protected function getPlacePoint($place)
     {
         $om = $this->getDoctrine()->getManager();
@@ -92,6 +100,12 @@ class WebTestCase extends SymfonyWebTestCase
         return $placePoint;
     }
 
+    /**
+     * @param Place $place
+     * @param PlacePoint $placePoint
+     * @param string $status
+     * @return Order
+     */
     protected function getOrder($place, $placePoint, $status)
     {
         $om = $this->getDoctrine()->getManager();

@@ -202,6 +202,13 @@ class Place extends Uploadable implements Translatable
     private $deliveryOptions;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="priority", type="smallint", options={"default":0})
+     */
+    private $priority;
+
+    /**
      * @ORM\OneToMany(targetEntity="FoodCategory", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
      *
      * @var ArrayCollection
@@ -311,6 +318,7 @@ class Place extends Uploadable implements Translatable
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->photos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->deliveryOptions = self::OPT_DELIVERY_AND_PICKUP;
+        $this->priority = 0;
     }
 
     /**
@@ -1373,5 +1381,28 @@ class Place extends Uploadable implements Translatable
     public function getNavision()
     {
         return $this->navision;
+    }
+
+    /**
+     * Set priority
+     *
+     * @param integer $priority
+     * @return Place
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
+    
+        return $this;
+    }
+
+    /**
+     * Get priority
+     *
+     * @return integer 
+     */
+    public function getPriority()
+    {
+        return $this->priority;
     }
 }

@@ -99,6 +99,8 @@ class DishAdmin extends FoodAdmin
 
         $formMapper
             ->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
+            ->add('timeFrom', null, array('label' => 'admin.dish.time_from', 'required' => false,))
+            ->add('timeTo', null, array('label' => 'admin.dish.time_to', 'required' => false,))
             ->add('file', 'file', $options)
             ->add('sizes', 'sonata_type_collection', array(
                     'required' => false,

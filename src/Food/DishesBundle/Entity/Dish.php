@@ -116,6 +116,20 @@ class Dish extends Uploadable implements Translatable
     private $categories;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="time_from", type="string", length=5, nullable=true)
+     */
+    private $timeFrom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="time_to", type="string", length=5, nullable=true)
+     */
+    private $timeTo;
+
+    /**
      * @ORM\ManyToMany(targetEntity="DishOption", inversedBy="dishes")
      * @ORM\JoinTable(name="dish_option_map")
      * @ORM\OrderBy({"groupName" = "DESC", "singleSelect" = "DESC"})
@@ -711,5 +725,51 @@ class Dish extends Uploadable implements Translatable
         }
 
         return false;
+    }
+
+    /**
+     * Set timeFrom
+     *
+     * @param string $timeFrom
+     * @return Dish
+     */
+    public function setTimeFrom($timeFrom)
+    {
+        $this->timeFrom = $timeFrom;
+    
+        return $this;
+    }
+
+    /**
+     * Get timeFrom
+     *
+     * @return string 
+     */
+    public function getTimeFrom()
+    {
+        return $this->timeFrom;
+    }
+
+    /**
+     * Set timeTo
+     *
+     * @param string $timeTo
+     * @return Dish
+     */
+    public function setTimeTo($timeTo)
+    {
+        $this->timeTo = $timeTo;
+    
+        return $this;
+    }
+
+    /**
+     * Get timeTo
+     *
+     * @return string 
+     */
+    public function getTimeTo()
+    {
+        return $this->timeTo;
     }
 }

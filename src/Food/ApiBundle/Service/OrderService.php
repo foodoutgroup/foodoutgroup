@@ -40,7 +40,7 @@ class OrderService extends ContainerAware
         return $returner;
     }
 
-    public function createOrder(Request $requestOrig, JsonRequest $request)
+    public function createOrder(Request $requestOrig, JsonRequest $request, $isThisPre = false)
     {
         /**
          * {
@@ -223,6 +223,11 @@ class OrderService extends ContainerAware
             );
             $os->getOrder()->setAddressId($address);
         }
+        if ($isThisPre) {
+            $os->getOrder()->setOrderStatus(
+                \Food\OrderBundle\Service\OrderService::$status_pre
+            );
+        }
         $os->saveOrder();
         $billingUrl = $os->billOrder();
         $order = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->findOneBy(
@@ -251,6 +256,11 @@ class OrderService extends ContainerAware
     {
         $message = $this->getOrderStatusMessage($order);
 
+        $title = $this->convertOrderStatus($order->getOrderStatus());
+        if ($title == "pre") {
+            $title = "waiting_user_confirmation";
+        }
+
         $returner = array(
             'order_id' => $order->getId(),
             'total_price' => array(
@@ -258,7 +268,7 @@ class OrderService extends ContainerAware
                 'currency' => 'LTL'
             ),
             'state' => array(
-                'title' => $this->convertOrderStatus($order->getOrderStatus()),
+                'title' => $title,
                 'info_number' => '+'.$order->getPlacePoint()->getPhone(),
                 'message' => $message
             ),
@@ -384,6 +394,7 @@ class OrderService extends ContainerAware
             FO::$status_failed => 'failed',
             FO::$status_finished => 'prepared',
             FO::$status_canceled => 'canceled',
+            FO::$status_pre => 'pre'
         );
 
         if (!isset($statusMap[$status])) {

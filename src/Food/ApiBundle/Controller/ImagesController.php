@@ -23,9 +23,31 @@ class ImagesController extends Controller
             }
 
             if (!file_exists($webPath.$filename)) {
-                throw new \InvalidArgumentException(
-                    sprintf('Image "%s" could not be found. No resize will take place', $filename)
-                );
+                // TODO Try the possible thumbs
+                $pathInfo = pathinfo($filename);
+                $throwEx = true;
+
+                if (isset($pathInfo['basename']) && !empty ($pathInfo['basename'])) {
+                    $thumbTypes = array(
+                        'type4', 'type3', 'type2', 'type1',
+                    );
+
+                    foreach ($thumbTypes as $thumbType) {
+                        $thumbPath = $pathInfo['dirname'].'/thumb_'.$thumbType.'_'.$pathInfo['basename'];
+                        if (file_exists($webPath.$thumbPath)) {
+                            $filename = $thumbPath;
+                            $throwEx = false;
+
+                            break;
+                        }
+                    }
+                }
+
+                if ($throwEx) {
+                    throw new \InvalidArgumentException(
+                        sprintf('Image "%s" could not be found. No resize will take place', $filename)
+                    );
+                }
             }
 
             // Jei jau turime sukarpyta - tikrinam ar jaunesnis nei savaites. Jei jaunas - atiduodam jau kirpta

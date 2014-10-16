@@ -10,13 +10,15 @@ trait ReturnDecorator
     protected function handleReturn(Request $request)
     {
         // a hack
-        $request->request->replace($request->query->all());
+        $request->request->add($request->query->all());
 
         // services
         $orderService = $this->container->get('food.order');
         $seb = $this->container->get('food.seb_banklink');
         $dispatcher = $this->container->get('event_dispatcher');
         $cartService = $this->get('food.cart');
+        $navService = $this->get('food.nav');
+        $em = $this->get('doctrine')->getManager();
 
         // preparation
         $orderId = max(0, (int)$request->get('VK_REF'));
@@ -35,16 +37,11 @@ trait ReturnDecorator
         $this->logBanklink($dispatcher, $request, $order);
 
         // verify
-        $data = [];
+        $data = $request->request->all();
 
         try {
-            foreach ($request->request->all() as $child) {
-                $data[$child->getName()] = $child->getData();
-            }
-
             // generate encoded MAC
-            $myMac = $seb->sign($seb->mac($data, $service),
-                              $seb->getPrivateKey());
+            $myMac = $seb->mac($data, $service);
 
             // finally update form
             $verified = $seb->verify($myMac, $mac, $seb->getBankKey());
@@ -79,7 +76,9 @@ trait ReturnDecorator
                 $this->logPaidAndFinish('SEB banklink billed payment',
                                         $orderService,
                                         $order,
-                                        $cartService);
+                                        $cartService,
+                                        $em,
+                                        $navService);
             }
         }
 

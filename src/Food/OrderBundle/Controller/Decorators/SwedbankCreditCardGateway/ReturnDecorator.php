@@ -12,6 +12,8 @@ trait ReturnDecorator
         $orderService = $this->get('food.order');
         $cartService = $this->get('food.cart');
         $gateway = $this->get('pirminis_credit_card_gateway');
+        $navService = $this->get('food.nav');
+        $em = $this->get('doctrine')->getManager();
 
         $view = 'FoodOrderBundle:Payments:' .
                 'swedbank_gateway/something_wrong.html.twig';
@@ -40,7 +42,9 @@ trait ReturnDecorator
                 'Swedbank Credit Card Gateway billed payment',
                 $orderService,
                 $order,
-                $cartService);
+                $cartService,
+                $em,
+                $navService);
 
             return $this->render($view, ['order' => $order]);
         }

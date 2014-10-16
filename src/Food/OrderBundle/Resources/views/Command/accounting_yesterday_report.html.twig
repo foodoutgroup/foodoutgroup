@@ -70,7 +70,7 @@
                     <td class="sum">{{ order.total }}</td>
                 </tr>
                 {% set totalSum = totalSum + order.total %}
-                {% if order.paymentMethod == 'paysera' %}
+                {% if order.paymentMethod != 'local' and order.paymentMethod != 'local.card' %}
                     {% set totalSumBanklink = totalSumBanklink + order.total %}
                 {% else %}
                     {% set totalSumDriver = totalSumDriver + order.total %}
@@ -125,7 +125,7 @@
                     <td class="sum">{{ order.total }}</td>
                 </tr>
                 {% set totalSum = totalSum + order.total %}
-                {% if order.paymentMethod == 'paysera' %}
+                {% if order.paymentMethod != 'local' and order.paymentMethod != 'local.card' %}
                     {% set totalSumBanklink = totalSumBanklink + order.total %}
                 {% else %}
                     {% set totalSumDriver = totalSumDriver + order.total %}
@@ -176,7 +176,7 @@
                     <td class="sum">{{ order.total }}</td>
                 </tr>
                 {% set totalSum = totalSum + order.total %}
-                {% if order.paymentMethod == 'paysera' %}
+                {% if order.paymentMethod != 'local' and order.paymentMethod != 'local.card' %}
                     {% set totalSumBanklink = totalSumBanklink + order.total %}
                 {% else %}
                     {% set totalSumDriver = totalSumDriver + order.total %}

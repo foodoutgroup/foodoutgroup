@@ -2,29 +2,40 @@
 
 namespace Food\OrderBundle\Controller\Decorators;
 
+use Doctrine\ORM\OptimisticLockException;
+
 trait PaymentLogDecorator
 {
     protected function logPaidAndFinish($message,
                                         $orderService,
                                         $order,
-                                        $cartService)
+                                        $cartService,
+                                        $em,
+                                        $navService)
     {
-        // is order already 'complete'? well then.. we have nothing to do here.
-        if ($order->getPaymentStatus() ==
-            $orderService::$paymentStatusComplete) return;
+        $orderService->setPaymentStatusWithoutSave(
+            $order,
+            $orderService::$paymentStatusComplete,
+            $message);
+        $order->setLastUpdated(new \DateTime('now'));
 
-        $orderService->setPaymentStatus($orderService::$paymentStatusComplete,
-                                        $message);
-        $orderService->saveOrder();
-        $orderService->informPlace();
-        $orderService->deactivateCoupon();
+        // try saving order with optimistic lock on
+        try {
+            $em->flush();
 
-        // clear cart after success
+            // inform stuff
+            $orderService->informPlace();
+            $orderService->deactivateCoupon();
+
+            // insert order into nav
+            $navService->insertOrder($navService->getOrderDataForNav($order));
+        } catch (OptimisticLockException $e) {
+            // actually do nothing
+        }
+
         $cartService->clearCart($order->getPlace());
-
-        // insert order into nav
-        $nav->insertOrder($nav->getOrderDataForNav($order));
     }
+
 
     protected function logFailureAndFinish($message, $orderService, $order)
     {

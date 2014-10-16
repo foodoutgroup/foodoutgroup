@@ -3,7 +3,9 @@
 namespace Food\OrderBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\QueryBuilder;
 use Food\CartBundle\Service\CartService;
+use Food\DishesBundle\Entity\Dish;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Coupon;
@@ -17,6 +19,7 @@ use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
 
 class OrderService extends ContainerAware
@@ -43,6 +46,7 @@ class OrderService extends ContainerAware
     public static $status_finished = "finished";
     public static $status_canceled = "canceled";
 
+    public static $status_pre = "pre";
     public static $status_nav_problems = "nav_problems";
 
     // TODO o gal sita mapa i configa? What do You think?
@@ -351,6 +355,13 @@ class OrderService extends ContainerAware
 
             // Notify Dispatchers
             $this->notifyOrderAccept();
+
+            // Put for logistics
+            if ($this->container->getParameter('logistics.send_to_external') == true
+                && $this->getOrder()->getDeliveryType() == 'deliver'
+                && $this->getOrder()->getPlacePointSelfDelivery() == false) {
+                $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
+            }
             // Kitais atvejais tik keiciam statusa, nes gal taip reikia
         } else {
             $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
@@ -518,11 +529,13 @@ class OrderService extends ContainerAware
             // TODO upload accounting
         }
         $ml = $this->container->get('food.mailer');
+        $slugUtil = $this->container->get('food.dishes.utils.slug');
+        $slugUtil->setLocale($this->getOrder()->getLocale());
 
         $variables = array(
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
             'miestas' => $this->getOrder()->getPlacePoint()->getCity(),
-            'maisto_review_url' => 'http://www.foodout.lt/lt/'.$this->container->get('food.dishes.utils.slug')->getSlugByItem(
+            'maisto_review_url' => 'http://www.foodout.lt/lt/'.$slugUtil->getSlugByItem(
                     $this->getOrder()->getPlace()->getId(),
                     'place'
             ).'/#detailed-restaurant-review'
@@ -588,6 +601,11 @@ class OrderService extends ContainerAware
     public function statusDelayed($source=null, $statusMessage=null)
     {
         $this->chageOrderStatus(self::$status_delayed, $source, $statusMessage);
+
+        if ($this->container->getParameter('logistics.send_to_external') == true
+            && $this->getOrder()->getDeliveryType() == 'deliver') {
+            $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
+        }
         return $this;
     }
 
@@ -793,7 +811,7 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param null $localBiller
+     * @param null|LocalBiller $localBiller
      */
     public function setLocalBiller($localBiller)
     {
@@ -812,7 +830,7 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param null $payseraBiller
+     * @param null|PaySera $payseraBiller
      */
     public function setPayseraBiller($payseraBiller)
     {
@@ -954,7 +972,12 @@ class OrderService extends ContainerAware
     public function setPaymentStatus($status, $message=null)
     {
         $order = $this->getOrder();
+        $this->setPaymentStatusWithoutSave($order, $status, $message);
+        $this->saveOrder();
+    }
 
+    public function setPaymentStatusWithoutSave($order, $status, $message = null)
+    {
         if (!$this->isAllowedPaymentStatus($status)) {
             throw new \InvalidArgumentException('Status: "'.$status.'" is not a valid order payment status');
         }
@@ -970,13 +993,14 @@ class OrderService extends ContainerAware
             $order->setLastPaymentError($message);
         }
 
-        $this->logPayment(
+        $this->logPaymentWithoutSave(
             $order,
             'payement status change',
-            sprintf('Status changed from "%s" to "%s" with message %s', $oldStatus, $status, $message)
+            sprintf('Status changed from "%s" to "%s" with message %s',
+                    $oldStatus,
+                    $status,
+                    $message)
         );
-
-        $this->saveOrder();
     }
 
     /**
@@ -1045,6 +1069,7 @@ class OrderService extends ContainerAware
             self::$status_assiged => 4,
             self::$status_completed => 5,
             self::$status_canceled => 5,
+            self::$status_failed => 5,
         );
 
         if (empty($from) && !empty($to)) {
@@ -1156,7 +1181,12 @@ class OrderService extends ContainerAware
             $order = $this->getOrder();
         }
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $token = $this->container->get('security.context')->getToken();
+        if ($token instanceof TokenInterface) {
+            $user = $token->getUser();
+        } else {
+            $user = 'anon.';
+        }
 
         if ($user == 'anon.') {
             $user = null;
@@ -1192,6 +1222,12 @@ class OrderService extends ContainerAware
      */
     public function logPayment($order=null, $event, $message=null, $debugData=null)
     {
+        $this->logPaymentWithoutSave($order, $event, $message, $debugData);
+        $this->getEm()->flush();
+    }
+
+    public function logPaymentWithoutSave($order=null, $event, $message=null, $debugData=null)
+    {
         $log = new PaymentLog();
 
         if (empty($order) && !($order instanceof Order)) {
@@ -1223,7 +1259,6 @@ class OrderService extends ContainerAware
         $log->setDebugData($debugData);
 
         $this->getEm()->persist($log);
-        $this->getEm()->flush();
     }
 
     public function getOrdersForDriver($driver)
@@ -1249,6 +1284,10 @@ class OrderService extends ContainerAware
      */
     public function informPlace($isReminder=false)
     {
+        $order = $this->getOrder();
+        if ($order->getOrderStatus()== OrderService::$status_pre) {
+            return;
+        }
         if (!$isReminder) {
             $this->notifyOrderCreate();
         }
@@ -1259,7 +1298,6 @@ class OrderService extends ContainerAware
         $miscUtils = $this->container->get('food.app.utils.misc');
         $country = $this->container->getParameter('country');
 
-        $order = $this->getOrder();
         $placePoint = $order->getPlacePoint();
         $placePointEmail = $placePoint->getEmail();
         $placePointAltEmail1 = $placePoint->getAltEmail1();
@@ -1855,6 +1893,14 @@ class OrderService extends ContainerAware
     {
         if (!$takeAway) {
             $list = $this->getCartService()->getCartDishes($place);
+            foreach ($list as $itm) {
+                if (!$this->isOrderableByTime($itm->getDishId())) {
+                    $formErrors[] = array(
+                        'message' => 'order.form.errors.dont_make_item',
+                        'text' => $itm->getDishId()->getName()
+                    );
+                }
+            }
             $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
             if ($total_cart < $place->getCartMinimum()) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum';
@@ -1866,11 +1912,21 @@ class OrderService extends ContainerAware
             }
         } elseif ($place->getMinimalOnSelfDel()) {
             $list = $this->getCartService()->getCartDishes($place);
+            foreach ($list as $itm) {
+                if (!$this->isOrderableByTime($itm->getDishId())) {
+                    $formErrors[] = array(
+                        'message' => 'order.form.errors.dont_make_item',
+                        'text' => $itm->getDishId()->getName()
+                    );
+                }
+            }
             $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
             if ($total_cart < $place->getCartMinimum()) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }
         }
+
+
 
         $pointRecord = null;
 
@@ -2283,6 +2339,40 @@ class OrderService extends ContainerAware
         if ($coupon && $coupon instanceof Coupon && $coupon->getSingleUse()) {
             $coupon->setActive(false);
             $this->saveCoupon($coupon);
+        }
+    }
+
+    /**
+     * @param Dish $dish
+     * @return bool
+     */
+    public function isOrderableByTime(Dish $dish)
+    {
+        $timeFrom = $dish->getTimeFrom();
+        $timeTo = $dish->getTimeTo();
+        if (empty($timeFrom) && empty($timeTo)) {
+            return true;
+        } else {
+            if (!empty($timeFrom) && !empty($timeTo)) {
+                if (date("H:i") >= $timeFrom && date("H:i") <= $timeTo) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } elseif (!empty($timeFrom)) {
+                if (date("H:i") >= $timeFrom) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                // !empty($timeTo);
+                if (date("H:i") <= $timeTo) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
     }
 }

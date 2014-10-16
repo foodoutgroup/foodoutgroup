@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Controller\Decorators\Nordea;
 
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\DBAL\LockMode;
 
 trait ReturnDecorator
 {
@@ -11,10 +12,14 @@ trait ReturnDecorator
         // services
         $orderService = $this->get('food.order');
         $cartService = $this->get('food.cart');
+        $navService = $this->get('food.nav');
+        $em = $this->get('doctrine')->getManager();
 
-        // get order. we must use $orderService to find order
+        // get order with an optimistic lock
         $orderId = (int)$request->query->get('RETURN_REF', 0);
-        $order = $orderService->getOrderById($orderId);
+        $order = $em->getRepository('FoodOrderBundle:Order')
+                    ->find($orderId, LockMode::OPTIMISTIC);
+        $orderService->setOrder($order);
 
         // verify
         $verified = $this->verify($request, $orderService, $order);
@@ -31,7 +36,9 @@ trait ReturnDecorator
             $this->logPaidAndFinish('Nordea banklink billed payment',
                                     $orderService,
                                     $order,
-                                    $cartService);
+                                    $cartService,
+                                    $em,
+                                    $nav);
         } else {
             $view = 'FoodOrderBundle:Payments:' .
                     'nordea_banklink/fail.html.twig';

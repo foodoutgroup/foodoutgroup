@@ -145,4 +145,59 @@ class MonitoringService extends ContainerAware {
 
         return $orders;
     }
+
+    /**
+     * @return array
+     */
+    public function getLogisticsSyncProblems()
+    {
+        $return = array(
+            'unsent' => 0,
+            'error' =>
+                array(
+                    'count' => 0,
+                    'lastError' => '',
+                )
+        );
+
+        $dateStart = new \DateTime("-4 minute");
+        $dateEnd = new \DateTime("-1 day");
+
+        $dateStart = $dateStart->format("Y-m-d H:i:s");
+        $dateEnd = $dateEnd->format("Y-m-d H:i:s");
+
+        $query = "SELECT
+          SUM(IF (status = 'unsent', 1, 0)) AS unsent,
+          SUM(IF (status = 'error', 1, 0)) AS error,
+          MAX(last_error) AS last_error
+        FROM orders_to_logistics
+        WHERE
+          status IN ('unsent', 'error')
+          AND date_added <= '{$dateStart}'
+          AND date_added > '{$dateEnd}'
+        ORDER BY
+          last_error DESC
+        ";
+
+        /**
+         * @var \Doctrine\DBAL\Driver\Statement $stmt
+         */
+        $stmt = $this->container->get('doctrine')->getManager()->getConnection()
+            ->prepare($query);
+
+        $stmt->execute();
+
+        $problems = $stmt->fetch();
+        if (!$problems) {
+            return $return;
+        }
+
+        $return['unsent'] = (int)$problems['unsent'];
+        $return['error']['count'] = (int)$problems['error'];
+        if ($problems['error'] > 0) {
+            $return['error']['lastError'] = $problems['last_error'];
+        }
+
+        return $return;
+    }
 }

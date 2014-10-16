@@ -4,6 +4,7 @@ namespace Food\OrderBundle\Controller\Decorators\Nordea;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Form;
+use Doctrine\ORM\OptimisticLockException;
 use Food\OrderBundle\Service\Events\BanklinkEvent;
 
 trait SharedDecorator
