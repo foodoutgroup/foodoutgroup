@@ -379,17 +379,25 @@ class LogisticsService extends ContainerAware
             throw new \InvalidArgumentException('Cannot put order to logistis when its not order. Dafuk?');
         }
 
-        $this->container->get('food.order')->logOrder($order, 'schedule_logistics_api_send', 'Order scheduled to send to logistics');
+        // Jeigu ijungtas sendas ir mes vezam ir deliver tipas
+        if ($this->container->getParameter('logistics.send_to_external') == true
+            && $order->getDeliveryType() == 'deliver'
+            && $order->getPlacePointSelfDelivery() == false) {
+            $logisticsCityFilter = $this->container->getParameter('logistics.city_filter');
+            if (empty($logisticsCityFilter) || in_array($order->getPlacePointCity(), $logisticsCityFilter)) {
+                $this->container->get('food.order')->logOrder($order, 'schedule_logistics_api_send', 'Order scheduled to send to logistics');
 
-        $om = $this->container->get('doctrine')->getManager();
-        $orderToLogistics = new OrderToLogistics();
+                $om = $this->container->get('doctrine')->getManager();
+                $orderToLogistics = new OrderToLogistics();
 
-        $orderToLogistics->setOrder($order)
-            ->setDateAdded(new \DateTime("now"))
-            ->setStatus('unsent');
+                $orderToLogistics->setOrder($order)
+                    ->setDateAdded(new \DateTime("now"))
+                    ->setStatus('unsent');
 
-        $om->persist($orderToLogistics);
-        $om->flush();
+                $om->persist($orderToLogistics);
+                $om->flush();
+            }
+        }
     }
 
     /**

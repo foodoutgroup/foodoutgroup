@@ -357,11 +357,8 @@ class OrderService extends ContainerAware
             $this->notifyOrderAccept();
 
             // Put for logistics
-            if ($this->container->getParameter('logistics.send_to_external') == true
-                && $this->getOrder()->getDeliveryType() == 'deliver'
-                && $this->getOrder()->getPlacePointSelfDelivery() == false) {
-                $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
-            }
+            $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
+
             // Kitais atvejais tik keiciam statusa, nes gal taip reikia
         } else {
             $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
@@ -588,6 +585,9 @@ class OrderService extends ContainerAware
             }
         }
 
+        // Put for logistics to cancel on their side
+        $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
+
         $this->chageOrderStatus(self::$status_canceled, $source, $statusMessage);
         return $this;
     }
@@ -602,10 +602,8 @@ class OrderService extends ContainerAware
     {
         $this->chageOrderStatus(self::$status_delayed, $source, $statusMessage);
 
-        if ($this->container->getParameter('logistics.send_to_external') == true
-            && $this->getOrder()->getDeliveryType() == 'deliver') {
-            $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
-        }
+        // Inform logistics
+        $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
         return $this;
     }
 
