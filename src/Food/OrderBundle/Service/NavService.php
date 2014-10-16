@@ -115,6 +115,14 @@ class NavService extends ContainerAware
         return $sqlSS;
     }
 
+    /**
+     * @return int
+     */
+    public function getNavIdModifier()
+    {
+        return $this->_orderIdModifier;
+    }
+
     public function getLastOrders()
     {
         $sqlSS = $this->initSqlConn();
@@ -312,10 +320,13 @@ class NavService extends ContainerAware
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
+    /**
+     * @param Order $order
+     * @return int
+     */
     public function getNavOrderId(Order $order)
     {
         return $this->_orderIdModifier + (int)$order->getId();
-
     }
 
     /**

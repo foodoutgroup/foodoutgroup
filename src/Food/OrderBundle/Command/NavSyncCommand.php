@@ -35,39 +35,34 @@ class NavSyncCommand extends ContainerAwareCommand
             $navService = $this->getContainer()->get('food.nav');
 
             $orders = $em->getRepository('FoodOrderBundle:Order')->getCurrentNavOrders();
-            $navOrders = $navService->getRecentNavOrders($orders);
 
-            foreach ($navOrders as $orderId => $orderData) {
-                $order = $orderService->getOrderById($orderId);
-                if (!$order instanceof Order) {
-                    throw new \Exception('Order from nav not found in local system. Local ID: '.$orderId.' Nav ID:'.$orderData['Order No_']);
+            if (!empty($orders) && count($orders) > 0) {
+                $navOrders = $navService->getRecentNavOrders($orders);
+
+                foreach ($navOrders as $orderId => $orderData) {
+                    $order = $orderService->getOrderById($orderId);
+                    if (!$order instanceof Order) {
+                        throw new \Exception('Order from nav not found in local system. Local ID: '.$orderId.' Nav ID:'.$orderData['Order No_']);
+                    }
+
+                    $output->writeln(sprintf(
+                        'Syncing order #%d. Local status: %s. Nav status: %s',
+                        $orderId,
+                        $order->getOrderStatus(),
+                        $orderData['Delivery Status']
+                    ));
+
+                    // Only update if not a dry-run
+                    if (!$dryRun) {
+                        $navService->changeOrderStatusByNav($order, $orderData);
+                        $em->persist($order);
+                    }
                 }
 
-                // TODO temp - istrinti
-                if ($orderId == 976) {
-                    $orderData['Delivery Status'] = 10;
-                }
-                if ($orderId == 977) {
-                    $orderData['Delivery Status'] = 6;
-                }
-
-                $output->writeln(sprintf(
-                    'Syncing order #%d. Local status: %s. Nav status: %s',
-                    $orderId,
-                    $order->getOrderStatus(),
-                    $orderData['Delivery Status']
-                ));
-
-                // Only update if not a dry-run
+                // Save all modified orders if not a dry run
                 if (!$dryRun) {
-                    $navService->changeOrderStatusByNav($order, $orderData);
-                    $em->persist($order);
+                    $em->flush();
                 }
-            }
-
-            // Save all modified orders if not a dry run
-            if (!$dryRun) {
-                $em->flush();
             }
         } catch (\Exception $e) {
             $output->writeln('Error syncing orders with Nav');
