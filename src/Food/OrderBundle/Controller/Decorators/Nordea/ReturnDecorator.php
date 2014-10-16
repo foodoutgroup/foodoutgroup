@@ -15,7 +15,6 @@ trait ReturnDecorator
         $navService = $this->get('food.nav');
         $em = $this->get('doctrine')->getManager();
 
-        // get order with an optimistic lock
         $orderId = (int)$request->query->get('RETURN_REF', 0);
         $order = $em->getRepository('FoodOrderBundle:Order')
                     ->find($orderId, LockMode::OPTIMISTIC);

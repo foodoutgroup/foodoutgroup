@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Controller\Decorators\SwedbankCreditCardGateway;
 
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\DBAL\LockMode;
 
 trait ReturnDecorator
 {
@@ -26,7 +27,9 @@ trait ReturnDecorator
         // extract actual order id. say thanks to swedbank requirements
         $transactionIdSplit = explode('_', $transactionId);
         $orderId = !empty($transactionIdSplit[0]) ? $transactionIdSplit[0] : 0;
-        $order = $orderService->getOrderById($orderId);
+        $order = $em->getRepository('FoodOrderBundle:Order')
+                    ->find($orderId, LockMode::OPTIMISTIC);
+        $orderService->setOrder($order);
 
         if (!$order) {
             $view = 'FoodOrderBundle:Payments:' .

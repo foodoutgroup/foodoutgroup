@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Controller\Decorators\Seb;
 
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\DBAL\LockMode;
 use Food\OrderBundle\Service\Banklink\Seb as SebService;
 
 trait ReturnDecorator
@@ -31,7 +32,9 @@ trait ReturnDecorator
                 'seb_banklink/something_wrong.html.twig';
 
         // order
-        $order = $orderService->getOrderById($orderId);
+        $order = $em->getRepository('FoodOrderBundle:Order')
+                    ->find($orderId, LockMode::OPTIMISTIC);
+        $orderService->setOrder($order);
 
         // banklink log
         $this->logBanklink($dispatcher, $request, $order);

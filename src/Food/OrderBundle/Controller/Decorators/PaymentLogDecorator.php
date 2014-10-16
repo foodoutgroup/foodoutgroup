@@ -29,19 +29,25 @@ trait PaymentLogDecorator
 
             // insert order into nav
             $navService->insertOrder($navService->getOrderDataForNav($order));
+
+            // clear cart
+            $cartService->clearCart($order->getPlace());
         } catch (OptimisticLockException $e) {
             // actually do nothing
         }
-
-        $cartService->clearCart($order->getPlace());
     }
 
 
     protected function logFailureAndFinish($message, $orderService, $order)
     {
-        $orderService->logPayment($order, $message, $message, $order);
-        $orderService->setPaymentStatus($orderService::$paymentStatusCanceled,
-                                        $message);
+        try {
+            $orderService->logPayment($order, $message, $message, $order);
+            $orderService->setPaymentStatus(
+                $orderService::$paymentStatusCanceled,
+                $message);
+        } catch (OptimisticLockException $e) {
+            // actually do nothing
+        }
     }
 
     protected function logProcessingAndFinish($message,
@@ -49,7 +55,13 @@ trait PaymentLogDecorator
                                               $order,
                                               $cartService)
     {
-        $orderService->logPayment($order, $message, $message, $order);
-        $cartService->clearCart($order->getPlace());
+        try {
+            $orderService->logPayment($order, $message, $message, $order);
+
+            // clear cart
+            $cartService->clearCart($order->getPlace());
+        } catch (OptimisticLockException $e) {
+            // actually do nothing
+        }
     }
 }
