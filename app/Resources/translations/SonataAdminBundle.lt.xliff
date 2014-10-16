@@ -935,9 +935,43 @@
                 <source>admin.order.status.source.paysera_payment</source>
                 <target>Paysera apmokėjimas</target>
             </trans-unit>
+            <trans-unit id="admin.order.status.source.nordea-banklink">
+                <source>admin.order.status.source.nordea-banklink</source>
+                <target>Nordea banklink apmokėjimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.seb-banklink">
+                <source>admin.order.status.source.seb-banklink</source>
+                <target>SEB banklink apmokėjimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.swedbank-credit-card-gateway">
+                <source>admin.order.status.source.swedbank-credit-card-gateway</source>
+                <target>Swedbank credit card gateway apmokėjimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.swedbank-gateway">
+                <source>admin.order.status.source.swedbank-gateway</source>
+                <target>Swedbank gateway apmokėjimas</target>
+            </trans-unit>
             <trans-unit id="admin.order.status.source.logistics_service">
                 <source>admin.order.status.source.logistics_service</source>
                 <target>Logistika</target>
+            </trans-unit>
+
+            <!-- Order logas pas sonata admina -->
+            <trans-unit id="admin.order.order_log">
+                <source>admin.order.order_log</source>
+                <target>Užsakymo sisteminis logas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.oder_log.order_status">
+                <source>admin.order.oder_log.order_status</source>
+                <target>Užsak. būklė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.oder_log.event">
+                <source>admin.order.oder_log.event</source>
+                <target>Įvykis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.order_log.message">
+                <source>admin.order.order_log.message</source>
+                <target>Pranešimas</target>
             </trans-unit>
 
             <!-- Dispatcher window -->

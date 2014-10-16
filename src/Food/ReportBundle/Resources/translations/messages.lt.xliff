@@ -6,6 +6,10 @@
                 <source>admin.report.orders</source>
                 <target>Užsakymai</target>
             </trans-unit>
+            <trans-unit id="admin.report.orders_canceled" resname="admin.report.orders_canceled">
+                <source>admin.report.orders_canceled</source>
+                <target>Atšaukti užsakymai</target>
+            </trans-unit>
             <trans-unit id="admin.report.daily_orders_graph" resname="admin.report.daily_orders_graph">
                 <source>admin.report.daily_orders_graph</source>
                 <target>Užsakymų per dieną</target>

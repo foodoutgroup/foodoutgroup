@@ -33,7 +33,7 @@ food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto|monitoring|nagios|banned|order).+"
+        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto|monitoring|nagios|banned|logistics|order).+"
 
 food_order_nav_test1:
     pattern: /order/nav_test1

@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\QueryBuilder;
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Dish;
 use Food\DishesBundle\Entity\Place;
@@ -18,6 +19,7 @@ use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
 
 class OrderService extends ContainerAware
@@ -353,6 +355,13 @@ class OrderService extends ContainerAware
 
             // Notify Dispatchers
             $this->notifyOrderAccept();
+
+            // Put for logistics
+            if ($this->container->getParameter('logistics.send_to_external') == true
+                && $this->getOrder()->getDeliveryType() == 'deliver'
+                && $this->getOrder()->getPlacePointSelfDelivery() == false) {
+                $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
+            }
             // Kitais atvejais tik keiciam statusa, nes gal taip reikia
         } else {
             $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
@@ -520,11 +529,13 @@ class OrderService extends ContainerAware
             // TODO upload accounting
         }
         $ml = $this->container->get('food.mailer');
+        $slugUtil = $this->container->get('food.dishes.utils.slug');
+        $slugUtil->setLocale($this->getOrder()->getLocale());
 
         $variables = array(
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
             'miestas' => $this->getOrder()->getPlacePoint()->getCity(),
-            'maisto_review_url' => 'http://www.foodout.lt/lt/'.$this->container->get('food.dishes.utils.slug')->getSlugByItem(
+            'maisto_review_url' => 'http://www.foodout.lt/lt/'.$slugUtil->getSlugByItem(
                     $this->getOrder()->getPlace()->getId(),
                     'place'
             ).'/#detailed-restaurant-review'
@@ -590,6 +601,11 @@ class OrderService extends ContainerAware
     public function statusDelayed($source=null, $statusMessage=null)
     {
         $this->chageOrderStatus(self::$status_delayed, $source, $statusMessage);
+
+        if ($this->container->getParameter('logistics.send_to_external') == true
+            && $this->getOrder()->getDeliveryType() == 'deliver') {
+            $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
+        }
         return $this;
     }
 
@@ -795,7 +811,7 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param null $localBiller
+     * @param null|LocalBiller $localBiller
      */
     public function setLocalBiller($localBiller)
     {
@@ -814,7 +830,7 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param null $payseraBiller
+     * @param null|PaySera $payseraBiller
      */
     public function setPayseraBiller($payseraBiller)
     {
@@ -1047,6 +1063,7 @@ class OrderService extends ContainerAware
             self::$status_assiged => 4,
             self::$status_completed => 5,
             self::$status_canceled => 5,
+            self::$status_failed => 5,
         );
 
         if (empty($from) && !empty($to)) {
@@ -1158,7 +1175,12 @@ class OrderService extends ContainerAware
             $order = $this->getOrder();
         }
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $token = $this->container->get('security.context')->getToken();
+        if ($token instanceof TokenInterface) {
+            $user = $token->getUser();
+        } else {
+            $user = 'anon.';
+        }
 
         if ($user == 'anon.') {
             $user = null;
