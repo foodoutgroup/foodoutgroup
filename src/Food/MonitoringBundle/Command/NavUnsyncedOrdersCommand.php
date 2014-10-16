@@ -23,13 +23,13 @@ class NavUnsyncedOrdersCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $critical = false;
+        $text = '<info>OK: all orders are synced</info>';
 
         try {
             $em = $this->getContainer()->get('doctrine')->getManager();
             $orders = $em->getRepository('FoodOrderBundle:Order')->getCurrentNavOrders();
             $navService = $this->getContainer()->get('food.nav');
 
-            echo "\nOrder count: ".count($orders)."\n";
             if (!empty($order) && count($orders) > 0) {
                 $navOrders = $navService->getRecentNavOrders($orders);
                 $ordersCount = count($orders);
@@ -40,7 +40,7 @@ class NavUnsyncedOrdersCommand extends ContainerAwareCommand
 
                     foreach($orders as $order) {
                         if (!isset($navOrders[$order->getId()])) {
-                            $orderIds[] = $order->getId();
+                            $unSyncedOrderIds[] = $order->getId();
                         }
                     }
 
@@ -51,10 +51,6 @@ class NavUnsyncedOrdersCommand extends ContainerAwareCommand
                     );
                     $critical = true;
                 }
-            }
-
-            if (!$critical) {
-                $text = '<info>OK: all orders are synced</info>';
             }
         } catch (\Exception $e) {
             $text = '<error>ERROR: Error in unsynced nav orders check: '.$e->getMessage().'</error>';
