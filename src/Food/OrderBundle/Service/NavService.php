@@ -172,7 +172,9 @@ class NavService extends ContainerAware
             'Delivery Type' => '1',
             'Restaurant No_' => '64',
             'Order Date' => date("Y-m-d H:i:s"),
-            'Order Time' => '1754-01-01 '.date("H:i:s", strtotime('-3 hours')),
+            //'Order Time' => '1754-01-01 '.date("H:i:s", strtotime('-3 hours')),
+            //'Takeout Time' => date("Y-m-d H:i:s", (strtotime('+20 minutes') - (3600 * 3))),
+            'Order Time' => '1754-01-01 '.date("H:i:s"),
             'Takeout Time' => date("Y-m-d H:i:s", (strtotime('+20 minutes') - (3600 * 3))),
             'Directions' => 'Negaminti',
             'Discount Card No_' => '',
@@ -224,12 +226,16 @@ class NavService extends ContainerAware
         $orderNewId = $this->getNavOrderId($order);
 
         $orderRow = null;
+        $street = "";
+        $houseNr = "";
+        $flatNr = "";
         if ($order->getAddressId()) {
             $target = $order->getAddressId()->getAddress();
             preg_match('/(([0-9]{1,3})[-|\s]{0,4}([0-9]{0,3}))$/i', $target, $errz);
             $street = trim(str_replace($errz[0], '', $target));
             $houseNr = (!empty($errz[2]) ? $errz[2] : '');
             $flatNr = (!empty($errz[3]) ? $errz[3] : '');
+            /*
             $orderRow = $this->container->get('doctrine')->getRepository('FoodAppBundle:Streets')->findOneBy(
                 array(
                     'name' => $street,
@@ -237,9 +243,11 @@ class NavService extends ContainerAware
                     'deliveryRegion' => $order->getAddressId()->getCity()
                 )
             );
-
-            $this->container->get('doctrine')->getManager()->refresh($orderRow);
+            */
+            //$this->container->get('doctrine')->getManager()->refresh($orderRow);
         }
+
+        
 
         $orderDate = $order->getOrderDate();
         $orderDate->sub(new \DateInterval('P0DT3H'));
@@ -248,16 +256,17 @@ class NavService extends ContainerAware
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Phone' => str_replace('370', '8', $order->getUser()->getPhone()),
-            'ZipCode' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getZipCode() : ''),
+            'ZipCode' => '', // ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getZipCode() : ''),
             'City' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $order->getAddressId()->getCity() : ''),
-            'Street' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getStreetName(): ''),
-            'Street No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getNumberFrom(): ''),
+            'Street' => $street, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getStreetName(): ''),
+            'Street No_' => $houseNr, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getNumberFrom(): ''),
             'Floor' => '',
-            'Grid' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getGrid(): ''),
+            'Grid' => '', // ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getGrid(): ''),
             'Chain' => $order->getPlace()->getChain(),
             'Name' => 'FO:'.$order->getUser()->getNameForOrder(),
             'Delivery Type' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? 1 : 4),
-            'Restaurant No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? '':  $order->getPlacePoint()->getInternalCode()),
+            //'Restaurant No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? '':  $order->getPlacePoint()->getInternalCode()),
+            'Restaurant No_' => $order->getPlacePoint()->getInternalCode(),
             'Order Date' => $orderDate->format("Y-m-d"),
             'Order Time' => '1754-01-01 '.$orderDate->format("H:i:s"),
             'Takeout Time' => $deliveryDate->format("Y-m-d H:i:s"),
@@ -266,9 +275,9 @@ class NavService extends ContainerAware
             'Order Status' => 4,
             'Delivery Order No_' => '',
             'Error Description' => '',
-            'Flat No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $flatNr: ''),
+            'Flat No_' => $flatNr, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $flatNr: ''),
             'Entrance Code' => '',
-            'Region Code' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getDeliveryRegion() : ''),
+            'Region Code' => mb_strtoupper($order->getPlacePoint()->getCity()), //$order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getDeliveryRegion() : ''),
             'Delivery Status' => 12,
             'In Use By User' => '',
             'Loyalty Card No_' => '',
@@ -338,7 +347,7 @@ class NavService extends ContainerAware
         return $navId - $this->_orderIdModifier;
     }
 
-    private function getWSConnection()
+    public function getWSConnection()
     {
 
         $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
@@ -360,7 +369,7 @@ class NavService extends ContainerAware
     {
         $orderId = $this->getNavOrderId($order);
         $client = $this->getWSConnection();
-        $return = $client->UpdatePrices(array('pInt' =>(int)$orderId));
+        $return = $client->FoodOutUpdatePrices(array('pInt' =>(int)$orderId));
         return $return;
     }
 
@@ -373,7 +382,7 @@ class NavService extends ContainerAware
         $sqlSS = $this->initSqlConn()->query($query);
 
         $client = $this->getWSConnection();
-        $return = $client->ProcessOrder(array('pInt' =>(int)$orderId));
+        $return = $client->FoodOutProcessOrder(array('pInt' =>(int)$orderId));
         return $return;
     }
 
@@ -488,32 +497,38 @@ class NavService extends ContainerAware
         $requestXml.= "</Lines>\n";
 
         $requestXml = iconv('utf-8', 'cp1257', $requestXml);
-
-
+        //ob_start();
         $response = $this->getWSConnection()->FoodOutValidateOrder(
                 array(
                     'params' => $requestData,
                     'errors' => array()
                 )
         );
+        //ob_end_clean();
 
-
-
+        $prbDish = "";
+        if ($response->return_value == 2) {
+            if ($lineMap[$response->errors->Error->SubCode]['parent'] == 0) {
+                $prbDish = $lineMap[$response->errors->Error->SubCode]['name'];
+            } else {
+                $prbDish = $lineMap[$lineMap[$response->errors->Error->SubCode]['parent']]['name'];
+            }
+        }
+        $returner = array(
+            'valid' => ($response->return_value == 0 ? true: false),
+            'errcode' => array(
+                'code' => ($response->return_value != 0 ? $response->errors->Error->Code : ''),
+                'line' => ($response->return_value != 0 ? $response->errors->Error->SubCode : ''),
+                'msg' => ($response->return_value != 0 ? $response->errors->Error->Description : ''),
+                'problem_dish' => $prbDish
+            )
+        );
+        echo "<pre>";
+        var_dump($returner);
+        var_dump($requestData);
         var_dump($response);
-        var_dump($this->getWSConnection()->__getLastResponse());
-        var_dump($this->getWSConnection()->__getLastRequest());
-
-        die("THE END");
-
-        /*
-				<Line>
-					<LineNo>2</LineNo>
-		               <ItemNo>DIS0021488</ItemNo>
-		               <Quantity>1</Quantity>
-		               <Price>14.99</Price>
-		               <Amount>14.99</Amount>
-		           </Line>
-        */
+        echo "</pre>";
+        return $returner;
     }
 
     /**

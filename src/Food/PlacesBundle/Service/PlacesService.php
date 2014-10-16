@@ -156,6 +156,7 @@ class PlacesService extends ContainerAware {
             $sessionData = array();
         }
         $sessionData[$placeId] = $pointId;
+
         $this->getSession()->set('point_data', $sessionData);
     }
 

@@ -1472,6 +1472,9 @@ class OrderService extends ContainerAware
             }
 
             $nav->putTheOrderToTheNAV($orderRenew);
+
+            $this->container->get('doctrine')->getManager()->refresh($orderRenew);
+
             sleep(1);
             $returner = $nav->updatePricesNAV($orderRenew);
             sleep(1);
@@ -1858,6 +1861,7 @@ class OrderService extends ContainerAware
      */
     public function validateDaGiantForm(Place $place, Request $request, &$formHasErrors, &$formErrors, $takeAway, $placePointId = null, $coupon = null)
     {
+        $phonePass = false;
         if (!$takeAway) {
             $list = $this->getCartService()->getCartDishes($place);
             foreach ($list as $itm) {
@@ -1907,6 +1911,7 @@ class OrderService extends ContainerAware
         } else {
             $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
         }
+
         if ($pointRecord != null) {
             $this->workTimeErrors($pointRecord, $formErrors);
         }
@@ -1916,6 +1921,7 @@ class OrderService extends ContainerAware
         if (0 === strlen($request->get('customer-firstname'))) {
             $formErrors[] = 'order.form.errors.customerfirstname';
         }
+
 
         if (0 === strlen($phone)) {
             $formErrors[] = 'order.form.errors.customerphone';
@@ -1976,12 +1982,39 @@ class OrderService extends ContainerAware
                 $formErrors[] = 'order.form.errors.customerphone_format';
             } else if ($isValid && !in_array($numberType, array(\libphonenumber\PhoneNumberType::MOBILE, \libphonenumber\PhoneNumberType::FIXED_LINE_OR_MOBILE))) {
                 $formErrors[] = 'order.form.errors.customerphone_not_mobile';
+            } else {
+                $phonePass = true;
             }
         }
 
         if ($request->get('cart_rules') != 'on') {
             $formErrors[] = 'order.form.errors.cart_rules';
         }
+
+        if ($phonePass && $place->getNavision()) {
+            $data = $this->container->get('food.nav')->validateCartInNav(
+                $request->get('customer-phone'),
+                $pointRecord,
+                date("Y.m.d"),
+                date("H:i:s"),
+                (!$takeAway ? self::$deliveryDeliver : self::$deliveryPickup),
+                $this->container->get('food.cart')->getCartDishes($place)
+            );
+            if (!$data['valid']) {
+                $formHasErrors = true;
+                if ($data['errcode']['code'] == "2") {
+                    $formErrors[] = array(
+                        'message' => 'order.form.errors.problems_with_dish',
+                        'text' => $data['errcode']['problem_dish']
+                    );
+                } elseif ($data['errcode']['code'] == 8) {
+                    $formErrors[] = 'order.form.errors.nav_restaurant_no_work';
+                } elseif ($data['errcode']['code'] == 6) {
+                    $formErrors[] = 'order.form.errors.nav_restaurant_no_setted';
+                }
+            }
+        }
+
 
         if (!empty($formErrors)) {
             $formHasErrors = true;

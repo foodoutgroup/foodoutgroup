@@ -127,6 +127,11 @@ class TestController extends Controller
 
     public function nav1Action()
     {
+        $navs = $this->get('food.nav');
+        $client = $navs->getWSConnection();
+        $return = $client->FoodOutUpdatePrices(array('pInt' =>2000002044));
+
+        die('E');
         $cs = $this->get('food.cart');
         $place = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->find(63);
         $pp = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find(82);
@@ -143,10 +148,10 @@ class TestController extends Controller
             $cds
         );
 
-        $ss = $navs->initSqlConn();
-        $querys=$ss->query("SELECT TOP 10 * FROM ".$navs->getMessagesTable());
-        var_dump($ss->fetchArray($querys));
-        die('E');
+        //$ss = $navs->initSqlConn();
+        //$querys=$ss->query("SELECT TOP 10 * FROM ".$navs->getMessagesTable());
+        //var_dump($ss->fetchArray($querys));
+        //die('E');
         return new Response("\n\n<br><br>THIS IS THE END");
     }
 }
