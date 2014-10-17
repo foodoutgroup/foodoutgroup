@@ -31,7 +31,7 @@ trait PaymentLogDecorator
             $navService->insertOrder($navService->getOrderDataForNav($order));
 
             // clear cart
-            $cartService->clearCart($order->getPlace());
+            // $cartService->clearCart($order->getPlace());
         } catch (OptimisticLockException $e) {
             // actually do nothing
         }
