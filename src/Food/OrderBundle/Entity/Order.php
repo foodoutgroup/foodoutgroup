@@ -133,7 +133,7 @@ class Order
      * @ORM\Column(name="discount_sum", type="decimal", precision=8, scale=2, nullable=true)
      */
     private $discountSum;
-    
+
     /**
      * @var integer
      * @ORM\Column(name="order_hash", type="string", length=100)
@@ -255,6 +255,11 @@ class Order
      */
     private $reminded = false;
 
+    /**
+     * @ORM\Version @ORM\Column(type="integer")
+     */
+    private $version;
+
     public function __toString()
     {
         if ($this->getId()) {
@@ -266,7 +271,7 @@ class Order
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -282,14 +287,14 @@ class Order
     public function setOrderDate($orderDate)
     {
         $this->order_date = $orderDate;
-    
+
         return $this;
     }
 
     /**
      * Get order_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getOrderDate()
     {
@@ -305,14 +310,14 @@ class Order
     public function setUser(\Food\UserBundle\Entity\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getUser()
     {
@@ -328,14 +333,14 @@ class Order
     public function setAddressId(\Food\UserBundle\Entity\UserAddress $addressId = null)
     {
         $this->address_id = $addressId;
-    
+
         return $this;
     }
 
     /**
      * Get address_id
      *
-     * @return \Food\UserBundle\Entity\UserAddress 
+     * @return \Food\UserBundle\Entity\UserAddress
      */
     public function getAddressId()
     {
@@ -351,7 +356,7 @@ class Order
     public function setOrderStatus($orderStatus = null)
     {
         $this->order_status = $orderStatus;
-    
+
         return $this;
     }
 
@@ -374,14 +379,14 @@ class Order
     public function setVat($vat)
     {
         $this->vat = $vat;
-    
+
         return $this;
     }
 
     /**
      * Get vat
      *
-     * @return integer 
+     * @return integer
      */
     public function getVat()
     {
@@ -397,14 +402,14 @@ class Order
     public function setOrderHash($orderHash)
     {
         $this->order_hash = $orderHash;
-    
+
         return $this;
     }
 
     /**
      * Get order_hash
      *
-     * @return string 
+     * @return string
      */
     public function getOrderHash()
     {
@@ -420,14 +425,14 @@ class Order
     public function setComment($comment)
     {
         $this->comment = $comment;
-    
+
         return $this;
     }
 
     /**
      * Get comment
      *
-     * @return string 
+     * @return string
      */
     public function getComment()
     {
@@ -443,14 +448,14 @@ class Order
     public function setPlaceComment($placeComment)
     {
         $this->place_comment = $placeComment;
-    
+
         return $this;
     }
 
     /**
      * Get place_comment
      *
-     * @return string 
+     * @return string
      */
     public function getPlaceComment()
     {
@@ -466,14 +471,14 @@ class Order
     public function setPaymentStatus($paymentStatus)
     {
         $this->paymentStatus = $paymentStatus;
-    
+
         return $this;
     }
 
     /**
      * Get paymentStatus
      *
-     * @return string 
+     * @return string
      */
     public function getPaymentStatus()
     {
@@ -489,14 +494,14 @@ class Order
     public function setLastPaymentError($lastPaymentError)
     {
         $this->lastPaymentError = $lastPaymentError;
-    
+
         return $this;
     }
 
     /**
      * Get lastPaymentError
      *
-     * @return string 
+     * @return string
      */
     public function getLastPaymentError()
     {
@@ -512,14 +517,14 @@ class Order
     public function setPaymentMethod($paymentMethod)
     {
         $this->paymentMethod = $paymentMethod;
-    
+
         return $this;
     }
 
     /**
      * Get paymentMethod
      *
-     * @return string 
+     * @return string
      */
     public function getPaymentMethod()
     {
@@ -535,14 +540,14 @@ class Order
     public function setSubmittedForPayment($submittedForPayment)
     {
         $this->submittedForPayment = $submittedForPayment;
-    
+
         return $this;
     }
 
     /**
      * Get submittedForPayment
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getSubmittedForPayment()
     {
@@ -558,14 +563,14 @@ class Order
     public function setLastUpdated($lastUpdated)
     {
         $this->lastUpdated = $lastUpdated;
-    
+
         return $this;
     }
 
     /**
      * Get lastUpdated
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getLastUpdated()
     {
@@ -581,14 +586,14 @@ class Order
     public function setDeliveryType($deliveryType)
     {
         $this->deliveryType = $deliveryType;
-    
+
         return $this;
     }
 
     /**
      * Get deliveryType
      *
-     * @return string 
+     * @return string
      */
     public function getDeliveryType()
     {
@@ -663,14 +668,14 @@ class Order
     public function setPlaceName($placeName)
     {
         $this->place_name = $placeName;
-    
+
         return $this;
     }
 
     /**
      * Get place_name
      *
-     * @return string 
+     * @return string
      */
     public function getPlaceName()
     {
@@ -686,14 +691,14 @@ class Order
     public function setPlacePointAddress($placePointAddress)
     {
         $this->place_point_address = $placePointAddress;
-    
+
         return $this;
     }
 
     /**
      * Get place_point_address
      *
-     * @return string 
+     * @return string
      */
     public function getPlacePointAddress()
     {
@@ -709,14 +714,14 @@ class Order
     public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
     {
         $this->place = $place;
-    
+
         return $this;
     }
 
     /**
      * Get place
      *
-     * @return \Food\DishesBundle\Entity\Place 
+     * @return \Food\DishesBundle\Entity\Place
      */
     public function getPlace()
     {
@@ -752,7 +757,7 @@ class Order
     public function setPlacePoint(\Food\DishesBundle\Entity\PlacePoint $placePoint = null)
     {
         $this->place_point = $placePoint;
-    
+
         return $this;
     }
 
@@ -765,7 +770,7 @@ class Order
     public function addDetail(\Food\OrderBundle\Entity\OrderDetails $details)
     {
         $this->details[] = $details;
-    
+
         return $this;
     }
 
@@ -798,14 +803,14 @@ class Order
     public function setPlacePointCity($placePointCity)
     {
         $this->place_point_city = $placePointCity;
-    
+
         return $this;
     }
 
     /**
      * Get place_point_city
      *
-     * @return string 
+     * @return string
      */
     public function getPlacePointCity()
     {
@@ -821,14 +826,14 @@ class Order
     public function setPlacePointSelfDelivery($placePointSelfDelivery)
     {
         $this->place_point_self_delivery = $placePointSelfDelivery;
-    
+
         return $this;
     }
 
     /**
      * Get place_point_self_delivery
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getPlacePointSelfDelivery()
     {
@@ -844,14 +849,14 @@ class Order
     public function setDriver(\Food\AppBundle\Entity\Driver $driver = null)
     {
         $this->driver = $driver;
-    
+
         return $this;
     }
 
     /**
      * Get driver
      *
-     * @return \Food\AppBundle\Entity\Driver 
+     * @return \Food\AppBundle\Entity\Driver
      */
     public function getDriver()
     {
@@ -867,7 +872,7 @@ class Order
     public function addOrderStatusLog(\Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog)
     {
         $this->orderStatusLog[] = $orderStatusLog;
-    
+
         return $this;
     }
 
@@ -900,14 +905,14 @@ class Order
     public function setLocale($locale)
     {
         $this->locale = $locale;
-    
+
         return $this;
     }
 
     /**
      * Get locale
      *
-     * @return string 
+     * @return string
      */
     public function getLocale()
     {
@@ -923,7 +928,7 @@ class Order
     public function addAccounting(\Food\OrderBundle\Entity\OrderAccounting $accounting)
     {
         $this->accounting[] = $accounting;
-    
+
         return $this;
     }
 
@@ -956,14 +961,14 @@ class Order
     public function setSeries($series)
     {
         $this->series = $series;
-    
+
         return $this;
     }
 
     /**
      * Get series
      *
-     * @return string 
+     * @return string
      */
     public function getSeries()
     {
@@ -979,14 +984,14 @@ class Order
     public function setNumber($number)
     {
         $this->number = $number;
-    
+
         return $this;
     }
 
     /**
      * Get number
      *
-     * @return integer 
+     * @return integer
      */
     public function getNumber()
     {
@@ -1002,7 +1007,7 @@ class Order
     public function setTotal($total)
     {
         $this->total = $total;
-    
+
         return $this;
     }
 
@@ -1035,14 +1040,14 @@ class Order
     public function setDelayDuration($delayDuration)
     {
         $this->delayDuration = $delayDuration;
-    
+
         return $this;
     }
 
     /**
      * Get delayDuration
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelayDuration()
     {
@@ -1058,14 +1063,14 @@ class Order
     public function setDelayReason($delayReason)
     {
         $this->delayReason = $delayReason;
-    
+
         return $this;
     }
 
     /**
      * Get delayReason
      *
-     * @return string 
+     * @return string
      */
     public function getDelayReason()
     {
@@ -1081,14 +1086,14 @@ class Order
     public function setAcceptTime($acceptTime)
     {
         $this->acceptTime = $acceptTime;
-    
+
         return $this;
     }
 
     /**
      * Get acceptTime
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getAcceptTime()
     {
@@ -1104,14 +1109,14 @@ class Order
     public function setDeliveryTime($deliveryTime)
     {
         $this->deliveryTime = $deliveryTime;
-    
+
         return $this;
     }
 
     /**
      * Get deliveryTime
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDeliveryTime()
     {
@@ -1127,14 +1132,14 @@ class Order
     public function setDelayed($delayed)
     {
         $this->delayed = $delayed;
-    
+
         return $this;
     }
 
     /**
      * Get delayed
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDelayed()
     {
@@ -1150,14 +1155,14 @@ class Order
     public function setUserIp($userIp)
     {
         $this->userIp = $userIp;
-    
+
         return $this;
     }
 
     /**
      * Get userIp
      *
-     * @return string 
+     * @return string
      */
     public function getUserIp()
     {
@@ -1173,7 +1178,7 @@ class Order
     public function addPaymentLog(\Food\OrderBundle\Entity\PaymentLog $paymentLog)
     {
         $this->paymentLog[] = $paymentLog;
-    
+
         return $this;
     }
 
@@ -1206,14 +1211,14 @@ class Order
     public function setReminded($reminded)
     {
         $this->reminded = $reminded;
-    
+
         return $this;
     }
 
     /**
      * Get reminded
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getReminded()
     {
@@ -1229,14 +1234,14 @@ class Order
     public function setCouponCode($couponCode)
     {
         $this->couponCode = $couponCode;
-    
+
         return $this;
     }
 
     /**
      * Get couponCode
      *
-     * @return string 
+     * @return string
      */
     public function getCouponCode()
     {
@@ -1252,14 +1257,14 @@ class Order
     public function setDiscountSize($discountSize)
     {
         $this->discountSize = $discountSize;
-    
+
         return $this;
     }
 
     /**
      * Get discountSize
      *
-     * @return integer 
+     * @return integer
      */
     public function getDiscountSize()
     {
@@ -1275,7 +1280,7 @@ class Order
     public function setDiscountSum($discountSum)
     {
         $this->discountSum = $discountSum;
-    
+
         return $this;
     }
 
@@ -1298,14 +1303,14 @@ class Order
     public function setCoupon(\Food\OrderBundle\Entity\Coupon $coupon = null)
     {
         $this->coupon = $coupon;
-    
+
         return $this;
     }
 
     /**
      * Get coupon
      *
-     * @return \Food\OrderBundle\Entity\Coupon 
+     * @return \Food\OrderBundle\Entity\Coupon
      */
     public function getCoupon()
     {
@@ -1337,7 +1342,7 @@ class Order
         $this->paymentLog = new \Doctrine\Common\Collections\ArrayCollection();
         $this->orderLog = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Add orderLog
      *
@@ -1347,7 +1352,7 @@ class Order
     public function addOrderLog(\Food\OrderBundle\Entity\OrderLog $orderLog)
     {
         $this->orderLog[] = $orderLog;
-    
+
         return $this;
     }
 
@@ -1364,10 +1369,33 @@ class Order
     /**
      * Get orderLog
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getOrderLog()
     {
         return $this->orderLog;
+    }
+
+    /**
+     * Set version
+     *
+     * @param integer $version
+     * @return Order
+     */
+    public function setVersion($version)
+    {
+        $this->version = $version;
+
+        return $this;
+    }
+
+    /**
+     * Get version
+     *
+     * @return integer
+     */
+    public function getVersion()
+    {
+        return $this->version;
     }
 }
