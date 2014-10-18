@@ -28,10 +28,10 @@ trait PaymentLogDecorator
             $orderService->deactivateCoupon();
 
             // insert order into nav
-            $navService->insertOrder($navService->getOrderDataForNav($order));
+            // $navService->insertOrder($navService->getOrderDataForNav($order));
 
             // clear cart
-            // $cartService->clearCart($order->getPlace());
+            $cartService->clearCart($order->getPlace());
         } catch (OptimisticLockException $e) {
             // actually do nothing
         }
