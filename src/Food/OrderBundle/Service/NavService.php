@@ -8,9 +8,11 @@ use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\OrderBundle\Common;
+use Food\OrderBundle\Service\NavService\OrderDataForNavDecorator;
 
 class NavService extends ContainerAware
 {
+    use OrderDataForNavDecorator;
 
     /**
      * Modifajeris. NELIESTI. Patys galesite tada rankutemis issirankioti is Cili DB savo uzsakymus.
@@ -125,6 +127,18 @@ class NavService extends ContainerAware
     public function getNavIdModifier()
     {
         return $this->_orderIdModifier;
+    }
+
+    public function initTestSqlConn() {
+        $sqlSS = $this->container->get('food.mssql');
+        $sqlSS->init(
+            '213.190.40.38',
+            5566,
+            'prototipas6',
+            'Neotest',
+            'NewNeo@123'
+        );
+        return $sqlSS;
     }
 
     public function getLastOrders()
@@ -251,7 +265,7 @@ class NavService extends ContainerAware
             //$this->container->get('doctrine')->getManager()->refresh($orderRow);
         }
 
-        
+
 
         $orderDate = $order->getOrderDate();
         $orderDate->sub(new \DateInterval('P0DT3H'));
@@ -677,4 +691,3 @@ class NavService extends ContainerAware
         return $navIds;
     }
 }
-?>

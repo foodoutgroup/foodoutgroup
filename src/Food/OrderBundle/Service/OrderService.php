@@ -357,11 +357,8 @@ class OrderService extends ContainerAware
             $this->notifyOrderAccept();
 
             // Put for logistics
-            if ($this->container->getParameter('logistics.send_to_external') == true
-                && $this->getOrder()->getDeliveryType() == 'deliver'
-                && $this->getOrder()->getPlacePointSelfDelivery() == false) {
-                $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
-            }
+            $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
+
             // Kitais atvejais tik keiciam statusa, nes gal taip reikia
         } else {
             $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
@@ -588,6 +585,9 @@ class OrderService extends ContainerAware
             }
         }
 
+        // Put for logistics to cancel on their side
+        $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
+
         $this->chageOrderStatus(self::$status_canceled, $source, $statusMessage);
         return $this;
     }
@@ -602,10 +602,8 @@ class OrderService extends ContainerAware
     {
         $this->chageOrderStatus(self::$status_delayed, $source, $statusMessage);
 
-        if ($this->container->getParameter('logistics.send_to_external') == true
-            && $this->getOrder()->getDeliveryType() == 'deliver') {
-            $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
-        }
+        // Inform logistics
+        $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
         return $this;
     }
 
@@ -972,7 +970,12 @@ class OrderService extends ContainerAware
     public function setPaymentStatus($status, $message=null)
     {
         $order = $this->getOrder();
+        $this->setPaymentStatusWithoutSave($order, $status, $message);
+        $this->saveOrder();
+    }
 
+    public function setPaymentStatusWithoutSave($order, $status, $message = null)
+    {
         if (!$this->isAllowedPaymentStatus($status)) {
             throw new \InvalidArgumentException('Status: "'.$status.'" is not a valid order payment status');
         }
@@ -988,13 +991,14 @@ class OrderService extends ContainerAware
             $order->setLastPaymentError($message);
         }
 
-        $this->logPayment(
+        $this->logPaymentWithoutSave(
             $order,
             'payement status change',
-            sprintf('Status changed from "%s" to "%s" with message %s', $oldStatus, $status, $message)
+            sprintf('Status changed from "%s" to "%s" with message %s',
+                    $oldStatus,
+                    $status,
+                    $message)
         );
-
-        $this->saveOrder();
     }
 
     /**
@@ -1216,6 +1220,12 @@ class OrderService extends ContainerAware
      */
     public function logPayment($order=null, $event, $message=null, $debugData=null)
     {
+        $this->logPaymentWithoutSave($order, $event, $message, $debugData);
+        $this->getEm()->flush();
+    }
+
+    public function logPaymentWithoutSave($order=null, $event, $message=null, $debugData=null)
+    {
         $log = new PaymentLog();
 
         if (empty($order) && !($order instanceof Order)) {
@@ -1247,7 +1257,6 @@ class OrderService extends ContainerAware
         $log->setDebugData($debugData);
 
         $this->getEm()->persist($log);
-        $this->getEm()->flush();
     }
 
     public function getOrdersForDriver($driver)

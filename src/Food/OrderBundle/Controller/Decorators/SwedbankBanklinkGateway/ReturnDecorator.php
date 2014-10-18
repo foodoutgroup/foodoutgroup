@@ -4,6 +4,7 @@ namespace Food\OrderBundle\Controller\Decorators\SwedbankBanklinkGateway;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\DBAL\LockMode;
 
 trait ReturnDecorator
 {
@@ -13,9 +14,12 @@ trait ReturnDecorator
         $orderService = $this->get('food.order');
         $gateway = $this->get('pirminis_banklink_gateway');
         $cartService = $this->get('food.cart');
+        $navService = $this->get('food.nav');
+        $em = $this->get('doctrine')->getManager();
 
+        // default template
         $view = 'FoodOrderBundle:Payments:' .
-                'swedbank_gateway/something_wrong.html.twig';
+                'swedbank_gateway/order_not_found.html.twig';
 
         // get order
         $transactionId = $gateway->order_id('swedbank', $request);
@@ -25,11 +29,12 @@ trait ReturnDecorator
         // extract actual order id. say thanks to swedbank requirements
         $transactionIdSplit = explode('_', $transactionId);
         $orderId = !empty($transactionIdSplit[0]) ? $transactionIdSplit[0] : 0;
-        $order = $orderService->getOrderById($orderId);
 
-        if (!$order) {
-            $view = 'FoodOrderBundle:Payments:' .
-                    'swedbank_gateway/order_not_found.html.twig';
+        try {
+            $order = $em->getRepository('FoodOrderBundle:Order')
+                        ->find($orderId, LockMode::OPTIMISTIC);
+            $orderService->setOrder($order);
+        } catch (\Exception $e) {
             return $this->render($view);
         }
 
@@ -42,10 +47,12 @@ trait ReturnDecorator
             ($isEvent &&
              $gateway->is_event_authorized('swedbank', $request))
         ) {
-            $this->logPaidAndFinish($orderService,
+            $this->logPaidAndFinish('Swedbank Banklink Gateway billed payment',
+                                    $orderService,
                                     $order,
                                     $cartService,
-                                    $isEvent);
+                                    $em,
+                                    $navService);
 
             if ($isEvent) {
                 return new Response('<Response>OK</Response>');
@@ -59,7 +66,11 @@ trait ReturnDecorator
                   ($isEvent &&
                    $gateway->event_requires_investigation('swedbank', $request))
         ) {
-            $this->logProcessingAndFinish($orderService, $order, $cartService);
+            $this->logProcessingAndFinish(
+                'Swedbank Banklink Gateway payment started',
+                $orderService,
+                $order,
+                $cartService);
 
             if ($isEvent) {
                 return new Response('<Response>OK</Response>');
@@ -74,7 +85,10 @@ trait ReturnDecorator
                   ($isEvent &&
                    $gateway->is_event_cancelled('swedbank', $request))
         ) {
-            $this->logFailureAndFinish($orderService, $order);
+            $this->logFailureAndFinish(
+                'Swedbank Banklink Gateway payment canceled',
+                $orderService,
+                $order);
 
             if ($isEvent) {
                 return new Response('<Response>OK</Response>');
@@ -96,6 +110,9 @@ trait ReturnDecorator
             $view = 'FoodOrderBundle:Payments:' .
                     'swedbank_gateway/communication_error.html.twig';
             return $this->render($view, ['order' => $order]);
+        } else {
+            $view = 'FoodOrderBundle:Payments:' .
+                    'swedbank_gateway/something_wrong.html.twig';
         }
 
         return $this->render($view, ['order' => $order]);

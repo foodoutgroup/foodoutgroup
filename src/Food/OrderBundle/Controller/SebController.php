@@ -4,12 +4,14 @@ namespace Food\OrderBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Food\OrderBundle\Controller\Decorators\PaymentLogDecorator;
 use Food\OrderBundle\Controller\Decorators\Seb\SharedDecorator;
 use Food\OrderBundle\Controller\Decorators\Seb\RedirectDecorator;
 use Food\OrderBundle\Controller\Decorators\Seb\ReturnDecorator;
 
 class SebController extends Controller
 {
+    use PaymentLogDecorator;
     use SharedDecorator;
     use RedirectDecorator;
     use ReturnDecorator;

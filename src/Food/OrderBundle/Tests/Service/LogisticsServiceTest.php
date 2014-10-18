@@ -822,7 +822,7 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
 
         $container = $this->getMock(
             'Symfony\Component\DependencyInjection\Container',
-            array('get')
+            array('get', 'getParameter')
         );
 
         $orderService = $this->getMockBuilder('Food\OrderBundle\Service\OrderService')
@@ -839,12 +839,25 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $logisticsService->setContainer($container);
 
         $order = new Order();
+        $order->setPlacePointSelfDelivery(false)
+            ->setDeliveryType(OrderService::$deliveryDeliver);
+
         $expectedOrderSendObject = new OrderToLogistics();
         $expectedOrderSendObject->setOrder($order)
             ->setStatus('unsent')
             ->setDateAdded(new \DateTime("now"));
 
         $container->expects($this->at(0))
+            ->method('getParameter')
+            ->with('logistics.send_to_external')
+            ->will($this->returnValue(true));
+
+        $container->expects($this->at(1))
+            ->method('getParameter')
+            ->with('logistics.city_filter')
+            ->will($this->returnValue(array()));
+
+        $container->expects($this->at(2))
             ->method('get')
             ->with('food.order')
             ->will($this->returnValue($orderService));
@@ -857,7 +870,7 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
                 'Order scheduled to send to logistics'
             );
 
-        $container->expects($this->at(1))
+        $container->expects($this->at(3))
             ->method('get')
             ->with('doctrine')
             ->will($this->returnValue($doctrine));
@@ -875,6 +888,181 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
 
         $logisticsService->putOrderForSend($order);
     }
+
+    public function testPutOrderForSendWithCityCheck()
+    {
+        $logisticsService = new LogisticsService();
+
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get', 'getParameter')
+        );
+
+        $orderService = $this->getMockBuilder('Food\OrderBundle\Service\OrderService')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $entityManager = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $logisticsService->setContainer($container);
+
+        $order = new Order();
+        $order->setPlacePointSelfDelivery(false)
+            ->setDeliveryType(OrderService::$deliveryDeliver)
+            ->setPlacePointCity('Kaunas');
+
+        $expectedOrderSendObject = new OrderToLogistics();
+        $expectedOrderSendObject->setOrder($order)
+            ->setStatus('unsent')
+            ->setDateAdded(new \DateTime("now"));
+
+        $container->expects($this->at(0))
+            ->method('getParameter')
+            ->with('logistics.send_to_external')
+            ->will($this->returnValue(true));
+
+        $container->expects($this->at(1))
+            ->method('getParameter')
+            ->with('logistics.city_filter')
+            ->will($this->returnValue(array('Vilnius', 'Kaunas')));
+
+        $container->expects($this->at(2))
+            ->method('get')
+            ->with('food.order')
+            ->will($this->returnValue($orderService));
+
+        $orderService->expects($this->once())
+            ->method('logOrder')
+            ->with(
+                $order,
+                'schedule_logistics_api_send',
+                'Order scheduled to send to logistics'
+            );
+
+        $container->expects($this->at(3))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getManager')
+            ->will($this->returnValue($entityManager));
+
+        $entityManager->expects($this->once())
+            ->method('persist')
+            ->with($expectedOrderSendObject);
+
+        $entityManager->expects($this->once())
+            ->method('flush');
+
+        $logisticsService->putOrderForSend($order);
+    }
+
+    public function testPutOrderForSendWithCityCheckFiltered()
+    {
+        $logisticsService = new LogisticsService();
+
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get', 'getParameter')
+        );
+
+        $logisticsService->setContainer($container);
+
+        $order = new Order();
+        $order->setPlacePointSelfDelivery(false)
+            ->setDeliveryType(OrderService::$deliveryDeliver)
+            ->setPlacePointCity('Klaipėda');
+
+        $expectedOrderSendObject = new OrderToLogistics();
+        $expectedOrderSendObject->setOrder($order)
+            ->setStatus('unsent')
+            ->setDateAdded(new \DateTime("now"));
+
+        $container->expects($this->at(0))
+            ->method('getParameter')
+            ->with('logistics.send_to_external')
+            ->will($this->returnValue(true));
+
+        $container->expects($this->at(1))
+            ->method('getParameter')
+            ->with('logistics.city_filter')
+            ->will($this->returnValue(array('Vilnius', 'Kaunas')));
+
+        $container->expects($this->never())
+            ->method('get');
+
+        $logisticsService->putOrderForSend($order);
+    }
+
+    public function testPutPickupOrderForSend()
+    {
+        $logisticsService = new LogisticsService();
+
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get', 'getParameter')
+        );
+
+        $logisticsService->setContainer($container);
+
+        $order = new Order();
+        $order->setPlacePointSelfDelivery(false)
+            ->setDeliveryType(OrderService::$deliveryPickup);
+
+        $expectedOrderSendObject = new OrderToLogistics();
+        $expectedOrderSendObject->setOrder($order)
+            ->setStatus('unsent')
+            ->setDateAdded(new \DateTime("now"));
+
+        $container->expects($this->at(0))
+            ->method('getParameter')
+            ->with('logistics.send_to_external')
+            ->will($this->returnValue(true));
+
+        $container->expects($this->never())
+            ->method('get');
+
+        $logisticsService->putOrderForSend($order);
+    }
+
+    public function testPutSelfDeliveredOrderForSend()
+    {
+        $logisticsService = new LogisticsService();
+
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get', 'getParameter')
+        );
+
+        $logisticsService->setContainer($container);
+
+        $order = new Order();
+        $order->setPlacePointSelfDelivery(true)
+            ->setDeliveryType(OrderService::$deliveryDeliver);
+
+        $expectedOrderSendObject = new OrderToLogistics();
+        $expectedOrderSendObject->setOrder($order)
+            ->setStatus('unsent')
+            ->setDateAdded(new \DateTime("now"));
+
+        $container->expects($this->at(0))
+            ->method('getParameter')
+            ->with('logistics.send_to_external')
+            ->will($this->returnValue(true));
+
+        $container->expects($this->never())
+            ->method('get');
+
+        $logisticsService->putOrderForSend($order);
+    }
+
+
 
     public function testSendOrderToLogistics()
     {
