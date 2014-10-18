@@ -21,6 +21,9 @@ class RestaurantsController extends Controller
 
         $address = $request->get('address');
         $city = $request->get('city');
+        if (!empty($city)) {
+            $city = str_replace("laipeda", "laipėda", $city);
+        }
         $lat = $request->get('lat');
         $lng = $request->get('lng');
         $keyword = $request->get('keyword', '');
@@ -101,6 +104,9 @@ class RestaurantsController extends Controller
     {
         $address = $request->get('address');
         $city = $request->get('city');
+        if (!empty($city)) {
+            $city = str_replace("laipeda", "laipėda", $city);
+        }
         $lat = $request->get('lat');
         $lng = $request->get('lng');
 
@@ -155,6 +161,9 @@ class RestaurantsController extends Controller
     public function getRestaurantAction($id, Request $request)
     {
         $city = $request->get('city');
+        if (!empty($city)) {
+            $city = str_replace("laipeda", "laipėda", $city);
+        }
         $address = $request->get('address');
         $lat = $request->get('lat');
         $lng = $request->get('lng');
