@@ -14,6 +14,7 @@ trait ReturnDecorator
         $cartService = $this->get('food.cart');
         $navService = $this->get('food.nav');
         $em = $this->get('doctrine')->getManager();
+        $logger = $this->get('logger');
 
         // template
         $view = 'FoodOrderBundle:Payments:nordea_banklink/fail.html.twig';
@@ -41,7 +42,8 @@ trait ReturnDecorator
                                     $order,
                                     $cartService,
                                     $em,
-                                    $navService);
+                                    $navService,
+                                    $logger);
         } else {
             // fail
             $this->logFailureAndFinish('Nordea banklink failed payment',
