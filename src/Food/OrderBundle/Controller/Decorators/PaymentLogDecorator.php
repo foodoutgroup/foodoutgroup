@@ -13,6 +13,11 @@ trait PaymentLogDecorator
                                         $em,
                                         $navService)
     {
+        if ($order->getPaymentStatus() ==
+            $orderService::$paymentStatusComplete) {
+            return;
+        }
+
         $orderService->setPaymentStatusWithoutSave(
             $order,
             $orderService::$paymentStatusComplete,
