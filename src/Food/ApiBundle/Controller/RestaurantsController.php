@@ -43,6 +43,7 @@ class RestaurantsController extends Controller
                 // TODO HACK pabaiga :)
 
                 $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
+
                 $this->get('food.googlegis')->groupData($location, $address, $city);
 
                 $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
