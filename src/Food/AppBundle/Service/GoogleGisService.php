@@ -75,7 +75,7 @@ class GoogleGisService extends ContainerAware
             foreach ($location->results as $key=>$rezRow) {
                 $hasIt = false;
                 foreach ($rezRow->address_components as $addr) {
-                    if (in_array('locality', $addr->types) && in_array('political', $addr->types) && $addr->short_name == $city) {
+                    if (in_array('locality', $addr->types) && in_array('political', $addr->types) && ($addr->short_name == $city || $addr->short_name = str_replace("ė", "e", $city))) {
                         $hasIt = true;
                     }
                 }
@@ -91,6 +91,7 @@ class GoogleGisService extends ContainerAware
         $returner['street_found'] = false;
         $returner['address_found'] = false;
         $returner['status'] = $location->status;
+
         if( !empty( $location->results[0]) && (in_array('street_address', $location->results[0]->types) || in_array('premise', $location->results[0]->types))) {
             $returner['not_found'] = false;
             $returner['street_found'] = true;
@@ -123,6 +124,7 @@ class GoogleGisService extends ContainerAware
             }
         }
         $this->setLocationToSession($returner);
+
         return $returner;
     }
 
