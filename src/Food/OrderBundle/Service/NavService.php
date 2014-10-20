@@ -577,7 +577,7 @@ class NavService extends ContainerAware
         }
 
         $return = array();
-        while ($rowRez = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+        while ($rowRez = $this->container->get('food.mssql')->fetchArray($result)) {
             $return[$this->getOrderIdFromNavId($rowRez['Order No_'])] = $rowRez;
         }
 
