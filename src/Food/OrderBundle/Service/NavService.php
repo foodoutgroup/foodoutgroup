@@ -370,7 +370,7 @@ class NavService extends ContainerAware
 
         $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
         //$clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
-        $clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija Skambučių Centras/Codeunit/WEB_Service2";
+        $clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija%20Skambučių%20Centras/Codeunit/WEB_Service2";
 
         stream_wrapper_unregister('http');
         stream_wrapper_register('http', '\Food\OrderBundle\Common\FoNTLMStream') or die("Failed to register protocol");
@@ -516,13 +516,14 @@ class NavService extends ContainerAware
 
         $requestXml = iconv('utf-8', 'cp1257', $requestXml);
         ob_start();
+        @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQUEST", print_r($requestData, true), "FROM: info@foodout.lt");
         $response = $this->getWSConnection()->FoodOutValidateOrder(
                 array(
                     'params' => $requestData,
                     'errors' => array()
                 )
         );
-        mail("paulius@foodout.lt", "CILI NVB VALIDATE RESPONSE", print_r($response, true), "FROM: info@foodout.lt");
+        @mail("paulius@foodout.lt", "CILI NVB VALIDATE RESPONSE", print_r($response, true), "FROM: info@foodout.lt");
         ob_end_clean();
 
         $prbDish = "";
