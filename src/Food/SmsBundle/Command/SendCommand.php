@@ -8,8 +8,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class SendCommand extends ContainerAwareCommand
 {
+    private $timeStart;
     protected function configure()
     {
+        $this->timeStart = microtime(true);
+
         $this
             ->setName('sms:send')
             ->setDescription('Send messages')
@@ -27,6 +30,7 @@ class SendCommand extends ContainerAwareCommand
         $count = 0;
 
         $messagingService = $this->getContainer()->get('food.messages');
+        $logger = $this->getContainer()->get('logger');
 //        $messagingProviders = $this->getContainer()->getParameter('sms.available_providers');
         $mainProvider = $this->getContainer()->getParameter('sms.main_provider');
 //
@@ -58,7 +62,14 @@ class SendCommand extends ContainerAwareCommand
                 }
             }
 
-            $output->writeln(sprintf('<info>%d messages sent</info>', $count));
+            $timeSpent = microtime(true) - $this->timeStart;
+            $output->writeln(sprintf('<info>%d messages sent in %0.2f seconds</info>', $count, $timeSpent));
+            // Log performance data
+            $logger->alert(sprintf(
+                '[Performance] SMS sent cron send %d messages in %0.2f seconds',
+                $count,
+                $timeSpent
+            ));
         } catch (\InvalidArgumentException $e) {
             $output->writeln('<error>Sorry, lazy programmer left a bug :(</error>');
             $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
