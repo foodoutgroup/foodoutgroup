@@ -73,7 +73,6 @@ class SqlConnectorService extends ContainerAware
 
     public function fetchArray($res)
     {
-        var_dump($res);
         if ($this->isWin) {
             return sqlsrv_fetch_array($res, SQLSRV_FETCH_ASSOC);
         } else {
