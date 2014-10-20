@@ -415,7 +415,6 @@ class NavService extends ContainerAware
     public function validateCartInNav($phone, $restaurant, $orderDate, $orderTime, $deliveryType, $dishes)
     {
         $rcCode = $restaurant->getInternalCode();
-        $rcCode = 'C09';
 
         $requestData = array(
             array('Lines' => array())
