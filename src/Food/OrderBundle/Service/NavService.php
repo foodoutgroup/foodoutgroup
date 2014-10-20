@@ -515,14 +515,15 @@ class NavService extends ContainerAware
         $requestXml.= "</Lines>\n";
 
         $requestXml = iconv('utf-8', 'cp1257', $requestXml);
-        //ob_start();
+        ob_start();
         $response = $this->getWSConnection()->FoodOutValidateOrder(
                 array(
                     'params' => $requestData,
                     'errors' => array()
                 )
         );
-        //ob_end_clean();
+        mail("paulius@foodout.lt", "CILI NVB VALIDATE RESPONSE", print_r($response, true), "FROM: info@foodout.lt");
+        ob_end_clean();
 
         $prbDish = "";
         if ($response->return_value == 2) {
