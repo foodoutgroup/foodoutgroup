@@ -59,21 +59,18 @@ class TextStrategy extends AbstractStrategy
             }
         }
 
-        $id = $this->idExistsIn($slugs, $textId);
-        if ($id && $id > 0) {
-            $oldItems = $em->getRepository('FoodAppBundle:Slug')
-                ->findAll($id);
+        $oldItems = $em->getRepository('FoodAppBundle:Slug')
+            ->findBy(array('item_id' => $textId));
 
-            if ($oldItems) {
-                foreach ($oldItems as $oldItem) {
-                    if ($oldItem->getName() == $slug && $oldItem->getLangId() == $langId) {
-                        $oldItem->setActive(true);
-                        $createNew = false;
-                    } else if ($oldItem->getName() != $slug) {
-                        $oldItem->setActive(false);
-                    }
-                    $em->persist($oldItem);
+        if ($oldItems) {
+            foreach ($oldItems as $oldItem) {
+                if ($oldItem->getName() == $slug && $oldItem->getLangId() == $langId) {
+                    $oldItem->setActive(true);
+                    $createNew = false;
+                } else if ($oldItem->getName() != $slug) {
+                    $oldItem->setActive(false);
                 }
+                $em->persist($oldItem);
             }
         }
 
@@ -91,21 +88,6 @@ class TextStrategy extends AbstractStrategy
         }
 
         $em->flush();
-    }
-
-    /**
-     * @param $slugs
-     * @param $id
-     * @return bool|int
-     */
-    private function idExistsIn($slugs, $id)
-    {
-        foreach ($slugs as $slRow) {
-            if ($slRow['item_id'] == $id) {
-                return $slRow['id'];
-            }
-        }
-        return false;
     }
 
     /**
