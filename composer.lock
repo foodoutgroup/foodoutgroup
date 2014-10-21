@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2f8e695941aa647cf6664322061d8726",
+    "hash": "5e83b11a325ac11d2026f0d5c9ec8082",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -1768,16 +1768,16 @@
         },
         {
             "name": "pirminis/maybe-monad",
-            "version": "1.2.4",
+            "version": "1.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pirminis/maybe-monad.git",
-                "reference": "88f2b9aac7b4c96ff19e3a2e4a59232138878244"
+                "reference": "67689bd2e85bc666a5d7cc01cca86cf2ca38eae8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pirminis/maybe-monad/zipball/88f2b9aac7b4c96ff19e3a2e4a59232138878244",
-                "reference": "88f2b9aac7b4c96ff19e3a2e4a59232138878244",
+                "url": "https://api.github.com/repos/pirminis/maybe-monad/zipball/67689bd2e85bc666a5d7cc01cca86cf2ca38eae8",
+                "reference": "67689bd2e85bc666a5d7cc01cca86cf2ca38eae8",
                 "shasum": ""
             },
             "require": {
@@ -1805,7 +1805,7 @@
                 "monad",
                 "safe"
             ],
-            "time": "2014-10-18 15:56:23"
+            "time": "2014-10-20 15:21:25"
         },
         {
             "name": "psr/log",
