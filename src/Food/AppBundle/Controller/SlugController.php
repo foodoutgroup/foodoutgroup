@@ -41,7 +41,7 @@ class SlugController extends Controller
                 'item_id' => $slugRow->getItemId(),
                 'lang_id' => $slugRow->getLangId(),
                 'type' => $slugRow->getType(),
-                'is_active' => true,
+                'active' => true,
             ]);
             if (empty($slugRow)) {
                 // Log da shit about slug problems :)
