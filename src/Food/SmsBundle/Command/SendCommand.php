@@ -9,6 +9,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class SendCommand extends ContainerAwareCommand
 {
     private $timeStart;
+    private $maxChecks = 5;
+
     protected function configure()
     {
         $this->timeStart = microtime(true);
@@ -49,16 +51,30 @@ class SendCommand extends ContainerAwareCommand
         $messagingService->setMessagingProvider($provider);
 
         try {
-            $unsentMessages = $messagingService->getUnsentMessages();
-            $unsentMessagesCount = count($unsentMessages);
-            $output->writeln(sprintf('<info>%d unsent messages found. Starting to send them now!</info>', $unsentMessagesCount));
+            for ($timesChecked = 1; $timesChecked <= $this->getMaxChecks(); $timesChecked++) {
+                $unsentMessages = $messagingService->getUnsentMessages();
+                $unsentMessagesCount = count($unsentMessages);
+                $output->writeln(sprintf('<info>Running %d of %d check itterarion.</info>', $timesChecked, $this->getMaxChecks()));
+                $output->writeln(sprintf('<info>%d unsent messages found. Starting to send them now!</info>', $unsentMessagesCount));
 
-            if (!empty($unsentMessages) && $unsentMessagesCount > 0) {
-                foreach($unsentMessages as $message) {
-                    $output->writeln(sprintf('<info>Sending message id: %d</info>', $message->getId()));
-                    $messagingService->sendMessage($message);
-                    $messagingService->saveMessage($message);
-                    $count++;
+                if (!empty($unsentMessages) && $unsentMessagesCount > 0) {
+                    foreach($unsentMessages as $message) {
+                        $output->writeln(sprintf('<info>Sending message id: %d</info>', $message->getId()));
+                        $messagingService->sendMessage($message);
+                        $messagingService->saveMessage($message);
+                        $count++;
+
+                        // Jei uztrukom ilgiau nei 80s - nustojam sukt checkus, nes greit pasileis naujas instance
+                        if ((microtime(true) - $this->timeStart) > 80) {
+                            break(2);
+                        }
+                    }
+                }
+
+                // Pailsim, jei tai ne paskutine iteracija
+                if ($timesChecked != $this->getMaxChecks()) {
+                    $output->writeln('<info>Sleeping for 10 seconds... zZzZzzZZzz...</info>');
+                    sleep(10);
                 }
             }
 
@@ -81,5 +97,21 @@ class SendCommand extends ContainerAwareCommand
 
             throw $e;
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxChecks()
+    {
+        return $this->maxChecks;
+    }
+
+    /**
+     * @param int $checks
+     */
+    public function setMaxChecks($checks=1)
+    {
+        $this->maxChecks = $checks;
     }
 }

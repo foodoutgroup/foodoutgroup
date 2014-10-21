@@ -66,8 +66,10 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $unsentMessages = array();
 
+        $sendCommand = new SendCommand();
+        $sendCommand->setMaxChecks(1);
         $application = new Application();
-        $application->add(new SendCommand());
+        $application->add($sendCommand);
 
         /**
          * @var SendCommand $command
@@ -142,8 +144,10 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $unsentMessages = array();
 
+        $sendCommand = new SendCommand();
+        $sendCommand->setMaxChecks(1);
         $application = new Application();
-        $application->add(new SendCommand());
+        $application->add($sendCommand);
 
         /**
          * @var SendCommand $command
@@ -224,8 +228,10 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $unsentMessages = array($message);
 
+        $sendCommand = new SendCommand();
+        $sendCommand->setMaxChecks(1);
         $application = new Application();
-        $application->add(new SendCommand());
+        $application->add($sendCommand);
 
         /**
          * @var SendCommand $command
@@ -312,8 +318,10 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $unsentMessages = array($message, $message);
 
+        $sendCommand = new SendCommand();
+        $sendCommand->setMaxChecks(1);
         $application = new Application();
-        $application->add(new SendCommand());
+        $application->add($sendCommand);
 
         /**
          * @var SendCommand $command
@@ -409,8 +417,10 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $unsentMessages = array($message);
 
+        $sendCommand = new SendCommand();
+        $sendCommand->setMaxChecks(1);
         $application = new Application();
-        $application->add(new SendCommand());
+        $application->add($sendCommand);
 
         /**
          * @var SendCommand $command
@@ -499,8 +509,10 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $unsentMessages = array($message);
 
+        $sendCommand = new SendCommand();
+        $sendCommand->setMaxChecks(1);
         $application = new Application();
-        $application->add(new SendCommand());
+        $application->add($sendCommand);
 
         /**
          * @var SendCommand $command
