@@ -89,6 +89,19 @@
     </div>
 
     {% block body %}{% endblock %}
+    <div class="site-center">
+    <div class="site-block">
+        <div class="clearfix bottom-blocks">
+            <div class="app-block clearfix"><img src="{{ asset('bundles/foodapp/images/app-view.png') }}">
+                <div class="app-block-inner">
+                    <h3>Foodout.lt tavo kišenėje!</h3>
+                    <p>Lorem ipsum dolor sit amet, enim ad minim veniam, quis nostrud ullamco laboris nisi ut aliqip ex commodo consequat.</p>
+                    <div><a href="#"><img src="{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a href="#"><img src="{{ asset('bundles/foodapp/images/g-store.png') }}"></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 
     {{ render(controller('FoodAppBundle:Default:footer')) }}
 </div>

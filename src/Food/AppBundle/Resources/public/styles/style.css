@@ -491,12 +491,12 @@ input.button {}
 
 
 /*Bottom blocks*/
-.bottom-blocks {padding-top: 94px;}
-.app-block {width: 580px; float: left; position: relative; height: 240px;}
-.app-block > img {position: absolute; left: -9px; bottom: 0px;}
-.app-block-inner {width: 304px; float: right;}
+.bottom-blocks {padding-top: 56px; margin-bottom: -98px;}
+.app-block {position: relative; height: 193px;}
+.app-block > img {position: absolute; left: 91px; bottom: 0px;}
+.app-block-inner {width: 500px; float: right; padding-right: 84px;}
 .app-block-inner h3 {margin: 0; font-size: 30px; line-height: 30px; letter-spacing: -1.6px; color: #513d28;}
-.app-block-inner p {color: #543f42; line-height: 17px; font-size: 12px; margin-top: 6px; margin-bottom: 17px;}
+.app-block-inner p {color: #543f42; line-height: 17px; font-size: 12px; margin-top: 14px; margin-bottom: 26px;}
 .app-block a {display: inline-block; margin-right: 10px;}
 
 .newsletter-block {float: right; width: 342px; background: #fff; padding: 19px; border-radius: 5px;}
