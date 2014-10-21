@@ -1,7 +1,7 @@
 <div id="detailed-dish-popup">
     <form class="popup detailed-dish-popup">
         {% if dish.getWebPathThumb('type3') is not empty %}
-            <img src="/{{ dish.getWebPathThumb('type3') }}" class="popup-header" />
+            <img src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type3') }}" class="popup-header" />
         {% endif %}
         <div class="dish-info">
             <p class="name">{{ dish.name }}</p>
@@ -11,7 +11,7 @@
             <div class="title">{% trans %}dish.select_size{% endtrans %}</div>
             <div class="clearfix">
                 {% for size in dish.sizes %}
-                    <label class="custom-radio">{{ size.unit.name }}<strong class="price">{{ size.priceLocalized }} {{ currency_display }}</strong>
+                    <label class="custom-radio">{{ size.unit.name }}<strong class="price">{{ size.priceLocalized }} {{ currency_display }}<span class="euro">/&nbsp;&euro;{{  misc_utils.getEuro(size.price)|number_format(2, ',', ' ') }}</span></strong>
                         <input type="radio" {% if loop.first %}checked{% endif %} value="{{ size.id }}" class="dish-size" name="dish-size">
                     </label>
                 {% endfor %}
@@ -33,14 +33,14 @@
                     {% set optCounter = optCounter+1 %}
 
                     {% if option.singleSelect == true %}
-                        <label class="custom-radio">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ option.priceLocalized }} {{ currency_display }}</strong>{% endif %}
+                        <label class="custom-radio">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ option.priceLocalized }} {{ currency_display }}<span class="euro">/&nbsp;&euro;{{  misc_utils.getEuro(option.price)|number_format(2, ',', ' ') }}</span></strong>{% endif %}
                             <input type="radio" name="option[{{ option.groupName }}]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
                         </label>
                     {% endif %}
                 {% endfor %}
                 {% for option in dish.options %}
                     {% if option.singleSelect == false %}
-                        <label class="custom-checkbox">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ option.priceLocalized }} {{ currency_display }}</strong>{% endif %}
+                        <label class="custom-checkbox">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ option.priceLocalized }} {{ currency_display }}<span class="euro">/&nbsp;&euro;{{  misc_utils.getEuro(option.price)|number_format(2, ',', ' ') }}</span></strong>{% endif %}
                             <input type="checkbox" name="options[]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
                         </label>
                     {% endif %}

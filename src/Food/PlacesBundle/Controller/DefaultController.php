@@ -25,6 +25,21 @@ class DefaultController extends Controller
         );
     }
 
+    public function indexCityAction($city)
+    {
+        $city = ucfirst($city);
+        $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", $city);
+        $this->get('food.googlegis')->setCityOnlyToSession($city);
+        $locData =  $this->get('food.googlegis')->getLocationFromSession();
+        return $this->render(
+            'FoodPlacesBundle:Default:index.html.twig',
+            array(
+                'recommended' => false,
+                'location' => $locData
+            )
+        );
+    }
+
     public function listAction($recommended = false, Request $request)
     {
         if ($recommended) {
@@ -49,14 +64,12 @@ class DefaultController extends Controller
 
         $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
             $kitchens,
-            $filter,
+            $filters,
             $recommended,
             $this->get('food.googlegis')->getLocationFromSession()
         );
         $this->get('food.places')->saveRelationPlaceToPoint($places);
         $places = $this->get('food.places')->placesPlacePointsWorkInformation($places);
-
-
 
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
 
@@ -72,15 +85,14 @@ class DefaultController extends Controller
         );
     }
 
-    public function citiesAction()
-    {
-        $cities = $this->get('food.places')->getAvailableCities();
-        return new Response(json_encode($cities));
-    }
-
     public function recommendedAction()
     {
         $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getRecommendedForTitle();
         return $this->render('FoodPlacesBundle:Default:recommended.html.twig', array('places' => $places));
+    }
+
+    public function changeLocationAction()
+    {
+        return $this->render('FoodPlacesBundle:Default:change_location.html.twig');
     }
 }

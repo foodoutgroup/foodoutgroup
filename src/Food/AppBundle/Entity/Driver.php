@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Food\AppBundle\Entity\Driver
  *
  * @ORM\Table(name="drivers")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Food\AppBundle\Entity\DriverRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class Driver

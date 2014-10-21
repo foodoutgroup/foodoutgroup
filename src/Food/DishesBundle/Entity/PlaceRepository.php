@@ -7,13 +7,13 @@ use Doctrine\ORM\Query\ResultSetMapping;
 class PlaceRepository extends EntityRepository
 {
     /**
-     * @param $kitchens
-     * @param $city
-     * @param $long
-     * @param $lat
+     * @param array $kitchens
+     * @param array $filters
+     * @param bool $recommended
+     * @param array|null $locationData
      * @return array
      */
-    public function magicFindByKitchensIds($kitchens, $filters, $recommended = false, $locationData = null)//, $city, $lat, $long)
+    public function magicFindByKitchensIds($kitchens, $filters=array(), $recommended = false, $locationData = null)//, $city, $lat, $long)
     {
         /*
             SET @lat1 = 54.680437, @lon1 = 25.261236, @lat2 = 54.681914, @lon2 = 25.268156;
@@ -68,24 +68,41 @@ class PlaceRepository extends EntityRepository
         $lat = null;
         $lon = null;
 
-        if (!empty($locationData) && !empty($locationData['city']) && !empty($locationData['lat']) && !empty($locationData['lng'])) {
-            $city = $locationData['city'];
+        if (!empty($locationData) && !empty($locationData['lat']) && !empty($locationData['lng'])) {
+            $city = (!empty($locationData['city']) ? $locationData['city'] : null);
             $lat = str_replace(",", ".", $locationData['lat']);
             $lon = str_replace(",", ".", $locationData['lng']);
+        } elseif (!empty($locationData) && !empty($locationData['city']) && isset($locationData['city_only']) && $locationData['city_only'] === true) {
+            $city = $locationData['city'];
         }
 
-
-        $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND city='".$city."' AND place = p.id
+        $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id
             AND (
-                (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) <= 7
+            (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) <= 7
                  OR
                  p.self_delivery = 1
-                 )
+            )
             ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
         $kitchensQuery = "";
 
         if (!empty($kitchens)) {
             $kitchensQuery = "AND p.id IN (SELECT place_id FROM place_kitchen WHERE kitchen_id IN(".implode(",", $kitchens)."))";
+        }
+
+        // Place filters
+        $placeFilter = '';
+        if (is_array($filters) && !empty($filters)) {
+            foreach ($filters as $filterName => $filterValue) {
+                switch($filterName) {
+                    case 'keyword':
+                        if (!empty($filterValue)) {
+                            $placeFilter .= ' AND p.name LIKE "%'.$filterValue.'%"';
+                        }
+                        break;
+
+                    default:
+                }
+            }
         }
 
         if ($recommended) {
@@ -95,13 +112,18 @@ class PlaceRepository extends EntityRepository
                 $kitchensQuery.= " recommended=1";
             }
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND ".$kitchensQuery." GROUP BY p.id";
-        } elseif ($city == null || $lat == null || $lon == null) {
-            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 ".$kitchensQuery." GROUP BY p.id";
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count, p.priority FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL ".$placeFilter." AND ".$kitchensQuery." GROUP BY p.id ORDER BY p.priority DESC, RAND()";
+        } elseif ($lat == null || $lon == null) {
+            if ($city == null) {
+                $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
+                $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count, p.priority FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL ".$placeFilter.$kitchensQuery." GROUP BY p.id";
+            } else {
+                $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city='".$city."' AND ppc.place = p.id";
+                $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count, p.priority FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL AND pp.city='".$city."' ".$placeFilter.$kitchensQuery." GROUP BY p.id";
+            }
         } else {
-            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.city='".$city."' AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.id =  (". $subQuery .") ".$kitchensQuery;
+            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city='".$city."' AND ppc.place = p.id";
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count, p.priority FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL AND pp.city='".$city."' ".$placeFilter." AND pp.id =  (". $subQuery .") ".$kitchensQuery." ORDER BY p.priority DESC, RAND()";
         }
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
@@ -117,11 +139,12 @@ class PlaceRepository extends EntityRepository
     }
 
     /**
-     * @param $placeId
-     * @param $locationData
+     * @param int $placeId
+     * @param array|null $locationData
+     * @param bool $ignoreSelfDelivery
      * @return null
      */
-    public function getPlacePointNear($placeId, $locationData)
+    public function getPlacePointNear($placeId, $locationData, $ignoreSelfDelivery = false)
     {
         if (empty($locationData['city']) || empty($locationData['lat'])) {
             return null;
@@ -134,8 +157,7 @@ class PlaceRepository extends EntityRepository
         $subQuery = "SELECT pp.id FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND pp.deleted_at IS NULL AND p.active=1 AND pp.city='".$city."' AND pp.place = $placeId
             AND (
                 (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <= 7
-                OR
-                p.self_delivery = 1
+                ".(!$ignoreSelfDelivery ? " OR p.self_delivery = 1":"")."
             )
             ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
 

@@ -108,6 +108,7 @@ class PlacesService extends ContainerAware {
             ->findBy(array(
                 'place' => $place->getId(),
                 'public' => 1,
+                'active' => 1,
             ));
     }
 
@@ -155,6 +156,7 @@ class PlacesService extends ContainerAware {
             $sessionData = array();
         }
         $sessionData[$placeId] = $pointId;
+
         $this->getSession()->set('point_data', $sessionData);
     }
 
@@ -189,9 +191,9 @@ class PlacesService extends ContainerAware {
 
     public function placesPlacePointsWorkInformation($places)
     {
+        $sortArrPrio = array();
         $sortArr = array();
         foreach ($places as &$place) {
-            $place['is_work'] = 9;
             if ($place['pp_count'] == 1) {
                 $place['is_work'] = ($this->container->get('food.order')->isTodayWork($place['point']) ? 1:9);
             } else {
@@ -205,10 +207,11 @@ class PlacesService extends ContainerAware {
                     }
                 }
             }
+            $sortArrPrio[] = intval($place['priority']);
             $sortArr[] = $place['is_work'];
         }
 
-        array_multisort($sortArr, SORT_NUMERIC, SORT_ASC, $places);
+        array_multisort($sortArr, SORT_NUMERIC, SORT_ASC, $sortArrPrio, SORT_NUMERIC, SORT_DESC, $places);
         return $places;
     }
 }

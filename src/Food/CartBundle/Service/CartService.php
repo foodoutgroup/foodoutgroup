@@ -18,6 +18,8 @@ class CartService {
      */
     private $em;
 
+    public $newSessionId = null;
+
     public function __construct()
     {
 
@@ -64,13 +66,26 @@ class CartService {
         return $this->em;
     }
 
+    /**
+     * @param null $newSessionId
+     */
+    public function setNewSessionId($newSessionId)
+    {
+        $this->newSessionId = $newSessionId;
+    }
+
+
 
     /**
      * @return string
      */
     public function getSessionId()
     {
-        return $this->getContainer()->get('session')->getId();
+        if (empty($this->newSessionId)) {
+            return $this->getContainer()->get('session')->getId();
+        } else {
+            return $this->newSessionId;
+        }
     }
 
     public function migrateCartBetweenSessionIds($oldSid, $newSid)
@@ -145,9 +160,10 @@ class CartService {
                     "ACTION: removeDishByIds, options removal",
                     $context
                 );
+            } else {
+                $this->getEm()->remove($opt);
+                $this->getEm()->flush();
             }
-            $this->getEm()->remove($opt);
-            $this->getEm()->flush();
         }
 
         $cartDish = $this->getEm()->getRepository('FoodCartBundle:Cart')
@@ -169,10 +185,10 @@ class CartService {
                 "ACTION: removeDishByIds, Dish removal removal",
                 $context
             );
+        } else {
+            $this->getEm()->remove($cartDish);
+            $this->getEm()->flush();
         }
-
-        $this->getEm()->remove($cartDish);
-        $this->getEm()->flush();
 
         return $this;
     }
@@ -288,7 +304,7 @@ class CartService {
      * @param DishOption[] $options
      * @return $this
      */
-    public function addDish(Dish $dish, DishSize $dishSize, $quantity, $options = array())
+    public function addDish(Dish $dish, DishSize $dishSize, $quantity, $options = array(), $comment = "", $sessionId = null)
     {
         $maxQuery = $this->getEm()->createQuery('SELECT MAX(c.cart_id) as top FROM FoodCartBundle:Cart c WHERE c.session = :session AND c.place_id= :place');
         $maxQuery->setParameters(
@@ -308,16 +324,17 @@ class CartService {
         $cartItem->setPlaceId($dish->getPlace());
         $cartItem->setDishId($dish);
         $cartItem->setCartId($itemId);
-        $cartItem->setSession($this->getSessionId());
+        $cartItem->setSession(($sessionId != null ? $sessionId : $this->getSessionId()));
         $cartItem->setQuantity($quantity);
         $cartItem->setDishSizeId($dishSize);
+        $cartItem->setComment($comment);
         $this->getEm()->persist($cartItem);
         $this->getEm()->flush();
 
         if (!empty($options)) {
             foreach ($options as $opt) {
                 $cartOptionItem = new CartOption();
-                $cartOptionItem->setSession($this->getSessionId());
+                $cartOptionItem->setSession(($sessionId != null ? $sessionId : $this->getSessionId()));
                 $cartOptionItem->setDishId($dish);
                 $cartOptionItem->setCartId($itemId);
                 $cartOptionItem->setDishOptionId($opt);

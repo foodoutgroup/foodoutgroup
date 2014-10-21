@@ -1,0 +1,28 @@
+<div style="display: none">
+    <div id="{{ id }}" class="delivery-info-form">
+        <div class="alert alert-danger" style="display: none;">
+            {% trans %}cart.checkout.address_not_found{% endtrans %}
+        </div>
+        <div class="form-row form-row-required city-row">
+            <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
+            <select class="custom-select">
+                <option {% if location and location.city is defined and location.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
+                <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
+                <option {% if location and location.city is defined and (location.city == 'Klaipėda' or location.city == 'Klaipeda') %}selected{% endif %}>Klaipėda</option>
+            </select>
+        </div>
+        <div class="form-row form-row-required address-row">
+            <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
+            <input type="text"
+                   id="address"
+                   value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}"
+                   placeholder="{{ 'index.street'|trans }}" />
+        </div>
+    </div>
+    <div id="place-point-not-found">
+        <div class="alert alert-danger">
+            <b>{% trans %}cart.checkout.place_point_not_in_radius{% endtrans %}</b><br />
+            <p>{% trans %}cart.checkout.no_delivery_choose_what_to_do{% endtrans %}</p>
+        </div>
+    </div>
+</div>

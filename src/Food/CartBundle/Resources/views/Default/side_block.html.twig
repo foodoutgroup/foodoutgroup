@@ -11,14 +11,18 @@
                 <div class="name">{{ dish.dishId.name }}</div>
                 <div class="type">{{ dish.dishSizeId.unit.name }}</div>
                 <div class="clearfix pad">
-                    <div class="count">{{ dish.quantity }} {% trans %}general.item_quantity{% endtrans %}</div>
-                    <div class="sum">x {{ dish.dishSizeId.priceLocalized }} {{ currency_display }}</div>
+                    <div class="count item">{{ dish.quantity }} {% trans %}general.item_quantity{% endtrans %}</div>
+                    <div class="sum item">x {{ dish.dishSizeId.price|number_format(2, ',', ' ') }} {{ currency_display }}
+                        <span class="euro">
+                            /&nbsp;&euro;{{ misc_utils.getEuro(dish.dishSizeId.price)|number_format(2, ',', ' ') }}
+                        </span>
+                    </div>
                 </div>
                 {% if dish.options|length > 0 %}
                     {% for option in dish.options %}
                         <div class="clearfix">
                             <div class="extra" title="{{ option.dishOptionId.name }}">{{ option.dishOptionId.name }}</div>
-                            <div class="extra sum">{{ option.dishOptionId.priceLocalized }} {{ currency_display }}</div>
+                            <div class="extra sum">{{ option.dishOptionId.price|number_format(2, ',', ' ') }} {{ currency_display }}<span class="euro">/&nbsp;&euro;{{  misc_utils.getEuro(option.dishOptionId.price)|number_format(2, ',', ' ') }}</span></div>
                         </div>
                     {% endfor %}
                 {% endif %}
@@ -28,36 +32,43 @@
             {% if applyDiscount %}
                 <div class="discount-sum clearfix">
                     <div class="fl">{% trans %}cart.block.discount_sum{% endtrans %}:</div>
-                    <div class="fr">{{ discountSum }} {{ currency_display }}</div>
+                    <div class="fr">{{ discountSum|number_format(2, ',', ' ') }} {{ currency_display }}</div>
                 </div>
             {% endif %}
-            <div class="total-sum clearfix">
+            <div class="total-sum cart clearfix">
                 <div class="fl">{% trans %}cart.block.total_cart{% endtrans %}:</div>
-                <div class="fr">{{ total_cart|replace({'.': ','}) }} {{ currency_display }}</div>
+                <div class="fr">{{ total_cart|number_format(2, ',', ' ') }} {{ currency_display }}<span class="euro">/ &euro;{{  misc_utils.getEuro(total_cart)|number_format(2, ',', ' ') }}</span></div>
             </div>
             {% if hide_delivery == 0 %}
                 <div class="delivery-price clearfix">
                     <div class="fl">{% trans %}cart.block.delivery_price{% endtrans %}:</div>
-                    <div class="fr">{{ place.deliveryPrice }} {{ currency_display }}</div>
+                    <div class="fr">{{ place.deliveryPrice|number_format(2, ',', ' ') }} {{ currency_display }}<span class="euro">/ &euro;{{  misc_utils.getEuro(place.deliveryPrice)|number_format(2, ',', ' ') }}</span></div>
                 </div>
-                <div class="total-sum clearfix">
+                <div class="total-sum final clearfix">
                     <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
-                    <div class="fr">{{ total_with_delivery|replace({'.': ','}) }} {{ currency_display }}</div>
+                    <div class="fr">{{ total_with_delivery|number_format(2, ',', ' ') }} {{ currency_display }}<span class="euro">/ &euro;{{  misc_utils.getEuro(total_with_delivery)|number_format(2, ',', ' ') }}</span></div>
                 </div>
             {% endif %}
         </div>
-        {% if inCart == false %}
-            <a href="{{ path('food_cart', { 'placeId' : place.id }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
+        {% if total_cart < place.cartMinimum and hide_delivery == false %}
+            <div class="alert alert-warning text-center">{{ 'cart.didnt_reach_min_cart'|trans }}</div>
         {% endif %}
+        {% if inCart == false %}
+            <a href="{{ path('food_cart', { 'placeId' : place.id, 'takeAway': hide_delivery }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
+        {% endif %}
+        {% if hide_delivery == false %}
         <div class="delivery-time tac">
             {% trans %}cart.block.delivery_time{% endtrans %} {{ place.deliveryTime }}
             {% if place.deliveryTimeInfo is not empty %}
                 <span class="delivery-time-info-cart ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
             {% endif %}
         </div>
-        <div class="delivery-time tac tooltip">{% trans %}cart.block.order_sum_minimum{% endtrans %} {{ place.cartMinimum }} {{ currency_display }}.
-            {% if place.minimalOnSelfDel == false %}{% trans %}cart.block.order_sum_minimum_take_myself{% endtrans %}{% endif %}
+        {% endif %}
+        {% if hide_delivery == false or place.minimalOnSelfDel %}
+        <div class="delivery-time tac">{% trans %}cart.block.order_sum_minimum{% endtrans %}<br />{{ place.cartMinimum }} {{ currency_display }} <span class="euro">/ &euro;{{  misc_utils.getEuro(place.cartMinimum)|number_format(2, ',', ' ') }}</span>.
+            {% if place.minimalOnSelfDel == false %}<br />{% trans %}cart.block.order_sum_minimum_take_myself{% endtrans %}{% endif %}
         </div>
+        {% endif %}
     {% else %}
         <div class="check-bottom">
             <h5 class="tac">{% trans %}cart.block.your_order_empty{% endtrans %}</h5>

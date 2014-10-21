@@ -1,0 +1,10 @@
+<div class="form-row">
+    {{ form_label(form.address.city) }}
+    {{ form_widget(form.address.city) }}
+</div>
+<div class="form-row">
+    {% set placeholder = 'index.street'|trans %}
+    {{ form_label(form.address.address) }}
+    {{ form_widget(form.address.address, {'attr': {'placeholder': placeholder}}) }}
+</div>
+<hr/>

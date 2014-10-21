@@ -168,7 +168,14 @@ class DefaultController extends Controller
         // TODO refactor this nonsense... if is if is if is bullshit...
         // Validate only if post happened
         if ($request->getMethod() == 'POST') {
-            $this->get('food.order')->validateDaGiantForm($place, $request, $formHasErrors, $formErrors, ($takeAway ? true : false), $request->get('place_point'));
+            $this->get('food.order')->validateDaGiantForm(
+                $place,
+                $request,
+                $formHasErrors,
+                $formErrors,
+                ($takeAway ? true : false),
+                ($takeAway ? $request->get('place_point'): null)
+            );
         }
 
         // Empty dish protection
@@ -233,6 +240,7 @@ class DefaultController extends Controller
                     // TODO gal cia normaliai generuosim desra-sasyskos-random krap ir siusim useriui emailu ir dar iloginsim
                     $user->setPlainPassword('new-user');
                     $user->addRole('ROLE_USER');
+                    $user->setEnabled(true);
 
                     $fosUserManager->updateUser($user);
                 }
@@ -306,7 +314,9 @@ class DefaultController extends Controller
                 'place' => $place,
                 'takeAway' => ($takeAway ? true : false),
                 'location' => $this->get('food.googlegis')->getLocationFromSession(),
-                'dataToLoad' => $dataToLoad
+                'dataToLoad' => $dataToLoad,
+                'submitted' => $request->isMethod('POST'),
+                'testNordea' => $request->query->get('test_nordea')
             )
         );
     }
@@ -344,13 +354,22 @@ class DefaultController extends Controller
             }
         }
 
+        // Jei restorane galima tik atsiimti arba, jei zmogus rinkosi, kad jis atsiimas, arba jei yra uzsakymas ir fiksuotas atsiemimas vietoje - neskaiciuojam pristatymo
+        if ($place->getDeliveryOptions() == Place::OPT_ONLY_PICKUP ||
+            ($order!=null && $order->getDeliveryType() == 'pickup')
+            || $takeAway == true) {
+            $hideDelivery = true;
+        } else {
+            $hideDelivery = false;
+        }
+
         $params = array(
             'list'  => $list,
             'place' => $place,
             'total_cart' => $total_cart,
             'total_with_delivery' => $total_cart + $place->getDeliveryPrice(),
             'inCart' => (int)$inCart,
-            'hide_delivery' => (($order!=null AND $order->getDeliveryType() == 'pickup') || $takeAway == true ? 1: 0),
+            'hide_delivery' => $hideDelivery,
             'applyDiscount' => $applyDiscount,
             'discountSize' => $discountSize,
             'discountSum' => $discountSum,

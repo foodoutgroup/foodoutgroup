@@ -97,8 +97,10 @@ class Admin extends SonataAdmin
      */
     public function prePersist($object)
     {
-        $object->setCreatedAt(new \DateTime("now"));
-        $object->setCreatedBy($this->getUser());
+        if (method_exists($object, 'setCreatedAt')) {
+            $object->setCreatedAt(new \DateTime("now"));
+            $object->setCreatedBy($this->getUser());
+        }
     }
 
     /**

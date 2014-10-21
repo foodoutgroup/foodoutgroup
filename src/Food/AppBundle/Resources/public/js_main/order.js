@@ -12,11 +12,27 @@ var Cart = {
      * @var Object formObject
      */
     submitOrder: function(formObject) {
+        var isPickup,
+            deliveryAction,
+            pickupAction,
+            takeaway_not,
+            takeaway_yep;
+
         if (Cart.isValidOrder(formObject)) {
-//            console.log('I are valid, submit');
-            formObject.submit();
+            isPickup = $('.delivery-info-form input[name="delivery-type"]:checked').val() == 'pickup';
+            deliveryAction = formObject.attr('data-delivery-action');
+            pickupAction = formObject.attr('data-pickup-action');
+            takeaway_not = $('.takeaway-not');
+            takeaway_yep = $('.takeaway-yep');
+
+            if (isPickup) {
+                takeaway_not.find('input, select').prop('disabled', true);
+                takeaway_yep.find('input, select').prop('disabled', false);
+            }
+
+            formObject.attr('action', isPickup ? pickupAction : deliveryAction)
+                      .submit();
         } else {
-//            console.log('I are idiot, do nothing');
             return false;
         }
     },
@@ -30,18 +46,47 @@ var Cart = {
     },
 
     deliveryTypeChanged: function(deliveryType) {
-        $('.content-lefter-big').mask();
+        var content_lefter, takeaway_not, takeaway_yep, takeAway;
+
+        takeaway_not = $('.takeaway-not');
+        takeaway_yep = $('.takeaway-yep');
+        content_lefter = $('.content-lefter-big');
+
+        // get ready
+        content_lefter.mask();
+
+        // do
         switch (deliveryType) {
             case 'pickup':
-                var url = Routing.generate('food_cart', { '_locale': Cart.locale, 'placeId': Cart.placeId, takeAway: 1 });
+                takeaway_not.hide();
+                takeaway_yep.show();
+                takeAway = 1;
                 break;
 
-            default:
             case 'deliver':
-                var url = Routing.generate('food_cart', { '_locale': Cart.locale, 'placeId': Cart.placeId });
+            default:
+                takeaway_yep.hide();
+                takeaway_not.show();
+                takeAway = 0;
                 break;
         }
 
-        window.location = url;
+        // cleanup
+        content_lefter.unmask();
+
+        var couponField = $('.cupon-info #coupon_code');
+        var sideBlock = $('.check-block');
+
+        sideBlock.mask();
+
+        // Reload cart
+        var url = Routing.generate('food_cart_action', { '_locale': Cart.locale, 'place': Cart.placeId, in_cart: 1, coupon_code: couponField.val(), take_away: takeAway  });
+
+        $.get(url, function(response) {
+            if (typeof(response.block) != "undefined") {
+                sideBlock.replaceWith(response.block);
+            }
+            sideBlock.unmask()
+        }, 'json');
     }
 };

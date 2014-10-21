@@ -18,6 +18,10 @@ use Gedmo\Translatable\Translatable;
  */
 class Place extends Uploadable implements Translatable
 {
+    const OPT_DELIVERY_AND_PICKUP = 'delivery_and_pickup';
+    const OPT_ONLY_DELIVERY = 'delivery';
+    const OPT_ONLY_PICKUP = 'pickup';
+
     /**
      * @var integer
      *
@@ -47,6 +51,20 @@ class Place extends Uploadable implements Translatable
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description = null;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="chain", type="string", length=10, nullable=true)
+     */
+    private $chain;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="navision", type="boolean")
+     */
+    private $navision = false;
 
     /**
      * @var string
@@ -110,6 +128,12 @@ class Place extends Uploadable implements Translatable
      */
     private $points;
 
+    /**
+     * @ORM\OneToMany(targetEntity="PlaceCoverPhoto", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @var ArrayCollection
+     */
+    private $photos;
 
     /**
      * @var int
@@ -161,6 +185,28 @@ class Place extends Uploadable implements Translatable
      * @ORM\Column(name="card_on_delivery", type="boolean")
      */
     private $cardOnDelivery = false;
+
+    /**
+     * This place does not accet online payments
+     * @var bool
+     *
+     * @ORM\Column(name="disabled_online_payment", type="boolean")
+     */
+    private $disabledOnlinePayment = false;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="delivery_options", type="string", length=64)
+     */
+    private $deliveryOptions;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="priority", type="smallint", options={"default":0})
+     */
+    private $priority;
 
     /**
      * @ORM\OneToMany(targetEntity="FoodCategory", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
@@ -270,6 +316,9 @@ class Place extends Uploadable implements Translatable
         $this->localized = new \Doctrine\Common\Collections\ArrayCollection();
         $this->points = new \Doctrine\Common\Collections\ArrayCollection();
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->photos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->deliveryOptions = self::OPT_DELIVERY_AND_PICKUP;
+        $this->priority = 0;
     }
 
     /**
@@ -1202,5 +1251,158 @@ class Place extends Uploadable implements Translatable
     public function getAlcoholRules()
     {
         return $this->alcoholRules;
+    }
+
+    /**
+     * Add photos
+     *
+     * @param \Food\DishesBundle\Entity\PlaceCoverPhoto $photos
+     * @return Place
+     */
+    public function addPhoto(\Food\DishesBundle\Entity\PlaceCoverPhoto $photos)
+    {
+        $this->photos[] = $photos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove photos
+     *
+     * @param \Food\DishesBundle\Entity\PlaceCoverPhoto $photos
+     */
+    public function removePhoto(\Food\DishesBundle\Entity\PlaceCoverPhoto $photos)
+    {
+        $this->photos->removeElement($photos);
+    }
+
+    /**
+     * Get photos
+     *
+     * @return PlaceCoverPhoto[]
+     */
+    public function getPhotos()
+    {
+        return $this->photos;
+    }
+
+    /**
+     * Set disabledOnlinePayment
+     *
+     * @param boolean $disabledOnlinePayment
+     * @return Place
+     */
+    public function setDisabledOnlinePayment($disabledOnlinePayment)
+    {
+        $this->disabledOnlinePayment = $disabledOnlinePayment;
+    
+        return $this;
+    }
+
+    /**
+     * Get disabledOnlinePayment
+     *
+     * @return boolean 
+     */
+    public function getDisabledOnlinePayment()
+    {
+        return $this->disabledOnlinePayment;
+    }
+
+    /**
+     * Set deliveryOptions
+     *
+     * @param string $deliveryOptions
+     *
+     * @throws \InvalidArgumentException
+     * @return Place
+     */
+    public function setDeliveryOptions($deliveryOptions)
+    {
+        if (!in_array($deliveryOptions, array(self::OPT_DELIVERY_AND_PICKUP, self::OPT_ONLY_DELIVERY, self::OPT_ONLY_PICKUP))) {
+            throw new \InvalidArgumentException('Unknown delivery opion: '.$deliveryOptions);
+        }
+        $this->deliveryOptions = $deliveryOptions;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryOptions
+     *
+     * @return string 
+     */
+    public function getDeliveryOptions()
+    {
+        return $this->deliveryOptions;
+    }
+
+    /**
+     * Set chain
+     *
+     * @param string $chain
+     * @return Place
+     */
+    public function setChain($chain)
+    {
+        $this->chain = $chain;
+    
+        return $this;
+    }
+
+    /**
+     * Get chain
+     *
+     * @return string 
+     */
+    public function getChain()
+    {
+        return $this->chain;
+    }
+
+    /**
+     * Set navision
+     *
+     * @param boolean $navision
+     * @return Place
+     */
+    public function setNavision($navision)
+    {
+        $this->navision = $navision;
+    
+        return $this;
+    }
+
+    /**
+     * Get navision
+     *
+     * @return boolean 
+     */
+    public function getNavision()
+    {
+        return $this->navision;
+    }
+
+    /**
+     * Set priority
+     *
+     * @param integer $priority
+     * @return Place
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
+    
+        return $this;
+    }
+
+    /**
+     * Get priority
+     *
+     * @return integer 
+     */
+    public function getPriority()
+    {
+        return $this->priority;
     }
 }

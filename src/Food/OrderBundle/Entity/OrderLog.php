@@ -20,7 +20,7 @@ class OrderLog
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Order")
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="orderLog")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      */
     private $order;

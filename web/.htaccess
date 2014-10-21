@@ -1,3 +1,8 @@
+# Deny all f*king hackers..
+Order deny,allow
+Deny from 110.85.105.74 #Kiniecia, skanuojantys FckEditor bugus
+Allow from all
+
 # Use the front controller as index file. It serves as a fallback solution when
 # every other rewrite/redirect fails (e.g. in an aliased environment without
 # mod_rewrite). Additionally, this reduces the matching process for the

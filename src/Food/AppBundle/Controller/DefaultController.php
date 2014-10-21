@@ -6,21 +6,28 @@ use Food\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Pirminis\Gateway\Swedbank\FullHps\Request as FullHpsRequest;
+use Pirminis\Gateway\Swedbank\FullHps\Response as FullHpsResponse;
+use Pirminis\Gateway\Swedbank\FullHps\Request\Parameters;
+use Pirminis\Gateway\Swedbank\Banklink\Sender;
+use Pirminis\Gateway\Swedbank\FullHps\TransactionQuery\Request as FullHpsTransRequest;
 
 class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
+        $miscUtils = $this->get('food.app.utils.misc');
         // Check if user is not banned
         $ip = $request->getClientIp();
         // Dude is banned - hit him
-        if ($this->get('food.app.utils.misc')->isIpBanned($ip)) {
+        if ($miscUtils->isIpBanned($ip)) {
             return $this->redirect($this->generateUrl('banned'), 302);
         }
 
         $formDefaults = array(
             'city' => '',
             'address' => '',
+            'house' => '',
         );
 
         $user = $this->getUser();
@@ -28,9 +35,12 @@ class DefaultController extends Controller
         if ($user instanceof User) {
             $defaultUserAddress = $user->getDefaultAddress();
             if (!empty($defaultUserAddress)) {
+                $addressData = $miscUtils->parseAddress($defaultUserAddress->getAddress());
+
                 $formDefaults = array(
                     'city' => $defaultUserAddress->getCity(),
-                    'address' => $defaultUserAddress->getAddress(),
+                    'address' => $addressData['street'],
+                    'house' => $addressData['house']
                 );
             }
         }
@@ -39,9 +49,12 @@ class DefaultController extends Controller
         $sessionLocation = $this->get('food.googlegis')->getLocationFromSession();
         if (!empty($sessionLocation)
             && !empty($sessionLocation['city']) && !empty($sessionLocation['address_orig'])) {
+            $addressData = $miscUtils->parseAddress($sessionLocation['address_orig']);
+
             $formDefaults = array(
                 'city' => $sessionLocation['city'],
-                'address' => $sessionLocation['address_orig'],
+                'address' => $addressData['street'],
+                'house' => $addressData['house']
             );
         }
 
@@ -129,5 +142,21 @@ class DefaultController extends Controller
             ),
             $response
         );
+    }
+
+    public function showVideoAction(Request $request)
+    {
+        $cookies = $request->cookies;
+        $cookie = $cookies->get('i_saw_video');
+        if(empty($cookie) || $cookie!=1) {
+            return $this->render(
+                'FoodAppBundle:Default:videopopup.js.twig',
+                array(
+                    'video' => 'https://www.youtube.com/v/3zFW6hnuvJY?fs=1&amp;autoplay=1'
+                )
+            );
+        } else {
+            return new Response();
+        }
     }
 }

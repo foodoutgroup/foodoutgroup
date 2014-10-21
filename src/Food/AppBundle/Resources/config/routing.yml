@@ -14,6 +14,15 @@ food_test:
     pattern:  /test/
     defaults: { _controller: FoodAppBundle:Test:index }
 
+food_test:
+    pattern:  /test/mssql
+    defaults: { _controller: FoodAppBundle:Test:mssql }
+
+food_nav_test1:
+    pattern: /test/nav/test1
+    defaults: { _controller: FoodAppBundle:Test:nav1 }
+
+
 food_review_create:
     pattern: /place/review/{id}
     defaults: { _controller: FoodDishesBundle:Place:reviewCreate }
@@ -48,7 +57,24 @@ food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto|monitoring|nagios|banned).+"
+        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto|monitoring|nagios|banned|logistics|order).+"
+
+food_order_nav_test1:
+    pattern: /order/nav_test1
+    defaults: { _controller: FoodOrderBundle:Default:testNav1 }
+
+food_order_nav_test2:
+    pattern: /order/nav_test2
+    defaults: { _controller: FoodOrderBundle:Default:testNav2 }
+
+food_order_nav_post:
+    pattern: /order/post/{id}
+    defaults: { _controller: FoodOrderBundle:Default:postToNav }
+
+food_order_nav_update_prices:
+    pattern: /order/update_prices/{id}
+    defaults: { _controller: FoodOrderBundle:Default:updatePricesNav }
+
 
 food_admin_get_place_categories:
     pattern: /admin/place/get-categories/{placeId}
@@ -128,6 +154,8 @@ food_ajax_remove_dish:
 food_ajax:
     pattern: /ajax/{action}/
     defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~}
+    options:
+        expose: true
 
 
 food_place_en:

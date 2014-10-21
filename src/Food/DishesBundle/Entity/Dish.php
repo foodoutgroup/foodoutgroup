@@ -116,6 +116,20 @@ class Dish extends Uploadable implements Translatable
     private $categories;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="time_from", type="string", length=5, nullable=true)
+     */
+    private $timeFrom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="time_to", type="string", length=5, nullable=true)
+     */
+    private $timeTo;
+
+    /**
      * @ORM\ManyToMany(targetEntity="DishOption", inversedBy="dishes")
      * @ORM\JoinTable(name="dish_option_map")
      * @ORM\OrderBy({"groupName" = "DESC", "singleSelect" = "DESC"})
@@ -174,7 +188,6 @@ class Dish extends Uploadable implements Translatable
         $this->setCreatedAt(new \DateTime('now'));
 
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->place = new \Doctrine\Common\Collections\ArrayCollection();
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -416,11 +429,34 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get translations
      *
-     * @return \Food\DishesBundle\Entity\DishLocalized[]
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getTranslations()
     {
         return $this->translations;
+    }
+
+    /**
+     * Set unit
+     *
+     * @param \Food\DishesBundle\Entity\DishUnit $unit
+     * @return Dish
+     */
+    public function setUnit(\Food\DishesBundle\Entity\DishUnit $unit = null)
+    {
+        $this->unit = $unit;
+    
+        return $this;
+    }
+
+    /**
+     * Get unit
+     *
+     * @return \Food\DishesBundle\Entity\DishUnit 
+     */
+    public function getUnit()
+    {
+        return $this->unit;
     }
 
     /**
@@ -689,5 +725,51 @@ class Dish extends Uploadable implements Translatable
         }
 
         return false;
+    }
+
+    /**
+     * Set timeFrom
+     *
+     * @param string $timeFrom
+     * @return Dish
+     */
+    public function setTimeFrom($timeFrom)
+    {
+        $this->timeFrom = $timeFrom;
+    
+        return $this;
+    }
+
+    /**
+     * Get timeFrom
+     *
+     * @return string 
+     */
+    public function getTimeFrom()
+    {
+        return $this->timeFrom;
+    }
+
+    /**
+     * Set timeTo
+     *
+     * @param string $timeTo
+     * @return Dish
+     */
+    public function setTimeTo($timeTo)
+    {
+        $this->timeTo = $timeTo;
+    
+        return $this;
+    }
+
+    /**
+     * Get timeTo
+     *
+     * @return string 
+     */
+    public function getTimeTo()
+    {
+        return $this->timeTo;
     }
 }

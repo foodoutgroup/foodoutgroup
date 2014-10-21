@@ -9,9 +9,9 @@ set :model_manager, "doctrine"
 set :branch, "master"
 
 # multi-stage environment
-set :stages,        %w(production staging sandbox)
+set :stages,        %w(production staging sandbox taurinas kofeinas pipiras)
 # isijungiam kada reik :)
-set :default_stage, "staging"
+set :default_stage, "production"
 set :stage_dir,     "app/config/deploy"
 require 'capistrano/ext/multistage'
 
@@ -53,8 +53,8 @@ namespace :deploy do
     end
 end
 
-after "deploy", "deploy:cleanup"
 after "deploy", "deploy:chmod_things"
+after "deploy:chmod_things", "deploy:cleanup"
 # Uncomment kai bus airbrake
 # after "deploy:cleanup", "deploy:airbrake_notify"
 after "deploy:rollback", "symfony:cache:clear"

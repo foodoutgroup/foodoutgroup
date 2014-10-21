@@ -27,6 +27,20 @@ class LoadFirstData implements FixtureInterface
         $admin->setRoles( array('ROLE_ADMIN') ) ;
         $admin->setSuperAdmin(true) ;
         $manager->persist($admin);
+
+        $apiUser = new User();
+        $apiUser->setFirstname('ApiTester')
+            ->setPhone('37061111111')
+            ->setEmail('api_tester@foodout.lt');
+        $apiUser->setPlainPassword('api_tester')
+            ->setApiToken('superApiTokenas')
+            ->setApiTokenValidity(new \DateTime('+1 day'))
+            ->setRoles(array('ROLE_USER'))
+            ->setEnabled(true)
+            ->setFullyRegistered(1);
+        $manager->persist($apiUser);
+
+        // Flush users
         $manager->flush();
 
 
@@ -60,10 +74,10 @@ class LoadFirstData implements FixtureInterface
         $staticRuContent = new StaticContentLocalized('ru', 'content', 'часто задаваемые вопросы. Думайте, какие вопросы спрашиваете!');
         $staticRuContent->setObject($staticFaq);
 
-        $staticFaq->addTranslation($staticEnTitle)
-            ->addTranslation($staticRuTitle)
-            ->addTranslation($staticEnContent)
-            ->addTranslation($staticRuContent);
+        $staticFaq->addTranslation($staticEnTitle);
+        $staticFaq->addTranslation($staticRuTitle);
+        $staticFaq->addTranslation($staticEnContent);
+        $staticFaq->addTranslation($staticRuContent);
         $manager->persist($staticFaq);
         $manager->flush();
 
@@ -91,11 +105,42 @@ class LoadFirstData implements FixtureInterface
         $staticRuContent = new StaticContentLocalized('ru', 'content', 'Номер телефона экстренной связи: 3706666666666, Администрация: 36000000000');
         $staticRuContent->setObject($staticContact);
 
-        $staticContact->addTranslation($staticEnTitle)
-            ->addTranslation($staticRuTitle)
-            ->addTranslation($staticEnContent)
-            ->addTranslation($staticRuContent);
+        $staticContact->addTranslation($staticEnTitle);
+        $staticContact ->addTranslation($staticRuTitle);
+        $staticContact->addTranslation($staticEnContent);
+        $staticContact->addTranslation($staticRuContent);
         $manager->persist($staticContact);
+        $manager->flush();
+
+        // Create static page for rules
+        $rulesContent = new StaticContent();
+        $rulesContent->setTitle('ordering_rules')
+            ->setContent('taisykle numeris 1 - nera taisykliu')
+            ->setCreatedAt(new \DateTime('now'))
+            ->setCreatedBy($admin)
+        ;
+
+        $manager->persist($rulesContent);
+        $manager->flush();
+
+        // Save static translations
+        $staticEnTitle = new StaticContentLocalized('en', 'title', 'ordering_rules');
+        $staticEnTitle->setObject($rulesContent);
+
+        $staticRuTitle = new StaticContentLocalized('ru', 'title', 'ordering_rules');
+        $staticRuTitle->setObject($rulesContent);
+
+        $staticEnContent = new StaticContentLocalized('en', 'content', 'taisykle numeris 1 - nera taisykliu');
+        $staticEnContent->setObject($rulesContent);
+
+        $staticRuContent = new StaticContentLocalized('ru', 'content', 'taisykle numeris 1 - nera taisykliu');
+        $staticRuContent->setObject($rulesContent);
+
+        $rulesContent->addTranslation($staticEnTitle);
+        $rulesContent->addTranslation($staticRuTitle);
+        $rulesContent->addTranslation($staticEnContent);
+        $rulesContent->addTranslation($staticRuContent);
+        $manager->persist($rulesContent);
         $manager->flush();
     }
 

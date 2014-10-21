@@ -54,6 +54,7 @@
 .dish-size .custom-radio strong,
 .dish-ingredients .custom-checkbox strong,
 .detailed-dish-popup .button-submit,
+.change-location-popup .button-submit,
 .delivery-info-form .submit-button span,
 .coupon_form_popup .button-submit,
 .coupon_form_popup .button-submit span,
@@ -271,6 +272,7 @@ input.button {}
 .restaurant-item .delivery,
 .restaurant-item .min-cart-size {padding-left: 20px;}
 .restaurant-item .delivery {background: url(/bundles/foodapp/images/delivery-ico.png) no-repeat left 2px; margin-right: 36px;}
+.restaurant-item .pickup {background: url(/bundles/foodapp/images/pickup-ico.png) no-repeat left 2px; margin-right: 36px; color: #55422e; padding-left: 13px; letter-spacing: 0.5px;}
 .restaurant-item .min-cart-size {background: url(/bundles/foodapp/images/cart-ico.png) no-repeat left 1px;}
 
 .restaurant-item .delivery span,
@@ -389,6 +391,7 @@ input.button {}
 .restaurant-info-lefter .ico-kitchen {background: url(/bundles/foodapp/images/kitchen-ico.png) no-repeat left top;}
 .restaurant-info-lefter .ico-time {background: url(/bundles/foodapp/images/time-ico.png) no-repeat left top;}
 .restaurant-info-lefter .ico-delivery {background: url(/bundles/foodapp/images/delivery-ico.png) no-repeat left top;}
+.restaurant-info-lefter .ico-pickup {background: url(/bundles/foodapp/images/pickup-ico.png) no-repeat left top;}
 .restaurant-info-lefter .ico-cart {background: url(/bundles/foodapp/images/cart-ico.png) no-repeat left top;}
 .restaurant-info-lefter .ico-payments {background: url(/bundles/foodapp/images/payment-ico.png) no-repeat left top;}
 
@@ -507,8 +510,12 @@ input.button {}
 .delivery-info-form label {float: left; padding-top: 9px; width: 173px; padding-right: 5px; font-size: 15px;}
 .delivery-info-form .custom-radio {padding-top: 0px;}
 .delivery-info-form input[type="text"],
+.delivery-info-form input[type="password"],
+.delivery-info-form input[type="email"],
 .delivery-info-form textarea {width: 310px; font-size: 15px; padding: 9px 12px; border: 1px solid #d8d8d8; border-radius: 3px; box-shadow: 0 0 1px #f2f2f2; box-shadow: 0 0 2px #d0c8c1;}
-.delivery-info-form input[type="text"] {height: 17px;}
+.delivery-info-form input[type="text"],
+.delivery-info-form input[type="password"],
+.delivery-info-form input[type="email"] {height: 17px;}
 .delivery-info-form textarea {height: 93px;}
 .delivery-info-form select {width: 335px;}
 
@@ -657,6 +664,9 @@ input.button {}
 .detailed-dish-popup {width: 550px; border-radius: 10px; background: #fff;}
 .detailed-dish-popup img {border-radius: 10px 10px 0 0;}
 
+.change-location-popup {width: 380px; border-radius: 10px; background: #fff;}
+.change-location-popup img {border-radius: 10px 10px 0 0;}
+
 .dish-info {text-align: center; padding: 16px; border-bottom: 1px solid #ebe2d9;}
 .dish-info .name {font-size: 27px; color: #55422e; margin: 0;}
 .dish-info .desc {color: #cfb4b8; font-size: 12px; line-height: 17px; margin: 0;}
@@ -678,6 +688,10 @@ input.button {}
 .detailed-dish-popup .button-submit, .coupon_form_popup .button-submit {display: block; height: 48px; line-height: 48px; font-size: 20px; text-align: center; color: #86560d; border-radius: 4px; background: url(/bundles/foodapp/images/button-rep.png) repeat-x left top; box-shadow: 0 1px 1px #c0c0c0; text-transform: uppercase; letter-spacing: 1.7px; text-shadow: 0 1px 0 #fde99a;}
 .detailed-dish-popup .button-submit span, .coupon_form_popup .button-submit span {display: inline-block; line-height: 48px; padding: 0 29px; background: url(/bundles/foodapp/images/button-arrow.png) no-repeat right center; text-shadow: 0 0 0 #fff;}
 
+.change-location-popup .popup-controls {padding: 16px 21px;}
+.change-location-popup .button-submit, .coupon_form_popup .button-submit {display: block; height: 48px; line-height: 48px; font-size: 20px; text-align: center; color: #86560d; border-radius: 4px; background: url(/bundles/foodapp/images/button-rep.png) repeat-x left top; box-shadow: 0 1px 1px #c0c0c0; text-transform: uppercase; letter-spacing: 1.7px; text-shadow: 0 1px 0 #fde99a;}
+.change-location-popup .button-submit span, .coupon_form_popup .button-submit span {display: inline-block; line-height: 48px; padding: 0 29px; background: url(/bundles/foodapp/images/button-arrow.png) no-repeat right center; text-shadow: 0 0 0 #fff;}
+
 /*Login regsiter popup*/
 .login-register-popup {width: 860px; border-radius: 10px; background: #fff url(/bundles/foodapp/images/dot.png) repeat-y center top;}
 .login-register-popup .lefter {padding: 24px 34px; float: left; width: 360px;}
@@ -697,6 +711,7 @@ input.button {}
 .login-register-popup .double {padding-top: 0px;}
 
 .login-form .form-controls {padding-top: 23px;}
+.resetting_form_wrapper form .form-controls {padding-top: 23px;}
 .register-form .form-controls {padding-top: 18px;}
 .login-register-popup .custom-checkbox {font-size: 12px; color: #cfb4b8; padding-top: 0px; width: 100px; margin-top: 9px; line-height: 22px;}
 .login-register-popup a {font-size: 12px; color: #cfb4b8; text-decoration: underline;}
@@ -716,8 +731,10 @@ input.button {}
 
 /** Uuuuuuuhhh - cant touch it **/
 .detailed-dish-popup .theCounter {width: 40px; text-align: center; border-radius: 5px; border: 1px solid #cccccc;}
+.change-location-popup .theCounter {width: 40px; text-align: center; border-radius: 5px; border: 1px solid #cccccc;}
 .theCounter-dec, .theCounter-inc {border: none; background-color: transparent;}
 #change-address { margin-bottom: 0px;}
+#places-change-address { margin-bottom: 0px;}
 .alert {padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px;}
 .alert.alert2 { margin-bottom: 0px }
 .alert-danger { background-color: #f2dede; border-color: #ebccd1; color: #a94442; }
@@ -801,7 +818,9 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
 
 .register-form .form-row.error input,
 .login-form .form-row.error input,
-.review-form .form-row.error span.rate-review {
+.user-details-form .form-row.error input,
+.review-form .form-row.error span.rate-review,
+.resetting_form_wrapper form .form-row.error input {
     border: 1px solid #ff0000;
 }
 
@@ -1033,3 +1052,444 @@ div.coupon_form_popup {
     padding-top: 10px;
 }
 .coupon_form_popup input[type="text"] {width: 324px; height: 17px; font-size: 15px; padding: 9px 12px; border: 1px solid #d8d8d8; border-radius: 3px; box-shadow: 0 0 1px #f2f2f2; box-shadow: 0 0 2px #d0c8c1;}
+
+
+.disabled_dish img { display: block; }
+
+.disabled_dish img,
+.disabled_dish .disabled {
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+}
+
+
+/** EPIC AUTOCOMPLETE START **/
+.typeahead,
+.tt-query,
+.tt-hint {
+    width: 396px;
+    height: 30px;
+    padding: 8px 12px;
+    font-size: 24px;
+    line-height: 30px;
+    border: 2px solid #ccc;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    outline: none;
+}
+
+.typeahead {
+    background-color: #fff;
+}
+
+.typeahead:focus {
+    border: 2px solid #0097cf;
+}
+
+.tt-query {
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+    color: #999
+}
+
+.tt-dropdown-menu {
+    width: 422px;
+    margin-top: 12px;
+    padding: 8px 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+    padding: 3px 20px;
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.tt-suggestion.tt-cursor {
+    color: #fff;
+    background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+    margin: 0;
+}
+.search-food-form .twitter-typeahead {
+    float: left;
+}
+/** Epic autocomplete end **/
+/** Search update **/
+.search-food-form span a { width: 130px !important; }
+#index_city-menu, #index_city-menu li { width: 162px !important; }
+.search-food-form input.input-street[type="text"] {
+    width: 190px;
+    margin-right: 0;
+    border-radius: 0;
+}
+.search-food-form input.input-house[type="text"] {
+    border-left: medium none;
+    border-radius: 0 5px 5px 0;
+    margin-right: 13px;
+    width: 91px;
+}
+
+.coupon_form_popup input[type="text"] {width: 324px; height: 17px; font-size: 15px; padding: 9px 12px; border: 1px solid #d8d8d8; border-radius: 3px; box-shadow: 0 0 1px #f2f2f2; box-shadow: 0 0 2px #d0c8c1;}
+
+.tooltip {
+  position: absolute;
+  z-index: 1070;
+  display: block;
+  visibility: visible;
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.tooltip.in {
+  opacity: 0.9;
+  filter: alpha(opacity=90);
+}
+.tooltip.top {
+  margin-top: -3px;
+  padding: 5px 0;
+}
+.tooltip.right {
+  margin-left: 3px;
+  padding: 0 5px;
+}
+.tooltip.bottom {
+  margin-top: 3px;
+  padding: 5px 0;
+}
+.tooltip.left {
+  margin-left: -3px;
+  padding: 0 5px;
+}
+.tooltip-inner {
+  max-width: 200px;
+  padding: 3px 8px;
+  color: #ffffff;
+  text-align: center;
+  text-decoration: none;
+  background-color: #000000;
+  border-radius: 4px;
+}
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+.tooltip.top .tooltip-arrow {
+  bottom: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px 5px 0;
+  border-top-color: #000000;
+}
+.tooltip.top-left .tooltip-arrow {
+  bottom: 0;
+  left: 5px;
+  border-width: 5px 5px 0;
+  border-top-color: #000000;
+}
+.tooltip.top-right .tooltip-arrow {
+  bottom: 0;
+  right: 5px;
+  border-width: 5px 5px 0;
+  border-top-color: #000000;
+}
+.tooltip.right .tooltip-arrow {
+  top: 50%;
+  left: 0;
+  margin-top: -5px;
+  border-width: 5px 5px 5px 0;
+  border-right-color: #000000;
+}
+.tooltip.left .tooltip-arrow {
+  top: 50%;
+  right: 0;
+  margin-top: -5px;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #000000;
+}
+.tooltip.bottom .tooltip-arrow {
+  top: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: #000000;
+}
+.tooltip.bottom-left .tooltip-arrow {
+  top: 0;
+  left: 5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: #000000;
+}
+.tooltip.bottom-right .tooltip-arrow {
+  top: 0;
+  right: 5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: #000000;
+}
+.popover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1010;
+  display: none;
+  max-width: 276px;
+  padding: 1px;
+  text-align: left;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0,0,0,0.2);
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  white-space: normal;
+}
+.popover.top {
+  margin-top: -10px;
+}
+.popover.right {
+  margin-left: 10px;
+}
+.popover.bottom {
+  margin-top: 10px;
+}
+.popover.left {
+  margin-left: -10px;
+}
+.popover-title {
+  margin: 0;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 18px;
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #ebebeb;
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+}
+.popover-title:empty {
+  display: none;
+}
+.popover-content {
+  color: #000000;
+  padding: 9px 14px;
+  text-align: center;
+}
+.popover .arrow,
+.popover .arrow:after {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+.popover .arrow {
+  border-width: 11px;
+}
+.popover .arrow:after {
+  border-width: 10px;
+  content: "";
+}
+.popover.top .arrow {
+  left: 50%;
+  margin-left: -11px;
+  border-bottom-width: 0;
+  border-top-color: #999;
+  border-top-color: rgba(0,0,0,0.25);
+  bottom: -11px;
+}
+.popover.top .arrow:after {
+  bottom: 1px;
+  margin-left: -10px;
+  border-bottom-width: 0;
+  border-top-color: #fff;
+}
+.popover.right .arrow {
+  top: 50%;
+  left: -11px;
+  margin-top: -11px;
+  border-left-width: 0;
+  border-right-color: #999;
+  border-right-color: rgba(0,0,0,0.25);
+}
+.popover.right .arrow:after {
+  left: 1px;
+  bottom: -10px;
+  border-left-width: 0;
+  border-right-color: #fff;
+}
+.popover.bottom .arrow {
+  left: 50%;
+  margin-left: -11px;
+  border-top-width: 0;
+  border-bottom-color: #999;
+  border-bottom-color: rgba(0,0,0,0.25);
+  top: -11px;
+}
+.popover.bottom .arrow:after {
+  top: 1px;
+  margin-left: -10px;
+  border-top-width: 0;
+  border-bottom-color: #fff;
+}
+.popover.left .arrow {
+  top: 50%;
+  right: -11px;
+  margin-top: -11px;
+  border-right-width: 0;
+  border-left-color: #999;
+  border-left-color: rgba(0,0,0,0.25);
+}
+.popover.left .arrow:after {
+  right: 1px;
+  border-right-width: 0;
+  border-left-color: #fff;
+  bottom: -10px;
+}
+
+/* Registration tolltips */
+.register-form .tooltip {
+    white-space: nowrap;
+}
+
+/* User password resetting form */
+.resetting_form_wrapper {
+    display: none;
+}
+
+.reset-password-form-content label {
+    text-align: left;
+}
+
+.takeaway-yep {
+    display: none;
+}
+
+.takeaway-yep.show {
+    display: block;
+}
+
+.takeaway-not.hide {
+    display: none;
+}
+
+.change-address-form {background: #fff; border-radius: 4px;}
+.change-address-form-content {padding: 11px 29px;}
+.change-address-form .form-row {margin-bottom: 13px;}
+.change-address-form label {float: left; padding-top: 9px; width: 173px; padding-right: 5px; font-size: 15px;}
+.change-address-form .custom-radio {padding-top: 0px;}
+.change-address-form input[type="text"],
+.change-address-form input[type="password"],
+.change-address-form input[type="email"],
+.change-address-form textarea {width: 310px; font-size: 15px; padding: 9px 12px; border: 1px solid #d8d8d8; border-radius: 3px; box-shadow: 0 0 1px #f2f2f2; box-shadow: 0 0 2px #d0c8c1;}
+.change-address-form input[type="text"],
+.change-address-form input[type="password"],
+.change-address-form input[type="email"] {height: 17px;}
+.change-address-form textarea {height: 93px;}
+.change-address-form select {width: 335px;}
+
+#change-location-error {
+    display: none;
+}
+
+
+/** EURO show start **/
+.restaurant-menu .euro {
+    font-size: 12px;
+    color: #a78f92;
+    display: block;
+    line-height: 12px;
+}
+.restaurant-menu-item .price {
+    line-height: 20px;
+}
+.detailed-dish-popup .euro {
+    font-size: 11px;
+    color: #a78f92;
+    padding-left: 7px;
+}
+.check-item .euro {
+    font-size: 11px;
+    padding-left: 4px;
+}
+.check-item .count.item {
+    width: 30%;
+}
+.check-item .sum.item {
+    width: 70%;
+}
+.check-item .clearfix.pad {
+    padding-left: 0px;
+}
+.check-item .extra {
+    width: 45%;
+}
+.check-item .extra.sum{
+    width: 55%;
+}
+.check-item .extra.sum .euro {
+    font-size: 10px;
+    padding-left: 3px;
+}
+.check-bottom .total-sum.cart {
+    font-size: 12px;
+}
+.check-bottom .total-sum.cart .fl {
+    width: 40%;
+}
+.check-bottom .total-sum.cart .fr {
+    width: 60%;
+}
+.check-bottom .euro {
+    font-size: 80%;
+}
+.check-bottom .total-sum.final .fl {
+    width: 30%;
+}
+.check-bottom .total-sum.final .fr {
+    width: 70%;
+}
+/** EURO show end **/
+
+.bolder-warning-alert {
+    color: #9c878a !important;
+}
+.text-center {
+    text-align: center;
+}
+.text-left {
+    text-align: left;
+}
+.text-right {
+    text-align: right;
+}
+.wider-radio {
+    width: 400px !important;
+}

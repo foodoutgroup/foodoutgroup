@@ -106,6 +106,10 @@
         <source>places.delivery_price</source>
         <target>Pristatymo kaina</target>
       </trans-unit>
+      <trans-unit id="places.card_on_delivery" resname="places.card_on_delivery">
+        <source>places.card_on_delivery</source>
+        <target>Atsiskaitymas kortele pristatymo metu</target>
+      </trans-unit>
       <trans-unit id="d2985ecde1e05e0634f3e4ff73f3b9e9" resname="places.minimal_cart">
         <source>places.minimal_cart</source>
         <target>Minimalus krepšelis</target>
@@ -173,6 +177,14 @@
       <trans-unit id="general.alcohol_confirmation.exit" resname="general.alcohol_confirmation.exit">
         <source>general.alcohol_confirmation.exit</source>
         <target>Išeiti</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes">
+        <source>yes</source>
+        <target>Taip</target>
+      </trans-unit>
+      <trans-unit id="no" resname="no">
+        <source>no</source>
+        <target>Ne</target>
       </trans-unit>
     </body>
   </file>

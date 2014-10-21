@@ -4,21 +4,10 @@ namespace Food\OrderBundle\Controller;
 
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
-    /**
-     * @Route("/hello/{name}")
-     * @Template()
-     */
-    public function indexAction($name)
-    {
-        return array('name' => $name);
-    }
-
     /**
      * @param $hash
      * @param Request $request
@@ -72,7 +61,7 @@ class DefaultController extends Controller
                     $orderService->getOrder()->getPlaceName(),
                     $orderService->getOrder()->getId(),
                     $currentOrderStatus,
-                    $orderService->getOrder()->getOrderStatus()
+                    $this->formToEntityStatus($formStatus)
                 );
                 $this->get('logger')->error($errorMessage);
             }
@@ -88,35 +77,38 @@ class DefaultController extends Controller
      */
     public function mobileAdminAction($hash, Request $request)
     {
-        $order = $this->get('food.order')->getOrderByHash($hash);
+        $orderService = $this->get('food.order');
+        $order = $orderService->getOrderByHash($hash);
         if ($request->isMethod('post')) {
             switch($request->get('status')) {
                 case 'confirm':
-                    $this->get('food.order')->statusAccepted('admin_mobile');
+                    $orderService->statusAccepted('admin_mobile');
                 break;
 
                 case 'delay':
-                    $this->get('food.order')->statusDelayed('admin_mobile', 'delay reason: '.$request->get('delay_reason'));
-                    $this->get('food.order')->getOrder()->setDelayed(true);
-                    $this->get('food.order')->getOrder()->setDelayReason($request->get('delay_reason'));
-                    $this->get('food.order')->getOrder()->setDelayDuration($request->get('delay_duration'));
-                    $this->get('food.order')->saveDelay();
-                    $this->get('food.order')->getOrderByHash($hash);
+                    $orderService->statusDelayed('admin_mobile', 'delay reason: '.$request->get('delay_reason'));
+                    $orderService->getOrder()->setDelayed(true);
+                    $orderService->getOrder()->setDelayReason($request->get('delay_reason'));
+                    $orderService->getOrder()->setDelayDuration($request->get('delay_duration'));
+                    $orderService->saveDelay();
+                    $orderService->getOrderByHash($hash);
                 break;
 
                 case 'cancel':
-                    $this->get('food.order')->statusCanceled('admin_mobile');
+                    $orderService->statusCanceled('admin_mobile');
+                    // Order has been canceled by admins - inform restourant
+                    $orderService->informPlaceCancelAction();
                 break;
 
                 case 'finish':
-                    $this->get('food.order')->statusFinished('admin_mobile');
+                    $orderService->statusFinished('admin_mobile');
                 break;
 
                 case 'completed':
-                    $this->get('food.order')->statusCompleted('admin_mobile');
+                    $orderService->statusCompleted('admin_mobile');
                 break;
             }
-            $this->get('food.order')->saveOrder();
+            $orderService->saveOrder();
 
             return $this->redirect(
                 $this->generateUrl('order_support_mobile', array('hash' => $hash))
@@ -156,7 +148,7 @@ class DefaultController extends Controller
                     $orderService->getOrder()->getDriver()->getName(),
                     $orderService->getOrder()->getId(),
                     $currentOrderStatus,
-                    $orderService->getOrder()->getOrderStatus()
+                    $this->formToEntityStatus($formStatus)
                 );
                 $this->get('logger')->error($errorMessage);
             }
@@ -203,5 +195,42 @@ class DefaultController extends Controller
         }
 
         return $statusTable[$formStatus];
+    }
+
+    public function testNav1Action()
+    {
+        $this->get('food.nav')->testInsertOrder();
+        die("TEST NAV");
+    }
+
+    public function testNav2Action()
+    {
+        $this->get('food.nav')->getLastOrders();
+        die("TEST NAV");
+    }
+
+    public function postToNavAction($id)
+    {
+        echo "<pre>";
+        $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($id);
+        $this->get('food.nav')->putTheOrderToTheNAV($order);
+        die("THE END");
+    }
+
+    public function updatePricesNavAction($id, Request $req)
+    {
+        $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($id);
+        var_dump($order->getId());
+
+        echo "<pre>";
+        if ($req->get('process', 0) == 1) {
+            echo "PROCESS:";
+            $ret = $this->get('food.nav')->processOrderNAV($order);
+            var_dump($ret);
+        }
+
+
+        $this->get('food.nav')->updatePricesNAV($order);
+        die("THE END UPDATE PRC NAV");
     }
 }

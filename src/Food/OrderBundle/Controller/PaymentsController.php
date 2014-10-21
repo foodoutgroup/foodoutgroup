@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Acl\Exception\Exception;
+use Food\OrderBundle\Form\SebBanklinkType;
+use Food\OrderBundle\Service\Banklink\Seb;
+use Food\OrderBundle\Service\Events\BanklinkEvent;
 
 class PaymentsController extends Controller
 {
@@ -108,8 +111,12 @@ class PaymentsController extends Controller
             $logger->alert("trace: ".$e->getTraceAsString());
 
             if (isset($order) && $order) {
-                $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());
-                $orderService->saveOrder();
+                if ($order->getPaymentStatus() != $orderService::$paymentStatusComplete) {
+                    $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());
+                    $orderService->saveOrder();
+                } else {
+                    $logger->error('Payment status was completed. Can not cancel it. Its final!');
+                }
             }
 
             return new Response($e->getTraceAsString(), 500);
@@ -167,5 +174,54 @@ class PaymentsController extends Controller
 
             return new Response($e->getTraceAsString(), 500);
         }
+    }
+
+    public function swedbankGatewayRedirectAction($id, $locale)
+    {
+        //
+    }
+
+    public function swedbankGatewayFailureAction(Request $request)
+    {
+        return $this->swedbankGatewaySuccessAction($request);
+    }
+
+    public function swedbankGatewaySuccessAction(Request $request)
+    {
+        // 
+    }
+
+    protected function markOrderPaid($orderService)
+    {
+        $orderService->setPaymentStatus(
+            $orderService::$paymentStatusComplete,
+            'Swedbank gateway billed payment');
+        $orderService->saveOrder();
+        $orderService->informPlace();
+
+        // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
+        $orderService->deactivateCoupon();
+    }
+
+    protected function markOrderProcessing($orderService, $order)
+    {
+        $orderService->logPayment(
+            $order,
+            'Swedbank Gateway wallet payment started',
+            'Swedbank Gateway wallet payment accepted. Waiting for funds to be billed',
+            $order
+        );
+    }
+
+    protected function markOrderCancelled($orderService, $order)
+    {
+        $orderService->logPayment(
+            $order,
+            'Swedbank gateway payment canceled',
+            'Swedbank gateway canceled in Swedbank',
+            $order
+        );
+
+        $orderService->setPaymentStatus($orderService::$paymentStatusCanceled, 'User canceled payment in Swedbank gateway');
     }
 }

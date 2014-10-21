@@ -24,7 +24,11 @@
       </trans-unit>
       <trans-unit id="44f58adead70171ab653c725c9abf0c3" resname="index.street">
         <source>index.street</source>
-        <target>Adresas (pvz. Laisvės pr. 77)</target>
+        <target>Adresas (pvz. Laisvės pr.)</target>
+      </trans-unit>
+      <trans-unit id="index.house" resname="index.house">
+        <source>index.house</source>
+        <target>Namas</target>
       </trans-unit>
       <trans-unit id="bb1fb2fdfdba48c2b3d2ec83e968729c" resname="index.findfood">
         <source>index.findfood</source>
@@ -182,6 +186,10 @@
         <source>general.email.new_order</source>
         <target>naujas užsakymas</target>
       </trans-unit>
+      <trans-unit id="general.email.canceled_order" resname="general.email.canceled_order">
+        <source>general.email.canceled_order</source>
+        <target>atšauktas užsakymas</target>
+      </trans-unit>
       <trans-unit id="general.email.order_reminder" resname="general.email.order_reminder">
         <source>general.email.order_reminder</source>
         <target>primename, kad turite nepatvirtintą užsakymą</target>
@@ -330,6 +338,10 @@
         <source>general.sms.new_order</source>
         <target>Naujas uzsakymas: </target>
       </trans-unit>
+      <trans-unit id="general.sms.canceled_order" resname="general.sms.canceled_order">
+        <source>general.sms.canceled_order</source>
+        <target>Uzsakymas #%order_number% atsauktas: </target>
+      </trans-unit>
       <trans-unit id="general.sms.order_reminder" resname="general.sms.order_reminder">
         <source>general.sms.order_reminder</source>
         <target>Primename, kad turite nepatvirtinta uzsakyma: </target>
@@ -409,6 +421,22 @@
       <trans-unit id="ff990e97a34ed6619f88da89f1555dd1" resname="mobile.payment.paysera">
         <source>mobile.payment.paysera</source>
         <target>Apmokėta internetu</target>
+      </trans-unit>
+      <trans-unit id="mobile.payment.nordea-banklink" resname="mobile.payment.nordea-banklink">
+        <source>mobile.payment.nordea-banklink</source>
+        <target>Apmokėta internetu (Nordea)</target>
+      </trans-unit>
+      <trans-unit id="mobile.payment.seb-banklink" resname="mobile.payment.seb-banklink">
+        <source>mobile.payment.seb-banklink</source>
+        <target>Apmokėta internetu (SEB)</target>
+      </trans-unit>
+      <trans-unit id="mobile.payment.swedbank-credit-card-gateway" resname="mobile.payment.swedbank-credit-card-gateway">
+        <source>mobile.payment.swedbank-credit-card-gateway</source>
+        <target>Apmokėta internetu (Swed CC)</target>
+      </trans-unit>
+      <trans-unit id="mobile.payment.swedbank-gateway" resname="mobile.payment.swedbank-gateway">
+        <source>mobile.payment.swedbank-gateway</source>
+        <target>Apmokėta internetu (Swedbank)</target>
       </trans-unit>
       <trans-unit id="ca4d1fefea4fd64c121dbd0e8fa2819c" resname="mobile.order.sum_with_delivery">
         <source>mobile.order.sum_with_delivery</source>
@@ -530,6 +558,10 @@
         <source>mobile.invoice.total_with_vat</source>
         <target>Viso</target>
       </trans-unit>
+      <trans-unit id="mobile.invoice.total_with_vat_eur" resname="mobile.invoice.total_with_vat_eur">
+        <source>mobile.invoice.total_with_vat_eur</source>
+        <target>Viso EUR</target>
+      </trans-unit>
       <trans-unit id="16e198a6b48257e47d9ce572ab7ce655" resname="mobile.deliver_time">
         <source>mobile.deliver_time</source>
         <target>Pristatyti iki</target>
@@ -648,7 +680,23 @@
       </trans-unit>
       <trans-unit id="6ff5d01a17890ac3a904f3340c591192" resname="general.email.accounting_report.paysera">
         <source>general.email.accounting_report.paysera</source>
-        <target>Internetu</target>
+        <target>Internetu (Paysera)</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.nordea-banklink" resname="general.email.accounting_report.nordea-banklink">
+        <source>general.email.accounting_report.nordea-banklink</source>
+        <target>Internetu (Nordea)</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.seb-banklink" resname="general.email.accounting_report.seb-banklink">
+        <source>general.email.accounting_report.seb-banklink</source>
+        <target>Internetu (SEB)</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.swedbank-credit-card-gateway" resname="general.email.accounting_report.swedbank-credit-card-gateway">
+        <source>general.email.accounting_report.swedbank-credit-card-gateway</source>
+        <target>Internetu (Swedbank kreditinė)</target>
+      </trans-unit>
+      <trans-unit id="general.email.accounting_report.swedbank-gateway" resname="general.email.accounting_report.swedbank-gateway">
+        <source>general.email.accounting_report.swedbank-gateway</source>
+        <target>Internetu (Swedbank banklink)</target>
       </trans-unit>
       <trans-unit id="2a27b06725260bba699dd331a49827d8" resname="index.title_page_header">
         <source>index.title_page_header</source>
@@ -762,6 +810,10 @@
       <trans-unit id="reporting.daily.yesterday_orders.place" resname="reporting.daily.yesterday_orders.place">
         <source>reporting.daily.yesterday_orders.place</source>
         <target>Restoranas</target>
+      </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.place_point" resname="reporting.daily.yesterday_orders.place_point">
+        <source>reporting.daily.yesterday_orders.place_point</source>
+        <target>Gam.taškas</target>
       </trans-unit>
       <trans-unit id="reporting.daily.yesterday_orders.payment_type" resname="reporting.daily.yesterday_orders.payment_type">
         <source>reporting.daily.yesterday_orders.payment_type</source>
@@ -880,6 +932,151 @@
       <trans-unit id="general.lastname.placeholder" resname="general.lastname.placeholder">
           <source>general.lastname.placeholder</source>
           <target>Pavardenis</target>
+      </trans-unit>
+      <trans-unit id="general.homepage.meta_title" resname="general.homepage.meta_title">
+          <source>general.homepage.meta_title</source>
+          <target>maisto pristatymas į namus ir biurą</target>
+      </trans-unit>
+      <!-- Swedbank gateway payments -->
+      <trans-unit id="payment.swedbank_gateway.cancelled" resname="payment.swedbank_gateway.cancelled">
+          <source>payment.swedbank_gateway.cancelled</source>
+          <target>Užsakymas atšauktas.</target>
+      </trans-unit>
+      <trans-unit id="payment.swedbank_gateway.communication_error" resname="payment.swedbank_gateway.communication_error">
+          <source>payment.swedbank_gateway.communication_error</source>
+          <target>Įvyko komunikacijos su banku klaida. Pabandykite atnaujinti šį puslapį po kelių minučių.</target>
+      </trans-unit>
+      <trans-unit id="payment.swedbank_gateway.error" resname="payment.swedbank_gateway.error">
+          <source>payment.swedbank_gateway.error</source>
+          <target>Užsakymas atšauktas.</target>
+      </trans-unit>
+      <trans-unit id="payment.swedbank_gateway.order_not_found" resname="payment.swedbank_gateway.order_not_found">
+          <source>payment.swedbank_gateway.order_not_found</source>
+          <target>Užsakymas nerastas.</target>
+      </trans-unit>
+      <trans-unit id="payment.swedbank_gateway.processing" resname="payment.swedbank_gateway.processing">
+          <source>payment.swedbank_gateway.processing</source>
+          <target>Užsakymas priimtas bako apdorojimui.</target>
+      </trans-unit>
+      <trans-unit id="payment.swedbank_gateway.something_wrong" resname="payment.swedbank_gateway.something_wrong">
+          <source>payment.swedbank_gateway.something_wrong</source>
+          <target>Įvyko nenustatyto tipo klaida.</target>
+      </trans-unit>
+      <trans-unit id="payment.swedbank_gateway.success" resname="payment.swedbank_gateway.success">
+          <source>payment.swedbank_gateway.success</source>
+          <target>Užsakymas sėkmingai apmokėtas.</target>
+      </trans-unit>
+      <trans-unit id="payment.nordea.success" resname="payment.nordea.success">
+          <source>payment.nordea.success</source>
+          <target>Užsakymas sėkmingai apmokėtas.</target>
+      </trans-unit>
+      <trans-unit id="payment.nordea.failed" resname="payment.nordea.failed">
+          <source>payment.nordea.failed</source>
+          <target>Užsakymas nebuvo apmokėtas.</target>
+      </trans-unit>
+      <trans-unit id="general.successful_user_registration" resname="general.successful_user_registration">
+        <source>general.successful_user_registration</source>
+        <target>Jūs sėkmingai užsiregistravote!</target>
+      </trans-unit>
+      <trans-unit id="general.noty.profile_updated" resname="general.noty.profile_updated">
+        <source>general.noty.profile_updated</source>
+        <target>Duomenys sėkmingai atnaujinti.</target>
+      </trans-unit>
+      <trans-unit id="general.resetting" resname="general.resetting">
+        <source>general.resetting</source>
+        <target>Slaptažodžio priminimas</target>
+      </trans-unit>
+      <trans-unit id="general.resetting.continue" resname="general.resetting.continue">
+        <source>general.resetting.continue</source>
+        <target>Tęsti</target>
+      </trans-unit>
+      <trans-unit id="general.resetting.email_sent" resname="general.resetting.email_sent">
+        <source>general.resetting.email_sent</source>
+        <target>Jums buvo išsiųstas jūsų sąskaitos slaptažodžio priminimo laiškas. Jame yra nuoroda, kuria nuėję galėsite pasikeisti slaptažodį.</target>
+      </trans-unit>
+      <trans-unit id="general.resetting.password_must_match" resname="general.resetting.password_must_match">
+        <source>general.resetting.password_must_match</source>
+        <target>Slaptažodžiai turi sutapti.</target>
+      </trans-unit>
+      <trans-unit id="registration.user.exists" resname="registration.user.exists">
+          <source>registration.user.exists</source>
+          <target>Vartotojas tokiu el. paštu jau egzistuoja</target>
+      </trans-unit>
+      <trans-unit id="registration.phone.is_empty" resname="registration.phone.is_empty">
+          <source>registration.phone.is_empty</source>
+          <target>Nenurodytas telefono numeris</target>
+      </trans-unit>
+      <trans-unit id="registration.firstname.is_empty" resname="registration.firstname.is_empty">
+          <source>registration.firstname.is_empty</source>
+          <target>Nenurodytas Vardas</target>
+      </trans-unit>
+      <trans-unit id="registration.email.is_empty" resname="registration.email.is_empty">
+          <source>registration.email.is_empty</source>
+          <target>Nenurodytas el.pašto adresas</target>
+      </trans-unit>
+      <trans-unit id="registration.password.too_short" resname="registration.password.too_short">
+          <source>registration.password.too_short</source>
+          <target>Slaptažodis negali būti trumpesnis, nei 6 simboliai</target>
+      </trans-unit>
+      <trans-unit id="mobile.change_password.password.is_empty" resname="mobile.change_password.password.is_empty">
+          <source>mobile.change_password.password.is_empty</source>
+          <target>Tučias slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="mobile.change_password.user.id_dont_match" resname="mobile.change_password.user.id_dont_match">
+          <source>mobile.change_password.user.id_dont_match</source>
+          <target>Nesutampa prijungtas vartotojas ir paduotas ID</target>
+      </trans-unit>
+      <trans-unit id="mobile.order_status.order_delayed" resname="mobile.order_status.order_delayed">
+          <source>mobile.order_status.order_delayed</source>
+          <target>Užsakymas vėluos %delayTime% min.</target>
+      </trans-unit>
+      <trans-unit id="cart.didnt_reach_min_cart" resname="cart.didnt_reach_min_cart">
+          <source>cart.didnt_reach_min_cart</source>
+          <target>Krepšelis nesiekia minimalios sumos</target>
+      </trans-unit>
+      <trans-unit id="login.username_placeholder" resname="login.username_placeholder">
+          <source>login.username_placeholder</source>
+          <target>vardenis@pastas.lt</target>
+      </trans-unit>
+      <trans-unit id="login.password_placeholder" resname="login.password_placeholder">
+          <source>login.password_placeholder</source>
+          <target>Slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="registration.firstname_placeholder" resname="registration.firstname_placeholder">
+          <source>registration.firstname_placeholder</source>
+          <target>Vardenis</target>
+      </trans-unit>
+      <trans-unit id="registration.lastname_placeholder" resname="registration.lastname_placeholder">
+          <source>registration.lastname_placeholder</source>
+          <target>Pavardenis</target>
+      </trans-unit>
+      <trans-unit id="registration.email_placeholder" resname="registration.email_placeholder">
+          <source>registration.email_placeholder</source>
+          <target>vardenis@pastas.lt</target>
+      </trans-unit>
+      <trans-unit id="registration.password_placeholder" resname="registration.password_placeholder">
+          <source>registration.password_placeholder</source>
+          <target>Slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="registration.repeat_password_placeholder" resname="registration.repeat_password_placeholder">
+          <source>registration.repeat_password_placeholder</source>
+          <target>Pakartokite slaptažodį</target>
+      </trans-unit>
+      <trans-unit id="profile.phone_placeholder" resname="profile.phone_placeholder">
+          <source>profile.phone_placeholder</source>
+          <target>37060000000</target>
+      </trans-unit>
+      <trans-unit id="profile.current_password" resname="profile.current_password">
+          <source>profile.current_password</source>
+          <target>Dabartinis slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="profile.new_password" resname="profile.new_password">
+          <source>profile.new_password</source>
+          <target>Naujas slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="profile.repeat_new_password" resname="profile.repeat_new_password">
+          <source>profile.repeat_new_password</source>
+          <target>Pakartokite naują slaptažodis</target>
       </trans-unit>
     </body>
   </file>

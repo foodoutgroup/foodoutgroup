@@ -1,0 +1,20 @@
+$(document).ready(function() {
+    $.fancybox({
+        'padding'		: 0,
+        'autoScale'		: false,
+        'transitionIn'	: 'none',
+        'transitionOut'	: 'none',
+        'title'			: '',
+        'width'			: 640,
+        'height'		: 385,
+        'href'			: '{{ video }}'.replace(new RegExp("watch\\?v=", "i"), 'v/'),
+        'type'			: 'swf',
+        'swf'			: {
+        'wmode'				: 'transparent',
+        'allowfullscreen'	: 'true'
+        },
+        afterClose: function() {
+            setCookie('i_saw_video', 1, 365*24*60);
+        }
+    });
+});

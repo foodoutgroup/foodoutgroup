@@ -121,6 +121,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $nameToFormat6 = 'Karolis';
         $nameToFormat7 = 'Balys';
         $nameToFormat8 = 'John';
+        $nameToFormat10 = 'Thomas';
 
         $expectedName1 = 'Mantai';
         $expectedName2 = 'Pauliau';
@@ -130,6 +131,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $expectedName6 = 'Karoli';
         $expectedName7 = 'Baly';
         $expectedName8 = 'John';
+        $expectedName10 = 'Thomas';
 
         $formatedName1 = $util->getName($nameToFormat1, 'lt');
         $formatedName2 = $util->getName($nameToFormat2, 'lt');
@@ -140,6 +142,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $formatedName7 = $util->getName($nameToFormat7, 'lt');
         $formatedName8 = $util->getName($nameToFormat8, 'lt');
         $formatedName9 = $util->getName($nameToFormat8, 'en');
+        $formatedName10 = $util->getName($nameToFormat10);
 
         $this->assertEquals($expectedName1, $formatedName1);
         $this->assertEquals($expectedName2, $formatedName2);
@@ -150,5 +153,6 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedName7, $formatedName7);
         $this->assertEquals($expectedName8, $formatedName8);
         $this->assertEquals($expectedName8, $formatedName9);
+        $this->assertEquals($expectedName10, $formatedName10);
     }
 }

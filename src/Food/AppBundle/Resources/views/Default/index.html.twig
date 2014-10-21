@@ -19,7 +19,10 @@
                 addrXhr = $.ajax({
                     type: 'GET',
                     url: '{{ path('food_ajax', {'action': 'find-address'}) }}',
-                    data:  {city: $('#index_city').val(), address: $('#index_address').val()},
+                    data:  {
+                        city: $('#index_city').val(),
+                        address: $('#index_address').val() + ' ' + $('#index_house').val()
+                    },
                     success:  function(resp){
                         if (resp.data.success == 1) {
                             $('.search-food-form').trigger('submit');
@@ -43,7 +46,12 @@
             }
 
             $('#index_submit').click(function(e){
-                getCrds();
+                if ($('#index_city').val() !="" && $('#index_city').val() != null && $('#index_address').val()=="") {
+                    var url = '{{ path('food_places_lt_main') }}' + $('#index_city').val();
+                    window.location.href = url;
+                } else {
+                    getCrds();
+                }
                 e.stopPropagation();
                 e.preventDefault();
             });
@@ -63,8 +71,11 @@
 
             });
         });
+        initStreetSearch();
+        initStreetHouseSearch();
     {% endblock %}
 
+{% block title %}{{ page_title }} - {% trans %}general.homepage.meta_title{% endtrans %}{% endblock %}
 
 {% block body %}
 
@@ -79,10 +90,12 @@
                         <option value="" disabled {% if formDefaults.city == '' %}selected{% endif %}>{% trans %}index.city{% endtrans %}</option>
                         <option value="Vilnius" {% if formDefaults.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
                         <option value="Kaunas" {% if formDefaults.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
+                        <option value="Klaipėda" {% if formDefaults.city == 'Klaipėda' or formDefaults.city == 'Klaipeda' %}selected{% endif %}>Klaipėda</option>
                     </select>
 
                     {# <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}"  autocomplete="off" > #}
                     <input type="text" id="index_address" placeholder="{% trans %}index.street{% endtrans %}" class="input-street" autocomplete="off" value="{{ formDefaults.address }}" />
+                    <input type="text" id="index_house" placeholder="{% trans %}index.house{% endtrans %}" class="input-house" autocomplete="off" value="{{ formDefaults.house }}" />
                     <input type="submit" id="index_submit" value="{% trans %}index.findfood{% endtrans %}" />
                 </div>
             </form>

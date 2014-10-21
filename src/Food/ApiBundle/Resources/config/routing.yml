@@ -1,0 +1,170 @@
+food_api_homepage:
+    pattern:  /
+    defaults: { _controller: FoodApiBundle:Default:index }
+
+
+#Restaurant routings
+food_api_restaurants:
+    pattern: /restaurants
+    defaults: { _controller: FoodApiBundle:Restaurants:getRestaurants }
+    methods: [GET]
+
+food_api_restaurants_filtered:
+    pattern: /restaurants/filters
+    defaults: { _controller: FoodApiBundle:Restaurants:getRestaurantsFiltered }
+    methods: [GET]
+
+food_api_restaurants_get:
+    pattern: /restaurants/{id}
+    defaults: { _controller: FoodApiBundle:Restaurants:getRestaurant}
+    methods: [GET]
+
+
+food_api_restaurants_get_menu:
+    pattern: /restaurants/{id}/menu
+    defaults: { _controller: FoodApiBundle:Restaurants:getMenu }
+    methods: [GET]
+
+food_api_restaurants_get_menu_categories:
+    pattern: /restaurants/{id}/menu/categories
+    defaults: { _controller: FoodApiBundle:Restaurants:getMenuCategories }
+    methods: [GET]
+
+food_api_restaurants_get_menu_item:
+    pattern: /restaurants/{placeId}/menu/{menuItem}
+    defaults: { _controller: FoodApiBundle:Restaurants:getMenuItem }
+    methods: [GET]
+
+
+
+#basketszzzz
+food_api_baskets_create:
+    pattern: /baskets
+    defaults: { _controller: FoodApiBundle:Basket:createBasket }
+    methods: [POST]
+
+food_api_basket_update:
+    pattern: /baskets/{id}
+    defaults: { _controller: FoodApiBundle:Basket:updateBasket }
+    methods: [PUT]
+
+food_api_baskets_get:
+    pattern: /baskets/{id}
+    defaults: { _controller: FoodApiBundle:Basket:getBasket }
+    methods: [GET]
+
+food_api_baskets_delete:
+    pattern: /baskets/{id}
+    defaults: { _controller: FoodApiBundle:Basket:deleteBasket }
+    methods: [DELETE]
+
+food_api_baskets_update_item:
+    pattern: /baskets/{id}/{basket_item_id}
+    defaults: { _controller: FoodApiBundle:Basket:updateBasketItem }
+    methods: [PUT]
+
+
+food_api_baskets_delete_item:
+    pattern: /baskets/{id}/{basket_item_id}
+    defaults: { _controller: FoodApiBundle:Basket:deleteBasketItem }
+    methods: [DELETE]
+
+
+
+# Orders Routings :)
+food_api_orders:
+    pattern: /orders
+    defaults: { _controller: FoodApiBundle:Orders:getOrders}
+    methods: [GET]
+
+food_api_order_create:
+    pattern: /orders
+    defaults: { _controller: FoodApiBundle:Orders:createOrder}
+    methods: [POST]
+
+food_api_order_create_wcon:
+    pattern: /orders2
+    defaults: { _controller: FoodApiBundle:Orders:createOrderPre}
+    methods: [POST]
+
+food_api_order_details:
+    pattern: /orders/{id}
+    defaults: { _controller: FoodApiBundle:Orders:getOrderDetails }
+    methods: [GET]
+
+food_api_order_details2:
+    pattern: /orders2/{id}
+    defaults: { _controller: FoodApiBundle:Orders:getOrderDetails }
+    methods: [GET]
+
+food_api_order_confirm:
+    pattern: /orders/{id}
+    defaults: { _controller: FoodApiBundle:Orders:confirmOrder }
+    methods: [POST]
+
+food_api_order_confirm2:
+    pattern: /orders2/{id}
+    defaults: { _controller: FoodApiBundle:Orders:confirmOrder }
+    methods: [POST]
+
+food_api_order_status:
+    pattern: /orders/{id}/status
+    defaults: { _controller: FoodApiBundle:Orders:getOrderStatus}
+    methods: [GET]
+
+food_api_order_status2:
+    pattern: /orders2/{id}/status
+    defaults: { _controller: FoodApiBundle:Orders:getOrderStatus}
+    methods: [GET]
+
+food_api_find_address:
+    pattern: /address
+    defaults: { _controller: FoodApiBundle:Address:findAddress}
+    methods: [GET]
+
+food_api_find_street:
+    pattern: /address/street
+    defaults: { _controller: FoodApiBundle:Address:findStreet}
+    methods: [GET]
+
+# Users part
+food_api_users_register:
+    pattern: /users
+    defaults: { _controller: FoodApiBundle:Users:register}
+    methods: [POST]
+
+food_api_users_reset_password:
+    pattern: /users/reset_password
+    defaults: { _controller: FoodApiBundle:Users:resetPassword}
+    methods: [POST]
+
+food_api_users_update:
+    pattern: /users
+    defaults: { _controller: FoodApiBundle:Users:update}
+    methods: [PUT]
+
+food_api_users_login:
+    pattern: /users/login
+    defaults: { _controller: FoodApiBundle:Users:login}
+    methods: [POST]
+
+food_api_users_change_password:
+    pattern: /users/change_password
+    defaults: { _controller: FoodApiBundle:Users:changePassword}
+    methods: [POST]
+
+food_api_users_information:
+    pattern: /users/me
+    defaults: { _controller: FoodApiBundle:Users:me}
+    methods: [GET]
+
+food_api_logout:
+    pattern: /users/session
+    defaults: { _controller: FoodApiBundle:Users:logout}
+    methods: [DELETE]
+
+# Images and stuff
+food_api_get_image:
+    pattern: /images/
+    defaults: { _controller: FoodApiBundle:Images:image}
+    methods: [GET]

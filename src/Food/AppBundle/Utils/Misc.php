@@ -48,6 +48,30 @@ class Misc
     }
 
     /**
+     * @param string $phone
+     * @param string $country
+     *
+     * @return bool
+     */
+    public function isMobilePhone($phone, $country)
+    {
+        $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+        try {
+            $numberProto = $phoneUtil->parse($phone, $country);
+        } catch (\libphonenumber\NumberParseException $e) {
+            return false;
+        }
+
+        $numberType = $phoneUtil->getNumberType($numberProto);
+
+        if (in_array($numberType, array(\libphonenumber\PhoneNumberType::MOBILE, \libphonenumber\PhoneNumberType::FIXED_LINE_OR_MOBILE))) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @param string $ip
      * @return bool
      */
@@ -63,4 +87,52 @@ class Misc
 
         return false;
     }
+
+    /**
+     * Parses address string to street, house, flat numbers
+     *
+     * @param string $address
+     * @return array
+     */
+    public function parseAddress($address)
+    {
+        if (!empty($address)) {
+            preg_match('/\s(([0-9]{1,3}\s?[a-z]?)[-|\s]{0,4}([0-9]{0,3}))$/i', $address, $addrData);
+
+            if (isset($addrData[0])) {
+                $street = trim(str_replace($addrData[0], '', $address));
+                $house = (!empty($addrData[2]) ? $addrData[2] : '');
+                $flat = (!empty($addrData[3]) ? $addrData[3] : '');
+            } else {
+                $street = $address;
+                $house = '';
+                $flat = '';
+            }
+        } else {
+            $street = '';
+            $house = '';
+            $flat = '';
+        }
+
+        return array(
+            'street' => $street,
+            'house' => $house,
+            'flat' => $flat,
+        );
+    }
+
+    /**
+     * @param float $price
+     * @return float
+     */
+    public function getEuro($price)
+    {
+        $accountingEuroRate = 3.4528;
+        $euroPrice = $price / $accountingEuroRate;
+
+        return round($euroPrice, 2);
+    }
+
+
+
 }

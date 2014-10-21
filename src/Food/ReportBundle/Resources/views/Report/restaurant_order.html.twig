@@ -1,0 +1,86 @@
+{# Restoranu uzsakymo counto reportas - wow, much name #}
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script srt="{{ asset('bundles/foodapp/scripts/jquery-ui/datepicker-lt.js') }}"></script>
+    <script src="{{ asset('bundles/foodreport/js/reports.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            Report.bindEvents();
+        });
+    </script>
+{% endblock %}
+
+{% block actions %}{% endblock %}
+
+{% block side_menu %}{% endblock %}
+
+{% block list_table %}
+    <style type="text/css">div.sidebar.span2 { display: none !important; }</style>
+    <div class="report">
+        <h2>{{ 'admin.report.restaurant_orders'|trans({}, 'SonataAdminBundle') }}</h2>
+        <h3>{{ 'admin.reports.order_count.period'|trans({}, 'SonataAdminBundle') }} {{ dateFrom|date("Y-m-d") }} - {{ dateTo|date("Y-m-d") }}</h3>
+        <table class="reports_list">
+            <tr>
+                <th>{{ 'admin.reports.place'|trans({}, 'SonataAdminBundle') }}</th>
+                {% if groupMonth == true %}
+                    <th>{{ 'admin.reports.month'|trans({}, 'SonataAdminBundle') }}</th>
+                {% endif %}
+                <th>{{ 'admin.reports.order_count'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.devliver_count'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.pickup_count'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.order_sum'|trans({}, 'SonataAdminBundle') }} ({{ currency_display }})</th>
+            </tr>
+            {% for place in stats %}
+                <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">
+                    <td>{{ place.place_name }}</td>
+                    {% if groupMonth == true %}
+                        <td class="center">{{ place.month }}</td>
+                    {% endif %}
+                    <td class="center narrow">{{ place.order_count }}</td>
+                    <td class="center narrow">{{ place.deliver_count }}</td>
+                    <td class="center narrow">{{ place.pickup_count }}</td>
+                    <td class="center narrow">{{ place.order_sum }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block list_filters %}
+<div class="sonata-ba-filter span2">
+    <form class="sonata-filter-form " action="{{ path('food_reports_restaurant_orders_list') }}" method="GET">
+        <fieldset class="filter_legend">
+            <legend class="filter_legend">{{ 'label_filters'|trans({}, 'SonataAdminBundle') }}</legend>
+            <div class="filter_container">
+                <div>
+                    <div class="clearfix">
+                        <label for="filter_place_name_value">{{ 'admin.reports.place'|trans({}, 'SonataAdminBundle') }}</label>
+                        <select name="place[]" multiple="multiple">
+                            <option value=""></option>
+                            {% for place in places %}
+                                <option value="{{ place.id }}"{% if place.id in placesSelected %}selected="selected"{% endif %}>{{ place.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="clearfix">
+                        <label for="filter_order_date_value">{{ 'admin.reports.date_range'|trans({}, 'SonataAdminBundle') }}</label>
+                        <input type="text" name="date_from" class="date_pick" value="{{ dateFrom|date("Y-m-d") }}" />
+                        <input type="text" name="date_to" class="date_pick" value="{{ dateTo|date("Y-m-d") }}" />
+                    </div>
+                    <div class="clearfix">
+                        {{ 'admin.reports.group_by_month'|trans({}, 'SonataAdminBundle') }}
+                        <input type="checkbox" name="group_month"{% if groupMonth == true %}checked="checked"{% endif %} />
+                        <br /><br />
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <input type="submit" class="btn btn-primary" value="{{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}">
+                <a class="btn" href="{{ path('food_reports_restaurant_orders_list') }}">{{ 'link_reset_filter'|trans({}, 'SonataAdminBundle') }}</a>
+            </div>
+
+        </fieldset>
+    </form>
+</div>
+{% endblock %}

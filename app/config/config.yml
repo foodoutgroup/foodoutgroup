@@ -9,7 +9,7 @@ imports:
 parameters:
     available_locales: [lt, en, ru]
     available_locales_routing: lt | en | ru
-    available_cities: ["Vilnius","Kaunas"]
+    available_cities: ["Vilnius","Kaunas","Klaipėda"]
     time_zone: "Europe/Vilnius"
     sms.available_providers: [food.infobip, food.silverstreet]
     sms.main_provider: "food.infobip"
@@ -32,6 +32,7 @@ parameters:
     order.city_coordinators:
         vilnius: []
         kaunas: [renata@foodout.lt]
+        klaipeda: [jurgita@foodout.lt]
     order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
@@ -52,7 +53,14 @@ parameters:
     # Possible values: "local", "etaxi"
     active_logistics: "local"
     # Todo situos gal ir iskelsime i paramsus - dependant on install?
-    payment.methods: [local, local.card, paysera]
+    payment.methods:
+        - local
+        - local.card
+        - paysera
+        - swedbank-gateway
+        - swedbank-credit-card-gateway
+        - seb-banklink
+        - nordea-banklink
     currency_display: Lt
     currency_iso: LTL
     # naudojam telefonu validacijoms
@@ -60,6 +68,18 @@ parameters:
     vat: 21
     evp.test_payments: 0
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
+    cloudfront_url: images.foodout.lt
+    logtime.order_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitOrders"
+    logtime.driver_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitDrivers"
+    # Ar siusti uzsakyma i isorine (TMS) sistema
+    logistics.send_to_external: true
+    logistics.city_filter: ["Klaipėda"]
+    # seb banklink
+    seb.banklink.private_key: "/home/skanu.lt/shared/banklinks/seb/private.key"
+    seb.banklink.bank_key: "/home/skanu.lt/shared/banklinks/seb/bank.key"
+    # nordea banklink
+    nordea.banklink.rcv_id: 303134580
+    nordea.banklink.mac: C5IUBtC5eriCYGbIYhhIV4v830k14uSn
 
 framework:
     #esi:             ~
@@ -98,13 +118,17 @@ twig:
         static_service: "@food.static"
         google_maps_api: "%google.maps_api%"
         language_utils: "@food.app.utils.language"
+        notifications: "@food.app.utils.notifications"
+        cloudfront_url: "%cloudfront_url%"
+        misc_utils: "@food.app.utils.misc"
+
 
 
 # Assetic Configuration
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle, FoodUserBundle ]
+    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle, FoodUserBundle, FoodPlacesBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -161,6 +185,12 @@ doctrine:
                 rand: DoctrineExtensions\Query\Mysql\Rand
                 power: Food\AppBundle\DQL\PowerFunction
 
+# Doctrine migrations
+doctrine_migrations:
+    dir_name: %kernel.root_dir%/DoctrineMigrations
+    namespace: Application\Migrations
+    table_name: migration_versions
+    name: Application Migrations
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -220,6 +250,7 @@ sonata_admin:
       #layout: SonataAdminBundle::standard_layout.html.twig
       layout: FoodAppBundle::admin_layout.html.twig
       ajax:   SonataAdminBundle::ajax_layout.html.twig
+      dashboard: FoodAppBundle::dashboard.html.twig
 
       list: SonataAdminBundle:CRUD:list.html.twig
       show: SonataAdminBundle:CRUD:show.html.twig
@@ -243,13 +274,12 @@ sonata_admin:
                       #- sonata.admin.kitchen
                       - sonata.admin.place
                       - sonata.admin.place.reviews
+                      - sonata.admin.place.coverphoto
                       #- sonata.admin.dish.unit
                       #- sonata.admin.dish.size
                       #- sonata.admin.food.category
-                      - sonata.admin.static
-                      - sonata.admin.sms
-                      - sonata.admin.coupon
                       #- sonata.admin.dish.unit.category
+                      - sonata.admin.coupon
                   roles: [ ROLE_ADMIN ]
               acme.admin.group.formanagers:
                   label: admin.group.formanagers
@@ -267,6 +297,13 @@ sonata_admin:
                 label_catalogue: SonataAdminBundle
                 items:
                       - sonata.admin.order
+              admin.system:
+                  items: ~
+                  item_adds:
+                      - sonata.admin.sms
+                      - sonata.admin.street
+                      - sonata.admin.static
+                  roles: [ ROLE_ADMIN ]
               admin.users:
                   items: ~
                   item_adds:
@@ -274,11 +311,16 @@ sonata_admin:
                       - sonata.admin.newsletter_subscribers
                       - sonata.admin.banned_ips
                   roles: [ ROLE_ADMIN ]
-              admin.support:
+#              admin.support:
+#                  items: ~
+#                  item_adds:
+#                      - sonata.admin.support
+#                  roles: [ ROLE_SUPPORT ]
+              admin.reports:
                   items: ~
                   item_adds:
-                      - sonata.admin.support
-                  roles: [ ROLE_SUPPORT ]
+                      - sonata.admin.restaurant_orders
+                  roles: [ ROLE_ADMIN ]
               admin.dispatcher:
                   items: ~
                   item_adds:
@@ -331,3 +373,9 @@ trsteel_ckeditor:
 #        route: route_name
 #        route_parameters:
 #            type: image
+
+# Payment gateway
+pirminis_gateway:
+    swedbank:
+        vtid: "21911859"
+        password: "rMUhc7p7"

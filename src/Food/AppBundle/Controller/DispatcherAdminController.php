@@ -10,7 +10,7 @@ class DispatcherAdminController extends Controller
 {
     public function listAction()
     {
-        $orderService = $this->get('food.order');
+        $repo = $this->get('doctrine')->getRepository('FoodOrderBundle:Order');
         $placeService = $this->get('food.places');
 
         $cityOrders = array();
@@ -18,9 +18,9 @@ class DispatcherAdminController extends Controller
 
         foreach ($availableCities as $city) {
             $cityOrders[$city] = array(
-                'unassigned' => $orderService->getOrdersUnassigned($city),
-                'unconfirmed' => $orderService->getOrdersUnconfirmed($city),
-                'not_finished' => $orderService->getOrdersAssigned($city),
+                'unassigned' => $repo->getOrdersUnassigned($city),
+                'unconfirmed' => $repo->getOrdersUnconfirmed($city),
+                'not_finished' => $repo->getOrdersAssigned($city),
             );
         }
 
@@ -79,6 +79,10 @@ class DispatcherAdminController extends Controller
             $method = 'status'.ucfirst($status);
             if (method_exists($orderService, $method)) {
                 $orderService->$method('dispatcher');
+
+                if ($method == 'statusCanceled') {
+                    $orderService->informPlaceCancelAction();
+                }
             }
             $orderService->saveOrder();
         } catch (\Exception $e) {
@@ -135,7 +139,7 @@ class DispatcherAdminController extends Controller
 
     public function checkNewOrdersAction(Request $request)
     {
-        $orderService = $this->get('food.order');
+        $repo = $this->get('doctrine')->getManager()->getRepository('FoodOrderBundle:Order');
 
         $orders = $request->get('orders');
         $needUpdate = false;
@@ -145,14 +149,14 @@ class DispatcherAdminController extends Controller
                 foreach ($orderData as $type => $recentId) {
                     switch($type) {
                         case 'unassigned':
-                            if ($orderService->hasNewUnassignedOrder($city, $recentId)) {
+                            if ($repo->hasNewUnassignedOrder($city, $recentId)) {
                                 $needUpdate = true;
                                 break 2;
                             }
                             break;
 
                         case 'unconfirmed':
-                            if ($orderService->hasNewUnconfirmedOrder($city, $recentId)) {
+                            if ($repo->hasNewUnconfirmedOrder($city, $recentId)) {
                                 $needUpdate = true;
                                 break 2;
                             }

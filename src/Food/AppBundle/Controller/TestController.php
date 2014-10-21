@@ -18,6 +18,7 @@ class TestController extends Controller
      */
     public function indexAction()
     {
+        /*
         $ml = $this->get('food.mailer');
 
         $variables = array(
@@ -30,9 +31,36 @@ class TestController extends Controller
         );
 
         $ml->setVariables( $variables )->setRecipient( 'paulius@foodout.lt', 'Sample Client')->setId( 30009269 )->send();
+        */
 
+        $ord = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find(1006);
+
+        //$nav = $this->get('food.nav')->putTheOrderToTheNAV($ord);
+        $returner = $this->get('food.nav')->updatePricesNAV($ord);
+        var_dump($returner);
+        echo '-- NEXT --';
+        die();
+        if($returner) {
+            $returner = $this->get('food.nav')->updatePricesNAV($ord);
+            var_dump($returner);
+        }
 
         return new Response('Uber');
+    }
+
+    public function mssqlAction()
+    {
+        echo "<pre>";
+        $link = mssql_pconnect('213.190.40.38:5566', 'fo_order', 'peH=waGe?zoOs69');
+        if (!$link) {
+            echo mssql_get_last_message();
+            die();
+        }
+        if(!mssql_select_db('skamb_centras', $link)) {
+            echo mssql_get_last_message();
+            die();
+        }
+        return new Response();
     }
 
     /**
@@ -70,7 +98,7 @@ class TestController extends Controller
      */
     public function reportAction()
     {
-        $orderService = $this->get('food.order');
+        $em = $this->get('doctrine')->getManager();
 
 //        $orders = $orderService->getDriversMonthlyOrderCount();
 //
@@ -84,7 +112,7 @@ class TestController extends Controller
 //            )
 //        );
 
-        $orders = $orderService->getYesterdayOrdersGrouped();
+        $orders = $em->getRepository('FoodOrderBundle:Order')->getYesterdayOrdersGrouped();
 
         return (
             $this->render(
@@ -95,5 +123,35 @@ class TestController extends Controller
                 )
             )
         );
+    }
+
+    public function nav1Action()
+    {
+        $navs = $this->get('food.nav');
+        $client = $navs->getWSConnection();
+        $return = $client->FoodOutUpdatePrices(array('pInt' =>2000002044));
+
+        die('E');
+        $cs = $this->get('food.cart');
+        $place = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->find(63);
+        $pp = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find(82);
+        $cds = $cs->getCartDishes($place);
+
+        $navs = $this->get('food.nav');
+
+        $navs->validateCartInNav(
+            '8615644121',
+            $pp,
+            date('Y.m.d'),
+            date('23:i:s'),
+            OrderService::$deliveryDeliver,
+            $cds
+        );
+
+        //$ss = $navs->initSqlConn();
+        //$querys=$ss->query("SELECT TOP 10 * FROM ".$navs->getMessagesTable());
+        //var_dump($ss->fetchArray($querys));
+        //die('E');
+        return new Response("\n\n<br><br>THIS IS THE END");
     }
 }

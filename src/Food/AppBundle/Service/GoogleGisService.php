@@ -62,7 +62,6 @@ class GoogleGisService extends ContainerAware
                 'key' => $this->container->getParameter('google.maps_server_api')
             )
         );
-
         return json_decode($resp->body);
     }
 
@@ -76,7 +75,7 @@ class GoogleGisService extends ContainerAware
             foreach ($location->results as $key=>$rezRow) {
                 $hasIt = false;
                 foreach ($rezRow->address_components as $addr) {
-                    if (in_array('locality', $addr->types) && in_array('political', $addr->types) && $addr->short_name == $city) {
+                    if (in_array('locality', $addr->types) && in_array('political', $addr->types) && ($addr->short_name == $city || $addr->short_name = str_replace("ė", "e", $city))) {
                         $hasIt = true;
                     }
                 }
@@ -92,12 +91,14 @@ class GoogleGisService extends ContainerAware
         $returner['street_found'] = false;
         $returner['address_found'] = false;
         $returner['status'] = $location->status;
-        if( !empty( $location->results[0]) && in_array('street_address', $location->results[0]->types)) {
+
+        if( !empty( $location->results[0]) && (in_array('street_address', $location->results[0]->types) || in_array('premise', $location->results[0]->types))) {
             $returner['not_found'] = false;
             $returner['street_found'] = true;
             $returner['address_found'] = true;
             $returner['street_nr'] =  $location->results[0]->address_components[0]->long_name;
             $returner['street'] =  $this->__getStreet($location->results[0]->address_components);
+            $returner['street_short'] =  $this->__getStreet($location->results[0]->address_components, true);
             $returner['city'] =  $this->__getCity($location->results[0]->address_components);
             $returner['address'] = $returner['street']." ".$returner['street_nr'];
             $returner['address_orig'] = $address;
@@ -115,6 +116,7 @@ class GoogleGisService extends ContainerAware
             if ($res == 0 || $res==1 && $resIs == 1) {
                 $returner['street_found'] = true;
                 $returner['street'] =  $location->results[0]->address_components[0]->long_name;
+                $returner['street_short'] =  $location->results[0]->address_components[0]->short_name;
                 $returner['city'] =  $location->results[0]->address_components[1]->long_name;
                 $returner['address'] = $returner['street'];
                 $returner['lat'] = $location->results[0]->geometry->location->lat;
@@ -122,7 +124,20 @@ class GoogleGisService extends ContainerAware
             }
         }
         $this->setLocationToSession($returner);
+
         return $returner;
+    }
+
+    public function setCityOnlyToSession($city)
+    {
+        $returner = array();
+        $returner['not_found'] = true;
+        $returner['street_found'] = false;
+        $returner['address_found'] = false;
+        $returner['city'] =  $city;
+        $returner['address'] = $returner['city'];
+        $returner['city_only'] = true;
+        $this->setLocationToSession($returner);
     }
 
     private function __getCity($results)
@@ -135,11 +150,15 @@ class GoogleGisService extends ContainerAware
         return "";
     }
 
-    private function __getStreet($results)
+    private function __getStreet($results, $shortVersion = false)
     {
         foreach ($results as $res) {
             if (in_array('route', $res->types)) {
-                return $res->long_name;
+                if ($shortVersion) {
+                    return $res->short_name;
+                } else {
+                    return $res->long_name;
+                }
             }
         }
         return "";
@@ -159,5 +178,75 @@ class GoogleGisService extends ContainerAware
     public function getLocationFromSession()
     {
         return $this->container->get('session')->get('location');
+    }
+
+    public function findAddressByCoords($lat, $lng)
+    {
+        $resp = $this->getCli()->get(
+            $this->container->getParameter('google.maps_geocode'),
+            array(
+                'latlng' => $lat.','.$lng,
+                'key' => $this->container->getParameter('google.maps_server_api')
+            )
+        );
+        $data = json_decode($resp->body);
+        $matchIsFound = null;
+        foreach ($data->results as $rezRow) {
+            if(in_array('street_address', $rezRow->types)) {
+                $matchIsFound = $rezRow;
+                break;
+            }
+        }
+        $returner = array();
+        if ($matchIsFound!==null) {
+            foreach ($matchIsFound->address_components as $cmp) {
+                if (in_array('street_number', $cmp->types)) {
+                    $returner['house_number'] = $cmp->long_name;
+                }
+                if (in_array('route', $cmp->types)) {
+                    $returner['street'] = $cmp->short_name;
+                }
+                if (in_array('locality', $cmp->types) && in_array('political', $cmp->types)) {
+                    $returner['city'] = $cmp->short_name;
+                }
+            }
+        }
+        return $returner;
+    }
+
+    public function findAddressByCoordsByStuff($city, $street, $houseNumber)
+    {
+        $resp = $this->getCli()->get(
+            $this->container->getParameter('google.maps_geocode'),
+            array(
+                'address' => $street." ".$houseNumber." ".$city.', Lithuania',
+                'sensor' => 'true',
+                'key' => $this->container->getParameter('google.maps_server_api')
+            )
+        );
+
+        $data = json_decode($resp->body);
+        $matchIsFound = null;
+        foreach ($data->results as $rezRow) {
+            if(in_array('street_address', $rezRow->types)) {
+                $matchIsFound = $rezRow;
+                break;
+            }
+        }
+        $returner = array();
+        if ($matchIsFound!==null) {
+            foreach ($matchIsFound->address_components as $cmp) {
+                if (in_array('street_number', $cmp->types)) {
+                    $returner['house_number'] = $cmp->long_name;
+                }
+                if (in_array('route', $cmp->types)) {
+                    $returner['street'] = $cmp->short_name;
+                }
+                if (in_array('locality', $cmp->types) && in_array('political', $cmp->types)) {
+                    $returner['city'] = $cmp->short_name;
+                }
+            }
+        }
+        return $returner;
     }
 }

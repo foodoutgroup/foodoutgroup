@@ -3,7 +3,8 @@
 {% for dish in dishes %}
     {% set smallestPrice = dish_service.smallestDishPrice(dish.id) %}
     {% set largestPrice = dish_service.largestDishPrice(dish.id) %}
-    <div class="restaurant-menu-item">
+    {% set showByHours = order_service.isOrderableByTime(dish) %}
+    <div class="restaurant-menu-item {% if showByHours == false %}disabled_dish{% endif %}">
         {% if dish.getWebPathThumb('type1') is not empty %}
             {% if listType == 'thumbs' %}
                 {% set largeImgClass = '' %}
@@ -13,8 +14,8 @@
                 {% set smallImgClass = '' %}
             {% endif %}
         <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" href2="#detailed-dish-popup" class="fancybox.ajax fancy-box">
-            <img src="/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}">
-            <img src="/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
+            <img src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}" style=" filter: blur(20px) grayscale(20%);">
+            <img src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
         </a>
         {% endif %}
         <h3 class="name">{{ loop.index }}. {{ dish.name }}</h3>
@@ -24,12 +25,22 @@
             <span class="price">
                 {% if smallestPrice == largestPrice %}
                     {{ smallestPrice|replace({'.': ','}) }} {{ currency_display }}
+                    <span class="euro">
+                        &euro;{{ misc_utils.getEuro(smallestPrice)|number_format(2, ',', ' ') }}
+                    </span>
                 {% else %}
-                    {{ smallestPrice|replace({'.': ','}) }} {{ currency_display }} - {{ largestPrice|replace({'.': ','}) }} {{ currency_display }}
+                    {{ smallestPrice|replace({'.': ','}) }} - {{ largestPrice|replace({'.': ','}) }} {{ currency_display }}
+                    <span class="euro">
+                        &euro;{{  misc_utils.getEuro(smallestPrice)|number_format(2, ',', ' ') }} - &euro;{{  misc_utils.getEuro(largestPrice)|number_format(2, ',', ' ') }}
+                    </span>
                 {% endif %}
             </span>
             {% endif %}
-            <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" href2="#detailed-dish-popup" class="fancybox.ajax add-to-cart fancy-box"></a>
+            {% if showByHours %}
+                <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" href2="#detailed-dish-popup" class="fancybox.ajax add-to-cart fancy-box"></a>
+            {% else %}
+                <span class="add-to-cart got-title disabled" title="Šiuo metu negaminamas."></span>
+            {% endif %}
         </div>
     </div>
 {% endfor %}
