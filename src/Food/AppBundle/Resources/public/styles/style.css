@@ -224,6 +224,7 @@ input.button {}
 
 /*Center -------------------------------------------*/
 .site-center {background: #f5f0eb; padding-bottom: 98px}
+.site-center.site-center-bottom { margin-top: -98px }
 
 .content-lefter {width: 180px; float: left; background: #fff; border-radius: 4px;}
 .content-righter {width: 780px; float: right; background: #fff; border-radius: 4px;}
@@ -424,7 +425,7 @@ input.button {}
     position: absolute;
     left:-1px;
     right: 0px;
-    background: url(../images/check-bottom.png) no-repeat center top;
+    background: url(/bundles/foodapp/images/check-bottom.png) no-repeat center top;
     width: 182px;
     height: 18px;
     bottom: -6px;
