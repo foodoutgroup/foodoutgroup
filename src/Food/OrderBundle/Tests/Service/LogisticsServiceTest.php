@@ -842,11 +842,6 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $order->setPlacePointSelfDelivery(false)
             ->setDeliveryType(OrderService::$deliveryDeliver);
 
-        $expectedOrderSendObject = new OrderToLogistics();
-        $expectedOrderSendObject->setOrder($order)
-            ->setStatus('unsent')
-            ->setDateAdded(new \DateTime("now"));
-
         $container->expects($this->at(0))
             ->method('getParameter')
             ->with('logistics.send_to_external')
@@ -878,6 +873,12 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $doctrine->expects($this->once())
             ->method('getManager')
             ->will($this->returnValue($entityManager));
+
+        // Cia inicijuojam expecta, nes po to atsiranda sekundes skirtumas
+        $expectedOrderSendObject = new OrderToLogistics();
+        $expectedOrderSendObject->setOrder($order)
+            ->setStatus('unsent')
+            ->setDateAdded(new \DateTime("now"));
 
         $entityManager->expects($this->once())
             ->method('persist')
@@ -916,11 +917,6 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
             ->setDeliveryType(OrderService::$deliveryDeliver)
             ->setPlacePointCity('Kaunas');
 
-        $expectedOrderSendObject = new OrderToLogistics();
-        $expectedOrderSendObject->setOrder($order)
-            ->setStatus('unsent')
-            ->setDateAdded(new \DateTime("now"));
-
         $container->expects($this->at(0))
             ->method('getParameter')
             ->with('logistics.send_to_external')
@@ -953,6 +949,12 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
             ->method('getManager')
             ->will($this->returnValue($entityManager));
 
+        // Cia inicijuojam expecta, nes po to atsiranda sekundes skirtumas
+        $expectedOrderSendObject = new OrderToLogistics();
+        $expectedOrderSendObject->setOrder($order)
+            ->setStatus('unsent')
+            ->setDateAdded(new \DateTime("now"));
+
         $entityManager->expects($this->once())
             ->method('persist')
             ->with($expectedOrderSendObject);
@@ -978,11 +980,6 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $order->setPlacePointSelfDelivery(false)
             ->setDeliveryType(OrderService::$deliveryDeliver)
             ->setPlacePointCity('Klaipėda');
-
-        $expectedOrderSendObject = new OrderToLogistics();
-        $expectedOrderSendObject->setOrder($order)
-            ->setStatus('unsent')
-            ->setDateAdded(new \DateTime("now"));
 
         $container->expects($this->at(0))
             ->method('getParameter')
@@ -1015,11 +1012,6 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $order->setPlacePointSelfDelivery(false)
             ->setDeliveryType(OrderService::$deliveryPickup);
 
-        $expectedOrderSendObject = new OrderToLogistics();
-        $expectedOrderSendObject->setOrder($order)
-            ->setStatus('unsent')
-            ->setDateAdded(new \DateTime("now"));
-
         $container->expects($this->at(0))
             ->method('getParameter')
             ->with('logistics.send_to_external')
@@ -1045,11 +1037,6 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $order = new Order();
         $order->setPlacePointSelfDelivery(true)
             ->setDeliveryType(OrderService::$deliveryDeliver);
-
-        $expectedOrderSendObject = new OrderToLogistics();
-        $expectedOrderSendObject->setOrder($order)
-            ->setStatus('unsent')
-            ->setDateAdded(new \DateTime("now"));
 
         $container->expects($this->at(0))
             ->method('getParameter')

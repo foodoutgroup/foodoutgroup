@@ -34,9 +34,17 @@ class SwedbankGatewayBiller extends ContainerAware
     {
         // services
         $router = $this->container->get('router');
+        $logger = $this->container->get('logger');
+
+        // log
+        $logger->alert('--====================================================');
 
         // get order
         $order = $this->getOrder();
+
+        // log
+        $logger->alert('++ Bandom bilinti orderi su Id: ' . $order->getId());
+        $logger->alert('-------------------------------------');
 
         if (!($order instanceof Order)) {
             throw new \InvalidArgumentException('Sorry, You gave me ' .
@@ -46,6 +54,11 @@ class SwedbankGatewayBiller extends ContainerAware
         $redirectUrl = $router->generate('swedbank_gateway_redirect',
                                          array('id' => $order->getId(),
                                                'locale' => $this->getLocale()));
+
+        // log
+        $logger->alert('-------------------------------------');
+        $logger->alert('Suformuotas url: '.$redirectUrl);
+        $logger->alert('-------------------------------------');
 
         return $redirectUrl;
     }

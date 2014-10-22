@@ -477,9 +477,10 @@ class NTLMSoapClient extends SoapClient {
         // @epic-fail
         // @omg-hack
         // @todo Fix shita geeeda. Manau geriau kad WSDL'a susitvarkytu NVB
+        @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQ1", print_r($request, true), "FROM: info@foodout.lt");
         $request = str_replace("ns1:", "", $request);
         $request = str_replace("pInt>", "ns1:pInt>", $request);
-
+        @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQ2", print_r($request, true), "FROM: info@foodout.lt");
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->validate);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $this->validate);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

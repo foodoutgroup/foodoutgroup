@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "891b5591c04fd1a784616459b74600f2",
+    "hash": "5e83b11a325ac11d2026f0d5c9ec8082",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -1768,16 +1768,16 @@
         },
         {
             "name": "pirminis/maybe-monad",
-            "version": "dev-master",
+            "version": "1.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pirminis/maybe-monad.git",
-                "reference": "1d21c2e430ca2cd9155c2f25291d36a2aec375a3"
+                "reference": "67689bd2e85bc666a5d7cc01cca86cf2ca38eae8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pirminis/maybe-monad/zipball/1d21c2e430ca2cd9155c2f25291d36a2aec375a3",
-                "reference": "1d21c2e430ca2cd9155c2f25291d36a2aec375a3",
+                "url": "https://api.github.com/repos/pirminis/maybe-monad/zipball/67689bd2e85bc666a5d7cc01cca86cf2ca38eae8",
+                "reference": "67689bd2e85bc666a5d7cc01cca86cf2ca38eae8",
                 "shasum": ""
             },
             "require": {
@@ -1805,7 +1805,7 @@
                 "monad",
                 "safe"
             ],
-            "time": "2014-10-12 17:10:51"
+            "time": "2014-10-20 15:21:25"
         },
         {
             "name": "psr/log",
@@ -3674,8 +3674,7 @@
         "shuber/curl": 20,
         "imagine/imagine": 20,
         "trsteel/ckeditor-bundle": 20,
-        "friendsofsymfony/jsrouting-bundle": 0,
-        "pirminis/maybe-monad": 20
+        "friendsofsymfony/jsrouting-bundle": 0
     },
     "prefer-stable": false,
     "platform": {

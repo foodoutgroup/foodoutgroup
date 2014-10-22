@@ -16,6 +16,7 @@ trait ReturnDecorator
         $cartService = $this->get('food.cart');
         $navService = $this->get('food.nav');
         $em = $this->get('doctrine')->getManager();
+        $logger = $this->get('logger');
 
         // default template
         $view = 'FoodOrderBundle:Payments:' .
@@ -52,7 +53,8 @@ trait ReturnDecorator
                                     $order,
                                     $cartService,
                                     $em,
-                                    $navService);
+                                    $navService,
+                                    $logger);
 
             if ($isEvent) {
                 return new Response('<Response>OK</Response>');
@@ -66,6 +68,14 @@ trait ReturnDecorator
                   ($isEvent &&
                    $gateway->event_requires_investigation('swedbank', $request))
         ) {
+            // log
+            $logger->alert("==========================\nprocessing payment action for Swedbank Gateway Banklink came\n====================================\n");
+            $logger->alert("Request data: ".var_export($request->query->all(), true));
+            $logger->alert('-----------------------------------------------------------');
+
+            // log
+            $logger->alert('Processing order ' . $order->getId());
+
             $this->logProcessingAndFinish(
                 'Swedbank Banklink Gateway payment started',
                 $orderService,
@@ -85,10 +95,19 @@ trait ReturnDecorator
                   ($isEvent &&
                    $gateway->is_event_cancelled('swedbank', $request))
         ) {
+            // log
+            $logger->alert("==========================\ncancel payment action for Swedbank Gateway Banklink came\n====================================\n");
+            $logger->alert("Request data: ".var_export($request->query->all(), true));
+            $logger->alert('-----------------------------------------------------------');
+
+            // log
+            $logger->alert('Cancelling order ' . $order->getId());
+
             $this->logFailureAndFinish(
                 'Swedbank Banklink Gateway payment canceled',
                 $orderService,
-                $order);
+                $order,
+                $logger);
 
             if ($isEvent) {
                 return new Response('<Response>OK</Response>');

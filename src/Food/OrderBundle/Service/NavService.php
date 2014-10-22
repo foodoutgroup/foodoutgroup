@@ -281,7 +281,7 @@ class NavService extends ContainerAware
             'Floor' => '',
             'Grid' => '', // ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getGrid(): ''),
             'Chain' => $order->getPlace()->getChain(),
-            'Name' => 'FO:'.$order->getUser()->getNameForOrder(),
+            'Name' => 'FO:'.$order->getUser()->getFirstname(),
             'Delivery Type' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? 1 : 4),
             //'Restaurant No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? '':  $order->getPlacePoint()->getInternalCode()),
             'Restaurant No_' => $order->getPlacePoint()->getInternalCode(),
@@ -310,9 +310,43 @@ class NavService extends ContainerAware
 
     private function _processLines(Order $order, $orderNewId)
     {
+        $theKey = 0;
         foreach ($order->getDetails() as $key=>$detail) {
             $this->_processLine($detail, $orderNewId, ($key + 1));
+            $theKey = $key + 1;
         }
+        if ($order->getDeliveryType() == OrderService::$deliveryDeliver) {
+            $this->_processLineDelivery($orderNewId, ($theKey + 1));
+        }
+    }
+
+    /**
+     * @param $orderNewId
+     * @param $key
+     *
+     * @todo - kolkas hardcoded delivery atstumas
+     */
+    private function _processLineDelivery($orderNewId, $key)
+    {
+        $dataToPut = array(
+            'Order No_' => $orderNewId,
+            'Line No_' => $key,
+            'Entry Type' => 0,
+            'No_' => "'ZRAW0009996'",
+            'Description' => "''",
+            'Quantity' => 1,
+            'Price' =>5,
+            'Parent Line' => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
+            'Amount' => 5,
+            'Discount Amount' => 0,
+            'Payment' => 5,
+            'Value' => "''"
+        );
+
+        $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
+
+        $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
+        $sqlSS = $this->initSqlConn()->query($query);
     }
 
     private function _processLine(OrderDetails $detail, $orderNewId, $key)
@@ -369,8 +403,8 @@ class NavService extends ContainerAware
     {
 
         $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
-         $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
-        //$clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija Skambučių Centras/Codeunit/WEB_Service2";
+        //$clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
+        $clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija%20Skambučių%20Centras/Codeunit/WEB_Service2";
 
         stream_wrapper_unregister('http');
         stream_wrapper_register('http', '\Food\OrderBundle\Common\FoNTLMStream') or die("Failed to register protocol");
@@ -415,7 +449,6 @@ class NavService extends ContainerAware
     public function validateCartInNav($phone, $restaurant, $orderDate, $orderTime, $deliveryType, $dishes)
     {
         $rcCode = $restaurant->getInternalCode();
-        $rcCode = 'C09';
 
         $requestData = array(
             array('Lines' => array())
@@ -515,14 +548,16 @@ class NavService extends ContainerAware
         $requestXml.= "</Lines>\n";
 
         $requestXml = iconv('utf-8', 'cp1257', $requestXml);
-        //ob_start();
+        ob_start();
+        @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQUEST", print_r($requestData, true), "FROM: info@foodout.lt");
         $response = $this->getWSConnection()->FoodOutValidateOrder(
                 array(
                     'params' => $requestData,
                     'errors' => array()
                 )
         );
-        //ob_end_clean();
+        @mail("paulius@foodout.lt", "CILI NVB VALIDATE RESPONSE", print_r($response, true), "FROM: info@foodout.lt");
+        ob_end_clean();
 
         $prbDish = "";
         if ($response->return_value == 2) {
@@ -576,7 +611,7 @@ class NavService extends ContainerAware
         }
 
         $return = array();
-        while ($rowRez = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+        while ($rowRez = $this->container->get('food.mssql')->fetchArray($result)) {
             $return[$this->getOrderIdFromNavId($rowRez['Order No_'])] = $rowRez;
         }
 

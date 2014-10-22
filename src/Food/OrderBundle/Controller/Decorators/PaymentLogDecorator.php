@@ -11,8 +11,17 @@ trait PaymentLogDecorator
                                         $order,
                                         $cartService,
                                         $em,
-                                        $navService)
+                                        $navService,
+                                        $logger)
     {
+        if ($order->getPaymentStatus() ==
+            $orderService::$paymentStatusComplete) {
+            // log
+            $logger->alert('Order is already complete, so returning without marking order complete and sending emails "logPaidAndFinish()".');
+
+            return;
+        }
+
         $orderService->setPaymentStatusWithoutSave(
             $order,
             $orderService::$paymentStatusComplete,
@@ -28,12 +37,18 @@ trait PaymentLogDecorator
             $orderService->deactivateCoupon();
 
             // insert order into nav
-            $navService->insertOrder($navService->getOrderDataForNav($order));
+            // $navService->insertOrder($navService->getOrderDataForNav($order));
 
             // clear cart
-            // $cartService->clearCart($order->getPlace());
+            $cartService->clearCart($order->getPlace());
+
+            // log
+            $logger->alert('Completed order ' . $order->getId() . ', informed place.');
         } catch (OptimisticLockException $e) {
             // actually do nothing
+
+            // log
+            $logger->alert('Optimistic lock failed, so order ' . $order->getId() . ' was not marked completed, which means place was NOT informed, which is good.');
         }
     }
 

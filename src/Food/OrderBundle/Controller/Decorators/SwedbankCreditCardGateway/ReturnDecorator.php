@@ -15,6 +15,7 @@ trait ReturnDecorator
         $gateway = $this->get('pirminis_credit_card_gateway');
         $navService = $this->get('food.nav');
         $em = $this->get('doctrine')->getManager();
+        $logger = $this->get('logger');
 
         // template
         $view = 'FoodOrderBundle:Payments:' .
@@ -47,7 +48,8 @@ trait ReturnDecorator
                 $order,
                 $cartService,
                 $em,
-                $navService);
+                $navService,
+                $logger);
 
             return $this->render($view, ['order' => $order]);
         }

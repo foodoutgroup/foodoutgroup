@@ -20,6 +20,7 @@ trait ReturnDecorator
         $cartService = $this->get('food.cart');
         $navService = $this->get('food.nav');
         $em = $this->get('doctrine')->getManager();
+        $logger = $this->get('logger');
 
         // preparation
         $orderId = max(0, (int)$request->get('VK_REF'));
@@ -80,7 +81,8 @@ trait ReturnDecorator
                                         $order,
                                         $cartService,
                                         $em,
-                                        $navService);
+                                        $navService,
+                                        $logger);
             }
         }
 
