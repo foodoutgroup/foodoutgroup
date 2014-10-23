@@ -60,7 +60,11 @@ class TextStrategy extends AbstractStrategy
         }
 
         $oldItems = $em->getRepository('FoodAppBundle:Slug')
-            ->findBy(array('item_id' => $textId));
+            ->findBy(array(
+                'item_id' => $textId,
+                'type' => $this->getType(),
+                'lang_id' => $langId,
+            ));
 
         if ($oldItems) {
             foreach ($oldItems as $oldItem) {
