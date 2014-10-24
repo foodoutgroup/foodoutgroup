@@ -80,7 +80,7 @@ trait OrderDataForNavDecorator
 
         // try to connect and execute a query, else return false (aka sql init
         // failure result, not directly our madeup false)
-        $conn = \Maybe($this->initTestSqlConn());
+        $conn = \Maybe($this->initSqlConn());
 
         return $conn
             // basically if we have connection - return query result (resource or true)
@@ -111,7 +111,8 @@ trait OrderDataForNavDecorator
 
     protected function getOrderTableName()
     {
-        return '[prototipas6].[dbo].[PROTOTIPAS$FoodOut Order]';
+        // return '[prototipas6].[dbo].[PROTOTIPAS$FoodOut Order]';
+        return $this->orderTable;
     }
 
     protected function getOrderFieldNames()
