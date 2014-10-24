@@ -69,22 +69,37 @@ class SqlConnectorService extends ContainerAware
         }
     }
 
+    /**
+     * @return resource
+     */
     private function _queryWin($query)
     {
-        $rez = sqlsrv_query ( $this->conn , $query);
+        // services
+        $logger = $this->container->get('logger');
 
-        if( $rez === false) {
-            throw new \RuntimeException( print_r( sqlsrv_errors(), true));
+        $rez = sqlsrv_query($this->conn , $query);
+
+        if (false === $rez) {
+            $logger->crit('Windows: query failed: ' . print_r(sqlsrv_errors(), true));
         }
+
         return $rez;
     }
 
+    /**
+     * @return resource|true
+     */
     private function _queryNx($query)
     {
+        // services
+        $logger = $this->container->get('logger');
+
         $rez = mssql_query($query, $this->conn);
-        if (!$rez) {
-            throw new \RuntimeException(mssql_get_last_message());
+
+        if (false === $rez) {
+            $logger->crit('Unix: query failed: ' . print_r(mssql_get_last_message(), true));
         }
+
         return $rez;
     }
 

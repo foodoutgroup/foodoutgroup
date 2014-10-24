@@ -78,13 +78,22 @@ trait OrderDataForNavDecorator
     {
         $query = $this->constructInsertOrderQuery($data);
 
-        // try to connect and execute a query, else return false
+        // try to connect and execute a query, else return false (aka sql init
+        // failure result, not directly our madeup false)
         $conn = \Maybe($this->initTestSqlConn());
 
-        return $conn->map(function($conn) use ($query) {
-            $isConnected = $conn->val();
-            return \Maybe($isConnected ? $conn->query($query) : $isConnected);
-        })->val();
+        return $conn
+            // basically if we have connection - return query result (resource or true)
+            ->map(function($conn) use ($query) {
+                $isConnected = $conn->val();
+                return $isConnected ? $conn->query($query) : $isConnected;
+            })
+            // since result can be resource or true, convert to both to boolean true
+            ->map(function($result) {
+                return false === $result ? false : true;
+            })
+            // don't forget to return not a Monad, but plain value which is true or false
+            ->val();
     }
 
     protected function constructInsertOrderQuery(OrderDataForNav $data)
