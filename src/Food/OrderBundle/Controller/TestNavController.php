@@ -8,6 +8,9 @@ class TestNavController extends Controller
 {
     public function indexAction()
     {
+        error_reporting(E_ALL);
+        ini_set('display_errors', true);
+
         $nav = $this->get('food.nav');
 
         $order = $this->getDoctrine()
