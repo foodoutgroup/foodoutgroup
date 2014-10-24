@@ -30,10 +30,10 @@ trait OrderDataForNavDecorator
         // ok so now we fill this handy data structure, nothing special
         $data = new OrderDataForNav();
         $data->id = (int) $order->getId()->val(0);
-        $data->date = $order->getOrderDate()->format('Y-m-d')->val('');
-        $data->time = $order->getOrderDate()->format('H:i:s')->val('');
-        $data->deliveryDate = $order->getDeliveryTime()->format('Y-m-d')->val('');
-        $data->deliveryTime = $order->getDeliveryTime()->format('H:i:s')->val('');
+        $data->date = $order->getOrderDate()->format('Y-m-d')->val('1754-01-01');
+        $data->time = '1754-01-01 ' . $order->getOrderDate()->format('H:i:s')->val('00:00:00');
+        $data->deliveryDate = $order->getDeliveryTime()->format('Y-m-d')->val('1754-01-01');
+        $data->deliveryTime = '1754-01-01 ' . $order->getDeliveryTime()->format('H:i:s')->val('00:00:00');
         $data->staff = 'auto';
         $data->chain = '';
         $data->restaurant = $order->getPlaceName()->val('');
