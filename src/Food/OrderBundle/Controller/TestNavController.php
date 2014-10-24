@@ -16,7 +16,7 @@ class TestNavController extends Controller
         $order = $this->getDoctrine()
                       ->getManager()
                       ->getRepository('FoodOrderBundle:Order')
-                      ->find(645);
+                      ->find(644);
         $data = $nav->getOrderDataForNav($order);
         $result = $nav->insertOrder($data);
         var_dump($result);
