@@ -131,14 +131,16 @@ class NavService extends ContainerAware
 
     public function initTestSqlConn() {
         $sqlSS = $this->container->get('food.mssql');
-        $sqlSS->init(
+
+        $isConnected = $sqlSS->init(
             '213.190.40.38',
             5566,
             'prototipas6',
             'Neotest',
             'NewNeo@123'
         );
-        return $sqlSS;
+
+        return $isConnected ? $sqlSS : $isConnected;
     }
 
     public function getLastOrders()

@@ -8,7 +8,8 @@
         "psr-4": { "": [
             "swedbank-gateway/gateway/src",
             "swedbank-gateway/gateway-bundle/src"
-        ]}
+        ]},
+        "files": ["vendor/pirminis/maybe-monad/lib/global.php"]
     },
     "repositories": [
         {
