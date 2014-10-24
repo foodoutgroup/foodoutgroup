@@ -14,8 +14,8 @@
                 {% set smallImgClass = '' %}
             {% endif %}
         <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" href2="#detailed-dish-popup" class="fancybox.ajax fancy-box">
-            <img src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}" style=" filter: blur(20px) grayscale(20%);">
-            <img src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
+            <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}" style=" filter: blur(20px) grayscale(20%);">
+            <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
         </a>
         {% endif %}
         <h3 class="name">{{ loop.index }}. {{ dish.name }}</h3>

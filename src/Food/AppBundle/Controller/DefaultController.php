@@ -128,7 +128,7 @@ class DefaultController extends Controller
         $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')
             ->findBy(array('active' => 1));
 
-        $staticPages = $this->get('food.static')->getActivePages(30, false);
+        $staticPages = $this->get('food.static')->getActivePages(30, true);
 
         $response = new Response();
         $response->headers->set('Content-Type', 'xml');
