@@ -4,7 +4,6 @@ namespace Food\OrderBundle\Service\NavService;
 
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\NavService\OrderDataForNav;
-use Pirminis\Maybe;
 
 trait OrderDataForNavDecorator
 {
@@ -13,47 +12,44 @@ trait OrderDataForNavDecorator
         // services. we only need 'misc' service for converting totals to euros
         $misc = $this->container->get('food.app.utils.misc');
 
-        // monads, although we only need $maybeOrder, others are for convenience
-        $maybeOrder = new Maybe($order);
-        $maybeDriver = $maybeOrder->getDriver();
-        $maybeUser = $maybeOrder->getUser();
-        $maybeAddress = $maybeOrder->getAddressId();
-        $maybePlace = $maybeOrder->getPlace();
+        $originalOrder = $order;
+
+        $order = \Maybe($order);
+        $driver = $order->getDriver();
+        $user = $order->getUser();
+        $address = $order->getAddressId();
+        $place = $order->getPlace();
 
         // values for convenience
-        $vat = $maybeOrder->getVat()->val(0.0);
-        $total = $maybeOrder->getTotal()->val(0.0);
-        $discountTotal = $maybeOrder->getDiscountSum()->val(0.0);
-        $deliveryTotal = $maybePlace->getDeliveryPrice()->val(0.0);
+        $vat = $order->getVat()->val(0.0);
+        $total = $order->getTotal()->val(0.0);
+        $discountTotal = $order->getDiscountSum()->val(0.0);
+        $deliveryTotal = $place->getDeliveryPrice()->val(0.0);
         $foodTotal = $total - $discountTotal - $deliveryTotal;
 
         // ok so now we fill this handy data structure, nothing special
         $data = new OrderDataForNav();
-        $data->id = (int) $maybeOrder->getId()->val(0);
-        $data->date = $maybeOrder->getOrderDate()->format('Y-m-d')->val();
-        $data->time = $maybeOrder->getOrderDate()->format('H:i:s')->val();
-        $data->deliveryDate = $maybeOrder->getDeliveryTime()
-                                         ->format('Y-m-d')
-                                         ->val();
-        $data->deliveryTime = $maybeOrder->getDeliveryTime()
-                                         ->format('H:i:s')
-                                         ->val();
+        $data->id = (int) $order->getId()->val(0);
+        $data->date = $order->getOrderDate()->format('Y-m-d')->val('');
+        $data->time = $order->getOrderDate()->format('H:i:s')->val('');
+        $data->deliveryDate = $order->getDeliveryTime()->format('Y-m-d')->val('');
+        $data->deliveryTime = $order->getDeliveryTime()->format('H:i:s')->val('');
         $data->staff = 'auto';
         $data->chain = '';
-        $data->restaurant = $maybeOrder->getPlaceName()->val();
-        $data->restaurantAddress = $maybeOrder->getPlacePointAddress()->val();
-        $data->driver = $maybeDriver->getName()->val();
-        $data->deliveryType = $maybeOrder->getDeliveryType()->val();
+        $data->restaurant = $order->getPlaceName()->val('');
+        $data->restaurantAddress = $order->getPlacePointAddress()->val('');
+        $data->driver = $driver->getName()->val('');
+        $data->deliveryType = $order->getDeliveryType()->val('');
         $data->clientName = sprintf("%s %s",
-                                    $maybeUser->getFirstname()->val(),
-                                    $maybeUser->getLastname()->val());
-        $data->isDelivered = $maybeOrder->getDeliveryTime()->val() == '' ?
+                                    $user->getFirstname()->val(''),
+                                    $user->getLastname()->val(''));
+        $data->isDelivered = $order->getDeliveryTime()->val('') == '' ?
                              'no' :
                              'yes';
-        $data->deliveryAddress = $maybeAddress->getAddress()->val();
-        $data->city = $maybeAddress->getCity()->val();
+        $data->deliveryAddress = $address->getAddress()->val('');
+        $data->city = $address->getCity()->val('');
         $data->country = '';
-        $data->paymentType = $maybeOrder->getPaymentMethod()->val();
+        $data->paymentType = $order->getPaymentMethod()->val('');
         $data->foodAmount = (double) $foodTotal;
         $data->foodAmountEUR = (double) $misc->getEuro($foodTotal);
         $data->foodVAT = (double) $vat;
@@ -81,7 +77,23 @@ trait OrderDataForNavDecorator
     public function insertOrder(OrderDataForNav $data)
     {
         $query = $this->constructInsertOrderQuery($data);
-        return $this->initTestSqlConn()->query($query);
+
+        // try to connect and execute a query, else return false (aka sql init
+        // failure result, not directly our madeup false)
+        $conn = \Maybe($this->initSqlConn());
+
+        return $conn
+            // basically if we have connection - return query result (resource or true)
+            ->map(function($conn) use ($query) {
+                $isConnected = $conn->val();
+                return $isConnected ? $conn->query($query) : $isConnected;
+            })
+            // since result can be resource or true, convert to both to boolean true
+            ->map(function($result) {
+                return false === $result ? false : true;
+            })
+            // don't forget to return not a Monad, but plain value which is true or false
+            ->val();
     }
 
     protected function constructInsertOrderQuery(OrderDataForNav $data)
@@ -99,7 +111,8 @@ trait OrderDataForNavDecorator
 
     protected function getOrderTableName()
     {
-        return '[prototipas6].[dbo].[PROTOTIPAS$FoodOut Order]';
+        // return '[prototipas6].[dbo].[PROTOTIPAS$FoodOut Order]';
+        return $this->orderTable;
     }
 
     protected function getOrderFieldNames()

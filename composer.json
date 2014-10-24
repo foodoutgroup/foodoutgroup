@@ -8,7 +8,8 @@
         "psr-4": { "": [
             "swedbank-gateway/gateway/src",
             "swedbank-gateway/gateway-bundle/src"
-        ]}
+        ]},
+        "files": ["vendor/pirminis/maybe-monad/lib/global.php"]
     },
     "repositories": [
         {
@@ -70,7 +71,7 @@
         "friendsofsymfony/jsrouting-bundle": "@stable",
         "giggsey/libphonenumber-for-php": "6.*",
         "ob/highcharts-bundle": "1.1.*",
-        "pirminis/maybe-monad": "~1.2"
+        "pirminis/maybe-monad": "1.2.10"
     },
     "scripts": {
         "post-install-cmd": [
