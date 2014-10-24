@@ -176,21 +176,6 @@ class PaymentsController extends Controller
         }
     }
 
-    public function swedbankGatewayRedirectAction($id, $locale)
-    {
-        //
-    }
-
-    public function swedbankGatewayFailureAction(Request $request)
-    {
-        return $this->swedbankGatewaySuccessAction($request);
-    }
-
-    public function swedbankGatewaySuccessAction(Request $request)
-    {
-        // 
-    }
-
     protected function markOrderPaid($orderService)
     {
         $orderService->setPaymentStatus(

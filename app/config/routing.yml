@@ -45,10 +45,6 @@ food_dishes:
     type:     annotation
     prefix:   /
 
-food_test_nav:
-    pattern: /test-nav
-    defaults: { _controller: FoodOrderBundle:TestNav:index }
-
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
