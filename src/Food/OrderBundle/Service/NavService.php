@@ -133,7 +133,7 @@ class NavService extends ContainerAware
         $sqlSS = $this->container->get('food.mssql');
 
         $isConnected = $sqlSS->init(
-            '213.190.40.38',
+            '213.190.40.381',
             5566,
             'prototipas6',
             'Neotest',
