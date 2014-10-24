@@ -77,10 +77,11 @@ class SqlConnectorService extends ContainerAware
         // services
         $logger = $this->container->get('logger');
 
-        $rez = sqlsrv_query($this->conn , $query);
+        $rez = @sqlsrv_query($this->conn , $query);
 
         if (false === $rez) {
-            $logger->crit('Windows: query failed: ' . print_r(sqlsrv_errors(), true));
+            $logger->crit('Windows: query(' . $query . ') failed: ' .
+                          print_r(sqlsrv_errors(), true));
         }
 
         return $rez;
@@ -94,10 +95,11 @@ class SqlConnectorService extends ContainerAware
         // services
         $logger = $this->container->get('logger');
 
-        $rez = mssql_query($query, $this->conn);
+        $rez = @mssql_query($query, $this->conn);
 
         if (false === $rez) {
-            $logger->crit('Unix: query failed: ' . print_r(mssql_get_last_message(), true));
+            $logger->crit('Unix: query(' . $query . ') failed: ' .
+                          print_r(mssql_get_last_message(), true));
         }
 
         return $rez;
