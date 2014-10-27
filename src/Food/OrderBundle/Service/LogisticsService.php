@@ -244,7 +244,7 @@ class LogisticsService extends ContainerAware
         // Pickup block
         $writer->startElement("PickUp");
         $writer->writeElement('Address', $order->getPlacePointAddress());
-        $writer->writeElement('City', $order->getPlacePointCity());
+        $writer->writeElement('City', $this->convertCityForLogTime($order->getPlacePointCity()));
         $writer->startElement("Coordinates");
         $writer->writeElement('Long', $order->getPlacePoint()->getLon());
         $writer->writeElement('Lat', $order->getPlacePoint()->getLat());
@@ -532,5 +532,33 @@ class LogisticsService extends ContainerAware
         $query = $queryBuilder->getQuery();
 
         return $query->getResult();
+    }
+
+    /**
+     * @param string $city
+     * @return string
+     */
+    public function convertCityForLogTime($city)
+    {
+        $majorCities = array(
+            'Viln' => 'Vilnius',
+            'Kaun' => 'Kaunas',
+            'Klaip' => 'Klaipėda',
+            'Rig' => 'Riga'
+        );
+
+        // All good, no need to worry
+        if (in_array($city, $majorCities)) {
+            return $city;
+        }
+
+        foreach($majorCities as $possiblePart => $cityName) {
+            if (strpos($city, $possiblePart) !== false) {
+                return $cityName;
+            }
+        }
+
+        // Sorry, could not help;
+        return $city;
     }
 }

@@ -1320,6 +1320,29 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expectedXml, $gotXml);
     }
 
+    public function testConvertCityForLogTime()
+    {
+        $testCities = array(
+            'Vilnius' => 'Vilnius',
+            'Kaunas' => 'Kaunas',
+            'Klaipėda' => 'Klaipėda',
+            'Klaipeda' => 'Klaipėda',
+            'Vilniaus rajonas' => 'Vilnius',
+            'Vilniaus raj.' => 'Vilnius',
+            'Kauno raj.' => 'Kaunas',
+            'Klaipėdos raj.' => 'Klaipėda',
+            'Plungė' => 'Plungė',
+        );
+
+        $logisticsService = new LogisticsService();
+
+        foreach($testCities as $testCity => $expectedCity) {
+            $gotCity = $logisticsService->convertCityForLogTime($testCity);
+
+            $this->assertEquals($expectedCity, $gotCity);
+        }
+    }
+
     /**
      * Clean xml that PhpUnit wont fail because of new lines...
      * @param string $xml
