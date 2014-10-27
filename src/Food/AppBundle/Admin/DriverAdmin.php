@@ -69,6 +69,7 @@ class DriverAdmin extends FoodAdmin
     {
         $datagridMapper
             ->add('name', null, array('label' => 'admin.driver.name'))
+            ->add('city', null, array('label' => 'admin.driver.city'))
             ->add('provider', null, array('label' => 'admin.driver.provider'))
             ->add('phone', null, array('label' => 'admin.driver.phone'))
             ->add('extId', null, array('label' => 'admin.driver.ext_id'))
