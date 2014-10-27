@@ -299,15 +299,37 @@ class OrderAccData
      */
     private $version;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set orderId
+     *
+     * @param integer $orderId
+     * @return OrderAccData
+     */
+    public function setOrderId($orderId)
+    {
+        $this->orderId = $orderId;
+    
+        return $this;
+    }
+
+    /**
+     * Get orderId
+     *
+     * @return integer 
+     */
+    public function getOrderId()
+    {
+        return $this->orderId;
     }
 
     /**
@@ -319,14 +341,14 @@ class OrderAccData
     public function setDate($date)
     {
         $this->date = $date;
-
+    
         return $this;
     }
 
     /**
      * Get date
      *
-     * @return string
+     * @return string 
      */
     public function getDate()
     {
@@ -342,14 +364,14 @@ class OrderAccData
     public function setTime($time)
     {
         $this->time = $time;
-
+    
         return $this;
     }
 
     /**
      * Get time
      *
-     * @return string
+     * @return string 
      */
     public function getTime()
     {
@@ -365,14 +387,14 @@ class OrderAccData
     public function setDeliveryDate($deliveryDate)
     {
         $this->deliveryDate = $deliveryDate;
-
+    
         return $this;
     }
 
     /**
      * Get deliveryDate
      *
-     * @return string
+     * @return string 
      */
     public function getDeliveryDate()
     {
@@ -388,14 +410,14 @@ class OrderAccData
     public function setDeliveryTime($deliveryTime)
     {
         $this->deliveryTime = $deliveryTime;
-
+    
         return $this;
     }
 
     /**
      * Get deliveryTime
      *
-     * @return string
+     * @return string 
      */
     public function getDeliveryTime()
     {
@@ -411,14 +433,14 @@ class OrderAccData
     public function setStaff($staff)
     {
         $this->staff = $staff;
-
+    
         return $this;
     }
 
     /**
      * Get staff
      *
-     * @return string
+     * @return string 
      */
     public function getStaff()
     {
@@ -434,14 +456,14 @@ class OrderAccData
     public function setChain($chain)
     {
         $this->chain = $chain;
-
+    
         return $this;
     }
 
     /**
      * Get chain
      *
-     * @return string
+     * @return string 
      */
     public function getChain()
     {
@@ -457,14 +479,14 @@ class OrderAccData
     public function setRestaurant($restaurant)
     {
         $this->restaurant = $restaurant;
-
+    
         return $this;
     }
 
     /**
      * Get restaurant
      *
-     * @return string
+     * @return string 
      */
     public function getRestaurant()
     {
@@ -480,14 +502,14 @@ class OrderAccData
     public function setRestaurantAddress($restaurantAddress)
     {
         $this->restaurantAddress = $restaurantAddress;
-
+    
         return $this;
     }
 
     /**
      * Get restaurantAddress
      *
-     * @return string
+     * @return string 
      */
     public function getRestaurantAddress()
     {
@@ -503,14 +525,14 @@ class OrderAccData
     public function setDriver($driver)
     {
         $this->driver = $driver;
-
+    
         return $this;
     }
 
     /**
      * Get driver
      *
-     * @return string
+     * @return string 
      */
     public function getDriver()
     {
@@ -526,14 +548,14 @@ class OrderAccData
     public function setDeliveryType($deliveryType)
     {
         $this->deliveryType = $deliveryType;
-
+    
         return $this;
     }
 
     /**
      * Get deliveryType
      *
-     * @return string
+     * @return string 
      */
     public function getDeliveryType()
     {
@@ -549,14 +571,14 @@ class OrderAccData
     public function setClientName($clientName)
     {
         $this->clientName = $clientName;
-
+    
         return $this;
     }
 
     /**
      * Get clientName
      *
-     * @return string
+     * @return string 
      */
     public function getClientName()
     {
@@ -572,14 +594,14 @@ class OrderAccData
     public function setIsDelivered($isDelivered)
     {
         $this->isDelivered = $isDelivered;
-
+    
         return $this;
     }
 
     /**
      * Get isDelivered
      *
-     * @return integer
+     * @return integer 
      */
     public function getIsDelivered()
     {
@@ -595,14 +617,14 @@ class OrderAccData
     public function setDeliveryAddress($deliveryAddress)
     {
         $this->deliveryAddress = $deliveryAddress;
-
+    
         return $this;
     }
 
     /**
      * Get deliveryAddress
      *
-     * @return string
+     * @return string 
      */
     public function getDeliveryAddress()
     {
@@ -618,14 +640,14 @@ class OrderAccData
     public function setCity($city)
     {
         $this->city = $city;
-
+    
         return $this;
     }
 
     /**
      * Get city
      *
-     * @return string
+     * @return string 
      */
     public function getCity()
     {
@@ -641,14 +663,14 @@ class OrderAccData
     public function setCountry($country)
     {
         $this->country = $country;
-
+    
         return $this;
     }
 
     /**
      * Get country
      *
-     * @return string
+     * @return string 
      */
     public function getCountry()
     {
@@ -664,14 +686,14 @@ class OrderAccData
     public function setPaymentType($paymentType)
     {
         $this->paymentType = $paymentType;
-
+    
         return $this;
     }
 
     /**
      * Get paymentType
      *
-     * @return string
+     * @return string 
      */
     public function getPaymentType()
     {
@@ -687,14 +709,14 @@ class OrderAccData
     public function setFoodAmount($foodAmount)
     {
         $this->foodAmount = $foodAmount;
-
+    
         return $this;
     }
 
     /**
      * Get foodAmount
      *
-     * @return string
+     * @return string 
      */
     public function getFoodAmount()
     {
@@ -710,14 +732,14 @@ class OrderAccData
     public function setFoodAmountEur($foodAmountEur)
     {
         $this->foodAmountEur = $foodAmountEur;
-
+    
         return $this;
     }
 
     /**
      * Get foodAmountEur
      *
-     * @return string
+     * @return string 
      */
     public function getFoodAmountEur()
     {
@@ -733,14 +755,14 @@ class OrderAccData
     public function setFoodVat($foodVat)
     {
         $this->foodVat = $foodVat;
-
+    
         return $this;
     }
 
     /**
      * Get foodVat
      *
-     * @return string
+     * @return string 
      */
     public function getFoodVat()
     {
@@ -756,14 +778,14 @@ class OrderAccData
     public function setDrinksAmount($drinksAmount)
     {
         $this->drinksAmount = $drinksAmount;
-
+    
         return $this;
     }
 
     /**
      * Get drinksAmount
      *
-     * @return string
+     * @return string 
      */
     public function getDrinksAmount()
     {
@@ -779,14 +801,14 @@ class OrderAccData
     public function setDrinksAmountEur($drinksAmountEur)
     {
         $this->drinksAmountEur = $drinksAmountEur;
-
+    
         return $this;
     }
 
     /**
      * Get drinksAmountEur
      *
-     * @return string
+     * @return string 
      */
     public function getDrinksAmountEur()
     {
@@ -802,14 +824,14 @@ class OrderAccData
     public function setDrinksVat($drinksVat)
     {
         $this->drinksVat = $drinksVat;
-
+    
         return $this;
     }
 
     /**
      * Get drinksVat
      *
-     * @return string
+     * @return string 
      */
     public function getDrinksVat()
     {
@@ -825,14 +847,14 @@ class OrderAccData
     public function setAlcoholAmount($alcoholAmount)
     {
         $this->alcoholAmount = $alcoholAmount;
-
+    
         return $this;
     }
 
     /**
      * Get alcoholAmount
      *
-     * @return string
+     * @return string 
      */
     public function getAlcoholAmount()
     {
@@ -848,14 +870,14 @@ class OrderAccData
     public function setAlcoholAmountEur($alcoholAmountEur)
     {
         $this->alcoholAmountEur = $alcoholAmountEur;
-
+    
         return $this;
     }
 
     /**
      * Get alcoholAmountEur
      *
-     * @return string
+     * @return string 
      */
     public function getAlcoholAmountEur()
     {
@@ -871,14 +893,14 @@ class OrderAccData
     public function setAlcoholVat($alcoholVat)
     {
         $this->alcoholVat = $alcoholVat;
-
+    
         return $this;
     }
 
     /**
      * Get alcoholVat
      *
-     * @return string
+     * @return string 
      */
     public function getAlcoholVat()
     {
@@ -894,14 +916,14 @@ class OrderAccData
     public function setDeliveryAmount($deliveryAmount)
     {
         $this->deliveryAmount = $deliveryAmount;
-
+    
         return $this;
     }
 
     /**
      * Get deliveryAmount
      *
-     * @return string
+     * @return string 
      */
     public function getDeliveryAmount()
     {
@@ -917,14 +939,14 @@ class OrderAccData
     public function setDeliveryAmountEur($deliveryAmountEur)
     {
         $this->deliveryAmountEur = $deliveryAmountEur;
-
+    
         return $this;
     }
 
     /**
      * Get deliveryAmountEur
      *
-     * @return string
+     * @return string 
      */
     public function getDeliveryAmountEur()
     {
@@ -940,14 +962,14 @@ class OrderAccData
     public function setDeliveryVat($deliveryVat)
     {
         $this->deliveryVat = $deliveryVat;
-
+    
         return $this;
     }
 
     /**
      * Get deliveryVat
      *
-     * @return string
+     * @return string 
      */
     public function getDeliveryVat()
     {
@@ -963,14 +985,14 @@ class OrderAccData
     public function setGiftCardAmount($giftCardAmount)
     {
         $this->giftCardAmount = $giftCardAmount;
-
+    
         return $this;
     }
 
     /**
      * Get giftCardAmount
      *
-     * @return string
+     * @return string 
      */
     public function getGiftCardAmount()
     {
@@ -986,14 +1008,14 @@ class OrderAccData
     public function setGiftCardAmountEur($giftCardAmountEur)
     {
         $this->giftCardAmountEur = $giftCardAmountEur;
-
+    
         return $this;
     }
 
     /**
      * Get giftCardAmountEur
      *
-     * @return string
+     * @return string 
      */
     public function getGiftCardAmountEur()
     {
@@ -1009,14 +1031,14 @@ class OrderAccData
     public function setDiscountType($discountType)
     {
         $this->discountType = $discountType;
-
+    
         return $this;
     }
 
     /**
      * Get discountType
      *
-     * @return string
+     * @return string 
      */
     public function getDiscountType()
     {
@@ -1032,14 +1054,14 @@ class OrderAccData
     public function setDiscountAmount($discountAmount)
     {
         $this->discountAmount = $discountAmount;
-
+    
         return $this;
     }
 
     /**
      * Get discountAmount
      *
-     * @return string
+     * @return string 
      */
     public function getDiscountAmount()
     {
@@ -1055,14 +1077,14 @@ class OrderAccData
     public function setDiscountAmountEur($discountAmountEur)
     {
         $this->discountAmountEur = $discountAmountEur;
-
+    
         return $this;
     }
 
     /**
      * Get discountAmountEur
      *
-     * @return string
+     * @return string 
      */
     public function getDiscountAmountEur()
     {
@@ -1078,14 +1100,14 @@ class OrderAccData
     public function setDiscountPercent($discountPercent)
     {
         $this->discountPercent = $discountPercent;
-
+    
         return $this;
     }
 
     /**
      * Get discountPercent
      *
-     * @return string
+     * @return string 
      */
     public function getDiscountPercent()
     {
@@ -1101,14 +1123,14 @@ class OrderAccData
     public function setTotalAmount($totalAmount)
     {
         $this->totalAmount = $totalAmount;
-
+    
         return $this;
     }
 
     /**
      * Get totalAmount
      *
-     * @return string
+     * @return string 
      */
     public function getTotalAmount()
     {
@@ -1124,14 +1146,14 @@ class OrderAccData
     public function setTotalAmountEur($totalAmountEur)
     {
         $this->totalAmountEur = $totalAmountEur;
-
+    
         return $this;
     }
 
     /**
      * Get totalAmountEur
      *
-     * @return string
+     * @return string 
      */
     public function getTotalAmountEur()
     {
@@ -1147,14 +1169,14 @@ class OrderAccData
     public function setIsSynced($isSynced)
     {
         $this->isSynced = $isSynced;
-
+    
         return $this;
     }
 
     /**
      * Get isSynced
      *
-     * @return integer
+     * @return integer 
      */
     public function getIsSynced()
     {
@@ -1170,17 +1192,40 @@ class OrderAccData
     public function setSyncTimestamp($syncTimestamp)
     {
         $this->syncTimestamp = $syncTimestamp;
-
+    
         return $this;
     }
 
     /**
      * Get syncTimestamp
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getSyncTimestamp()
     {
         return $this->syncTimestamp;
+    }
+
+    /**
+     * Set version
+     *
+     * @param integer $version
+     * @return OrderAccData
+     */
+    public function setVersion($version)
+    {
+        $this->version = $version;
+    
+        return $this;
+    }
+
+    /**
+     * Get version
+     *
+     * @return integer 
+     */
+    public function getVersion()
+    {
+        return $this->version;
     }
 }
