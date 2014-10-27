@@ -30,6 +30,7 @@ trait PaymentLogDecorator
 
         // try saving order with optimistic lock on
         try {
+            // throws exception on optimistic lock check failure
             $em->flush();
 
             // inform stuff
@@ -37,7 +38,7 @@ trait PaymentLogDecorator
             $orderService->deactivateCoupon();
 
             // insert order into nav
-            // $navService->insertOrder($navService->getOrderDataForNav($order));
+            $navService->insertOrder($navService->getOrderDataForNav($order));
 
             // clear cart
             $cartService->clearCart($order->getPlace());

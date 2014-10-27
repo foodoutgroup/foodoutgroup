@@ -50,6 +50,7 @@ parameters:
     google.maps_geocode: "https://maps.googleapis.com/maps/api/geocode/json"
     google.maps_api: "AIzaSyDyKJYX3Cr4Cn41VR9oaAqbmT8XlbHBY-Q"
     google.maps_server_api: "AIzaSyBK3xf8ZPVWfTa2uXZN-OJHd6Fwl1Yo560"
+    #google.maps_server_api: "AIzaSyANrqCSGWV4b8JRuTPVDdrpmVTytMgBB9M"
     # Possible values: "local", "etaxi"
     active_logistics: "local"
     # Todo situos gal ir iskelsime i paramsus - dependant on install?
