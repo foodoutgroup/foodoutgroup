@@ -237,6 +237,10 @@ class BasketService extends ContainerAware
             )
         );
 
+        if (!$itemInCart instanceof Cart) {
+            throw new \Exception('Cart not found in API. Cart id: '.$basket_item_id.' Place id: '.$basket->getPlaceId());
+        }
+
         $oldOptions = $doc->getRepository('FoodCartBundle:CartOption')->findBy(
             array(
                 'session' => $basket->getSession(),
@@ -248,7 +252,7 @@ class BasketService extends ContainerAware
             $doc->getManager()->remove($opt);
             $doc->getManager()->flush();
         }
-        $newOptions = $request->get('options');
+        $newOptions = $request->get('options', array());
         foreach ($newOptions as $optNew) {
             $cartOpt = new CartOption();
             $cartOpt->setCartId($itemInCart->getCartId())
