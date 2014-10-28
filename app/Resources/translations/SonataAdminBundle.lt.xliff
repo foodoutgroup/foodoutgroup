@@ -375,6 +375,18 @@
                 <source>admin.place.delivery_options</source>
                 <target>Pristatymo galimyb.</target>
             </trans-unit>
+            <trans-unit id="admin.place.navision" resname="admin.place.navision">
+                <source>admin.place.navision</source>
+                <target>Navision sync.</target>
+            </trans-unit>
+            <trans-unit id="admin.place.only_alcohol" resname="admin.place.only_alcohol">
+                <source>admin.place.only_alcohol</source>
+                <target>Tik alkoholis</target>
+            </trans-unit>
+            <trans-unit id="admin.place.chain" resname="admin.place.chain">
+                <source>admin.place.chain</source>
+                <target>Grandinė</target>
+            </trans-unit>
 
             <!-- Place points -->
             <trans-unit id="place-point-list">

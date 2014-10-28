@@ -62,6 +62,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('active', 'checkbox', array('label' => 'admin.active', 'required' => false,))
             ->add('new', 'checkbox', array('label' => 'admin.is_new', 'required' => false,))
             ->add('recommended', 'checkbox', array('label' => 'admin.place.recommended', 'required' => false,))
+            ->add('onlyAlcohol', 'checkbox', array('label' => 'admin.place.only_alcohol', 'required' => false,))
             ->add('deliveryOptions', 'choice', array('label' => 'admin.place.delivery_options', 'required' => true, 'choices' => $deliveryOptionChoices))
             ->add('deliveryTime', null, array('label' => 'admin.place.delivery_time'))
             ->add('deliveryTimeInfo', null, array('label' => 'admin.place.delivery_time_info', 'required' => false))

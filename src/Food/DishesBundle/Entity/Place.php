@@ -74,6 +74,13 @@ class Place extends Uploadable implements Translatable
     private $alcoholRules = null;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="only_alcohol", type="boolean")
+     */
+    private $onlyAlcohol = false;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="logo", type="string", length=255)
@@ -1404,5 +1411,28 @@ class Place extends Uploadable implements Translatable
     public function getPriority()
     {
         return $this->priority;
+    }
+
+    /**
+     * Set onlyAlcohol
+     *
+     * @param boolean $onlyAlcohol
+     * @return Place
+     */
+    public function setOnlyAlcohol($onlyAlcohol)
+    {
+        $this->onlyAlcohol = $onlyAlcohol;
+    
+        return $this;
+    }
+
+    /**
+     * Get onlyAlcohol
+     *
+     * @return boolean 
+     */
+    public function getOnlyAlcohol()
+    {
+        return $this->onlyAlcohol;
     }
 }
