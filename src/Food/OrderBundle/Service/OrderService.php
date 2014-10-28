@@ -269,9 +269,6 @@ class OrderService extends ContainerAware
         // Log user IP address
         $this->order->setUserIp($this->container->get('request')->getClientIp());
 
-        // log order data (if we have listeners)
-        // $this->logOrderForNav($this->order);
-
         return $this->getOrder();
     }
 
@@ -755,9 +752,6 @@ class OrderService extends ContainerAware
         }
         $this->getOrder()->setTotal($sumTotal);
         $this->saveOrder();
-
-        // log order data (if we have listeners)
-        // $this->logOrderForNav($this->order);
 
     }
 
