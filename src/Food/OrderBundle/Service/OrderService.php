@@ -21,6 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
+use Food\OrderBundle\Service\Events\NavOrderEvent;
 
 class OrderService extends ContainerAware
 {
@@ -221,6 +222,11 @@ class OrderService extends ContainerAware
         return $this->context;
     }
 
+    public function getEventDispatcher()
+    {
+        return $this->container->get('event_dispatcher');
+    }
+
     /**
      * @param int $placeId
      * @param PlacePoint $placePoint
@@ -262,6 +268,9 @@ class OrderService extends ContainerAware
 
         // Log user IP address
         $this->order->setUserIp($this->container->get('request')->getClientIp());
+
+        // log order data (if we have listeners)
+        // $this->logOrderForNav($this->order);
 
         return $this->getOrder();
     }
@@ -747,6 +756,17 @@ class OrderService extends ContainerAware
         $this->getOrder()->setTotal($sumTotal);
         $this->saveOrder();
 
+        // log order data (if we have listeners)
+        // $this->logOrderForNav($this->order);
+
+    }
+
+    public function logOrderForNav(Order $order = null)
+    {
+        $event = new NavOrderEvent($order);
+
+        $this->getEventDispatcher()
+             ->dispatch(NavOrderEvent::LOG_ORDER, $event);
     }
 
     /**
@@ -761,6 +781,9 @@ class OrderService extends ContainerAware
             $this->order->setLastUpdated(new \DateTime("now"));
             $this->getEm()->persist($this->order);
             $this->getEm()->flush();
+
+            // log order data (if we have listeners)
+            $this->logOrderForNav($this->order);
         }
     }
 

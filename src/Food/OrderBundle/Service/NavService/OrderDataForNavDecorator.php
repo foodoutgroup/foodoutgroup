@@ -2,7 +2,9 @@
 
 namespace Food\OrderBundle\Service\NavService;
 
+use Doctrine\DBAL\LockMode;
 use Food\OrderBundle\Entity\Order;
+use Food\OrderBundle\Entity\OrderAccData;
 use Food\OrderBundle\Service\NavService\OrderDataForNav;
 
 trait OrderDataForNavDecorator
@@ -67,7 +69,7 @@ trait OrderDataForNavDecorator
         $data->discountType = '';
         $data->discountAmount = (double) $discountTotal;
         $data->discountAmountEUR = (double) $misc->getEuro($discountTotal);
-        $data->discountPercent = (double) ($discountTotal / $total);
+        $data->discountPercent = (double) ($total > 0.0 ? ($discountTotal / $total) : 0.0);
         $data->totalAmount = (double) $total;
         $data->totalAmountEUR = (double) $misc->getEuro($total);
 
@@ -94,6 +96,78 @@ trait OrderDataForNavDecorator
             })
             // don't forget to return not a Monad, but plain value which is true or false
             ->val();
+    }
+
+    public function insertOrderAccData(Order $order, OrderDataForNav $data)
+    {
+        // if order is, for example, unsaved - cancel
+        if (is_null($order->getId())) return;
+
+        // services
+        $em = $this->container->get('doctrine.orm.entity_manager');
+
+        // check if OrderAccData in question already exists
+        $maybeDataExists = \Maybe(
+            $em->getRepository('FoodOrderBundle:OrderAccData')
+               ->findBy(['order_id' => $order->getId()])
+        );
+
+        $orderAccData = $maybeDataExists[0]->map(function($row) use ($em) {
+            if ($row->is_none()) {
+                // if not - return new entity
+                return new OrderAccData();
+            } else {
+                // if exists - return it
+                return $row;
+            }
+        })->val();
+
+        // if OrderAccData is synced - cancel
+        if ($orderAccData->getIsSynced()) return;
+
+        $orderAccData
+            ->setOrderId($order->getId())
+            ->setDate($data->date)
+            ->setTime($data->time)
+            ->setDeliveryDate($data->deliveryDate)
+            ->setDeliveryTime($data->deliveryTime)
+            ->setStaff($data->staff)
+            ->setChain($data->chain)
+            ->setRestaurant($data->restaurant)
+            ->setRestaurantAddress($data->restaurantAddress)
+            ->setDriver($data->driver)
+            ->setDeliveryType($data->deliveryType)
+            ->setClientName($data->clientName)
+            ->setIsDelivered($data->isDelivered == 'yes' ? true : false)
+            ->setDeliveryAddress($data->deliveryAddress)
+            ->setCity($data->city)
+            ->setCountry($data->country)
+            ->setPaymentType($data->paymentType)
+            ->setFoodAmount($data->foodAmount)
+            ->setFoodAmountEur($data->foodAmountEUR)
+            ->setFoodVat($data->foodVAT)
+            ->setDrinksAmount($data->drinksAmount)
+            ->setDrinksAmountEur($data->drinksAmountEUR)
+            ->setDrinksVat($data->drinksVAT)
+            ->setAlcoholAmount($data->alcoholAmount)
+            ->setAlcoholAmountEur($data->alcoholAmountEUR)
+            ->setAlcoholVat($data->alcoholVAT)
+            ->setDeliveryAmount($data->deliveryAmount)
+            ->setDeliveryAmountEur($data->deliveryAmountEUR)
+            ->setDeliveryVat($data->deliveryVAT)
+            ->setGiftCardAmount($data->giftCardAmount)
+            ->setGiftCardAmountEur($data->giftCardAmountEUR)
+            ->setDiscountType($data->discountType)
+            ->setDiscountAmount($data->discountAmount)
+            ->setDiscountAmountEur($data->discountAmountEUR)
+            ->setDiscountPercent($data->discountPercent)
+            ->setTotalAmount($data->totalAmount)
+            ->setTotalAmountEur($data->totalAmountEUR)
+            ->setIsSynced(false)
+            ->setSyncTimestamp(null);
+
+        $em->persist($orderAccData);
+        $em->flush();
     }
 
     protected function constructInsertOrderQuery(OrderDataForNav $data)

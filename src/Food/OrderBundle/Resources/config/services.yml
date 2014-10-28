@@ -89,3 +89,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: banklink.request, method: onBanklinkRequest }
             - { name: kernel.event_listener, event: banklink.response, method: onBanklinkResponse }
+
+    food.nav.sync_listener:
+        class: Food\OrderBundle\Service\NavOrderSyncListener
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: kernel.event_listener, event: nav.order.log_for_sync, method: onLogForSync }

@@ -26,7 +26,7 @@ class OrderAccData
      *
      * @ORM\Column(name="order_id", type="integer")
      */
-    private $orderId;
+    private $order_id;
 
     /**
      * @var string
@@ -47,14 +47,14 @@ class OrderAccData
      *
      * @ORM\Column(name="delivery_date", type="string", length=255)
      */
-    private $deliveryDate;
+    private $delivery_date;
 
     /**
      * @var string
      *
      * @ORM\Column(name="delivery_time", type="string", length=255)
      */
-    private $deliveryTime;
+    private $delivery_time;
 
     /**
      * @var string
@@ -82,7 +82,7 @@ class OrderAccData
      *
      * @ORM\Column(name="restaurant_address", type="string", length=255)
      */
-    private $restaurantAddress;
+    private $restaurant_address;
 
     /**
      * @var string
@@ -96,28 +96,28 @@ class OrderAccData
      *
      * @ORM\Column(name="delivery_type", type="string", length=255)
      */
-    private $deliveryType;
+    private $delivery_type;
 
     /**
      * @var string
      *
      * @ORM\Column(name="client_name", type="string", length=255)
      */
-    private $clientName;
+    private $client_name;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="is_delivered", type="smallint")
      */
-    private $isDelivered;
+    private $is_delivered;
 
     /**
      * @var string
      *
      * @ORM\Column(name="delivery_address", type="string", length=255)
      */
-    private $deliveryAddress;
+    private $delivery_address;
 
     /**
      * @var string
@@ -138,161 +138,161 @@ class OrderAccData
      *
      * @ORM\Column(name="payment_type", type="string", length=255)
      */
-    private $paymentType;
+    private $payment_type;
 
     /**
      * @var string
      *
      * @ORM\Column(name="food_amount", type="decimal", precision=8, scale=4)
      */
-    private $foodAmount;
+    private $food_amount;
 
     /**
      * @var string
      *
      * @ORM\Column(name="food_amount_eur", type="decimal", precision=8, scale=4)
      */
-    private $foodAmountEur;
+    private $food_amount_eur;
 
     /**
      * @var string
      *
      * @ORM\Column(name="food_vat", type="decimal", precision=8, scale=4)
      */
-    private $foodVat;
+    private $food_vat;
 
     /**
      * @var string
      *
      * @ORM\Column(name="drinks_amount", type="decimal", precision=8, scale=4)
      */
-    private $drinksAmount;
+    private $drinks_amount;
 
     /**
      * @var string
      *
      * @ORM\Column(name="drinks_amount_eur", type="decimal", precision=8, scale=4)
      */
-    private $drinksAmountEur;
+    private $drinks_amount_eur;
 
     /**
      * @var string
      *
      * @ORM\Column(name="drinks_vat", type="decimal", precision=8, scale=4)
      */
-    private $drinksVat;
+    private $drinks_vat;
 
     /**
      * @var string
      *
      * @ORM\Column(name="alcohol_amount", type="decimal", precision=8, scale=4)
      */
-    private $alcoholAmount;
+    private $alcohol_amount;
 
     /**
      * @var string
      *
      * @ORM\Column(name="alcohol_amount_eur", type="decimal", precision=8, scale=4)
      */
-    private $alcoholAmountEur;
+    private $alcohol_amount_eur;
 
     /**
      * @var string
      *
      * @ORM\Column(name="alcohol_vat", type="decimal", precision=8, scale=4)
      */
-    private $alcoholVat;
+    private $alcohol_vat;
 
     /**
      * @var string
      *
      * @ORM\Column(name="delivery_amount", type="decimal", precision=8, scale=4)
      */
-    private $deliveryAmount;
+    private $delivery_amount;
 
     /**
      * @var string
      *
      * @ORM\Column(name="delivery_amount_eur", type="decimal", precision=8, scale=4)
      */
-    private $deliveryAmountEur;
+    private $delivery_amount_eur;
 
     /**
      * @var string
      *
      * @ORM\Column(name="delivery_vat", type="decimal", precision=8, scale=4)
      */
-    private $deliveryVat;
+    private $delivery_vat;
 
     /**
      * @var string
      *
      * @ORM\Column(name="gift_card_amount", type="decimal", precision=8, scale=4)
      */
-    private $giftCardAmount;
+    private $gift_card_amount;
 
     /**
      * @var string
      *
      * @ORM\Column(name="gift_card_amount_eur", type="decimal", precision=8, scale=4)
      */
-    private $giftCardAmountEur;
+    private $gift_card_amount_eur;
 
     /**
      * @var string
      *
      * @ORM\Column(name="discount_type", type="string", length=255)
      */
-    private $discountType;
+    private $discount_type;
 
     /**
      * @var string
      *
      * @ORM\Column(name="discount_amount", type="decimal", precision=8, scale=4)
      */
-    private $discountAmount;
+    private $discount_amount;
 
     /**
      * @var string
      *
      * @ORM\Column(name="discount_amount_eur", type="decimal", precision=8, scale=4)
      */
-    private $discountAmountEur;
+    private $discount_amount_eur;
 
     /**
      * @var string
      *
      * @ORM\Column(name="discount_percent", type="decimal", precision=8, scale=4)
      */
-    private $discountPercent;
+    private $discount_percent;
 
     /**
      * @var string
      *
      * @ORM\Column(name="total_amount", type="decimal", precision=8, scale=4)
      */
-    private $totalAmount;
+    private $total_amount;
 
     /**
      * @var string
      *
      * @ORM\Column(name="total_amount_eur", type="decimal", precision=8, scale=4)
      */
-    private $totalAmountEur;
+    private $total_amount_eur;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="is_synced", type="smallint")
      */
-    private $isSynced;
+    private $is_synced;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="sync_timestamp", type="datetime")
+     * @ORM\Column(name="sync_timestamp", type="datetime", nullable=true)
      */
-    private $syncTimestamp;
+    private $sync_timestamp;
 
     /**
      * @ORM\Version @ORM\Column(type="integer")
@@ -310,26 +310,26 @@ class OrderAccData
     }
 
     /**
-     * Set orderId
+     * Set order_id
      *
      * @param integer $orderId
      * @return OrderAccData
      */
     public function setOrderId($orderId)
     {
-        $this->orderId = $orderId;
+        $this->order_id = $orderId;
     
         return $this;
     }
 
     /**
-     * Get orderId
+     * Get order_id
      *
      * @return integer 
      */
     public function getOrderId()
     {
-        return $this->orderId;
+        return $this->order_id;
     }
 
     /**
@@ -379,49 +379,49 @@ class OrderAccData
     }
 
     /**
-     * Set deliveryDate
+     * Set delivery_date
      *
      * @param string $deliveryDate
      * @return OrderAccData
      */
     public function setDeliveryDate($deliveryDate)
     {
-        $this->deliveryDate = $deliveryDate;
+        $this->delivery_date = $deliveryDate;
     
         return $this;
     }
 
     /**
-     * Get deliveryDate
+     * Get delivery_date
      *
      * @return string 
      */
     public function getDeliveryDate()
     {
-        return $this->deliveryDate;
+        return $this->delivery_date;
     }
 
     /**
-     * Set deliveryTime
+     * Set delivery_time
      *
      * @param string $deliveryTime
      * @return OrderAccData
      */
     public function setDeliveryTime($deliveryTime)
     {
-        $this->deliveryTime = $deliveryTime;
+        $this->delivery_time = $deliveryTime;
     
         return $this;
     }
 
     /**
-     * Get deliveryTime
+     * Get delivery_time
      *
      * @return string 
      */
     public function getDeliveryTime()
     {
-        return $this->deliveryTime;
+        return $this->delivery_time;
     }
 
     /**
@@ -494,26 +494,26 @@ class OrderAccData
     }
 
     /**
-     * Set restaurantAddress
+     * Set restaurant_address
      *
      * @param string $restaurantAddress
      * @return OrderAccData
      */
     public function setRestaurantAddress($restaurantAddress)
     {
-        $this->restaurantAddress = $restaurantAddress;
+        $this->restaurant_address = $restaurantAddress;
     
         return $this;
     }
 
     /**
-     * Get restaurantAddress
+     * Get restaurant_address
      *
      * @return string 
      */
     public function getRestaurantAddress()
     {
-        return $this->restaurantAddress;
+        return $this->restaurant_address;
     }
 
     /**
@@ -540,95 +540,95 @@ class OrderAccData
     }
 
     /**
-     * Set deliveryType
+     * Set delivery_type
      *
      * @param string $deliveryType
      * @return OrderAccData
      */
     public function setDeliveryType($deliveryType)
     {
-        $this->deliveryType = $deliveryType;
+        $this->delivery_type = $deliveryType;
     
         return $this;
     }
 
     /**
-     * Get deliveryType
+     * Get delivery_type
      *
      * @return string 
      */
     public function getDeliveryType()
     {
-        return $this->deliveryType;
+        return $this->delivery_type;
     }
 
     /**
-     * Set clientName
+     * Set client_name
      *
      * @param string $clientName
      * @return OrderAccData
      */
     public function setClientName($clientName)
     {
-        $this->clientName = $clientName;
+        $this->client_name = $clientName;
     
         return $this;
     }
 
     /**
-     * Get clientName
+     * Get client_name
      *
      * @return string 
      */
     public function getClientName()
     {
-        return $this->clientName;
+        return $this->client_name;
     }
 
     /**
-     * Set isDelivered
+     * Set is_delivered
      *
      * @param integer $isDelivered
      * @return OrderAccData
      */
     public function setIsDelivered($isDelivered)
     {
-        $this->isDelivered = $isDelivered;
+        $this->is_delivered = $isDelivered;
     
         return $this;
     }
 
     /**
-     * Get isDelivered
+     * Get is_delivered
      *
      * @return integer 
      */
     public function getIsDelivered()
     {
-        return $this->isDelivered;
+        return $this->is_delivered;
     }
 
     /**
-     * Set deliveryAddress
+     * Set delivery_address
      *
      * @param string $deliveryAddress
      * @return OrderAccData
      */
     public function setDeliveryAddress($deliveryAddress)
     {
-        $this->deliveryAddress = $deliveryAddress;
+        $this->delivery_address = $deliveryAddress;
     
         return $this;
     }
 
     /**
-     * Get deliveryAddress
+     * Get delivery_address
      *
      * @return string 
      */
     public function getDeliveryAddress()
     {
-        return $this->deliveryAddress;
+        return $this->delivery_address;
     }
 
     /**
@@ -678,532 +678,532 @@ class OrderAccData
     }
 
     /**
-     * Set paymentType
+     * Set payment_type
      *
      * @param string $paymentType
      * @return OrderAccData
      */
     public function setPaymentType($paymentType)
     {
-        $this->paymentType = $paymentType;
+        $this->payment_type = $paymentType;
     
         return $this;
     }
 
     /**
-     * Get paymentType
+     * Get payment_type
      *
      * @return string 
      */
     public function getPaymentType()
     {
-        return $this->paymentType;
+        return $this->payment_type;
     }
 
     /**
-     * Set foodAmount
+     * Set food_amount
      *
      * @param string $foodAmount
      * @return OrderAccData
      */
     public function setFoodAmount($foodAmount)
     {
-        $this->foodAmount = $foodAmount;
+        $this->food_amount = $foodAmount;
     
         return $this;
     }
 
     /**
-     * Get foodAmount
+     * Get food_amount
      *
      * @return string 
      */
     public function getFoodAmount()
     {
-        return $this->foodAmount;
+        return $this->food_amount;
     }
 
     /**
-     * Set foodAmountEur
+     * Set food_amount_eur
      *
      * @param string $foodAmountEur
      * @return OrderAccData
      */
     public function setFoodAmountEur($foodAmountEur)
     {
-        $this->foodAmountEur = $foodAmountEur;
+        $this->food_amount_eur = $foodAmountEur;
     
         return $this;
     }
 
     /**
-     * Get foodAmountEur
+     * Get food_amount_eur
      *
      * @return string 
      */
     public function getFoodAmountEur()
     {
-        return $this->foodAmountEur;
+        return $this->food_amount_eur;
     }
 
     /**
-     * Set foodVat
+     * Set food_vat
      *
      * @param string $foodVat
      * @return OrderAccData
      */
     public function setFoodVat($foodVat)
     {
-        $this->foodVat = $foodVat;
+        $this->food_vat = $foodVat;
     
         return $this;
     }
 
     /**
-     * Get foodVat
+     * Get food_vat
      *
      * @return string 
      */
     public function getFoodVat()
     {
-        return $this->foodVat;
+        return $this->food_vat;
     }
 
     /**
-     * Set drinksAmount
+     * Set drinks_amount
      *
      * @param string $drinksAmount
      * @return OrderAccData
      */
     public function setDrinksAmount($drinksAmount)
     {
-        $this->drinksAmount = $drinksAmount;
+        $this->drinks_amount = $drinksAmount;
     
         return $this;
     }
 
     /**
-     * Get drinksAmount
+     * Get drinks_amount
      *
      * @return string 
      */
     public function getDrinksAmount()
     {
-        return $this->drinksAmount;
+        return $this->drinks_amount;
     }
 
     /**
-     * Set drinksAmountEur
+     * Set drinks_amount_eur
      *
      * @param string $drinksAmountEur
      * @return OrderAccData
      */
     public function setDrinksAmountEur($drinksAmountEur)
     {
-        $this->drinksAmountEur = $drinksAmountEur;
+        $this->drinks_amount_eur = $drinksAmountEur;
     
         return $this;
     }
 
     /**
-     * Get drinksAmountEur
+     * Get drinks_amount_eur
      *
      * @return string 
      */
     public function getDrinksAmountEur()
     {
-        return $this->drinksAmountEur;
+        return $this->drinks_amount_eur;
     }
 
     /**
-     * Set drinksVat
+     * Set drinks_vat
      *
      * @param string $drinksVat
      * @return OrderAccData
      */
     public function setDrinksVat($drinksVat)
     {
-        $this->drinksVat = $drinksVat;
+        $this->drinks_vat = $drinksVat;
     
         return $this;
     }
 
     /**
-     * Get drinksVat
+     * Get drinks_vat
      *
      * @return string 
      */
     public function getDrinksVat()
     {
-        return $this->drinksVat;
+        return $this->drinks_vat;
     }
 
     /**
-     * Set alcoholAmount
+     * Set alcohol_amount
      *
      * @param string $alcoholAmount
      * @return OrderAccData
      */
     public function setAlcoholAmount($alcoholAmount)
     {
-        $this->alcoholAmount = $alcoholAmount;
+        $this->alcohol_amount = $alcoholAmount;
     
         return $this;
     }
 
     /**
-     * Get alcoholAmount
+     * Get alcohol_amount
      *
      * @return string 
      */
     public function getAlcoholAmount()
     {
-        return $this->alcoholAmount;
+        return $this->alcohol_amount;
     }
 
     /**
-     * Set alcoholAmountEur
+     * Set alcohol_amount_eur
      *
      * @param string $alcoholAmountEur
      * @return OrderAccData
      */
     public function setAlcoholAmountEur($alcoholAmountEur)
     {
-        $this->alcoholAmountEur = $alcoholAmountEur;
+        $this->alcohol_amount_eur = $alcoholAmountEur;
     
         return $this;
     }
 
     /**
-     * Get alcoholAmountEur
+     * Get alcohol_amount_eur
      *
      * @return string 
      */
     public function getAlcoholAmountEur()
     {
-        return $this->alcoholAmountEur;
+        return $this->alcohol_amount_eur;
     }
 
     /**
-     * Set alcoholVat
+     * Set alcohol_vat
      *
      * @param string $alcoholVat
      * @return OrderAccData
      */
     public function setAlcoholVat($alcoholVat)
     {
-        $this->alcoholVat = $alcoholVat;
+        $this->alcohol_vat = $alcoholVat;
     
         return $this;
     }
 
     /**
-     * Get alcoholVat
+     * Get alcohol_vat
      *
      * @return string 
      */
     public function getAlcoholVat()
     {
-        return $this->alcoholVat;
+        return $this->alcohol_vat;
     }
 
     /**
-     * Set deliveryAmount
+     * Set delivery_amount
      *
      * @param string $deliveryAmount
      * @return OrderAccData
      */
     public function setDeliveryAmount($deliveryAmount)
     {
-        $this->deliveryAmount = $deliveryAmount;
+        $this->delivery_amount = $deliveryAmount;
     
         return $this;
     }
 
     /**
-     * Get deliveryAmount
+     * Get delivery_amount
      *
      * @return string 
      */
     public function getDeliveryAmount()
     {
-        return $this->deliveryAmount;
+        return $this->delivery_amount;
     }
 
     /**
-     * Set deliveryAmountEur
+     * Set delivery_amount_eur
      *
      * @param string $deliveryAmountEur
      * @return OrderAccData
      */
     public function setDeliveryAmountEur($deliveryAmountEur)
     {
-        $this->deliveryAmountEur = $deliveryAmountEur;
+        $this->delivery_amount_eur = $deliveryAmountEur;
     
         return $this;
     }
 
     /**
-     * Get deliveryAmountEur
+     * Get delivery_amount_eur
      *
      * @return string 
      */
     public function getDeliveryAmountEur()
     {
-        return $this->deliveryAmountEur;
+        return $this->delivery_amount_eur;
     }
 
     /**
-     * Set deliveryVat
+     * Set delivery_vat
      *
      * @param string $deliveryVat
      * @return OrderAccData
      */
     public function setDeliveryVat($deliveryVat)
     {
-        $this->deliveryVat = $deliveryVat;
+        $this->delivery_vat = $deliveryVat;
     
         return $this;
     }
 
     /**
-     * Get deliveryVat
+     * Get delivery_vat
      *
      * @return string 
      */
     public function getDeliveryVat()
     {
-        return $this->deliveryVat;
+        return $this->delivery_vat;
     }
 
     /**
-     * Set giftCardAmount
+     * Set gift_card_amount
      *
      * @param string $giftCardAmount
      * @return OrderAccData
      */
     public function setGiftCardAmount($giftCardAmount)
     {
-        $this->giftCardAmount = $giftCardAmount;
+        $this->gift_card_amount = $giftCardAmount;
     
         return $this;
     }
 
     /**
-     * Get giftCardAmount
+     * Get gift_card_amount
      *
      * @return string 
      */
     public function getGiftCardAmount()
     {
-        return $this->giftCardAmount;
+        return $this->gift_card_amount;
     }
 
     /**
-     * Set giftCardAmountEur
+     * Set gift_card_amount_eur
      *
      * @param string $giftCardAmountEur
      * @return OrderAccData
      */
     public function setGiftCardAmountEur($giftCardAmountEur)
     {
-        $this->giftCardAmountEur = $giftCardAmountEur;
+        $this->gift_card_amount_eur = $giftCardAmountEur;
     
         return $this;
     }
 
     /**
-     * Get giftCardAmountEur
+     * Get gift_card_amount_eur
      *
      * @return string 
      */
     public function getGiftCardAmountEur()
     {
-        return $this->giftCardAmountEur;
+        return $this->gift_card_amount_eur;
     }
 
     /**
-     * Set discountType
+     * Set discount_type
      *
      * @param string $discountType
      * @return OrderAccData
      */
     public function setDiscountType($discountType)
     {
-        $this->discountType = $discountType;
+        $this->discount_type = $discountType;
     
         return $this;
     }
 
     /**
-     * Get discountType
+     * Get discount_type
      *
      * @return string 
      */
     public function getDiscountType()
     {
-        return $this->discountType;
+        return $this->discount_type;
     }
 
     /**
-     * Set discountAmount
+     * Set discount_amount
      *
      * @param string $discountAmount
      * @return OrderAccData
      */
     public function setDiscountAmount($discountAmount)
     {
-        $this->discountAmount = $discountAmount;
+        $this->discount_amount = $discountAmount;
     
         return $this;
     }
 
     /**
-     * Get discountAmount
+     * Get discount_amount
      *
      * @return string 
      */
     public function getDiscountAmount()
     {
-        return $this->discountAmount;
+        return $this->discount_amount;
     }
 
     /**
-     * Set discountAmountEur
+     * Set discount_amount_eur
      *
      * @param string $discountAmountEur
      * @return OrderAccData
      */
     public function setDiscountAmountEur($discountAmountEur)
     {
-        $this->discountAmountEur = $discountAmountEur;
+        $this->discount_amount_eur = $discountAmountEur;
     
         return $this;
     }
 
     /**
-     * Get discountAmountEur
+     * Get discount_amount_eur
      *
      * @return string 
      */
     public function getDiscountAmountEur()
     {
-        return $this->discountAmountEur;
+        return $this->discount_amount_eur;
     }
 
     /**
-     * Set discountPercent
+     * Set discount_percent
      *
      * @param string $discountPercent
      * @return OrderAccData
      */
     public function setDiscountPercent($discountPercent)
     {
-        $this->discountPercent = $discountPercent;
+        $this->discount_percent = $discountPercent;
     
         return $this;
     }
 
     /**
-     * Get discountPercent
+     * Get discount_percent
      *
      * @return string 
      */
     public function getDiscountPercent()
     {
-        return $this->discountPercent;
+        return $this->discount_percent;
     }
 
     /**
-     * Set totalAmount
+     * Set total_amount
      *
      * @param string $totalAmount
      * @return OrderAccData
      */
     public function setTotalAmount($totalAmount)
     {
-        $this->totalAmount = $totalAmount;
+        $this->total_amount = $totalAmount;
     
         return $this;
     }
 
     /**
-     * Get totalAmount
+     * Get total_amount
      *
      * @return string 
      */
     public function getTotalAmount()
     {
-        return $this->totalAmount;
+        return $this->total_amount;
     }
 
     /**
-     * Set totalAmountEur
+     * Set total_amount_eur
      *
      * @param string $totalAmountEur
      * @return OrderAccData
      */
     public function setTotalAmountEur($totalAmountEur)
     {
-        $this->totalAmountEur = $totalAmountEur;
+        $this->total_amount_eur = $totalAmountEur;
     
         return $this;
     }
 
     /**
-     * Get totalAmountEur
+     * Get total_amount_eur
      *
      * @return string 
      */
     public function getTotalAmountEur()
     {
-        return $this->totalAmountEur;
+        return $this->total_amount_eur;
     }
 
     /**
-     * Set isSynced
+     * Set is_synced
      *
      * @param integer $isSynced
      * @return OrderAccData
      */
     public function setIsSynced($isSynced)
     {
-        $this->isSynced = $isSynced;
+        $this->is_synced = $isSynced;
     
         return $this;
     }
 
     /**
-     * Get isSynced
+     * Get is_synced
      *
      * @return integer 
      */
     public function getIsSynced()
     {
-        return $this->isSynced;
+        return $this->is_synced;
     }
 
     /**
-     * Set syncTimestamp
+     * Set sync_timestamp
      *
      * @param \DateTime $syncTimestamp
      * @return OrderAccData
      */
     public function setSyncTimestamp($syncTimestamp)
     {
-        $this->syncTimestamp = $syncTimestamp;
+        $this->sync_timestamp = $syncTimestamp;
     
         return $this;
     }
 
     /**
-     * Get syncTimestamp
+     * Get sync_timestamp
      *
      * @return \DateTime 
      */
     public function getSyncTimestamp()
     {
-        return $this->syncTimestamp;
+        return $this->sync_timestamp;
     }
 
     /**
