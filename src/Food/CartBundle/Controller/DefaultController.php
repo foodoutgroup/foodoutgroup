@@ -168,7 +168,14 @@ class DefaultController extends Controller
         // TODO refactor this nonsense... if is if is if is bullshit...
         // Validate only if post happened
         if ($request->getMethod() == 'POST') {
-            $this->get('food.order')->validateDaGiantForm($place, $request, $formHasErrors, $formErrors, ($takeAway ? true : false), $request->get('place_point'));
+            $this->get('food.order')->validateDaGiantForm(
+                $place,
+                $request,
+                $formHasErrors,
+                $formErrors,
+                ($takeAway ? true : false),
+                ($takeAway ? $request->get('place_point'): null)
+            );
         }
 
         // Empty dish protection
@@ -308,7 +315,8 @@ class DefaultController extends Controller
                 'takeAway' => ($takeAway ? true : false),
                 'location' => $this->get('food.googlegis')->getLocationFromSession(),
                 'dataToLoad' => $dataToLoad,
-                'submitted' => $request->isMethod('POST')
+                'submitted' => $request->isMethod('POST'),
+                'testNordea' => $request->query->get('test_nordea')
             )
         );
     }

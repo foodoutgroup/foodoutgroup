@@ -3,7 +3,10 @@
 namespace Food\OrderBundle\Service;
 
 use Food\AppBundle\Entity\Driver;
+use Food\OrderBundle\Entity\Order;
+use Food\OrderBundle\Entity\OrderToLogistics;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Curl;
 
 /**
  * Class LogisticsService
@@ -22,6 +25,22 @@ class LogisticsService extends ContainerAware
      * @var OrderService
      */
     private $orderService = null;
+
+    /**
+     * Convert order payment method to external logistics method
+     * @var array
+     */
+    private $paymentMethodMap = array(
+        'local' => 'local',
+        'local.card' => 'local.card',
+        'paysera' => 'prepaid',
+        'banklink' => 'prepaid',
+    );
+
+    /**
+     * @var Curl
+     */
+    private $_cli;
 
     /**
      * @param string $logisticSystem
@@ -53,6 +72,27 @@ class LogisticsService extends ContainerAware
     public function getOrderService()
     {
         return $this->orderService;
+    }
+
+    /**
+     * @param \Curl $cli
+     */
+    public function setCli($cli)
+    {
+        $this->_cli = $cli;
+    }
+
+    /**
+     * @return \Curl
+     */
+    public function getCli()
+    {
+        if (empty($this->_cli)) {
+            $this->_cli = new Curl;
+            $this->_cli->options['CURLOPT_SSL_VERIFYPEER'] = false;
+            $this->_cli->options['CURLOPT_SSL_VERIFYHOST'] = false;
+        }
+        return $this->_cli;
     }
 
     /**
@@ -152,6 +192,7 @@ class LogisticsService extends ContainerAware
                 $order = $orderService->getOrderById($orderId);
                 $order->setDriver($driver);
 
+                // TODO kolkas visad vairuotoja informuojam SMS'u, bet su LogTimeApi nutart ar dubliuojam
                 $orderService->statusAssigned('logistics_service');
                 $orderService->saveOrder();
             }
@@ -165,6 +206,301 @@ class LogisticsService extends ContainerAware
 //            default:
 //                break;
 //        }
+    }
+
+    /**
+     * Get preconfigured Xml writer
+     *
+     * @return \XMLWriter
+     */
+    private function getDefaultXmlWriter()
+    {
+        $writer = new \XMLWriter();
+        $writer->openMemory();
+        $writer->startDocument('1.0','UTF-8');
+        $writer->setIndent(true);
+
+        return $writer;
+    }
+
+    /**
+     * Prepares xml of order for external system
+     * @param Order $order
+     *
+     * @throws \InvalidArgumentException
+     * @return string
+     */
+    public function generateOrderXml($order)
+    {
+        if (!$order instanceof Order) {
+            throw new \InvalidArgumentException('Cannot generate xml with no order. The road to Mordor is closed');
+        }
+
+        $writer = $this->getDefaultXmlWriter();
+
+        $writer->startElement('Order');
+        $writer->writeElement('OrderId', $order->getId());
+
+        // Pickup block
+        $writer->startElement("PickUp");
+        $writer->writeElement('Address', $order->getPlacePointAddress());
+        $writer->writeElement('City', $this->convertCityForLogTime($order->getPlacePointCity()));
+        $writer->startElement("Coordinates");
+        $writer->writeElement('Long', $order->getPlacePoint()->getLon());
+        $writer->writeElement('Lat', $order->getPlacePoint()->getLat());
+        //End coordinates block
+        $writer->endElement();
+        $writer->writeElement('PointName', $order->getPlaceName());
+        $writer->writeElement('PointId', $order->getPlacePoint()->getId());
+        $writer->writeElement('Phone', $order->getPlacePoint()->getPhone());
+        // End pickup block
+        $writer->endElement();
+
+        // Delivery block
+        $writer->startElement("Delivery");
+        $writer->writeElement('Address', $order->getAddressId()->getAddress());
+        $writer->writeElement('City', $this->convertCityForLogTime($order->getAddressId()->getCity()));
+        $writer->writeElement('AddressId', $order->getAddressId()->getId());
+        $writer->startElement("Coordinates");
+        $writer->writeElement('Long', $order->getAddressId()->getLon());
+        $writer->writeElement('Lat', $order->getAddressId()->getLat());
+        //End coordinates block
+        $writer->endElement();
+        $writer->writeElement('CustomerName', $order->getUser()->getFirstname());
+        $writer->writeElement('Phone', $order->getUser()->getPhone());
+        $writer->writeElement('CustomerComment', $order->getComment());
+        // End delivery block
+        $writer->endElement();
+
+        // Pickup time
+        $acceptTime = $order->getAcceptTime();
+
+        // If delayed - add delay duration
+        if ($order->getDelayed()) {
+            $delay = $order->getDelayDuration();
+            $acceptTime->add(
+                new \DateInterval(sprintf('PT%dM', $delay))
+            );
+        }
+
+        $pickupToTime = clone $acceptTime;
+        $deliveryToTime = clone $acceptTime;
+
+        $writer->startElement("PickUpTime");
+        $writer->writeElement('From', $order->getAcceptTime()->format("Y-m-d H:i"));
+        $writer->writeElement('To', $pickupToTime->add(new \DateInterval('PT20M'))->format("Y-m-d H:i"));
+        // End pickup time block
+        $writer->endElement();
+
+        // Delivery time block
+        $writer->startElement("DeliveryTime");
+        $writer->writeElement('From', $order->getAcceptTime()->format("Y-m-d H:i"));
+        $writer->writeElement('To', $deliveryToTime->add(new \DateInterval('PT1H'))->format("Y-m-d H:i"));
+        // End delivery time block
+        $writer->endElement();
+
+        $writer->writeElement('PaymentMethod', $this->convertPaymentMethod($order->getPaymentMethod()));
+        $writer->writeElement('Price', $order->getTotal());
+        $writer->writeElement('Status', $order->getOrderStatus());
+
+        // Content block
+        $writer->startElement("Content");
+        foreach ($order->getDetails() as $dish) {
+            $writer->startElement("Item");
+            $writer->writeElement('Id', $dish->getId());
+            $writer->writeElement('Name', $dish->getDishName());
+            $writer->writeElement('Qty', $dish->getQuantity());
+            $writer->endElement();
+        }
+        // End content block
+        $writer->endElement();
+
+        // End order block
+        $writer->endElement();
+
+        $writer->endDocument();
+        $xml = $writer->outputMemory(true);
+
+        return $xml;
+    }
+
+    /**
+     * @param Driver[] $drivers
+     * @return string
+     */
+    public function generateDriverXml($drivers)
+    {
+        $writer = $this->getDefaultXmlWriter();
+
+        $writer->startElement('Drivers');
+
+        foreach ($drivers as $driver) {
+            $writer->startElement('Driver');
+            $writer->writeElement('Id', $driver->getId());
+            $writer->writeElement('Phone', $driver->getPhone());
+            $writer->writeElement('Name', $driver->getName());
+            $writer->writeElement('City', $driver->getCity());
+            $writer->writeElement('Active', ($driver->getActive() ? 'Y' : 'N'));
+            $writer->endElement();
+        }
+
+        // End drivers block
+        $writer->endElement();
+
+        $writer->endDocument();
+        $xml = $writer->outputMemory(true);
+
+        return $xml;
+    }
+
+    /**
+     * @param string $orderMethod
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public function convertPaymentMethod($orderMethod)
+    {
+        if (!isset($this->paymentMethodMap[$orderMethod])) {
+            throw new \InvalidArgumentException('Unknown payment method: '.$orderMethod);
+        }
+
+        return $this->paymentMethodMap[$orderMethod];
+    }
+
+    /**
+     * Add order to sending stack
+     *
+     * @param Order $order
+     * @throws \InvalidArgumentException
+     */
+    public function putOrderForSend($order)
+    {
+        if (!$order instanceof Order) {
+            throw new \InvalidArgumentException('Cannot put order to logistis when its not order. Dafuk?');
+        }
+
+        // Jeigu ijungtas sendas ir mes vezam ir deliver tipas
+        if ($this->container->getParameter('logistics.send_to_external') == true
+            && $order->getDeliveryType() == 'deliver'
+            && $order->getPlacePointSelfDelivery() == false) {
+            $logisticsCityFilter = $this->container->getParameter('logistics.city_filter');
+            if (empty($logisticsCityFilter) || in_array($order->getPlacePointCity(), $logisticsCityFilter)) {
+                $this->container->get('food.order')->logOrder($order, 'schedule_logistics_api_send', 'Order scheduled to send to logistics');
+
+                $om = $this->container->get('doctrine')->getManager();
+                $orderToLogistics = new OrderToLogistics();
+
+                $orderToLogistics->setOrder($order)
+                    ->setDateAdded(new \DateTime("now"))
+                    ->setStatus('unsent');
+
+                $om->persist($orderToLogistics);
+                $om->flush();
+            }
+        }
+    }
+
+    /**
+     * Send Order to Logistics system
+     *
+     * @param string $url
+     * @param string $xml
+     * @return array
+     */
+    public function sendToLogistics($url, $xml)
+    {
+        $resp = $this->getCli()->post(
+            $url,
+            $xml
+        );
+
+        if ($resp->headers['Status-Code'] == 200) {
+            return array(
+                'status' => 'sent',
+                'error' => '',
+            );
+        } else {
+            return array(
+                'status' => 'error',
+                'error' => 'Status code: '.$resp->headers['Status-Code']."\n".'Error:'."\n".$resp->body,
+            );
+        }
+    }
+
+    /**
+     * Parse driver assignment in logistics
+     * @param string $xml
+     * @throws \InvalidArgumentException
+     * @return array
+     */
+    public function parseDriverAssignXml($xml)
+    {
+        if (empty($xml)) {
+            throw new \InvalidArgumentException('No xml given');
+        }
+
+        $driverData = array();
+
+        $dom = new \DOMDocument();
+        $dom->loadXML($xml);
+        $orderElements = $dom->getElementsByTagName('RouteAssigned');
+
+        // Kolkas tik vienas. Jei po kelis nores perduot - reiksapglebt gaubianciu tagu, kitaip nevalidu
+        foreach ($orderElements as $order)
+        {
+            $driverData[] = array(
+                'order_id' => $order->getElementsByTagName('Order_id')->item(0)->nodeValue,
+                'driver_id' => $order->getElementsByTagName('Driver_id')->item(0)->nodeValue,
+                'vehicle_no' => $order->getElementsByTagName('Vehicle_no')->item(0)->nodeValue,
+                'planned_delivery_time' => new \DateTime(
+                        $order->getElementsByTagName('Planned_delivery_time')->item(0)->nodeValue
+                    ),
+            );
+        }
+
+        return $driverData;
+    }
+
+    /**
+     * Parse Order status change in logistics
+     *
+     * @param string $xml
+     * @throws \InvalidArgumentException
+     * @return mixed
+     */
+    public function parseOrderStatusXml($xml)
+    {
+        if (empty($xml)) {
+            throw new \InvalidArgumentException('No xml given');
+        }
+
+        $statusData = array();
+
+        $dom = new \DOMDocument();
+        $dom->loadXML($xml);
+        $orderStatusElement = $dom->getElementsByTagName('ShipmentStatus');
+
+        // Vienas elementas. Jei po kelis nores perduot - reiksapglebt gaubianciu tagu, kitaip nevalidu
+        foreach ($orderStatusElement as $order)
+        {
+            $failReason = '';
+            $failElement = $order->getElementsByTagName('FailReason');
+
+            if (!empty($failElement)) {
+                $failReason = $failElement->item(0)->nodeValue;
+            }
+
+            $statusData[] = array(
+                'order_id' => $order->getElementsByTagName('Order_id')->item(0)->nodeValue,
+                'event_date' => new \DateTime(
+                        $order->getElementsByTagName('Event_Date')->item(0)->nodeValue
+                    ),
+                'status' => $order->getElementsByTagName('Status')->item(0)->nodeValue,
+                'fail_reason' => $failReason,
+            );
+        }
+
+        return $statusData;
     }
 
 
@@ -196,5 +532,33 @@ class LogisticsService extends ContainerAware
         $query = $queryBuilder->getQuery();
 
         return $query->getResult();
+    }
+
+    /**
+     * @param string $city
+     * @return string
+     */
+    public function convertCityForLogTime($city)
+    {
+        $majorCities = array(
+            'Viln' => 'Vilnius',
+            'Kaun' => 'Kaunas',
+            'Klaip' => 'Klaipėda',
+            'Rig' => 'Riga'
+        );
+
+        // All good, no need to worry
+        if (in_array($city, $majorCities)) {
+            return $city;
+        }
+
+        foreach($majorCities as $possiblePart => $cityName) {
+            if (strpos($city, $possiblePart) !== false) {
+                return $cityName;
+            }
+        }
+
+        // Sorry, could not help;
+        return $city;
     }
 }

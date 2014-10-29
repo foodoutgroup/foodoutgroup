@@ -60,10 +60,16 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             array('setDebugEnabled')
         );
 
+        $logger = $this->getMockBuilder('Monolog\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $unsentMessages = array();
 
+        $sendCommand = new SendCommand();
+        $sendCommand->setMaxChecks(1);
         $application = new Application();
-        $application->add(new SendCommand());
+        $application->add($sendCommand);
 
         /**
          * @var SendCommand $command
@@ -76,7 +82,12 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->with('food.messages')
             ->will($this->returnValue($messagingService));
 
-        $container->expects($this->at(2))
+        $container->expects($this->at(1))
+            ->method('get')
+            ->with('logger')
+            ->will($this->returnValue($logger));
+
+        $container->expects($this->at(3))
             ->method('get')
             ->with('food.infobip')
             ->will($this->returnValue($infobipProvider));
@@ -103,6 +114,9 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
         $messagingService->expects($this->never())
             ->method('saveMessage');
 
+        $logger->expects($this->once())
+            ->method('alert');
+
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             array('command' => $command->getName())
@@ -124,11 +138,16 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             '\Food\SmsBundle\Service\InfobipProvider',
             array('setDebugEnabled')
         );
+        $logger = $this->getMockBuilder('Monolog\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $unsentMessages = array();
 
+        $sendCommand = new SendCommand();
+        $sendCommand->setMaxChecks(1);
         $application = new Application();
-        $application->add(new SendCommand());
+        $application->add($sendCommand);
 
         /**
          * @var SendCommand $command
@@ -141,7 +160,12 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->with('food.messages')
             ->will($this->returnValue($messagingService));
 
-        $container->expects($this->at(2))
+        $container->expects($this->at(1))
+            ->method('get')
+            ->with('logger')
+            ->will($this->returnValue($logger));
+
+        $container->expects($this->at(3))
             ->method('get')
             ->with('food.infobip')
             ->will($this->returnValue($infobipProvider));
@@ -169,6 +193,9 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
         $messagingService->expects($this->never())
             ->method('saveMessage');
 
+        $logger->expects($this->once())
+            ->method('alert');
+
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             array('command' => $command->getName(), '--debug' => true)
@@ -191,6 +218,9 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             '\Food\SmsBundle\Service\InfobipProvider',
             array('setDebugEnabled')
         );
+        $logger = $this->getMockBuilder('Monolog\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $message = $this->getMockBuilder('\Food\SmsBundle\Entity\Message')
             ->disableOriginalConstructor()
@@ -198,8 +228,10 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $unsentMessages = array($message);
 
+        $sendCommand = new SendCommand();
+        $sendCommand->setMaxChecks(1);
         $application = new Application();
-        $application->add(new SendCommand());
+        $application->add($sendCommand);
 
         /**
          * @var SendCommand $command
@@ -212,7 +244,12 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->with('food.messages')
             ->will($this->returnValue($messagingService));
 
-        $container->expects($this->at(2))
+        $container->expects($this->at(1))
+            ->method('get')
+            ->with('logger')
+            ->will($this->returnValue($logger));
+
+        $container->expects($this->at(3))
             ->method('get')
             ->with('food.infobip')
             ->will($this->returnValue($infobipProvider));
@@ -245,6 +282,9 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->method('saveMessage')
             ->with($message);
 
+        $logger->expects($this->once())
+            ->method('alert');
+
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             array('command' => $command->getName())
@@ -268,6 +308,9 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             '\Food\SmsBundle\Service\InfobipProvider',
             array('setDebugEnabled')
         );
+        $logger = $this->getMockBuilder('Monolog\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $message = $this->getMockBuilder('\Food\SmsBundle\Entity\Message')
             ->disableOriginalConstructor()
@@ -275,8 +318,10 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $unsentMessages = array($message, $message);
 
+        $sendCommand = new SendCommand();
+        $sendCommand->setMaxChecks(1);
         $application = new Application();
-        $application->add(new SendCommand());
+        $application->add($sendCommand);
 
         /**
          * @var SendCommand $command
@@ -289,7 +334,12 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->with('food.messages')
             ->will($this->returnValue($messagingService));
 
-        $container->expects($this->at(2))
+        $container->expects($this->at(1))
+            ->method('get')
+            ->with('logger')
+            ->will($this->returnValue($logger));
+
+        $container->expects($this->at(3))
             ->method('get')
             ->with('food.infobip')
             ->will($this->returnValue($infobipProvider));
@@ -326,6 +376,9 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->method('saveMessage')
             ->with($message);
 
+        $logger->expects($this->once())
+            ->method('alert');
+
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             array('command' => $command->getName())
@@ -354,6 +407,9 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             '\Food\SmsBundle\Service\InfobipProvider',
             array('setDebugEnabled')
         );
+        $logger = $this->getMockBuilder('Monolog\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $message = $this->getMockBuilder('\Food\SmsBundle\Entity\Message')
             ->disableOriginalConstructor()
@@ -361,8 +417,10 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $unsentMessages = array($message);
 
+        $sendCommand = new SendCommand();
+        $sendCommand->setMaxChecks(1);
         $application = new Application();
-        $application->add(new SendCommand());
+        $application->add($sendCommand);
 
         /**
          * @var SendCommand $command
@@ -375,7 +433,12 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->with('food.messages')
             ->will($this->returnValue($messagingService));
 
-        $container->expects($this->at(2))
+        $container->expects($this->at(1))
+            ->method('get')
+            ->with('logger')
+            ->will($this->returnValue($logger));
+
+        $container->expects($this->at(3))
             ->method('get')
             ->with('food.infobip')
             ->will($this->returnValue($infobipProvider));
@@ -436,6 +499,9 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             '\Food\SmsBundle\Service\InfobipProvider',
             array('setDebugEnabled')
         );
+        $logger = $this->getMockBuilder('Monolog\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $message = $this->getMockBuilder('\Food\SmsBundle\Entity\Message')
             ->disableOriginalConstructor()
@@ -443,8 +509,10 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $unsentMessages = array($message);
 
+        $sendCommand = new SendCommand();
+        $sendCommand->setMaxChecks(1);
         $application = new Application();
-        $application->add(new SendCommand());
+        $application->add($sendCommand);
 
         /**
          * @var SendCommand $command
@@ -457,7 +525,12 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->with('food.messages')
             ->will($this->returnValue($messagingService));
 
-        $container->expects($this->at(2))
+        $container->expects($this->at(1))
+            ->method('get')
+            ->with('logger')
+            ->will($this->returnValue($logger));
+
+        $container->expects($this->at(3))
             ->method('get')
             ->with('food.infobip')
             ->will($this->returnValue($infobipProvider));

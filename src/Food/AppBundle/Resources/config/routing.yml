@@ -26,6 +26,10 @@ food_test_invoice:
     pattern:  /test/invoice
     defaults: { _controller: FoodAppBundle:Test:invoice }
 
+food_nav_test1:
+    pattern: /test/nav/test1
+    defaults: { _controller: FoodAppBundle:Test:nav1 }
+
 
 food_review_create:
     pattern: /place/review/{id}
@@ -37,7 +41,7 @@ food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto|monitoring|nagios|banned|order).+"
+        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto|monitoring|nagios|banned|logistics|order).+"
 
 food_order_nav_test1:
     pattern: /order/nav_test1

@@ -76,7 +76,7 @@ class Response
      */
     public function dc_reference()
     {
-        $dc_ref = $this->xpath_first($this->dom(),
+        $dc_ref = $this->xpath_last($this->dom(),
                                      static::QUERY_HPS_DC_REFERENCE_XPATH);
         return $dc_ref;
     }
@@ -102,8 +102,8 @@ class Response
      */
     protected function dc_response()
     {
-        $dc_response = $this->xpath_first($this->dom(),
-                                          static::HPS_STATUS_XPATH);
+        $dc_response = $this->xpath_last($this->dom(),
+                                         static::HPS_STATUS_XPATH);
         return $dc_response;
     }
 
@@ -112,7 +112,7 @@ class Response
      */
     protected function dc_attempt_reference()
     {
-        $a_ref = $this->xpath_first($this->dom(),
+        $a_ref = $this->xpath_last($this->dom(),
                                     static::HPS_AUTH_ATTEMPT_DC_RESPONSE_XPATH);
         return $a_ref;
     }

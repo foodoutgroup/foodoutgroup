@@ -151,7 +151,11 @@
                             <div class="form-row">
                                 <div class="alert alert-warning">
                                     {% for err in formErrors %}
-                                        <li>{{ err|trans|raw }}</li>
+                                        {% if err is iterable %}
+                                            <li>{{ err.message|trans({'%text%': err.text})|raw }}</li>
+                                        {% else %}
+                                            <li>{{ err|trans|raw }}</li>
+                                        {% endif %}
                                     {% endfor %}
                                 </div>
                             </div>
@@ -177,9 +181,9 @@
                                 <div class="form-row form-row-required address-change">
                                     <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
                                     <select class="custom-select" disabled="true">
-                                        <option {% if location and location.city is defined and location.city == 'Vilnius' %}#}selected{% endif %}>Vilnius</option>
-                                        <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
-                                        <option {% if location and location.city is defined and location.city == 'Klaipėda' %}selected{% endif %}>Klaipėda</option>
+                                        <option {% if location and location.city is defined and location.city == 'Vilnius' %}#}selected{% endif %} value="Vilnius">Vilnius</option>
+                                        <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %} value="Kaunas">Kaunas</option>
+                                        <option {% if location and location.city is defined and (location.city == 'Klaipėda' or location.city == 'Klaipeda') %}selected{% endif %} value="Klaipėda">Klaipėda</option>
                                     </select>
                                 </div>
                                 <div class="form-row form-row-required address-change">
@@ -198,7 +202,9 @@
                                     <label>{% trans %}cart.checkout.place_point{% endtrans %}:</label>
                                     <select class="custom-select" name="place_point">
                                         {% for point in place.points %}
-                                        <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}</option>
+                                            {% if point.active and point.public and point.pickUp %}
+                                                <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}</option>
+                                            {% endif %}
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -257,12 +263,28 @@
 
                             {% if not place.disabledOnlinePayment %}
                             {# TODO kolkas viskas rodo i Paysera#}
+                            <div class="select-payment clearfix">
+                                <label class="custom-radio">
+                                    <img src="/bundles/foodapp/images/nordea-small.png">
+                                    <input type="radio" name="payment-type" value="nordea-banklink"/>
+                                </label>
+                            </div>
+                            <div class="select-payment clearfix">
+                                <label class="custom-radio wider-radio">
+                                    {{ 'cart.checkout.gateway_cc'|trans }}:
+                                    <img src="/bundles/foodapp/images/master-card-small.png">
+                                    <img src="/bundles/foodapp/images/visa-small.png">
+                                    <img src="/bundles/foodapp/images/maestro-small.png">
+                                    <img src="/bundles/foodapp/images/visa-electron-small.png">
+                                    <input type="radio" name="payment-type" value="swedbank-credit-card-gateway"/>
+                                </label>
+                            </div>
                             <div class="select-bank clearfix">
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-sb.png">
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-seb.png">
-                                    <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                    <input type="radio" name="payment-type" value="seb-banklink"/>
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-db.png">
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
@@ -271,19 +293,11 @@
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-swb.png">
-                                    <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                    <input type="radio" name="payment-type" value="swedbank-gateway"/>
                                 </label>
                                 <label class="custom-radio"><img src="/bundles/foodapp/images/bank-dnb.png">
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
-                                {% if app.request.server.get("REMOTE_ADDR") in ['84.240.14.80', '127.0.0.1', '::1', '88.119.87.158', '178.236.207.146', '78.56.64.71', '213.159.53.74'] %}
-                                <label class="custom-radio"><img src="/bundles/foodapp/images/bank-swb.png">
-                                    <input type="radio" name="payment-type" value="swedbank-gateway"{% if order is not null and order.paymentMethod == 'swedbank-gateway' %} checked="checked"{% endif %}>
-                                </label>
-                                <label class="custom-radio"><img src="/bundles/foodapp/images/bank-swb.png">
-                                    <input type="radio" name="payment-type" value="swedbank-credit-card-gateway"{% if order is not null and order.paymentMethod == 'swedbank-credit-card-gateway' %} checked="checked"{% endif %}>
-                                </label>
-                                {% endif %}
                             </div>
                             {% endif %}
                         </div>

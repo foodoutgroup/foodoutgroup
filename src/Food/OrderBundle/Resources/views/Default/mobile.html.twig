@@ -65,7 +65,7 @@
                 {% else %}
                     {% trans %}mobile.order.sum{% endtrans %}
                     {% endif %}:
-                </b> {{ order.total }} {{ currency_display }}
+                </b> {{ order.total }} {{ currency_display }} / &euro; {{ misc_utils.euro(order.total) }}
             </td>
         </tr>
         <tr>

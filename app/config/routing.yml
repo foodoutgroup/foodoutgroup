@@ -85,6 +85,14 @@ banned:
     path: /banned/
     defaults: { _controller: FoodAppBundle:Default:banned}
 
+logistics_order_status:
+    path: /logistics/status-update/
+    defaults: { _controller: FoodOrderBundle:Logistics:orderStatus}
+
+logistics_driver_assign:
+    path: /logistics/driver-assign/
+    defaults: { _controller: FoodOrderBundle:Logistics:driverAssign}
+
 ordermobile:
     path: /o/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~, action: ~ }
@@ -121,37 +129,25 @@ paysera_callback:
     path: /payments/paysera/callback
     defaults: { _controller: FoodOrderBundle:Payments:payseraCallback}
 
-# Swedbank gateway banklink
-swedbank_gateway_redirect:
-    pattern: /payments/swedbank/gateway/redirect/{id}/{locale}
-    defaults: { _controller: FoodOrderBundle:Payments:swedbankGatewayRedirect, id: ~, locale: ~ }
-    requirements:
-        _method: GET
-        id: "[0-9]+"
+# Swedbank banklink banklink
+swedbank_banklink_gateway:
+    resource: "@FoodOrderBundle/Resources/config/swedbank_banklink_gateway_routing.yml"
+    prefix: /payments/swedbank/gateway
 
-swedbank_gateway_success:
-    pattern: /payments/swedbank/gateway/success
-    defaults: { _controller: FoodOrderBundle:Payments:swedbankGatewaySuccess }
+# Swedbank credit card gateway
+swedbank_credit_card_gateway:
+    resource: "@FoodOrderBundle/Resources/config/swedbank_credit_card_gateway_routing.yml"
+    prefix: /payments/swedbank/ccgateway
 
-swedbank_gateway_failure:
-    pattern: /payments/swedbank/gateway/failure
-    defaults: { _controller: FoodOrderBundle:Payments:swedbankGatewayFailure }
+# SEB banklink
+seb_banklink:
+    resource: "@FoodOrderBundle/Resources/config/seb_routing.yml"
+    prefix: /payments/seb/banklink
 
-# Swedbank credit card gateway banklink
-swedbank_credit_card_gateway_redirect:
-    pattern: /payments/swedbank/ccgateway/redirect/{id}
-    defaults: { _controller: FoodOrderBundle:Payments:swedbankCreditCardGatewayRedirect, id: ~ }
-    requirements:
-        _method: GET
-        id: "[0-9]+"
-
-swedbank_credit_card_gateway_success:
-    pattern: /payments/swedbank/ccgateway/success
-    defaults: { _controller: FoodOrderBundle:Payments:swedbankCreditCardGatewaySuccess }
-
-swedbank_credit_card_gateway_failure:
-    pattern: /payments/swedbank/ccgateway/failure
-    defaults: { _controller: FoodOrderBundle:Payments:swedbankCreditCardGatewayFailure }
+# NORDEA banklink
+nordea_banklink:
+    resource: "@FoodOrderBundle/Resources/config/nordea_routing.yml"
+    prefix: /payments/nordea/banklink
 
 # other
 food_sitemap:

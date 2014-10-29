@@ -61,6 +61,16 @@
     </script>
     <script src="{{ asset('bundles/foodapp/scripts/noty/packaged/jquery.noty.packaged.min.js') }}"></script>
     <script src="{{ asset('bundles/foodapp/scripts/bootstrap/js/bootstrap.min.js') }}"></script>
+
+        {% javascripts '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.pack.js'
+        '@FoodAppBundle/Resources/public/scripts/fancy/helpers/jquery.fancybox-media.js' %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+        {% stylesheets '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+        {% endstylesheets %}
+
     {% endblock %}
 </head>
 <body>
@@ -79,6 +89,19 @@
     </div>
 
     {% block body %}{% endblock %}
+    <div class="site-center site-center-bottom">
+    <div class="site-block">
+        <div class="clearfix bottom-blocks">
+            <div class="app-block clearfix"><img src="{{ asset('bundles/foodapp/images/app-view.png') }}">
+                <div class="app-block-inner">
+                    <h3>Foodout.lt tavo kišenėje!</h3>
+                    <p>Užsisakyk maisto į namus ar biurą per iPhone arba Android telefonus. Atsisiųsk nemokamą aplikaciją!.</p>
+                    <div><a target="_BLANK" href="https://itunes.apple.com/us/app/foodout/id919992168"><img src="{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a target="_BLANK" href="https://play.google.com/store/apps/details?id=co.lemonlabs.android.foodout#"><img src="{{ asset('bundles/foodapp/images/g-store.png') }}"></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 
     {{ render(controller('FoodAppBundle:Default:footer')) }}
 </div>
@@ -98,9 +121,13 @@
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
     ga('create', 'UA-50355577-1', 'foodout.lt');
+    ga('require', 'displayfeatures');
     ga('send', 'pageview');
 
     {% block ga_js_code %}{% endblock %}
+
+
+    {% render(controller('FoodAppBundle:Default:showVideo')) %}
 </script>
 </body>
 </html>

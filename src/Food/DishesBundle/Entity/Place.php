@@ -74,6 +74,13 @@ class Place extends Uploadable implements Translatable
     private $alcoholRules = null;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="only_alcohol", type="boolean")
+     */
+    private $onlyAlcohol = false;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="logo", type="string", length=255)
@@ -202,6 +209,13 @@ class Place extends Uploadable implements Translatable
     private $deliveryOptions;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="priority", type="smallint", options={"default":0})
+     */
+    private $priority;
+
+    /**
      * @ORM\OneToMany(targetEntity="FoodCategory", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
      *
      * @var ArrayCollection
@@ -311,6 +325,7 @@ class Place extends Uploadable implements Translatable
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->photos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->deliveryOptions = self::OPT_DELIVERY_AND_PICKUP;
+        $this->priority = 0;
     }
 
     /**
@@ -1373,5 +1388,51 @@ class Place extends Uploadable implements Translatable
     public function getNavision()
     {
         return $this->navision;
+    }
+
+    /**
+     * Set priority
+     *
+     * @param integer $priority
+     * @return Place
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
+    
+        return $this;
+    }
+
+    /**
+     * Get priority
+     *
+     * @return integer 
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * Set onlyAlcohol
+     *
+     * @param boolean $onlyAlcohol
+     * @return Place
+     */
+    public function setOnlyAlcohol($onlyAlcohol)
+    {
+        $this->onlyAlcohol = $onlyAlcohol;
+    
+        return $this;
+    }
+
+    /**
+     * Get onlyAlcohol
+     *
+     * @return boolean 
+     */
+    public function getOnlyAlcohol()
+    {
+        return $this->onlyAlcohol;
     }
 }

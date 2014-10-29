@@ -410,7 +410,7 @@ class InfobipProvider implements SmsProviderInterface {
         $jsonError = json_last_error();
         if ($jsonError != JSON_ERROR_NONE) {
             $this->log('-- HTTP Error: We have got an error while decoding response from Curl lib: '.$jsonError);
-            new \InvalidArgumentException('HTTP Error: We have got an error while decoding response from Curl lib: '.$jsonError);
+            throw new \InvalidArgumentException('HTTP Error: We have got an error while decoding response from Curl lib: '.$jsonError);
         }
 
         return (float)$balance;

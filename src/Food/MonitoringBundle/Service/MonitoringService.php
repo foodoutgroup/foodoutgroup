@@ -51,6 +51,7 @@ class MonitoringService extends ContainerAware {
             ->andWhere('o.paymentStatus = :payment_status')
             ->andWhere('o.order_date >= :from_date')
             ->andWhere('o.order_date <= :to_date')
+            ->andWhere('o.order_date < :max_delivery_date')
             ->orderBy('o.order_date', 'ASC')
             ->setParameters(
                 [
@@ -62,7 +63,8 @@ class MonitoringService extends ContainerAware {
                     ),
                     'payment_status' => OrderService::$paymentStatusComplete,
                     'from_date' => $from,
-                    'to_date' => $to
+                    'to_date' => $to,
+                    'max_delivery_date' => new \DateTime('-4 hour')
                 ]
             )
             ->getQuery();
@@ -104,5 +106,98 @@ class MonitoringService extends ContainerAware {
         }
 
         return $orders;
+    }
+
+    /**
+     * @return Order[]|array
+     */
+    public function getUnassignedOrders()
+    {
+        $repository = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order');
+
+        $query = $repository->createQueryBuilder('o')
+            ->where('o.order_status IN (:order_status)')
+            ->andWhere('o.paymentStatus = :payment_status')
+            ->andWhere('o.deliveryTime <= :date')
+            ->andWhere('o.deliveryTime > :oldest_date')
+            ->andWhere('o.place_point_self_delivery != 1')
+            ->andWhere('o.deliveryType != :delivery_type')
+            ->orderBy('o.order_date', 'ASC')
+            ->setParameters(
+                [
+                    'order_status' => array(
+                        OrderService::$status_accepted,
+                        OrderService::$status_delayed,
+                        OrderService::$status_forwarded,
+                    ),
+                    'payment_status' => OrderService::$paymentStatusComplete,
+                    'date' => new \DateTime("+25 minute"),
+                    'oldest_date' => new \DateTime("-1 day"),
+                    'delivery_type' => OrderService::$deliveryPickup,
+                ]
+            )
+            ->getQuery();
+
+        $orders = $query->getResult();
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLogisticsSyncProblems()
+    {
+        $return = array(
+            'unsent' => 0,
+            'error' =>
+                array(
+                    'count' => 0,
+                    'lastError' => '',
+                )
+        );
+
+        $dateStart = new \DateTime("-4 minute");
+        $dateEnd = new \DateTime("-1 day");
+
+        $dateStart = $dateStart->format("Y-m-d H:i:s");
+        $dateEnd = $dateEnd->format("Y-m-d H:i:s");
+
+        $query = "SELECT
+          SUM(IF (status = 'unsent', 1, 0)) AS unsent,
+          SUM(IF (status = 'error', 1, 0)) AS error,
+          MAX(last_error) AS last_error
+        FROM orders_to_logistics
+        WHERE
+          status IN ('unsent', 'error')
+          AND date_added <= '{$dateStart}'
+          AND date_added > '{$dateEnd}'
+        ORDER BY
+          last_error DESC
+        ";
+
+        /**
+         * @var \Doctrine\DBAL\Driver\Statement $stmt
+         */
+        $stmt = $this->container->get('doctrine')->getManager()->getConnection()
+            ->prepare($query);
+
+        $stmt->execute();
+
+        $problems = $stmt->fetch();
+        if (!$problems) {
+            return $return;
+        }
+
+        $return['unsent'] = (int)$problems['unsent'];
+        $return['error']['count'] = (int)$problems['error'];
+        if ($problems['error'] > 0) {
+            $return['error']['lastError'] = $problems['last_error'];
+        }
+
+        return $return;
     }
 }

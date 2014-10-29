@@ -46,7 +46,12 @@
             }
 
             $('#index_submit').click(function(e){
-                getCrds();
+                if ($('#index_city').val() !="" && $('#index_city').val() != null && $('#index_address').val()=="") {
+                    var url = '{{ path('food_places_lt_main') }}' + $('#index_city').val();
+                    window.location.href = url;
+                } else {
+                    getCrds();
+                }
                 e.stopPropagation();
                 e.preventDefault();
             });
@@ -85,7 +90,7 @@
                         <option value="" disabled {% if formDefaults.city == '' %}selected{% endif %}>{% trans %}index.city{% endtrans %}</option>
                         <option value="Vilnius" {% if formDefaults.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
                         <option value="Kaunas" {% if formDefaults.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
-                        <option value="Klaipėda" {% if formDefaults.city == 'Klaipėda' %}selected{% endif %}>Klaipėda</option>
+                        <option value="Klaipėda" {% if formDefaults.city == 'Klaipėda' or formDefaults.city == 'Klaipeda' %}selected{% endif %}>Klaipėda</option>
                     </select>
 
                     {# <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}"  autocomplete="off" > #}
@@ -148,8 +153,6 @@
         {#</div>#}
 
         {{ render(controller('FoodPlacesBundle:Default:recommended')) }}
-
-        {% include 'FoodAppBundle:Default:bottom_block.html.twig' %}
 
         </div>
     </div>

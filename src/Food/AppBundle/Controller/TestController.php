@@ -125,6 +125,36 @@ class TestController extends Controller
         );
     }
 
+    public function nav1Action()
+    {
+        $navs = $this->get('food.nav');
+        $client = $navs->getWSConnection();
+        $return = $client->FoodOutUpdatePrices(array('pInt' =>2000002044));
+
+        die('E');
+        $cs = $this->get('food.cart');
+        $place = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->find(63);
+        $pp = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find(82);
+        $cds = $cs->getCartDishes($place);
+
+        $navs = $this->get('food.nav');
+
+        $navs->validateCartInNav(
+            '8615644121',
+            $pp,
+            date('Y.m.d'),
+            date('23:i:s'),
+            OrderService::$deliveryDeliver,
+            $cds
+        );
+
+        //$ss = $navs->initSqlConn();
+        //$querys=$ss->query("SELECT TOP 10 * FROM ".$navs->getMessagesTable());
+        //var_dump($ss->fetchArray($querys));
+        //die('E');
+        return new Response("\n\n<br><br>THIS IS THE END");
+    }
+
     public function invoiceAction()
     {
         $order = $this->get('food.order')->getOrderById(243);

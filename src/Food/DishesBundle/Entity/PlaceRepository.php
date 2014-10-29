@@ -72,6 +72,8 @@ class PlaceRepository extends EntityRepository
             $city = (!empty($locationData['city']) ? $locationData['city'] : null);
             $lat = str_replace(",", ".", $locationData['lat']);
             $lon = str_replace(",", ".", $locationData['lng']);
+        } elseif (!empty($locationData) && !empty($locationData['city']) && isset($locationData['city_only']) && $locationData['city_only'] === true) {
+            $city = $locationData['city'];
         }
 
         $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id
@@ -103,6 +105,13 @@ class PlaceRepository extends EntityRepository
             }
         }
 
+        $otherFilters = '';
+        // 21:30 isjungiame alkoholiku rodyma :)
+        $hour = date("H");
+        if ($hour > '21' || ($hour == '21' && date('i') > '30')) {
+            $otherFilters .= ' AND p.only_alcohol != 1';
+        }
+
         if ($recommended) {
             if (!empty($kitchensQuery)) {
                 $kitchensQuery.= "AND recommended=1";
@@ -110,13 +119,18 @@ class PlaceRepository extends EntityRepository
                 $kitchensQuery.= " recommended=1";
             }
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL ".$placeFilter." AND ".$kitchensQuery." GROUP BY p.id";
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count, p.priority FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL ".$placeFilter.$otherFilters." AND ".$kitchensQuery." GROUP BY p.id ORDER BY p.priority DESC, RAND()";
         } elseif ($lat == null || $lon == null) {
-            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL ".$placeFilter.$kitchensQuery." GROUP BY p.id";
+            if ($city == null) {
+                $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
+                $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count, p.priority FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL ".$placeFilter.$otherFilters.$kitchensQuery." GROUP BY p.id";
+            } else {
+                $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city='".$city."' AND ppc.place = p.id";
+                $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count, p.priority FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL AND pp.city='".$city."' ".$placeFilter.$otherFilters.$kitchensQuery." GROUP BY p.id";
+            }
         } else {
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city='".$city."' AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL AND pp.city='".$city."' ".$placeFilter." AND pp.id =  (". $subQuery .") ".$kitchensQuery;
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count, p.priority FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.deleted_at IS NULL AND pp.city='".$city."' ".$placeFilter.$otherFilters." AND pp.id =  (". $subQuery .") ".$kitchensQuery." ORDER BY p.priority DESC, RAND()";
         }
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
@@ -169,7 +183,22 @@ class PlaceRepository extends EntityRepository
      */
     public function getRecommendedForTitle()
     {
-        $query = "SELECT p.id FROM place p WHERE p.active = 1 AND p.recommended = 1 AND p.deleted_at IS NULL ORDER BY RAND() LIMIT 5";
+        $otherFilters = '';
+        // 21:30 isjungiame alkoholiku rodyma :)
+        $hour = date("H");
+        if ($hour > '21' || ($hour == '21' && date('i') > '30')) {
+            $otherFilters .= ' AND p.only_alcohol != 1';
+        }
+
+        $query = "SELECT p.id
+                FROM place p
+                WHERE
+                    p.active = 1
+                    AND p.recommended = 1
+                    AND p.deleted_at IS NULL
+                    {$otherFilters}
+                ORDER BY RAND()
+                LIMIT 5";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $placesIds = $stmt->fetchAll();

@@ -9,7 +9,6 @@
             }
         });
 
-
         $('.newsletter-form').bind('submit', function(){
             function isEmailAddress(str) {
                 if (typeof str == "undefined") {
@@ -34,7 +33,7 @@
         });
     });
 </script>
-<div class="clearfix bottom-blocks newsletter-wide">
+<div class="site-block clearfix footer-top">
     <div class="newsletter-block">
         <div class="newsletter-block-inner clearfix">
         <h4>{% trans %}index.newsletter{% endtrans %}</h4>
@@ -44,4 +43,8 @@
             </form>
         </div>
     </div>
+    <ul class="menu pros-list">
+        <li>{% trans %}index.get_best_offers{% endtrans %}</li>
+        <li>{% trans %}index.get_best_offers2{% endtrans %}</li>
+    </ul>
 </div>

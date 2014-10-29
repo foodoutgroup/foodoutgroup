@@ -51,7 +51,7 @@
                     <td>{{ order.id }}</td>
                     <td>{{ order.orderDate|date("H:i") }}</td>
                     <td>{{ order.placeName }}</td>
-                    <td>{{ order.placePointAddress }}</td>
+                    <td>{{ order.placePointAddress }}, {{ order.placePointCity }}</td>
                     <td>
                         {% if order.driverSafe is defined and order.driverSafe is not empty %}
                             {{ order.driverSafe.name }}{% if order.driverSafe.phone %}, {{ order.driverSafe.phone }}{% endif %}{% if order.driverSafe.provider %}, {{ order.driverSafe.provider }}{% endif %}
@@ -70,7 +70,7 @@
                     <td class="sum">{{ order.total }}</td>
                 </tr>
                 {% set totalSum = totalSum + order.total %}
-                {% if order.paymentMethod == 'paysera' %}
+                {% if order.paymentMethod != 'local' and order.paymentMethod != 'local.card' %}
                     {% set totalSumBanklink = totalSumBanklink + order.total %}
                 {% else %}
                     {% set totalSumDriver = totalSumDriver + order.total %}
@@ -113,7 +113,7 @@
                     <td>{{ order.id }}</td>
                     <td>{{ order.orderDate|date("H:i") }}</td>
                     <td>{{ order.placeName }}</td>
-                    <td>{{ order.placePointAddress }}</td>
+                    <td>{{ order.placePointAddress }}, {{ order.placePointCity }}</td>
                     <td>{{ ('general.email.accounting_report.' ~ order.paymentMethod)|trans() }}</td>
                     <td>{{ order.couponCode }}</td>
                     <td>{{ order.discountSize }}</td>
@@ -125,7 +125,7 @@
                     <td class="sum">{{ order.total }}</td>
                 </tr>
                 {% set totalSum = totalSum + order.total %}
-                {% if order.paymentMethod == 'paysera' %}
+                {% if order.paymentMethod != 'local' and order.paymentMethod != 'local.card' %}
                     {% set totalSumBanklink = totalSumBanklink + order.total %}
                 {% else %}
                     {% set totalSumDriver = totalSumDriver + order.total %}
@@ -166,7 +166,7 @@
                     <td>{{ order.id }}</td>
                     <td>{{ order.orderDate|date("H:i") }}</td>
                     <td>{{ order.placeName }}</td>
-                    <td>{{ order.placePointAddress }}</td>
+                    <td>{{ order.placePointAddress }}, {{ order.placePointCity }}</td>
                     <td>{{ ('mobile.payment.' ~ order.paymentMethod)|trans() }}</td>
                     <td>{{ order.couponCode }}</td>
                     <td>{{ order.discountSize }}</td>
@@ -176,7 +176,7 @@
                     <td class="sum">{{ order.total }}</td>
                 </tr>
                 {% set totalSum = totalSum + order.total %}
-                {% if order.paymentMethod == 'paysera' %}
+                {% if order.paymentMethod != 'local' and order.paymentMethod != 'local.card' %}
                     {% set totalSumBanklink = totalSumBanklink + order.total %}
                 {% else %}
                     {% set totalSumDriver = totalSumDriver + order.total %}

@@ -3,7 +3,9 @@
 namespace Food\OrderBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\QueryBuilder;
 use Food\CartBundle\Service\CartService;
+use Food\DishesBundle\Entity\Dish;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Coupon;
@@ -17,6 +19,7 @@ use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
 
 class OrderService extends ContainerAware
@@ -43,6 +46,7 @@ class OrderService extends ContainerAware
     public static $status_finished = "finished";
     public static $status_canceled = "canceled";
 
+    public static $status_pre = "pre";
     public static $status_nav_problems = "nav_problems";
 
     // TODO o gal sita mapa i configa? What do You think?
@@ -51,7 +55,9 @@ class OrderService extends ContainerAware
         'local.card' => 'food.local_biller',
         'paysera' => 'food.paysera_biller',
         'swedbank-gateway' => 'food.swedbank_gateway_biller',
-        'swedbank-credit-card-gateway' => 'food.swedbank_credit_card_gateway_biller'
+        'swedbank-credit-card-gateway' => 'food.swedbank_credit_card_gateway_biller',
+        'seb-banklink' => 'food.seb_banklink_biller',
+        'nordea-banklink' => 'food.nordea_banklink_biller'
     );
 
     public static $deliveryTrans = array(
@@ -349,6 +355,10 @@ class OrderService extends ContainerAware
 
             // Notify Dispatchers
             $this->notifyOrderAccept();
+
+            // Put for logistics
+            $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
+
             // Kitais atvejais tik keiciam statusa, nes gal taip reikia
         } else {
             $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
@@ -516,11 +526,13 @@ class OrderService extends ContainerAware
             // TODO upload accounting
         }
         $ml = $this->container->get('food.mailer');
+        $slugUtil = $this->container->get('food.dishes.utils.slug');
+        $slugUtil->setLocale($this->getOrder()->getLocale());
 
         $variables = array(
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
             'miestas' => $this->getOrder()->getPlacePoint()->getCity(),
-            'maisto_review_url' => 'http://www.foodout.lt/lt/'.$this->container->get('food.dishes.utils.slug')->getSlugByItem(
+            'maisto_review_url' => 'http://www.foodout.lt/lt/'.$slugUtil->getSlugByItem(
                     $this->getOrder()->getPlace()->getId(),
                     'place'
             ).'/#detailed-restaurant-review'
@@ -573,6 +585,9 @@ class OrderService extends ContainerAware
             }
         }
 
+        // Put for logistics to cancel on their side
+        $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
+
         $this->chageOrderStatus(self::$status_canceled, $source, $statusMessage);
         return $this;
     }
@@ -586,6 +601,9 @@ class OrderService extends ContainerAware
     public function statusDelayed($source=null, $statusMessage=null)
     {
         $this->chageOrderStatus(self::$status_delayed, $source, $statusMessage);
+
+        // Inform logistics
+        $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
         return $this;
     }
 
@@ -791,7 +809,7 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param null $localBiller
+     * @param null|LocalBiller $localBiller
      */
     public function setLocalBiller($localBiller)
     {
@@ -810,7 +828,7 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param null $payseraBiller
+     * @param null|PaySera $payseraBiller
      */
     public function setPayseraBiller($payseraBiller)
     {
@@ -952,7 +970,12 @@ class OrderService extends ContainerAware
     public function setPaymentStatus($status, $message=null)
     {
         $order = $this->getOrder();
+        $this->setPaymentStatusWithoutSave($order, $status, $message);
+        $this->saveOrder();
+    }
 
+    public function setPaymentStatusWithoutSave($order, $status, $message = null)
+    {
         if (!$this->isAllowedPaymentStatus($status)) {
             throw new \InvalidArgumentException('Status: "'.$status.'" is not a valid order payment status');
         }
@@ -968,13 +991,14 @@ class OrderService extends ContainerAware
             $order->setLastPaymentError($message);
         }
 
-        $this->logPayment(
+        $this->logPaymentWithoutSave(
             $order,
             'payement status change',
-            sprintf('Status changed from "%s" to "%s" with message %s', $oldStatus, $status, $message)
+            sprintf('Status changed from "%s" to "%s" with message %s',
+                    $oldStatus,
+                    $status,
+                    $message)
         );
-
-        $this->saveOrder();
     }
 
     /**
@@ -1043,6 +1067,7 @@ class OrderService extends ContainerAware
             self::$status_assiged => 4,
             self::$status_completed => 5,
             self::$status_canceled => 5,
+            self::$status_failed => 5,
         );
 
         if (empty($from) && !empty($to)) {
@@ -1154,7 +1179,12 @@ class OrderService extends ContainerAware
             $order = $this->getOrder();
         }
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $token = $this->container->get('security.context')->getToken();
+        if ($token instanceof TokenInterface) {
+            $user = $token->getUser();
+        } else {
+            $user = 'anon.';
+        }
 
         if ($user == 'anon.') {
             $user = null;
@@ -1190,6 +1220,12 @@ class OrderService extends ContainerAware
      */
     public function logPayment($order=null, $event, $message=null, $debugData=null)
     {
+        $this->logPaymentWithoutSave($order, $event, $message, $debugData);
+        $this->getEm()->flush();
+    }
+
+    public function logPaymentWithoutSave($order=null, $event, $message=null, $debugData=null)
+    {
         $log = new PaymentLog();
 
         if (empty($order) && !($order instanceof Order)) {
@@ -1221,7 +1257,6 @@ class OrderService extends ContainerAware
         $log->setDebugData($debugData);
 
         $this->getEm()->persist($log);
-        $this->getEm()->flush();
     }
 
     public function getOrdersForDriver($driver)
@@ -1247,6 +1282,10 @@ class OrderService extends ContainerAware
      */
     public function informPlace($isReminder=false)
     {
+        $order = $this->getOrder();
+        if ($order->getOrderStatus()== OrderService::$status_pre) {
+            return;
+        }
         if (!$isReminder) {
             $this->notifyOrderCreate();
         }
@@ -1257,7 +1296,6 @@ class OrderService extends ContainerAware
         $miscUtils = $this->container->get('food.app.utils.misc');
         $country = $this->container->getParameter('country');
 
-        $order = $this->getOrder();
         $placePoint = $order->getPlacePoint();
         $placePointEmail = $placePoint->getEmail();
         $placePointAltEmail1 = $placePoint->getAltEmail1();
@@ -1356,6 +1394,92 @@ class OrderService extends ContainerAware
         }
     }
 
+    public function informPlaceCancelAction()
+    {
+        $messagingService = $this->container->get('food.messages');
+        $translator = $this->container->get('translator');
+        $logger = $this->container->get('logger');
+        $miscUtils = $this->container->get('food.app.utils.misc');
+        $country = $this->container->getParameter('country');
+
+        $order = $this->getOrder();
+        $placePoint = $order->getPlacePoint();
+        $placePointEmail = $placePoint->getEmail();
+        $placePointAltEmail1 = $placePoint->getAltEmail1();
+        $placePointAltEmail2 = $placePoint->getAltEmail2();
+        $placePointAltPhone1 = $placePoint->getAltPhone1();
+        $placePointAltPhone2 = $placePoint->getAltPhone2();
+
+        $domain = $this->container->getParameter('domain');
+
+        $orderConfirmRoute = $this->container->get('router')
+            ->generate('ordermobile', array('hash' => $order->getOrderHash()), true);
+
+        $orderSmsTextTranslation = $translator->trans('general.sms.canceled_order', array('%order_number%' => $order->getId()));
+        $orderTextTranslation = $translator->trans('general.email.canceled_order');
+
+        $messageText = $orderSmsTextTranslation
+            .$orderConfirmRoute;
+
+        // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
+        if (!empty($placePointEmail)) {
+            $logger->alert('--- Place asks for email, so we have sent an email about canceled order to: '.$placePointEmail);
+            $emailMessageText = $messageText;
+            $emailMessageText .= "\n" . $orderTextTranslation . ': '
+                . $order->getPlacePoint()->getAddress() . ', ' . $order->getPlacePoint()->getCity();
+            $mailer = $this->container->get('mailer');
+
+            $message = \Swift_Message::newInstance()
+                ->setSubject($this->container->getParameter('title').': '.$translator->trans('general.sms.new_order'))
+                ->setFrom('info@'.$domain)
+            ;
+
+            $message->addTo($placePointEmail);
+
+            if (!empty($placePointAltEmail1)) {
+                $message->addCc($placePointAltEmail1);
+            }
+            if (!empty($placePointAltEmail2)) {
+                $message->addCc($placePointAltEmail2);
+            }
+
+            $message->setBody($emailMessageText);
+            $mailer->send($message);
+        }
+
+        if (!$order->getPlace()->getNavision()) {
+            // Siunciam sms'a
+            $logger->alert("Sending message for order to be accepted to number: ".$placePoint->getPhone().' with text "'.$messageText.'"');
+            $smsSenderNumber = $this->container->getParameter('sms.sender');
+
+            $messagesToSend = array(
+                array(
+                    'sender' => $smsSenderNumber,
+                    'recipient' => $placePoint->getPhone(),
+                    'text' => $messageText
+                )
+            );
+
+            if (!empty($placePointAltPhone1) && $miscUtils->isMobilePhone($placePointAltPhone1, $country)) {
+                $messagesToSend[] = array(
+                    'sender' => $smsSenderNumber,
+                    'recipient' => $placePointAltPhone1,
+                    'text' => $messageText
+                );
+            }
+            if (!empty($placePointAltPhone2) && $miscUtils->isMobilePhone($placePointAltPhone2, $country)) {
+                $messagesToSend[] = array(
+                    'sender' => $smsSenderNumber,
+                    'recipient' => $placePointAltPhone2,
+                    'text' => $messageText
+                );
+            }
+
+            //send multiple messages
+            $messagingService->addMultipleMessagesToSend($messagesToSend);
+        }
+    }
+
     /**
      * For debuging purpose only!
      */
@@ -1379,6 +1503,9 @@ class OrderService extends ContainerAware
             }
 
             $nav->putTheOrderToTheNAV($orderRenew);
+
+            $this->container->get('doctrine')->getManager()->refresh($orderRenew);
+
             sleep(1);
             $returner = $nav->updatePricesNAV($orderRenew);
             sleep(1);
@@ -1801,8 +1928,17 @@ class OrderService extends ContainerAware
      */
     public function validateDaGiantForm(Place $place, Request $request, &$formHasErrors, &$formErrors, $takeAway, $placePointId = null, $coupon = null)
     {
+        $phonePass = false;
         if (!$takeAway) {
             $list = $this->getCartService()->getCartDishes($place);
+            foreach ($list as $itm) {
+                if (!$this->isOrderableByTime($itm->getDishId())) {
+                    $formErrors[] = array(
+                        'message' => 'order.form.errors.dont_make_item',
+                        'text' => $itm->getDishId()->getName()
+                    );
+                }
+            }
             $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
             if ($total_cart < $place->getCartMinimum()) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum';
@@ -1814,11 +1950,21 @@ class OrderService extends ContainerAware
             }
         } elseif ($place->getMinimalOnSelfDel()) {
             $list = $this->getCartService()->getCartDishes($place);
+            foreach ($list as $itm) {
+                if (!$this->isOrderableByTime($itm->getDishId())) {
+                    $formErrors[] = array(
+                        'message' => 'order.form.errors.dont_make_item',
+                        'text' => $itm->getDishId()->getName()
+                    );
+                }
+            }
             $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
             if ($total_cart < $place->getCartMinimum()) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }
         }
+
+
 
         $pointRecord = null;
 
@@ -1832,6 +1978,7 @@ class OrderService extends ContainerAware
         } else {
             $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
         }
+
         if ($pointRecord != null) {
             $this->workTimeErrors($pointRecord, $formErrors);
         }
@@ -1841,6 +1988,7 @@ class OrderService extends ContainerAware
         if (0 === strlen($request->get('customer-firstname'))) {
             $formErrors[] = 'order.form.errors.customerfirstname';
         }
+
 
         if (0 === strlen($phone)) {
             $formErrors[] = 'order.form.errors.customerphone';
@@ -1901,12 +2049,39 @@ class OrderService extends ContainerAware
                 $formErrors[] = 'order.form.errors.customerphone_format';
             } else if ($isValid && !in_array($numberType, array(\libphonenumber\PhoneNumberType::MOBILE, \libphonenumber\PhoneNumberType::FIXED_LINE_OR_MOBILE))) {
                 $formErrors[] = 'order.form.errors.customerphone_not_mobile';
+            } else {
+                $phonePass = true;
             }
         }
 
         if ($request->get('cart_rules') != 'on') {
             $formErrors[] = 'order.form.errors.cart_rules';
         }
+
+        if ($phonePass && $place->getNavision()) {
+            $data = $this->container->get('food.nav')->validateCartInNav(
+                $request->get('customer-phone'),
+                $pointRecord,
+                date("Y.m.d"),
+                date("H:i:s"),
+                (!$takeAway ? self::$deliveryDeliver : self::$deliveryPickup),
+                $this->container->get('food.cart')->getCartDishes($place)
+            );
+            if (!$data['valid']) {
+                $formHasErrors = true;
+                if ($data['errcode']['code'] == "2") {
+                    $formErrors[] = array(
+                        'message' => 'order.form.errors.problems_with_dish',
+                        'text' => $data['errcode']['problem_dish']
+                    );
+                } elseif ($data['errcode']['code'] == 8) {
+                    $formErrors[] = 'order.form.errors.nav_restaurant_no_work';
+                } elseif ($data['errcode']['code'] == 6) {
+                    $formErrors[] = 'order.form.errors.nav_restaurant_no_setted';
+                }
+            }
+        }
+
 
         if (!empty($formErrors)) {
             $formHasErrors = true;
@@ -2231,6 +2406,40 @@ class OrderService extends ContainerAware
         if ($coupon && $coupon instanceof Coupon && $coupon->getSingleUse()) {
             $coupon->setActive(false);
             $this->saveCoupon($coupon);
+        }
+    }
+
+    /**
+     * @param Dish $dish
+     * @return bool
+     */
+    public function isOrderableByTime(Dish $dish)
+    {
+        $timeFrom = $dish->getTimeFrom();
+        $timeTo = $dish->getTimeTo();
+        if (empty($timeFrom) && empty($timeTo)) {
+            return true;
+        } else {
+            if (!empty($timeFrom) && !empty($timeTo)) {
+                if (date("H:i") >= $timeFrom && date("H:i") <= $timeTo) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } elseif (!empty($timeFrom)) {
+                if (date("H:i") >= $timeFrom) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                // !empty($timeTo);
+                if (date("H:i") <= $timeTo) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
     }
 }

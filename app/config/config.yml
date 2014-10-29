@@ -32,7 +32,7 @@ parameters:
     order.city_coordinators:
         vilnius: []
         kaunas: [renata@foodout.lt]
-        klaipeda: []
+        klaipėda: [jurgita@foodout.lt]
     order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
@@ -49,11 +49,19 @@ parameters:
     arc_gis_geocode_url: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=pjson&Address=_1_&City=_2_&CountryCode=LT&outFields=AddrNum,StName,City"
     google.maps_geocode: "https://maps.googleapis.com/maps/api/geocode/json"
     google.maps_api: "AIzaSyDyKJYX3Cr4Cn41VR9oaAqbmT8XlbHBY-Q"
-    google.maps_server_api: "AIzaSyBK3xf8ZPVWfTa2uXZN-OJHd6Fwl1Yo560"
+    # google.maps_server_api: "AIzaSyBK3xf8ZPVWfTa2uXZN-OJHd6Fwl1Yo560"
+    google.maps_server_api: "AIzaSyANrqCSGWV4b8JRuTPVDdrpmVTytMgBB9M"
     # Possible values: "local", "etaxi"
     active_logistics: "local"
     # Todo situos gal ir iskelsime i paramsus - dependant on install?
-    payment.methods: [local, local.card, paysera, "swedbank-gateway", "swedbank-credit-card-gateway"]
+    payment.methods:
+        - local
+        - local.card
+        - paysera
+        - swedbank-gateway
+        - swedbank-credit-card-gateway
+        - seb-banklink
+        - nordea-banklink
     currency_display: Lt
     currency_iso: LTL
     # naudojam telefonu validacijoms
@@ -62,6 +70,17 @@ parameters:
     evp.test_payments: 0
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
     cloudfront_url: images.foodout.lt
+    logtime.order_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitOrders"
+    logtime.driver_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitDrivers"
+    # Ar siusti uzsakyma i isorine (TMS) sistema
+    logistics.send_to_external: true
+    logistics.city_filter: ["Klaipėda"]
+    # seb banklink
+    seb.banklink.private_key: "/home/skanu.lt/shared/banklinks/seb/private.key"
+    seb.banklink.bank_key: "/home/skanu.lt/shared/banklinks/seb/bank.key"
+    # nordea banklink
+    nordea.banklink.rcv_id: 303134580
+    nordea.banklink.mac: C5IUBtC5eriCYGbIYhhIV4v830k14uSn
     invoice.series: FOE
 
 framework:

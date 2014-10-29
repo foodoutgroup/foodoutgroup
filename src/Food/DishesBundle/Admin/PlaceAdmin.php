@@ -62,6 +62,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('active', 'checkbox', array('label' => 'admin.active', 'required' => false,))
             ->add('new', 'checkbox', array('label' => 'admin.is_new', 'required' => false,))
             ->add('recommended', 'checkbox', array('label' => 'admin.place.recommended', 'required' => false,))
+            ->add('onlyAlcohol', 'checkbox', array('label' => 'admin.place.only_alcohol', 'required' => false,))
             ->add('deliveryOptions', 'choice', array('label' => 'admin.place.delivery_options', 'required' => true, 'choices' => $deliveryOptionChoices))
             ->add('deliveryTime', null, array('label' => 'admin.place.delivery_time'))
             ->add('deliveryTimeInfo', null, array('label' => 'admin.place.delivery_time_info', 'required' => false))
@@ -71,6 +72,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('minimalOnSelfDel', 'checkbox', array('label' => 'admin.place.minimal_on_self_delivery', 'required' => false))
             ->add('cardOnDelivery', 'checkbox', array('label' => 'admin.place.card_on_delivery', 'required' => false))
             ->add('disabledOnlinePayment', 'checkbox', array('label' => 'admin.place.disabled_online_payment', 'required' => false))
+            ->add('priority', null, array('label' => 'admin.place.priority', 'required' => false))
 
             ->add('file', 'file', $options)
         /*

@@ -371,11 +371,15 @@ class OrderRepository extends EntityRepository
     /**
      * @param \DateTime $dateFrom
      * @param \DateTime $dateTo
+     * @param string $orderStatus
      * @return array
      */
-    public function getOrderCountByDay($dateFrom, $dateTo)
+    public function getOrderCountByDay($dateFrom, $dateTo, $orderStatus=null)
     {
-        $orderStatus = OrderService::$status_completed;
+        if (empty($orderStatus)) {
+            $orderStatus = OrderService::$status_completed;
+        }
+
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
         $dateTo = $dateTo->format("Y-m-d 00:00:01");
 
@@ -394,5 +398,73 @@ class OrderRepository extends EntityRepository
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    /**
+     * @return Order[]|array
+     */
+    public function getUnclosedOrders()
+    {
+        $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_canceled."'";
+        $paymentStatus = OrderService::$paymentStatusComplete;
+        $pickup = OrderService::$deliveryPickup;
+        $deliver = OrderService::$deliveryDeliver;
+
+        $dateFrom = new \DateTime("-12 hour");
+        $dateToPickup = new \DateTime("-90 minute");
+        $dateToDeliver = new \DateTime("-2 hour");
+        $dateFrom = $dateFrom->format("Y-m-d h:i:s");
+        $dateToPickup = $dateToPickup->format("Y-m-d h:i:s");
+        $dateToDeliver = $dateToDeliver->format("Y-m-d h:i:s");
+
+        $query = "
+          SELECT
+            o.id,
+            o.delivery_time
+          FROM orders o
+          WHERE
+            o.order_status NOT IN ({$orderStatus})
+            AND o.payment_status = '{$paymentStatus}'
+            AND (
+              (
+                o.delivery_type = '{$pickup}'
+                AND o.delivery_time BETWEEN '{$dateFrom}' AND '{$dateToPickup}'
+              )
+              OR
+              (
+               o.delivery_type = '{$deliver}'
+                AND o.delivery_time BETWEEN '{$dateFrom}' AND '{$dateToDeliver}'
+              )
+            )
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * @return array
+     */
+    public function getCurrentNavOrders()
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb->leftJoin('o.place', 'p')
+            ->where('o.order_date >= :order_date')
+            ->andWhere('p.navision = :navision')
+            ->andWhere('o.order_status NOT IN (:order_status)')
+            ->setParameters(array(
+                'order_date' => new \DateTime('-1 day'),
+                'order_status' => array(
+                    OrderService::$status_completed,
+                    OrderService::$status_canceled,
+                    OrderService::$status_nav_problems,
+                ),
+                'navision' => 1,
+            ));
+
+        return $qb->getQuery()
+            ->getResult();
     }
 }
