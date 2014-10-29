@@ -1,6 +1,7 @@
 <?php
 namespace Food\AppBundle\Service;
 
+use Food\AppBundle\Entity\GeoCache;
 use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Curl;
@@ -54,15 +55,44 @@ class GoogleGisService extends ContainerAware
                 // Nieko nekeiciam
             }
         }
-        $resp = $this->getCli()->get(
-            $this->container->getParameter('google.maps_geocode'),
-            array(
-                'address' => $address.', Lithuania',
-                'sensor' => 'true',
-                'key' => $this->container->getParameter('google.maps_server_api')
-            )
-        );
-        return json_decode($resp->body);
+
+
+        $cnt = $this->container->get('doctrine')->getRepository('FoodAppBundle:GeoCache')
+            ->findOneBy(
+                array(
+                    'requestAddress' => $address,
+                    'requestCountry' => 'Lithuania'
+                )
+            );
+
+        if (!$cnt || $cnt == null) {
+            $resp = $this->getCli()->get(
+                $this->container->getParameter('google.maps_geocode'),
+                array(
+                    'address' => $address.', Lithuania',
+                    'sensor' => 'true',
+                    'key' => $this->container->getParameter('google.maps_server_api')
+                )
+            );
+            $geoData = new GeoCache();
+            $geoData->setRequestAddress($address)
+                ->setRequestCountry('Lithuania')
+                ->setRequestData($address.', Lithuania')
+                ->setRequestDate(new \DateTime("now"))
+                ->setRessponseBody($resp->body)
+                ->setCounter(1);
+
+            $em = $this->container->get('doctrine')->getManager();
+            $em->persist($geoData);
+            $em->flush();
+
+            return json_decode($resp->body);
+        } else {
+            $cnt->setCounter($cnt->getCounter() + 1);
+            $em = $this->container->get('doctrine')->getManager();
+            $em->flush();
+            return json_decode($cnt->getRessponseBody());
+        }
     }
 
     /**
