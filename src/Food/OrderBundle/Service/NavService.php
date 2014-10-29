@@ -453,7 +453,6 @@ class NavService extends ContainerAware
     public function validateCartInNav($phone, $restaurant, $orderDate, $orderTime, $deliveryType, $dishes)
     {
         $rcCode = $restaurant->getInternalCode();
-
         $requestData = array(
             array('Lines' => array())
         );
@@ -496,7 +495,7 @@ class NavService extends ContainerAware
             $requestXml.= "\t\t<Amount>".$cart->getDishSizeId()->getPrice() * $cart->getQuantity()."</Amount>\n";
             $requestXml.= "\t</Line>\n";
 
-
+            $lineMap = array();
             $requestData['Lines'][] = array('Line' => array(
                 'LineNo' => $lineNo,
                 'ParentLineNo' => 0,
@@ -507,6 +506,10 @@ class NavService extends ContainerAware
                 'Price' => $cart->getDishSizeId()->getPrice(),
                 'Amount' => $cart->getDishSizeId()->getPrice() * $cart->getQuantity()
             ));
+            $lineMap[$lineNo] = array(
+                'parent' => 0,
+                'name' => $cart->getDishId()->getName()
+            );
 
             $origLineNo = $lineNo;
             foreach ( $detailOptions = $cart->getOptions() as $optKey => $option) {
@@ -534,6 +537,10 @@ class NavService extends ContainerAware
                     $requestXml.= "\t\t<Amount>".$option->getDishOptionId()->getPrice() * $cart->getQuantity()."</Amount>\n";
                     $requestXml.= "\t</Line>\n";
 
+                    $lineMap[$lineNo] = array(
+                        'parent' => $origLineNo,
+                        'name' => $description
+                    );
 
                     $requestData['Lines'][] = array('Line' => array(
                         'LineNo' => $lineNo,
@@ -571,6 +578,7 @@ class NavService extends ContainerAware
                 $prbDish = $lineMap[$lineMap[$response->errors->Error->SubCode]['parent']]['name'];
             }
         }
+
         $returner = array(
             'valid' => ($response->return_value == 0 ? true: false),
             'errcode' => array(
@@ -580,11 +588,6 @@ class NavService extends ContainerAware
                 'problem_dish' => $prbDish
             )
         );
-        echo "<pre>";
-        var_dump($returner);
-        var_dump($requestData);
-        var_dump($response);
-        echo "</pre>";
         return $returner;
     }
 
