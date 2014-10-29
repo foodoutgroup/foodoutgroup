@@ -76,6 +76,55 @@ trait OrderDataForNavDecorator
         return $data;
     }
 
+    public function getOrderDataForNavLocally($orderId)
+    {
+        // services
+        $em = $this->container->get('doctrine.orm.entity_manager');
+
+        $orderAccData = $this->findOrderAccData($orderId);
+
+        $data = new OrderDataForNav();
+        $data->id = $orderAccData->getOrderId();
+        $data->date = $orderAccData->getDate();
+        $data->time = $orderAccData->getTime();
+        $data->deliveryDate = $orderAccData->getDeliveryDate();
+        $data->deliveryTime = $orderAccData->getDeliveryTime();
+        $data->staff = $orderAccData->getStaff();
+        $data->chain = $orderAccData->getChain();
+        $data->restaurant = $orderAccData->getRestaurant();
+        $data->restaurantAddress = $orderAccData->getRestaurantAddress();
+        $data->driver = $orderAccData->getDriver();
+        $data->deliveryType = $orderAccData->getDeliveryType();
+        $data->clientName = $orderAccData->getClientName();
+        $data->isDelivered = $orderAccData->getIsDelivered() ? 'yes' : 'no';
+        $data->deliveryAddress = $orderAccData->getDeliveryAddress();
+        $data->city = $orderAccData->getCity();
+        $data->country = $orderAccData->getCountry();
+        $data->paymentType = $orderAccData->getPaymentType();
+        $data->foodAmount = (double) $orderAccData->getFoodAmount();
+        $data->foodAmountEUR = (double) $orderAccData->getFoodAmountEur();
+        $data->foodVAT = (double) $orderAccData->getFoodVat();
+        $data->drinksAmount = (double) $orderAccData->getDrinksAmount();
+        $data->drinksAmountEUR = (double) $orderAccData->getDrinksAmountEur();
+        $data->drinksVAT = (double) $orderAccData->getDrinksVat();
+        $data->alcoholAmount = (double) $orderAccData->getAlcoholAmount();
+        $data->alcoholAmountEUR = (double) $orderAccData->getAlcoholAmountEur();
+        $data->alcoholVAT = (double) $orderAccData->getAlcoholVat();
+        $data->deliveryAmount = (double) $orderAccData->getDeliveryAmount();
+        $data->deliveryAmountEUR = (double) $orderAccData->getDeliveryAmountEur();
+        $data->deliveryVAT = (double) $orderAccData->getDeliveryVat();
+        $data->giftCardAmount = (double) $orderAccData->getGiftCardAmount();
+        $data->giftCardAmountEUR = (double) $orderAccData->getGiftCardAmountEur();
+        $data->discountType = $orderAccData->getDiscountType();
+        $data->discountAmount = (double) $orderAccData->getDiscountAmount();
+        $data->discountAmountEUR = (double) $orderAccData->getDiscountAmountEur();
+        $data->discountPercent = (double) $orderAccData->getDiscountPercent();
+        $data->totalAmount = (double) $orderAccData->getTotalAmount();
+        $data->totalAmountEUR = (double) $orderAccData->getTotalAmountEur();
+
+        return $data;
+    }
+
     public function insertOrder(OrderDataForNav $data)
     {
         $query = $this->constructInsertOrderQuery($data);
@@ -168,6 +217,14 @@ trait OrderDataForNavDecorator
 
         $em->persist($orderAccData);
         $em->flush();
+    }
+
+    public function getUnsyncedOrderData()
+    {
+        return $this->container
+                    ->get('doctrine.orm.entity_manager')
+                    ->getRepository('FoodOrderBundle:OrderAccData')
+                    ->findBy(['is_synced' => 0]);
     }
 
     protected function constructInsertOrderQuery(OrderDataForNav $data)
@@ -277,5 +334,17 @@ trait OrderDataForNavDecorator
         return array_map(
             function($val) { return str_replace("'", "\\'", $val); },
             $data);
+    }
+
+    protected function findOrderAccData($orderId)
+    {
+        $rows =  $this->container
+                      ->get('doctrine.orm.entity_manager')
+                      ->getRepository('FoodOrderBundle:OrderAccData')
+                      ->findBy(['order_id' => $orderId]);
+
+        $maybeRows = \Maybe($rows);
+
+        return $maybeRows[0]->val();
     }
 }
