@@ -79,10 +79,10 @@ parameters:
     seb.banklink.private_key: "/home/skanu.lt/shared/banklinks/seb/private.key"
     seb.banklink.bank_key: "/home/skanu.lt/shared/banklinks/seb/bank.key"
     # nordea banklink
-    # nordea.banklink.rcv_id: 303134580
-    nordea.banklink.rcv_id: 12345678LT
-    # nordea.banklink.mac: C5IUBtC5eriCYGbIYhhIV4v830k14uSn
-    nordea.banklink.mac: LEHTI
+    nordea.banklink.rcv_id: 303134580
+    nordea.banklink.mac: C5IUBtC5eriCYGbIYhhIV4v830k14uSn
+    # nordea.banklink.rcv_id: 12345678LT
+    # nordea.banklink.mac: LEHTI
 
 framework:
     #esi:             ~
