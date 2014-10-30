@@ -149,6 +149,9 @@ trait OrderDataForNavDecorator
 
     public function insertOrderAccData(Order $order, OrderDataForNav $data)
     {
+        // if order is not completed - cancel
+        if (!$this->isCompleted($order)) return;
+
         // if order is, for example, unsaved - cancel
         if (is_null($order->getId())) return;
 
@@ -346,5 +349,14 @@ trait OrderDataForNavDecorator
         $maybeRows = \Maybe($rows);
 
         return $maybeRows[0]->val();
+    }
+
+    protected function isCompleted(Order $order)
+    {
+        $orderService = $this->container->get('food.order');
+
+        return $order->getPaymentStatus() ==
+               $orderService::$paymentStatusComplete ? true : false;
+
     }
 }
