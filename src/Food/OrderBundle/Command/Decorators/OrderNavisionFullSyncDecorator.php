@@ -33,7 +33,12 @@ trait OrderNavisionFullSyncDecorator
                     $entity->getOrderId());
 
                 if ($notDryRun) {
-                    $success = $navService->insertOrder($data);
+                    $timestamp = $entity->getSyncTimestamp();
+                    if (empty($timestamp)) {
+                        $success = $navService->insertOrder($data);
+                    } else {
+                        $success = $navService->updateOrder($data);
+                    }
                 }
 
                 if ($success) {

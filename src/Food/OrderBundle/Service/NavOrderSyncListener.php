@@ -15,6 +15,6 @@ class NavOrderSyncListener extends ContainerAware
         $navService = $this->container->get('food.nav');
 
         $data = $navService->getOrderDataForNav($event->getOrder());
-        $navService->insertOrderAccData($event->getOrder(), $data);
+        $navService->touchOrderAccData($event->getOrder(), $data);
     }
 }

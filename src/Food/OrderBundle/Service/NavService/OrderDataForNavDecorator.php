@@ -127,28 +127,36 @@ trait OrderDataForNavDecorator
 
     public function insertOrder(OrderDataForNav $data)
     {
+        $conn = $this->initSqlConn();
+
+        if (empty($conn)) return false;
+
         $query = $this->constructInsertOrderQuery($data);
+        $success = $conn->query($query);
 
-        // try to connect and execute a query, else return false (aka sql init
-        // failure result, not directly our madeup false)
-        $conn = \Maybe($this->initSqlConn());
-
-        return $conn
-            // basically if we have connection - return query result (resource or true)
-            ->map(function($conn) use ($query) {
-                $isConnected = $conn->val();
-                return $isConnected ? $conn->query($query) : $isConnected;
-            })
-            // since result can be resource or true, convert to both to boolean true
-            ->map(function($result) {
-                return false === $result ? false : true;
-            })
-            // don't forget to return not a Monad, but plain value which is true or false
-            ->val();
+        return false === $success ? false : true;
     }
 
-    public function insertOrderAccData(Order $order, OrderDataForNav $data)
+    public function updateOrder(OrderDataForNav $data)
     {
+        $conn = $this->initSqlConn();
+
+        if (empty($conn)) return false;
+
+        $query = $this->constructUpdateOrderQuery($data);
+        $success = $conn->query($query);
+
+        return false === $success ? false : true;
+    }
+
+    /**
+     * Touch (insert or update) OrderAccData.
+     */
+    public function touchOrderAccData(Order $order, OrderDataForNav $data)
+    {
+        // if order is not completed - cancel
+        if (!$this->isCompleted($order)) return;
+
         // if order is, for example, unsaved - cancel
         if (is_null($order->getId())) return;
 
@@ -166,13 +174,11 @@ trait OrderDataForNavDecorator
                 // if not - return new entity
                 return new OrderAccData();
             } else {
-                // if exists - return it
+                // if exists - mark unsynced and return it
+                $row->setIsSynced(false);
                 return $row;
             }
         })->val();
-
-        // if OrderAccData is synced - cancel
-        if ($orderAccData->getIsSynced()) return;
 
         $orderAccData
             ->setOrderId($order->getId())
@@ -237,6 +243,46 @@ trait OrderDataForNavDecorator
                          sprintf(
                             "('%s')",
                             implode("', '", $this->getOrderValues($data))));
+        return $query;
+    }
+
+    protected function constructUpdateOrderQuery(OrderDataForNav $data)
+    {
+        $fields = $this->getOrderFieldNames();
+        $values = $this->getOrderValues($data);
+
+        // we dont need order field & value, for now
+        $idField = array_shift($fields);
+        $idValue = array_shift($values);
+
+        // format fields
+        $fieldsCallback = function($val) {
+            return sprintf('[%s]', $val);
+        };
+        $fields = array_map($fieldsCallback, $fields);
+
+        // format values
+        $valuesCallback = function($val) {
+            // return is_numeric($val) ? $val : sprintf("'%s'", $val);
+            return sprintf("'%s'", $val);
+        };
+        $values = array_map($valuesCallback, $values);
+
+        // combine fields with values
+        $combined = array_combine($fields, $values);
+
+        // generate final useful array with combined fields and values
+        $valuesForUpdate = [];
+        foreach ($combined as $key => $value) {
+            $valuesForUpdate[] = sprintf('%s = %s', $key, $value);
+        }
+
+        // create query
+        $query = sprintf('UPDATE %s SET %s WHERE %s',
+                         $this->getOrderTableName(),
+                         implode(', ', $valuesForUpdate),
+                         sprintf('[%s] = %s', $idField, $idValue));
+
         return $query;
     }
 
@@ -346,5 +392,14 @@ trait OrderDataForNavDecorator
         $maybeRows = \Maybe($rows);
 
         return $maybeRows[0]->val();
+    }
+
+    protected function isCompleted(Order $order)
+    {
+        $orderService = $this->container->get('food.order');
+
+        return $order->getPaymentStatus() ==
+               $orderService::$paymentStatusComplete ? true : false;
+
     }
 }

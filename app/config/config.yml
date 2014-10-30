@@ -81,6 +81,8 @@ parameters:
     # nordea banklink
     nordea.banklink.rcv_id: 303134580
     nordea.banklink.mac: C5IUBtC5eriCYGbIYhhIV4v830k14uSn
+    # nordea.banklink.rcv_id: 12345678LT
+    # nordea.banklink.mac: LEHTI
 
 framework:
     #esi:             ~
