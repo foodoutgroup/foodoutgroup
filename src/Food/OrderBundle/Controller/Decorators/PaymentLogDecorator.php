@@ -35,7 +35,7 @@ trait PaymentLogDecorator
             $em->flush();
 
             // inform stuff
-            $orderService->informPlace();
+            // $orderService->informPlace();
             $orderService->deactivateCoupon();
 
             // log order data (if we have listeners)
