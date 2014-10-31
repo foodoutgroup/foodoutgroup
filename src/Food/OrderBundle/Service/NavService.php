@@ -270,6 +270,9 @@ class NavService extends ContainerAware
         }
 
 
+        $city = $order->getPlacePoint()->getCity();
+        $city = str_replace("ė", "e", $city);
+        $region = mb_strtoupper($city);
 
         $orderDate = $order->getOrderDate();
         $orderDate->sub(new \DateInterval('P0DT3H'));
@@ -299,7 +302,7 @@ class NavService extends ContainerAware
             'Error Description' => '',
             'Flat No_' => $flatNr, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $flatNr: ''),
             'Entrance Code' => '',
-            'Region Code' => mb_strtoupper($order->getPlacePoint()->getCity()), //$order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getDeliveryRegion() : ''),
+            'Region Code' => $region, //$order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getDeliveryRegion() : ''),
             'Delivery Status' => 12,
             'In Use By User' => '',
             'Loyalty Card No_' => '',
