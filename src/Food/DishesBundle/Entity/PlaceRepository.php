@@ -86,7 +86,7 @@ class PlaceRepository extends EntityRepository
         $kitchensQuery = "";
 
         if (!empty($kitchens)) {
-            $kitchensQuery = "AND p.id IN (SELECT place_id FROM place_kitchen WHERE kitchen_id IN(".implode(",", $kitchens)."))";
+            $kitchensQuery = " AND p.id IN (SELECT place_id FROM place_kitchen WHERE kitchen_id IN(".implode(",", $kitchens)."))";
         }
 
         // Place filters
