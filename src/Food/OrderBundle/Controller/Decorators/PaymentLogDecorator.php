@@ -14,6 +14,7 @@ trait PaymentLogDecorator
                                         $navService,
                                         $logger)
     {
+        // if order is already complete - cancel
         if ($order->getPaymentStatus() ==
             $orderService::$paymentStatusComplete) {
             // log
@@ -37,8 +38,8 @@ trait PaymentLogDecorator
             $orderService->informPlace();
             $orderService->deactivateCoupon();
 
-            // insert order into nav
-            $navService->insertOrder($navService->getOrderDataForNav($order));
+            // log order data (if we have listeners)
+            $orderService->logOrderForNav($order);
 
             // clear cart
             $cartService->clearCart($order->getPlace());

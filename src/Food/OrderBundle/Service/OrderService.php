@@ -21,6 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
+use Food\OrderBundle\Service\Events\NavOrderEvent;
 
 class OrderService extends ContainerAware
 {
@@ -219,6 +220,11 @@ class OrderService extends ContainerAware
     public function getContext()
     {
         return $this->context;
+    }
+
+    public function getEventDispatcher()
+    {
+        return $this->container->get('event_dispatcher');
     }
 
     /**
@@ -749,6 +755,14 @@ class OrderService extends ContainerAware
 
     }
 
+    public function logOrderForNav(Order $order = null)
+    {
+        $event = new NavOrderEvent($order);
+
+        $this->getEventDispatcher()
+             ->dispatch(NavOrderEvent::LOG_ORDER, $event);
+    }
+
     /**
      * @throws \Exception
      */
@@ -761,6 +775,9 @@ class OrderService extends ContainerAware
             $this->order->setLastUpdated(new \DateTime("now"));
             $this->getEm()->persist($this->order);
             $this->getEm()->flush();
+
+            // log order data (if we have listeners)
+            $this->logOrderForNav($this->order);
         }
     }
 
