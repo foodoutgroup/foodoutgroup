@@ -326,7 +326,7 @@ class OrderRepository extends EntityRepository
     {
         $orderStatus = OrderService::$status_completed;
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
-        $dateTo = $dateTo->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 23:59:59");
 
         $placesFilter = '';
         if (!empty($placeIds)) {
@@ -381,7 +381,7 @@ class OrderRepository extends EntityRepository
         }
 
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
-        $dateTo = $dateTo->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 23:59:59");
 
         $query = "
           SELECT
