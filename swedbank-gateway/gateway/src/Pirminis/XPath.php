@@ -10,14 +10,18 @@ trait XPath
         return $list;
     }
 
-    public function xpath_first(\SimpleXMLElement $dom, $path)
+    public function xpath_first(\SimpleXMLElement $dom = null, $path)
     {
+        if (is_null($dom)) return '';
+
         list($first) = $this->xpath($dom, $path) + array(null);
         return (string)$first;
     }
 
-    public function xpath_last(\SimpleXMLElement $dom, $path)
+    public function xpath_last(\SimpleXMLElement $dom = null, $path)
     {
+        if (is_null($dom)) return '';
+
         $elements = $this->xpath($dom, $path) + array(null);
         $last = end($elements);
         return (string)$last;
