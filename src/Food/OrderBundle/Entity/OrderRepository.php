@@ -374,7 +374,7 @@ class OrderRepository extends EntityRepository
      * @param string $orderStatus
      * @return array
      */
-    public function getOrderCountByDay($dateFrom, $dateTo, $orderStatus=null)
+    public function getOrderCountByDay($dateFrom, $dateTo, $orderStatus=null, $mobile=false)
     {
         if (empty($orderStatus)) {
             $orderStatus = OrderService::$status_completed;
@@ -391,6 +391,7 @@ class OrderRepository extends EntityRepository
           WHERE
             o.order_status = '{$orderStatus}'
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
+            ".($mobile ? 'AND mobile=1':'')."
           GROUP BY DATE_FORMAT(o.order_date, '%m-%d')
           ORDER BY DATE_FORMAT(o.order_date, '%m-%d') ASC
         ";
