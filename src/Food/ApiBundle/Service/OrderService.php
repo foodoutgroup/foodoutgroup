@@ -196,6 +196,8 @@ class OrderService extends ContainerAware
             ($serviceVar['type'] == "pickup" ? true : false)
         );
 
+        $os->setMobileOrder(true);
+
         $paymentMethod = $request->get('payment-type');
         $customerComment = (!empty($serviceVar['address']) ? $serviceVar['address']['comments'] : "");
 

@@ -947,6 +947,12 @@ class OrderService extends ContainerAware
         $this->logPayment($order, 'payement method change', sprintf('Method changed from "%s" to "%s"', $oldMethod, $method));
     }
 
+    public function setMobileOrder($isMobile = true)
+    {
+        $order = $this->getOrder();
+        $order->setMobile($isMobile);
+    }
+
     /**
      * @param string $method
      * @return bool
