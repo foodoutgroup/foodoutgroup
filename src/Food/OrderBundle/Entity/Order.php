@@ -260,6 +260,13 @@ class Order
      */
     private $version;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="mobile", type="boolean", nullable=true)
+     */
+    private $mobile = false;
+
+
     public function __toString()
     {
         if ($this->getId()) {

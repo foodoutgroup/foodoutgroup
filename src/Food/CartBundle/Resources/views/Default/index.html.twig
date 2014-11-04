@@ -122,7 +122,38 @@
     });
 {% endblock %}
 
+{% block ga_js_code %}
+    $(document).ready(
+        function() {
+            $('body .delivery-type-radios .custom-radio, body .delivery-type-radios .custom-radio .iCheck-helper').click(
+                function(){
+                    var opt = "";
+                    if ($(this).is('.custom-radio')) {
+                        opt = $(this).find('input').val();
 
+                    } else {
+                        opt = $(this).parent().find('input').val();
+                    }
+                    ga('ec:setAction', 'checkout_option', {'step': 2, 'option': opt});
+                }
+            );
+
+
+            $('body .cart-rules.custom-checkbox, body .cart-rules.custom-checkbox .iCheck-helper').click(
+                function(){
+                    var opt = "";
+                    if ($(this).is('.custom-radio')) {
+                        opt = $(this).find('input').is(':checked');
+
+                    } else {
+                        opt = $(this).parent().find('input').is(':checked');
+                    }
+                    ga('ec:setAction', 'checkout_option', {'step': 4, 'option': opt});
+                }
+            );
+        }
+    );
+{% endblock %}
 {% block body %}
 
     {% include 'FoodDishesBundle:Place:dish_cart_partial.html.twig' %}
@@ -159,6 +190,17 @@
                                     {% endfor %}
                                 </div>
                             </div>
+                            <script>
+                                $(document).ready(function() {
+                                    {% for err in formErrors %}
+                                        {% if err is iterable %}
+                                            ga('ec:setAction', 'checkout_option', {'step': 3, 'option': '{{ err.message|trans({'%text%': err.text})}}'});
+                                        {% else %}
+                                            ga('ec:setAction', 'checkout_option', {'step': 3, 'option': '{{ err|trans }}'});
+                                        {% endif %}
+                                    {% endfor %}
+                                });
+                            </script>
                             {% endif %}
                             <div class="form-row">
                                 <label><br></label>

@@ -5,6 +5,7 @@ use Food\AppBundle\Entity\GeoCache;
 use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Curl;
+use Symfony\Component\Form\Tests\Extension\Validator\Type\BaseValidatorExtensionTest;
 
 class GoogleGisService extends ContainerAware
 {
@@ -74,6 +75,7 @@ class GoogleGisService extends ContainerAware
                     'key' => $this->container->getParameter('google.maps_server_api')
                 )
             );
+            var_dump($address);
             $geoData = new GeoCache();
             $geoData->setRequestAddress($address)
                 ->setRequestCountry('Lithuania')
@@ -222,7 +224,7 @@ class GoogleGisService extends ContainerAware
         $data = json_decode($resp->body);
         $matchIsFound = null;
         foreach ($data->results as $rezRow) {
-            if(in_array('street_address', $rezRow->types)) {
+            if(in_array('street_address', $rezRow->types) || in_array('premise', $rezRow->types)) {
                 $matchIsFound = $rezRow;
                 break;
             }
@@ -257,13 +259,16 @@ class GoogleGisService extends ContainerAware
 
         $data = json_decode($resp->body);
         $matchIsFound = null;
+
         foreach ($data->results as $rezRow) {
-            if(in_array('street_address', $rezRow->types)) {
+            if(in_array('street_address', $rezRow->types) || in_array('premise', $rezRow->types)) {
                 $matchIsFound = $rezRow;
                 break;
             }
         }
+
         $returner = array();
+
         if ($matchIsFound!==null) {
             foreach ($matchIsFound->address_components as $cmp) {
                 if (in_array('street_number', $cmp->types)) {
@@ -277,6 +282,7 @@ class GoogleGisService extends ContainerAware
                 }
             }
         }
+        var_dump($returner);
         return $returner;
     }
 }

@@ -366,13 +366,14 @@ class NavService extends ContainerAware
                 $code = $detailOptions[0]->getDishOptionCode();
             }
         }
-
+        $desc = "'".substr($detail->getDishName(), 0, 29)."' ".$detail->getDishUnitName();
+        $desc = str_replace(" pica", "", $desc);
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Line No_' => $key,
             'Entry Type' => 0,
             'No_' => "'".$code."'",
-            'Description' => "'".substr($detail->getDishName(), 0, 29)."'",
+            'Description' => $desc,
             'Quantity' => $detail->getQuantity(),
             'Price' => $detail->getPrice(), // @todo test the price. Kaip gula. Total ar ne.
             'Parent Line' => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
