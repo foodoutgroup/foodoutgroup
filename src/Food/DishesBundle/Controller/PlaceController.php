@@ -63,14 +63,17 @@ class PlaceController extends Controller
 
         $placePointData = array();
         $placePoint = $placeService->getPlacePointData($point_id);
+        $place = $placePoint->getPlace();
+
         if ($placePoint->getActive() && $placePoint->getPublic()) {
             $placePointData = $placePoint->__toArray();
+            $placePointData['allowInternetPayments'] = !$place->getDisabledOnlinePayment();
         }
 
         $response = new JsonResponse($placePointData);
         $response->setCharset('UTF-8');
-
         $response->prepare($request);
+
         return $response;
     }
 
