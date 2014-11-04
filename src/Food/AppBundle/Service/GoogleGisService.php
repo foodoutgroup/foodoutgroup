@@ -75,7 +75,7 @@ class GoogleGisService extends ContainerAware
                     'key' => $this->container->getParameter('google.maps_server_api')
                 )
             );
-            var_dump($address);
+
             $geoData = new GeoCache();
             $geoData->setRequestAddress($address)
                 ->setRequestCountry('Lithuania')
@@ -282,7 +282,6 @@ class GoogleGisService extends ContainerAware
                 }
             }
         }
-        var_dump($returner);
         return $returner;
     }
 }
