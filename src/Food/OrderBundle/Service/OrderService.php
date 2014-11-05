@@ -2050,7 +2050,7 @@ class OrderService extends ContainerAware
                 $request->get('customer-phone'),
                 $pointRecord,
                 date("Y.m.d"),
-                date("H:i:s"),
+                date("H:i:s", strtotime("+1 hour")),
                 (!$takeAway ? self::$deliveryDeliver : self::$deliveryPickup),
                 $this->container->get('food.cart')->getCartDishes($place)
             );
