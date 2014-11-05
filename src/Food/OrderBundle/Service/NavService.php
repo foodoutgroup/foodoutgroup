@@ -366,7 +366,7 @@ class NavService extends ContainerAware
                 $code = $detailOptions[0]->getDishOptionCode();
             }
         }
-        $desc = "'".substr($detail->getDishName(), 0, 29)."' ".$detail->getDishUnitName();
+        $desc = "'".substr($detail->getDishName(), 0, 29)." ".$detail->getDishUnitName()."'";
         $desc = str_replace(" pica", "", $desc);
         $dataToPut = array(
             'Order No_' => $orderNewId,
