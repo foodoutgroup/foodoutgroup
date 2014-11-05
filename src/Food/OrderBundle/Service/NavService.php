@@ -366,8 +366,35 @@ class NavService extends ContainerAware
                 $code = $detailOptions[0]->getDishOptionCode();
             }
         }
-        $desc = "'".substr($detail->getDishName(), 0, 29)." ".$detail->getDishUnitName()."'";
+        $desc = $detail->getDishName();
+        $unitDesc = $detail->getDishUnitName();
+
+        $desc = str_replace(array("'",'"', ',', '(', ')'), '', $desc);
+        $desc = str_replace(array('ė', 'e', 'Ę','Ė'), 'e', $desc);
+        $desc = str_replace(array('ą', 'Ą'), 'a', $desc);
+        $desc = str_replace(array('č', 'Č'), 'c', $desc);
+        $desc = str_replace(array('į', 'Į'), 'i', $desc);
+        $desc = str_replace(array('š', 'Š'), 's', $desc);
+        $desc = str_replace(array('ų','ū', 'Ų','Ū'), 'u', $desc);
+        $desc = strtolower($desc);
+
+        $unitDesc = str_replace(array("'",'"', ',', '(', ')'), '', $unitDesc);
+        $unitDesc = str_replace(array('ė', 'e', 'Ę','Ė'), 'e', $unitDesc);
+        $unitDesc = str_replace(array('ą', 'Ą'), 'a', $unitDesc);
+        $unitDesc = str_replace(array('č', 'Č'), 'c', $unitDesc);
+        $unitDesc = str_replace(array('į', 'Į'), 'i', $unitDesc);
+        $unitDesc = str_replace(array('š', 'Š'), 's', $unitDesc);
+        $unitDesc = str_replace(array('ų','ū', 'Ų','Ū'), 'u', $unitDesc);
+        $unitDesc = strtolower($unitDesc);
+
+        $desc = str_replace("makaronai", "makar", $desc);
+        $desc = str_replace("lasisomis", "lasis", $desc);
+
+        $desc = "'".substr($desc, 0, 29)." ".$unitDesc."'";
         $desc = str_replace(" pica", "", $desc);
+        $desc = str_replace("Apkepti", "apk", $desc);
+        $desc = str_replace("blyneliai", "blynel", $desc);
+        $desc = str_replace(" Porcija", "", $desc);
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Line No_' => $key,
@@ -386,8 +413,10 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
         $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
+
         @mail("paulius@foodout.lt", "[SQL Line Query]#".$key, $query, "FROM: info@foodout.lt");
-        $sqlSS = $this->initSqlConn()->query($query);
+
+        $sqlSS = $this->initSqlConn()->query($query);)
     }
 
     /**
