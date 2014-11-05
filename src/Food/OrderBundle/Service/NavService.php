@@ -386,6 +386,7 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
         $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
+        @mail("paulius@foodout.lt", "[SQL Line Query]#".$key, $query, "FROM: info@foodout.lt");
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
