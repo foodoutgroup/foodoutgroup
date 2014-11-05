@@ -275,9 +275,9 @@ class NavService extends ContainerAware
         $region = mb_strtoupper($city);
 
         $orderDate = $order->getOrderDate();
-        //$orderDate->sub(new \DateInterval('P0DT3H'));
+        $orderDate->add(new \DateInterval('P0DT3H'));
         $deliveryDate = $order->getDeliveryTime();
-        //$deliveryDate->sub(new \DateInterval('P0DT3H'));
+        $deliveryDate->add(new \DateInterval('P0DT3H'));
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Phone' => str_replace('370', '8', $order->getUser()->getPhone()),
