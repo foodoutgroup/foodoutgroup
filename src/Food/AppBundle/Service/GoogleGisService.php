@@ -51,12 +51,13 @@ class GoogleGisService extends ContainerAware
         if (sizeof($addressSplt) > 1) {
             $tmp = substr($addressSplt[1], 0, 1);
             if ($tmp == intval($tmp)) {
+                $cityDelimeter = explode(",", $address);
                 $address = $addressSplt[0];
+                $address.= ", ".end($cityDelimeter);
             } else {
                 // Nieko nekeiciam
             }
         }
-
 
         $cnt = $this->container->get('doctrine')->getRepository('FoodAppBundle:GeoCache')
             ->findOneBy(
