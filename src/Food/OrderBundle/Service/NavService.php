@@ -416,7 +416,7 @@ class NavService extends ContainerAware
 
         @mail("paulius@foodout.lt", "[SQL Line Query]#".$key, $query, "FROM: info@foodout.lt");
 
-        $sqlSS = $this->initSqlConn()->query($query);)
+        $sqlSS = $this->initSqlConn()->query($query);
     }
 
     /**
