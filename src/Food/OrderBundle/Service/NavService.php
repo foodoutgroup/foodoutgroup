@@ -197,7 +197,7 @@ class NavService extends ContainerAware
             //'Order Time' => '1754-01-01 '.date("H:i:s", strtotime('-3 hours')),
             //'Takeout Time' => date("Y-m-d H:i:s", (strtotime('+20 minutes') - (3600 * 3))),
             'Order Time' => '1754-01-01 '.date("H:i:s"),
-            'Takeout Time' => date("Y-m-d H:i:s", (strtotime('+20 minutes') - (3600 * 3))),
+            'Takeout Time' => date("Y-m-d H:i:s", (strtotime('+20 minutes'))),
             'Directions' => 'Negaminti',
             'Discount Card No_' => '',
             'Order Status' => '',
