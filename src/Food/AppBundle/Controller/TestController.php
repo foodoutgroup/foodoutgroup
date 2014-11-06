@@ -129,8 +129,8 @@ class TestController extends Controller
     {
 
         $navs = $this->get('food.nav');
-        $data = $this->container->get('doctrine')->getRepository('FoodOrderBundle:NavItems')->find('DIS0000597');
-        var_dump($data);
+        )
+        $navs->syncDisDescription();
 
         die("MOJO");
     }
