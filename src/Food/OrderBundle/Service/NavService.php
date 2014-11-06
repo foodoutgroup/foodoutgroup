@@ -42,6 +42,8 @@ class NavService extends ContainerAware
 
     private $messagesTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web Order Messages]';
 
+    private $itemsTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Item]';
+
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
@@ -82,6 +84,15 @@ class NavService extends ContainerAware
     {
         return $this->messagesTable;
     }
+
+    /**
+     * @return string
+     */
+    public function getItemsTable()
+    {
+        return $this->itemsTable;
+    }
+
 
 
 
@@ -395,6 +406,12 @@ class NavService extends ContainerAware
         $desc = str_replace("Apkepti", "apk", $desc);
         $desc = str_replace("blyneliai", "blynel", $desc);
         $desc = str_replace(" Porcija", "", $desc);
+
+        $data = $this->container->get('doctrine')->getRepository('FoodOrderBundle:NavItems')->find($code);
+        if ($data) {
+            $desc = "'".$data->getDescription()."'";
+        }
+
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Line No_' => $key,
@@ -765,5 +782,21 @@ class NavService extends ContainerAware
         }
 
         return $navIds;
+    }
+
+    public function syncDisDescription($date = null)
+    {
+        $result = $this->initSqlConn()->query('SELECT [No_], [Description], [Search Description] FROM '.$this->getItemsTable()." WHERE LEN([No_]) > 3");
+        if( $result === false) {
+            throw new \InvalidArgumentException('Wow Such fail.. Many problems... Such no results?');
+        }
+
+        $counter = 0;
+        while($rowRez = $this->container->get('food.mssql')->fetchArray($result)) {
+            $query = "REPLACE INTO nav_items VALUES('".addslashes($rowRez['No_'])."', '".addslashes(iconv('cp1257','utf-8',$rowRez['Description']))."', '".addslashes(iconv('cp1257','utf-8',$rowRez['Search Description']))."')";
+            $stmt = $this->container->get('doctrine')->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+            $counter++;
+        }
     }
 }

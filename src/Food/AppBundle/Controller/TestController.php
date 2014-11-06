@@ -127,6 +127,16 @@ class TestController extends Controller
 
     public function nav1Action()
     {
+
+        $navs = $this->get('food.nav');
+        $data = $this->container->get('doctrine')->getRepository('FoodOrderBundle:NavItems')->find('DIS0000597');
+        var_dump($data);
+
+        die("MOJO");
+    }
+
+    public function nav12Action()
+    {
         $navs = $this->get('food.nav');
         $client = $navs->getWSConnection();
         $return = $client->FoodOutUpdatePrices(array('pInt' =>2000002044));
