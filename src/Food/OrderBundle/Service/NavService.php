@@ -784,6 +784,21 @@ class NavService extends ContainerAware
         return $navIds;
     }
 
+    public function getOrderHeader($oId)
+    {
+        $orderId = $this->getNavOrderId($oId);
+        $result = $this->initSqlConn()->query('SELECT * FROM '.$this->getHeaderTable()." WHERE [Order No_] = '".$orderId."'");
+        if( $result === false) {
+            throw new \InvalidArgumentException('Wow Such fail.. Many problems... Such no results?');
+        }
+
+        echo "<pre>";
+        while($rowRez = $this->container->get('food.mssql')->fetchArray($result)) {
+            var_dump($rowRez);
+        }
+
+    }
+
     public function syncDisDescription($date = null)
     {
         $result = $this->initSqlConn()->query('SELECT [No_], [Description], [Search Description] FROM '.$this->getItemsTable()." WHERE LEN([No_]) > 3");

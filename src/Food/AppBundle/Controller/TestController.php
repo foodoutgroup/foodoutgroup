@@ -129,7 +129,8 @@ class TestController extends Controller
     {
 
         $navs = $this->get('food.nav');
-        $navs->syncDisDescription();
+        $navs->getOrderHeader(1592);
+        $navs->getOrderHeader(1593);
 
         die("MOJO");
     }
