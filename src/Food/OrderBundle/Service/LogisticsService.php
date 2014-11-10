@@ -35,6 +35,10 @@ class LogisticsService extends ContainerAware
         'local.card' => 'local.card',
         'paysera' => 'prepaid',
         'banklink' => 'prepaid',
+        'swedbank-gateway' => 'prepaid',
+        'swedbank-credit-card-gateway' => 'prepaid',
+        'seb-banklink' => 'prepaid',
+        'nordea-banklink' => 'prepaid'
     );
 
     /**

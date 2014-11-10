@@ -33,6 +33,7 @@ class ReportService extends ContainerAware
 
         $orderData = $orderRepo->getOrderCountByDay($dateFrom, $dateTo);
         $orderCanceledData = $orderRepo->getOrderCountByDay($dateFrom, $dateTo, OrderService::$status_canceled);
+        $orderMobileData = $orderRepo->getOrderCountByDay($dateFrom, $dateTo, null, true);
 
         $orderGraphData = $this->fillEmptyDays(
             $this->remapDataForGraph($orderData, 'report_day', 'order_count'),
@@ -41,6 +42,12 @@ class ReportService extends ContainerAware
         );
         $orderCancelGraphData = $this->fillEmptyDays(
             $this->remapDataForGraph($orderCanceledData, 'report_day', 'order_count'),
+            $dateFrom,
+            $dateTo
+        );
+
+        $orderMobileCountGraphData = $this->fillEmptyDays(
+            $this->remapDataForGraph($orderMobileData, 'report_day', 'order_count'),
             $dateFrom,
             $dateTo
         );
@@ -56,6 +63,11 @@ class ReportService extends ContainerAware
                 "data" => array_values($orderCancelGraphData),
                 'type' => 'spline',
             ),
+            array(
+                'name' => 'Mobile orders',
+                'data' => array_values($orderMobileCountGraphData),
+                'type' => 'spline'
+            )
         );
 
         $ob = new Highchart();

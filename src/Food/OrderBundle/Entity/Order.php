@@ -272,6 +272,13 @@ class Order
      */
     private $version;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="mobile", type="boolean", nullable=true)
+     */
+    private $mobile = false;
+
+
     public function __toString()
     {
         if ($this->getId()) {
@@ -1409,6 +1416,29 @@ class Order
     public function getVersion()
     {
         return $this->version;
+    }
+
+    /**
+     * Set mobile
+     *
+     * @param boolean $mobile
+     * @return Order
+     */
+    public function setMobile($mobile)
+    {
+        $this->mobile = $mobile;
+    
+        return $this;
+    }
+
+    /**
+     * Get mobile
+     *
+     * @return boolean 
+     */
+    public function getMobile()
+    {
+        return $this->mobile;
     }
 
     /**

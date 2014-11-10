@@ -326,7 +326,7 @@ class OrderRepository extends EntityRepository
     {
         $orderStatus = OrderService::$status_completed;
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
-        $dateTo = $dateTo->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 23:59:59");
 
         $placesFilter = '';
         if (!empty($placeIds)) {
@@ -374,14 +374,14 @@ class OrderRepository extends EntityRepository
      * @param string $orderStatus
      * @return array
      */
-    public function getOrderCountByDay($dateFrom, $dateTo, $orderStatus=null)
+    public function getOrderCountByDay($dateFrom, $dateTo, $orderStatus=null, $mobile=false)
     {
         if (empty($orderStatus)) {
             $orderStatus = OrderService::$status_completed;
         }
 
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
-        $dateTo = $dateTo->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 23:59:59");
 
         $query = "
           SELECT
@@ -391,6 +391,7 @@ class OrderRepository extends EntityRepository
           WHERE
             o.order_status = '{$orderStatus}'
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
+            ".($mobile ? 'AND mobile=1':'')."
           GROUP BY DATE_FORMAT(o.order_date, '%m-%d')
           ORDER BY DATE_FORMAT(o.order_date, '%m-%d') ASC
         ";

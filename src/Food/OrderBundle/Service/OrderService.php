@@ -222,6 +222,11 @@ class OrderService extends ContainerAware
         return $this->context;
     }
 
+    public function getEventDispatcher()
+    {
+        return $this->container->get('event_dispatcher');
+    }
+
     /**
      * @param int $placeId
      * @param PlacePoint $placePoint
@@ -750,6 +755,14 @@ class OrderService extends ContainerAware
 
     }
 
+    public function logOrderForNav(Order $order = null)
+    {
+        $event = new NavOrderEvent($order);
+
+        $this->getEventDispatcher()
+             ->dispatch(NavOrderEvent::LOG_ORDER, $event);
+    }
+
     /**
      * @throws \Exception
      */
@@ -762,6 +775,9 @@ class OrderService extends ContainerAware
             $this->order->setLastUpdated(new \DateTime("now"));
             $this->getEm()->persist($this->order);
             $this->getEm()->flush();
+
+            // log order data (if we have listeners)
+            $this->logOrderForNav($this->order);
         }
     }
 
@@ -929,6 +945,12 @@ class OrderService extends ContainerAware
         $order->setPaymentMethod($method);
 
         $this->logPayment($order, 'payement method change', sprintf('Method changed from "%s" to "%s"', $oldMethod, $method));
+    }
+
+    public function setMobileOrder($isMobile = true)
+    {
+        $order = $this->getOrder();
+        $order->setMobile($isMobile);
     }
 
     /**

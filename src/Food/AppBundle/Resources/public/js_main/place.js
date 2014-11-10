@@ -22,7 +22,8 @@ var Place = {
     informationTabOpened: false,
     translations: {
         'payments_cash': 'grynais',
-        'payments_card': 'kortele'
+        'payments_card': 'kortele',
+        'payments_online': 'pavedimu'
     },
 
     /**
@@ -142,20 +143,19 @@ var Place = {
                         // dont brake stuff, please
                         return;
                     }
+
                     Place.lastPointData = data;
                     // TODO translation
-                    var payments = '';
-                    if (data.allowCash) {
-                        payments += Place.translations.payments_cash;
-                    }
-                    if (data.allowCard) {
-                        if (payments != '') {
-                            payments += ', ';
-                        }
-                        payments += Place.translations.payments_card;
-                    }
-                    var paymentsDataField  =$('.ico-payments');
-                    paymentsDataField.find('.payments-data').html(payments);
+                    var payments = [];
+
+                    if (data.allowCash) payments.push(Place.translations.payments_cash);
+                    if (data.allowCard) payments.push(Place.translations.payments_card);
+                    if (data.allowInternetPayments) payments.push(Place.translations.payments_online);
+
+                    var paymentsDataField = $('.ico-payments');
+                    paymentsDataField.find('.payments-data')
+                                     .html(payments.join(', '));
+
                     if (paymentsDataField.hasClass('hidden')) {
                         paymentsDataField.removeClass('hidden');
                     }

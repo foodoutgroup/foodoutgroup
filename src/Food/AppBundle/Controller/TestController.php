@@ -127,6 +127,16 @@ class TestController extends Controller
 
     public function nav1Action()
     {
+
+        $navs = $this->get('food.nav');
+        $navs->getOrderHeader(1592);
+        $navs->getOrderHeader(1593);
+
+        die("MOJO");
+    }
+
+    public function nav12Action()
+    {
         $navs = $this->get('food.nav');
         $client = $navs->getWSConnection();
         $return = $client->FoodOutUpdatePrices(array('pInt' =>2000002044));

@@ -219,9 +219,17 @@
                 <source>admin.dish_options</source>
                 <target>Patiekalų priedai</target>
             </trans-unit>
+            <trans-unit id="admin.dish_option.infocode">
+                <source>admin.dish_option.infocode</source>
+                <target>Infokodas</target>
+            </trans-unit>
             <trans-unit id="admin.dish_option.code">
                 <source>admin.dish_option.code</source>
                 <target>Sis. kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.dish_option.sub_code">
+                <source>admin.dish_option.sub_code</source>
+                <target>Sub.Sis. kodas</target>
             </trans-unit>
             <trans-unit id="admin.dish_option.group_name">
                 <source>admin.dish_option.group_name</source>
