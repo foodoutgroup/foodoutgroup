@@ -2,6 +2,7 @@
 
 namespace Food\AppBundle\Utils;
 
+use Food\AppBundle\Entity\Param;
 use Food\AppBundle\Traits;
 
 class Misc
@@ -180,5 +181,46 @@ class Misc
             'mainPart' => $mainPart,
             'minorPart' => $minorPart,
         );
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     * @throws \Exception
+     */
+    public function getParam($name)
+    {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $parameter = $em->getRepository('Food\AppBundle\Entity\Param')->findOneBy(array('param' => $name));
+
+        if (!$parameter instanceof Param) {
+            throw new \Exception('Parameter not found');
+        }
+
+        return $parameter->getValue();
+    }
+
+    /**
+     * @param string $name
+     * @param string|array|int $value
+     */
+    public function setParam($name, $value)
+    {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $parameter = $em->getRepository('Food\AppBundle\Entity\Param')->findOneBy(array('param' => $name));
+
+        if (!$parameter instanceof Param) {
+            $parameter = new Param();
+            $parameter->setParam($name);
+        }
+
+        if (is_array($value)) {
+            $value = serialize($value);
+        }
+
+        $parameter->setValue($value);
+
+        $em->persist($parameter);
+        $em->flush();
     }
 }

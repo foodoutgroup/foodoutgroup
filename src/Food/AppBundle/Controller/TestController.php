@@ -167,10 +167,11 @@ class TestController extends Controller
     public function pdfAction()
     {
         $os = $this->get('food.order');
+        $is = $this->get('food.invoice');
 
-        $os->getOrderById(243);
+        $order = $os->getOrderById(985);
 
-        $path = $os->generateUserInvoice();
+        $path = $is->generateUserInvoice($order);
 
         return new Response(
             'Path: '.$path

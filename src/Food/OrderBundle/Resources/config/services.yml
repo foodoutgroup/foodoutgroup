@@ -51,6 +51,12 @@ services:
             - [setPayseraBiller, [@food.paysera_biller]]
             - [setLocalBiller, [@food.local_biller]]
 
+    food.invoice:
+        class: Food\OrderBundle\Service\InvoiceService
+        arguments: []
+        calls:
+            - [setContainer, ["@service_container"]]
+
     food.accounting:
         class: Food\OrderBundle\Service\AccountingService
         arguments: []

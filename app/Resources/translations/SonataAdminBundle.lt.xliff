@@ -457,6 +457,10 @@
                 <source>admin.point.alt_email</source>
                 <target>Papild. el.paštas</target>
             </trans-unit>
+            <trans-unit id="admin.point.invoice_email">
+                <source>admin.point.invoice_email</source>
+                <target>Buhalt. el.paštas</target>
+            </trans-unit>
             <trans-unit id="admin.point.city">
                 <source>admin.point.city</source>
                 <target>Miestas</target>

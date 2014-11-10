@@ -27,6 +27,7 @@
         <table>
             <tr>
                 <th>#</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.sf_number{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.time{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.place{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.place_point{% endtrans %}</th>
@@ -49,6 +50,7 @@
                 {% set delivery_no_vat =  (order.place.deliveryPrice / (( vat_size / 100 ) + 1))|round(2) %}
                 <tr>
                     <td>{{ order.id }}</td>
+                    <td>{{ order.sfSeries }} {{ order.sfNumber }}</td>
                     <td>{{ order.orderDate|date("H:i") }}</td>
                     <td>{{ order.placeName }}</td>
                     <td>{{ order.placePointAddress }}, {{ order.placePointCity }}</td>
@@ -90,6 +92,7 @@
         <table>
             <tr>
                 <th>#</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.sf_number{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.time{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.place{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.place_point{% endtrans %}</th>
@@ -111,6 +114,7 @@
                 {% set delivery_no_vat =  (order.place.deliveryPrice / (( vat_size / 100 ) + 1))|round(2) %}
                 <tr>
                     <td>{{ order.id }}</td>
+                    <td>{{ order.sfSeries }} {{ order.sfNumber }}</td>
                     <td>{{ order.orderDate|date("H:i") }}</td>
                     <td>{{ order.placeName }}</td>
                     <td>{{ order.placePointAddress }}, {{ order.placePointCity }}</td>
@@ -145,6 +149,7 @@
         <table>
             <tr>
                 <th>#</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.sf_number{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.time{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.place{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.place_point{% endtrans %}</th>
@@ -164,6 +169,7 @@
                 {% set delivery_no_vat =  0 %}
                 <tr>
                     <td>{{ order.id }}</td>
+                    <td>{{ order.sfSeries }} {{ order.sfNumber }}</td>
                     <td>{{ order.orderDate|date("H:i") }}</td>
                     <td>{{ order.placeName }}</td>
                     <td>{{ order.placePointAddress }}, {{ order.placePointCity }}</td>

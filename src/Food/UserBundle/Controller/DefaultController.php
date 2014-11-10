@@ -32,7 +32,7 @@ class DefaultController extends Controller
      */
     public function registerCreateAction(Request $request)
     {
-        $formFactory = $this->container->get('fos_user.registration.form.factory');
+        $form = $this->container->get('fos_user.registration.form');
         $userManager = $this->container->get('fos_user.user_manager');
         $dispatcher = $this->container->get('event_dispatcher');
         $translator = $this->container->get('translator');
@@ -49,7 +49,7 @@ class DefaultController extends Controller
             return $event->getResponse();
         }
 
-        $form = $formFactory->createForm();
+//        $form = $formFactory->createForm();
         $form->setData($user);
         $form->bind($request);
 
@@ -59,7 +59,7 @@ class DefaultController extends Controller
         if ($existingUser) {
             $user = $existingUser;
 
-            $form = $formFactory->createForm();
+//            $form = $formFactory->createForm();
             $form->setData($user);
             $form->bind($request);
         }
@@ -136,8 +136,7 @@ class DefaultController extends Controller
      */
     public function registerAction(Request $request)
     {
-        $formFactory = $this->container->get('fos_user.registration.form.factory');
-        $form = $formFactory->createForm();
+        $form = $this->container->get('fos_user.registration.form');
 
         return $this->render(
             'FoodUserBundle:Default:register.html.twig',

@@ -25,6 +25,7 @@ class PlacePointFullAdmin extends FoodAdmin
             ->add('email', 'text', array('label' => 'admin.point.email', 'required' => false))
             ->add('alt_email1', 'text', array('label' => 'admin.point.alt_email', 'required' => false))
             ->add('alt_email2', 'text', array('label' => 'admin.point.alt_email', 'required' => false))
+            ->add('invoice_email', 'text', array('label' => 'admin.point.invoice_email', 'required' => false))
             //->add('coords', 'text', array('label' => 'admin.point.coords'))
             ->add('delivery_time', 'text', array('label' => 'admin.point.devtime'))
             ->add('lat', 'text', array('label' => 'admin.point.lat','attr'=>array('placeholder'=>'xx.xxxxx')))

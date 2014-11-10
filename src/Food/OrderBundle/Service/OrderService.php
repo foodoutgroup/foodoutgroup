@@ -3,7 +3,7 @@
 namespace Food\OrderBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\QueryBuilder;
+use Food\AppBundle\Entity\Driver;
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Dish;
 use Food\DishesBundle\Entity\Place;
@@ -21,6 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
+use Food\OrderBundle\Service\Events\NavOrderEvent;
 
 class OrderService extends ContainerAware
 {
@@ -974,6 +975,12 @@ class OrderService extends ContainerAware
         $this->saveOrder();
     }
 
+    /**
+     * @param Order $order
+     * @param string $status
+     * @param string $message
+     * @throws \InvalidArgumentException
+     */
     public function setPaymentStatusWithoutSave($order, $status, $message = null)
     {
         if (!$this->isAllowedPaymentStatus($status)) {
@@ -986,6 +993,18 @@ class OrderService extends ContainerAware
 
         $oldStatus = $order->getPaymentStatus();
         $order->setPaymentStatus($status);
+
+        if ($status == self::$paymentStatusComplete) {
+            $miscService = $this->container->get('food.app.utils.misc');
+
+            $sfNumber = (int)$miscService->getParam('sf_next_number');
+            $order->setSfSeries($this->container->getParameter('invoice.series'));
+            $order->setSfNumber($sfNumber);
+
+            $miscService->setParam('sf_next_number', ($sfNumber+1));
+
+            $this->container->get('food.invoice')->addInvoiceToSend($order);
+        }
 
         if ($status == self::$paymentStatusError) {
             $order->setLastPaymentError($message);
@@ -1259,6 +1278,10 @@ class OrderService extends ContainerAware
         $this->getEm()->persist($log);
     }
 
+    /**
+     * @param Driver $driver
+     * @return array|\Food\OrderBundle\Entity\Order[]
+     */
     public function getOrdersForDriver($driver)
     {
         $em = $this->container->get('doctrine')->getManager();
@@ -1394,6 +1417,9 @@ class OrderService extends ContainerAware
         }
     }
 
+    /**
+     * @return void
+     */
     public function informPlaceCancelAction()
     {
         $messagingService = $this->container->get('food.messages');
@@ -1665,42 +1691,6 @@ class OrderService extends ContainerAware
 
         $message->setBody($emailMessageText);
         $mailer->send($message);
-    }
-
-
-    public function sendUserInvoice()
-    {
-
-    }
-
-    public function generateUserInvoice()
-    {
-        if (!$this->getOrder() instanceof Order) {
-            throw new \InvalidArgumentException('Cannot generate invoice PDF without order');
-        }
-
-        $filename = __DIR__.'/../../../../web/test.pdf';
-
-        $this->container->get('knp_snappy.pdf')->generateFromHtml(
-            $this->container->get('templating')->render(
-                'FoodOrderBundle:Default:invoice.html.twig',
-                array(
-                    'order'  => $this->getOrder()
-                )
-            ),
-            $filename
-        );
-
-        return $filename;
-    }
-
-    protected function removeUserInvoice($filename)
-    {
-        if (file_exists($filename)) {
-            unlink($filename);
-        } else {
-            throw new \InvalidArgumentException('User Invoice does not exist. Can not delete');
-        }
     }
 
     /**

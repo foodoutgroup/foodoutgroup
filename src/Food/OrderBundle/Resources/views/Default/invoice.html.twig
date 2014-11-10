@@ -8,100 +8,139 @@
             border-spacing: 1px;
         }
         .data-table td {
-            border: 1px solid #000000;;
+            border: 1px solid #000000;
+            padding-left: 5px;
         }
-        .data-table td.no-border {
+        .data-table td.no-border,
+        .data-table tr.no-border-line td {
             border: none;
+        }
+        .data-table td.narrow_col {
+            width: 50px;
+            text-align: center;
+        }
+        .data-table td.sum_col {
+            text-align: right;
+            padding-right: 5px;
+            width: 70px;
         }
     </style>
 </head>
 <body>
 <div style="text-align: center">
-    <h1>PVM SĄSKAITA-FAKTŪRA</h1>
+    <h1>{% trans %}order.invoice.invoice_title{% endtrans %}</h1>
     <br />
-    <h3>Serija {{ invoice_series }} Nr. 00342</h3>
+    <h3>{% trans %}order.invoice.series{% endtrans %} {{ order.sfSeries }} {% trans %}order.invoice.number{% endtrans %} {{ order.sfNumber }}</h3>
 </div>
 <br />
 <br />
 <div style="width: 100%;">
     <div style="display: inline-block; width: 49%;">
-        PARDAVĖJAS<br />
-        UAB FOODOUT.LT<br />
+        {% trans %}order.invoice.seller{% endtrans %}<br />
+        {% trans %}order.invoice.foodout_company_name{% endtrans %}<br />
         <br />
-        Laisvės pr. 77, Vilnius<br />
-        Įmonės kodas ******<br />
-        PVM mok.kodas ******<br />
-        Swedbank AB<br />
-        Banko kodas 73000<br />
-        A/s ************************<br />
+        {% trans %}order.invoice.foodout_address{% endtrans %}<br />
+        {% trans %}order.invoice.company_code{% endtrans %} {% trans %}order.invoice.foodout_company_code{% endtrans %}<br />
+        {% trans %}order.invoice.vat_num{% endtrans %} {% trans %}order.invoice.foodout_vat_code{% endtrans %}<br />
+        {% trans %}order.invoice.foodout_bank{% endtrans %}<br />
+        {% trans %}order.invoice.bank_code{% endtrans %} {% trans %}order.invoice.foodout_bank_code{% endtrans %}<br />
+        A/s {% trans %}order.invoice.foodout_bank_account{% endtrans %}<br />
     </div>
-    <div style="display: inline-block; width: 49%;">
-        PIRKĖJAS<br />
-        Jonas Jonaitis<br />
+    <div style="display: inline-block; width: 49%; vertical-align: top;">
+        {% trans %}order.invoice.buyer{% endtrans %}<br />
+        {{ order.user.fullName }}<br />
         <br />
-        Vytenio g. 15<br />
-        Vilnius<br />
+        {{ order.addressId.address|capitalize }}<br />
+        {{ order.addressId.city }}<br />
         <br />
-        Dok.data: {{ order.orderDate|date("Y m d") }}<br />
+        <br />
+        <br />
+        {% trans %}order.invoice.document_date{% endtrans %}: {{ order.orderDate|date("Y m d") }}<br />
     </div>
 </div>
 <br />
+<br />
 <table class="data-table">
     <tr>
-        <td>Eil. Nr.</td>
-        <td>Pavadinimas</td>
-        <td>Mato vnt.</td>
-        <td>Kiekis</td>
-        <td>Kaina</td>
-        <td>Suma, Lt</td>
+        <td class="narrow_col">{% trans %}order.invoice.line_num{% endtrans %}</td>
+        <td>{% trans %}order.invoice.product_name{% endtrans %}</td>
+        <td style="width: 285px;">{% trans %}order.invoice.measure_name{% endtrans %}</td>
+        <td class="narrow_col">{% trans %}order.invoice.quantity{% endtrans %}</td>
+        <td class="sum_col">{% trans %}order.invoice.price{% endtrans %}</td>
+        <td class="sum_col">{% trans %}order.invoice.sum{% endtrans %}, {{ currency_display }}</td>
         <td class="no-border"></td>
     </tr>
     {% for dish in order.details %}
-    <tr>
-        <td>{{ loop.index }}</td>
-        <td>{{ dish.dishName }}</td>
-        <td>{{ dish.dishUnitName }}</td>
-        <td>{{ dish.quantity }}</td>
-        <td>{{ dish.price }}</td>
-        <td>{{ dish.price * dish.quantity }}</td>
-        <td class="no-border"></td>
-    </tr>
+        <tr class="no-border-line">
+            <td class="narrow_col">{{ loop.index }}</td>
+            <td>{{ dish.dishName }}</td>
+            <td>{{ dish.dishUnitName }}</td>
+            <td class="narrow_col">{{ dish.quantity }}</td>
+            <td class="sum_col">{{ dish.price }}</td>
+            <td class="sum_col">{{ dish.price * dish.quantity }}</td>
+            <td class="no-border sum_col"></td>
+        </tr>
     {% endfor %}
-    {# TODO Itraukti pristatymo kaina #}
-    {% set sum_no_vat = ((order.total) / (( vat_size / 100 ) + 1))|round(2) %}
-    <tr>
-        <td colspan="2">Iš viso:</td>
+
+    {% set sum_no_vat = ((order.total - order.place.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
+
+    {% if order.deliveryType == 'deliver' %}
+        {% set sum_no_vat = ((order.total - order.place.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
+        {% set delivery_no_vat =  (order.place.deliveryPrice / (( vat_size / 100 ) + 1))|round(2) %}
+    {% else %}
+        {% set sum_no_vat = ((order.total) / (( vat_size / 100 ) + 1))|round(2) %}
+        {% set delivery_no_vat =  0 %}
+    {% endif %}
+
+    {% set vat_sum = order.total - sum_no_vat - delivery_no_vat %}
+
+    <tr class="no-border-line"><td colspan="7">&nbsp;</td></tr>
+    <tr class="no-border-line">
         <td></td>
         <td></td>
         <td></td>
-        <td>{{ sum_no_vatl|number_format(2, ',', ' ') }}</td>{# TODO - su ir be pristatymo turi skirtis :) #}
-        <td>354 &euro;</td>
+        <td></td>
+        <td>{% trans %}order.invoice.sum_no_vat{% endtrans %}:</td>
+        <td class="sum_col">{{ sum_no_vat|number_format(2, ',', ' ') }} {{ currency_display }}</td>
+        <td class="sum_col">&euro; {{ misc_utils.euro(sum_no_vat) }}</td>
     </tr>
-    <tr>
-        <td colspan="2">PVM {{ vat_size }}%</td>
+    {% if order.deliveryType == 'deliver' %}
+        <tr class="no-border-line">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{% trans %}order.invoice.delivery{% endtrans %}</td>
+            <td class="sum_col">{{ delivery_no_vat|number_format(2, ',', ' ') }} {{ currency_display }}</td>
+            <td class="sum_col">&euro; {{ misc_utils.euro(order.place.deliveryPrice) }}</td>
+        </tr>
+    {% endif %}
+
+    <tr class="no-border-line">
         <td></td>
         <td></td>
         <td></td>
-        <td>220,98</td>
-        <td>70 &euro;</td>
+        <td></td>
+        <td>{% trans %}order.invoice.vat{% endtrans %} {{ vat_size }}%</td>
+        <td class="sum_col">{{ vat_sum|number_format(2, ',', ' ') }} {{ currency_display }}</td>
+        <td class="sum_col">&euro; {{ misc_utils.euro(vat_sum) }}</td>
     </tr>
-    <tr>
-        <td colspan="2">Moėti viso:</td>
+    <tr class="no-border-line">
         <td></td>
         <td></td>
         <td></td>
-        <td>{{ order.total|number_format(2, ',', ' ') }}</td>
-        <td>&euro;{{  misc_utils.getEuro(order.total)|number_format(2, ',', ' ')}}</td>
+        <td></td>
+        <td style="border-top: 1px solid black;">{% trans %}order.invoice.sum_total{% endtrans %}:</td>
+        <td class="sum_col" style="border-top: 1px solid black;">{{ order.total|number_format(2, ',', ' ') }} {{ currency_display }}</td>
+        <td class="sum_col" style="border-top: 1px solid black;">&euro;{{  misc_utils.getEuro(order.total)|number_format(2, ',', ' ') }}</td>
     </tr>
 </table>
 <br />
 <br />
-<div>Suma žodžiais: {{ misc_utils.priceToText(order.total)|capitalize }}</div>
-<br />
-<div>Sąskaitą išrašė: </div>
+<div>{% trans %}order.invoice.sum_words{% endtrans %}: {{ misc_utils.priceToText(order.total)|capitalize }}</div>
 <br />
 <br />
 <br />
-<div>Sąskaitą gavo: __________________________________________________________</div>
+<div>{% trans %}order.invoice.invoice_receiver{% endtrans %}: __________________________________________________________</div>
 </body>
 </html>

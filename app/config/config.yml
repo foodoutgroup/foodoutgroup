@@ -81,7 +81,10 @@ parameters:
     # nordea banklink
     nordea.banklink.rcv_id: 303134580
     nordea.banklink.mac: C5IUBtC5eriCYGbIYhhIV4v830k14uSn
-    invoice.series: FOE
+    # nordea.banklink.rcv_id: 12345678LT
+    # nordea.banklink.mac: LEHTI
+    fos_user.template.engine: 'twig'
+    invoice.series: FOO
 
 framework:
     #esi:             ~
