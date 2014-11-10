@@ -328,13 +328,14 @@ class NavService extends ContainerAware
 
     private function _processLines(Order $order, $orderNewId)
     {
-        $theKey = 0;
+        $theKey = 1;
         foreach ($order->getDetails() as $key=>$detail) {
-            $this->_processLine($detail, $orderNewId, ($key + 1));
-            $theKey = $key + 1;
+            $theKey = $this->_processLine($detail, $orderNewId, $theKey);
+            $theKey = $theKey + 1;
         }
+
         if ($order->getDeliveryType() == OrderService::$deliveryDeliver) {
-            $this->_processLineDelivery($orderNewId, ($theKey + 1));
+            $this->_processLineDelivery($orderNewId, $theKey);
         }
     }
 
@@ -370,13 +371,7 @@ class NavService extends ContainerAware
     private function _processLine(OrderDetails $detail, $orderNewId, $key)
     {
         $this->container->get('doctrine')->getManager()->refresh($detail);
-        $code = $detail->getDishSizeCode();
-        if (empty($code)) {
-            $detailOptions = $detail->getOptions();
-            if (!empty($detailOptions)) {
-                $code = $detailOptions[0]->getDishOptionCode();
-            }
-        }
+
         $desc = $detail->getDishName();
         $unitDesc = $detail->getDishUnitName();
 
@@ -407,10 +402,21 @@ class NavService extends ContainerAware
         $desc = str_replace("blyneliai", "blynel", $desc);
         $desc = str_replace(" Porcija", "", $desc);
 
+        $code = $detail->getDishSizeCode();
+        if (empty($code)) {
+            $detailOptions = $detail->getOptions();
+            if (!empty($detailOptions)) {
+                $code = $detailOptions[0]->getDishOptionCode();
+                $optionIdUsed = 0;
+            }
+        }
+
+
         $data = $this->container->get('doctrine')->getRepository('FoodOrderBundle:NavItems')->find($code);
         if ($data) {
             $desc = "'".$data->getDescription()."'";
         }
+        $optionIdUsed = -1;
 
         $dataToPut = array(
             'Order No_' => $orderNewId,
@@ -426,14 +432,44 @@ class NavService extends ContainerAware
             'Payment' => $detail->getPrice() * $detail->getQuantity(),
             'Value' => "''"
         );
-
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
-
         $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
 
         @mail("paulius@foodout.lt", "[SQL Line Query]#".$key, $query, "FROM: info@foodout.lt");
-
         $sqlSS = $this->initSqlConn()->query($query);
+
+        $okeyCounter = $key;
+        foreach ($detail->getOptions() as $okey=>$opt) {
+            if ($okey != $optionIdUsed) {
+                $okeyCounter++;
+                $code = $opt->getDishOptionCode();
+                $desc = $opt->getDishOptionName();
+                if ($opt->getDishOptionId()->getInfocode()) {
+                    $desc = $opt->getDishOptionId()->getSubCode();
+                }
+
+                $dataToPut = array(
+                    'Order No_' => $orderNewId,
+                    'Line No_' => $okeyCounter,
+                    'Entry Type' => 1,
+                    'No_' => "'".$code."'",
+                    'Description' => "'".$desc."'",
+                    'Quantity' => 0,
+                    'Price' => 0,
+                    'Parent Line' => $key,
+                    'Amount' => 0,
+                    'Discount Amount' => 0,
+                    'Payment' => 0,
+                    'Value' => "''"
+                );
+                $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
+                $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
+                @mail("paulius@foodout.lt", "[SQL Line Query SUBQ]#".$key."-".$okey, $query, "FROM: info@foodout.lt");
+                $sqlSS = $this->initSqlConn()->query($query);
+            }
+        }
+        $key = $okeyCounter;
+        return $key;
     }
 
     /**
@@ -569,10 +605,9 @@ class NavService extends ContainerAware
                 } else {
                     $optionCode = $option->getDishOptionId()->getCode();
                     $description = "";
-                    if(strpos($optionCode, '--') !== false) {
-                        list($preCode, $posCode) = explode("--", $optionCode);
-                        $optionCode = $preCode;
-                        $description = $posCode;
+                    if($option->getDishOptionId()->getInfocode()) {
+                        $optionCode = $option->getDishOptionId()->getCode();
+                        $description = $option->getDishOptionId()->getSubCode();
                     } else {
                         $description = $option->getDishOptionId()->getName();
                     }
@@ -610,6 +645,7 @@ class NavService extends ContainerAware
         $requestXml.= "</Lines>\n";
 
         $requestXml = iconv('utf-8', 'cp1257', $requestXml);
+
         ob_start();
         @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQUEST", print_r($requestData, true), "FROM: info@foodout.lt");
         $response = $this->getWSConnection()->FoodOutValidateOrder(

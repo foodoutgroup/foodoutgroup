@@ -23,9 +23,12 @@ class DishOptionAdmin extends FoodAdmin
                     'description' => array('label' => 'label.description', 'required' => false),
                 ),
             )
-        )->add('code', null, array('label' => 'admin.dish_option.code', 'required' => false))
-         ->add('groupName', null, array('label' => 'admin.dish_option.group_name'))
-         ->add('singleSelect', 'checkbox', array('label' => 'admin.dish_option.single_select', 'required' => false));
+        )
+        ->add('infocode', 'checkbox', array('label' => 'admin.dish_option.infocode', 'required' => false,))
+        ->add('code', null, array('label' => 'admin.dish_option.code', 'required' => false))
+        ->add('subCode', null, array('label' => 'admin.dish_option.sub_code', 'required' => false))
+        ->add('groupName', null, array('label' => 'admin.dish_option.group_name'))
+        ->add('singleSelect', 'checkbox', array('label' => 'admin.dish_option.single_select', 'required' => false));
 
         if ($this->isAdmin()) {
             $formMapper->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
@@ -41,7 +44,9 @@ class DishOptionAdmin extends FoodAdmin
         $datagridMapper
             ->add('place')
             ->add('name', null, array('label' => 'admin.dish_option.name'))
+            ->add('infocode', null, array('label' => 'admin.dish_option.infocode'))
             ->add('code', null, array('label' => 'admin.dish_option.code'))
+            ->add('subCode', null, array('label' => 'admin.dish_option.sub_code'))
             ->add('price', null, array('label' => 'admin.dish_option.price'))
             ->add('createdBy', null, array('label' => 'admin.created_by'))
 //            ->add(
@@ -79,6 +84,9 @@ class DishOptionAdmin extends FoodAdmin
             ->add('place')
             ->add('price', null, array('label' => 'admin.dish_option.price'))
             ->add('singleSelect', null, array('label' => 'admin.dish_option.single_select', 'editable' => true))
+            ->add('infocode', null, array('label' => 'admin.dish_option.infocode', 'editable' => true))
+            ->add('code', null, array('label' => 'admin.dish_option.code', 'editable' => true))
+            ->add('subCode', null, array('label' => 'admin.dish_option.sub_code','editable' => true))
             ->add('groupName', null, array('label' => 'admin.dish_option.group_name', 'editable' => true))
             ->add('createdBy', null, array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))

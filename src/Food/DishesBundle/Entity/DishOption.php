@@ -40,10 +40,23 @@ class DishOption implements Translatable
     private $name;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="infocode", type="boolean", nullable=true)
+     */
+    private $infocode;
+
+    /**
      * @var string
      * @ORM\Column(name="code", type="string", length=45, nullable=true)
      */
     private $code;
+
+    /**
+     * @var string
+     * @ORM\Column(name="sub_code", type="string", length=45, nullable=true)
+     */
+    private $subCode;
 
     /**
      * @var string
@@ -589,5 +602,51 @@ class DishOption implements Translatable
     public function getGroupName()
     {
         return $this->groupName;
+    }
+
+    /**
+     * Set infocode
+     *
+     * @param boolean $infocode
+     * @return DishOption
+     */
+    public function setInfocode($infocode)
+    {
+        $this->infocode = $infocode;
+    
+        return $this;
+    }
+
+    /**
+     * Get infocode
+     *
+     * @return boolean 
+     */
+    public function getInfocode()
+    {
+        return $this->infocode;
+    }
+
+    /**
+     * Set subCode
+     *
+     * @param string $subCode
+     * @return DishOption
+     */
+    public function setSubCode($subCode)
+    {
+        $this->subCode = $subCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get subCode
+     *
+     * @return string 
+     */
+    public function getSubCode()
+    {
+        return $this->subCode;
     }
 }

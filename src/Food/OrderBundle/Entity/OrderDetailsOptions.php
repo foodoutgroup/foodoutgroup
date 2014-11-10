@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Food\DishesBundle\Entity\DishOption;
 
 /**
  * @ORM\Table(name="order_details_options")
@@ -63,7 +64,7 @@ class OrderDetailsOptions
     /**
      * Set dish_option_name
      *
-     * @param string $dishOptionName
+     * @param DishOption $dishOptionName
      * @return OrderDetailsOptions
      */
     public function setDishOptionName($dishOptionName)
@@ -155,7 +156,7 @@ class OrderDetailsOptions
     /**
      * Set dish_option_id
      *
-     * @param \DishOption $dishOptionId
+     * @param DishOption $dishOptionId
      * @return OrderDetailsOptions
      */
     public function setDishOptionId($dishOptionId)
@@ -168,7 +169,7 @@ class OrderDetailsOptions
     /**
      * Get dish_option_id
      *
-     * @return integer 
+     * @return DishOption
      */
     public function getDishOptionId()
     {
