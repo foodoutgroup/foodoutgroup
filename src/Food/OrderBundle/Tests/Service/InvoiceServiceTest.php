@@ -28,4 +28,46 @@ class InvoiceServiceTest extends WebTestCase
 
         $this->assertEquals('foodout_lt_FooTest12245.pdf', $filename);
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testAddInvoiceToSendException()
+    {
+        $invoiceService = $this->getContainer()->get('food.invoice');
+
+        $invoiceService->addInvoiceToSend(null);
+    }
+
+    // TODO Place no send invoice test
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGenerateUserInvoiceException()
+    {
+        $invoiceService = $this->getContainer()->get('food.invoice');
+
+        $invoiceService->generateUserInvoice(null);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testStoreUserInvoiceException()
+    {
+        $invoiceService = $this->getContainer()->get('food.invoice');
+
+        $invoiceService->storeUserInvoice(null);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSendUserInvoiceException()
+    {
+        $invoiceService = $this->getContainer()->get('food.invoice');
+
+        $invoiceService->sendUserInvoice(null);
+    }
 }

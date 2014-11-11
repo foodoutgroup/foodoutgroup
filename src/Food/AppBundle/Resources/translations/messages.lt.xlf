@@ -358,10 +358,6 @@
         <source>general.sms.new_order_in_mail</source>
         <target>Prasome pasitikrinti savo el.pasta, gavote nauja uzsakyma</target>
       </trans-unit>
-      <trans-unit id="general.sms.order_invoice" resname="general.sms.order_invoice">
-        <source>general.sms.order_invoice</source>
-        <target>Jūsų sąskaita užsakymui iš "%place_name%"</target>
-      </trans-unit>
       <trans-unit id="3d6f52993727876649fad3f9e2d5c687" resname="general.sms.driver_assigned_order">
         <source>general.sms.driver_assigned_order</source>
         <target>Priskirtas naujas uzsakymas: </target>

@@ -167,7 +167,7 @@ class TestController extends Controller
 
     public function invoiceAction()
     {
-        $order = $this->get('food.order')->getOrderById(243);
+        $order = $this->get('food.order')->getOrderById(985);
         return $this->render(
             'FoodOrderBundle:Default:invoice.html.twig',
             array('order' => $order)

@@ -53,6 +53,11 @@ class InvoiceService extends ContainerAware
             throw new \InvalidArgumentException('I need order to plan invoice generation');
         }
 
+        // Invoice sending is not turned on
+        if (!$order->getPlace()->getSendInvoice()) {
+            return;
+        }
+
         $em = $this->container->get('doctrine')->getManager();
 
         $invoiceTask = new InvoiceToSend();
@@ -85,6 +90,7 @@ class InvoiceService extends ContainerAware
 
     public function getUserInvoice($order)
     {
+        // TODO implement me
         // Get from S3
         $s3Client = $this->getS3Client();
 
@@ -191,36 +197,22 @@ class InvoiceService extends ContainerAware
             }
         }
 
-        $mailer = $this->container->get('mailer');
-        $translator = $this->container->get('translator');
-        $domain = $this->container->getParameter('domain');
+        $ml = $this->container->get('food.mailer');
 
         $fileName = $this->getInvoiceFilename($order);
         $file = 'https://s3-eu-west-1.amazonaws.com/foodout-invoice/pdf/'.$fileName;
 
+        $variables = array(
+            'uzsakymo_data' => $order->getOrderDate()->format("Y-m-d H:i"),
+            'restorano_pavadinimas' => $order->getPlaceName(),
+        );
+
         foreach ($emails as $email) {
-            $message = \Swift_Message::newInstance()
-                ->setSubject(
-                    $this->container->getParameter('title').': '
-                    .$translator->trans(
-                        'general.sms.order_invoice',
-                        array('%place_name%' => $order->getPlaceName())
-                    )
-                )
-                ->setFrom('info@'.$domain)
-            ;
-
-            $message->addTo($email);
-            $message->attach(
-                \Swift_Attachment::fromPath($file)
-            );
-
-//            // Give it a body
-//            ->setBody('Here is the message itself')
-//
-//                // And optionally an alternative body
-//                ->addPart('<q>Here is the message itself</q>', 'text/html')
-            $mailer->send($message);
+            $ml->setVariables( $variables )
+                ->setRecipient($email, $email)
+                ->addAttachment($fileName, file_get_contents($file))
+                ->setId(30019657)
+                ->send();
         }
 
         return $emails;
