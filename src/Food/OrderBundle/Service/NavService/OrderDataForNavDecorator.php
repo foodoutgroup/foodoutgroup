@@ -248,10 +248,10 @@ trait OrderDataForNavDecorator
         $query = sprintf('INSERT INTO %s %s VALUES %s',
                          $this->getOrderTableName(),
                          sprintf(
-                            "([%s])",
+                            "([%s], [ReplicationCounter])",
                             implode('], [', $this->getOrderFieldNames())),
                          sprintf(
-                            "('%s')",
+                            "('%s', 1)",
                             implode("', '", $this->getOrderValues($data))));
         return $query;
     }
@@ -290,7 +290,7 @@ trait OrderDataForNavDecorator
         // create query
         $query = sprintf('UPDATE %s SET %s WHERE %s',
                          $this->getOrderTableName(),
-                         implode(', ', $valuesForUpdate),
+                         implode(', ', $valuesForUpdate) . ', [ReplicationCounter] = [ReplicationCounter] + 1',
                          sprintf('[%s] = %s', $idField, $idValue));
 
         return $query;
