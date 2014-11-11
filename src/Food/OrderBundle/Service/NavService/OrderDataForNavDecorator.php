@@ -85,10 +85,20 @@ trait OrderDataForNavDecorator
 
         $data = new OrderDataForNav();
         $data->id = $orderAccData->getOrderId();
-        $data->date = $orderAccData->getDate();
-        $data->time = $orderAccData->getTime();
-        $data->deliveryDate = $orderAccData->getDeliveryDate();
-        $data->deliveryTime = $orderAccData->getDeliveryTime();
+        $data->date = \Maybe($orderAccData)->getOrderDate()
+                                           ->format('Y-m-d')
+                                           ->val('1754-01-01');
+        $data->time = '1754-01-01 ' .
+                      \Maybe($orderAccData)->getOrderDate()
+                                           ->format('H:i:s')
+                                           ->val('00:00:00');
+        $data->deliveryDate = \Maybe($orderAccData)->getDeliveryTime()
+                                                   ->format('Y-m-d')
+                                                   ->val('1754-01-01');
+        $data->deliveryTime = '1754-01-01 ' .
+                              \Maybe($orderAccData)->getDeliveryTime()
+                                                   ->format('H:i:s')
+                                                   ->val('00:00:00');
         $data->staff = $orderAccData->getStaff();
         $data->chain = $orderAccData->getChain();
         $data->restaurant = $orderAccData->getRestaurant();
