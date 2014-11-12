@@ -1016,7 +1016,9 @@ class OrderService extends ContainerAware
         $oldStatus = $order->getPaymentStatus();
         $order->setPaymentStatus($status);
 
-        if ($status == self::$paymentStatusComplete) {
+        // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
+        if ($status == self::$paymentStatusComplete
+            && $order->getPlace()->getSendInvoice()) {
             $miscService = $this->container->get('food.app.utils.misc');
 
             $sfNumber = (int)$miscService->getParam('sf_next_number');
