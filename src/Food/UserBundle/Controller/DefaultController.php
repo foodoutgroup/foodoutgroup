@@ -12,10 +12,11 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Form;
 use Doctrine\Common\Collections\ArrayCollection;
-use FOS\UserBundle\Event\GetResponseUserEvent;
-use FOS\UserBundle\FOSUserEvents;
-use FOS\UserBundle\Event\FormEvent;
-use FOS\UserBundle\Event\FilterUserResponseEvent;
+// TODO Jonai cia del naujos FOS versijos uzkomentavau
+//use FOS\UserBundle\Event\GetResponseUserEvent;
+//use FOS\UserBundle\FOSUserEvents;
+//use FOS\UserBundle\Event\FormEvent;
+//use FOS\UserBundle\Event\FilterUserResponseEvent;
 use Food\UserBundle\Form\Type\ProfileFormType;
 use Food\UserBundle\Form\Type\ProfileMegaFormType;
 use Food\UserBundle\Form\Type\UserAddressFormType;
@@ -34,7 +35,8 @@ class DefaultController extends Controller
     {
         $form = $this->container->get('fos_user.registration.form');
         $userManager = $this->container->get('fos_user.user_manager');
-        $dispatcher = $this->container->get('event_dispatcher');
+        // TODO Jonai cia del naujos FOS versijos uzkomentavau
+//        $dispatcher = $this->container->get('event_dispatcher');
         $translator = $this->container->get('translator');
         $notifications = $this->container->get('food.app.utils.notifications');
 
@@ -42,12 +44,13 @@ class DefaultController extends Controller
         $user->setUsername(uniqid('', true));
         $user->setEnabled(true);
 
-        $event = new GetResponseUserEvent($user, $request);
-        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, $event);
+        // TODO Jonai cia del naujos FOS versijos uzkomentavau
+//        $event = new GetResponseUserEvent($user, $request);
+//        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, $event);
 
-        if (null !== $event->getResponse()) {
-            return $event->getResponse();
-        }
+//        if (null !== $event->getResponse()) {
+//            return $event->getResponse();
+//        }
 
 //        $form = $formFactory->createForm();
         $form->setData($user);
@@ -65,8 +68,9 @@ class DefaultController extends Controller
         }
 
         if ($form->isValid() && (!$existingUser || ($existingUser && !$existingUser->getFullyRegistered()))) {
-            $event = new FormEvent($form, $request);
-            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
+            // TODO Jonai cia del naujos FOS versijos uzkomentavau
+//            $event = new FormEvent($form, $request);
+//            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
 
             // manually set these flags. ->setEnabled is especially important for password update if user exists.
             $user->setEnabled(true);
@@ -82,13 +86,15 @@ class DefaultController extends Controller
 
             $this->_notifyNewUser($user, $d['plainPassword']['first']);
 
-            if (null === $response = $event->getResponse()) {
-                $url = $this->container->get('router')->generate('food_lang_homepage');
-                $response = new Response('');
-            }
+            // TODO Jonai cia del naujos FOS versijos uzkomentavau
+//            if (null === $response = $event->getResponse()) {
+//                $url = $this->container->get('router')->generate('food_lang_homepage');
+//                $response = new Response('');
+//            }
 
             $oldSid = $request->getSession()->getId();
-            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+            // TODO Jonai cia del naujos FOS versijos uzkomentavau
+//            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
             $newSid = $request->getSession()->getId();
 
             /**
@@ -96,6 +102,8 @@ class DefaultController extends Controller
              */
             $this->get('food.cart')->migrateCartBetweenSessionIds($oldSid, $newSid);
 
+            // TODO Jonai cia del naujos FOS versijos uzkomentavau - cia hack responsas :(
+            $response = new Response('');
             return $response;
         }
 
