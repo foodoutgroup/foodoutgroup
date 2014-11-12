@@ -121,15 +121,11 @@ class CheckUndeliveredMessagesCommandTest extends \PHPUnit_Framework_TestCase
         $mailer = $this->getMockBuilder('\Swift_Mailer')
             ->disableOriginalConstructor()
             ->getMock();
-        $infobipProvider = $this->getMockBuilder('\Food\SmsBundle\Service\InfobipProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
 
         // Testable vars
         $email = 'support@niamniamas.info';
         $emails = array($email);
         $phone = '37060000000';
-        $phones = array($phone);
         $sendMessages = true;
         $sender = 'niamniamas.info monitoring';
         $errorMessage = 'ERROR: 1 undelivered messages!';

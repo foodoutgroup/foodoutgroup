@@ -88,18 +88,6 @@ class InvoiceService extends ContainerAware
         );
     }
 
-    public function getUserInvoice($order)
-    {
-        // TODO implement me
-        // Get from S3
-        $s3Client = $this->getS3Client();
-
-        // Todo
-        $invoice = $s3Client->getObject(
-            array()
-        );
-    }
-
     /**
      * @return string
      */

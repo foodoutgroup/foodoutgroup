@@ -71,7 +71,7 @@ class UsersController extends Controller
         try {
             $this->parseRequestBody($request);
             $um = $this->getUserManager();
-            $dispatcher = $this->container->get('event_dispatcher');
+//            $dispatcher = $this->container->get('event_dispatcher');
             $translator = $this->get('translator');
             $miscUtil = $this->get('food.app.utils.misc');
 
