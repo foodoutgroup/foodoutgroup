@@ -236,6 +236,13 @@ class Place extends Uploadable implements Translatable
     private $averageRating = 0;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="send_invoice", type="boolean")
+     */
+    private $sendInvoice = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="\Food\UserBundle\Entity\User", mappedBy="place")
      **/
     private $users;
@@ -1434,5 +1441,28 @@ class Place extends Uploadable implements Translatable
     public function getOnlyAlcohol()
     {
         return $this->onlyAlcohol;
+    }
+
+    /**
+     * Set sendInvoice
+     *
+     * @param boolean $sendInvoice
+     * @return Place
+     */
+    public function setSendInvoice($sendInvoice)
+    {
+        $this->sendInvoice = $sendInvoice;
+    
+        return $this;
+    }
+
+    /**
+     * Get sendInvoice
+     *
+     * @return boolean 
+     */
+    public function getSendInvoice()
+    {
+        return $this->sendInvoice;
     }
 }

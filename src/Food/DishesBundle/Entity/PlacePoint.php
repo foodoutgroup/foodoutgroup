@@ -82,6 +82,13 @@ class PlacePoint
     /**
      * @var string
      *
+     * @ORM\Column(name="invoice_email", type="string", length=128, nullable=true)
+     */
+    private $invoiceEmail;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="city", type="string", length=255)
      */
     private $city;
@@ -1391,5 +1398,28 @@ class PlacePoint
     public function getInternalCode()
     {
         return $this->internal_code;
+    }
+
+    /**
+     * Set invoiceEmail
+     *
+     * @param string $invoiceEmail
+     * @return PlacePoint
+     */
+    public function setInvoiceEmail($invoiceEmail)
+    {
+        $this->invoiceEmail = $invoiceEmail;
+    
+        return $this;
+    }
+
+    /**
+     * Get invoiceEmail
+     *
+     * @return string 
+     */
+    public function getInvoiceEmail()
+    {
+        return $this->invoiceEmail;
     }
 }

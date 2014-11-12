@@ -164,4 +164,27 @@ class TestController extends Controller
         //die('E');
         return new Response("\n\n<br><br>THIS IS THE END");
     }
+
+    public function invoiceAction()
+    {
+        $order = $this->get('food.order')->getOrderById(985);
+        return $this->render(
+            'FoodOrderBundle:Default:invoice.html.twig',
+            array('order' => $order)
+        );
+    }
+
+    public function pdfAction()
+    {
+        $os = $this->get('food.order');
+        $is = $this->get('food.invoice');
+
+        $order = $os->getOrderById(985);
+
+        $path = $is->generateUserInvoice($order);
+
+        return new Response(
+            'Path: '.$path
+        );
+    }
 }

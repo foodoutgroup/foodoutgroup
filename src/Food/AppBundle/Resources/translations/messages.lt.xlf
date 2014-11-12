@@ -875,6 +875,10 @@
         <source>reporting.daily.yesterday_orders.discount_sum</source>
         <target><![CDATA[Nuolaidos<br />suma]]></target>
       </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.sf_number" resname="reporting.daily.yesterday_orders.sf_number">
+        <source>reporting.daily.yesterday_orders.sf_number</source>
+        <target>SF numeris</target>
+      </trans-unit>
       <!-- Start of debug emails on new order -->
       <trans-unit id="general.new_order.title" resname="general.new_order.title">
           <source>general.new_order.title</source>
@@ -1085,6 +1089,14 @@
       <trans-unit id="profile.repeat_new_password" resname="profile.repeat_new_password">
           <source>profile.repeat_new_password</source>
           <target>Pakartokite naują slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="general.currency_modals" resname="general.currency_modals">
+          <source>general.currency_modals</source>
+          <target>litas|litai|litų</target>
+      </trans-unit>
+      <trans-unit id="general.currency_minor_modals" resname="general.currency_minor_modals">
+        <source>general.currency_minor_modals</source>
+        <target>centas|centai|centų</target>
       </trans-unit>
     </body>
   </file>

@@ -160,7 +160,6 @@ class LogisticsService extends ContainerAware
     {
         // TODO implement me with etaxi and other possible flows
         throw new \Exception('I are not implemented yet');
-        return array();
     }
 
     /**

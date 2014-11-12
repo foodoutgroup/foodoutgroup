@@ -256,6 +256,18 @@ class Order
     private $reminded = false;
 
     /**
+     * @var string
+     * @ORM\Column(name="sf_series", type="string", length=4, nullable=true)
+     */
+    private $sfSeries = null;
+
+    /**
+     * @var int
+     * @ORM\Column(name="sf_number", type="integer", nullable=true)
+     */
+    private $sfNumber = null;
+
+    /**
      * @ORM\Version @ORM\Column(type="integer")
      */
     private $version;
@@ -1427,5 +1439,51 @@ class Order
     public function getMobile()
     {
         return $this->mobile;
+    }
+
+    /**
+     * Set sfSeries
+     *
+     * @param string $sfSeries
+     * @return Order
+     */
+    public function setSfSeries($sfSeries)
+    {
+        $this->sfSeries = $sfSeries;
+    
+        return $this;
+    }
+
+    /**
+     * Get sfSeries
+     *
+     * @return string 
+     */
+    public function getSfSeries()
+    {
+        return $this->sfSeries;
+    }
+
+    /**
+     * Set sfNumber
+     *
+     * @param integer $sfNumber
+     * @return Order
+     */
+    public function setSfNumber($sfNumber)
+    {
+        $this->sfNumber = $sfNumber;
+    
+        return $this;
+    }
+
+    /**
+     * Get sfNumber
+     *
+     * @return integer 
+     */
+    public function getSfNumber()
+    {
+        return $this->sfNumber;
     }
 }

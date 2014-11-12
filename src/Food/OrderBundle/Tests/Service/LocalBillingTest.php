@@ -127,7 +127,7 @@ class LocalBillingTest extends \PHPUnit_Framework_TestCase {
             ->method('alert')
             ->with('-------------------------------------');
 
-        $order->expects($this->once())
+        $orderService->expects($this->once())
             ->method('setPaymentStatus')
             ->with('complete');
 

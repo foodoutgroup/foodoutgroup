@@ -3,7 +3,7 @@
 namespace Food\OrderBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\QueryBuilder;
+use Food\AppBundle\Entity\Driver;
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Dish;
 use Food\DishesBundle\Entity\Place;
@@ -997,6 +997,12 @@ class OrderService extends ContainerAware
         $this->saveOrder();
     }
 
+    /**
+     * @param Order $order
+     * @param string $status
+     * @param string $message
+     * @throws \InvalidArgumentException
+     */
     public function setPaymentStatusWithoutSave($order, $status, $message = null)
     {
         if (!$this->isAllowedPaymentStatus($status)) {
@@ -1009,6 +1015,20 @@ class OrderService extends ContainerAware
 
         $oldStatus = $order->getPaymentStatus();
         $order->setPaymentStatus($status);
+
+        // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
+        if ($status == self::$paymentStatusComplete
+            && $order->getPlace()->getSendInvoice()) {
+            $miscService = $this->container->get('food.app.utils.misc');
+
+            $sfNumber = (int)$miscService->getParam('sf_next_number');
+            $order->setSfSeries($this->container->getParameter('invoice.series'));
+            $order->setSfNumber($sfNumber);
+
+            $miscService->setParam('sf_next_number', ($sfNumber+1));
+
+            $this->container->get('food.invoice')->addInvoiceToSend($order);
+        }
 
         if ($status == self::$paymentStatusError) {
             $order->setLastPaymentError($message);
@@ -1282,6 +1302,10 @@ class OrderService extends ContainerAware
         $this->getEm()->persist($log);
     }
 
+    /**
+     * @param Driver $driver
+     * @return array|\Food\OrderBundle\Entity\Order[]
+     */
     public function getOrdersForDriver($driver)
     {
         $em = $this->container->get('doctrine')->getManager();
@@ -1417,6 +1441,9 @@ class OrderService extends ContainerAware
         }
     }
 
+    /**
+     * @return void
+     */
     public function informPlaceCancelAction()
     {
         $messagingService = $this->container->get('food.messages');
