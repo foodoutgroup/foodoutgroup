@@ -720,7 +720,7 @@
       </trans-unit>
       <trans-unit id="general.ip_banned_info" resname="general.ip_banned_info">
         <source>general.ip_banned_info</source>
-        <target><![CDATA[Atsiprašome, tačiau Jūsų IP adresas (%ip%) yra užblokuotas.<br />IP adresai blokuojami, jei: lankytojas kuria melagingus užsakymus; smeižia, įžeidžia ar kita tyčine veikla trikdo kitų lankytojų ar restoranų darbą.<br /><br />Administracijos nurodyta priežastis: "%reason%".<br /><br />Jeigu manote, jog tai įvyko per klaidą - susisiekite su mumis <strong><a href="mailto:info@foodout.lt">info@foodout.lt</a></strong> arba telefonu <strong>+370 615 96647</strong>]]></target>
+        <target><![CDATA[Atsiprašome, tačiau Jūsų IP adresas (%ip%) yra užblokuotas.<br />IP adresai blokuojami, jei: lankytojas kuria melagingus užsakymus; smeižia, įžeidžia ar kita tyčine veikla trikdo kitų lankytojų ar restoranų darbą.<br /><br />Administracijos nurodyta priežastis: "%reason%".<br /><br />Jeigu manote, jog tai įvyko per klaidą - susisiekite su mumis <strong><a href="mailto:info@foodout.lt">info@foodout.lt</a></strong> arba telefonu <strong>+370 687 44359</strong>]]></target>
       </trans-unit>
       <trans-unit id="general.raty.not_rated_yet" resname="general.raty.not_rated_yet">
         <source>general.raty.not_rated_yet</source>
@@ -752,11 +752,11 @@
       </trans-unit>
       <trans-unit id="general.cart.success" resname="general.cart.success">
         <source>general.cart.success</source>
-        <target><![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 615 96647</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
+        <target><![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 687 44359</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
       </trans-unit>
       <trans-unit id="general.cart.wait" resname="general.cart.wait">
         <source>general.cart.wait</source>
-        <target><![CDATA[Jūsų užsakymas priimtas ir bus perduotas restoranui, kai tik baigsite mokėjimą. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>"Foodout.lt"</strong> telefonu <strong>+370 615 96647</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
+        <target><![CDATA[Jūsų užsakymas priimtas ir bus perduotas restoranui, kai tik baigsite mokėjimą. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>"Foodout.lt"</strong> telefonu <strong>+370 687 44359</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
       </trans-unit>
       <trans-unit id="reporting.monthly.driver_report.title" resname="reporting.monthly.driver_report.title">
         <source>reporting.monthly.driver_report.title</source>
