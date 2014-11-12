@@ -85,10 +85,20 @@ trait OrderDataForNavDecorator
 
         $data = new OrderDataForNav();
         $data->id = $orderAccData->getOrderId();
-        $data->date = $orderAccData->getDate();
-        $data->time = $orderAccData->getTime();
-        $data->deliveryDate = $orderAccData->getDeliveryDate();
-        $data->deliveryTime = $orderAccData->getDeliveryTime();
+        $data->date = \Maybe($orderAccData)->getOrderDate()
+                                           ->format('Y-m-d')
+                                           ->val('1754-01-01');
+        $data->time = '1754-01-01 ' .
+                      \Maybe($orderAccData)->getOrderDate()
+                                           ->format('H:i:s')
+                                           ->val('00:00:00');
+        $data->deliveryDate = \Maybe($orderAccData)->getDeliveryTime()
+                                                   ->format('Y-m-d')
+                                                   ->val('1754-01-01');
+        $data->deliveryTime = '1754-01-01 ' .
+                              \Maybe($orderAccData)->getDeliveryTime()
+                                                   ->format('H:i:s')
+                                                   ->val('00:00:00');
         $data->staff = $orderAccData->getStaff();
         $data->chain = $orderAccData->getChain();
         $data->restaurant = $orderAccData->getRestaurant();
@@ -238,10 +248,10 @@ trait OrderDataForNavDecorator
         $query = sprintf('INSERT INTO %s %s VALUES %s',
                          $this->getOrderTableName(),
                          sprintf(
-                            "([%s])",
+                            "([%s], [ReplicationCounter])",
                             implode('], [', $this->getOrderFieldNames())),
                          sprintf(
-                            "('%s')",
+                            "('%s', 1)",
                             implode("', '", $this->getOrderValues($data))));
         return $query;
     }
@@ -280,7 +290,7 @@ trait OrderDataForNavDecorator
         // create query
         $query = sprintf('UPDATE %s SET %s WHERE %s',
                          $this->getOrderTableName(),
-                         implode(', ', $valuesForUpdate),
+                         implode(', ', $valuesForUpdate) . ', [ReplicationCounter] = [ReplicationCounter] + 1',
                          sprintf('[%s] = %s', $idField, $idValue));
 
         return $query;
