@@ -311,16 +311,12 @@ sonata_admin:
               admin.system:
                   items: ~
                   item_adds:
-                      - sonata.admin.sms
-                      - sonata.admin.street
-                      - sonata.admin.static
-                  roles: [ ROLE_ADMIN ]
-              admin.users:
-                  items: ~
-                  item_adds:
                       - sonata.admin.users
+                      - sonata.admin.sms
+                      - sonata.admin.static
                       - sonata.admin.newsletter_subscribers
                       - sonata.admin.banned_ips
+                      - sonata.admin.street
                   roles: [ ROLE_ADMIN ]
 #              admin.support:
 #                  items: ~
