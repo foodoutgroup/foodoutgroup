@@ -93,10 +93,6 @@ class NavService extends ContainerAware
         return $this->itemsTable;
     }
 
-
-
-
-
     /**
      * @return false|resource
      */
@@ -696,6 +692,42 @@ class NavService extends ContainerAware
                 [Order No_] IN (%s)
             ORDER BY [Order No_] DESC',
             $this->getHeaderTable(),
+            implode(', ', $orderIds)
+        );
+
+        $result = $this->initSqlConn()->query($query);
+        if( $result === false) {
+            throw new \InvalidArgumentException('No wanted orders found in Nav. How is that even possible?');
+        }
+
+        $return = array();
+        while ($rowRez = $this->container->get('food.mssql')->fetchArray($result)) {
+            $return[$this->getOrderIdFromNavId($rowRez['Order No_'])] = $rowRez;
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param Order[] $orders
+     *
+     * @return mixed
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getRecentNavOrderSums($orders)
+    {
+        $orderIds = $this->getNavIdsFromOrders($orders);
+
+        $query = sprintf(
+            '
+            SELECT [Order No_], SUM(Amount) AS total
+            FROM %s
+            WHERE
+              [Order No_] IN ( %s )
+            GROUP BY [Order No_]
+            ORDER BY [Order No_] DESC',
+            $this->getLineTable(),
             implode(', ', $orderIds)
         );
 
