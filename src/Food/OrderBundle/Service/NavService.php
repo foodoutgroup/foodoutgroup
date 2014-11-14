@@ -677,9 +677,7 @@ class NavService extends ContainerAware
     /**
      * @param Order[] $orders
      *
-     * @return mixed
-     *
-     * @throws \InvalidArgumentException
+     * @return array
      */
     public function getRecentNavOrders($orders)
     {
@@ -697,7 +695,7 @@ class NavService extends ContainerAware
 
         $result = $this->initSqlConn()->query($query);
         if( $result === false) {
-            throw new \InvalidArgumentException('No wanted orders found in Nav. How is that even possible?');
+            return array();
         }
 
         $return = array();
