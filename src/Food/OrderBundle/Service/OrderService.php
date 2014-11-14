@@ -1348,8 +1348,6 @@ class OrderService extends ContainerAware
         $placePointEmail = $placePoint->getEmail();
         $placePointAltEmail1 = $placePoint->getAltEmail1();
         $placePointAltEmail2 = $placePoint->getAltEmail2();
-        $placePointAltPhone1 = $placePoint->getAltPhone1();
-        $placePointAltPhone2 = $placePoint->getAltPhone2();
 
         $domain = $this->container->getParameter('domain');
 
@@ -1404,37 +1402,29 @@ class OrderService extends ContainerAware
 
         // Siunciam SMS tik tuo atveju, jei neperduodam per Nav'a
         if (!$order->getPlace()->getNavision()) {
-            // Siunciam sms'a
-            $logger->alert("Sending message for order to be accepted to number: ".$placePoint->getPhone().' with text "'.$messageText.'"');
             $smsSenderNumber = $this->container->getParameter('sms.sender');
+            $messagesToSend = array();
 
-            // I pagrindini nr siunciam net jei landline, kad gautume errorus jei ka..
-            $messagesToSend = array(
-                array(
-                    'sender' => $smsSenderNumber,
-                    'recipient' => $placePoint->getPhone(),
-                    'text' => $messageText
-                )
+            $orderMessageRecipients = array(
+                $placePoint->getPhone(),
+                $placePoint->getAltPhone1(),
+                $placePoint->getAltPhone2(),
             );
 
-            // Informuojame papildomais numeriais (del visa ko)
-            if (!empty($placePointAltPhone1) && $miscUtils->isMobilePhone($placePointAltPhone1, $country)) {
-                $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone1.' with text "'.$messageText.'"');
+            foreach($orderMessageRecipients as $nr => $phone) {
+                // Siunciam sms'a jei jis ne landline
+                if (!empty($phone) && $miscUtils->isMobilePhone($phone, $country)) {
+                    $logger->alert("Sending message for order #Uzsisakant is Cili - nerodome cili telefono numerio.. ir kiti tel sudai #523".$order->getId()." to be accepted to number: " . $phone . ' with text "' . $messageText . '"');
 
-                $messagesToSend[] = array(
-                    'sender' => $smsSenderNumber,
-                    'recipient' => $placePointAltPhone1,
-                    'text' => $messageText
-                );
-            }
-            if (!empty($placePointAltPhone2) && $miscUtils->isMobilePhone($placePointAltPhone2, $country)) {
-                $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone2.' with text "'.$messageText.'"');
-
-                $messagesToSend[] = array(
-                    'sender' => $smsSenderNumber,
-                    'recipient' => $placePointAltPhone2,
-                    'text' => $messageText
-                );
+                    $messagesToSend[] = array(
+                        'sender' => $smsSenderNumber,
+                        'recipient' => $phone,
+                        'text' => $messageText
+                    );
+                } else if ($nr == 0) {
+                    // Main phone is not mobile
+                    $logger->error('Main phone number for place point of place '.$placePoint->getPlace()->getName().' is set landline - no message sent');
+                }
             }
 
             //send multiple messages
