@@ -1414,7 +1414,7 @@ class OrderService extends ContainerAware
             foreach($orderMessageRecipients as $nr => $phone) {
                 // Siunciam sms'a jei jis ne landline
                 if (!empty($phone) && $miscUtils->isMobilePhone($phone, $country)) {
-                    $logger->alert("Sending message for order #Uzsisakant is Cili - nerodome cili telefono numerio.. ir kiti tel sudai #523".$order->getId()." to be accepted to number: " . $phone . ' with text "' . $messageText . '"');
+                    $logger->alert("Sending message for order #".$order->getId()." to be accepted to number: " . $phone . ' with text "' . $messageText . '"');
 
                     $messagesToSend[] = array(
                         'sender' => $smsSenderNumber,
