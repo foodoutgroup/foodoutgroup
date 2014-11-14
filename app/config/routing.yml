@@ -81,6 +81,13 @@ adminroot:
         route: sonata_admin_dashboard
         permanent: true
 
+# temp hack for sonata dumb error
+sonata_user_profile_show:
+    pattern:  /admin/food/user/1/show
+    defaults: { _controller: SonataUserBundle:ProfileFOSUser1:show }
+    requirements:
+        _method: GET
+
 banned:
     path: /banned/
     defaults: { _controller: FoodAppBundle:Default:banned}
