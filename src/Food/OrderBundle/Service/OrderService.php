@@ -574,7 +574,8 @@ class OrderService extends ContainerAware
         if (!empty($userPhone)) {
             $messagingService = $this->container->get('food.messages');
 
-            if ($this->getOrder()->getPaymentMethod() == 'local') {
+            // If not paid by banklink or paysera
+            if (in_array($this->getOrder()->getPaymentMethod(), array('local', 'local.card'))) {
                 $messageText = $this->container->get('translator')->trans('general.sms.client.restourant_cancel');
             // If banklink payment and it is complete - inform that we will return money, because restourant sux!
             } elseif ($this->getOrder()->getPaymentStatus() == 'complete') {
