@@ -13,7 +13,7 @@ class MessageRepository extends EntityRepository
     public function getSmsCountByDay($dateFrom, $dateTo)
     {
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
-        $dateTo = $dateTo->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 23:59:59");
 
         $query = sprintf(
             $this->getReportQuery(),
@@ -34,7 +34,7 @@ class MessageRepository extends EntityRepository
     public function getSmsUndeliveredCountByDay($dateFrom, $dateTo)
     {
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
-        $dateTo = $dateTo->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 23:59:59");
 
         $query = sprintf(
             $this->getReportQuery(),
