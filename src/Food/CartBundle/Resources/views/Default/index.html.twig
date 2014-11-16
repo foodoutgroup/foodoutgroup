@@ -305,7 +305,6 @@
 
                             {% if not place.disabledOnlinePayment %}
                             {# TODO kolkas viskas rodo i Paysera#}
-                            {#
                             <div class="select-payment clearfix">
                                 <label class="custom-radio">
                                     <img src="/bundles/foodapp/images/nordea-small.png">
@@ -342,7 +341,6 @@
                                     <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                 </label>
                             </div>
-                            #}
                             {% endif %}
                         </div>
                         <div class="form-controls clearfix"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button-back">{% trans %}cart.checkout.button_get_back{% endtrans %}</a><a href="#" class="submit-button"><span>{% trans %}cart.checkout.button_order{% endtrans %}</span></a></div>
