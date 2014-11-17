@@ -595,6 +595,8 @@ class OrderService extends ContainerAware
         // Put for logistics to cancel on their side
         $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
 
+        $this->informPaidOrderCanceled();
+
         $this->chageOrderStatus(self::$status_canceled, $source, $statusMessage);
         return $this;
     }
@@ -1522,6 +1524,86 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * Inform admins when paid order was canceled by place - maby we should refund, or maby not
+     */
+    public function informPaidOrderCanceled()
+    {
+        $order = $this->getOrder();
+
+        if (!$order instanceof Order) {
+            throw new \InvalidArgumentException('No order set. Cant check if it is canceled or what..');
+        }
+
+        // Order is post-paid - skip it
+        if (in_array($order->getPaymentMethod(), array('local', 'local.card'))) {
+            return;
+        }
+
+        $translator = $this->container->get('translator');
+
+        $domain = $this->container->getParameter('domain');
+        $notifyEmails = $this->container->getParameter('order.notify_emails');
+        $cityCoordinators = $this->container->getParameter('order.city_coordinators');
+
+        $emailSubject = $translator->trans('general.canceled_order.title');
+        $emailMessageText = $emailSubject
+            ."OrderId: " . $order->getId()."\n\n"
+            .$translator->trans('general.new_order.selected_place_point').": ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
+            .$translator->trans('general.new_order.place_point_phone').":".$order->getPlacePoint()->getPhone()."\n"
+            ."\n"
+            .$translator->trans('general.new_order.client_name').": ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
+            .$translator->trans('general.new_order.client_phone').": ".$order->getUser()->getPhone()."\n"
+            ."\n"
+            .$translator->trans('general.new_order.delivery_type').": ".$order->getDeliveryType()."\n"
+            .$translator->trans('general.new_order.payment_type').": ".$order->getPaymentMethod()."\n"
+            .$translator->trans('general.new_order.payment_status').": ".$order->getPaymentStatus()."\n"
+        ;
+
+        $emailMessageText .= "\n"
+            .$translator->trans('general.new_order.admin_link').": ".$this->container->get('router')
+                ->generate('order_support_mobile', array('hash' => $order->getOrderHash()), true)
+            ."\n";
+
+        $mailer = $this->container->get('mailer');
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($emailMessageText.': '.$order->getPlace()->getName().' (#'.$order->getId().')')
+            ->setFrom('info@'.$domain)
+        ;
+
+        if (!empty($cityCoordinators)) {
+            if (isset($cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')])) {
+                $notifyEmails = array_merge(
+                    $notifyEmails,
+                    $cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')]
+                );
+            }
+        }
+
+        $this->addEmailsToMessage($message, $notifyEmails);
+
+        $message->setBody($emailMessageText);
+        $mailer->send($message);
+    }
+
+    /**
+     * @param \Swift_Mime_SimpleMessage $message
+     * @param array $emails
+     */
+    private function addEmailsToMessage(\Swift_Mime_SimpleMessage $message, $emails)
+    {
+        $mainEmailSet = false;
+        foreach ($emails as $email) {
+            if (!$mainEmailSet) {
+                $mainEmailSet = true;
+                $message->addTo($email);
+            } else {
+                $message->addCc($email);
+            }
+        }
+    }
+
+    /**
      * For debuging purpose only!
      */
     public function notifyOrderCreate() {
@@ -1613,24 +1695,16 @@ class OrderService extends ContainerAware
             ->setFrom('info@'.$domain)
         ;
 
-        $mainEmailSet = false;
-
-        foreach ($notifyEmails as $email) {
-            if (!$mainEmailSet) {
-                $mainEmailSet = true;
-                $message->addTo($email);
-            } else {
-                $message->addCc($email);
-            }
-        }
-
         if (!empty($cityCoordinators)) {
             if (isset($cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')])) {
-                foreach($cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')] as $coordinatorEmail) {
-                    $message->addCc($coordinatorEmail);
-                }
+                $notifyEmails = array_merge(
+                    $notifyEmails,
+                    $cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')]
+                );
             }
         }
+
+        $this->addEmailsToMessage($message, $notifyEmails);
 
         $message->setBody($emailMessageText);
         $mailer->send($message);

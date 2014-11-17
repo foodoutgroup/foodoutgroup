@@ -936,6 +936,10 @@
           <source>general.new_order.driver_link</source>
           <target>Vairuotojas gaus nuoroda</target>
       </trans-unit>
+      <trans-unit id="general.canceled_order.title" resname="general.canceled_order.title">
+          <source>general.canceled_order.title</source>
+          <target>Atšauktas apmokėtas užsakymas</target>
+      </trans-unit>
       <!-- End of debug emails on new order -->
       <trans-unit id="general.email.placeholder" resname="general.email.placeholder">
           <source>general.email.placeholder</source>
