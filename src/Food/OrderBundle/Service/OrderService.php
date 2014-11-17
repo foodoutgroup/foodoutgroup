@@ -1590,7 +1590,7 @@ class OrderService extends ContainerAware
      * @param \Swift_Mime_SimpleMessage $message
      * @param array $emails
      */
-    private function addEmailsToMessage(\Swift_Mime_SimpleMessage $message, $emails)
+    public function addEmailsToMessage(\Swift_Mime_SimpleMessage $message, $emails)
     {
         $mainEmailSet = false;
         foreach ($emails as $email) {
@@ -1767,16 +1767,7 @@ class OrderService extends ContainerAware
             ->setFrom('info@'.$domain)
         ;
 
-        $mainEmailSet = false;
-
-        foreach ($notifyEmails as $email) {
-            if (!$mainEmailSet) {
-                $mainEmailSet = true;
-                $message->addTo($email);
-            } else {
-                $message->addCc($email);
-            }
-        }
+        $this->addEmailsToMessage($message, $notifyEmails);
 
         $message->setBody($emailMessageText);
         $mailer->send($message);

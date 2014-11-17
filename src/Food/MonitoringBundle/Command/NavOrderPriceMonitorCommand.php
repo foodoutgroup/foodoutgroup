@@ -118,6 +118,7 @@ class NavOrderPriceMonitorCommand extends ContainerAwareCommand
         }
 
         $mailer = $this->getContainer()->get('mailer');
+        $orderService = $this->getContainer()->get('food.order');
         $notifyEmails = $this->getContainer()->getParameter('order.notify_emails');
         $domain = $this->getContainer()->getParameter('domain');
 
@@ -126,15 +127,7 @@ class NavOrderPriceMonitorCommand extends ContainerAwareCommand
             ->setFrom('info@'.$domain)
         ;
 
-        $emailSet = false;
-        foreach ($notifyEmails as $email) {
-            if (!$emailSet) {
-                $emailSet = true;
-                $message->addTo($email);
-            } else {
-                $message->addCc($email);
-            }
-        }
+        $orderService->addEmailsToMessage($message, $notifyEmails);
 
         $message->setBody($messageText);
         $mailer->send($message);
