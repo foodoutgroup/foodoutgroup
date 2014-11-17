@@ -114,7 +114,7 @@ class Response
      */
     public function redirect_url()
     {
-        if (empty($this->dom())) return '';
+        if (!$this->dom()) return '';
 
         $redirect_urls = $this->dom()
                               ->xpath(static::REDIRECT_URL_XPATH);
@@ -131,7 +131,7 @@ class Response
      */
     public function order_id()
     {
-        if (empty($this->dom())) return '';
+        if (!$this->dom()) return '';
 
         $purchases = $this->dom()
                           ->xpath(static::PURCHASE_XPATH);
@@ -159,7 +159,7 @@ class Response
 
     protected function event_status()
     {
-        if (empty($this->dom())) return '';
+        if (!$this->dom()) return '';
 
         $statuses = $this->dom()
                        ->xpath(static::EVENT_STATUS_XPATH);
@@ -193,7 +193,7 @@ class Response
      */
     protected function status()
     {
-        if (empty($this->dom())) return 0;
+        if (!$this->dom()) return 0;
 
         $statuses = $this->dom()
                          ->xpath(static::STATUS_XPATH);
