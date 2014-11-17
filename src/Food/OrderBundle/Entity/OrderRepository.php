@@ -406,7 +406,9 @@ class OrderRepository extends EntityRepository
      */
     public function getUnclosedOrders()
     {
-        $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_canceled."'";
+        $orderStatus = "'".OrderService::$status_completed
+            ."', '".OrderService::$status_canceled
+            ."', '".OrderService::$status_nav_problems."'";
         $paymentStatus = OrderService::$paymentStatusComplete;
         $pickup = OrderService::$deliveryPickup;
         $deliver = OrderService::$deliveryDeliver;
