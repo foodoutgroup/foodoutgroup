@@ -1638,11 +1638,15 @@ class OrderService extends ContainerAware
                 if($returner->return_value == "TRUE") {
 
                 } else {
+                    // Problems processing order in nav
+                    $this->logStatusChange($order, self::$status_nav_problems, 'cili_nav_process');
                     $order->setOrderStatus(self::$status_nav_problems);
                     $this->getEm()->merge($order);
                     $this->getEm()->flush();
                 }
             } else {
+                // Problems updating price
+                $this->logStatusChange($order, self::$status_nav_problems, 'cili_nav_update_price');
                 $order->setOrderStatus(self::$status_nav_problems);
                 $this->getEm()->merge($order);
                 $this->getEm()->flush();

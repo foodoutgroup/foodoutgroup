@@ -995,6 +995,14 @@
                 <source>admin.order.status.source.cili_nav</source>
                 <target>Čili Navision</target>
             </trans-unit>
+            <trans-unit id="admin.order.status.source.cili_nav_process">
+                <source>admin.order.status.source.cili_nav_process</source>
+                <target>Čili Navision order processing</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.cili_nav_update_price">
+                <source>admin.order.status.source.cili_nav_update_price</source>
+                <target>Čili Navision update prices</target>
+            </trans-unit>
 
             <!-- Order logas pas sonata admina -->
             <trans-unit id="admin.order.order_log">
