@@ -65,7 +65,7 @@
         "imagine/Imagine": "dev-master",
         "trsteel/ckeditor-bundle": "1.5.x-dev",
         "friendsofsymfony/jsrouting-bundle": "@stable",
-        "giggsey/libphonenumber-for-php": "6.*",
+        "giggsey/libphonenumber-for-php": "7.*",
         "ob/highcharts-bundle": "1.1.*",
         "pirminis/maybe-monad": "1.2.10",
         "knplabs/knp-snappy-bundle": "dev-master",

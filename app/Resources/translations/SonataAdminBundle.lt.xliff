@@ -983,6 +983,18 @@
                 <source>admin.order.status.source.logistics_service</source>
                 <target>Logistika</target>
             </trans-unit>
+            <trans-unit id="admin.order.status.source.logistics_service_external">
+                <source>admin.order.status.source.logistics_service_external</source>
+                <target>Išorinė logistika</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.auto_close_order_command">
+                <source>admin.order.status.source.auto_close_order_command</source>
+                <target>Automatinis užsakymu uždarymas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.cili_nav">
+                <source>admin.order.status.source.cili_nav</source>
+                <target>Čili Navision</target>
+            </trans-unit>
 
             <!-- Order logas pas sonata admina -->
             <trans-unit id="admin.order.order_log">
