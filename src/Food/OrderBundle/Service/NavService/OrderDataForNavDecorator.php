@@ -251,7 +251,7 @@ trait OrderDataForNavDecorator
                             "([%s], [ReplicationCounter])",
                             implode('], [', $this->getOrderFieldNames())),
                          sprintf(
-                            "('%s', 1)",
+                            "('%s', 0)",
                             implode("', '", $this->getOrderValues($data))));
         return $query;
     }
@@ -290,7 +290,7 @@ trait OrderDataForNavDecorator
         // create query
         $query = sprintf('UPDATE %s SET %s WHERE %s',
                          $this->getOrderTableName(),
-                         implode(', ', $valuesForUpdate) . ', [ReplicationCounter] = [ReplicationCounter] + 1',
+                         implode(', ', $valuesForUpdate) . ', [ReplicationCounter] = (SELECT ISNULL(MAX(ReplicationCounter),0) FROM FoodOut_Order) + 1',
                          sprintf('[%s] = %s', $idField, $idValue));
 
         return $query;
