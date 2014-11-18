@@ -1669,3 +1669,10 @@ div.coupon_form_popup {
 .sum.item.discount {
     color: #cd1d36;
 }
+
+.dish-size .custom-radio .price.discounted {
+    text-decoration: line-through;
+}
+.dish-size .custom-radio .price.discount {
+    color: #cd1d36;
+}

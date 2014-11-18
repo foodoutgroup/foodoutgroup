@@ -61,6 +61,10 @@ class OrderDetails
      */
     private $price;
 
+    /**
+     * @ORM\Column(name="orig_price", type="decimal", precision=8, scale=2)
+     */
+    private $origPrice;
 
     /**
      * @var OrderDetailsOptions[]
@@ -302,5 +306,28 @@ class OrderDetails
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * Set origPrice
+     *
+     * @param string $origPrice
+     * @return OrderDetails
+     */
+    public function setOrigPrice($origPrice)
+    {
+        $this->origPrice = $origPrice;
+    
+        return $this;
+    }
+
+    /**
+     * Get origPrice
+     *
+     * @return string 
+     */
+    public function getOrigPrice()
+    {
+        return $this->origPrice;
     }
 }

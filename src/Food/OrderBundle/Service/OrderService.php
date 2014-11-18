@@ -705,16 +705,17 @@ class OrderService extends ContainerAware
                 ->setOrderId($this->getOrder())
                 ->setQuantity($cartDish->getQuantity())
                 ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
-                ->setPrice($cartDish->getDishSizeId()->getPrice())
+                ->setPrice($cartDish->getDishSizeId()->getCurrentPrice())
+                ->setOrigPrice($cartDish->getDishSizeId()->getPrice())
                 ->setDishName($cartDish->getDishId()->getName())
                 ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
                 ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
-                ->setDishSizeCode($cartDish->getDishSizeId()->getCode());
+                ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
             ;
             $this->getEm()->persist($dish);
             $this->getEm()->flush();
 
-            $sumTotal += $cartDish->getQuantity() * $cartDish->getDishSizeId()->getPrice();
+            $sumTotal += $cartDish->getQuantity() * $cartDish->getDishSizeId()->getCurrentPrice();
 
             foreach ($options as $opt) {
                 $orderOpt = new OrderDetailsOptions();

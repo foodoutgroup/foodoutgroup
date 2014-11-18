@@ -436,7 +436,7 @@ class CartService {
         foreach ($cartItems as $cartItem) {
             $tmpRow = array(
                 'name' => $cartItem->getDishId()->getName(),
-                'price' => $cartItem->getDishSizeId()->getPrice(),
+                'price' => $cartItem->getDishSizeId()->getCurrentPrice(),
                 'size' => $cartItem->getDishSizeId()->getUnit()->getName(),
                 'quantity' => $cartItem->getQuantity(),
                 'options' => $this->getOptionsForJson($cartItem)

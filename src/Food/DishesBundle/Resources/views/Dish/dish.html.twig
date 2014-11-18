@@ -11,7 +11,19 @@
             <div class="title">{% trans %}dish.select_size{% endtrans %}</div>
             <div class="clearfix">
                 {% for size in dish.sizes %}
-                    <label class="custom-radio">{{ size.unit.name }}<strong class="price">{{ size.priceLocalized }} {{ currency_display }}<span class="euro">/&nbsp;&euro;{{  misc_utils.getEuro(size.price)|number_format(2, ',', ' ') }}</span></strong>
+                    <label class="custom-radio">{{ size.unit.name }}
+                        {% set showDiscount = false %}
+                        {% if dish.showDiscount  %}
+                            {% set showDiscount = true %}
+                        {% endif %}
+                        <strong class="price {% if showDiscount %}discounted{% endif %}">
+                            {{ size.priceLocalized }} {{ currency_display }}<span class="euro">/&nbsp;&euro;{{  misc_utils.getEuro(size.price)|number_format(2, ',', ' ') }}</span>
+                        </strong>
+                        {% if showDiscount %}
+                            <strong class="price {% if showDiscount %}discount{% endif %}">
+                                {{ size.discountPrice }} {{ currency_display }}<span class="euro">/&nbsp;&euro;{{  misc_utils.getEuro(size.discountPrice)|number_format(2, ',', ' ') }}</span>
+                            </strong>
+                        {% endif %}
                         <input type="radio" {% if loop.first %}checked{% endif %} value="{{ size.id }}" class="dish-size" name="dish-size">
                     </label>
                 {% endfor %}
