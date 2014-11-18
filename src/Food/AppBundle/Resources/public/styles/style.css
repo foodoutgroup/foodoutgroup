@@ -1642,3 +1642,30 @@ div.coupon_form_popup {
 .wider-radio {
     width: 400px !important;
 }
+
+/** Discount stuff **/
+.restaurant-menu-item .price.discounted {
+    text-decoration: line-through;
+}
+.restaurant-menu-item .price.discounted.multiline {
+    font-size: 12px;
+}
+.restaurant-menu-item .price.discounted.multiline .euro{
+    font-size: 11px;
+}
+
+.restaurant-menu-item .price.discount {
+    color: #cd1d36;
+}
+.restaurant-menu-item  .price.discount.multiline {
+    font-size: 12px;
+}
+.restaurant-menu-item  .price.discount.multiline .euro {
+    font-size: 11px;
+}
+.sum.item.discounted {
+    text-decoration: line-through;
+}
+.sum.item.discount {
+    color: #cd1d36;
+}

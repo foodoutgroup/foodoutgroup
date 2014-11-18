@@ -136,6 +136,14 @@ class Dish extends Uploadable implements Translatable
      */
     private $options;
 
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="discount_prices_enabled", type="boolean", nullable=true)
+     */
+    private $discountPricesEnabled = false;
+
     /**
      * @var bool
      *
@@ -771,5 +779,37 @@ class Dish extends Uploadable implements Translatable
     public function getTimeTo()
     {
         return $this->timeTo;
+    }
+
+    /**
+     * Set discountPricesEnabled
+     *
+     * @param boolean $discountPricesEnabled
+     * @return Dish
+     */
+    public function setDiscountPricesEnabled($discountPricesEnabled)
+    {
+        $this->discountPricesEnabled = $discountPricesEnabled;
+    
+        return $this;
+    }
+
+    /**
+     * Get discountPricesEnabled
+     *
+     * @return boolean 
+     */
+    public function getDiscountPricesEnabled()
+    {
+        return $this->discountPricesEnabled;
+    }
+
+
+    public function getShowDiscount()
+    {
+        if ($this->getDiscountPricesEnabled() && $this->getPlace()->getDiscountPricesEnabled()) {
+            return true;
+        }
+        return false;
     }
 }

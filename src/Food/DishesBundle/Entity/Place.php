@@ -102,10 +102,16 @@ class Place extends Uploadable implements Translatable
     /**
      * @var bool
      *
+     * @ORM\Column(name="discount_prices_enabled", type="boolean", nullable=true)
+     */
+    private $discountPricesEnabled;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="recommended", type="boolean")
      */
     private $recommended;
-
 
     /**
      * @var bool
@@ -1464,5 +1470,28 @@ class Place extends Uploadable implements Translatable
     public function getSendInvoice()
     {
         return $this->sendInvoice;
+    }
+
+    /**
+     * Set discountPricesEnabled
+     *
+     * @param boolean $discountPricesEnabled
+     * @return Place
+     */
+    public function setDiscountPricesEnabled($discountPricesEnabled)
+    {
+        $this->discountPricesEnabled = $discountPricesEnabled;
+    
+        return $this;
+    }
+
+    /**
+     * Get discountPricesEnabled
+     *
+     * @return boolean 
+     */
+    public function getDiscountPricesEnabled()
+    {
+        return $this->discountPricesEnabled;
     }
 }

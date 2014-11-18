@@ -194,6 +194,10 @@
                 <source>admin.dish.recomended_list</source>
                 <target>Rekom.</target>
             </trans-unit>
+            <trans-unit id="admin.dish.discount_prices_enabled">
+                <source>admin.dish.discount_prices_enabled</source>
+                <target>Nuol. kainos.</target>
+            </trans-unit>
             <trans-unit id="admin.dish.active">
                 <source>admin.dish.active</source>
                 <target>Aktyvus</target>
@@ -366,6 +370,10 @@
             <trans-unit id="admin.place.recommended">
                 <source>admin.place.recommended</source>
                 <target>Rekomend.</target>
+            </trans-unit>
+            <trans-unit id="admin.place.discount_prices_enabled">
+                <source>admin.place.discount_prices_enabled</source>
+                <target>Nuol.kainos</target>
             </trans-unit>
             <trans-unit id="admin.place.card_on_delivery">
                 <source>admin.place.card_on_delivery</source>

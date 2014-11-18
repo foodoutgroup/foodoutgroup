@@ -59,6 +59,7 @@ class DishSizeAdmin extends FoodAdmin
 
         $formMapper->add('code')
             ->add('price')
+            ->add('discountPrice')
         ;
     }
 

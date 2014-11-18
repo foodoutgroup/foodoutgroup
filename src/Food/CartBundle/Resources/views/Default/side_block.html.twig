@@ -12,11 +12,23 @@
                 <div class="type">{{ dish.dishSizeId.unit.name }}</div>
                 <div class="clearfix pad">
                     <div class="count item">{{ dish.quantity }} {% trans %}general.item_quantity{% endtrans %}</div>
-                    <div class="sum item">x {{ dish.dishSizeId.price|number_format(2, ',', ' ') }} {{ currency_display }}
+                    {% set showDiscount = false %}
+                    {% if dish.dishId.showDiscount  %}
+                        {% set showDiscount = true %}
+                    {% endif %}
+                    <div class="sum item {% if showDiscount %}discounted{% endif %}">x {{ dish.dishSizeId.price|number_format(2, ',', ' ') }} {{ currency_display }}
                         <span class="euro">
                             /&nbsp;&euro;{{ misc_utils.getEuro(dish.dishSizeId.price)|number_format(2, ',', ' ') }}
                         </span>
                     </div>
+                    {% if showDiscount %}
+                        <div class="sum item discount">x {{ dish.dishSizeId.discountPrice|number_format(2, ',', ' ') }} {{ currency_display }}
+                            <span class="euro">
+                            /&nbsp;&euro;{{ misc_utils.getEuro(dish.dishSizeId.discountPrice)|number_format(2, ',', ' ') }}
+                        </span>
+                        </div>
+                    {% endif %}
+
                 </div>
                 {% if dish.options|length > 0 %}
                     {% for option in dish.options %}

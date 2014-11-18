@@ -42,4 +42,31 @@ class DishesService extends ContainerAware {
         }
         return null;
     }
+
+    public function getSmallestDishDiscountPrice($dishId)
+    {
+        $prices = $this->em()->getRepository('FoodDishesBundle:Dish')->getSmallestDiscountPrice($dishId);
+        if (!empty($prices) && is_array($prices)) {
+            return $prices[0]['discountPrice'];
+        } elseif (!empty($prices)) {
+            return $prices['discountPrice'];
+        }
+        return null;
+    }
+
+    public function getLargestDishDiscountPrice($dishId)
+    {
+        $prices = $this->em()->getRepository('FoodDishesBundle:Dish')->getLargestDiscountPrice($dishId);
+        if (!empty($prices) && is_array($prices)) {
+            return $prices[0]['discountPrice'];
+        } elseif (!empty($prices)) {
+            return $prices['discountPrice'];
+        }
+        return null;
+    }
+    public function  hasDiscountPrice($dishId)
+    {
+        $hasAnyDiscountPrice = $this->em()->getRepository('FoodDishesBundle:Dish')->hasDiscountPrice($dishId);
+        return $hasAnyDiscountPrice;
+    }
 }
