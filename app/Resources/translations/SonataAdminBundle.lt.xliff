@@ -1111,6 +1111,10 @@
                 <source>admin.dispatcher.order_status.canceled</source>
                 <target>Atšauktas</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.nav_problems">
+                <source>admin.dispatcher.order_status.nav_problems</source>
+                <target>Navision problemos</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.order_status_title">
                 <source>admin.dispatcher.order_status_title</source>
                 <target>Užsakymo būklė</target>
