@@ -52,7 +52,7 @@ class NavOrderPriceMonitorCommand extends ContainerAwareCommand
             $orders = $em->getRepository('FoodOrderBundle:Order')->getCurrentNavOrders('-5 minute');
             $navService = $this->getContainer()->get('food.nav');
 
-            if (!empty($order) && count($orders) > 0) {
+            if (!empty($orders) && count($orders) > 0) {
                 $navOrders = $navService->getRecentNavOrderSums($orders);
 
 
@@ -87,7 +87,7 @@ class NavOrderPriceMonitorCommand extends ContainerAwareCommand
 
             foreach($criticalOrders as $order) {
                 $text .= sprintf(
-                        'Foodout uzsakymo id: %d ; Navision uzsakymo id: %d ; Suma Foodoute: %s ; Suma Navision: %s',
+                        'Foodout uzsakymo id: %d ; Navision uzsakymo id: %d ; Suma Foodoute: %01.2f ; Suma Navision: %01.2f',
                         $order['orderId'],
                         $order['navOrderId'],
                         $order['localTotal'],
