@@ -179,6 +179,13 @@ class BasketService extends ContainerAware
         $basket = new ShoppingBasket();
         $basket->set('basket_id', $basketInfo->getId());
         $basket->set('restaurant_id', $basketInfo->getPlaceId()->getId());
+        $basket->set(
+            'payment_options',
+            array(
+                'cash' => true,
+                'credit_card' => $basketInfo->getPlaceId()->getCardOnDelivery()
+            )
+        );
         $basket->set('expires', (date("U") + (3600 * 24 * 7)));
         $basket->set(
             'total_price',
