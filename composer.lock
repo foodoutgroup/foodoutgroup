@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4473478e7f042fa2f1a2a53ea432368e",
+    "hash": "a677e57745cbf0c6764057c80762c02f",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -74,12 +74,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "2e41cee225240423aa043e05d5cadfee82c4d555"
+                "reference": "1c64304b79236578fe19c77e588d5bc538a005df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2e41cee225240423aa043e05d5cadfee82c4d555",
-                "reference": "2e41cee225240423aa043e05d5cadfee82c4d555",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1c64304b79236578fe19c77e588d5bc538a005df",
+                "reference": "1c64304b79236578fe19c77e588d5bc538a005df",
                 "shasum": ""
             },
             "require": {
@@ -133,7 +133,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2014-11-12 21:52:35"
+            "time": "2014-11-17 23:10:56"
         },
         {
             "name": "beberlei/DoctrineExtensions",
@@ -4500,12 +4500,8 @@
             "time": "2014-03-14 16:22:22"
         }
     ],
-    "packages-dev": [
-
-    ],
-    "aliases": [
-
-    ],
+    "packages-dev": [],
+    "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "doctrine/doctrine-fixtures-bundle": 20,
@@ -4537,7 +4533,5 @@
     "platform": {
         "php": ">=5.3.3"
     },
-    "platform-dev": [
-
-    ]
+    "platform-dev": []
 }

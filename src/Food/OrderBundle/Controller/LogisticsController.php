@@ -113,7 +113,7 @@ class LogisticsController extends Controller
                             $order->getOrderStatus() == $orderService::$status_assiged
                             && $order->getDriver()->getId() != $driver['driver_id'])
                         ) {
-                        $logisticsService->assignDriver($driver['driver_id'], array($driver['order_id']));
+                        $logisticsService->assignDriver($driver['driver_id'], array($driver['order_id']), true);
                         $orderService->logOrder(
                             $order,
                             'logistics_api_driver_assign',

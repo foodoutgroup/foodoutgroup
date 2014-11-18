@@ -365,6 +365,77 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $logisticsService->assignDriver($driverId, $orderIds);
     }
 
+    public function testAssignDriverExternal()
+    {
+        $driverId = 15;
+        $orderIds = array(64);
+
+        $driver = new Driver();
+        $driver->setName('Jonas Jonauskas');
+
+        $order =$this->getMock(
+            'Food\OrderBundle\Entity\Order',
+            array('setDriver')
+        );
+
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get')
+        );
+
+        $logger = $this->getMockBuilder('Monolog\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $logisticsService = $this->getMock(
+            'Food\OrderBundle\Service\LogisticsService',
+            array('getDriverById', 'getDriversLocal')
+        );
+        $orderService = $this->getMock(
+            'Food\OrderBundle\Service\OrderService',
+            array('getOrderById', 'statusAssigned', 'saveOrder')
+        );
+
+        $logisticsService->setOrderService($orderService);
+        $logisticsService->setContainer($container);
+
+        $container->expects($this->once())
+            ->method('get')
+            ->with('logger')
+            ->will($this->returnValue($logger));
+
+        $logger->expects($this->at(0))
+            ->method('alert')
+            ->with('++ assignDriver');
+
+        $logger->expects($this->at(1))
+            ->method('alert')
+            ->with('driverId: '.$driverId);
+
+        $logisticsService->expects($this->once())
+            ->method('getDriverById')
+            ->with($driverId)
+            ->will($this->returnValue($driver));
+
+        $orderService->expects($this->once())
+            ->method('getOrderById')
+            ->with($orderIds[0])
+            ->will($this->returnValue($order));
+
+        $order->expects($this->once())
+            ->method('setDriver')
+            ->with($driver);
+
+        $orderService->expects($this->once())
+            ->method('statusAssigned')
+            ->with('logistics_service_external');
+
+        $orderService->expects($this->once())
+            ->method('saveOrder');
+
+        $logisticsService->assignDriver($driverId, $orderIds, true);
+    }
+
     public function testAssignDriverMultiple()
     {
         $driverId = 15;
