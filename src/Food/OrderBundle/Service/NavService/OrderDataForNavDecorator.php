@@ -251,7 +251,7 @@ trait OrderDataForNavDecorator
                             "([%s], [ReplicationCounter])",
                             implode('], [', $this->getOrderFieldNames())),
                          sprintf(
-                            "('%s', 0)",
+                            "('%s', " . $this->getReplicationValueForSql() . ")",
                             implode("', '", $this->getOrderValues($data))));
         return $query;
     }
@@ -290,7 +290,7 @@ trait OrderDataForNavDecorator
         // create query
         $query = sprintf('UPDATE %s SET %s WHERE %s',
                          $this->getOrderTableName(),
-                         implode(', ', $valuesForUpdate) . ', [ReplicationCounter] = (SELECT ISNULL(MAX(ReplicationCounter),0) FROM ' . $this->getOrderTableName() . ') + 1',
+                         implode(', ', $valuesForUpdate) . ', [ReplicationCounter] = ' . $this->getReplicationValueForSql(),
                          sprintf('[%s] = %s', $idField, $idValue));
 
         return $query;
@@ -411,5 +411,10 @@ trait OrderDataForNavDecorator
         return $order->getPaymentStatus() ==
                $orderService::$paymentStatusComplete ? true : false;
 
+    }
+
+    protected function getReplicationValueForSql()
+    {
+        return '(SELECT ISNULL(MAX(ReplicationCounter),0) FROM ' . $this->getOrderTableName() . ') + 1';
     }
 }
