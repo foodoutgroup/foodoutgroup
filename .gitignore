@@ -5,6 +5,7 @@
 /app/var/sessions/*
 /vendor/
 /app/config/parameters.yml
+/bin/*
 
 # ignore Assetic generated css/js files
 /web/css/*
