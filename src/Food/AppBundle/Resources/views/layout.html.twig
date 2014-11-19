@@ -26,7 +26,7 @@
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/styles/style.css'  %}
-        <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+        <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("Ymd") }}" type="text/css"  />
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/styles/jquery.loadmask.css'  %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
