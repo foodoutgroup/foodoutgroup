@@ -137,7 +137,7 @@ trait OrderDataForNavDecorator
 
     public function insertOrder(OrderDataForNav $data)
     {
-        $conn = $this->initSqlConn();
+        $conn = $this->initTestSqlConn();
 
         if (empty($conn)) return false;
 
@@ -149,7 +149,7 @@ trait OrderDataForNavDecorator
 
     public function updateOrder(OrderDataForNav $data)
     {
-        $conn = $this->initSqlConn();
+        $conn = $this->initTestSqlConn();
 
         if (empty($conn)) return false;
 
@@ -290,7 +290,7 @@ trait OrderDataForNavDecorator
         // create query
         $query = sprintf('UPDATE %s SET %s WHERE %s',
                          $this->getOrderTableName(),
-                         implode(', ', $valuesForUpdate) . ', [ReplicationCounter] = (SELECT ISNULL(MAX(ReplicationCounter),0) FROM FoodOut_Order) + 1',
+                         implode(', ', $valuesForUpdate) . ', [ReplicationCounter] = (SELECT ISNULL(MAX(ReplicationCounter),0) FROM ' . $this->getOrderTableName() . ') + 1',
                          sprintf('[%s] = %s', $idField, $idValue));
 
         return $query;
@@ -298,8 +298,8 @@ trait OrderDataForNavDecorator
 
     protected function getOrderTableName()
     {
-        // return '[prototipas6].[dbo].[PROTOTIPAS$FoodOut Order]';
-        return $this->orderTable;
+        return '[prototipas6].[dbo].[PROTOTIPAS$FoodOut Order]';
+        // return $this->orderTable;
     }
 
     protected function getOrderFieldNames()

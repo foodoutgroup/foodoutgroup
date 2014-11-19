@@ -9,6 +9,8 @@ trait OrderNavisionFullSyncDecorator
 {
     protected function sync($notDryRun = false, OutputInterface $output)
     {
+        mb_internal_encoding('utf-8');
+
         // services
         $container = $this->getContainer();
         $navService = $container->get('food.nav');
