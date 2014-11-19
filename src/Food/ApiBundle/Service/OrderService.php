@@ -198,10 +198,11 @@ class OrderService extends ContainerAware
 
         $os->setMobileOrder(true);
 
-        $paymentMethod = $request->get('payment-type');
+        $paymentMethod = $request->get('payment_option');
         $customerComment = (!empty($serviceVar['address']) ? $serviceVar['address']['comments'] : "");
 
-        $os->setPaymentMethod('local');
+        $os->setPaymentMethod(($paymentMethod == 'cash' ? 'local':'local.card'));
+
         if ($serviceVar['type'] == "pickup") {
             $os->setDeliveryType($os::$deliveryPickup);
         } else {

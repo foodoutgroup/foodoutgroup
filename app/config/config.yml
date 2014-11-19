@@ -28,13 +28,16 @@ parameters:
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
-    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt, giedrius@foodout.lt]
+#    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt, giedrius@foodout.lt]
+    order.notify_emails: [paulius@foodout.lt]
     order.city_coordinators:
         vilnius: []
         kaunas: []
 #        kaunas: [renata@foodout.lt]
-        klaipėda: [jurgita@foodout.lt]
-    order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
+#        klaipėda: [jurgita@foodout.lt]
+        klaipėda: []
+#    order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
+    order.accept_notify_emails: [paulius@foodout.lt]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
     domain: "foodout.lt"
