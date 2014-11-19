@@ -991,6 +991,26 @@
                 <source>admin.order.status.source.logistics_service</source>
                 <target>Logistika</target>
             </trans-unit>
+            <trans-unit id="admin.order.status.source.logistics_service_external">
+                <source>admin.order.status.source.logistics_service_external</source>
+                <target>Išorinė logistika</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.auto_close_order_command">
+                <source>admin.order.status.source.auto_close_order_command</source>
+                <target>Automatinis užsakymu uždarymas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.cili_nav">
+                <source>admin.order.status.source.cili_nav</source>
+                <target>Čili Navision</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.cili_nav_process">
+                <source>admin.order.status.source.cili_nav_process</source>
+                <target>Čili Navision order processing</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.cili_nav_update_price">
+                <source>admin.order.status.source.cili_nav_update_price</source>
+                <target>Čili Navision update prices</target>
+            </trans-unit>
 
             <!-- Order logas pas sonata admina -->
             <trans-unit id="admin.order.order_log">
@@ -1098,6 +1118,10 @@
             <trans-unit id="admin.dispatcher.order_status.canceled">
                 <source>admin.dispatcher.order_status.canceled</source>
                 <target>Atšauktas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.nav_problems">
+                <source>admin.dispatcher.order_status.nav_problems</source>
+                <target>Navision problemos</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.order_status_title">
                 <source>admin.dispatcher.order_status_title</source>

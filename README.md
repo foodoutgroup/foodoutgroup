@@ -7,11 +7,11 @@ Foodout maisto platforma
 
 TODO
 ========================
-* Banklink
-* Mobile
-* Nav
+* WOW
+* LV
+* Order redagavimas
+* R-keeper
 * Printer
-* Logistics
 * Atideti uzsakymai
 * Social login
 * Titulinio page cover auto change
@@ -25,7 +25,11 @@ Strigai - klausk siu zmoniu:
 * SMS - Mantas
 * Monitoring - Mantas
 * Banklink - Jonas
+* Cili NAV - Paulius
+* Logistika - Mantas
+* Call center - Jonas
 * Profile / Registracija / User stuff - Jonas
+* Fakturos - Mantas
 
 
 Why not futurama?? :)

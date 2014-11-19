@@ -39,6 +39,10 @@ class SmsBalanceCommand extends ContainerAwareCommand
         $warnCount = 0;
 
         foreach($messagingProviders as $providerName) {
+            // Kolkas del silverstreeto nerekiam, nes ju nepildome del netinkamu papildymo salygu
+            if ($providerName == 'food.silverstreet') {
+                continue;
+            }
             $thisCritical = false;
             $thisWarning = false;
             $provider = $this->getContainer()->get($providerName);

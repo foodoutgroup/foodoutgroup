@@ -64,7 +64,7 @@ class ReportService extends ContainerAware
                 'type' => 'spline',
             ),
             array(
-                'name' => 'Mobile orders',
+                'name' => $translator->trans('admin.report.mobile_orders'),
                 'data' => array_values($orderMobileCountGraphData),
                 'type' => 'spline'
             )
@@ -74,6 +74,7 @@ class ReportService extends ContainerAware
         $ob->chart->renderTo('order_chart');
         $ob->title->text($translator->trans('admin.report.daily_orders_graph'));
         $ob->yAxis->title(array('text'  => $translator->trans('admin.report.amount')));
+        $ob->yAxis->floor(0);
         $ob->xAxis->categories(array_keys($orderGraphData));
         $ob->series($series);
 
@@ -97,8 +98,17 @@ class ReportService extends ContainerAware
         $smsData = $this->getDoctrine()->getRepository('FoodSmsBundle:Message')
             ->getSmsCountByDay($dateFrom, $dateTo);
 
+        $smsUndeliveredData = $this->getDoctrine()->getRepository('FoodSmsBundle:Message')
+            ->getSmsUndeliveredCountByDay($dateFrom, $dateTo);
+
         $smsGraphData = $this->fillEmptyDays(
                 $this->remapDataForGraph($smsData, 'report_day', 'message_count'),
+                $dateFrom,
+                $dateTo
+            );
+
+        $smsUndeliveredGraphData = $this->fillEmptyDays(
+                $this->remapDataForGraph($smsUndeliveredData, 'report_day', 'message_count'),
                 $dateFrom,
                 $dateTo
             );
@@ -108,6 +118,11 @@ class ReportService extends ContainerAware
                 "name" => $translator->trans('admin.report.sms'),
                 "data" => array_values($smsGraphData),
                 'type' => 'spline',
+            ),
+            array(
+                "name" => $translator->trans('admin.report.sms_undelivered'),
+                "data" => array_values($smsUndeliveredGraphData),
+                'type' => 'spline',
             )
         );
 
@@ -115,6 +130,7 @@ class ReportService extends ContainerAware
         $ob->chart->renderTo('sms_chart');
         $ob->title->text($translator->trans('admin.report.daily_sms_graph'));
         $ob->yAxis->title(array('text'  => $translator->trans('admin.report.amount')));
+        $ob->yAxis->floor(0);
         $ob->xAxis->categories(array_keys($smsGraphData));
         $ob->series($series);
 

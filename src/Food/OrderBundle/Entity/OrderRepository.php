@@ -406,7 +406,9 @@ class OrderRepository extends EntityRepository
      */
     public function getUnclosedOrders()
     {
-        $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_canceled."'";
+        $orderStatus = "'".OrderService::$status_completed
+            ."', '".OrderService::$status_canceled
+            ."', '".OrderService::$status_nav_problems."'";
         $paymentStatus = OrderService::$paymentStatusComplete;
         $pickup = OrderService::$deliveryPickup;
         $deliver = OrderService::$deliveryDeliver;
@@ -445,10 +447,14 @@ class OrderRepository extends EntityRepository
     }
 
     /**
+     * @param $timeBack string|null
      * @return array
      */
-    public function getCurrentNavOrders()
+    public function getCurrentNavOrders($timeBack = null)
     {
+        if (empty($timeBack)) {
+            $timeBack = '-1 day';
+        }
         $qb = $this->createQueryBuilder('o');
 
         $qb->leftJoin('o.place', 'p')
@@ -456,7 +462,7 @@ class OrderRepository extends EntityRepository
             ->andWhere('p.navision = :navision')
             ->andWhere('o.order_status NOT IN (:order_status)')
             ->setParameters(array(
-                'order_date' => new \DateTime('-1 day'),
+                'order_date' => new \DateTime($timeBack),
                 'order_status' => array(
                     OrderService::$status_completed,
                     OrderService::$status_canceled,

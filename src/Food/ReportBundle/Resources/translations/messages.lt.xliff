@@ -10,6 +10,10 @@
                 <source>admin.report.orders_canceled</source>
                 <target>Atšaukti užsakymai</target>
             </trans-unit>
+            <trans-unit id="admin.report.mobile_orders" resname="admin.report.mobile_orders">
+                <source>admin.report.mobile_orders</source>
+                <target>Mobile užsakymai</target>
+            </trans-unit>
             <trans-unit id="admin.report.daily_orders_graph" resname="admin.report.daily_orders_graph">
                 <source>admin.report.daily_orders_graph</source>
                 <target>Užsakymų per dieną</target>
@@ -21,6 +25,10 @@
             <trans-unit id="admin.report.sms" resname="admin.report.sms">
                 <source>admin.report.sms</source>
                 <target>Pristatyti SMS</target>
+            </trans-unit>
+            <trans-unit id="admin.report.sms_undelivered" resname="admin.report.sms_undelivered">
+                <source>admin.report.sms_undelivered</source>
+                <target>Nepristatyti SMS</target>
             </trans-unit>
             <trans-unit id="admin.report.daily_sms_graph" resname="admin.report.daily_sms_graph">
                 <source>admin.report.daily_sms_graph</source>
