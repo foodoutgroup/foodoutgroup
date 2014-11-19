@@ -55,7 +55,7 @@ class DishSize
 
     /**
      * @var double
-     * @ORM\Column(name="discount_price", type="decimal", scale=2)
+     * @ORM\Column(name="discount_price", type="decimal", scale=2, nullable=true)
      */
     private $discountPrice;
 
