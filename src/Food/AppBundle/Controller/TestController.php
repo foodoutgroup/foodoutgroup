@@ -187,4 +187,12 @@ class TestController extends Controller
             'Path: '.$path
         );
     }
+
+    public function putOrderAction()
+    {
+        $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find(2008);
+        $ns = $this->get('food.nav');
+        $ns->putTheOrderToTheNAV($order);
+        return new Response('THE END');
+    }
 }
