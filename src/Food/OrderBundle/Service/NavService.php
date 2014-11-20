@@ -325,6 +325,7 @@ class NavService extends ContainerAware
     private function _processLines(Order $order, $orderNewId)
     {
         $theKey = 1;
+        $this->container->get('doctrine')->getManager()->refresh($order);
         foreach ($order->getDetails() as $key=>$detail) {
             $theKey = $this->_processLine($detail, $orderNewId, $theKey);
             $theKey = $theKey + 1;
@@ -419,6 +420,7 @@ class NavService extends ContainerAware
         $discountAmount = 0;
         $paymentAmount = $amountForInsert;
 
+        /*
         if ($detail->getDishId()->getShowDiscount()) {
             $discountPrice = $detail->getPrice();
             $priceForInsert = $detail->getOrigPrice();
@@ -426,6 +428,7 @@ class NavService extends ContainerAware
             $discountAmount = ($priceForInsert - $discountPrice) * $detail->getQuantity();
             $paymentAmount = $amountForInsert - $discountAmount;
         }
+        */
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Line No_' => $key,
@@ -443,7 +446,7 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
         $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
 
-        @mail("paulius@foodout.lt", "[SQL Line Query]#".$key, $query, "FROM: info@foodout.lt");
+        @mail("paulius@foodout.lt", '#'.($orderNewId - $this->_orderIdModifier).' [SQL Line Query]-#'.$key, $query, "FROM: info@foodout.lt");
         $sqlSS = $this->initSqlConn()->query($query);
 
         $okeyCounter = $key;
@@ -472,7 +475,7 @@ class NavService extends ContainerAware
                 );
                 $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
                 $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
-                @mail("paulius@foodout.lt", "[SQL Line Query SUBQ]#".$key."-".$okey, $query, "FROM: info@foodout.lt");
+                @mail("paulius@foodout.lt", '#'.($orderNewId - $this->_orderIdModifier).' [SQL Line Query SUBQ]#'.$key."-".$okey, $query, "FROM: info@foodout.lt");
                 $sqlSS = $this->initSqlConn()->query($query);
             }
         }

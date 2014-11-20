@@ -25,10 +25,10 @@ parameters:
     silverstreet_provider.login: "foodout"
     silverstreet_provider.password: "ZQg5ryLS"
     # Situos gal issikelkime i parametru faila pagal aplinka?
-    admin.emails: [mantas@foodout.lt]
+    admin.emails: [mantas@foodout.lt, paulius@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
-    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt, giedrius@foodout.lt]
+    order.notify_emails: [mantas@foodout.lt, birute@foodout.lt, giedrius@foodout.lt]
     order.city_coordinators:
         vilnius: []
         kaunas: [zaneta@foodout.lt]

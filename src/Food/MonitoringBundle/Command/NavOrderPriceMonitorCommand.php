@@ -120,6 +120,12 @@ class NavOrderPriceMonitorCommand extends ContainerAwareCommand
         $mailer = $this->getContainer()->get('mailer');
         $orderService = $this->getContainer()->get('food.order');
         $notifyEmails = $this->getContainer()->getParameter('order.notify_emails');
+
+        $notifyEmails = array_merge(
+            $notifyEmails,
+            $this->getContainer()->getParameter('admin.emails')
+        );
+
         $domain = $this->getContainer()->getParameter('domain');
 
         $message = \Swift_Message::newInstance()
