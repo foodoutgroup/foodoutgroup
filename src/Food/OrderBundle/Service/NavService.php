@@ -325,6 +325,7 @@ class NavService extends ContainerAware
     private function _processLines(Order $order, $orderNewId)
     {
         $theKey = 1;
+        $this->container->get('doctrine')->getManager()->refresh($order);
         foreach ($order->getDetails() as $key=>$detail) {
             $theKey = $this->_processLine($detail, $orderNewId, $theKey);
             $theKey = $theKey + 1;
