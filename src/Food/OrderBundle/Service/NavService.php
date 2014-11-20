@@ -419,6 +419,7 @@ class NavService extends ContainerAware
         $discountAmount = 0;
         $paymentAmount = $amountForInsert;
 
+        /*
         if ($detail->getDishId()->getShowDiscount()) {
             $discountPrice = $detail->getPrice();
             $priceForInsert = $detail->getOrigPrice();
@@ -426,6 +427,7 @@ class NavService extends ContainerAware
             $discountAmount = ($priceForInsert - $discountPrice) * $detail->getQuantity();
             $paymentAmount = $amountForInsert - $discountAmount;
         }
+        */
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Line No_' => $key,
