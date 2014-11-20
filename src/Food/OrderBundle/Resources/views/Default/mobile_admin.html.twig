@@ -210,7 +210,7 @@
                                 {% for orderInfo in order.orderLog %}
                                     <tr>
                                         <td style="white-space: nowrap">{{ orderInfo.eventDate|date("Y-m-d H:i:s") }}</td>
-                                        <td>{{ ( 'admin.order.payment_status.' ~ orderInfo.orderStatus)|trans({}, 'SonataAdminBundle') }}</td>
+                                        <td>{{ ( 'admin.dispatcher.order_status.' ~ orderInfo.orderStatus)|trans({}, 'SonataAdminBundle') }}</td>
                                         <td>{{ orderInfo.event }}</td>
                                         <td>{{ orderInfo.message }}</td>
                                     </tr>
