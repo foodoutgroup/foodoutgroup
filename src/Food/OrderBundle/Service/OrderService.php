@@ -1710,6 +1710,13 @@ class OrderService extends ContainerAware
             }
         }
 
+        if ($order->getPlace()->getNavision()) {
+            $notifyEmails = array_merge(
+                $notifyEmails,
+                $this->container->getParameter('admin.emails')
+            );
+        }
+
         $this->addEmailsToMessage($message, $notifyEmails);
 
         $message->setBody($emailMessageText);
