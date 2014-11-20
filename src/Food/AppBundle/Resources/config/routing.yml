@@ -18,6 +18,10 @@ food_test:
     pattern:  /test/mssql
     defaults: { _controller: FoodAppBundle:Test:mssql }
 
+food_putorder:
+    pattern:  /test/put-order
+    defaults: { _controller: FoodAppBundle:Test:putOrder }
+
 food_test_pdf:
     pattern:  /test/pdf
     defaults: { _controller: FoodAppBundle:Test:pdf }
