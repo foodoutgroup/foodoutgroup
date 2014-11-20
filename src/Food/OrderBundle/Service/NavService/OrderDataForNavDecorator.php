@@ -412,4 +412,20 @@ trait OrderDataForNavDecorator
     {
         return '(SELECT ISNULL(MAX(ReplicationCounter),0) FROM ' . $this->getOrderTableName() . ') + 1';
     }
+
+    public function orderExists($id)
+    {
+        $conn = $this->initSqlConn();
+
+        if (empty($conn)) return false;
+
+        $query = sprintf('SELECT [Order id] FROM %s WHERE [Order id] = %s',
+                         $this->getOrderTableName(),
+                         $id);
+        $resource = $conn->query($query);
+        $row = mssql_fetch_array($resource);
+        mssql_free_result($resource);
+        
+        return !empty($row) ? true : false;
+    }
 }
