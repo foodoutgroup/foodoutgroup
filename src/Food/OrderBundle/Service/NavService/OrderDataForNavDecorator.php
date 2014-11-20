@@ -239,14 +239,15 @@ trait OrderDataForNavDecorator
 
     protected function constructInsertOrderQuery(OrderDataForNav $data)
     {
-        $query = sprintf('INSERT INTO %s %s VALUES %s',
+        $query = sprintf('INSERT INTO %s %s SELECT %s FROM %s',
                          $this->getOrderTableName(),
                          sprintf(
                             "([%s], [ReplicationCounter])",
                             implode('], [', $this->getOrderFieldNames())),
                          sprintf(
-                            "('%s', '0')",
-                            implode("', '", $this->getOrderValues($data))));
+                            "'%s', ISNULL(MAX(ReplicationCounter),0) + 1",
+                            implode("', '", $this->getOrderValues($data))),
+                         $this->getOrderTableName());
         return $query;
     }
 
