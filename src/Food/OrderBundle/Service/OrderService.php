@@ -1569,7 +1569,7 @@ class OrderService extends ContainerAware
         $mailer = $this->container->get('mailer');
 
         $message = \Swift_Message::newInstance()
-            ->setSubject($emailMessageText.': '.$order->getPlace()->getName().' (#'.$order->getId().')')
+            ->setSubject($emailSubject.': '.$order->getPlace()->getName().' (#'.$order->getId().')')
             ->setFrom('info@'.$domain)
         ;
 
@@ -1708,6 +1708,13 @@ class OrderService extends ContainerAware
                     $cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')]
                 );
             }
+        }
+
+        if ($order->getPlace()->getNavision()) {
+            $notifyEmails = array_merge(
+                $notifyEmails,
+                $this->container->getParameter('admin.emails')
+            );
         }
 
         $this->addEmailsToMessage($message, $notifyEmails);

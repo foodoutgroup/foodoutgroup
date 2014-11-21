@@ -325,6 +325,7 @@ class NavService extends ContainerAware
     private function _processLines(Order $order, $orderNewId)
     {
         $theKey = 1;
+        $this->container->get('doctrine')->getManager()->refresh($order);
         foreach ($order->getDetails() as $key=>$detail) {
             $theKey = $this->_processLine($detail, $orderNewId, $theKey);
             $theKey = $theKey + 1;
@@ -414,6 +415,20 @@ class NavService extends ContainerAware
         }
         $optionIdUsed = -1;
 
+        $priceForInsert = $detail->getPrice();
+        $amountForInsert = $priceForInsert * $detail->getQuantity();
+        $discountAmount = 0;
+        $paymentAmount = $amountForInsert;
+
+        /*
+        if ($detail->getDishId()->getShowDiscount()) {
+            $discountPrice = $detail->getPrice();
+            $priceForInsert = $detail->getOrigPrice();
+            $amountForInsert = $priceForInsert * $detail->getQuantity();
+            $discountAmount = ($priceForInsert - $discountPrice) * $detail->getQuantity();
+            $paymentAmount = $amountForInsert - $discountAmount;
+        }
+        */
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Line No_' => $key,
@@ -421,17 +436,17 @@ class NavService extends ContainerAware
             'No_' => "'".$code."'",
             'Description' => $desc,
             'Quantity' => $detail->getQuantity(),
-            'Price' => $detail->getPrice(), // @todo test the price. Kaip gula. Total ar ne.
+            'Price' => $priceForInsert, //$detail->getPrice(), // @todo test the price. Kaip gula. Total ar ne.
             'Parent Line' => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
-            'Amount' => $detail->getPrice() * $detail->getQuantity(),// @todo test the price. Kaip gula. Total ar ne.
-            'Discount Amount' => 0,
-            'Payment' => $detail->getPrice() * $detail->getQuantity(),
+            'Amount' => $amountForInsert, // $detail->getPrice() * $detail->getQuantity(),// @todo test the price. Kaip gula. Total ar ne.
+            'Discount Amount' => "-".$discountAmount,
+            'Payment' => $paymentAmount, //$detail->getPrice() * $detail->getQuantity(),
             'Value' => "''"
         );
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
         $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
 
-        @mail("paulius@foodout.lt", "[SQL Line Query]#".$key, $query, "FROM: info@foodout.lt");
+        @mail("paulius@foodout.lt", '#'.($orderNewId - $this->_orderIdModifier).' [SQL Line Query]-#'.$key, $query, "FROM: info@foodout.lt");
         $sqlSS = $this->initSqlConn()->query($query);
 
         $okeyCounter = $key;
@@ -460,7 +475,7 @@ class NavService extends ContainerAware
                 );
                 $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
                 $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
-                @mail("paulius@foodout.lt", "[SQL Line Query SUBQ]#".$key."-".$okey, $query, "FROM: info@foodout.lt");
+                @mail("paulius@foodout.lt", '#'.($orderNewId - $this->_orderIdModifier).' [SQL Line Query SUBQ]#'.$key."-".$okey, $query, "FROM: info@foodout.lt");
                 $sqlSS = $this->initSqlConn()->query($query);
             }
         }

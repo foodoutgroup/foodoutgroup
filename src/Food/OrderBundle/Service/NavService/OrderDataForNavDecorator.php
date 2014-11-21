@@ -85,20 +85,14 @@ trait OrderDataForNavDecorator
 
         $data = new OrderDataForNav();
         $data->id = $orderAccData->getOrderId();
-        $data->date = \Maybe($orderAccData)->getOrderDate()
-                                           ->format('Y-m-d')
+        $data->date = \Maybe($orderAccData)->getDate()
                                            ->val('1754-01-01');
-        $data->time = '1754-01-01 ' .
-                      \Maybe($orderAccData)->getOrderDate()
-                                           ->format('H:i:s')
-                                           ->val('00:00:00');
-        $data->deliveryDate = \Maybe($orderAccData)->getDeliveryTime()
-                                                   ->format('Y-m-d')
+        $data->time = \Maybe($orderAccData)->getTime()
+                                           ->val('1754-01-01 00:00:00');
+        $data->deliveryDate = \Maybe($orderAccData)->getDeliveryDate()
                                                    ->val('1754-01-01');
-        $data->deliveryTime = '1754-01-01 ' .
-                              \Maybe($orderAccData)->getDeliveryTime()
-                                                   ->format('H:i:s')
-                                                   ->val('00:00:00');
+        $data->deliveryTime = \Maybe($orderAccData)->getDeliveryTime()
+                                                   ->val('1754-01-01 00:00:00');
         $data->staff = $orderAccData->getStaff();
         $data->chain = $orderAccData->getChain();
         $data->restaurant = $orderAccData->getRestaurant();
@@ -245,14 +239,15 @@ trait OrderDataForNavDecorator
 
     protected function constructInsertOrderQuery(OrderDataForNav $data)
     {
-        $query = sprintf('INSERT INTO %s %s VALUES %s',
+        $query = sprintf('INSERT INTO %s %s SELECT %s FROM %s',
                          $this->getOrderTableName(),
                          sprintf(
                             "([%s], [ReplicationCounter])",
                             implode('], [', $this->getOrderFieldNames())),
                          sprintf(
-                            "('%s', " . $this->getReplicationValueForSql() . ")",
-                            implode("', '", $this->getOrderValues($data))));
+                            "'%s', ISNULL(MAX(ReplicationCounter),0) + 1",
+                            implode("', '", $this->getOrderValues($data))),
+                         $this->getOrderTableName());
         return $query;
     }
 
@@ -416,5 +411,21 @@ trait OrderDataForNavDecorator
     protected function getReplicationValueForSql()
     {
         return '(SELECT ISNULL(MAX(ReplicationCounter),0) FROM ' . $this->getOrderTableName() . ') + 1';
+    }
+
+    public function orderExists($id)
+    {
+        $conn = $this->initSqlConn();
+
+        if (empty($conn)) return false;
+
+        $query = sprintf('SELECT [Order id] FROM %s WHERE [Order id] = %s',
+                         $this->getOrderTableName(),
+                         $id);
+        $resource = $conn->query($query);
+        $row = mssql_fetch_array($resource);
+        mssql_free_result($resource);
+        
+        return !empty($row) ? true : false;
     }
 }

@@ -36,7 +36,9 @@ trait OrderNavisionFullSyncDecorator
 
                 if ($notDryRun) {
                     $timestamp = $entity->getSyncTimestamp();
-                    if (empty($timestamp)) {
+                    $orderExists = $navService->orderExists($data->id);
+
+                    if (empty($timestamp) && !$orderExists) {
                         $success = $navService->insertOrder($data);
                     } else {
                         $success = $navService->updateOrder($data);
