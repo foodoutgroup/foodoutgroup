@@ -285,6 +285,17 @@ class NavService extends ContainerAware
         $orderDate->add(new \DateInterval('P0DT0H'));
         $deliveryDate = $order->getDeliveryTime();
         $deliveryDate->sub(new \DateInterval('P0DT2H'));
+
+        $comment = $order->getComment();
+
+        if ($order->getPaymentMethod() == "local.card") {
+            $comment.=" -#- MOKEJIMAS: KORTELE ATSIIMANT";
+        } elseif ($order->getPaymentMethod() == "local") {
+            $comment.=" -#- MOKEJIMAS: GRYNAIS ATSIIMANT";
+        } else {
+            $comment.=" -#- MOKEJIMAS: APMOKETA INTR.";
+        }
+
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Phone' => str_replace('370', '8', $order->getUser()->getPhone()),
@@ -302,7 +313,7 @@ class NavService extends ContainerAware
             'Order Date' => $orderDate->format("Y-m-d"),
             'Order Time' => '1754-01-01 '.$orderDate->format("H:i:s"),
             'Takeout Time' => $deliveryDate->format("Y-m-d H:i:s"),
-            'Directions' => $order->getComment(),
+            'Directions' => $comment,
             'Discount Card No_' => '',
             'Order Status' => 4,
             'Delivery Order No_' => '',
