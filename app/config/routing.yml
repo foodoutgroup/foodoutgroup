@@ -69,7 +69,7 @@ food_homepage:
 
 
 food_applikacija:
-    pattern:  /aplikacija
+    pattern:  /aplikacijos
     defaults: { _controller: FoodAppBundle:Application:index }
 
 
