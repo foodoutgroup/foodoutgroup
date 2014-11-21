@@ -18,9 +18,12 @@ class MenuItem extends ContainerAware
         "thumbnail_url" => '',
         "title" => '',
         "ingredients" => '',
+        'show_discount' => false,
         "price_range" => array(
             "minimum" => 0,
             "maximum" => 0,
+            "minimum_old" => 0,
+            "maximum_old" => 0,
             "currency" => "LTL"
         ),
         "status" => 'available',
