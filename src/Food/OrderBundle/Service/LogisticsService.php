@@ -181,6 +181,7 @@ class LogisticsService extends ContainerAware
     /**
      * @param int $driverId
      * @param array $orderIds
+     * @param bool $external
      */
     public function assignDriver($driverId, $orderIds, $external = false)
     {
@@ -197,9 +198,20 @@ class LogisticsService extends ContainerAware
 
                 if ($external) {
                     $source = 'logistics_service_external';
+                    $logString = 'Driver #%d assigned to order #%d from logistics';
+                    $logAction = 'logistics_api_driver_assign';
                 } else {
                     $source = 'logistics_service';
+                    $logString = 'Driver #%d assigned to order #%d from dispatcher';
+                    $logAction = 'dispatcher_driver_assign';
                 }
+
+                // Uzloginam prie orderio, kas, kada ir per kur priskyre vairuotoja
+                $orderService->logOrder(
+                    $order,
+                    $logAction,
+                    sprintf($logString, $driverId, $orderId)
+                );
 
                 // TODO kolkas visad vairuotoja informuojam SMS'u, bet su LogTimeApi nutart ar dubliuojam
                 $orderService->statusAssigned($source);

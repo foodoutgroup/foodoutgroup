@@ -51,7 +51,7 @@ class OrderStatusLog
 
     /**
      * @var string
-     * @ORM\Column(name="source", type="string", length=25, nullable=true)
+     * @ORM\Column(name="source", type="string", length=50, nullable=true)
      */
     private $source;
 
