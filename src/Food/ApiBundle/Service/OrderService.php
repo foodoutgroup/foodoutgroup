@@ -198,7 +198,7 @@ class OrderService extends ContainerAware
 
         $os->setMobileOrder(true);
 
-        $paymentMethod = $request->get('payment_option');
+        $paymentMethod = (isset($serviceVar['payment_option']) ? $serviceVar['payment_option'] : 'cash');
         $customerComment = (!empty($serviceVar['address']) ? $serviceVar['address']['comments'] : "");
 
         $os->setPaymentMethod(($paymentMethod == 'cash' ? 'local':'local.card'));
