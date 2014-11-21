@@ -1548,7 +1548,7 @@ class OrderService extends ContainerAware
         $cityCoordinators = $this->container->getParameter('order.city_coordinators');
 
         $emailSubject = $translator->trans('general.canceled_order.title');
-        $emailMessageText = $emailSubject
+        $emailMessageText = $emailSubject."\n\n"
             ."OrderId: " . $order->getId()."\n\n"
             .$translator->trans('general.new_order.selected_place_point').": ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
             .$translator->trans('general.new_order.place_point_phone').":".$order->getPlacePoint()->getPhone()."\n"
