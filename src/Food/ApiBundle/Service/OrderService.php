@@ -279,8 +279,8 @@ class OrderService extends ContainerAware
                 'restaurant_id' => $order->getPlace()->getId(),
                 'restaurant_title' => $order->getPlace()->getName(),
                 'payment_options' => array(
-                    'cash' => true,
-                    'credit_card' => $order->getPlace()->getCardOnDelivery()
+                    'cash' => ($order->getPaymentMethod() == "local" ? true: false),
+                    'credit_card' => ($order->getPaymentMethod() == "local.card" ? true: false),
                 ),
                 'items' => $this->_getItemsForResponse($order)
             ),
