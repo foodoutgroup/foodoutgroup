@@ -997,7 +997,6 @@ class OrderService extends ContainerAware
     public function setPaymentStatus($status, $message=null)
     {
         $order = $this->getOrder();
-        $this->logOrder($order, 'payment_status_change', sprintf('From %s to %s', $order->getPaymentStatus(), $status));
         $this->setPaymentStatusWithoutSave($order, $status, $message);
         $this->saveOrder();
     }
@@ -1010,6 +1009,8 @@ class OrderService extends ContainerAware
      */
     public function setPaymentStatusWithoutSave($order, $status, $message = null)
     {
+        $this->logOrder($order, 'payment_status_change', sprintf('From %s to %s', $order->getPaymentStatus(), $status));
+
         if (!$this->isAllowedPaymentStatus($status)) {
             throw new \InvalidArgumentException('Status: "'.$status.'" is not a valid order payment status');
         }
@@ -1548,7 +1549,7 @@ class OrderService extends ContainerAware
         $cityCoordinators = $this->container->getParameter('order.city_coordinators');
 
         $emailSubject = $translator->trans('general.canceled_order.title');
-        $emailMessageText = $emailSubject
+        $emailMessageText = $emailSubject."\n\n"
             ."OrderId: " . $order->getId()."\n\n"
             .$translator->trans('general.new_order.selected_place_point').": ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
             .$translator->trans('general.new_order.place_point_phone').":".$order->getPlacePoint()->getPhone()."\n"
