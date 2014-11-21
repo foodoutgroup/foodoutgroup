@@ -289,11 +289,11 @@ class NavService extends ContainerAware
         $comment = $order->getComment();
 
         if ($order->getPaymentMethod() == "local.card") {
-            $comment.=" -#- MOKEJIMAS: KORTELE ATSIIMANT";
+            $comment.="## MOKEJIMAS:KORTELE";
         } elseif ($order->getPaymentMethod() == "local") {
-            $comment.=" -#- MOKEJIMAS: GRYNAIS ATSIIMANT";
+            $comment.="## MOKEJIMAS:GRYNAIS";
         } else {
-            $comment.=" -#- MOKEJIMAS: APMOKETA INTR.";
+            $comment.="## MOKEJIMAS:APMOKETA";
         }
 
         $dataToPut = array(
