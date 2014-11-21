@@ -322,7 +322,7 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         );
         $orderService = $this->getMock(
             'Food\OrderBundle\Service\OrderService',
-            array('getOrderById', 'statusAssigned', 'saveOrder')
+            array('getOrderById', 'statusAssigned', 'saveOrder', 'logOrder')
         );
 
         $logisticsService->setOrderService($orderService);
@@ -356,6 +356,14 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
             ->with($driver);
 
         $orderService->expects($this->once())
+            ->method('logOrder')
+            ->with(
+                $order,
+                'dispatcher_driver_assign',
+                'Driver #15 assigned to order #64 from dispatcher'
+            );
+
+        $orderService->expects($this->once())
             ->method('statusAssigned')
             ->with('logistics_service');
 
@@ -367,8 +375,8 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testAssignDriverExternal()
     {
-        $driverId = 15;
-        $orderIds = array(64);
+        $driverId = 17;
+        $orderIds = array(66);
 
         $driver = new Driver();
         $driver->setName('Jonas Jonauskas');
@@ -393,7 +401,7 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         );
         $orderService = $this->getMock(
             'Food\OrderBundle\Service\OrderService',
-            array('getOrderById', 'statusAssigned', 'saveOrder')
+            array('getOrderById', 'statusAssigned', 'saveOrder', 'logOrder')
         );
 
         $logisticsService->setOrderService($orderService);
@@ -425,6 +433,14 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $order->expects($this->once())
             ->method('setDriver')
             ->with($driver);
+
+        $orderService->expects($this->once())
+            ->method('logOrder')
+            ->with(
+                $order,
+                'logistics_api_driver_assign',
+                'Driver #17 assigned to order #66 from logistics'
+            );
 
         $orderService->expects($this->once())
             ->method('statusAssigned')
@@ -464,7 +480,7 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         );
         $orderService = $this->getMock(
             'Food\OrderBundle\Service\OrderService',
-            array('getOrderById', 'statusAssigned', 'saveOrder')
+            array('getOrderById', 'statusAssigned', 'saveOrder', 'logOrder')
         );
 
         $logisticsService->setOrderService($orderService);
@@ -495,6 +511,9 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $order->expects($this->exactly(2))
             ->method('setDriver')
             ->with($driver);
+
+        $orderService->expects($this->exactly(2))
+            ->method('logOrder');
 
         $orderService->expects($this->exactly(2))
             ->method('statusAssigned')
@@ -1020,15 +1039,8 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
             ->method('getManager')
             ->will($this->returnValue($entityManager));
 
-        // Cia inicijuojam expecta, nes po to atsiranda sekundes skirtumas
-        $expectedOrderSendObject = new OrderToLogistics();
-        $expectedOrderSendObject->setOrder($order)
-            ->setStatus('unsent')
-            ->setDateAdded(new \DateTime("now"));
-
         $entityManager->expects($this->once())
-            ->method('persist')
-            ->with($expectedOrderSendObject);
+            ->method('persist');
 
         $entityManager->expects($this->once())
             ->method('flush');

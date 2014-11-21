@@ -804,6 +804,8 @@ class NavService extends ContainerAware
                     $orderService->statusFinished('cili_nav');
                 } else if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), OrderService::$status_finished)) {
                     $orderService->statusFinished('cili_nav');
+                } else if ($order->getOrderStatus() == OrderService::$status_finished) {
+                    // do nothing - it is already finished
                 } else {
                     $logger->error(sprintf(
                         'Invalid status change detected: Order #%d was marked as "finished" in Cili Nav. His current status: %s',

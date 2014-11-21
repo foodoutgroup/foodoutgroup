@@ -114,11 +114,6 @@ class LogisticsController extends Controller
                             && $order->getDriver()->getId() != $driver['driver_id'])
                         ) {
                         $logisticsService->assignDriver($driver['driver_id'], array($driver['order_id']), true);
-                        $orderService->logOrder(
-                            $order,
-                            'logistics_api_driver_assign',
-                            sprintf('Driver #%d assigned to order #%d from logitics', $driver['driver_id'], $driver['order_id'])
-                        );
                     } else {
                         $errorReason = 'Invalid status change. From: '.$order->getOrderStatus().' To: '.$orderService::$status_assiged;
                     }

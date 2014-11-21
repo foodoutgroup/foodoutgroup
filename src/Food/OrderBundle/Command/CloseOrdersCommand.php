@@ -44,9 +44,7 @@ class CloseOrdersCommand extends ContainerAwareCommand
                         continue;
                     }
 
-
                     $orderService->logOrder($order, 'auto_close', 'Order auto close command closed order');
-
                     $orderService->statusCompleted('auto_close_order_command');
 
                     $em->persist($order);
