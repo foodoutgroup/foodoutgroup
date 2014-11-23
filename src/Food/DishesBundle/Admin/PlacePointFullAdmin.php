@@ -109,7 +109,7 @@ class PlacePointFullAdmin extends FoodAdmin
             $wt = explode(":", $object->{'getWd'.$i.'End'}());
             $val = $object->{'getWd'.$i.'End'}();
             if (sizeof($wt) == 2) {
-                if ($wt <= 6) {
+                if ($wt[0] <= 6) {
                     $wt[0] = $wt[0] + 24;
                     $object->{'setWd'.$i.'EndLong'}(implode("", $wt));
                 } else {
