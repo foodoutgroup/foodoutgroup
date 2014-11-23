@@ -441,6 +441,7 @@ class NavService extends ContainerAware
         }
         */
         $desc = str_replace(array("'",'"', ',', '(', ')', '`'), '', $desc);
+        $desc = "'".$desc."'";
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Line No_' => $key,
