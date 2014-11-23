@@ -82,4 +82,42 @@ class PlacePointFullAdmin extends FoodAdmin
             ))
         ;
     }
+
+    /**
+     * @param \Food\DishesBundle\Entity\PlacePoint $object
+     * @return mixed|void
+     */
+    public function prePersist($object)
+    {
+        $this->_fixExtendedWorkTime($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\PlacePoint $object
+     */
+    public function preUpdate($object)
+    {
+        $this->_fixExtendedWorkTime($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\PlacePoint $object
+     */
+    private function _fixExtendedWorkTime($object)
+    {
+        for($i = 1; $i<=7; $i++) {
+            $wt = explode(":", $object->{'getWd'.$i.'End'}());
+            $val = $object->{'getWd'.$i.'End'}();
+            if (sizeof($wt) == 2) {
+                if ($wt <= 6) {
+                    $wt[0] = $wt[0] + 24;
+                    $object->{'setWd'.$i.'EndLong'}(implode("", $wt));
+                } else {
+                    $object->{'setWd'.$i.'EndLong'}(implode("", $wt));
+                }
+            } else {
+                $object->{'setWd'.$i.'EndLong'}($val);
+            }
+        }
+    }
 }
