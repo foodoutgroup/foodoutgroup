@@ -18,9 +18,12 @@ class MenuItem extends ContainerAware
         "thumbnail_url" => '',
         "title" => '',
         "ingredients" => '',
+        'show_discount' => false,
         "price_range" => array(
             "minimum" => 0,
             "maximum" => 0,
+            "minimum_old" => 0,
+            "maximum_old" => 0,
             "currency" => "LTL"
         ),
         "status" => 'available',
@@ -91,20 +94,23 @@ class MenuItem extends ContainerAware
             $categories[] = $cat->getId();
         }
 
+        $ds = $this->container->get('food.dishes');
+        $showDiscount = $dish->getShowDiscount();
+        $priceRange = array(
+            'minimum' => (!$showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : $ds->getSmallestDishDiscountPrice($dish->getId()) * 100),
+            'maximum' => (!$showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : $ds->getLargestDishDiscountPrice($dish->getId()) * 100),
+            'minimum_old' => ($showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : 0),
+            'maximum_old' => ($showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : 0),
+            'currency' => 'LTL'
+        );
         $this->set('item_id', $dish->getId())
             ->set('restaurant_id', $dish->getPlace()->getId())
             ->set('category_id', $categories)
             ->set('thumbnail_url',$dish->getWebPath())
             ->set('title', $dish->getName())
             ->set('ingredients', $dish->getDescription())
-            ->set(
-                'price_range',
-                array(
-                    'minimum' => $this->container->get('food.dishes')->getSmallestDishPrice($dish->getId()) * 100,
-                    'maximum' => $this->container->get('food.dishes')->getLargestDishPrice($dish->getId()) * 100,
-                    'currency' => 'LTL'
-                )
-            )
+            ->set('show_discount', $showDiscount)
+            ->set('price_range', $priceRange)
             ->set('updated_at', ($dish->getEditedAt() != null ? $dish->getEditedAt()->format('U'): $dish->getCreatedAt()->format('U')));
 
         if ($loadOptions) {

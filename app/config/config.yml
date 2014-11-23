@@ -25,15 +25,19 @@ parameters:
     silverstreet_provider.login: "foodout"
     silverstreet_provider.password: "ZQg5ryLS"
     # Situos gal issikelkime i parametru faila pagal aplinka?
-    admin.emails: [mantas@foodout.lt, paulius@foodout.lt]
+    admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
-    order.notify_emails: [mantas@foodout.lt, birute@foodout.lt, giedrius@foodout.lt]
+#    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt, giedrius@foodout.lt]
+    order.notify_emails: [paulius@foodout.lt]
     order.city_coordinators:
         vilnius: []
-        kaunas: [zaneta@foodout.lt]
-        klaipėda: [jurgita@foodout.lt]
-    order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
+        kaunas: []
+#        kaunas: [renata@foodout.lt]
+#        klaipėda: [jurgita@foodout.lt]
+        klaipėda: []
+#    order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
+    order.accept_notify_emails: [paulius@foodout.lt]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
     domain: "foodout.lt"
@@ -74,7 +78,7 @@ parameters:
     logtime.driver_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitDrivers"
     # Ar siusti uzsakyma i isorine (TMS) sistema
     logistics.send_to_external: true
-    logistics.city_filter: ["Kaunas", "Klaipėda"]
+    logistics.city_filter: ["Klaipėda"]
     # seb banklink
     seb.banklink.private_key: "/home/skanu.lt/shared/banklinks/seb/private.key"
     seb.banklink.bank_key: "/home/skanu.lt/shared/banklinks/seb/bank.key"
