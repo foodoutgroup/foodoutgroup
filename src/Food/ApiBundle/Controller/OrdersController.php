@@ -11,8 +11,20 @@ use Food\ApiBundle\Exceptions\ApiException;
 
 class OrdersController extends Controller
 {
+    private function _theJudge($request)
+    {
+        $miscUtils = $this->get('food.app.utils.misc');
+        // Check if user is not banned
+        $ip = $request->getClientIp();
+        // Dude is banned - hit him
+        if ($miscUtils->isIpBanned($ip)) {
+            @mail("paulius@foodout.lt", "GOT BAN", $ip, "FROM: test@foodout.lt");
+            die('{error: "Piktybinis", description: null}');
+        }
+    }
     public function getOrdersAction(Request $request)
     {
+        $this->_theJudge($request);
         try {
             $requestJson = new JsonRequest($request);
             return new JsonResponse($this->get('food_api.order')->getPendingOrders($request, $requestJson));
@@ -29,6 +41,7 @@ class OrdersController extends Controller
 
     public function createOrderAction(Request $request)
     {
+        $this->_theJudge($request);
         mail("paulius@foodout.lt", "FOO LOGS", print_r($request->getContent(), true), "FROM: test@foodout.lt");
         try {
             $requestJson = new JsonRequest($request);
@@ -46,6 +59,7 @@ class OrdersController extends Controller
 
     public function createOrderPreAction(Request $request)
     {
+        $this->_theJudge($request);
         @mail("paulius@foodout.lt", "FOO LOGS PRE", print_r($request->getContent(), true), "FROM: test@foodout.lt");
         try {
             $requestJson = new JsonRequest($request);
@@ -61,8 +75,9 @@ class OrdersController extends Controller
         }
     }
 
-    public function getOrderDetailsAction($id)
+    public function getOrderDetailsAction($id, Request $request)
     {
+        $this->_theJudge($request);
         try {
             $order = $this->get('food.order')->getOrderById($id);
 
