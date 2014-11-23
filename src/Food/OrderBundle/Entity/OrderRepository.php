@@ -408,15 +408,17 @@ class OrderRepository extends EntityRepository
     {
         $orderStatus = "'".OrderService::$status_completed
             ."', '".OrderService::$status_canceled
+            ."', '".OrderService::$status_new
             ."', '".OrderService::$status_nav_problems."'";
         $paymentStatus = OrderService::$paymentStatusComplete;
         $pickup = OrderService::$deliveryPickup;
         $deliver = OrderService::$deliveryDeliver;
 
-        $dateFrom = new \DateTime("-12 hour");
-        $dateToPickup = new \DateTime("-90 minute");
+        $dateFrom = new \DateTime("now");
+        $dateToPickup = new \DateTime("-70 minute");
         $dateToDeliver = new \DateTime("-2 hour");
-        $dateFrom = $dateFrom->format("Y-m-d h:i:s");
+
+        $dateFrom1 = $dateFrom->sub(new \DateInterval('PT12H'))->format("Y-m-d h:i:s");
         $dateToPickup = $dateToPickup->format("Y-m-d h:i:s");
         $dateToDeliver = $dateToDeliver->format("Y-m-d h:i:s");
 
@@ -431,12 +433,12 @@ class OrderRepository extends EntityRepository
             AND (
               (
                 o.delivery_type = '{$pickup}'
-                AND o.delivery_time BETWEEN '{$dateFrom}' AND '{$dateToPickup}'
+                AND o.delivery_time BETWEEN '{$dateFrom1}' AND '{$dateToPickup}'
               )
               OR
               (
                o.delivery_type = '{$deliver}'
-                AND o.delivery_time BETWEEN '{$dateFrom}' AND '{$dateToDeliver}'
+                AND o.delivery_time BETWEEN '{$dateFrom1}' AND '{$dateToDeliver}'
               )
             )
         ";
