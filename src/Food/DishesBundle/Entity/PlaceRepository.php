@@ -148,6 +148,7 @@ class PlaceRepository extends EntityRepository
         foreach ($places as $pkey=>&$place) {
             //var_dump($place['pp_count']);
             $place['place'] = $this->find($place['place_id']);
+
             $placePointQuery = "
                 SELECT pps.id
                     FROM place_point pps,
@@ -167,11 +168,19 @@ class PlaceRepository extends EntityRepository
             ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1"
             ;
 
-            $stmt = $this->getEntityManager()->getConnection()->prepare($placePointQuery);
-            $stmt->execute();
-            $placesPInfo = $stmt->fetchColumn(0);
-            if ($placesPInfo) {
-                $place['point'] = $this->getEntityManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placesPInfo);
+            $defaultPlacePoint = true;
+            if (empty($lat) || empty($lon)) {
+                $defaultPlacePoint = false;
+            }
+            if ($defaultPlacePoint) {
+                $stmt = $this->getEntityManager()->getConnection()->prepare($placePointQuery);
+                $stmt->execute();
+                $placesPInfo = $stmt->fetchColumn(0);
+                if ($placesPInfo) {
+                    $place['point'] = $this->getEntityManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placesPInfo);
+                } else {
+                    $place['point'] = $this->getEntityManager()->getRepository('FoodDishesBundle:PlacePoint')->find($place['point_id']);
+                }
             } else {
                 $place['point'] = $this->getEntityManager()->getRepository('FoodDishesBundle:PlacePoint')->find($place['point_id']);
             }
