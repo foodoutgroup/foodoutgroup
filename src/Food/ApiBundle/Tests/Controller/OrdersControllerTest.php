@@ -144,7 +144,7 @@ class OrdersControllerTest extends WebTestCase
             ),
             'state' => array(
                 'title' => 'accepted',
-                'info_number' => '37061212122',
+                'info_number' => '+37061212122',
                 'message' => ''
             ),
             'details' => array(
@@ -202,7 +202,7 @@ class OrdersControllerTest extends WebTestCase
             ),
             'state' => array(
                 'title' => 'accepted',
-                'info_number' => '37061212122',
+                'info_number' => '+37061212122',
                 'message' => ''
             ),
             'details' => array(
