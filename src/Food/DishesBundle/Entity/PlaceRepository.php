@@ -137,10 +137,54 @@ class PlaceRepository extends EntityRepository
         $stmt->execute();
         $places = $stmt->fetchAll();
 
+        $dh = date("H");
+        $dm = date("i");
+        if (intval($dh) < 6) {
+            $dh = 24 + intval($dh);
+        }
+        $dth = $dh."".$dm;
+        $wd = date("N");
+
         foreach ($places as $pkey=>&$place) {
             //var_dump($place['pp_count']);
             $place['place'] = $this->find($place['place_id']);
-            $place['point'] = $this->getEntityManager()->getRepository('FoodDishesBundle:PlacePoint')->find($place['point_id']);
+
+            $placePointQuery = "
+                SELECT pps.id
+                    FROM place_point pps,
+                    place p
+                    WHERE
+                        p.id = pps.place
+                        AND pps.active=1
+                        AND pps.deleted_at is NULL
+                        AND pps.city='".$city."'
+                        AND pps.place = ".$place['place']->getId()."
+                        AND '".$dth."' BETWEEN wd".$wd."_start AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)
+                        AND (
+            (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) <= 7
+                 OR
+                 p.self_delivery = 1
+            )
+            ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1"
+            ;
+
+            $defaultPlacePoint = true;
+            if (empty($lat) || empty($lon)) {
+                $defaultPlacePoint = false;
+            }
+            if ($defaultPlacePoint) {
+                $stmt = $this->getEntityManager()->getConnection()->prepare($placePointQuery);
+                $stmt->execute();
+                $placesPInfo = $stmt->fetchColumn(0);
+                if ($placesPInfo) {
+                    $place['point'] = $this->getEntityManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placesPInfo);
+                } else {
+                    $place['point'] = $this->getEntityManager()->getRepository('FoodDishesBundle:PlacePoint')->find($place['point_id']);
+                }
+            } else {
+                $place['point'] = $this->getEntityManager()->getRepository('FoodDishesBundle:PlacePoint')->find($place['point_id']);
+            }
+
         }
         return $places;
     }
@@ -160,12 +204,20 @@ class PlaceRepository extends EntityRepository
         $lat = str_replace(",", ".", $locationData['lat']);
         $lon = str_replace(",", ".", $locationData['lng']);
 
+        $dh = date("H");
+        $dm = date("i");
+        if (intval($dh) < 6) {
+            $dh = 24 + intval($dh);
+        }
+        $dth = $dh."".$dm;
+        $wd = date("N");
 
         $subQuery = "SELECT pp.id FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND pp.deleted_at IS NULL AND p.active=1 AND pp.city='".$city."' AND pp.place = $placeId
             AND (
                 (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <= 7
                 ".(!$ignoreSelfDelivery ? " OR p.self_delivery = 1":"")."
             )
+            AND '".$dth."' BETWEEN wd".$wd."_start AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)
             ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);

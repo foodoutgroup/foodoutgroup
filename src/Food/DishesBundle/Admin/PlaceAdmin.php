@@ -201,6 +201,7 @@ class PlaceAdmin extends FoodAdmin
     {
         foreach ($object->getPoints() as $point) {
             $point->setPlace($object);
+            $this->_fixExtendedWorkTime($point);
             $cAt = $point->getCreatedAt();
             if (empty($cAt)) {
                 $point->setCreatedAt(new \DateTime('now'));
@@ -212,6 +213,26 @@ class PlaceAdmin extends FoodAdmin
         }
     }
 
+    /**
+     * @param \Food\DishesBundle\Entity\PlacePoint $object
+     */
+    private function _fixExtendedWorkTime($object)
+    {
+        for($i = 1; $i<=7; $i++) {
+            $wt = explode(":", $object->{'getWd'.$i.'End'}());
+            $val = $object->{'getWd'.$i.'End'}();
+            if (sizeof($wt) == 2) {
+                if ($wt[0] <= 6) {
+                    $wt[0] = $wt[0] + 24;
+                    $object->{'setWd'.$i.'EndLong'}(implode("", $wt));
+                } else {
+                    $object->{'setWd'.$i.'EndLong'}(implode("", $wt));
+                }
+            } else {
+                $object->{'setWd'.$i.'EndLong'}($val);
+            }
+        }
+    }
     /**
      * @param \Food\DishesBundle\Entity\Place $object
      */

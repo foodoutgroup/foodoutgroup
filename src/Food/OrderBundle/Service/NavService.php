@@ -411,6 +411,7 @@ class NavService extends ContainerAware
         $desc = str_replace(" Porcija", "", $desc);
 
         $code = $detail->getDishSizeCode();
+        $optionIdUsed = -1;
         if (empty($code)) {
             $detailOptions = $detail->getOptions();
             if (!empty($detailOptions)) {
@@ -424,7 +425,6 @@ class NavService extends ContainerAware
         if ($data) {
             $desc = "'".$data->getDescription()."'";
         }
-        $optionIdUsed = -1;
 
         $priceForInsert = $detail->getPrice();
         $amountForInsert = $priceForInsert * $detail->getQuantity();
@@ -440,6 +440,8 @@ class NavService extends ContainerAware
             $paymentAmount = $amountForInsert - $discountAmount;
         }
         */
+        $desc = str_replace(array("'",'"', ',', '(', ')', '`'), '', $desc);
+        $desc = "'".$desc."'";
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Line No_' => $key,

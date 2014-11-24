@@ -1958,20 +1958,27 @@ class OrderService extends ContainerAware
     {
         $wd = date('w');
         if ($wd == 0) $wd = 7;
-        $timeFr = $placePoint->{'getWd'.$wd.'Start'}();
-        $timeTo = $placePoint->{'getWd'.$wd.'End'}();
+        $frm = $placePoint->{'getWd'.$wd.'Start'}();
+        $tot = $placePoint->{'getWd'.$wd.'EndLong'}();
+        if (empty($tot)) {
+            $tot = $placePoint->{'getWd'.$wd.'End'}();
+        }
+        $timeFr = str_replace(":", "", $frm);
+        $timeTo = str_replace(":", "", $tot);
 
-        if(!strpos($timeFr, ':')|| !strpos($timeTo, ':')) {
+        $totalH = date("H");
+        $totalM = date("i");
+        if ($totalH < 6) {
+            $totalH = $totalH + 24;
+        }
+        $total = $totalH."".$totalM;
+
+        if(!strpos($frm, ':')) {
             return false;
         } else {
-            $timeFrTs = strtotime($timeFr);
-            $timeToFs = strtotime($timeTo);
-            if ($timeToFs < $timeFrTs) {
-                $timeToFs+= 60 * 60 * 24;
-            }
-            if ($timeFrTs > date('U')) {
+            if ($timeFr > $total) {
                 return false;
-            } elseif ($timeToFs < date('U')) {
+            } elseif ($timeTo < $total) {
                 return false;
             }
         }
@@ -2056,6 +2063,20 @@ class OrderService extends ContainerAware
             $placePointMap = $this->container->get('session')->get('point_data');
             if (!empty($placePointMap[$place->getId()])) {
                 $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+                if ($pointRecord) {
+                    $isWork = $this->isTodayWork($pointRecord);
+                    if (!$isWork) {
+                        $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
+                        $theId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(),$locationData);
+                        $formErrors[] = $theId;
+                        if ($theId) {
+                            $placePointMap[$place->getId()] = $theId;
+                            $this->container->get('session')->set('point_data', $placePointMap);
+                        } else {
+                            $formErrors[] = 'order.form.errors.no_restaurant_to_deliver';
+                        }
+                    }
+                }
             } else {
                 $formErrors[] = 'order.form.errors.customeraddr';
             }

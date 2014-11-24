@@ -198,10 +198,13 @@ class OrderService extends ContainerAware
 
         $os->setMobileOrder(true);
 
-        $paymentMethod = $request->get('payment-type');
+        $paymentMethod = (isset($serviceVar['payment_option']) ? $serviceVar['payment_option'] : 'cash');
         $customerComment = (!empty($serviceVar['address']) ? $serviceVar['address']['comments'] : "");
 
-        $os->setPaymentMethod('local');
+        $os->setPaymentMethod(($paymentMethod == 'cash' ? 'local':'local.card'));
+
+        @mail("paulius@foodout.lt", "MOBILE REQUEST JSONobject", print_r($request, true), "FROM: info@foodout.lt");
+
         if ($serviceVar['type'] == "pickup") {
             $os->setDeliveryType($os::$deliveryPickup);
         } else {
@@ -278,8 +281,8 @@ class OrderService extends ContainerAware
                 'restaurant_id' => $order->getPlace()->getId(),
                 'restaurant_title' => $order->getPlace()->getName(),
                 'payment_options' => array(
-                    'cash' => true,
-                    'credit_card' => $order->getPlace()->getCardOnDelivery()
+                    'cash' => ($order->getPaymentMethod() == "local" ? true: false),
+                    'credit_card' => ($order->getPaymentMethod() == "local.card" ? true: false),
                 ),
                 'items' => $this->_getItemsForResponse($order)
             ),
