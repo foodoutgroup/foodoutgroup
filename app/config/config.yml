@@ -12,7 +12,7 @@ parameters:
     available_cities: ["Vilnius","Kaunas","Klaipėda"]
     time_zone: "Europe/Vilnius"
     sms.available_providers: [food.infobip, food.silverstreet]
-    sms.main_provider: "food.infobip"
+    sms.main_provider: "food.silverstreet"
     sms.sender: "Foodout.lt"
     sms.balance_limit_warn: 5
     sms.balance_limit_critical: 3
