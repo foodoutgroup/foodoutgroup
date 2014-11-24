@@ -16,3 +16,18 @@ services:
 
     food_user.user_password_validator:
         class: Food\UserBundle\Service\UserPasswordValidator
+
+    food_user.registration.form.handler:
+        class: Food\UserBundle\Service\RegistrationFormHandler
+        scope: request
+        arguments:
+            - @fos_user.registration.form
+            - @request
+            - @fos_user.user_manager
+            - @fos_user.mailer
+            - @fos_user.util.token_generator
+            - @translator
+            - @food.app.utils.notifications
+            - @food.mailer
+            - @router
+            - @food.cart
