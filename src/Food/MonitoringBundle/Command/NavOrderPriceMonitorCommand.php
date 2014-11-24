@@ -59,7 +59,7 @@ class NavOrderPriceMonitorCommand extends ContainerAwareCommand
                 foreach($orders as $order) {
                     // dont panic if it is not here - unsynced monitor will take care of that
                     if (isset($navOrders[$order->getId()])) {
-                        if (intval(($order->getTotal() * 100)) != intval(($navOrders[$order->getId()]['total'] * 100))) {
+                        if (sprintf('%01.2f', $order->getTotal()) != sprintf('%01.2f', $navOrders[$order->getId()]['total'])) {
                             $criticalOrders[] = array(
                                 'orderId' => $order->getId(),
                                 'navOrderId' => $navOrders[$order->getId()]['Order No_'],
