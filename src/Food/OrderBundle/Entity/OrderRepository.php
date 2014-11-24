@@ -19,7 +19,8 @@ class OrderRepository extends EntityRepository
             'order_status' =>  array(
                 OrderService::$status_accepted,
                 OrderService::$status_delayed,
-                OrderService::$status_finished
+                OrderService::$status_finished,
+                OrderService::$status_forwarded,
             ),
             'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,

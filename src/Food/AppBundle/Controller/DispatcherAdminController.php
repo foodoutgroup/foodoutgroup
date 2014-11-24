@@ -41,6 +41,7 @@ class DispatcherAdminController extends Controller
         switch ($order->getOrderStatus()) {
             case $orderService::$status_new:
                 $orderStatuses = array(
+                    $orderService::$status_accepted,
                     $orderService::$status_canceled,
                 );
                 break;
