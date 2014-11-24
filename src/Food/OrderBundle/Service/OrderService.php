@@ -1114,9 +1114,9 @@ class OrderService extends ContainerAware
             self::$status_forwarded => 2,
             self::$status_finished => 3,
             self::$status_assiged => 4,
+            self::$status_failed => 4,
             self::$status_completed => 5,
             self::$status_canceled => 5,
-            self::$status_failed => 5,
         );
 
         if (empty($from) && !empty($to)) {
