@@ -470,6 +470,8 @@ class OrderRepository extends EntityRepository
                     OrderService::$status_completed,
                     OrderService::$status_canceled,
                     OrderService::$status_nav_problems,
+                    // TODO temp, nav canot cancel assigned orders
+                    OrderService::$status_assiged
                 ),
                 'navision' => 1,
             ));
