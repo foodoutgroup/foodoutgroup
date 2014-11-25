@@ -311,14 +311,14 @@ class LogisticsService extends ContainerAware
         $deliveryToTime = clone $acceptTime;
 
         $writer->startElement("PickUpTime");
-        $writer->writeElement('From', $order->getAcceptTime()->format("Y-m-d H:i"));
+        $writer->writeElement('From', $acceptTime->format("Y-m-d H:i"));
         $writer->writeElement('To', $pickupToTime->add(new \DateInterval('PT20M'))->format("Y-m-d H:i"));
         // End pickup time block
         $writer->endElement();
 
         // Delivery time block
         $writer->startElement("DeliveryTime");
-        $writer->writeElement('From', $order->getAcceptTime()->format("Y-m-d H:i"));
+        $writer->writeElement('From', $acceptTime->format("Y-m-d H:i"));
         $writer->writeElement('To', $deliveryToTime->add(new \DateInterval('PT1H'))->format("Y-m-d H:i"));
         // End delivery time block
         $writer->endElement();
