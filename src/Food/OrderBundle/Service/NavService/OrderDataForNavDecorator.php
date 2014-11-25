@@ -59,8 +59,11 @@ trait OrderDataForNavDecorator
         $data->alcoholAmount = 0.0;
         $data->alcoholAmountEUR = 0.0;
         $data->alcoholVAT = 0.0;
-        $data->deliveryAmount = (double) $deliveryTotal;
-        $data->deliveryAmountEUR = (double) $misc->getEuro($deliveryTotal);
+        $data->deliveryAmount = (double) ($order->getDeliveryType()
+                                                ->val('') == 'pickup' ?
+                                                    0.0 :
+                                                    $deliveryTotal);
+        $data->deliveryAmountEUR = (double) $misc->getEuro($data->deliveryAmount);
         $data->deliveryVAT = (double) $vat;
         $data->giftCardAmount = 0.0;
         $data->giftCardAmountEUR = 0.0;
