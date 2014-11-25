@@ -59,6 +59,7 @@ class OrderAdmin extends SonataAdmin
                     '1' => $this->trans('label_type_yes'),
                 )
             ))
+            ->add('total', null, array('label' => 'admin.order.total'))
             ->add('couponCode', null, array('label' => 'admin.order.coupon_code'))
         ;
     }
