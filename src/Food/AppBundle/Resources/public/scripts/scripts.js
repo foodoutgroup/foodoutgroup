@@ -98,7 +98,7 @@ bind_registration_form = function() {
                 var inputs = $('.register-form:visible .form-row input');
                 inputs.tooltip('show');
             } else {
-                top.location.href = top.location.href;
+                top.location.href = top.location.href.replace('#', '');
             }
         };
 
@@ -125,7 +125,7 @@ bind_login_form = function() {
 
         callback = function(response) {
             if (response.success == 1) {
-                top.location.href = top.location.href;
+                top.location.href = top.location.href.replace('#', '');
             } else {
                 form_login_rows.addClass('error');
                 form.find('input[password]').val('');
