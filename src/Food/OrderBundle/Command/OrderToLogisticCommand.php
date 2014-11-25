@@ -64,6 +64,14 @@ class OrderToLogisticCommand extends ContainerAwareCommand
                 $output->writeln('Sending XML for order '.$orderToSend->getOrder()->getId());
                 $xml = $logisticsService->generateOrderXml($orderToSend->getOrder());
 
+                $this->getContainer()->get('logger')->alert(
+                  sprintf(
+                      'Sending order #%d to logistics with XML'."\n".' %s',
+                      $orderToSend->getOrder()->getId(),
+                      $xml
+                  )
+                );
+
                 if (!$dryRun) {
                     $orderToSend->setDateSent(new \DateTime("now"))
                         ->setTimesSent($orderToSend->getTimesSent()+1);
