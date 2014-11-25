@@ -88,8 +88,7 @@ class RegistrationFormHandler extends OriginalHandler
         $this->notifications->setSuccessMessage(
             $this->translator->trans('general.successful_user_registration'));
 
-        $d = $this->request->get('fos_user_registration_form');
-
+        // $d = $this->request->get('fos_user_registration_form');
         // $this->_notifyNewUser($user, $d['plainPassword']['first']);
 
         $this->userManager->updateUser($user);
