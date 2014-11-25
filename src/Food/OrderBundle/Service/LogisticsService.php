@@ -295,6 +295,9 @@ class LogisticsService extends ContainerAware
 
         // Pickup time
         $acceptTime = $order->getAcceptTime();
+        if (empty($acceptTime)) {
+            $acceptTime = $order->getOrderDate();
+        }
 
         // If delayed - add delay duration
         if ($order->getDelayed()) {
