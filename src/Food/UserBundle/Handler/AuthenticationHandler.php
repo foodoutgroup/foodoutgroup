@@ -12,6 +12,13 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 class AuthenticationHandler implements AuthenticationFailureHandlerInterface,
                                        AuthenticationSuccessHandlerInterface
 {
+    protected $cartService;
+
+    public function setCartService($service)
+    {
+        $this->cartService = $service;
+    }
+
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         if ($request->isXmlHttpRequest()) {
@@ -23,6 +30,16 @@ class AuthenticationHandler implements AuthenticationFailureHandlerInterface,
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
+        $session = $request->getSession();
+        $currentSessionId = $session->getId();
+        $oldSessionId = $session->get('session_id_before_login');
+
+        if (!empty($oldSessionId) && $currentSessionId != $oldSessionId) {
+            $this->cartService
+                 ->migrateCartBetweenSessionIds($oldSessionId,
+                                                $currentSessionId);
+        }
+
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse(['success' => 1]);
         }
