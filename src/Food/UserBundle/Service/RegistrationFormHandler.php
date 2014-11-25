@@ -90,12 +90,7 @@ class RegistrationFormHandler extends OriginalHandler
 
         $d = $this->request->get('fos_user_registration_form');
 
-        $this->_notifyNewUser($user, $d['plainPassword']['first']);
-
-        // mysterious problem solver
-        $oldSid = $this->request->getSession()->getId();
-        $newSid = $this->request->getSession()->getId();
-        $this->cart->migrateCartBetweenSessionIds($oldSid, $newSid);
+        // $this->_notifyNewUser($user, $d['plainPassword']['first']);
 
         $this->userManager->updateUser($user);
     }

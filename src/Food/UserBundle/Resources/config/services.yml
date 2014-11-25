@@ -13,6 +13,8 @@ services:
 
     food_user.authentication_handler:
         class: Food\UserBundle\Handler\AuthenticationHandler
+        calls:
+            - [setCartService, [@food.cart]]
 
     food_user.user_password_validator:
         class: Food\UserBundle\Service\UserPasswordValidator

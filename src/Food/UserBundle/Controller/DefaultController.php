@@ -83,6 +83,7 @@ class DefaultController extends Controller
     public function loginAction(Request $request)
     {
         $session = $request->getSession();
+        $session->set('session_id_before_login', $session->getId());
 
         $csrfToken = $this->container->has('form.csrf_provider')
             ? $this->container->get('form.csrf_provider')->generateCsrfToken('authenticate')
