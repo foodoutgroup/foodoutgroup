@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use FOS\UserBundle\Model\UserInterface;
 
 class ResetPasswordController extends Controller
 {
@@ -56,30 +57,42 @@ class ResetPasswordController extends Controller
      */
     public function resetAction(Request $request, $token)
     {
-        $formFactory = $this->container->get('fos_user.resetting.form.factory');
+        // services
         $userManager = $this->container->get('fos_user.user_manager');
+        $form = $this->container->get('fos_user.resetting.form');
+        $formHandler = $this->container->get('fos_user.resetting.form.handler');
+        $router = $this->container->get('router');
 
+        // get user
         $user = $userManager->findUserByConfirmationToken($token);
-        $form = $formFactory->createForm();
-        $form->setData($user);
 
-        if ('POST' === $request->getMethod()) {
-            $form->bind($request);
+        // get parameter
+        $tokenTtl = $this->container
+                         ->getParameter('fos_user.resetting.token_ttl');
 
-            if ($form->isValid()) {
-                $userManager->updateUser($user);
-
-                $url = $this->container
-                            ->get('router')
-                            ->generate('user_profile');
-
-                $response = new RedirectResponse($url);
-
-                return $response;
-            }
+        if (null === $user || !$user->isPasswordRequestNonExpired($tokenTtl)) {
+            return ['token' => $token,
+                    'form' => $form->createView(),
+                    'submitted' => $form->isSubmitted()];
         }
 
-        return ['token' => $token, 'form' => $form->createView(), 'submitted' => $form->isSubmitted()];
+        // process form using request
+        $process = $formHandler->process($user);
+
+        // if form is valid
+        if ($process) {
+            $url = $router->generate('user_profile');
+            $response = new RedirectResponse($url);
+
+            // don't forget to login user
+            $this->authenticateUser($user, $response);
+
+            return $response;
+        }
+
+        return ['token' => $token,
+                'form' => $form->createView(),
+                'submitted' => $form->isSubmitted()];
     }
 
     private function form()
@@ -98,5 +111,21 @@ class ResetPasswordController extends Controller
         ;
 
         return $form;
+    }
+
+    protected function authenticateUser(UserInterface $user, Response $response)
+    {
+        // services
+        $loginManager = $this->container->get('fos_user.security.login_manager');
+
+        // parameter name
+        $firewallName = $this->container->getParameter('fos_user.firewall_name');
+
+        try {
+            $loginManager->loginUser($firewallName, $user, $response);
+        } catch (AccountStatusException $ex) {
+            // We simply do not authenticate users which do not pass the user
+            // checker (not enabled, expired, etc.).
+        }
     }
 }
