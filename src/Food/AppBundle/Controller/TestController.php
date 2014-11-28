@@ -199,4 +199,145 @@ class TestController extends Controller
         $ns->putTheOrderToTheNAV($order);
         return new Response('THE END');
     }
+
+    public function migrateCiliAction()
+    {
+        $oldPlaceId = 63;
+        $newPlaceId = 85;
+        //echo "<pre>";
+        $query = "SELECT o.id as oid, n.id as nid
+          FROM
+            food_category o, food_category n
+            WHERE
+            o.place_id = ".$oldPlaceId." AND n.place_id = ".$newPlaceId."
+            AND o.lineup = n.lineup
+            AND o.name = n.name
+        ";
+        $adp = $this->container->get('doctrine')->getManager()->getConnection();
+        $stmt = $adp->prepare($query);
+        $stmt->execute();
+        $categoryList = $stmt->fetchAll();
+        $mapCatList = array();
+        foreach ($categoryList as $catRow) {
+            $mapCatList[$catRow['oid']] = $catRow['nid'];
+        }
+        var_dump($mapCatList);
+
+        $query = "SELECT o.id as oid, n.id as nid
+          FROM
+            dish_unit o, dish_unit n
+            WHERE
+            o.place = ".$oldPlaceId." AND n.place = ".$newPlaceId."
+            AND o.created_at = n.created_at
+            AND o.name = n.name
+        ";
+        $adp = $this->container->get('doctrine')->getManager()->getConnection();
+        $stmt = $adp->prepare($query);
+        $stmt->execute();
+        $dishUnit = $stmt->fetchAll();
+        $mapDishUnitList = array();
+        foreach ($dishUnit as $catRow) {
+            $mapDishUnitList[$catRow['oid']] = $catRow['nid'];
+        }
+
+        $query = "SELECT o.id as oid, n.id as nid, o.name, n.name, o.code, n.code FROM `dish_option` o, `dish_option` n  WHERE
+            o.place_id = ".$oldPlaceId." AND n.place_id = ".$newPlaceId."
+            AND
+            o.name = n.name AND
+            (IF(o.code IS NULL, n.code IS NULL, o.code=n.code)) AND
+            (IF(o.sub_code IS NULL, n.sub_code IS NULL, o.sub_code=n.sub_code))
+            AND
+            o.created_at = n.created_at
+        ";
+        $adp = $this->container->get('doctrine')->getManager()->getConnection();
+        $stmt = $adp->prepare($query);
+        $stmt->execute();
+        $dishOptions = $stmt->fetchAll();
+        $dishOptionMap = array();
+        foreach ($dishOptions as $catRow) {
+            $dishOptionMap[$catRow['oid']] = $catRow['nid'];
+        }
+
+
+        $query = "SELECT * FROM dish WHERE place_id = ".$oldPlaceId;
+        $adp = $this->container->get('doctrine')->getManager()->getConnection();
+        $stmt = $adp->prepare($query);
+        $stmt->execute();
+        $dishes = $stmt->fetchAll();
+        foreach ($dishes as $dish) {
+            $query = "INSERT INTO `dish`
+              (`id`, `place_id`, `created_by`, `edited_by`, `deleted_by`, `name`, `description`, `created_at`, `deleted_at`, `edited_at`, `recomended`, `photo`, `active`, `time_from`, `time_to`, `discount_prices_enabled`)
+              VALUES
+              (null,
+              ".$newPlaceId.",
+              ".$dish['created_by'].",
+              ".(empty($dish['edited_by']) ? 'null': $dish['edited_by']).",
+              ".(empty($dish['deleted_by']) ? 'null': $dish['deleted_by']).",
+              '".addslashes($dish['name'])."',
+              '".addslashes($dish['description'])."',
+              '".$dish['created_at']."',
+              ".(empty($dish['deleted_at']) ? "null": "'".$dish['deleted_at']."'").",
+              ".(empty($dish['edited_at']) ? "null": "'".$dish['edited_at']."'").",
+              '".$dish['recomended']."',
+              '".$dish['photo']."',
+              '".$dish['active']."',
+              '".(empty($dish['time_from']) ? $dish['time_from']:'')."',
+              '".(empty($dish['time_to']) ? $dish['time_to']:'')."',
+              ".(empty($dish['discount_prices_enabled']) ? 'null':'1')."
+              );";
+
+            $stmt = $adp->prepare($query);
+            $stmt->execute();
+            $lastId = $adp->lastInsertId();
+            $query2 = "SELECT * FROM dish_size WHERE dish_id=".$dish['id'];
+
+            $stmt = $adp->prepare($query2);
+            $stmt->execute();
+            $dishSize = $stmt->fetch();
+
+            $genQuery = "INSERT INTO `dish_size` (`id`, `dish_id`, `unit_id`, `created_by`, `edited_by`, `deleted_by`, `code`, `price`, `created_at`, `edited_at`, `deleted_at`, `discount_price`)
+              VALUES
+              (
+                null,
+                ".$lastId.",
+                ".$mapDishUnitList[$dishSize['unit_id']].",
+                NULL,
+                NULL,
+                NULL,
+                '".$dishSize['code']."',
+                '".$dishSize['price']."',
+                '".$dishSize['created_at']."',
+                ".(empty($dishSize['edited_at']) ? "null": "'".$dishSize['edited_at']."'").",
+                ".(empty($dishSize['deleted_at']) ? "null": "'".$dishSize['deleted_at']."'").",
+                '".$dishSize['discount_price']."'
+              );";
+
+            $stmt = $adp->prepare($genQuery);
+            $stmt->execute();
+
+
+            $query3 = "SELECT * FROM food_category_dish_map WHERE dish_id=".$dish['id'];
+            $stmt = $adp->prepare($query3);
+            $stmt->execute();
+            $categories = $stmt->fetchAll();
+            foreach ($categories as $cat) {
+                $queryCats = "INSERT INTO food_category_dish_map VALUES(".$lastId.", ".$mapCatList[$cat['foodcategory_id']].");";
+                $stmt = $adp->prepare($queryCats);
+                $stmt->execute();
+            }
+
+            $query4 = "SELECT * FROM dish_option_map WHERE dish_id=".$dish['id'];
+            $stmt = $adp->prepare($query4);
+            $stmt->execute();
+            $categories = $stmt->fetchAll();
+            foreach ($categories as $cat) {
+                $queryOpts = "INSERT INTO dish_option_map VALUES(".$lastId.", ".$dishOptionMap[$cat['dishoption_id']].");";
+                $stmt = $adp->prepare($queryOpts);
+                $stmt->execute();
+            }
+            //$dishOptionMap
+        }
+
+        die('KEBAS');
+    }
 }
