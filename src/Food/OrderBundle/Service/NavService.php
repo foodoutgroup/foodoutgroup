@@ -595,8 +595,13 @@ class NavService extends ContainerAware
             if (empty($code)) {
                 $detailOptions = $cart->getOptions();
                 if (!empty($detailOptions)) {
-                    $code = $detailOptions[0]->getDishOptionId()->getCode();
-                    $disFromOptions = true;
+                    if ($detailOptions[0]->getDishOptionId()->getInfocode()) {
+                        $code = $detailOptions[1]->getDishOptionId()->getCode();
+                        $disFromOptions = true;
+                    } else {
+                        $code = $detailOptions[0]->getDishOptionId()->getCode();
+                        $disFromOptions = true;
+                    }
                 }
             }
 
