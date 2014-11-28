@@ -18,6 +18,10 @@ food_test:
     pattern:  /test/mssql
     defaults: { _controller: FoodAppBundle:Test:mssql }
 
+food_migrator:
+    pattern: /test/migrate-cili
+    defaults: { _controller: FoodAppBundle:Test:migrateCili }
+
 food_putorder:
     pattern:  /test/put-order
     defaults: { _controller: FoodAppBundle:Test:putOrder }
