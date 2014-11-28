@@ -282,7 +282,7 @@ class NavService extends ContainerAware
         $region = mb_strtoupper($city);
 
         $orderDate = $order->getOrderDate();
-        $orderDate->add(new \DateInterval('P0DT0H'));
+        $orderDate->add(new \DateInterval('P0DT1H'));
         $deliveryDate = $order->getDeliveryTime();
         $deliveryDate->sub(new \DateInterval('P0DT2H'));
 
