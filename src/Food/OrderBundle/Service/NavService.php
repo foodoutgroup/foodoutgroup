@@ -591,16 +591,16 @@ class NavService extends ContainerAware
         foreach ($dishes as $detailKey=>$cart) {
             $lineNo = $lineNo + 1;
             $code = $cart->getDishSizeId()->getCode();
-            $disFromOptions = false;
+            $disFromOptions = -1;
             if (empty($code)) {
                 $detailOptions = $cart->getOptions();
                 if (!empty($detailOptions)) {
                     if ($detailOptions[0]->getDishOptionId()->getInfocode()) {
                         $code = $detailOptions[1]->getDishOptionId()->getCode();
-                        $disFromOptions = true;
+                        $disFromOptions = 1;
                     } else {
                         $code = $detailOptions[0]->getDishOptionId()->getCode();
-                        $disFromOptions = true;
+                        $disFromOptions = 0;
                     }
                 }
             }
@@ -634,7 +634,7 @@ class NavService extends ContainerAware
 
             $origLineNo = $lineNo;
             foreach ( $detailOptions = $cart->getOptions() as $optKey => $option) {
-                if ($disFromOptions) {
+                if ($optKey == $disFromOptions) {
                     continue;
                 } else {
                     $optionCode = $option->getDishOptionId()->getCode();
