@@ -81,6 +81,7 @@ class OrderAdmin extends SonataAdmin
             ->add('order_status', 'string', array('label' => 'admin.order.order_status_short'))
             ->add('paymentMethod', 'string', array('label' => 'admin.order.payment_method'))
             ->add('paymentStatus', 'string', array('label' => 'admin.order.payment_status'))
+            ->add('mobile', null, array('label' => 'admin.order.ismobile'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
