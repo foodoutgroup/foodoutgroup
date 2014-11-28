@@ -1238,7 +1238,7 @@
             </trans-unit>
             <trans-unit id="admin.driver.has_orders">
                 <source>admin.driver.has_orders</source>
-                <target>Turi užsak.</target>
+                <target>Užsak.</target>
             </trans-unit>
 
             <!-- Banned IP listas -->
