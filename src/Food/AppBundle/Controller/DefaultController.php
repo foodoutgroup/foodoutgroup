@@ -159,4 +159,11 @@ class DefaultController extends Controller
             return new Response();
         }
     }
+
+    public function meetAction()
+    {
+        return $this->render(
+            'FoodAppBundle:Default:meet.html.twig'
+        );
+    }
 }

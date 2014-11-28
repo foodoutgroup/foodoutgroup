@@ -1011,6 +1011,10 @@
                 <source>admin.order.status.source.cili_nav_update_price</source>
                 <target>Čili Navision update prices</target>
             </trans-unit>
+            <trans-unit id="admin.order.ismobile">
+                <source>admin.order.ismobile</source>
+                <target>Mob</target>
+            </trans-unit>
 
             <!-- Order logas pas sonata admina -->
             <trans-unit id="admin.order.order_log">
