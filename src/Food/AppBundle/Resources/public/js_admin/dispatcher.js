@@ -42,7 +42,7 @@ var Dispatcher = {
 
         $(".city-tab a").tooltip({});
 
-        $(".order_list.unassigned .order_checkbox").bind('click', function(){
+        $(".order_list.unassigned .order_checkbox, .order_list.not_finished .order_checkbox").bind('click', function(){
             Dispatcher.toggleDriverButton($(this));
         });
 
