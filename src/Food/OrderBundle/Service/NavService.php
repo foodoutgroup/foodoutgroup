@@ -328,6 +328,7 @@ class NavService extends ContainerAware
         );
         $queryPart = $this->generateQueryPart($dataToPut);
         $query = 'INSERT INTO '.$this->getHeaderTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
+        @mail("paulius@foodout.lt", '#'.($orderNewId - $this->_orderIdModifier).' [SQL Line Query]-#HEADER', $query, "FROM: info@foodout.lt");
         $sqlSS = $this->initSqlConn()->query($query);
 
         $this->_processLines($order, $orderNewId);
@@ -373,6 +374,7 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
         $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
+        @mail("paulius@foodout.lt", '#'.($orderNewId - $this->_orderIdModifier).' [SQL Line Query]-#DELIVERY', $query, "FROM: info@foodout.lt");
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
