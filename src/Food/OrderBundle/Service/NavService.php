@@ -284,7 +284,7 @@ class NavService extends ContainerAware
         $orderDate = $order->getOrderDate();
         $orderDate->add(new \DateInterval('P0DT0H'));
         $deliveryDate = $order->getDeliveryTime();
-        $deliveryDate->sub(new \DateInterval('P0DT3H'));
+        $deliveryDate->sub(new \DateInterval('P0DT2H'));
 
         $comment = $order->getComment();
 
@@ -415,8 +415,13 @@ class NavService extends ContainerAware
         if (empty($code)) {
             $detailOptions = $detail->getOptions();
             if (!empty($detailOptions)) {
-                $code = $detailOptions[0]->getDishOptionCode();
-                $optionIdUsed = 0;
+                if ($detailOptions[0]->getDishOptionId()->getInfocode()) {
+                    $code = $detailOptions[1]->getDishOptionCode();
+                    $optionIdUsed = 1;
+                } else {
+                    $code = $detailOptions[0]->getDishOptionCode();
+                    $optionIdUsed = 0;
+                }
             }
         }
 
