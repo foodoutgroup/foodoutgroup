@@ -1011,6 +1011,34 @@
                 <source>admin.order.status.source.cili_nav_update_price</source>
                 <target>Čili Navision update prices</target>
             </trans-unit>
+            <trans-unit id="admin.order.hash">
+                <source>admin.order.hash</source>
+                <target>Order hash</target>
+            </trans-unit>
+            <trans-unit id="admin.order.send_invoice">
+                <source>admin.order.send_invoice</source>
+                <target>Siųsti Faktūrą</target>
+            </trans-unit>
+            <trans-unit id="admin.order.company">
+                <source>admin.order.company</source>
+                <target>Įmonė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.companyName">
+                <source>admin.order.companyName</source>
+                <target>Pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.companyCode">
+                <source>admin.order.companyCode</source>
+                <target>Įm. kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.vatCode">
+                <source>admin.order.vatCode</source>
+                <target>PVM kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.companyAddress">
+                <source>admin.order.companyAddress</source>
+                <target>Adresas</target>
+            </trans-unit>
 
             <!-- Order logas pas sonata admina -->
             <trans-unit id="admin.order.order_log">

@@ -49,6 +49,7 @@ class OrderService extends ContainerAware
 
     public static $status_pre = "pre";
     public static $status_nav_problems = "nav_problems";
+    public static $status_partialy_completed = "partialy_completed";
 
     // TODO o gal sita mapa i configa? What do You think?
     private $paymentSystemByMethod = array(
@@ -516,37 +517,82 @@ class OrderService extends ContainerAware
      */
     public function statusCompleted($source=null, $statusMessage=null)
     {
+        $order = $this->getOrder();
+        $oldStatus = $order->getOrderStatus();
         $this->chageOrderStatus(self::$status_completed, $source, $statusMessage);
 
-        // Form accounting data if it is not formed already
-        // TODO uzkomentuota, nes nenaudojame, o dabar meta: Error: Class 'Food\OrderBundle\Service\AccountingService' not found in app\cache\dev\appDevDebugProjectContainer.php line 1211
-//        $order = $this->getOrder();
-//        $accountingService = $this->container->get('food.accounting');
-//        $accounting = $order->getAccounting();
-
-        // if not generated yet - do it!
-        if (empty($accounting)) {
-            // TODO kolkas stabdome. Pirmam testavimui reikia susitvarkyti su SMS'ais ir mobile vairuotojo aplinka, vaztarasciu
-//            $accounting = $accountingService->generateAccounting($this->getOrder());
-
-            // TODO upload accounting
+        // Jei buvo partialy completed - nebereikia siusti confirmo
+        if ($oldStatus != self::$status_partialy_completed) {
+            $this->sendCompletedMail();
         }
+
+        // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
+        if ($order->getPlace()->getSendInvoice()) {
+            $miscService = $this->container->get('food.app.utils.misc');
+
+            $sfNumber = (int)$miscService->getParam('sf_next_number');
+            $order->setSfSeries($this->container->getParameter('invoice.series'));
+            $order->setSfNumber($sfNumber);
+
+            $miscService->setParam('sf_next_number', ($sfNumber+1));
+
+            // Suplanuojam sf siuntima klientui
+            $this->container->get('food.invoice')->addInvoiceToSend($order);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param null|string $source
+     * @param null|string $statusMessage
+     *
+     * @return $this
+     */
+    public function statusPartialyCompleted($source=null, $statusMessage=null)
+    {
+        $this->chageOrderStatus(self::$status_partialy_completed, $source, $statusMessage);
+
+        $this->sendCompletedMail(true);
+
+        return $this;
+    }
+
+    /**
+     * Sends client an email after order complete
+     * @param boolean $partialy
+     * @throws \Exception
+     */
+    public function sendCompletedMail($partialy = false)
+    {
         $ml = $this->container->get('food.mailer');
         $slugUtil = $this->container->get('food.dishes.utils.slug');
         $slugUtil->setLocale($this->getOrder()->getLocale());
 
+        // TODO darant LV - sutvarkyti URL
         $variables = array(
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
             'miestas' => $this->getOrder()->getPlacePoint()->getCity(),
             'maisto_review_url' => 'http://www.foodout.lt/lt/'.$slugUtil->getSlugByItem(
                     $this->getOrder()->getPlace()->getId(),
                     'place'
-            ).'/#detailed-restaurant-review'
+                ).'/#detailed-restaurant-review'
         );
 
-       $ml->setVariables( $variables )->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30009271 )->send();
+        // TODO partialy template!!!!
+        if ($partialy) {
+            $template = 'xxxxxxx';
+        } else {
+            $template = 30009271;
+        }
 
-        return $this;
+        $ml->setVariables($variables)
+            ->setRecipient(
+                $this->getOrder()->getUser()->getEmail(),
+                $this->getOrder()->getUser()->getEmail()
+            )
+            ->setId($template)
+            ->send();
     }
 
     /**
@@ -1021,20 +1067,6 @@ class OrderService extends ContainerAware
 
         $oldStatus = $order->getPaymentStatus();
         $order->setPaymentStatus($status);
-
-        // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
-        if ($status == self::$paymentStatusComplete
-            && $order->getPlace()->getSendInvoice()) {
-            $miscService = $this->container->get('food.app.utils.misc');
-
-            $sfNumber = (int)$miscService->getParam('sf_next_number');
-            $order->setSfSeries($this->container->getParameter('invoice.series'));
-            $order->setSfNumber($sfNumber);
-
-            $miscService->setParam('sf_next_number', ($sfNumber+1));
-
-            $this->container->get('food.invoice')->addInvoiceToSend($order);
-        }
 
         if ($status == self::$paymentStatusError) {
             $order->setLastPaymentError($message);

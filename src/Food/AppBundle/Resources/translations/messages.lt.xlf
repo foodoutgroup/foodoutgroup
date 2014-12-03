@@ -226,6 +226,10 @@
         <source>mobile.order_delivered</source>
         <target>Pristačiau užsakymą</target>
       </trans-unit>
+      <trans-unit id="mobile.order_partialy_delivered" resname="mobile.order_partialy_delivered">
+        <source>mobile.order_partialy_delivered</source>
+        <target>Pristačiau dalį užsakymo (klientas dalies nepriėmė)</target>
+      </trans-unit>
       <trans-unit id="ebbc16fb3a732d7abe363ef2463397f9" resname="mobile.order_cancel">
         <source>mobile.order_cancel</source>
         <target>Atšaukti užsakymą</target>

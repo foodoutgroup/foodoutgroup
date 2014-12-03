@@ -44,7 +44,7 @@ class InvoiceService extends ContainerAware
     }
 
     /**
-     * @param $order
+     * @param Order $order
      * @throws \InvalidArgumentException
      */
     public function addInvoiceToSend($order)

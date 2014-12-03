@@ -542,6 +542,7 @@ input.button {}
 .delivery-info-form input[type="email"] {height: 17px;}
 .delivery-info-form textarea {height: 93px;}
 .delivery-info-form select {width: 335px;}
+.delivery-info-form textarea.company_address {height: 60px;}
 
 .delivery-info-form .section-2 {margin-top: 48px; padding-bottom: 33px; margin-bottom: 21px;}
 
@@ -1679,4 +1680,20 @@ div.coupon_form_popup {
 }
 .dish-size .custom-radio .price.discount {
     color: #cd1d36;
+}
+
+/* Custom checkbox shown on right side */
+.form-row.checkbox-right {
+    padding-left: 0px;
+}
+.custom-checkbox.checkbox-right .icheckbox {
+    float: left;
+    position: static;
+    margin-top: 10px;
+}
+.custom-checkbox.checkbox-right label {
+    padding-right: 2px;
+}
+.company_data {
+    padding-top: 10px;
 }
