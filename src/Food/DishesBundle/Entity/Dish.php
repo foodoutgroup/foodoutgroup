@@ -20,8 +20,8 @@ use Symfony\Component\Validator\ExecutionContextInterface;
  */
 class Dish extends Uploadable implements Translatable
 {
-    // 1.9M or 1.9 megabyte
-    protected $maxFileSize = 1992294;
+    // megabytes
+    protected $maxFileSize = 1.9;
 
     /**
      * @var integer
@@ -821,8 +821,8 @@ class Dish extends Uploadable implements Translatable
 
     public function isFileSizeValid(ExecutionContextInterface $context)
     {
-        if ($this->getFile() && $this->getFile()->getSize() > $this->maxFileSize) {
-            $context->addViolationAt('file', 'Paveiksliukas užima per daug disko vietos, pabandyk įkelti mažesnį paveiksliuką.');
+        if ($this->getFile() && $this->getFile()->getSize() > round($this->maxFileSize * 1024 * 1024)) {
+            $context->addViolationAt('file', 'Paveiksliukas užima daugiau nei ' . $this->maxFileSize . ' MB vietos.');
         }
     }
 }
