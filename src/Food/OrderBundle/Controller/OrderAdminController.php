@@ -16,7 +16,8 @@ class OrderAdminController extends Controller
         $orderService = $this->get('food.order');
         $order = $orderService->getOrderById($id);
 
-        if (empty($order->getSfSeries())) {
+        $orderSfSeries = $order->getSfSeries();
+        if (empty($orderSfSeries)) {
             $miscService = $this->get('food.app.utils.misc');
 
             $sfNumber = (int)$miscService->getParam('sf_next_number');
