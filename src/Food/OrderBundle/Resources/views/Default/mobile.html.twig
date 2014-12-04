@@ -114,7 +114,17 @@
             <th colspan="5">{% trans %}mobile.comment{% endtrans %}</th>
         </tr>
         <tr>
-            <td colspan="5">{{ order.comment|nl2br }}</td>
+            <td colspan="5">
+                {{ order.comment|nl2br }}
+                {% if order.company and order.place.sendInvoice == false %}
+                    <br /><br />
+                    {% trans %}mobile.need_invoice{% endtrans %}<br /><br />
+                    {% trans %}mobile.company_name{% endtrans %}: {{ order.companyName }}<br />
+                    {% trans %}mobile.company_code{% endtrans %}: {{ order.companyCode }}<br />
+                    {% trans %}mobile.vat_code{% endtrans %}: {{ order.vatCode }}<br />
+                    {% trans %}mobile.company_address{% endtrans %}: {{ order.companyAddress|nl2br }}<br />
+                {% endif %}
+            </td>
         </tr>
         <tr>
             <th colspan="5">{% trans %}mobile.payment{% endtrans %}</th>

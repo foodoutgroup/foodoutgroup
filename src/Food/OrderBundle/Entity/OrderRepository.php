@@ -410,7 +410,8 @@ class OrderRepository extends EntityRepository
         $orderStatus = "'".OrderService::$status_completed
             ."', '".OrderService::$status_canceled
             ."', '".OrderService::$status_new
-            ."', '".OrderService::$status_nav_problems."'";
+            ."', '".OrderService::$status_nav_problems
+            ."', '".OrderService::$status_partialy_completed."'";
         $paymentStatus = OrderService::$paymentStatusComplete;
         $pickup = OrderService::$deliveryPickup;
         $deliver = OrderService::$deliveryDeliver;

@@ -13,8 +13,26 @@ class OrderAdminController extends Controller
      */
     public function sendInvoiceAction($id = null)
     {
-        $order = $this->get('food.order')->getOrderById($id);
+        $orderService = $this->get('food.order');
+        $order = $orderService->getOrderById($id);
+
+        if (empty($order->getSfSeries())) {
+            $miscService = $this->get('food.app.utils.misc');
+
+            $sfNumber = (int)$miscService->getParam('sf_next_number');
+            $order->setSfSeries($this->container->getParameter('invoice.series'));
+            $order->setSfNumber($sfNumber);
+
+            $miscService->setParam('sf_next_number', ($sfNumber+1));
+            $orderService->saveOrder();
+        }
+
         $this->get('food.invoice')->addInvoiceToSend($order);
+
+        $this->get('session')->getFlashBag()->add(
+            'success',
+            $this->get('translator')->trans('admin.order.invoice_added_for_send', array(), 'SonataAdminBundle')
+        );
 
         return $this->redirect(
             $this->generateUrl('admin_food_order_order_list')

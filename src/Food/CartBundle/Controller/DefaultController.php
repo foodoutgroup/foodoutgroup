@@ -280,6 +280,16 @@ class DefaultController extends Controller
             }
             $orderService->setPaymentStatus($orderService::$paymentStatusWait);
 
+            // I R big bussines
+            if ($request->get('company') == 'on') {
+                $orderService->getOrder()
+                    ->setCompany(true)
+                    ->setCompanyName($request->get('company_name'))
+                    ->setCompanyCode($request->get('company_code'))
+                    ->setVatCode($request->get('vat_code'))
+                    ->setCompanyAddress($request->get('company_address'));
+            }
+
             // Update order with recent address information. but only if we need to deliver
             if ($deliveryType == $orderService::$deliveryDeliver) {
                 $locationData = $googleGisService->getLocationFromSession();

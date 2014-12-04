@@ -290,6 +290,22 @@ Vilnius]]></target>
             <source>order.form.errors.nav_restaurant_no_setted</source>
             <target><![CDATA[<b>Restoranas šiuo metu nepasiekiamas.</b>]]></target>
         </trans-unit>
+        <trans-unit id="order.form.errors.empty_company" resname="order.form.errors.empty_company">
+            <source>order.form.errors.empty_company</source>
+            <target>Įveskite įmone, kuriai norite gauti sąskaitą faktūrą</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.empty_company_code" resname="order.form.errors.empty_company_code">
+            <source>order.form.errors.empty_company_code</source>
+            <target>Įveskite įmonės kodą</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.empty_vat_code" resname="order.form.errors.empty_vat_code">
+            <source>order.form.errors.empty_vat_code</source>
+            <target>Įveskite PVM mokėtojo kodą</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.empty_company_address" resname="order.form.errors.empty_company_address">
+            <source>order.form.errors.empty_company_address</source>
+            <target>Įveskite įmonės registracijos adresą</target>
+        </trans-unit>
         <trans-unit id="general.cart_rules_slug" resname="general.cart_rules_slug">
             <source>general.cart_rules_slug</source>
             <target>ordering_rules</target>

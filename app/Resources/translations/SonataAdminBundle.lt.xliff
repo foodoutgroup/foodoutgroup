@@ -1019,6 +1019,10 @@
                 <source>admin.order.send_invoice</source>
                 <target>Siųsti Faktūrą</target>
             </trans-unit>
+            <trans-unit id="admin.order.invoice_added_for_send">
+                <source>admin.order.invoice_added_for_send</source>
+                <target>Sąskaita pridėta siuntimui</target>
+            </trans-unit>
             <trans-unit id="admin.order.company">
                 <source>admin.order.company</source>
                 <target>Įmonė</target>
@@ -1138,6 +1142,10 @@
             <trans-unit id="admin.dispatcher.order_status.completed">
                 <source>admin.dispatcher.order_status.completed</source>
                 <target>Pristatytas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.partialy_completed">
+                <source>admin.dispatcher.order_status.partialy_completed</source>
+                <target>Nepilnai pristatytas</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.order_status.finished">
                 <source>admin.dispatcher.order_status.finished</source>

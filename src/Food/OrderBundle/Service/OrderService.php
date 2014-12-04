@@ -518,13 +518,9 @@ class OrderService extends ContainerAware
     public function statusCompleted($source=null, $statusMessage=null)
     {
         $order = $this->getOrder();
-        $oldStatus = $order->getOrderStatus();
         $this->chageOrderStatus(self::$status_completed, $source, $statusMessage);
 
-        // Jei buvo partialy completed - nebereikia siusti confirmo
-        if ($oldStatus != self::$status_partialy_completed) {
-            $this->sendCompletedMail();
-        }
+        $this->sendCompletedMail();
 
         // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
         if ($order->getPlace()->getSendInvoice()) {
@@ -555,6 +551,40 @@ class OrderService extends ContainerAware
 
         $this->sendCompletedMail(true);
 
+        // Informuojam buhalterija
+        $mailer = $this->container->get('mailer');
+        $translator = $this->container->get('translator');
+        $domain = $this->container->getParameter('domain');
+        $financeEmail = $this->container->getParameter('accounting_email');
+        $order = $this->getOrder();
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject(
+                $this->container->getParameter('title').': '
+                .$translator->trans('general.email.partialy_completed')
+                .' (#'.$order->getId().')'
+            )
+            ->setFrom('info@'.$domain)
+        ;
+
+        $message->addTo($financeEmail);
+        // Issiimti
+        $message->addCc('mantas@foodout.lt');
+
+        $driver = $order->getDriver();
+        if (!empty($driver)) {
+            $driverName = $driver->getName();
+        } else {
+            $driverName = '';
+        }
+
+        $emailBody = $translator->trans('general.email.partialy_completed')."\n\n"
+        .'Order ID: '.$order->getId()."\n"
+        .'Vairuotojas: '.$driverName;
+
+        $message->setBody($emailBody);
+        $mailer->send($message);
+
         return $this;
     }
 
@@ -569,7 +599,7 @@ class OrderService extends ContainerAware
         $slugUtil = $this->container->get('food.dishes.utils.slug');
         $slugUtil->setLocale($this->getOrder()->getLocale());
 
-        // TODO darant LV - sutvarkyti URL
+        // TODO darant LV - sutvarkyti URL ir sablonu ID
         $variables = array(
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
             'miestas' => $this->getOrder()->getPlacePoint()->getCity(),
@@ -579,9 +609,8 @@ class OrderService extends ContainerAware
                 ).'/#detailed-restaurant-review'
         );
 
-        // TODO partialy template!!!!
         if ($partialy) {
-            $template = 'xxxxxxx';
+            $template = 30021995;
         } else {
             $template = 30009271;
         }
@@ -1855,6 +1884,7 @@ class OrderService extends ContainerAware
             self::$status_finished,
             self::$status_assiged,
             self::$status_completed,
+            self::$status_partialy_completed,
             self::$status_canceled,
         );
     }
@@ -2087,8 +2117,6 @@ class OrderService extends ContainerAware
             }
         }
 
-
-
         $pointRecord = null;
 
         if (empty($placePointId)) {
@@ -2188,6 +2216,22 @@ class OrderService extends ContainerAware
                 $formErrors[] = 'order.form.errors.customerphone_not_mobile';
             } else {
                 $phonePass = true;
+            }
+        }
+
+        // Company field validation
+        if ($request->get('company') == 'on') {
+            if (empty($request->get('company_name'))) {
+                $formErrors[] = 'order.form.errors.empty_company';
+            }
+            if (empty($request->get('company_code'))) {
+                $formErrors[] = 'order.form.errors.empty_company_code';
+            }
+            if (empty($request->get('vat_code'))) {
+                $formErrors[] = 'order.form.errors.empty_vat_code';
+            }
+            if (empty($request->get('company_address'))) {
+                $formErrors[] = 'order.form.errors.empty_company_address';
             }
         }
 

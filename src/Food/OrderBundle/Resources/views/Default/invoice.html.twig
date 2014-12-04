@@ -48,6 +48,7 @@
     </div>
     <div style="display: inline-block; width: 49%; vertical-align: top;">
         {% trans %}order.invoice.buyer{% endtrans %}<br />
+        {% if order.company == false %}
         {{ order.user.fullName }}<br />
         <br />
         {{ order.addressId.address|capitalize }}<br />
@@ -55,6 +56,14 @@
         <br />
         <br />
         <br />
+        {% else %}
+            {{ order.companyName }}<br />
+            <br />
+            {{ order.companyAddress|capitalize }}<br />
+            {% trans %}order.invoice.company_code{% endtrans %} {{ order.companyCode }}<br />
+            {% trans %}order.invoice.vat_num{% endtrans %}{{ order.vatCode }}<br />
+            <br />
+        {% endif %}
         {% trans %}order.invoice.document_date{% endtrans %}: {{ order.orderDate|date("Y m d") }}<br />
     </div>
 </div>

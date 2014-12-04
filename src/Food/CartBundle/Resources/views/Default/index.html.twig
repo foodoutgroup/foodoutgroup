@@ -294,7 +294,7 @@
                                 <label>{% trans %}cart.checkout.company{% endtrans %}:</label>
                                 <input type="checkbox" name="company" id="company_order" {% if (dataToLoad is not empty and dataToLoad['company'] is defined and dataToLoad['company'] is not empty) %}checked="checked"{% endif %} />
                             </div>
-                            <div class="company_data hidden">
+                            <div class="company_data {% if (dataToLoad is empty or dataToLoad['company'] is not defined or dataToLoad['company'] is empty) %}hidden{% endif %}">
                                 <div class="form-row form-row-required">
                                     <label>{% trans %}cart.checkout.company_name{% endtrans %}:</label>
                                     <input type="text" name="company_name" placeholder="{% trans %}cart.checkout.company_name_placeholder{% endtrans %}" value="{% if (dataToLoad is not empty and dataToLoad['company_name'] is not empty) %}{{ dataToLoad['company_name'] }}{% endif %}" />
