@@ -541,9 +541,16 @@ class NavService extends ContainerAware
 
     public function updatePricesNAV(Order $order)
     {
-        $orderId = $this->getNavOrderId($order);
-        $client = $this->getWSConnection();
-        $return = $client->FoodOutUpdatePrices(array('pInt' =>(int)$orderId));
+        if (!$order->getNavPriceUpdated()) {
+            $orderId = $this->getNavOrderId($order);
+            $client = $this->getWSConnection();
+            $return = $client->FoodOutUpdatePrices(array('pInt' =>(int)$orderId));
+            $order->setNavPriceUpdated(true);
+            $this->getContainer()->get('doctrine')->getManager()->merge($order);
+            $this->getContainer()->get('doctrine')->getManager()->flush();
+        } else {
+            $return = true;
+        }
         return $return;
     }
 
@@ -555,8 +562,15 @@ class NavService extends ContainerAware
 
         $sqlSS = $this->initSqlConn()->query($query);
 
-        $client = $this->getWSConnection();
-        $return = $client->FoodOutProcessOrder(array('pInt' =>(int)$orderId));
+        if (!$order->getNavPorcessedOrder()) {
+            $client = $this->getWSConnection();
+            $return = $client->FoodOutProcessOrder(array('pInt' =>(int)$orderId));
+            $order->setNavPorcessedOrder(true);
+            $this->getContainer()->get('doctrine')->getManager()->merge($order);
+            $this->getContainer()->get('doctrine')->getManager()->flush();
+        } else {
+            $return = true;
+        }
         return $return;
     }
 
