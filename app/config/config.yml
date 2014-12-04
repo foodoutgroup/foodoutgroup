@@ -14,8 +14,8 @@ parameters:
     sms.available_providers: [food.infobip, food.silverstreet]
     sms.main_provider: "food.infobip"
     sms.sender: "Foodout.lt"
-    sms.balance_limit_warn: 5
-    sms.balance_limit_critical: 3
+    sms.balance_limit_warn: 7
+    sms.balance_limit_critical: 4
     infobip_provider.api_url: "http://api.infobip.com/api/v3/sendsms/json"
     infobip_provider.account_url: "http://api2.infobip.com/api"
     infobip_provider.login: "skanu1"
