@@ -2221,16 +2221,21 @@ class OrderService extends ContainerAware
 
         // Company field validation
         if ($request->get('company') == 'on') {
-            if (empty($request->get('company_name'))) {
+            $companyName = $request->get('company_name');
+            $companyCode = $request->get('company_code');
+            $vatCode = $request->get('vat_code');
+            $companyAddress = $request->get('company_address');
+
+            if (empty($companyName)) {
                 $formErrors[] = 'order.form.errors.empty_company';
             }
-            if (empty($request->get('company_code'))) {
+            if (empty($companyCode)) {
                 $formErrors[] = 'order.form.errors.empty_company_code';
             }
-            if (empty($request->get('vat_code'))) {
+            if (empty($vatCode)) {
                 $formErrors[] = 'order.form.errors.empty_vat_code';
             }
-            if (empty($request->get('company_address'))) {
+            if (empty($companyAddress)) {
                 $formErrors[] = 'order.form.errors.empty_company_address';
             }
         }
