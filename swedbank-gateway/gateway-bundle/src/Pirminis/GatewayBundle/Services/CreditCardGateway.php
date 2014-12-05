@@ -39,6 +39,12 @@ class CreditCardGateway
         $params = new Parameters();
         $params->set('client', $config['vtid'])
                ->set('password', $config['password'])
+               ->set('country', $this->options['country'])
+               ->set('surname', $this->options['surname'])
+               ->set('name', $this->options['name'])
+               ->set('telephone', $this->options['telephone'])
+               ->set('email', $this->options['email'])
+               ->set('ip', $this->options['ip'])
                ->set('order_id', $this->options['order_id'])
                ->set('price', $this->options['price'])
                ->set('transaction_datetime',
@@ -49,6 +55,8 @@ class CreditCardGateway
         ;
 
         $request = new Request($params);
+
+        var_dump($request->xml()); die('xxx');
 
         // for logging purposes
         $event = new BanklinkEvent((int)$params->get('order_id'), null, $request->xml());

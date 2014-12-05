@@ -15,7 +15,14 @@ trait RedirectDecorator
         $order = $this->findOrder($id);
 
         // configuration
-        $options = ['order_id' => substr($order->getId() . '_' . time(),
+        $options = ['country' => 'LT',
+                    'surname' => $order->getUser()->getLastname(),
+                    'name' => $order->getUser()->getFirstname(),
+                    'telephone' => $order->getUser()->getPhone(),
+                    'email' => $order->getUser()->getEmail(),
+                    'ip' => !empty($_SERVER['REMOTE_ADDR']) ?
+                            $_SERVER['REMOTE_ADDR'] : '',
+                    'order_id' => substr($order->getId() . '_' . time(),
                                   0,
                                   16),
                     'price' => sprintf('%.2f', $order->getTotal()),

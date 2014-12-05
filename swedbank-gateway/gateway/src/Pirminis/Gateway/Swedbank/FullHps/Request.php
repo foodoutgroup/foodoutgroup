@@ -37,6 +37,32 @@ class Request
     </Authentication>
     <Transaction>
         <TxnDetails>
+            <Risk>
+                <Action service="1">
+                    <MerchantConfiguration>
+                        <channel>W</channel> <--
+                    </MerchantConfiguration>
+                    <CustomerDetails>
+                        <OrderDetails>
+                            <BillingDetails>
+                                <country>%country%</country> <--
+                            </BillingDetails>
+                        </OrderDetails>
+                        <PersonalDetails>
+                            <surname>%surname%</surname> <--
+                            <first_name>%name%</first_name> <--
+                            <telephone>%telephone%</telephone> <--
+                        </PersonalDetails>
+                        <PaymentDetails>
+                            <payment_method>CC</payment_method> <--
+                        </PaymentDetails>
+                        <RiskDetails>
+                            <email_address>%email%</email_address> <--
+                            <ip_address>%ip%</ip_address> <--
+                        </RiskDetails>
+                    </CustomerDetails>
+                </Action>
+            </Risk>
             <merchantreference>%order_id%</merchantreference>
             <ThreeDSecure>
                 <merchant_url>http://foodout.lt</merchant_url>
@@ -48,7 +74,8 @@ class Request
             <amount currency="LTL">%price%</amount>
         </TxnDetails>
         <HpsTxn>
-            <page_set_id>1360</page_set_id>
+            <!-- <page_set_id>1360</page_set_id> -->
+            <page_set_id>4</page_set_id>
             <method>setup_full</method>
             <return_url>%return_url%</return_url>
             <expiry_url>%expiry_url%</expiry_url>

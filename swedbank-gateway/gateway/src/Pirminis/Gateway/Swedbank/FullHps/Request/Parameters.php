@@ -7,6 +7,12 @@ class Parameters
     protected $params;
     protected $mandatory_params = ['client',
                                    'password',
+                                   'country',
+                                   'surname',
+                                   'name',
+                                   'telephone',
+                                   'email',
+                                   'ip',
                                    'order_id',
                                    'price',
                                    'transaction_datetime',
