@@ -19,7 +19,10 @@ class DispatcherAdminController extends Controller
         foreach ($availableCities as $city) {
             $cityOrders[$city] = array(
                 'unassigned' => $repo->getOrdersUnassigned($city),
-                'unconfirmed' => $repo->getOrdersUnconfirmed($city),
+                'unconfirmed' => array(
+                    'deliver' => $repo->getOrdersUnconfirmed($city),
+                    'pickup' => $repo->getOrdersUnconfirmed($city, true),
+                ),
                 'not_finished' => $repo->getOrdersAssigned($city),
             );
         }

@@ -39,14 +39,15 @@ class OrderRepository extends EntityRepository
 
     /**
      * @param string $city
+     * @param boolean $pickup
      * @return array
      */
-    public function getOrdersUnconfirmed($city)
+    public function getOrdersUnconfirmed($city, $pickup = false)
     {
         $filter = array(
             'order_status' =>  array(OrderService::$status_new),
             'place_point_city' => $city,
-            'deliveryType' => OrderService::$deliveryDeliver,
+            'deliveryType' => (!$pickup ? OrderService::$deliveryDeliver : OrderService::$deliveryPickup),
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
