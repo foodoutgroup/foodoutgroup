@@ -64,7 +64,7 @@ class OrderService extends ContainerAware
 
     public static $deliveryTrans = array(
         'deliver' => 'PRISTATYMAS',
-        'pickup'  => 'ATSIEMIMAS'
+        'pickup' => 'ATSIEMIMAS'
     );
 
     public static $deliveryDeliver = "deliver";
@@ -233,7 +233,7 @@ class OrderService extends ContainerAware
      * @param PlacePoint $placePoint
      * @return Order
      */
-    public function createOrder($placeId, $placePoint=null)
+    public function createOrder($placeId, $placePoint = null)
     {
         $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
         if (empty($placePoint)) {
@@ -278,7 +278,7 @@ class OrderService extends ContainerAware
      * @param string|null $source
      * @param string|null $message
      */
-    protected function chageOrderStatus($status, $source=null, $message=null)
+    protected function chageOrderStatus($status, $source = null, $message = null)
     {
         // Let's log the shit out of it
         $this->logStatusChange($this->getOrder(), $status, $source, $message);
@@ -291,7 +291,7 @@ class OrderService extends ContainerAware
      * @param string|null $statusMessage
      * @return $this
      */
-    public function statusNew($source=null, $statusMessage=null)
+    public function statusNew($source = null, $statusMessage = null)
     {
         $this->chageOrderStatus(self::$status_new, $source, $statusMessage);
         return $this;
@@ -305,7 +305,7 @@ class OrderService extends ContainerAware
      *
      * @return $this
      */
-    public function statusFailed($source=null, $statusMessage=null)
+    public function statusFailed($source = null, $statusMessage = null)
     {
         $this->chageOrderStatus(self::$status_failed, $source, $statusMessage);
         return $this;
@@ -317,7 +317,7 @@ class OrderService extends ContainerAware
      *
      * @return $this
      */
-    public function statusAccepted($source=null, $statusMessage=null)
+    public function statusAccepted($source = null, $statusMessage = null)
     {
         // Inform poor user, that his order was accepted
         if ($this->getOrder()->getOrderStatus() == self::$status_new) {
@@ -413,13 +413,13 @@ class OrderService extends ContainerAware
 
 
                 $ordersText.=" (".$this->container->get('translator')->trans('email.dishes.options').": ";*/
-                foreach ($options as $k=>$opt) {
+                foreach ($options as $k => $opt) {
                     /*if ($k !=0) {
                         $ordersText.=", ";
                     }
                     $ordersText.=$opt->getDishOptionName();*/
                     $invoice[] = array(
-                        'itm_name' => "  - ".$opt->getDishOptionName(),
+                        'itm_name' => "  - " . $opt->getDishOptionName(),
                         'itm_amount' => $ord->getQuantity(),
                         'itm_price' => $opt->getPrice(),
                         'itm_sum' => $opt->getPrice() * $ord->getQuantity(),
@@ -432,33 +432,33 @@ class OrderService extends ContainerAware
         }
 //        $ordersText.= "</ul>";
 
-/*
-        $variables = array(
-            'username' => $userName,
-            'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
-            'maisto_ruosejas' => $this->getOrder()->getPlacePoint()->getAddress(),
-            'uzsakymas' => $ordersText,
-            'adresas' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->getAddress().", ".$this->getOrder()->getAddressId()->getCity() : "--"),
-            'pristatymo_data' => $this->getOrder()->getDeliveryTime()->format('Y-m-d H:i:s')
-        );
+        /*
+                $variables = array(
+                    'username' => $userName,
+                    'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
+                    'maisto_ruosejas' => $this->getOrder()->getPlacePoint()->getAddress(),
+                    'uzsakymas' => $ordersText,
+                    'adresas' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->getAddress().", ".$this->getOrder()->getAddressId()->getCity() : "--"),
+                    'pristatymo_data' => $this->getOrder()->getDeliveryTime()->format('Y-m-d H:i:s')
+                );
 
-*/
+        */
 
         $variables = array(
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
             'maisto_ruosejas' => $this->getOrder()->getPlacePoint()->getAddress(),
             'uzsakymas' => $this->getOrder()->getId(),
-            'adresas' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->getAddress().", ".$this->getOrder()->getAddressId()->getCity() : "--"),
+            'adresas' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->getAddress() . ", " . $this->getOrder()->getAddressId()->getCity() : "--"),
             'pristatymo_data' => $this->getOrder()->getDeliveryTime()->format('Y-m-d H:i:s'),
             'total_sum' => $this->getOrder()->getTotal(),
             'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getPlace()->getDeliveryPrice() : 0),
-            'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ?  ($this->getOrder()->getTotal() - $this->getOrder()->getPlace()->getDeliveryPrice()) :  $this->getOrder()->getTotal()),
+            'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getPlace()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
             'invoice' => $invoice
         );
 
 
 //        $ml->setVariables( $variables )->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30009269  )->send();
-        $ml->setVariables( $variables )->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30010811 )->send();
+        $ml->setVariables($variables)->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId(30010811)->send();
     }
 
     /**
@@ -467,7 +467,7 @@ class OrderService extends ContainerAware
      *
      * @return $this
      */
-    public function statusAssigned($source=null, $statusMessage=null)
+    public function statusAssigned($source = null, $statusMessage = null)
     {
         // Inform poor user, that his order was accepted
         $driver = $this->getOrder()->getDriver();
@@ -480,9 +480,9 @@ class OrderService extends ContainerAware
                 ->generate('drivermobile', array('hash' => $this->getOrder()->getOrderHash()), true);
 
             $messageText = $this->container->get('translator')->trans('general.sms.driver_assigned_order')
-                .$orderConfirmRoute;
+                . $orderConfirmRoute;
 
-            $logger->alert("Sending message for driver about assigned order to number: ".$driver->getPhone().' with text "'.$messageText.'"');
+            $logger->alert("Sending message for driver about assigned order to number: " . $driver->getPhone() . ' with text "' . $messageText . '"');
 
             $message = $messagingService->createMessage(
                 $this->container->getParameter('sms.sender'),
@@ -503,7 +503,7 @@ class OrderService extends ContainerAware
      *
      * @return $this
      */
-    public function statusForwarded($source=null, $statusMessage=null)
+    public function statusForwarded($source = null, $statusMessage = null)
     {
         $this->chageOrderStatus(self::$status_forwarded, $source, $statusMessage);
         return $this;
@@ -515,7 +515,7 @@ class OrderService extends ContainerAware
      *
      * @return $this
      */
-    public function statusCompleted($source=null, $statusMessage=null)
+    public function statusCompleted($source = null, $statusMessage = null)
     {
         $order = $this->getOrder();
         $this->chageOrderStatus(self::$status_completed, $source, $statusMessage);
@@ -524,19 +524,30 @@ class OrderService extends ContainerAware
 
         // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
         if ($order->getPlace()->getSendInvoice()) {
-            $miscService = $this->container->get('food.app.utils.misc');
-
-            $sfNumber = (int)$miscService->getParam('sf_next_number');
-            $order->setSfSeries($this->container->getParameter('invoice.series'));
-            $order->setSfNumber($sfNumber);
-
-            $miscService->setParam('sf_next_number', ($sfNumber+1));
+            $this->setInvoiceDataForOrder();
 
             // Suplanuojam sf siuntima klientui
             $this->container->get('food.invoice')->addInvoiceToSend($order);
         }
 
         return $this;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function setInvoiceDataForOrder()
+    {
+        $order = $this->getOrder();
+        $miscService = $this->container->get('food.app.utils.misc');
+
+        $sfNumber = (int)$miscService->getParam('sf_next_number');
+        $order->setSfSeries($this->container->getParameter('invoice.series'));
+        $order->setSfNumber($sfNumber);
+
+        $miscService->setParam('sf_next_number', ($sfNumber + 1));
+
+        $this->saveOrder();
     }
 
     /**

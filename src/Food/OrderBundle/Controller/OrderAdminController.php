@@ -18,14 +18,7 @@ class OrderAdminController extends Controller
 
         $orderSfSeries = $order->getSfSeries();
         if (empty($orderSfSeries)) {
-            $miscService = $this->get('food.app.utils.misc');
-
-            $sfNumber = (int)$miscService->getParam('sf_next_number');
-            $order->setSfSeries($this->container->getParameter('invoice.series'));
-            $order->setSfNumber($sfNumber);
-
-            $miscService->setParam('sf_next_number', ($sfNumber+1));
-            $orderService->saveOrder();
+            $orderService->setInvoiceDataForOrder();
         }
 
         $this->get('food.invoice')->addInvoiceToSend($order);
