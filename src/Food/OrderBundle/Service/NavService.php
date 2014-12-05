@@ -826,6 +826,8 @@ class NavService extends ContainerAware
             case 1:
             case 4:
             case 5:
+            // 7-as - assigned, bet nezinom kuriam vairui, tai darom tik accepta
+            case 7:
                 if ($order->getOrderStatus() == OrderService::$status_new) {
                     $orderService->statusAccepted('cili_nav');
                 }
