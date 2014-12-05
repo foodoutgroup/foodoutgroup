@@ -40,25 +40,25 @@ class Request
             <Risk>
                 <Action service="1">
                     <MerchantConfiguration>
-                        <channel>W</channel> <--
+                        <channel>W</channel>
                     </MerchantConfiguration>
                     <CustomerDetails>
                         <OrderDetails>
                             <BillingDetails>
-                                <country>%country%</country> <--
+                                <country>%country%</country>
                             </BillingDetails>
                         </OrderDetails>
                         <PersonalDetails>
-                            <surname>%surname%</surname> <--
-                            <first_name>%name%</first_name> <--
-                            <telephone>%telephone%</telephone> <--
+                            <surname>%surname%</surname>
+                            <first_name>%name%</first_name>
+                            <telephone>%telephone%</telephone>
                         </PersonalDetails>
                         <PaymentDetails>
-                            <payment_method>CC</payment_method> <--
+                            <payment_method>CC</payment_method>
                         </PaymentDetails>
                         <RiskDetails>
-                            <email_address>%email%</email_address> <--
-                            <ip_address>%ip%</ip_address> <--
+                            <email_address>%email%</email_address>
+                            <ip_address>%ip%</ip_address>
                         </RiskDetails>
                     </CustomerDetails>
                 </Action>

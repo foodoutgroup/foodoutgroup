@@ -56,8 +56,6 @@ class CreditCardGateway
 
         $request = new Request($params);
 
-        var_dump($request->xml()); die('xxx');
-
         // for logging purposes
         $event = new BanklinkEvent((int)$params->get('order_id'), null, $request->xml());
         $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST, $event);
