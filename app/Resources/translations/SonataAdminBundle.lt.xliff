@@ -1011,6 +1011,10 @@
                 <source>admin.order.status.source.cili_nav_update_price</source>
                 <target>Čili Navision update prices</target>
             </trans-unit>
+            <trans-unit id="admin.order.ismobile">
+                <source>admin.order.ismobile</source>
+                <target>Mob</target>
+            </trans-unit>
             <trans-unit id="admin.order.hash">
                 <source>admin.order.hash</source>
                 <target>Order hash</target>
@@ -1270,7 +1274,7 @@
             </trans-unit>
             <trans-unit id="admin.driver.has_orders">
                 <source>admin.driver.has_orders</source>
-                <target>Turi užsak.</target>
+                <target>Užsak.</target>
             </trans-unit>
 
             <!-- Banned IP listas -->

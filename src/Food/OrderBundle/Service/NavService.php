@@ -328,6 +328,7 @@ class NavService extends ContainerAware
         );
         $queryPart = $this->generateQueryPart($dataToPut);
         $query = 'INSERT INTO '.$this->getHeaderTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
+        @mail("paulius@foodout.lt", '#'.($orderNewId - $this->_orderIdModifier).' [SQL Line Query]-#HEADER', $query, "FROM: info@foodout.lt");
         $sqlSS = $this->initSqlConn()->query($query);
 
         $this->_processLines($order, $orderNewId);
@@ -373,6 +374,7 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
         $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
+        @mail("paulius@foodout.lt", '#'.($orderNewId - $this->_orderIdModifier).' [SQL Line Query]-#DELIVERY', $query, "FROM: info@foodout.lt");
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
@@ -415,8 +417,13 @@ class NavService extends ContainerAware
         if (empty($code)) {
             $detailOptions = $detail->getOptions();
             if (!empty($detailOptions)) {
-                $code = $detailOptions[0]->getDishOptionCode();
-                $optionIdUsed = 0;
+                if ($detailOptions[0] && $detailOptions[0]->getDishOptionId()->getInfocode()) {
+                    $code = $detailOptions[1]->getDishOptionCode();
+                    $optionIdUsed = 1;
+                } else {
+                    $code = $detailOptions[0]->getDishOptionCode();
+                    $optionIdUsed = 0;
+                }
             }
         }
 
@@ -534,9 +541,16 @@ class NavService extends ContainerAware
 
     public function updatePricesNAV(Order $order)
     {
-        $orderId = $this->getNavOrderId($order);
-        $client = $this->getWSConnection();
-        $return = $client->FoodOutUpdatePrices(array('pInt' =>(int)$orderId));
+        if (!$order->getNavPriceUpdated()) {
+            $orderId = $this->getNavOrderId($order);
+            $client = $this->getWSConnection();
+            $return = $client->FoodOutUpdatePrices(array('pInt' =>(int)$orderId));
+            $order->setNavPriceUpdated(true);
+            $this->getContainer()->get('doctrine')->getManager()->merge($order);
+            $this->getContainer()->get('doctrine')->getManager()->flush();
+        } else {
+            $return = true;
+        }
         return $return;
     }
 
@@ -548,8 +562,15 @@ class NavService extends ContainerAware
 
         $sqlSS = $this->initSqlConn()->query($query);
 
-        $client = $this->getWSConnection();
-        $return = $client->FoodOutProcessOrder(array('pInt' =>(int)$orderId));
+        if (!$order->getNavPorcessedOrder()) {
+            $client = $this->getWSConnection();
+            $return = $client->FoodOutProcessOrder(array('pInt' =>(int)$orderId));
+            $order->setNavPorcessedOrder(true);
+            $this->getContainer()->get('doctrine')->getManager()->merge($order);
+            $this->getContainer()->get('doctrine')->getManager()->flush();
+        } else {
+            $return = true;
+        }
         return $return;
     }
 
@@ -586,12 +607,17 @@ class NavService extends ContainerAware
         foreach ($dishes as $detailKey=>$cart) {
             $lineNo = $lineNo + 1;
             $code = $cart->getDishSizeId()->getCode();
-            $disFromOptions = false;
+            $disFromOptions = -1;
             if (empty($code)) {
                 $detailOptions = $cart->getOptions();
                 if (!empty($detailOptions)) {
-                    $code = $detailOptions[0]->getDishOptionId()->getCode();
-                    $disFromOptions = true;
+                    if ($detailOptions[0]->getDishOptionId()->getInfocode()) {
+                        $code = $detailOptions[1]->getDishOptionId()->getCode();
+                        $disFromOptions = 1;
+                    } else {
+                        $code = $detailOptions[0]->getDishOptionId()->getCode();
+                        $disFromOptions = 0;
+                    }
                 }
             }
 
@@ -624,7 +650,7 @@ class NavService extends ContainerAware
 
             $origLineNo = $lineNo;
             foreach ( $detailOptions = $cart->getOptions() as $optKey => $option) {
-                if ($disFromOptions) {
+                if ($optKey == $disFromOptions) {
                     continue;
                 } else {
                     $optionCode = $option->getDishOptionId()->getCode();

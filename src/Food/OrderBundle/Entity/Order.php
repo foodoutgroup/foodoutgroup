@@ -308,6 +308,19 @@ class Order
      */
     private $mobile = false;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="nav_price_update", type="boolean", nullable=true)
+     */
+    private $navPriceUpdated = false;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="nav_process_order", type="boolean", nullable=true)
+     */
+    private $navPorcessedOrder = false;
+
+
 
     public function __toString()
     {
@@ -1515,6 +1528,52 @@ class Order
     public function getSfNumber()
     {
         return $this->sfNumber;
+    }
+
+    /**
+     * Set navPriceUpdated
+     *
+     * @param boolean $navPriceUpdated
+     * @return Order
+     */
+    public function setNavPriceUpdated($navPriceUpdated)
+    {
+        $this->navPriceUpdated = $navPriceUpdated;
+    
+        return $this;
+    }
+
+    /**
+     * Get navPriceUpdated
+     *
+     * @return boolean 
+     */
+    public function getNavPriceUpdated()
+    {
+        return $this->navPriceUpdated;
+    }
+
+    /**
+     * Set navPorcessedOrder
+     *
+     * @param boolean $navPorcessedOrder
+     * @return Order
+     */
+    public function setNavPorcessedOrder($navPorcessedOrder)
+    {
+        $this->navPorcessedOrder = $navPorcessedOrder;
+    
+        return $this;
+    }
+
+    /**
+     * Get navPorcessedOrder
+     *
+     * @return boolean 
+     */
+    public function getNavPorcessedOrder()
+    {
+        return $this->navPorcessedOrder;
     }
 
     /**

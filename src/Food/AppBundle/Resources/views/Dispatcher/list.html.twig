@@ -22,9 +22,9 @@
 {% block side_menu %}{% endblock %}
 
 {% block list_table %}
-    {# type gali buti 'unassigned', 'not_finished' ;) Just in case you need that #}
+    {# type gali buti 'unassigned', 'unconfirmed', 'not_finished' ;) Just in case you need that #}
     {% macro order_table(order_list, type, cityName) %}
-        {% if type == 'unassigned' %}
+        {% if type == 'unassigned' or type == 'not_finished' %}
         <div class="driver_button">
             <button class="get_drivers_button btn btn-lg" disabled="disabled">
                 {#<span class="icon_steering_wheel"></span>#}
@@ -64,7 +64,7 @@
                             <input type="checkbox" id="order_{{ order.id }}" value="{{ order.id }}" class="order_checkbox" />
                         {% endif %}
                     </td>
-                    <td>{{ order.id }}</td>
+                    <td><a href="{{ path('admin_food_order_order_show', {'id': order.id}) }}" target="_blank">{{ order.id }}</a></td>
                     <td>
                         {{ order.placeName }}
                         {% set placePointPhones = '+'~order.placePoint.phone %}

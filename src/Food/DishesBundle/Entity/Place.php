@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Food\AppBundle\Entity\Uploadable;
 use Gedmo\Translatable\Translatable;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * Client
@@ -15,12 +17,16 @@ use Gedmo\Translatable\Translatable;
  * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\PlaceRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\PlaceLocalized")
+ * @Callback(methods={"isFileSizeValid"})
  */
 class Place extends Uploadable implements Translatable
 {
     const OPT_DELIVERY_AND_PICKUP = 'delivery_and_pickup';
     const OPT_ONLY_DELIVERY = 'delivery';
     const OPT_ONLY_PICKUP = 'pickup';
+
+    // megabytes
+    protected $maxFileSize = 1.9;
 
     /**
      * @var integer
@@ -1493,5 +1499,12 @@ class Place extends Uploadable implements Translatable
     public function getDiscountPricesEnabled()
     {
         return $this->discountPricesEnabled;
+    }
+
+    public function isFileSizeValid(ExecutionContextInterface $context)
+    {
+        if ($this->getFile() && $this->getFile()->getSize() > round($this->maxFileSize * 1024 * 1024)) {
+            $context->addViolationAt('file', 'Paveiksliukas užima daugiau nei ' . $this->maxFileSize . ' MB vietos.');
+        }
     }
 }

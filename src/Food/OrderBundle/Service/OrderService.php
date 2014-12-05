@@ -1635,8 +1635,9 @@ class OrderService extends ContainerAware
         ;
 
         $emailMessageText .= "\n"
-            .$translator->trans('general.new_order.admin_link').": ".$this->container->get('router')
-                ->generate('order_support_mobile', array('hash' => $order->getOrderHash()), true)
+            .$translator->trans('general.new_order.admin_link').": "
+            .'http://'.$domain.$this->container->get('router')
+                ->generate('order_support_mobile', array('hash' => $order->getOrderHash()), false)
             ."\n";
 
         $mailer = $this->container->get('mailer');

@@ -89,6 +89,19 @@
     </div>
 
     {% block body %}{% endblock %}
+    <div class="site-center site-center-bottom">
+        <div class="site-block">
+            <div class="clearfix bottom-blocks">
+                <div class="app-block clearfix"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-view.png') }}">
+                    <div class="app-block-inner">
+                        <h3>Foodout.lt tavo kišenėje!</h3>
+                        <p>Užsisakyk maisto į namus ar biurą per iPhone arba Android telefonus. Atsisiųsk nemokamą aplikaciją!.</p>
+                        <div><a target="_BLANK" href="https://itunes.apple.com/us/app/foodout/id919992168"><img src="{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a target="_BLANK" href="https://play.google.com/store/apps/details?id=co.lemonlabs.android.foodout#"><img src="{{ asset('bundles/foodapp/images/g-store.png') }}"></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {{ render(controller('FoodAppBundle:Default:footer')) }}
 </div>

@@ -1,0 +1,91 @@
+{% extends 'FoodAppBundle::layout_no_video.html.twig' %}
+
+{% block title %}{% trans %}general.places{% endtrans %} - {{ page_title }}{% endblock %}
+
+{% block jscode %}
+
+{% endblock %}
+{% block body %}
+    {% javascripts '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.pack.js'
+    '@FoodAppBundle/Resources/public/scripts/fancy/helpers/jquery.fancybox-media.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% stylesheets '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    {% endstylesheets %}
+
+    <div class="change-location-box"></div>
+    <div class="site-center">
+        <div class="site-block">
+            <div class="page-path clearfix">{#<a href="{{ path('food_homepage') }}">Pradžia</a>#}</div>{# TODO breadcrumbs <a href="#">Restoranai arti Žirmūnų</a>#}
+            <div class="page-title">
+                <br />
+                <br />
+                <h1 class="clearfix">
+                    <Center>Sveiki atvykę!<br />
+                        Nuo šiol maistą į namus iš Čili pica, SOYA, Forest ir Čili kaimas galite užsisakyti dar greičiau ir patogiau naudojantis www.foodout.lt.<br />
+                        Linkime jums gero apetito!<br />
+                    </center>
+                </h1>
+                <span style="float: right">Foodout.lt kolektyvas</span>
+            </div>
+            <center class="item-righter ">
+
+                <table cellpadding="10">
+                    <tr>
+                        <td align="center">
+                            <a href="http://foodout.lt/lt/cili-pica/">
+                                <img src="http://foodout.lt/uploads/places/thumb_63_f732592f7320d5cd00b5f45014c578d1.png">
+                            </a>
+                        </td>
+                        <td align="center">
+                            <a href="http://foodout.lt/lt/forest/">
+                                <img src="http://foodout.lt/uploads/places/thumb_68_45b0a7e6104e1b6a3461485c33dbac9a.jpeg">
+                            </a>
+                        </td>
+                        <td align="center">
+                            <a href="http://foodout.lt/lt/soya-1/">
+                                <img src="http://foodout.lt/uploads/places/thumb_0_640d6316b1db24f413f0377455b4d4cd.jpeg">
+                            </a>
+                        </td>
+                        <td align="center">
+                            <a href="http://foodout.lt/lt/cili-kaimas/">
+                                <img src="http://foodout.lt/uploads/places/thumb_67_f121d135f39f03e48da5fe5e8ced5b0a.jpeg">
+                            </a>
+                        </td>
+
+
+                    </tr>
+                    <tr>
+
+                        <td align="center">
+                            <a href="http://foodout.lt/lt/cili-pica/" class="button" style="width: 90px">
+                                Spausti čia
+                            </a>
+                        </td>
+                        <td align="center">
+                            <a href="http://foodout.lt/lt/forest/" class="button" style="width: 90px">
+                                Spausti čia
+                            </a>
+                        </td>
+                        <td align="center">
+                            <a href="http://foodout.lt/lt/soya-1/" class="button" style="width: 90px">
+                                Spausti čia
+                            </a>
+                        </td>
+                        <td align="center">
+                            <a href="http://foodout.lt/lt/cili-kaimas/" class="button" style="width: 90px">
+                                Spausti čia
+                            </a>
+                        </td>
+
+                    </tr>
+                </table>
+            </center>
+            <br />
+            <br />
+
+        </div>
+    </div>
+{% endblock %}
