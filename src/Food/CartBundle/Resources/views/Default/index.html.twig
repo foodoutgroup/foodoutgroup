@@ -303,7 +303,7 @@
                                     <label>{% trans %}cart.checkout.company_code{% endtrans %}:</label>
                                     <input type="text" name="company_code" placeholder="{% trans %}cart.checkout.company_code_placeholder{% endtrans %}" value="{% if (dataToLoad is not empty and dataToLoad['company_code'] is not empty) %}{{ dataToLoad['company_code'] }}{% endif %}" />
                                 </div>
-                                <div class="form-row form-row-required">
+                                <div class="form-row">
                                     <label>{% trans %}cart.checkout.vat_code{% endtrans %}:</label>
                                     <input type="text" name="vat_code" placeholder="{% trans %}cart.checkout.vat_code_placeholder{% endtrans %}" value="{% if (dataToLoad is not empty and dataToLoad['vat_code'] is not empty) %}{{ dataToLoad['vat_code'] }}{% endif %}" />
                                 </div>

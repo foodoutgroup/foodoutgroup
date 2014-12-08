@@ -61,7 +61,7 @@
             <br />
             {{ order.companyAddress|capitalize }}<br />
             {% trans %}order.invoice.company_code{% endtrans %} {{ order.companyCode }}<br />
-            {% trans %}order.invoice.vat_num{% endtrans %}{{ order.vatCode }}<br />
+            {% if order.vatCode != '' %}{% trans %}order.invoice.vat_num{% endtrans %}{{ order.vatCode }}{% endif %}<br />
             <br />
         {% endif %}
         {% trans %}order.invoice.document_date{% endtrans %}: {{ order.orderDate|date("Y m d") }}<br />

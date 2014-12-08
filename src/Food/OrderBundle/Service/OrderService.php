@@ -2235,7 +2235,6 @@ class OrderService extends ContainerAware
         if ($request->get('company') == 'on') {
             $companyName = $request->get('company_name');
             $companyCode = $request->get('company_code');
-            $vatCode = $request->get('vat_code');
             $companyAddress = $request->get('company_address');
 
             if (empty($companyName)) {
@@ -2243,9 +2242,6 @@ class OrderService extends ContainerAware
             }
             if (empty($companyCode)) {
                 $formErrors[] = 'order.form.errors.empty_company_code';
-            }
-            if (empty($vatCode)) {
-                $formErrors[] = 'order.form.errors.empty_vat_code';
             }
             if (empty($companyAddress)) {
                 $formErrors[] = 'order.form.errors.empty_company_address';
