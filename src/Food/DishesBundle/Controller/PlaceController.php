@@ -17,6 +17,15 @@ class PlaceController extends Controller
     public function indexAction($id, $slug, $categoryId, Request $request)
     {
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
+
+        // Place is incative, why show it?
+        if ($place->getActive() == false) {
+            return $this->redirect(
+                $this->generateUrl('food_homepage'),
+                307 // Temporary redirect status
+            );
+        }
+
         $categoryList = $this->get('food.places')->getActiveCategories($place);
         $placePoints = $this->get('food.places')->getPublicPoints($place);
         $placePointsAll = $this->get('food.places')->getAllPoints($place);
