@@ -99,7 +99,7 @@ class MenuItem extends ContainerAware
         $discountText = "";
         if ($showDiscount) {
             $diff = ($ds->getLargestDishDiscountPrice($dish->getId()) / $ds->getLargestDishPrice($dish->getId())) * 100 - 100;
-            $discountText = "- ".round($diff)."%";
+            $discountText = round($diff)."%";
         }
         $priceRange = array(
             'minimum' => (!$showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : $ds->getSmallestDishDiscountPrice($dish->getId()) * 100),
