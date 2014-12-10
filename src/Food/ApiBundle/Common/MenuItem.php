@@ -132,7 +132,9 @@ class MenuItem extends ContainerAware
                 $options['sizes']['items'][] = array(
                     'option_id' => $size->getId(),
                     'title' => $unit->getName(),
-                    'price_modifier' => $size->getPrice() * 100
+                    'price_modifier' => $size->getCurrentPrice() * 100,
+                    'price_modifier_old' => ($size->getDish()->getShowDiscount() ?  $size->getPrice() * 100 : 0)
+
                 );
             }
             $options['sizes']['default'] = $options['sizes']['items'][0]['option_id'];
