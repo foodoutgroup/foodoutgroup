@@ -96,11 +96,17 @@ class MenuItem extends ContainerAware
 
         $ds = $this->container->get('food.dishes');
         $showDiscount = $dish->getShowDiscount();
+        $discountText = "";
+        if ($showDiscount) {
+            $diff = ($ds->getLargestDishDiscountPrice($dish->getId()) / $ds->getLargestDishPrice($dish->getId())) * 100 - 100;
+            $showDiscount = "- ".$diff."%";
+        }
         $priceRange = array(
             'minimum' => (!$showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : $ds->getSmallestDishDiscountPrice($dish->getId()) * 100),
             'maximum' => (!$showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : $ds->getLargestDishDiscountPrice($dish->getId()) * 100),
             'minimum_old' => ($showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : 0),
             'maximum_old' => ($showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : 0),
+            'discount_text' => $discountText,
             'currency' => 'LTL'
         );
         $this->set('item_id', $dish->getId())
