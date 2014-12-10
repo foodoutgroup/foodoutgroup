@@ -1680,3 +1680,10 @@ div.coupon_form_popup {
 .dish-size .custom-radio .price.discount {
     color: #cd1d36;
 }
+
+.no-arrow span {
+    background: none !important
+}
+.no-arrow.no-arrow-second {
+    margin-left: 10px;
+}

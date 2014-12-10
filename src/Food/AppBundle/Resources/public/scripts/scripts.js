@@ -278,6 +278,44 @@ change_location = function(element,
         }
     };
 
+    if (element.find('.submit-button').size() == 0) {
+        element.append('<a href="#" class="submit-button btn-cancel no-arrow no-arrow-second"><span>'+ cancel_options.text +'</span></a>');
+        element.append('<a href="#" class="submit-button btn-submit no-arrow"><span>'+ change_options.text +'</span></a>');
+    }
+
+    element.find('.btn-cancel').unbind('click').bind('click', function(){
+        $.fancybox.close();
+    });
+
+    element.find('.btn-submit').unbind('click').bind('click', function(){
+        this.parent().mask();
+        alert = element.find('.alert');
+
+        options = {
+            type: 'GET',
+            url: request_url,
+            data: data_callback(),
+            success: function(response){
+                click_callback({response: response,
+                    dialog: dialog,
+                    alert: alert});
+            }
+        }
+        $.ajax(options);
+    });
+
+    $.fancybox({
+        'autoScale': true,
+        'transitionIn': 'elastic',
+        'transitionOut': 'elastic',
+        'speedIn': 500,
+        'speedOut': 300,
+        'autoDimensions': true,
+        'centerOnScroll': true,
+        'content' : element
+    });
+
+    /*
     dialog_options = {
         modal: true,
         resizeable: false,
@@ -291,6 +329,7 @@ change_location = function(element,
     element.dialog(dialog_options)
            .siblings('.ui-dialog-titlebar')
            .remove();
+    */
 }
 
 initStreetSearch = function(){
