@@ -256,9 +256,41 @@ class Order
     private $reminded = false;
 
     /**
+     * @var string
+     * @ORM\Column(name="sf_series", type="string", length=4, nullable=true)
+     */
+    private $sfSeries = null;
+
+    /**
+     * @var int
+     * @ORM\Column(name="sf_number", type="integer", nullable=true)
+     */
+    private $sfNumber = null;
+
+    /**
      * @ORM\Version @ORM\Column(type="integer")
      */
     private $version;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="mobile", type="boolean", nullable=true)
+     */
+    private $mobile = false;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="nav_price_update", type="boolean", nullable=true)
+     */
+    private $navPriceUpdated = false;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="nav_process_order", type="boolean", nullable=true)
+     */
+    private $navPorcessedOrder = false;
+
+
 
     public function __toString()
     {
@@ -1397,5 +1429,120 @@ class Order
     public function getVersion()
     {
         return $this->version;
+    }
+
+    /**
+     * Set mobile
+     *
+     * @param boolean $mobile
+     * @return Order
+     */
+    public function setMobile($mobile)
+    {
+        $this->mobile = $mobile;
+    
+        return $this;
+    }
+
+    /**
+     * Get mobile
+     *
+     * @return boolean 
+     */
+    public function getMobile()
+    {
+        return $this->mobile;
+    }
+
+    /**
+     * Set sfSeries
+     *
+     * @param string $sfSeries
+     * @return Order
+     */
+    public function setSfSeries($sfSeries)
+    {
+        $this->sfSeries = $sfSeries;
+    
+        return $this;
+    }
+
+    /**
+     * Get sfSeries
+     *
+     * @return string 
+     */
+    public function getSfSeries()
+    {
+        return $this->sfSeries;
+    }
+
+    /**
+     * Set sfNumber
+     *
+     * @param integer $sfNumber
+     * @return Order
+     */
+    public function setSfNumber($sfNumber)
+    {
+        $this->sfNumber = $sfNumber;
+    
+        return $this;
+    }
+
+    /**
+     * Get sfNumber
+     *
+     * @return integer 
+     */
+    public function getSfNumber()
+    {
+        return $this->sfNumber;
+    }
+
+    /**
+     * Set navPriceUpdated
+     *
+     * @param boolean $navPriceUpdated
+     * @return Order
+     */
+    public function setNavPriceUpdated($navPriceUpdated)
+    {
+        $this->navPriceUpdated = $navPriceUpdated;
+    
+        return $this;
+    }
+
+    /**
+     * Get navPriceUpdated
+     *
+     * @return boolean 
+     */
+    public function getNavPriceUpdated()
+    {
+        return $this->navPriceUpdated;
+    }
+
+    /**
+     * Set navPorcessedOrder
+     *
+     * @param boolean $navPorcessedOrder
+     * @return Order
+     */
+    public function setNavPorcessedOrder($navPorcessedOrder)
+    {
+        $this->navPorcessedOrder = $navPorcessedOrder;
+    
+        return $this;
+    }
+
+    /**
+     * Get navPorcessedOrder
+     *
+     * @return boolean 
+     */
+    public function getNavPorcessedOrder()
+    {
+        return $this->navPorcessedOrder;
     }
 }

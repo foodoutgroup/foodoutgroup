@@ -151,14 +151,17 @@ class PaymentsController extends Controller
             }
 
             if ($data['status'] == 1) {
-                // Paysera was waiting for funds to be transfered
-                $logger->alert('-- Payment is valid. Procceed with care..');
-                $orderService->setPaymentStatus($orderService::$paymentStatusComplete, 'Paysera billed payment');
-                $orderService->saveOrder();
-                $orderService->informPlace();
+                // Nedubliuokim pranesimu, jei paymentas jau patvirtintas, tai ner ko to daryt dar karta
+                if ($order->getPaymentStatus() != $orderService::$paymentStatusComplete) {
+                    // Paysera was waiting for funds to be transfered
+                    $logger->alert('-- Payment is valid. Procceed with care..');
+                    $orderService->setPaymentStatus($orderService::$paymentStatusComplete, 'Paysera billed payment');
+                    $orderService->saveOrder();
+                    $orderService->informPlace();
 
-                // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
-                $orderService->deactivateCoupon();
+                    // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
+                    $orderService->deactivateCoupon();
+                }
 
                 return new Response('OK');
             }
@@ -174,54 +177,5 @@ class PaymentsController extends Controller
 
             return new Response($e->getTraceAsString(), 500);
         }
-    }
-
-    public function swedbankGatewayRedirectAction($id, $locale)
-    {
-        //
-    }
-
-    public function swedbankGatewayFailureAction(Request $request)
-    {
-        return $this->swedbankGatewaySuccessAction($request);
-    }
-
-    public function swedbankGatewaySuccessAction(Request $request)
-    {
-        // 
-    }
-
-    protected function markOrderPaid($orderService)
-    {
-        $orderService->setPaymentStatus(
-            $orderService::$paymentStatusComplete,
-            'Swedbank gateway billed payment');
-        $orderService->saveOrder();
-        $orderService->informPlace();
-
-        // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
-        $orderService->deactivateCoupon();
-    }
-
-    protected function markOrderProcessing($orderService, $order)
-    {
-        $orderService->logPayment(
-            $order,
-            'Swedbank Gateway wallet payment started',
-            'Swedbank Gateway wallet payment accepted. Waiting for funds to be billed',
-            $order
-        );
-    }
-
-    protected function markOrderCancelled($orderService, $order)
-    {
-        $orderService->logPayment(
-            $order,
-            'Swedbank gateway payment canceled',
-            'Swedbank gateway canceled in Swedbank',
-            $order
-        );
-
-        $orderService->setPaymentStatus($orderService::$paymentStatusCanceled, 'User canceled payment in Swedbank gateway');
     }
 }

@@ -55,6 +55,10 @@
                 <source>admin.place.recommended</source>
                 <target>Rekomend.</target>
             </trans-unit>
+            <trans-unit id="admin.place.discount_prices_enabled">
+                <source>admin.place.discount_prices_enabled</source>
+                <target>Nuol.kainos</target>
+            </trans-unit>
             <trans-unit id="admin.place.delivery_option.delivery_and_pickup">
                 <source>admin.place.delivery_option.delivery_and_pickup</source>
                 <target>Pristatymas ir atsiėmimas</target>

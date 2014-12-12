@@ -194,6 +194,10 @@
                 <source>admin.dish.recomended_list</source>
                 <target>Rekom.</target>
             </trans-unit>
+            <trans-unit id="admin.dish.discount_prices_enabled">
+                <source>admin.dish.discount_prices_enabled</source>
+                <target>Nuol. kainos.</target>
+            </trans-unit>
             <trans-unit id="admin.dish.active">
                 <source>admin.dish.active</source>
                 <target>Aktyvus</target>
@@ -219,9 +223,17 @@
                 <source>admin.dish_options</source>
                 <target>Patiekalų priedai</target>
             </trans-unit>
+            <trans-unit id="admin.dish_option.infocode">
+                <source>admin.dish_option.infocode</source>
+                <target>Infokodas</target>
+            </trans-unit>
             <trans-unit id="admin.dish_option.code">
                 <source>admin.dish_option.code</source>
                 <target>Sis. kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.dish_option.sub_code">
+                <source>admin.dish_option.sub_code</source>
+                <target>Sub.Sis. kodas</target>
             </trans-unit>
             <trans-unit id="admin.dish_option.group_name">
                 <source>admin.dish_option.group_name</source>
@@ -359,6 +371,10 @@
                 <source>admin.place.recommended</source>
                 <target>Rekomend.</target>
             </trans-unit>
+            <trans-unit id="admin.place.discount_prices_enabled">
+                <source>admin.place.discount_prices_enabled</source>
+                <target>Nuol.kainos</target>
+            </trans-unit>
             <trans-unit id="admin.place.card_on_delivery">
                 <source>admin.place.card_on_delivery</source>
                 <target>Kortele prist. metu</target>
@@ -374,6 +390,22 @@
             <trans-unit id="admin.place.delivery_options">
                 <source>admin.place.delivery_options</source>
                 <target>Pristatymo galimyb.</target>
+            </trans-unit>
+            <trans-unit id="admin.place.navision" resname="admin.place.navision">
+                <source>admin.place.navision</source>
+                <target>Navision sync.</target>
+            </trans-unit>
+            <trans-unit id="admin.place.only_alcohol" resname="admin.place.only_alcohol">
+                <source>admin.place.only_alcohol</source>
+                <target>Tik alkoholis</target>
+            </trans-unit>
+            <trans-unit id="admin.place.send_invoice" resname="admin.place.send_invoice">
+                <source>admin.place.send_invoice</source>
+                <target>Siųsti faktūras</target>
+            </trans-unit>
+            <trans-unit id="admin.place.chain" resname="admin.place.chain">
+                <source>admin.place.chain</source>
+                <target>Grandinė</target>
             </trans-unit>
 
             <!-- Place points -->
@@ -444,6 +476,10 @@
             <trans-unit id="admin.point.alt_email">
                 <source>admin.point.alt_email</source>
                 <target>Papild. el.paštas</target>
+            </trans-unit>
+            <trans-unit id="admin.point.invoice_email">
+                <source>admin.point.invoice_email</source>
+                <target>Buhalt. el.paštas</target>
             </trans-unit>
             <trans-unit id="admin.point.city">
                 <source>admin.point.city</source>
@@ -955,6 +991,30 @@
                 <source>admin.order.status.source.logistics_service</source>
                 <target>Logistika</target>
             </trans-unit>
+            <trans-unit id="admin.order.status.source.logistics_service_external">
+                <source>admin.order.status.source.logistics_service_external</source>
+                <target>Išorinė logistika</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.auto_close_order_command">
+                <source>admin.order.status.source.auto_close_order_command</source>
+                <target>Automatinis užsakymu uždarymas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.cili_nav">
+                <source>admin.order.status.source.cili_nav</source>
+                <target>Čili Navision</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.cili_nav_process">
+                <source>admin.order.status.source.cili_nav_process</source>
+                <target>Čili Navision order processing</target>
+            </trans-unit>
+            <trans-unit id="admin.order.status.source.cili_nav_update_price">
+                <source>admin.order.status.source.cili_nav_update_price</source>
+                <target>Čili Navision update prices</target>
+            </trans-unit>
+            <trans-unit id="admin.order.ismobile">
+                <source>admin.order.ismobile</source>
+                <target>Mob</target>
+            </trans-unit>
 
             <!-- Order logas pas sonata admina -->
             <trans-unit id="admin.order.order_log">
@@ -1002,6 +1062,10 @@
             <trans-unit id="admin.dispatcher.undelivered">
                 <source>admin.dispatcher.undelivered</source>
                 <target>Nepristatyti</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.unconfirmed_pickup">
+                <source>admin.dispatcher.unconfirmed_pickup</source>
+                <target>Nepatvirtinti atsiėmimai restorane</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.unconfirmed">
                 <source>admin.dispatcher.unconfirmed</source>
@@ -1062,6 +1126,10 @@
             <trans-unit id="admin.dispatcher.order_status.canceled">
                 <source>admin.dispatcher.order_status.canceled</source>
                 <target>Atšauktas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.nav_problems">
+                <source>admin.dispatcher.order_status.nav_problems</source>
+                <target>Navision problemos</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.order_status_title">
                 <source>admin.dispatcher.order_status_title</source>
@@ -1174,7 +1242,7 @@
             </trans-unit>
             <trans-unit id="admin.driver.has_orders">
                 <source>admin.driver.has_orders</source>
-                <target>Turi užsak.</target>
+                <target>Užsak.</target>
             </trans-unit>
 
             <!-- Banned IP listas -->

@@ -13,3 +13,8 @@ parameters:
     mailer_user: null
     mailer_password: null
     secret: f6180a0fb30e99a1da1e364412f96c3f98cbaa1f
+
+    aws_key: AKIAJN3454YNXAUSJIRA
+    aws_secret: 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
+    aws_region: eu-west-1
+    s3_bucket: foodout-invoice

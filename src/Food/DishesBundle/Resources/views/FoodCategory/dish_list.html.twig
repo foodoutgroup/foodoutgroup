@@ -22,19 +22,48 @@
         <p class="desc">{{ dish.description|nl2br }}</p>
         <div class="menu-item-bottom clearfix">
             {% if smallestPrice and largestPrice %}
-            <span class="price">
+                {% set hasDiscount = false %}
+                {% set multiLine = false %}
+                {% if dish.discountPricesEnabled and dish.place.discountPricesEnabled %}
+                    {% if dish_service.hasDiscountPrice(dish.id) %}
+                        {% set hasDiscount = true %}
+                    {% endif %}
+                {% endif %}
                 {% if smallestPrice == largestPrice %}
-                    {{ smallestPrice|replace({'.': ','}) }} {{ currency_display }}
-                    <span class="euro">
-                        &euro;{{ misc_utils.getEuro(smallestPrice)|number_format(2, ',', ' ') }}
-                    </span>
+                    {# ehm. in case of need :D #}
                 {% else %}
-                    {{ smallestPrice|replace({'.': ','}) }} - {{ largestPrice|replace({'.': ','}) }} {{ currency_display }}
-                    <span class="euro">
-                        &euro;{{  misc_utils.getEuro(smallestPrice)|number_format(2, ',', ' ') }} - &euro;{{  misc_utils.getEuro(largestPrice)|number_format(2, ',', ' ') }}
+                    {% set multiLine = true %}
+                {% endif %}
+                <span class="price {% if hasDiscount %}discounted{% endif %} {% if hasDiscount and multiLine %}multiline{% endif %}">
+                    {% if smallestPrice == largestPrice %}
+                        {{ smallestPrice|replace({'.': ','}) }} {{ currency_display }}
+                        <span class="euro">
+                            &euro;{{ misc_utils.getEuro(smallestPrice)|number_format(2, ',', ' ') }}
+                        </span>
+                    {% else %}
+                        {{ smallestPrice|replace({'.': ','}) }} - {{ largestPrice|replace({'.': ','}) }} {{ currency_display }}
+                        <span class="euro">
+                            &euro;{{  misc_utils.getEuro(smallestPrice)|number_format(2, ',', ' ') }} - &euro;{{  misc_utils.getEuro(largestPrice)|number_format(2, ',', ' ') }}
+                        </span>
+                    {% endif %}
+                </span>
+                {% if hasDiscount %}
+                    {% set smallestDiscountPrice = dish_service.smallestDishDiscountPrice(dish.id) %}
+                    {% set largestDiscountPrice = dish_service.largestDishDiscountPrice(dish.id) %}
+                    <span class="price {% if hasDiscount %}discount{% endif %} {% if hasDiscount and multiLine %}multiline{% endif %}">
+                    {% if smallestDiscountPrice == largestDiscountPrice %}
+                        {{ smallestDiscountPrice|replace({'.': ','}) }} {{ currency_display }}
+                        <span class="euro">
+                            &euro;{{ misc_utils.getEuro(smallestDiscountPrice)|number_format(2, ',', ' ') }}
+                        </span>
+                    {% else %}
+                        {{ smallestDiscountPrice|replace({'.': ','}) }} - {{ largestDiscountPrice|replace({'.': ','}) }} {{ currency_display }}
+                        <span class="euro">
+                            &euro;{{  misc_utils.getEuro(smallestDiscountPrice)|number_format(2, ',', ' ') }} - &euro;{{  misc_utils.getEuro(largestDiscountPrice)|number_format(2, ',', ' ') }}
+                        </span>
+                    {% endif %}
                     </span>
                 {% endif %}
-            </span>
             {% endif %}
             {% if showByHours %}
                 <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" href2="#detailed-dish-popup" class="fancybox.ajax add-to-cart fancy-box"></a>

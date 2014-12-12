@@ -13,7 +13,7 @@ class CheckUnsentMessagesCommand extends ContainerAwareCommand
     {
         $this
             ->setName('sms:check:unsent')
-            ->setDescription('Check')
+            ->setDescription('Check for unsent messages')
         ;
     }
 
@@ -21,6 +21,7 @@ class CheckUnsentMessagesCommand extends ContainerAwareCommand
     {
         $messagingService = $this->getContainer()->get('food.messages');
 
+        $critical = false;
         $from = new \DateTime("-1 hours");
         $to = new \DateTime("-5 minutes");
         try {
@@ -33,61 +34,22 @@ class CheckUnsentMessagesCommand extends ContainerAwareCommand
                     $messagesCount
                 );
 
-                $this->soundTheAlarm($text);
             } else {
                 $text = '<info>OK: all messages sent. Have a nice day</info>';
             }
         } catch (\Exception $e) {
-            $text = 'Error in unsent messages check: '.$e->getMessage();
-            $this->soundTheAlarm($text);
+            $text = '<error>Error in unsent messages check: '.$e->getMessage().'</error>';
+            $output->writeln($text);
 
             throw $e;
         }
 
         $output->writeln($text);
-    }
 
-    /**
-     * @param string $text
-     */
-    protected function soundTheAlarm($text)
-    {
-        $text = str_replace(array('<error>', '</error>'), '', $text);
-        $domain = $this->getContainer()->getParameter('domain');
-        $adminEmails = $this->getContainer()->getParameter('admin.emails');
-        $mailer = $this->getContainer()->get('mailer');
-
-        $sendMonitoringMessages = $this->getContainer()->getParameter('admin.send_monitoring_message');
-        $adminPhones = array();
-
-        if (!empty($adminEmails)) {
-            $message = \Swift_Message::newInstance()
-                ->setSubject('Unsent messages monitoring error')
-                ->setFrom('monitoring@'.$domain)
-            ;
-
-            foreach ($adminEmails as $email) {
-                $message->addTo($email);
-            }
-
-            $message->setBody($text);
-            $mailer->send($message);
+        if ($critical) {
+            return 2;
         }
 
-        if ($sendMonitoringMessages && !empty($adminPhones)) {
-            $messagingService = $this->getContainer()->get('food.messages');
-            // Rizikuojam siusdami per ji, nes jis stabiliausias, o luzis greiciausiai musu crono :(
-            $provider = $this->getContainer()->get('food.infobip');
-            $messagingService->setMessagingProvider($provider);
-
-            $adminPhones = $this->getContainer()->getParameter('admin.phones');
-            $sender = $this->getContainer()->getParameter('sms.sender');
-
-            foreach ($adminPhones as $phone) {
-                $textMessage = $messagingService->createMessage($sender, $phone, $text);
-                $messagingService->sendMessage($textMessage);
-                $messagingService->saveMessage($textMessage);
-            }
-        }
+        return 0;
     }
 }

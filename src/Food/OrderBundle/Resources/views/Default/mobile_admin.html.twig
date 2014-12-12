@@ -194,6 +194,36 @@
                 </div>
             </td>
         </tr>
+        <tr>
+            <td colspan="5">
+                <strong>{% trans from "SonataAdminBundle" %}admin.order.order_log{% endtrans %}:</strong><br />
+                <div class="collapsable-row">
+                    <div class="span4 collapse-group">
+                        <div class="collapse">
+                            <table>
+                                <tr>
+                                    <th>{{ 'admin.order.status.date'|trans({}, 'SonataAdminBundle') }}</th>
+                                    <th>{{ 'admin.dispatcher.status'|trans({}, 'SonataAdminBundle') }}</th>
+                                    <th>{{ 'admin.order.payment_status.event'|trans({}, 'SonataAdminBundle') }}</th>
+                                    <th>{{ 'admin.order.status.message'|trans({}, 'SonataAdminBundle') }}</th>
+                                </tr>
+                                {% for orderInfo in order.orderLog %}
+                                    <tr>
+                                        <td style="white-space: nowrap">{{ orderInfo.eventDate|date("Y-m-d H:i:s") }}</td>
+                                        <td>{{ ( 'admin.dispatcher.order_status.' ~ orderInfo.orderStatus)|trans({}, 'SonataAdminBundle') }}</td>
+                                        <td>{{ orderInfo.event }}</td>
+                                        <td>{{ orderInfo.message }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                        <p>
+                            <a class="btn btn-info btn-block" href="#">Plačiau</a>
+                        </p>
+                    </div>
+                </div>
+            </td>
+        </tr>
         </tbody>
     </table>
     <div class="alert alert-warning">Prieš keistamas statusa - pasitikrink, koks jis yra dabar ir neprisidirbk!</div>

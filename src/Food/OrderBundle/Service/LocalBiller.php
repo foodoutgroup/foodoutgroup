@@ -70,7 +70,7 @@ class LocalBiller extends ContainerAware implements BillingInterface {
         $logger->alert('-------------------------------------');
 
         // Kadangi jokio paymento nedarom - uzdarom paymento flow su sekme
-        $order->setPaymentStatus($orderService::$paymentStatusComplete);
+        $orderService->setPaymentStatus($orderService::$paymentStatusComplete);
         $orderService->saveOrder();
 
         // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti

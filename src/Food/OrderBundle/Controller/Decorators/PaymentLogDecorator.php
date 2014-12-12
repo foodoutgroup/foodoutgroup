@@ -14,6 +14,7 @@ trait PaymentLogDecorator
                                         $navService,
                                         $logger)
     {
+        // if order is already complete - cancel
         if ($order->getPaymentStatus() ==
             $orderService::$paymentStatusComplete) {
             // log
@@ -30,14 +31,15 @@ trait PaymentLogDecorator
 
         // try saving order with optimistic lock on
         try {
+            // throws exception on optimistic lock check failure
             $em->flush();
 
             // inform stuff
             $orderService->informPlace();
             $orderService->deactivateCoupon();
 
-            // insert order into nav
-            // $navService->insertOrder($navService->getOrderDataForNav($order));
+            // log order data (if we have listeners)
+            $orderService->logOrderForNav($order);
 
             // clear cart
             $cartService->clearCart($order->getPlace());

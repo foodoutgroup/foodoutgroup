@@ -1,5 +1,8 @@
 {# Apatine puslapio raudona juosta su nuorodomis #}
 <div class="site-footer">
+
+    {% include 'FoodAppBundle:Default:bottom_block.html.twig' %}
+
     <div class="site-block clearfix">
         <div class="col col-1">
             <h5>{% trans %}general.page_name{% endtrans %}</h5>
@@ -59,8 +62,17 @@
             </div>
         </div>
         {% endif %}
-        <div class="col col-4"><img alt="{{ page_title }}" src="{{ asset('bundles/foodapp/images/logo_food_small.png') }}" />
+        <div class="col col-4">
+            {#
+            <img alt="{{ page_title }}" src="{{ asset('bundles/foodapp/images/logo_food_small.png') }}" />
             <p class="copyrights">&copy; foodout.lt</p>
+            #}
+            <h5>Foodout yra socialus</h5>
+            <div class="bottom-social clerafix">
+                <a href="https://www.facebook.com/foodout.lt" target="_blank"><img src="/bundles/foodapp/images/fb-ico.png"></a>
+                {# <a href="#"><img src="/bundles/foodapp/images/gp-ico.png"></a>#}
+                <a href="http://www.youtube.com/channel/UC64X-gVnB2NXg1MeYx2oljw" target="_BLANK"><img src="/bundles/foodapp/images/yt-ico.png"></a></div>
+            <p class="copyrights tar">&copy; Foodout.lt</p>
         </div>
     </div>
 </div>

@@ -42,7 +42,7 @@ class DishAdminController extends Controller
                     '<li style="width: 330px; float: left; display: block">'
                     .'  <label>'.
                     '       <input type="checkbox" id="'.$uniqueId.'_options_'.$elementNo.'" name="'.$uniqueId.'[options][]" value="'.$option->getId().'">'
-                    .'      <span>'.$option->getName().($option->getGroupName() ? ' <b>(G:</b> '.$option->getGroupName().'<b>)</b>':'')
+                    .'      <span title="'.$option->getCode().'">'.$option->getName().($option->getGroupName() ? ' <b>(G:</b> '.$option->getGroupName().'<b>)</b>':'')
                             .($option->getSingleSelect() ? ' <b>Vnt</b>' : '')
                             .'</span>'
                     .'  </label>'

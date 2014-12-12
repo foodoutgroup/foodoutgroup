@@ -18,7 +18,7 @@
     ga('require', 'ecommerce', 'ecommerce.js');
 
     ga('ecommerce:addTransaction',{
-        'id': '{{ order.orderHash }}', // transaction ID - required
+        'id': '{{ order.id }}', // transaction ID - required
         'affiliation': '{{ order.place.name }}', // affiliation or store name
         'revenue': '{{ order.total }}',      // total - required
         'shipping': '{{ order.place.deliveryPrice }}', // shipping
@@ -28,7 +28,7 @@
     {% for item in order.details %}
 
         ga('ecommerce:addItem', {
-            'id': '{{ order.orderHash }}', // transaction ID - necessary to associate item with transaction
+            'id': '{{ order.id }}', // transaction ID - necessary to associate item with transaction
             'sku': '{{ item.id }}',           // SKU/code - required
             'name': '{{ item.dishName }}',        // product name
             'category': '{{ item.dishUnitName }}',   // category or variation
@@ -49,7 +49,14 @@
                 <div class="cupon-page">
                     <h1>Sveikiname!</h1>
                     {#<p>Jūsų užsakymas priimtas ir turėtų pasiekti jus per <strong>{{ order.placePoint.deliveryTime }}</strong> minučių. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitumų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 687 44359</strong>. &#123;&#35;Savo užsakymą <a href="#" class="delivery-location-ico"><span>galite sekti čia</span></a>&#35;&#125;</p>#}
-                    <p>{% trans with {'%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success{% endtrans %} {#Savo užsakymą <a href="#" class="delivery-location-ico"><span>galite sekti čia</span></a>#}</p>
+                    <p>
+                        {% if order.placePoint.phoneNiceFormat|length > 4 %}
+                            {% trans with {'%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success{% endtrans %}
+                        {% else %}
+                            {% trans with {'%placeName%':  order.placeName} %}general.cart.success_no_place_num{% endtrans %}
+                        {% endif %}
+                        {#Savo užsakymą <a href="#" class="delivery-location-ico"><span>galite sekti čia</span></a>#}
+                    </p>
                 </div>
             </div>
         </div>

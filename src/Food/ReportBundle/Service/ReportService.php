@@ -33,6 +33,7 @@ class ReportService extends ContainerAware
 
         $orderData = $orderRepo->getOrderCountByDay($dateFrom, $dateTo);
         $orderCanceledData = $orderRepo->getOrderCountByDay($dateFrom, $dateTo, OrderService::$status_canceled);
+        $orderMobileData = $orderRepo->getOrderCountByDay($dateFrom, $dateTo, null, true);
 
         $orderGraphData = $this->fillEmptyDays(
             $this->remapDataForGraph($orderData, 'report_day', 'order_count'),
@@ -41,6 +42,12 @@ class ReportService extends ContainerAware
         );
         $orderCancelGraphData = $this->fillEmptyDays(
             $this->remapDataForGraph($orderCanceledData, 'report_day', 'order_count'),
+            $dateFrom,
+            $dateTo
+        );
+
+        $orderMobileCountGraphData = $this->fillEmptyDays(
+            $this->remapDataForGraph($orderMobileData, 'report_day', 'order_count'),
             $dateFrom,
             $dateTo
         );
@@ -56,12 +63,18 @@ class ReportService extends ContainerAware
                 "data" => array_values($orderCancelGraphData),
                 'type' => 'spline',
             ),
+            array(
+                'name' => $translator->trans('admin.report.mobile_orders'),
+                'data' => array_values($orderMobileCountGraphData),
+                'type' => 'spline'
+            )
         );
 
         $ob = new Highchart();
         $ob->chart->renderTo('order_chart');
         $ob->title->text($translator->trans('admin.report.daily_orders_graph'));
         $ob->yAxis->title(array('text'  => $translator->trans('admin.report.amount')));
+        $ob->yAxis->floor(0);
         $ob->xAxis->categories(array_keys($orderGraphData));
         $ob->series($series);
 
@@ -85,8 +98,17 @@ class ReportService extends ContainerAware
         $smsData = $this->getDoctrine()->getRepository('FoodSmsBundle:Message')
             ->getSmsCountByDay($dateFrom, $dateTo);
 
+        $smsUndeliveredData = $this->getDoctrine()->getRepository('FoodSmsBundle:Message')
+            ->getSmsUndeliveredCountByDay($dateFrom, $dateTo);
+
         $smsGraphData = $this->fillEmptyDays(
                 $this->remapDataForGraph($smsData, 'report_day', 'message_count'),
+                $dateFrom,
+                $dateTo
+            );
+
+        $smsUndeliveredGraphData = $this->fillEmptyDays(
+                $this->remapDataForGraph($smsUndeliveredData, 'report_day', 'message_count'),
                 $dateFrom,
                 $dateTo
             );
@@ -96,6 +118,11 @@ class ReportService extends ContainerAware
                 "name" => $translator->trans('admin.report.sms'),
                 "data" => array_values($smsGraphData),
                 'type' => 'spline',
+            ),
+            array(
+                "name" => $translator->trans('admin.report.sms_undelivered'),
+                "data" => array_values($smsUndeliveredGraphData),
+                'type' => 'spline',
             )
         );
 
@@ -103,6 +130,7 @@ class ReportService extends ContainerAware
         $ob->chart->renderTo('sms_chart');
         $ob->title->text($translator->trans('admin.report.daily_sms_graph'));
         $ob->yAxis->title(array('text'  => $translator->trans('admin.report.amount')));
+        $ob->yAxis->floor(0);
         $ob->xAxis->categories(array_keys($smsGraphData));
         $ob->series($series);
 

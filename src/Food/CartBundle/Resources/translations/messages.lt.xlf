@@ -171,6 +171,11 @@
             <target>Netaikoma jei užsakymą atsiimsite pats.</target>
         </trans-unit>
 
+
+        <trans-unit id="order.form.errors.no_restaurant_to_deliver" resname="order.form.errors.no_restaurant_to_deliver">
+            <source>order.form.errors.no_restaurant_to_deliver</source>
+            <target>Šiuo metu restoranas jau nebegali aptarnauti Jūsų užsakymo.</target>
+        </trans-unit>
         <trans-unit id="order.form.errors.customerfirstname" resname="order.form.errors.customerfirstname">
             <source>order.form.errors.customerfirstname</source>
             <target>Įveskite savo vardą</target>

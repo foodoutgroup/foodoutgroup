@@ -120,6 +120,7 @@ class WebTestCase extends SymfonyWebTestCase
             ->setVat('21')
             ->setTotal('100')
             ->setOrderHash('sadasfdafsf')
+            ->setPaymentMethod('local')
             ->setPaymentStatus('complete')
             ->setLocale('lt');
 

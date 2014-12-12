@@ -20,7 +20,7 @@
 	#boxer { background: #fff; border-radius: 3px; box-shadow: 0 0 25px #000; padding: 10px; position: absolute; z-index: 105; }
 	#boxer.inline { padding: 30px; }
 	
-	#boxer .boxer-close { background: #fff url(fs-boxer-icons.png) no-repeat -70px 10px; border-radius: 100%; cursor: pointer; display: block; height: 30px; position: absolute; padding: 0; right: -8px; top: -8px; width: 30px; text-indent: -99999px; z-index: 106; }
+	#boxer .boxer-close { background: #fff url(/scripts/boxer/fs-boxer-icons.png) no-repeat -70px 10px; border-radius: 100%; cursor: pointer; display: block; height: 30px; position: absolute; padding: 0; right: -8px; top: -8px; width: 30px; text-indent: -99999px; z-index: 106; }
 	
 	#boxer .boxer-container { background: #fff; height: 100%; overflow: hidden; position: relative; width: 100%; z-index: 105; zoom: 1; }
 	#boxer .boxer-content { background: #fff; overflow: hidden; padding: 0; width: 10000px; }
@@ -29,7 +29,7 @@
 	#boxer .boxer-iframe { float: left; height: 100%; overflow: auto; width: 100%; }
 	#boxer .boxer-meta { clear: both; }
 	
-	#boxer .boxer-arrow { background: #fff url(fs-boxer-icons.png) no-repeat 0 0; border-radius: 100%;  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4); cursor: pointer; display: block; height: 40px; margin-right: auto; margin-left: auto; position: absolute; text-indent: -99999px; top: 0; width: 40px; 
+	#boxer .boxer-arrow { background: #fff url(/scripts/boxer/fs-boxer-icons.png) no-repeat 0 0; border-radius: 100%;  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4); cursor: pointer; display: block; height: 40px; margin-right: auto; margin-left: auto; position: absolute; text-indent: -99999px; top: 0; width: 40px;
 		-webkit-transition: opacity 0.1s linear;
 		   -moz-transition: opacity 0.1s linear;
 		   	-ms-transition: opacity 0.1s linear;

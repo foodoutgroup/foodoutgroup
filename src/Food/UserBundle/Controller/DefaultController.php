@@ -12,10 +12,6 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Form;
 use Doctrine\Common\Collections\ArrayCollection;
-use FOS\UserBundle\Event\GetResponseUserEvent;
-use FOS\UserBundle\FOSUserEvents;
-use FOS\UserBundle\Event\FormEvent;
-use FOS\UserBundle\Event\FilterUserResponseEvent;
 use Food\UserBundle\Form\Type\ProfileFormType;
 use Food\UserBundle\Form\Type\ProfileMegaFormType;
 use Food\UserBundle\Form\Type\UserAddressFormType;
@@ -32,75 +28,24 @@ class DefaultController extends Controller
      */
     public function registerCreateAction(Request $request)
     {
-        $formFactory = $this->container->get('fos_user.registration.form.factory');
-        $userManager = $this->container->get('fos_user.user_manager');
-        $dispatcher = $this->container->get('event_dispatcher');
-        $translator = $this->container->get('translator');
-        $notifications = $this->container->get('food.app.utils.notifications');
+        $form = $this->container->get('fos_user.registration.form');
+        // we will be using extended version of fos registration form handler
+        // $formHandler = $this->container->get('fos_user.registration.form.handler');
+        $formHandler = $this->container->get('food_user.registration.form.handler');
 
-        $user = $userManager->createUser();
-        $user->setUsername(uniqid('', true));
-        $user->setEnabled(true);
+        // we have no confirmation email, hence this parameter is always false
+        // $confirmationEnabled = $this->container->getParameter('fos_user.registration.confirmation.enabled');
+        $confirmationEnabled = false;
 
-        $event = new GetResponseUserEvent($user, $request);
-        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, $event);
+        // check if user exists
+        $email = $request->request->get('fos_user_registration_form[email]', '', true);
+        $existingUser = $this->userExists($email);
 
-        if (null !== $event->getResponse()) {
-            return $event->getResponse();
-        }
+        $formHandler->setUser($existingUser);
+        $process = $formHandler->process($confirmationEnabled);
 
-        $form = $formFactory->createForm();
-        $form->setData($user);
-        $form->bind($request);
-
-        $existingUser = $this->userExists($form->get('email')->getData());
-
-        // rebind if user exists
-        if ($existingUser) {
-            $user = $existingUser;
-
-            $form = $formFactory->createForm();
-            $form->setData($user);
-            $form->bind($request);
-        }
-
-        if ($form->isValid() && (!$existingUser || ($existingUser && !$existingUser->getFullyRegistered()))) {
-            $event = new FormEvent($form, $request);
-            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
-
-            // manually set these flags. ->setEnabled is especially important for password update if user exists.
-            $user->setEnabled(true);
-            $user->setFullyRegistered(true);
-
-            // finally update user
-            $userManager->updateUser($user);
-
-            // set noty notification for successful user registration
-            $notifications->setSuccessMessage($translator->trans('general.successful_user_registration'));
-
-            $d = $request->get('fos_user_registration_form');
-
-            $this->_notifyNewUser($user, $d['plainPassword']['first']);
-
-            if (null === $response = $event->getResponse()) {
-                $url = $this->container->get('router')->generate('food_lang_homepage');
-                $response = new Response('');
-            }
-
-            $oldSid = $request->getSession()->getId();
-            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
-            $newSid = $request->getSession()->getId();
-
-            /**
-             * @TODO - WATAFAK. Tik taip uzgesinom gaisra. Need to fix normaly :)
-             */
-            $this->get('food.cart')->migrateCartBetweenSessionIds($oldSid, $newSid);
-
-            return $response;
-        }
-
-        if ($existingUser) {
-            $form->get('email')->addError(new FormError('This user is already registered.'));
+        if ($process) {
+            return new Response('');
         }
 
         return $this->render(
@@ -114,30 +59,12 @@ class DefaultController extends Controller
     }
 
     /**
-     * @param User $user
-     * @param $pass
-     */
-    private function _notifyNewUser($user, $pass)
-    {
-        $ml = $this->get('food.mailer');
-
-        $variables = array(
-            'username' => $user->getUsername(),
-            'password' => $pass,
-            'login_url' => $this->generateUrl('food_lang_homepage', array(), true),
-        );
-
-        $ml->setVariables( $variables )->setRecipient( $user->getEmail(), $user->getEmail())->setId( 30009253 )->send();
-    }
-
-    /**
      * @Route("/{_locale}/register", name="user_register")
      * @Template("FoodUserBundle:Default:register.html.twig")
      */
     public function registerAction(Request $request)
     {
-        $formFactory = $this->container->get('fos_user.registration.form.factory');
-        $form = $formFactory->createForm();
+        $form = $this->container->get('fos_user.registration.form');
 
         return $this->render(
             'FoodUserBundle:Default:register.html.twig',
@@ -156,6 +83,7 @@ class DefaultController extends Controller
     public function loginAction(Request $request)
     {
         $session = $request->getSession();
+        $session->set('session_id_before_login', $session->getId());
 
         $csrfToken = $this->container->has('form.csrf_provider')
             ? $this->container->get('form.csrf_provider')->generateCsrfToken('authenticate')
@@ -297,7 +225,7 @@ class DefaultController extends Controller
                 ->findByEmail($email)
         );
 
-        return $existingUser->first();
+        return \Maybe($existingUser)->first()->val(null, true);
     }
 
     private function user()

@@ -62,6 +62,9 @@ class PlaceAdmin extends FoodAdmin
             ->add('active', 'checkbox', array('label' => 'admin.active', 'required' => false,))
             ->add('new', 'checkbox', array('label' => 'admin.is_new', 'required' => false,))
             ->add('recommended', 'checkbox', array('label' => 'admin.place.recommended', 'required' => false,))
+            ->add('discountPricesEnabled', 'checkbox', array('label' => 'admin.place.discount_prices_enabled', 'required' => false,))
+            ->add('onlyAlcohol', 'checkbox', array('label' => 'admin.place.only_alcohol', 'required' => false,))
+            ->add('sendInvoice', 'checkbox', array('label' => 'admin.place.send_invoice', 'required' => false))
             ->add('deliveryOptions', 'choice', array('label' => 'admin.place.delivery_options', 'required' => true, 'choices' => $deliveryOptionChoices))
             ->add('deliveryTime', null, array('label' => 'admin.place.delivery_time'))
             ->add('deliveryTimeInfo', null, array('label' => 'admin.place.delivery_time_info', 'required' => false))
@@ -124,6 +127,7 @@ class PlaceAdmin extends FoodAdmin
     {
         $datagridMapper
             ->add('name', null, array('label' => 'admin.place.name'))
+            ->add('discountPricesEnabled', null, array('label' => 'admin.place.discount_prices_enabled'))
             ->add('active', null, array('label' => 'admin.active'))
             ->add('recommended', null, array('label' => 'admin.place.recommended'))
         ;
@@ -145,6 +149,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('active', null, array('label' => 'admin.active', 'editable' => true))
             ->add('new', null, array('label' => 'admin.is_new', 'editable' => true))
             ->add('recommended', null, array('label' => 'admin.place.recommended', 'editable' => true))
+            ->add('discountPricesEnabled', null, array('label' => 'admin.place.discount_prices_enabled', 'editable' => true,))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),
@@ -196,6 +201,7 @@ class PlaceAdmin extends FoodAdmin
     {
         foreach ($object->getPoints() as $point) {
             $point->setPlace($object);
+            $this->_fixExtendedWorkTime($point);
             $cAt = $point->getCreatedAt();
             if (empty($cAt)) {
                 $point->setCreatedAt(new \DateTime('now'));
@@ -207,6 +213,26 @@ class PlaceAdmin extends FoodAdmin
         }
     }
 
+    /**
+     * @param \Food\DishesBundle\Entity\PlacePoint $object
+     */
+    private function _fixExtendedWorkTime($object)
+    {
+        for($i = 1; $i<=7; $i++) {
+            $wt = explode(":", $object->{'getWd'.$i.'End'}());
+            $val = $object->{'getWd'.$i.'End'}();
+            if (sizeof($wt) == 2) {
+                if ($wt[0] <= 6) {
+                    $wt[0] = $wt[0] + 24;
+                    $object->{'setWd'.$i.'EndLong'}(implode("", $wt));
+                } else {
+                    $object->{'setWd'.$i.'EndLong'}(implode("", $wt));
+                }
+            } else {
+                $object->{'setWd'.$i.'EndLong'}($val);
+            }
+        }
+    }
     /**
      * @param \Food\DishesBundle\Entity\Place $object
      */

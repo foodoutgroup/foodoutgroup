@@ -28,11 +28,11 @@ parameters:
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
-    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, birute@foodout.lt]
+    order.notify_emails: [mantas@foodout.lt, birute@foodout.lt, giedrius@foodout.lt]
     order.city_coordinators:
         vilnius: []
-        kaunas: [renata@foodout.lt]
-        klaipeda: [jurgita@foodout.lt]
+        kaunas: [zaneta@foodout.lt]
+        klaipėda: [jurgita@foodout.lt]
     order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
@@ -50,6 +50,7 @@ parameters:
     google.maps_geocode: "https://maps.googleapis.com/maps/api/geocode/json"
     google.maps_api: "AIzaSyDyKJYX3Cr4Cn41VR9oaAqbmT8XlbHBY-Q"
     google.maps_server_api: "AIzaSyBK3xf8ZPVWfTa2uXZN-OJHd6Fwl1Yo560"
+    # google.maps_server_api: "AIzaSyANrqCSGWV4b8JRuTPVDdrpmVTytMgBB9M"
     # Possible values: "local", "etaxi"
     active_logistics: "local"
     # Todo situos gal ir iskelsime i paramsus - dependant on install?
@@ -73,13 +74,17 @@ parameters:
     logtime.driver_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitDrivers"
     # Ar siusti uzsakyma i isorine (TMS) sistema
     logistics.send_to_external: true
-    logistics.city_filter: ["Klaipėda"]
+    logistics.city_filter: ["Klaipėda", "Kaunas"]
     # seb banklink
     seb.banklink.private_key: "/home/skanu.lt/shared/banklinks/seb/private.key"
     seb.banklink.bank_key: "/home/skanu.lt/shared/banklinks/seb/bank.key"
     # nordea banklink
     nordea.banklink.rcv_id: 303134580
     nordea.banklink.mac: C5IUBtC5eriCYGbIYhhIV4v830k14uSn
+    # nordea.banklink.rcv_id: 12345678LT
+    # nordea.banklink.mac: LEHTI
+    fos_user.template.engine: 'twig'
+    invoice.series: FOO
 
 framework:
     #esi:             ~
@@ -107,19 +112,22 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
-        slug_util:    "@food.dishes.utils.slug"
+#       Vars
         locale:       "%locale%"
         page_title:   "%title%"
         currency_display: "%currency_display%"
         currency_iso: "%currency_iso%"
         vat_size: "%vat%"
+        google_maps_api: "%google.maps_api%"
+        cloudfront_url: "%cloudfront_url%"
+        invoice_series: "%invoice.series%"
+#       Services
+        slug_util:    "@food.dishes.utils.slug"
         dish_service: "@food.dishes"
         order_service: "@food.order"
         static_service: "@food.static"
-        google_maps_api: "%google.maps_api%"
         language_utils: "@food.app.utils.language"
         notifications: "@food.app.utils.notifications"
-        cloudfront_url: "%cloudfront_url%"
         misc_utils: "@food.app.utils.misc"
 
 
@@ -204,6 +212,8 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: Food\UserBundle\Entity\User
+    group:
+      group_class: Application\Sonata\UserBundle\Entity\Group
     registration:
       form:
         type: food_user_registration
@@ -300,16 +310,12 @@ sonata_admin:
               admin.system:
                   items: ~
                   item_adds:
-                      - sonata.admin.sms
-                      - sonata.admin.street
-                      - sonata.admin.static
-                  roles: [ ROLE_ADMIN ]
-              admin.users:
-                  items: ~
-                  item_adds:
                       - sonata.admin.users
+                      - sonata.admin.sms
+                      - sonata.admin.static
                       - sonata.admin.newsletter_subscribers
                       - sonata.admin.banned_ips
+                      - sonata.admin.street
                   roles: [ ROLE_ADMIN ]
 #              admin.support:
 #                  items: ~
@@ -379,3 +385,14 @@ pirminis_gateway:
     swedbank:
         vtid: "21911859"
         password: "rMUhc7p7"
+
+knp_snappy:
+    pdf:
+        enabled:    true
+#        binary:     /usr/local/bin/wkhtmltopdf
+        binary:     'C:\wkhtmltopdf\bin\wkhtmltopdf.exe'
+        options:    []
+    image:
+        enabled:    false
+#        binary:     /usr/local/bin/wkhtmltoimage
+#        options:    []

@@ -4,9 +4,12 @@
     <table>
         {% for child in object.sizes %}
             <tr>
-                <td>{{ child.unit.name }}</td>
-                <td>{{ child.price }}</td>
+                <td style="padding: 1px;">{{ child.unit.name }}</td>
+                <td style="padding: 1px;">{{ child.price }}</td>
             </tr>
+            <Tr>
+                <td colspan="2" style="padding: 1px;">{{ child.code }}</td>
+            </Tr>
         {% endfor %}
     </table>
 {% endblock %}

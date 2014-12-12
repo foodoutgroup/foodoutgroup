@@ -25,6 +25,7 @@ class PlacePointFullAdmin extends FoodAdmin
             ->add('email', 'text', array('label' => 'admin.point.email', 'required' => false))
             ->add('alt_email1', 'text', array('label' => 'admin.point.alt_email', 'required' => false))
             ->add('alt_email2', 'text', array('label' => 'admin.point.alt_email', 'required' => false))
+            ->add('invoice_email', 'text', array('label' => 'admin.point.invoice_email', 'required' => false))
             //->add('coords', 'text', array('label' => 'admin.point.coords'))
             ->add('delivery_time', 'text', array('label' => 'admin.point.devtime'))
             ->add('lat', 'text', array('label' => 'admin.point.lat','attr'=>array('placeholder'=>'xx.xxxxx')))
@@ -80,5 +81,43 @@ class PlacePointFullAdmin extends FoodAdmin
                 'label' => 'admin.actions'
             ))
         ;
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\PlacePoint $object
+     * @return mixed|void
+     */
+    public function prePersist($object)
+    {
+        $this->_fixExtendedWorkTime($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\PlacePoint $object
+     */
+    public function preUpdate($object)
+    {
+        $this->_fixExtendedWorkTime($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\PlacePoint $object
+     */
+    private function _fixExtendedWorkTime($object)
+    {
+        for($i = 1; $i<=7; $i++) {
+            $wt = explode(":", $object->{'getWd'.$i.'End'}());
+            $val = $object->{'getWd'.$i.'End'}();
+            if (sizeof($wt) == 2) {
+                if ($wt[0] <= 6) {
+                    $wt[0] = $wt[0] + 24;
+                    $object->{'setWd'.$i.'EndLong'}(implode("", $wt));
+                } else {
+                    $object->{'setWd'.$i.'EndLong'}(implode("", $wt));
+                }
+            } else {
+                $object->{'setWd'.$i.'EndLong'}($val);
+            }
+        }
     }
 }

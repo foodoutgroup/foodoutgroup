@@ -19,7 +19,8 @@ class OrderRepository extends EntityRepository
             'order_status' =>  array(
                 OrderService::$status_accepted,
                 OrderService::$status_delayed,
-                OrderService::$status_finished
+                OrderService::$status_finished,
+                OrderService::$status_forwarded,
             ),
             'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
@@ -38,14 +39,15 @@ class OrderRepository extends EntityRepository
 
     /**
      * @param string $city
+     * @param boolean $pickup
      * @return array
      */
-    public function getOrdersUnconfirmed($city)
+    public function getOrdersUnconfirmed($city, $pickup = false)
     {
         $filter = array(
             'order_status' =>  array(OrderService::$status_new),
             'place_point_city' => $city,
-            'deliveryType' => OrderService::$deliveryDeliver,
+            'deliveryType' => (!$pickup ? OrderService::$deliveryDeliver : OrderService::$deliveryPickup),
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
@@ -326,7 +328,7 @@ class OrderRepository extends EntityRepository
     {
         $orderStatus = OrderService::$status_completed;
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
-        $dateTo = $dateTo->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 23:59:59");
 
         $placesFilter = '';
         if (!empty($placeIds)) {
@@ -374,14 +376,14 @@ class OrderRepository extends EntityRepository
      * @param string $orderStatus
      * @return array
      */
-    public function getOrderCountByDay($dateFrom, $dateTo, $orderStatus=null)
+    public function getOrderCountByDay($dateFrom, $dateTo, $orderStatus=null, $mobile=false)
     {
         if (empty($orderStatus)) {
             $orderStatus = OrderService::$status_completed;
         }
 
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
-        $dateTo = $dateTo->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 23:59:59");
 
         $query = "
           SELECT
@@ -391,6 +393,7 @@ class OrderRepository extends EntityRepository
           WHERE
             o.order_status = '{$orderStatus}'
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
+            ".($mobile ? 'AND mobile=1':'')."
           GROUP BY DATE_FORMAT(o.order_date, '%m-%d')
           ORDER BY DATE_FORMAT(o.order_date, '%m-%d') ASC
         ";
@@ -405,15 +408,19 @@ class OrderRepository extends EntityRepository
      */
     public function getUnclosedOrders()
     {
-        $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_canceled."'";
+        $orderStatus = "'".OrderService::$status_completed
+            ."', '".OrderService::$status_canceled
+            ."', '".OrderService::$status_new
+            ."', '".OrderService::$status_nav_problems."'";
         $paymentStatus = OrderService::$paymentStatusComplete;
         $pickup = OrderService::$deliveryPickup;
         $deliver = OrderService::$deliveryDeliver;
 
-        $dateFrom = new \DateTime("-12 hour");
-        $dateToPickup = new \DateTime("-90 minute");
+        $dateFrom = new \DateTime("now");
+        $dateToPickup = new \DateTime("-70 minute");
         $dateToDeliver = new \DateTime("-2 hour");
-        $dateFrom = $dateFrom->format("Y-m-d h:i:s");
+
+        $dateFrom1 = $dateFrom->sub(new \DateInterval('PT12H'))->format("Y-m-d h:i:s");
         $dateToPickup = $dateToPickup->format("Y-m-d h:i:s");
         $dateToDeliver = $dateToDeliver->format("Y-m-d h:i:s");
 
@@ -428,12 +435,12 @@ class OrderRepository extends EntityRepository
             AND (
               (
                 o.delivery_type = '{$pickup}'
-                AND o.delivery_time BETWEEN '{$dateFrom}' AND '{$dateToPickup}'
+                AND o.delivery_time BETWEEN '{$dateFrom1}' AND '{$dateToPickup}'
               )
               OR
               (
                o.delivery_type = '{$deliver}'
-                AND o.delivery_time BETWEEN '{$dateFrom}' AND '{$dateToDeliver}'
+                AND o.delivery_time BETWEEN '{$dateFrom1}' AND '{$dateToDeliver}'
               )
             )
         ";
@@ -444,10 +451,14 @@ class OrderRepository extends EntityRepository
     }
 
     /**
+     * @param $timeBack string|null
      * @return array
      */
-    public function getCurrentNavOrders()
+    public function getCurrentNavOrders($timeBack = null)
     {
+        if (empty($timeBack)) {
+            $timeBack = '-1 day';
+        }
         $qb = $this->createQueryBuilder('o');
 
         $qb->leftJoin('o.place', 'p')
@@ -455,11 +466,13 @@ class OrderRepository extends EntityRepository
             ->andWhere('p.navision = :navision')
             ->andWhere('o.order_status NOT IN (:order_status)')
             ->setParameters(array(
-                'order_date' => new \DateTime('-1 day'),
+                'order_date' => new \DateTime($timeBack),
                 'order_status' => array(
                     OrderService::$status_completed,
                     OrderService::$status_canceled,
                     OrderService::$status_nav_problems,
+                    // TODO temp, nav canot cancel assigned orders
+                    OrderService::$status_assiged
                 ),
                 'navision' => 1,
             ));

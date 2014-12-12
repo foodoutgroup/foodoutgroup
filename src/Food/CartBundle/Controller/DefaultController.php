@@ -5,6 +5,7 @@ namespace Food\CartBundle\Controller;
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Place;
 use Food\OrderBundle\Entity\Order;
+use FOS\UserBundle\Model\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -123,11 +124,6 @@ class DefaultController extends Controller
     public function addDishToCartAction($dishId, $dishSize, $dishQuantity=0, $options=array())
     {
         $this->getCartService()->addDishByIds($dishId, $dishSize, $dishQuantity, $options);
-    }
-
-    public function removeDishAction($dishId,$cartId, $placeId)
-    {
-        $this->getCartService()->removeDish($dishId);
     }
 
     public function removeOpionAction($dishId, $optionId)

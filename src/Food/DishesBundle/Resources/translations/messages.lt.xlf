@@ -50,6 +50,10 @@
         <source>places.payments.card</source>
         <target>kortele</target>
       </trans-unit>
+      <trans-unit id="places.payments.online" resname="places.payments.online">
+        <source>places.payments.online</source>
+        <target>pavedimu</target>
+      </trans-unit>
       <trans-unit id="f2377b3408835a32e98c2b5eb8b21043" resname="places.home">
         <source>places.home</source>
         <target>Pradžia</target>

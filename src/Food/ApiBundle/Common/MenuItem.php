@@ -3,9 +3,11 @@
 namespace Food\ApiBundle\Common;
 
 use Food\DishesBundle\Entity\Dish;
+use Food\DishesBundle\Entity\DishUnit;
 use Food\DishesBundle\Entity\Place;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class MenuItem extends ContainerAware
 {
@@ -16,9 +18,12 @@ class MenuItem extends ContainerAware
         "thumbnail_url" => '',
         "title" => '',
         "ingredients" => '',
+        'show_discount' => false,
         "price_range" => array(
             "minimum" => 0,
             "maximum" => 0,
+            "minimum_old" => 0,
+            "maximum_old" => 0,
             "currency" => "LTL"
         ),
         "status" => 'available',
@@ -27,7 +32,10 @@ class MenuItem extends ContainerAware
     public  $data;
     private $availableFields = array();
 
-
+    /**
+     * @param Place $place
+     * @param ContainerInterface|null $container
+     */
     public function __construct(Place $place = null, $container = null)
     {
         $this->data = $this->block;
@@ -38,15 +46,19 @@ class MenuItem extends ContainerAware
         $this->container = $container;
     }
 
+    /**
+     * @param string $param
+     * @return mixed
+     */
     public function get($param) {
         $this->checkParam($param);
         return $this->data[$param];
     }
 
     /**
-     * @param $param
-     * @param $data
-     * @return \MenuItem $this
+     * @param string $param
+     * @param mixed $data
+     * @return MenuItem $this
      */
     public function set($param, $data)
     {
@@ -56,7 +68,7 @@ class MenuItem extends ContainerAware
     }
 
     /**
-     * @param $param
+     * @param string $param
      * @throws \Symfony\Component\Config\Definition\Exception\Exception
      */
     private function checkParam($param)
@@ -66,6 +78,11 @@ class MenuItem extends ContainerAware
         }
     }
 
+    /**
+     * @param Dish $dish
+     * @param bool $loadOptions
+     * @return array
+     */
     public function loadFromEntity(Dish $dish, $loadOptions = false)
     {
         if (!$dish->getActive()) {
@@ -77,20 +94,23 @@ class MenuItem extends ContainerAware
             $categories[] = $cat->getId();
         }
 
+        $ds = $this->container->get('food.dishes');
+        $showDiscount = $dish->getShowDiscount();
+        $priceRange = array(
+            'minimum' => (!$showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : $ds->getSmallestDishDiscountPrice($dish->getId()) * 100),
+            'maximum' => (!$showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : $ds->getLargestDishDiscountPrice($dish->getId()) * 100),
+            'minimum_old' => ($showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : 0),
+            'maximum_old' => ($showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : 0),
+            'currency' => 'LTL'
+        );
         $this->set('item_id', $dish->getId())
             ->set('restaurant_id', $dish->getPlace()->getId())
             ->set('category_id', $categories)
             ->set('thumbnail_url',$dish->getWebPath())
             ->set('title', $dish->getName())
             ->set('ingredients', $dish->getDescription())
-            ->set(
-                'price_range',
-                array(
-                    'minimum' => $this->container->get('food.dishes')->getSmallestDishPrice($dish->getId()) * 100,
-                    'maximum' => $this->container->get('food.dishes')->getLargestDishPrice($dish->getId()) * 100,
-                    'currency' => 'LTL'
-                )
-            )
+            ->set('show_discount', $showDiscount)
+            ->set('price_range', $priceRange)
             ->set('updated_at', ($dish->getEditedAt() != null ? $dish->getEditedAt()->format('U'): $dish->getCreatedAt()->format('U')));
 
         if ($loadOptions) {
@@ -103,9 +123,15 @@ class MenuItem extends ContainerAware
                 )
             );
             foreach($dish->getSizes() as $k=>$size) {
+                // Jei dydis staiga dingo - tiesiog skipinkim si dydi
+                $unit = $size->getUnit();
+                if (!$unit instanceof DishUnit) {
+                    continue;
+                }
+
                 $options['sizes']['items'][] = array(
                     'option_id' => $size->getId(),
-                    'title' => $size->getUnit()->getName(),
+                    'title' => $unit->getName(),
                     'price_modifier' => $size->getPrice() * 100
                 );
             }

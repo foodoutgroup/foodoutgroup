@@ -161,7 +161,7 @@ class MonitoringService extends ContainerAware {
         );
 
         $dateStart = new \DateTime("-4 minute");
-        $dateEnd = new \DateTime("-1 day");
+        $dateEnd = new \DateTime("-90 minute");
 
         $dateStart = $dateStart->format("Y-m-d H:i:s");
         $dateEnd = $dateEnd->format("Y-m-d H:i:s");

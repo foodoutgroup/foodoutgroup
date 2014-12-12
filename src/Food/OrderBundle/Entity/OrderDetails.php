@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Food\DishesBundle\Entity\Dish;
 
 /**
  * @ORM\Table(name="order_details")
@@ -61,6 +62,10 @@ class OrderDetails
      */
     private $price;
 
+    /**
+     * @ORM\Column(name="orig_price", type="decimal", precision=8, scale=2)
+     */
+    private $origPrice;
 
     /**
      * @var OrderDetailsOptions[]
@@ -82,15 +87,6 @@ class OrderDetails
     
         return $this;
     }
-
-    /**
-     * @todo REIK TESTUOT. Gink die koks jabanunas mappedBy :D - jei neveiks - Lenkai kalti :D
-     *
-     * @var OrderDetails[]
-     *
-     * ORM\OneToMany(targetEntity="OrderDetailsOptions", mappedBy={"order_id", "dish_id"})
-     */
-    private $details;
 
     /**
      * Get dish_name
@@ -311,5 +307,28 @@ class OrderDetails
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * Set origPrice
+     *
+     * @param string $origPrice
+     * @return OrderDetails
+     */
+    public function setOrigPrice($origPrice)
+    {
+        $this->origPrice = $origPrice;
+    
+        return $this;
+    }
+
+    /**
+     * Get origPrice
+     *
+     * @return string 
+     */
+    public function getOrigPrice()
+    {
+        return $this->origPrice;
     }
 }

@@ -6,6 +6,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
 use Food\AppBundle\Entity\Uploadable;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * Dish
@@ -14,9 +16,13 @@ use Food\AppBundle\Entity\Uploadable;
  * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\DishRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\DishLocalized")
+ * @Callback(methods={"isFileSizeValid"})
  */
 class Dish extends Uploadable implements Translatable
 {
+    // megabytes
+    protected $maxFileSize = 1.9;
+
     /**
      * @var integer
      *
@@ -135,6 +141,14 @@ class Dish extends Uploadable implements Translatable
      * @ORM\OrderBy({"groupName" = "DESC", "singleSelect" = "DESC"})
      */
     private $options;
+
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="discount_prices_enabled", type="boolean", nullable=true)
+     */
+    private $discountPricesEnabled = false;
 
     /**
      * @var bool
@@ -771,5 +785,44 @@ class Dish extends Uploadable implements Translatable
     public function getTimeTo()
     {
         return $this->timeTo;
+    }
+
+    /**
+     * Set discountPricesEnabled
+     *
+     * @param boolean $discountPricesEnabled
+     * @return Dish
+     */
+    public function setDiscountPricesEnabled($discountPricesEnabled)
+    {
+        $this->discountPricesEnabled = $discountPricesEnabled;
+    
+        return $this;
+    }
+
+    /**
+     * Get discountPricesEnabled
+     *
+     * @return boolean 
+     */
+    public function getDiscountPricesEnabled()
+    {
+        return $this->discountPricesEnabled;
+    }
+
+
+    public function getShowDiscount()
+    {
+        if ($this->getDiscountPricesEnabled() && $this->getPlace()->getDiscountPricesEnabled()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function isFileSizeValid(ExecutionContextInterface $context)
+    {
+        if ($this->getFile() && $this->getFile()->getSize() > round($this->maxFileSize * 1024 * 1024)) {
+            $context->addViolationAt('file', 'Paveiksliukas užima daugiau nei ' . $this->maxFileSize . ' MB vietos.');
+        }
     }
 }

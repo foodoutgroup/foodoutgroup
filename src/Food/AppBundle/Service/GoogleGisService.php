@@ -1,9 +1,11 @@
 <?php
 namespace Food\AppBundle\Service;
 
+use Food\AppBundle\Entity\GeoCache;
 use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Curl;
+use Symfony\Component\Form\Tests\Extension\Validator\Type\BaseValidatorExtensionTest;
 
 class GoogleGisService extends ContainerAware
 {
@@ -49,20 +51,51 @@ class GoogleGisService extends ContainerAware
         if (sizeof($addressSplt) > 1) {
             $tmp = substr($addressSplt[1], 0, 1);
             if ($tmp == intval($tmp)) {
+                $cityDelimeter = explode(",", $address);
                 $address = $addressSplt[0];
+                $address.= ", ".end($cityDelimeter);
             } else {
                 // Nieko nekeiciam
             }
         }
-        $resp = $this->getCli()->get(
-            $this->container->getParameter('google.maps_geocode'),
-            array(
-                'address' => $address.', Lithuania',
-                'sensor' => 'true',
-                'key' => $this->container->getParameter('google.maps_server_api')
-            )
-        );
-        return json_decode($resp->body);
+
+        $cnt = $this->container->get('doctrine')->getRepository('FoodAppBundle:GeoCache')
+            ->findOneBy(
+                array(
+                    'requestAddress' => $address,
+                    'requestCountry' => 'Lithuania'
+                )
+            );
+
+        if (!$cnt || $cnt == null) {
+            $resp = $this->getCli()->get(
+                $this->container->getParameter('google.maps_geocode'),
+                array(
+                    'address' => $address.', Lithuania',
+                    'sensor' => 'true',
+                    'key' => $this->container->getParameter('google.maps_server_api')
+                )
+            );
+
+            $geoData = new GeoCache();
+            $geoData->setRequestAddress($address)
+                ->setRequestCountry('Lithuania')
+                ->setRequestData($address.', Lithuania')
+                ->setRequestDate(new \DateTime("now"))
+                ->setRessponseBody($resp->body)
+                ->setCounter(1);
+
+            $em = $this->container->get('doctrine')->getManager();
+            $em->persist($geoData);
+            $em->flush();
+
+            return json_decode($resp->body);
+        } else {
+            $cnt->setCounter($cnt->getCounter() + 1);
+            $em = $this->container->get('doctrine')->getManager();
+            $em->flush();
+            return json_decode($cnt->getRessponseBody());
+        }
     }
 
     /**
@@ -192,7 +225,7 @@ class GoogleGisService extends ContainerAware
         $data = json_decode($resp->body);
         $matchIsFound = null;
         foreach ($data->results as $rezRow) {
-            if(in_array('street_address', $rezRow->types)) {
+            if(in_array('street_address', $rezRow->types) || in_array('premise', $rezRow->types)) {
                 $matchIsFound = $rezRow;
                 break;
             }
@@ -227,13 +260,16 @@ class GoogleGisService extends ContainerAware
 
         $data = json_decode($resp->body);
         $matchIsFound = null;
+
         foreach ($data->results as $rezRow) {
-            if(in_array('street_address', $rezRow->types)) {
+            if(in_array('street_address', $rezRow->types) || in_array('premise', $rezRow->types)) {
                 $matchIsFound = $rezRow;
                 break;
             }
         }
+
         $returner = array();
+
         if ($matchIsFound!==null) {
             foreach ($matchIsFound->address_components as $cmp) {
                 if (in_array('street_number', $cmp->types)) {

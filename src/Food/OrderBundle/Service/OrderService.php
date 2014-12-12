@@ -3,7 +3,7 @@
 namespace Food\OrderBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\QueryBuilder;
+use Food\AppBundle\Entity\Driver;
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Dish;
 use Food\DishesBundle\Entity\Place;
@@ -21,6 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
+use Food\OrderBundle\Service\Events\NavOrderEvent;
 
 class OrderService extends ContainerAware
 {
@@ -219,6 +220,11 @@ class OrderService extends ContainerAware
     public function getContext()
     {
         return $this->context;
+    }
+
+    public function getEventDispatcher()
+    {
+        return $this->container->get('event_dispatcher');
     }
 
     /**
@@ -568,7 +574,8 @@ class OrderService extends ContainerAware
         if (!empty($userPhone)) {
             $messagingService = $this->container->get('food.messages');
 
-            if ($this->getOrder()->getPaymentMethod() == 'local') {
+            // If not paid by banklink or paysera
+            if (in_array($this->getOrder()->getPaymentMethod(), array('local', 'local.card'))) {
                 $messageText = $this->container->get('translator')->trans('general.sms.client.restourant_cancel');
             // If banklink payment and it is complete - inform that we will return money, because restourant sux!
             } elseif ($this->getOrder()->getPaymentStatus() == 'complete') {
@@ -587,6 +594,8 @@ class OrderService extends ContainerAware
 
         // Put for logistics to cancel on their side
         $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
+
+        $this->informPaidOrderCanceled();
 
         $this->chageOrderStatus(self::$status_canceled, $source, $statusMessage);
         return $this;
@@ -699,16 +708,17 @@ class OrderService extends ContainerAware
                 ->setOrderId($this->getOrder())
                 ->setQuantity($cartDish->getQuantity())
                 ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
-                ->setPrice($cartDish->getDishSizeId()->getPrice())
+                ->setPrice($cartDish->getDishSizeId()->getCurrentPrice())
+                ->setOrigPrice($cartDish->getDishSizeId()->getPrice())
                 ->setDishName($cartDish->getDishId()->getName())
                 ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
                 ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
-                ->setDishSizeCode($cartDish->getDishSizeId()->getCode());
+                ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
             ;
             $this->getEm()->persist($dish);
             $this->getEm()->flush();
 
-            $sumTotal += $cartDish->getQuantity() * $cartDish->getDishSizeId()->getPrice();
+            $sumTotal += $cartDish->getQuantity() * $cartDish->getDishSizeId()->getCurrentPrice();
 
             foreach ($options as $opt) {
                 $orderOpt = new OrderDetailsOptions();
@@ -749,6 +759,14 @@ class OrderService extends ContainerAware
 
     }
 
+    public function logOrderForNav(Order $order = null)
+    {
+        $event = new NavOrderEvent($order);
+
+        $this->getEventDispatcher()
+             ->dispatch(NavOrderEvent::LOG_ORDER, $event);
+    }
+
     /**
      * @throws \Exception
      */
@@ -761,6 +779,9 @@ class OrderService extends ContainerAware
             $this->order->setLastUpdated(new \DateTime("now"));
             $this->getEm()->persist($this->order);
             $this->getEm()->flush();
+
+            // log order data (if we have listeners)
+            $this->logOrderForNav($this->order);
         }
     }
 
@@ -930,6 +951,12 @@ class OrderService extends ContainerAware
         $this->logPayment($order, 'payement method change', sprintf('Method changed from "%s" to "%s"', $oldMethod, $method));
     }
 
+    public function setMobileOrder($isMobile = true)
+    {
+        $order = $this->getOrder();
+        $order->setMobile($isMobile);
+    }
+
     /**
      * @param string $method
      * @return bool
@@ -974,8 +1001,16 @@ class OrderService extends ContainerAware
         $this->saveOrder();
     }
 
+    /**
+     * @param Order $order
+     * @param string $status
+     * @param string $message
+     * @throws \InvalidArgumentException
+     */
     public function setPaymentStatusWithoutSave($order, $status, $message = null)
     {
+        $this->logOrder($order, 'payment_status_change', sprintf('From %s to %s', $order->getPaymentStatus(), $status));
+
         if (!$this->isAllowedPaymentStatus($status)) {
             throw new \InvalidArgumentException('Status: "'.$status.'" is not a valid order payment status');
         }
@@ -986,6 +1021,20 @@ class OrderService extends ContainerAware
 
         $oldStatus = $order->getPaymentStatus();
         $order->setPaymentStatus($status);
+
+        // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
+        if ($status == self::$paymentStatusComplete
+            && $order->getPlace()->getSendInvoice()) {
+            $miscService = $this->container->get('food.app.utils.misc');
+
+            $sfNumber = (int)$miscService->getParam('sf_next_number');
+            $order->setSfSeries($this->container->getParameter('invoice.series'));
+            $order->setSfNumber($sfNumber);
+
+            $miscService->setParam('sf_next_number', ($sfNumber+1));
+
+            $this->container->get('food.invoice')->addInvoiceToSend($order);
+        }
 
         if ($status == self::$paymentStatusError) {
             $order->setLastPaymentError($message);
@@ -1065,9 +1114,9 @@ class OrderService extends ContainerAware
             self::$status_forwarded => 2,
             self::$status_finished => 3,
             self::$status_assiged => 4,
+            self::$status_failed => 4,
             self::$status_completed => 5,
             self::$status_canceled => 5,
-            self::$status_failed => 5,
         );
 
         if (empty($from) && !empty($to)) {
@@ -1259,6 +1308,10 @@ class OrderService extends ContainerAware
         $this->getEm()->persist($log);
     }
 
+    /**
+     * @param Driver $driver
+     * @return array|\Food\OrderBundle\Entity\Order[]
+     */
     public function getOrdersForDriver($driver)
     {
         $em = $this->container->get('doctrine')->getManager();
@@ -1300,8 +1353,6 @@ class OrderService extends ContainerAware
         $placePointEmail = $placePoint->getEmail();
         $placePointAltEmail1 = $placePoint->getAltEmail1();
         $placePointAltEmail2 = $placePoint->getAltEmail2();
-        $placePointAltPhone1 = $placePoint->getAltPhone1();
-        $placePointAltPhone2 = $placePoint->getAltPhone2();
 
         $domain = $this->container->getParameter('domain');
 
@@ -1356,37 +1407,29 @@ class OrderService extends ContainerAware
 
         // Siunciam SMS tik tuo atveju, jei neperduodam per Nav'a
         if (!$order->getPlace()->getNavision()) {
-            // Siunciam sms'a
-            $logger->alert("Sending message for order to be accepted to number: ".$placePoint->getPhone().' with text "'.$messageText.'"');
             $smsSenderNumber = $this->container->getParameter('sms.sender');
+            $messagesToSend = array();
 
-            // I pagrindini nr siunciam net jei landline, kad gautume errorus jei ka..
-            $messagesToSend = array(
-                array(
-                    'sender' => $smsSenderNumber,
-                    'recipient' => $placePoint->getPhone(),
-                    'text' => $messageText
-                )
+            $orderMessageRecipients = array(
+                $placePoint->getPhone(),
+                $placePoint->getAltPhone1(),
+                $placePoint->getAltPhone2(),
             );
 
-            // Informuojame papildomais numeriais (del visa ko)
-            if (!empty($placePointAltPhone1) && $miscUtils->isMobilePhone($placePointAltPhone1, $country)) {
-                $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone1.' with text "'.$messageText.'"');
+            foreach($orderMessageRecipients as $nr => $phone) {
+                // Siunciam sms'a jei jis ne landline
+                if (!empty($phone) && $miscUtils->isMobilePhone($phone, $country)) {
+                    $logger->alert("Sending message for order #".$order->getId()." to be accepted to number: " . $phone . ' with text "' . $messageText . '"');
 
-                $messagesToSend[] = array(
-                    'sender' => $smsSenderNumber,
-                    'recipient' => $placePointAltPhone1,
-                    'text' => $messageText
-                );
-            }
-            if (!empty($placePointAltPhone2) && $miscUtils->isMobilePhone($placePointAltPhone2, $country)) {
-                $logger->alert("Sending additional message for order to be accepted to number: ".$placePointAltPhone2.' with text "'.$messageText.'"');
-
-                $messagesToSend[] = array(
-                    'sender' => $smsSenderNumber,
-                    'recipient' => $placePointAltPhone2,
-                    'text' => $messageText
-                );
+                    $messagesToSend[] = array(
+                        'sender' => $smsSenderNumber,
+                        'recipient' => $phone,
+                        'text' => $messageText
+                    );
+                } else if ($nr == 0) {
+                    // Main phone is not mobile
+                    $logger->error('Main phone number for place point of place '.$placePoint->getPlace()->getName().' is set landline - no message sent');
+                }
             }
 
             //send multiple messages
@@ -1394,6 +1437,9 @@ class OrderService extends ContainerAware
         }
     }
 
+    /**
+     * @return void
+     */
     public function informPlaceCancelAction()
     {
         $messagingService = $this->container->get('food.messages');
@@ -1481,6 +1527,87 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * Inform admins when paid order was canceled by place - maby we should refund, or maby not
+     */
+    public function informPaidOrderCanceled()
+    {
+        $order = $this->getOrder();
+
+        if (!$order instanceof Order) {
+            throw new \InvalidArgumentException('No order set. Cant check if it is canceled or what..');
+        }
+
+        // Order is post-paid - skip it
+        if (in_array($order->getPaymentMethod(), array('local', 'local.card'))) {
+            return;
+        }
+
+        $translator = $this->container->get('translator');
+
+        $domain = $this->container->getParameter('domain');
+        $notifyEmails = $this->container->getParameter('order.notify_emails');
+        $cityCoordinators = $this->container->getParameter('order.city_coordinators');
+
+        $emailSubject = $translator->trans('general.canceled_order.title');
+        $emailMessageText = $emailSubject."\n\n"
+            ."OrderId: " . $order->getId()."\n\n"
+            .$translator->trans('general.new_order.selected_place_point').": ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
+            .$translator->trans('general.new_order.place_point_phone').":".$order->getPlacePoint()->getPhone()."\n"
+            ."\n"
+            .$translator->trans('general.new_order.client_name').": ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
+            .$translator->trans('general.new_order.client_phone').": ".$order->getUser()->getPhone()."\n"
+            ."\n"
+            .$translator->trans('general.new_order.delivery_type').": ".$order->getDeliveryType()."\n"
+            .$translator->trans('general.new_order.payment_type').": ".$order->getPaymentMethod()."\n"
+            .$translator->trans('general.new_order.payment_status').": ".$order->getPaymentStatus()."\n"
+        ;
+
+        $emailMessageText .= "\n"
+            .$translator->trans('general.new_order.admin_link').": "
+            .'http://'.$domain.$this->container->get('router')
+                ->generate('order_support_mobile', array('hash' => $order->getOrderHash()), false)
+            ."\n";
+
+        $mailer = $this->container->get('mailer');
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($emailSubject.': '.$order->getPlace()->getName().' (#'.$order->getId().')')
+            ->setFrom('info@'.$domain)
+        ;
+
+        if (!empty($cityCoordinators)) {
+            if (isset($cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')])) {
+                $notifyEmails = array_merge(
+                    $notifyEmails,
+                    $cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')]
+                );
+            }
+        }
+
+        $this->addEmailsToMessage($message, $notifyEmails);
+
+        $message->setBody($emailMessageText);
+        $mailer->send($message);
+    }
+
+    /**
+     * @param \Swift_Mime_SimpleMessage $message
+     * @param array $emails
+     */
+    public function addEmailsToMessage(\Swift_Mime_SimpleMessage $message, $emails)
+    {
+        $mainEmailSet = false;
+        foreach ($emails as $email) {
+            if (!$mainEmailSet) {
+                $mainEmailSet = true;
+                $message->addTo($email);
+            } else {
+                $message->addCc($email);
+            }
+        }
+    }
+
+    /**
      * For debuging purpose only!
      */
     public function notifyOrderCreate() {
@@ -1515,11 +1642,15 @@ class OrderService extends ContainerAware
                 if($returner->return_value == "TRUE") {
 
                 } else {
+                    // Problems processing order in nav
+                    $this->logStatusChange($order, self::$status_nav_problems, 'cili_nav_process');
                     $order->setOrderStatus(self::$status_nav_problems);
                     $this->getEm()->merge($order);
                     $this->getEm()->flush();
                 }
             } else {
+                // Problems updating price
+                $this->logStatusChange($order, self::$status_nav_problems, 'cili_nav_update_price');
                 $order->setOrderStatus(self::$status_nav_problems);
                 $this->getEm()->merge($order);
                 $this->getEm()->flush();
@@ -1572,24 +1703,23 @@ class OrderService extends ContainerAware
             ->setFrom('info@'.$domain)
         ;
 
-        $mainEmailSet = false;
-
-        foreach ($notifyEmails as $email) {
-            if (!$mainEmailSet) {
-                $mainEmailSet = true;
-                $message->addTo($email);
-            } else {
-                $message->addCc($email);
-            }
-        }
-
         if (!empty($cityCoordinators)) {
             if (isset($cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')])) {
-                foreach($cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')] as $coordinatorEmail) {
-                    $message->addCc($coordinatorEmail);
-                }
+                $notifyEmails = array_merge(
+                    $notifyEmails,
+                    $cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')]
+                );
             }
         }
+
+        if ($order->getPlace()->getNavision()) {
+            $notifyEmails = array_merge(
+                $notifyEmails,
+                $this->container->getParameter('admin.emails')
+            );
+        }
+
+        $this->addEmailsToMessage($message, $notifyEmails);
 
         $message->setBody($emailMessageText);
         $mailer->send($message);
@@ -1652,16 +1782,7 @@ class OrderService extends ContainerAware
             ->setFrom('info@'.$domain)
         ;
 
-        $mainEmailSet = false;
-
-        foreach ($notifyEmails as $email) {
-            if (!$mainEmailSet) {
-                $mainEmailSet = true;
-                $message->addTo($email);
-            } else {
-                $message->addCc($email);
-            }
-        }
+        $this->addEmailsToMessage($message, $notifyEmails);
 
         $message->setBody($emailMessageText);
         $mailer->send($message);
@@ -1838,20 +1959,27 @@ class OrderService extends ContainerAware
     {
         $wd = date('w');
         if ($wd == 0) $wd = 7;
-        $timeFr = $placePoint->{'getWd'.$wd.'Start'}();
-        $timeTo = $placePoint->{'getWd'.$wd.'End'}();
+        $frm = $placePoint->{'getWd'.$wd.'Start'}();
+        $tot = $placePoint->{'getWd'.$wd.'EndLong'}();
+        if (empty($tot)) {
+            $tot = $placePoint->{'getWd'.$wd.'End'}();
+        }
+        $timeFr = str_replace(":", "", $frm);
+        $timeTo = str_replace(":", "", $tot);
 
-        if(!strpos($timeFr, ':')|| !strpos($timeTo, ':')) {
+        $totalH = date("H");
+        $totalM = date("i");
+        if ($totalH < 6) {
+            $totalH = $totalH + 24;
+        }
+        $total = $totalH."".$totalM;
+
+        if(!strpos($frm, ':')) {
             return false;
         } else {
-            $timeFrTs = strtotime($timeFr);
-            $timeToFs = strtotime($timeTo);
-            if ($timeToFs < $timeFrTs) {
-                $timeToFs+= 60 * 60 * 24;
-            }
-            if ($timeFrTs > date('U')) {
+            if ($timeFr > $total) {
                 return false;
-            } elseif ($timeToFs < date('U')) {
+            } elseif ($timeTo < $total) {
                 return false;
             }
         }
@@ -1936,6 +2064,20 @@ class OrderService extends ContainerAware
             $placePointMap = $this->container->get('session')->get('point_data');
             if (!empty($placePointMap[$place->getId()])) {
                 $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+                if ($pointRecord) {
+                    $isWork = $this->isTodayWork($pointRecord);
+                    if (!$isWork) {
+                        $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
+                        $theId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(),$locationData);
+                        $formErrors[] = $theId;
+                        if ($theId) {
+                            $placePointMap[$place->getId()] = $theId;
+                            $this->container->get('session')->set('point_data', $placePointMap);
+                        } else {
+                            $formErrors[] = 'order.form.errors.no_restaurant_to_deliver';
+                        }
+                    }
+                }
             } else {
                 $formErrors[] = 'order.form.errors.customeraddr';
             }

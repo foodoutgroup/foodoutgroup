@@ -70,6 +70,16 @@ food_homepage:
     defaults: { _controller: FoodAppBundle:Default:index }
 
 
+
+food_applikacija:
+    pattern:  /aplikacijos
+    defaults: { _controller: FoodAppBundle:Application:index }
+
+food_lets_meet:
+    pattern:  /susipazinkime
+    defaults: { _controller: FoodAppBundle:Default:meet }
+
+
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
     prefix:   /
@@ -84,6 +94,13 @@ adminroot:
         _controller: FrameworkBundle:Redirect:redirect
         route: sonata_admin_dashboard
         permanent: true
+
+# temp hack for sonata dumb error
+sonata_user_profile_show:
+    pattern:  /admin/food/user/1/show
+    defaults: { _controller: SonataUserBundle:ProfileFOSUser1:show }
+    requirements:
+        _method: GET
 
 banned:
     path: /banned/

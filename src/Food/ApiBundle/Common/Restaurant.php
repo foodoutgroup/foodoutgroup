@@ -123,7 +123,7 @@ class Restaurant extends ContainerAware
                 'payment_options',
                 array(
                     'cash' => true,
-                    'credit_card' => ($place->getSelfDelivery() ? false: true)
+                    'credit_card' => $place->getCardOnDelivery()
                 )
             )
             ->set(

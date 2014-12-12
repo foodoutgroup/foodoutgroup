@@ -36,6 +36,14 @@
                 <td>{{ dish.price }}</td>
                 <td>{{ dish.price * dish.quantity }}</td>
             </tr>
+            {% for option in dish.options %}
+                <tr>
+                    <td style="padding-left: 20px;">{{ option.dishOptionName }}</td>
+                    <td>{{ option.quantity }}</td>
+                    <td>{{ option.price }}</td>
+                    <td>{{ option.price * option.quantity }}</td>
+                </tr>
+            {% endfor %}
         {% endfor %}
             {% set sum_no_vat = ((order.total - order.place.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
 

@@ -10,13 +10,29 @@ food_test_report:
     pattern:  /test/report
     defaults: { _controller: FoodAppBundle:Test:report }
 
-food_test:
+food_test_index:
     pattern:  /test/
     defaults: { _controller: FoodAppBundle:Test:index }
 
 food_test:
     pattern:  /test/mssql
     defaults: { _controller: FoodAppBundle:Test:mssql }
+
+food_migrator:
+    pattern: /test/migrate-cili
+    defaults: { _controller: FoodAppBundle:Test:migrateCili }
+
+food_putorder:
+    pattern:  /test/put-order
+    defaults: { _controller: FoodAppBundle:Test:putOrder }
+
+food_test_pdf:
+    pattern:  /test/pdf
+    defaults: { _controller: FoodAppBundle:Test:pdf }
+
+food_test_invoice:
+    pattern:  /test/invoice
+    defaults: { _controller: FoodAppBundle:Test:invoice }
 
 food_nav_test1:
     pattern: /test/nav/test1

@@ -82,6 +82,13 @@ class PlacePoint
     /**
      * @var string
      *
+     * @ORM\Column(name="invoice_email", type="string", length=128, nullable=true)
+     */
+    private $invoiceEmail;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="city", type="string", length=255)
      */
     private $city;
@@ -241,6 +248,48 @@ class PlacePoint
      * @ORM\Column(name="wd7_end", type="string", length=5)
      */
     private $wd7_end;
+
+    /**
+     * @var string
+     * @ORM\Column(name="wd1_end_long", type="string", length=5, nullable=true)
+     */
+    private $wd1_end_long;
+
+    /**
+     * @var string
+     * @ORM\Column(name="wd2_end_long", type="string", length=5, nullable=true)
+     */
+    private $wd2_end_long;
+
+    /**
+     * @var string
+     * @ORM\Column(name="wd3_end_long", type="string", length=5, nullable=true)
+     */
+    private $wd3_end_long;
+
+    /**
+     * @var string
+     * @ORM\Column(name="wd4_end_long", type="string", length=5, nullable=true)
+     */
+    private $wd4_end_long;
+
+    /**
+     * @var string
+     * @ORM\Column(name="wd5_end_long", type="string", length=5, nullable=true)
+     */
+    private $wd5_end_long;
+
+    /**
+     * @var string
+     * @ORM\Column(name="wd6_end_long", type="string", length=5, nullable=true)
+     */
+    private $wd6_end_long;
+
+    /**
+     * @var string
+     * @ORM\Column(name="wd7_end_long", type="string", length=5, nullable=true)
+     */
+    private $wd7_end_long;
 
     /**
      * @var bool
@@ -1391,5 +1440,189 @@ class PlacePoint
     public function getInternalCode()
     {
         return $this->internal_code;
+    }
+
+    /**
+     * Set invoiceEmail
+     *
+     * @param string $invoiceEmail
+     * @return PlacePoint
+     */
+    public function setInvoiceEmail($invoiceEmail)
+    {
+        $this->invoiceEmail = $invoiceEmail;
+    
+        return $this;
+    }
+
+    /**
+     * Get invoiceEmail
+     *
+     * @return string 
+     */
+    public function getInvoiceEmail()
+    {
+        return $this->invoiceEmail;
+    }
+
+    /**
+     * Set wd1_end_long
+     *
+     * @param string $wd1EndLong
+     * @return PlacePoint
+     */
+    public function setWd1EndLong($wd1EndLong)
+    {
+        $this->wd1_end_long = $wd1EndLong;
+    
+        return $this;
+    }
+
+    /**
+     * Get wd1_end_long
+     *
+     * @return string 
+     */
+    public function getWd1EndLong()
+    {
+        return $this->wd1_end_long;
+    }
+
+    /**
+     * Set wd2_end_long
+     *
+     * @param string $wd2EndLong
+     * @return PlacePoint
+     */
+    public function setWd2EndLong($wd2EndLong)
+    {
+        $this->wd2_end_long = $wd2EndLong;
+    
+        return $this;
+    }
+
+    /**
+     * Get wd2_end_long
+     *
+     * @return string 
+     */
+    public function getWd2EndLong()
+    {
+        return $this->wd2_end_long;
+    }
+
+    /**
+     * Set wd3_end_long
+     *
+     * @param string $wd3EndLong
+     * @return PlacePoint
+     */
+    public function setWd3EndLong($wd3EndLong)
+    {
+        $this->wd3_end_long = $wd3EndLong;
+    
+        return $this;
+    }
+
+    /**
+     * Get wd3_end_long
+     *
+     * @return string 
+     */
+    public function getWd3EndLong()
+    {
+        return $this->wd3_end_long;
+    }
+
+    /**
+     * Set wd4_end_long
+     *
+     * @param string $wd4EndLong
+     * @return PlacePoint
+     */
+    public function setWd4EndLong($wd4EndLong)
+    {
+        $this->wd4_end_long = $wd4EndLong;
+    
+        return $this;
+    }
+
+    /**
+     * Get wd4_end_long
+     *
+     * @return string 
+     */
+    public function getWd4EndLong()
+    {
+        return $this->wd4_end_long;
+    }
+
+    /**
+     * Set wd5_end_long
+     *
+     * @param string $wd5EndLong
+     * @return PlacePoint
+     */
+    public function setWd5EndLong($wd5EndLong)
+    {
+        $this->wd5_end_long = $wd5EndLong;
+    
+        return $this;
+    }
+
+    /**
+     * Get wd5_end_long
+     *
+     * @return string 
+     */
+    public function getWd5EndLong()
+    {
+        return $this->wd5_end_long;
+    }
+
+    /**
+     * Set wd6_end_long
+     *
+     * @param string $wd6EndLong
+     * @return PlacePoint
+     */
+    public function setWd6EndLong($wd6EndLong)
+    {
+        $this->wd6_end_long = $wd6EndLong;
+    
+        return $this;
+    }
+
+    /**
+     * Get wd6_end_long
+     *
+     * @return string 
+     */
+    public function getWd6EndLong()
+    {
+        return $this->wd6_end_long;
+    }
+
+    /**
+     * Set wd7_end_long
+     *
+     * @param string $wd7EndLong
+     * @return PlacePoint
+     */
+    public function setWd7EndLong($wd7EndLong)
+    {
+        $this->wd7_end_long = $wd7EndLong;
+    
+        return $this;
+    }
+
+    /**
+     * Get wd7_end_long
+     *
+     * @return string 
+     */
+    public function getWd7EndLong()
+    {
+        return $this->wd7_end_long;
     }
 }

@@ -28,7 +28,7 @@
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/styles/style.css'  %}
-        <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+        <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("Ymd") }}" type="text/css"  />
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/styles/jquery.loadmask.css'  %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
@@ -74,6 +74,23 @@
         {% endstylesheets %}
 
     {% endblock %}
+    {# Facebook retargeting script for Inspired #}
+    <script>(function() {
+            var _fbq = window._fbq || (window._fbq = []);
+            if (!_fbq.loaded) {
+                var fbds = document.createElement('script');
+                fbds.async = true;
+                fbds.src = '//connect.facebook.net/en_US/fbds.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(fbds, s);
+                _fbq.loaded = true;
+            }
+            _fbq.push(['addPixelId', '1000570273293239']);
+        })();
+        window._fbq = window._fbq || [];
+        window._fbq.push(['track', 'PixelInitialized', {}]);
+    </script>
+    <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=1000570273293239&ev=PixelInitialized" /></noscript>
 </head>
 <body>
 {{ notifications.init|raw }}
@@ -94,6 +111,19 @@
     </div>
 
     {% block body %}{% endblock %}
+    <div class="site-center site-center-bottom">
+    <div class="site-block">
+        <div class="clearfix bottom-blocks">
+            <div class="app-block clearfix"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-view.png') }}">
+                <div class="app-block-inner">
+                    <h3>Foodout.lt tavo kišenėje!</h3>
+                    <p>Užsisakyk maisto į namus ar biurą per iPhone arba Android telefonus. Atsisiųsk nemokamą aplikaciją!.</p>
+                    <div><a target="_BLANK" href="https://itunes.apple.com/us/app/foodout/id919992168"><img src="{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a target="_BLANK" href="https://play.google.com/store/apps/details?id=co.lemonlabs.android.foodout#"><img src="{{ asset('bundles/foodapp/images/g-store.png') }}"></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 
     {{ render(controller('FoodAppBundle:Default:footer')) }}
 </div>
@@ -113,7 +143,9 @@
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
     ga('create', 'UA-50355577-1', 'foodout.lt');
+    ga('require', 'displayfeatures');
     ga('send', 'pageview');
+    ga('require', 'ec');
 
     {% block ga_js_code %}{% endblock %}
 

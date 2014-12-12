@@ -6,6 +6,118 @@
                 <source>email.dishes.options</source>
                 <target>Priedai</target>
             </trans-unit>
+            <trans-unit id="order.invoice.invoice_title" resname="order.invoice.invoice_title">
+                <source>order.invoice.invoice_title</source>
+                <target>PVM SĄSKAITA-FAKTŪRA</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.series" resname="order.invoice.series">
+                <source>order.invoice.series</source>
+                <target>Serija</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.number" resname="order.invoice.number">
+                <source>order.invoice.number</source>
+                <target>Nr.</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.seller" resname="order.invoice.seller">
+                <source>order.invoice.seller</source>
+                <target>PARDAVĖJAS</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.buyer" resname="order.invoice.buyer">
+                <source>order.invoice.buyer</source>
+                <target>PIRKĖJAS</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.document_date" resname="order.invoice.document_date">
+                <source>order.invoice.document_date</source>
+                <target>Dok.data</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.company_code" resname="order.invoice.company_code">
+                <source>order.invoice.company_code</source>
+                <target>Įmonės kodas</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.vat_num" resname="order.invoice.vat_num">
+                <source>order.invoice.vat_num</source>
+                <target>PVM mok.kodas</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.bank_code" resname="order.invoice.bank_code">
+                <source>order.invoice.bank_code</source>
+                <target>Banko kodas</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.line_num" resname="order.invoice.line_num">
+                <source>order.invoice.line_num</source>
+                <target>Eil. Nr.</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.product_name" resname="order.invoice.product_name">
+                <source>order.invoice.product_name</source>
+                <target>Pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.measure_name" resname="order.invoice.measure_name">
+                <source>order.invoice.measure_name</source>
+                <target>Mato vnt.</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.quantity" resname="order.invoice.quantity">
+                <source>order.invoice.quantity</source>
+                <target>Kiekis</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.price" resname="order.invoice.price">
+                <source>order.invoice.price</source>
+                <target>Kaina</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.sum" resname="order.invoice.sum">
+                <source>order.invoice.sum</source>
+                <target>Suma</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.sum_no_vat" resname="order.invoice.sum_no_vat">
+                <source>order.invoice.sum_no_vat</source>
+                <target>Iš viso</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.delivery" resname="order.invoice.delivery">
+                <source>order.invoice.delivery</source>
+                <target>Pristatymas</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.vat" resname="order.invoice.vat">
+                <source>order.invoice.vat</source>
+                <target>PVM</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.sum_total" resname="order.invoice.sum_total">
+                <source>order.invoice.sum_total</source>
+                <target>Mokėti viso</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.sum_words" resname="order.invoice.sum_words">
+                <source>order.invoice.sum_words</source>
+                <target>Suma žodžiais</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.invoice_receiver" resname="order.invoice.invoice_receiver">
+                <source>order.invoice.invoice_receiver</source>
+                <target>Sąskaitą gavo</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.foodout_company_name" resname="order.invoice.foodout_company_name">
+                <source>order.invoice.foodout_company_name</source>
+                <target>UAB FOODOUT.LT</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.foodout_address" resname="order.invoice.foodout_address">
+                <source>order.invoice.foodout_address</source>
+                <target>Laisvės pr. 77C-58, 06155 Vilnius</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.foodout_company_code" resname="order.invoice.foodout_company_code">
+                <source>order.invoice.foodout_company_code</source>
+                <target>303134580</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.foodout_vat_code" resname="order.invoice.foodout_vat_code">
+                <source>order.invoice.foodout_vat_code</source>
+                <target>LT100008038519</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.foodout_bank" resname="order.invoice.foodout_bank">
+                <source>order.invoice.foodout_bank</source>
+                <target>Swedbank AB</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.foodout_bank_code" resname="order.invoice.foodout_bank_code">
+                <source>order.invoice.foodout_bank_code</source>
+                <target>73000</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.foodout_bank_account" resname="order.invoice.foodout_bank_account">
+                <source>order.invoice.foodout_bank_account</source>
+                <target>LT92 7300 0101 3664 5307</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

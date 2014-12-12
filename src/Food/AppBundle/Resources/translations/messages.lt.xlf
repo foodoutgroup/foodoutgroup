@@ -18,6 +18,14 @@
         <source>index.newsletter_subscribe</source>
         <target>Prenumeruok</target>
       </trans-unit>
+        <trans-unit id="index.get_best_offers" resname="index.get_best_offers">
+            <source>index.get_best_offers</source>
+            <target>Mūsų naujienos ieško tavo pašto.</target>
+        </trans-unit>
+        <trans-unit id="index.get_best_offers2" resname="index.get_best_offers2">
+            <source>index.get_best_offers2</source>
+            <target>Jos pažada atnešti skaniausias žinias ir specialius pasiūlymus.</target>
+        </trans-unit>
       <trans-unit id="be95147756721360c95dba571491c885" resname="index.city">
         <source>index.city</source>
         <target>Pasirinkite miestą</target>
@@ -712,7 +720,7 @@
       </trans-unit>
       <trans-unit id="general.ip_banned_info" resname="general.ip_banned_info">
         <source>general.ip_banned_info</source>
-        <target><![CDATA[Atsiprašome, tačiau Jūsų IP adresas (%ip%) yra užblokuotas.<br />IP adresai blokuojami, jei: lankytojas kuria melagingus užsakymus; smeižia, įžeidžia ar kita tyčine veikla trikdo kitų lankytojų ar restoranų darbą.<br /><br />Administracijos nurodyta priežastis: "%reason%".<br /><br />Jeigu manote, jog tai įvyko per klaidą - susisiekite su mumis <strong><a href="mailto:info@foodout.lt">info@foodout.lt</a></strong> arba telefonu <strong>+370 687 44359</strong>]]></target>
+        <target><![CDATA[Atsiprašome, tačiau Jūsų IP adresas (%ip%) yra užblokuotas.<br />IP adresai blokuojami, jei: lankytojas kuria melagingus užsakymus; smeižia, įžeidžia ar kita tyčine veikla trikdo kitų lankytojų ar restoranų darbą.<br /><br />Administracijos nurodyta priežastis: "%reason%".<br /><br />Jeigu manote, jog tai įvyko per klaidą - susisiekite su mumis <strong><a href="mailto:info@foodout.lt">info@foodout.lt</a></strong> arba telefonu <strong>+370 614 17872</strong>]]></target>
       </trans-unit>
       <trans-unit id="general.raty.not_rated_yet" resname="general.raty.not_rated_yet">
         <source>general.raty.not_rated_yet</source>
@@ -756,11 +764,15 @@
       </trans-unit>
       <trans-unit id="general.cart.success" resname="general.cart.success">
         <source>general.cart.success</source>
-        <target><![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitumų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 687 44359</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
+        <target><![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 614 17872</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="general.cart.success_no_place_num" resname="general.cart.success_no_place_num">
+        <source>general.cart.success_no_place_num</source>
+        <target><![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 614 17872</strong>.]]></target>
       </trans-unit>
       <trans-unit id="general.cart.wait" resname="general.cart.wait">
         <source>general.cart.wait</source>
-        <target><![CDATA[Jūsų užsakymas priimtas ir bus perduotas restoranui, kai tik baigsite mokėjimą. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitumų, prašome susisiekite <br/> su <strong>"Foodout.lt"</strong> telefonu <strong>+370 687 44359</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
+        <target><![CDATA[Jūsų užsakymas priimtas ir bus perduotas restoranui, kai tik baigsite mokėjimą. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>"Foodout.lt"</strong> telefonu <strong>+370 614 17872</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
       </trans-unit>
       <trans-unit id="reporting.monthly.driver_report.title" resname="reporting.monthly.driver_report.title">
         <source>reporting.monthly.driver_report.title</source>
@@ -879,6 +891,10 @@
         <source>reporting.daily.yesterday_orders.discount_sum</source>
         <target><![CDATA[Nuolaidos<br />suma]]></target>
       </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.sf_number" resname="reporting.daily.yesterday_orders.sf_number">
+        <source>reporting.daily.yesterday_orders.sf_number</source>
+        <target>SF numeris</target>
+      </trans-unit>
       <!-- Start of debug emails on new order -->
       <trans-unit id="general.new_order.title" resname="general.new_order.title">
           <source>general.new_order.title</source>
@@ -931,6 +947,10 @@
       <trans-unit id="general.new_order.driver_link" resname="general.new_order.driver_link">
           <source>general.new_order.driver_link</source>
           <target>Vairuotojas gaus nuoroda</target>
+      </trans-unit>
+      <trans-unit id="general.canceled_order.title" resname="general.canceled_order.title">
+          <source>general.canceled_order.title</source>
+          <target>Atšauktas apmokėtas užsakymas</target>
       </trans-unit>
       <!-- End of debug emails on new order -->
       <trans-unit id="general.email.placeholder" resname="general.email.placeholder">
@@ -1089,6 +1109,14 @@
       <trans-unit id="profile.repeat_new_password" resname="profile.repeat_new_password">
           <source>profile.repeat_new_password</source>
           <target>Pakartokite naują slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="general.currency_modals" resname="general.currency_modals">
+          <source>general.currency_modals</source>
+          <target>litas|litai|litų</target>
+      </trans-unit>
+      <trans-unit id="general.currency_minor_modals" resname="general.currency_minor_modals">
+        <source>general.currency_minor_modals</source>
+        <target>centas|centai|centų</target>
       </trans-unit>
       <trans-unit id="places.in_vilnius" resname="places.in_vilnius">
           <source>places.in_vilnius</source>

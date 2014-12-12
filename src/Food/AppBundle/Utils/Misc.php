@@ -2,6 +2,7 @@
 
 namespace Food\AppBundle\Utils;
 
+use Food\AppBundle\Entity\Param;
 use Food\AppBundle\Traits;
 
 class Misc
@@ -9,12 +10,12 @@ class Misc
     use Traits\Service;
 
     /**
-     * @var \Symfony\Component\DependencyInjection\Container
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
     private $container;
 
     /**
-     * @param \Symfony\Component\DependencyInjection\Container $container
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
     public function setContainer($container)
     {
@@ -22,7 +23,7 @@ class Misc
     }
 
     /**
-     * @return \Symfony\Component\DependencyInjection\Container
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
     public function getContainer()
     {
@@ -133,6 +134,93 @@ class Misc
         return round($euroPrice, 2);
     }
 
+    /**
+     * @param int|float $sum
+     * @return string
+     */
+    public function priceToText($sum)
+    {
+        $translator = $this->getContainer()->get('translator');
 
+        $numbers = $this->floatToInts($sum);
 
+        $nf = new \NumberFormatter('lt', \NumberFormatter::SPELLOUT);
+
+        if ($numbers['minorPart'] > 0) {
+            return sprintf(
+                '%s %s %s %s',
+                $nf->format($numbers['mainPart']),
+                $translator->transChoice('general.currency_modals', $numbers['mainPart']),
+                $nf->format($numbers['minorPart']),
+                $translator->transChoice('general.currency_minor_modals', $numbers['minorPart'])
+            );
+        } else {
+            return sprintf(
+                '%s %s',
+                $nf->format($numbers['mainPart']),
+                'litas'
+            );
+        }
+    }
+
+    /**
+     * @param $float
+     * @return array
+     */
+    public function floatToInts($float)
+    {
+        $parts        = explode('.', (string)$float);
+        $mainPart = $parts[0];
+        if (isset($parts[1])) {
+            $minorPart    = trim($parts[1], '0');
+        } else {
+             $minorPart = 0;
+        }
+
+        return array(
+            'mainPart' => $mainPart,
+            'minorPart' => $minorPart,
+        );
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     * @throws \Exception
+     */
+    public function getParam($name)
+    {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $parameter = $em->getRepository('Food\AppBundle\Entity\Param')->findOneBy(array('param' => $name));
+
+        if (!$parameter instanceof Param) {
+            throw new \Exception('Parameter not found');
+        }
+
+        return $parameter->getValue();
+    }
+
+    /**
+     * @param string $name
+     * @param string|array|int $value
+     */
+    public function setParam($name, $value)
+    {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $parameter = $em->getRepository('Food\AppBundle\Entity\Param')->findOneBy(array('param' => $name));
+
+        if (!$parameter instanceof Param) {
+            $parameter = new Param();
+            $parameter->setParam($name);
+        }
+
+        if (is_array($value)) {
+            $value = serialize($value);
+        }
+
+        $parameter->setValue($value);
+
+        $em->persist($parameter);
+        $em->flush();
+    }
 }

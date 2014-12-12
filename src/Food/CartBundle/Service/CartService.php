@@ -401,7 +401,7 @@ class CartService {
     {
         $total = 0;
         foreach ($cartItems as $cartItem) {
-            $total += $cartItem->getDishSizeId()->getPrice() * $cartItem->getQuantity();
+            $total += $cartItem->getDishSizeId()->getCurrentPrice() * $cartItem->getQuantity();
             foreach ($cartItem->getOptions() as $opt) {
                 $total += $opt->getDishOptionId()->getPrice() * $cartItem->getQuantity();
             }
@@ -436,7 +436,7 @@ class CartService {
         foreach ($cartItems as $cartItem) {
             $tmpRow = array(
                 'name' => $cartItem->getDishId()->getName(),
-                'price' => $cartItem->getDishSizeId()->getPrice(),
+                'price' => $cartItem->getDishSizeId()->getCurrentPrice(),
                 'size' => $cartItem->getDishSizeId()->getUnit()->getName(),
                 'quantity' => $cartItem->getQuantity(),
                 'options' => $this->getOptionsForJson($cartItem)

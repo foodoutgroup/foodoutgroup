@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Food\AppBundle\Entity\Uploadable;
 use Gedmo\Translatable\Translatable;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * Client
@@ -15,12 +17,16 @@ use Gedmo\Translatable\Translatable;
  * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\PlaceRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\PlaceLocalized")
+ * @Callback(methods={"isFileSizeValid"})
  */
 class Place extends Uploadable implements Translatable
 {
     const OPT_DELIVERY_AND_PICKUP = 'delivery_and_pickup';
     const OPT_ONLY_DELIVERY = 'delivery';
     const OPT_ONLY_PICKUP = 'pickup';
+
+    // megabytes
+    protected $maxFileSize = 1.9;
 
     /**
      * @var integer
@@ -74,6 +80,13 @@ class Place extends Uploadable implements Translatable
     private $alcoholRules = null;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="only_alcohol", type="boolean")
+     */
+    private $onlyAlcohol = false;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="logo", type="string", length=255)
@@ -95,10 +108,16 @@ class Place extends Uploadable implements Translatable
     /**
      * @var bool
      *
+     * @ORM\Column(name="discount_prices_enabled", type="boolean", nullable=true)
+     */
+    private $discountPricesEnabled;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="recommended", type="boolean")
      */
     private $recommended;
-
 
     /**
      * @var bool
@@ -227,6 +246,13 @@ class Place extends Uploadable implements Translatable
      * @ORM\Column(name="average_rating", type="float")
      */
     private $averageRating = 0;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="send_invoice", type="boolean")
+     */
+    private $sendInvoice = false;
 
     /**
      * @ORM\OneToMany(targetEntity="\Food\UserBundle\Entity\User", mappedBy="place")
@@ -1404,5 +1430,81 @@ class Place extends Uploadable implements Translatable
     public function getPriority()
     {
         return $this->priority;
+    }
+
+    /**
+     * Set onlyAlcohol
+     *
+     * @param boolean $onlyAlcohol
+     * @return Place
+     */
+    public function setOnlyAlcohol($onlyAlcohol)
+    {
+        $this->onlyAlcohol = $onlyAlcohol;
+    
+        return $this;
+    }
+
+    /**
+     * Get onlyAlcohol
+     *
+     * @return boolean 
+     */
+    public function getOnlyAlcohol()
+    {
+        return $this->onlyAlcohol;
+    }
+
+    /**
+     * Set sendInvoice
+     *
+     * @param boolean $sendInvoice
+     * @return Place
+     */
+    public function setSendInvoice($sendInvoice)
+    {
+        $this->sendInvoice = $sendInvoice;
+    
+        return $this;
+    }
+
+    /**
+     * Get sendInvoice
+     *
+     * @return boolean 
+     */
+    public function getSendInvoice()
+    {
+        return $this->sendInvoice;
+    }
+
+    /**
+     * Set discountPricesEnabled
+     *
+     * @param boolean $discountPricesEnabled
+     * @return Place
+     */
+    public function setDiscountPricesEnabled($discountPricesEnabled)
+    {
+        $this->discountPricesEnabled = $discountPricesEnabled;
+    
+        return $this;
+    }
+
+    /**
+     * Get discountPricesEnabled
+     *
+     * @return boolean 
+     */
+    public function getDiscountPricesEnabled()
+    {
+        return $this->discountPricesEnabled;
+    }
+
+    public function isFileSizeValid(ExecutionContextInterface $context)
+    {
+        if ($this->getFile() && $this->getFile()->getSize() > round($this->maxFileSize * 1024 * 1024)) {
+            $context->addViolationAt('file', 'Paveiksliukas užima daugiau nei ' . $this->maxFileSize . ' MB vietos.');
+        }
     }
 }

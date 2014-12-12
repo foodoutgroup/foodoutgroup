@@ -3,9 +3,10 @@
 namespace Food\AppBundle\Tests\Utils;
 
 use Food\AppBundle\Entity\BannedIp;
+use Food\AppBundle\Test\WebTestCase;
 use Food\AppBundle\Utils\Misc;
 
-class MiscTest extends \PHPUnit_Framework_TestCase
+class MiscTest extends WebTestCase
 {
     public function testSetGetContainers()
     {
@@ -290,5 +291,31 @@ class MiscTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedPrice3, $gotPrice3);
         $this->assertEquals($expectedPrice4, $gotPrice4);
         $this->assertEquals($expectedPrice5, $gotPrice5);
+    }
+
+    public function testPriceToText()
+    {
+        $util = new Misc();
+        $util->setContainer($this->getContainer());
+
+        $expectedValue1 = 'dvidešimt vienas litas';
+        $expectedValue2 = 'penkiolika litų šešiasdešimt keturi centai';
+        $expectedValue3 = 'šimtas penkiasdešimt keturi litai penkiolika centų';
+        $expectedValue4 = 'tūkstantis trys šimtai dvidešimt litų du centai';
+
+        $testPrice1 = '21';
+        $testPrice2 = '15.64';
+        $testPrice3 = '154.15';
+        $testPrice4 = '1320.02';
+
+        $gotText1 = $util->priceToText($testPrice1);
+        $gotText2 = $util->priceToText($testPrice2);
+        $gotText3 = $util->priceToText($testPrice3);
+        $gotText4 = $util->priceToText($testPrice4);
+
+        $this->assertEquals($expectedValue1, $gotText1);
+        $this->assertEquals($expectedValue2, $gotText2);
+        $this->assertEquals($expectedValue3, $gotText3);
+        $this->assertEquals($expectedValue4, $gotText4);
     }
 }
