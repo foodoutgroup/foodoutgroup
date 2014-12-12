@@ -1697,4 +1697,5 @@ div.coupon_form_popup {
 #change-address label, #places-change-address label { width: 120px; }
 #change-address button, #places-change-address button { float: right; }
 .width463 {width: 463px;}
-.page-title .h1 {font-size: 30px; margin: 0; color: #513d28; font-weight: normal; float: none !important;}
+#change-address .page-title .h1, #places-change-address .page-title .h1{font-size: 30px; margin: 0; color: #513d28; font-weight: normal; float: none !important;}
+#change-address .title, #places-change-address .title {font-size: 17px; color: #4d090a; text-align: center; margin: 0; padding-bottom: 15px; padding-right: 63px; letter-spacing: 0.6px;}

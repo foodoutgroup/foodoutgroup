@@ -71,7 +71,7 @@
             <div class="alert alert2 alert-warning"><li>{% trans %}places.is_not_detailed_search{% endtrans %}</li></div>
         {% endif %}
     </div>
-    {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'places-change-address'} %}
+    {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'places-change-address', hideQlu: false} %}
     <script type="text/javascript">
         // <![CDATA[
             $(document).ready(function() {
