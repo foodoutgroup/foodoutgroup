@@ -279,7 +279,7 @@ change_location = function(element,
         }
     };
     */
-    if (element.find('.submit-button').size() == 0) {
+    if (element.find('.submit').size() == 0) {
         //element.append('<a href="#" class="submit-button btn-cancel no-arrow no-arrow-second"><span>'+ cancel_options.text +'</span></a>');
         element.append('<div class="form-row address-row width463"><label></label><button class="button-normal submit">'+ change_options.text +'</button></div>');
     }
