@@ -82,7 +82,7 @@
                         if (options.response.data.success == 1) {
                             window.location = '{{ url('food_places_lt_main') }}';
                         } else {
-                            options.dialog.parent().unmask();
+                            options.dialog.unmask();
                             options.alert.show();
 
                             setTimeout(function(){

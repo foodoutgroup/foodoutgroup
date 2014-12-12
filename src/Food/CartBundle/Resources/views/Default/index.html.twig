@@ -22,14 +22,14 @@
                         options.response.data.adr == 1)
                     {
                         if (options.response.data.nodelivery == 1) {
-                            options.dialog.parent().unmask();
-                            options.dialog.dialog('close');
+                            options.dialog.unmask();
+                            $.fancybox.close();
                             toTakeOrNotToTake();
                         } else {
                             window.location.reload();
                         }
                     } else {
-                        options.dialog.parent().unmask();
+                        options.dialog.unmask();
                         options.alert.show();
                         setTimeout(function(){
                             options.alert.hide();

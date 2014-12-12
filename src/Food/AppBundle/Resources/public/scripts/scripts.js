@@ -271,24 +271,25 @@ change_location = function(element,
         }
     };
 
+    /*
     cancel_options = {
         text: cancel_text,
         click: function() {
             $(this).dialog('close');
         }
     };
-
+    */
     if (element.find('.submit-button').size() == 0) {
-        element.append('<a href="#" class="submit-button btn-cancel no-arrow no-arrow-second"><span>'+ cancel_options.text +'</span></a>');
-        element.append('<a href="#" class="submit-button btn-submit no-arrow"><span>'+ change_options.text +'</span></a>');
+        //element.append('<a href="#" class="submit-button btn-cancel no-arrow no-arrow-second"><span>'+ cancel_options.text +'</span></a>');
+        element.append('<div class="form-row address-row width463"><label></label><button class="button-normal submit">'+ change_options.text +'</button></div>');
     }
 
     element.find('.btn-cancel').unbind('click').bind('click', function(){
         $.fancybox.close();
     });
 
-    element.find('.btn-submit').unbind('click').bind('click', function(){
-        this.parent().mask();
+    element.find('.submit').unbind('click').bind('click', function(){
+        element.mask();
         alert = element.find('.alert');
 
         options = {
@@ -297,8 +298,9 @@ change_location = function(element,
             data: data_callback(),
             success: function(response){
                 click_callback({response: response,
-                    dialog: dialog,
-                    alert: alert});
+                    dialog: element,
+                    alert: alert}
+                );
             }
         }
         $.ajax(options);
@@ -312,6 +314,7 @@ change_location = function(element,
         'speedOut': 300,
         'autoDimensions': true,
         'centerOnScroll': true,
+        //'modal': true,
         'content' : element
     });
 
