@@ -53,6 +53,14 @@ class Request
                             <first_name>%name%</first_name>
                             <telephone>%telephone%</telephone>
                         </PersonalDetails>
+                        <ShippingDetails>
+                            <first_name>%name%</first_name>
+                            <surname>%surname%</surname>
+                            <address_line1>%shipping_address%</address_line1>
+                            <address_line2></address_line2>
+                            <city>%city%</city>
+                            <country>%country%</country>
+                        </ShippingDetails>
                         <PaymentDetails>
                             <payment_method>CC</payment_method>
                         </PaymentDetails>

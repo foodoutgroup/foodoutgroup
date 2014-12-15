@@ -16,6 +16,10 @@ trait RedirectDecorator
 
         // configuration
         $options = ['country' => 'LT',
+                    'city' => $order->getPlacePointCity(),
+                    'shipping_address' => $order->getDeliveryType() == 'deliver'
+                                          ? $order->getAddressId()->getAddress()
+                                          : '',
                     'surname' => $order->getUser()->getLastname(),
                     'name' => $order->getUser()->getFirstname(),
                     'telephone' => $order->getUser()->getPhone(),
