@@ -19,7 +19,10 @@ class DispatcherAdminController extends Controller
         foreach ($availableCities as $city) {
             $cityOrders[$city] = array(
                 'unassigned' => $repo->getOrdersUnassigned($city),
-                'unconfirmed' => $repo->getOrdersUnconfirmed($city),
+                'unconfirmed' => array(
+                    'deliver' => $repo->getOrdersUnconfirmed($city),
+                    'pickup' => $repo->getOrdersUnconfirmed($city, true),
+                ),
                 'not_finished' => $repo->getOrdersAssigned($city),
             );
         }
@@ -41,6 +44,7 @@ class DispatcherAdminController extends Controller
         switch ($order->getOrderStatus()) {
             case $orderService::$status_new:
                 $orderStatuses = array(
+                    $orderService::$status_accepted,
                     $orderService::$status_canceled,
                 );
                 break;

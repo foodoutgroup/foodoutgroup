@@ -74,12 +74,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "1c64304b79236578fe19c77e588d5bc538a005df"
+                "reference": "26df03201f01d81dc6e7f903285b3f4bdaaca7d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1c64304b79236578fe19c77e588d5bc538a005df",
-                "reference": "1c64304b79236578fe19c77e588d5bc538a005df",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/26df03201f01d81dc6e7f903285b3f4bdaaca7d4",
+                "reference": "26df03201f01d81dc6e7f903285b3f4bdaaca7d4",
                 "shasum": ""
             },
             "require": {
@@ -133,7 +133,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2014-11-17 23:10:56"
+            "time": "2014-11-20 22:53:37"
         },
         {
             "name": "beberlei/DoctrineExtensions",

@@ -181,6 +181,7 @@ class LogisticsService extends ContainerAware
     /**
      * @param int $driverId
      * @param array $orderIds
+     * @param bool $external
      */
     public function assignDriver($driverId, $orderIds, $external = false)
     {
@@ -197,9 +198,20 @@ class LogisticsService extends ContainerAware
 
                 if ($external) {
                     $source = 'logistics_service_external';
+                    $logString = 'Driver #%d assigned to order #%d from logistics';
+                    $logAction = 'logistics_api_driver_assign';
                 } else {
                     $source = 'logistics_service';
+                    $logString = 'Driver #%d assigned to order #%d from dispatcher';
+                    $logAction = 'dispatcher_driver_assign';
                 }
+
+                // Uzloginam prie orderio, kas, kada ir per kur priskyre vairuotoja
+                $orderService->logOrder(
+                    $order,
+                    $logAction,
+                    sprintf($logString, $driverId, $orderId)
+                );
 
                 // TODO kolkas visad vairuotoja informuojam SMS'u, bet su LogTimeApi nutart ar dubliuojam
                 $orderService->statusAssigned($source);
@@ -283,6 +295,9 @@ class LogisticsService extends ContainerAware
 
         // Pickup time
         $acceptTime = $order->getAcceptTime();
+        if (empty($acceptTime)) {
+            $acceptTime = $order->getOrderDate();
+        }
 
         // If delayed - add delay duration
         if ($order->getDelayed()) {
@@ -296,14 +311,14 @@ class LogisticsService extends ContainerAware
         $deliveryToTime = clone $acceptTime;
 
         $writer->startElement("PickUpTime");
-        $writer->writeElement('From', $order->getAcceptTime()->format("Y-m-d H:i"));
+        $writer->writeElement('From', $acceptTime->format("Y-m-d H:i"));
         $writer->writeElement('To', $pickupToTime->add(new \DateInterval('PT20M'))->format("Y-m-d H:i"));
         // End pickup time block
         $writer->endElement();
 
         // Delivery time block
         $writer->startElement("DeliveryTime");
-        $writer->writeElement('From', $order->getAcceptTime()->format("Y-m-d H:i"));
+        $writer->writeElement('From', $acceptTime->format("Y-m-d H:i"));
         $writer->writeElement('To', $deliveryToTime->add(new \DateInterval('PT1H'))->format("Y-m-d H:i"));
         // End delivery time block
         $writer->endElement();

@@ -624,7 +624,9 @@ class OrderService extends ContainerAware
     {
         if (empty($this->order))
         {
-            throw new \Exception("Dude - no order here :)");
+            // Log this shit, as this happens alot so we need info to debug
+            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 20);
+            throw new \Exception("Dude - no order here :)\nBacktrace:\n".var_export($backtrace));
         }
         return $this->order;
     }
@@ -997,7 +999,6 @@ class OrderService extends ContainerAware
     public function setPaymentStatus($status, $message=null)
     {
         $order = $this->getOrder();
-        $this->logOrder($order, 'payment_status_change', sprintf('From %s to %s', $order->getPaymentStatus(), $status));
         $this->setPaymentStatusWithoutSave($order, $status, $message);
         $this->saveOrder();
     }
@@ -1010,6 +1011,8 @@ class OrderService extends ContainerAware
      */
     public function setPaymentStatusWithoutSave($order, $status, $message = null)
     {
+        $this->logOrder($order, 'payment_status_change', sprintf('From %s to %s', $order->getPaymentStatus(), $status));
+
         if (!$this->isAllowedPaymentStatus($status)) {
             throw new \InvalidArgumentException('Status: "'.$status.'" is not a valid order payment status');
         }
@@ -1113,9 +1116,9 @@ class OrderService extends ContainerAware
             self::$status_forwarded => 2,
             self::$status_finished => 3,
             self::$status_assiged => 4,
+            self::$status_failed => 4,
             self::$status_completed => 5,
             self::$status_canceled => 5,
-            self::$status_failed => 5,
         );
 
         if (empty($from) && !empty($to)) {
@@ -1548,7 +1551,7 @@ class OrderService extends ContainerAware
         $cityCoordinators = $this->container->getParameter('order.city_coordinators');
 
         $emailSubject = $translator->trans('general.canceled_order.title');
-        $emailMessageText = $emailSubject
+        $emailMessageText = $emailSubject."\n\n"
             ."OrderId: " . $order->getId()."\n\n"
             .$translator->trans('general.new_order.selected_place_point').": ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
             .$translator->trans('general.new_order.place_point_phone').":".$order->getPlacePoint()->getPhone()."\n"
@@ -1562,8 +1565,9 @@ class OrderService extends ContainerAware
         ;
 
         $emailMessageText .= "\n"
-            .$translator->trans('general.new_order.admin_link').": ".$this->container->get('router')
-                ->generate('order_support_mobile', array('hash' => $order->getOrderHash()), true)
+            .$translator->trans('general.new_order.admin_link').": "
+            .'http://'.$domain.$this->container->get('router')
+                ->generate('order_support_mobile', array('hash' => $order->getOrderHash()), false)
             ."\n";
 
         $mailer = $this->container->get('mailer');
@@ -1957,20 +1961,27 @@ class OrderService extends ContainerAware
     {
         $wd = date('w');
         if ($wd == 0) $wd = 7;
-        $timeFr = $placePoint->{'getWd'.$wd.'Start'}();
-        $timeTo = $placePoint->{'getWd'.$wd.'End'}();
+        $frm = $placePoint->{'getWd'.$wd.'Start'}();
+        $tot = $placePoint->{'getWd'.$wd.'EndLong'}();
+        if (empty($tot)) {
+            $tot = $placePoint->{'getWd'.$wd.'End'}();
+        }
+        $timeFr = str_replace(":", "", $frm);
+        $timeTo = str_replace(":", "", $tot);
 
-        if(!strpos($timeFr, ':')|| !strpos($timeTo, ':')) {
+        $totalH = date("H");
+        $totalM = date("i");
+        if ($totalH < 6) {
+            $totalH = $totalH + 24;
+        }
+        $total = $totalH."".$totalM;
+
+        if(!strpos($frm, ':')) {
             return false;
         } else {
-            $timeFrTs = strtotime($timeFr);
-            $timeToFs = strtotime($timeTo);
-            if ($timeToFs < $timeFrTs) {
-                $timeToFs+= 60 * 60 * 24;
-            }
-            if ($timeFrTs > date('U')) {
+            if ($timeFr > $total) {
                 return false;
-            } elseif ($timeToFs < date('U')) {
+            } elseif ($timeTo < $total) {
                 return false;
             }
         }
@@ -2055,6 +2066,20 @@ class OrderService extends ContainerAware
             $placePointMap = $this->container->get('session')->get('point_data');
             if (!empty($placePointMap[$place->getId()])) {
                 $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+                if ($pointRecord) {
+                    $isWork = $this->isTodayWork($pointRecord);
+                    if (!$isWork) {
+                        $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
+                        $theId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(),$locationData);
+                        $formErrors[] = $theId;
+                        if ($theId) {
+                            $placePointMap[$place->getId()] = $theId;
+                            $this->container->get('session')->set('point_data', $placePointMap);
+                        } else {
+                            $formErrors[] = 'order.form.errors.no_restaurant_to_deliver';
+                        }
+                    }
+                }
             } else {
                 $formErrors[] = 'order.form.errors.customeraddr';
             }

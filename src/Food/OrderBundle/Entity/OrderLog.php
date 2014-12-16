@@ -39,7 +39,7 @@ class OrderLog
 
     /**
      * @var string
-     * @ORM\Column(name="event", type="string", length=50)
+     * @ORM\Column(name="event", type="string", length=60)
      */
     private $event;
 

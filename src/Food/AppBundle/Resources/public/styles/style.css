@@ -836,7 +836,7 @@ input.button {}
 .alert-warning { background-color: #fcf8e3; border-color: #faebcc; color: #8a6d3b; }
 .alert-info {background-color: #d9edf7; border-color: #bce8f1; color: #31708f; }
 .alert-success { background-color: #dff0d8; border-color: #d6e9c6; color: #3c763d;}
-#change-address .alert { margin-bottom: 0px;}
+#change-address .alert { margin-bottom: 20px;}
 h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
 
 .address-change a,.address-change a span, .address-change input { cursor: pointer !important; }
@@ -1680,3 +1680,22 @@ div.coupon_form_popup {
 .dish-size .custom-radio .price.discount {
     color: #cd1d36;
 }
+
+.button-normal {
+    font-size: 13px;
+    color: #fff;
+    text-shadow: 0 1px 0 #6d9104;
+    text-transform: uppercase;
+    width: 211px;
+    height: 40px;
+    border-radius: 4px;
+    background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x left center;
+    box-shadow: 0 1px 1px #c0c0c0;
+    border: none;
+    letter-spacing: 1px;
+}
+#change-address label, #places-change-address label { width: 120px; }
+#change-address button, #places-change-address button { float: right; }
+.width463 {width: 463px;}
+#change-address .page-title .h1, #places-change-address .page-title .h1{font-size: 30px; margin: 0; color: #513d28; font-weight: normal; float: none !important;}
+#change-address .title, #places-change-address .title {font-size: 17px; color: #4d090a; text-align: center; margin: 0; padding-bottom: 15px; padding-right: 63px; letter-spacing: 0.6px;}

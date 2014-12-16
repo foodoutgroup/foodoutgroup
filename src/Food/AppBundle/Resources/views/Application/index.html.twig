@@ -1,0 +1,66 @@
+{% extends 'FoodAppBundle::layout_no_mobile.html.twig' %}
+
+{% block title %}{% trans %}general.places{% endtrans %} - {{ page_title }}{% endblock %}
+{% block adnet_retargeting %}
+    <!-- Adform Tracking Code BEGIN -->
+    <script type="text/javascript">
+        var _adftrack = {
+            pm: 314127,
+            divider: encodeURIComponent('|'),
+            pagename: encodeURIComponent('Foodout.lt|{% trans %}general.places{% endtrans %}')
+        };
+        (function () { var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = 'https://track.adform.net/serving/scripts/trackpoint/async/'; var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x); })();
+
+    </script>
+    <noscript>
+        <p style="margin:0;padding:0;border:0;">
+            <img src="https://track.adform.net/Serving/TrackPoint/?pm=314127&ADFPageName=Foodout.lt|{% trans %}general.places{% endtrans %}&ADFdivider=|" width="1" height="1" alt="" />
+        </p>
+    </noscript>
+    <!-- Adform Tracking Code END -->
+{% endblock %}
+
+{% block jscode %}
+
+{% endblock %}
+{% block body %}
+    {% javascripts '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.pack.js'
+    '@FoodAppBundle/Resources/public/scripts/fancy/helpers/jquery.fancybox-media.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% stylesheets '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    {% endstylesheets %}
+
+    <div class="change-location-box"></div>
+    <div class="site-center">
+        <div class="site-block">
+            <div class="page-path clearfix">{#<a href="{{ path('food_homepage') }}">Pradžia</a>#}</div>{# TODO breadcrumbs <a href="#">Restoranai arti Žirmūnų</a>#}
+            <div class="page-title">
+                <br />
+                <br />
+                <h1 class="clearfix">
+                    <Center>Atsisiųsk nemokamą Foodout.lt aplikaciją!</center>
+                </h1>
+            </div>
+            <center>
+                <br />
+                <br />
+            <table>
+                <tr>
+                    <td>
+                        <a href="https://itunes.apple.com/us/app/foodout/id919992168"><img src="/bundles/foodapp/images/badge_appstore.jpg" /></a>
+                    </td>
+                    <td>
+                        <a href="https://play.google.com/store/apps/details?id=co.lemonlabs.android.foodout#"><img src="/bundles/foodapp/images/badge_googleplay.png" /></a>
+                    </td>
+                </tr>
+            </table>
+            </center>
+            <br />
+            <br />
+
+        </div>
+    </div>
+{% endblock %}

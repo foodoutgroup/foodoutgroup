@@ -8,16 +8,16 @@ class Request
     protected $transactionRequestXml = <<<TRANSACTION_REQUEST
 <?xml version="1.0" encoding="UTF-8"?>
 <Request>
-    <Authentication>
-        <client>%client%</client>
-        <password>%password%</password>
-    </Authentication>
-    <Transaction>
-        <HistoricTxn>
-            <method>query</method>
-            <reference>%dts_reference%</reference>
-        </HistoricTxn>
-    </Transaction>
+  <Authentication>
+    <client>%client%</client>
+    <password>%password%</password>
+  </Authentication>
+  <Transaction>
+    <HistoricTxn>
+      <method>query</method>
+      <reference>%dts_reference%</reference>
+    </HistoricTxn>
+  </Transaction>
 </Request>
 TRANSACTION_REQUEST;
 

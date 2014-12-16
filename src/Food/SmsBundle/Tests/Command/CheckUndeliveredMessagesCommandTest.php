@@ -55,9 +55,6 @@ class CheckUndeliveredMessagesCommandTest extends \PHPUnit_Framework_TestCase
         $messagingService = $this->getMockBuilder('\Food\SmsBundle\Service\MessagesService')
             ->disableOriginalConstructor()
             ->getMock();
-        $mailer = $this->getMockBuilder('\Swift_Mailer')
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $application = new Application();
         $application->add(new CheckUndeliveredMessagesCommand());
@@ -78,26 +75,6 @@ class CheckUndeliveredMessagesCommandTest extends \PHPUnit_Framework_TestCase
             ->with($this->isInstanceOf('\DateTime'), $this->isInstanceOf('\DateTime'))
             ->will($this->throwException(new \Exception('I failed')));
 
-        $container->expects($this->at(1))
-            ->method('getParameter')
-            ->with('domain')
-            ->will($this->returnValue('foodout'));
-
-        $container->expects($this->at(2))
-            ->method('getParameter')
-            ->with('admin.emails')
-            ->will($this->returnValue(array()));
-
-        $container->expects($this->at(3))
-            ->method('get')
-            ->with('mailer')
-            ->will($this->returnValue($mailer));
-
-        $container->expects($this->at(4))
-            ->method('getParameter')
-            ->with('admin.send_monitoring_message')
-            ->will($this->returnValue(false));
-
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             array('command' => $command->getName())
@@ -116,9 +93,6 @@ class CheckUndeliveredMessagesCommandTest extends \PHPUnit_Framework_TestCase
             array('getParameter', 'get')
         );
         $messagingService = $this->getMockBuilder('\Food\SmsBundle\Service\MessagesService')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mailer = $this->getMockBuilder('\Swift_Mailer')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -154,26 +128,6 @@ class CheckUndeliveredMessagesCommandTest extends \PHPUnit_Framework_TestCase
             ->with($this->isInstanceOf('\DateTime'), $this->isInstanceOf('\DateTime'))
             ->will($this->returnValue($messages));
 
-        $container->expects($this->at(1))
-            ->method('getParameter')
-            ->with('domain')
-            ->will($this->returnValue('foodout'));
-
-        $container->expects($this->at(2))
-            ->method('getParameter')
-            ->with('admin.emails')
-            ->will($this->returnValue($emails));
-
-        $container->expects($this->at(3))
-            ->method('get')
-            ->with('mailer')
-            ->will($this->returnValue($mailer));
-
-        $container->expects($this->at(4))
-            ->method('getParameter')
-            ->with('admin.send_monitoring_message')
-            ->will($this->returnValue($sendMessages));
-
 //        $container->expects($this->at(5))
 //            ->method('get')
 //            ->with('food.messages')
@@ -197,10 +151,6 @@ class CheckUndeliveredMessagesCommandTest extends \PHPUnit_Framework_TestCase
 //            ->method('getParameter')
 //            ->with('sms.sender')
 //            ->will($this->returnValue($sender));
-
-        $mailer->expects($this->once())
-            ->method('send')
-            ->with($this->isInstanceOf('\Swift_Mime_MimePart'));
 
 //        $messagingService->expects($this->once())
 //            ->method('createMessage')

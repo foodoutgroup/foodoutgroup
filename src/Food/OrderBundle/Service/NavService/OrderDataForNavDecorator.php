@@ -13,8 +13,7 @@ trait OrderDataForNavDecorator
     {
         // services. we only need 'misc' service for converting totals to euros
         $misc = $this->container->get('food.app.utils.misc');
-
-        $originalOrder = $order;
+        $orderService = $this->container->get('food.order');
 
         $order = \Maybe($order);
         $driver = $order->getDriver();
@@ -45,9 +44,8 @@ trait OrderDataForNavDecorator
         $data->clientName = sprintf("%s %s",
                                     $user->getFirstname()->val(''),
                                     $user->getLastname()->val(''));
-        $data->isDelivered = $order->getDeliveryTime()->val('') == '' ?
-                             'no' :
-                             'yes';
+        $data->isDelivered = $order->getOrderStatus()->val('') ==
+                             $orderService::$status_completed ? 'yes' : 'no';
         $data->deliveryAddress = $address->getAddress()->val('');
         $data->city = $address->getCity()->val('');
         $data->country = '';
@@ -61,8 +59,11 @@ trait OrderDataForNavDecorator
         $data->alcoholAmount = 0.0;
         $data->alcoholAmountEUR = 0.0;
         $data->alcoholVAT = 0.0;
-        $data->deliveryAmount = (double) $deliveryTotal;
-        $data->deliveryAmountEUR = (double) $misc->getEuro($deliveryTotal);
+        $data->deliveryAmount = (double) ($order->getDeliveryType()
+                                                ->val('') == 'pickup' ?
+                                                    0.0 :
+                                                    $deliveryTotal);
+        $data->deliveryAmountEUR = (double) $misc->getEuro($data->deliveryAmount);
         $data->deliveryVAT = (double) $vat;
         $data->giftCardAmount = 0.0;
         $data->giftCardAmountEUR = 0.0;

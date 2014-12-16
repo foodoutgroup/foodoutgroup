@@ -22,9 +22,9 @@
 {% block side_menu %}{% endblock %}
 
 {% block list_table %}
-    {# type gali buti 'unassigned', 'not_finished' ;) Just in case you need that #}
+    {# type gali buti 'unassigned', 'unconfirmed', 'not_finished' ;) Just in case you need that #}
     {% macro order_table(order_list, type, cityName) %}
-        {% if type == 'unassigned' %}
+        {% if type == 'unassigned' or type == 'not_finished' %}
         <div class="driver_button">
             <button class="get_drivers_button btn btn-lg" disabled="disabled">
                 {#<span class="icon_steering_wheel"></span>#}
@@ -38,8 +38,10 @@
                 <th>{{ 'admin.dispatcher.order_id'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.dispatcher.place'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
+            {% if type != 'unconfirmed-pickup' %}
                 <th>{{ 'admin.dispatcher.client_address'|trans({}, 'SonataAdminBundle') }}</th>
                 <th class="self_delivery">{{ 'admin.dispatcher.self_delivery'|trans({}, 'SonataAdminBundle') }}</th>
+            {% endif %}
                 <th class="order_date">{{ 'admin.dispatcher.order_date'|trans({}, 'SonataAdminBundle') }}</th>
                 <th class="order_date">{{ 'admin.dispatcher.delivery_time'|trans({}, 'SonataAdminBundle') }}</th>
                 <th class="order_date">{{ 'admin.dispatcher.delayed'|trans({}, 'SonataAdminBundle') }}</th>
@@ -64,7 +66,7 @@
                             <input type="checkbox" id="order_{{ order.id }}" value="{{ order.id }}" class="order_checkbox" />
                         {% endif %}
                     </td>
-                    <td>{{ order.id }}</td>
+                    <td><a href="{{ path('admin_food_order_order_show', {'id': order.id}) }}" target="_blank">{{ order.id }}</a></td>
                     <td>
                         {{ order.placeName }}
                         {% set placePointPhones = '+'~order.placePoint.phone %}
@@ -77,6 +79,7 @@
                         <span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ placePointPhones }}"></span>
                     </td>
                     <td>{{ order.placePoint.address }}</td>
+                {% if type != 'unconfirmed-pickup' %}
                     <td>{{ order.addressId.address }}</td>
                     <td class="self_delivery">
                         {% if order.placePointSelfDelivery %}
@@ -85,6 +88,7 @@
                             <span class="glyphicon glyphicon-remove"></span>
                         {% endif %}
                     </td>
+                {% endif %}
                     <td class="order_date" title="{{ order.orderDate|date("Y-m-d") }}">{{ order.orderDate|date("H:i") }}</td>
                     <td class="order_date" title="{{ order.deliveryTime|date("Y-m-d") }}">{{ order.deliveryTime|date("H:i") }}</td>
                     <td class="order_date{% if order.delayed %} delayed-order{% endif %}">
@@ -150,7 +154,7 @@
         <ul>
             {% for city in cities %}
                 {% set cityUnassigned = cityOrders[city].unassigned|length %}
-                {% set cityUnconfirmed = cityOrders[city].unconfirmed|length %}
+                {% set cityUnconfirmed = (cityOrders[city].unconfirmed.deliver|length + cityOrders[city].unconfirmed.pickup|length) %}
                 {% set cityNotFinished = cityOrders[city].not_finished|length %}
                 {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished}, 'SonataAdminBundle') %}
                 <li class="city-tab">
@@ -168,7 +172,7 @@
                     </li>
                     <li>
                         <a href="#city-{{ loop.index }}-unconfirmed">
-                            {{ 'admin.dispatcher.unconfirmed'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.unconfirmed|length }})</span>
+                            {{ 'admin.dispatcher.unconfirmed'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unconfirmed.deliver|length + city.unconfirmed.pickup|length) }})</span>
                         </a>
                     </li>
                     <li>
@@ -181,7 +185,13 @@
                     {{ table.order_table(city.unassigned, 'unassigned', cityName) }}
                 </div>
                 <div id="city-{{ loop.index }}-unconfirmed">
-                    {{ table.order_table(city.unconfirmed, 'unconfirmed', cityName) }}
+                    {{ table.order_table(city.unconfirmed.deliver, 'unconfirmed', cityName) }}
+                    <div style="text-align: center;">
+                        <br />
+                        <br />
+                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unconfirmed_pickup{% endtrans %}:</h4>
+                    </div>
+                    {{ table.order_table(city.unconfirmed.pickup, 'unconfirmed-pickup', cityName) }}
                 </div>
                 <div id="city-{{ loop.index }}-undelivered">
                     {{ table.order_table(city.not_finished, 'not_finished', cityName) }}

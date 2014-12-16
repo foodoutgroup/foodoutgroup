@@ -19,7 +19,8 @@ class OrderRepository extends EntityRepository
             'order_status' =>  array(
                 OrderService::$status_accepted,
                 OrderService::$status_delayed,
-                OrderService::$status_finished
+                OrderService::$status_finished,
+                OrderService::$status_forwarded,
             ),
             'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
@@ -38,14 +39,15 @@ class OrderRepository extends EntityRepository
 
     /**
      * @param string $city
+     * @param boolean $pickup
      * @return array
      */
-    public function getOrdersUnconfirmed($city)
+    public function getOrdersUnconfirmed($city, $pickup = false)
     {
         $filter = array(
             'order_status' =>  array(OrderService::$status_new),
             'place_point_city' => $city,
-            'deliveryType' => OrderService::$deliveryDeliver,
+            'deliveryType' => (!$pickup ? OrderService::$deliveryDeliver : OrderService::$deliveryPickup),
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
@@ -408,15 +410,17 @@ class OrderRepository extends EntityRepository
     {
         $orderStatus = "'".OrderService::$status_completed
             ."', '".OrderService::$status_canceled
+            ."', '".OrderService::$status_new
             ."', '".OrderService::$status_nav_problems."'";
         $paymentStatus = OrderService::$paymentStatusComplete;
         $pickup = OrderService::$deliveryPickup;
         $deliver = OrderService::$deliveryDeliver;
 
-        $dateFrom = new \DateTime("-12 hour");
-        $dateToPickup = new \DateTime("-90 minute");
+        $dateFrom = new \DateTime("now");
+        $dateToPickup = new \DateTime("-70 minute");
         $dateToDeliver = new \DateTime("-2 hour");
-        $dateFrom = $dateFrom->format("Y-m-d h:i:s");
+
+        $dateFrom1 = $dateFrom->sub(new \DateInterval('PT12H'))->format("Y-m-d h:i:s");
         $dateToPickup = $dateToPickup->format("Y-m-d h:i:s");
         $dateToDeliver = $dateToDeliver->format("Y-m-d h:i:s");
 
@@ -431,12 +435,12 @@ class OrderRepository extends EntityRepository
             AND (
               (
                 o.delivery_type = '{$pickup}'
-                AND o.delivery_time BETWEEN '{$dateFrom}' AND '{$dateToPickup}'
+                AND o.delivery_time BETWEEN '{$dateFrom1}' AND '{$dateToPickup}'
               )
               OR
               (
                o.delivery_type = '{$deliver}'
-                AND o.delivery_time BETWEEN '{$dateFrom}' AND '{$dateToDeliver}'
+                AND o.delivery_time BETWEEN '{$dateFrom1}' AND '{$dateToDeliver}'
               )
             )
         ";
@@ -467,6 +471,8 @@ class OrderRepository extends EntityRepository
                     OrderService::$status_completed,
                     OrderService::$status_canceled,
                     OrderService::$status_nav_problems,
+                    // TODO temp, nav canot cancel assigned orders
+                    OrderService::$status_assiged
                 ),
                 'navision' => 1,
             ));

@@ -67,6 +67,16 @@ food_homepage:
     defaults: { _controller: FoodAppBundle:Default:index }
 
 
+
+food_applikacija:
+    pattern:  /aplikacijos
+    defaults: { _controller: FoodAppBundle:Application:index }
+
+food_lets_meet:
+    pattern:  /susipazinkime
+    defaults: { _controller: FoodAppBundle:Default:meet }
+
+
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
     prefix:   /{_locale}/

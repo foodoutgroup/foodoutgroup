@@ -1,9 +1,15 @@
 <div style="display: none">
     <div id="{{ id }}" class="delivery-info-form">
+        <div class="page-title"><span class="h1">Įveskite adresą</span></div>
+        {% if hideQlu == false %}
+            <div class="form-row form-row-required city-row width463" class="search-qlue">
+            <p class="title">{% trans %}index.search_form_qlue{% endtrans %}</p>
+            </div>
+        {% endif %}
         <div class="alert alert-danger" style="display: none;">
             {% trans %}cart.checkout.address_not_found{% endtrans %}
         </div>
-        <div class="form-row form-row-required city-row">
+        <div class="form-row form-row-required city-row width463">
             <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
             <select class="custom-select">
                 <option {% if location and location.city is defined and location.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
@@ -11,7 +17,7 @@
                 <option {% if location and location.city is defined and (location.city == 'Klaipėda' or location.city == 'Klaipeda') %}selected{% endif %}>Klaipėda</option>
             </select>
         </div>
-        <div class="form-row form-row-required address-row">
+        <div class="form-row form-row-required address-row width463">
             <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
             <input type="text"
                    id="address"
