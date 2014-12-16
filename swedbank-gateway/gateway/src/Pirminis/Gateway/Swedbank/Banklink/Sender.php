@@ -4,8 +4,9 @@ namespace Pirminis\Gateway\Swedbank\Banklink;
 
 class Sender
 {
-    const DESTINATION = 'https://accreditation.datacash.com/Transaction/swedrep_i';
-    // const DESTINATION = 'https://mars.transaction.datacash.com/Transaction';
+    const DESTINATION = 'https://mars.transaction.datacash.com/Transaction';
+    // URL for testing below
+    // const DESTINATION = 'https://accreditation.datacash.com/Transaction/swedrep_i';
 
     protected $request_xml = '';
 

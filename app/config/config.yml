@@ -28,14 +28,14 @@ parameters:
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
-    # order.notify_emails: [mantas@foodout.lt, birute@foodout.lt, giedrius@foodout.lt]
-    order.notify_emails: [pirminis@gmail.com]
+    order.notify_emails: [mantas@foodout.lt, birute@foodout.lt, giedrius@foodout.lt]
+    # order.notify_emails: [pirminis@gmail.com]
     order.city_coordinators:
         vilnius: []
         kaunas: [zaneta@foodout.lt]
         klaipėda: [jurgita@foodout.lt]
-    # order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
-    order.accept_notify_emails: [pirminis@gmail.com]
+    order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
+    # order.accept_notify_emails: [pirminis@gmail.com]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
     domain: "foodout.lt"
@@ -385,10 +385,11 @@ trsteel_ckeditor:
 # Payment gateway
 pirminis_gateway:
     swedbank:
-        # vtid: "21911859"
-        vtid: "88185002"
-        # password: "rMUhc7p7"
-        password: "aXVdnHfZSJmz"
+        vtid: "21911859"
+        password: "rMUhc7p7"
+        # credentials for testing below
+        # vtid: "88185002"
+        # password: "aXVdnHfZSJmz"
 
 knp_snappy:
     pdf:
