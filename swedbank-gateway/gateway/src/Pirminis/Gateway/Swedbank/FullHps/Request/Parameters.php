@@ -26,11 +26,11 @@ class Parameters
 
     public function set($name, $value)
     {
-        if (false === array_search($name, $this->mandatory_params, true) ||
-            is_null($value)
-        ) {
+        if (false === array_search($name, $this->mandatory_params, true)) {
             throw new \InvalidArgumentException('Cannot set parameter.');
         }
+
+        if (is_null($value)) $value = '';
 
         if (in_array($name, $this->exceptional_params)) {
             if ($name == 'transaction_datetime') {
