@@ -51,8 +51,8 @@ fos_user_security:
 
 soanata_user:
     resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
-    prefix: /admin
-    #prefix: /{_locale}/admin
+    # prefix: /admin
+    prefix: /{_locale}/admin
 
 admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
