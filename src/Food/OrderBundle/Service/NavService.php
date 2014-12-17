@@ -123,8 +123,8 @@ class NavService extends ContainerAware
             '213.190.40.38',
             5566,
             'prototipas6', //'skamb_centras',
-            'fo_order',
-            'peH=waGe?zoOs69'
+            'Neotest',
+            'NewNeo@123'
         );
 
         return $isConnected ? $sqlSS : $isConnected;
