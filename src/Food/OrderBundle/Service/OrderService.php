@@ -624,9 +624,12 @@ class OrderService extends ContainerAware
     {
         if (empty($this->order))
         {
+            $e = new \Exception("Dude - no order here :)");
             // Log this shit, as this happens alot so we need info to debug
-            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 20);
-            throw new \Exception("Dude - no order here :)\nBacktrace:\n".var_export($backtrace));
+            $this->container->get('logger')->error(
+                $e->getMessage()."\nTrace: ".$e->getTraceAsString()
+            );
+            throw $e;
         }
         return $this->order;
     }
