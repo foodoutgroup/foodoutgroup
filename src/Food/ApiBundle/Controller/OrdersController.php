@@ -106,6 +106,8 @@ class OrdersController extends Controller
 
     public function confirmOrderAction($id)
     {
+        mail("paulius@foodout.lt", "Some freaky start ".$id." 1", "This is the end", "FROM: info@foodout.lt");
+
         try {
             $order = $this->get('food.order')->getOrderById($id);
 
@@ -123,11 +125,13 @@ class OrdersController extends Controller
             $this->get('food.order')->statusNew('api');
             $this->get('food.order')->saveOrder();
             $this->get('food.order')->informPlace();
-
+            mail("paulius@foodout.lt", "Some freaky start ".$id." After inform", "This is the end", "FROM: info@foodout.lt");
             return new JsonResponse($this->get('food_api.order')->getOrderForResponse($order));
         }  catch (ApiException $e) {
+            mail("paulius@foodout.lt", "Some freaky start ".$id." API", "This is the end", "FROM: info@foodout.lt");
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         }  catch (\Exception $e) {
+            mail("paulius@foodout.lt", "Some freaky start ".$id." GENERAL", "This is the end", "FROM: info@foodout.lt");
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
