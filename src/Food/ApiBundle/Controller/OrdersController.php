@@ -106,6 +106,8 @@ class OrdersController extends Controller
 
     public function confirmOrderAction($id)
     {
+        mb_internal_encoding('utf-8');
+
         try {
             $order = $this->get('food.order')->getOrderById($id);
 

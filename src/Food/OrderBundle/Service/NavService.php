@@ -577,8 +577,10 @@ class NavService extends ContainerAware
     {
         if (!$order->getNavPriceUpdated()) {
             $orderId = $this->getNavOrderId($order);
+            ob_start();
             $client = $this->getWSConnection();
             $return = $client->FoodOutUpdatePrices(array('pInt' =>(int)$orderId));
+            ob_end_clean();
             $order->setNavPriceUpdated(true);
             $this->getContainer()->get('doctrine')->getManager()->merge($order);
             $this->getContainer()->get('doctrine')->getManager()->flush();
@@ -597,8 +599,10 @@ class NavService extends ContainerAware
         $sqlSS = $this->initSqlConn()->query($query);
 
         if (!$order->getNavPorcessedOrder()) {
+            ob_start();
             $client = $this->getWSConnection();
             $return = $client->FoodOutProcessOrder(array('pInt' =>(int)$orderId));
+            ob_end_flush();
             $order->setNavPorcessedOrder(true);
             $this->getContainer()->get('doctrine')->getManager()->merge($order);
             $this->getContainer()->get('doctrine')->getManager()->flush();
