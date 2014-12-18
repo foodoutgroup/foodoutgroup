@@ -106,6 +106,7 @@ class OrdersController extends Controller
 
     public function confirmOrderAction($id)
     {
+        mb_internal_encoding('utf-8');
         mail("paulius@foodout.lt", "Some freaky start ".$id." 1", "This is the end", "FROM: info@foodout.lt");
 
         try {
