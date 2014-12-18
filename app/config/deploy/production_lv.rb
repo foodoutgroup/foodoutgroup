@@ -8,6 +8,7 @@ set :user, "skanu.lt"
 set :password, "veM6hee0"
 
 set :symfony_env_prod, "prod"
+set :clear_controllers, false
 ssh_options[:keys] = ["C:\Users\drawgas\.ssh\id_rsa"]
 
 role :web,        domain                         # Your HTTP server, Apache/etc
