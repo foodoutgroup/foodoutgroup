@@ -325,7 +325,7 @@
             </trans-unit>
             <trans-unit id="admin.place.name">
                 <source>admin.place.name</source>
-                <target>Place name/target>
+                <target>Place name</target>
             </trans-unit>
             <trans-unit id="admin.place.delivery_time">
                 <source>admin.place.delivery_time</source>
