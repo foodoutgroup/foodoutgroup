@@ -125,6 +125,7 @@ class PaySeraBillingTest extends \PHPUnit_Framework_TestCase {
             'cancelurl' => $cancelUrl,
             'callbackurl' => $callbackUrl,
             'test' => 1,
+            'time_limit' => date('Y-m-d H:i:s', strtotime('+1 hour')),
         );
 
 
