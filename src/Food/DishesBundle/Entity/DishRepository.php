@@ -6,6 +6,10 @@ use Doctrine\ORM\EntityRepository;
 class DishRepository extends EntityRepository
 {
 
+    /**
+     * @param integer $categoryId
+     * @return array
+     */
     public function getCategoryActiveDishes($categoryId)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -18,6 +22,10 @@ class DishRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @param int $dishId
+     * @return array
+     */
     public function getSmallestPrice($dishId)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -31,6 +39,10 @@ class DishRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @param int $dishId
+     * @return array
+     */
     public function getLargestPrice($dishId)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -44,6 +56,10 @@ class DishRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @param int $dishId
+     * @return array
+     */
     public function getSmallestDiscountPrice($dishId)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -58,6 +74,10 @@ class DishRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @param int $dishId
+     * @return array
+     */
     public function getLargestDiscountPrice($dishId)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -72,7 +92,10 @@ class DishRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-
+    /**
+     * @param int $dishId
+     * @return bool
+     */
     public function hasDiscountPrice($dishId)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
