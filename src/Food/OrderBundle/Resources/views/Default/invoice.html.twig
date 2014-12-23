@@ -82,11 +82,11 @@
         </tr>
     {% endfor %}
 
-    {% set sum_no_vat = ((order.total - order.place.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
+    {% set sum_no_vat = ((order.total - order.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
 
     {% if order.deliveryType == 'deliver' %}
-        {% set sum_no_vat = ((order.total - order.place.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
-        {% set delivery_no_vat =  (order.place.deliveryPrice / (( vat_size / 100 ) + 1))|round(2) %}
+        {% set sum_no_vat = ((order.total - order.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
+        {% set delivery_no_vat =  (order.deliveryPrice / (( vat_size / 100 ) + 1))|round(2) %}
     {% else %}
         {% set sum_no_vat = ((order.total) / (( vat_size / 100 ) + 1))|round(2) %}
         {% set delivery_no_vat =  0 %}
@@ -112,7 +112,7 @@
             <td></td>
             <td>{% trans %}order.invoice.delivery{% endtrans %}</td>
             <td class="sum_col">{{ delivery_no_vat|number_format(2, ',', ' ') }} {{ currency_display }}</td>
-            <td class="sum_col">&euro; {{ misc_utils.euro(order.place.deliveryPrice) }}</td>
+            <td class="sum_col">&euro; {{ misc_utils.euro(order.deliveryPrice) }}</td>
         </tr>
     {% endif %}
 

@@ -230,9 +230,10 @@ class OrderService extends ContainerAware
     /**
      * @param int $placeId
      * @param PlacePoint $placePoint
+     * @param boolean $fromConsole
      * @return Order
      */
-    public function createOrder($placeId, $placePoint=null)
+    public function createOrder($placeId, $placePoint=null, $fromConsole=false)
     {
         $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
         if (empty($placePoint)) {
@@ -243,8 +244,12 @@ class OrderService extends ContainerAware
         }
 
         $this->order = new Order();
-        $user = $this->container->get('security.context')->getToken()->getUser();
-        if ($user == 'anon.') {
+        if (!$fromConsole) {
+            $user = $this->container->get('security.context')->getToken()->getUser();
+            if ($user == 'anon.') {
+                $user = null;
+            }
+        } else {
             $user = null;
         }
         $this->order->setPlace($placeRecord);
@@ -261,13 +266,18 @@ class OrderService extends ContainerAware
         $this->order->setUser($user);
         $this->order->setOrderDate(new \DateTime("now"));
         $this->order->setDeliveryTime($deliveryTime);
+        $this->order->setDeliveryPrice($placeRecord->getDeliveryPrice());
         $this->order->setVat($this->container->getParameter('vat'));
         $this->order->setOrderHash(
             $this->generateOrderHash($this->order)
         );
 
         // Log user IP address
-        $this->order->setUserIp($this->container->get('request')->getClientIp());
+        if (!$fromConsole) {
+            $this->order->setUserIp($this->container->get('request')->getClientIp());
+        } else {
+            $this->order->setUserIp('');
+        }
 
         return $this->getOrder();
     }
@@ -322,45 +332,48 @@ class OrderService extends ContainerAware
         if ($this->getOrder()->getOrderStatus() == self::$status_new) {
             $recipient = $this->getOrder()->getUser()->getPhone();
 
-            if (!empty($recipient)) {
-                $smsService = $this->container->get('food.messages');
+            // SMS siunciam tik tuo atveju jei orderis ne is callcentro
+            if ($this->getOrder()->getOrderFromNav() == false) {
+                if (!empty($recipient)) {
+                    $smsService = $this->container->get('food.messages');
 
-                $sender = $this->container->getParameter('sms.sender');
+                    $sender = $this->container->getParameter('sms.sender');
 
-                $translation = 'general.sms.user.order_accepted';
-                if ($this->getOrder()->getDeliveryType() == 'pickup') {
-                    $translation = 'general.sms.user.order_accepted_pickup';
+                    $translation = 'general.sms.user.order_accepted';
+                    if ($this->getOrder()->getDeliveryType() == 'pickup') {
+                        $translation = 'general.sms.user.order_accepted_pickup';
+                    }
+
+                    $placeName = $this->container->get('food.app.utils.language')
+                        ->removeChars('lt', $this->getOrder()->getPlaceName(), false, false);
+                    $placeName = ucfirst($placeName);
+
+                    $text = $this->container->get('translator')
+                        ->trans(
+                            $translation,
+                            array(
+                                'restourant_name' => $placeName,
+                                'delivery_time' => $this->getOrder()->getPlace()->getDeliveryTime(),
+                                'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone()
+                            ),
+                            null,
+                            $this->getOrder()->getLocale()
+                        );
+
+                    $message = $smsService->createMessage($sender, $recipient, $text);
+                    $smsService->saveMessage($message);
                 }
+                $this->getOrder()->setAcceptTime(new \DateTime("now"));
+                $dt = new \DateTime('now');
+                $dt->add(new \DateInterval('P0DT1H0M0S'));
+                $this->getOrder()->setDeliveryTime($dt);
+                $this->saveOrder();
+                $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
+                $this->_notifyOnAccepted();
 
-                $placeName = $this->container->get('food.app.utils.language')
-                    ->removeChars('lt', $this->getOrder()->getPlaceName(), false, false);
-                $placeName = ucfirst($placeName);
-
-                $text = $this->container->get('translator')
-                    ->trans(
-                        $translation,
-                        array(
-                            'restourant_name' => $placeName,
-                            'delivery_time' => $this->getOrder()->getPlace()->getDeliveryTime(),
-                            'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone()
-                        ),
-                        null,
-                        $this->getOrder()->getLocale()
-                    );
-
-                $message = $smsService->createMessage($sender, $recipient, $text);
-                $smsService->saveMessage($message);
+                // Notify Dispatchers
+                $this->notifyOrderAccept();
             }
-            $this->getOrder()->setAcceptTime(new \DateTime("now"));
-            $dt = new \DateTime('now');
-            $dt->add(new \DateInterval('P0DT1H0M0S'));
-            $this->getOrder()->setDeliveryTime($dt);
-            $this->saveOrder();
-            $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
-            $this->_notifyOnAccepted();
-
-            // Notify Dispatchers
-            $this->notifyOrderAccept();
 
             // Put for logistics
             $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
@@ -525,26 +538,30 @@ class OrderService extends ContainerAware
 //        $accounting = $order->getAccounting();
 
         // if not generated yet - do it!
-        if (empty($accounting)) {
+//        if (empty($accounting)) {
             // TODO kolkas stabdome. Pirmam testavimui reikia susitvarkyti su SMS'ais ir mobile vairuotojo aplinka, vaztarasciu
 //            $accounting = $accountingService->generateAccounting($this->getOrder());
 
             // TODO upload accounting
+//        }
+
+        // Pristatymo emaila siunciam tik uzsakymams ne is Nav call centro
+        if ($this->getOrder()->getOrderFromNav() == false) {
+            $ml = $this->container->get('food.mailer');
+            $slugUtil = $this->container->get('food.dishes.utils.slug');
+            $slugUtil->setLocale($this->getOrder()->getLocale());
+
+            $variables = array(
+                'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
+                'miestas' => $this->getOrder()->getPlacePoint()->getCity(),
+                'maisto_review_url' => 'http://www.foodout.lt/lt/' . $slugUtil->getSlugByItem(
+                        $this->getOrder()->getPlace()->getId(),
+                        'place'
+                    ) . '/#detailed-restaurant-review'
+            );
+
+            $ml->setVariables($variables)->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId(30009271)->send();
         }
-        $ml = $this->container->get('food.mailer');
-        $slugUtil = $this->container->get('food.dishes.utils.slug');
-        $slugUtil->setLocale($this->getOrder()->getLocale());
-
-        $variables = array(
-            'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
-            'miestas' => $this->getOrder()->getPlacePoint()->getCity(),
-            'maisto_review_url' => 'http://www.foodout.lt/lt/'.$slugUtil->getSlugByItem(
-                    $this->getOrder()->getPlace()->getId(),
-                    'place'
-            ).'/#detailed-restaurant-review'
-        );
-
-       $ml->setVariables( $variables )->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30009271 )->send();
 
         return $this;
     }
@@ -571,7 +588,7 @@ class OrderService extends ContainerAware
     {
         // If restourant (or Foodout) has canceled order - send informational SMS message to user
         $userPhone = $this->getOrder()->getUser()->getPhone();
-        if (!empty($userPhone)) {
+        if (!empty($userPhone) && $this->getOrder()->getOrderFromNav() == false) {
             $messagingService = $this->container->get('food.messages');
 
             // If not paid by banklink or paysera
@@ -595,7 +612,10 @@ class OrderService extends ContainerAware
         // Put for logistics to cancel on their side
         $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
 
-        $this->informPaidOrderCanceled();
+        // Importuotiems is 1822 nesiunciame cancel
+        if ($this->getOrder()->getOrderFromNav() == false) {
+            $this->informPaidOrderCanceled();
+        }
 
         $this->chageOrderStatus(self::$status_canceled, $source, $statusMessage);
         return $this;
@@ -780,8 +800,11 @@ class OrderService extends ContainerAware
             $this->getEm()->persist($this->order);
             $this->getEm()->flush();
 
-            // log order data (if we have listeners)
-            $this->logOrderForNav($this->order);
+            // TODO kolkas i buhalterine nekisam - istestave importo veikima, pabaigiam sita vieta
+            if ($this->getOrder()->getOrderFromNav() == false) {
+                // log order data (if we have listeners)
+                $this->logOrderForNav($this->order);
+            }
         }
     }
 
@@ -825,6 +848,29 @@ class OrderService extends ContainerAware
 
         // TODO negrazu, bet laikina :(
         $this->order = $order[0];
+
+        return $this->order;
+    }
+
+    /**
+     * @param int $id Nav delivery Order Id
+     *
+     * @throws \Exception
+     * @return Order|false
+     */
+    public function getOrderByNavDeliveryId($id)
+    {
+        $em = $this->container->get('doctrine')->getManager();
+        $order = $em->getRepository('Food\OrderBundle\Entity\Order')
+            ->findOneBy(
+                array('navDeliveryOrder' => $id), null, 1
+            );
+
+        if (!$order) {
+            return false;
+        }
+
+        $this->order = $order;
 
         return $this->order;
     }

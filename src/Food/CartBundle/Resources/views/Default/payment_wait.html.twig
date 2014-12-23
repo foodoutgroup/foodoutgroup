@@ -21,7 +21,7 @@
         'id': '{{ order.orderHash }}', // transaction ID - required
         'affiliation': '{{ order.place.name }}', // affiliation or store name
         'revenue': '{{ order.total }}',      // total - required
-        'shipping': '{{ order.place.deliveryPrice }}', // shipping
+        'shipping': '{{ order.deliveryPrice }}', // shipping
         'tax': '{{ order.vat }}',        // tax
         'currency': '{{ currency_iso }}'
     });

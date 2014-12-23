@@ -74,12 +74,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "26df03201f01d81dc6e7f903285b3f4bdaaca7d4"
+                "reference": "07aed453474847b32a1078972b1db7a9afaca3cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/26df03201f01d81dc6e7f903285b3f4bdaaca7d4",
-                "reference": "26df03201f01d81dc6e7f903285b3f4bdaaca7d4",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/07aed453474847b32a1078972b1db7a9afaca3cb",
+                "reference": "07aed453474847b32a1078972b1db7a9afaca3cb",
                 "shasum": ""
             },
             "require": {
@@ -133,7 +133,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2014-11-20 22:53:37"
+            "time": "2014-12-12 20:21:42"
         },
         {
             "name": "beberlei/DoctrineExtensions",
@@ -1324,16 +1324,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "7.0",
+            "version": "7.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "7a66a13b9b1c9c6af0a2bf869722497897553dea"
+                "reference": "82dbb587f2682ed389295293f1a511e2e778cbcf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/7a66a13b9b1c9c6af0a2bf869722497897553dea",
-                "reference": "7a66a13b9b1c9c6af0a2bf869722497897553dea",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/82dbb587f2682ed389295293f1a511e2e778cbcf",
+                "reference": "82dbb587f2682ed389295293f1a511e2e778cbcf",
                 "shasum": ""
             },
             "require": {
@@ -1380,7 +1380,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2014-11-03 14:47:13"
+            "time": "2014-11-25 13:22:15"
         },
         {
             "name": "guzzle/guzzle",
@@ -1989,16 +1989,16 @@
         },
         {
             "name": "knplabs/knp-snappy",
-            "version": "0.2.1",
+            "version": "0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/snappy.git",
-                "reference": "e5d1e7486d9344a6cc5c3194daad7a5141b92e6e"
+                "reference": "523d41047c117d973150c343dbd76160a045eeb6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/snappy/zipball/e5d1e7486d9344a6cc5c3194daad7a5141b92e6e",
-                "reference": "e5d1e7486d9344a6cc5c3194daad7a5141b92e6e",
+                "url": "https://api.github.com/repos/KnpLabs/snappy/zipball/523d41047c117d973150c343dbd76160a045eeb6",
+                "reference": "523d41047c117d973150c343dbd76160a045eeb6",
                 "shasum": ""
             },
             "require": {
@@ -2014,7 +2014,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.2.x-dev"
+                    "dev-master": "0.3.x-dev"
                 }
             },
             "autoload": {
@@ -2046,7 +2046,7 @@
                 "thumbnail",
                 "wkhtmltopdf"
             ],
-            "time": "2014-10-14 16:54:20"
+            "time": "2014-11-26 21:43:25"
         },
         {
             "name": "knplabs/knp-snappy-bundle",
@@ -2055,19 +2055,20 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpSnappyBundle.git",
-                "reference": "4e5a2cf512782bc665f26d0368735871e7476255"
+                "reference": "7cd7db8cb140ef3e0107d027876a2a999fd91e01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpSnappyBundle/zipball/4e5a2cf512782bc665f26d0368735871e7476255",
-                "reference": "4e5a2cf512782bc665f26d0368735871e7476255",
+                "url": "https://api.github.com/repos/KnpLabs/KnpSnappyBundle/zipball/7cd7db8cb140ef3e0107d027876a2a999fd91e01",
+                "reference": "7cd7db8cb140ef3e0107d027876a2a999fd91e01",
                 "shasum": ""
             },
             "require": {
                 "knplabs/knp-snappy": "*",
                 "php": ">=5.3.2",
                 "symfony/finder": ">=2.0.0",
-                "symfony/framework-bundle": ">=2.0.0"
+                "symfony/framework-bundle": ">=2.0.0",
+                "symfony/validator": ">=2.0.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -2103,20 +2104,20 @@
                 "pdf",
                 "snappy"
             ],
-            "time": "2014-10-26 21:46:18"
+            "time": "2014-12-03 13:03:00"
         },
         {
             "name": "kriswallsmith/assetic",
-            "version": "v1.1.2",
+            "version": "v1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kriswallsmith/assetic.git",
-                "reference": "735cffd3982c6e8cdebe292d5db39d077f65890f"
+                "reference": "02105abcd35fb32933bc566e4c3bec84c612e9c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/735cffd3982c6e8cdebe292d5db39d077f65890f",
-                "reference": "735cffd3982c6e8cdebe292d5db39d077f65890f",
+                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/02105abcd35fb32933bc566e4c3bec84c612e9c1",
+                "reference": "02105abcd35fb32933bc566e4c3bec84c612e9c1",
                 "shasum": ""
             },
             "require": {
@@ -2174,7 +2175,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2013-07-19 00:03:27"
+            "time": "2014-12-12 05:37:00"
         },
         {
             "name": "leafo/lessphp",
@@ -2182,13 +2183,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafo/lessphp.git",
-                "reference": "011afcca8e6f1000a6e789921ba805fa578271a3"
+                "reference": "23f7caba70564c8cdfcc8f891b9f35d82223d6fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafo/lessphp/zipball/011afcca8e6f1000a6e789921ba805fa578271a3",
-                "reference": "011afcca8e6f1000a6e789921ba805fa578271a3",
+                "url": "https://api.github.com/repos/leafo/lessphp/zipball/23f7caba70564c8cdfcc8f891b9f35d82223d6fd",
+                "reference": "23f7caba70564c8cdfcc8f891b9f35d82223d6fd",
                 "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.3.*"
             },
             "type": "library",
             "extra": {
@@ -2215,7 +2219,7 @@
             ],
             "description": "lessphp is a compiler for LESS written in PHP.",
             "homepage": "http://leafo.net/lessphp/",
-            "time": "2014-04-27 02:56:30"
+            "time": "2014-11-24 19:21:51"
         },
         {
             "name": "michelf/php-markdown",
@@ -2650,17 +2654,17 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v2.3.5",
+            "version": "v2.3.6",
             "target-dir": "Sensio/Bundle/DistributionBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "715fcb65f9a4841ffaf40c0bf050329d74c84cad"
+                "reference": "ddcfeaeb504ece5de546dbefd5c527eed7453048"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/715fcb65f9a4841ffaf40c0bf050329d74c84cad",
-                "reference": "715fcb65f9a4841ffaf40c0bf050329d74c84cad",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/ddcfeaeb504ece5de546dbefd5c527eed7453048",
+                "reference": "ddcfeaeb504ece5de546dbefd5c527eed7453048",
                 "shasum": ""
             },
             "require": {
@@ -2692,7 +2696,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2014-09-03 12:25:05"
+            "time": "2014-12-03 13:50:45"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -2912,12 +2916,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "254f05b01b0de0665bb5de9bff7d9e2e71fcb8a6"
+                "reference": "2a94ad425edd6514f66084b95f181f57c79c0ace"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/254f05b01b0de0665bb5de9bff7d9e2e71fcb8a6",
-                "reference": "254f05b01b0de0665bb5de9bff7d9e2e71fcb8a6",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/2a94ad425edd6514f66084b95f181f57c79c0ace",
+                "reference": "2a94ad425edd6514f66084b95f181f57c79c0ace",
                 "shasum": ""
             },
             "require": {
@@ -2968,7 +2972,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-10-27 10:21:58"
+            "time": "2014-12-16 13:29:51"
         },
         {
             "name": "sonata-project/cache",
@@ -3692,16 +3696,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.3.0",
+            "version": "v5.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "b86b927dfefdb56ab0b22d1350033d9a38e9f205"
+                "reference": "c5f963e7f9d6f6438fda4f22d5cc2db296ec621a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/b86b927dfefdb56ab0b22d1350033d9a38e9f205",
-                "reference": "b86b927dfefdb56ab0b22d1350033d9a38e9f205",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/c5f963e7f9d6f6438fda4f22d5cc2db296ec621a",
+                "reference": "c5f963e7f9d6f6438fda4f22d5cc2db296ec621a",
                 "shasum": ""
             },
             "require": {
@@ -3740,7 +3744,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2014-10-04 05:53:18"
+            "time": "2014-12-05 14:17:14"
         },
         {
             "name": "symfony/assetic-bundle",
@@ -3915,17 +3919,16 @@
         },
         {
             "name": "symfony/swiftmailer-bundle",
-            "version": "v2.3.7",
-            "target-dir": "Symfony/Bundle/SwiftmailerBundle",
+            "version": "v2.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/SwiftmailerBundle.git",
-                "reference": "e98defd402f72e8b54a029ba4d3ac4cb51dc3577"
+                "reference": "970b13d01871207e81d17b17ddda025e7e21e797"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/SwiftmailerBundle/zipball/e98defd402f72e8b54a029ba4d3ac4cb51dc3577",
-                "reference": "e98defd402f72e8b54a029ba4d3ac4cb51dc3577",
+                "url": "https://api.github.com/repos/symfony/SwiftmailerBundle/zipball/970b13d01871207e81d17b17ddda025e7e21e797",
+                "reference": "970b13d01871207e81d17b17ddda025e7e21e797",
                 "shasum": ""
             },
             "require": {
@@ -3939,6 +3942,9 @@
                 "symfony/http-kernel": "~2.1",
                 "symfony/yaml": "~2.1"
             },
+            "suggest": {
+                "psr/log": "Allows logging"
+            },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -3946,8 +3952,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Symfony\\Bundle\\SwiftmailerBundle": ""
+                "psr-4": {
+                    "Symfony\\Bundle\\SwiftmailerBundle\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3956,19 +3962,17 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony SwiftmailerBundle",
             "homepage": "http://symfony.com",
-            "time": "2014-04-05 17:15:52"
+            "time": "2014-12-01 17:44:50"
         },
         {
             "name": "symfony/symfony",
@@ -4101,9 +4105,9 @@
             "require": {
                 "ezyang/htmlpurifier": "~4.0",
                 "php": ">=5.3.0",
-                "symfony/form": ">=2.1,<2.6-dev",
-                "symfony/framework-bundle": "2.*,<2.6",
-                "twig/twig": ">=1.1,<2.0-dev"
+                "symfony/form": ">=2.1,<2.7",
+                "symfony/framework-bundle": "2.*,<2.7",
+                "twig/twig": ">=1.1,<2.0"
             },
             "require-dev": {
                 "symfony/twig-bundle": "2.*,<2.6",
@@ -4283,12 +4287,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/evp/WebToPayBundle.git",
-                "reference": "fac566911f7b3da4086f2eb0511014bbe5838e4a"
+                "reference": "4be0ca3872f29e353250a63d142f8bcdc27ec89b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/evp/WebToPayBundle/zipball/fac566911f7b3da4086f2eb0511014bbe5838e4a",
-                "reference": "fac566911f7b3da4086f2eb0511014bbe5838e4a",
+                "url": "https://api.github.com/repos/evp/WebToPayBundle/zipball/4be0ca3872f29e353250a63d142f8bcdc27ec89b",
+                "reference": "4be0ca3872f29e353250a63d142f8bcdc27ec89b",
                 "shasum": ""
             },
             "require": {
@@ -4304,11 +4308,11 @@
             "authors": [
                 {
                     "name": "EVP International",
-                    "homepage": "http://www.webtopay.com/"
+                    "homepage": "https://www.paysera.com/"
                 }
             ],
             "description": "Symfony2 bundle for WebToPay provided services",
-            "time": "2014-01-21 15:34:06"
+            "time": "2014-12-10 11:43:47"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -4530,6 +4534,7 @@
         "aws/aws-sdk-php": 20
     },
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": {
         "php": ">=5.3.3"
     },

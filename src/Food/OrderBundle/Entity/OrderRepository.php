@@ -452,9 +452,10 @@ class OrderRepository extends EntityRepository
 
     /**
      * @param $timeBack string|null
+     * @param boolean $skipImportedFromNav
      * @return array
      */
-    public function getCurrentNavOrders($timeBack = null)
+    public function getCurrentNavOrders($timeBack = null, $skipImportedFromNav = false)
     {
         if (empty($timeBack)) {
             $timeBack = '-1 day';
@@ -476,6 +477,10 @@ class OrderRepository extends EntityRepository
                 ),
                 'navision' => 1,
             ));
+
+        if ($skipImportedFromNav) {
+            $qb->andWhere('o.orderFromNav != 1');
+        }
 
         return $qb->getQuery()
             ->getResult();

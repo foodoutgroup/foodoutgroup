@@ -46,8 +46,8 @@
             {% set totalSumBanklink = 0 %}
             {% set totalSumDriver = 0 %}
             {% for order in orders.our_deliver %}
-                {% set sum_no_vat = ((order.total - order.place.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
-                {% set delivery_no_vat =  (order.place.deliveryPrice / (( vat_size / 100 ) + 1))|round(2) %}
+                {% set sum_no_vat = ((order.total - order.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
+                {% set delivery_no_vat =  (order.deliveryPrice / (( vat_size / 100 ) + 1))|round(2) %}
                 <tr>
                     <td>{{ order.id }}</td>
                     <td>{{ order.sfSeries }} {{ order.sfNumber }}</td>
@@ -65,7 +65,7 @@
                     <td>{{ order.couponCode }}</td>
                     <td>{{ order.discountSize }}</td>
                     <td>{{ order.discountSum }}</td>
-                    <td class="sum">{{ order.place.deliveryPrice }}</td>
+                    <td class="sum">{{ order.deliveryPrice }}</td>
                     <td class="sum">{{ delivery_no_vat }}</td>
                     <td class="sum">{{ sum_no_vat }}</td>
                     <td class="sum">{{ order.total - (sum_no_vat + delivery_no_vat) }}</td>
@@ -110,8 +110,8 @@
             {% set totalSumBanklink = 0 %}
             {% set totalSumDriver = 0 %}
             {% for order in orders.self_delivered %}
-                {% set sum_no_vat = ((order.total - order.place.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
-                {% set delivery_no_vat =  (order.place.deliveryPrice / (( vat_size / 100 ) + 1))|round(2) %}
+                {% set sum_no_vat = ((order.total - order.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
+                {% set delivery_no_vat =  (order.deliveryPrice / (( vat_size / 100 ) + 1))|round(2) %}
                 <tr>
                     <td>{{ order.id }}</td>
                     <td>{{ order.sfSeries }} {{ order.sfNumber }}</td>
@@ -122,7 +122,7 @@
                     <td>{{ order.couponCode }}</td>
                     <td>{{ order.discountSize }}</td>
                     <td>{{ order.discountSum }}</td>
-                    <td class="sum">{{ order.place.deliveryPrice }}</td>
+                    <td class="sum">{{ order.deliveryPrice }}</td>
                     <td class="sum">{{ delivery_no_vat }}</td>
                     <td class="sum">{{ sum_no_vat }}</td>
                     <td class="sum">{{ order.total - (sum_no_vat + delivery_no_vat) }}</td>
