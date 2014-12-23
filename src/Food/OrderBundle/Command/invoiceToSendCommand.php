@@ -76,10 +76,20 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                         $output->writeln('Invoice sent to emails: '.implode(', ', $emails));
                     }
                 } catch (\Exception $e) {
+                    // mark error (for historical reasons)
+                    // but please _DO NOT_ mark it unsent!
                     $orderToSend->markError()
                         ->setLastError($e->getMessage());
 
                     $em->persist($orderToSend);
+                    $em->flush();
+
+                    // recreate original invoice to send since it was unsent
+                    $originalOrderToSend = clone($orderToSend);
+                    $originalOrderToSend->markUnsent()
+                                        ->setLastError('');
+
+                    $em->persist($originalOrderToSend);
                     $em->flush();
 
                     throw $e;
