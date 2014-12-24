@@ -16,6 +16,7 @@ class ShoppingBasket extends ContainerAware{
         ),
         'total_price' => array(
             'amount' => 0,
+            'discount' => 0,
             'currency' => 'LTL'
         ),
         'items' => array(),

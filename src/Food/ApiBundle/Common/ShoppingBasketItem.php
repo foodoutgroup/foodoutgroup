@@ -19,6 +19,7 @@ class ShoppingBasketItem extends ContainerAware
         "additional_info" => "",
         "price"=> array(
             "amount" => 0,
+            "amount_old" => 0,
             "currency"=> "LTL"
         )
     );
@@ -86,6 +87,7 @@ class ShoppingBasketItem extends ContainerAware
                 'price',
                 array(
                     'amount' => $this->_contDaPriceOfAll($cartItem) * 100, // @todo
+                    'amount_old' => ($cartItem->getDishId()->getShowDiscount() ? $this->_contDaPriceOfAllOld($cartItem) * 100 : 0),
                     'currency' => 'LTL'
                 )
             );
@@ -108,5 +110,11 @@ class ShoppingBasketItem extends ContainerAware
     {
         $cartItem->setEm($this->container->get('doctrine'));
         return $this->container->get('food.cart')->getCartTotal(array($cartItem), $cartItem->getPlaceId());
+    }
+
+    private function _contDaPriceOfAllOld(Cart $cartItem)
+    {
+        $cartItem->setEm($this->container->get('doctrine'));
+        return $this->container->get('food.cart')->getCartTotalOld(array($cartItem), $cartItem->getPlaceId());
     }
 }

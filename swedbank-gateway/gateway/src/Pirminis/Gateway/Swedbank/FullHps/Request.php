@@ -31,32 +31,67 @@ class Request
     protected $fullHPSRequestXml = <<<FULLHPSREQUEST
 <?xml version="1.0" encoding="UTF-8"?>
 <Request version="2">
-    <Authentication>
-        <client>%client%</client>
-        <password>%password%</password>
-    </Authentication>
-    <Transaction>
-        <TxnDetails>
-            <merchantreference>%order_id%</merchantreference>
-            <ThreeDSecure>
-                <merchant_url>http://foodout.lt</merchant_url>
-                <purchase_datetime>%transaction_datetime%</purchase_datetime>
-                <purchase_desc>%comment%</purchase_desc>
-                <verify>yes</verify>
-            </ThreeDSecure>
-            <capturemethod>ecomm</capturemethod>
-            <amount currency="LTL">%price%</amount>
-        </TxnDetails>
-        <HpsTxn>
-            <page_set_id>1360</page_set_id>
-            <method>setup_full</method>
-            <return_url>%return_url%</return_url>
-            <expiry_url>%expiry_url%</expiry_url>
-        </HpsTxn>
-        <CardTxn>
-            <method>auth</method>
-        </CardTxn>
-    </Transaction>
+  <Authentication>
+    <client>%client%</client>
+    <password>%password%</password>
+  </Authentication>
+  <Transaction>
+    <TxnDetails>
+      <Risk>
+        <Action service="1">
+          <MerchantConfiguration>
+            <channel>W</channel>
+          </MerchantConfiguration>
+          <CustomerDetails>
+            <OrderDetails>
+              <BillingDetails>
+                <country>%country%</country>
+              </BillingDetails>
+            </OrderDetails>
+            <PersonalDetails>
+              <surname>%surname%</surname>
+              <first_name>%name%</first_name>
+              <telephone>%telephone%</telephone>
+            </PersonalDetails>
+            <ShippingDetails>
+              <first_name>%name%</first_name>
+              <surname>%surname%</surname>
+              <address_line1>%shipping_address%</address_line1>
+              <address_line2 />
+              <city>%city%</city>
+              <country>%country%</country>
+            </ShippingDetails>
+            <PaymentDetails>
+              <payment_method>CC</payment_method>
+            </PaymentDetails>
+            <RiskDetails>
+              <email_address>%email%</email_address>
+              <ip_address>%ip%</ip_address>
+            </RiskDetails>
+          </CustomerDetails>
+        </Action>
+      </Risk>
+      <merchantreference>%order_id%</merchantreference>
+      <ThreeDSecure>
+        <merchant_url>http://foodout.lt</merchant_url>
+        <purchase_datetime>%transaction_datetime%</purchase_datetime>
+        <purchase_desc>%comment%</purchase_desc>
+        <verify>yes</verify>
+      </ThreeDSecure>
+      <capturemethod>ecomm</capturemethod>
+      <amount currency="LTL">%price%</amount>
+    </TxnDetails>
+    <HpsTxn>
+      <page_set_id>1360</page_set_id>
+      <!-- for testing <page_set_id>4</page_set_id> -->
+      <method>setup_full</method>
+      <return_url>%return_url%</return_url>
+      <expiry_url>%expiry_url%</expiry_url>
+    </HpsTxn>
+    <CardTxn>
+      <method>auth</method>
+    </CardTxn>
+  </Transaction>
 </Request>
 FULLHPSREQUEST;
 }

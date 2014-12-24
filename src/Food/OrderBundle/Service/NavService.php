@@ -326,11 +326,11 @@ class NavService extends ContainerAware
         $comment = $order->getComment();
 
         if ($order->getPaymentMethod() == "local.card") {
-            $comment.="## MOKEJIMAS:KORTELE";
+            $comment.=". Mokesiu kortele";
         } elseif ($order->getPaymentMethod() == "local") {
-            $comment.="## MOKEJIMAS:GRYNAIS";
+            $comment.=". Mokesiu grynais";
         } else {
-            $comment.="## MOKEJIMAS:APMOKETA";
+
         }
 
         $dataToPut = array(
@@ -380,9 +380,43 @@ class NavService extends ContainerAware
             $theKey = $theKey + 1;
         }
 
+        if ($order->getPaymentMethod() != "local.card" && $order->getPaymentMethod() != "local") {
+            $this->_processPayedLineDelivery($order, $orderNewId, $theKey);
+            $theKey = $theKey + 1;
+        }
+
         if ($order->getDeliveryType() == OrderService::$deliveryDeliver) {
             $this->_processLineDelivery($orderNewId, $theKey);
         }
+    }
+
+    /**
+     * @param $orderNewId
+     * @param $key
+     *
+     */
+    private function _processPayedLineDelivery(Order $order, $orderNewId, $key)
+    {
+        $dataToPut = array(
+            'Order No_' => $orderNewId,
+            'Line No_' => $key,
+            'Entry Type' => 3,
+            'No_' => "'B_SWED'",
+            'Description' => "''",
+            'Quantity' => 1,
+            'Price' => $order->getTotal(),
+            'Parent Line' => 0,
+            'Amount' => 0,
+            'Discount Amount' => 0,
+            'Payment' => 0,
+            'Value' => "''"
+        );
+
+        $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
+
+        $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
+        @mail("paulius@foodout.lt", '#'.($orderNewId - $this->_orderIdModifier).' [SQL Line Query]-#PREPAID', $query, "FROM: info@foodout.lt");
+        $sqlSS = $this->initSqlConn()->query($query);
     }
 
     /**
@@ -580,8 +614,10 @@ class NavService extends ContainerAware
     {
         if (!$order->getNavPriceUpdated()) {
             $orderId = $this->getNavOrderId($order);
+            ob_start();
             $client = $this->getWSConnection();
             $return = $client->FoodOutUpdatePrices(array('pInt' =>(int)$orderId));
+            ob_end_clean();
             $order->setNavPriceUpdated(true);
             $this->getContainer()->get('doctrine')->getManager()->merge($order);
             $this->getContainer()->get('doctrine')->getManager()->flush();
@@ -600,8 +636,10 @@ class NavService extends ContainerAware
         $sqlSS = $this->initSqlConn()->query($query);
 
         if (!$order->getNavPorcessedOrder()) {
+            ob_start();
             $client = $this->getWSConnection();
             $return = $client->FoodOutProcessOrder(array('pInt' =>(int)$orderId));
+            ob_end_flush();
             $order->setNavPorcessedOrder(true);
             $this->getContainer()->get('doctrine')->getManager()->merge($order);
             $this->getContainer()->get('doctrine')->getManager()->flush();
