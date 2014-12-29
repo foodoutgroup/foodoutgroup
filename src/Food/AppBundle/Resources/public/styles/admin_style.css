@@ -67,6 +67,19 @@ h4.padded {
 .driver-tooltip {
     text-align: left;
 }
+
+tr.late_warning {
+    background-color: #ff7f65 !important;
+}
+
+td.no-wrap {
+    white-space: nowrap;
+}
+
+.no-wrap span.glyphicon {
+    vertical-align: middle;
+}
+
 /* TODO prie buttono nupieski vairiuka */
 /*span.icon_steering_wheel {*/
     /*content: "";*/
