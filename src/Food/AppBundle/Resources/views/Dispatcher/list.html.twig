@@ -60,7 +60,7 @@
                         Dispatcher.recentOrders['{{ cityName }}']['{{ type }}'] = {{ order.id }};
                     </script>
                 {% endif %}
-                {% if (type == 'unconfirmed' and order.orderDate|date_modify("+10 minutes")|date("H:i:s") >= "now"|date("H:i:s")) or (type == 'unassigned' and order.placePointSelfDelivery != true and order.deliveryTime|date_modify("-25 minutes")|date("H:i:s") >= "now"|date("H:i:s")) %}
+                {% if (type == 'unconfirmed' and order.orderDate|date_modify("+10 minutes")|date("H:i:s") < "now"|date("H:i:s")) or (type == 'unassigned' and order.placePointSelfDelivery != true and order.deliveryTime|date_modify("-25 minutes")|date("H:i:s") >= "now"|date("H:i:s")) %}
                     {% set additional_class = 'late_warning' %}
                 {% else %}
                     {% set additional_class = '' %}
