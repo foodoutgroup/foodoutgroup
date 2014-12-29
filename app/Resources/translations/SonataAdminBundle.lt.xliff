@@ -1015,6 +1015,10 @@
                 <source>admin.order.ismobile</source>
                 <target>Mob</target>
             </trans-unit>
+            <trans-unit id="admin.order.ismobile_full">
+                <source>admin.order.ismobile_full</source>
+                <target>Mobile</target>
+            </trans-unit>
 
             <!-- Order logas pas sonata admina -->
             <trans-unit id="admin.order.order_log">
