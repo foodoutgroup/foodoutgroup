@@ -946,6 +946,9 @@ class NavService extends ContainerAware
         return $navIds;
     }
 
+    /**
+     * @param int $oId
+     */
     public function getOrderHeader($oId)
     {
         $orderId = $this->_orderIdModifier + (int)$oId;
@@ -964,6 +967,10 @@ class NavService extends ContainerAware
         echo "\n\n----------------------------------";
     }
 
+    /**
+     * @param null $date
+     * @throws \InvalidArgumentException
+     */
     public function syncDisDescription($date = null)
     {
         $result = $this->initSqlConn()->query('SELECT [No_], [Description], [Search Description] FROM '.$this->getItemsTable()." WHERE LEN([No_]) > 3 AND [No_] NOT LIKE 'DIS%'");
