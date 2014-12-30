@@ -1059,6 +1059,22 @@
                 <source>admin.dispatcher.comment</source>
                 <target>Client comment.</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.payment">
+                <source>admin.dispatcher.payment</source>
+                <target>Payment</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payement.local">
+                <source>admin.dispatcher.payement.local</source>
+                <target>Cash on delivery</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payement.local_card">
+                <source>admin.dispatcher.payement.local_card</source>
+                <target>Card on delivery</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payement.bank_link">
+                <source>admin.dispatcher.payement.bank_link</source>
+                <target>Online</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.unassigned">
                 <source>admin.dispatcher.unassigned</source>
                 <target>Unassigned</target>

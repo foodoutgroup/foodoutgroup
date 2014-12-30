@@ -88,6 +88,10 @@ td.no-wrap {
     /*width: 26px;*/
 /*}*/
 
+.narrow_col {
+    width: 70px;
+}
+
 .reports_list {
 
 }

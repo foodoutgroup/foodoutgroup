@@ -1059,6 +1059,22 @@
                 <source>admin.dispatcher.comment</source>
                 <target>Klient. koment.</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.payment">
+                <source>admin.dispatcher.payment</source>
+                <target>Apmok.</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payement.local">
+                <source>admin.dispatcher.payement.local</source>
+                <target>Gryn. atsiimant</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payement.local_card">
+                <source>admin.dispatcher.payement.local_card</source>
+                <target>Kort. atsiimant</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payement.bank_link">
+                <source>admin.dispatcher.payement.bank_link</source>
+                <target>Internetu</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.unassigned">
                 <source>admin.dispatcher.unassigned</source>
                 <target>Nepriskirti</target>
