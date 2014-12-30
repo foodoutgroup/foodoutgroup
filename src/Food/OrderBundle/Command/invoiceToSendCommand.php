@@ -38,6 +38,7 @@ class InvoiceToSendCommand extends ContainerAwareCommand
     {
         try {
             $invoiceService = $this->getContainer()->get('food.invoice');
+            $nav = $this->getContainer()->get('food.nav');
             $em = $this->getContainer()->get('doctrine')->getManager();
             $forcedEmail = $input->getOption('force-email');
             if (empty($forcedEmail)) {
@@ -68,10 +69,13 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                         $emails = $invoiceService->sendUserInvoice($orderToSend->getOrder(), $forcedEmail);
 
                         $orderToSend->setDateSent(new \DateTime('now'))
-                            ->markSent();
+                                    ->markSent();
 
                         $em->persist($orderToSend);
-                          $em->flush();
+                        $em->flush();
+
+                        // create invoice in NAVISION
+                        $nav->createInvoice($orderToSend);
 
                         $output->writeln('Invoice sent to emails: '.implode(', ', $emails));
                     }
