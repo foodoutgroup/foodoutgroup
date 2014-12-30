@@ -9,6 +9,7 @@ use Food\OrderBundle\Entity\OrderDetails;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\OrderBundle\Common;
 use Food\OrderBundle\Service\NavService\OrderDataForNavDecorator;
+use Food\OrderBundle\Service\Events\SoapFaultEvent;
 
 class NavService extends ContainerAware
 {
@@ -525,8 +526,8 @@ class NavService extends ContainerAware
     {
 
         $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
-        //$clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
-        $clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija%20Skambučių%20Centras/Codeunit/WEB_Service2";
+        $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
+        // $clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija%20Skambučių%20Centras/Codeunit/WEB_Service2";
 
         stream_wrapper_unregister('http');
         stream_wrapper_register('http', '\Food\OrderBundle\Common\FoNTLMStream') or die("Failed to register protocol");
@@ -572,6 +573,75 @@ class NavService extends ContainerAware
             $return = true;
         }
         return $return;
+    }
+
+    public function createInvoice(Order $order)
+    {
+        $response = new \StdClass();
+
+        // if user is not a company or didnt need an invoice - nothing to do here.
+        if (empty($order->getCompany())) {
+            return null;
+        }
+
+        // we will need to connect to a web service
+        $client = $this->getWSConnection();
+
+        // before requesting a web service method we must fill some mandatory parameters
+        $o = \Maybe($order);
+
+        // some calculations beforehand
+        $total = $o->getTotal()->val(0.0);
+        $discountTotal = $o->getDiscountSum()->val(0.0);
+        $deliveryTotal = $o->getPlace()->getDeliveryPrice()->val(0.0);
+        $foodTotal = $total - $discountTotal - $deliveryTotal;
+
+        // main variable that holds parameters for a Soap call
+        $params = ['InvoiceNo' => $o->getSfSeries()->val('') . $o->getSfNumber()->val(''),
+                   'OrderID' => $o->getId()->val('0'),
+                   'OrderDate' => $o->getOrderDate()->format('Y-m-d')->val('1754-01-01') .
+                                  ' ' .
+                                  $o->getOrderDate()->format('H:i:s')->val('00:00:00'),
+                   'RestaurantID' => $o->getPlace()->getId()->val('0'),
+                   'RestaurantName' => $o->getPlaceName()->val(''),
+                   'DriverID' => $o->getDriver()->getId()->val(''),
+                   'ClientName' => $o->getUser()->getFirstname()->val('') .
+                                   ' ' .
+                                   $o->getUser()->getLastname()->val(''),
+                   'RegistrationNo' => $o->getCompanyCode()->val(''),
+                   'VATRegistrationNo' => $o->getVATCode()->val(''),
+                   'DeliveryAddress' => $o->getAddressId()->getAddress()->val(''),
+                   'City' => $o->getPlacePointCity()->val(''),
+                   'PaymentType' => $o->getPaymentMethod()->val(''),
+                   'PaymentCode' => $this->convertPaymentType($o->getPaymentMethod()->val('')),
+                   'FoodAmount' => number_format($foodTotal, 2, '.', ''),
+                   'AlcoholAmount' => number_format(0.0, 2, '.', ''),
+                   'DeliveryAmount' => $o->getDeliveryType()->val('') == 'pickup'
+                                       ? '0.00'
+                                       : number_format($o->getDeliveryPrice()->val('0.0'), 2, '.', '')];
+
+        // send a call to a web service, but beware of exceptions
+        try {
+            $response = $client->FoodOutCreateInvoice(['params' => $params]);
+
+            $r = \Maybe($response);
+
+            // correct logic is when $response->return_value === 0
+            if (!($r->return_value->val('') === 0)) {
+                throw new \SoapFault((string) $r->return_value->val(''),
+                                     'Soap call "FoodOutCreateInvoice" didn\'t return 0.');
+            }
+        } catch (\SoapFault $e) {
+            $event = new SoapFaultEvent($e);
+
+            $this->getContainer()
+                 ->get('event_dispatcher')
+                 ->dispatch(SoapFaultEvent::SOAP_FAULT, $event);
+        }
+
+        $r = \Maybe($response);
+
+        return $r->return_value->val('') === 0 ? true : false;
     }
 
     /**
@@ -937,6 +1007,28 @@ class NavService extends ContainerAware
             $stmt = $this->container->get('doctrine')->getEntityManager()->getConnection()->prepare($query);
             $stmt->execute();
             $counter++;
+        }
+    }
+
+    protected function convertPaymentType($type)
+    {
+        switch ($type) {
+            case 'local':
+                return 'CASH';
+            case 'local.card':
+                return 'CC';
+            case 'paysera':
+                return 'BANK_PAYSERA';
+            case 'swedbank-gateway':
+                return 'BANK_SWED';
+            case 'swedbank-credit-card-gateway':
+                return 'BANK_CC';
+            case 'seb-banklink':
+                return 'BANK_SEB';
+            case 'nordea-banklink':
+                return 'BANK_NORD';
+            default:
+                return $type;
         }
     }
 }
