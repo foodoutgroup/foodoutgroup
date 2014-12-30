@@ -141,7 +141,7 @@ class OrderAdmin extends SonataAdmin
                 )
             )
             ->add('submittedForPayment', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.submitted_for_payment'))
-            ->add('driver.contact', null, array('label' => 'admin.order.driver'))
+            ->add('driverContact', null, array('label' => 'admin.order.driver'))
             ->add('lastUpdate', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.last_update'))
             ->add('lastPaymentError', 'string', array('label' => 'admin.order.last_payment_error'))
         ;

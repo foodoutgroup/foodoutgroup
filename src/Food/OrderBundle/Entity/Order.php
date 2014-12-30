@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Food\AppBundle\Entity\Driver;
 
 /**
  * @ORM\Table(name="orders")
@@ -1544,5 +1545,24 @@ class Order
     public function getNavPorcessedOrder()
     {
         return $this->navPorcessedOrder;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDriverContact()
+    {
+        try {
+            $driver = $this->getDriver();
+
+            if (!$driver instanceof Driver) {
+                return '';
+            }
+
+            return $driver->getContact();
+        } catch (\Exception $e) {
+            // No driver set or he is deleted :|
+            return '';
+        }
     }
 }
