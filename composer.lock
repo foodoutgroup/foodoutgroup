@@ -2660,17 +2660,17 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v2.3.6",
+            "version": "v2.3.7",
             "target-dir": "Sensio/Bundle/DistributionBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "ddcfeaeb504ece5de546dbefd5c527eed7453048"
+                "reference": "59085bedb5bffbc7305f42b836daa2ed3173be3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/ddcfeaeb504ece5de546dbefd5c527eed7453048",
-                "reference": "ddcfeaeb504ece5de546dbefd5c527eed7453048",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/59085bedb5bffbc7305f42b836daa2ed3173be3b",
+                "reference": "59085bedb5bffbc7305f42b836daa2ed3173be3b",
                 "shasum": ""
             },
             "require": {
@@ -2702,7 +2702,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2014-12-03 13:50:45"
+            "time": "2014-12-30 08:39:48"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -2918,16 +2918,16 @@
         },
         {
             "name": "sonata-project/block-bundle",
-            "version": "dev-master",
+            "version": "2.2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "e7f4ab616d61619ad295ca7cb221f9395d6916d9"
+                "reference": "f4d965821c8d249d97dedbb741c713f13c45c19f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/e7f4ab616d61619ad295ca7cb221f9395d6916d9",
-                "reference": "e7f4ab616d61619ad295ca7cb221f9395d6916d9",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/f4d965821c8d249d97dedbb741c713f13c45c19f",
+                "reference": "f4d965821c8d249d97dedbb741c713f13c45c19f",
                 "shasum": ""
             },
             "require": {
@@ -2949,7 +2949,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.3.x-dev"
+                    "dev-master": "2.2.x-dev"
                 }
             },
             "autoload": {
@@ -2978,7 +2978,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2014-12-18 11:31:34"
+            "time": "2014-12-17 15:27:31"
         },
         {
             "name": "sonata-project/cache",
