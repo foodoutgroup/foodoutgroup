@@ -246,6 +246,12 @@ class Place extends Uploadable implements Translatable
      * @ORM\Column(name="average_rating", type="float")
      */
     private $averageRating = 0;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="review_count", type="integer")
+     */
+    private $reviewCount = 0;
 
     /**
      * @var bool
@@ -1506,5 +1512,28 @@ class Place extends Uploadable implements Translatable
         if ($this->getFile() && $this->getFile()->getSize() > round($this->maxFileSize * 1024 * 1024)) {
             $context->addViolationAt('file', 'Paveiksliukas užima daugiau nei ' . $this->maxFileSize . ' MB vietos.');
         }
+    }
+
+    /**
+     * Set reviewCount
+     *
+     * @param integer $reviewCount
+     * @return Place
+     */
+    public function setReviewCount($reviewCount)
+    {
+        $this->reviewCount = $reviewCount;
+    
+        return $this;
+    }
+
+    /**
+     * Get reviewCount
+     *
+     * @return integer 
+     */
+    public function getReviewCount()
+    {
+        return $this->reviewCount;
     }
 }
