@@ -11,6 +11,12 @@ use Food\ApiBundle\Exceptions\ApiException;
 
 class OrderService extends ContainerAware
 {
+    /**
+     * @param Request $requestOrig
+     * @param JsonRequest $request
+     * @return array
+     * @throws ApiException
+     */
     public function getPendingOrders(Request $requestOrig, JsonRequest $request)
     {
         $returner = array();
@@ -40,6 +46,14 @@ class OrderService extends ContainerAware
         return $returner;
     }
 
+    /**
+     * @param Request $requestOrig
+     * @param JsonRequest $request
+     * @param bool $isThisPre
+     * @return array
+     * @throws ApiException
+     * @throws \Exception
+     */
     public function createOrder(Request $requestOrig, JsonRequest $request, $isThisPre = false)
     {
         /**

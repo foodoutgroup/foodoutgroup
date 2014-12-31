@@ -3,10 +3,12 @@ namespace Food\ApiBundle\Common;
 
 use Food\CartBundle\Entity\Cart;
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\HttpFoundation\Request;
 
 class ShoppingBasketItem extends ContainerAware
 {
+    /**
+     * @var array
+     */
     private $block = array(
         "basket_item_id" => null,
         "item_id" => null,
@@ -24,9 +26,20 @@ class ShoppingBasketItem extends ContainerAware
         )
     );
 
+    /**
+     * @var array
+     */
     private $data = array();
+
+    /**
+     * @var array
+     */
     private $availableFields = array();
 
+    /**
+     * @param Cart $cart
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface|null $container
+     */
     public function __construct(Cart $cart = null, $container = null)
     {
         $this->data = $this->block;
@@ -37,14 +50,19 @@ class ShoppingBasketItem extends ContainerAware
         $this->container = $container;
     }
 
+    /**
+     * @param string $param
+     * @return mixed
+     * @throws \Exception
+     */
     public function get($param) {
         $this->checkParam($param);
         return $this->data[$param];
     }
 
     /**
-     * @param $param
-     * @param $data
+     * @param string $param
+     * @param mixed $data
      * @return \MenuItem $this
      */
     public function set($param, $data)
@@ -55,16 +73,20 @@ class ShoppingBasketItem extends ContainerAware
     }
 
     /**
-     * @param $param
-     * @throws \Symfony\Component\Config\Definition\Exception\Exception
+     * @param string $param
+     * @throws \Exception
      */
     private function checkParam($param)
     {
         if (!in_array($param, $this->availableFields)) {
-            throw new Exception("Param: ".$param.", was not found in fields list :)");
+            throw new \Exception("Param: ".$param.", was not found in fields list :)");
         }
     }
 
+    /**
+     * @param array $requestPart
+     * @return array
+     */
     public function populateFromCreateRequest($requestPart)
     {
         $this->set('item_id', $requestPart['item_id'])
@@ -75,6 +97,10 @@ class ShoppingBasketItem extends ContainerAware
         return $this->data;
     }
 
+    /**
+     * @param Cart $cartItem
+     * @return array
+     */
     public function loadFromEntity(Cart $cartItem)
     {
         $this->set('basket_item_id', $cartItem->getCartId()) // @todo - ar tikrai ?? :)
@@ -94,6 +120,10 @@ class ShoppingBasketItem extends ContainerAware
         return $this->data;
     }
 
+    /**
+     * @param Cart $cartItem
+     * @return array
+     */
     private function _getOptions(Cart $cartItem)
     {
         $returner = array();
@@ -106,12 +136,20 @@ class ShoppingBasketItem extends ContainerAware
         return $returner;
     }
 
+    /**
+     * @param Cart $cartItem
+     * @return float|int
+     */
     private function _contDaPriceOfAll(Cart $cartItem)
     {
         $cartItem->setEm($this->container->get('doctrine'));
         return $this->container->get('food.cart')->getCartTotal(array($cartItem), $cartItem->getPlaceId());
     }
 
+    /**
+     * @param Cart $cartItem
+     * @return float|int
+     */
     private function _contDaPriceOfAllOld(Cart $cartItem)
     {
         $cartItem->setEm($this->container->get('doctrine'));

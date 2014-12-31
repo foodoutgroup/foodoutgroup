@@ -47,6 +47,10 @@ class Restaurant extends ContainerAware
     public  $data;
     private $availableFields = array();
 
+    /**
+     * @param Place|null $place
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     */
     public function __construct(Place $place = null, $container = null)
     {
         $this->data = $this->block;
@@ -57,14 +61,18 @@ class Restaurant extends ContainerAware
         $this->container = $container;
     }
 
+    /**
+     * @param string $param
+     * @return mixed
+     */
     public function get($param) {
         $this->checkParam($param);
         return $this->data[$param];
     }
 
     /**
-     * @param $param
-     * @param $data
+     * @param string $param
+     * @param mixed $data
      * @return Restaurant $this
      */
     public function set($param, $data)
@@ -76,15 +84,21 @@ class Restaurant extends ContainerAware
 
     /**
      * @param $param
-     * @throws \Symfony\Component\Config\Definition\Exception\Exception
+     * @throws \Exception
      */
     private function checkParam($param)
     {
         if (!in_array($param, $this->availableFields)) {
-            throw new Exception("Param: ".$param.", was not found in fields list :)");
+            throw new \Exception("Param: ".$param.", was not found in fields list :)");
         }
     }
 
+    /**
+     * @param Place $place
+     * @param PlacePoint $placePoint
+     * @param bool $pickUpOnly
+     * @return $this
+     */
     public function loadFromEntity(Place $place, PlacePoint $placePoint = null, $pickUpOnly = false)
     {
         $kitchens = $place->getKitchens();
@@ -102,8 +116,6 @@ class Restaurant extends ContainerAware
                 $photos[] = '/uploads/covers/'.$photo->getPhoto();
             }
         }
-
-
 
         $pickUp = (isset($placePoint) && $placePoint->getPickUp() ? true: false);
         $delivery = (isset($placePoint) && $placePoint->getDelivery() ? true: false);
@@ -159,6 +171,10 @@ class Restaurant extends ContainerAware
         return $this;
     }
 
+    /**
+     * @param PlacePoint $point
+     * @return array
+     */
     private function _getWorkHoursOfPlacePoint(PlacePoint $point)
     {
         return array(
@@ -172,6 +188,11 @@ class Restaurant extends ContainerAware
         );
     }
 
+    /**
+     * @param Place $place
+     * @param PlacePoint $placePoint
+     * @return array
+     */
     private function _getLocationsForResponse(Place $place, PlacePoint $placePoint = null)
     {
         $points = $place->getPoints();
