@@ -343,10 +343,12 @@ class TestController extends Controller
 
     public function listOrdersAction() {
         $ns = $this->get('food.nav');
-        $query = "SELECT TOP 20 * FROM [skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header] ORDER BY [Order No_] DESC";
+        $query = 'SELECT TOP 20 * FROM [skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header] ORDER BY [Order No_] DESC';
         $rez = $ns->initSqlConn()->query($query);
         echo "<pre>";
-        var_dump($ns->initSqlConn()->fetchArray($rez));
+        while ($rowRez = $this->get('food.mssql')->fetchArray($rez)) {
+            var_dump($rowRez);
+        }
         die();
     }
 }
