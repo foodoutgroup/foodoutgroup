@@ -116,9 +116,14 @@ class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
             ->method('getRepository')
             ->will($this->returnValue($messageRepository));
 
-        $messageRepository->expects($this->once())
+        $messageRepository->expects($this->at(0))
             ->method('findBy')
             ->with(array('extId' => $messageExtId), null, 1)
+            ->will($this->returnValue(false));
+
+        $messageRepository->expects($this->at(1))
+            ->method('findBy')
+            ->with(array('secondaryExtId' => $messageExtId), null, 1)
             ->will($this->returnValue(false));
 
         $returnedMessage = $messagesService->getMessageByExtId($messageExtId);

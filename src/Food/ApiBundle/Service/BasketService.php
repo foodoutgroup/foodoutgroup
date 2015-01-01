@@ -8,16 +8,23 @@ use Food\ApiBundle\Exceptions\ApiException;
 use Food\CartBundle\Entity\Cart;
 use Food\CartBundle\Entity\CartOption;
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\HttpFoundation\Request;
 use Food\ApiBundle\Common\JsonRequest;
 
 class BasketService extends ContainerAware
 {
+    /**
+     * @param JsonRequest $request
+     * @return array|null
+     */
     public function createBasketFromRequest(JsonRequest $request)
     {
         return $this->_createBasket($request->get('restaurant_id'), $request);
     }
 
+    /**
+     * @param JsonRequest $request
+     * @return array
+     */
     public function _getCreateBasketItems(JsonRequest $request)
     {
         $returner = array();
@@ -34,6 +41,13 @@ class BasketService extends ContainerAware
         return $returner;
     }
 
+    /**
+     * @param int $id
+     * @param JsonRequest $request
+     * @param bool $remove
+     * @return array|null
+     * @throws ApiException
+     */
     public function updateBasketFromRequest($id, JsonRequest $request, $remove = false)
     {
         $dc = $this->container->get('doctrine');
@@ -107,6 +121,10 @@ class BasketService extends ContainerAware
         $doc->getManager()->flush();
     }
 
+    /**
+     * @param ShoppingBasketRelation $basket
+     * @param Cart $cartItem
+     */
     private function _removeItem(ShoppingBasketRelation $basket, Cart $cartItem)
     {
         $doc = $this->container->get('doctrine');
@@ -124,6 +142,11 @@ class BasketService extends ContainerAware
         $doc->getManager()->flush();
     }
 
+    /**
+     * @param int $restaurantId
+     * @param JsonRequest $request
+     * @return array|null
+     */
     private function _createBasket($restaurantId, JsonRequest $request)
     {
         $sessionId = $this->container->get('session')->getId();
@@ -138,6 +161,11 @@ class BasketService extends ContainerAware
         return $this->updateBasketFromRequest($newBasketRel->getId(), $request, true);
     }
 
+    /**
+     * @param int $id
+     * @return array|null
+     * @throws ApiException
+     */
     public function getBasket($id)
     {
         $items = array();
@@ -173,7 +201,7 @@ class BasketService extends ContainerAware
         },
         "total_price": {
         "amount": 3500,
-        "currency": "LTL"
+        "currency": "EUR"
         },
          */
         $basket = new ShoppingBasket();
@@ -206,6 +234,12 @@ class BasketService extends ContainerAware
         return $basket->getData();
     }
 
+    /**
+     * @param $id
+     * @param $basket_item_id
+     * @param JsonRequest $request
+     * @throws ApiException
+     */
     public function deleteBasketItem($id, $basket_item_id, JsonRequest $request)
     {
         $doc = $this->container->get('doctrine');
@@ -240,6 +274,12 @@ class BasketService extends ContainerAware
         $this->_removeItem($ent, $itemInCart);
     }
 
+    /**
+     * @param $id
+     * @param $basket_item_id
+     * @param JsonRequest $request
+     * @throws \Exception
+     */
     public function updateBasketItem($id, $basket_item_id, JsonRequest $request)
     {
         $doc = $this->container->get('doctrine');

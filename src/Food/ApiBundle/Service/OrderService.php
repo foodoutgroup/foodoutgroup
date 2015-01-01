@@ -11,6 +11,12 @@ use Food\ApiBundle\Exceptions\ApiException;
 
 class OrderService extends ContainerAware
 {
+    /**
+     * @param Request $requestOrig
+     * @param JsonRequest $request
+     * @return array
+     * @throws ApiException
+     */
     public function getPendingOrders(Request $requestOrig, JsonRequest $request)
     {
         $returner = array();
@@ -40,6 +46,14 @@ class OrderService extends ContainerAware
         return $returner;
     }
 
+    /**
+     * @param Request $requestOrig
+     * @param JsonRequest $request
+     * @param bool $isThisPre
+     * @return array
+     * @throws ApiException
+     * @throws \Exception
+     */
     public function createOrder(Request $requestOrig, JsonRequest $request, $isThisPre = false)
     {
         /**
@@ -270,7 +284,7 @@ class OrderService extends ContainerAware
             'order_id' => $order->getId(),
             'total_price' => array(
                 'amount' => $order->getTotal()*100,
-                'currency' => 'LTL'
+                'currency' => $this->container->getParameter('currency_iso')
             ),
             'state' => array(
                 'title' => $title,
@@ -317,6 +331,7 @@ class OrderService extends ContainerAware
     private function _getItemsForResponse(Order $order)
     {
         $returner = array();
+        $currency = $this->container->getParameter('currency_iso');
         foreach ($order->getDetails() as $detail) {
             $sum = 0;
             $sum+= $detail->getPrice() * $detail->getQuantity();
@@ -328,7 +343,7 @@ class OrderService extends ContainerAware
                 'count' => $detail->getQuantity(),
                 'price' => array(
                     'amount' => $sum * 100,
-                    'currency' => 'LTL'
+                    'currency' => $currency
                 )
             );
         }

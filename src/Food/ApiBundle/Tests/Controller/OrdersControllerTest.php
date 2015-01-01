@@ -140,7 +140,7 @@ class OrdersControllerTest extends WebTestCase
             'order_id' => $order->getId(),
             'total_price' => array(
                 'amount' => 10000,
-                'currency' => 'LTL'
+                'currency' => 'EUR'
             ),
             'state' => array(
                 'title' => 'accepted',
@@ -198,7 +198,7 @@ class OrdersControllerTest extends WebTestCase
             'order_id' => $order->getId(),
             'total_price' => array(
                 'amount' => 10000,
-                'currency' => 'LTL'
+                'currency' => 'EUR'
             ),
             'state' => array(
                 'title' => 'accepted',
@@ -225,7 +225,7 @@ class OrdersControllerTest extends WebTestCase
                 ),
                 'price' => array(
                     'amount' => 500,
-                    'currency' => 'LTL',
+                    'currency' => 'EUR',
                 ),
             )
         );

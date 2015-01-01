@@ -2,7 +2,6 @@
 
 namespace Food\ApiBundle\Controller;
 
-use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +10,9 @@ use Food\ApiBundle\Exceptions\ApiException;
 
 class OrdersController extends Controller
 {
+    /**
+     * @param $request
+     */
     private function _theJudge($request)
     {
         $miscUtils = $this->get('food.app.utils.misc');
@@ -22,6 +24,11 @@ class OrdersController extends Controller
             die('{error: "Piktybinis", description: null}');
         }
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function getOrdersAction(Request $request)
     {
         $this->_theJudge($request);
@@ -39,6 +46,10 @@ class OrdersController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function createOrderAction(Request $request)
     {
         $this->_theJudge($request);
@@ -57,6 +68,10 @@ class OrdersController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function createOrderPreAction(Request $request)
     {
         $this->_theJudge($request);
@@ -75,6 +90,11 @@ class OrdersController extends Controller
         }
     }
 
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function getOrderDetailsAction($id, Request $request)
     {
         $this->_theJudge($request);
@@ -104,6 +124,10 @@ class OrdersController extends Controller
         }
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function confirmOrderAction($id)
     {
         mb_internal_encoding('utf-8');
@@ -138,6 +162,10 @@ class OrdersController extends Controller
         }
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function getOrderStatusAction($id)
     {
         try {

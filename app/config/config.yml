@@ -119,7 +119,6 @@ twig:
         locale:       "%locale%"
         page_title:   "%title%"
         currency_display: "%currency_display%"
-        display_currency_alternative: "%display_currency_alternative%"
         currency_iso: "%currency_iso%"
         vat_size: "%vat%"
         google_maps_api: "%google.maps_api%"

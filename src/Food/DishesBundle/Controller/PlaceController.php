@@ -128,6 +128,7 @@ class PlaceController extends Controller
             $averageRating = $placeService->calculateAverageRating($place);
 
             $place->setAverageRating($averageRating);
+            $place->setReviewCount(count($place->getReviews()));
             $placeService->savePlace($place);
 
             return new JsonResponse(['success' => true]);
