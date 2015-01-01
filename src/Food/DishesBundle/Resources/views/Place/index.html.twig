@@ -170,8 +170,8 @@
                                                 <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
                                             {% endif %}
                                         </li>
-                                        <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>{{ place.deliveryPrice }} {{ currency_display }}</li>
-                                        <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>{{ place.cartMinimum }} {{ currency_display }}</li>
+                                        <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>{{ currency_display|raw }}{{ place.deliveryPrice }}</li>
+                                        <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>{{ currency_display|raw }}{{ place.cartMinimum }}</li>
                                         {% endif %}
                                         <li class="ico-payments hidden"><strong>{% trans %}places.payment_types{% endtrans %}:</strong><span class="payments-data"></span></li>
                                         {% if place.deliveryOptions != 'pickup' %}

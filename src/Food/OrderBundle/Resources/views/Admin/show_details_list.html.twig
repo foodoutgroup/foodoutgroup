@@ -16,9 +16,9 @@
             {% for detail in object.details %}
                 <tr>
                     <td>{{ detail.getDishName() }}</td>
-                    <td>{{ detail.getPrice() }} {{ currency_display }}</td>
+                    <td>{{ detail.getPrice() }} {{ currency_display|raw }}</td>
                     <td>{{ detail.getQuantity() }}</td>
-                    <td>{{ detail.getPrice() * detail.getQuantity() }} {{ currency_display }}</td>
+                    <td>{{ detail.getPrice() * detail.getQuantity() }} {{ currency_display|raw }}</td>
                     <td>{{ detail.getDishUnitName() }}</td>
                     <td>{{ detail.getDishSizeCode() }}</td>
                     <td>

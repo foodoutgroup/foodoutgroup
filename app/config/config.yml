@@ -64,8 +64,9 @@ parameters:
         - swedbank-credit-card-gateway
         - seb-banklink
         - nordea-banklink
-    currency_display: Lt
-    currency_iso: LTL
+    currency_display: '&euro;'
+    currency_iso: EUR
+    display_currency_alternative:  Lt
     # naudojam telefonu validacijoms
     country: LT
     vat: 21
@@ -118,6 +119,7 @@ twig:
         locale:       "%locale%"
         page_title:   "%title%"
         currency_display: "%currency_display%"
+        display_currency_alternative: "%display_currency_alternative%"
         currency_iso: "%currency_iso%"
         vat_size: "%vat%"
         google_maps_api: "%google.maps_api%"

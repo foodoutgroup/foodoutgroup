@@ -135,6 +135,18 @@ class Misc
     }
 
     /**
+     * @param float $price
+     * @return float
+     */
+    public function getLitas($price)
+    {
+        $accountingEuroRate = 3.4528;
+        $litasPrice = $price * $accountingEuroRate;
+
+        return round($litasPrice, 2);
+    }
+
+    /**
      * @param int|float $sum
      * @return string
      */

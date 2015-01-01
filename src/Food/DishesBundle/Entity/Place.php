@@ -157,10 +157,16 @@ class Place extends Uploadable implements Translatable
     /**
      * @var int
      *
-     * @ORM\Column(name="delivery_price", type="integer")
+     * @ORM\Column(name="delivery_price", type="float")
      */
     private $deliveryPrice;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="delivery_price_old", type="integer", nullable=true)
+     */
+    private $deliveryPriceOld;
 
     /**
      * @var string
@@ -179,9 +185,16 @@ class Place extends Uploadable implements Translatable
     /**
      * @var int
      *
-     * @ORM\Column(name="cart_minimum", type="integer")
+     * @ORM\Column(name="cart_minimum", type="float")
      */
     private $cartMinimum;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="cart_minimum_old", type="integer")
+     */
+    private $cartMinimumOld;
 
     /**
      * @var bool

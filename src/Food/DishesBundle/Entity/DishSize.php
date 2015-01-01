@@ -59,6 +59,20 @@ class DishSize
      */
     private $discountPrice;
 
+
+    /**
+     * @var double
+     *
+     * @ORM\Column(name="price_old", type="decimal", scale=2, nullable=true)
+     */
+    private $priceOld;
+
+    /**
+     * @var double
+     * @ORM\Column(name="discount_price_old", type="decimal", scale=2, nullable=true)
+     */
+    private $discountPriceOld;
+
     /**
      * @var \DateTime
      *

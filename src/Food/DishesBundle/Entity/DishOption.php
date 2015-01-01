@@ -33,6 +33,13 @@ class DishOption implements Translatable
     private $price;
 
     /**
+     * @var double
+     *
+     * @ORM\Column(name="price_old", type="decimal", scale=2, nullable=true)
+     */
+    private $priceOld;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=60)
