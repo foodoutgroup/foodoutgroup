@@ -79,7 +79,7 @@ class Request
         <verify>yes</verify>
       </ThreeDSecure>
       <capturemethod>ecomm</capturemethod>
-      <amount currency="LTL">%price%</amount>
+      <amount currency="EUR">%price%</amount>
     </TxnDetails>
     <HpsTxn>
       <page_set_id>1360</page_set_id>

@@ -119,7 +119,7 @@ class PaySeraBillingTest extends \PHPUnit_Framework_TestCase {
             'sign_password' => 'omgSoSecure',
             'orderid' => $orderId,
             'amount' => $orderTotal*100,
-            'currency' => 'LTL',
+            'currency' => 'EUR',
             'country' => 'LT',
             'accepturl' => $acceptUrl,
             'cancelurl' => $cancelUrl,
