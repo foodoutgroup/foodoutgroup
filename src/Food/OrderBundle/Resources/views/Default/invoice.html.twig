@@ -131,8 +131,8 @@
         <td></td>
         <td></td>
         <td style="border-top: 1px solid black;">{% trans %}order.invoice.sum_total{% endtrans %}:</td>
-        <td class="sum_col" style="border-top: 1px solid black;">{{ order.total|number_format(2, ',', ' ') }} {{ currency_display }}</td>
-        <td class="sum_col" style="border-top: 1px solid black;">&euro;{{  misc_utils.getEuro(order.total)|number_format(2, ',', ' ') }}</td>
+        <td class="sum_col" style="border-top: 1px solid black;">{{ order.total|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
+        <td class="sum_col" style="border-top: 1px solid black;">{{  misc_utils.getLitas(order.total)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</td>
     </tr>
 </table>
 <br />

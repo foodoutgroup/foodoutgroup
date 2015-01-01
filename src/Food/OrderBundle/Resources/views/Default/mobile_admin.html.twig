@@ -65,7 +65,7 @@
                 <td colspan="5">
                     <b>
                         {% trans %}mobile.order.coupon_discount_sum{% endtrans %}
-                    </b> {{ order.discountSum }} {{ currency_display }}
+                    </b> {{ order.discountSum }} {{ currency_display|raw }}
                 </td>
             </tr>
         {% endif %}
@@ -77,7 +77,7 @@
                 {% else %}
                     {% trans %}mobile.order.sum{% endtrans %}
                     {% endif %}:
-                </b> {{ order.total }} {{ currency_display }} / &euro; {{ misc_utils.euro(order.total) }}
+                </b> {{ order.total }} {{ currency_display|raw }} / {{ misc_utils.getLitas(order.total) }}
             </td>
         </tr>
         <tr>
