@@ -90,7 +90,7 @@
             <tr>
                 <td colspan="2" style="border: none;"></td>
                 <td>{% trans %}mobile.invoice.total_with_vat{% endtrans %}:</td>
-                <td>{{ order.total }} {{ currency_display }}</td>
+                <td>{{ order.total }} {{ currency_display | raw }}</td>
             </tr>
             <tr>
                 <td colspan="2" style="border: none;"></td>

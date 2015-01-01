@@ -44,7 +44,7 @@ class NordeaBanklinkType extends AbstractType
             ->add('MAC', 'hidden')
             ->add('CONFIRM', 'hidden', ['data' => 'YES'])
             ->add('KEYVERS', 'hidden', ['data' => '0001'])
-            ->add('CUR', 'hidden', ['data' => 'LTL'])
+            ->add('CUR', 'hidden', ['data' => 'EUR'])
         ;
     }
 

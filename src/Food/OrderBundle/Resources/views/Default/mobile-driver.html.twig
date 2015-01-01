@@ -43,7 +43,7 @@
                 <td colspan="5">
                     <b>
                         {% trans %}mobile.order.coupon_discount_sum{% endtrans %}
-                    </b> {{ order.discountSum }} {{ currency_display }}
+                    </b> {{ order.discountSum }} {{ currency_display|raw }}
                 </td>
             </tr>
         {% endif %}
