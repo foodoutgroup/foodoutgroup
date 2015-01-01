@@ -38,6 +38,10 @@ food_nav_test1:
     pattern: /test/nav/test1
     defaults: { _controller: FoodAppBundle:Test:nav1 }
 
+food_nav_list:
+    pattern: /test/nav/list
+    defaults: { _controller: FoodAppBundle:Test:listOrders }
+
 
 food_review_create:
     pattern: /place/review/{id}
