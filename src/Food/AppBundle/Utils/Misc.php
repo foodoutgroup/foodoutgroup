@@ -15,6 +15,11 @@ class Misc
     private $container;
 
     /**
+     * @var float
+     */
+    private $accountingEuroRate = 3.4528;
+
+    /**
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
     public function setContainer($container)
@@ -128,8 +133,7 @@ class Misc
      */
     public function getEuro($price)
     {
-        $accountingEuroRate = 3.4528;
-        $euroPrice = $price / $accountingEuroRate;
+        $euroPrice = $price / $this->accountingEuroRate;
 
         return round($euroPrice, 2);
     }
@@ -140,8 +144,7 @@ class Misc
      */
     public function getLitas($price)
     {
-        $accountingEuroRate = 3.4528;
-        $litasPrice = $price * $accountingEuroRate;
+        $litasPrice = $price * $this->accountingEuroRate;
 
         return round($litasPrice, 2);
     }
@@ -170,7 +173,7 @@ class Misc
             return sprintf(
                 '%s %s',
                 $nf->format($numbers['mainPart']),
-                'litas'
+                'euras'
             );
         }
     }
