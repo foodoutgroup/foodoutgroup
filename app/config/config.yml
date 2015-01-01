@@ -120,6 +120,7 @@ twig:
         page_title:   "%title%"
         currency_display: "%currency_display%"
         currency_iso: "%currency_iso%"
+        display_currency_alternative: "%display_currency_alternative%"
         vat_size: "%vat%"
         google_maps_api: "%google.maps_api%"
         cloudfront_url: "%cloudfront_url%"
