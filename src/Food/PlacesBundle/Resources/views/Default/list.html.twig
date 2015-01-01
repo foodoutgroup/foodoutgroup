@@ -85,7 +85,7 @@
                     {% if place.place.deliveryOptions != 'pickup' %}
                     <span class="delivery">{% trans %}place.delivery_info{% endtrans %}:
                         <span>
-                            {{ place.place.deliveryPrice }} Lt / {{ place.place.deliveryTime }}
+                            {{ currency_display|raw }}{{ place.place.deliveryPrice }} / {{ place.place.deliveryTime }}
                             {% if place.place.deliveryTimeInfo is not empty %}
                                 <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.place.deliveryTimeInfo }}"></span>
                             {% endif %}
@@ -98,7 +98,7 @@
                     {% endif %}
                     {% if place.place.deliveryOptions != 'pickup' or (place.place.deliveryOptions == 'pickup' and place.place.minimalOnSelfDel) %}
                     <span class="min-cart-size">{% trans %}place.min_cart_amount{% endtrans %}:
-                        <span>{{ place.place.cartMinimum }} Lt </span>
+                        <span>{{ currency_display|raw }}{{ place.place.cartMinimum }}</span>
                     </span>
                     {% endif %}
                 </div>
