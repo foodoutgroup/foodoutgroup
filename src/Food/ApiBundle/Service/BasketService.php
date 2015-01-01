@@ -201,7 +201,7 @@ class BasketService extends ContainerAware
         },
         "total_price": {
         "amount": 3500,
-        "currency": "LTL"
+        "currency": "EUR"
         },
          */
         $basket = new ShoppingBasket();

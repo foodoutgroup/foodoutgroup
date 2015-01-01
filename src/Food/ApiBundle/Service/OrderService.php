@@ -284,7 +284,7 @@ class OrderService extends ContainerAware
             'order_id' => $order->getId(),
             'total_price' => array(
                 'amount' => $order->getTotal()*100,
-                'currency' => 'LTL'
+                'currency' => $this->container->getParameter('currency_iso')
             ),
             'state' => array(
                 'title' => $title,
@@ -331,6 +331,7 @@ class OrderService extends ContainerAware
     private function _getItemsForResponse(Order $order)
     {
         $returner = array();
+        $currency = $this->container->getParameter('currency_iso');
         foreach ($order->getDetails() as $detail) {
             $sum = 0;
             $sum+= $detail->getPrice() * $detail->getQuantity();
@@ -342,7 +343,7 @@ class OrderService extends ContainerAware
                 'count' => $detail->getQuantity(),
                 'price' => array(
                     'amount' => $sum * 100,
-                    'currency' => 'LTL'
+                    'currency' => $currency
                 )
             );
         }

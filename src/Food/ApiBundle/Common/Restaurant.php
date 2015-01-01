@@ -30,11 +30,11 @@ class Restaurant extends ContainerAware
             'estimated_time' => 0,
             'price' => array(
                 'amount' => 0,
-                'currency' => 'LTL'
+                'currency' => 'EUR'
             ),
             'minimal_order' => array(
                 'amount' => 0,
-                'currency' => 'LTL'
+                'currency' => 'EUR'
             ),
         ),
         'is_working' => false,
@@ -123,6 +123,7 @@ class Restaurant extends ContainerAware
             $pickUp = true;
             $delivery = false;
         }
+        $currency = $this->container->getParameter('currency_iso');
         $this
             ->set('restaurant_id', $place->getId())
             ->set('title', $place->getName())
@@ -151,15 +152,15 @@ class Restaurant extends ContainerAware
                     'estimated_time' => $place->getDeliveryTime(),
                     'price' => array(
                         'amount' => $place->getDeliveryPrice() * 100,
-                        'currency' => 'LTL'
+                        'currency' => $currency
                     ),
                     'minimal_order' => array(
                         'amount' => $place->getCartMinimum() * 100,
-                        'currency' => 'LTL'
+                        'currency' => $currency
                     ),
                     'minimal_order_pickup' => array(
                         'amount' => ($place->getMinimalOnSelfDel() ?  $place->getCartMinimum() * 100 : 0),
-                        'currency' => 'LTL'
+                        'currency' => $currency
                     )
                 )
             )

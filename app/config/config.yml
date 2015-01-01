@@ -65,7 +65,7 @@ parameters:
         - seb-banklink
         - nordea-banklink
     currency_display: Lt
-    currency_iso: LTL
+    currency_iso: EUR
     # naudojam telefonu validacijoms
     country: LT
     vat: 21

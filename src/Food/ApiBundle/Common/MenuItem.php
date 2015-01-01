@@ -24,7 +24,7 @@ class MenuItem extends ContainerAware
             "maximum" => 0,
             "minimum_old" => 0,
             "maximum_old" => 0,
-            "currency" => "LTL"
+            "currency" => "EUR"
         ),
         "status" => 'available',
         "updated_at" => ""
@@ -107,7 +107,7 @@ class MenuItem extends ContainerAware
             'minimum_old' => ($showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : 0),
             'maximum_old' => ($showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : 0),
             'discount_text' => $discountText,
-            'currency' => 'LTL'
+            'currency' => $this->container->getParameter('currency_iso')
         );
         $this->set('item_id', $dish->getId())
             ->set('restaurant_id', $dish->getPlace()->getId())

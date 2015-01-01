@@ -22,7 +22,7 @@ class ShoppingBasketItem extends ContainerAware
         "price"=> array(
             "amount" => 0,
             "amount_old" => 0,
-            "currency"=> "LTL"
+            "currency"=> "EUR"
         )
     );
 
@@ -114,7 +114,7 @@ class ShoppingBasketItem extends ContainerAware
                 array(
                     'amount' => $this->_contDaPriceOfAll($cartItem) * 100, // @todo
                     'amount_old' => ($cartItem->getDishId()->getShowDiscount() ? $this->_contDaPriceOfAllOld($cartItem) * 100 : 0),
-                    'currency' => 'LTL'
+                    'currency' => $this->container->getParameter('currency_iso')
                 )
             );
         return $this->data;
