@@ -307,10 +307,10 @@ class MiscTest extends WebTestCase
         $testEuroPrice3 = 16.28;
         $testEuroPrice4 = 63.33;
 
-        $gotPrice1 = $util->getEuro($testEuroPrice1);
-        $gotPrice2 = $util->getEuro($testEuroPrice2);
-        $gotPrice3 = $util->getEuro($testEuroPrice3);
-        $gotPrice4 = $util->getEuro($testEuroPrice4);
+        $gotPrice1 = $util->getLitas($testEuroPrice1);
+        $gotPrice2 = $util->getLitas($testEuroPrice2);
+        $gotPrice3 = $util->getLitas($testEuroPrice3);
+        $gotPrice4 = $util->getLitas($testEuroPrice4);
 
         $this->assertEquals($expectedLitasPrice1, $gotPrice1);
         $this->assertEquals($expectedLitasPrice2, $gotPrice2);
