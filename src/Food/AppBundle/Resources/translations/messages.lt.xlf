@@ -1100,7 +1100,7 @@
       </trans-unit>
       <trans-unit id="general.currency_modals" resname="general.currency_modals">
           <source>general.currency_modals</source>
-          <target>euras|euraai|eurų</target>
+          <target>euras|eurai|eurų</target>
       </trans-unit>
       <trans-unit id="general.currency_minor_modals" resname="general.currency_minor_modals">
         <source>general.currency_minor_modals</source>

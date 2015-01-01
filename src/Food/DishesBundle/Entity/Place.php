@@ -192,7 +192,7 @@ class Place extends Uploadable implements Translatable
     /**
      * @var int
      *
-     * @ORM\Column(name="cart_minimum_old", type="integer")
+     * @ORM\Column(name="cart_minimum_old", type="integer", nullable=true)
      */
     private $cartMinimumOld;
 

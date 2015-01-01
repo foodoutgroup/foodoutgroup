@@ -107,7 +107,7 @@
             <div class="item-righter">
                 <div class="clearfix">
                     <div data-stars="{{ place.place.rating }}" class="restoran-rating fl"></div>
-                    {% if place.place.reviews.count != 0 %}
+                    {% if place.place.reviewCount != 0 %}
                         <div class="rating-count fr"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}#detailed-restaurant-review">{{ place.place.reviews.count }} {% transchoice place.place.reviews.count %}places.reviews_count{% endtranschoice %}</a></div>
                     {% endif %}
                 </div><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}" class="button"><span>{% trans %}places.watch_menu{% endtrans %}</span></a>

@@ -297,7 +297,7 @@ class MiscTest extends WebTestCase
     {
         $util = new Misc();
 
-        $expectedLitasPrice1 = 4.34;
+        $expectedLitasPrice1 = 0;
         $expectedLitasPrice2 = 20.72;
         $expectedLitasPrice3 = 56.21;
         $expectedLitasPrice4 = 218.67;
