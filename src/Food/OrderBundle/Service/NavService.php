@@ -986,4 +986,22 @@ class NavService extends ContainerAware
             $counter++;
         }
     }
+
+    public function areWebServicesAlive()
+    {
+        $critical = false;
+        $text = '';
+        $client = new \StdClass();
+
+        try {
+            $client = $this->getWSConnection();
+
+            $text = '<info>OK: web services are up and running.</info>';
+        } catch (\SoapFault $e) {
+            $critical = true;
+            $text = '<error>ERROR: could not connect to web services: "' . $e->getMessage() . '"</error>';
+        }
+
+        return [$critical, $text];
+    }
 }
