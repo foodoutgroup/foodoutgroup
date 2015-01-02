@@ -55,13 +55,13 @@ class MessageRepository extends EntityRepository
     {
         return "
           SELECT
-            DATE_FORMAT(s.submitted_at, '%%m-%%d') AS report_day,
+            DATE_FORMAT(s.submitted_at, '%%y-%%m-%%d') AS report_day,
             COUNT(s.id) AS message_count
           FROM sms_message s
           WHERE
             %s
-          GROUP BY DATE_FORMAT(s.submitted_at, '%%m-%%d')
-          ORDER BY DATE_FORMAT(s.submitted_at, '%%m-%%d') ASC
+          GROUP BY DATE_FORMAT(s.submitted_at, '%%y-%%m-%%d')
+          ORDER BY DATE_FORMAT(s.submitted_at, '%%y-%%m-%%d') ASC
         ";
     }
 }
