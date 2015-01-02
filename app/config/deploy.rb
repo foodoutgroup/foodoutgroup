@@ -6,12 +6,12 @@ set :repository,  "git@github.com:Foodout/skanu.lt.git"
 set :scm,         :git
 
 set :model_manager, "doctrine"
-set :branch, "mobile_bastards"
+set :branch, "master"
 
 # multi-stage environment
 set :stages,        %w(production staging sandbox taurinas kofeinas pipiras)
 # isijungiam kada reik :)
-set :default_stage, "taurinas"
+set :default_stage, "production"
 set :stage_dir,     "app/config/deploy"
 require 'capistrano/ext/multistage'
 
