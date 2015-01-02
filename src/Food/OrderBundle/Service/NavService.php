@@ -397,11 +397,11 @@ class NavService extends ContainerAware
             'No_' => "'ZRAW0009996'",
             'Description' => "''",
             'Quantity' => 1,
-            'Price' =>5,
+            'Price' => 1.5,
             'Parent Line' => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
-            'Amount' => 5,
+            'Amount' => 1.5,
             'Discount Amount' => 0,
-            'Payment' => 5,
+            'Payment' => 1.5,
             'Value' => "''"
         );
 
