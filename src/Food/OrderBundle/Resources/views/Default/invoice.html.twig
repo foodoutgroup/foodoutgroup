@@ -67,7 +67,7 @@
         <td style="width: 285px;">{% trans %}order.invoice.measure_name{% endtrans %}</td>
         <td class="narrow_col">{% trans %}order.invoice.quantity{% endtrans %}</td>
         <td class="sum_col">{% trans %}order.invoice.price{% endtrans %}</td>
-        <td class="sum_col">{% trans %}order.invoice.sum{% endtrans %}, {{ currency_display }}</td>
+        <td class="sum_col">{% trans %}order.invoice.sum{% endtrans %}, {{ currency_display|raw }}</td>
         <td class="no-border"></td>
     </tr>
     {% for dish in order.details %}
@@ -101,8 +101,8 @@
         <td></td>
         <td></td>
         <td>{% trans %}order.invoice.sum_no_vat{% endtrans %}:</td>
-        <td class="sum_col">{{ sum_no_vat|number_format(2, ',', ' ') }} {{ currency_display }}</td>
-        <td class="sum_col">&euro; {{ misc_utils.euro(sum_no_vat) }}</td>
+        <td class="sum_col">{{ sum_no_vat|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
+        <td class="sum_col">{{ misc_utils.getLitas(sum_no_vat) }} {{ display_currency_alternative }}</td>
     </tr>
     {% if order.deliveryType == 'deliver' %}
         <tr class="no-border-line">
@@ -111,8 +111,8 @@
             <td></td>
             <td></td>
             <td>{% trans %}order.invoice.delivery{% endtrans %}</td>
-            <td class="sum_col">{{ delivery_no_vat|number_format(2, ',', ' ') }} {{ currency_display }}</td>
-            <td class="sum_col">&euro; {{ misc_utils.euro(order.place.deliveryPrice) }}</td>
+            <td class="sum_col">{{ delivery_no_vat|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
+            <td class="sum_col">{{ misc_utils.getLitas(order.place.deliveryPrice) }} {{ display_currency_alternative }}</td>
         </tr>
     {% endif %}
 
@@ -122,8 +122,8 @@
         <td></td>
         <td></td>
         <td>{% trans %}order.invoice.vat{% endtrans %} {{ vat_size }}%</td>
-        <td class="sum_col">{{ vat_sum|number_format(2, ',', ' ') }} {{ currency_display }}</td>
-        <td class="sum_col">&euro; {{ misc_utils.euro(vat_sum) }}</td>
+        <td class="sum_col">{{ vat_sum|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
+        <td class="sum_col">{{ misc_utils.getLitas(vat_sum) }} {{ display_currency_alternative }}</td>
     </tr>
     <tr class="no-border-line">
         <td></td>

@@ -32,7 +32,7 @@
                             {% for option in detail.options %}
                                 <tr>
                                     <td>{{ option.dishOptionName }}</td>
-                                    <td>{{ option.price }} {{ currency_display }}</td>
+                                    <td>{{ option.price }} {{ currency_display|raw }}</td>
                                     <td>{{ option.dishOptionCode }}</td>
                                 </tr>
                             {% endfor %}
