@@ -11,7 +11,7 @@ class NavSoapAccessibleCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('monitoring:soap:accessible')
+            ->setName('monitoring:nav:soap_accessible')
             ->setDescription('Check if Navision SOAP web services are alive.')
         ;
     }
