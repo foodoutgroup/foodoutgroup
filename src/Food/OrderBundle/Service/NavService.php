@@ -567,7 +567,7 @@ class NavService extends ContainerAware
         $url = $clientUrl2;
         //$options = array('trace'=>1, 'login' =>'CILIJA\fo_order', 'password' => 'peH=waGe?zoOs69');
         $options = array('trace'=>1, 'cache_wsdl' => WSDL_CACHE_NONE, 'login' =>'CILIJA\nas', 'password' => 'c1l1j@');
-        $client = new Common\FoNTLMSoapClient($url, $options);
+        $client = @new Common\FoNTLMSoapClient($url, $options);
         stream_wrapper_restore('http');
         return $client;
     }
