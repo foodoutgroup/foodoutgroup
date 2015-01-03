@@ -44,7 +44,6 @@ class NavService extends ContainerAware
 
     private $itemsTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Item]';
 
-
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
@@ -985,5 +984,27 @@ class NavService extends ContainerAware
             $stmt->execute();
             $counter++;
         }
+    }
+
+    public function areWebServicesAlive()
+    {
+        $critical = false;
+
+        try {
+            $client = $this->getContainer()->get('food.nav')->getWSConnection();
+            $functions = $client->__getFunctions();
+
+            if (!in_array('FoodOutUpdatePrices', $functions) || !in_array('FoodOutProcessOrder', $functions)) {
+                $critical = true;
+                $text = '<error>ERROR: Foodout NAV SOAP commands not found';
+            } else {
+                $text = '<info>OK: web services are up and running.</info>';
+            }
+        } catch (\SoapFault $e) {
+            $critical = true;
+            $text = '<error>ERROR: could not connect to NAV web services: "' . $e->getMessage() . '"</error>';
+        }
+
+        return [$critical, $text];
     }
 }
