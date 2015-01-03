@@ -994,7 +994,10 @@ class NavService extends ContainerAware
             $client = $this->getContainer()->get('food.nav')->getWSConnection();
             $functions = $client->__getFunctions();
 
-            if (!in_array('FoodOutUpdatePrices', $functions) || !in_array('FoodOutProcessOrder', $functions)) {
+            if (
+                !in_array('FoodOutUpdatePrices_Result FoodOutUpdatePrices(FoodOutUpdatePrices $parameters)', $functions)
+                || !in_array('FoodOutProcessOrder_Result FoodOutProcessOrder(FoodOutProcessOrder $parameters)', $functions)
+            ) {
                 $critical = true;
                 $text = '<error>ERROR: Foodout NAV SOAP commands not found';
             } else {
