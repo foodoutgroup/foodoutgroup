@@ -271,13 +271,54 @@ change_location = function(element,
         }
     };
 
+    /*
     cancel_options = {
         text: cancel_text,
         click: function() {
             $(this).dialog('close');
         }
     };
+    */
+    if (element.find('.submit').size() == 0) {
+        //element.append('<a href="#" class="submit-button btn-cancel no-arrow no-arrow-second"><span>'+ cancel_options.text +'</span></a>');
+        element.append('<div class="form-row address-row width463"><label></label><button class="button-normal submit">'+ change_options.text +'</button></div>');
+    }
 
+    element.find('.btn-cancel').unbind('click').bind('click', function(){
+        $.fancybox.close();
+    });
+
+    element.find('.submit').unbind('click').bind('click', function(){
+        element.mask();
+        alert = element.find('.alert');
+
+        options = {
+            type: 'GET',
+            url: request_url,
+            data: data_callback(),
+            success: function(response){
+                click_callback({response: response,
+                    dialog: element,
+                    alert: alert}
+                );
+            }
+        }
+        $.ajax(options);
+    });
+
+    $.fancybox({
+        'autoScale': true,
+        'transitionIn': 'elastic',
+        'transitionOut': 'elastic',
+        'speedIn': 500,
+        'speedOut': 300,
+        'autoDimensions': true,
+        'centerOnScroll': true,
+        //'modal': true,
+        'content' : element
+    });
+
+    /*
     dialog_options = {
         modal: true,
         resizeable: false,
@@ -291,6 +332,7 @@ change_location = function(element,
     element.dialog(dialog_options)
            .siblings('.ui-dialog-titlebar')
            .remove();
+    */
 }
 
 initStreetSearch = function(){

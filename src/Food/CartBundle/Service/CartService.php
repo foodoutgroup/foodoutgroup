@@ -392,7 +392,6 @@ class CartService {
 
     /**
      * @param \Food\CartBundle\Entity\Cart[] $cartItems
-     * param \Food\DishesBundle\Entity\Place $place
      * @return float|int
      *
      * TODO Pauliau, ar cia dar reikalingas place'as?
@@ -402,6 +401,22 @@ class CartService {
         $total = 0;
         foreach ($cartItems as $cartItem) {
             $total += $cartItem->getDishSizeId()->getCurrentPrice() * $cartItem->getQuantity();
+            foreach ($cartItem->getOptions() as $opt) {
+                $total += $opt->getDishOptionId()->getPrice() * $cartItem->getQuantity();
+            }
+        }
+        return $total;
+    }
+
+    /**
+     * @param \Food\CartBundle\Entity\Cart[] $cartItems
+     * @return float|int
+     */
+    public function getCartTotalOld($cartItems)
+    {
+        $total = 0;
+        foreach ($cartItems as $cartItem) {
+            $total += $cartItem->getDishSizeId()->getPrice() * $cartItem->getQuantity();
             foreach ($cartItem->getOptions() as $opt) {
                 $total += $opt->getDishOptionId()->getPrice() * $cartItem->getQuantity();
             }

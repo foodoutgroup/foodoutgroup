@@ -30,7 +30,7 @@
                 <th>{{ 'admin.reports.order_count'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.reports.devliver_count'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.reports.pickup_count'|trans({}, 'SonataAdminBundle') }}</th>
-                <th>{{ 'admin.reports.order_sum'|trans({}, 'SonataAdminBundle') }} ({{ currency_display }})</th>
+                <th>{{ 'admin.reports.order_sum'|trans({}, 'SonataAdminBundle') }} ({{ currency_display|raw }})</th>
             </tr>
             {% for place in stats %}
                 <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">

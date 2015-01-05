@@ -24,7 +24,7 @@ class MenuItem extends ContainerAware
             "maximum" => 0,
             "minimum_old" => 0,
             "maximum_old" => 0,
-            "currency" => "LTL"
+            "currency" => "EUR"
         ),
         "status" => 'available',
         "updated_at" => ""
@@ -96,12 +96,18 @@ class MenuItem extends ContainerAware
 
         $ds = $this->container->get('food.dishes');
         $showDiscount = $dish->getShowDiscount();
+        $discountText = "";
+        if ($showDiscount) {
+            $diff = ($ds->getLargestDishDiscountPrice($dish->getId()) / $ds->getLargestDishPrice($dish->getId())) * 100 - 100;
+            $discountText = round($diff)."%";
+        }
         $priceRange = array(
             'minimum' => (!$showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : $ds->getSmallestDishDiscountPrice($dish->getId()) * 100),
             'maximum' => (!$showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : $ds->getLargestDishDiscountPrice($dish->getId()) * 100),
             'minimum_old' => ($showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : 0),
             'maximum_old' => ($showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : 0),
-            'currency' => 'LTL'
+            'discount_text' => $discountText,
+            'currency' => $this->container->getParameter('currency_iso')
         );
         $this->set('item_id', $dish->getId())
             ->set('restaurant_id', $dish->getPlace()->getId())
@@ -132,7 +138,9 @@ class MenuItem extends ContainerAware
                 $options['sizes']['items'][] = array(
                     'option_id' => $size->getId(),
                     'title' => $unit->getName(),
-                    'price_modifier' => $size->getPrice() * 100
+                    'price_modifier' => $size->getCurrentPrice() * 100,
+                    'price_modifier_old' => ($size->getDish()->getShowDiscount() ?  $size->getPrice() * 100 : 0)
+
                 );
             }
             $options['sizes']['default'] = $options['sizes']['items'][0]['option_id'];

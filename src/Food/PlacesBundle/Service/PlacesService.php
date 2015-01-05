@@ -170,6 +170,7 @@ class PlacesService extends ContainerAware {
             ->createQueryBuilder('p')
             ->where('p.active = 1')
             ->orderBy('p.averageRating', 'DESC')
+            ->addOrderBy('p.reviewCount', 'DESC')
             ->setMaxResults($limit)
             ->getQuery();
 
@@ -193,7 +194,9 @@ class PlacesService extends ContainerAware {
     {
         $sortArrPrio = array();
         $sortArr = array();
+        $sortTop = array();
         foreach ($places as &$place) {
+            $place['show_top'] = 0;
             if ($place['pp_count'] == 1) {
                 $place['is_work'] = ($this->container->get('food.order')->isTodayWork($place['point']) ? 1:9);
             } else {
@@ -207,11 +210,15 @@ class PlacesService extends ContainerAware {
                     }
                 }
             }
-            $sortArrPrio[] = intval($place['priority']);
+            if ($place['place']->getNavision()) {
+                $place['show_top'] = 1;
+            }
+            $sortArrPrio[] = intval($place['priority']);// + ($place['place']->getNavision() ? 20:0);
             $sortArr[] = $place['is_work'];
+            $sortTop[] = $place['show_top'];
         }
 
-        array_multisort($sortArr, SORT_NUMERIC, SORT_ASC, $sortArrPrio, SORT_NUMERIC, SORT_DESC, $places);
+        array_multisort($sortTop,SORT_NUMERIC, SORT_DESC, $sortArr, SORT_NUMERIC, SORT_ASC, $sortArrPrio, SORT_NUMERIC, SORT_DESC, $places);
         return $places;
     }
 }

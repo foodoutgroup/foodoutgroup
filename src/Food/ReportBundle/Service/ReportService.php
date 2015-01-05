@@ -165,9 +165,9 @@ class ReportService extends ContainerAware
     {
         $currentDate = clone $dateFrom;
 
-        while($currentDate->format("m-d") < $dateTo->format("m-d"))
+        while($currentDate->format("y-m-d") < $dateTo->format("y-m-d"))
         {
-            $formatedDate = $currentDate->format("m-d");
+            $formatedDate = $currentDate->format("y-m-d");
             if (!isset($data[$formatedDate])) {
                 $data[$formatedDate] = 0;
             }

@@ -301,6 +301,7 @@ class InfobipProvider implements SmsProviderInterface {
                         'text' => urlencode(
                             str_replace('"', '\"', $message)
                         ),
+                        'ValidityPeriod' => '03:30',
                         'recipients' =>
                             array(
                                 array('gsm' => $recipient),

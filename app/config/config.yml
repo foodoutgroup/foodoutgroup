@@ -14,8 +14,8 @@ parameters:
     sms.available_providers: [food.infobip, food.silverstreet]
     sms.main_provider: "food.infobip"
     sms.sender: "Foodout.lt"
-    sms.balance_limit_warn: 7
-    sms.balance_limit_critical: 4
+    sms.balance_limit_warn: 20
+    sms.balance_limit_critical: 18
     infobip_provider.api_url: "http://api.infobip.com/api/v3/sendsms/json"
     infobip_provider.account_url: "http://api2.infobip.com/api"
     infobip_provider.login: "skanu1"
@@ -29,11 +29,13 @@ parameters:
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
     order.notify_emails: [mantas@foodout.lt, birute@foodout.lt, giedrius@foodout.lt]
+    #order.notify_emails: [pirminis@gmail.com]
     order.city_coordinators:
         vilnius: []
         kaunas: [zaneta@foodout.lt]
         klaipėda: [jurgita@foodout.lt]
     order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
+    # order.accept_notify_emails: [pirminis@gmail.com]
     accounting_email: "buhalterija@foodout.lt"
     title: "Foodout"
     domain: "foodout.lt"
@@ -62,8 +64,9 @@ parameters:
         - swedbank-credit-card-gateway
         - seb-banklink
         - nordea-banklink
-    currency_display: Lt
-    currency_iso: LTL
+    currency_display: '&euro;'
+    currency_iso: EUR
+    display_currency_alternative:  Lt
     # naudojam telefonu validacijoms
     country: LT
     vat: 21
@@ -117,6 +120,7 @@ twig:
         page_title:   "%title%"
         currency_display: "%currency_display%"
         currency_iso: "%currency_iso%"
+        display_currency_alternative: "%display_currency_alternative%"
         vat_size: "%vat%"
         google_maps_api: "%google.maps_api%"
         cloudfront_url: "%cloudfront_url%"
@@ -385,6 +389,9 @@ pirminis_gateway:
     swedbank:
         vtid: "21911859"
         password: "rMUhc7p7"
+        # credentials for testing below
+        # vtid: "88185002"
+        # password: "aXVdnHfZSJmz"
 
 knp_snappy:
     pdf:

@@ -172,12 +172,13 @@ class PaySera extends ContainerAware implements BillingInterface {
             'sign_password' => $this->getSightPassword(),
             'orderid' => $order->getId(),
             'amount' => (int)round($order->getTotal()*100),
-            'currency' => 'LTL', // TODO kai eisim i kita rinka
+            'currency' => 'EUR', // TODO kai eisim i kita rinka
             'country' => 'LT', // TODO kai eisim i kita rinka
             'accepturl' => $acceptUrl,
             'cancelurl' => $cancelUrl,
             'callbackurl' => $callbackUrl,
             'test' => $this->getTest(),
+            'time_limit' => date('Y-m-d H:i:s', strtotime('+1 hour')),
         );
 
         $logger->alert('++ EVP paduodami paramsai:');

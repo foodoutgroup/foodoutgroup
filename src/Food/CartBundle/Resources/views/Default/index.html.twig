@@ -22,14 +22,14 @@
                         options.response.data.adr == 1)
                     {
                         if (options.response.data.nodelivery == 1) {
-                            options.dialog.parent().unmask();
-                            options.dialog.dialog('close');
+                            options.dialog.unmask();
+                            $.fancybox.close();
                             toTakeOrNotToTake();
                         } else {
                             window.location.reload();
                         }
                     } else {
-                        options.dialog.parent().unmask();
+                        options.dialog.unmask();
                         options.alert.show();
                         setTimeout(function(){
                             options.alert.hide();
@@ -389,7 +389,7 @@
             </div>
         </div>
     </div>
-    {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'change-address'} %}
+    {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'change-address', hideQlu: true} %}
     <div class="hidden">
         <div id="rules" class="cart_rules_content">
             <div class="cart_rules_inner">{{ static_service.getPage(slug_util.oneByName('ordering_rules', locale).itemId).content|raw }}</div>

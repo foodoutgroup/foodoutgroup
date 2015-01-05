@@ -39,14 +39,15 @@ class OrderRepository extends EntityRepository
 
     /**
      * @param string $city
+     * @param boolean $pickup
      * @return array
      */
-    public function getOrdersUnconfirmed($city)
+    public function getOrdersUnconfirmed($city, $pickup = false)
     {
         $filter = array(
             'order_status' =>  array(OrderService::$status_new),
             'place_point_city' => $city,
-            'deliveryType' => OrderService::$deliveryDeliver,
+            'deliveryType' => (!$pickup ? OrderService::$deliveryDeliver : OrderService::$deliveryPickup),
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
@@ -386,15 +387,15 @@ class OrderRepository extends EntityRepository
 
         $query = "
           SELECT
-            DATE_FORMAT(o.order_date, '%m-%d') AS report_day,
+            DATE_FORMAT(o.order_date, '%y-%m-%d') AS report_day,
             COUNT(o.id) AS order_count
           FROM orders o
           WHERE
             o.order_status = '{$orderStatus}'
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
             ".($mobile ? 'AND mobile=1':'')."
-          GROUP BY DATE_FORMAT(o.order_date, '%m-%d')
-          ORDER BY DATE_FORMAT(o.order_date, '%m-%d') ASC
+          GROUP BY DATE_FORMAT(o.order_date, '%y-%m-%d')
+          ORDER BY DATE_FORMAT(o.order_date, '%y-%m-%d') ASC
         ";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);

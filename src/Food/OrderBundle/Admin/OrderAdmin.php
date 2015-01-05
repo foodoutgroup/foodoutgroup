@@ -63,6 +63,7 @@ class OrderAdmin extends SonataAdmin
 //            ->add('companyCode', null, array('label' => 'admin.order.companyCode'))
             ->add('total', null, array('label' => 'admin.order.total'))
             ->add('couponCode', null, array('label' => 'admin.order.coupon_code'))
+            ->add('mobile', null, array('label' => 'admin.order.ismobile_full'))
         ;
     }
 
@@ -155,7 +156,7 @@ class OrderAdmin extends SonataAdmin
                 )
             )
             ->add('submittedForPayment', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.submitted_for_payment'))
-            ->add('driver.contact', null, array('label' => 'admin.order.driver'))
+            ->add('driverContact', null, array('label' => 'admin.order.driver'))
             ->add('lastUpdate', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.last_update'))
             ->add('lastPaymentError', 'string', array('label' => 'admin.order.last_payment_error'))
             ->add('orderHash', 'string', array('label' => 'admin.order.hash'))
@@ -170,7 +171,7 @@ class OrderAdmin extends SonataAdmin
      */
     public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
     {
-        $collection->clearExcept(array('list', 'show'))
+        $collection->clearExcept(array('list', 'show', 'export'))
             ->add('sendInvoice', $this->getRouterIdParameter().'/sendInvoice');
     }
 

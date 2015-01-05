@@ -45,7 +45,6 @@ class NavService extends ContainerAware
 
     private $itemsTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Item]';
 
-
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
@@ -290,11 +289,11 @@ class NavService extends ContainerAware
         $comment = $order->getComment();
 
         if ($order->getPaymentMethod() == "local.card") {
-            $comment.="## MOKEJIMAS:KORTELE";
+            $comment.=". Mokesiu kortele";
         } elseif ($order->getPaymentMethod() == "local") {
-            $comment.="## MOKEJIMAS:GRYNAIS";
+            $comment.=". Mokesiu grynais";
         } else {
-            $comment.="## MOKEJIMAS:APMOKETA";
+
         }
 
         $dataToPut = array(
@@ -344,9 +343,43 @@ class NavService extends ContainerAware
             $theKey = $theKey + 1;
         }
 
+        if ($order->getPaymentMethod() != "local.card" && $order->getPaymentMethod() != "local") {
+            $this->_processPayedLineDelivery($order, $orderNewId, $theKey);
+            $theKey = $theKey + 1;
+        }
+
         if ($order->getDeliveryType() == OrderService::$deliveryDeliver) {
             $this->_processLineDelivery($orderNewId, $theKey);
         }
+    }
+
+    /**
+     * @param $orderNewId
+     * @param $key
+     *
+     */
+    private function _processPayedLineDelivery(Order $order, $orderNewId, $key)
+    {
+        $dataToPut = array(
+            'Order No_' => $orderNewId,
+            'Line No_' => $key,
+            'Entry Type' => 3,
+            'No_' => "'B_SWED'",
+            'Description' => "''",
+            'Quantity' => 1,
+            'Price' => $order->getTotal(),
+            'Parent Line' => 0,
+            'Amount' => 0,
+            'Discount Amount' => 0,
+            'Payment' => 0,
+            'Value' => "''"
+        );
+
+        $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
+
+        $query = 'INSERT INTO '.$this->getLineTable().' ('.$queryPart['keys'].') VALUES('.$queryPart['values'].')';
+        @mail("paulius@foodout.lt", '#'.($orderNewId - $this->_orderIdModifier).' [SQL Line Query]-#PREPAID', $query, "FROM: info@foodout.lt");
+        $sqlSS = $this->initSqlConn()->query($query);
     }
 
     /**
@@ -364,11 +397,11 @@ class NavService extends ContainerAware
             'No_' => "'ZRAW0009996'",
             'Description' => "''",
             'Quantity' => 1,
-            'Price' =>5,
+            'Price' => 1.5,
             'Parent Line' => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
-            'Amount' => 5,
+            'Amount' => 1.5,
             'Discount Amount' => 0,
-            'Payment' => 5,
+            'Payment' => 1.5,
             'Value' => "''"
         );
 
@@ -535,7 +568,7 @@ class NavService extends ContainerAware
         $url = $clientUrl2;
         //$options = array('trace'=>1, 'login' =>'CILIJA\fo_order', 'password' => 'peH=waGe?zoOs69');
         $options = array('trace'=>1, 'cache_wsdl' => WSDL_CACHE_NONE, 'login' =>'CILIJA\nas', 'password' => 'c1l1j@');
-        $client = new Common\FoNTLMSoapClient($url, $options);
+        $client = @new Common\FoNTLMSoapClient($url, $options);
         stream_wrapper_restore('http');
         return $client;
     }
@@ -544,8 +577,10 @@ class NavService extends ContainerAware
     {
         if (!$order->getNavPriceUpdated()) {
             $orderId = $this->getNavOrderId($order);
+            ob_start();
             $client = $this->getWSConnection();
             $return = $client->FoodOutUpdatePrices(array('pInt' =>(int)$orderId));
+            ob_end_clean();
             $order->setNavPriceUpdated(true);
             $this->getContainer()->get('doctrine')->getManager()->merge($order);
             $this->getContainer()->get('doctrine')->getManager()->flush();
@@ -564,8 +599,10 @@ class NavService extends ContainerAware
         $sqlSS = $this->initSqlConn()->query($query);
 
         if (!$order->getNavPorcessedOrder()) {
+            ob_start();
             $client = $this->getWSConnection();
             $return = $client->FoodOutProcessOrder(array('pInt' =>(int)$orderId));
+            ob_end_flush();
             $order->setNavPorcessedOrder(true);
             $this->getContainer()->get('doctrine')->getManager()->merge($order);
             $this->getContainer()->get('doctrine')->getManager()->flush();
@@ -896,6 +933,8 @@ class NavService extends ContainerAware
             case 1:
             case 4:
             case 5:
+            // 7-as - assigned, bet nezinom kuriam vairui, tai darom tik accepta
+            case 7:
                 if ($order->getOrderStatus() == OrderService::$status_new) {
                     $orderService->statusAccepted('cili_nav');
                 }
@@ -976,6 +1015,9 @@ class NavService extends ContainerAware
         return $navIds;
     }
 
+    /**
+     * @param int $oId
+     */
     public function getOrderHeader($oId)
     {
         $orderId = $this->_orderIdModifier + (int)$oId;
@@ -994,6 +1036,10 @@ class NavService extends ContainerAware
         echo "\n\n----------------------------------";
     }
 
+    /**
+     * @param null $date
+     * @throws \InvalidArgumentException
+     */
     public function syncDisDescription($date = null)
     {
         $result = $this->initSqlConn()->query('SELECT [No_], [Description], [Search Description] FROM '.$this->getItemsTable()." WHERE LEN([No_]) > 3 AND [No_] NOT LIKE 'DIS%'");
@@ -1030,5 +1076,30 @@ class NavService extends ContainerAware
             default:
                 return $type;
         }
+    }
+
+    public function areWebServicesAlive()
+    {
+        $critical = false;
+
+        try {
+            $client = $this->getContainer()->get('food.nav')->getWSConnection();
+            $functions = $client->__getFunctions();
+
+            if (
+                !in_array('FoodOutUpdatePrices_Result FoodOutUpdatePrices(FoodOutUpdatePrices $parameters)', $functions)
+                || !in_array('FoodOutProcessOrder_Result FoodOutProcessOrder(FoodOutProcessOrder $parameters)', $functions)
+            ) {
+                $critical = true;
+                $text = '<error>ERROR: Foodout NAV SOAP commands not found';
+            } else {
+                $text = '<info>OK: web services are up and running.</info>';
+            }
+        } catch (\SoapFault $e) {
+            $critical = true;
+            $text = '<error>ERROR: could not connect to NAV web services: "' . $e->getMessage() . '"</error>';
+        }
+
+        return [$critical, $text];
     }
 }

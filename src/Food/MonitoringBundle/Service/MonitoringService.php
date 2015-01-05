@@ -200,4 +200,32 @@ class MonitoringService extends ContainerAware {
 
         return $return;
     }
+
+    /**
+     * @return array
+     */
+    public function getFewOrdersFromNav()
+    {
+        $navService = $this->container->get('food.nav');
+
+        $query = sprintf(
+            'SELECT TOP 1 [Order No_], [Order Status], [Delivery Status]
+            FROM %s',
+            $navService->getHeaderTable()
+        );
+
+        $result = $navService->initSqlConn()
+            ->query($query);
+
+        if( $result === false) {
+            return array();
+        }
+
+        $return = array();
+        while ($rowRez = $this->container->get('food.mssql')->fetchArray($result)) {
+            $return[] = $rowRez;
+        }
+
+        return $return;
+    }
 }

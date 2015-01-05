@@ -4,7 +4,6 @@ namespace Food\ApiBundle\Controller;
 
 use Food\ApiBundle\Exceptions\ApiException;
 use Food\UserBundle\Entity\User;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;

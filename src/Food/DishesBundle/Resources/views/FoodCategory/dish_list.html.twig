@@ -36,14 +36,14 @@
                 {% endif %}
                 <span class="price {% if hasDiscount %}discounted{% endif %} {% if hasDiscount and multiLine %}multiline{% endif %}">
                     {% if smallestPrice == largestPrice %}
-                        {{ smallestPrice|replace({'.': ','}) }} {{ currency_display }}
+                        {{ currency_display | raw}} {{ smallestPrice|replace({'.': ','}) }}
                         <span class="euro">
-                            &euro;{{ misc_utils.getEuro(smallestPrice)|number_format(2, ',', ' ') }}
+                            {{ misc_utils.getLitas(smallestPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}
                         </span>
                     {% else %}
-                        {{ smallestPrice|replace({'.': ','}) }} - {{ largestPrice|replace({'.': ','}) }} {{ currency_display }}
+                        {{ currency_display | raw}} {{ smallestPrice|replace({'.': ','}) }} - {{ largestPrice|replace({'.': ','}) }}
                         <span class="euro">
-                            &euro;{{  misc_utils.getEuro(smallestPrice)|number_format(2, ',', ' ') }} - &euro;{{  misc_utils.getEuro(largestPrice)|number_format(2, ',', ' ') }}
+                            {{  misc_utils.getLitas(smallestPrice)|number_format(2, ',', ' ') }} - {{  misc_utils.getLitas(largestPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}
                         </span>
                     {% endif %}
                 </span>
@@ -52,14 +52,14 @@
                     {% set largestDiscountPrice = dish_service.largestDishDiscountPrice(dish.id) %}
                     <span class="price {% if hasDiscount %}discount{% endif %} {% if hasDiscount and multiLine %}multiline{% endif %}">
                     {% if smallestDiscountPrice == largestDiscountPrice %}
-                        {{ smallestDiscountPrice|replace({'.': ','}) }} {{ currency_display }}
+                        {{ currency_display | raw}} {{ smallestDiscountPrice|replace({'.': ','}) }}
                         <span class="euro">
-                            &euro;{{ misc_utils.getEuro(smallestDiscountPrice)|number_format(2, ',', ' ') }}
+                            {{ misc_utils.getLitas(smallestDiscountPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}
                         </span>
                     {% else %}
-                        {{ smallestDiscountPrice|replace({'.': ','}) }} - {{ largestDiscountPrice|replace({'.': ','}) }} {{ currency_display }}
+                        {{ currency_display | raw}} {{ smallestDiscountPrice|replace({'.': ','}) }} - {{ largestDiscountPrice|replace({'.': ','}) }}
                         <span class="euro">
-                            &euro;{{  misc_utils.getEuro(smallestDiscountPrice)|number_format(2, ',', ' ') }} - &euro;{{  misc_utils.getEuro(largestDiscountPrice)|number_format(2, ',', ' ') }}
+                            {{  misc_utils.getLitas(smallestDiscountPrice)|number_format(2, ',', ' ') }} - {{  misc_utils.getLitas(largestDiscountPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}
                         </span>
                     {% endif %}
                     </span>
