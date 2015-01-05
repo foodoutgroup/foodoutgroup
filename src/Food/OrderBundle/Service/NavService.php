@@ -617,7 +617,8 @@ class NavService extends ContainerAware
         $response = new \StdClass();
 
         // if user is not a company or didnt need an invoice - nothing to do here.
-        if (empty($order->getCompany())) {
+        $company = $order->getCompany();
+        if (empty($company)) {
             return null;
         }
 
