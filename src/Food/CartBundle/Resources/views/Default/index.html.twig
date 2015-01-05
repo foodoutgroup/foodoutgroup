@@ -135,9 +135,13 @@
                         opt = $(this).parent().find('input').val();
                     }
 
-                    with ($('#online_payments')) {
-                        if (opt == 'pickup') hide();
-                        else show();
+                    var nav = '{{ place.navision }}';
+
+                    with ($('.for_hiding')) {
+                        if ('1' === nav) {
+                            if (opt == 'pickup') hide();
+                            else show();
+                        }
                     }
 
                     ga('ec:setAction', 'checkout_option', {'step': 2, 'option': opt});
@@ -303,7 +307,7 @@
                                     <input type="radio" name="payment-type" value="local"{% if (order is not null and order.paymentMethod == 'local') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local') or (dataToLoad is empty) %} checked="checked"{% endif %}>
                                 </label>
                                 {% if takeAway != true and place.cardOnDelivery %}
-                                <label class="custom-radio">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
+                                <label class="custom-radio for_hiding">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
                                     <input type="radio" name="payment-type" value="local.card"{% if (order is not null and order.paymentMethod == 'local.card') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local.card') %} checked="checked"{% endif %}>
                                 </label>
                                 {% endif %}
@@ -311,7 +315,7 @@
 
                             {% if not place.disabledOnlinePayment %}
                             {# TODO kolkas viskas rodo i Paysera#}
-                            <div id="online_payments">
+                            <div class="for_hiding">
                                 <div class="select-payment clearfix">
                                     <label class="custom-radio">
                                         <img src="/bundles/foodapp/images/nordea-small.png">
