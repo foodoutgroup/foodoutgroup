@@ -177,6 +177,14 @@
                 Cart.bindEvents();
             });
         </script>
+
+        {% if takeAway and '1' == place.navision %}
+            <script type="text/javascript">
+                $(window).load(function() {
+                    $('.for_hiding').hide();
+                });
+            </script>
+        {% endif %}
     {% endjavascripts %}
     <div class="site-center">
         <div class="site-block">
