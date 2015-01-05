@@ -58,6 +58,10 @@ class InvoiceService extends ContainerAware
             return;
         }
 
+        if ($order->getPlacePointSelfDelivery() || $order->getDeliveryType() == OrderService::$deliveryPickup) {
+            return;
+        }
+
         $em = $this->container->get('doctrine')->getManager();
 
         $invoiceTask = new InvoiceToSend();
