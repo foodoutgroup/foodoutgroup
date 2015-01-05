@@ -75,7 +75,7 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                         $em->flush();
 
                         // create invoice in NAVISION
-                        $nav->createInvoice($orderToSend);
+                        $nav->createInvoice($orderToSend->getOrder());
 
                         $output->writeln('Invoice sent to emails: '.implode(', ', $emails));
                     }

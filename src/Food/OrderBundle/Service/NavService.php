@@ -526,8 +526,8 @@ class NavService extends ContainerAware
     {
 
         $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
-        // $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
-        $clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija%20Skambučių%20Centras/Codeunit/WEB_Service2";
+        $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
+        // $clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija%20Skambučių%20Centras/Codeunit/WEB_Service2";
 
         stream_wrapper_unregister('http');
         stream_wrapper_register('http', '\Food\OrderBundle\Common\FoNTLMStream') or die("Failed to register protocol");
@@ -596,6 +596,13 @@ class NavService extends ContainerAware
         $deliveryTotal = $o->getPlace()->getDeliveryPrice()->val(0.0);
         $foodTotal = $total - $discountTotal - $deliveryTotal;
 
+        // payment type and code preprocessing
+        $driverId = $o->getDriver()->getId()->val('');
+        $paymentType = $o->getPaymentMethod()->val('');
+        $paymentCode = $paymentType == 'local'
+                       ? $driverId
+                       : $this->convertPaymentType($paymentType);
+
         // main variable that holds parameters for a Soap call
         $params = ['InvoiceNo' => $o->getSfSeries()->val('') . $o->getSfNumber()->val(''),
                    'OrderID' => $o->getId()->val('0'),
@@ -604,7 +611,7 @@ class NavService extends ContainerAware
                                   $o->getOrderDate()->format('H:i:s')->val('00:00:00'),
                    'RestaurantID' => $o->getPlace()->getId()->val('0'),
                    'RestaurantName' => $o->getPlaceName()->val(''),
-                   'DriverID' => $o->getDriver()->getId()->val(''),
+                   'DriverID' => $driverId,
                    'ClientName' => $o->getUser()->getFirstname()->val('') .
                                    ' ' .
                                    $o->getUser()->getLastname()->val(''),
@@ -612,8 +619,8 @@ class NavService extends ContainerAware
                    'VATRegistrationNo' => $o->getVATCode()->val(''),
                    'DeliveryAddress' => $o->getAddressId()->getAddress()->val(''),
                    'City' => $o->getPlacePointCity()->val(''),
-                   'PaymentType' => $o->getPaymentMethod()->val(''),
-                   'PaymentCode' => $this->convertPaymentType($o->getPaymentMethod()->val('')),
+                   'PaymentType' => $paymentType,
+                   'PaymentCode' => $paymentCode,
                    'FoodAmount' => number_format($foodTotal, 2, '.', ''),
                    'AlcoholAmount' => number_format(0.0, 2, '.', ''),
                    'DeliveryAmount' => $o->getDeliveryType()->val('') == 'pickup'
