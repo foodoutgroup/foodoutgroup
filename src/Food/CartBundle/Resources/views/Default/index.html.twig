@@ -139,8 +139,12 @@
 
                     with ($('.for_hiding')) {
                         if ('1' === nav) {
-                            if (opt == 'pickup') hide();
-                            else show();
+                            if (opt == 'pickup') {
+                                $('.iradio input[type="radio"]', '.select-payment, .select-bank').iCheck('uncheck');
+                                hide();
+                            } else {
+                                show();
+                            }
                         }
                     }
 
