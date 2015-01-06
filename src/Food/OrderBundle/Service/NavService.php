@@ -616,12 +616,6 @@ class NavService extends ContainerAware
     {
         $response = new \StdClass();
 
-        // if user is not a company or didnt need an invoice - nothing to do here.
-        $company = $order->getCompany();
-        if (empty($company)) {
-            return null;
-        }
-
         // we will need to connect to a web service
         $client = $this->getWSConnection();
 
