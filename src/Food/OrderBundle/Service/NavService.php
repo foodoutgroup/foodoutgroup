@@ -638,9 +638,9 @@ class NavService extends ContainerAware
         // main variable that holds parameters for a Soap call
         $params = ['InvoiceNo' => $o->getSfSeries()->val('') . $o->getSfNumber()->val(''),
                    'OrderID' => $o->getId()->val('0'),
-                   'OrderDate' => $o->getOrderDate()->format('Y.m.d')->val('1754-01-01') .
-                                  ' ' .
-                                  $o->getOrderDate()->format('H:i:s')->val('00:00:00'),
+                   'OrderDate' => $o->getOrderDate()->format('Y.m.d')->val('1754-01-01'),
+                                  // ' ' .
+                                  // $o->getOrderDate()->format('H:i:s')->val('00:00:00'),
                    'RestaurantID' => $o->getPlace()->getId()->val('0'),
                    'RestaurantName' => $o->getPlaceName()->val(''),
                    'DriverID' => $driverId,
@@ -658,8 +658,6 @@ class NavService extends ContainerAware
                    'DeliveryAmount' => $o->getDeliveryType()->val('') == 'pickup'
                                        ? '0.00'
                                        : number_format($o->getDeliveryPrice()->val('0.0'), 2, '.', '')];
-
-        print_r($params);
 
         // send a call to a web service, but beware of exceptions
         try {
