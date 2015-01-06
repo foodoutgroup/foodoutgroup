@@ -659,8 +659,6 @@ class NavService extends ContainerAware
                                        ? '0.00'
                                        : number_format($o->getDeliveryPrice()->val('0.0'), 2, '.', '')];
 
-        print_r($params);
-
         // send a call to a web service, but beware of exceptions
         try {
             $response = $client->FoodOutCreateInvoice(['params' => $params]);
