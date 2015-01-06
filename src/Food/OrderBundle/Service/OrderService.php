@@ -539,15 +539,21 @@ class OrderService extends ContainerAware
     public function setInvoiceDataForOrder()
     {
         $order = $this->getOrder();
-        $miscService = $this->container->get('food.app.utils.misc');
 
-        $sfNumber = (int)$miscService->getParam('sf_next_number');
-        $order->setSfSeries($this->container->getParameter('invoice.series'));
-        $order->setSfNumber($sfNumber);
+        $orderSeries = $order->getSfSeries();
+        $orderSfNumber = $order->getSfNumber();
 
-        $miscService->setParam('sf_next_number', ($sfNumber + 1));
+        if (empty($orderSeries) || empty($orderSfNumber)) {
+            $miscService = $this->container->get('food.app.utils.misc');
 
-        $this->saveOrder();
+            $sfNumber = (int)$miscService->getParam('sf_next_number');
+            $order->setSfSeries($this->container->getParameter('invoice.series'));
+            $order->setSfNumber($sfNumber);
+
+            $miscService->setParam('sf_next_number', ($sfNumber + 1));
+
+            $this->saveOrder();
+        }
     }
 
     /**

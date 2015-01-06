@@ -879,6 +879,10 @@
                 <source>admin.order.discount_sum</source>
                 <target>Discount sum</target>
             </trans-unit>
+            <trans-unit id="admin.order.sf_line">
+                <source>admin.order.sf_line</source>
+                <target>Invoice</target>
+            </trans-unit>
             <trans-unit id="admin.order.comment">
                 <source>admin.order.comment</source>
                 <target>Client comment</target>

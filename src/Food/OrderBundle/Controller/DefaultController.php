@@ -121,7 +121,7 @@ class DefaultController extends Controller
                 break;
 
                 case 'partialy_completed':
-                    $this->get('food.order')->statusPartialyCompleted('admin_mobile');
+                    $orderService->statusPartialyCompleted('admin_mobile');
                 break;
             }
             $orderService->saveOrder();

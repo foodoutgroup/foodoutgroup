@@ -64,6 +64,16 @@ class InvoiceService extends ContainerAware
 
         $em = $this->container->get('doctrine')->getManager();
 
+        $unsentItem = $em->getRepository('FoodOrderBundle:InvoiceToSend')->findBy(array(
+            'order' => $order,
+            'status' => 'unsent'
+        ));
+
+        // If there is a unsent Item already registered - dont do that again
+        if (!empty($unsentItem) && count($unsentItem)>0) {
+            return;
+        }
+
         $invoiceTask = new InvoiceToSend();
         $invoiceTask->setOrder($order)
             ->setDateAdded(new \DateTime('now'))

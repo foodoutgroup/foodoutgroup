@@ -64,6 +64,7 @@ class OrderAdmin extends SonataAdmin
             ->add('total', null, array('label' => 'admin.order.total'))
             ->add('couponCode', null, array('label' => 'admin.order.coupon_code'))
             ->add('mobile', null, array('label' => 'admin.order.ismobile_full'))
+            ->add('sfLine', null, array('label' => 'admin.order.sf_line'))
         ;
     }
 
@@ -134,6 +135,7 @@ class OrderAdmin extends SonataAdmin
             ->add('couponCode', 'string', array('label' => 'admin.order.coupon_code'))
             ->add('discountSize', 'string', array('label' => 'admin.order.discount_size'))
             ->add('discountSum', 'string', array('label' => 'admin.order.discount_sum'))
+            ->add('sfLine', 'string', array('label' => 'admin.order.sf_line'))
             ->add('comment', 'string', array('label' => 'admin.order.comment'))
             ->add('place_comment', 'string', array('label' => 'admin.order.place_comment'))
             ->add('order_status', 'sonata_type_collection',

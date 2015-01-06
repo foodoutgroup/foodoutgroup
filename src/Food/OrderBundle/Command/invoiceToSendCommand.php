@@ -88,29 +88,11 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                     $em->persist($orderToSend);
                     $em->flush();
 
-                    // recreate original invoice to send since it was unsent
-                    $originalOrderToSend = clone($orderToSend);
-                    $originalOrderToSend->markUnsent()
-                                        ->setLastError('');
-
-                    $em->persist($originalOrderToSend);
-                    $em->flush();
+                    $invoiceService->addInvoiceToSend($orderToSend->getOrder());
 
                     throw $e;
                 }
             }
-
-            // Insert empty line for clarity
-//            $output->writeln('');
-//            sleep(20);
-//            $output->writeln('Removing generated invoice PDF files from local storage...');
-//
-//            if (!$dryRun) {
-//                foreach ($orders as $orderToSend) {
-//                    $output->writeln('Removing local invoice copy for order '.$orderToSend->getOrder()->getId());
-//                    $invoiceService->removeUserInvoice($orderToSend->getOrder());
-//                }
-//            }
 
         } catch (\Exception $e) {
             $output->writeln('Error sending order invoice');

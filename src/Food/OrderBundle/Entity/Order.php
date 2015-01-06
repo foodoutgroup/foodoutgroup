@@ -1522,6 +1522,14 @@ class Order
     }
 
     /**
+     * @return string
+     */
+    public function getSfLine()
+    {
+        return $this->sfSeries.$this->sfNumber;
+    }
+
+    /**
      * Get sfNumber
      *
      * @return integer 
