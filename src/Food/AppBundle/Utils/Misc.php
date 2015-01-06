@@ -187,7 +187,10 @@ class Misc
         $parts        = explode('.', (string)$float);
         $mainPart = $parts[0];
         if (isset($parts[1])) {
-            $minorPart    = trim($parts[1], '0');
+            if ((int)$parts[1] < 10 && strpos($parts[1], '0') !== 0) {
+                $parts[1] = $parts[1].'0';
+            }
+            $minorPart    = ltrim($parts[1], '0');
         } else {
              $minorPart = 0;
         }

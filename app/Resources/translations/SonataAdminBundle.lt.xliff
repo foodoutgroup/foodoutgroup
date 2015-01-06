@@ -1426,6 +1426,10 @@
                 <source>admin.reports.place</source>
                 <target>Restoranas</target>
             </trans-unit>
+            <trans-unit id="admin.reports.self_delivery">
+                <source>admin.reports.self_delivery</source>
+                <target>Sava logistika</target>
+            </trans-unit>
             <trans-unit id="admin.reports.order_count">
                 <source>admin.reports.order_count</source>
                 <target>Kiekis</target>
