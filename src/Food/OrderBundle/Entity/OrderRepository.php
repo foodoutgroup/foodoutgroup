@@ -346,6 +346,7 @@ class OrderRepository extends EntityRepository
           SELECT
             o.place_id,
             p.name AS place_name,
+            p.self_delivery AS self_delivery,
             COUNT(o.id) AS order_count,
             SUM(o.total) AS order_sum,
             SUM(
