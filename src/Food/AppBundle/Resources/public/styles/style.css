@@ -1695,15 +1695,16 @@ div.coupon_form_popup {
     border: none;
     letter-spacing: 1px;
 }
+
 #change-address label, #places-change-address label { width: 120px; }
 #change-address button, #places-change-address button { float: right; }
 .width463 {width: 463px;}
 #change-address .page-title .h1, #places-change-address .page-title .h1{font-size: 30px; margin: 0; color: #513d28; font-weight: normal; float: none !important;}
-#change-address .title, #places-change-address .title {font-size: 17px; color: #4d090a; text-align: center; margin: 0; padding-bottom: 15px; padding-right: 63px; letter-spacing: 0.6px;}}
+#change-address .title, #places-change-address .title {font-size: 17px; color: #4d090a; text-align: center; margin: 0; padding-bottom: 15px; padding-right: 63px; letter-spacing: 0.6px;}
 
 /* Custom checkbox shown on right side */
-.form-row.checkbox-right {
-    padding-left: 0px;
+.form-row.custom-checkbox.checkbox-right {
+    padding-left: 0;
 }
 .custom-checkbox.checkbox-right .icheckbox {
     float: left;
