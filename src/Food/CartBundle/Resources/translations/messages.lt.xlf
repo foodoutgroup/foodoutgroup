@@ -290,6 +290,10 @@ Vilnius]]></target>
             <source>order.form.errors.nav_restaurant_no_setted</source>
             <target><![CDATA[<b>Restoranas šiuo metu nepasiekiamas.</b>]]></target>
         </trans-unit>
+        <trans-unit id="order.form.errors.nav_empty_cart" resname="order.form.errors.nav_empty_cart">
+            <source>order.form.errors.nav_empty_cart</source>
+            <target><![CDATA[<b>Krepšelis neturi patiekalų.</b>]]></target>
+        </trans-unit>
         <trans-unit id="order.form.errors.empty_company" resname="order.form.errors.empty_company">
             <source>order.form.errors.empty_company</source>
             <target>Įveskite įmone, kuriai norite gauti sąskaitą faktūrą</target>

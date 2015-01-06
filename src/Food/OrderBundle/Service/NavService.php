@@ -803,11 +803,25 @@ class NavService extends ContainerAware
         }
         $requestXml.= "</Lines>\n";
 
+        // this is more like anomaly than a rule
+        if (empty($requestData['Lines'])) {
+            $returner = [
+                'valid' => false,
+                'errcode' => [
+                    'code' => 255,
+                    'line' => __LINE__,
+                    'msg' => 'No line items.',
+                    'problem_dish' => ''
+                ]
+            ];
+
+            return $returner;
+        }
+
         $requestXml = iconv('utf-8', 'cp1257', $requestXml);
 
         ob_start();
         @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQUEST", print_r($requestData, true), "FROM: info@foodout.lt");
-        @mail("jonas.s@foodout.lt", "CILI NVB VALIDATE REQUEST", print_r($requestData, true), "FROM: info@foodout.lt");
         $response = $this->getWSConnection()->FoodOutValidateOrder(
                 array(
                     'params' => $requestData,

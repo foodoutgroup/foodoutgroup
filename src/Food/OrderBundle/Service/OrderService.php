@@ -2283,6 +2283,9 @@ class OrderService extends ContainerAware
                     $formErrors[] = 'order.form.errors.nav_restaurant_no_work';
                 } elseif ($data['errcode']['code'] == 6) {
                     $formErrors[] = 'order.form.errors.nav_restaurant_no_setted';
+                } elseif ($data['errcode']['code'] == 255) {
+                    $formHasErrors = true;
+                    // $formErrors[] = 'order.form.errors.nav_empty_cart';
                 }
             }
         }
