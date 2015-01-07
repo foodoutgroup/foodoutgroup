@@ -61,6 +61,9 @@ class TranslationConverterCommand extends ContainerAwareCommand
         $files = $this->getFinder()->files()->name($pattern)->in($path);
 
         foreach ($files as $file) {
+            $pathName = $file->getPathName();
+            $pathDir = dirname($pathName);
+
             list($domain, $language) = explode('.', $file->getFilename());
 
             $output->writeln(sprintf('Taking file %s', $file->getRealPath()));
@@ -75,9 +78,9 @@ class TranslationConverterCommand extends ContainerAwareCommand
             }
 
             try {
-                $this->getTranslationWriter()->writeTranslations($file, $outputFormat, array(
-                    'path' => $this->getTranslationPath())
-                );
+                $this->getTranslationWriter()->writeTranslations($file, $outputFormat, [
+                    'path' => $pathDir
+                ]);
 
                 $output->writeln('<fg=green>New translation files saved in the same path.</fg=green>');
             } catch (\Exception $e) {
