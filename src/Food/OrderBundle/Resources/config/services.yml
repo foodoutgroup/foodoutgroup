@@ -102,3 +102,11 @@ services:
             - [setContainer, [@service_container]]
         tags:
             - { name: kernel.event_listener, event: nav.order.log_for_sync, method: onLogForSync }
+
+    # Soap fault handler. Non-mandatory, you can disable this if you hate critical log messages about soap faults
+    food.soap.fault_listener:
+        class: Food\OrderBundle\Service\SoapFaultListener
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: kernel.event_listener, event: food.soap.fault, method: onSoapFault }

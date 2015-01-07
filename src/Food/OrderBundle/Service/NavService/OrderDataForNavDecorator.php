@@ -51,7 +51,7 @@ trait OrderDataForNavDecorator
         $data->country = '';
         $data->paymentType = $order->getPaymentMethod()->val('');
         $data->foodAmount = (double) $foodTotal;
-        $data->foodAmountEUR = (double) $misc->getEuro($foodTotal);
+        $data->foodAmountEUR = (double) $foodTotal;
         $data->foodVAT = (double) $vat;
         $data->drinksAmount = 0.0;
         $data->drinksAmountEUR = 0.0;
@@ -63,16 +63,16 @@ trait OrderDataForNavDecorator
                                                 ->val('') == 'pickup' ?
                                                     0.0 :
                                                     $deliveryTotal);
-        $data->deliveryAmountEUR = (double) $misc->getEuro($data->deliveryAmount);
+        $data->deliveryAmountEUR = (double) $data->deliveryAmount;
         $data->deliveryVAT = (double) $vat;
         $data->giftCardAmount = 0.0;
         $data->giftCardAmountEUR = 0.0;
         $data->discountType = '';
         $data->discountAmount = (double) $discountTotal;
-        $data->discountAmountEUR = (double) $misc->getEuro($discountTotal);
+        $data->discountAmountEUR = (double) $discountTotal;
         $data->discountPercent = (double) ($total > 0.0 ? ($discountTotal / $total) : 0.0);
         $data->totalAmount = (double) $total;
-        $data->totalAmountEUR = (double) $misc->getEuro($total);
+        $data->totalAmountEUR = (double) $total;
 
         return $data;
     }
@@ -426,7 +426,7 @@ trait OrderDataForNavDecorator
         $resource = $conn->query($query);
         $row = mssql_fetch_array($resource);
         mssql_free_result($resource);
-        
+
         return !empty($row) ? true : false;
     }
 }

@@ -462,6 +462,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
             OrderService::$status_finished,
             OrderService::$status_assiged,
             OrderService::$status_completed,
+            OrderService::$status_partialy_completed,
             OrderService::$status_canceled,
         );
 

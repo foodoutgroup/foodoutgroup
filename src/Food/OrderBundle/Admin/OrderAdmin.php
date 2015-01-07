@@ -59,8 +59,12 @@ class OrderAdmin extends SonataAdmin
                     '1' => $this->trans('label_type_yes'),
                 )
             ))
+//            ->add('companyName', null, array('label' => 'admin.order.companyName'))
+//            ->add('companyCode', null, array('label' => 'admin.order.companyCode'))
             ->add('total', null, array('label' => 'admin.order.total'))
             ->add('couponCode', null, array('label' => 'admin.order.coupon_code'))
+            ->add('mobile', null, array('label' => 'admin.order.ismobile_full'))
+            ->add('sfLine', null, array('label' => 'admin.order.sf_line'))
         ;
     }
 
@@ -85,6 +89,9 @@ class OrderAdmin extends SonataAdmin
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
+                    'sendInvoice' => array(
+                        'template' => 'FoodOrderBundle:CRUD:list__action_sendInvoice.html.twig'
+                    ),
                 ),
                 'label' => 'admin.actions'
             ))
@@ -105,6 +112,16 @@ class OrderAdmin extends SonataAdmin
             ->add('place_point_address', 'string', array('label' => 'admin.order.place_point'))
             ->add('user.contact', null, array('label' => 'admin.order.user'))
             ->add('address_id', null, array('label' => 'admin.order.delivery_address'))
+            ->add('company', 'sonata_type_collection',
+                array(
+                    'label' => 'admin.order.company',
+                    'template' => 'FoodOrderBundle:Admin:order_company_data.html.twig'
+                )
+            )
+//            ->add('companyName', null, array('label' => 'admin.order.companyName'))
+//            ->add('companyCode', null, array('label' => 'admin.order.companyCode'))
+//            ->add('vatCode', null, array('label' => 'admin.order.vatCode'))
+//            ->add('companyAddress', null, array('label' => 'admin.order.companyAddress'))
             ->add('userIp', null, array('label' => 'admin.order.user_ip'))
             ->add('deliveryType', 'string', array('label' => 'admin.order.delivery_type'))
             ->add('details', 'sonata_type_collection',
@@ -119,6 +136,7 @@ class OrderAdmin extends SonataAdmin
             ->add('couponCode', 'string', array('label' => 'admin.order.coupon_code'))
             ->add('discountSize', 'string', array('label' => 'admin.order.discount_size'))
             ->add('discountSum', 'string', array('label' => 'admin.order.discount_sum'))
+            ->add('sfLine', 'string', array('label' => 'admin.order.sf_line'))
             ->add('comment', 'string', array('label' => 'admin.order.comment'))
             ->add('place_comment', 'string', array('label' => 'admin.order.place_comment'))
             ->add('order_status', 'sonata_type_collection',
@@ -141,9 +159,10 @@ class OrderAdmin extends SonataAdmin
                 )
             )
             ->add('submittedForPayment', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.submitted_for_payment'))
-            ->add('driver.contact', null, array('label' => 'admin.order.driver'))
+            ->add('driverContact', null, array('label' => 'admin.order.driver'))
             ->add('lastUpdate', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.last_update'))
             ->add('lastPaymentError', 'string', array('label' => 'admin.order.last_payment_error'))
+            ->add('orderHash', 'string', array('label' => 'admin.order.hash'))
         ;
     }
 
@@ -155,7 +174,8 @@ class OrderAdmin extends SonataAdmin
      */
     public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
     {
-        $collection->clearExcept(array('list', 'show'));
+        $collection->clearExcept(array('list', 'show', 'export'))
+            ->add('sendInvoice', $this->getRouterIdParameter().'/sendInvoice');
     }
 
 }

@@ -38,6 +38,7 @@ class InvoiceToSendCommand extends ContainerAwareCommand
     {
         try {
             $invoiceService = $this->getContainer()->get('food.invoice');
+            $nav = $this->getContainer()->get('food.nav');
             $em = $this->getContainer()->get('doctrine')->getManager();
             $forcedEmail = $input->getOption('force-email');
             if (empty($forcedEmail)) {
@@ -68,35 +69,30 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                         $emails = $invoiceService->sendUserInvoice($orderToSend->getOrder(), $forcedEmail);
 
                         $orderToSend->setDateSent(new \DateTime('now'))
-                            ->markSent();
+                                    ->markSent();
 
                         $em->persist($orderToSend);
-                          $em->flush();
+                        $em->flush();
+
+                        // create invoice in NAVISION
+                        $nav->createInvoice($orderToSend->getOrder());
 
                         $output->writeln('Invoice sent to emails: '.implode(', ', $emails));
                     }
                 } catch (\Exception $e) {
+                    // mark error (for historical reasons)
+                    // but please _DO NOT_ mark it unsent!
                     $orderToSend->markError()
                         ->setLastError($e->getMessage());
 
                     $em->persist($orderToSend);
                     $em->flush();
 
+                    $invoiceService->addInvoiceToSend($orderToSend->getOrder());
+
                     throw $e;
                 }
             }
-
-            // Insert empty line for clarity
-//            $output->writeln('');
-//            sleep(20);
-//            $output->writeln('Removing generated invoice PDF files from local storage...');
-//
-//            if (!$dryRun) {
-//                foreach ($orders as $orderToSend) {
-//                    $output->writeln('Removing local invoice copy for order '.$orderToSend->getOrder()->getId());
-//                    $invoiceService->removeUserInvoice($orderToSend->getOrder());
-//                }
-//            }
 
         } catch (\Exception $e) {
             $output->writeln('Error sending order invoice');

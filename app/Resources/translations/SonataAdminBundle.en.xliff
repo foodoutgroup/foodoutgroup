@@ -879,6 +879,10 @@
                 <source>admin.order.discount_sum</source>
                 <target>Discount sum</target>
             </trans-unit>
+            <trans-unit id="admin.order.sf_line">
+                <source>admin.order.sf_line</source>
+                <target>Invoice</target>
+            </trans-unit>
             <trans-unit id="admin.order.comment">
                 <source>admin.order.comment</source>
                 <target>Client comment</target>
@@ -1015,6 +1019,10 @@
                 <source>admin.order.ismobile</source>
                 <target>Mob</target>
             </trans-unit>
+            <trans-unit id="admin.order.ismobile_full">
+                <source>admin.order.ismobile_full</source>
+                <target>Mobile</target>
+            </trans-unit>
 
             <!-- Order logas pas sonata admina -->
             <trans-unit id="admin.order.order_log">
@@ -1054,6 +1062,22 @@
             <trans-unit id="admin.dispatcher.comment">
                 <source>admin.dispatcher.comment</source>
                 <target>Client comment.</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payment">
+                <source>admin.dispatcher.payment</source>
+                <target>Payment</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payement.local">
+                <source>admin.dispatcher.payement.local</source>
+                <target>Cash on delivery</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payement.local_card">
+                <source>admin.dispatcher.payement.local_card</source>
+                <target>Card on delivery</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payement.bank_link">
+                <source>admin.dispatcher.payement.bank_link</source>
+                <target>Online</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.unassigned">
                 <source>admin.dispatcher.unassigned</source>
@@ -1365,6 +1389,10 @@
             <trans-unit id="admin.reports.place">
                 <source>admin.reports.place</source>
                 <target>Restoranas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.self_delivery">
+                <source>admin.reports.self_delivery</source>
+                <target>Sava logistika</target>
             </trans-unit>
             <trans-unit id="admin.reports.order_count">
                 <source>admin.reports.order_count</source>

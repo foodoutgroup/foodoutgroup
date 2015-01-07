@@ -10,6 +10,7 @@ use Food\OrderBundle\Entity\OrderDetails;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\OrderBundle\Common;
 use Food\OrderBundle\Service\NavService\OrderDataForNavDecorator;
+use Food\OrderBundle\Service\Events\SoapFaultEvent;
 
 class NavService extends ContainerAware
 {
@@ -56,8 +57,7 @@ class NavService extends ContainerAware
     private $posTransactionLinesTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$POS Trans_ Line]';
 
     private $deliveryOrderStatusTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery order status]';
-
-
+    
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
@@ -434,11 +434,11 @@ class NavService extends ContainerAware
             'No_' => "'ZRAW0009996'",
             'Description' => "''",
             'Quantity' => 1,
-            'Price' =>5,
+            'Price' => 1.5,
             'Parent Line' => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
-            'Amount' => 5,
+            'Amount' => 1.5,
             'Discount Amount' => 0,
-            'Payment' => 5,
+            'Payment' => 1.5,
             'Value' => "''"
         );
 
@@ -596,7 +596,7 @@ class NavService extends ContainerAware
     {
 
         $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
-        //$clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
+        // $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
         $clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija%20Skambučių%20Centras/Codeunit/WEB_Service2";
 
         stream_wrapper_unregister('http');
@@ -605,7 +605,7 @@ class NavService extends ContainerAware
         $url = $clientUrl2;
         //$options = array('trace'=>1, 'login' =>'CILIJA\fo_order', 'password' => 'peH=waGe?zoOs69');
         $options = array('trace'=>1, 'cache_wsdl' => WSDL_CACHE_NONE, 'login' =>'CILIJA\nas', 'password' => 'c1l1j@');
-        $client = new Common\FoNTLMSoapClient($url, $options);
+        $client = @new Common\FoNTLMSoapClient($url, $options);
         stream_wrapper_restore('http');
         return $client;
     }
@@ -647,6 +647,77 @@ class NavService extends ContainerAware
             $return = true;
         }
         return $return;
+    }
+
+    public function createInvoice(Order $order)
+    {
+        $response = new \StdClass();
+
+        // we will need to connect to a web service
+        $client = $this->getWSConnection();
+
+        // before requesting a web service method we must fill some mandatory parameters
+        $o = \Maybe($order);
+
+        // some calculations beforehand
+        $total = $o->getTotal()->val(0.0);
+        $discountTotal = $o->getDiscountSum()->val(0.0);
+        $deliveryTotal = $o->getPlace()->getDeliveryPrice()->val(0.0);
+        $foodTotal = $total - $discountTotal - $deliveryTotal;
+
+        // payment type and code preprocessing
+        $driverId = $o->getDriver()->getId()->val('');
+        $paymentType = $o->getPaymentMethod()->val('');
+        $paymentCode = $paymentType == 'local'
+                       ? $driverId
+                       : $this->convertPaymentType($paymentType);
+
+        // main variable that holds parameters for a Soap call
+        $params = ['InvoiceNo' => $o->getSfSeries()->val('') . $o->getSfNumber()->val(''),
+                   'OrderID' => $o->getId()->val('0'),
+                   'OrderDate' => $o->getOrderDate()->format('Y.m.d')->val('1754-01-01'),
+                                  // ' ' .
+                                  // $o->getOrderDate()->format('H:i:s')->val('00:00:00'),
+                   'RestaurantID' => $o->getPlace()->getId()->val('0'),
+                   'RestaurantName' => $o->getPlaceName()->val(''),
+                   'DriverID' => $driverId,
+                   'ClientName' => $o->getUser()->getFirstname()->val('') .
+                                   ' ' .
+                                   $o->getUser()->getLastname()->val(''),
+                   'RegistrationNo' => $o->getCompanyCode()->val(''),
+                   'VATRegistrationNo' => $o->getVATCode()->val(''),
+                   'DeliveryAddress' => $o->getAddressId()->getAddress()->val(''),
+                   'City' => $o->getPlacePointCity()->val(''),
+                   'PaymentType' => $paymentType,
+                   'PaymentCode' => $paymentCode,
+                   'FoodAmount' => number_format($foodTotal, 2, '.', ''),
+                   'AlcoholAmount' => number_format(0.0, 2, '.', ''),
+                   'DeliveryAmount' => $o->getDeliveryType()->val('') == 'pickup'
+                                       ? '0.00'
+                                       : number_format($o->getDeliveryPrice()->val('0.0'), 2, '.', '')];
+
+        // send a call to a web service, but beware of exceptions
+        try {
+            $response = $client->FoodOutCreateInvoice(['params' => $params]);
+
+            $r = \Maybe($response);
+
+            // correct logic is when $response->return_value === 0
+            if (!($r->return_value->val('') === 0)) {
+                throw new \SoapFault((string) $r->return_value->val(''),
+                                     'Soap call "FoodOutCreateInvoice" didn\'t return 0.');
+            }
+        } catch (\SoapFault $e) {
+            $event = new SoapFaultEvent($e);
+
+            $this->getContainer()
+                 ->get('event_dispatcher')
+                 ->dispatch(SoapFaultEvent::SOAP_FAULT, $event);
+        }
+
+        $r = \Maybe($response);
+
+        return $r->return_value->val('') === 0 ? true : false;
     }
 
     /**
@@ -768,6 +839,21 @@ class NavService extends ContainerAware
             }
         }
         $requestXml.= "</Lines>\n";
+
+        // this is more like anomaly than a rule
+        if (empty($requestData['Lines'])) {
+            $returner = [
+                'valid' => false,
+                'errcode' => [
+                    'code' => 255,
+                    'line' => __LINE__,
+                    'msg' => 'No line items.',
+                    'problem_dish' => ''
+                ]
+            ];
+
+            return $returner;
+        }
 
         $requestXml = iconv('utf-8', 'cp1257', $requestXml);
 
@@ -1076,7 +1162,7 @@ class NavService extends ContainerAware
 
     /**
      * @param null $date
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \InvalidArgumentException
      */
     public function syncDisDescription($date = null)
     {
@@ -1092,6 +1178,53 @@ class NavService extends ContainerAware
             $stmt->execute();
             $counter++;
         }
+    }
+
+    protected function convertPaymentType($type)
+    {
+        switch ($type) {
+            case 'local':
+                return 'CASH';
+            case 'local.card':
+                return 'CC';
+            case 'paysera':
+                return 'BANK_PAYSERA';
+            case 'swedbank-gateway':
+                return 'BANK_SWED';
+            case 'swedbank-credit-card-gateway':
+                return 'BANK_CC';
+            case 'seb-banklink':
+                return 'BANK_SEB';
+            case 'nordea-banklink':
+                return 'BANK_NORD';
+            default:
+                return $type;
+        }
+    }
+
+    public function areWebServicesAlive()
+    {
+        $critical = false;
+
+        try {
+            $client = $this->getContainer()->get('food.nav')->getWSConnection();
+            $functions = $client->__getFunctions();
+
+            if (
+                !in_array('FoodOutUpdatePrices_Result FoodOutUpdatePrices(FoodOutUpdatePrices $parameters)', $functions)
+                || !in_array('FoodOutProcessOrder_Result FoodOutProcessOrder(FoodOutProcessOrder $parameters)', $functions)
+            ) {
+                $critical = true;
+                $text = '<error>ERROR: Foodout NAV SOAP commands not found';
+            } else {
+                $text = '<info>OK: web services are up and running.</info>';
+            }
+        } catch (\SoapFault $e) {
+            $critical = true;
+            $text = '<error>ERROR: could not connect to NAV web services: "' . $e->getMessage() . '"</error>';
+        }
+
+        return [$critical, $text];
     }
 
     /**

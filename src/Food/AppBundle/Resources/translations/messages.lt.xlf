@@ -226,6 +226,10 @@
         <source>mobile.order_delivered</source>
         <target>Pristačiau užsakymą</target>
       </trans-unit>
+      <trans-unit id="mobile.order_partialy_delivered" resname="mobile.order_partialy_delivered">
+        <source>mobile.order_partialy_delivered</source>
+        <target>Pristačiau dalį užsakymo (klientas dalies nepriėmė)</target>
+      </trans-unit>
       <trans-unit id="ebbc16fb3a732d7abe363ef2463397f9" resname="mobile.order_cancel">
         <source>mobile.order_cancel</source>
         <target>Atšaukti užsakymą</target>
@@ -358,6 +362,10 @@
         <source>general.sms.new_order_in_mail</source>
         <target>Prasome pasitikrinti savo el.pasta, gavote nauja uzsakyma</target>
       </trans-unit>
+      <trans-unit id="general.email.partialy_completed" resname="general.email.partialy_completed">
+        <source>general.email.partialy_completed</source>
+        <target>Pristatytas nepilnas užsakymas</target>
+      </trans-unit>
       <trans-unit id="3d6f52993727876649fad3f9e2d5c687" resname="general.sms.driver_assigned_order">
         <source>general.sms.driver_assigned_order</source>
         <target>Priskirtas naujas uzsakymas: </target>
@@ -413,6 +421,26 @@
       <trans-unit id="84b322bfb942d74b28b61094cee1efab" resname="mobile.comment">
         <source>mobile.comment</source>
         <target>Kita informacija</target>
+      </trans-unit>
+      <trans-unit id="mobile.need_invoice" resname="mobile.need_invoice">
+        <source>mobile.need_invoice</source>
+        <target>Reikės sąskaitos faktūros</target>
+      </trans-unit>
+      <trans-unit id="mobile.company_name" resname="mobile.company_name">
+        <source>mobile.company_name</source>
+        <target>Įmonė</target>
+      </trans-unit>
+      <trans-unit id="mobile.company_code" resname="mobile.company_code">
+        <source>mobile.company_code</source>
+        <target>Įm. kodas</target>
+      </trans-unit>
+      <trans-unit id="mobile.vat_code" resname="mobile.vat_code">
+        <source>mobile.vat_code</source>
+        <target>PVM kodas</target>
+      </trans-unit>
+      <trans-unit id="mobile.company_address" resname="mobile.company_address">
+        <source>mobile.company_address</source>
+        <target>Adresas</target>
       </trans-unit>
       <trans-unit id="ff1fd4e7d3fb885df18c293c9c41a302" resname="mobile.payment">
         <source>mobile.payment</source>
@@ -1100,7 +1128,7 @@
       </trans-unit>
       <trans-unit id="general.currency_modals" resname="general.currency_modals">
           <source>general.currency_modals</source>
-          <target>litas|litai|litų</target>
+          <target>euras|eurai|eurų</target>
       </trans-unit>
       <trans-unit id="general.currency_minor_modals" resname="general.currency_minor_modals">
         <source>general.currency_minor_modals</source>

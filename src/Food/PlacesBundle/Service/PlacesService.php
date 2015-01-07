@@ -170,6 +170,7 @@ class PlacesService extends ContainerAware {
             ->createQueryBuilder('p')
             ->where('p.active = 1')
             ->orderBy('p.averageRating', 'DESC')
+            ->addOrderBy('p.reviewCount', 'DESC')
             ->setMaxResults($limit)
             ->getQuery();
 

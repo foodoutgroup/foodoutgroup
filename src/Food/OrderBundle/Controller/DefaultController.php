@@ -119,6 +119,10 @@ class DefaultController extends Controller
                 case 'completed':
                     $orderService->statusCompleted('admin_mobile');
                 break;
+
+                case 'partialy_completed':
+                    $orderService->statusPartialyCompleted('admin_mobile');
+                break;
             }
             $orderService->saveOrder();
 
@@ -152,6 +156,10 @@ class DefaultController extends Controller
                 switch($formStatus) {
                     case 'completed':
                         $this->get('food.order')->statusCompleted('driver_mobile');
+                    break;
+
+                    case 'partialy_completed':
+                        $this->get('food.order')->statusPartialyCompleted('driver_mobile');
                     break;
                 }
                 $this->get('food.order')->saveOrder();

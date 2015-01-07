@@ -123,7 +123,7 @@
                         {# Atsiliepimai #}
                         <div id="detailed-restaurant-review" class="detailed-restaurant-review">
                             <div class="review-title clearfix">
-                                <h3>{{ place.reviews.count }} {% transchoice place.reviews.count %}places.review_choice{% endtranschoice %}</h3>
+                                <h3>{{ place.reviewCount }} {% transchoice place.reviews.count %}places.review_choice{% endtranschoice %}</h3>
                                 {% if (wasHere and not alreadyWrote) or not app.user %}
                                     <a href="{% if app.user %}#place-review-popup{% else %}#login-register-popup{% endif %}" class="fancy-box">{% trans %}places.add_review{% endtrans %}</a>
                                 {% endif %}
@@ -170,8 +170,8 @@
                                                 <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
                                             {% endif %}
                                         </li>
-                                        <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>{{ place.deliveryPrice }} {{ currency_display }}</li>
-                                        <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>{{ place.cartMinimum }} {{ currency_display }}</li>
+                                        <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>{{ currency_display|raw }}{{ place.deliveryPrice }}</li>
+                                        <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>{{ currency_display|raw }}{{ place.cartMinimum }}</li>
                                         {% endif %}
                                         <li class="ico-payments hidden"><strong>{% trans %}places.payment_types{% endtrans %}:</strong><span class="payments-data"></span></li>
                                         {% if place.deliveryOptions != 'pickup' %}

@@ -346,6 +346,7 @@ class OrderRepository extends EntityRepository
           SELECT
             o.place_id,
             p.name AS place_name,
+            p.self_delivery AS self_delivery,
             COUNT(o.id) AS order_count,
             SUM(o.total) AS order_sum,
             SUM(
@@ -387,15 +388,15 @@ class OrderRepository extends EntityRepository
 
         $query = "
           SELECT
-            DATE_FORMAT(o.order_date, '%m-%d') AS report_day,
+            DATE_FORMAT(o.order_date, '%y-%m-%d') AS report_day,
             COUNT(o.id) AS order_count
           FROM orders o
           WHERE
             o.order_status = '{$orderStatus}'
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
             ".($mobile ? 'AND mobile=1':'')."
-          GROUP BY DATE_FORMAT(o.order_date, '%m-%d')
-          ORDER BY DATE_FORMAT(o.order_date, '%m-%d') ASC
+          GROUP BY DATE_FORMAT(o.order_date, '%y-%m-%d')
+          ORDER BY DATE_FORMAT(o.order_date, '%y-%m-%d') ASC
         ";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
@@ -411,7 +412,8 @@ class OrderRepository extends EntityRepository
         $orderStatus = "'".OrderService::$status_completed
             ."', '".OrderService::$status_canceled
             ."', '".OrderService::$status_new
-            ."', '".OrderService::$status_nav_problems."'";
+            ."', '".OrderService::$status_nav_problems
+            ."', '".OrderService::$status_partialy_completed."'";
         $paymentStatus = OrderService::$paymentStatusComplete;
         $pickup = OrderService::$deliveryPickup;
         $deliver = OrderService::$deliveryDeliver;

@@ -12,7 +12,7 @@ trait SharedDecorator
     protected function getOptions($order)
     {
         return ['snd_id' => 'EM0489',
-                'curr' => 'LTL',
+                'curr' => 'EUR',
                 'acc' => 'LT197044060007974514',
                 'name' => 'UAB Foodout.lt',
                 'lang' => 'LIT',

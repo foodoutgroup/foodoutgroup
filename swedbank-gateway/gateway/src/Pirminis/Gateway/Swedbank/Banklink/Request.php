@@ -56,7 +56,7 @@ class Request
             <AmountDetails>
               <Amount>%price%</Amount>
               <Exponent>2</Exponent>
-              <CurrencyCode>440</CurrencyCode>
+              <CurrencyCode>978</CurrencyCode>
             </AmountDetails>
           </BillingDetails>
         </TransactionDetails>

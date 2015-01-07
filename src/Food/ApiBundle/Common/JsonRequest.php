@@ -18,6 +18,11 @@ class JsonRequest
         }
     }
 
+    /**
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
     public function get($key, $default = null)
     {
         if (!empty($this->requestParams[$key])) {

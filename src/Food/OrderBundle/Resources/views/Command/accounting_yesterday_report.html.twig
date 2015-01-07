@@ -80,9 +80,9 @@
             {% endfor %}
             <tr>
                 <td colspan="13" class="total">
-                    <strong>{% trans %}reporting.daily.yesterday_orders.total_banklink{% endtrans %}: </strong><div>{{ totalSumBanklink }} {{ currency_display }}</div><br />
-                    <strong>{% trans %}reporting.daily.yesterday_orders.total_pickup{% endtrans %}: </strong><div>{{ totalSumDriver }} {{ currency_display }}</div><br />
-                    <strong>{% trans %}reporting.daily.yesterday_orders.total_with_vat_no_brake{% endtrans %}: </strong><div>{{ totalSum }} {{ currency_display }}</div>
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_banklink{% endtrans %}: </strong><div>{{ totalSumBanklink }} {{ currency_display | raw }}</div><br />
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_pickup{% endtrans %}: </strong><div>{{ totalSumDriver }} {{ currency_display | raw }}</div><br />
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_with_vat_no_brake{% endtrans %}: </strong><div>{{ totalSum }} {{ currency_display | raw }}</div>
                 </td>
             </tr>
         </table>
@@ -137,9 +137,9 @@
             {% endfor %}
             <tr>
                 <td colspan="13" class="total">
-                    <strong>{% trans %}reporting.daily.yesterday_orders.total_banklink{% endtrans %}: </strong><div>{{ totalSumBanklink }} {{ currency_display }}</div><br />
-                    <strong>{% trans %}reporting.daily.yesterday_orders.total_pickup{% endtrans %}: </strong><div>{{ totalSumDriver }} {{ currency_display }}</div><br />
-                    <strong>{% trans %}reporting.daily.yesterday_orders.total_with_vat_no_brake{% endtrans %}: </strong><div>{{ totalSum }} {{ currency_display }}</div>
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_banklink{% endtrans %}: </strong><div>{{ totalSumBanklink }} {{ currency_display | raw }}</div><br />
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_pickup{% endtrans %}: </strong><div>{{ totalSumDriver }} {{ currency_display | raw }}</div><br />
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_with_vat_no_brake{% endtrans %}: </strong><div>{{ totalSum }} {{ currency_display | raw }}</div>
                 </td>
             </tr>
         </table>
@@ -190,9 +190,9 @@
             {% endfor %}
             <tr>
                 <td colspan="13" class="total">
-                    <strong>{% trans %}reporting.daily.yesterday_orders.total_banklink{% endtrans %}: </strong><div>{{ totalSumBanklink }} {{ currency_display }}</div><br />
-                    <strong>{% trans %}reporting.daily.yesterday_orders.total_pickup{% endtrans %}: </strong><div>{{ totalSumDriver }} {{ currency_display }}</div><br />
-                    <strong>{% trans %}reporting.daily.yesterday_orders.total_with_vat_no_brake{% endtrans %}: </strong><div>{{ totalSum }} {{ currency_display }}</div>
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_banklink{% endtrans %}: </strong><div>{{ totalSumBanklink }} {{ currency_display | raw }}</div><br />
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_pickup{% endtrans %}: </strong><div>{{ totalSumDriver }} {{ currency_display | raw }}</div><br />
+                    <strong>{% trans %}reporting.daily.yesterday_orders.total_with_vat_no_brake{% endtrans %}: </strong><div>{{ totalSum }} {{ currency_display | raw }}</div>
                 </td>
             </tr>
         </table>

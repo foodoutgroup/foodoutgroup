@@ -152,7 +152,7 @@
                                             <div title="{{ tip.orderDishes(order) }}" class="dishes-tip" style="display: inline-block;">
                                                 <strong>{{ order.details.count }} {% trans %}general.order.dishes{% endtrans %}</strong>
                                             </div>
-                                            {% trans %}general.for{% endtrans %} {{ order.total }} {{ currency_display }}
+                                            {% trans %}general.for{% endtrans %} {{ currency_display|raw }}{{ order.total }}
                                             {% if order.deliveryType == 'deliver' %}
                                                 {% trans %}general.to{% endtrans %} {{ order.addressId.address }}.
                                             {% else %}
