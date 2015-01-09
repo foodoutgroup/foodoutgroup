@@ -88,6 +88,8 @@ parameters:
     # nordea.banklink.mac: LEHTI
     fos_user.template.engine: 'twig'
     invoice.series: FOO
+    daily_report_emails:
+      - jonas.s@foodout.lt
 
 framework:
     #esi:             ~
