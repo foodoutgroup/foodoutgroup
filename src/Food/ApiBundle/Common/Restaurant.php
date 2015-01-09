@@ -13,6 +13,7 @@ class Restaurant extends ContainerAware
         'restaurant_id' => null,
         'title' => '',
         'description' => '',
+        'top' => false,
         'cuisine' => array(),
         'tags' => array(),
         'thumbnail_url' => '',
@@ -128,6 +129,7 @@ class Restaurant extends ContainerAware
             ->set('restaurant_id', $place->getId())
             ->set('title', $place->getName())
             ->set('description', $place->getDescription())
+            ->set('top', $place->getTop())
             ->set('cuisine', $kitchensForResp)
             ->set('tags', array()) // @todo FILL IT !!
             ->set('photo_urls', $photos)
