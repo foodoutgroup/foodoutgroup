@@ -180,7 +180,7 @@ trait WeeklyReportDecorator
     {
         return sprintf('Weekly Foodout.lt report for %s to %s',
                        date('Y-m-d', strtotime('-7 day')),
-                       date('Y-m-d'));
+                       date('Y-m-d', strtotime('-1 day')));
     }
 
     protected function getWeeklyMailContent($places,
