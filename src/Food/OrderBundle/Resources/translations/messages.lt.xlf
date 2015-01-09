@@ -66,6 +66,10 @@
                 <source>order.invoice.sum</source>
                 <target>Suma</target>
             </trans-unit>
+            <trans-unit id="order.invoice.food_from1822" resname="order.invoice.food_from1822">
+                <source>order.invoice.food_from1822</source>
+                <target>Maistas</target>
+            </trans-unit>
             <trans-unit id="order.invoice.sum_no_vat" resname="order.invoice.sum_no_vat">
                 <source>order.invoice.sum_no_vat</source>
                 <target>Iš viso</target>

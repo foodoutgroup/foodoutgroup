@@ -79,17 +79,29 @@
         <td class="sum_col">{% trans %}order.invoice.sum{% endtrans %}, {{ currency_display|raw }}</td>
         <td class="no-border"></td>
     </tr>
-    {% for dish in order.details %}
+    {% if order.orderFromNav %}
         <tr class="no-border-line">
-            <td class="narrow_col">{{ loop.index }}</td>
-            <td>{{ dish.dishName }}</td>
-            <td>{{ dish.dishUnitName }}</td>
-            <td class="narrow_col">{{ dish.quantity }}</td>
-            <td class="sum_col">{{ dish.price }}</td>
+            <td class="narrow_col">1</td>
+            <td>{{ 'order.invoice.food_from1822'|trans() }}</td>
+            <td></td>
+            <td class="narrow_col">1</td>
+            <td class="sum_col">{{ order.total - order.deliveryPrice }}</td>
             <td class="sum_col">{{ dish.price * dish.quantity }}</td>
             <td class="no-border sum_col"></td>
         </tr>
-    {% endfor %}
+    {% else %}
+        {% for dish in order.details %}
+            <tr class="no-border-line">
+                <td class="narrow_col">{{ loop.index }}</td>
+                <td>{{ dish.dishName }}</td>
+                <td>{{ dish.dishUnitName }}</td>
+                <td class="narrow_col">{{ dish.quantity }}</td>
+                <td class="sum_col">{{ dish.price }}</td>
+                <td class="sum_col">{{ dish.price * dish.quantity }}</td>
+                <td class="no-border sum_col"></td>
+            </tr>
+        {% endfor %}
+    {% endif %}
 
     {% set sum_no_vat = ((order.total - order.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
 
