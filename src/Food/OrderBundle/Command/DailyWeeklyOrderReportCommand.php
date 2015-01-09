@@ -72,7 +72,8 @@ class DailyWeeklyOrderReportCommand extends ContainerAwareCommand
         } elseif ($weekly) {
             list($error, $text) = $orderService->sendWeeklyReport($forceEmail,
                                                                   $notDryRun,
-                                                                  $output);
+                                                                  $output,
+                                                                  $this->getHelper('table'));
         }
 
         // finally
