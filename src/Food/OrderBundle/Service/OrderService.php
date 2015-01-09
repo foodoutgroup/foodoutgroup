@@ -2729,12 +2729,14 @@ class OrderService extends ContainerAware
             FROM orders o
             WHERE
                 o.order_status = ? AND
+                o.payment_status = ? AND
                 DATE(o.order_date) >= SUBDATE(CURRENT_DATE, 1) AND
                 DATE(o.order_date) <= CURRENT_DATE
         ';
 
         $stmt = $conn->prepare($query);
         $stmt->bindValue(1, 'completed');
+        $stmt->bindValue(2, 'complete');
         $stmt->execute();
 
         $result = $stmt->fetch();
@@ -2753,12 +2755,14 @@ class OrderService extends ContainerAware
             FROM orders o
             WHERE
                 o.order_status = ? AND
+                o.payment_status = ? AND
                 DATE(o.order_date) >= SUBDATE(CURRENT_DATE, 1) AND
                 DATE(o.order_date) <= CURRENT_DATE
         ';
 
         $stmt = $conn->prepare($query);
         $stmt->bindValue(1, 'completed');
+        $stmt->bindValue(2, 'complete');
         $stmt->execute();
 
         $result = $stmt->fetch();
@@ -2777,12 +2781,14 @@ class OrderService extends ContainerAware
             FROM orders o
             WHERE
                 o.order_status = ? AND
+                o.payment_status = ? AND
                 DATE(o.order_date) >= SUBDATE(CURRENT_DATE, 1) AND
                 DATE(o.order_date) <= CURRENT_DATE
         ';
 
         $stmt = $conn->prepare($query);
         $stmt->bindValue(1, 'completed');
+        $stmt->bindValue(2, 'complete');
         $stmt->execute();
 
         $result = $stmt->fetch();
@@ -2802,12 +2808,14 @@ class OrderService extends ContainerAware
             FROM orders o
             WHERE
                 o.order_status = ? AND
+                o.payment_status = ? AND
                 DATE(o.order_date) >= SUBDATE(CURRENT_DATE, 1) AND
                 DATE(o.order_date) <= CURRENT_DATE
         ';
 
         $stmt = $conn->prepare($query);
         $stmt->bindValue(1, 'completed');
+        $stmt->bindValue(2, 'complete');
         $stmt->execute();
 
         $result = $stmt->fetch();
