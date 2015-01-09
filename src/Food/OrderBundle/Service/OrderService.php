@@ -2678,7 +2678,7 @@ class OrderService extends ContainerAware
         $dailyReportEmails = $this->container->getParameter('daily_report_emails');
 
         // content
-        $title = 'Daily Foodout.lt report';
+        $title = 'Daily Foodout.lt report for ' . date('Y-m-d', strtotime('-1 day'));
         $content = sprintf("Pajamos: € %s\nSėkmingi užsakymai: %s\nVidutinė krepšelio suma: € %s\nVidutinis pristaytmo laikas: %s min.",
                            $income,
                            $successfulOrders,

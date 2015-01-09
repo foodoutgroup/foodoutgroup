@@ -90,6 +90,10 @@ parameters:
     invoice.series: FOO
     daily_report_emails:
       - jonas.s@foodout.lt
+      - juozas@foodout.lt
+      - birute@foodout.lt
+      - giedrius@foodout.lt
+      - paulius@foodout.lt
 
 framework:
     #esi:             ~
