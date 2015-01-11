@@ -49,7 +49,13 @@ class DailyWeeklyOrderReportCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // services
-        $orderService = $this->getContainer()->get('food.order');
+        $dailyReport = $this->getContainer()->get('food.daily_report');
+        $dailyReport->setOutput($output);
+        $dailyReport->setTableHelper($this->getHelper('table'));
+
+        $weeklyReport = $this->getContainer()->get('food.weekly_report');
+        $weeklyReport->setOutput($output);
+        $weeklyReport->setTableHelper($this->getHelper('table'));
 
         // our options
         $daily = $input->getOption(static::DAILY);
@@ -65,15 +71,11 @@ class DailyWeeklyOrderReportCommand extends ContainerAwareCommand
         }
 
         if ($daily) {
-            list($error, $text) = $orderService->sendDailyReport($forceEmail,
-                                                                 $notDryRun,
-                                                                 $output,
-                                                                 $this->getHelper('table'));
+            $result = $dailyReport->sendDailyReport($forceEmail, $notDryRun);
+            list($error, $text) = $result;
         } elseif ($weekly) {
-            list($error, $text) = $orderService->sendWeeklyReport($forceEmail,
-                                                                  $notDryRun,
-                                                                  $output,
-                                                                  $this->getHelper('table'));
+            $result = $weeklyReport->sendWeeklyReport($forceEmail, $notDryRun);
+            list($error, $text) = $result;
         }
 
         // finally

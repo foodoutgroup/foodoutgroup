@@ -22,14 +22,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
 use Food\OrderBundle\Service\Events\NavOrderEvent;
-use Food\OrderBundle\Service\OrderService\DailyReportDecorator;
-use Food\OrderBundle\Service\OrderService\WeeklyReportDecorator;
 
 class OrderService extends ContainerAware
 {
-    use DailyReportDecorator;
-    use WeeklyReportDecorator;
-
     private $localBiller = null;
     private $payseraBiller = null;
     private $swedbankGatewayBiller = null;
