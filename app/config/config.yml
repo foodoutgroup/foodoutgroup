@@ -77,7 +77,7 @@ parameters:
     logtime.driver_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitDrivers"
     # Ar siusti uzsakyma i isorine (TMS) sistema
     logistics.send_to_external: true
-    logistics.city_filter: ["Klaipėda", "Kaunas", "Vilnius"]
+    logistics.city_filter: ["Klaipėda", "Kaunas"]
     # seb banklink
     seb.banklink.private_key: "/home/skanu.lt/shared/banklinks/seb/private.key"
     seb.banklink.bank_key: "/home/skanu.lt/shared/banklinks/seb/bank.key"
