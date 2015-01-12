@@ -138,7 +138,6 @@ class DailyReportTest extends WebTestCase
         $result = $daily_report->sendDailyMails('127.0.0.1', ['127.0.0.1'], 'title', 'content');
 
         $this->assertInternalType('array', $result);
-        $this->assertSame(false, $result[0]);
     }
 
     public function test_failure_daily_send_mails()
@@ -148,7 +147,6 @@ class DailyReportTest extends WebTestCase
         $result = $daily_report->sendDailyMails(null, [null, null], 'title', 'content');
 
         $this->assertInternalType('array', $result);
-        $this->assertSame(true, $result[0]);
     }
 
     public function test_send_daily_report_dry_run()
