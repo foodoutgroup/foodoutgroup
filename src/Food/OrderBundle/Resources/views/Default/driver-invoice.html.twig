@@ -22,7 +22,7 @@
             </tr>
             <tr>
                 <td>{% trans %}mobile.invoice.driver{% endtrans %}:</td>
-                <td>{{ order.driver.name }}</td>
+                <td>{{ misc_utils.getDriver(order) }}</td>
             </tr>
             <tr>
                 <td>{% trans %}mobile.invoice.car_number{% endtrans %}:</td>
