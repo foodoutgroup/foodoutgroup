@@ -64,7 +64,7 @@ class OrderAdmin extends SonataAdmin
             ->add('total', null, array('label' => 'admin.order.total'))
             ->add('couponCode', null, array('label' => 'admin.order.coupon_code'))
             ->add('mobile', null, array('label' => 'admin.order.ismobile_full'))
-            ->add('sfLine', null, array('label' => 'admin.order.sf_line'))
+            ->add('sfNumber', null, array('label' => 'admin.order.sf_line'))
         ;
     }
 
