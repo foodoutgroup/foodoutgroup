@@ -80,7 +80,6 @@ class AjaxController extends Controller
 
     public function _ajaxFindStreet(Response $response, $city, $street)
     {
-
         $respData = array();
         $street = mb_strtoupper($street, 'utf-8');
         /*
@@ -93,11 +92,25 @@ class AjaxController extends Controller
         $street = str_replace("Z", "[Z|Ž]", $street);
         */
         $conn = $this->get('database_connection');
+
+        // protect
         $street = strip_tags($street);
-        //$sql = "SELECT DISTINCT(street_name), `name` FROM nav_streets WHERE delivery_region='".$city."' AND street_name REGEXP '(".$street.")' LIMIT 5";
-        $sql = "SELECT DISTINCT(street_name), `name` FROM nav_streets WHERE delivery_region='".$city."' AND street_name LIKE '%".$street."%' LIMIT 5";
-        $rows = $conn->query($sql);
-        $streets = $rows->fetchAll();
+        $street = str_replace(['%', '_'], '', $street); // PDO doesn't do dis
+
+        // query
+        $sql = 'SELECT DISTINCT(street_name), `name`
+                FROM nav_streets
+                WHERE delivery_region = ? AND
+                      street_name LIKE ?
+                LIMIT 5';
+
+        // get streets
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(1, $city);
+        $stmt->bindValue(2, "%$street%");
+        $stmt->execute();
+        $streets = $stmt->fetchAll();
+
         $gs = $this->get('food.googlegis');
 
         foreach ($streets as $key=>&$streetRow) {
@@ -118,15 +131,31 @@ class AjaxController extends Controller
 
     public function _ajaxFindStreetHouse(Response $response, $city, $street, $house)
     {
+        $conn = $this->get('database_connection');
+
         $respData = array();
+
+        // protect
         $street = mb_strtoupper($street, 'utf-8');
+        $house = str_replace(['%', '_'], '', $house); // PDO doesn't do dis
         $house = htmlentities(addslashes(strip_tags($house)));
         $street = htmlentities(addslashes(strip_tags($street)));
         $city = htmlentities(addslashes(strip_tags($city)));
-        $sql = "SELECT DISTINCT(number_from) FROM nav_streets WHERE delivery_region='".$city."' AND street_name ='".$street."' AND number_from LIKE '".$house."%'";
-        $conn = $this->get('database_connection');
-        $rows = $conn->query($sql);
-        $streets = $rows->fetchAll();
+
+        // query
+        $sql = 'SELECT DISTINCT(number_from)
+                FROM nav_streets
+                WHERE delivery_region = ? AND
+                      street_name = ? AND
+                      number_from LIKE ?';
+
+        // get streets
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(1, $city);
+        $stmt->bindValue(2, $street);
+        $stmt->bindValue(3, "$house%");
+        $stmt->execute();
+        $streets = $stmt->fetchAll();
 
         foreach ($streets as $str) {
             $respData[] = array('value' => $str['number_from']);
