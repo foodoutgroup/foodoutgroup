@@ -697,12 +697,6 @@ class NavService extends ContainerAware
         $requestData = array(
             array('Lines' => array())
         );
-        $requestXml = "<Phone>".str_replace("370", "8", $phone)."</Phone>\n";
-        $requestXml.= "<RestaurantNo>".$rcCode."</RestaurantNo>\n";
-        $requestXml.= "<OrderDate>".str_replace("-", ".", $orderDate)."</OrderDate>\n";
-        $requestXml.= "<OrderTime>".$orderTime."</OrderTime>\n";
-        $requestXml.= "<DeliveryType>".($deliveryType == OrderService::$deliveryDeliver ? 1: 4)."</DeliveryType>\n";
-        $requestXml.= "<Lines>\n";
 
         $requestData = array(
             'Phone'=> str_replace("370", "8", $phone),
@@ -729,17 +723,6 @@ class NavService extends ContainerAware
                     }
                 }
             }
-
-            $requestXml.= "\t<Line>\n";
-            $requestXml.= "\t\t<LineNo>".$lineNo."</LineNo>\n";
-            $requestXml.= "\t\t<ParentLineNo>0</ParentLineNo>\n";
-            $requestXml.= "\t\t<EntryType>0</EntryType>\n";
-            $requestXml.= "\t\t<ItemNo>".$code."</ItemNo>\n";
-            $requestXml.= "\t\t<Description>za</Description>\n";
-            $requestXml.= "\t\t<Quantity>".$cart->getQuantity()."</Quantity>\n";
-            $requestXml.= "\t\t<Price>".$cart->getDishSizeId()->getPrice()."</Price>\n";
-            $requestXml.= "\t\t<Amount>".$cart->getDishSizeId()->getPrice() * $cart->getQuantity()."</Amount>\n";
-            $requestXml.= "\t</Line>\n";
 
             $lineMap = array();
             $requestData['Lines'][] = array('Line' => array(
@@ -771,16 +754,6 @@ class NavService extends ContainerAware
                         $description = $option->getDishOptionId()->getName();
                     }
                     $lineNo = $lineNo + 1;
-                    $requestXml.= "\t<Line>\n";
-                    $requestXml.= "\t\t<LineNo>".$lineNo."</LineNo>\n";
-                    $requestXml.= "\t\t<ParentLineNo>".$origLineNo."</ParentLineNo>\n";
-                    $requestXml.= "\t\t<EntryType>1</EntryType>\n";
-                    $requestXml.= "\t\t<ItemNo>".$optionCode."</ItemNo>\n";
-                    $requestXml.= "\t\t<Description></Description>\n";
-                    $requestXml.= "\t\t<Quantity>".$cart->getQuantity()."</Quantity>\n";
-                    $requestXml.= "\t\t<Price>".$option->getDishOptionId()->getPrice()."</Price>\n";
-                    $requestXml.= "\t\t<Amount>".$option->getDishOptionId()->getPrice() * $cart->getQuantity()."</Amount>\n";
-                    $requestXml.= "\t</Line>\n";
 
                     $lineMap[$lineNo] = array(
                         'parent' => $origLineNo,
@@ -801,7 +774,6 @@ class NavService extends ContainerAware
                 }
             }
         }
-        $requestXml.= "</Lines>\n";
 
         // this is more like anomaly than a rule
         if (empty($requestData['Lines'])) {
@@ -817,8 +789,6 @@ class NavService extends ContainerAware
 
             return $returner;
         }
-
-        $requestXml = iconv('utf-8', 'cp1257', $requestXml);
 
         ob_start();
         @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQUEST", print_r($requestData, true), "FROM: info@foodout.lt");
