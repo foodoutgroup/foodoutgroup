@@ -72,9 +72,19 @@ class WeeklyReportTest extends WebTestCase
 
     public function test_get_weekly_mail_content()
     {
-        $weekly_report = new WeeklyReport();
+        $templating_mock = $this->getMockBuilder('\Symfony\Bridge\Twig\Form\TwigRenderer')
+                                ->disableOriginalConstructor()
+                                ->setMethods(['render'])
+                                ->getMock();
 
-        $result = $weekly_report->getWeeklyMailContent(1, 2, 3, 4, 5);
+        $templating_mock->expects($this->once())
+                        ->method('render')
+                        ->willReturn('content');
+
+        $weekly_report = new WeeklyReport();
+        $weekly_report->setTemplating($templating_mock);
+
+        $result = $weekly_report->getWeeklyMailContent(1, 2, 3, 4, 5, 6, 7);
 
         $this->assertInternalType('string', $result);
     }
@@ -163,6 +173,11 @@ class WeeklyReportTest extends WebTestCase
                               ->setMethods(['getWeeklyDataFor', 'getNumberOfPlacesFromLastWeek'])
                               ->getMock();
 
+        $ga_mock = $this->getMockBuilder('\Food\AppBundle\Service\GoogleAnalyticsService')
+                        ->disableOriginalConstructor()
+                        ->setMethods([])
+                        ->getMock();
+
         $weekly_report->setOutput($output_mock);
         $weekly_report->setTableHelper($table_helper_mock);
         $weekly_report->expects($this->any())
@@ -171,6 +186,7 @@ class WeeklyReportTest extends WebTestCase
         $weekly_report->expects($this->atLeastOnce())
                       ->method('getWeeklyDataFor')
                       ->willReturn('123');
+        $weekly_report->setGoogleAnalyticsService($ga_mock);
 
         $result = $weekly_report->sendWeeklyReport('127.0.0.1', false);
 
@@ -192,6 +208,20 @@ class WeeklyReportTest extends WebTestCase
                               ->setMethods(['getWeeklyDataFor', 'getNumberOfPlacesFromLastWeek'])
                               ->getMock();
 
+        $ga_mock = $this->getMockBuilder('\Food\AppBundle\Service\GoogleAnalyticsService')
+                        ->disableOriginalConstructor()
+                        ->setMethods([])
+                        ->getMock();
+
+        $templating_mock = $this->getMockBuilder('\Symfony\Bridge\Twig\Form\TwigRenderer')
+                                ->disableOriginalConstructor()
+                                ->setMethods(['render'])
+                                ->getMock();
+
+        $templating_mock->expects($this->once())
+                        ->method('render')
+                        ->willReturn('content');
+
         $weekly_report->setOutput($output_mock);
         $weekly_report->setTableHelper($table_helper_mock);
         $weekly_report->expects($this->any())
@@ -200,6 +230,8 @@ class WeeklyReportTest extends WebTestCase
         $weekly_report->expects($this->atLeastOnce())
                       ->method('getWeeklyDataFor')
                       ->willReturn('123');
+        $weekly_report->setGoogleAnalyticsService($ga_mock);
+        $weekly_report->setTemplating($templating_mock);
 
         $result = $weekly_report->sendWeeklyReport('127.0.0.1', true);
 

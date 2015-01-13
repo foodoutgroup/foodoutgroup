@@ -2,10 +2,11 @@
 
 namespace Food\OrderBundle\Service;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\TableHelper;
+use Food\AppBundle\Service\GoogleAnalyticsService;
 
 class DailyReport extends ContainerAware
 {
@@ -13,6 +14,8 @@ class DailyReport extends ContainerAware
     protected $dailyReportEmails;
     protected $output;
     protected $tableHelper;
+    protected $googleAnalyticsService;
+    protected $templating;
 
     protected $sqlMap = [
         'income' => 'SELECT IFNULL(SUM(o.total), 0.0) AS result',
@@ -32,13 +35,24 @@ class DailyReport extends ContainerAware
         $averageCartSize = round($this->getDailyDataFor('average_cart'), 2);
         $averageDeliveryTime = round($this->getDailyDataFor('average_delivery'));
 
+        // stuff from google analytics
+        $from = date('Y-m-d', strtotime('-1 day'));
+        $to = $from;
+
+        $pageviews = $this->getGoogleAnalyticsService()
+                          ->getPageviews($from, $to);
+        $uniquePageviews = $this->getGoogleAnalyticsService()
+                                ->getUniquePageviews($from, $to);
+
         // output some data
         $this->getTableHelper()->setHeaders(['Metric', 'Value']);
         $this->getTableHelper()->setRows([
             ['Income', sprintf('<fg=cyan>€ %s</fg=cyan>', $income)],
             ['Number of successful orders', sprintf('<fg=cyan>%s</fg=cyan>', $successfulOrders)],
             ['Price of average cart', sprintf('<fg=cyan>€ %s</fg=cyan>', $averageCartSize)],
-            ['Average delivery time', sprintf('<fg=cyan>%s mins</fg=cyan>', $averageDeliveryTime)]
+            ['Average delivery time', sprintf('<fg=cyan>%s mins</fg=cyan>', $averageDeliveryTime)],
+            ['Pageviews', sprintf('<fg=cyan>%s views</fg=cyan>', $pageviews)],
+            ['Unique pageviews', sprintf('<fg=cyan>%s views</fg=cyan>', $uniquePageviews)]
         ]);
 
         $this->getOutput()->writeln('Yesterday we had:');
@@ -52,7 +66,9 @@ class DailyReport extends ContainerAware
         $content = $this->getDailyMailContent($income,
                                               $successfulOrders,
                                               $averageCartSize,
-                                              $averageDeliveryTime);
+                                              $averageDeliveryTime,
+                                              $pageviews,
+                                              $uniquePageviews);
 
         return $this->sendDailyMails($forceEmail,
                                      $this->getDailyReportEmails(),
@@ -83,13 +99,21 @@ class DailyReport extends ContainerAware
     public function getDailyMailContent($income,
                                         $successfulOrders,
                                         $averageCartSize,
-                                        $averageDeliveryTime)
+                                        $averageDeliveryTime,
+                                        $pageviews,
+                                        $uniquePageviews)
     {
-        return sprintf("Pajamos: € %s\nSėkmingi užsakymai: %s\nVidutinė krepšelio suma: € %s\nVidutinis pristatymo laikas: %s min.",
-                       $income,
-                       $successfulOrders,
-                       $averageCartSize,
-                       $averageDeliveryTime);
+        $template = 'FoodOrderBundle:DailyReport:email.html.twig';
+        $data = [
+            'income' => $income,
+            'successfulOrders' => $successfulOrders,
+            'averageCartSize' => $averageCartSize,
+            'averageDeliveryTime' => $averageDeliveryTime,
+            'pageviews' => $pageviews,
+            'uniquePageviews' => $uniquePageviews
+        ];
+
+        return $this->getTemplating()->render($template, $data);
     }
 
     public function sendDailyMails($forceEmail,
@@ -101,7 +125,8 @@ class DailyReport extends ContainerAware
         $emails = !empty($forceEmail) ? [$forceEmail] : $dailyReportEmails;
 
         foreach ($emails as $email) {
-            $mailSent = @mail($email, $title, $content) && $mailSent;
+            $headers = 'Content-Type: text/html;charset=utf-8';
+            $mailSent = @mail($email, $title, $content, $headers) && $mailSent;
         }
 
         return $mailSent
@@ -166,5 +191,27 @@ class DailyReport extends ContainerAware
     public function getTableHelper()
     {
         return $this->tableHelper;
+    }
+
+    public function setGoogleAnalyticsService(GoogleAnalyticsService $service)
+    {
+        $this->googleAnalyticsService = $service;
+        return $this;
+    }
+
+    public function getGoogleAnalyticsService()
+    {
+        return $this->googleAnalyticsService;
+    }
+
+    public function setTemplating($templating)
+    {
+        $this->templating = $templating;
+        return $this;
+    }
+
+    public function getTemplating()
+    {
+        return $this->templating;
     }
 }
