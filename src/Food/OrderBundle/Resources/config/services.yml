@@ -91,6 +91,7 @@ services:
             - [setConnection, ["@doctrine.dbal.default_connection"]]
             - [setDailyReportEmails, ["%daily_report_emails%"]]
             - [setGoogleAnalyticsService, ["@food.google_analytics"]]
+            - [setTemplating, ["@templating"]]
 
     food.weekly_report:
         class: Food\OrderBundle\Service\WeeklyReport
@@ -98,6 +99,7 @@ services:
             - [setConnection, ["@doctrine.dbal.default_connection"]]
             - [setWeeklyReportEmails, ["%weekly_report_emails%"]]
             - [setGoogleAnalyticsService, ["@food.google_analytics"]]
+            - [setTemplating, ["@templating"]]
 
     # this is not part of gateway-bundle. it is part of main app.
     # we simply register banklink event listener that handles third party

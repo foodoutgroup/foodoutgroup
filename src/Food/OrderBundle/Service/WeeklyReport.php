@@ -15,6 +15,7 @@ class WeeklyReport extends ContainerAware
     protected $output;
     protected $tableHelper;
     protected $googleAnalyticsService;
+    protected $templating;
 
     public $sqlMap = [
         'income' => 'SELECT IFNULL(SUM(o.total), 0.0) AS result',
@@ -111,20 +112,18 @@ class WeeklyReport extends ContainerAware
                                          $pageviews,
                                          $uniquePageviews)
     {
-        return sprintf("Restoranų skaičius: %s
-Pajamos: € %s
-Sėkmingi užsakymai: %s
-Vidutinė krepšelio suma: € %s
-Vidutinis pristatymo laikas: %s min.
-Lankytojų skaičius: %s
-Unikalių lankytojų skaičius: %s",
-                       $places,
-                       $income,
-                       $successfulOrders,
-                       $averageCartSize,
-                       $averageDeliveryTime,
-                       $pageviews,
-                       $uniquePageviews);
+        $template = 'FoodOrderBundle:WeeklyReport:email.html.twig';
+        $data = [
+            'places' => $places,
+            'income' => $income,
+            'successfulOrders' => $successfulOrders,
+            'averageCartSize' => $averageCartSize,
+            'averageDeliveryTime' => $averageDeliveryTime,
+            'pageviews' => $pageviews,
+            'uniquePageviews' => $uniquePageviews
+        ];
+
+        return $this->getTemplating()->render($template, $data);
     }
 
     public function sendWeeklyMails($forceEmail,
@@ -136,7 +135,7 @@ Unikalių lankytojų skaičius: %s",
         $emails = !empty($forceEmail) ? [$forceEmail] : $weeklyReportEmails;
 
         foreach ($emails as $email) {
-            $headers = 'Content-Type: text/plain;charset=utf-8';
+            $headers = 'Content-Type: text/html;charset=utf-8';
             $mailSent = @mail($email, $title, $content, $headers) && $mailSent;
         }
 
@@ -226,5 +225,16 @@ Unikalių lankytojų skaičius: %s",
     public function getGoogleAnalyticsService()
     {
         return $this->googleAnalyticsService;
+    }
+
+    public function setTemplating($templating)
+    {
+        $this->templating = $templating;
+        return $this;
+    }
+
+    public function getTemplating()
+    {
+        return $this->templating;
     }
 }

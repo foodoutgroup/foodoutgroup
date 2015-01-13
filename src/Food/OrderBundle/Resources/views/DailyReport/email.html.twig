@@ -1,0 +1,34 @@
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th align="left">{{ 'daily_report.metric'|trans }}</th>
+            <th>{{ 'daily_report.value'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ 'daily_report.income'|trans }}</td>
+            <td>&euro; {{ income }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'daily_report.successful_orders'|trans }}</td>
+            <td>{{ successfulOrders }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'daily_report.average_cart_size'|trans }}</td>
+            <td>&euro; {{ averageCartSize }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'daily_report.average_delivery_time'|trans }}</td>
+            <td>{{ averageDeliveryTime }} min.</td>
+        </tr>
+        <tr>
+            <td>{{ 'daily_report.pageviews'|trans }}</td>
+            <td>{{ pageviews }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'daily_report.unique_pageviews'|trans }}</td>
+            <td>{{ uniquePageviews }}</td>
+        </tr>
+    </tbody>
+</table>

@@ -15,6 +15,7 @@ class DailyReport extends ContainerAware
     protected $output;
     protected $tableHelper;
     protected $googleAnalyticsService;
+    protected $templating;
 
     protected $sqlMap = [
         'income' => 'SELECT IFNULL(SUM(o.total), 0.0) AS result',
@@ -102,18 +103,17 @@ class DailyReport extends ContainerAware
                                         $pageviews,
                                         $uniquePageviews)
     {
-        return sprintf("Pajamos: € %s
-Sėkmingi užsakymai: %s
-Vidutinė krepšelio suma: € %s
-Vidutinis pristatymo laikas: %s min.
-Lankytojų skaičius: %s
-Unikalių lankytojų skaičius: %s",
-                       $income,
-                       $successfulOrders,
-                       $averageCartSize,
-                       $averageDeliveryTime,
-                       $pageviews,
-                       $uniquePageviews);
+        $template = 'FoodOrderBundle:DailyReport:email.html.twig';
+        $data = [
+            'income' => $income,
+            'successfulOrders' => $successfulOrders,
+            'averageCartSize' => $averageCartSize,
+            'averageDeliveryTime' => $averageDeliveryTime,
+            'pageviews' => $pageviews,
+            'uniquePageviews' => $uniquePageviews
+        ];
+
+        return $this->getTemplating()->render($template, $data);
     }
 
     public function sendDailyMails($forceEmail,
@@ -125,7 +125,7 @@ Unikalių lankytojų skaičius: %s",
         $emails = !empty($forceEmail) ? [$forceEmail] : $dailyReportEmails;
 
         foreach ($emails as $email) {
-            $headers = 'Content-Type: text/plain;charset=utf-8';
+            $headers = 'Content-Type: text/html;charset=utf-8';
             $mailSent = @mail($email, $title, $content, $headers) && $mailSent;
         }
 
@@ -196,10 +196,22 @@ Unikalių lankytojų skaičius: %s",
     public function setGoogleAnalyticsService(GoogleAnalyticsService $service)
     {
         $this->googleAnalyticsService = $service;
+        return $this;
     }
 
     public function getGoogleAnalyticsService()
     {
         return $this->googleAnalyticsService;
+    }
+
+    public function setTemplating($templating)
+    {
+        $this->templating = $templating;
+        return $this;
+    }
+
+    public function getTemplating()
+    {
+        return $this->templating;
     }
 }
