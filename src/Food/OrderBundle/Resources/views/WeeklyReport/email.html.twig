@@ -2,37 +2,37 @@
     <thead>
         <tr>
             <th align="left">{{ 'daily_report.metric'|trans }}</th>
-            <th>{{ 'daily_report.value'|trans }}</th>
+            <th align="right">{{ 'daily_report.value'|trans }}</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>{{ 'weekly_report.places'|trans }}</td>
-            <td>{{ places }}</td>
+            <td align="right">{{ places }}</td>
         </tr>
         <tr>
             <td>{{ 'daily_report.income'|trans }}</td>
-            <td>&euro; {{ income }}</td>
+            <td align="right">&euro; {{ income }}</td>
         </tr>
         <tr>
             <td>{{ 'daily_report.successful_orders'|trans }}</td>
-            <td>{{ successfulOrders }}</td>
+            <td align="right">{{ successfulOrders }}</td>
         </tr>
         <tr>
             <td>{{ 'daily_report.average_cart_size'|trans }}</td>
-            <td>&euro; {{ averageCartSize }}</td>
+            <td align="right">&euro; {{ averageCartSize }}</td>
         </tr>
         <tr>
             <td>{{ 'daily_report.average_delivery_time'|trans }}</td>
-            <td>{{ averageDeliveryTime }} min.</td>
+            <td align="right">{{ averageDeliveryTime }} min.</td>
         </tr>
         <tr>
             <td>{{ 'daily_report.pageviews'|trans }}</td>
-            <td>{{ pageviews }}</td>
+            <td align="right">{{ pageviews }}</td>
         </tr>
         <tr>
             <td>{{ 'daily_report.unique_pageviews'|trans }}</td>
-            <td>{{ uniquePageviews }}</td>
+            <td align="right">{{ uniquePageviews }}</td>
         </tr>
     </tbody>
 </table>
