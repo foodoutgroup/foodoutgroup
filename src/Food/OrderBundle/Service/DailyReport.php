@@ -101,7 +101,8 @@ class DailyReport extends ContainerAware
         $emails = !empty($forceEmail) ? [$forceEmail] : $dailyReportEmails;
 
         foreach ($emails as $email) {
-            $mailSent = @mail($email, $title, $content) && $mailSent;
+            $headers = 'Content-Type: text/plain;charset=utf-8';
+            $mailSent = @mail($email, $title, $content, $headers) && $mailSent;
         }
 
         return $mailSent

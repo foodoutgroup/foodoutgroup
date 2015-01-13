@@ -111,7 +111,8 @@ class WeeklyReport extends ContainerAware
         $emails = !empty($forceEmail) ? [$forceEmail] : $weeklyReportEmails;
 
         foreach ($emails as $email) {
-            $mailSent = @mail($email, $title, $content) && $mailSent;
+            $headers = 'Content-Type: text/plain;charset=utf-8';
+            $mailSent = @mail($email, $title, $content, $headers) && $mailSent;
         }
 
         return $mailSent
