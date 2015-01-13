@@ -72,7 +72,17 @@ class WeeklyReportTest extends WebTestCase
 
     public function test_get_weekly_mail_content()
     {
+        $templating_mock = $this->getMockBuilder('\Symfony\Bridge\Twig\Form\TwigRenderer')
+                                ->disableOriginalConstructor()
+                                ->setMethods(['render'])
+                                ->getMock();
+
+        $templating_mock->expects($this->once())
+                        ->method('render')
+                        ->willReturn('content');
+
         $weekly_report = new WeeklyReport();
+        $weekly_report->setTemplating($templating_mock);
 
         $result = $weekly_report->getWeeklyMailContent(1, 2, 3, 4, 5, 6, 7);
 
@@ -203,6 +213,15 @@ class WeeklyReportTest extends WebTestCase
                         ->setMethods([])
                         ->getMock();
 
+        $templating_mock = $this->getMockBuilder('\Symfony\Bridge\Twig\Form\TwigRenderer')
+                                ->disableOriginalConstructor()
+                                ->setMethods(['render'])
+                                ->getMock();
+
+        $templating_mock->expects($this->once())
+                        ->method('render')
+                        ->willReturn('content');
+
         $weekly_report->setOutput($output_mock);
         $weekly_report->setTableHelper($table_helper_mock);
         $weekly_report->expects($this->any())
@@ -212,6 +231,7 @@ class WeeklyReportTest extends WebTestCase
                       ->method('getWeeklyDataFor')
                       ->willReturn('123');
         $weekly_report->setGoogleAnalyticsService($ga_mock);
+        $weekly_report->setTemplating($templating_mock);
 
         $result = $weekly_report->sendWeeklyReport('127.0.0.1', true);
 

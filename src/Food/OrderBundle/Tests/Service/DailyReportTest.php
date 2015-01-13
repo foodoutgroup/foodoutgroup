@@ -72,7 +72,17 @@ class DailyReportTest extends WebTestCase
 
     public function test_get_daily_mail_content()
     {
+        $templating_mock = $this->getMockBuilder('\Symfony\Bridge\Twig\Form\TwigRenderer')
+                                ->disableOriginalConstructor()
+                                ->setMethods(['render'])
+                                ->getMock();
+
+        $templating_mock->expects($this->once())
+                        ->method('render')
+                        ->willReturn('content');
+
         $daily_report = new DailyReport();
+        $daily_report->setTemplating($templating_mock);
 
         $result = $daily_report->getDailyMailContent(1, 2, 3, 4, 5, 6);
 
@@ -200,12 +210,22 @@ class DailyReportTest extends WebTestCase
                         ->setMethods([])
                         ->getMock();
 
+        $templating_mock = $this->getMockBuilder('\Symfony\Bridge\Twig\Form\TwigRenderer')
+                                ->disableOriginalConstructor()
+                                ->setMethods(['render'])
+                                ->getMock();
+
+        $templating_mock->expects($this->once())
+                        ->method('render')
+                        ->willReturn('content');
+
         $daily_report->setOutput($output_mock);
         $daily_report->setTableHelper($table_helper_mock);
         $daily_report->expects($this->atLeastOnce())
                      ->method('getDailyDataFor')
                      ->willReturn('123');
         $daily_report->setGoogleAnalyticsService($ga_mock);
+        $daily_report->setTemplating($templating_mock);
 
         $result = $daily_report->sendDailyReport('127.0.0.1', true);
 
