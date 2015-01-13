@@ -74,7 +74,7 @@ class WeeklyReportTest extends WebTestCase
     {
         $weekly_report = new WeeklyReport();
 
-        $result = $weekly_report->getWeeklyMailContent(1, 2, 3, 4, 5);
+        $result = $weekly_report->getWeeklyMailContent(1, 2, 3, 4, 5, 6, 7);
 
         $this->assertInternalType('string', $result);
     }
@@ -163,6 +163,11 @@ class WeeklyReportTest extends WebTestCase
                               ->setMethods(['getWeeklyDataFor', 'getNumberOfPlacesFromLastWeek'])
                               ->getMock();
 
+        $ga_mock = $this->getMockBuilder('\Food\AppBundle\Service\GoogleAnalyticsService')
+                        ->disableOriginalConstructor()
+                        ->setMethods([])
+                        ->getMock();
+
         $weekly_report->setOutput($output_mock);
         $weekly_report->setTableHelper($table_helper_mock);
         $weekly_report->expects($this->any())
@@ -171,6 +176,7 @@ class WeeklyReportTest extends WebTestCase
         $weekly_report->expects($this->atLeastOnce())
                       ->method('getWeeklyDataFor')
                       ->willReturn('123');
+        $weekly_report->setGoogleAnalyticsService($ga_mock);
 
         $result = $weekly_report->sendWeeklyReport('127.0.0.1', false);
 
@@ -192,6 +198,11 @@ class WeeklyReportTest extends WebTestCase
                               ->setMethods(['getWeeklyDataFor', 'getNumberOfPlacesFromLastWeek'])
                               ->getMock();
 
+        $ga_mock = $this->getMockBuilder('\Food\AppBundle\Service\GoogleAnalyticsService')
+                        ->disableOriginalConstructor()
+                        ->setMethods([])
+                        ->getMock();
+
         $weekly_report->setOutput($output_mock);
         $weekly_report->setTableHelper($table_helper_mock);
         $weekly_report->expects($this->any())
@@ -200,6 +211,7 @@ class WeeklyReportTest extends WebTestCase
         $weekly_report->expects($this->atLeastOnce())
                       ->method('getWeeklyDataFor')
                       ->willReturn('123');
+        $weekly_report->setGoogleAnalyticsService($ga_mock);
 
         $result = $weekly_report->sendWeeklyReport('127.0.0.1', true);
 
