@@ -51,8 +51,6 @@ services:
         class: Food\AppBundle\Service\GoogleAnalyticsService
         calls:
             - [setServiceAccountName, ["%google.analytics.service_account_name%"]]
-            - [setDeveloperKey, ["%google.maps_server_api%"]]
             - [setPrivateKey, ["%google.analytics.base64_private_key%"]]
-            - [setClientId, ["%google.analytics.client_id%"]]
             - [setScopes, ["%google.analytics.scopes%"]]
             - [setViewId, ["%google.analytics.view_id%"]]

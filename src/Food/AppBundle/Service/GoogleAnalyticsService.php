@@ -10,8 +10,6 @@ class GoogleAnalyticsService
     protected $serviceAccountName;
     protected $scopes;
     protected $privateKey;
-    protected $clientId;
-    protected $developerKey;
     protected $viewId;
 
     public function getService()
@@ -24,8 +22,6 @@ class GoogleAnalyticsService
                 $this->getPrivateKey()
             )
         );
-        // $client->setClientId($this->getClientId());
-        // $client->setDeveloperKey($this->getDeveloperKey());
 
         $service = new \Google_Service_Analytics($client);
 
@@ -93,28 +89,6 @@ class GoogleAnalyticsService
     public function getPrivateKey()
     {
         return $this->privateKey;
-    }
-
-    public function setClientId($value)
-    {
-        $this->clientId = $value;
-        return $this;
-    }
-
-    public function getClientId()
-    {
-        return $this->clientId;
-    }
-
-    public function setDeveloperKey($value)
-    {
-        $this->developerKey = $value;
-        return $this;
-    }
-
-    public function getDeveloperKey()
-    {
-        return $this->developerKey;
     }
 
     public function setViewId($value)
