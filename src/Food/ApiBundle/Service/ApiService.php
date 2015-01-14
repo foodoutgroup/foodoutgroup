@@ -33,10 +33,10 @@ class ApiService extends ContainerAware
             foreach ($place->getDishes() as $dish) {
                 $menuItem = new MenuItem(null, $this->container);
                 $item = $menuItem->loadFromEntity($dish);
-                if (!empty($item)) {
-                    if ($updated_at == null || $item['updated_at'] > $updated_at)
+                //if (!empty($item)) {
+                //    if ($updated_at == null || $item['updated_at'] > $updated_at)
                     $returner[] = $item;
-                }
+                //}
             }
             return $returner;
         }
