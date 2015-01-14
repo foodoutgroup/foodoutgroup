@@ -733,13 +733,11 @@ class NavService extends ContainerAware
      * @param String $orderTime
      * @param String $deliveryType
      * @param Cart[] $dishes
+     * @return array
      */
     public function validateCartInNav($phone, $restaurant, $orderDate, $orderTime, $deliveryType, $dishes)
     {
         $rcCode = $restaurant->getInternalCode();
-        $requestData = array(
-            array('Lines' => array())
-        );
 
         $requestData = array(
             'Phone'=> str_replace("370", "8", $phone),
