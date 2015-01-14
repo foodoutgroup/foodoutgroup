@@ -110,6 +110,12 @@ class Order
     private $total;
 
     /**
+     * @var int
+     * @ORM\Column(name="delivery_price", type="integer", nullable=true)
+     */
+    private $deliveryPrice;
+
+    /**
      * @ORM\ManyToOne(targetEntity="\Food\OrderBundle\Entity\Coupon")
      * @ORM\JoinColumn(name="coupon", referencedColumnName="id")
      **/
@@ -321,8 +327,21 @@ class Order
      */
     private $navPorcessedOrder = false;
 
+    /**
+     * @var int
+     * @ORM\Column(name="nav_delivery_order", type="bigint", nullable=true)
+     */
+    private $navDeliveryOrder;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="order_from_nav", type="boolean", nullable=true)
+     */
+    private $orderFromNav = false;
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         if ($this->getId()) {
@@ -1583,6 +1602,75 @@ class Order
     public function getNavPorcessedOrder()
     {
         return $this->navPorcessedOrder;
+    }
+
+    /**
+     * Set navDeliveryOrder
+     *
+     * @param integer $navDeliveryOrder
+     * @return Order
+     */
+    public function setNavDeliveryOrder($navDeliveryOrder)
+    {
+        $this->navDeliveryOrder = $navDeliveryOrder;
+    
+        return $this;
+    }
+
+    /**
+     * Get navDeliveryOrder
+     *
+     * @return integer 
+     */
+    public function getNavDeliveryOrder()
+    {
+        return $this->navDeliveryOrder;
+    }
+
+    /**
+     * Set deliveryPrice
+     *
+     * @param integer $deliveryPrice
+     * @return Order
+     */
+    public function setDeliveryPrice($deliveryPrice)
+    {
+        $this->deliveryPrice = $deliveryPrice;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryPrice
+     *
+     * @return integer 
+     */
+    public function getDeliveryPrice()
+    {
+        return $this->deliveryPrice;
+    }
+
+    /**
+     * Set orderFromNav
+     *
+     * @param boolean $orderFromNav
+     * @return Order
+     */
+    public function setOrderFromNav($orderFromNav)
+    {
+        $this->orderFromNav = $orderFromNav;
+    
+        return $this;
+    }
+
+    /**
+     * Get orderFromNav
+     *
+     * @return boolean 
+     */
+    public function getOrderFromNav()
+    {
+        return $this->orderFromNav;
     }
 
     /**

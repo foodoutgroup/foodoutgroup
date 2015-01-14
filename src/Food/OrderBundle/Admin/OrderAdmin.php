@@ -132,6 +132,7 @@ class OrderAdmin extends SonataAdmin
             )
             ->add('vat', 'string', array('label' => 'admin.order.vat'))
             ->add('total', 'string', array('label' => 'admin.order.total'))
+            ->add('deliveryPrice', 'string', array('label' => 'admin.order.delivery_price'))
             ->add('couponCode', 'string', array('label' => 'admin.order.coupon_code'))
             ->add('discountSize', 'string', array('label' => 'admin.order.discount_size'))
             ->add('discountSum', 'string', array('label' => 'admin.order.discount_sum'))

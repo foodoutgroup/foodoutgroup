@@ -867,6 +867,10 @@
                 <source>admin.order.total</source>
                 <target>Viso (su PVM)</target>
             </trans-unit>
+            <trans-unit id="admin.order.delivery_price">
+                <source>admin.order.delivery_price</source>
+                <target>Pristatymo kaina (su PVM)</target>
+            </trans-unit>
             <trans-unit id="admin.order.coupon_code">
                 <source>admin.order.coupon_code</source>
                 <target>Nuolaidos kupono kodas</target>

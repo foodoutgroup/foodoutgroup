@@ -188,9 +188,13 @@ class InvoiceService extends ContainerAware
         if (!empty($forcedEmail)) {
             $emails = array($forcedEmail);
         } else {
-            $emails = array(
-                $order->getUser()->getEmail(),
-            );
+            $emails = array();
+
+            $userEmail = $order->getUser()->getEmail();
+
+            if (!$order->getOrderFromNav() || ($userEmail != ($order->getUser()->getPhone().'@foodout.lt'))) {
+                $emails[] = $userEmail;
+            }
 
             $placeFinanceMail = $order->getPlacePoint()->getInvoiceEmail();
 
