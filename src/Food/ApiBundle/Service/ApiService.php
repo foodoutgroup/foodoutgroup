@@ -32,14 +32,47 @@ class ApiService extends ContainerAware
             $returner = array();
             foreach ($place->getDishes() as $dish) {
                 $menuItem = new MenuItem(null, $this->container);
+                if ($dish->getActive()) {
+                    $item = $menuItem->loadFromEntity($dish);
+                    //if (!empty($item)) {
+                    //    if ($updated_at == null || $item['updated_at'] > $updated_at)
+                        $returner[] = $item;
+                    //}
+                }
+            }
+            return $returner;
+        }
+        return array();
+    }
+
+    public function createDeletedByPlaceId($placeId, $updated_at = null)
+    {
+        $query = "SELECT id FROM dish WHERE place_id=".intval($placeId)." AND (active=0 OR deleted_at IS NOT NULL)";
+        $stmt = $this->container->get('doctrine')->getManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $dishes = $stmt->fetchAll();
+        if (!empty($dishes)) {
+            $returner = array();
+            foreach ($dishes as $wtf) {
+                $returner[] = $wtf['id'];
+            }
+            return $returner;
+        }
+        /*
+        $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find((int)$placeId);
+        if ($place) {
+            $returner = array();
+            foreach ($place->getDishes() as $dish) {
+                $menuItem = new MenuItem(null, $this->container);
                 $item = $menuItem->loadFromEntity($dish);
                 //if (!empty($item)) {
                 //    if ($updated_at == null || $item['updated_at'] > $updated_at)
-                    $returner[] = $item;
+                $returner[] = $item;
                 //}
             }
             return $returner;
         }
+        */
         return array();
     }
 
