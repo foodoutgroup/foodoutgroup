@@ -52,6 +52,12 @@ parameters:
     google.maps_geocode: "https://maps.googleapis.com/maps/api/geocode/json"
     google.maps_api: "AIzaSyDyKJYX3Cr4Cn41VR9oaAqbmT8XlbHBY-Q"
     google.maps_server_api: "AIzaSyBK3xf8ZPVWfTa2uXZN-OJHd6Fwl1Yo560"
+    google.analytics.service_account_name: "901445143989-o62noh2599lvhriap16e9gtg33cn2qfa@developer.gserviceaccount.com"
+    google.analytics.client_id: "901445143989-o62noh2599lvhriap16e9gtg33cn2qfa.apps.googleusercontent.com"
+    google.analytics.scopes:
+        - "https://www.googleapis.com/auth/analytics.readonly"
+    google.analytics.base64_private_key: "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"
+    google.analytics.view_id: "85237075"
     # google.maps_server_api: "AIzaSyANrqCSGWV4b8JRuTPVDdrpmVTytMgBB9M"
     # Possible values: "local", "etaxi"
     active_logistics: "local"
@@ -88,6 +94,14 @@ parameters:
     # nordea.banklink.mac: LEHTI
     fos_user.template.engine: 'twig'
     invoice.series: FOO
+    daily_report_emails: &daily_report_emails
+      - jonas.s@foodout.lt
+      - juozas@foodout.lt
+      - birute@foodout.lt
+      - giedrius@foodout.lt
+      - paulius@foodout.lt
+    weekly_report_emails:
+      <<: *daily_report_emails
 
 framework:
     #esi:             ~

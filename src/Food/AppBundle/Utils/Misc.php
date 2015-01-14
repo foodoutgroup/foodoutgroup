@@ -4,6 +4,7 @@ namespace Food\AppBundle\Utils;
 
 use Food\AppBundle\Entity\Param;
 use Food\AppBundle\Traits;
+use Food\OrderBundle\Entity\Order;
 
 class Misc
 {
@@ -240,5 +241,17 @@ class Misc
 
         $em->persist($parameter);
         $em->flush();
+    }
+
+    /**
+     * @param Order $order
+     */
+    public function getDriver(Order $order)
+    {
+        $query = "SELECT d.name FROM drivers d, orders o WHERE d.id=o.driver_id AND o.id=".$order->getId();
+        $stmt = $this->container->get('doctrine')->getManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $driver = $stmt->fetchColumn(0);
+        return $driver;
     }
 }

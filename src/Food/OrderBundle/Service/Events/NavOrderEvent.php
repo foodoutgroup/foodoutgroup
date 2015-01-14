@@ -7,7 +7,7 @@ use Food\OrderBundle\Entity\Order;
 
 class NavOrderEvent extends Event
 {
-    const LOG_ORDER = 'nav.order.log_for_sync';
+    const MARK_ORDER = 'nav.order.mark_for_sync';
 
     protected $order;
 

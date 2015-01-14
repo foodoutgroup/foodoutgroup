@@ -22,7 +22,7 @@
             </tr>
             <tr>
                 <td>{% trans %}mobile.invoice.driver{% endtrans %}:</td>
-                <td>{{ order.driver.name }}</td>
+                <td>{{ misc_utils.getDriver(order) }}</td>
             </tr>
             <tr>
                 <td>{% trans %}mobile.invoice.car_number{% endtrans %}:</td>
@@ -94,7 +94,7 @@
             </tr>
             <tr>
                 <td colspan="2" style="border: none;"></td>
-                <td>{% trans %}mobile.invoice.total_with_vat_eur{% endtrans %}:</td>
+                <td>{% trans %}mobile.invoice.total_with_vat_ltl{% endtrans %}:</td>
                 <td>{{ misc_utils.getLitas(order.total) }}</td>
             </tr>
         </tbody>

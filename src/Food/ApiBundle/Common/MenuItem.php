@@ -117,7 +117,7 @@ class MenuItem extends ContainerAware
             ->set('ingredients', $dish->getDescription())
             ->set('show_discount', $showDiscount)
             ->set('price_range', $priceRange)
-            ->set('updated_at', ($dish->getEditedAt() != null ? $dish->getEditedAt()->format('U'): $dish->getCreatedAt()->format('U')));
+            ->set('updated_at', date('U')); //($dish->getEditedAt() != null ? $dish->getEditedAt()->format('U'): $dish->getCreatedAt()->format('U')));
 
         if ($loadOptions) {
             $options = array(

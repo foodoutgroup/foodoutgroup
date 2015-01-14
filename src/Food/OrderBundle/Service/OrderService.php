@@ -549,6 +549,78 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @throws \Exception
+     */
+    public function setInvoiceDataForOrder()
+    {
+        $order = $this->getOrder();
+
+        $orderSeries = $order->getSfSeries();
+        $orderSfNumber = $order->getSfNumber();
+
+        if (empty($orderSeries) || empty($orderSfNumber)) {
+            $miscService = $this->container->get('food.app.utils.misc');
+
+            $sfNumber = (int)$miscService->getParam('sf_next_number');
+            $order->setSfSeries($this->container->getParameter('invoice.series'));
+            $order->setSfNumber($sfNumber);
+
+            $miscService->setParam('sf_next_number', ($sfNumber + 1));
+
+            $this->saveOrder();
+        }
+    }
+
+    /**
+     * @param null|string $source
+     * @param null|string $statusMessage
+     *
+     * @return $this
+     */
+    public function statusPartialyCompleted($source=null, $statusMessage=null)
+    {
+        $this->chageOrderStatus(self::$status_partialy_completed, $source, $statusMessage);
+
+        $this->sendCompletedMail(true);
+
+        // Informuojam buhalterija
+        $mailer = $this->container->get('mailer');
+        $translator = $this->container->get('translator');
+        $domain = $this->container->getParameter('domain');
+        $financeEmail = $this->container->getParameter('accounting_email');
+        $order = $this->getOrder();
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject(
+                $this->container->getParameter('title').': '
+                .$translator->trans('general.email.partialy_completed')
+                .' (#'.$order->getId().')'
+            )
+            ->setFrom('info@'.$domain)
+        ;
+
+        $message->addTo($financeEmail);
+        // Issiimti
+        $message->addCc('mantas@foodout.lt');
+
+        $driver = $order->getDriver();
+        if (!empty($driver)) {
+            $driverName = $driver->getName();
+        } else {
+            $driverName = '';
+        }
+
+        $emailBody = $translator->trans('general.email.partialy_completed')."\n\n"
+        .'Order ID: '.$order->getId()."\n"
+        .'Vairuotojas: '.$driverName;
+
+        $message->setBody($emailBody);
+        $mailer->send($message);
+
+        return $this;
+    }
+
+    /**
      * Sends client an email after order complete
      * @param boolean $partialy
      * @throws \Exception
@@ -825,12 +897,12 @@ class OrderService extends ContainerAware
 
     }
 
-    public function logOrderForNav(Order $order = null)
+    public function markOrderForNav(Order $order = null)
     {
         $event = new NavOrderEvent($order);
 
         $this->getEventDispatcher()
-             ->dispatch(NavOrderEvent::LOG_ORDER, $event);
+             ->dispatch(NavOrderEvent::MARK_ORDER, $event);
     }
 
     /**
@@ -849,7 +921,7 @@ class OrderService extends ContainerAware
             // TODO kolkas i buhalterine nekisam - istestave importo veikima, pabaigiam sita vieta
             if ($this->getOrder()->getOrderFromNav() == false) {
                 // log order data (if we have listeners)
-                $this->logOrderForNav($this->order);
+                $this->markOrderForNav($this->order);
             }
         }
     }
