@@ -39,7 +39,7 @@ trait PaymentLogDecorator
             $orderService->deactivateCoupon();
 
             // log order data (if we have listeners)
-            $orderService->logOrderForNav($order);
+            $orderService->markOrderForNav($order);
 
             // clear cart
             $cartService->clearCart($order->getPlace());

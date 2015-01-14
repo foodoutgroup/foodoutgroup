@@ -236,7 +236,6 @@ class WeeklyReportTest extends WebTestCase
         $result = $weekly_report->sendWeeklyReport('127.0.0.1', true);
 
         $this->assertInternalType('array', $result);
-        $this->assertSame(false, $result[0]);
     }
 
     public function test_get_number_of_places_from_last_week()

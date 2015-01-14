@@ -856,12 +856,12 @@ class OrderService extends ContainerAware
 
     }
 
-    public function logOrderForNav(Order $order = null)
+    public function markOrderForNav(Order $order = null)
     {
         $event = new NavOrderEvent($order);
 
         $this->getEventDispatcher()
-             ->dispatch(NavOrderEvent::LOG_ORDER, $event);
+             ->dispatch(NavOrderEvent::MARK_ORDER, $event);
     }
 
     /**
@@ -878,7 +878,7 @@ class OrderService extends ContainerAware
             $this->getEm()->flush();
 
             // log order data (if we have listeners)
-            $this->logOrderForNav($this->order);
+            $this->markOrderForNav($this->order);
         }
     }
 

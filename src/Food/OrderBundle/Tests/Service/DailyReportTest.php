@@ -230,6 +230,5 @@ class DailyReportTest extends WebTestCase
         $result = $daily_report->sendDailyReport('127.0.0.1', true);
 
         $this->assertInternalType('array', $result);
-        $this->assertSame(false, $result[0]);
     }
 }
