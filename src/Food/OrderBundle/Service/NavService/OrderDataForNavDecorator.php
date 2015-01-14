@@ -11,8 +11,6 @@ trait OrderDataForNavDecorator
 {
     public function getOrderDataForNav(Order $order)
     {
-        // services. we only need 'misc' service for converting totals to euros
-        $misc = $this->container->get('food.app.utils.misc');
         $orderService = $this->container->get('food.order');
 
         $order = \Maybe($order);

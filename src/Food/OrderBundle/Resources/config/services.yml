@@ -90,12 +90,16 @@ services:
         calls:
             - [setConnection, ["@doctrine.dbal.default_connection"]]
             - [setDailyReportEmails, ["%daily_report_emails%"]]
+            - [setGoogleAnalyticsService, ["@food.google_analytics"]]
+            - [setTemplating, ["@templating"]]
 
     food.weekly_report:
         class: Food\OrderBundle\Service\WeeklyReport
         calls:
             - [setConnection, ["@doctrine.dbal.default_connection"]]
             - [setWeeklyReportEmails, ["%weekly_report_emails%"]]
+            - [setGoogleAnalyticsService, ["@food.google_analytics"]]
+            - [setTemplating, ["@templating"]]
 
     # this is not part of gateway-bundle. it is part of main app.
     # we simply register banklink event listener that handles third party
@@ -113,7 +117,7 @@ services:
         calls:
             - [setContainer, [@service_container]]
         tags:
-            - { name: kernel.event_listener, event: nav.order.log_for_sync, method: onLogForSync }
+            - { name: kernel.event_listener, event: nav.order.mark_for_sync, method: onMarkForSync }
 
     # Soap fault handler. Non-mandatory, you can disable this if you hate critical log messages about soap faults
     food.soap.fault_listener:

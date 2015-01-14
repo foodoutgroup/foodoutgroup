@@ -46,3 +46,11 @@ services:
         class: Food\AppBundle\Utils\ResetPassword
         calls:
             - [container, [@service_container]]
+
+    food.google_analytics:
+        class: Food\AppBundle\Service\GoogleAnalyticsService
+        calls:
+            - [setServiceAccountName, ["%google.analytics.service_account_name%"]]
+            - [setPrivateKey, ["%google.analytics.base64_private_key%"]]
+            - [setScopes, ["%google.analytics.scopes%"]]
+            - [setViewId, ["%google.analytics.view_id%"]]

@@ -10,7 +10,7 @@ class NavOrderSyncListener extends ContainerAware
 {
     protected $container;
 
-    public function onLogForSync(NavOrderEvent $event = null)
+    public function onMarkForSync(NavOrderEvent $event = null)
     {
         $navService = $this->container->get('food.nav');
 

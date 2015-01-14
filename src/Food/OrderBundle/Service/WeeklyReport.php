@@ -2,10 +2,11 @@
 
 namespace Food\OrderBundle\Service;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\TableHelper;
+use Food\AppBundle\Service\GoogleAnalyticsService;
 
 class WeeklyReport extends ContainerAware
 {
@@ -13,6 +14,8 @@ class WeeklyReport extends ContainerAware
     protected $weeklyReportEmails;
     protected $output;
     protected $tableHelper;
+    protected $googleAnalyticsService;
+    protected $templating;
 
     public $sqlMap = [
         'income' => 'SELECT IFNULL(SUM(o.total), 0.0) AS result',
@@ -33,6 +36,15 @@ class WeeklyReport extends ContainerAware
         $averageCartSize = round($this->getWeeklyDataFor('average_cart'), 2);
         $averageDeliveryTime = round($this->getWeeklyDataFor('average_delivery'));
 
+        // stuff from google analytics
+        $from = date('Y-m-d', strtotime('-7 day'));
+        $to = date('Y-m-d', strtotime('-1 day'));
+
+        $pageviews = $this->getGoogleAnalyticsService()
+                          ->getPageviews($from, $to);
+        $uniquePageviews = $this->getGoogleAnalyticsService()
+                                ->getUniquePageviews($from, $to);
+
         // output some data
         $this->getTableHelper()->setHeaders(['Metric', 'Value']);
         $this->getTableHelper()->setRows([
@@ -40,7 +52,9 @@ class WeeklyReport extends ContainerAware
             ['Income', sprintf('<fg=cyan>€ %s</fg=cyan>', $income)],
             ['Number of successful orders', sprintf('<fg=cyan>%s</fg=cyan>', $successfulOrders)],
             ['Price of average cart', sprintf('<fg=cyan>€ %s</fg=cyan>', $averageCartSize)],
-            ['Average delivery time', sprintf('<fg=cyan>%s mins</fg=cyan>', $averageDeliveryTime)]
+            ['Average delivery time', sprintf('<fg=cyan>%s mins</fg=cyan>', $averageDeliveryTime)],
+            ['Pageviews', sprintf('<fg=cyan>%s views</fg=cyan>', $pageviews)],
+            ['Unique pageviews', sprintf('<fg=cyan>%s views</fg=cyan>', $uniquePageviews)]
         ]);
 
         $this->getOutput()->writeln('Last week we had:');
@@ -55,7 +69,9 @@ class WeeklyReport extends ContainerAware
                                                $income,
                                                $successfulOrders,
                                                $averageCartSize,
-                                               $averageDeliveryTime);
+                                               $averageDeliveryTime,
+                                               $pageviews,
+                                               $uniquePageviews);
 
         return $this->sendWeeklyMails($forceEmail,
                                       $this->getWeeklyReportEmails(),
@@ -92,14 +108,22 @@ class WeeklyReport extends ContainerAware
                                          $income,
                                          $successfulOrders,
                                          $averageCartSize,
-                                         $averageDeliveryTime)
+                                         $averageDeliveryTime,
+                                         $pageviews,
+                                         $uniquePageviews)
     {
-        return sprintf("Restoranų skaičius: %s\nPajamos: € %s\nSėkmingi užsakymai: %s\nVidutinė krepšelio suma: € %s\nVidutinis pristatymo laikas: %s min.",
-                       $places,
-                       $income,
-                       $successfulOrders,
-                       $averageCartSize,
-                       $averageDeliveryTime);
+        $template = 'FoodOrderBundle:WeeklyReport:email.html.twig';
+        $data = [
+            'places' => $places,
+            'income' => $income,
+            'successfulOrders' => $successfulOrders,
+            'averageCartSize' => $averageCartSize,
+            'averageDeliveryTime' => $averageDeliveryTime,
+            'pageviews' => $pageviews,
+            'uniquePageviews' => $uniquePageviews
+        ];
+
+        return $this->getTemplating()->render($template, $data);
     }
 
     public function sendWeeklyMails($forceEmail,
@@ -111,7 +135,8 @@ class WeeklyReport extends ContainerAware
         $emails = !empty($forceEmail) ? [$forceEmail] : $weeklyReportEmails;
 
         foreach ($emails as $email) {
-            $mailSent = @mail($email, $title, $content) && $mailSent;
+            $headers = 'Content-Type: text/html;charset=utf-8';
+            $mailSent = @mail($email, $title, $content, $headers) && $mailSent;
         }
 
         return $mailSent
@@ -190,5 +215,26 @@ class WeeklyReport extends ContainerAware
     public function getTableHelper()
     {
         return $this->tableHelper;
+    }
+
+    public function setGoogleAnalyticsService(GoogleAnalyticsService $service)
+    {
+        $this->googleAnalyticsService = $service;
+    }
+
+    public function getGoogleAnalyticsService()
+    {
+        return $this->googleAnalyticsService;
+    }
+
+    public function setTemplating($templating)
+    {
+        $this->templating = $templating;
+        return $this;
+    }
+
+    public function getTemplating()
+    {
+        return $this->templating;
     }
 }
