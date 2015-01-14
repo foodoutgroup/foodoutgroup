@@ -142,7 +142,6 @@ class Dish extends Uploadable implements Translatable
      */
     private $options;
 
-
     /**
      * @var bool
      *

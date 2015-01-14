@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Service;
 
 use Food\CartBundle\Entity\Cart;
+use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
@@ -35,6 +36,12 @@ class NavService extends ContainerAware
 
     //private $messagesTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Web Order Messages]';
 
+//    private $deliveryOrderTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Delivery Order]';
+//
+//    private $posTransactionLinesTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$POS Trans_ Line]';
+
+//    private $deliveryOrderStatusTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Delivery order status]';
+
     private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
 
     private $lineTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Lines]';
@@ -45,6 +52,12 @@ class NavService extends ContainerAware
 
     private $itemsTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Item]';
 
+    private $deliveryOrderTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery Order]';
+
+    private $posTransactionLinesTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$POS Trans_ Line]';
+
+    private $deliveryOrderStatusTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery order status]';
+    
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
@@ -91,6 +104,30 @@ class NavService extends ContainerAware
     public function getItemsTable()
     {
         return $this->itemsTable;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeliveryOrderTable()
+    {
+        return $this->deliveryOrderTable;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPosTransactionLinesTable()
+    {
+        return $this->posTransactionLinesTable;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeliveryOrderStatusTable()
+    {
+        return $this->deliveryOrderStatusTable;
     }
 
     /**
@@ -836,9 +873,12 @@ class NavService extends ContainerAware
     public function getRecentNavOrders($orders)
     {
         $orderIds = $this->getNavIdsFromOrders($orders);
+        if (empty($orderIds)) {
+            return array();
+        }
 
         $query = sprintf(
-            'SELECT [Order No_], [Order Status], [Delivery Status]
+            'SELECT [Order No_], [Order Status], [Delivery Status], [Delivery Order No_]
             FROM %s
             WHERE
                 [Order No_] IN (%s)
@@ -891,6 +931,63 @@ class NavService extends ContainerAware
         $return = array();
         while ($rowRez = $this->container->get('food.mssql')->fetchArray($result)) {
             $return[$this->getOrderIdFromNavId($rowRez['Order No_'])] = $rowRez;
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param Order[] $orders
+     * @return array
+     */
+    public function getImportedOrdersStatus($orders)
+    {
+        $orderIds = array();
+        $orderIdMap = array();
+
+        foreach($orders as $order) {
+            if ($order->getOrderFromNav()) {
+                $orderIds[] = $order->getNavDeliveryOrder();
+                $orderIdMap[$order->getNavDeliveryOrder()] = $order->getId();
+            }
+        }
+
+        if (empty($orderIds)) {
+            return array();
+        }
+
+        $query = sprintf(
+            'SELECT
+                dOrder.[Order No_] As [OrderNo],
+                (
+                 SELECT TOP 1
+                    oStat.[Status]
+                 FROM %s oStat
+                 WHERE
+                    [ORDER No_] = dOrder.[Order No_]
+                 ORDER BY [TIME] DESC
+                 ) AS OrderStatus
+            FROM %s dOrder
+            WHERE
+                dOrder.[Order No_] IN (%s)',
+            $this->getDeliveryOrderStatusTable(),
+            $this->getDeliveryOrderTable(),
+            implode(', ', $orderIds)
+        );
+
+        $result = $this->initSqlConn()->query($query);
+        if( $result === false) {
+            return array();
+        }
+
+        $return = array();
+        while ($rowRez = $this->container->get('food.mssql')->fetchArray($result)) {
+            $return[$orderIdMap[$rowRez['OrderNo']]] = array(
+                'Order No_' => $rowRez['OrderNo'],
+                'Order Status' => null,
+                'Delivery Status' => $rowRez['OrderStatus'],
+                'Delivery Order No_' => $rowRez['OrderNo']
+            );
         }
 
         return $return;
@@ -982,7 +1079,13 @@ class NavService extends ContainerAware
 
             case 0:
             default:
-                // do nothing
+                // Set delivery order ID if it is not set
+                $deliveryOrderId = $order->getNavDeliveryOrder();
+                if (empty($deliveryOrderId)) {
+                    // TODO pasitikrint lauko pavadinima
+                    $order->setNavDeliveryOrder($navOrder['Delivery Order No_']);
+                }
+
                 break;
         }
     }
@@ -1003,6 +1106,10 @@ class NavService extends ContainerAware
         foreach ($orders as $order) {
             if (!$order instanceof Order) {
                 throw new \InvalidArgumentException('Got a non order object when extracting Nav ids');
+            }
+            // Skip orders from Nav
+            if ($order->getOrderFromNav()) {
+                continue;
             }
 
             $navIds[] = $this->getNavOrderId($order);
@@ -1097,5 +1204,135 @@ class NavService extends ContainerAware
         }
 
         return [$critical, $text];
+    }
+
+    /**
+     * @return array
+     */
+    public function getNewNonFoodoutOrders()
+    {
+        $query = sprintf(
+            "SELECT
+                dOrder.[Order No_] As [OrderNo],
+                dOrder.[Phone No_],
+                dOrder.[Date Created],
+                dOrder.[Time Created],
+                dOrder.[Contact Pickup Time],
+                dOrder.[Driver ID],
+                dOrder.[Address],
+                dOrder.[City],
+                dOrder.[Directions],
+                dOrder.[Tender Type],
+                dOrder.[Restaurant No_],
+                dOrder.[Sales Type],
+                dOrder.[Chain],
+                dOrder.[Contact No_],
+                dOrder.[Amount Incl_ VAT],
+                pTrans.[VAT %%],
+                pTrans.[Amount] AS DeliveryAmount,
+                (
+                    SELECT
+                    SUM([Amount])
+                    FROM %s pSumTrans
+                    WHERE
+                        pSumTrans.[Receipt No_] = dOrder.[Order No_]
+                ) AS OrderSum,
+                (
+                 SELECT TOP 1
+                    oStat.[Status]
+                 FROM %s oStat
+                 WHERE
+                    [ORDER No_] = dOrder.[Order No_]
+                 ORDER BY [TIME] DESC
+                 ) AS OrderStatus
+            FROM %s dOrder
+            LEFT JOIN %s pTrans ON pTrans.[Receipt No_] = dOrder.[Order No_]
+            WHERE
+                dOrder.[Date Created] >= '%s'
+                AND dOrder.[Time Created] >= '%s'
+                AND dOrder.[Delivery Region] IN (%s)
+                AND dOrder.[FoodOut Order] != 1
+                AND pTrans.[Number] IN ('ZRAW0009996', 'ZRAW0010001', 'ZRAW0010002', 'ZRAW0010190', 'ZRAW0010255')
+            ORDER BY
+                dOrder.[Date Created] ASC,
+                dOrder.[Time Created] ASC
+            ",
+            $this->getPosTransactionLinesTable(),
+            $this->getDeliveryOrderStatusTable(),
+            $this->getDeliveryOrderTable(),
+            $this->getPosTransactionLinesTable(),
+            date('Y-m-d'),
+            '1754-01-01 '.date("H:i:s", strtotime('-2 hour')),
+            "'Vilnius', 'Kaunas', 'Klaipeda'"
+        );
+
+        $result = $this->initSqlConn()->query($query);
+        if( $result === false) {
+            return array();
+        }
+
+        $return = array();
+        while ($rowRez = $this->container->get('food.mssql')->fetchArray($result)) {
+            $return[$rowRez['OrderNo']] = $rowRez;
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param string $chain
+     * @param string $restaurantNo
+     * @return PlacePoint
+     */
+    public function getLocalPlacePoint($chain, $restaurantNo)
+    {
+        $repo = $this->getContainer()->get('doctrine')->getRepository('FoodDishesBundle:PlacePoint');
+        $pPoint = $repo->findOneBy(array('internal_code' => $restaurantNo));
+
+        if (!$pPoint instanceof PlacePoint || $pPoint->getId() == '' || !$pPoint->getActive())
+        {
+            return false;
+        }
+
+        if ($pPoint->getPlace()->getChain() != $chain) {
+            $this->getContainer()->get('logger')
+                ->error(sprintf(
+                    'Found placePoint for restaurant no "%s" with id: %d but chain from Nav "%s" does not match Place chain "%s". The point will still be used',
+                    $restaurantNo,
+                    $pPoint->getId(),
+                    $chain.
+                    $pPoint->getPlace()->getChain()
+                ));
+        }
+
+        return $pPoint;
+    }
+
+    /**
+     * @param string $navDriverId
+     * @return mixed
+     */
+    public function getDriverByNavId($navDriverId)
+    {
+        $nameParts = str_split($navDriverId, 3);
+
+        $driverQueryBuilder = $this->getContainer()->get('doctrine')->getRepository('FoodAppBundle:Driver')
+            ->createQueryBuilder('d')
+            ->where('d.name LIKE :first_name_part')
+            ->andWhere('d.name LIKE :second_name_part')
+            ->setParameters(array(
+                'first_name_part' => $nameParts[0]."%",
+                'second_name_part' => "% ".$nameParts[1]."%"
+            ))
+            ->orderBy('d.id', 'ASC')
+            ->setMaxResults(1);
+
+        $driver = $driverQueryBuilder->getQuery()->getResult();
+
+        if (empty($driver)) {
+            return false;
+        }
+
+        return $driver[0];
     }
 }

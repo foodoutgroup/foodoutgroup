@@ -38,6 +38,9 @@ class NavSyncCommand extends ContainerAwareCommand
 
             if (!empty($orders) && count($orders) > 0) {
                 $navOrders = $navService->getRecentNavOrders($orders);
+                $ordersFromNav = $navService->getImportedOrdersStatus($orders);
+
+                $navOrders = $navOrders + $ordersFromNav;
 
                 foreach ($navOrders as $orderId => $orderData) {
                     $order = $orderService->getOrderById($orderId);
