@@ -349,7 +349,7 @@ class NavService extends ContainerAware
         }
 
         if ($order->getDeliveryType() == OrderService::$deliveryDeliver) {
-            $this->_processLineDelivery($orderNewId, $theKey);
+            $this->_processLineDelivery($order, $orderNewId, $theKey);
         }
     }
 
@@ -388,8 +388,14 @@ class NavService extends ContainerAware
      *
      * @todo - kolkas hardcoded delivery atstumas
      */
-    private function _processLineDelivery($orderNewId, $key)
+    private function _processLineDelivery(Order $order, $orderNewId, $key)
     {
+        $devPrice = 1.5;
+        $couponCode = $order->getCouponCode();
+        if (!empty($couponCode) && strlen($couponCode) > 1) {
+            ////$devPrice = $order->getDe
+        }
+
         $dataToPut = array(
             'Order No_' => $orderNewId,
             'Line No_' => $key,
@@ -397,11 +403,11 @@ class NavService extends ContainerAware
             'No_' => "'ZRAW0009996'",
             'Description' => "''",
             'Quantity' => 1,
-            'Price' => 1.5,
+            'Price' => $devPrice,
             'Parent Line' => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
-            'Amount' => 1.5,
+            'Amount' => $devPrice,
             'Discount Amount' => 0,
-            'Payment' => 1.5,
+            'Payment' => $devPrice,
             'Value' => "''"
         );
 
