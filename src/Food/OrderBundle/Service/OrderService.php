@@ -852,23 +852,32 @@ class OrderService extends ContainerAware
             }
         }
 
+        $deliveryPrice = $this->getOrder()->getPlace()->getDeliveryPrice();
+
         // Pritaikom nuolaida
         if (!empty($coupon) && $coupon instanceof Coupon) {
             $order = $this->getOrder();
             $order->setCoupon($coupon)
                 ->setCouponCode($coupon->getCode());
 
-            $discountSize = $coupon->getDiscount();
-            $discountSum = ($sumTotal * $discountSize) / 100;
-            $sumTotal = $sumTotal - $discountSum;
+            if (!$coupon->getFreeDelivery()) {
+                $discountSize = $coupon->getDiscount();
+                $discountSum = ($sumTotal * $discountSize) / 100;
+                $sumTotal = $sumTotal - $discountSum;
 
-            $order->setDiscountSize($discountSize)
-                ->setDiscountSum($discountSum);
+                $order->setDiscountSize($discountSize)
+                    ->setDiscountSum($discountSum);
+            } else {
+                $deliveryPrice = 0;
+            }
         }
 
         if(!$selfDelivery) {
-            $sumTotal+= $this->getOrder()->getPlace()->getDeliveryPrice();
+            $sumTotal+= $deliveryPrice;
+        } else {
+            $deliveryPrice = 0;
         }
+        $this->getOrder()->setDeliveryPrice($deliveryPrice);
         $this->getOrder()->setTotal($sumTotal);
         $this->saveOrder();
 

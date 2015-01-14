@@ -1350,6 +1350,14 @@
                 <source>admin.coupon.place</source>
                 <target>Restoranas</target>
             </trans-unit>
+            <trans-unit id="admin.coupon.only_nav">
+                <source>admin.coupon.only_nav</source>
+                <target>Tik Navision</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.free_delivery">
+                <source>admin.coupon.free_delivery</source>
+                <target>Nemok. pristatymas</target>
+            </trans-unit>
             <trans-unit id="admin.coupon.active">
                 <source>admin.coupon.active</source>
                 <target>Aktyvus</target>

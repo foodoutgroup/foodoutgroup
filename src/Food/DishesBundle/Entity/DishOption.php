@@ -656,4 +656,27 @@ class DishOption implements Translatable
     {
         return $this->subCode;
     }
+
+    /**
+     * Set priceOld
+     *
+     * @param string $priceOld
+     * @return DishOption
+     */
+    public function setPriceOld($priceOld)
+    {
+        $this->priceOld = $priceOld;
+    
+        return $this;
+    }
+
+    /**
+     * Get priceOld
+     *
+     * @return string 
+     */
+    public function getPriceOld()
+    {
+        return $this->priceOld;
+    }
 }

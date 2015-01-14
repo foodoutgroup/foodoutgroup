@@ -1549,4 +1549,50 @@ class Place extends Uploadable implements Translatable
     {
         return $this->reviewCount;
     }
+
+    /**
+     * Set deliveryPriceOld
+     *
+     * @param integer $deliveryPriceOld
+     * @return Place
+     */
+    public function setDeliveryPriceOld($deliveryPriceOld)
+    {
+        $this->deliveryPriceOld = $deliveryPriceOld;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryPriceOld
+     *
+     * @return integer 
+     */
+    public function getDeliveryPriceOld()
+    {
+        return $this->deliveryPriceOld;
+    }
+
+    /**
+     * Set cartMinimumOld
+     *
+     * @param integer $cartMinimumOld
+     * @return Place
+     */
+    public function setCartMinimumOld($cartMinimumOld)
+    {
+        $this->cartMinimumOld = $cartMinimumOld;
+    
+        return $this;
+    }
+
+    /**
+     * Get cartMinimumOld
+     *
+     * @return integer 
+     */
+    public function getCartMinimumOld()
+    {
+        return $this->cartMinimumOld;
+    }
 }

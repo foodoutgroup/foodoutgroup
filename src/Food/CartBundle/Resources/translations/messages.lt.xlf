@@ -330,6 +330,10 @@ Vilnius]]></target>
             <source>general.coupon.wrong_place</source>
             <target>Jūsų pateiktas nuolaidos kuponas galioja tik %place_name% restorane</target>
         </trans-unit>
+        <trans-unit id="general.coupon.only_cili" resname="general.coupon.only_cili">
+            <source>general.coupon.only_cili</source>
+            <target>Jūsų pateiktas nuolaidos kuponas galioja tik Čili pica, Soya, Forest restoranuose</target>
+        </trans-unit>
         <trans-unit id="general.coupon.wrong_place_simple" resname="general.coupon.wrong_place_simple">
             <source>general.coupon.wrong_place_simple</source>
             <target>Jūsų pateiktas nuolaidos kuponas šiame restorane negalioja. Pasitikrinkite kupono kodą</target>

@@ -397,4 +397,50 @@ class DishSize
             return $this->getPrice();
         }
     }
+
+    /**
+     * Set priceOld
+     *
+     * @param string $priceOld
+     * @return DishSize
+     */
+    public function setPriceOld($priceOld)
+    {
+        $this->priceOld = $priceOld;
+    
+        return $this;
+    }
+
+    /**
+     * Get priceOld
+     *
+     * @return string 
+     */
+    public function getPriceOld()
+    {
+        return $this->priceOld;
+    }
+
+    /**
+     * Set discountPriceOld
+     *
+     * @param string $discountPriceOld
+     * @return DishSize
+     */
+    public function setDiscountPriceOld($discountPriceOld)
+    {
+        $this->discountPriceOld = $discountPriceOld;
+    
+        return $this;
+    }
+
+    /**
+     * Get discountPriceOld
+     *
+     * @return string 
+     */
+    public function getDiscountPriceOld()
+    {
+        return $this->discountPriceOld;
+    }
 }

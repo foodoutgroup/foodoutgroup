@@ -41,7 +41,7 @@
             </div>
         {% endfor %}
         <div class="check-bottom">
-            {% if applyDiscount %}
+            {% if applyDiscount and not freeDelivery %}
                 <div class="discount-sum clearfix">
                     <div class="fl">{% trans %}cart.block.discount_sum{% endtrans %}:</div>
                     <div class="fr">{{ currency_display | raw }}{{ discountSum|number_format(2, ',', ' ') }}</div>
@@ -54,7 +54,11 @@
             {% if hide_delivery == 0 %}
                 <div class="delivery-price clearfix">
                     <div class="fl">{% trans %}cart.block.delivery_price{% endtrans %}:</div>
-                    <div class="fr">{{ currency_display|raw }}{{ place.deliveryPrice|number_format(2, ',', ' ') }}<span class="euro">/ {{  misc_utils.getLitas(place.deliveryPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}</span></div>
+                    {% if freeDelivery %}
+                        <div class="fr">{{ currency_display|raw }}0,00<span class="euro">/ 0,00 {{ display_currency_alternative }}</span></div>
+                    {% else %}
+                        <div class="fr">{{ currency_display|raw }}{{ place.deliveryPrice|number_format(2, ',', ' ') }}<span class="euro">/ {{  misc_utils.getLitas(place.deliveryPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}</span></div>
+                    {% endif %}
                 </div>
                 <div class="total-sum final clearfix">
                     <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>

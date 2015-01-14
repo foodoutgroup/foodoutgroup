@@ -203,6 +203,16 @@ class AjaxController extends Controller
                 'general.coupon.wrong_place',
                 array('%place_name%' => $coupon->getPlace()->getName())
             );
+        // Only for navision restaurants
+        } else if ($coupon->getOnlyNav()) {
+            $place = $this->container->get('food.places')->getPlace($placeId);
+
+            if ($place->getNavision()) {
+                $cont['data'] = $coupon->__toArray();
+            } else {
+                $cont['status'] = false;
+                $cont['data']['error'] = $trans->trans('general.coupon.only_cili');
+            }
         } else {
             $cont['data'] = $coupon->__toArray();
         }

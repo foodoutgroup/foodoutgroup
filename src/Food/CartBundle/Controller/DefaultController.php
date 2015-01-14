@@ -345,7 +345,7 @@ class DefaultController extends Controller
         $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
 
         // If coupon in use
-        $applyDiscount = false;
+        $applyDiscount = $freeDelivery = false;
         $discountSize = null;
         $discountSum = null;
         if (!empty($couponCode)) {
@@ -353,10 +353,14 @@ class DefaultController extends Controller
 
             if ($coupon) {
                 $applyDiscount = true;
-                $discountSize = $coupon->getDiscount();
-                $discountSum = ($total_cart * $coupon->getDiscount()) / 100;
+                $freeDelivery = $coupon->getFreeDelivery();
 
-                $total_cart = $total_cart - $discountSum;
+                if (!$freeDelivery) {
+                    $discountSize = $coupon->getDiscount();
+                    $discountSum = ($total_cart * $coupon->getDiscount()) / 100;
+
+                    $total_cart = $total_cart - $discountSum;
+                }
             }
         }
 
@@ -373,10 +377,11 @@ class DefaultController extends Controller
             'list'  => $list,
             'place' => $place,
             'total_cart' => $total_cart,
-            'total_with_delivery' => $total_cart + $place->getDeliveryPrice(),
+            'total_with_delivery' => ($freeDelivery ? $total_cart : ($total_cart + $place->getDeliveryPrice())),
             'inCart' => (int)$inCart,
             'hide_delivery' => $hideDelivery,
             'applyDiscount' => $applyDiscount,
+            'freeDelivery' => $freeDelivery,
             'discountSize' => $discountSize,
             'discountSum' => $discountSum,
         );
