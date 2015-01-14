@@ -65,7 +65,7 @@ class CouponAdmin extends FoodAdmin
             ->add('freeDelivery', null, array('label' => 'admin.coupon.free_delivery', 'editable' => true))
             ->add('code', null, array('label' => 'admin.coupon.code', 'editable' => false))
             ->add('place', null, array('label' => 'admin.coupon.place', 'editable' => true))
-            ->add('onlyNav', null, array('label' => 'admin.coupon.only_nav', 'required' => false))
+            ->add('onlyNav', null, array('label' => 'admin.coupon.only_nav', 'editable' => true))
             ->add('active', null, array('label' => 'admin.coupon.active', 'editable' => true))
             ->add('singleUse', null, array('label' => 'admin.coupon.single_use', 'editable' => true))
             ->add('_action', 'actions', array(
