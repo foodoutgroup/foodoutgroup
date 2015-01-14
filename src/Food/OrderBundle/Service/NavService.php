@@ -430,7 +430,7 @@ class NavService extends ContainerAware
         $devPrice = 1.5;
         $couponCode = $order->getCouponCode();
         if (!empty($couponCode) && strlen($couponCode) > 1) {
-            ////$devPrice = $order->getDe
+            $devPrice = $order->getDeliveryPrice();
         }
 
         $dataToPut = array(
