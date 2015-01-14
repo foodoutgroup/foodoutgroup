@@ -869,6 +869,11 @@ class OrderService extends ContainerAware
                     ->setDiscountSum($discountSum);
             } else {
                 $deliveryPrice = 0;
+
+                if ($order->getDiscountSum() == '')
+                {
+                    $order->setDiscountSum(0);
+                }
             }
         }
 
