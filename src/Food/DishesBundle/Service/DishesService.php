@@ -67,7 +67,7 @@ class DishesService extends ContainerAware {
 
     public function getOneDishDiscountPrice($dishId)
     {
-        $query = "SELECT discount_price as discount, price FROM dish_size WHERE deleted_at IS NULL AND dish_id=".intval($dishId)." ORDER BY (discount_price/price) DESC ";
+        $query = "SELECT discount_price as discount, price FROM dish_size WHERE deleted_at IS NULL AND discount_price > 0 AND dish_id=".intval($dishId)." ORDER BY (discount_price/price) DESC ";
         $stmt = $this->em()->getConnection()->prepare($query);
         $stmt->execute();
         return $stmt->fetch();

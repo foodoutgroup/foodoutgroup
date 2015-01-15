@@ -109,8 +109,10 @@ class MenuItem extends ContainerAware
         }
         if ($minimum == $minOld && $maximum == $maxOld) {
             $theDishInfo = $ds->getOneDishDiscountPrice($dish->getId());
-            $diff = ($theDishInfo['discount'] / $theDishInfo['price']) * 100 - 100;
-            $discountText = round($diff)."%";
+            if ($theDishInfo) {
+                $diff = ($theDishInfo['discount'] / $theDishInfo['price']) * 100 - 100;
+                $discountText = round($diff)."%";
+            }
         }
         $priceRange = array(
             'minimum' => $minimum,
