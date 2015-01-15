@@ -122,6 +122,13 @@ class Place extends Uploadable implements Translatable
     /**
      * @var bool
      *
+     * @ORM\Column(name="top", type="boolean", nullable=true)
+     */
+    private $top;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="new", type="boolean")
      */
     private $new;
@@ -1548,6 +1555,29 @@ class Place extends Uploadable implements Translatable
     public function getReviewCount()
     {
         return $this->reviewCount;
+    }
+
+    /**
+     * Set top
+     *
+     * @param boolean $top
+     * @return Place
+     */
+    public function setTop($top)
+    {
+        $this->top = $top;
+    
+        return $this;
+    }
+
+    /**
+     * Get top
+     *
+     * @return boolean 
+     */
+    public function getTop()
+    {
+        return $this->top;
     }
 
     /**
