@@ -111,17 +111,31 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                     $output->writeln('Delivery Amount: '.$orderData['DeliveryAmount']);
                     $output->writeln('Delivery Type: '.$deliveryType);
 
-                    $orderDate = new \DateTime(
-                        $orderData['Date Created']->format("Y-m-d")
-                        .' '
-                        .$orderData['Time Created']->format("H:i:s")
-                    );
+                    if ($orderData['Date Created'] instanceof \DateTime) {
+                        $orderDate = new \DateTime(
+                            $orderData['Date Created']->format("Y-m-d")
+                            . ' '
+                            . $orderData['Time Created']->format("H:i:s")
+                        );
 
-                    $deliveryDate = new \DateTime(
-                        $orderData['Date Created']->format("Y-m-d")
-                        .' '
-                        .$orderData['Contact Pickup Time']->format("H:i:s")
-                    );
+                        $deliveryDate = new \DateTime(
+                            $orderData['Date Created']->format("Y-m-d")
+                            .' '
+                            .$orderData['Contact Pickup Time']->format("H:i:s")
+                        );
+                    } else {
+                        $orderDate = new \DateTime(
+                           date("Y-m-d", strtotime($orderData['Date Created']))
+                            . ' '
+                            .date("H:i:s", strtotime($orderData['Time Created']))
+                        );
+
+                        $deliveryDate = new \DateTime(
+                            date("Y-m-d", strtotime($orderData['Date Created']))
+                            .' '
+                            .date("H:i:s", strtotime($orderData['Contact Pickup Time']))
+                        );
+                    }
 
                     $output->writeln('Order Date: '.$orderDate->format("Y-m-d H:i:s"));
                     $output->writeln('Delivery Date: '.$deliveryDate->format("Y-m-d H:i:s"));
