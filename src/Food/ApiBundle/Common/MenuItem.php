@@ -154,7 +154,7 @@ class MenuItem extends ContainerAware
                     'option_id' => $size->getId(),
                     'title' => $unit->getName(),
                     'price_modifier' => $size->getCurrentPrice() * 100,
-                    'price_modifier_old' => ($size->getDish()->getShowDiscount() ?  $size->getPrice() * 100 : 0)
+                    'price_modifier_old' => ($size->getDish()->getShowDiscount() && $size->getDiscountPrice() > 0?  $size->getPrice() * 100 : 0)
 
                 );
             }
