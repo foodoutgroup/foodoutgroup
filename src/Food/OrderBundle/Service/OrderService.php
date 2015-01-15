@@ -364,12 +364,16 @@ class OrderService extends ContainerAware
                     $message = $smsService->createMessage($sender, $recipient, $text);
                     $smsService->saveMessage($message);
                 }
-                $this->getOrder()->setAcceptTime(new \DateTime("now"));
+            }
+
+            $this->getOrder()->setAcceptTime(new \DateTime("now"));
+            $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
+
+            if ($this->getOrder()->getOrderFromNav() == false) {
                 $dt = new \DateTime('now');
                 $dt->add(new \DateInterval('P0DT1H0M0S'));
                 $this->getOrder()->setDeliveryTime($dt);
                 $this->saveOrder();
-                $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
                 $this->_notifyOnAccepted();
 
                 // Notify Dispatchers
