@@ -241,7 +241,10 @@ class RestaurantsController extends Controller
                 'limit' => 50
             )
         );
-        return new JsonResponse($response);
+        $resp = new JsonResponse($response);
+        $resp->setMaxAge(1);
+        $resp->setSharedMaxAge(1);
+        return $resp;
     }
 
     /**
