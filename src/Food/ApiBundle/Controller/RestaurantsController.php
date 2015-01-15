@@ -244,6 +244,8 @@ class RestaurantsController extends Controller
         $resp = new JsonResponse($response);
         $resp->setMaxAge(1);
         $resp->setSharedMaxAge(1);
+        $date = new \DateTime();
+        $resp->setLastModified($date);
         return $resp;
     }
 
