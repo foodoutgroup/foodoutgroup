@@ -110,8 +110,8 @@ class Order
     private $total;
 
     /**
-     * @var int
-     * @ORM\Column(name="delivery_price", type="integer", nullable=true)
+     * @var float
+     * @ORM\Column(name="delivery_price", type="float", nullable=true)
      */
     private $deliveryPrice;
 
@@ -1630,7 +1630,7 @@ class Order
     /**
      * Set deliveryPrice
      *
-     * @param integer $deliveryPrice
+     * @param float $deliveryPrice
      * @return Order
      */
     public function setDeliveryPrice($deliveryPrice)
@@ -1643,7 +1643,7 @@ class Order
     /**
      * Get deliveryPrice
      *
-     * @return integer 
+     * @return float
      */
     public function getDeliveryPrice()
     {
