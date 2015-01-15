@@ -1053,8 +1053,12 @@ class NavService extends ContainerAware
 
             case 8:
             case 9:
-                if ($order->getDeliveryType() == OrderService::$deliveryPickup
-                    && $orderService->isValidOrderStatusChange($order->getOrderStatus(), OrderService::$status_completed)) {
+                if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), OrderService::$status_completed)
+                    && (
+                        $order->getDeliveryType() == OrderService::$deliveryPickup
+                        || ($order->getDeliveryType() == OrderService::$deliveryDeliver && $order->getOrderFromNav())
+                        )
+                    ) {
                         $orderService->statusCompleted('cili_nav');
 
                         // log order data (if we have listeners)
