@@ -113,7 +113,7 @@ class ShoppingBasketItem extends ContainerAware
                 'price',
                 array(
                     'amount' => $this->_contDaPriceOfAll($cartItem) * 100, // @todo
-                    'amount_old' => ($cartItem->getDishId()->getShowDiscount() ? $this->_contDaPriceOfAllOld($cartItem) * 100 : 0),
+                    'amount_old' => ($cartItem->getDishId()->getShowDiscount() && $cartItem->getDishSizeId()->getDiscountPrice() > 0 ? $this->_contDaPriceOfAllOld($cartItem) * 100 : 0),
                     'currency' => $this->container->getParameter('currency_iso')
                 )
             );

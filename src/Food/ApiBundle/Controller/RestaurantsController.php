@@ -244,6 +244,8 @@ class RestaurantsController extends Controller
         $resp = new JsonResponse($response);
         $resp->setMaxAge(1);
         $resp->setSharedMaxAge(1);
+        $date = new \DateTime();
+        $resp->setLastModified($date);
         return $resp;
     }
 
@@ -255,7 +257,12 @@ class RestaurantsController extends Controller
     public function getMenuItemAction($placeId, $menuItem)
     {
         $response = $this->get('food_api.api')->createMenuItemByPlaceIdAndItemId($placeId, $menuItem);
-        return new JsonResponse($response);
+        $resp = new JsonResponse($response);
+        $resp->setMaxAge(1);
+        $resp->setSharedMaxAge(1);
+        $date = new \DateTime();
+        $resp->setLastModified($date);
+        return $resp;
     }
 
     /**
