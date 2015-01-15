@@ -391,7 +391,7 @@ class DishSize
 
     public function getCurrentPrice()
     {
-        if ($this->getDish()->getShowDiscount()) {
+        if ($this->getDish()->getShowDiscount() && $this->getDiscountPrice()!=0) {
             return $this->getDiscountPrice();
         } else {
             return $this->getPrice();

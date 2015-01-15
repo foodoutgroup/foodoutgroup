@@ -13,7 +13,7 @@
                 {% for size in dish.sizes %}
                     <label class="custom-radio">{{ size.unit.name }}
                         {% set showDiscount = false %}
-                        {% if dish.showDiscount  %}
+                        {% if dish.showDiscount and size.discountPrice != 0 %}
                             {% set showDiscount = true %}
                         {% endif %}
                         <strong class="price {% if showDiscount %}discounted{% endif %}">

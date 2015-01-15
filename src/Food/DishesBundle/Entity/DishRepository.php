@@ -62,6 +62,7 @@ class DishRepository extends EntityRepository
      */
     public function getSmallestDiscountPrice($dishId)
     {
+        /*
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('d, s.discountPrice')
             ->from('\Food\DishesBundle\Entity\Dish', 'd')
@@ -72,6 +73,11 @@ class DishRepository extends EntityRepository
         ;
 
         return $qb->getQuery()->getResult();
+        */
+        $query = "SELECT IF(discount_price = 0, price, discount_price) as discountPrice FROM dish_size WHERE dish_id=".intval($dishId)." ORDER BY IF(discount_price = 0, price, discount_price) ASC";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
     /**
@@ -80,6 +86,7 @@ class DishRepository extends EntityRepository
      */
     public function getLargestDiscountPrice($dishId)
     {
+        /*
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('d, s.discountPrice')
             ->from('\Food\DishesBundle\Entity\Dish', 'd')
@@ -90,6 +97,11 @@ class DishRepository extends EntityRepository
         ;
 
         return $qb->getQuery()->getResult();
+        */
+        $query = "SELECT IF(discount_price = 0, price, discount_price) as discountPrice FROM dish_size WHERE dish_id=".intval($dishId)." ORDER BY IF(discount_price = 0, price, discount_price) DESC";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
     /**
