@@ -112,6 +112,8 @@ class MenuItem extends ContainerAware
             if ($theDishInfo) {
                 $diff = ($theDishInfo['discount'] / $theDishInfo['price']) * 100 - 100;
                 $discountText = round($diff)."%";
+                $minOld = 0;
+                $maxOld = 0;
             }
         }
         $priceRange = array(
