@@ -123,6 +123,7 @@ class MonitoringService extends ContainerAware {
             ->andWhere('o.deliveryTime > :oldest_date')
             ->andWhere('o.place_point_self_delivery != 1')
             ->andWhere('o.deliveryType != :delivery_type')
+            ->andWhere('o.orderFromNav != 1')
             ->orderBy('o.order_date', 'ASC')
             ->setParameters(
                 [
