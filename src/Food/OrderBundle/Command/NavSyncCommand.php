@@ -52,6 +52,12 @@ class NavSyncCommand extends ContainerAwareCommand
                         $orderData['Delivery Status']
                     ));
 
+                    $orderPlaceChanged = $navService->didOrderPlaceChange($orderData['Order No)']);
+
+                    if (!empty($orderPlaceChanged)) {
+                        // use $orderPlaceChanged['Store No_'] to set new place for $order
+                    }
+
                     // Only update if not a dry-run
                     if (!$dryRun) {
                         $navService->changeOrderStatusByNav($order, $orderData);

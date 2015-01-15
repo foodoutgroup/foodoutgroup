@@ -884,6 +884,35 @@ class NavService extends ContainerAware
         return $return;
     }
 
+    public function didOrderPlaceChange($orderNo)
+    {
+        $query = sprintf('
+            SELECT
+                woh.[Delivery Order No_],
+                do.[Order No_],
+                pt.[Receipt No_],
+                do.[Restaurant No_],
+                pt.[Store No_]
+            FROM %s woh
+            LEFT JOIN [skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery Order] do ON do.[Order No_] = woh.[Delivery Order No_]
+            LEFT JOIN [skamb_centras].[dbo].[Čilija Skambučių Centras$POS Transaction] pt ON pt.[Receipt No_] = do.[Order No_]
+            WHERE
+                do.[Restaurant No_] != pt.[Store No_] AND
+                pt.[Store No_] != \'ISC\' AND
+                woh.[Order No_] = %s
+            ORDER BY woh.[timestamp] DESC',
+            $this->getHeaderTable(),
+            $orderNo);
+
+        $result = $this->initSqlConn()->query($query);
+
+        if( $result === false) {
+            return [];
+        }
+
+        return [123];
+    }
+
     /**
      * @param Order[] $orders
      *
