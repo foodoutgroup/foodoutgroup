@@ -909,11 +909,7 @@ class OrderService extends ContainerAware
             $this->getEm()->persist($this->order);
             $this->getEm()->flush();
 
-            // TODO kolkas i buhalterine nekisam - istestave importo veikima, pabaigiam sita vieta
-            if ($this->getOrder()->getOrderFromNav() == false) {
-                // log order data (if we have listeners)
-                $this->markOrderForNav($this->order);
-            }
+            $this->markOrderForNav($this->order);
         }
     }
 
