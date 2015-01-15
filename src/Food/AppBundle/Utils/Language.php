@@ -132,7 +132,7 @@ class Language
      */
     public function removeChars($lang, $text, $toLower = true, $removeSpecialChars=true)
     {
-        if (!in_array($lang, array('lt', 'ru', 'en'))) {
+        if (!in_array($lang, array('lt', 'ru', 'en', 'lv'))) {
             throw new \Exception('Undefined language');
         }
 
