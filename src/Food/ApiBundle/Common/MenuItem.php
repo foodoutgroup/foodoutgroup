@@ -96,16 +96,31 @@ class MenuItem extends ContainerAware
 
         $ds = $this->container->get('food.dishes');
         $showDiscount = $dish->getShowDiscount();
+
+        $minimum = (!$showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : $ds->getSmallestDishDiscountPrice($dish->getId()) * 100);
+        $maximum = (!$showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : $ds->getLargestDishDiscountPrice($dish->getId()) * 100);
+        $minOld = ($showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : 0);
+        $maxOld = ($showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : 0);
+
         $discountText = "";
         if ($showDiscount) {
             $diff = ($ds->getLargestDishDiscountPrice($dish->getId()) / $ds->getLargestDishPrice($dish->getId())) * 100 - 100;
             $discountText = round($diff)."%";
         }
+        if ($minimum == $minOld && $maximum == $maxOld) {
+            $theDishInfo = $ds->getOneDishDiscountPrice($dish->getId());
+            if ($theDishInfo) {
+                $diff = ($theDishInfo['discount'] / $theDishInfo['price']) * 100 - 100;
+                $discountText = round($diff)."%";
+                $minOld = 0;
+                $maxOld = 0;
+            }
+        }
         $priceRange = array(
-            'minimum' => (!$showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : $ds->getSmallestDishDiscountPrice($dish->getId()) * 100),
-            'maximum' => (!$showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : $ds->getLargestDishDiscountPrice($dish->getId()) * 100),
-            'minimum_old' => ($showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : 0),
-            'maximum_old' => ($showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : 0),
+            'minimum' => $minimum,
+            'maximum' => $maximum,
+            'minimum_old' => $minOld,
+            'maximum_old' => $maxOld,
             'discount_text' => $discountText,
             'currency' => $this->container->getParameter('currency_iso')
         );
