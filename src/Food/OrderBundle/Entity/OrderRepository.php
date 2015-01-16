@@ -157,6 +157,7 @@ class OrderRepository extends EntityRepository
             ),
             'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
+            'orderFromNav' => 0
         );
         $order = $this->getOrdersByFilter($filter, 'single');
 
@@ -183,6 +184,7 @@ class OrderRepository extends EntityRepository
             'order_status' =>  array(OrderService::$status_new),
             'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
+            'orderFromNav' => 0
         );
         $order = $this->getOrdersByFilter($filter, 'single');
 
@@ -252,7 +254,6 @@ class OrderRepository extends EntityRepository
                 $filter,
                 array(
                     'order_date' => 'DESC',
-                    'order_from_nav' => 0,
                 ),
                 1
             );

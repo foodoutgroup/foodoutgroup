@@ -23,6 +23,7 @@
             text-align: right;
             padding-right: 5px;
             width: 70px;
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -72,7 +73,7 @@
 <table class="data-table">
     <tr>
         <td class="narrow_col">{% trans %}order.invoice.line_num{% endtrans %}</td>
-        <td style="min-width: 375px;">{% trans %}order.invoice.product_name{% endtrans %}</td>
+        <td style="min-width: 345px;">{% trans %}order.invoice.product_name{% endtrans %}</td>
         <td style="max-width: 205px;">{% trans %}order.invoice.measure_name{% endtrans %}</td>
         <td class="narrow_col">{% trans %}order.invoice.quantity{% endtrans %}</td>
         <td class="sum_col">{% trans %}order.invoice.price{% endtrans %}</td>
