@@ -2,6 +2,7 @@
 
 namespace Food\OrderBundle\Service;
 
+use Food\AppBundle\Entity\Driver;
 use Food\CartBundle\Entity\Cart;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
@@ -1093,6 +1094,20 @@ class NavService extends ContainerAware
     }
 
     /**
+     * @param Order $order
+     * @param string $driverId
+     */
+    public function setDriverFromNav(Order $order, $driverId)
+    {
+        $order->setNavDriverCode($driverId);
+        $driver = $this->getDriverByNavId($driverId);
+
+        if ($driver instanceof Driver) {
+            $order->setDriver($driver);
+        }
+    }
+
+    /**
      * @param Order[] $orders
      * @return array
      * @throws \InvalidArgumentException
@@ -1291,7 +1306,7 @@ class NavService extends ContainerAware
         $repo = $this->getContainer()->get('doctrine')->getRepository('FoodDishesBundle:PlacePoint');
         $pPoint = $repo->findOneBy(array('internal_code' => $restaurantNo));
 
-        if (!$pPoint instanceof PlacePoint || $pPoint->getId() == '' || !$pPoint->getActive())
+        if (!$pPoint instanceof PlacePoint || $pPoint->getId() == '')
         {
             return false;
         }
