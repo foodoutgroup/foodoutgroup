@@ -706,7 +706,7 @@ class NavService extends ContainerAware
                    'AlcoholAmount' => number_format(0.0, 2, '.', ''),
                    'DeliveryAmount' => $o->getDeliveryType()->val('') == 'pickup'
                                        ? '0.00'
-                                       : number_format($o->getPlace()->getDeliveryPrice()->val('0.0'), 2, '.', '')];
+                                       : number_format($o->getDeliveryPrice()->val('0.0'), 2, '.', '')];
 
         // send a call to a web service, but beware of exceptions
         try {
