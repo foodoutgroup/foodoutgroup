@@ -45,7 +45,7 @@ class ApiService extends ContainerAware
         return array();
     }
 
-    public function createDeletedByPlaceId($placeId, $updated_at = null)
+    public function createDeletedByPlaceId($placeId, $updated_at = null, &$menuItems)
     {
         $query = "SELECT id FROM dish WHERE place_id=".intval($placeId)." AND (active=0 OR deleted_at IS NOT NULL)";
         $stmt = $this->container->get('doctrine')->getManager()->getConnection()->prepare($query);
@@ -55,6 +55,11 @@ class ApiService extends ContainerAware
             $returner = array();
             foreach ($dishes as $wtf) {
                 $returner[] = $wtf['id'];
+                $menuItems[] = array(
+                    'item_id ' => $wtf['id'],
+                    'restaurant_id' => $placeId,
+                    'status' => 'deleted'
+                );
             }
             return $returner;
         }

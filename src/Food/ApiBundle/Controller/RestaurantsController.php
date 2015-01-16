@@ -230,7 +230,7 @@ class RestaurantsController extends Controller
     {
         $updated_at = $request->get('updated_at');
         $menuItems = $this->get('food_api.api')->createMenuByPlaceId($id, $updated_at);
-        $deletedItems = $this->get('food_api.api')->createDeletedByPlaceId($id, $updated_at);
+        $deletedItems = $this->get('food_api.api')->createDeletedByPlaceId($id, $updated_at, $menuItems);
 
         $response = array(
             'menu' => $menuItems,
