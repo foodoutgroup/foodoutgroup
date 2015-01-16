@@ -35,16 +35,16 @@ trait OrderDataForNavDecorator
         $data->deliveryTime = '1754-01-01 ' . $order->getDeliveryTime()->format('H:i:s')->val('00:00:00');
         $data->staff = 'auto';
         $data->chain = '';
-        $data->restaurant = $order->getPlaceName()->val('');
-        $data->restaurantAddress = $order->getPlacePointAddress()->val('');
-        $data->driver = $driver->getName()->val('');
+        $data->restaurant = $this->cleanChars($order->getPlaceName()->val(''));
+        $data->restaurantAddress = $this->cleanChars($order->getPlacePointAddress()->val(''));
+        $data->driver = $this->cleanChars($driver->getName()->val(''));
         $data->deliveryType = $order->getDeliveryType()->val('');
         $data->clientName = sprintf("%s %s",
-                                    $user->getFirstname()->val(''),
-                                    $user->getLastname()->val(''));
+                                    $this->cleanChars($user->getFirstname()->val('')),
+                                    $this->cleanChars($user->getLastname()->val('')));
         $data->isDelivered = $order->getOrderStatus()->val('') ==
                              $orderService::$status_completed ? 'yes' : 'no';
-        $data->deliveryAddress = $address->getAddress()->val('');
+        $data->deliveryAddress = $this->cleanChars($address->getAddress()->val(''));
         $data->city = $address->getCity()->val('');
         $data->country = '';
         $data->paymentType = $order->getPaymentMethod()->val('');
@@ -426,5 +426,19 @@ trait OrderDataForNavDecorator
         mssql_free_result($resource);
 
         return !empty($row) ? true : false;
+    }
+
+    /**
+     * Cleans up russian characters from a string.
+     * @param  string $value
+     * @return string
+     */
+    public function cleanChars($value)
+    {
+        $language = $this->container->get('food.app.utils.language');
+
+        $newValue = $language->removeChars('ru', $value, false);
+
+        return $newValue;
     }
 }
