@@ -886,8 +886,8 @@ class NavService extends ContainerAware
             FROM %s woh
             LEFT JOIN %s dor ON dor.[ORDER No_] = woh.[Delivery ORDER No_]
             WHERE
-                [Order No_] IN (%s)
-            ORDER BY [Order No_] DESC',
+                woh.[Order No_] IN (%s)
+            ORDER BY woh.[Order No_] DESC',
             $this->getHeaderTable(),
             $this->getDeliveryOrderTable(),
             implode(', ', $orderIds)
