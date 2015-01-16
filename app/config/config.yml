@@ -100,6 +100,7 @@ parameters:
       - birute@foodout.lt
       - giedrius@foodout.lt
       - paulius@foodout.lt
+      - mantas@foodout.lt
       - tomas.martunas@gmail.com
     weekly_report_emails:
       <<: *daily_report_emails

@@ -877,12 +877,14 @@ class NavService extends ContainerAware
         }
 
         $query = sprintf(
-            'SELECT [Order No_], [Order Status], [Delivery Status], [Delivery Order No_]
-            FROM %s
+            'SELECT woh.[Order No_], woh.[Order Status], woh.[Delivery Status], woh.[Delivery Order No_], dor.[Driver ID]
+            FROM %s woh
+            LEFT JOIN %s dor ON dor.[ORDER No_] = woh.[Delivery ORDER No_]
             WHERE
                 [Order No_] IN (%s)
             ORDER BY [Order No_] DESC',
             $this->getHeaderTable(),
+            $this->getDeliveryOrderTable(),
             implode(', ', $orderIds)
         );
 
@@ -958,6 +960,7 @@ class NavService extends ContainerAware
         $query = sprintf(
             'SELECT
                 dOrder.[Order No_] As [OrderNo],
+                dOrder.[Driver ID],
                 (
                  SELECT TOP 1
                     oStat.[Status]
@@ -965,11 +968,19 @@ class NavService extends ContainerAware
                  WHERE
                     [ORDER No_] = dOrder.[Order No_]
                  ORDER BY [TIME] DESC
-                 ) AS OrderStatus
+                 ) AS OrderStatus,
+                 (
+                    SELECT
+                    SUM([Amount])
+                    FROM %s pSumTrans
+                    WHERE
+                        pSumTrans.[Receipt No_] = dOrder.[Order No_]
+                ) AS OrderSum
             FROM %s dOrder
             WHERE
                 dOrder.[Order No_] IN (%s)',
             $this->getDeliveryOrderStatusTable(),
+            $this->getPosTransactionLinesTable(),
             $this->getDeliveryOrderTable(),
             implode(', ', $orderIds)
         );
@@ -985,7 +996,9 @@ class NavService extends ContainerAware
                 'Order No_' => $rowRez['OrderNo'],
                 'Order Status' => null,
                 'Delivery Status' => $rowRez['OrderStatus'],
-                'Delivery Order No_' => $rowRez['OrderNo']
+                'Delivery Order No_' => $rowRez['OrderNo'],
+                'Driver ID' => $rowRez['Driver ID'],
+                'Total Sum' => $rowRez['OrderSum'],
             );
         }
 
@@ -1270,6 +1283,7 @@ class NavService extends ContainerAware
                 AND dOrder.[Delivery Region] IN (%s)
                 AND dOrder.[FoodOut Order] != 1
                 AND pTrans.[Number] IN ('ZRAW0009996', 'ZRAW0010001', 'ZRAW0010002', 'ZRAW0010190', 'ZRAW0010255')
+                AND dOrder.[Replication Counter] > 0
             ORDER BY
                 dOrder.[Date Created] ASC,
                 dOrder.[Time Created] ASC

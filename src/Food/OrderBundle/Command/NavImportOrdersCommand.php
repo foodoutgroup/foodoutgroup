@@ -60,6 +60,19 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                     $output->writeln('Order #'.$orderData['OrderNo'].' - import started');
                     $output->writeln('Data: '."\n".var_export($orderData, true));
                     $output->writeln('');
+
+                    if ($orderData['OrderStatus'] == 0) {
+                        $stats['skipped']++;
+                        $output->writeln('Order #'.$orderData['OrderNo'].' skipped - status NEW - we only import from accepted');
+                        continue;
+                    }
+
+                    if ($orderData['OrderSum'] == 0) {
+                        $stats['skipped']++;
+                        $output->writeln('Order #'.$orderData['OrderNo'].' skipped - Total sum with VAT is 0');
+                        continue;
+                    }
+
                     $localOrder = $orderService->getOrderByNavDeliveryId($orderId);
                     // Order already exists - skip it
                     if ($localOrder instanceof Order) {
@@ -215,6 +228,8 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             $order->setAddressId($address);
 
                             if ($orderData['OrderStatus'] > 6 && !empty($orderData['Driver ID'])) {
+                                $order->setNavDriverCode($orderData['Driver ID']);
+
                                 $output->writeln('Searching for possible driver with NAV ID: '.$orderData['Driver ID']);
                                 // Driver shoud be assigned already to not mess with the data
                                 $driver = $navService->getDriverByNavId($orderData['Driver ID']);
