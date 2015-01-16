@@ -57,10 +57,21 @@
                             {{ misc_utils.getLitas(smallestDiscountPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}
                         </span>
                     {% else %}
-                        {{ currency_display | raw}} {{ smallestDiscountPrice|replace({'.': ','}) }} - {{ largestDiscountPrice|replace({'.': ','}) }}
-                        <span class="euro">
-                            {{  misc_utils.getLitas(smallestDiscountPrice)|number_format(2, ',', ' ') }} - {{  misc_utils.getLitas(largestDiscountPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}
-                        </span>
+                        {% set showNormalDiscount = true %}
+                        {% if smallestPrice == smallestDiscountPrice and  largestPrice == largestDiscountPrice %}
+                            {% set discountStr = dish_service.getDiscountString(dish.id) %}
+                            {% if discountStr != '' %}
+                                {% set showNormalDiscount = false %}
+                            {% endif %}
+                        {% endif %}
+                        {% if showNormalDiscount %}
+                            {{ currency_display | raw}} {{ smallestDiscountPrice|replace({'.': ','}) }} - {{ largestDiscountPrice|replace({'.': ','}) }}
+                            <span class="euro">
+                                {{  misc_utils.getLitas(smallestDiscountPrice)|number_format(2, ',', ' ') }} - {{  misc_utils.getLitas(largestDiscountPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}
+                            </span>
+                        {% else %}
+                            {{ discountStr }}
+                        {% endif %}
                     {% endif %}
                     </span>
                 {% endif %}

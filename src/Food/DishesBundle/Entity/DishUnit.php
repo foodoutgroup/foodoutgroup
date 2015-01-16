@@ -32,6 +32,14 @@ class DishUnit implements Translatable
      */
     private $name;
 
+    /**
+     * @var string
+     *
+     * @Gedmo\Translatable
+     * @ORM\Column(name="short_name", type="string", length=45)
+     */
+    private $shortName;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="Place")
@@ -342,5 +350,28 @@ class DishUnit implements Translatable
     public function getUnitCategory()
     {
         return $this->unitCategory;
+    }
+
+    /**
+     * Set shortName
+     *
+     * @param string $shortName
+     * @return DishUnit
+     */
+    public function setShortName($shortName)
+    {
+        $this->shortName = $shortName;
+    
+        return $this;
+    }
+
+    /**
+     * Get shortName
+     *
+     * @return string 
+     */
+    public function getShortName()
+    {
+        return $this->shortName;
     }
 }
