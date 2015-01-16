@@ -674,6 +674,11 @@ class NavService extends ContainerAware
 
         // payment type and code preprocessing
         $driverId = $o->getDriver()->getId()->val('');
+
+        if (empty($driverId) && $order->getNavDriverCode() != '') {
+            $driverId = $order->getNavDriverCode();
+        }
+
         $paymentType = $o->getPaymentMethod()->val('');
         $paymentCode = $paymentType == 'local'
                        ? $driverId
