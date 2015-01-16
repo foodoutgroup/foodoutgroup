@@ -67,10 +67,26 @@ class DishesService extends ContainerAware {
 
     public function getOneDishDiscountPrice($dishId)
     {
-        $query = "SELECT discount_price as discount, price FROM dish_size WHERE deleted_at IS NULL AND discount_price > 0 AND dish_id=".intval($dishId)." ORDER BY (discount_price/price) DESC ";
+        $query = "SELECT ds.discount_price as discount, ds.price, du.short_name FROM dish_size ds, dish_unit du WHERE ds.unit_id = du.id AND ds.deleted_at IS NULL AND ds.discount_price > 0 AND ds.dish_id=".intval($dishId)." ORDER BY (ds.discount_price/ds.price) DESC ";
         $stmt = $this->em()->getConnection()->prepare($query);
         $stmt->execute();
         return $stmt->fetch();
+    }
+
+    public function getDiscountString($dishId)
+    {
+        $data = $this->getOneDishDiscountPrice($dishId);
+        if (!empty($data)) {
+            if (!empty($data['short_name'])) {
+                $proc = round(100 - (($data['discount'] / $data['price']) * 100));
+                if (!empty($proc) && $proc > 1) {
+                    return "-".$proc."% ".$data['short_name'];
+                } else {
+                    return "";
+                }
+            }
+        }
+        return "";
     }
 
     public function  hasDiscountPrice($dishId)

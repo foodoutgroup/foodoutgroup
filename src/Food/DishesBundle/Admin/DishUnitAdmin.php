@@ -32,6 +32,7 @@ class DishUnitAdmin extends FoodAdmin
                 'translatable_class' => 'Food\DishesBundle\Entity\DishUnit',
                 'fields' => array(
                     'name' => array('label' => 'label.name'),
+                    'shortName' => array('label' => 'label.short_name'),
                 )
             ));
 
