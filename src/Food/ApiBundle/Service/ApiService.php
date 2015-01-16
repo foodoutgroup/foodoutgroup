@@ -55,11 +55,13 @@ class ApiService extends ContainerAware
             $returner = array();
             foreach ($dishes as $wtf) {
                 $returner[] = $wtf['id'];
+                /*
                 $menuItems[] = array(
                     'item_id ' => $wtf['id'],
                     'restaurant_id' => $placeId,
                     'status' => 'deleted'
                 );
+                */
             }
             return $returner;
         }
