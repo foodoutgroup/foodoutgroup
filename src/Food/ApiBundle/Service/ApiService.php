@@ -47,21 +47,23 @@ class ApiService extends ContainerAware
 
     public function createDeletedByPlaceId($placeId, $updated_at = null, &$menuItems)
     {
-        $query = "SELECT id FROM dish WHERE place_id=".intval($placeId)." AND (active=0 OR deleted_at IS NOT NULL)";
+        $query = "SELECT id,photo, deleted_at  FROM dish WHERE place_id=".intval($placeId)." AND (active=0 OR deleted_at IS NOT NULL)";
         $stmt = $this->container->get('doctrine')->getManager()->getConnection()->prepare($query);
+
         $stmt->execute();
         $dishes = $stmt->fetchAll();
         if (!empty($dishes)) {
             $returner = array();
             foreach ($dishes as $wtf) {
                 $returner[] = $wtf['id'];
-                /*
                 $menuItems[] = array(
-                    'item_id ' => $wtf['id'],
-                    'restaurant_id' => $placeId,
-                    'status' => 'deleted'
+                    'item_id ' => intval($wtf['id']),
+                    'restaurant_id' => intval($placeId),
+                    'category_id' => array(),
+                    'status' => 'deleted',
+                    'thumbnail_url' => (!empty($wtf['photo']) ? 'uploads/dishes/'.$wtf['photo'] : null),
+                    'updated_at' => date("U", strtotime($wtf['deleted_at']))
                 );
-                */
             }
             return $returner;
         }
