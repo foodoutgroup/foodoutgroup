@@ -7,9 +7,11 @@ Foodout maisto platforma
 
 TODO
 ========================
-* WOW
 * LV
 * Order redagavimas
+* Marketing tools
+* Backup solution
+* Scalability
 * R-keeper
 * Printer
 * Atideti uzsakymai
@@ -30,6 +32,9 @@ Strigai - klausk siu zmoniu:
 * Call center - Jonas
 * Profile / Registracija / User stuff - Jonas
 * Fakturos - Mantas
+* Duomenu / fakturu importas i NAV - Jonas
+* 1822 Call center importas - Mantas
+* Akcijos - Paulius
 
 
 Why not futurama?? :)
