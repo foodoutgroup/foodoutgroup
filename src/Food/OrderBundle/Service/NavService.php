@@ -1350,10 +1350,11 @@ class NavService extends ContainerAware
      */
     public function getDriverByNavId($navDriverId)
     {
+        $driverRepo = $this->getContainer()->get('doctrine')->getRepository('FoodAppBundle:Driver');
+
         $nameParts = str_split($navDriverId, 3);
 
-        $driverQueryBuilder = $this->getContainer()->get('doctrine')->getRepository('FoodAppBundle:Driver')
-            ->createQueryBuilder('d')
+        $driverQueryBuilder = $driverRepo->createQueryBuilder('d')
             ->where('d.name LIKE :first_name_part')
             ->andWhere('d.name LIKE :second_name_part')
             ->setParameters(array(
@@ -1366,7 +1367,15 @@ class NavService extends ContainerAware
         $driver = $driverQueryBuilder->getQuery()->getResult();
 
         if (empty($driver)) {
-            return false;
+            $driver = $driverRepo->findOneBy(array(
+                'extId' => $navDriverId,
+            ));
+
+            if ($driver instanceof Driver && $driver->getId()) {
+                return $driver;
+            } else {
+                return false;
+            }
         }
 
         return $driver[0];
