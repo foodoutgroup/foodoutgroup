@@ -88,14 +88,15 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                         continue;
                     }
 
-                    $placePoint = $navService->getLocalPlacePoint($orderData['Chain'], $orderData['Restaurant No_']);
+                    $restaurantNo = trim($orderData['Restaurant No_']);
+                    $placePoint = $navService->getLocalPlacePoint($orderData['Chain'], $restaurantNo);
                     // Skip if placepoint not found - scream for emergency..
                     if (!$placePoint) {
                         $skipMessage = sprintf(
                             'Cannot find PlacePoint for Nav Delivery Order: "%s" with Chain: "%s" and Restaurant No: "%s"',
                             $orderId,
                             $orderData['Chain'],
-                            $orderData['Restaurant No_']
+                            $restaurantNo
                         );
                         $output->writeln($skipMessage);
                         $log->error($skipMessage);
@@ -227,15 +228,16 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             // Set Address in order
                             $order->setAddressId($address);
 
-                            if ($orderData['OrderStatus'] > 6 && !empty($orderData['Driver ID'])) {
-                                $order->setNavDriverCode($orderData['Driver ID']);
+                            $driverId = trim($orderData['Driver ID']);
+                            if ($orderData['OrderStatus'] > 6 && !empty($driverId)) {
+                                $order->setNavDriverCode($driverId);
 
-                                $output->writeln('Searching for possible driver with NAV ID: '.$orderData['Driver ID']);
+                                $output->writeln('Searching for possible driver with NAV ID: '.$driverId);
                                 // Driver shoud be assigned already to not mess with the data
-                                $driver = $navService->getDriverByNavId($orderData['Driver ID']);
+                                $driver = $navService->getDriverByNavId($driverId);
 
                                 if (!$driver instanceof Driver) {
-                                    $missingDriverMaessage = 'Driver with Nav ID '.$orderData['Driver ID'].' not found in local DB';
+                                    $missingDriverMaessage = 'Driver with Nav ID '.$driverId.' not found in local DB';
                                     $output->writeln($missingDriverMaessage);
                                     $log->error($missingDriverMaessage);
                                 } else {
