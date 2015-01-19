@@ -37,6 +37,7 @@ class InvoiceToSendCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
+            $logger = $this->getContainer()->get('logger');
             $invoiceService = $this->getContainer()->get('food.invoice');
             $nav = $this->getContainer()->get('food.nav');
             $em = $this->getContainer()->get('doctrine')->getManager();
@@ -61,7 +62,9 @@ class InvoiceToSendCommand extends ContainerAwareCommand
 
             foreach($orders as $orderToSend) {
                 try {
-                    $output->writeln('Sending Invoice for order '.$orderToSend->getOrder()->getId());
+                    $sendingMessage = 'Sending Invoice for order '.$orderToSend->getOrder()->getId();
+                    $output->writeln($sendingMessage);
+                    $logger->alert($sendingMessage);
 
                     if (!$dryRun) {
                         $invoiceService->generateUserInvoice($orderToSend->getOrder());
@@ -77,7 +80,9 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                         // create invoice in NAVISION
                         $nav->createInvoice($orderToSend->getOrder());
 
-                        $output->writeln('Invoice sent to emails: '.implode(', ', $emails));
+                        $sentMessage = 'Invoice sent to emails: '.implode(', ', $emails);
+                        $output->writeln($sentMessage);
+                        $logger->alert($sentMessage);
                     }
                 } catch (\Exception $e) {
                     // mark error (for historical reasons)
