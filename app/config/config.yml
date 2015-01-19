@@ -102,6 +102,7 @@ parameters:
       - paulius@foodout.lt
       - mantas@foodout.lt
       - tomas.martunas@gmail.com
+      - s.svitojus@ltkcapital.com
     weekly_report_emails:
       <<: *daily_report_emails
 
