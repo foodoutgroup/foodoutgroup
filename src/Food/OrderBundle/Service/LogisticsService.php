@@ -406,7 +406,8 @@ class LogisticsService extends ContainerAware
         // Jeigu ijungtas sendas ir mes vezam ir deliver tipas
         if ($this->container->getParameter('logistics.send_to_external') == true
             && $order->getDeliveryType() == 'deliver'
-            && $order->getPlacePointSelfDelivery() == false) {
+            && $order->getPlacePointSelfDelivery() == false
+            && !$order->getOrderFromNav()) {
             $logisticsCityFilter = $this->container->getParameter('logistics.city_filter');
             if (empty($logisticsCityFilter) || in_array($order->getPlacePointCity(), $logisticsCityFilter)) {
                 $this->container->get('food.order')->logOrder($order, 'schedule_logistics_api_send', 'Order scheduled to send to logistics');
