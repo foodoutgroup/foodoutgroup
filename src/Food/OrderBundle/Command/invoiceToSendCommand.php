@@ -5,6 +5,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Food\OrderBundle\Entity\InvoiceToSendNavOnly;
 
 class InvoiceToSendCommand extends ContainerAwareCommand
 {
@@ -75,7 +76,7 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                         $em->flush();
 
                         // create invoice in NAVISION
-                        $nav->createInvoice($orderToSend->getOrder());
+                        $this->sendNavInvoice($orderToSend->getOrder());
 
                         $output->writeln('Invoice sent to emails: '.implode(', ', $emails));
                     }
@@ -99,5 +100,29 @@ class InvoiceToSendCommand extends ContainerAwareCommand
             $output->writeln('Error: '.$e->getMessage());
             throw $e;
         }
+    }
+
+    protected function sendNavInvoice($order)
+    {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $nav = $this->getContainer()->get('food.nav');
+
+        // call SOAP
+        $success = $nav->createInvoice($order);
+
+        // create sent/error entry for this nav invoice to send
+        $invoiceToSendNavOnly = new InvoiceToSendNavOnly();
+        $invoiceToSendNavOnly->setOrder($order)
+                             ->setDateAdded(new \DateTime('now'))
+                             ->setDateSent(new \DateTime('now'));
+
+        if ($success) {
+            $invoiceToSendNavOnly->markSent();
+        } else {
+            $invoiceToSendNavOnly->markError();
+        }
+
+        $em->persist($invoiceToSendNavOnly);
+        $em->flush();
     }
 }
