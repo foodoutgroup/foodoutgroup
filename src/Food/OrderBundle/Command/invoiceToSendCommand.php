@@ -68,7 +68,13 @@ class InvoiceToSendCommand extends ContainerAwareCommand
 
                     if (!$dryRun) {
                         $invoiceService->generateUserInvoice($orderToSend->getOrder());
+
+                        usleep(500000);
+
                         $invoiceService->storeUserInvoice($orderToSend->getOrder());
+
+                        usleep(500000);
+
                         $emails = $invoiceService->sendUserInvoice($orderToSend->getOrder(), $forcedEmail);
 
                         $orderToSend->setDateSent(new \DateTime('now'))
@@ -83,6 +89,8 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                         $sentMessage = 'Invoice sent to emails: '.implode(', ', $emails);
                         $output->writeln($sentMessage);
                         $logger->alert($sentMessage);
+
+                        sleep(1);
                     }
                 } catch (\Exception $e) {
                     // mark error (for historical reasons)
