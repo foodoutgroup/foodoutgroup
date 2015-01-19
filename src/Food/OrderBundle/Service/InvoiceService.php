@@ -204,6 +204,7 @@ class InvoiceService extends ContainerAware
         }
 
         $ml = $this->container->get('food.mailer');
+        $logger = $this->container->get('logger');
 
         $fileName = $this->getInvoiceFilename($order);
         $file = 'https://s3-eu-west-1.amazonaws.com/foodout-invoice/pdf/'.$fileName;
@@ -214,11 +215,19 @@ class InvoiceService extends ContainerAware
         );
 
         foreach ($emails as $email) {
-            $ml->setVariables( $variables )
+            $logger->alert(sprintf(
+                'Siunciama saskaita faktura uzsakymui #%d el.pastu: %s. Fakturos failas: %s',
+                $order->getId(),
+                $email,
+                $fileName
+            ));
+
+            $mailerResponse = $ml->setVariables( $variables )
                 ->setRecipient($email, $email)
                 ->addAttachment($fileName, file_get_contents($file))
                 ->setId(30019657)
                 ->send();
+            $logger->alert('Mailer responded (for order #'.$order->getId().': '.var_export($mailerResponse, true));
         }
 
         return $emails;
