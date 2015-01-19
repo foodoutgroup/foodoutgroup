@@ -227,8 +227,15 @@ class InvoiceService extends ContainerAware
                 ->addAttachment($fileName, file_get_contents($file))
                 ->setId(30019657)
                 ->send();
-            $logger->alert('Mailer responded (for order #'.$order->getId().': '.var_export($mailerResponse, true));
+            $logger->alert('Mailer responded (for order #'.$order->getId().'): '.var_export($mailerResponse, true));
         }
+
+        // TODO - panaikinti debugini siuntima...
+        $ml->setVariables( $variables )
+            ->setRecipient('mantas@foodout.lt', 'mantas@foodout.lt')
+            ->addAttachment($fileName, file_get_contents($file))
+            ->setId(30019657)
+            ->send();
 
         return $emails;
     }
