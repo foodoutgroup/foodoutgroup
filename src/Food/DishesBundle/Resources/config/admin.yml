@@ -174,7 +174,7 @@ services:
             arguments:
                 - ~
                 - Food\OrderBundle\Entity\Order
-                - ~
+                - 'FoodOrderBundle:OrderAdmin'
             calls:
                 - [ setTranslationDomain, [SonataAdminBundle]]
 

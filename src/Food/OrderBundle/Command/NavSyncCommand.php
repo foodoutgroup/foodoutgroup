@@ -38,6 +38,9 @@ class NavSyncCommand extends ContainerAwareCommand
 
             if (!empty($orders) && count($orders) > 0) {
                 $navOrders = $navService->getRecentNavOrders($orders);
+                $ordersFromNav = $navService->getImportedOrdersStatus($orders);
+
+                $navOrders = $navOrders + $ordersFromNav;
 
                 foreach ($navOrders as $orderId => $orderData) {
                     $order = $orderService->getOrderById($orderId);
@@ -55,6 +58,17 @@ class NavSyncCommand extends ContainerAwareCommand
                     // Only update if not a dry-run
                     if (!$dryRun) {
                         $navService->changeOrderStatusByNav($order, $orderData);
+
+                        if (!$order->getDriver() && $orderData['Delivery Status'] > 6 && !empty($orderData['Driver ID'])) {
+                            $navService->setDriverFromNav($order, $orderData['Driver ID']);
+                        }
+
+                        if ($order->getOrderFromNav() && isset($orderData['Total Sum']) && !empty($orderData['Total Sum'])) {
+                            if ($order->getTotal() != sprintf('%0.2f', $orderData['Total Sum'])) {
+                                $order->setTotal($orderData['Total Sum']);
+                            }
+                        }
+
                         $em->persist($order);
                     }
                 }

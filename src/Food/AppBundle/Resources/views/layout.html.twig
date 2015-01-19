@@ -91,6 +91,24 @@
         window._fbq.push(['track', 'PixelInitialized', {}]);
     </script>
     <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=1000570273293239&ev=PixelInitialized" /></noscript>
+    {% block adnet_retargeting %}
+        <!-- Adform Tracking Code BEGIN -->
+        <script type="text/javascript">
+            var _adftrack = {
+                pm: 314127,
+                divider: encodeURIComponent('|'),
+                pagename: encodeURIComponent('Foodout.lt|Pagrindinis')
+            };
+            (function () { var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = 'https://track.adform.net/serving/scripts/trackpoint/async/'; var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x); })();
+
+        </script>
+        <noscript>
+            <p style="margin:0;padding:0;border:0;">
+                <img src="https://track.adform.net/Serving/TrackPoint/?pm=314127&ADFPageName=Foodout.lt|Pagrindinis&ADFdivider=|" width="1" height="1" alt="" />
+            </p>
+        </noscript>
+        <!-- Adform Tracking Code END -->
+    {% endblock %}
 </head>
 <body>
 {{ notifications.init|raw }}
@@ -150,7 +168,9 @@
     {% block ga_js_code %}{% endblock %}
 
 
-    {% render(controller('FoodAppBundle:Default:showVideo')) %}
+    {#
+        {% render(controller('FoodAppBundle:Default:showVideo')) %}
+    #}
 </script>
 </body>
 </html>

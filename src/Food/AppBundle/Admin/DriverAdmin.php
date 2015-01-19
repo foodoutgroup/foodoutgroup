@@ -123,7 +123,7 @@ class DriverAdmin extends FoodAdmin
      */
     public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
     {
-        $collection->clearExcept(array('list', 'edit', /*'show', */'create', 'delete'));
+        $collection->clearExcept(array('list', 'edit', /*'show', */'create', 'delete', 'export'));
     }
 
     /**

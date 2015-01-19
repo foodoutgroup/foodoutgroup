@@ -19,9 +19,11 @@ class CouponAdmin extends FoodAdmin
     {
         $formMapper
             ->add('name', 'text', array('label' => 'admin.coupon.name',))
-            ->add('discount', null, array('label' => 'admin.coupon.discount',))
+            ->add('discount', null, array('label' => 'admin.coupon.discount', 'required' => false))
+            ->add('freeDelivery', null, array('label' => 'admin.coupon.free_delivery', 'required' => false))
             ->add('code', null, array('label' => 'admin.coupon.code', 'required' => true))
             ->add('place', null, array('label' => 'admin.coupon.place',))
+            ->add('onlyNav', 'checkbox', array('label' => 'admin.coupon.only_nav', 'required' => false))
             ->add('singleUse', 'checkbox', array('label' => 'admin.coupon.single_use', 'required' => false))
             ->add('active', 'checkbox', array('label' => 'admin.coupon.active', 'required' => false));
         ;
@@ -42,6 +44,8 @@ class CouponAdmin extends FoodAdmin
             ->add('active', null, array('label' => 'admin.coupon.active'))
             ->add('singleUse', null, array('label' => 'admin.coupon.single_use'))
             ->add('place', null, array('label' => 'admin.coupon.place'))
+            ->add('onlyNav', null, array('label' => 'admin.coupon.only_nav'))
+            ->add('freeDelivery', null, array('label' => 'admin.coupon.free_delivery'))
         ;
     }
 
@@ -58,8 +62,10 @@ class CouponAdmin extends FoodAdmin
             ->addIdentifier('id', 'integer', array('label' => 'admin.coupon.id'))
             ->addIdentifier('name', 'string', array('label' => 'admin.coupon.name', 'editable' => true))
             ->add('discount', null, array('label' => 'admin.coupon.discount', 'editable' => true))
+            ->add('freeDelivery', null, array('label' => 'admin.coupon.free_delivery', 'editable' => true))
             ->add('code', null, array('label' => 'admin.coupon.code', 'editable' => false))
             ->add('place', null, array('label' => 'admin.coupon.place', 'editable' => true))
+            ->add('onlyNav', null, array('label' => 'admin.coupon.only_nav', 'editable' => true))
             ->add('active', null, array('label' => 'admin.coupon.active', 'editable' => true))
             ->add('singleUse', null, array('label' => 'admin.coupon.single_use', 'editable' => true))
             ->add('_action', 'actions', array(
@@ -79,6 +85,6 @@ class CouponAdmin extends FoodAdmin
      */
     public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
     {
-        $collection->clearExcept(array('list', 'edit', 'create', 'delete'));
+        $collection->clearExcept(array('list', 'edit', 'create', 'delete', 'export'));
     }
 }

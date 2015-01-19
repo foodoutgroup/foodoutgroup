@@ -62,6 +62,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('active', 'checkbox', array('label' => 'admin.active', 'required' => false,))
             ->add('new', 'checkbox', array('label' => 'admin.is_new', 'required' => false,))
             ->add('recommended', 'checkbox', array('label' => 'admin.place.recommended', 'required' => false,))
+            ->add('top', 'checkbox', array('label' => 'TOP', 'required' => false,))
             ->add('discountPricesEnabled', 'checkbox', array('label' => 'admin.place.discount_prices_enabled', 'required' => false,))
             ->add('onlyAlcohol', 'checkbox', array('label' => 'admin.place.only_alcohol', 'required' => false,))
             ->add('sendInvoice', 'checkbox', array('label' => 'admin.place.send_invoice', 'required' => false))
@@ -149,6 +150,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('active', null, array('label' => 'admin.active', 'editable' => true))
             ->add('new', null, array('label' => 'admin.is_new', 'editable' => true))
             ->add('recommended', null, array('label' => 'admin.place.recommended', 'editable' => true))
+            ->add('top', null, array('label' => 'TOP', 'editable' => true))
             ->add('discountPricesEnabled', null, array('label' => 'admin.place.discount_prices_enabled', 'editable' => true,))
             ->add('_action', 'actions', array(
                 'actions' => array(

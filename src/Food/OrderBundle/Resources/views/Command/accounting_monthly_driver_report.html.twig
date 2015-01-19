@@ -37,9 +37,9 @@
                     <td class="sum">{{ order.total_orders }}</td>
                     <td class="sum">{{ order.local_payments }}</td>
                     <td class="sum">{{ order.external_payments }}</td>
-                    <td class="sum">{{ order.total_local }} {{ currency_display }}</td>
-                    <td class="sum">{{ order.total_external }} {{ currency_display }}</td>
-                    <td class="sum">{{ order.order_total_sum }} {{ currency_display }}</td>
+                    <td class="sum">{{ order.total_local }} {{ currency_display|raw }}</td>
+                    <td class="sum">{{ order.total_external }} {{ currency_display|raw }}</td>
+                    <td class="sum">{{ order.order_total_sum }} {{ currency_display|raw }}</td>
                 </tr>
             {% endfor %}
         </table>

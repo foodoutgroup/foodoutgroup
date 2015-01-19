@@ -867,6 +867,10 @@
                 <source>admin.order.total</source>
                 <target>Viso (su PVM)</target>
             </trans-unit>
+            <trans-unit id="admin.order.delivery_price">
+                <source>admin.order.delivery_price</source>
+                <target>Pristatymo kaina (su PVM)</target>
+            </trans-unit>
             <trans-unit id="admin.order.coupon_code">
                 <source>admin.order.coupon_code</source>
                 <target>Nuolaidos kupono kodas</target>
@@ -878,6 +882,10 @@
             <trans-unit id="admin.order.discount_sum">
                 <source>admin.order.discount_sum</source>
                 <target>Nuolaidos suma</target>
+            </trans-unit>
+            <trans-unit id="admin.order.sf_line">
+                <source>admin.order.sf_line</source>
+                <target>Faktūra</target>
             </trans-unit>
             <trans-unit id="admin.order.comment">
                 <source>admin.order.comment</source>
@@ -1015,6 +1023,42 @@
                 <source>admin.order.ismobile</source>
                 <target>Mob</target>
             </trans-unit>
+            <trans-unit id="admin.order.ismobile_full">
+                <source>admin.order.ismobile_full</source>
+                <target>Mobile</target>
+            </trans-unit>
+            <trans-unit id="admin.order.hash">
+                <source>admin.order.hash</source>
+                <target>Order hash</target>
+            </trans-unit>
+            <trans-unit id="admin.order.send_invoice">
+                <source>admin.order.send_invoice</source>
+                <target>Siųsti Faktūrą</target>
+            </trans-unit>
+            <trans-unit id="admin.order.invoice_added_for_send">
+                <source>admin.order.invoice_added_for_send</source>
+                <target>Sąskaita pridėta siuntimui</target>
+            </trans-unit>
+            <trans-unit id="admin.order.company">
+                <source>admin.order.company</source>
+                <target>Įmonė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.companyName">
+                <source>admin.order.companyName</source>
+                <target>Pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.companyCode">
+                <source>admin.order.companyCode</source>
+                <target>Įm. kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.vatCode">
+                <source>admin.order.vatCode</source>
+                <target>PVM kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.companyAddress">
+                <source>admin.order.companyAddress</source>
+                <target>Adresas</target>
+            </trans-unit>
 
             <!-- Order logas pas sonata admina -->
             <trans-unit id="admin.order.order_log">
@@ -1054,6 +1098,22 @@
             <trans-unit id="admin.dispatcher.comment">
                 <source>admin.dispatcher.comment</source>
                 <target>Klient. koment.</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payment">
+                <source>admin.dispatcher.payment</source>
+                <target>Apmok.</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payement.local">
+                <source>admin.dispatcher.payement.local</source>
+                <target>Gryn. atsiimant</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payement.local_card">
+                <source>admin.dispatcher.payement.local_card</source>
+                <target>Kort. atsiimant</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payement.bank_link">
+                <source>admin.dispatcher.payement.bank_link</source>
+                <target>Internetu</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.unassigned">
                 <source>admin.dispatcher.unassigned</source>
@@ -1118,6 +1178,10 @@
             <trans-unit id="admin.dispatcher.order_status.completed">
                 <source>admin.dispatcher.order_status.completed</source>
                 <target>Pristatytas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.partialy_completed">
+                <source>admin.dispatcher.order_status.partialy_completed</source>
+                <target>Nepilnai pristatytas</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.order_status.finished">
                 <source>admin.dispatcher.order_status.finished</source>
@@ -1326,6 +1390,14 @@
                 <source>admin.coupon.place</source>
                 <target>Restoranas</target>
             </trans-unit>
+            <trans-unit id="admin.coupon.only_nav">
+                <source>admin.coupon.only_nav</source>
+                <target>Tik Navision</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.free_delivery">
+                <source>admin.coupon.free_delivery</source>
+                <target>Nemok. pristatymas</target>
+            </trans-unit>
             <trans-unit id="admin.coupon.active">
                 <source>admin.coupon.active</source>
                 <target>Aktyvus</target>
@@ -1365,6 +1437,10 @@
             <trans-unit id="admin.reports.place">
                 <source>admin.reports.place</source>
                 <target>Restoranas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.self_delivery">
+                <source>admin.reports.self_delivery</source>
+                <target>Sava logistika</target>
             </trans-unit>
             <trans-unit id="admin.reports.order_count">
                 <source>admin.reports.order_count</source>

@@ -32,9 +32,16 @@ class Coupon
     /**
      * @var int
      *
-     * @ORM\Column(name="discount", type="integer",  nullable=false)
+     * @ORM\Column(name="discount", type="integer",  nullable=true)
      */
     private $discount;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="free_delivery", type="boolean")
+     */
+    private $freeDelivery = false;
 
     /**
      * @var string
@@ -48,6 +55,13 @@ class Coupon
      * @ORM\JoinColumn(name="place", referencedColumnName="id")
      */
     private $place;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="only_nav", type="boolean")
+     */
+    private $onlyNav = false;
 
     /**
      * @var bool
@@ -430,5 +444,51 @@ class Coupon
     public function getDiscount()
     {
         return $this->discount;
+    }
+
+    /**
+     * Set onlyNav
+     *
+     * @param boolean $onlyNav
+     * @return Coupon
+     */
+    public function setOnlyNav($onlyNav)
+    {
+        $this->onlyNav = $onlyNav;
+    
+        return $this;
+    }
+
+    /**
+     * Get onlyNav
+     *
+     * @return boolean 
+     */
+    public function getOnlyNav()
+    {
+        return $this->onlyNav;
+    }
+
+    /**
+     * Set freeDelivery
+     *
+     * @param boolean $freeDelivery
+     * @return Coupon
+     */
+    public function setFreeDelivery($freeDelivery)
+    {
+        $this->freeDelivery = $freeDelivery;
+    
+        return $this;
+    }
+
+    /**
+     * Get freeDelivery
+     *
+     * @return boolean 
+     */
+    public function getFreeDelivery()
+    {
+        return $this->freeDelivery;
     }
 }

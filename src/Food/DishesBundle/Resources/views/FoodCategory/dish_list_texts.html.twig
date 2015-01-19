@@ -24,9 +24,9 @@
                 {% if smallestPrice and largestPrice %}
                     <span class="price">
                         {% if smallestPrice == largestPrice %}
-                            {{ smallestPrice }} {{ currency_display }}
+                            {{ smallestPrice }} {{ currency_display|raw }}
                         {% else %}
-                            {{ smallestPrice }} {{ currency_display }} - {{ largestPrice }} {{ currency_display }}
+                            {{ smallestPrice }} {{ currency_display|raw }} - {{ largestPrice }} {{ currency_display|raw }}
                         {% endif %}
                      </span>
                 {% endif %}

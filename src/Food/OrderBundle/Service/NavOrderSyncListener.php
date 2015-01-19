@@ -5,12 +5,16 @@ namespace Food\OrderBundle\Service;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\OrderBundle\Service\Events\NavOrderEvent;
 use Food\OrderBundle\Entity\Order;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class NavOrderSyncListener extends ContainerAware
 {
+    /**
+     * @var ContainerInterface
+     */
     protected $container;
 
-    public function onLogForSync(NavOrderEvent $event = null)
+    public function onMarkForSync(NavOrderEvent $event = null)
     {
         $navService = $this->container->get('food.nav');
 

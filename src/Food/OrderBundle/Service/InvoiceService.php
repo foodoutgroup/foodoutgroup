@@ -44,7 +44,7 @@ class InvoiceService extends ContainerAware
     }
 
     /**
-     * @param $order
+     * @param Order $order
      * @throws \InvalidArgumentException
      */
     public function addInvoiceToSend($order)
@@ -58,7 +58,21 @@ class InvoiceService extends ContainerAware
             return;
         }
 
+        if ($order->getPlacePointSelfDelivery() || $order->getDeliveryType() == OrderService::$deliveryPickup) {
+            return;
+        }
+
         $em = $this->container->get('doctrine')->getManager();
+
+        $unsentItem = $em->getRepository('FoodOrderBundle:InvoiceToSend')->findBy(array(
+            'order' => $order,
+            'status' => 'unsent'
+        ));
+
+        // If there is a unsent Item already registered - dont do that again
+        if (!empty($unsentItem) && count($unsentItem)>0) {
+            return;
+        }
 
         $invoiceTask = new InvoiceToSend();
         $invoiceTask->setOrder($order)
@@ -112,6 +126,16 @@ class InvoiceService extends ContainerAware
         $file = $this->getInvoiceFilename($order);
         $filename = $this->getInvoicePath().$file;
 
+        $this->container->get('logger')->alert(
+            sprintf(
+                'Generating user invoice for Order #%d | with SF data: %s | Filename: %s | Filepath: %s',
+                $order->getId(),
+                $order->getSfLine(),
+                $file,
+                $filename
+            )
+        );
+
         // Generate new invoice file
         if (file_exists($filename)) {
             unlink($filename);
@@ -145,6 +169,16 @@ class InvoiceService extends ContainerAware
         $filename = $this->getInvoicePath().$file;
 
         try {
+            $this->container->get('logger')->alert(
+                sprintf(
+                    'Storing user invoice for Order #%d | with SF data: %s | Filename: %s | Filepath: %s',
+                    $order->getId(),
+                    $order->getSfLine(),
+                    $file,
+                    $filename
+                )
+            );
+
             $s3Client->putObject(array(
                 'Bucket' => $this->container->getParameter('s3_bucket'),
                 'Body'   => fopen($filename, 'r'),
@@ -174,9 +208,13 @@ class InvoiceService extends ContainerAware
         if (!empty($forcedEmail)) {
             $emails = array($forcedEmail);
         } else {
-            $emails = array(
-                $order->getUser()->getEmail(),
-            );
+            $emails = array();
+
+            $userEmail = $order->getUser()->getEmail();
+
+            if (!$order->getOrderFromNav() || ($userEmail != ($order->getUser()->getPhone().'@foodout.lt'))) {
+                $emails[] = $userEmail;
+            }
 
             $placeFinanceMail = $order->getPlacePoint()->getInvoiceEmail();
 
@@ -186,6 +224,7 @@ class InvoiceService extends ContainerAware
         }
 
         $ml = $this->container->get('food.mailer');
+        $logger = $this->container->get('logger');
 
         $fileName = $this->getInvoiceFilename($order);
         $file = 'https://s3-eu-west-1.amazonaws.com/foodout-invoice/pdf/'.$fileName;
@@ -195,9 +234,33 @@ class InvoiceService extends ContainerAware
             'restorano_pavadinimas' => $order->getPlaceName(),
         );
 
-        foreach ($emails as $email) {
-            $ml->setVariables( $variables )
-                ->setRecipient($email, $email)
+        $logger->alert(sprintf(
+            'Invoice preparation for sending: Order id: #%d | Invoice: %s | Email count: %d',
+            $order->getId(),
+            $order->getSfLine(),
+            count($emails)
+        ));
+
+        if (!empty($emails)) {
+            foreach ($emails as $email) {
+                $logger->alert(sprintf(
+                    'Siunciama saskaita faktura uzsakymui #%d el.pastu: %s. Fakturos failas: %s',
+                    $order->getId(),
+                    $email,
+                    $fileName
+                ));
+
+                $mailerResponse = $ml->setVariables($variables)
+                    ->setRecipient($email, $email)
+                    ->addAttachment($fileName, file_get_contents($file))
+                    ->setId(30019657)
+                    ->send();
+                $logger->alert('Mailer responded (for order #' . $order->getId() . '): ' . var_export($mailerResponse, true));
+            }
+
+            // TODO - panaikinti debugini siuntima...
+            $ml->setVariables($variables)
+                ->setRecipient('mantas@foodout.lt', 'mantas@foodout.lt')
                 ->addAttachment($fileName, file_get_contents($file))
                 ->setId(30019657)
                 ->send();

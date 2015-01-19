@@ -4,7 +4,6 @@ namespace Food\ApiBundle\Controller;
 
 use Food\ApiBundle\Exceptions\ApiException;
 use Food\UserBundle\Entity\User;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -119,7 +118,8 @@ class UsersController extends Controller
             $user->setFirstname($nameParsed['firstname'])
                 ->setPhone($miscUtil->formatPhone($phone, $this->container->getParameter('country')))
                 ->setEmail($email);
-            $user->setRoles(array('ROLE_USER'));
+            // $user->setRoles(array('ROLE_USER'));
+            $user->addRole('ROLE_USER');
             $user->setEnabled(true);
 
             if (!empty($nameParsed['lastname'])) {
@@ -128,7 +128,7 @@ class UsersController extends Controller
 
             if (!empty($password)) {
                 $user->setPlainPassword($password)
-                    ->setFullyRegistered(true);
+                     ->setFullyRegistered(true);
 
                 // TODO turi ateiti emailas apie registracija - kolkas neeina :(
                 // TODO reikia issiaiskinti kur dingo FosUserEventai...

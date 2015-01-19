@@ -93,7 +93,6 @@ class PlacePoint
      */
     private $city;
 
-
     /**
      * @var string
      *

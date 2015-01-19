@@ -146,6 +146,7 @@ class DefaultController extends Controller
 
     public function showVideoAction(Request $request)
     {
+        return new Response();
         $cookies = $request->cookies;
         $cookie = $cookies->get('i_saw_video');
         if(empty($cookie) || $cookie!=1) {

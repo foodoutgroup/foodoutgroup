@@ -13,15 +13,15 @@
                 {% for size in dish.sizes %}
                     <label class="custom-radio">{{ size.unit.name }}
                         {% set showDiscount = false %}
-                        {% if dish.showDiscount  %}
+                        {% if dish.showDiscount and size.discountPrice != 0 %}
                             {% set showDiscount = true %}
                         {% endif %}
                         <strong class="price {% if showDiscount %}discounted{% endif %}">
-                            {{ size.priceLocalized }} {{ currency_display }}<span class="euro">/&nbsp;&euro;{{  misc_utils.getEuro(size.price)|number_format(2, ',', ' ') }}</span>
+                            {{ currency_display|raw }}{{ size.priceLocalized }}<span class="euro">/&nbsp;{{  misc_utils.getLitas(size.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
                         </strong>
                         {% if showDiscount %}
                             <strong class="price {% if showDiscount %}discount{% endif %}">
-                                {{ size.discountPrice }} {{ currency_display }}<span class="euro">/&nbsp;&euro;{{  misc_utils.getEuro(size.discountPrice)|number_format(2, ',', ' ') }}</span>
+                                {{ currency_display|raw }}{{ size.discountPrice }}<span class="euro">/&nbsp;{{  misc_utils.getLitas(size.discountPrice)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
                             </strong>
                         {% endif %}
                         <input type="radio" {% if loop.first %}checked{% endif %} value="{{ size.id }}" class="dish-size" name="dish-size">
@@ -45,14 +45,15 @@
                     {% set optCounter = optCounter+1 %}
 
                     {% if option.singleSelect == true %}
-                        <label class="custom-radio">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ option.priceLocalized }} {{ currency_display }}<span class="euro">/&nbsp;&euro;{{  misc_utils.getEuro(option.price)|number_format(2, ',', ' ') }}</span></strong>{% endif %}
+                        <label class="custom-radio">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ currency_display|raw }}
+                                {{ option.priceLocalized }}<span class="euro">/&nbsp;{{  misc_utils.getLitas(option.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span></strong>{% endif %}
                             <input type="radio" name="option[{{ option.groupName }}]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
                         </label>
                     {% endif %}
                 {% endfor %}
                 {% for option in dish.options %}
                     {% if option.singleSelect == false %}
-                        <label class="custom-checkbox">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ option.priceLocalized }} {{ currency_display }}<span class="euro">/&nbsp;&euro;{{  misc_utils.getEuro(option.price)|number_format(2, ',', ' ') }}</span></strong>{% endif %}
+                        <label class="custom-checkbox">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ currency_display|raw }} {{ option.priceLocalized }}<span class="euro">/&nbsp;{{  misc_utils.getLitas(option.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span></strong>{% endif %}
                             <input type="checkbox" name="options[]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
                         </label>
                     {% endif %}

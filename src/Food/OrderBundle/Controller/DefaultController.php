@@ -2,9 +2,11 @@
 
 namespace Food\OrderBundle\Controller;
 
+use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DefaultController extends Controller
 {
@@ -18,6 +20,11 @@ class DefaultController extends Controller
     {
         $orderService = $this->get('food.order');
         $order = $orderService->getOrderByHash($hash);
+
+        if (!$order instanceof Order) {
+            throw new NotFoundHttpException('Order not found');
+        }
+
         $currentOrderStatus = $orderService->getOrder()->getOrderStatus();
 
         if ($request->isMethod('post')) {
@@ -79,6 +86,11 @@ class DefaultController extends Controller
     {
         $orderService = $this->get('food.order');
         $order = $orderService->getOrderByHash($hash);
+
+        if (!$order instanceof Order) {
+            throw new NotFoundHttpException('Order not found');
+        }
+
         if ($request->isMethod('post')) {
             switch($request->get('status')) {
                 case 'confirm':
@@ -107,6 +119,10 @@ class DefaultController extends Controller
                 case 'completed':
                     $orderService->statusCompleted('admin_mobile');
                 break;
+
+                case 'partialy_completed':
+                    $orderService->statusPartialyCompleted('admin_mobile');
+                break;
             }
             $orderService->saveOrder();
 
@@ -126,6 +142,11 @@ class DefaultController extends Controller
     {
         $orderService =  $this->get('food.order');
         $order = $orderService->getOrderByHash($hash);
+
+        if (!$order instanceof Order) {
+            throw new NotFoundHttpException('Order not found');
+        }
+
         $currentOrderStatus = $orderService->getOrder()->getOrderStatus();
 
         if ($request->isMethod('post')) {
@@ -135,6 +156,10 @@ class DefaultController extends Controller
                 switch($formStatus) {
                     case 'completed':
                         $this->get('food.order')->statusCompleted('driver_mobile');
+                    break;
+
+                    case 'partialy_completed':
+                        $this->get('food.order')->statusPartialyCompleted('driver_mobile');
                     break;
                 }
                 $this->get('food.order')->saveOrder();

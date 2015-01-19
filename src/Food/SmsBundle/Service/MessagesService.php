@@ -199,8 +199,12 @@ class MessagesService {
      */
     public function getMessageByExtId($extId)
     {
-        $em = $this->getManager();
-        $message = $em->getRepository('Food\SmsBundle\Entity\Message')->findBy(array('extId' => $extId), null, 1);
+        $repo = $this->getManager()->getRepository('Food\SmsBundle\Entity\Message');
+        $message = $repo->findBy(array('extId' => $extId), null, 1);
+
+        if (!$message) {
+            $message = $repo->findBy(array('secondaryExtId' => $extId), null, 1);
+        }
 
         if (!$message) {
             return false;
@@ -236,9 +240,16 @@ class MessagesService {
             );
 
             $message->setSent($status['sent'])
-                ->setSubmittedAt(new \DateTime("now"))
-                ->setExtId($status['messageid'])
-                ->setLastSendingError($status['error'])
+                ->setSubmittedAt(new \DateTime("now"));
+
+            $currentExtId = $message->getExtId();
+            if (empty($currentExtId)) {
+                $message->setExtId($status['messageid']);
+            } else {
+                $message->setSecondaryExtId($status['messageid']);
+            }
+
+            $message->setLastSendingError($status['error'])
                 ->setSmsc($this->getMessagingProvider()->getProviderName())
                 ->setTimesSent($message->getTimesSent()+1);
 

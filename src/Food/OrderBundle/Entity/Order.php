@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Food\AppBundle\Entity\Driver;
 
 /**
  * @ORM\Table(name="orders")
@@ -109,6 +110,12 @@ class Order
     private $total;
 
     /**
+     * @var float
+     * @ORM\Column(name="delivery_price", type="float", nullable=true)
+     */
+    private $deliveryPrice;
+
+    /**
      * @ORM\ManyToOne(targetEntity="\Food\OrderBundle\Entity\Coupon")
      * @ORM\JoinColumn(name="coupon", referencedColumnName="id")
      **/
@@ -187,6 +194,13 @@ class Order
     private $driverSafe = array();
 
     /**
+     * @var string $navDriverCode
+     *
+     * @ORM\Column(name="nav_driver_code", type="string", length=10, nullable=true)
+     */
+    private $navDriverCode;
+
+    /**
      * @var string $locale
      *
      * @ORM\Column(name="locale", type="string", length=4)
@@ -251,6 +265,36 @@ class Order
 
     /**
      * @var bool
+     * @ORM\Column(name="company", type="boolean", nullable=true)
+     */
+    private $company = false;
+
+    /**
+     * @var string
+     * @ORM\Column(name="company_name", type="string", length=160, nullable=true)
+     */
+    private $companyName;
+
+    /**
+     * @var string
+     * @ORM\Column(name="company_code", type="string", length=60, nullable=true)
+     */
+    private $companyCode;
+
+    /**
+     * @var string
+     * @ORM\Column(name="vat_code", type="string", length=60, nullable=true)
+     */
+    private $vatCode;
+
+    /**
+     * @var string
+     * @ORM\Column(name="company_address", type="text", nullable=true)
+     */
+    private $company_address;
+
+    /**
+     * @var bool
      * @ORM\Column(name="reminded", type="boolean", nullable=true)
      */
     private $reminded = false;
@@ -290,8 +334,21 @@ class Order
      */
     private $navPorcessedOrder = false;
 
+    /**
+     * @var int
+     * @ORM\Column(name="nav_delivery_order", type="bigint", nullable=true)
+     */
+    private $navDeliveryOrder;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="order_from_nav", type="boolean", nullable=true)
+     */
+    private $orderFromNav = false;
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         if ($this->getId()) {
@@ -952,85 +1009,6 @@ class Order
     }
 
     /**
-     * Add accounting
-     *
-     * @param \Food\OrderBundle\Entity\OrderAccounting $accounting
-     * @return Order
-     */
-    public function addAccounting(\Food\OrderBundle\Entity\OrderAccounting $accounting)
-    {
-        $this->accounting[] = $accounting;
-
-        return $this;
-    }
-
-    /**
-     * Remove accounting
-     *
-     * @param \Food\OrderBundle\Entity\OrderAccounting $accounting
-     */
-    public function removeAccounting(\Food\OrderBundle\Entity\OrderAccounting $accounting)
-    {
-        $this->accounting->removeElement($accounting);
-    }
-
-    /**
-     * Get accounting
-     *
-     * @return OrderAccounting[]
-     */
-    public function getAccounting()
-    {
-        return $this->accounting;
-    }
-
-    /**
-     * Set series
-     *
-     * @param string $series
-     * @return Order
-     */
-    public function setSeries($series)
-    {
-        $this->series = $series;
-
-        return $this;
-    }
-
-    /**
-     * Get series
-     *
-     * @return string
-     */
-    public function getSeries()
-    {
-        return $this->series;
-    }
-
-    /**
-     * Set number
-     *
-     * @param integer $number
-     * @return Order
-     */
-    public function setNumber($number)
-    {
-        $this->number = $number;
-
-        return $this;
-    }
-
-    /**
-     * Get number
-     *
-     * @return integer
-     */
-    public function getNumber()
-    {
-        return $this->number;
-    }
-
-    /**
      * Set total
      *
      * @param float $total
@@ -1491,6 +1469,14 @@ class Order
     }
 
     /**
+     * @return string
+     */
+    public function getSfLine()
+    {
+        return $this->sfSeries.$this->sfNumber;
+    }
+
+    /**
      * Get sfNumber
      *
      * @return integer 
@@ -1544,5 +1530,231 @@ class Order
     public function getNavPorcessedOrder()
     {
         return $this->navPorcessedOrder;
+    }
+
+    /**
+     * Set navDeliveryOrder
+     *
+     * @param integer $navDeliveryOrder
+     * @return Order
+     */
+    public function setNavDeliveryOrder($navDeliveryOrder)
+    {
+        $this->navDeliveryOrder = $navDeliveryOrder;
+    
+        return $this;
+    }
+
+    /**
+     * Get navDeliveryOrder
+     *
+     * @return integer 
+     */
+    public function getNavDeliveryOrder()
+    {
+        return $this->navDeliveryOrder;
+    }
+
+    /**
+     * Set deliveryPrice
+     *
+     * @param float $deliveryPrice
+     * @return Order
+     */
+    public function setDeliveryPrice($deliveryPrice)
+    {
+        $this->deliveryPrice = $deliveryPrice;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryPrice
+     *
+     * @return float
+     */
+    public function getDeliveryPrice()
+    {
+        return $this->deliveryPrice;
+    }
+
+    /**
+     * Set orderFromNav
+     *
+     * @param boolean $orderFromNav
+     * @return Order
+     */
+    public function setOrderFromNav($orderFromNav)
+    {
+        $this->orderFromNav = $orderFromNav;
+    
+        return $this;
+    }
+
+    /**
+     * Get orderFromNav
+     *
+     * @return boolean 
+     */
+    public function getOrderFromNav()
+    {
+        return $this->orderFromNav;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDriverContact()
+    {
+        try {
+            $driver = $this->getDriver();
+
+            if (!$driver instanceof Driver) {
+                return '';
+            }
+
+            return $driver->getContact();
+        } catch (\Exception $e) {
+            // No driver set or he is deleted :|
+            return '';
+        }
+    }
+
+    /**
+     * Set company
+     *
+     * @param boolean $company
+     * @return Order
+     */
+    public function setCompany($company)
+    {
+        $this->company = $company;
+    
+        return $this;
+    }
+
+    /**
+     * Get company
+     *
+     * @return boolean 
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * Set companyName
+     *
+     * @param string $companyName
+     * @return Order
+     */
+    public function setCompanyName($companyName)
+    {
+        $this->companyName = $companyName;
+    
+        return $this;
+    }
+
+    /**
+     * Get companyName
+     *
+     * @return string 
+     */
+    public function getCompanyName()
+    {
+        return $this->companyName;
+    }
+
+    /**
+     * Set companyCode
+     *
+     * @param string $companyCode
+     * @return Order
+     */
+    public function setCompanyCode($companyCode)
+    {
+        $this->companyCode = $companyCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get companyCode
+     *
+     * @return string 
+     */
+    public function getCompanyCode()
+    {
+        return $this->companyCode;
+    }
+
+    /**
+     * Set vatCode
+     *
+     * @param string $vatCode
+     * @return Order
+     */
+    public function setVatCode($vatCode)
+    {
+        $this->vatCode = $vatCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get vatCode
+     *
+     * @return string 
+     */
+    public function getVatCode()
+    {
+        return $this->vatCode;
+    }
+
+    /**
+     * Set company_address
+     *
+     * @param string $companyAddress
+     * @return Order
+     */
+    public function setCompanyAddress($companyAddress)
+    {
+        $this->company_address = $companyAddress;
+    
+        return $this;
+    }
+
+    /**
+     * Get company_address
+     *
+     * @return string 
+     */
+    public function getCompanyAddress()
+    {
+        return $this->company_address;
+    }
+
+    /**
+     * Set navDriverCode
+     *
+     * @param string $navDriverCode
+     * @return Order
+     */
+    public function setNavDriverCode($navDriverCode)
+    {
+        $this->navDriverCode = $navDriverCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get navDriverCode
+     *
+     * @return string 
+     */
+    public function getNavDriverCode()
+    {
+        return $this->navDriverCode;
     }
 }

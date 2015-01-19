@@ -7,6 +7,14 @@ class Parameters
     protected $params;
     protected $mandatory_params = ['client',
                                    'password',
+                                   'city',
+                                   'country',
+                                   'shipping_address',
+                                   'surname',
+                                   'name',
+                                   'telephone',
+                                   'email',
+                                   'ip',
                                    'order_id',
                                    'price',
                                    'transaction_datetime',
@@ -18,11 +26,11 @@ class Parameters
 
     public function set($name, $value)
     {
-        if (false === array_search($name, $this->mandatory_params, true) ||
-            empty($value)
-        ) {
+        if (false === array_search($name, $this->mandatory_params, true)) {
             throw new \InvalidArgumentException('Cannot set parameter.');
         }
+
+        if (is_null($value)) $value = '';
 
         if (in_array($name, $this->exceptional_params)) {
             if ($name == 'transaction_datetime') {
@@ -43,7 +51,7 @@ class Parameters
     {
         if (false === array_search($name, $this->mandatory_params, true) ||
             !isset($this->params[$name]) ||
-            empty($this->params[$name])
+            is_null($this->params[$name])
         ) {
             throw new \InvalidArgumentException('Cannot get parameter.');
         }

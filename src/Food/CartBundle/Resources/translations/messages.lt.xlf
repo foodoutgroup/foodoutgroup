@@ -170,6 +170,44 @@
             <source>cart.block.order_sum_minimum_take_myself</source>
             <target>Netaikoma jei užsakymą atsiimsite pats.</target>
         </trans-unit>
+        <trans-unit id="cart.checkout.company" resname="cart.checkout.company">
+            <source>cart.checkout.company</source>
+            <target>Reikės sąskaitos faktūros</target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.company_name" resname="cart.checkout.company_name">
+            <source>cart.checkout.company_name</source>
+            <target>Įmonė</target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.company_name_placeholder" resname="cart.checkout.company_name_placeholder">
+            <source>cart.checkout.company_name_placeholder</source>
+            <target><![CDATA[UAB &quot;Įmonė&quot;]]></target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.company_code" resname="cart.checkout.company_code">
+            <source>cart.checkout.company_code</source>
+            <target>Įmonės kodas</target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.company_code_placeholder" resname="cart.checkout.company_code_placeholder">
+            <source>cart.checkout.company_code_placeholder</source>
+            <target>312345678</target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.vat_code" resname="cart.checkout.vat_code">
+            <source>cart.checkout.vat_code</source>
+            <target>PVM kodas</target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.vat_code_placeholder" resname="cart.checkout.vat_code_placeholder">
+            <source>cart.checkout.vat_code_placeholder</source>
+            <target>LT100001234567</target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.company_address" resname="cart.checkout.company_address">
+            <source>cart.checkout.company_address</source>
+            <target>Adresas</target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.company_address_placeholder" resname="cart.checkout.company_address_placeholder">
+            <source>cart.checkout.company_address_placeholder</source>
+            <target><![CDATA[Laisvės pr. 123,
+LT-01234,
+Vilnius]]></target>
+        </trans-unit>
 
 
         <trans-unit id="order.form.errors.no_restaurant_to_deliver" resname="order.form.errors.no_restaurant_to_deliver">
@@ -252,6 +290,26 @@
             <source>order.form.errors.nav_restaurant_no_setted</source>
             <target><![CDATA[<b>Restoranas šiuo metu nepasiekiamas.</b>]]></target>
         </trans-unit>
+        <trans-unit id="order.form.errors.nav_empty_cart" resname="order.form.errors.nav_empty_cart">
+            <source>order.form.errors.nav_empty_cart</source>
+            <target><![CDATA[<b>Krepšelis neturi patiekalų.</b>]]></target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.empty_company" resname="order.form.errors.empty_company">
+            <source>order.form.errors.empty_company</source>
+            <target>Įveskite įmone, kuriai norite gauti sąskaitą faktūrą</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.empty_company_code" resname="order.form.errors.empty_company_code">
+            <source>order.form.errors.empty_company_code</source>
+            <target>Įveskite įmonės kodą</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.empty_vat_code" resname="order.form.errors.empty_vat_code">
+            <source>order.form.errors.empty_vat_code</source>
+            <target>Įveskite PVM mokėtojo kodą</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.empty_company_address" resname="order.form.errors.empty_company_address">
+            <source>order.form.errors.empty_company_address</source>
+            <target>Įveskite įmonės registracijos adresą</target>
+        </trans-unit>
         <trans-unit id="general.cart_rules_slug" resname="general.cart_rules_slug">
             <source>general.cart_rules_slug</source>
             <target>ordering_rules</target>
@@ -271,6 +329,10 @@
         <trans-unit id="general.coupon.wrong_place" resname="general.coupon.wrong_place">
             <source>general.coupon.wrong_place</source>
             <target>Jūsų pateiktas nuolaidos kuponas galioja tik %place_name% restorane</target>
+        </trans-unit>
+        <trans-unit id="general.coupon.only_cili" resname="general.coupon.only_cili">
+            <source>general.coupon.only_cili</source>
+            <target>Jūsų pateiktas nuolaidos kuponas galioja tik Čili pica, Soya, Forest restoranuose</target>
         </trans-unit>
         <trans-unit id="general.coupon.wrong_place_simple" resname="general.coupon.wrong_place_simple">
             <source>general.coupon.wrong_place_simple</source>

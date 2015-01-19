@@ -1,0 +1,29 @@
+{# Uzsakymo statuso ir statuso istorijos ispiesimas prie sonatos order show formos #}
+<td colspan="2">
+    <b>{{ field_description.options.label|trans({}, 'SonataAdminBundle') }}:</b> {% if object.company %}{{ ( 'label_type_yes')|trans({}, 'SonataAdminBundle') }}{% else %}{{ ( 'label_type_no')|trans({}, 'SonataAdminBundle') }}{% endif %}
+    <br />
+    <br />
+    <div class="collapsable">
+        <h4 class="padded">{{ field_description.options.label|trans({}, 'SonataAdminBundle') }}</h4>
+        <div id="field_container_details" class="field-container">
+            <table>
+                <tr>
+                    <td>{{ 'admin.order.companyName'|trans({}, 'SonataAdminBundle') }}</td>
+                    <td>{{ object.companyName }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'admin.order.companyCode'|trans({}, 'SonataAdminBundle') }}</td>
+                    <td>{{ object.companyCode }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'admin.order.vatCode'|trans({}, 'SonataAdminBundle') }}</td>
+                    <td>{{ object.vatCode }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'admin.order.companyAddress'|trans({}, 'SonataAdminBundle') }}</td>
+                    <td>{{ object.companyAddress|nl2br }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</td>

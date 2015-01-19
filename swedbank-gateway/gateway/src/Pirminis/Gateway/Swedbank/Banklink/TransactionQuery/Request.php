@@ -8,17 +8,17 @@ class Request
     protected $transactionRequestXml = <<<TRANSACTION_REQUEST
 <?xml version="1.0" encoding="UTF-8"?>
 <Request>
-    <Authentication>
-        <client>%client%</client>
-        <password>%password%</password>
-    </Authentication>
-    <Transaction>
-        <APMTxn>
-            <method>transaction_query</method>
-            <dpg_reference_id>%dpg_reference_id%</dpg_reference_id>
-            <AlternativePayment version="2" />
-        </APMTxn>
-    </Transaction>
+  <Authentication>
+    <client>%client%</client>
+    <password>%password%</password>
+  </Authentication>
+  <Transaction>
+    <APMTxn>
+      <method>transaction_query</method>
+      <dpg_reference_id>%dpg_reference_id%</dpg_reference_id>
+      <AlternativePayment version="2" />
+    </APMTxn>
+  </Transaction>
 </Request>
 TRANSACTION_REQUEST;
 
