@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * InvoiceToSendNavOnly
  *
  * @ORM\Table(name="invoice_to_send_nav_only")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Food\OrderBundle\Entity\InvoiceToSendNavOnlyRepository")
  */
 class InvoiceToSendNavOnly
 {

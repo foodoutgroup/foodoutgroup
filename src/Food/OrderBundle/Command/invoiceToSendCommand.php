@@ -100,9 +100,19 @@ class InvoiceToSendCommand extends ContainerAwareCommand
             $output->writeln('Error: '.$e->getMessage());
             throw $e;
         }
+
+        // now try to resend unsent NAV invoices
+        if (!$dryRun) {
+            $invoicesToSendNavOnly = $em->getRepository('FoodOrderBundle:InvoiceToSendNavOnly')
+                                        ->getInvoiceToSendNavOnly();
+
+            foreach ($invoicesToSendNavOnly as $invoice) {
+                $this->sendNavInvoice($invoice->getOrder());
+            }
+        }
     }
 
-    protected function sendNavInvoice($order)
+    protected function sendNavInvoice($order, $invoice = null)
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
         $nav = $this->getContainer()->get('food.nav');
@@ -111,15 +121,20 @@ class InvoiceToSendCommand extends ContainerAwareCommand
         $success = $nav->createInvoice($order);
 
         // create sent/error entry for this nav invoice to send
-        $invoiceToSendNavOnly = new InvoiceToSendNavOnly();
-        $invoiceToSendNavOnly->setOrder($order)
-                             ->setDateAdded(new \DateTime('now'))
-                             ->setDateSent(new \DateTime('now'));
+        if (is_null($invoice)) {
+            $invoiceToSendNavOnly = new InvoiceToSendNavOnly();
+            $invoiceToSendNavOnly->setOrder($order)
+                                 ->setDateAdded(new \DateTime('now'))
+                                 ->setDateSent(new \DateTime('now'));
+        } else {
+            $invoiceToSendNavOnly = $invoice;
+            $invoiceToSendNavOnly->setDateSent(new \DateTime('now'));
+        }
 
         if ($success) {
             $invoiceToSendNavOnly->markSent();
         } else {
-            $invoiceToSendNavOnly->markError();
+            $invoiceToSendNavOnly->markUnsent();
         }
 
         $em->persist($invoiceToSendNavOnly);
