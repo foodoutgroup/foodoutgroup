@@ -217,6 +217,10 @@
         <source>places.recomended_block_title</source>
         <target>Mūsų rekomenduojami restoranai</target>
       </trans-unit>
+        <trans-unit id="places.best_offers_block_title" resname="places.best_offers_block_title">
+            <source>places.best_offers_block_title</source>
+            <target>Geri pasiūlymai</target>
+        </trans-unit>
       <trans-unit id="ff0bc83f13df6076f1fe1eda1481372d" resname="places.recomended_show_more">
         <source>places.recomended_show_more</source>
         <target>Daugiau pasiūlymų</target>
