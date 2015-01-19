@@ -21,7 +21,7 @@ class DailyReport extends ContainerAware
         'income' => 'SELECT IFNULL(SUM(o.total), 0.0) AS result',
         'successful_orders' => 'SELECT IFNULL(COUNT(*), 0) AS result',
         'average_cart' => 'SELECT IFNULL(AVG(o.total), 0.0) AS result',
-        'average_delivery' => 'SELECT AVG(TIMESTAMPDIFF(MINUTE, o.submitted_for_payment, o.delivery_time)) AS result'
+        'average_delivery' => 'SELECT AVG(TIMESTAMPDIFF(MINUTE, o.order_date, osl.event_date)) AS result'
     ];
 
     public function sendDailyReport($forceEmail, $notDryRun)
@@ -82,7 +82,8 @@ class DailyReport extends ContainerAware
 
         $stmt = $this->getConnection()->prepare($query);
         $stmt->bindValue(1, 'completed');
-        $stmt->bindValue(2, 'complete');
+        $stmt->bindValue(2, 'completed');
+        $stmt->bindValue(3, 'complete');
         $stmt->execute();
 
         $result = $stmt->fetch();
@@ -139,11 +140,22 @@ class DailyReport extends ContainerAware
         $query = '
             %s
             FROM orders o
+            INNER JOIN (
+                SELECT *
+                FROM order_status_log
+                GROUP BY
+                    order_id,
+                    new_status
+                HAVING new_status = ?
+                ORDER BY event_date DESC
+            ) osl ON osl.order_id = o.id
             WHERE
                 o.order_status = ? AND
                 o.payment_status = ? AND
                 DATE(o.order_date) >= SUBDATE(CURRENT_DATE, 1) AND
-                DATE(o.order_date) < CURRENT_DATE
+                DATE(o.order_date) < CURRENT_DATE AND
+                o.order_date IS NOT NULL AND
+                osl.event_date IS NOT NULL
         ';
 
         return sprintf($query, $partialSql);
