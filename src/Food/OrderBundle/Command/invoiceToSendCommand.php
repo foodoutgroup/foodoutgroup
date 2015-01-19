@@ -90,7 +90,7 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                         $output->writeln($sentMessage);
                         $logger->alert($sentMessage);
 
-                        sleep(1);
+                        usleep(1500000);
                     }
                 } catch (\Exception $e) {
                     // mark error (for historical reasons)
