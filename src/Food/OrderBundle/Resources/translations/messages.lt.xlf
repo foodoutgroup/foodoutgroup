@@ -130,6 +130,10 @@
                 <source>daily_report.value</source>
                 <target>Reikšmė</target>
             </trans-unit>
+            <trans-unit id="daily_report.kpi_metric" resname="daily_report.kpi_metric">
+                <source>daily_report.kpi_metric</source>
+                <target>KPI metrika</target>
+            </trans-unit>
             <trans-unit id="daily_report.income" resname="daily_report.income">
                 <source>daily_report.income</source>
                 <target>Pajamos</target>
