@@ -21,7 +21,7 @@ class DailyReport extends ContainerAware
         'income' => 'SELECT IFNULL(SUM(o.total), 0.0) AS result',
         'successful_orders' => 'SELECT IFNULL(COUNT(*), 0) AS result',
         'average_cart' => 'SELECT IFNULL(AVG(o.total), 0.0) AS result',
-        'average_delivery' => 'SELECT AVG(TIMESTAMPDIFF(MINUTE, o.order_date, osl.event_date)) AS result'
+        'average_delivery' => 'SELECT AVG(IF(TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date)<180,TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date),60)) AS result'
     ];
 
     public function sendDailyReport($forceEmail, $notDryRun)
@@ -78,7 +78,7 @@ class DailyReport extends ContainerAware
 
     public function getDailyDataFor($metric)
     {
-        $query = $this->getDailyReportQuery($this->sqlMap[$metric]);
+        $query = $this->getDailyReportQuery($metric);
 
         $stmt = $this->getConnection()->prepare($query);
         $stmt->bindValue(1, 'completed');
@@ -135,8 +135,10 @@ class DailyReport extends ContainerAware
                : [true, '<fg=red>There was at least one error sending mails.</fg=red>'];
     }
 
-    public function getDailyReportQuery($partialSql)
+    public function getDailyReportQuery($metric)
     {
+        $partialSql = $this->sqlMap[$metric];
+
         $query = '
             %s
             FROM orders o
@@ -149,14 +151,32 @@ class DailyReport extends ContainerAware
                 HAVING new_status = ?
                 ORDER BY event_date DESC
             ) osl ON osl.order_id = o.id
+            ' . ('average_delivery' == $metric ? '
+            INNER JOIN (
+                SELECT *
+                FROM order_status_log
+                GROUP BY
+                    order_id,
+                    new_status
+                HAVING new_status = \'assigned\'
+                ORDER BY event_date DESC
+            ) osl2 ON osl2.order_id = o.id' : '') . '
             WHERE
                 o.order_status = ? AND
                 o.payment_status = ? AND
                 DATE(o.order_date) >= SUBDATE(CURRENT_DATE, 1) AND
                 DATE(o.order_date) < CURRENT_DATE AND
-                o.order_date IS NOT NULL AND
                 osl.event_date IS NOT NULL
         ';
+
+        if ('average_delivery' == $metric) {
+            $query .= '
+                AND
+                o.delivery_type = \'deliver\' AND
+                osl.source != \'auto_close_order_command\' AND
+                o.place_point_self_delivery = 0
+            ';
+        }
 
         return sprintf($query, $partialSql);
     }
