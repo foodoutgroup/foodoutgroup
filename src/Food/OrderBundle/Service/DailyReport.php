@@ -20,9 +20,7 @@ class DailyReport extends ContainerAware
     protected $sqlMap = [
         'income' => 'SELECT IFNULL(SUM(o.total), 0.0) AS result',
         'successful_orders' => 'SELECT IFNULL(COUNT(*), 0) AS result',
-        'average_cart' => 'SELECT IFNULL(AVG(o.total), 0.0) AS result',
-        'average_delivery' => 'SELECT AVG(IF(TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date)<180,TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date),60)) AS result',
-        'average_delivery_by_region' => 'SELECT o.place_point_city, AVG(IF(TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date)<180,TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date),60)) AS result'
+        'average_cart' => 'SELECT IFNULL(AVG(o.total), 0.0) AS result'
     ];
 
     public function sendDailyReport($forceEmail, $notDryRun)
@@ -34,8 +32,8 @@ class DailyReport extends ContainerAware
         $income = $this->getDailyDataFor('income');
         $successfulOrders = $this->getDailyDataFor('successful_orders');
         $averageCartSize = round($this->getDailyDataFor('average_cart'), 2);
-        $averageDeliveryTime = round($this->getDailyDataFor('average_delivery'));
-        $averageDeliveryTimeByRegion = $this->getDailyDataFor('average_delivery_by_region');
+        $averageDeliveryTime = round($this->getDailyDeliveryTime());
+        $averageDeliveryTimeByRegion = $this->getDailyDeliveryTimesByRegion();
 
         // stuff from google analytics
         $from = date('Y-m-d', strtotime('-1 day'));
@@ -79,19 +77,106 @@ class DailyReport extends ContainerAware
                                      $content);
     }
 
+    public function getDailyDeliveryTime()
+    {
+        $query = '
+            SELECT AVG(IF(TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date)<180,
+                       TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date),
+                       60)) AS result
+            FROM orders o
+            INNER JOIN (
+                SELECT *
+                FROM order_status_log
+                GROUP BY
+                    order_id,
+                    new_status
+                HAVING new_status = \'completed\'
+                ORDER BY event_date DESC
+            ) osl ON osl.order_id = o.id
+            INNER JOIN (
+                SELECT *
+                FROM order_status_log
+                GROUP BY
+                    order_id,
+                    new_status
+                HAVING new_status = \'assigned\'
+                ORDER BY event_date DESC
+            ) osl2 ON osl2.order_id = o.id
+            WHERE
+                o.order_status = \'completed\' AND
+                o.payment_status = \'complete\' AND
+                DATE(o.order_date) >= SUBDATE(CURRENT_DATE, 1) AND
+                DATE(o.order_date) < CURRENT_DATE AND
+                osl.event_date IS NOT NULL AND
+                o.delivery_type = \'deliver\' AND
+                osl.source != \'auto_close_order_command\' AND
+                o.place_point_self_delivery = 0';
+
+        $stmt = $this->getConnection()->prepare($query);
+        $stmt->execute();
+
+        $result = $stmt->fetch();
+
+        return $result['result'];
+    }
+
+    public function getDailyDeliveryTimesByRegion()
+    {
+        $query = '
+            SELECT
+                o.place_point_city,
+                AVG(IF(TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date)<180,
+                       TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date),
+                       60)) AS result
+            FROM orders o
+            INNER JOIN (
+                SELECT *
+                FROM order_status_log
+                GROUP BY
+                    order_id,
+                    new_status
+                HAVING new_status = \'completed\'
+                ORDER BY event_date DESC
+            ) osl ON osl.order_id = o.id
+            INNER JOIN (
+                SELECT *
+                FROM order_status_log
+                GROUP BY
+                    order_id,
+                    new_status
+                HAVING new_status = \'assigned\'
+                ORDER BY event_date DESC
+            ) osl2 ON osl2.order_id = o.id
+            WHERE
+                o.order_status = \'completed\' AND
+                o.payment_status = \'complete\' AND
+                DATE(o.order_date) >= SUBDATE(CURRENT_DATE, 1) AND
+                DATE(o.order_date) < CURRENT_DATE AND
+                osl.event_date IS NOT NULL AND
+                o.delivery_type = \'deliver\' AND
+                osl.source != \'auto_close_order_command\' AND
+                o.place_point_self_delivery = 0
+            GROUP BY o.place_point_city
+            ORDER BY o.place_point_city DESC';
+
+        $stmt = $this->getConnection()->prepare($query);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
     public function getDailyDataFor($metric)
     {
         $query = $this->getDailyReportQuery($metric);
 
         $stmt = $this->getConnection()->prepare($query);
-        $stmt->bindValue(1, 'completed');
-        $stmt->bindValue(2, 'completed');
-        $stmt->bindValue(3, 'complete');
         $stmt->execute();
 
-        $result = $stmt->fetchAll();
+        $result = $stmt->fetch();
 
-        return count($result) == 1 ? $result[0]['result'] : $result;
+        return $result['result'];
     }
 
     public function getDailyMailTitle()
@@ -153,41 +238,16 @@ class DailyReport extends ContainerAware
                 GROUP BY
                     order_id,
                     new_status
-                HAVING new_status = ?
+                HAVING new_status = \'completed\'
                 ORDER BY event_date DESC
             ) osl ON osl.order_id = o.id
-            ' . (in_array($metric, ['average_delivery', 'average_delivery_by_region']) ? '
-            INNER JOIN (
-                SELECT *
-                FROM order_status_log
-                GROUP BY
-                    order_id,
-                    new_status
-                HAVING new_status = \'assigned\'
-                ORDER BY event_date DESC
-            ) osl2 ON osl2.order_id = o.id' : '') . '
             WHERE
-                o.order_status = ? AND
-                o.payment_status = ? AND
+                o.order_status = \'completed\' AND
+                o.payment_status = \'complete\' AND
                 DATE(o.order_date) >= SUBDATE(CURRENT_DATE, 1) AND
                 DATE(o.order_date) < CURRENT_DATE AND
                 osl.event_date IS NOT NULL
         ';
-
-        if (in_array($metric, ['average_delivery', 'average_delivery_by_region'])) {
-            $query .= '
-                AND
-                o.delivery_type = \'deliver\' AND
-                osl.source != \'auto_close_order_command\' AND
-                o.place_point_self_delivery = 0
-            ';
-        }
-
-        if ('average_delivery_by_region' == $metric) {
-            $query .= '
-                GROUP BY o.place_point_city
-                ORDER BY o.place_point_city DESC';
-        }
 
         return sprintf($query, $partialSql);
     }
