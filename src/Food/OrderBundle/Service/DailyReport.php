@@ -269,7 +269,7 @@ class DailyReport extends ContainerAware
         $calculations->kpiIncome = number_format($this->kpiMap[$dayOfWeek] * $this->kpiIncomeMap[$monthOfYear], 2, '.', '');
         $calculations->kpiSuccessfulOrders = round($this->kpiMap[$dayOfWeek] * $this->kpiOrdersMap[$monthOfYear]);
         $calculations->kpiAverageCartSize = number_format($this->kpiCartSizeMap[$monthOfYear], 2, '.', '');
-        $calculations->kpiAverageDeliveryTime = round($this->kpiDeliveryMap[$monthOfYear]);
+        $calculations->kpiAverageDeliveryTime = $this->kpiDeliveryMap[$monthOfYear];
 
         // result
         return $calculations;
