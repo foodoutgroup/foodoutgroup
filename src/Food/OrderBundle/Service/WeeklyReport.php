@@ -21,7 +21,8 @@ class WeeklyReport extends ContainerAware
         'income' => 'SELECT IFNULL(SUM(o.total), 0.0) AS result',
         'successful_orders' => 'SELECT IFNULL(COUNT(*), 0) AS result',
         'average_cart' => 'SELECT IFNULL(AVG(o.total), 0.0) AS result',
-        'average_delivery' => 'SELECT AVG(IF(TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date)<180,TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date),60)) AS result'
+        'average_delivery' => 'SELECT AVG(IF(TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date)<180,TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date),60)) AS result',
+        'average_delivery_by_region' => 'SELECT o.place_point_city, AVG(IF(TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date)<180,TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date),60)) AS result'
     ];
 
     public function sendWeeklyReport($forceEmail, $notDryRun)
@@ -35,6 +36,7 @@ class WeeklyReport extends ContainerAware
         $successfulOrders = $this->getWeeklyDataFor('successful_orders');
         $averageCartSize = round($this->getWeeklyDataFor('average_cart'), 2);
         $averageDeliveryTime = round($this->getWeeklyDataFor('average_delivery'));
+        $averageDeliveryTimeByRegion = $this->getWeeklyDataFor('average_delivery_by_region');
 
         // stuff from google analytics
         $from = date('Y-m-d', strtotime('-7 day'));
@@ -71,7 +73,8 @@ class WeeklyReport extends ContainerAware
                                                $averageCartSize,
                                                $averageDeliveryTime,
                                                $pageviews,
-                                               $uniquePageviews);
+                                               $uniquePageviews,
+                                               $averageDeliveryTimeByRegion);
 
         return $this->sendWeeklyMails($forceEmail,
                                       $this->getWeeklyReportEmails(),
@@ -110,7 +113,8 @@ class WeeklyReport extends ContainerAware
                                          $averageCartSize,
                                          $averageDeliveryTime,
                                          $pageviews,
-                                         $uniquePageviews)
+                                         $uniquePageviews,
+                                         $averageDeliveryTimeByRegion)
     {
         $template = 'FoodOrderBundle:WeeklyReport:email.html.twig';
         $data = [
@@ -120,7 +124,8 @@ class WeeklyReport extends ContainerAware
             'averageCartSize' => $averageCartSize,
             'averageDeliveryTime' => $averageDeliveryTime,
             'pageviews' => $pageviews,
-            'uniquePageviews' => $uniquePageviews
+            'uniquePageviews' => $uniquePageviews,
+            'averageDeliveryTimeByRegion' => $averageDeliveryTimeByRegion
         ];
 
         return $this->getTemplating()->render($template, $data);
@@ -135,7 +140,7 @@ class WeeklyReport extends ContainerAware
         $emails = !empty($forceEmail) ? [$forceEmail] : $weeklyReportEmails;
 
         foreach ($emails as $email) {
-            $headers = 'Content-Type: text/html;charset=utf-8';
+            $headers = "Content-Type: text/html;charset=utf-8\r\nFrom: info@foodout.lt";
             $mailSent = @mail($email, $title, $content, $headers) && $mailSent;
         }
 
@@ -154,9 +159,9 @@ class WeeklyReport extends ContainerAware
         $stmt->bindValue(3, 'complete');
         $stmt->execute();
 
-        $result = $stmt->fetch();
+        $result = $stmt->fetchAll();
 
-        return $result['result'];
+        return count($result) == 1 ? $result[0]['result'] : $result;
     }
 
     public function getWeeklyReportQuery($metric)
@@ -175,7 +180,7 @@ class WeeklyReport extends ContainerAware
                 HAVING new_status = ?
                 ORDER BY event_date DESC
             ) osl ON osl.order_id = o.id
-            ' . ('average_delivery' == $metric ? '
+            ' . (in_array($metric, ['average_delivery', 'average_delivery_by_region']) ? '
             INNER JOIN (
                 SELECT *
                 FROM order_status_log
@@ -193,13 +198,19 @@ class WeeklyReport extends ContainerAware
                 osl.event_date IS NOT NULL
         ';
 
-        if ('average_delivery' == $metric) {
+        if (in_array($metric, ['average_delivery', 'average_delivery_by_region'])) {
             $query .= '
                 AND
                 o.delivery_type = \'deliver\' AND
                 osl.source != \'auto_close_order_command\' AND
                 o.place_point_self_delivery = 0
             ';
+        }
+
+        if ('average_delivery_by_region' == $metric) {
+            $query .= '
+                GROUP BY o.place_point_city
+                ORDER BY o.place_point_city DESC';
         }
 
         return sprintf($query, $partialSql);

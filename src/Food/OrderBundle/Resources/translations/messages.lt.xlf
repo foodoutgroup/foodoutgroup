@@ -154,6 +154,10 @@
                 <source>daily_report.unique_pageviews</source>
                 <target>Unikalių lankytojų skaičius</target>
             </trans-unit>
+            <trans-unit id="daily_report.city" resname="daily_report.city">
+                <source>daily_report.city</source>
+                <target>Regionas</target>
+            </trans-unit>
             <trans-unit id="weekly_report.places" resname="weekly_report.places">
                 <source>weekly_report.places</source>
                 <target>Restoranų skaičius</target>

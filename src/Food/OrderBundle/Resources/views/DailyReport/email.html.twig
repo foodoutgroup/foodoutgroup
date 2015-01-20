@@ -32,3 +32,22 @@
         </tr>
     </tbody>
 </table>
+
+<br/>
+
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th align="left">{{ 'daily_report.city'|trans }}</th>
+            <th align="right">{{ 'daily_report.average_delivery_time'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in averageDeliveryTimeByRegion %}
+            <tr>
+                <td>{{ item.place_point_city }}</td>
+                <td align="right">{{ item.result|round }} min.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
