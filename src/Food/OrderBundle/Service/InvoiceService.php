@@ -250,7 +250,9 @@ class InvoiceService extends ContainerAware
                     $fileName
                 ));
 
-                $ml->removeAttachments();
+                // TODO this is a temp fix for Mailer lite api
+                $ml->removeAttachments()
+                    ->flush();
 
                 $mailerResponse = $ml->setVariables($variables)
                     ->setRecipient($email, $email)
