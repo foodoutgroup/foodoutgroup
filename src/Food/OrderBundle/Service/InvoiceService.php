@@ -250,6 +250,8 @@ class InvoiceService extends ContainerAware
                     $fileName
                 ));
 
+                $ml->removeAttachments();
+
                 $mailerResponse = $ml->setVariables($variables)
                     ->setRecipient($email, $email)
                     ->addAttachment($fileName, file_get_contents($file))
