@@ -1395,26 +1395,26 @@ class NavService extends ContainerAware
     {
         $driverRepo = $this->getContainer()->get('doctrine')->getRepository('FoodAppBundle:Driver');
 
-        $nameParts = str_split($navDriverId, 3);
+        $driver = $driverRepo->findOneBy(array(
+            'extId' => $navDriverId,
+        ));
 
-        $driverQueryBuilder = $driverRepo->createQueryBuilder('d')
-            ->where('d.name LIKE :first_name_part')
-            ->andWhere('d.name LIKE :second_name_part')
-            ->setParameters(array(
-                'first_name_part' => $nameParts[0]."%",
-                'second_name_part' => "% ".$nameParts[1]."%"
-            ))
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(1);
+        if (empty($driver) || ($driver instanceof Driver && $driver->getId())) {
+            $nameParts = str_split($navDriverId, 3);
 
-        $driver = $driverQueryBuilder->getQuery()->getResult();
+            $driverQueryBuilder = $driverRepo->createQueryBuilder('d')
+                ->where('d.name LIKE :first_name_part')
+                ->andWhere('d.name LIKE :second_name_part')
+                ->setParameters(array(
+                    'first_name_part' => $nameParts[0]."%",
+                    'second_name_part' => "% ".$nameParts[1]."%"
+                ))
+                ->orderBy('d.id', 'ASC')
+                ->setMaxResults(1);
 
-        if (empty($driver)) {
-            $driver = $driverRepo->findOneBy(array(
-                'extId' => $navDriverId,
-            ));
+            $driver = $driverQueryBuilder->getQuery()->getResult();
 
-            if ($driver instanceof Driver && $driver->getId()) {
+            if (empty($driver)) {
                 return $driver;
             } else {
                 return false;
