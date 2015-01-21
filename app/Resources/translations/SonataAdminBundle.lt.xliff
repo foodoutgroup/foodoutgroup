@@ -513,6 +513,10 @@
                 <source>admin.point.allow_card</source>
                 <target>Kortele</target>
             </trans-unit>
+            <trans-unit id="admin.point.use_external_logistics">
+                <source>admin.point.use_external_logistics</source>
+                <target>Siųsti į Metrikas (logistika)</target>
+            </trans-unit>
 
             <!-- Place reviews -->
             <trans-unit id="place-reviews-list">

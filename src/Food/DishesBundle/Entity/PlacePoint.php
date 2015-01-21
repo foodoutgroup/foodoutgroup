@@ -155,6 +155,13 @@ class PlacePoint
      */
     private $delivery = true;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="use_external_logistics", type="boolean")
+     */
+    private $useExternalLogistics = true;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="Place", inversedBy="points")
@@ -1623,5 +1630,28 @@ class PlacePoint
     public function getWd7EndLong()
     {
         return $this->wd7_end_long;
+    }
+
+    /**
+     * Set useExternalLogistics
+     *
+     * @param boolean $useExternalLogistics
+     * @return PlacePoint
+     */
+    public function setUseExternalLogistics($useExternalLogistics)
+    {
+        $this->useExternalLogistics = $useExternalLogistics;
+    
+        return $this;
+    }
+
+    /**
+     * Get useExternalLogistics
+     *
+     * @return boolean 
+     */
+    public function getUseExternalLogistics()
+    {
+        return $this->useExternalLogistics;
     }
 }

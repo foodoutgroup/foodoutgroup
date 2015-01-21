@@ -513,6 +513,10 @@
                 <source>admin.point.allow_card</source>
                 <target>Card</target>
             </trans-unit>
+            <trans-unit id="admin.point.use_external_logistics">
+                <source>admin.point.use_external_logistics</source>
+                <target>Send to Metrics (logistics)</target>
+            </trans-unit>
 
             <!-- Place reviews -->
             <trans-unit id="place-reviews-list">
