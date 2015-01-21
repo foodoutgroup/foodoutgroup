@@ -212,6 +212,7 @@ class DefaultController extends Controller
             'delay' => OrderService::$status_delayed,
             'cancel' => OrderService::$status_canceled,
             'finish' => OrderService::$status_finished,
+            'partialy_completed' => OrderService::$status_partialy_completed,
             'completed' => OrderService::$status_completed,
         );
 
