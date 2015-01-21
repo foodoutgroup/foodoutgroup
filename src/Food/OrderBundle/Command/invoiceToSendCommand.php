@@ -5,6 +5,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Food\OrderBundle\Entity\InvoiceToSendNavOnly;
 
 class InvoiceToSendCommand extends ContainerAwareCommand
 {
@@ -82,7 +83,7 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                         $em->flush();
 
                         // create invoice in NAVISION
-                        $nav->createInvoice($orderToSend->getOrder());
+                        $this->sendNavInvoice($orderToSend->getOrder());
 
                         $sentMessage = 'Invoice sent to emails: '.implode(', ', $emails);
                         $output->writeln($sentMessage);
@@ -94,7 +95,7 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                     // mark error (for historical reasons)
                     // but please _DO NOT_ mark it unsent!
                     $orderToSend->markError()
-                        ->setLastError($e->getMessage());
+                                ->setLastError($e->getMessage());
 
                     $em->persist($orderToSend);
                     $em->flush();
@@ -110,5 +111,52 @@ class InvoiceToSendCommand extends ContainerAwareCommand
             $output->writeln('Error: '.$e->getMessage());
             throw $e;
         }
+
+        // now try to resend unsent NAV invoices
+        if (!$dryRun) {
+            $invoicesToSendNavOnly = $em->getRepository('FoodOrderBundle:InvoiceToSendNavOnly')
+                                        ->getInvoiceToSendNavOnly();
+
+            foreach ($invoicesToSendNavOnly as $invoice) {
+                $success = $this->sendNavInvoice($invoice->getOrder(), $invoice);
+            }
+        }
+    }
+
+    protected function sendNavInvoice($order, $invoice = null)
+    {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $nav = $this->getContainer()->get('food.nav');
+
+        // call SOAP
+        $success = $nav->createInvoice($order);
+
+        // create sent/error entry for this nav invoice to send
+        if (is_null($invoice)) {
+            $invoiceToSendNavOnly = new InvoiceToSendNavOnly();
+            $invoiceToSendNavOnly->setOrder($order)
+                                 ->setDateAdded(new \DateTime('now'))
+                                 ->setDateSent(new \DateTime('now'));
+
+            $em->persist($invoiceToSendNavOnly);
+        } else {
+            $invoiceToSendNavOnly = $invoice;
+            $invoiceToSendNavOnly->setDateSent(new \DateTime('now'));
+        }
+
+        if ($success) {
+            $invoiceToSendNavOnly->markSent();
+            $em->flush();
+        } else {
+            $invoiceToSendNavOnly->markError();
+
+            $newInvoice = clone $invoiceToSendNavOnly;
+            $newInvoice->markUnsent();
+
+            $em->persist($newInvoice);
+            $em->flush();
+        }
+
+        return $success;
     }
 }
