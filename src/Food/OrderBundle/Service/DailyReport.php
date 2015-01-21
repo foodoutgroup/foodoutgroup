@@ -10,18 +10,50 @@ use Food\AppBundle\Service\GoogleAnalyticsService;
 
 class DailyReport extends ContainerAware
 {
+    const PHP_1_DAY_AGO = '-1 day';
+    const MYSQL_1_DAY_AGO = 'SUBDATE(CURRENT_DATE, 1)';
+    const MYSQL_0_DAYS_AGO = 'SUBDATE(CURRENT_DATE, 0)';
+
     protected $connection;
     protected $dailyReportEmails;
     protected $output;
     protected $tableHelper;
     protected $googleAnalyticsService;
     protected $templating;
+    protected $kpiMap = [
+        '1' => 0.8,
+        '2' => 0.8,
+        '3' => 0.8,
+        '4' => 1.0,
+        '5' => 1.3,
+        '6' => 1.3,
+        '7' => 1.0
+    ];
+    protected $kpiIncomeMap = [
+        '1' => 6704,
+        '2' => 6921,
+        '3' => 7955
+    ];
+    protected $kpiOrdersMap = [
+        '1' => 564,
+        '2' => 583,
+        '3' => 670
+    ];
+    protected $kpiCartSizeMap = [
+        '1' => 11.8,
+        '2' => 11.8,
+        '3' => 11.8
+    ];
+    protected $kpiDeliveryMap = [
+        '1' => 60,
+        '2' => 60,
+        '3' => 60
+    ];
 
     protected $sqlMap = [
         'income' => 'SELECT IFNULL(SUM(o.total), 0.0) AS result',
         'successful_orders' => 'SELECT IFNULL(COUNT(*), 0) AS result',
-        'average_cart' => 'SELECT IFNULL(AVG(o.total), 0.0) AS result',
-        'average_delivery' => 'SELECT AVG(TIMESTAMPDIFF(MINUTE, o.order_date, osl.event_date)) AS result'
+        'average_cart' => 'SELECT IFNULL(AVG(o.total), 0.0) AS result'
     ];
 
     public function sendDailyReport($forceEmail, $notDryRun)
@@ -30,45 +62,14 @@ class DailyReport extends ContainerAware
             $this->getOutput()->writeln('<bg=yellow;fg=white>This is dry run. No emails will be sent.</bg=yellow;fg=white>');
         }
 
-        $income = $this->getDailyDataFor('income');
-        $successfulOrders = $this->getDailyDataFor('successful_orders');
-        $averageCartSize = round($this->getDailyDataFor('average_cart'), 2);
-        $averageDeliveryTime = round($this->getDailyDataFor('average_delivery'));
-
-        // stuff from google analytics
-        $from = date('Y-m-d', strtotime('-1 day'));
-        $to = $from;
-
-        $pageviews = $this->getGoogleAnalyticsService()
-                          ->getPageviews($from, $to);
-        $uniquePageviews = $this->getGoogleAnalyticsService()
-                                ->getUniquePageviews($from, $to);
-
-        // output some data
-        $this->getTableHelper()->setHeaders(['Metric', 'Value']);
-        $this->getTableHelper()->setRows([
-            ['Income', sprintf('<fg=cyan>€ %s</fg=cyan>', $income)],
-            ['Number of successful orders', sprintf('<fg=cyan>%s</fg=cyan>', $successfulOrders)],
-            ['Price of average cart', sprintf('<fg=cyan>€ %s</fg=cyan>', $averageCartSize)],
-            ['Average delivery time', sprintf('<fg=cyan>%s mins</fg=cyan>', $averageDeliveryTime)],
-            ['Pageviews', sprintf('<fg=cyan>%s views</fg=cyan>', $pageviews)],
-            ['Unique pageviews', sprintf('<fg=cyan>%s views</fg=cyan>', $uniquePageviews)]
-        ]);
-
-        $this->getOutput()->writeln('Yesterday we had:');
-        $this->getTableHelper()->render($this->getOutput());
+        $calculations = $this->getCalculations();
 
         if (!$notDryRun) {
             return [false, '<fg=green>Dry run was successful.</fg=green>'];
         }
 
+        $content = $this->getDailyMailContent($calculations);
         $title = $this->getDailyMailTitle();
-        $content = $this->getDailyMailContent($income,
-                                              $successfulOrders,
-                                              $averageCartSize,
-                                              $averageDeliveryTime,
-                                              $pageviews,
-                                              $uniquePageviews);
 
         return $this->sendDailyMails($forceEmail,
                                      $this->getDailyReportEmails(),
@@ -76,14 +77,101 @@ class DailyReport extends ContainerAware
                                      $content);
     }
 
-    public function getDailyDataFor($metric)
+    public function getDailyDeliveryTime()
     {
-        $query = $this->getDailyReportQuery($this->sqlMap[$metric]);
+        $query = '
+            SELECT AVG(IF(TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date)<180,
+                       TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date),
+                       60)) AS result
+            FROM orders o
+            INNER JOIN (
+                SELECT *
+                FROM order_status_log
+                GROUP BY
+                    order_id,
+                    new_status
+                HAVING new_status = \'completed\'
+                ORDER BY event_date DESC
+            ) osl ON osl.order_id = o.id
+            INNER JOIN (
+                SELECT *
+                FROM order_status_log
+                GROUP BY
+                    order_id,
+                    new_status
+                HAVING new_status = \'assigned\'
+                ORDER BY event_date DESC
+            ) osl2 ON osl2.order_id = o.id
+            WHERE
+                o.order_status = \'completed\' AND
+                o.payment_status = \'complete\' AND
+                DATE(o.order_date) >= ' . static::MYSQL_1_DAY_AGO . ' AND
+                DATE(o.order_date) < ' . static::MYSQL_0_DAYS_AGO . ' AND
+                osl.event_date IS NOT NULL AND
+                o.delivery_type = \'deliver\' AND
+                osl.source != \'auto_close_order_command\' AND
+                o.place_point_self_delivery = 0';
 
         $stmt = $this->getConnection()->prepare($query);
-        $stmt->bindValue(1, 'completed');
-        $stmt->bindValue(2, 'completed');
-        $stmt->bindValue(3, 'complete');
+        $stmt->execute();
+
+        $result = $stmt->fetch();
+
+        return $result['result'];
+    }
+
+    public function getDailyDeliveryTimesByRegion()
+    {
+        $query = '
+            SELECT
+                o.place_point_city,
+                AVG(IF(TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date)<180,
+                       TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date),
+                       60)) AS result
+            FROM orders o
+            INNER JOIN (
+                SELECT *
+                FROM order_status_log
+                GROUP BY
+                    order_id,
+                    new_status
+                HAVING new_status = \'completed\'
+                ORDER BY event_date DESC
+            ) osl ON osl.order_id = o.id
+            INNER JOIN (
+                SELECT *
+                FROM order_status_log
+                GROUP BY
+                    order_id,
+                    new_status
+                HAVING new_status = \'assigned\'
+                ORDER BY event_date DESC
+            ) osl2 ON osl2.order_id = o.id
+            WHERE
+                o.order_status = \'completed\' AND
+                o.payment_status = \'complete\' AND
+                DATE(o.order_date) >= ' . static::MYSQL_1_DAY_AGO . ' AND
+                DATE(o.order_date) < ' . static::MYSQL_0_DAYS_AGO . ' AND
+                osl.event_date IS NOT NULL AND
+                o.delivery_type = \'deliver\' AND
+                osl.source != \'auto_close_order_command\' AND
+                o.place_point_self_delivery = 0
+            GROUP BY o.place_point_city
+            ORDER BY o.place_point_city DESC';
+
+        $stmt = $this->getConnection()->prepare($query);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
+    public function getDailyDataFor($metric)
+    {
+        $query = $this->getDailyReportQuery($metric);
+
+        $stmt = $this->getConnection()->prepare($query);
         $stmt->execute();
 
         $result = $stmt->fetch();
@@ -94,25 +182,18 @@ class DailyReport extends ContainerAware
     public function getDailyMailTitle()
     {
         return sprintf('Daily Foodout.lt report for %s',
-                       date('Y-m-d', strtotime('-1 day')));
+                       date('Y-m-d', strtotime(static::PHP_1_DAY_AGO)));
     }
 
-    public function getDailyMailContent($income,
-                                        $successfulOrders,
-                                        $averageCartSize,
-                                        $averageDeliveryTime,
-                                        $pageviews,
-                                        $uniquePageviews)
+    public function getDailyMailContent(\StdClass $params)
     {
         $template = 'FoodOrderBundle:DailyReport:email.html.twig';
-        $data = [
-            'income' => $income,
-            'successfulOrders' => $successfulOrders,
-            'averageCartSize' => $averageCartSize,
-            'averageDeliveryTime' => $averageDeliveryTime,
-            'pageviews' => $pageviews,
-            'uniquePageviews' => $uniquePageviews
-        ];
+        $data = [];
+        $paramsList = get_object_vars($params);
+
+        foreach ($paramsList as $key => $value) {
+            $data[$key] = $value;
+        }
 
         return $this->getTemplating()->render($template, $data);
     }
@@ -126,7 +207,7 @@ class DailyReport extends ContainerAware
         $emails = !empty($forceEmail) ? [$forceEmail] : $dailyReportEmails;
 
         foreach ($emails as $email) {
-            $headers = 'Content-Type: text/html;charset=utf-8';
+            $headers = "Content-Type: text/html;charset=utf-8\r\nFrom: info@foodout.lt";
             $mailSent = @mail($email, $title, $content, $headers) && $mailSent;
         }
 
@@ -135,8 +216,10 @@ class DailyReport extends ContainerAware
                : [true, '<fg=red>There was at least one error sending mails.</fg=red>'];
     }
 
-    public function getDailyReportQuery($partialSql)
+    public function getDailyReportQuery($metric)
     {
+        $partialSql = $this->sqlMap[$metric];
+
         $query = '
             %s
             FROM orders o
@@ -146,19 +229,50 @@ class DailyReport extends ContainerAware
                 GROUP BY
                     order_id,
                     new_status
-                HAVING new_status = ?
+                HAVING new_status = \'completed\'
                 ORDER BY event_date DESC
             ) osl ON osl.order_id = o.id
             WHERE
-                o.order_status = ? AND
-                o.payment_status = ? AND
-                DATE(o.order_date) >= SUBDATE(CURRENT_DATE, 1) AND
-                DATE(o.order_date) < CURRENT_DATE AND
-                o.order_date IS NOT NULL AND
+                o.order_status = \'completed\' AND
+                o.payment_status = \'complete\' AND
+                DATE(o.order_date) >= ' . static::MYSQL_1_DAY_AGO . ' AND
+                DATE(o.order_date) < ' . static::MYSQL_0_DAYS_AGO . ' AND
                 osl.event_date IS NOT NULL
         ';
 
         return sprintf($query, $partialSql);
+    }
+
+    public function getCalculations()
+    {
+        // local
+        $calculations = new \StdClass();
+        $calculations->income = $this->getDailyDataFor('income');
+        $calculations->successfulOrders = $this->getDailyDataFor('successful_orders');
+        $calculations->averageCartSize = number_format($this->getDailyDataFor('average_cart'), 2, '.', '');
+        $calculations->averageDeliveryTime = round($this->getDailyDeliveryTime());
+        $calculations->averageDeliveryTimeByRegion = $this->getDailyDeliveryTimesByRegion();
+
+        // from google analytics
+        $from = date('Y-m-d', strtotime(static::PHP_1_DAY_AGO));
+        $to = $from;
+
+        $calculations->pageviews = $this->getGoogleAnalyticsService()
+                                        ->getPageviews($from, $to);
+        $calculations->uniquePageviews = $this->getGoogleAnalyticsService()
+                                              ->getUniquePageviews($from, $to);
+
+        // KPI
+        $dayOfWeek = date('N', strtotime(static::PHP_1_DAY_AGO));
+        $monthOfYear = date('n', strtotime(static::PHP_1_DAY_AGO));
+
+        $calculations->kpiIncome = number_format($this->kpiMap[$dayOfWeek] * $this->kpiIncomeMap[$monthOfYear], 2, '.', '');
+        $calculations->kpiSuccessfulOrders = round($this->kpiMap[$dayOfWeek] * $this->kpiOrdersMap[$monthOfYear]);
+        $calculations->kpiAverageCartSize = number_format($this->kpiCartSizeMap[$monthOfYear], 2, '.', '');
+        $calculations->kpiAverageDeliveryTime = $this->kpiDeliveryMap[$monthOfYear];
+
+        // result
+        return $calculations;
     }
 
     public function setConnection(Connection $connection)
