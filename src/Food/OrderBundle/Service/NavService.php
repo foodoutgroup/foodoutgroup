@@ -908,7 +908,7 @@ class NavService extends ContainerAware
 
     public function didOrderPlaceChange($orderNo)
     {
-        $this->container->get('food.mssql')
+        $this->container->get('food.mssql');
 
         $query = sprintf('
             SELECT
