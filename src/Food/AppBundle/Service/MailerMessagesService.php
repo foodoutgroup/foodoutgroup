@@ -99,6 +99,8 @@ class MailerMessagesService extends MailerRestBaseService
 
     public function resetVariables() {
         $this->variables = array();
+
+        return $this;
     }
 
     public function setVariable( $name, $value ) {
