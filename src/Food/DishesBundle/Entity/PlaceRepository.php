@@ -250,7 +250,7 @@ class PlaceRepository extends EntityRepository
                     AND ((p.navision=1 AND p.recommended = 1) OR p.recommended = 1)
                     AND p.deleted_at IS NULL
                     {$otherFilters}
-                ORDER BY p.navision DESC
+                ORDER BY p.navision DESC, RAND()
                 LIMIT 5";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
