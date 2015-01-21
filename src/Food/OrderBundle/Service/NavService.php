@@ -715,7 +715,7 @@ class NavService extends ContainerAware
             $r = \Maybe($response);
 
             // correct logic is when $response->return_value === 0
-            if (!($r->return_value->val('') === 0)) {
+            if (!($r->return_value->val('') == 0)) {
                 throw new \SoapFault((string) $r->return_value->val(''),
                                      'Soap call "FoodOutCreateInvoice" didn\'t return 0. Parameters used: ' . var_export($params, true));
             }
