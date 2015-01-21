@@ -10,18 +10,56 @@ use Food\AppBundle\Service\GoogleAnalyticsService;
 
 class WeeklyReport extends ContainerAware
 {
+    const PHP_1_DAY_AGO = '-1 day';
+    const PHP_7_DAYS_AGO = '-7 day';
+    const MYSQL_7_DAYS_AGO = 'SUBDATE(CURRENT_DATE, 7)';
+    const MYSQL_0_DAYS_AGO = 'SUBDATE(CURRENT_DATE, 0)';
+
     protected $connection;
     protected $weeklyReportEmails;
     protected $output;
     protected $tableHelper;
     protected $googleAnalyticsService;
     protected $templating;
+    protected $kpiMap = [
+        '1' => 0.8,
+        '2' => 0.8,
+        '3' => 0.8,
+        '4' => 1.0,
+        '5' => 1.3,
+        '6' => 1.3,
+        '7' => 1.0
+    ];
+    protected $kpiPlacesMap = [
+        '1' => 83,
+        '2' => 92,
+        '3' => 101
+    ];
+    protected $kpiIncomeMap = [
+        '1' => 6704,
+        '2' => 6921,
+        '3' => 7955
+    ];
+    protected $kpiOrdersMap = [
+        '1' => 564,
+        '2' => 583,
+        '3' => 670
+    ];
+    protected $kpiCartSizeMap = [
+        '1' => 11.8,
+        '2' => 11.8,
+        '3' => 11.8
+    ];
+    protected $kpiDeliveryMap = [
+        '1' => 60,
+        '2' => 60,
+        '3' => 60
+    ];
 
-    public $sqlMap = [
+    protected $sqlMap = [
         'income' => 'SELECT IFNULL(SUM(o.total), 0.0) AS result',
         'successful_orders' => 'SELECT IFNULL(COUNT(*), 0) AS result',
-        'average_cart' => 'SELECT IFNULL(AVG(o.total), 0.0) AS result',
-        'average_delivery' => 'SELECT AVG(TIMESTAMPDIFF(MINUTE, o.submitted_for_payment, o.delivery_time)) AS result'
+        'average_cart' => 'SELECT IFNULL(AVG(o.total), 0.0) AS result'
     ];
 
     public function sendWeeklyReport($forceEmail, $notDryRun)
@@ -30,48 +68,14 @@ class WeeklyReport extends ContainerAware
             $this->getOutput()->writeln('<bg=yellow;fg=white>This is dry run. No emails will be sent.</bg=yellow;fg=white>');
         }
 
-        $places = $this->getNumberOfPlacesFromLastWeek();
-        $income = $this->getWeeklyDataFor('income');
-        $successfulOrders = $this->getWeeklyDataFor('successful_orders');
-        $averageCartSize = round($this->getWeeklyDataFor('average_cart'), 2);
-        $averageDeliveryTime = round($this->getWeeklyDataFor('average_delivery'));
-
-        // stuff from google analytics
-        $from = date('Y-m-d', strtotime('-7 day'));
-        $to = date('Y-m-d', strtotime('-1 day'));
-
-        $pageviews = $this->getGoogleAnalyticsService()
-                          ->getPageviews($from, $to);
-        $uniquePageviews = $this->getGoogleAnalyticsService()
-                                ->getUniquePageviews($from, $to);
-
-        // output some data
-        $this->getTableHelper()->setHeaders(['Metric', 'Value']);
-        $this->getTableHelper()->setRows([
-            ['Number of places', sprintf('<fg=cyan>%s</fg=cyan>', $places)],
-            ['Income', sprintf('<fg=cyan>€ %s</fg=cyan>', $income)],
-            ['Number of successful orders', sprintf('<fg=cyan>%s</fg=cyan>', $successfulOrders)],
-            ['Price of average cart', sprintf('<fg=cyan>€ %s</fg=cyan>', $averageCartSize)],
-            ['Average delivery time', sprintf('<fg=cyan>%s mins</fg=cyan>', $averageDeliveryTime)],
-            ['Pageviews', sprintf('<fg=cyan>%s views</fg=cyan>', $pageviews)],
-            ['Unique pageviews', sprintf('<fg=cyan>%s views</fg=cyan>', $uniquePageviews)]
-        ]);
-
-        $this->getOutput()->writeln('Last week we had:');
-        $this->getTableHelper()->render($this->getOutput());
-
         if (!$notDryRun) {
             return [false, '<fg=green>Dry run was successful.</fg=green>'];
         }
 
+        $calculations = $this->getCalculations();
+
         $title = $this->getWeeklyMailTitle();
-        $content = $this->getWeeklyMailContent($places,
-                                               $income,
-                                               $successfulOrders,
-                                               $averageCartSize,
-                                               $averageDeliveryTime,
-                                               $pageviews,
-                                               $uniquePageviews);
+        $content = $this->getWeeklyMailContent($calculations);
 
         return $this->sendWeeklyMails($forceEmail,
                                       $this->getWeeklyReportEmails(),
@@ -97,31 +101,112 @@ class WeeklyReport extends ContainerAware
         return $result['result'];
     }
 
+    public function getWeeklyDeliveryTime()
+    {
+        $query = '
+            SELECT AVG(IF(TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date)<180,
+                       TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date),
+                       60)) AS result
+            FROM orders o
+            INNER JOIN (
+                SELECT *
+                FROM order_status_log
+                GROUP BY
+                    order_id,
+                    new_status
+                HAVING new_status = \'completed\'
+                ORDER BY event_date DESC
+            ) osl ON osl.order_id = o.id
+            INNER JOIN (
+                SELECT *
+                FROM order_status_log
+                GROUP BY
+                    order_id,
+                    new_status
+                HAVING new_status = \'assigned\'
+                ORDER BY event_date DESC
+            ) osl2 ON osl2.order_id = o.id
+            WHERE
+                o.order_status = \'completed\' AND
+                o.payment_status = \'complete\' AND
+                DATE(o.order_date) >= ' . static::MYSQL_7_DAYS_AGO . ' AND
+                DATE(o.order_date) < ' . static::MYSQL_0_DAYS_AGO . ' AND
+                osl.event_date IS NOT NULL AND
+                o.delivery_type = \'deliver\' AND
+                osl.source != \'auto_close_order_command\' AND
+                o.place_point_self_delivery = 0';
+
+        $stmt = $this->getConnection()->prepare($query);
+        $stmt->execute();
+
+        $result = $stmt->fetch();
+
+        return $result['result'];
+    }
+
+    public function getWeeklyDeliveryTimesByRegion()
+    {
+        $query = '
+            SELECT
+                o.place_point_city,
+                AVG(IF(TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date)<180,
+                       TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date),
+                       60)) AS result
+            FROM orders o
+            INNER JOIN (
+                SELECT *
+                FROM order_status_log
+                GROUP BY
+                    order_id,
+                    new_status
+                HAVING new_status = \'completed\'
+                ORDER BY event_date DESC
+            ) osl ON osl.order_id = o.id
+            INNER JOIN (
+                SELECT *
+                FROM order_status_log
+                GROUP BY
+                    order_id,
+                    new_status
+                HAVING new_status = \'assigned\'
+                ORDER BY event_date DESC
+            ) osl2 ON osl2.order_id = o.id
+            WHERE
+                o.order_status = \'completed\' AND
+                o.payment_status = \'complete\' AND
+                DATE(o.order_date) >= ' . static::MYSQL_7_DAYS_AGO . ' AND
+                DATE(o.order_date) < ' . static::MYSQL_0_DAYS_AGO . ' AND
+                osl.event_date IS NOT NULL AND
+                o.delivery_type = \'deliver\' AND
+                osl.source != \'auto_close_order_command\' AND
+                o.place_point_self_delivery = 0
+            GROUP BY o.place_point_city
+            ORDER BY o.place_point_city DESC';
+
+        $stmt = $this->getConnection()->prepare($query);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
     public function getWeeklyMailTitle()
     {
         return sprintf('Weekly Foodout.lt report for %s to %s',
-                       date('Y-m-d', strtotime('-7 day')),
-                       date('Y-m-d', strtotime('-1 day')));
+                       date('Y-m-d', strtotime(static::PHP_7_DAYS_AGO)),
+                       date('Y-m-d', strtotime(static::PHP_1_DAY_AGO)));
     }
 
-    public function getWeeklyMailContent($places,
-                                         $income,
-                                         $successfulOrders,
-                                         $averageCartSize,
-                                         $averageDeliveryTime,
-                                         $pageviews,
-                                         $uniquePageviews)
+    public function getWeeklyMailContent(\StdClass $params)
     {
         $template = 'FoodOrderBundle:WeeklyReport:email.html.twig';
-        $data = [
-            'places' => $places,
-            'income' => $income,
-            'successfulOrders' => $successfulOrders,
-            'averageCartSize' => $averageCartSize,
-            'averageDeliveryTime' => $averageDeliveryTime,
-            'pageviews' => $pageviews,
-            'uniquePageviews' => $uniquePageviews
-        ];
+        $data = [];
+        $paramsList = get_object_vars($params);
+
+        foreach ($paramsList as $key => $value) {
+            $data[$key] = $value;
+        }
 
         return $this->getTemplating()->render($template, $data);
     }
@@ -135,7 +220,7 @@ class WeeklyReport extends ContainerAware
         $emails = !empty($forceEmail) ? [$forceEmail] : $weeklyReportEmails;
 
         foreach ($emails as $email) {
-            $headers = 'Content-Type: text/html;charset=utf-8';
+            $headers = "Content-Type: text/html;charset=utf-8\r\nFrom: info@foodout.lt";
             $mailSent = @mail($email, $title, $content, $headers) && $mailSent;
         }
 
@@ -146,11 +231,9 @@ class WeeklyReport extends ContainerAware
 
     public function getWeeklyDataFor($metric)
     {
-        $query = $this->getWeeklyReportQuery($this->sqlMap[$metric]);
+        $query = $this->getWeeklyReportQuery($metric);
 
         $stmt = $this->getConnection()->prepare($query);
-        $stmt->bindValue(1, 'completed');
-        $stmt->bindValue(2, 'complete');
         $stmt->execute();
 
         $result = $stmt->fetch();
@@ -158,19 +241,65 @@ class WeeklyReport extends ContainerAware
         return $result['result'];
     }
 
-    public function getWeeklyReportQuery($partialSql)
+    public function getWeeklyReportQuery($metric)
     {
+        $partialSql = $this->sqlMap[$metric];
+
         $query = '
             %s
             FROM orders o
+            INNER JOIN (
+                SELECT *
+                FROM order_status_log
+                GROUP BY
+                    order_id,
+                    new_status
+                HAVING new_status = \'completed\'
+                ORDER BY event_date DESC
+            ) osl ON osl.order_id = o.id
             WHERE
-                o.order_status = ? AND
-                o.payment_status = ? AND
-                DATE(o.order_date) >= SUBDATE(CURRENT_DATE, 7) AND
-                DATE(o.order_date) < CURRENT_DATE
+                o.order_status = \'completed\' AND
+                o.payment_status = \'complete\' AND
+                DATE(o.order_date) >= ' . static::MYSQL_7_DAYS_AGO . ' AND
+                DATE(o.order_date) < ' . static::MYSQL_0_DAYS_AGO . ' AND
+                osl.event_date IS NOT NULL
         ';
 
         return sprintf($query, $partialSql);
+    }
+
+    public function getCalculations()
+    {
+        // local
+        $calculations = new \StdClass();
+        $calculations->places = $this->getNumberOfPlacesFromLastWeek();
+        $calculations->income = $this->getWeeklyDataFor('income');
+        $calculations->successfulOrders = $this->getWeeklyDataFor('successful_orders');
+        $calculations->averageCartSize = number_format($this->getWeeklyDataFor('average_cart'), 2, '.', '');
+        $calculations->averageDeliveryTime = round($this->getWeeklyDeliveryTime());
+        $calculations->averageDeliveryTimeByRegion = $this->getWeeklyDeliveryTimesByRegion();
+
+        // from google analytics
+        $from = date('Y-m-d', strtotime(static::PHP_7_DAYS_AGO));
+        $to = date('Y-m-d', strtotime(static::PHP_1_DAY_AGO));
+
+        $calculations->pageviews = $this->getGoogleAnalyticsService()
+                                        ->getPageviews($from, $to);
+        $calculations->uniquePageviews = $this->getGoogleAnalyticsService()
+                                              ->getUniquePageviews($from, $to);
+
+        // KPI
+        $dayOfWeek = date('N', strtotime(static::PHP_7_DAYS_AGO));
+        $monthOfYear = date('n', strtotime(static::PHP_7_DAYS_AGO));
+
+        $calculations->kpiPlaces = $this->kpiPlacesMap[$monthOfYear];
+        $calculations->kpiIncome = number_format(7 * $this->kpiMap[$dayOfWeek] * $this->kpiIncomeMap[$monthOfYear], 2, '.', '');
+        $calculations->kpiSuccessfulOrders = round(7 * $this->kpiMap[$dayOfWeek] * $this->kpiOrdersMap[$monthOfYear]);
+        $calculations->kpiAverageCartSize = number_format($this->kpiCartSizeMap[$monthOfYear], 2, '.', '');
+        $calculations->kpiAverageDeliveryTime = $this->kpiDeliveryMap[$monthOfYear];
+
+        // result
+        return $calculations;
     }
 
     public function setConnection(Connection $connection)

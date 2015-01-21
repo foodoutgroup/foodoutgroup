@@ -170,6 +170,12 @@ class MailerMessagesService extends MailerRestBaseService
         return $this;
     }
 
+    public function removeAttachments() {
+        $this->attachments = array();
+
+        return $this;
+    }
+
     public function send() {
 
         $data = array(

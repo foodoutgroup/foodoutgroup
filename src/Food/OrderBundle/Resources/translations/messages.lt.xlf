@@ -130,6 +130,10 @@
                 <source>daily_report.value</source>
                 <target>Reikšmė</target>
             </trans-unit>
+            <trans-unit id="daily_report.kpi_metric" resname="daily_report.kpi_metric">
+                <source>daily_report.kpi_metric</source>
+                <target>KPI metrika</target>
+            </trans-unit>
             <trans-unit id="daily_report.income" resname="daily_report.income">
                 <source>daily_report.income</source>
                 <target>Pajamos</target>
@@ -153,6 +157,10 @@
             <trans-unit id="daily_report.unique_pageviews" resname="daily_report.unique_pageviews">
                 <source>daily_report.unique_pageviews</source>
                 <target>Unikalių lankytojų skaičius</target>
+            </trans-unit>
+            <trans-unit id="daily_report.city" resname="daily_report.city">
+                <source>daily_report.city</source>
+                <target>Regionas</target>
             </trans-unit>
             <trans-unit id="weekly_report.places" resname="weekly_report.places">
                 <source>weekly_report.places</source>
