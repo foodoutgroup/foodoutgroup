@@ -58,6 +58,11 @@ class NavService extends ContainerAware
     private $posTransactionLinesTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$POS Trans_ Line]';
 
     private $deliveryOrderStatusTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery order status]';
+
+    private $contractTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Contract]';
+
+    private $customerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Customer]';
+
     
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
@@ -130,6 +135,24 @@ class NavService extends ContainerAware
     {
         return $this->deliveryOrderStatusTable;
     }
+
+    /**
+     * @return string
+     */
+    public function getContractTable()
+    {
+        return $this->contractTable;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerTable()
+    {
+        return $this->customerTable;
+    }
+
+
 
     /**
      * @return false|resource
@@ -1322,9 +1345,16 @@ class NavService extends ContainerAware
                  WHERE
                     [ORDER No_] = dOrder.[Order No_]
                  ORDER BY [TIME] DESC
-                 ) AS OrderStatus
+                 ) AS OrderStatus,
+                 cCustomer.[Name] AS CustomerName,
+                 cCustomer.[Address] AS CustomerAddress,
+                 cCustomer.[VAT Registration No_] AS CustomerVatNo,
+                 cCustomer.[E-mail] AS CustomerEmail,
+                 cCustomer.[Registration No_] AS CustomerRegNo
             FROM %s dOrder
             LEFT JOIN %s pTrans ON pTrans.[Receipt No_] = dOrder.[Order No_]
+            LEFT JOIN %s cContract ON cContract.[Contract Register No_] = dOrder.[Contract Register No_]
+            LEFT JOIN %s cCustomer ON cCustomer.[No_] = cContract.[Customer No_]
             WHERE
                 dOrder.[Date Created] >= '%s'
                 AND dOrder.[Time Created] >= '%s'
@@ -1340,6 +1370,8 @@ class NavService extends ContainerAware
             $this->getDeliveryOrderStatusTable(),
             $this->getDeliveryOrderTable(),
             $this->getPosTransactionLinesTable(),
+            $this->getContractTable(),
+            $this->getCustomerTable(),
             date('Y-m-d'),
             '1754-01-01 '.date("H:i:s", strtotime('-2 hour')),
             "'Vilnius', 'Kaunas', 'Klaipeda'"
