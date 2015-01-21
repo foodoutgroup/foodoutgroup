@@ -715,12 +715,16 @@ class NavService extends ContainerAware
 
             $r = \Maybe($response);
 
-            // correct logic is when $response->return_value === 0
+            // correct logic is when $response->return_value == 0
             if (!($r->return_value->val('') == 0)) {
                 throw new \SoapFault((string) $r->return_value->val(''),
                                      'Soap call "FoodOutCreateInvoice" didn\'t return 0. Parameters used: ' . var_export($params, true));
             }
         } catch (\SoapFault $e) {
+            if (preg_match('/The Foodout Invoice already exists\./', $e->getMessage())) {
+                return true;
+            }
+
             $event = new SoapFaultEvent($e);
 
             $this->getContainer()
@@ -730,7 +734,7 @@ class NavService extends ContainerAware
 
         $r = \Maybe($response);
 
-        return $r->return_value->val('') === 0 ? true : false;
+        return $r->return_value->val('') == 0 ? true : false;
     }
 
     /**
