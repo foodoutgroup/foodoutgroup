@@ -84,7 +84,7 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                     // mark error (for historical reasons)
                     // but please _DO NOT_ mark it unsent!
                     $orderToSend->markError()
-                        ->setLastError($e->getMessage());
+                                ->setLastError($e->getMessage());
 
                     $em->persist($orderToSend);
                     $em->flush();
@@ -107,7 +107,7 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                                         ->getInvoiceToSendNavOnly();
 
             foreach ($invoicesToSendNavOnly as $invoice) {
-                $this->sendNavInvoice($invoice->getOrder());
+                $success = $this->sendNavInvoice($invoice->getOrder(), $invoice);
             }
         }
     }
@@ -126,6 +126,8 @@ class InvoiceToSendCommand extends ContainerAwareCommand
             $invoiceToSendNavOnly->setOrder($order)
                                  ->setDateAdded(new \DateTime('now'))
                                  ->setDateSent(new \DateTime('now'));
+
+            $em->persist($invoiceToSendNavOnly);
         } else {
             $invoiceToSendNavOnly = $invoice;
             $invoiceToSendNavOnly->setDateSent(new \DateTime('now'));
@@ -133,11 +135,17 @@ class InvoiceToSendCommand extends ContainerAwareCommand
 
         if ($success) {
             $invoiceToSendNavOnly->markSent();
+            $em->flush();
         } else {
-            $invoiceToSendNavOnly->markUnsent();
+            $invoiceToSendNavOnly->markError();
+
+            $newInvoice = clone $invoiceToSendNavOnly;
+            $newInvoice->markUnsent();
+
+            $em->persist($newInvoice);
+            $em->flush();
         }
 
-        $em->persist($invoiceToSendNavOnly);
-        $em->flush();
+        return $success;
     }
 }
