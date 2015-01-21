@@ -12,6 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\OrderBundle\Common;
 use Food\OrderBundle\Service\NavService\OrderDataForNavDecorator;
 use Food\OrderBundle\Service\Events\SoapFaultEvent;
+use Food\OrderBundle\Entity\InvoiceToSendNavOnly;
 
 class NavService extends ContainerAware
 {
@@ -715,7 +716,7 @@ class NavService extends ContainerAware
             $r = \Maybe($response);
 
             // correct logic is when $response->return_value === 0
-            if (!($r->return_value->val('') === 0)) {
+            if (!($r->return_value->val('') == 0)) {
                 throw new \SoapFault((string) $r->return_value->val(''),
                                      'Soap call "FoodOutCreateInvoice" didn\'t return 0. Parameters used: ' . var_export($params, true));
             }
@@ -1422,5 +1423,41 @@ class NavService extends ContainerAware
         }
 
         return $driver[0];
+    }
+
+    public function sendNavInvoice($order, $invoice = null)
+    {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+
+        // call SOAP
+        $success = $this->createInvoice($order);
+
+        // create sent/error entry for this nav invoice to send
+        if (is_null($invoice)) {
+            $invoiceToSendNavOnly = new InvoiceToSendNavOnly();
+            $invoiceToSendNavOnly->setOrder($order)
+                                 ->setDateAdded(new \DateTime('now'))
+                                 ->setDateSent(new \DateTime('now'));
+
+            $em->persist($invoiceToSendNavOnly);
+        } else {
+            $invoiceToSendNavOnly = $invoice;
+            $invoiceToSendNavOnly->setDateSent(new \DateTime('now'));
+        }
+
+        if ($success) {
+            $invoiceToSendNavOnly->markSent();
+            $em->flush();
+        } else {
+            $invoiceToSendNavOnly->markError();
+
+            $newInvoice = clone $invoiceToSendNavOnly;
+            $newInvoice->markUnsent();
+
+            $em->persist($newInvoice);
+            $em->flush();
+        }
+
+        return $success;
     }
 }
