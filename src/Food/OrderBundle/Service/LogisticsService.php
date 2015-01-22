@@ -350,13 +350,18 @@ class LogisticsService extends ContainerAware
 
     /**
      * @param Driver[] $drivers
+     * @param array|null $deleted
      * @return string
      */
-    public function generateDriverXml($drivers)
+    public function generateDriverXml($drivers, $deleted = null)
     {
         $writer = $this->getDefaultXmlWriter();
 
         $writer->startElement('Drivers');
+
+        if (!empty($deleted) && is_array($deleted)) {
+            $drivers = $drivers+$deleted;
+        }
 
         foreach ($drivers as $driver) {
             $writer->startElement('Driver');
