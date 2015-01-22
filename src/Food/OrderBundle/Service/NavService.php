@@ -701,7 +701,7 @@ class NavService extends ContainerAware
                    'VATRegistrationNo' => $o->getVATCode()->val(''),
                    'DeliveryAddress' => $o->getAddressId()->getAddress()->val(''),
                    'City' => $o->getPlacePointCity()->val(''),
-                   'PaymentType' => $paymentType,
+                   'PaymentType' => substr($paymentType, 0, 20),
                    'PaymentCode' => $paymentCode,
                    'FoodAmount' => number_format($foodTotal, 2, '.', ''),
                    'AlcoholAmount' => number_format(0.0, 2, '.', ''),
