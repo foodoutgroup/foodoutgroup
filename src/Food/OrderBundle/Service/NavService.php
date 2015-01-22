@@ -917,7 +917,7 @@ class NavService extends ContainerAware
             return [];
         }
 
-        $this->container->get('food.mssql');
+        $mssql = $this->container->get('food.mssql');
 
         $query = sprintf('
             SELECT
