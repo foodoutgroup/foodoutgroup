@@ -57,9 +57,9 @@ class WeeklyReport extends ContainerAware
     ];
 
     protected $sqlMap = [
-        'income' => 'SELECT IFNULL(SUM(o.total), 0.0) AS result',
+        'income' => 'SELECT IFNULL(SUM(o.total - IFNULL(o.delivery_price, 0)), 0.0) AS result',
         'successful_orders' => 'SELECT IFNULL(COUNT(*), 0) AS result',
-        'average_cart' => 'SELECT IFNULL(AVG(o.total), 0.0) AS result'
+        'average_cart' => 'SELECT IFNULL(AVG(o.total - IFNULL(o.delivery_price, 0)), 0.0) AS result'
     ];
 
     public function sendWeeklyReport($forceEmail, $notDryRun)
@@ -273,7 +273,7 @@ class WeeklyReport extends ContainerAware
         // local
         $calculations = new \StdClass();
         $calculations->places = $this->getNumberOfPlacesFromLastWeek();
-        $calculations->income = $this->getWeeklyDataFor('income');
+        $calculations->income = number_format($this->getWeeklyDataFor('income'), 2, '.', '');
         $calculations->successfulOrders = $this->getWeeklyDataFor('successful_orders');
         $calculations->averageCartSize = number_format($this->getWeeklyDataFor('average_cart'), 2, '.', '');
         $calculations->averageDeliveryTime = round($this->getWeeklyDeliveryTime());
@@ -293,8 +293,8 @@ class WeeklyReport extends ContainerAware
         $monthOfYear = date('n', strtotime(static::PHP_7_DAYS_AGO));
 
         $calculations->kpiPlaces = $this->kpiPlacesMap[$monthOfYear];
-        $calculations->kpiIncome = number_format(7 * $this->kpiMap[$dayOfWeek] * $this->kpiIncomeMap[$monthOfYear], 2, '.', '');
-        $calculations->kpiSuccessfulOrders = round(7 * $this->kpiMap[$dayOfWeek] * $this->kpiOrdersMap[$monthOfYear]);
+        $calculations->kpiIncome = number_format(7 * $this->kpiIncomeMap[$monthOfYear], 2, '.', '');
+        $calculations->kpiSuccessfulOrders = round(7 * $this->kpiOrdersMap[$monthOfYear]);
         $calculations->kpiAverageCartSize = number_format($this->kpiCartSizeMap[$monthOfYear], 2, '.', '');
         $calculations->kpiAverageDeliveryTime = $this->kpiDeliveryMap[$monthOfYear];
 
