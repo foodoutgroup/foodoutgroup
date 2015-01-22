@@ -939,7 +939,7 @@ class NavService extends ContainerAware
 
         $result = $this->initSqlConn()->query($query);
 
-        if( $result === false) {
+        if ($result === false) {
             return [];
         }
 
