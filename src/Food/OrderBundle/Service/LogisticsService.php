@@ -369,17 +369,17 @@ class LogisticsService extends ContainerAware
             $writer->endElement();
         }
 
-//        if (!empty($deleted) && is_array($deleted)) {
-//            foreach ($deleted as $driver) {
-//                $writer->startElement('Driver');
-//                $writer->writeElement('Id', $driver->getId());
-//                $writer->writeElement('Phone', $driver->getPhone());
-//                $writer->writeElement('Name', $driver->getName());
-//                $writer->writeElement('City', $driver->getCity());
-//                $writer->writeElement('Active', 'N');
-//                $writer->endElement();
-//            }
-//        }
+        if (!empty($deleted) && is_array($deleted)) {
+            foreach ($deleted as $driver) {
+                $writer->startElement('Driver');
+                $writer->writeElement('Id', $driver['id']);
+                $writer->writeElement('Phone', $driver['phone']);
+                $writer->writeElement('Name', $driver['name']);
+                $writer->writeElement('City', $driver['city']);
+                $writer->writeElement('Active', 'N');
+                $writer->endElement();
+            }
+        }
 
         // End drivers block
         $writer->endElement();
