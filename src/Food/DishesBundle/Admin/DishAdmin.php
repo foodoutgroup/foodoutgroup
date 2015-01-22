@@ -169,14 +169,12 @@ class DishAdmin extends FoodAdmin
             ->addIdentifier('name', 'string', array('label' => 'admin.dish.name'))
             ->add('place')
             ->add('categories')
-        /*
             ->add('image', 'string', array(
                 'template' => 'FoodDishesBundle:Default:list_image.html.twig',
                 'label' => 'admin.dish.photo'
             ))
-        */
             ->add('options')
-        //    ->add('sizes', 'string', array('template' => 'FoodDishesBundle:Default:list_admin_list_sizes.html.twig'))
+            ->add('sizes', 'string', array('template' => 'FoodDishesBundle:Default:list_admin_list_sizes.html.twig'))
             ->add('discountPricesEnabled', null, array('label' => 'admin.dish.discount_prices_enabled', 'editable' => true))
             ->add('recomended', null, array('label' => 'admin.dish.recomended_list', 'editable' => true))
             ->add('active', null, array('label' => 'admin.dish.active_list', 'editable' => true))
