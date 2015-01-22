@@ -701,7 +701,7 @@ class NavService extends ContainerAware
                    'VATRegistrationNo' => $o->getVATCode()->val(''),
                    'DeliveryAddress' => $o->getAddressId()->getAddress()->val(''),
                    'City' => $o->getPlacePointCity()->val(''),
-                   'PaymentType' => $paymentType,
+                   'PaymentType' => substr($paymentType, 0, 20),
                    'PaymentCode' => $paymentCode,
                    'FoodAmount' => number_format($foodTotal, 2, '.', ''),
                    'AlcoholAmount' => number_format(0.0, 2, '.', ''),
@@ -1250,7 +1250,7 @@ class NavService extends ContainerAware
             case 'local.card':
                 return 'CC';
             case 'paysera':
-                return 'BANK_PAYSERA';
+                return 'BANK_PAYSE';
             case 'swedbank-gateway':
                 return 'BANK_SWED';
             case 'swedbank-credit-card-gateway':
