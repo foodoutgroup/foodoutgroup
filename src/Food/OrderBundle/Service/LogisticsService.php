@@ -370,7 +370,7 @@ class LogisticsService extends ContainerAware
         }
 
         if (!empty($deleted) && is_array($deleted)) {
-            foreach ($drivers as $driver) {
+            foreach ($deleted as $driver) {
                 $writer->startElement('Driver');
                 $writer->writeElement('Id', $driver->getId());
                 $writer->writeElement('Phone', $driver->getPhone());
