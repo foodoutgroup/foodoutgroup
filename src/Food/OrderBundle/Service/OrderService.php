@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\OptimisticLockException;
 use Food\AppBundle\Entity\Driver;
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Dish;
@@ -652,8 +653,16 @@ class OrderService extends ContainerAware
         if (empty($orderSeries) || empty($orderSfNumber)) {
             $miscService = $this->container->get('food.app.utils.misc');
 
-            $sfNumber = (int)$miscService->getParam('sf_next_number');
-            $miscService->setParam('sf_next_number', ($sfNumber + 1));
+            try {
+                $sfNumber = (int)$miscService->getParam('sf_next_number');
+                $miscService->setParam('sf_next_number', ($sfNumber + 1));
+            } catch (OptimisticLockException $e) {
+                sleep(1);
+                $sfNumber = (int)$miscService->getParam('sf_next_number');
+                $miscService->setParam('sf_next_number', ($sfNumber + 1));
+
+                $this->container->get('logger')->alert('--- Had problems receiving SF number');
+            }
 
             $order->setSfSeries($this->container->getParameter('invoice.series'));
             $order->setSfNumber($sfNumber);
