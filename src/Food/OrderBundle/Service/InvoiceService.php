@@ -264,11 +264,11 @@ class InvoiceService extends ContainerAware
             }
 
             // TODO - panaikinti debugini siuntima...
-            $ml->setVariables($variables)
-                ->setRecipient('mantas@foodout.lt', 'mantas@foodout.lt')
-                ->addAttachment($fileName, file_get_contents($file))
-                ->setId(30019657)
-                ->send();
+//            $ml->setVariables($variables)
+//                ->setRecipient('mantas@foodout.lt', 'mantas@foodout.lt')
+//                ->addAttachment($fileName, file_get_contents($file))
+//                ->setId(30019657)
+//                ->send();
         }
 
         return $emails;

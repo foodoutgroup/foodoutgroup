@@ -38,7 +38,7 @@ class DriverRepository extends EntityRepository
         SELECT d.*
         FROM `drivers` d
         WHERE
-          d.deleted_at >= "'.date("Y-m-d 00:00:01", strtotime('-2 week')).'"
+          d.deleted_at >= "'.date("Y-m-d 00:00:01", strtotime('-3 month')).'"
         ';
 
         $stmt = $this->getEntityManager()->getConnection()
