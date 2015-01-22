@@ -359,10 +359,6 @@ class LogisticsService extends ContainerAware
 
         $writer->startElement('Drivers');
 
-        if (!empty($deleted) && is_array($deleted)) {
-            $drivers = $drivers+$deleted;
-        }
-
         foreach ($drivers as $driver) {
             $writer->startElement('Driver');
             $writer->writeElement('Id', $driver->getId());
@@ -371,6 +367,18 @@ class LogisticsService extends ContainerAware
             $writer->writeElement('City', $driver->getCity());
             $writer->writeElement('Active', ($driver->getActive() ? 'Y' : 'N'));
             $writer->endElement();
+        }
+
+        if (!empty($deleted) && is_array($deleted)) {
+            foreach ($drivers as $driver) {
+                $writer->startElement('Driver');
+                $writer->writeElement('Id', $driver->getId());
+                $writer->writeElement('Phone', $driver->getPhone());
+                $writer->writeElement('Name', $driver->getName());
+                $writer->writeElement('City', $driver->getCity());
+                $writer->writeElement('Active', 'N');
+                $writer->endElement();
+            }
         }
 
         // End drivers block
