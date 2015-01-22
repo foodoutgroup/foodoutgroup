@@ -542,7 +542,9 @@ class OrderService extends ContainerAware
         }
         
         // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
-        if ($order->getPlace()->getSendInvoice()) {
+        if ($order->getPlace()->getSendInvoice()
+            && !$order->getPlacePointSelfDelivery()
+            && !$order->getDeliveryType() == OrderService::$deliveryPickup) {
             $this->setInvoiceDataForOrder();
 
             // Suplanuojam sf siuntima klientui
@@ -651,10 +653,11 @@ class OrderService extends ContainerAware
             $miscService = $this->container->get('food.app.utils.misc');
 
             $sfNumber = (int)$miscService->getParam('sf_next_number');
+            $miscService->setParam('sf_next_number', ($sfNumber + 1));
+
             $order->setSfSeries($this->container->getParameter('invoice.series'));
             $order->setSfNumber($sfNumber);
 
-            $miscService->setParam('sf_next_number', ($sfNumber + 1));
 
             $this->saveOrder();
         }
@@ -1853,12 +1856,13 @@ class OrderService extends ContainerAware
             }
         }
 
-        if ($order->getPlace()->getNavision()) {
-            $notifyEmails = array_merge(
-                $notifyEmails,
-                $this->container->getParameter('admin.emails')
-            );
-        }
+        // Turn on only if debug needed
+//        if ($order->getPlace()->getNavision()) {
+//            $notifyEmails = array_merge(
+//                $notifyEmails,
+//                $this->container->getParameter('admin.emails')
+//            );
+//        }
 
         $this->addEmailsToMessage($message, $notifyEmails);
 
