@@ -1419,14 +1419,14 @@ class NavService extends ContainerAware
 
             $driver = $driverQueryBuilder->getQuery()->getResult();
 
-            if (empty($driver)) {
-                return $driver;
+            if (!empty($driver)) {
+                return $driver[0];
             } else {
                 return false;
             }
         }
 
-        return $driver[0];
+        return $driver;
     }
 
     public function sendNavInvoice($order, $invoice = null)
