@@ -51,9 +51,9 @@ class DailyReport extends ContainerAware
     ];
 
     protected $sqlMap = [
-        'income' => 'SELECT IFNULL(SUM(o.total), 0.0) AS result',
+        'income' => 'SELECT IFNULL(SUM(o.total - IFNULL(o.delivery_price, 0)), 0.0) AS result',
         'successful_orders' => 'SELECT IFNULL(COUNT(*), 0) AS result',
-        'average_cart' => 'SELECT IFNULL(AVG(o.total), 0.0) AS result'
+        'average_cart' => 'SELECT IFNULL(AVG(o.total - IFNULL(o.delivery_price, 0)), 0.0) AS result'
     ];
 
     public function sendDailyReport($forceEmail, $notDryRun)
@@ -247,7 +247,7 @@ class DailyReport extends ContainerAware
     {
         // local
         $calculations = new \StdClass();
-        $calculations->income = $this->getDailyDataFor('income');
+        $calculations->income = number_format($this->getDailyDataFor('income'), 2, '.', '');
         $calculations->successfulOrders = $this->getDailyDataFor('successful_orders');
         $calculations->averageCartSize = number_format($this->getDailyDataFor('average_cart'), 2, '.', '');
         $calculations->averageDeliveryTime = round($this->getDailyDeliveryTime());
