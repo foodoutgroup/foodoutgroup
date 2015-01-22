@@ -913,38 +913,43 @@ class NavService extends ContainerAware
 
     public function didOrderPlaceChange($orderNo)
     {
-        // $this->container->get('food.mssql');
+        if (empty($orderNo)) {
+            return [];
+        }
 
-        // $query = sprintf('
-        //     SELECT
-        //         woh.[Delivery Order No_],
-        //         do.[Order No_],
-        //         pt.[Receipt No_],
-        //         do.[Restaurant No_],
-        //         pt.[Store No_]
-        //     FROM %s woh
-        //     LEFT JOIN [skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery Order] do ON do.[Order No_] = woh.[Delivery Order No_]
-        //     LEFT JOIN [skamb_centras].[dbo].[Čilija Skambučių Centras$POS Transaction] pt ON pt.[Receipt No_] = do.[Order No_]
-        //     WHERE
-        //         do.[Restaurant No_] != pt.[Store No_] AND
-        //         pt.[Store No_] != \'ISC\' AND
-        //         woh.[Order No_] = %s
-        //     ORDER BY woh.[timestamp] DESC',
-        //     $this->getHeaderTable(),
-        //     $orderNo);
+        $this->container->get('food.mssql');
 
-        // $result = $this->initSqlConn()->query($query);
+        $query = sprintf('
+            SELECT
+                woh.[Delivery Order No_],
+                do.[Order No_],
+                pt.[Receipt No_],
+                do.[Restaurant No_],
+                pt.[Store No_]
+            FROM %s woh
+            LEFT JOIN [skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery Order] do ON do.[Order No_] = woh.[Delivery Order No_]
+            LEFT JOIN [skamb_centras].[dbo].[Čilija Skambučių Centras$POS Transaction] pt ON pt.[Receipt No_] = do.[Order No_]
+            WHERE
+                do.[Restaurant No_] != pt.[Store No_] AND
+                pt.[Store No_] != \'ISC\' AND
+                woh.[Order No_] = %s
+            ORDER BY woh.[timestamp] DESC',
+            $this->getHeaderTable(),
+            $orderNo);
 
-        // if( $result === false) {
-        //     return [];
-        // }
+        $result = $this->initSqlConn()->query($query);
 
-        // $resultList = [];
-        // while ($row = $mssql->fetchArray($result)) {
-        //     $resultList[$this->getOrderIdFromNavId($row['Order No_'])] = $row;
-        // }
+        if( $result === false) {
+            return [];
+        }
 
-        // return $resultList;
+        $resultList = [];
+        while ($row = $mssql->fetchArray($result)) {
+            $maybeRow = \Maybe($row);
+            $resultList[$this->getOrderIdFromNavId($maybeRow['Order No_']->val(''))] = $row;
+        }
+
+        return $resultList;
     }
 
     /*SELECT TOP 10 woh.[Delivery Order No_], do.[Order No_], pt.[Receipt No_], do.[Restaurant No_], pt.[Store No_]

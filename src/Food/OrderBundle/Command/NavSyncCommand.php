@@ -55,14 +55,16 @@ class NavSyncCommand extends ContainerAwareCommand
                         $orderData['Delivery Status']
                     ));
 
-                    // $orderPlaceChanged = $navService->didOrderPlaceChange($orderData['Order No)']);
+                    // check if place of order changed and do something about it
+                    $maybeOrderData = \Maybe($orderData);
 
-                    // if (!empty($orderPlaceChanged)) {
-                    //     // use $orderPlaceChanged['Store No_'] to set new place for $order
+                    $orderPlaceChanged = $navService->didOrderPlaceChange($maybeOrderData['Order No_']->val(''));
 
-                    //     // for now we will have only debug code
-                    //     mail('jonas.s@foodout.lt', 'nav moved place debug', var_export($orderPlaceChanged, true), 'FROM: info@foodout.lt');
-                    // }
+                    if (!empty($orderPlaceChanged)) {
+                        // use $orderPlaceChanged['Store No_'] to set new place for $order
+                        // for now we will have only debug code
+                        @mail('jonas.s@foodout.lt', 'nav moved place debug', var_export($orderPlaceChanged, true), 'FROM: info@foodout.lt');
+                    }
 
                     // Only update if not a dry-run
                     if (!$dryRun) {
