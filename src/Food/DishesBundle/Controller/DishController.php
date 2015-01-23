@@ -16,10 +16,19 @@ class DishController extends Controller
      */
     public function getDishAction($dish)
     {
+        $dishEnt = $this->getDoctrine()->getRepository('FoodDishesBundle:Dish')->find((int)$dish);
+        $sizeCount = sizeof($dishEnt->getSizes());
+        $selSize = 1;
+        if ($sizeCount == 3) {
+            $selSize = 2;
+        } elseif ($sizeCount == 4) {
+            $selSize = 3;
+        }
         return $this->render(
             'FoodDishesBundle:Dish:dish.html.twig',
             array(
-                'dish' => $this->getDoctrine()->getRepository('FoodDishesBundle:Dish')->find((int)$dish),
+                'dish' => $dishEnt,
+                'selectedSize' => $selSize,
                 'cart' => null
             )
         );
