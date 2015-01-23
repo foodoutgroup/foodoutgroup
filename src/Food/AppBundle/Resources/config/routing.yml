@@ -42,6 +42,10 @@ food_nav_list:
     pattern: /test/nav/list
     defaults: { _controller: FoodAppBundle:Test:listOrders }
 
+food_nav_migrator:
+    pattern: /test/migrator/{date}
+    defaults: { _controller: FoodAppBundle:Test:migrator, date: ~ }
+
 
 food_review_create:
     pattern: /place/review/{id}
