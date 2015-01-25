@@ -59,7 +59,9 @@ class NavService extends ContainerAware
     private $posTransactionLinesTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$POS Trans_ Line]';
 
     private $deliveryOrderStatusTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery order status]';
-    
+
+    private $invoiceTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Foodout Invoice]';
+
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
@@ -130,6 +132,11 @@ class NavService extends ContainerAware
     public function getDeliveryOrderStatusTable()
     {
         return $this->deliveryOrderStatusTable;
+    }
+
+    public function getInvoiceTable()
+    {
+        return $this->invoiceTable;
     }
 
     /**
@@ -670,7 +677,7 @@ class NavService extends ContainerAware
         // some calculations beforehand
         $total = $o->getTotal()->val(0.0);
         $discountTotal = $o->getDiscountSum()->val(0.0);
-        $deliveryTotal = $o->getPlace()->getDeliveryPrice()->val(0.0);
+        $deliveryTotal = $o->getDeliveryPrice()->val(0.0);
         $foodTotal = $total - $discountTotal - $deliveryTotal;
 
         // payment type and code preprocessing
@@ -1468,5 +1475,122 @@ class NavService extends ContainerAware
         }
 
         return $success;
+    }
+
+    public function selectNavInvoice(Order $order)
+    {
+        if (empty($order)) {
+            return false;
+        }
+
+        $mssql = $this->container->get('food.mssql');
+
+        $query = '
+            SELECT TOP 1
+                i.[Order ID],
+                i.[Invoice No_],
+                i.[Restaurant ID],
+                i.[Restaurant Name],
+                i.[Driver ID],
+                i.[Client Name],
+                i.[Registration No_],
+                i.[VAT Registration No_],
+                i.[Delivery Address],
+                i.[City],
+                i.[Payment Method Type],
+                i.[Payment Method Code],
+                i.[Food Amount With VAT],
+                i.[Alcohol Amount With VAT],
+                i.[Delivery Amount With VAT]
+            FROM %s i
+            WHERE i.[Order ID] = %s';
+        $query = sprintf($query, $this->getInvoiceTable(), $order->getId());
+
+        $result = $this->initTestSqlConn()->query($query);
+
+        if ($result === false) {
+            return null;
+        }
+
+        $row = (array)$mssql->fetchArray($result);
+
+        $resultList = [];
+
+        foreach ($row as $key => $value) {
+            if (is_numeric($key)) {
+                continue;
+            }
+
+            $resultList[$key] = iconv('cp1257', 'utf-8', $value);
+        }
+
+        return $resultList;
+    }
+
+    public function compareNavInvoiceWithOrder(array $navInvoice, Order $order)
+    {
+        if (empty($navInvoice) || empty($order)) {
+            return null;
+        }
+
+        $navInvoice['Food Amount With VAT'] = round($navInvoice['Food Amount With VAT'], 2);
+        $navInvoice['Alcohol Amount With VAT'] = round($navInvoice['Alcohol Amount With VAT'], 2);
+        $navInvoice['Delivery Amount With VAT'] = round($navInvoice['Delivery Amount With VAT'], 2);
+
+        $o = \Maybe($order);
+
+        $orderProperties = [
+            'Order ID' => $o->getId()->val(''),
+            'Invoice No_' => $o->getSfSeries()->val('') . $o->getSfNumber()->val(''),
+            'Restaurant ID' => $o->getPlace()->getId()->val(''),
+            'Restaurant Name' => $o->getPlaceName()->val(''),
+            'Driver ID' => $o->getDriver()->getId()->val(''),
+            'Client Name' => trim(preg_replace('#\s{2,}#', ' ', $o->getUser()->getFirstname()->val('') . ' ' . $o->getUser()->getLastname()->val(''))),
+            'Registration No_' => $o->getCompanyCode()->val(''),
+            'VAT Registration No_' => $o->getVatCode()->val(''),
+            'Delivery Address' => trim(preg_replace('#\s{2,}#', ' ', $o->getAddressId()->getAddress()->val(''))),
+            'City' => $o->getPlacePointCity()->val(''),
+            'Payment Method Type' => $o->getPaymentMethod()->val(''),
+            'Payment Method Code' => $o->getPaymentMethod()->val('') == 'local'
+                                     ? $o->getDriver()->getId()->val('')
+                                     : $this->convertPaymentType($o->getPaymentMethod()->val('')),
+            'Food Amount With VAT' => $o->getTotal()->val(0.0) - $o->getDeliveryPrice()->val(0.0),
+            'Alcohol Amount With VAT' => 0.0,
+            'Delivery Amount With VAT' => $o->getDeliveryPrice()->val('')
+        ];
+
+        $result = [
+            'sameData' => array_intersect_assoc($navInvoice, $orderProperties),
+            'invoiceHas' => array_diff_assoc($navInvoice, $orderProperties),
+            'orderHas' => array_diff_assoc($orderProperties, $navInvoice)
+        ];
+
+        return $result;
+    }
+
+    public function updateNavInvoice(Order $order, array $data)
+    {
+        if (empty($order) || empty($data)) {
+            return false;
+        }
+
+        $cols = [];
+
+        foreach ($data as $key => $value) {
+            $cols[] = sprintf("[%s] = '%s'", $key, str_replace('\'', '\\\'', $value));
+        }
+
+        $cols[] = sprintf('[ReplicationCounter] = (SELECT ISNULL(MAX(ReplicationCounter),0) FROM %s) + 1',
+                          $this->getInvoiceTable());
+
+        $query = 'UPDATE %s SET %s WHERE [Order ID] = %s';
+        $query = sprintf($query,
+                         $this->getInvoiceTable(),
+                         implode(', ', $cols),
+                         $order->getId());
+
+        $result = $this->initTestSqlConn()->query($query);
+
+        return $result;
     }
 }
