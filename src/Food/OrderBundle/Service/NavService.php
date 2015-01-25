@@ -1548,7 +1548,7 @@ class NavService extends ContainerAware
             'Client Name' => trim(preg_replace('#\s{2,}#', ' ', $o->getUser()->getFirstname()->val('') . ' ' . $o->getUser()->getLastname()->val(''))),
             'Registration No_' => $o->getCompanyCode()->val(''),
             'VAT Registration No_' => $o->getVatCode()->val(''),
-            'Delivery Address' => $o->getAddressId()->getAddress()->val(''),
+            'Delivery Address' => trim(preg_replace('#\s{2,}#', ' ', $o->getAddressId()->getAddress()->val(''))),
             'City' => $o->getPlacePointCity()->val(''),
             'Payment Method Type' => $o->getPaymentMethod()->val(''),
             'Payment Method Code' => $o->getPaymentMethod()->val('') == 'local'

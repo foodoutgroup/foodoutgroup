@@ -43,68 +43,38 @@ class OrderNavisionUpdateInvoicesCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dryRun = !$input->getOption('not-dry-run');
-        $from = $input->getOption('from');
-        $to = $input->getOption('to');
-        $onlyColumn = $input->getOption('only-column');
+        $options = $this->getOptions($input);
+        $services = $this->getServices();
 
-        if (empty($from) || empty($to)) {
-            throw new \Exception('Please specify --from="yyyy-mm-dd hh:mm:ss" and --to="yyyy-mm-dd hh:mm:ss"');
-        }
+        $this->checkOptions($options);
 
-        $nav = $this->getContainer()->get('food.nav');
-        $logger = $this->getContainer()->get('logger');
-
-        $orders = $this->getOrders($from, $to);
+        $orders = $this->getOrders($options->from, $options->to, $services);
 
         foreach ($orders as $order) {
-            $navInvoice = $nav->selectNavInvoice($order);
-            $comparison = $nav->compareNavInvoiceWithOrder($navInvoice, $order);
+            $navInvoice = $services->nav->selectNavInvoice($order);
+            $comparison = $services->nav->compareNavInvoiceWithOrder($navInvoice, $order);
+            $comparison['orderHas'] = $this->trimIfOnlyColumn($options->onlyColumn, $comparison['orderHas']);
 
-            $c = \Maybe($comparison);
-
-            if ($onlyColumn && !is_null($c['orderHas'][$onlyColumn]->val())) {
-                $data = [$onlyColumn => $c['orderHas'][$onlyColumn]->val('')];
-
-                $success = $dryRun ? false : $nav->updateNavInvoice($order, $data);
-
-                $message = sprintf('[Order ID] = %s: Updating column\'s [%s] value from "%s" to "%s" .. %s',
-                                   $order->getId(),
-                                   $onlyColumn,
-                                   $c['invoiceHas'][$onlyColumn]->val(''),
-                                   $c['orderHas'][$onlyColumn]->val(''),
-                                   $success ? 'success' : 'failure');
-
-                $output->writeln($message);
-                $logger->info($message);
-            } elseif (!$onlyColumn && !empty($comparison['orderHas'])) {
-                $success = $dryRun ? false : $nav->updateNavInvoice($order, $comparison['orderHas']);
-
-                $cols = [];
-
-                foreach ($comparison['orderHas'] as $key => $value) {
-                    $cols[] = sprintf('[%s] from "%s" to "%s"',
-                                      $key,
-                                      $c['invoiceHas'][$key]->val(''),
-                                      $comparison['orderHas'][$key]);
-                }
-
-                $message = sprintf('[Order ID] = %s: Updating columns %s .. %s',
-                                    $order->getId(),
-                                    implode(', ', $cols),
-                                    $success ? 'success' : 'failure');
-
-                $output->writeln($message);
-                $logger->info($message);
+            if (empty($comparison['orderHas'])) {
+                continue;
             }
+
+            $success = $options->dryRun
+                       ? false
+                       : $services->nav->updateNavInvoice($order, $comparison['orderHas']);
+
+            $message = $this->generateMessage($comparison, $order, $success, $options->dryRun);
+
+            $output->writeln($message);
+            $services->logger->info($message);
         }
     }
 
-    protected function getOrders($from, $to)
+    protected function getOrders($from, $to, \StdClass $services)
     {
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $qb = $services->em->createQueryBuilder();
 
-        $qb = $em->createQueryBuilder();
+        $params = ['from' => $from, 'to' => $to, 'delivery_type' => 'deliver'];
 
         $result = $qb->select('o')
                      ->from('FoodOrderBundle:Order', 'o')
@@ -113,12 +83,79 @@ class OrderNavisionUpdateInvoicesCommand extends ContainerAwareCommand
                      ->andWhere($qb->expr()->isNotNull('o.sfSeries'))
                      ->andWhere($qb->expr()->isNotNull('o.sfNumber'))
                      ->andWhere('o.deliveryType = :delivery_type')
-                     ->setParameters(['from' => $from,
-                                      'to' => $to,
-                                      'delivery_type' => 'deliver'])
+                     ->setParameters($params)
                      ->getQuery()
                      ->getResult();
 
         return $result;
+    }
+
+    protected function getOptions(InputInterface $input)
+    {
+        $options = new \StdClass();
+
+        $options->dryRun = ! $input->getOption('not-dry-run');
+        $options->from = $input->getOption('from');
+        $options->to = $input->getOption('to');
+        $options->onlyColumn = $input->getOption('only-column');
+
+        return $options;
+    }
+
+    protected function getServices()
+    {
+        $container = $this->getContainer();
+
+        $services = new \StdClass();
+
+        $services->nav = $container->get('food.nav');
+        $services->logger = $container->get('logger');
+        $services->em = $container->get('doctrine.orm.entity_manager');
+
+        return $services;
+    }
+
+    protected function checkOptions(\StdClass $options)
+    {
+        if (empty($options->from) || empty($options->to)) {
+            $message = 'Please specify --from="yyyy-mm-dd hh:mm:ss" and --to="yyyy-mm-dd hh:mm:ss"';
+
+            throw new \Exception($message);
+        }
+    }
+
+    protected function trimIfOnlyColumn($onlyColumn, array $data)
+    {
+        // nothing has changed
+        if (!$onlyColumn) {
+            return $data;
+        }
+
+        $data = empty($data[$onlyColumn])
+                ? []
+                : [$onlyColumn => $data[$onlyColumn]];
+
+        return $data;
+    }
+
+    protected function generateMessage(array $data, $order, $success, $dryRun)
+    {
+        $maybeData = \Maybe($data);
+        $mssqlColumnNames = array_keys($data['orderHas']);
+        $cols = [];
+
+        foreach ($mssqlColumnNames as $column) {
+            $cols[] = sprintf('[%s] from "%s" to "%s"',
+                              $column,
+                              $maybeData['invoiceHas'][$column]->val(''),
+                              $maybeData['orderHas'][$column]->val(''));
+        }
+
+        $message = sprintf('[Order ID] = %s: Updating columns %s .. %s',
+                            $order->getId(),
+                            implode(', ', $cols),
+                            $dryRun ? 'skipped' : ($success ? 'success' : 'failure'));
+
+        return $message;
     }
 }
