@@ -57,9 +57,9 @@ class WeeklyReport extends ContainerAware
     ];
 
     protected $sqlMap = [
-        'income' => 'SELECT IFNULL(SUM(o.total - IFNULL(o.delivery_price, 0)), 0.0) AS result',
+        'income' => 'SELECT IFNULL(SUM(o.total - IFNULL(o.delivery_price, 0)) / 1.21, 0.0) AS result',
         'successful_orders' => 'SELECT IFNULL(COUNT(*), 0) AS result',
-        'average_cart' => 'SELECT IFNULL(AVG(o.total - IFNULL(o.delivery_price, 0)), 0.0) AS result'
+        'average_cart' => 'SELECT IFNULL(AVG((o.total - IFNULL(o.delivery_price, 0))/1.21), 0.0) AS result'
     ];
 
     public function sendWeeklyReport($forceEmail, $notDryRun)
