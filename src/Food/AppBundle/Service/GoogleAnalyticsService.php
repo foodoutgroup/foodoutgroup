@@ -6,6 +6,8 @@ class GoogleAnalyticsService
 {
     const GA_PAGEVIEWS = 'ga:pageviews';
     const GA_UNIQUE_PAGEVIEWS = 'ga:uniquePageviews';
+    const GA_USERS = 'ga:users';
+    const GA_USER_TYPE = 'ga:userType';
 
     protected $serviceAccountName;
     protected $scopes;
@@ -56,6 +58,41 @@ class GoogleAnalyticsService
         return !empty($result[static::GA_UNIQUE_PAGEVIEWS])
                ? $result[static::GA_UNIQUE_PAGEVIEWS]
                : null;
+    }
+
+    public function getUsers($from, $to)
+    {
+        $result = $this->getService()
+                       ->data_ga
+                       ->get(sprintf('ga:%s', $this->getViewId()),
+                             $from,
+                             $to,
+                             static::GA_USERS)
+                       ->getTotalsForAllResults();
+
+        return !empty($result[static::GA_USERS])
+               ? $result[static::GA_USERS]
+               : null;
+    }
+
+    public function getReturningUsers($from, $to)
+    {
+        $result = $this->getService()
+                       ->data_ga
+                       ->get(sprintf('ga:%s', $this->getViewId()),
+                             $from,
+                             $to,
+                             static::GA_USERS,
+                             ['dimensions' => static::GA_USER_TYPE])
+                       ->getRows();
+
+        foreach ((array)$result as $value) {
+            if (!empty($value[0]) && 'Returning Visitor' == $value[0]) {
+                return $value[1];
+            }
+        }
+
+        return -1;
     }
 
     public function setServiceAccountName($value)
