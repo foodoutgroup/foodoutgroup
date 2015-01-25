@@ -59,7 +59,7 @@ class WeeklyReport extends ContainerAware
     protected $sqlMap = [
         'income' => 'SELECT IFNULL(SUM(o.total - IFNULL(o.delivery_price, 0)) / 1.21, 0.0) AS result',
         'successful_orders' => 'SELECT IFNULL(COUNT(*), 0) AS result',
-        'average_cart' => 'SELECT IFNULL(AVG((o.total - IFNULL(o.delivery_price, 0))/1.21), 0.0) AS result'
+        'average_cart' => 'SELECT IFNULL(AVG(o.total - IFNULL(o.delivery_price, 0)) / 1.21, 0.0) AS result'
     ];
 
     public function sendWeeklyReport($forceEmail, $notDryRun)
@@ -283,10 +283,10 @@ class WeeklyReport extends ContainerAware
         $from = date('Y-m-d', strtotime(static::PHP_7_DAYS_AGO));
         $to = date('Y-m-d', strtotime(static::PHP_1_DAY_AGO));
 
-        $calculations->pageviews = $this->getGoogleAnalyticsService()
-                                        ->getPageviews($from, $to);
-        $calculations->uniquePageviews = $this->getGoogleAnalyticsService()
-                                              ->getUniquePageviews($from, $to);
+        $calculations->uniqueUsers = $this->getGoogleAnalyticsService()
+                                          ->getUsers($from, $to);
+        $calculations->returningUsers = $this->getGoogleAnalyticsService()
+                                             ->getReturningusers($from, $to);
 
         // KPI
         $dayOfWeek = date('N', strtotime(static::PHP_7_DAYS_AGO));

@@ -51,9 +51,9 @@ class DailyReport extends ContainerAware
     ];
 
     protected $sqlMap = [
-        'income' => 'SELECT IFNULL(SUM(o.total - IFNULL(o.delivery_price, 0)) / 1.21, 0.0) AS result',
+        'income' => 'SELECT IFNULL(SUM(o.total - IFNULL(o.delivery_price, 0.0)) / 1.21, 0.0) AS result',
         'successful_orders' => 'SELECT IFNULL(COUNT(*), 0) AS result',
-        'average_cart' => 'SELECT IFNULL(AVG((o.total - IFNULL(o.delivery_price, 0))/1.21), 0.0) AS result'
+        'average_cart' => 'SELECT IFNULL(AVG(o.total - IFNULL(o.delivery_price, 0.0)) / 1.21, 0.0) AS result'
     ];
 
     public function sendDailyReport($forceEmail, $notDryRun)
@@ -257,10 +257,10 @@ class DailyReport extends ContainerAware
         $from = date('Y-m-d', strtotime(static::PHP_1_DAY_AGO));
         $to = $from;
 
-        $calculations->pageviews = $this->getGoogleAnalyticsService()
-                                        ->getPageviews($from, $to);
-        $calculations->uniquePageviews = $this->getGoogleAnalyticsService()
-                                              ->getUniquePageviews($from, $to);
+        $calculations->uniqueUsers = $this->getGoogleAnalyticsService()
+                                          ->getUsers($from, $to);
+        $calculations->returningUsers = $this->getGoogleAnalyticsService()
+                                             ->getReturningUsers($from, $to);
 
         // KPI
         $dayOfWeek = date('N', strtotime(static::PHP_1_DAY_AGO));

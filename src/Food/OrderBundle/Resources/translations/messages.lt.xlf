@@ -150,13 +150,13 @@
                 <source>daily_report.average_delivery_time</source>
                 <target>Vidutinis pristatymo laikas</target>
             </trans-unit>
-            <trans-unit id="daily_report.pageviews" resname="daily_report.pageviews">
-                <source>daily_report.pageviews</source>
-                <target>Lankytojų skaičius</target>
-            </trans-unit>
-            <trans-unit id="daily_report.unique_pageviews" resname="daily_report.unique_pageviews">
-                <source>daily_report.unique_pageviews</source>
+            <trans-unit id="daily_report.unique_users" resname="daily_report.unique_users">
+                <source>daily_report.unique_users</source>
                 <target>Unikalių lankytojų skaičius</target>
+            </trans-unit>
+            <trans-unit id="daily_report.returning_users" resname="daily_report.returning_users">
+                <source>daily_report.returning_users</source>
+                <target>Grįžusių lankytojų skaičius</target>
             </trans-unit>
             <trans-unit id="daily_report.city" resname="daily_report.city">
                 <source>daily_report.city</source>
