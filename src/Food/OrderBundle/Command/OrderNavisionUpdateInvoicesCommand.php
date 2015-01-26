@@ -53,6 +53,7 @@ class OrderNavisionUpdateInvoicesCommand extends ContainerAwareCommand
         foreach ($orders as $order) {
             $navInvoice = $services->nav->selectNavInvoice($order);
             $comparison = $services->nav->compareNavInvoiceWithOrder($navInvoice, $order);
+            $comparison['orderHas'] = $this->trimIfAllColumns($comparison['orderHas']);
             $comparison['orderHas'] = $this->trimIfOnlyColumn($options->onlyColumn, $comparison['orderHas']);
 
             if (empty($comparison['orderHas'])) {
@@ -124,6 +125,25 @@ class OrderNavisionUpdateInvoicesCommand extends ContainerAwareCommand
 
             throw new \Exception($message);
         }
+    }
+
+    protected function trimIfAllColumns(array $orderHas)
+    {
+        if (empty($orderHas)) {
+            return $orderHas;
+        }
+
+        $resultData = [];
+
+        foreach ($orderHas as $key => $value) {
+            if (empty($value)) {
+                continue;
+            }
+
+            $resultData[$key] = $value;
+        }
+
+        return $resultData;
     }
 
     protected function trimIfOnlyColumn($onlyColumn, array $data)
