@@ -71,7 +71,6 @@ class OrderNavisionUpdateInvoicesCommand extends ContainerAwareCommand
             $message = $this->generateMessage($comparison, $order, $success, $options->dryRun);
 
             $output->writeln($message);
-            $services->logger->info($message);
         }
     }
 
@@ -114,7 +113,6 @@ class OrderNavisionUpdateInvoicesCommand extends ContainerAwareCommand
         $services = new \StdClass();
 
         $services->nav = $container->get('food.nav');
-        $services->logger = $container->get('logger');
         $services->em = $container->get('doctrine.orm.entity_manager');
 
         return $services;
