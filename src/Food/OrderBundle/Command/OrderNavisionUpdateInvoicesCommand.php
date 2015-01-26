@@ -96,7 +96,7 @@ class OrderNavisionUpdateInvoicesCommand extends ContainerAwareCommand
     {
         $options = new \StdClass();
 
-        $options->dryRun = ! $input->getOption('not-dry-run');
+        $options->dryRun = !$input->getOption('not-dry-run');
         $options->from = $input->getOption('from');
         $options->to = $input->getOption('to');
         $options->onlyColumn = $input->getOption('only-column');

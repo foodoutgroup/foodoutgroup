@@ -1595,4 +1595,31 @@ class NavService extends ContainerAware
 
         return $result;
     }
+
+    /**
+     * Get driver code from NAV.
+     * @param  int $id orders.nav_delivery_order
+     * @return string
+     */
+    public function getNavDriverCode($id)
+    {
+        $mssql = $this->container->get('food.mssql');
+
+        $query = '
+            SELECT TOP 1 [Driver ID]
+            FROM %s
+            WHERE [Order No_] = \'%s\'
+        ';
+        $query = sprintf($query, $this->getDeliveryOrderTable(), $id);
+
+        $result = $this->initSqlConn()->query($query);
+
+        if (empty($result)) {
+            return null;
+        }
+
+        $row = (array)$mssql->fetchArray($result);
+
+        return !empty($row[0]) ? iconv('cp1257', 'utf-8', $row[0]) : null;
+    }
 }
