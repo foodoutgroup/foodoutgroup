@@ -48,9 +48,11 @@ class OrderNavisionUpdateInvoicesCommand extends ContainerAwareCommand
 
         $this->checkOptions($options);
 
-        $orders = $this->getOrders($options->from, $options->to, $services);
+        $orderIds = $this->getOrders($options->from, $options->to, $services);
 
-        foreach ($orders as $order) {
+        foreach ($orderIds as $id) {
+            $order = $this->findOrder($id, $services);
+
             $navInvoice = $services->nav->selectNavInvoice($order);
             $comparison = $services->nav->compareNavInvoiceWithOrder($navInvoice, $order);
             $comparison['orderHas'] = $this->trimIfAllColumns($comparison['orderHas']);
@@ -79,7 +81,7 @@ class OrderNavisionUpdateInvoicesCommand extends ContainerAwareCommand
 
         $params = ['from' => $from, 'to' => $to, 'delivery_type' => 'deliver'];
 
-        $result = $qb->select('o')
+        $result = $qb->select('o.id')
                      ->from('FoodOrderBundle:Order', 'o')
                      ->where('o.order_date >= :from')
                      ->andWhere('o.order_date < :to')
@@ -179,5 +181,18 @@ class OrderNavisionUpdateInvoicesCommand extends ContainerAwareCommand
                             $dryRun ? 'skipped' : ($success ? 'success' : 'failure'));
 
         return $message;
+    }
+
+    protected function findOrder($id, \StdClass $services)
+    {
+        if (empty($id)) {
+            return null;
+        }
+
+        $order = $services->em
+                          ->getRepository('FoodOrderBundle:Order')
+                          ->find($id);
+
+        return $order;
     }
 }
