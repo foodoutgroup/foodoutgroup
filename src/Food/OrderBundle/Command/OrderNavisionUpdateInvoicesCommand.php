@@ -59,9 +59,11 @@ class OrderNavisionUpdateInvoicesCommand extends ContainerAwareCommand
                 continue;
             }
 
-            $success = $options->dryRun
-                       ? false
-                       : $services->nav->updateNavInvoice($order, $comparison['orderHas']);
+            if ($options->dryRun) {
+                $success = false;
+            } else {
+                $success = $services->nav->updateNavInvoice($order, $comparison['orderHas']);
+            }
 
             $message = $this->generateMessage($comparison, $order, $success, $options->dryRun);
 

@@ -1529,8 +1529,10 @@ class NavService extends ContainerAware
 
     public function compareNavInvoiceWithOrder(array $navInvoice, Order $order)
     {
+        $result = ['sameData' => [], 'orderHas' => [], 'invoiceHas' => []];
+
         if (empty($navInvoice) || empty($order)) {
-            return null;
+            return $result;
         }
 
         $navInvoice['Food Amount With VAT'] = round($navInvoice['Food Amount With VAT'], 2);
