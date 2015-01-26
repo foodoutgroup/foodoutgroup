@@ -80,8 +80,8 @@ class DailyReport extends ContainerAware
     public function getDailyDeliveryTime()
     {
         $query = '
-            SELECT AVG(IF(TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date)<180,
-                       TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date),
+            SELECT AVG(IF(TIMESTAMPDIFF(MINUTE, o.accept_time, osl.event_date)<180,
+                       TIMESTAMPDIFF(MINUTE, o.accept_time, osl.event_date),
                        60)) AS result
             FROM orders o
             INNER JOIN (
@@ -93,21 +93,13 @@ class DailyReport extends ContainerAware
                 HAVING new_status = \'completed\'
                 ORDER BY event_date DESC
             ) osl ON osl.order_id = o.id
-            INNER JOIN (
-                SELECT *
-                FROM order_status_log
-                GROUP BY
-                    order_id,
-                    new_status
-                HAVING new_status = \'assigned\'
-                ORDER BY event_date DESC
-            ) osl2 ON osl2.order_id = o.id
             WHERE
                 o.order_status = \'completed\' AND
                 o.payment_status = \'complete\' AND
                 DATE(o.order_date) >= ' . static::MYSQL_1_DAY_AGO . ' AND
                 DATE(o.order_date) < ' . static::MYSQL_0_DAYS_AGO . ' AND
                 osl.event_date IS NOT NULL AND
+                o.accept_time IS NOT NULL AND
                 o.delivery_type = \'deliver\' AND
                 osl.source != \'auto_close_order_command\' AND
                 o.place_point_self_delivery = 0';
@@ -125,8 +117,8 @@ class DailyReport extends ContainerAware
         $query = '
             SELECT
                 o.place_point_city,
-                AVG(IF(TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date)<180,
-                       TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date),
+                AVG(IF(TIMESTAMPDIFF(MINUTE, o.accept_time, osl.event_date)<180,
+                       TIMESTAMPDIFF(MINUTE, o.accept_time, osl.event_date),
                        60)) AS result
             FROM orders o
             INNER JOIN (
@@ -138,21 +130,13 @@ class DailyReport extends ContainerAware
                 HAVING new_status = \'completed\'
                 ORDER BY event_date DESC
             ) osl ON osl.order_id = o.id
-            INNER JOIN (
-                SELECT *
-                FROM order_status_log
-                GROUP BY
-                    order_id,
-                    new_status
-                HAVING new_status = \'assigned\'
-                ORDER BY event_date DESC
-            ) osl2 ON osl2.order_id = o.id
             WHERE
                 o.order_status = \'completed\' AND
                 o.payment_status = \'complete\' AND
                 DATE(o.order_date) >= ' . static::MYSQL_1_DAY_AGO . ' AND
                 DATE(o.order_date) < ' . static::MYSQL_0_DAYS_AGO . ' AND
                 osl.event_date IS NOT NULL AND
+                o.accept_time IS NOT NULL AND
                 o.delivery_type = \'deliver\' AND
                 osl.source != \'auto_close_order_command\' AND
                 o.place_point_self_delivery = 0
