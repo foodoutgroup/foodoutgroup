@@ -16,13 +16,13 @@ class SimpleMailerService
                 ->setBody($body);
 
         $this->getMailer()->send($message);
-        $success = $this
+        $amountOfSent = $this
             ->getMailer()
             ->getTransport()
             ->getSpool()
             ->flushQueue($this->getTransport());
 
-        return $success;
+        return $amountOfSent;
     }
 
     public function setMailer($service)
