@@ -42,6 +42,12 @@ services:
         class: Food\AppBundle\Service\MailerMessagesService
         arguments: [%mailer_api_key%]
 
+    food.simple_mailer:
+        class: Food\AppBundle\Service\SimpleMailerService
+        calls:
+            - [setMailer, [@mailer]]
+            - [setTransport, [@swiftmailer.transport.real]]
+
     food.reset_password:
         class: Food\AppBundle\Utils\ResetPassword
         calls:
