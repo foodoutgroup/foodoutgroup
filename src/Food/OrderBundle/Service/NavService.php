@@ -1348,6 +1348,7 @@ class NavService extends ContainerAware
                  ) AS OrderStatus,
                  cCustomer.[Name] AS CustomerName,
                  cCustomer.[Address] AS CustomerAddress,
+                 cCustomer.[City] AS CustomerCity,
                  cCustomer.[VAT Registration No_] AS CustomerVatNo,
                  cCustomer.[E-mail] AS CustomerEmail,
                  cCustomer.[Registration No_] AS CustomerRegNo

@@ -172,6 +172,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             ->setLocale($this->getContainer()->getParameter('locale'))
                             ->setComment($orderData['Directions']);
 
+
                         // User data
                         $phone = $miscUtility->formatPhone($orderData['Phone No_'], $country);
                         $output->writeln('Searching for user with phone: '.$phone);
@@ -227,6 +228,34 @@ class NavImportOrdersCommand extends ContainerAwareCommand
 
                             // Set Address in order
                             $order->setAddressId($address);
+
+
+
+                            /**
+                             *                  cCustomer.[Name] AS CustomerName,
+                            cCustomer.[Address] AS CustomerAddress,
+                            cCustomer.[City] AS CustomerCity,
+                            cCustomer.[VAT Registration No_] AS CustomerVatNo,
+                            cCustomer.[E-mail] AS CustomerEmail,
+                            cCustomer.[Registration No_] AS CustomerRegNo
+                             */
+                            if (!empty($orderData['CustomerName']) && !empty($orderData['CustomerRegNo'])) {
+                                $addressToSave = $order->getAddressId()->getAddress();
+                                $cityToSave = $order->getAddressId()->getCity();
+                                if (!empty($orderData['CustomerAddress'])) {
+                                    $addressToSave = $orderData['CustomerAddress'];
+                                }
+                                if (!empty($orderData['CustomerCity'])) {
+                                    $cityToSave = $orderData['CustomerCity'];
+                                }
+
+                                $order->setCompany(true)
+                                    ->setCompanyName($orderData['CustomerName'])
+                                    ->setCompanyCode($orderData['CustomerRegNo'])
+                                    ->setVatCode($orderData['CustomerVatNo'])
+                                    ->setCompanyAddress($addressToSave.", ". $cityToSave);
+                            }
+
 
                             $driverId = trim($orderData['Driver ID']);
                             if ($orderData['OrderStatus'] > 6 && !empty($driverId)) {
