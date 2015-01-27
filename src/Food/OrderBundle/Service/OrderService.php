@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\OptimisticLockException;
 use Food\AppBundle\Entity\Driver;
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Dish;
@@ -542,7 +543,9 @@ class OrderService extends ContainerAware
         }
         
         // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
-        if ($order->getPlace()->getSendInvoice()) {
+        if ($order->getPlace()->getSendInvoice()
+            && !$order->getPlacePointSelfDelivery()
+            && $order->getDeliveryType() == OrderService::$deliveryDeliver) {
             $this->setInvoiceDataForOrder();
 
             // Suplanuojam sf siuntima klientui
@@ -650,11 +653,20 @@ class OrderService extends ContainerAware
         if (empty($orderSeries) || empty($orderSfNumber)) {
             $miscService = $this->container->get('food.app.utils.misc');
 
-            $sfNumber = (int)$miscService->getParam('sf_next_number');
+            try {
+                $sfNumber = (int)$miscService->getParam('sf_next_number');
+                $miscService->setParam('sf_next_number', ($sfNumber + 1));
+            } catch (OptimisticLockException $e) {
+                sleep(1);
+                $sfNumber = (int)$miscService->getParam('sf_next_number');
+                $miscService->setParam('sf_next_number', ($sfNumber + 1));
+
+                $this->container->get('logger')->alert('--- Had problems receiving SF number');
+            }
+
             $order->setSfSeries($this->container->getParameter('invoice.series'));
             $order->setSfNumber($sfNumber);
 
-            $miscService->setParam('sf_next_number', ($sfNumber + 1));
 
             $this->saveOrder();
         }
@@ -1853,12 +1865,13 @@ class OrderService extends ContainerAware
             }
         }
 
-        if ($order->getPlace()->getNavision()) {
-            $notifyEmails = array_merge(
-                $notifyEmails,
-                $this->container->getParameter('admin.emails')
-            );
-        }
+        // Turn on only if debug needed
+//        if ($order->getPlace()->getNavision()) {
+//            $notifyEmails = array_merge(
+//                $notifyEmails,
+//                $this->container->getParameter('admin.emails')
+//            );
+//        }
 
         $this->addEmailsToMessage($message, $notifyEmails);
 

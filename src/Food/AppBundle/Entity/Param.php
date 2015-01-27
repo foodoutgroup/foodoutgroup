@@ -34,6 +34,12 @@ class Param
     private $value;
 
     /**
+     * @ORM\Version
+     * @ORM\Column(type="integer")
+     */
+    private $version;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -60,7 +66,7 @@ class Param
      * Set param
      *
      * @param string $param
-     * @return Params
+     * @return Param
      */
     public function setParam($param)
     {
@@ -83,7 +89,7 @@ class Param
      * Set value
      *
      * @param string $value
-     * @return Params
+     * @return Param
      */
     public function setValue($value)
     {
@@ -100,5 +106,28 @@ class Param
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * Set version
+     *
+     * @param integer $version
+     * @return Param
+     */
+    public function setVersion($version)
+    {
+        $this->version = $version;
+    
+        return $this;
+    }
+
+    /**
+     * Get version
+     *
+     * @return integer 
+     */
+    public function getVersion()
+    {
+        return $this->version;
     }
 }

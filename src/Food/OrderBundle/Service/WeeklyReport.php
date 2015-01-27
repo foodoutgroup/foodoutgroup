@@ -57,9 +57,9 @@ class WeeklyReport extends ContainerAware
     ];
 
     protected $sqlMap = [
-        'income' => 'SELECT IFNULL(SUM(o.total), 0.0) AS result',
+        'income' => 'SELECT IFNULL(SUM(o.total - IFNULL(o.delivery_price, 0)) / 1.21, 0.0) AS result',
         'successful_orders' => 'SELECT IFNULL(COUNT(*), 0) AS result',
-        'average_cart' => 'SELECT IFNULL(AVG(o.total), 0.0) AS result'
+        'average_cart' => 'SELECT IFNULL(AVG(o.total - IFNULL(o.delivery_price, 0)) / 1.21, 0.0) AS result'
     ];
 
     public function sendWeeklyReport($forceEmail, $notDryRun)
@@ -104,8 +104,8 @@ class WeeklyReport extends ContainerAware
     public function getWeeklyDeliveryTime()
     {
         $query = '
-            SELECT AVG(IF(TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date)<180,
-                       TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date),
+            SELECT AVG(IF(TIMESTAMPDIFF(MINUTE, o.accept_time, osl.event_date)<180,
+                       TIMESTAMPDIFF(MINUTE, o.accept_time, osl.event_date),
                        60)) AS result
             FROM orders o
             INNER JOIN (
@@ -117,21 +117,12 @@ class WeeklyReport extends ContainerAware
                 HAVING new_status = \'completed\'
                 ORDER BY event_date DESC
             ) osl ON osl.order_id = o.id
-            INNER JOIN (
-                SELECT *
-                FROM order_status_log
-                GROUP BY
-                    order_id,
-                    new_status
-                HAVING new_status = \'assigned\'
-                ORDER BY event_date DESC
-            ) osl2 ON osl2.order_id = o.id
             WHERE
                 o.order_status = \'completed\' AND
                 o.payment_status = \'complete\' AND
                 DATE(o.order_date) >= ' . static::MYSQL_7_DAYS_AGO . ' AND
                 DATE(o.order_date) < ' . static::MYSQL_0_DAYS_AGO . ' AND
-                osl.event_date IS NOT NULL AND
+                o.accept_time IS NOT NULL AND
                 o.delivery_type = \'deliver\' AND
                 osl.source != \'auto_close_order_command\' AND
                 o.place_point_self_delivery = 0';
@@ -149,8 +140,8 @@ class WeeklyReport extends ContainerAware
         $query = '
             SELECT
                 o.place_point_city,
-                AVG(IF(TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date)<180,
-                       TIMESTAMPDIFF(MINUTE, osl2.event_date, osl.event_date),
+                AVG(IF(TIMESTAMPDIFF(MINUTE, o.accept_time, osl.event_date)<180,
+                       TIMESTAMPDIFF(MINUTE, o.accept_time, osl.event_date),
                        60)) AS result
             FROM orders o
             INNER JOIN (
@@ -162,21 +153,12 @@ class WeeklyReport extends ContainerAware
                 HAVING new_status = \'completed\'
                 ORDER BY event_date DESC
             ) osl ON osl.order_id = o.id
-            INNER JOIN (
-                SELECT *
-                FROM order_status_log
-                GROUP BY
-                    order_id,
-                    new_status
-                HAVING new_status = \'assigned\'
-                ORDER BY event_date DESC
-            ) osl2 ON osl2.order_id = o.id
             WHERE
                 o.order_status = \'completed\' AND
                 o.payment_status = \'complete\' AND
                 DATE(o.order_date) >= ' . static::MYSQL_7_DAYS_AGO . ' AND
                 DATE(o.order_date) < ' . static::MYSQL_0_DAYS_AGO . ' AND
-                osl.event_date IS NOT NULL AND
+                o.accept_time IS NOT NULL AND
                 o.delivery_type = \'deliver\' AND
                 osl.source != \'auto_close_order_command\' AND
                 o.place_point_self_delivery = 0
@@ -273,7 +255,7 @@ class WeeklyReport extends ContainerAware
         // local
         $calculations = new \StdClass();
         $calculations->places = $this->getNumberOfPlacesFromLastWeek();
-        $calculations->income = $this->getWeeklyDataFor('income');
+        $calculations->income = number_format($this->getWeeklyDataFor('income'), 2, '.', '');
         $calculations->successfulOrders = $this->getWeeklyDataFor('successful_orders');
         $calculations->averageCartSize = number_format($this->getWeeklyDataFor('average_cart'), 2, '.', '');
         $calculations->averageDeliveryTime = round($this->getWeeklyDeliveryTime());
@@ -283,18 +265,18 @@ class WeeklyReport extends ContainerAware
         $from = date('Y-m-d', strtotime(static::PHP_7_DAYS_AGO));
         $to = date('Y-m-d', strtotime(static::PHP_1_DAY_AGO));
 
-        $calculations->pageviews = $this->getGoogleAnalyticsService()
-                                        ->getPageviews($from, $to);
-        $calculations->uniquePageviews = $this->getGoogleAnalyticsService()
-                                              ->getUniquePageviews($from, $to);
+        $calculations->uniqueUsers = $this->getGoogleAnalyticsService()
+                                          ->getUsers($from, $to);
+        $calculations->returningUsers = $this->getGoogleAnalyticsService()
+                                             ->getReturningusers($from, $to);
 
         // KPI
         $dayOfWeek = date('N', strtotime(static::PHP_7_DAYS_AGO));
         $monthOfYear = date('n', strtotime(static::PHP_7_DAYS_AGO));
 
         $calculations->kpiPlaces = $this->kpiPlacesMap[$monthOfYear];
-        $calculations->kpiIncome = number_format(7 * $this->kpiMap[$dayOfWeek] * $this->kpiIncomeMap[$monthOfYear], 2, '.', '');
-        $calculations->kpiSuccessfulOrders = round(7 * $this->kpiMap[$dayOfWeek] * $this->kpiOrdersMap[$monthOfYear]);
+        $calculations->kpiIncome = number_format(7 * $this->kpiIncomeMap[$monthOfYear], 2, '.', '');
+        $calculations->kpiSuccessfulOrders = round(7 * $this->kpiOrdersMap[$monthOfYear]);
         $calculations->kpiAverageCartSize = number_format($this->kpiCartSizeMap[$monthOfYear], 2, '.', '');
         $calculations->kpiAverageDeliveryTime = $this->kpiDeliveryMap[$monthOfYear];
 

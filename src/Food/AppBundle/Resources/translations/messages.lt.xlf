@@ -1008,7 +1008,7 @@
       </trans-unit>
       <trans-unit id="payment.swedbank_gateway.processing" resname="payment.swedbank_gateway.processing">
           <source>payment.swedbank_gateway.processing</source>
-          <target>Užsakymas priimtas bako apdorojimui.</target>
+          <target>Užsakymas priimtas banko apdorojimui.</target>
       </trans-unit>
       <trans-unit id="payment.swedbank_gateway.something_wrong" resname="payment.swedbank_gateway.something_wrong">
           <source>payment.swedbank_gateway.something_wrong</source>

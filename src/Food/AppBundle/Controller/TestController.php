@@ -351,4 +351,32 @@ class TestController extends Controller
         }
         die();
     }
+
+    public function migratorAction($date)
+    {
+        $select = "SELECT * FROM orders WHERE order_date LIKE '$date%' AND order_status='completed' AND payment_status='complete' AND sf_series IS NULL AND sf_number IS NULL";
+        $adp = $this->get('doctrine')->getConnection();
+        $stmt = $adp->prepare($select);
+        $stmt->execute();
+        $all = $stmt->fetchAll();
+        $os = $this->get('food.order');
+        foreach ($all as $row) {
+            $ent = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($row['id']);
+            echo $row['id']."<br>";
+            if ($ent) {
+                if ($ent->getPlace()->getSendInvoice()
+                    && !$ent->getPlacePointSelfDelivery()
+                    && $ent->getDeliveryType() == OrderService::$deliveryDeliver) {
+                    $os->setOrder($ent);
+                        $os->setInvoiceDataForOrder();
+                        $this->get('food.invoice')->addInvoiceToSend($ent);
+                    $os->saveOrder();
+                }
+            }
+        }
+
+
+
+        die($date);
+    }
 }

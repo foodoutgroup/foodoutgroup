@@ -28,7 +28,7 @@ parameters:
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
-    order.notify_emails: [mantas@foodout.lt, birute@foodout.lt, giedrius@foodout.lt]
+    order.notify_emails: [birute@foodout.lt, giedrius@foodout.lt]
     #order.notify_emails: [pirminis@gmail.com]
     order.city_coordinators:
         vilnius: []
@@ -83,7 +83,7 @@ parameters:
     logtime.driver_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitDrivers"
     # Ar siusti uzsakyma i isorine (TMS) sistema
     logistics.send_to_external: true
-    logistics.city_filter: ["Klaipėda", "Kaunas", "Vilnius"]
+    logistics.city_filter: ["Klaipėda", "Kaunas"]
     # seb banklink
     seb.banklink.private_key: "/home/skanu.lt/shared/banklinks/seb/private.key"
     seb.banklink.bank_key: "/home/skanu.lt/shared/banklinks/seb/bank.key"
@@ -103,6 +103,7 @@ parameters:
       - mantas@foodout.lt
       - tomas.martunas@gmail.com
       - s.svitojus@ltkcapital.com
+      - jonas@foodout.lt
     weekly_report_emails:
       <<: *daily_report_emails
 

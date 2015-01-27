@@ -24,7 +24,7 @@
                                 {{ currency_display|raw }}{{ size.discountPrice }}<span class="euro">/&nbsp;{{  misc_utils.getLitas(size.discountPrice)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
                             </strong>
                         {% endif %}
-                        <input type="radio" {% if loop.first %}checked{% endif %} value="{{ size.id }}" class="dish-size" name="dish-size">
+                        <input type="radio" {% if loop.index == selectedSize %}checked{% endif %} value="{{ size.id }}" class="dish-size" name="dish-size">
                     </label>
                 {% endfor %}
             </div>

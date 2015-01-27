@@ -12,6 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\OrderBundle\Common;
 use Food\OrderBundle\Service\NavService\OrderDataForNavDecorator;
 use Food\OrderBundle\Service\Events\SoapFaultEvent;
+use Food\OrderBundle\Entity\InvoiceToSendNavOnly;
 
 class NavService extends ContainerAware
 {
@@ -63,7 +64,8 @@ class NavService extends ContainerAware
 
     private $customerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Customer]';
 
-    
+    private $invoiceTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Foodout Invoice]';
+
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
@@ -134,6 +136,11 @@ class NavService extends ContainerAware
     public function getDeliveryOrderStatusTable()
     {
         return $this->deliveryOrderStatusTable;
+    }
+
+    public function getInvoiceTable()
+    {
+        return $this->invoiceTable;
     }
 
     /**
@@ -692,15 +699,15 @@ class NavService extends ContainerAware
         // some calculations beforehand
         $total = $o->getTotal()->val(0.0);
         $discountTotal = $o->getDiscountSum()->val(0.0);
-        $deliveryTotal = $o->getPlace()->getDeliveryPrice()->val(0.0);
+        $deliveryTotal = $o->getDeliveryPrice()->val(0.0);
         $foodTotal = $total - $discountTotal - $deliveryTotal;
 
         // payment type and code preprocessing
         $driverId = $o->getDriver()->getId()->val('');
 
-        if (empty($driverId) && $order->getNavDriverCode() != '') {
-            $driverId = $order->getNavDriverCode();
-        }
+        // if (empty($driverId) && $order->getNavDriverCode() != '') {
+        //     $driverId = $order->getNavDriverCode();
+        // }
 
         $paymentType = $o->getPaymentMethod()->val('');
         $paymentCode = $paymentType == 'local'
@@ -723,7 +730,7 @@ class NavService extends ContainerAware
                    'VATRegistrationNo' => $o->getVATCode()->val(''),
                    'DeliveryAddress' => $o->getAddressId()->getAddress()->val(''),
                    'City' => $o->getPlacePointCity()->val(''),
-                   'PaymentType' => $paymentType,
+                   'PaymentType' => substr($paymentType, 0, 20),
                    'PaymentCode' => $paymentCode,
                    'FoodAmount' => number_format($foodTotal, 2, '.', ''),
                    'AlcoholAmount' => number_format(0.0, 2, '.', ''),
@@ -737,12 +744,16 @@ class NavService extends ContainerAware
 
             $r = \Maybe($response);
 
-            // correct logic is when $response->return_value === 0
-            if (!($r->return_value->val('') === 0)) {
+            // correct logic is when $response->return_value == 0
+            if (!($r->return_value->val('') == 0)) {
                 throw new \SoapFault((string) $r->return_value->val(''),
                                      'Soap call "FoodOutCreateInvoice" didn\'t return 0. Parameters used: ' . var_export($params, true));
             }
         } catch (\SoapFault $e) {
+            if (preg_match('/The Foodout Invoice already exists\./', $e->getMessage())) {
+                return true;
+            }
+
             $event = new SoapFaultEvent($e);
 
             $this->getContainer()
@@ -752,7 +763,7 @@ class NavService extends ContainerAware
 
         $r = \Maybe($response);
 
-        return $r->return_value->val('') === 0 ? true : false;
+        return $r->return_value->val('') == 0 ? true : false;
     }
 
     /**
@@ -931,38 +942,43 @@ class NavService extends ContainerAware
 
     public function didOrderPlaceChange($orderNo)
     {
-        // $this->container->get('food.mssql');
+        if (empty($orderNo)) {
+            return [];
+        }
 
-        // $query = sprintf('
-        //     SELECT
-        //         woh.[Delivery Order No_],
-        //         do.[Order No_],
-        //         pt.[Receipt No_],
-        //         do.[Restaurant No_],
-        //         pt.[Store No_]
-        //     FROM %s woh
-        //     LEFT JOIN [skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery Order] do ON do.[Order No_] = woh.[Delivery Order No_]
-        //     LEFT JOIN [skamb_centras].[dbo].[Čilija Skambučių Centras$POS Transaction] pt ON pt.[Receipt No_] = do.[Order No_]
-        //     WHERE
-        //         do.[Restaurant No_] != pt.[Store No_] AND
-        //         pt.[Store No_] != \'ISC\' AND
-        //         woh.[Order No_] = %s
-        //     ORDER BY woh.[timestamp] DESC',
-        //     $this->getHeaderTable(),
-        //     $orderNo);
+        $mssql = $this->container->get('food.mssql');
 
-        // $result = $this->initSqlConn()->query($query);
+        $query = sprintf('
+            SELECT
+                woh.[Delivery Order No_],
+                do.[Order No_],
+                pt.[Receipt No_],
+                do.[Restaurant No_],
+                pt.[Store No_]
+            FROM %s woh
+            LEFT JOIN [skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery Order] do ON do.[Order No_] = woh.[Delivery Order No_]
+            LEFT JOIN [skamb_centras].[dbo].[Čilija Skambučių Centras$POS Transaction] pt ON pt.[Receipt No_] = do.[Order No_]
+            WHERE
+                do.[Restaurant No_] != pt.[Store No_] AND
+                pt.[Store No_] != \'ISC\' AND
+                woh.[Order No_] = %s
+            ORDER BY woh.[timestamp] DESC',
+            $this->getHeaderTable(),
+            $orderNo);
 
-        // if( $result === false) {
-        //     return [];
-        // }
+        $result = $this->initSqlConn()->query($query);
 
-        // $resultList = [];
-        // while ($row = $mssql->fetchArray($result)) {
-        //     $resultList[$this->getOrderIdFromNavId($row['Order No_'])] = $row;
-        // }
+        if ($result === false) {
+            return [];
+        }
 
-        // return $resultList;
+        $resultList = [];
+        while ($row = $mssql->fetchArray($result)) {
+            $maybeRow = \Maybe($row);
+            $resultList[$this->getOrderIdFromNavId($maybeRow['Order No_']->val(''))] = $row;
+        }
+
+        return $resultList;
     }
 
     /*SELECT TOP 10 woh.[Delivery Order No_], do.[Order No_], pt.[Receipt No_], do.[Restaurant No_], pt.[Store No_]
@@ -1268,7 +1284,7 @@ class NavService extends ContainerAware
             case 'local.card':
                 return 'CC';
             case 'paysera':
-                return 'BANK_PAYSERA';
+                return 'BANK_PAYSE';
             case 'swedbank-gateway':
                 return 'BANK_SWED';
             case 'swedbank-credit-card-gateway':
@@ -1447,13 +1463,195 @@ class NavService extends ContainerAware
 
             $driver = $driverQueryBuilder->getQuery()->getResult();
 
-            if (empty($driver)) {
-                return $driver;
+            if (!empty($driver)) {
+                return $driver[0];
             } else {
                 return false;
             }
         }
 
-        return $driver[0];
+        return $driver;
+    }
+
+    public function sendNavInvoice($order, $invoice = null)
+    {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+
+        // call SOAP
+        $success = $this->createInvoice($order);
+
+        // create sent/error entry for this nav invoice to send
+        if (is_null($invoice)) {
+            $invoiceToSendNavOnly = new InvoiceToSendNavOnly();
+            $invoiceToSendNavOnly->setOrder($order)
+                                 ->setDateAdded(new \DateTime('now'))
+                                 ->setDateSent(new \DateTime('now'));
+
+            $em->persist($invoiceToSendNavOnly);
+        } else {
+            $invoiceToSendNavOnly = $invoice;
+            $invoiceToSendNavOnly->setDateSent(new \DateTime('now'));
+        }
+
+        if ($success) {
+            $invoiceToSendNavOnly->markSent();
+            $em->flush();
+        } else {
+            $invoiceToSendNavOnly->markError();
+
+            $newInvoice = clone $invoiceToSendNavOnly;
+            $newInvoice->markUnsent();
+
+            $em->persist($newInvoice);
+            $em->flush();
+        }
+
+        return $success;
+    }
+
+    public function selectNavInvoice(Order $order)
+    {
+        if (empty($order)) {
+            return false;
+        }
+
+        $mssql = $this->container->get('food.mssql');
+
+        $query = '
+            SELECT TOP 1
+                i.[Order ID],
+                i.[Invoice No_],
+                i.[Restaurant ID],
+                i.[Restaurant Name],
+                i.[Driver ID],
+                i.[Client Name],
+                i.[Registration No_],
+                i.[VAT Registration No_],
+                i.[Delivery Address],
+                i.[City],
+                i.[Payment Method Type],
+                i.[Payment Method Code],
+                i.[Food Amount With VAT],
+                i.[Alcohol Amount With VAT],
+                i.[Delivery Amount With VAT]
+            FROM %s i
+            WHERE i.[Order ID] = %s';
+        $query = sprintf($query, $this->getInvoiceTable(), $order->getId());
+
+        $result = $this->initTestSqlConn()->query($query);
+
+        if ($result === false) {
+            return null;
+        }
+
+        $row = (array)$mssql->fetchArray($result);
+
+        $resultList = [];
+
+        foreach ($row as $key => $value) {
+            if (is_numeric($key)) {
+                continue;
+            }
+
+            $resultList[$key] = iconv('cp1257', 'utf-8', $value);
+        }
+
+        return $resultList;
+    }
+
+    public function compareNavInvoiceWithOrder(array $navInvoice, Order $order)
+    {
+        $result = ['sameData' => [], 'orderHas' => [], 'invoiceHas' => []];
+
+        if (empty($navInvoice) || empty($order)) {
+            return $result;
+        }
+
+        $navInvoice['Food Amount With VAT'] = round($navInvoice['Food Amount With VAT'], 2);
+        $navInvoice['Alcohol Amount With VAT'] = round($navInvoice['Alcohol Amount With VAT'], 2);
+        $navInvoice['Delivery Amount With VAT'] = round($navInvoice['Delivery Amount With VAT'], 2);
+
+        $o = \Maybe($order);
+
+        $orderProperties = [
+            'Order ID' => $o->getId()->val(''),
+            'Invoice No_' => $o->getSfSeries()->val('') . $o->getSfNumber()->val(''),
+            'Restaurant ID' => $o->getPlace()->getId()->val(''),
+            'Restaurant Name' => $o->getPlaceName()->val(''),
+            'Driver ID' => $o->getDriver()->getId()->val(''),
+            'Client Name' => trim(preg_replace('#\s{2,}#', ' ', $o->getUser()->getFirstname()->val('') . ' ' . $o->getUser()->getLastname()->val(''))),
+            'Registration No_' => $o->getCompanyCode()->val(''),
+            'VAT Registration No_' => $o->getVatCode()->val(''),
+            'Delivery Address' => trim(preg_replace('#\s{2,}#', ' ', $o->getAddressId()->getAddress()->val(''))),
+            'City' => $o->getPlacePointCity()->val(''),
+            'Payment Method Type' => $o->getPaymentMethod()->val(''),
+            'Payment Method Code' => $o->getPaymentMethod()->val('') == 'local'
+                                     ? $o->getDriver()->getId()->val('')
+                                     : $this->convertPaymentType($o->getPaymentMethod()->val('')),
+            'Food Amount With VAT' => $o->getTotal()->val(0.0) - $o->getDeliveryPrice()->val(0.0),
+            'Alcohol Amount With VAT' => 0.0,
+            'Delivery Amount With VAT' => $o->getDeliveryPrice()->val('')
+        ];
+
+        $result = [
+            'sameData' => array_intersect_assoc($navInvoice, $orderProperties),
+            'invoiceHas' => array_diff_assoc($navInvoice, $orderProperties),
+            'orderHas' => array_diff_assoc($orderProperties, $navInvoice)
+        ];
+
+        return $result;
+    }
+
+    public function updateNavInvoice(Order $order, array $data)
+    {
+        if (empty($order) || empty($data)) {
+            return false;
+        }
+
+        $cols = [];
+
+        foreach ($data as $key => $value) {
+            $cols[] = sprintf("[%s] = '%s'", $key, str_replace('\'', '\\\'', $value));
+        }
+
+        $cols[] = sprintf('[ReplicationCounter] = (SELECT ISNULL(MAX(ReplicationCounter),0) FROM %s) + 1',
+                          $this->getInvoiceTable());
+
+        $query = 'UPDATE %s SET %s WHERE [Order ID] = %s';
+        $query = sprintf($query,
+                         $this->getInvoiceTable(),
+                         implode(', ', $cols),
+                         $order->getId());
+
+        $result = $this->initTestSqlConn()->query($query);
+
+        return $result;
+    }
+
+    /**
+     * Get driver code from NAV.
+     * @param  int $id orders.nav_delivery_order
+     * @return string
+     */
+    public function getNavDriverCode($id)
+    {
+        $mssql = $this->container->get('food.mssql');
+
+        $query = '
+            SELECT TOP 1 [Driver ID]
+            FROM %s
+            WHERE [Order No_] = \'%s\'
+        ';
+        $query = sprintf($query, $this->getDeliveryOrderTable(), $id);
+
+        $result = $this->initSqlConn()->query($query);
+
+        if (empty($result)) {
+            return null;
+        }
+
+        $row = (array)$mssql->fetchArray($result);
+
+        return !empty($row[0]) ? iconv('cp1257', 'utf-8', $row[0]) : null;
     }
 }
