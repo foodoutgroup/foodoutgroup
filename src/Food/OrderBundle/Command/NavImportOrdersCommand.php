@@ -196,6 +196,11 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                         if ($deliveryType != OrderService::$deliveryPickup) {
                             // User address data
                             $fixedAddress = iconv('CP1257', 'UTF-8', $orderData['Address']);
+                            // OMG, kartais NAV adresas turi bruksniukus, kuriu niekam nereikia.. fuj fuj fuj
+                            if (mb_strpos($fixedAddress, '--') == (mb_strlen($fixedAddress) - 2)) {
+                                $fixedAddress = mb_substr($fixedAddress, 0, (mb_strlen($fixedAddress) - 2));
+                            }
+
                             $fixedCity = iconv('CP1257', 'UTF-8', $orderData['City']);
                             $addressStr = strstr($fixedAddress, ', ' . $fixedCity, true);
                             $addressData = $gisService->getPlaceData($fixedAddress);
