@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Food\AppBundle\Entity\Driver;
 
 /**
- * @ORM\Table(name="orders")
+ * @ORM\Table(name="orders", indexes={@ORM\Index(name="nav_delivery_order_idx", columns={"nav_delivery_order"})})
  * @ORM\Entity(repositoryClass="Food\OrderBundle\Entity\OrderRepository")
  */
 class Order
