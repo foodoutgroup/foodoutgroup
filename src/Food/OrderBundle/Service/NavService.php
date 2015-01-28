@@ -191,8 +191,8 @@ class NavService extends ContainerAware
             '213.190.40.38',
             5566,
             'skamb_centras',
-            'fo_order',
-            'peH=waGe?zoOs69'
+            'Neotest',
+            'NewNeo@123'
         );
 
         return $isConnected ? $sqlSS : $isConnected;
@@ -1398,7 +1398,6 @@ class NavService extends ContainerAware
         if( $result === false) {
             return array();
         }
-
         $return = array();
         while ($rowRez = $this->container->get('food.mssql')->fetchArray($result)) {
             $return[$rowRez['OrderNo']] = $rowRez;

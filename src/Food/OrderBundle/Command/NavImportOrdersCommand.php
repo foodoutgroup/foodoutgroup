@@ -256,7 +256,6 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                                     ->setCompanyAddress($addressToSave.", ". $cityToSave);
                             }
 
-
                             $driverId = trim($orderData['Driver ID']);
                             if ($orderData['OrderStatus'] > 6 && !empty($driverId)) {
                                 $order->setNavDriverCode($driverId);
