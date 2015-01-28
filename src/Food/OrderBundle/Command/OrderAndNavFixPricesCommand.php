@@ -60,8 +60,14 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 
             $navInvoice = $services->nav->selectNavInvoice($order);
 
+            if (empty($navInvoice)) {
+                $output->writeln('[Order ID] = ' . $order->getId() . ': has no Navision invoice');
+
+                continue;
+            }
+
             // 2. update Navision invoices
-            $foodAmount = number_format($data['posted_total'] - $order->getDeliveryPrice(), 2, '.', '');
+            $foodAmount = $this->calculateFoodTotal($data['posted_total'], $order->getDeliveryPrice());
             $output->write('[Order ID] = ' . $order->getId() . ': update NAV invoice [Food Amount With VAT] from ' . number_format($navInvoice['Food Amount With VAT'], 2, '.', '') . ' to ' . $foodAmount . '.. ');
 
             if ($options->dryRun ||
@@ -85,7 +91,7 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
     {
         $qb = $services->em->createQueryBuilder();
 
-        $params = ['from' => $from, 'to' => $to];
+        $params = ['from' => $from, 'to' => $to, 'city' => 'Vilnius'];
 
         $result = $qb->select('o.id, p.total AS posted_total')
                      ->from('FoodOrderBundle:Order', 'o')
@@ -94,7 +100,7 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
                      ->andWhere('o.order_date <= :to')
                      ->andWhere($qb->expr()->isNotNull('o.sfSeries'))
                      ->andWhere($qb->expr()->isNotNull('o.sfNumber'))
-                     ->andWhere('p.total != 0')
+                     ->andWhere('o.place_point_city = :city')
                      ->setParameters($params)
                      ->getQuery()
                      ->getResult();
@@ -157,5 +163,18 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
         $services->em->flush();
 
         return $order;
+    }
+
+    protected function calculateFoodTotal($postedTotal, $deliveryPrice)
+    {
+        if (!is_numeric($postedTotal) || !is_numeric($deliveryPrice)) {
+            throw new \InvalidArgumentException('$postedTotal or $deliveryPrice is not numeric, but it should be.');
+        }
+
+        if (0.0 == $postedTotal) {
+            return '0.01';
+        }
+
+        return number_format($postedTotal - $deliveryPrice, 2, '.', '');
     }
 }
