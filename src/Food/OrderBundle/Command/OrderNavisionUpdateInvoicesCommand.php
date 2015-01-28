@@ -83,7 +83,7 @@ class OrderNavisionUpdateInvoicesCommand extends ContainerAwareCommand
         $result = $qb->select('o.id')
                      ->from('FoodOrderBundle:Order', 'o')
                      ->where('o.order_date >= :from')
-                     ->andWhere('o.order_date < :to')
+                     ->andWhere('o.order_date <= :to')
                      ->andWhere($qb->expr()->isNotNull('o.sfSeries'))
                      ->andWhere($qb->expr()->isNotNull('o.sfNumber'))
                      ->andWhere('o.deliveryType = :delivery_type')
@@ -114,6 +114,9 @@ class OrderNavisionUpdateInvoicesCommand extends ContainerAwareCommand
 
         $services->nav = $container->get('food.nav');
         $services->em = $container->get('doctrine.orm.entity_manager');
+
+        // critical in batch sql operations! disabling will prevent memory leaks.
+        $services->em->getConnection()->getConfiguration()->setSQLLogger(null);
 
         return $services;
     }
