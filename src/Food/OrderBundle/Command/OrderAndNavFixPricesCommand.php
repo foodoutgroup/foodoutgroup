@@ -65,7 +65,8 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 
             if ($options->dryRun ||
                 empty($navInvoice) ||
-                empty($navInvoice['Food Amount With VAT']))
+                empty($navInvoice['Food Amount With VAT']) ||
+                number_format($navInvoice['Food Amount With VAT'], 2, '.', '') == $data['posted_total'])
             {
                 $output->writeln('skipped');
             } else {
