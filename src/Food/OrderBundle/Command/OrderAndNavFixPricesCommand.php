@@ -50,7 +50,7 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
             // 1. update orders
             $output->write('[Order ID] = ' . $order->getId() . ': updating total from ' . $order->getTotal() . ' to ' . $data['posted_total'] . '.. ');
 
-            if ($options->dryRun) {
+            if ($options->dryRun || $order->getTotal() == $data['posted_total']) {
                 $output->writeln('skipped');
             } else {
                 $order = $this->updateTotal($order, $data['posted_total'], $services);
@@ -61,16 +61,17 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
             $navInvoice = $services->nav->selectNavInvoice($order);
 
             // 2. update Navision invoices
-            $output->write('[Order ID] = ' . $order->getId() . ': update NAV invoice [Food Amount With VAT] from ' . number_format($navInvoice['Food Amount With VAT'], 2, '.', '') . ' to ' . $data['posted_total'] . '.. ');
+            $foodAmount = number_format($data['posted_total'] - $order->getDeliveryPrice(), 2, '.', '');
+            $output->write('[Order ID] = ' . $order->getId() . ': update NAV invoice [Food Amount With VAT] from ' . number_format($navInvoice['Food Amount With VAT'], 2, '.', '') . ' to ' . $foodAmount . '.. ');
 
             if ($options->dryRun ||
                 empty($navInvoice) ||
                 empty($navInvoice['Food Amount With VAT']) ||
-                number_format($navInvoice['Food Amount With VAT'], 2, '.', '') == $data['posted_total'])
+                number_format($navInvoice['Food Amount With VAT'], 2, '.', '') == $foodAmount)
             {
                 $output->writeln('skipped');
             } else {
-                $updateWith = ['Food Amount With VAT' => $data['posted_total']];
+                $updateWith = ['Food Amount With VAT' => $foodAmount];
                 $success = $services->nav->updateNavInvoice($order, $updateWith);
 
                 $output->writeln(!empty($success) ? 'success' : 'failure');
@@ -93,7 +94,6 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
                      ->andWhere('o.order_date <= :to')
                      ->andWhere($qb->expr()->isNotNull('o.sfSeries'))
                      ->andWhere($qb->expr()->isNotNull('o.sfNumber'))
-                     ->andWhere('o.total != p.total')
                      ->andWhere('p.total != 0')
                      ->setParameters($params)
                      ->getQuery()
@@ -135,60 +135,6 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 
             throw new \Exception($message);
         }
-    }
-
-    protected function trimIfAllColumns(array $orderHas)
-    {
-        if (empty($orderHas)) {
-            return $orderHas;
-        }
-
-        $resultData = [];
-
-        foreach ($orderHas as $key => $value) {
-            if (empty($value)) {
-                continue;
-            }
-
-            $resultData[$key] = $value;
-        }
-
-        return $resultData;
-    }
-
-    protected function trimIfOnlyColumn($onlyColumn, array $data)
-    {
-        // nothing has changed
-        if (!$onlyColumn) {
-            return $data;
-        }
-
-        $data = empty($data[$onlyColumn])
-                ? []
-                : [$onlyColumn => $data[$onlyColumn]];
-
-        return $data;
-    }
-
-    protected function generateMessage(array $data, $order, $success, $dryRun)
-    {
-        $maybeData = \Maybe($data);
-        $mssqlColumnNames = array_keys($data['orderHas']);
-        $cols = [];
-
-        foreach ($mssqlColumnNames as $column) {
-            $cols[] = sprintf('[%s] from "%s" to "%s"',
-                              $column,
-                              $maybeData['invoiceHas'][$column]->val(''),
-                              $maybeData['orderHas'][$column]->val(''));
-        }
-
-        $message = sprintf('[Order ID] = %s: Updating columns %s .. %s',
-                            $order->getId(),
-                            implode(', ', $cols),
-                            $dryRun ? 'skipped' : ($success ? 'success' : 'failure'));
-
-        return $message;
     }
 
     protected function findOrder($id, \StdClass $services)
