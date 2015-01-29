@@ -45,10 +45,6 @@ class TranslationConverterCommand extends ContainerAwareCommand
             throw new \InvalidArgumentException('You must specify a --output format option.');
         }
 
-        // if (!$path || !$this->getFilesystem()->exists($path)) {
-        //     throw new \InvalidArgumentException('You must specify a valid --path option.');
-        // }
-
         $dumper = $this->getDumper($outputFormat);
         $this->getTranslationWriter()->addDumper($outputFormat, $dumper);
 
