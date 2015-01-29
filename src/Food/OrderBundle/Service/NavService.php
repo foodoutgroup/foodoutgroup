@@ -698,16 +698,18 @@ class NavService extends ContainerAware
 
         // some calculations beforehand
         $total = $o->getTotal()->val(0.0);
-        $discountTotal = $o->getDiscountSum()->val(0.0);
         $deliveryTotal = $o->getDeliveryPrice()->val(0.0);
-        $foodTotal = $total - $discountTotal - $deliveryTotal;
+        $foodTotal = $total - $deliveryTotal;
 
         // payment type and code preprocessing
         $driverId = $o->getDriver()->getId()->val('');
 
-        // if (empty($driverId) && $order->getNavDriverCode() != '') {
-        //     $driverId = $order->getNavDriverCode();
-        // }
+        // client name depends on if client is a company or not
+        $clientName = $o->getCompany()->val(false)
+                      ? $o->getCompanyName()->val('')
+                      : sprintf('%s %s',
+                                $o->getUser()->getFirstname()->val(''),
+                                $o->getUser()->getLastname()->val(''));
 
         $paymentType = $o->getPaymentMethod()->val('');
         $paymentCode = $paymentType == 'local'
@@ -718,17 +720,13 @@ class NavService extends ContainerAware
         $params = ['InvoiceNo' => $o->getSfSeries()->val('') . $o->getSfNumber()->val(''),
                    'OrderID' => $o->getId()->val('0'),
                    'OrderDate' => $o->getOrderDate()->format('Y.m.d')->val('1754-01-01'),
-                                  // ' ' .
-                                  // $o->getOrderDate()->format('H:i:s')->val('00:00:00'),
                    'RestaurantID' => $o->getPlace()->getId()->val('0'),
                    'RestaurantName' => $o->getPlaceName()->val(''),
                    'DriverID' => $driverId,
-                   'ClientName' => $o->getUser()->getFirstname()->val('') .
-                                   ' ' .
-                                   $o->getUser()->getLastname()->val(''),
+                   'ClientName' => $this->normalizeStringForNav($clientName),
                    'RegistrationNo' => $o->getCompanyCode()->val(''),
                    'VATRegistrationNo' => $o->getVATCode()->val(''),
-                   'DeliveryAddress' => $o->getAddressId()->getAddress()->val(''),
+                   'DeliveryAddress' => $this->normalizeStringForNav($o->getAddressId()->getAddress()->val('')),
                    'City' => $o->getPlacePointCity()->val(''),
                    'PaymentType' => substr($paymentType, 0, 20),
                    'PaymentCode' => $paymentCode,
@@ -1572,16 +1570,23 @@ class NavService extends ContainerAware
 
         $o = \Maybe($order);
 
+        // client name depends on if client is a company or not
+        $clientName = $o->getCompany()->val(false)
+                      ? $o->getCompanyName()->val('')
+                      : sprintf('%s %s',
+                                $o->getUser()->getFirstname()->val(''),
+                                $o->getUser()->getLastname()->val(''));
+
         $orderProperties = [
             'Order ID' => $o->getId()->val(''),
             'Invoice No_' => $o->getSfSeries()->val('') . $o->getSfNumber()->val(''),
             'Restaurant ID' => $o->getPlace()->getId()->val(''),
             'Restaurant Name' => $o->getPlaceName()->val(''),
             'Driver ID' => $o->getDriver()->getId()->val(''),
-            'Client Name' => trim(preg_replace('#\s{2,}#', ' ', $o->getUser()->getFirstname()->val('') . ' ' . $o->getUser()->getLastname()->val(''))),
+            'Client Name' => $this->normalizeStringForNav($clientName),
             'Registration No_' => $o->getCompanyCode()->val(''),
             'VAT Registration No_' => $o->getVatCode()->val(''),
-            'Delivery Address' => trim(preg_replace('#\s{2,}#', ' ', $o->getAddressId()->getAddress()->val(''))),
+            'Delivery Address' => $this->normalizeStringForNav($o->getAddressId()->getAddress()->val('')),
             'City' => $o->getPlacePointCity()->val(''),
             'Payment Method Type' => $o->getPaymentMethod()->val(''),
             'Payment Method Code' => $o->getPaymentMethod()->val('') == 'local'
@@ -1652,5 +1657,10 @@ class NavService extends ContainerAware
         $row = (array)$mssql->fetchArray($result);
 
         return !empty($row[0]) ? iconv('cp1257', 'utf-8', $row[0]) : null;
+    }
+
+    public function normalizeStringForNav($value)
+    {
+        return trim(preg_replace('#\s{2,}#', ' ', $value));
     }
 }

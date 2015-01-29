@@ -109,6 +109,9 @@ class OrderUpdateDriverCommand extends ContainerAwareCommand
         $services->em = $container->get('doctrine.orm.entity_manager');
         $services->nav = $container->get('food.nav');
 
+        // critical in batch sql operations! disabling will prevent memory leaks.
+        $services->em->getConnection()->getConfiguration()->setSQLLogger(null);
+
         return $services;
     }
 
@@ -133,7 +136,7 @@ class OrderUpdateDriverCommand extends ContainerAwareCommand
         $result = $qb->select('o.id, o.navDeliveryOrder, o.navDriverCode')
                      ->from('FoodOrderBundle:Order', 'o')
                      ->where('o.order_date >= :from')
-                     ->andWhere('o.order_date < :to')
+                     ->andWhere('o.order_date <= :to')
                      ->andWhere($qb->expr()->isNotNull('o.sfSeries'))
                      ->andWhere($qb->expr()->isNotNull('o.sfNumber'))
                      ->andWhere($qb->expr()->isNull('o.driver'))
