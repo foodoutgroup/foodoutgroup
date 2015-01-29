@@ -211,11 +211,20 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                         // if delivery, only then you mess with address
                         if ($deliveryType != OrderService::$deliveryPickup) {
                             // User address data
-                            $fixedAddress = iconv('CP1257', 'UTF-8', $orderData['Address']);
+                            $output->writeln('Order delivery type - deliver. Setting address');
+                            $output->writeln('Address from NAV: '.var_export($orderData['Address'], true));
+                            $fixedAddress = trim(iconv('CP1257', 'UTF-8', $orderData['Address']));
+                            $output->writeln('Converted address: '.var_export($fixedAddress, true));
                             // OMG, kartais NAV adresas turi bruksniukus, kuriu niekam nereikia.. fuj fuj fuj
                             if (mb_strpos($fixedAddress, '--') == (mb_strlen($fixedAddress) - 2)) {
+                                $output->writeln('Found -- chars.. Cleaning address');
                                 $fixedAddress = mb_substr($fixedAddress, 0, (mb_strlen($fixedAddress) - 2));
                             }
+                            if (mb_strpos($fixedAddress, '--,') !== false) {
+                                $output->writeln('Found --, chars.. Cleaning address');
+                                $fixedAddress = str_replace('--,', ',', $fixedAddress);
+                            }
+                            $output->writeln('Cleaned address: '.var_export($fixedAddress, true));
 
                             $fixedCity = iconv('CP1257', 'UTF-8', $orderData['City']);
                             $addressStr = strstr($fixedAddress, ', ' . $fixedCity, true);
@@ -252,7 +261,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
 
 
                             /**
-                             *                  cCustomer.[Name] AS CustomerName,
+                            cCustomer.[Name] AS CustomerName,
                             cCustomer.[Address] AS CustomerAddress,
                             cCustomer.[City] AS CustomerCity,
                             cCustomer.[VAT Registration No_] AS CustomerVatNo,
