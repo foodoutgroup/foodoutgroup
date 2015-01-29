@@ -170,13 +170,24 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             ->setPaymentStatus(OrderService::$paymentStatusComplete)
                             ->setOrderStatus(OrderService::$status_new)
                             ->setLocale($this->getContainer()->getParameter('locale'))
-                            ->setComment($orderData['Directions']);
+                            ->setComment(iconv('CP1257', 'UTF-8', $orderData['Directions']));
 
 
                         // User data
                         $phone = $miscUtility->formatPhone($orderData['Phone No_'], $country);
-                        $output->writeln('Searching for user with phone: '.$phone);
-                        $user = $userService->findUserBy(array('phone' => $phone));
+                        $customerEmail = trim($orderData['CustomerEmail']);
+
+
+                        $user = null;
+                        if (!empty($customerEmail)) {
+                            $output->writeln('Searching for user with email: '.$customerEmail);
+                            $user = $userService->findUserByEmail($customerEmail);
+                        }
+
+                        if (!$user instanceof User || $user->getId() == '') {
+                            $output->writeln('Searching for user with phone: ' . $phone);
+                            $user = $userService->findUserBy(array('phone' => $phone));
+                        }
 
                         // no user, create one
                         if (!$user instanceof User || $user->getId() == '') {
@@ -184,7 +195,11 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             $user = $userService->createUser();
                             $user->setUsername($phone);
                             $user->setFirstname($phone);
-                            $user->setEmail($phone.'@foodout.lt');
+                            if (!empty($customerEmail)) {
+                                $user->setEmail($customerEmail);
+                            } else {
+                                $user->setEmail($phone . '@foodout.lt');
+                            }
                             $user->setPhone($phone);
                             $user->setPassword('temp_'.$phone);
                             $user->setEnabled(true);
@@ -243,17 +258,23 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                                 $addressToSave = $order->getAddressId()->getAddress();
                                 $cityToSave = $order->getAddressId()->getCity();
                                 if (!empty($orderData['CustomerAddress'])) {
-                                    $addressToSave = $orderData['CustomerAddress'];
+                                    $addressToSave = iconv('CP1257', 'UTF-8', $orderData['CustomerAddress']);
                                 }
                                 if (!empty($orderData['CustomerCity'])) {
-                                    $cityToSave = $orderData['CustomerCity'];
+                                    $cityToSave = iconv('CP1257', 'UTF-8', $orderData['CustomerCity']);
+                                }
+
+                                $companyAddress = $addressToSave;
+
+                                if (strpos($addressToSave, $cityToSave) === false) {
+                                    $companyAddress .= ", ". $cityToSave;
                                 }
 
                                 $order->setCompany(true)
-                                    ->setCompanyName($orderData['CustomerName'])
+                                    ->setCompanyName(iconv('CP1257', 'UTF-8', $orderData['CustomerName']))
                                     ->setCompanyCode($orderData['CustomerRegNo'])
                                     ->setVatCode($orderData['CustomerVatNo'])
-                                    ->setCompanyAddress($addressToSave.", ". $cityToSave);
+                                    ->setCompanyAddress($companyAddress);
                             }
 
                             $driverId = trim($orderData['Driver ID']);

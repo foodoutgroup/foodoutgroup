@@ -1427,7 +1427,7 @@ class NavService extends ContainerAware
                     'Found placePoint for restaurant no "%s" with id: %d but chain from Nav "%s" does not match Place chain "%s". The point will still be used',
                     $restaurantNo,
                     $pPoint->getId(),
-                    $chain.
+                    $chain,
                     $pPoint->getPlace()->getChain()
                 ));
         }
