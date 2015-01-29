@@ -932,6 +932,10 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $order->setPlacePointSelfDelivery(false)
             ->setDeliveryType(OrderService::$deliveryDeliver);
 
+        $placePoint = new PlacePoint();
+        $placePoint->setUseExternalLogistics(true);
+        $order->setPlacePoint($placePoint);
+
         $container->expects($this->at(0))
             ->method('getParameter')
             ->with('logistics.send_to_external')
@@ -1006,6 +1010,9 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $order->setPlacePointSelfDelivery(false)
             ->setDeliveryType(OrderService::$deliveryDeliver)
             ->setPlacePointCity('Kaunas');
+        $placePoint = new PlacePoint();
+        $placePoint->setUseExternalLogistics(true);
+        $order->setPlacePoint($placePoint);
 
         $container->expects($this->at(0))
             ->method('getParameter')
@@ -1063,6 +1070,9 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $order->setPlacePointSelfDelivery(false)
             ->setDeliveryType(OrderService::$deliveryDeliver)
             ->setPlacePointCity('Klaipėda');
+        $placePoint = new PlacePoint();
+        $placePoint->setUseExternalLogistics(true);
+        $order->setPlacePoint($placePoint);
 
         $container->expects($this->at(0))
             ->method('getParameter')
@@ -1094,6 +1104,9 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $order = new Order();
         $order->setPlacePointSelfDelivery(false)
             ->setDeliveryType(OrderService::$deliveryPickup);
+        $placePoint = new PlacePoint();
+        $placePoint->setUseExternalLogistics(false);
+        $order->setPlacePoint($placePoint);
 
         $container->expects($this->at(0))
             ->method('getParameter')

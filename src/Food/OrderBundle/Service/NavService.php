@@ -60,6 +60,10 @@ class NavService extends ContainerAware
 
     private $deliveryOrderStatusTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery order status]';
 
+    private $contractTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Contract]';
+
+    private $customerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Customer]';
+
     private $invoiceTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Foodout Invoice]';
 
     /**
@@ -140,6 +144,24 @@ class NavService extends ContainerAware
     }
 
     /**
+     * @return string
+     */
+    public function getContractTable()
+    {
+        return $this->contractTable;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerTable()
+    {
+        return $this->customerTable;
+    }
+
+
+
+    /**
      * @return false|resource
      */
     public function getConnection()
@@ -169,8 +191,8 @@ class NavService extends ContainerAware
             '213.190.40.38',
             5566,
             'skamb_centras',
-            'fo_order',
-            'peH=waGe?zoOs69'
+            'Neotest',
+            'NewNeo@123'
         );
 
         return $isConnected ? $sqlSS : $isConnected;
@@ -1337,9 +1359,17 @@ class NavService extends ContainerAware
                  WHERE
                     [ORDER No_] = dOrder.[Order No_]
                  ORDER BY [TIME] DESC
-                 ) AS OrderStatus
+                 ) AS OrderStatus,
+                 cCustomer.[Name] AS CustomerName,
+                 cCustomer.[Address] AS CustomerAddress,
+                 cCustomer.[City] AS CustomerCity,
+                 cCustomer.[VAT Registration No_] AS CustomerVatNo,
+                 cCustomer.[E-mail] AS CustomerEmail,
+                 cCustomer.[Registration No_] AS CustomerRegNo
             FROM %s dOrder
             LEFT JOIN %s pTrans ON pTrans.[Receipt No_] = dOrder.[Order No_]
+            LEFT JOIN %s cContract ON cContract.[Contract Register No_] = dOrder.[Contract Register No_]
+            LEFT JOIN %s cCustomer ON cCustomer.[No_] = cContract.[Customer No_]
             WHERE
                 dOrder.[Date Created] >= '%s'
                 AND dOrder.[Time Created] >= '%s'
@@ -1355,6 +1385,8 @@ class NavService extends ContainerAware
             $this->getDeliveryOrderStatusTable(),
             $this->getDeliveryOrderTable(),
             $this->getPosTransactionLinesTable(),
+            $this->getContractTable(),
+            $this->getCustomerTable(),
             date('Y-m-d'),
             '1754-01-01 '.date("H:i:s", strtotime('-2 hour')),
             "'Vilnius', 'Kaunas', 'Klaipeda'"
@@ -1364,7 +1396,6 @@ class NavService extends ContainerAware
         if( $result === false) {
             return array();
         }
-
         $return = array();
         while ($rowRez = $this->container->get('food.mssql')->fetchArray($result)) {
             $return[$rowRez['OrderNo']] = $rowRez;
@@ -1394,7 +1425,7 @@ class NavService extends ContainerAware
                     'Found placePoint for restaurant no "%s" with id: %d but chain from Nav "%s" does not match Place chain "%s". The point will still be used',
                     $restaurantNo,
                     $pPoint->getId(),
-                    $chain.
+                    $chain,
                     $pPoint->getPlace()->getChain()
                 ));
         }

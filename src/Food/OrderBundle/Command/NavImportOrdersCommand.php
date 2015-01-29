@@ -170,12 +170,24 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             ->setPaymentStatus(OrderService::$paymentStatusComplete)
                             ->setOrderStatus(OrderService::$status_new)
                             ->setLocale($this->getContainer()->getParameter('locale'))
-                            ->setComment($orderData['Directions']);
+                            ->setComment(iconv('CP1257', 'UTF-8', $orderData['Directions']));
+
 
                         // User data
                         $phone = $miscUtility->formatPhone($orderData['Phone No_'], $country);
-                        $output->writeln('Searching for user with phone: '.$phone);
-                        $user = $userService->findUserBy(array('phone' => $phone));
+                        $customerEmail = trim($orderData['CustomerEmail']);
+
+
+                        $user = null;
+                        if (!empty($customerEmail)) {
+                            $output->writeln('Searching for user with email: '.$customerEmail);
+                            $user = $userService->findUserByEmail($customerEmail);
+                        }
+
+                        if (!$user instanceof User || $user->getId() == '') {
+                            $output->writeln('Searching for user with phone: ' . $phone);
+                            $user = $userService->findUserBy(array('phone' => $phone));
+                        }
 
                         // no user, create one
                         if (!$user instanceof User || $user->getId() == '') {
@@ -183,7 +195,11 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             $user = $userService->createUser();
                             $user->setUsername($phone);
                             $user->setFirstname($phone);
-                            $user->setEmail($phone.'@foodout.lt');
+                            if (!empty($customerEmail)) {
+                                $user->setEmail($customerEmail);
+                            } else {
+                                $user->setEmail($phone . '@foodout.lt');
+                            }
                             $user->setPhone($phone);
                             $user->setPassword('temp_'.$phone);
                             $user->setEnabled(true);
@@ -195,11 +211,20 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                         // if delivery, only then you mess with address
                         if ($deliveryType != OrderService::$deliveryPickup) {
                             // User address data
-                            $fixedAddress = iconv('CP1257', 'UTF-8', $orderData['Address']);
+                            $output->writeln('Order delivery type - deliver. Setting address');
+                            $output->writeln('Address from NAV: '.var_export($orderData['Address'], true));
+                            $fixedAddress = trim(iconv('CP1257', 'UTF-8', $orderData['Address']));
+                            $output->writeln('Converted address: '.var_export($fixedAddress, true));
                             // OMG, kartais NAV adresas turi bruksniukus, kuriu niekam nereikia.. fuj fuj fuj
                             if (mb_strpos($fixedAddress, '--') == (mb_strlen($fixedAddress) - 2)) {
+                                $output->writeln('Found -- chars.. Cleaning address');
                                 $fixedAddress = mb_substr($fixedAddress, 0, (mb_strlen($fixedAddress) - 2));
                             }
+                            if (mb_strpos($fixedAddress, '--,') !== false) {
+                                $output->writeln('Found --, chars.. Cleaning address');
+                                $fixedAddress = str_replace('--,', ',', $fixedAddress);
+                            }
+                            $output->writeln('Cleaned address: '.var_export($fixedAddress, true));
 
                             $fixedCity = iconv('CP1257', 'UTF-8', $orderData['City']);
                             $addressStr = strstr($fixedAddress, ', ' . $fixedCity, true);
@@ -232,6 +257,39 @@ class NavImportOrdersCommand extends ContainerAwareCommand
 
                             // Set Address in order
                             $order->setAddressId($address);
+
+
+
+                            /**
+                            cCustomer.[Name] AS CustomerName,
+                            cCustomer.[Address] AS CustomerAddress,
+                            cCustomer.[City] AS CustomerCity,
+                            cCustomer.[VAT Registration No_] AS CustomerVatNo,
+                            cCustomer.[E-mail] AS CustomerEmail,
+                            cCustomer.[Registration No_] AS CustomerRegNo
+                             */
+                            if (!empty($orderData['CustomerName']) && !empty($orderData['CustomerRegNo'])) {
+                                $addressToSave = $order->getAddressId()->getAddress();
+                                $cityToSave = $order->getAddressId()->getCity();
+                                if (!empty($orderData['CustomerAddress'])) {
+                                    $addressToSave = iconv('CP1257', 'UTF-8', $orderData['CustomerAddress']);
+                                }
+                                if (!empty($orderData['CustomerCity'])) {
+                                    $cityToSave = iconv('CP1257', 'UTF-8', $orderData['CustomerCity']);
+                                }
+
+                                $companyAddress = $addressToSave;
+
+                                if (strpos($addressToSave, $cityToSave) === false) {
+                                    $companyAddress .= ", ". $cityToSave;
+                                }
+
+                                $order->setCompany(true)
+                                    ->setCompanyName(iconv('CP1257', 'UTF-8', $orderData['CustomerName']))
+                                    ->setCompanyCode($orderData['CustomerRegNo'])
+                                    ->setVatCode($orderData['CustomerVatNo'])
+                                    ->setCompanyAddress($companyAddress);
+                            }
 
                             $driverId = trim($orderData['Driver ID']);
                             if ($orderData['OrderStatus'] > 6 && !empty($driverId)) {
