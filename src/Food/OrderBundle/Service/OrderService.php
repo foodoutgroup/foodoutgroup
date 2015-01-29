@@ -2222,13 +2222,11 @@ class OrderService extends ContainerAware
                     if (!$isWork) {
                         $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
                         $theId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(),$locationData);
-                        $formErrors[] = $theId;
-                        if ($theId) {
-                            $placePointMap[$place->getId()] = $theId;
-                            $this->container->get('session')->set('point_data', $placePointMap);
-                        } else {
-                            $formErrors[] = 'order.form.errors.no_restaurant_to_deliver';
-                        }
+
+                        $placePointMap[$place->getId()] = $theId;
+                        $this->container->get('session')->set('point_data', $placePointMap);
+
+                        $formErrors[] = 'order.form.errors.no_restaurant_to_deliver';
                     }
                 }
             } else {
