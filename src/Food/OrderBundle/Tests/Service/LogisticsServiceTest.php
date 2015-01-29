@@ -932,6 +932,10 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $order->setPlacePointSelfDelivery(false)
             ->setDeliveryType(OrderService::$deliveryDeliver);
 
+        $placePoint = new PlacePoint();
+        $placePoint->setUseExternalLogistics(true);
+        $order->setPlacePoint($placePoint);
+
         $container->expects($this->at(0))
             ->method('getParameter')
             ->with('logistics.send_to_external')
