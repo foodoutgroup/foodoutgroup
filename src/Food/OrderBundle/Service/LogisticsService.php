@@ -191,7 +191,7 @@ class LogisticsService extends ContainerAware
         $driver = $this->getDriverById($driverId);
         $orderService = $this->getOrderService();
 
-        if ($driver) {
+        if ($driver && is_array($orderIds)) {
             foreach($orderIds as $orderId) {
                 $order = $orderService->getOrderById($orderId);
                 $order->setDriver($driver);
@@ -218,15 +218,6 @@ class LogisticsService extends ContainerAware
                 $orderService->saveOrder();
             }
         }
-
-        // TODO etaksi assigninimas
-//        switch($this->getLogisticSystem()) {
-//            case 'etaxi':
-//                break;
-//
-//            default:
-//                break;
-//        }
     }
 
     /**
