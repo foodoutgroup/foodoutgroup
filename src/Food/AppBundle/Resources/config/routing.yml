@@ -49,7 +49,7 @@ food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto|monitoring|nagios|banned|logistics|order).+"
+        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|vietas|maina|mesto|monitoring|nagios|banned|logistics|order).+"
 
 food_order_nav_test1:
     pattern: /order/nav_test1
@@ -157,6 +157,10 @@ food_place_en:
 food_place_lt:
     resource: "@FoodPlacesBundle/Resources/config/routing_lt.yml"
     prefix:   /vietos
+
+food_place_lv:
+    resource: "@FoodPlacesBundle/Resources/config/routing_lv.yml"
+    prefix:   /vietas
 
 food_place_ru:
     resource: "@FoodPlacesBundle/Resources/config/routing_ru.yml"

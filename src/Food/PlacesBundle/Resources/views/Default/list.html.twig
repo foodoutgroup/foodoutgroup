@@ -134,8 +134,12 @@
         }
         trgt.text(trgt.text().replace("%1", cnt));
         {% if location_show %}
-            if (recommended == 0 && cnt > 0) {
-                trgt.text(trgt.text() + ', {% trans %}places.places_near{% endtrans %} {{ location.address }}');
+            if (!recommended && cnt > 0) {
+                {% set locAdress = '' %}
+                {% if location and location.address_found %}
+                    {% set locAdress=location.address %}
+                {% endif %}
+                trgt.text(trgt.text() + ', {% trans %}places.places_near{% endtrans %} {{ locAdress }}');
             }
         {% endif %}
 
