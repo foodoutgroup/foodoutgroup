@@ -4,7 +4,6 @@ namespace Food\OrderBundle\Service;
 
 use Food\AppBundle\Entity\Driver;
 use Food\CartBundle\Entity\Cart;
-use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
@@ -1060,6 +1059,7 @@ class NavService extends ContainerAware
                     FROM %s pSumTrans
                     WHERE
                         pSumTrans.[Receipt No_] = dOrder.[Order No_]
+                        AND pSumTrans.[Deleted] = 0
                 ) AS OrderSum
             FROM %s dOrder
             WHERE
