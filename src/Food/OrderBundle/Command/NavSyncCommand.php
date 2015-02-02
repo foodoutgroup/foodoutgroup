@@ -70,7 +70,7 @@ class NavSyncCommand extends ContainerAwareCommand
                     if (!$dryRun) {
                         $navService->changeOrderStatusByNav($order, $orderData);
 
-                        if (!$order->getDriver() && $orderData['Delivery Status'] > 6 && !empty($orderData['Driver ID'])) {
+                        if ($orderData['Delivery Status'] > 6 && !empty($orderData['Driver ID'])) {
                             $navService->setDriverFromNav($order, $orderData['Driver ID']);
                         }
 
