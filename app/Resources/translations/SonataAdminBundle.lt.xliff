@@ -1037,7 +1037,19 @@
             </trans-unit>
             <trans-unit id="admin.order.send_invoice">
                 <source>admin.order.send_invoice</source>
-                <target>Siųsti Faktūrą</target>
+                <target>Siųsti SF</target>
+            </trans-unit>
+            <trans-unit id="admin.order.edit_send_invoice">
+                <source>admin.order.edit_send_invoice</source>
+                <target>Redaguoti</target>
+            </trans-unit>
+            <trans-unit id="admin.order.download_invoice">
+                <source>admin.order.download_invoice</source>
+                <target>Atsisiųsti SF</target>
+            </trans-unit>
+            <trans-unit id="admin.order.nav_delivery_order">
+                <source>admin.order.nav_delivery_order</source>
+                <target>Važtaražčio nr.</target>
             </trans-unit>
             <trans-unit id="admin.order.invoice_added_for_send">
                 <source>admin.order.invoice_added_for_send</source>

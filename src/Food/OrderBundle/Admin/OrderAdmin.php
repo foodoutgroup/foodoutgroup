@@ -23,6 +23,18 @@ class OrderAdmin extends SonataAdmin
         }
     }
 
+    // Fields to be shown on create/edit forms
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        $formMapper
+            ->add('company', 'checkbox', array('label' => 'admin.order.company'))
+            ->add('companyName', 'text', array('label' => 'admin.order.companyName'))
+            ->add('companyCode', 'text', array('label' => 'admin.order.companyCode'))
+            ->add('vatCode', 'text', array('label' => 'admin.order.vatCode'))
+            ->add('companyAddress', 'text', array('label' => 'admin.order.companyAddress'))
+        ;
+    }
+
     /**
      * @param DatagridMapper $datagridMapper
      *
@@ -65,6 +77,7 @@ class OrderAdmin extends SonataAdmin
             ->add('total', null, array('label' => 'admin.order.total'))
             ->add('couponCode', null, array('label' => 'admin.order.coupon_code'))
             ->add('mobile', null, array('label' => 'admin.order.ismobile_full'))
+            ->add('navDeliveryOrder', null, array('label' => 'admin.order.nav_delivery_order'))
             ->add('sfNumber', null, array('label' => 'admin.order.sf_line'))
         ;
     }
@@ -90,8 +103,12 @@ class OrderAdmin extends SonataAdmin
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
+                    'edit' => array(),
                     'sendInvoice' => array(
                         'template' => 'FoodOrderBundle:CRUD:list__action_sendInvoice.html.twig'
+                    ),
+                    'downloadInvoice' => array(
+                        'template' => 'FoodOrderBundle:CRUD:list__action_downloadInvoice.html.twig'
                     ),
                 ),
                 'label' => 'admin.actions'
@@ -119,10 +136,6 @@ class OrderAdmin extends SonataAdmin
                     'template' => 'FoodOrderBundle:Admin:order_company_data.html.twig'
                 )
             )
-//            ->add('companyName', null, array('label' => 'admin.order.companyName'))
-//            ->add('companyCode', null, array('label' => 'admin.order.companyCode'))
-//            ->add('vatCode', null, array('label' => 'admin.order.vatCode'))
-//            ->add('companyAddress', null, array('label' => 'admin.order.companyAddress'))
             ->add('userIp', null, array('label' => 'admin.order.user_ip'))
             ->add('deliveryType', 'string', array('label' => 'admin.order.delivery_type'))
             ->add('details', 'sonata_type_collection',
@@ -175,8 +188,9 @@ class OrderAdmin extends SonataAdmin
      */
     public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
     {
-        $collection->clearExcept(array('list', 'show', 'export'))
-            ->add('sendInvoice', $this->getRouterIdParameter().'/sendInvoice');
+        $collection->clearExcept(array('edit', 'list', 'show', 'export'))
+            ->add('sendInvoice', $this->getRouterIdParameter().'/sendInvoice')
+            ->add('downloadInvoice', $this->getRouterIdParameter().'/downloadInvoice');
     }
 
 }
