@@ -123,7 +123,7 @@
                     </td>
                     {% if type == 'not_finished' %}
                         <td class="driver">
-                            {% if order.driver is not null and order.driver is not empty %}
+                            {% if order.driver is not null and order.driver is not empty and order.isDriverNotDeleted %}
                                 {%
                                 set driverInfo = 'admin.driver.phone'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.phone ~ "<br/>"
                                 ~ 'admin.driver.city'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.city ~ "<br/>"

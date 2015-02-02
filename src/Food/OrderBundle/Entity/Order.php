@@ -1601,6 +1601,22 @@ class Order
         return $this->orderFromNav;
     }
 
+    public function isDriverNotDeleted()
+    {
+        try {
+            $driver = $this->getDriver();
+
+            if (!$driver instanceof Driver) {
+                return false;
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            // No driver set or he is deleted :|
+            return false;
+        }
+    }
+
     /**
      * @return string
      */
