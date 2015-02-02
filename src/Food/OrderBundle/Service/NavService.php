@@ -1351,6 +1351,7 @@ class NavService extends ContainerAware
                     FROM %s pSumTrans
                     WHERE
                         pSumTrans.[Receipt No_] = dOrder.[Order No_]
+                        AND pSumTrans.[Deleted] = 0
                 ) AS OrderSum,
                 (
                  SELECT TOP 1
@@ -1421,7 +1422,7 @@ class NavService extends ContainerAware
 
         if ($pPoint->getPlace()->getChain() != $chain) {
             $this->getContainer()->get('logger')
-                ->error(sprintf(
+                ->alert(sprintf(
                     'Found placePoint for restaurant no "%s" with id: %d but chain from Nav "%s" does not match Place chain "%s". The point will still be used',
                     $restaurantNo,
                     $pPoint->getId(),
