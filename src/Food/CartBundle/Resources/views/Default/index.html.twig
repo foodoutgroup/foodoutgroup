@@ -223,9 +223,9 @@
                                 <div class="form-row form-row-required address-change">
                                     <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
                                     <select class="custom-select" disabled="true">
-                                        <option {% if location and location.city is defined and location.city == 'Vilnius' %}#}selected{% endif %} value="Vilnius">Vilnius</option>
-                                        <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %} value="Kaunas">Kaunas</option>
-                                        <option {% if location and location.city is defined and (location.city == 'Klaipėda' or location.city == 'Klaipeda') %}selected{% endif %} value="Klaipėda">Klaipėda</option>
+                                        {% for city in available_cities %}
+                                            <option value="{{ city }} {% if location and location.city is defined and (location.city == city or flocation.city == city|replace({'ė':'e'})) %}selected{% endif %}">{{ city }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                                 <div class="form-row form-row-required address-change">

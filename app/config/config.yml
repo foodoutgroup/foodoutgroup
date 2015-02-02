@@ -6,6 +6,7 @@ imports:
     - { resource: "@FoodSmsBundle/Resources/config/admin.yml" }
     - { resource: @A2lixTranslationFormBundle/Resources/config/gedmo.xml }
 
+
 parameters:
     sms.available_providers: [food.infobip, food.silverstreet]
     sms.main_provider: "food.infobip"
@@ -38,19 +39,6 @@ parameters:
     # Possible values: "local", "etaxi"
     active_logistics: "local"
     # Todo situos gal ir iskelsime i paramsus - dependant on install?
-    payment.methods:
-        - local
-        - local.card
-        - paysera
-        - swedbank-gateway
-        - swedbank-credit-card-gateway
-        - seb-banklink
-        - nordea-banklink
-    currency_display: Lt
-    currency_iso: LTL
-    # naudojam telefonu validacijoms
-    country: LT
-    vat: 21
     evp.test_payments: 0
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
     cloudfront_url: images.foodout.lt
@@ -101,6 +89,10 @@ twig:
         page_title:   "%title%"
         currency_display: "%currency_display%"
         currency_iso: "%currency_iso%"
+        display_currency_alternative: "%display_currency_alternative%"
+        currency_alternative: %currency_alternative%
+        publicdomain: "%publicdomain%"
+        available_cities: %available_cities%
         vat_size: "%vat%"
         google_maps_api: "%google.maps_api%"
         cloudfront_url: "%cloudfront_url%"
