@@ -1606,6 +1606,10 @@ class Order
         try {
             $driver = $this->getDriver();
 
+            if ($driver == null) {
+                return true;
+            }
+
             if (!$driver instanceof Driver) {
                 return false;
             }
