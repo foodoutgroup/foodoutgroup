@@ -1288,12 +1288,20 @@ class OrderService extends ContainerAware
             return false;
         }
 
-        $rejection = in_array($to, [self::$status_failed, self::$status_canceled]);
-        if ($from == self::$status_completed && $rejection) {
+        if ($flowLine[$from] <= $flowLine[$to]) {
             return true;
         }
 
-        if ($flowLine[$from] <= $flowLine[$to]) {
+        return false;
+    }
+
+    public function isValidOrderStatusChangeWhenCompleted($from, $to)
+    {
+        $fromCompleted = $from == self::$status_completed;
+        $toFailed = $to == self::$status_failed;
+        $toCancelled = $to == self::$status_canceled;
+
+        if ($fromCompleted && ($toFailed || $toCancelled)) {
             return true;
         }
 

@@ -34,7 +34,7 @@ class NavSyncCommand extends ContainerAwareCommand
             $orderService = $this->getContainer()->get('food.order');
             $navService = $this->getContainer()->get('food.nav');
 
-            $orders = $em->getRepository('FoodOrderBundle:Order')->getCurrentNavOrders();
+            $orders = $em->getRepository('FoodOrderBundle:Order')->getCurrentNavOrders(null, false, false);
 
             if (!empty($orders) && count($orders) > 0) {
                 $navOrders = $navService->getRecentNavOrders($orders);
