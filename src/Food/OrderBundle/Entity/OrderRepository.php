@@ -481,7 +481,7 @@ class OrderRepository extends EntityRepository
             ->setParameters(array(
                 'order_date' => new \DateTime($timeBack),
                 'order_status' => array(
-                    OrderService::$status_completed,
+                    // OrderService::$status_completed,
                     OrderService::$status_canceled,
                     OrderService::$status_nav_problems,
                     // TODO temp, nav canot cancel assigned orders

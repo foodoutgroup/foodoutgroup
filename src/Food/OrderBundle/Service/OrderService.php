@@ -1288,6 +1288,11 @@ class OrderService extends ContainerAware
             return false;
         }
 
+        $rejection = in_array($to, [self::$status_failed, self::$status_canceled]);
+        if ($from == self::$status_completed && $rejection) {
+            return true;
+        }
+
         if ($flowLine[$from] <= $flowLine[$to]) {
             return true;
         }
