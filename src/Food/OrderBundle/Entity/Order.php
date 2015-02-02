@@ -1610,6 +1610,8 @@ class Order
                 return false;
             }
 
+            $driver->getName();
+
             return true;
         } catch (\Exception $e) {
             // No driver set or he is deleted :|
