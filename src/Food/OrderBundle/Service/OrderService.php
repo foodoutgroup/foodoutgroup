@@ -1268,6 +1268,7 @@ class OrderService extends ContainerAware
             self::$status_finished => 3,
             self::$status_assiged => 4,
             self::$status_failed => 4,
+            self::$status_partialy_completed => 5,
             self::$status_completed => 5,
             self::$status_canceled => 5,
         );
