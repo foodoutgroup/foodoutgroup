@@ -1,234 +1,303 @@
 <?php
 namespace Food\OrderBundle\Tests\Service;
 
+use Symfony\Component\Console\Output\OutputInterface;
+use Doctrine\DBAL\Connection;
 use Food\AppBundle\Test\WebTestCase;
 use Food\OrderBundle\Service\DailyReport;
+use Food\AppBundle\Service\GoogleAnalyticsService;
 
 class DailyReportTest extends WebTestCase
 {
-    // public function test_get_daily_report_query()
-    // {
-    //     $daily_report = new DailyReport();
+    public function testTemplatingSetterAndGetter()
+    {
+        $dailyReport = new DailyReport();
 
-    //     $result = $daily_report->getDailyReportQuery('very specific string');
+        $param = new \StdClass();
 
-    //     $this->assertContains('very specific string', $result);
-    // }
+        $setterResult = $dailyReport->setTemplating($param);
+        $getterResult = $dailyReport->getTemplating();
 
-    // public function test_get_daily_data_for_income()
-    // {
-    //     // 1.
-    //     $connection_mock = $this->getMockBuilder('\Doctrine\DBAL\Connection')
-    //                             ->disableOriginalConstructor()
-    //                             ->setMethods(['prepare'])
-    //                             ->getMock();
+        $this->assertSame($setterResult, $dailyReport);
+        $this->assertSame($getterResult, $param);
+    }
 
-    //     $stmt_mock = $this->getMockBuilder('\StdClass')
-    //                       ->setMethods(['bindValue', 'execute', 'fetch'])
-    //                       ->getMock();
+    public function testGoogleAnalyticsServiceSetterAndGetter()
+    {
+        $dailyReport = new DailyReport();
 
-    //     // 2.
-    //     $connection_mock->expects($this->atLeastOnce())
-    //                     ->method('prepare')
-    //                     ->willReturn($stmt_mock);
+        $service = new GoogleAnalyticsService();
 
-    //     $stmt_mock->expects($this->atLeastOnce())
-    //               ->method('fetch')
-    //               ->willReturn(['result' => '3.45']);
+        $setterResult = $dailyReport->setGoogleAnalyticsService($service);
+        $getterResult = $dailyReport->getGoogleAnalyticsService();
 
-    //     $stmt_mock->expects($this->atLeastOnce())
-    //               ->method('execute')
-    //               ->willReturn($stmt_mock);
+        $this->assertSame($setterResult, $dailyReport);
+        $this->assertSame($getterResult, $service);
+    }
 
-    //     // 3.
-    //     $daily_report = new DailyReport();
-    //     $daily_report->setConnection($connection_mock);
+    public function testOutputSetterAndGetter()
+    {
+        $dailyReport = new DailyReport();
 
-    //     // 4.
-    //     $income = $daily_report->getDailyDataFor('income');
-    //     $successful_orders = $daily_report->getDailyDataFor('successful_orders');
-    //     $average_cart = $daily_report->getDailyDataFor('average_cart');
-    //     $average_delivery = $daily_report->getDailyDataFor('average_delivery');
+        $output = $this->getMockBuilder('\Symfony\Component\Console\Output\OutputInterface')
+                       ->disableOriginalConstructor()
+                       ->getMock();
 
-    //     // 5.
-    //     $this->assertInternalType('string', $income);
-    //     $this->assertInternalType('string', $successful_orders);
-    //     $this->assertInternalType('string', $average_cart);
-    //     $this->assertInternalType('string', $average_delivery);
-    //     $this->assertSame('3.45', $income);
-    //     $this->assertSame('3.45', $successful_orders);
-    //     $this->assertSame('3.45', $average_cart);
-    //     $this->assertSame('3.45', $average_delivery);
-    // }
+        $setterResult = $dailyReport->setOutput($output);
+        $getterResult = $dailyReport->getOutput();
 
-    // public function test_get_daily_mail_title()
-    // {
-    //     $daily_report = new DailyReport();
+        $this->assertSame($setterResult, $dailyReport);
+        $this->assertSame($getterResult, $output);
+    }
 
-    //     $result = $daily_report->getDailyMailTitle();
+    public function testDailyReportEmailsSetterAndGetter()
+    {
+        $dailyReport = new DailyReport();
 
-    //     $this->assertInternalType('string', $result);
-    // }
+        $emails = ['one', 'two', 'three'];
 
-    // public function test_get_daily_mail_content()
-    // {
-    //     $templating_mock = $this->getMockBuilder('\Symfony\Bridge\Twig\Form\TwigRenderer')
-    //                             ->disableOriginalConstructor()
-    //                             ->setMethods(['render'])
-    //                             ->getMock();
+        $setterResult = $dailyReport->setDailyReportEmails($emails);
+        $getterResult = $dailyReport->getDailyReportEmails();
 
-    //     $templating_mock->expects($this->once())
-    //                     ->method('render')
-    //                     ->willReturn('content');
+        $this->assertSame($setterResult, $dailyReport);
+        $this->assertSame($getterResult, $emails);
+    }
 
-    //     $daily_report = new DailyReport();
-    //     $daily_report->setTemplating($templating_mock);
+    public function testConnectionSetterAndGetter()
+    {
+        $dailyReport = new DailyReport();
 
-    //     $result = $daily_report->getDailyMailContent(1, 2, 3, 4, 5, 6);
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+                           ->disableOriginalConstructor()
+                           ->getMock();
 
-    //     $this->assertInternalType('string', $result);
-    // }
+        $setterResult = $dailyReport->setConnection($connection);
+        $getterResult = $dailyReport->getConnection();
 
-    // public function test_set_and_get_connection()
-    // {
-    //     $daily_report = new DailyReport();
+        $this->assertSame($setterResult, $dailyReport);
+        $this->assertSame($getterResult, $connection);
+    }
 
-    //     $connection_mock = $this->getMockBuilder('\Doctrine\DBAL\Connection')
-    //                             ->disableOriginalConstructor()
-    //                             ->getMock();
+    public function testGetDailyReportQuery()
+    {
+        $dailyReport = new DailyReport();
 
-    //     $result = $daily_report->setConnection($connection_mock);
+        $result1 = $dailyReport->getDailyReportQuery('income');
+        $result2 = $dailyReport->getDailyReportQuery('successful_orders');
+        $result3 = $dailyReport->getDailyReportQuery('average_cart');
 
-    //     $this->assertSame($daily_report, $result);
-    //     $this->assertSame($result->getConnection(), $connection_mock);
-    // }
+        $this->assertInternalType('string', $result1);
+        $this->assertInternalType('string', $result2);
+        $this->assertInternalType('string', $result3);
+    }
 
-    // public function test_set_and_get_daily_report_emails()
-    // {
-    //     $daily_report = new DailyReport();
+    public function testGetDailyDeliveryTimesByRegion()
+    {
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+                           ->disableOriginalConstructor()
+                           ->setMethods(['prepare'])
+                           ->getMock();
 
-    //     $result = $daily_report->setDailyReportEmails(['a', 'b']);
+        $stmt = $this->getMockBuilder('\Doctrine\DBAL\Driver\Mysqli\Statement')
+                     ->disableOriginalConstructor()
+                     ->setMethods(['execute', 'fetchAll'])
+                     ->getMock();
 
-    //     $this->assertSame($result, $daily_report);
-    //     $this->assertSame(['a', 'b'], $result->getDailyReportEmails());
-    // }
+        $connection->expects($this->once())
+                   ->method('prepare')
+                   ->willReturn($stmt);
 
-    // public function test_set_and_get_output()
-    // {
-    //     $daily_report = new DailyReport();
+        $stmt->expects($this->once())
+             ->method('fetchAll')
+             ->willReturn([123, 456]);
 
-    //     $output_mock = $this->getMockBuilder('\Symfony\Component\Console\Output\OutputInterface')
-    //                         ->disableOriginalConstructor()
-    //                         ->getMock();
+        $dailyReport = new DailyReport();
+        $dailyReport->setConnection($connection);
 
-    //     $result = $daily_report->setOutput($output_mock);
+        $result = $dailyReport->getDailyDeliveryTimesByRegion();
 
-    //     $this->assertSame($result, $daily_report);
-    //     $this->assertSame($result->getOutput(), $output_mock);
-    // }
+        $this->assertInternalType('array', $result);
+        $this->assertNotEmpty($result);
+    }
 
-    // public function test_set_and_get_table_helper()
-    // {
-    //     $daily_report = new DailyReport();
+    public function testGetDailyDeliveryTime()
+    {
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+                           ->disableOriginalConstructor()
+                           ->setMethods(['prepare'])
+                           ->getMock();
 
-    //     $table_helper_mock = $this->getMockBuilder('\Symfony\Component\Console\Helper\TableHelper')
-    //                               ->disableOriginalConstructor()
-    //                               ->getMock();
+        $stmt = $this->getMockBuilder('\Doctrine\DBAL\Driver\Mysqli\Statement')
+                     ->disableOriginalConstructor()
+                     ->setMethods(['execute', 'fetch'])
+                     ->getMock();
 
-    //     $result = $daily_report->setTableHelper($table_helper_mock);
+        $connection->expects($this->once())
+                   ->method('prepare')
+                   ->willReturn($stmt);
 
-    //     $this->assertSame($result, $daily_report);
-    //     $this->assertSame($result->getTableHelper(), $table_helper_mock);
-    // }
+        $stmt->expects($this->once())
+             ->method('fetch')
+             ->willReturn(['result' => [123, 456]]);
 
-    // public function test_success_daily_send_mails()
-    // {
-    //     $daily_report = new DailyReport();
+        $dailyReport = new DailyReport();
+        $dailyReport->setConnection($connection);
 
-    //     $result = $daily_report->sendDailyMails('127.0.0.1', ['127.0.0.1'], 'title', 'content');
+        $result = $dailyReport->getDailyDeliveryTime();
 
-    //     $this->assertInternalType('array', $result);
-    // }
+        $this->assertInternalType('array', $result);
+        $this->assertNotEmpty($result);
+    }
 
-    // public function test_failure_daily_send_mails()
-    // {
-    //     $daily_report = new DailyReport();
+    public function testGetDailyMailTitle()
+    {
+        $dailyReport = new DailyReport();
 
-    //     $result = $daily_report->sendDailyMails(null, [null, null], 'title', 'content');
+        $result = $dailyReport->getDailyMailTitle();
 
-    //     $this->assertInternalType('array', $result);
-    // }
+        $this->assertInternalType('string', $result);
+    }
 
-    // public function test_send_daily_report_dry_run()
-    // {
-    //     $output_mock = $this->getMockBuilder('\Symfony\Component\Console\Output\OutputInterface')
-    //                         ->disableOriginalConstructor()
-    //                         ->getMock();
+    public function testGetDailyMailContent()
+    {
+        $templating = $this->getMockBuilder('\StdClass')
+                           ->setMethods(['render'])
+                           ->getMock();
 
-    //     $table_helper_mock = $this->getMockBuilder('\Symfony\Component\Console\Helper\TableHelper')
-    //                               ->disableOriginalConstructor()
-    //                               ->getMock();
+        $templating->expects($this->once())
+                   ->method('render')
+                   ->willReturn('1234');
 
-    //     $daily_report = $this->getMockBuilder('\Food\OrderBundle\Service\DailyReport')
-    //                          ->setMethods(['getDailyDataFor'])
-    //                          ->getMock();
+        $dailyReport = new DailyReport();
+        $dailyReport->setTemplating($templating);
 
-    //     $ga_mock = $this->getMockBuilder('\Food\AppBundle\Service\GoogleAnalyticsService')
-    //                     ->disableOriginalConstructor()
-    //                     ->setMethods([])
-    //                     ->getMock();
+        $params = new \StdClass();
+        $params->name = '12345';
 
-    //     $daily_report->setOutput($output_mock);
-    //     $daily_report->setTableHelper($table_helper_mock);
-    //     $daily_report->expects($this->atLeastOnce())
-    //                  ->method('getDailyDataFor')
-    //                  ->willReturn('123');
-    //     $daily_report->setGoogleAnalyticsService($ga_mock);
+        $result = $dailyReport->getDailyMailContent($params);
 
-    //     $result = $daily_report->sendDailyReport('127.0.0.1', false);
+        $this->assertInternalType('string', $result);
+    }
 
-    //     $this->assertInternalType('array', $result);
-    //     $this->assertSame(false, $result[0]);
-    // }
+    public function testGetCalculations()
+    {
+        $gaService = $this->getMockBuilder('\Food\AppBundle\Service\GoogleAnalyticsService')
+                          ->setMethods(['getUsers', 'getReturningUsers'])
+                          ->getMock();
 
-    // public function test_send_daily_report_not_dry_run()
-    // {
-    //     $output_mock = $this->getMockBuilder('\Symfony\Component\Console\Output\OutputInterface')
-    //                         ->disableOriginalConstructor()
-    //                         ->getMock();
+        $dailyReport = $this->getMockBuilder('\Food\OrderBundle\Service\DailyReport')
+                            ->setMethods(['getDailyDataFor',
+                                          'getDailyDeliveryTime',
+                                          'getDailyDeliveryTimesByRegion'])
+                            ->getMock();
+        $dailyReport->setGoogleAnalyticsService($gaService);
 
-    //     $table_helper_mock = $this->getMockBuilder('\Symfony\Component\Console\Helper\TableHelper')
-    //                               ->disableOriginalConstructor()
-    //                               ->getMock();
+        $gaService->expects($this->once())
+                  ->method('getUsers')
+                  ->willReturn(123);
 
-    //     $daily_report = $this->getMockBuilder('\Food\OrderBundle\Service\DailyReport')
-    //                          ->setMethods(['getDailyDataFor'])
-    //                          ->getMock();
+        $gaService->expects($this->once())
+                  ->method('getReturningUsers')
+                  ->willReturn(456);
 
-    //     $ga_mock = $this->getMockBuilder('\Food\AppBundle\Service\GoogleAnalyticsService')
-    //                     ->disableOriginalConstructor()
-    //                     ->setMethods([])
-    //                     ->getMock();
+        $dailyReport->expects($this->exactly(3))
+                    ->method('getDailyDataFor')
+                    ->willReturn(123);
 
-    //     $templating_mock = $this->getMockBuilder('\Symfony\Bridge\Twig\Form\TwigRenderer')
-    //                             ->disableOriginalConstructor()
-    //                             ->setMethods(['render'])
-    //                             ->getMock();
+        $dailyReport->expects($this->once())
+                    ->method('getDailyDeliveryTime')
+                    ->willReturn(456);
 
-    //     $templating_mock->expects($this->once())
-    //                     ->method('render')
-    //                     ->willReturn('content');
+        $dailyReport->expects($this->once())
+                    ->method('getDailyDeliveryTimesByRegion')
+                    ->willReturn(789);
 
-    //     $daily_report->setOutput($output_mock);
-    //     $daily_report->setTableHelper($table_helper_mock);
-    //     $daily_report->expects($this->atLeastOnce())
-    //                  ->method('getDailyDataFor')
-    //                  ->willReturn('123');
-    //     $daily_report->setGoogleAnalyticsService($ga_mock);
-    //     $daily_report->setTemplating($templating_mock);
+        $result = $dailyReport->getCalculations();
 
-    //     $result = $daily_report->sendDailyReport('127.0.0.1', true);
+        $this->assertInstanceOf('\StdClass', $result);
+    }
 
-    //     $this->assertInternalType('array', $result);
-    // }
+    public function testGetDailyDataFor()
+    {
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+                           ->disableOriginalConstructor()
+                           ->setMethods(['prepare'])
+                           ->getMock();
+
+        $stmt = $this->getMockBuilder('\Doctrine\DBAL\Driver\Mysqli\Statement')
+                     ->disableOriginalConstructor()
+                     ->setMethods(['execute', 'fetch'])
+                     ->getMock();
+
+        $connection->expects($this->any())
+                   ->method('prepare')
+                   ->willReturn($stmt);
+
+        $stmt->expects($this->any())
+             ->method('fetch')
+             ->willReturn(['result' => '123']);
+
+        $dailyReport = $this->getMockBuilder('\Food\OrderBundle\Service\DailyReport')
+                            ->setMethods(['getDailyReportQuery'])
+                            ->getMock();
+        $dailyReport->setConnection($connection);
+
+        $dailyReport->expects($this->any())
+                    ->method('getDailyReportQuery')
+                    ->willReturn('some string');
+
+        $result1 = $dailyReport->getDailyDataFor('income');
+        $result2 = $dailyReport->getDailyDataFor('successful_orders');
+        $result3 = $dailyReport->getDailyDataFor('average_cart');
+
+        $this->assertInternalType('string', $result1);
+        $this->assertInternalType('string', $result2);
+        $this->assertInternalType('string', $result3);
+    }
+
+    public function testSendDailyMails()
+    {
+        $dailyReport = new DailyReport();
+
+        $result = $dailyReport->sendDailyMails('email', [1, 2, 3], 'title', 'content');
+
+        $this->assertInternalType('array', $result);
+    }
+
+    public function testSendDailyReport()
+    {
+        $output = $this->getMockBuilder('\Symfony\Component\Console\Output\OutputInterface')
+                       ->setMethods(['writeln'])
+                       ->getMockForAbstractClass();
+
+        $dailyReport = $this->getMockBuilder('\Food\OrderBundle\Service\DailyReport')
+                            ->setMethods(['getCalculations',
+                                          'getDailyMailContent',
+                                          'getDailyMailTitle',
+                                          'sendDailyMails'])
+                            ->getMock();
+        $dailyReport->setOutput($output);
+
+        $dailyReport->expects($this->any())
+                    ->method('getCalculations')
+                    ->willReturn(new \StdClass());
+
+        $dailyReport->expects($this->any())
+                    ->method('getDailyMailContent')
+                    ->willReturn('123');
+
+        $dailyReport->expects($this->any())
+                    ->method('getDailyMailTitle')
+                    ->willReturn('4321231');
+
+        $dailyReport->expects($this->any())
+                    ->method('sendDailyMails')
+                    ->willReturn(['some array']);
+
+        $result1 = $dailyReport->sendDailyReport('email', false);
+        $result2 = $dailyReport->sendDailyReport('email', true);
+
+        $this->assertInternalType('array', $result1);
+        $this->assertInternalType('array', $result2);
+    }
 }

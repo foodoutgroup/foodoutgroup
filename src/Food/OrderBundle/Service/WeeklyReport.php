@@ -317,20 +317,10 @@ class WeeklyReport extends ContainerAware
         return $this->output;
     }
 
-    public function setTableHelper(TableHelper $tableHelper)
-    {
-        $this->tableHelper = $tableHelper;
-        return $this;
-    }
-
-    public function getTableHelper()
-    {
-        return $this->tableHelper;
-    }
-
     public function setGoogleAnalyticsService(GoogleAnalyticsService $service)
     {
         $this->googleAnalyticsService = $service;
+        return $this;
     }
 
     public function getGoogleAnalyticsService()
