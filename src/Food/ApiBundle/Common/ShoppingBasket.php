@@ -6,6 +6,9 @@ use Food\CartBundle\Entity\Cart;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
 class ShoppingBasket extends ContainerAware{
+    /**
+     * @var array
+     */
     private $block = array(
         'basket_id' => null,
         'restaurant_id' => null,
@@ -16,14 +19,26 @@ class ShoppingBasket extends ContainerAware{
         ),
         'total_price' => array(
             'amount' => 0,
-            'currency' => 'LTL'
+            'discount' => 0,
+            'currency' => 'EUR'
         ),
         'items' => array(),
     );
+
+    /**
+     * @var null
+     */
     private $data = null;
 
+    /**
+     * @var array
+     */
     private $availableFields = array();
 
+    /**
+     * @param Cart $cart
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface|null $container
+     */
     public function __construct(Cart $cart = null, $container = null)
     {
         $this->data = $this->block;
@@ -34,6 +49,11 @@ class ShoppingBasket extends ContainerAware{
         $this->container = $container;
     }
 
+    /**
+     * @param $param
+     * @return mixed
+     * @throws \Exception
+     */
     public function get($param) {
         $this->checkParam($param);
         return $this->data[$param];
@@ -42,7 +62,7 @@ class ShoppingBasket extends ContainerAware{
     /**
      * @param $param
      * @param $data
-     * @return \MenuItem $this
+     * @return MenuItem $this
      */
     public function set($param, $data)
     {
@@ -53,20 +73,26 @@ class ShoppingBasket extends ContainerAware{
 
     /**
      * @param $param
-     * @throws \Symfony\Component\Config\Definition\Exception\Exception
+     * @throws \Exception
      */
     private function checkParam($param)
     {
         if (!in_array($param, $this->availableFields)) {
-            throw new Exception("Param: ".$param.", was not found in fields list :)");
+            throw new \Exception("Param: ".$param.", was not found in fields list :)");
         }
     }
 
+    /**
+     * @param Cart $cart
+     */
     public function loadFromEntity(Cart $cart)
     {
 
     }
 
+    /**
+     * @return array|null
+     */
     public function getData()
     {
         return $this->data;

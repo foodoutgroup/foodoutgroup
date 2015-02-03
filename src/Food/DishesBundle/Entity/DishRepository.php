@@ -6,6 +6,10 @@ use Doctrine\ORM\EntityRepository;
 class DishRepository extends EntityRepository
 {
 
+    /**
+     * @param integer $categoryId
+     * @return array
+     */
     public function getCategoryActiveDishes($categoryId)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -18,6 +22,10 @@ class DishRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @param int $dishId
+     * @return array
+     */
     public function getSmallestPrice($dishId)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -31,6 +39,10 @@ class DishRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @param int $dishId
+     * @return array
+     */
     public function getLargestPrice($dishId)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -44,8 +56,13 @@ class DishRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @param int $dishId
+     * @return array
+     */
     public function getSmallestDiscountPrice($dishId)
     {
+        /*
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('d, s.discountPrice')
             ->from('\Food\DishesBundle\Entity\Dish', 'd')
@@ -56,10 +73,20 @@ class DishRepository extends EntityRepository
         ;
 
         return $qb->getQuery()->getResult();
+        */
+        $query = "SELECT IF(discount_price < 1 OR discount_price IS NULL OR discount_price ='' , price, discount_price) as discountPrice FROM dish_size WHERE deleted_at IS NULL AND dish_id=".intval($dishId)." ORDER BY IF(discount_price < 1 OR discount_price IS NULL OR discount_price ='', price, discount_price) ASC";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
+    /**
+     * @param int $dishId
+     * @return array
+     */
     public function getLargestDiscountPrice($dishId)
     {
+        /*
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('d, s.discountPrice')
             ->from('\Food\DishesBundle\Entity\Dish', 'd')
@@ -70,9 +97,17 @@ class DishRepository extends EntityRepository
         ;
 
         return $qb->getQuery()->getResult();
+        */
+        $query = "SELECT IF(discount_price < 1 OR discount_price IS NULL OR discount_price ='' , price, discount_price) as discountPrice FROM dish_size WHERE deleted_at IS NULL AND dish_id=".intval($dishId)." ORDER BY IF(discount_price < 1 OR discount_price IS NULL OR discount_price ='', price, discount_price) DESC";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
-
+    /**
+     * @param int $dishId
+     * @return bool
+     */
     public function hasDiscountPrice($dishId)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();

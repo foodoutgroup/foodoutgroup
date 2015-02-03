@@ -52,6 +52,7 @@ class MonitoringService extends ContainerAware {
             ->andWhere('o.order_date >= :from_date')
             ->andWhere('o.order_date <= :to_date')
             ->andWhere('o.order_date < :max_delivery_date')
+            ->andWhere('o.orderFromNav != 1')
             ->orderBy('o.order_date', 'ASC')
             ->setParameters(
                 [
@@ -89,6 +90,7 @@ class MonitoringService extends ContainerAware {
             ->andWhere('o.paymentStatus = :payment_status')
             ->andWhere('o.order_date <= :date')
             ->andWhere('o.order_date > :oldest_date')
+            ->andWhere('o.orderFromNav != 1')
             ->orderBy('o.order_date', 'ASC')
             ->setParameters(
                 [
@@ -122,6 +124,7 @@ class MonitoringService extends ContainerAware {
             ->andWhere('o.deliveryTime > :oldest_date')
             ->andWhere('o.place_point_self_delivery != 1')
             ->andWhere('o.deliveryType != :delivery_type')
+            ->andWhere('o.orderFromNav != 1')
             ->orderBy('o.order_date', 'ASC')
             ->setParameters(
                 [
@@ -196,6 +199,34 @@ class MonitoringService extends ContainerAware {
         $return['error']['count'] = (int)$problems['error'];
         if ($problems['error'] > 0) {
             $return['error']['lastError'] = $problems['last_error'];
+        }
+
+        return $return;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFewOrdersFromNav()
+    {
+        $navService = $this->container->get('food.nav');
+
+        $query = sprintf(
+            'SELECT TOP 1 [Order No_], [Order Status], [Delivery Status]
+            FROM %s',
+            $navService->getHeaderTable()
+        );
+
+        $result = $navService->initSqlConn()
+            ->query($query);
+
+        if( $result === false) {
+            return array();
+        }
+
+        $return = array();
+        while ($rowRez = $this->container->get('food.mssql')->fetchArray($result)) {
+            $return[] = $rowRez;
         }
 
         return $return;

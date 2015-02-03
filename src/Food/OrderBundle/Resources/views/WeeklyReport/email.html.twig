@@ -1,0 +1,65 @@
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th align="left">{{ 'daily_report.metric'|trans }}</th>
+            <th align="right">{{ 'daily_report.value'|trans }}</th>
+            <th align="right">{{ 'daily_report.kpi_metric'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ 'weekly_report.places'|trans }}</td>
+            <td align="right">{{ places }}</td>
+            <td align="right">{{ kpiPlaces }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'daily_report.income'|trans }}</td>
+            <td align="right">&euro; {{ income }}</td>
+            <td align="right">&euro; {{ kpiIncome }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'daily_report.successful_orders'|trans }}</td>
+            <td align="right">{{ successfulOrders }}</td>
+            <td align="right">{{ kpiSuccessfulOrders }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'daily_report.average_cart_size'|trans }}</td>
+            <td align="right">&euro; {{ averageCartSize }}</td>
+            <td align="right">&euro; {{ kpiAverageCartSize }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'daily_report.average_delivery_time'|trans }}</td>
+            <td align="right">{{ averageDeliveryTime }} min.</td>
+            <td align="right">{{ kpiAverageDeliveryTime}} min.</td>
+        </tr>
+        <tr>
+            <td>{{ 'daily_report.unique_users'|trans }}</td>
+            <td align="right">{{ uniqueUsers }}</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>{{ 'daily_report.returning_users'|trans }}</td>
+            <td align="right">{{ returningUsers }}</td>
+            <td>&nbsp;</td>
+        </tr>
+    </tbody>
+</table>
+
+<br/>
+
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th align="left">{{ 'daily_report.city'|trans }}</th>
+            <th align="right">{{ 'daily_report.average_delivery_time'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in averageDeliveryTimeByRegion %}
+            <tr>
+                <td>{{ item.place_point_city }}</td>
+                <td align="right">{{ item.result|round }} min.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

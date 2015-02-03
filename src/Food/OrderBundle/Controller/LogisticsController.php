@@ -47,7 +47,7 @@ class LogisticsController extends Controller
                             'Order status updated from logistics. Logstics status: '.$orderStatus['status']
                         );
 
-                        if ($newOrderStatus == $orderService::$status_completed) {
+                        if ($newOrderStatus == $orderService::$status_completed && $order->getOrderStatus() != OrderService::$status_canceled) {
                             $orderService->statusCompleted('LogisticsAPI');
                         } else if ($newOrderStatus == $orderService::$status_failed) {
                             $orderService->statusFailed('LogisticsAPI', $orderStatus['fail_reason']);

@@ -91,6 +91,11 @@ class DefaultController extends Controller
         return $this->render('FoodPlacesBundle:Default:recommended.html.twig', array('places' => $places));
     }
 
+    public function bestOffersAction()
+    {
+        return $this->render('FoodPlacesBundle:Default:best_offers.html.twig');
+    }
+
     public function changeLocationAction()
     {
         return $this->render('FoodPlacesBundle:Default:change_location.html.twig');

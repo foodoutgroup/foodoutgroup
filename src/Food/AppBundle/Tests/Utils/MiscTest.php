@@ -293,29 +293,75 @@ class MiscTest extends WebTestCase
         $this->assertEquals($expectedPrice5, $gotPrice5);
     }
 
+    public function testLitas()
+    {
+        $util = new Misc();
+
+        $expectedLitasPrice1 = 0;
+        $expectedLitasPrice2 = 20.72;
+        $expectedLitasPrice3 = 56.21;
+        $expectedLitasPrice4 = 218.67;
+
+        $testEuroPrice1 = 0;
+        $testEuroPrice2 = 6;
+        $testEuroPrice3 = 16.28;
+        $testEuroPrice4 = 63.33;
+
+        $gotPrice1 = $util->getLitas($testEuroPrice1);
+        $gotPrice2 = $util->getLitas($testEuroPrice2);
+        $gotPrice3 = $util->getLitas($testEuroPrice3);
+        $gotPrice4 = $util->getLitas($testEuroPrice4);
+
+        $this->assertEquals($expectedLitasPrice1, $gotPrice1);
+        $this->assertEquals($expectedLitasPrice2, $gotPrice2);
+        $this->assertEquals($expectedLitasPrice3, $gotPrice3);
+        $this->assertEquals($expectedLitasPrice4, $gotPrice4);
+    }
+
+    public function testFloatToInts()
+    {
+        $util = new Misc();
+        $util->setContainer($this->getContainer());
+
+        $testNum1 = 13.50;
+
+        $expectedArray1 = array(
+            'mainPart' => 13,
+            'minorPart' => 50
+        );
+
+        $gotArray1 = $util->floatToInts($testNum1);
+
+        $this->assertEquals($expectedArray1, $gotArray1);
+    }
+
     public function testPriceToText()
     {
         $util = new Misc();
         $util->setContainer($this->getContainer());
 
-        $expectedValue1 = 'dvidešimt vienas litas';
-        $expectedValue2 = 'penkiolika litų šešiasdešimt keturi centai';
-        $expectedValue3 = 'šimtas penkiasdešimt keturi litai penkiolika centų';
-        $expectedValue4 = 'tūkstantis trys šimtai dvidešimt litų du centai';
+        $expectedValue1 = 'dvidešimt vienas euras';
+        $expectedValue2 = 'penkiolika eurų šešiasdešimt keturi centai';
+        $expectedValue3 = 'šimtas penkiasdešimt keturi eurai penkiolika centų';
+        $expectedValue4 = 'tūkstantis trys šimtai dvidešimt eurų du centai';
+        $expectedValue5 = 'trylika eurų penkiasdešimt centų';
 
         $testPrice1 = '21';
         $testPrice2 = '15.64';
         $testPrice3 = '154.15';
         $testPrice4 = '1320.02';
+        $testPrice5 = '13.50';
 
         $gotText1 = $util->priceToText($testPrice1);
         $gotText2 = $util->priceToText($testPrice2);
         $gotText3 = $util->priceToText($testPrice3);
         $gotText4 = $util->priceToText($testPrice4);
+        $gotText5 = $util->priceToText($testPrice5);
 
         $this->assertEquals($expectedValue1, $gotText1);
         $this->assertEquals($expectedValue2, $gotText2);
         $this->assertEquals($expectedValue3, $gotText3);
         $this->assertEquals($expectedValue4, $gotText4);
+        $this->assertEquals($expectedValue5, $gotText5);
     }
 }

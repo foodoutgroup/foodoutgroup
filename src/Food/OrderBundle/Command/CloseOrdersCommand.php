@@ -48,6 +48,9 @@ class CloseOrdersCommand extends ContainerAwareCommand
                     $orderService->statusCompleted('auto_close_order_command');
 
                     $em->persist($order);
+
+                    // log order data (if we have listeners)
+                    $orderService->markOrderForNav($order);
                 }
                 $processedOrders++;
             }

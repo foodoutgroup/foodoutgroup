@@ -55,7 +55,12 @@ class BasketController extends Controller
     {
         try {
             $basket = $this->get('food_api.basket')->getBasket($id);
-            return new JsonResponse($basket);
+            $resp = new JsonResponse($basket);
+            $resp->setMaxAge(1);
+            $resp->setSharedMaxAge(1);
+            $date = new \DateTime();
+            $resp->setLastModified($date);
+            return $resp;
         }  catch (ApiException $e) {
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {

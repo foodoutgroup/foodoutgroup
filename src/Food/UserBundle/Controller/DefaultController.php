@@ -240,6 +240,7 @@ class DefaultController extends Controller
     private function user()
     {
         $sc = $this->get('security.context');
+        $logger = $this->get('logger');
 
         if (!$sc->isGranted('ROLE_USER')) {
             return null;
@@ -249,6 +250,8 @@ class DefaultController extends Controller
 
         // this conditional is mandatory
         if ($user) {
+            $logger->alert('User instance is about to be refreshed');
+
             $this->getDoctrine()
                  ->getManager()
                  ->refresh($user);

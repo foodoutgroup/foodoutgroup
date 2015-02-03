@@ -122,6 +122,13 @@ class Place extends Uploadable implements Translatable
     /**
      * @var bool
      *
+     * @ORM\Column(name="top", type="boolean", nullable=true)
+     */
+    private $top;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="new", type="boolean")
      */
     private $new;
@@ -157,10 +164,16 @@ class Place extends Uploadable implements Translatable
     /**
      * @var int
      *
-     * @ORM\Column(name="delivery_price", type="integer")
+     * @ORM\Column(name="delivery_price", type="float")
      */
     private $deliveryPrice;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="delivery_price_old", type="integer", nullable=true)
+     */
+    private $deliveryPriceOld;
 
     /**
      * @var string
@@ -179,9 +192,16 @@ class Place extends Uploadable implements Translatable
     /**
      * @var int
      *
-     * @ORM\Column(name="cart_minimum", type="integer")
+     * @ORM\Column(name="cart_minimum", type="float")
      */
     private $cartMinimum;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="cart_minimum_old", type="integer", nullable=true)
+     */
+    private $cartMinimumOld;
 
     /**
      * @var bool
@@ -246,6 +266,12 @@ class Place extends Uploadable implements Translatable
      * @ORM\Column(name="average_rating", type="float")
      */
     private $averageRating = 0;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="review_count", type="integer")
+     */
+    private $reviewCount = 0;
 
     /**
      * @var bool
@@ -1506,5 +1532,97 @@ class Place extends Uploadable implements Translatable
         if ($this->getFile() && $this->getFile()->getSize() > round($this->maxFileSize * 1024 * 1024)) {
             $context->addViolationAt('file', 'Paveiksliukas užima daugiau nei ' . $this->maxFileSize . ' MB vietos.');
         }
+    }
+
+    /**
+     * Set reviewCount
+     *
+     * @param integer $reviewCount
+     * @return Place
+     */
+    public function setReviewCount($reviewCount)
+    {
+        $this->reviewCount = $reviewCount;
+    
+        return $this;
+    }
+
+    /**
+     * Get reviewCount
+     *
+     * @return integer 
+     */
+    public function getReviewCount()
+    {
+        return $this->reviewCount;
+    }
+
+    /**
+     * Set top
+     *
+     * @param boolean $top
+     * @return Place
+     */
+    public function setTop($top)
+    {
+        $this->top = $top;
+    
+        return $this;
+    }
+
+    /**
+     * Get top
+     *
+     * @return boolean 
+     */
+    public function getTop()
+    {
+        return $this->top;
+    }
+
+    /**
+     * Set deliveryPriceOld
+     *
+     * @param integer $deliveryPriceOld
+     * @return Place
+     */
+    public function setDeliveryPriceOld($deliveryPriceOld)
+    {
+        $this->deliveryPriceOld = $deliveryPriceOld;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliveryPriceOld
+     *
+     * @return integer 
+     */
+    public function getDeliveryPriceOld()
+    {
+        return $this->deliveryPriceOld;
+    }
+
+    /**
+     * Set cartMinimumOld
+     *
+     * @param integer $cartMinimumOld
+     * @return Place
+     */
+    public function setCartMinimumOld($cartMinimumOld)
+    {
+        $this->cartMinimumOld = $cartMinimumOld;
+    
+        return $this;
+    }
+
+    /**
+     * Get cartMinimumOld
+     *
+     * @return integer 
+     */
+    public function getCartMinimumOld()
+    {
+        return $this->cartMinimumOld;
     }
 }

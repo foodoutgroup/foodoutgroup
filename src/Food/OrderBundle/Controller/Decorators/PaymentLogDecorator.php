@@ -39,7 +39,7 @@ trait PaymentLogDecorator
             $orderService->deactivateCoupon();
 
             // log order data (if we have listeners)
-            $orderService->logOrderForNav($order);
+            $orderService->markOrderForNav($order);
 
             // clear cart
             $cartService->clearCart($order->getPlace());
@@ -47,7 +47,8 @@ trait PaymentLogDecorator
             // log
             $logger->alert('Completed order ' . $order->getId() . ', informed place.');
         } catch (OptimisticLockException $e) {
-            // actually do nothing
+            // actually reset entity manager
+            $this->get('doctrine')->resetManager();
 
             // log
             $logger->alert('Optimistic lock failed, so order ' . $order->getId() . ' was not marked completed, which means place was NOT informed, which is good.');
@@ -63,7 +64,8 @@ trait PaymentLogDecorator
                 $orderService::$paymentStatusCanceled,
                 $message);
         } catch (OptimisticLockException $e) {
-            // actually do nothing
+            // actually reset entity manager
+            $this->get('doctrine')->resetManager();
         }
     }
 
@@ -78,7 +80,8 @@ trait PaymentLogDecorator
             // clear cart
             $cartService->clearCart($order->getPlace());
         } catch (OptimisticLockException $e) {
-            // actually do nothing
+            // actually reset entity manager
+            $this->get('doctrine')->resetManager();
         }
     }
 }

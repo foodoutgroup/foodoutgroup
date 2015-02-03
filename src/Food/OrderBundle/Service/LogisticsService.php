@@ -191,7 +191,7 @@ class LogisticsService extends ContainerAware
         $driver = $this->getDriverById($driverId);
         $orderService = $this->getOrderService();
 
-        if ($driver) {
+        if ($driver && is_array($orderIds)) {
             foreach($orderIds as $orderId) {
                 $order = $orderService->getOrderById($orderId);
                 $order->setDriver($driver);
@@ -218,15 +218,6 @@ class LogisticsService extends ContainerAware
                 $orderService->saveOrder();
             }
         }
-
-        // TODO etaksi assigninimas
-//        switch($this->getLogisticSystem()) {
-//            case 'etaxi':
-//                break;
-//
-//            default:
-//                break;
-//        }
     }
 
     /**
@@ -350,9 +341,10 @@ class LogisticsService extends ContainerAware
 
     /**
      * @param Driver[] $drivers
+     * @param array|null $deleted
      * @return string
      */
-    public function generateDriverXml($drivers)
+    public function generateDriverXml($drivers, $deleted = null)
     {
         $writer = $this->getDefaultXmlWriter();
 
@@ -366,6 +358,18 @@ class LogisticsService extends ContainerAware
             $writer->writeElement('City', $driver->getCity());
             $writer->writeElement('Active', ($driver->getActive() ? 'Y' : 'N'));
             $writer->endElement();
+        }
+
+        if (!empty($deleted) && is_array($deleted)) {
+            foreach ($deleted as $driver) {
+                $writer->startElement('Driver');
+                $writer->writeElement('Id', $driver['id']);
+                $writer->writeElement('Phone', $driver['phone']);
+                $writer->writeElement('Name', $driver['name']);
+                $writer->writeElement('City', $driver['city']);
+                $writer->writeElement('Active', 'N');
+                $writer->endElement();
+            }
         }
 
         // End drivers block
@@ -406,7 +410,8 @@ class LogisticsService extends ContainerAware
         // Jeigu ijungtas sendas ir mes vezam ir deliver tipas
         if ($this->container->getParameter('logistics.send_to_external') == true
             && $order->getDeliveryType() == 'deliver'
-            && $order->getPlacePointSelfDelivery() == false) {
+            && $order->getPlacePointSelfDelivery() == false
+            && $order->getPlacePoint()->getUseExternalLogistics()) {
             $logisticsCityFilter = $this->container->getParameter('logistics.city_filter');
             if (empty($logisticsCityFilter) || in_array($order->getPlacePointCity(), $logisticsCityFilter)) {
                 $this->container->get('food.order')->logOrder($order, 'schedule_logistics_api_send', 'Order scheduled to send to logistics');

@@ -24,17 +24,25 @@
         <table class="reports_list">
             <tr>
                 <th>{{ 'admin.reports.place'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.self_delivery'|trans({}, 'SonataAdminBundle') }}</th>
                 {% if groupMonth == true %}
                     <th>{{ 'admin.reports.month'|trans({}, 'SonataAdminBundle') }}</th>
                 {% endif %}
                 <th>{{ 'admin.reports.order_count'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.reports.devliver_count'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.reports.pickup_count'|trans({}, 'SonataAdminBundle') }}</th>
-                <th>{{ 'admin.reports.order_sum'|trans({}, 'SonataAdminBundle') }} ({{ currency_display }})</th>
+                <th>{{ 'admin.reports.order_sum'|trans({}, 'SonataAdminBundle') }} ({{ currency_display|raw }})</th>
             </tr>
             {% for place in stats %}
                 <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">
                     <td>{{ place.place_name }}</td>
+                    <td>
+                        {% if place.self_delivery %}
+                            {{ 'label_type_yes'|trans({}, 'SonataAdminBundle') }}
+                        {% else %}
+                            {{ 'label_type_no'|trans({}, 'SonataAdminBundle') }}
+                        {% endif %}
+                    </td>
                     {% if groupMonth == true %}
                         <td class="center">{{ place.month }}</td>
                     {% endif %}

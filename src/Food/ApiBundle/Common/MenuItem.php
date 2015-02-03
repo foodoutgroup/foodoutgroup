@@ -24,7 +24,7 @@ class MenuItem extends ContainerAware
             "maximum" => 0,
             "minimum_old" => 0,
             "maximum_old" => 0,
-            "currency" => "LTL"
+            "currency" => "EUR"
         ),
         "status" => 'available',
         "updated_at" => ""
@@ -96,12 +96,33 @@ class MenuItem extends ContainerAware
 
         $ds = $this->container->get('food.dishes');
         $showDiscount = $dish->getShowDiscount();
+
+        $minimum = (!$showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : $ds->getSmallestDishDiscountPrice($dish->getId()) * 100);
+        $maximum = (!$showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : $ds->getLargestDishDiscountPrice($dish->getId()) * 100);
+        $minOld = ($showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : 0);
+        $maxOld = ($showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : 0);
+
+        $discountText = "";
+        if ($showDiscount) {
+            $diff = ($ds->getLargestDishDiscountPrice($dish->getId()) / $ds->getLargestDishPrice($dish->getId())) * 100 - 100;
+            $discountText = round($diff)."%";
+        }
+        if ($minimum == $minOld && $maximum == $maxOld) {
+            $theDishInfo = $ds->getOneDishDiscountPrice($dish->getId());
+            if ($theDishInfo) {
+                $diff = ($theDishInfo['discount'] / $theDishInfo['price']) * 100 - 100;
+                $discountText = round($diff)."%";
+                $minOld = 0;
+                $maxOld = 0;
+            }
+        }
         $priceRange = array(
-            'minimum' => (!$showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : $ds->getSmallestDishDiscountPrice($dish->getId()) * 100),
-            'maximum' => (!$showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : $ds->getLargestDishDiscountPrice($dish->getId()) * 100),
-            'minimum_old' => ($showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : 0),
-            'maximum_old' => ($showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : 0),
-            'currency' => 'LTL'
+            'minimum' => $minimum,
+            'maximum' => $maximum,
+            'minimum_old' => $minOld,
+            'maximum_old' => $maxOld,
+            'discount_text' => $discountText,
+            'currency' => $this->container->getParameter('currency_iso')
         );
         $this->set('item_id', $dish->getId())
             ->set('restaurant_id', $dish->getPlace()->getId())
@@ -111,7 +132,7 @@ class MenuItem extends ContainerAware
             ->set('ingredients', $dish->getDescription())
             ->set('show_discount', $showDiscount)
             ->set('price_range', $priceRange)
-            ->set('updated_at', ($dish->getEditedAt() != null ? $dish->getEditedAt()->format('U'): $dish->getCreatedAt()->format('U')));
+            ->set('updated_at', date('U')); //($dish->getEditedAt() != null ? $dish->getEditedAt()->format('U'): $dish->getCreatedAt()->format('U')));
 
         if ($loadOptions) {
             $options = array(
@@ -132,7 +153,9 @@ class MenuItem extends ContainerAware
                 $options['sizes']['items'][] = array(
                     'option_id' => $size->getId(),
                     'title' => $unit->getName(),
-                    'price_modifier' => $size->getPrice() * 100
+                    'price_modifier' => $size->getCurrentPrice() * 100,
+                    'price_modifier_old' => ($size->getDish()->getShowDiscount() && $size->getDiscountPrice() > 0?  $size->getPrice() * 100 : 0)
+
                 );
             }
             $options['sizes']['default'] = $options['sizes']['items'][0]['option_id'];

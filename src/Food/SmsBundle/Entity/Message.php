@@ -111,6 +111,12 @@ class Message
      * @ORM\Column(name="ext_id", type="string", length=45, nullable=true)
      */
     private $extId = null;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="secondary_ext_id", type="string", length=45, nullable=true)
+     */
+    private $secondaryExtId = null;
 
     function __construct()
     {
@@ -437,5 +443,28 @@ class Message
     public function getSmsc()
     {
         return $this->smsc;
+    }
+
+    /**
+     * Set secondaryExtId
+     *
+     * @param string $secondaryExtId
+     * @return Message
+     */
+    public function setSecondaryExtId($secondaryExtId)
+    {
+        $this->secondaryExtId = $secondaryExtId;
+    
+        return $this;
+    }
+
+    /**
+     * Get secondaryExtId
+     *
+     * @return string 
+     */
+    public function getSecondaryExtId()
+    {
+        return $this->secondaryExtId;
     }
 }

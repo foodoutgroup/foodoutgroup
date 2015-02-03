@@ -43,7 +43,7 @@
                 <td colspan="5">
                     <b>
                         {% trans %}mobile.order.coupon_discount_sum{% endtrans %}
-                    </b> {{ order.discountSum }} {{ currency_display }}
+                    </b> {{ order.discountSum }} {{ currency_display|raw }}
                 </td>
             </tr>
         {% endif %}
@@ -55,7 +55,7 @@
                 {% else %}
                     {% trans %}mobile.order.sum{% endtrans %}
                     {% endif %}:
-                </b> {{ order.total }} {{ currency_display }} / &euro; {{ misc_utils.euro(order.total) }}
+                </b> {{ order.total }} {{ currency_display|raw }} / {{ misc_utils.getLitas(order.total) }} {{ display_currency_alternative }}
             </td>
         </tr>
         <tr>
@@ -95,7 +95,7 @@
             <th colspan="5">{% trans %}mobile.place_point_phone{% endtrans %}</th>
         </tr>
         <tr>
-            <td colspan="5">{{ order.placePoint.phone }}</td>
+            <td colspan="5"><a href="tel:+{{ order.placePoint.phone }}">+{{ order.placePoint.phone }}</a></td>
         </tr>
         <tr>
             <th colspan="5">{% trans %}mobile.delivery_destination{% endtrans %}</th>
@@ -107,7 +107,7 @@
             <th colspan="5">{% trans %}mobile.customer_phone{% endtrans %}</th>
         </tr>
         <tr>
-            <td colspan="5">{{ order.user.phone }}</td>
+            <td colspan="5"><a href="tel:+{{ order.user.phone }}">+{{ order.user.phone }}</a></td>
         </tr>
         <tr>
             <th colspan="5">{% trans %}mobile.comment{% endtrans %}</th>
@@ -134,6 +134,7 @@
     <form method="post">
         {% if order.orderStatus == "assigned" %}
             <button type="submit" name="status" value="completed" class="btn btn-success btn-block">{% trans %}mobile.order_delivered{% endtrans %}</button>
+            <button type="submit" name="status" value="partialy_completed" class="btn btn-warning btn-block">{% trans %}mobile.order_partialy_delivered{% endtrans %}</button>
         {% endif %}
         <a class="btn btn-info btn-block" href="{{ path('driver_mobile_invoice', {hash: order.orderHash}) }}">{% trans %}mobile.invoice_driver{% endtrans %}</a>
 

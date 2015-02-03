@@ -47,7 +47,7 @@ class NTLMStream {
     protected $validate = false;
 
     public function stream_open($path, $mode, $options, $opened_path) {
-        echo "[NTLMStream::stream_open] $path , mode=$mode \n";
+        //echo "[NTLMStream::stream_open] $path , mode=$mode \n";
         $this->path = $path;
         $this->mode = $mode;
         $this->options = $options;

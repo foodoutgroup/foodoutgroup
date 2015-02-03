@@ -41,6 +41,7 @@ class DriversToLogisticCommand extends ContainerAwareCommand
             $dryRun = false;
 
             $drivers = $em->getRepository('FoodAppBundle:Driver')->findAll();
+            $deletedDrivers = $em->getRepository('FoodAppBundle:Driver')->findRecentlyDeleted();
 
             // Dont send if dry-run
             if ($input->getOption('dry-run')) {
@@ -49,7 +50,7 @@ class DriversToLogisticCommand extends ContainerAwareCommand
             }
 
             $output->writeln('Generating and sending XML for '.count($drivers).' drivers');
-            $xml = $logisticsService->generateDriverXml($drivers);
+            $xml = $logisticsService->generateDriverXml($drivers, $deletedDrivers);
 
             if (!$dryRun) {
                 $response = $logisticsService->sendToLogistics($systemUrl, $xml);

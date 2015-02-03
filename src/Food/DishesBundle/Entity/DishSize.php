@@ -59,6 +59,20 @@ class DishSize
      */
     private $discountPrice;
 
+
+    /**
+     * @var double
+     *
+     * @ORM\Column(name="price_old", type="decimal", scale=2, nullable=true)
+     */
+    private $priceOld;
+
+    /**
+     * @var double
+     * @ORM\Column(name="discount_price_old", type="decimal", scale=2, nullable=true)
+     */
+    private $discountPriceOld;
+
     /**
      * @var \DateTime
      *
@@ -377,10 +391,56 @@ class DishSize
 
     public function getCurrentPrice()
     {
-        if ($this->getDish()->getShowDiscount()) {
+        if ($this->getDish()->getShowDiscount() && $this->getDiscountPrice()!=0) {
             return $this->getDiscountPrice();
         } else {
             return $this->getPrice();
         }
+    }
+
+    /**
+     * Set priceOld
+     *
+     * @param string $priceOld
+     * @return DishSize
+     */
+    public function setPriceOld($priceOld)
+    {
+        $this->priceOld = $priceOld;
+    
+        return $this;
+    }
+
+    /**
+     * Get priceOld
+     *
+     * @return string 
+     */
+    public function getPriceOld()
+    {
+        return $this->priceOld;
+    }
+
+    /**
+     * Set discountPriceOld
+     *
+     * @param string $discountPriceOld
+     * @return DishSize
+     */
+    public function setDiscountPriceOld($discountPriceOld)
+    {
+        $this->discountPriceOld = $discountPriceOld;
+    
+        return $this;
+    }
+
+    /**
+     * Get discountPriceOld
+     *
+     * @return string 
+     */
+    public function getDiscountPriceOld()
+    {
+        return $this->discountPriceOld;
     }
 }

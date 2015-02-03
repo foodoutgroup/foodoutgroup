@@ -39,6 +39,14 @@ class CreditCardGateway
         $params = new Parameters();
         $params->set('client', $config['vtid'])
                ->set('password', $config['password'])
+               ->set('city', $this->options['city'])
+               ->set('country', $this->options['country'])
+               ->set('shipping_address', $this->options['shipping_address'])
+               ->set('surname', $this->options['surname'])
+               ->set('name', $this->options['name'])
+               ->set('telephone', $this->options['telephone'])
+               ->set('email', $this->options['email'])
+               ->set('ip', $this->options['ip'])
                ->set('order_id', $this->options['order_id'])
                ->set('price', $this->options['price'])
                ->set('transaction_datetime',

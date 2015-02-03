@@ -196,7 +196,7 @@ input.button {}
 
 /*Header ------------------------------------------*/
 .site-header {}
-.site-header h1 {text-align: center; font-size: 67px; margin: 0px; color: #fff; padding-top: 64px; line-height: 60px; font-weight: normal; letter-spacing: -2.6px; padding-bottom: 44px;}
+.site-header h1 {text-align: center; font-size: 67px; margin: 0px; color: #fff; padding-top: 64px; line-height: 60px; font-weight: normal; letter-spacing: -2.6px; padding-bottom: 44px; text-shadow: 4px 4px 8px #000000;}
 
 .special-offer-block {position: relative; background-position: center top; background-repeat: no-repeat; background-size: cover;}
 .special-offer-block .site-block {height: 484px; position: relative;}
@@ -542,6 +542,7 @@ input.button {}
 .delivery-info-form input[type="email"] {height: 17px;}
 .delivery-info-form textarea {height: 93px;}
 .delivery-info-form select {width: 335px;}
+.delivery-info-form textarea.company_address {height: 60px;}
 
 .delivery-info-form .section-2 {margin-top: 48px; padding-bottom: 33px; margin-bottom: 21px;}
 
@@ -682,7 +683,7 @@ input.button {}
 .site-footer .col {float: left; font-size: 15px; letter-spacing: 0.5px; margin-right: 36px; background: url(/bundles/foodapp/images/rep-dot.png) repeat-y right top;}
 .site-footer .col-1 {width: 180px;}
 .site-footer .col-2 {width: 190px;}
-.site-footer .col-3 {width: 463px; margin-right: 0px; padding-right: 37px;}
+.site-footer .col-3 {width: 517px; margin-right: 0px; padding-right: 25px;}
 .site-footer .col-4 {width: 220px; float: right; margin-right: 0px; text-align: right; background: none;}
 
 .site-footer li {line-height: 29px;}
@@ -694,7 +695,7 @@ input.button {}
 
 .small-col {width: 193px; line-height: 29px;}
 /* TODO laikinas footerio reitingu isplatinimas */
-.small-col.rating-col {width: 227px;}
+.small-col.rating-col {width: 258px;}
 
 .copyrights {position: absolute; right: 0px; bottom: 2px; font-size: 14px;}
 
@@ -1694,8 +1695,25 @@ div.coupon_form_popup {
     border: none;
     letter-spacing: 1px;
 }
+
 #change-address label, #places-change-address label { width: 120px; }
 #change-address button, #places-change-address button { float: right; }
 .width463 {width: 463px;}
 #change-address .page-title .h1, #places-change-address .page-title .h1{font-size: 30px; margin: 0; color: #513d28; font-weight: normal; float: none !important;}
 #change-address .title, #places-change-address .title {font-size: 17px; color: #4d090a; text-align: center; margin: 0; padding-bottom: 15px; padding-right: 63px; letter-spacing: 0.6px;}
+
+/* Custom checkbox shown on right side */
+.form-row.custom-checkbox.checkbox-right {
+    padding-left: 0;
+}
+.custom-checkbox.checkbox-right .icheckbox {
+    float: left;
+    position: static;
+    margin-top: 10px;
+}
+.custom-checkbox.checkbox-right label {
+    padding-right: 2px;
+}
+.company_data {
+    padding-top: 10px;
+}

@@ -97,6 +97,12 @@ class MailerMessagesService extends MailerRestBaseService
         return $this;
     }
 
+    public function resetVariables() {
+        $this->variables = array();
+
+        return $this;
+    }
+
     public function setVariable( $name, $value ) {
 
         $this->variables[ $name ] = $value;
@@ -166,6 +172,12 @@ class MailerMessagesService extends MailerRestBaseService
     public function addAttachment( $filename, $content ) {
 
         $this->attachments[] = array('filename' => $filename, 'content' => $content );
+
+        return $this;
+    }
+
+    public function removeAttachments() {
+        $this->attachments = array();
 
         return $this;
     }

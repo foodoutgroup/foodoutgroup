@@ -38,6 +38,9 @@ class NavSyncCommand extends ContainerAwareCommand
 
             if (!empty($orders) && count($orders) > 0) {
                 $navOrders = $navService->getRecentNavOrders($orders);
+                $ordersFromNav = $navService->getImportedOrdersStatus($orders);
+
+                $navOrders = $navOrders + $ordersFromNav;
 
                 foreach ($navOrders as $orderId => $orderData) {
                     $order = $orderService->getOrderById($orderId);
@@ -52,9 +55,31 @@ class NavSyncCommand extends ContainerAwareCommand
                         $orderData['Delivery Status']
                     ));
 
+                    // check if place of order changed and do something about it
+                    $maybeOrderData = \Maybe($orderData);
+
+                    $orderPlaceChanged = $navService->didOrderPlaceChange($maybeOrderData['Order No_']->val(''));
+
+                    if (!empty($orderPlaceChanged)) {
+                        // use $orderPlaceChanged['Store No_'] to set new place for $order
+                        // for now we will have only debug code
+                        @mail('jonas.s@foodout.lt', 'nav moved place debug', var_export($orderPlaceChanged, true), 'FROM: info@foodout.lt');
+                    }
+
                     // Only update if not a dry-run
                     if (!$dryRun) {
                         $navService->changeOrderStatusByNav($order, $orderData);
+
+                        if (!$order->getDriver() && $orderData['Delivery Status'] > 6 && !empty($orderData['Driver ID'])) {
+                            $navService->setDriverFromNav($order, $orderData['Driver ID']);
+                        }
+
+                        if ($order->getOrderFromNav() && isset($orderData['Total Sum']) && !empty($orderData['Total Sum'])) {
+                            if ($order->getTotal() != sprintf('%0.2f', $orderData['Total Sum'])) {
+                                $order->setTotal($orderData['Total Sum']);
+                            }
+                        }
+
                         $em->persist($order);
                     }
                 }

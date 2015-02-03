@@ -45,6 +45,7 @@
                 <th class="order_date">{{ 'admin.dispatcher.order_date'|trans({}, 'SonataAdminBundle') }}</th>
                 <th class="order_date">{{ 'admin.dispatcher.delivery_time'|trans({}, 'SonataAdminBundle') }}</th>
                 <th class="order_date">{{ 'admin.dispatcher.delayed'|trans({}, 'SonataAdminBundle') }}</th>
+                <th class="narrow_col">{{ 'admin.dispatcher.payment'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.dispatcher.comment'|trans({}, 'SonataAdminBundle') }}</th>
                 {% if type == 'not_finished' %}
                     <th>{{ 'admin.dispatcher.driver'|trans({}, 'SonataAdminBundle') }}</th>
@@ -60,10 +61,18 @@
                         Dispatcher.recentOrders['{{ cityName }}']['{{ type }}'] = {{ order.id }};
                     </script>
                 {% endif %}
-                <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">
-                    <td>
+                {% if (type == 'unconfirmed' and order.orderDate|date_modify("+10 minutes")|date("d H:i") < "now"|date("d H:i")) or (type == 'unassigned' and order.placePointSelfDelivery != true and order.deliveryTime|date_modify("-25 minute")|date("d H:i") < "now"|date("d H:i")) %}
+                    {% set additional_class = 'late_warning' %}
+                {% else %}
+                    {% set additional_class = '' %}
+                {% endif %}
+                <tr class="{{ loop.index%2 ? 'odd' : 'even' }} {{ additional_class }}">
+                    <td class="no-wrap">
                         {% if not order.placePointSelfDelivery %}
                             <input type="checkbox" id="order_{{ order.id }}" value="{{ order.id }}" class="order_checkbox" />
+                        {% endif %}
+                        {% if additional_class != '' %}
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
                         {% endif %}
                     </td>
                     <td><a href="{{ path('admin_food_order_order_show', {'id': order.id}) }}" target="_blank">{{ order.id }}</a></td>
@@ -97,6 +106,15 @@
                         {% endif %}
                     </td>
                     <td>
+                        {% if order.paymentMethod == 'local' %}
+                            {{ 'admin.dispatcher.payement.local'|trans({}, 'SonataAdminBundle') }}
+                        {% elseif order.paymentMethod == 'local.card'%}
+                            {{ 'admin.dispatcher.payement.local_card'|trans({}, 'SonataAdminBundle') }}
+                        {% else %}
+                            {{ 'admin.dispatcher.payement.bank_link'|trans({}, 'SonataAdminBundle') }}
+                        {% endif %}
+                    </td>
+                    <td>
                         {% if order.comment|length > 20 %}
                             <span class="shortened_comment">{{ order.comment|slice(0, 17) }}... <span class="glyphicon glyphicon-question-sign spliced-text" title="{{ order.comment }}"></span></span>
                         {% else %}
@@ -105,7 +123,7 @@
                     </td>
                     {% if type == 'not_finished' %}
                         <td class="driver">
-                            {% if order.driver is not null and order.driver is not empty %}
+                            {% if order.driver is not null and order.driver is not empty and order.isDriverNotDeleted %}
                                 {%
                                 set driverInfo = 'admin.driver.phone'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.phone ~ "<br/>"
                                 ~ 'admin.driver.city'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.city ~ "<br/>"
@@ -157,7 +175,7 @@
                 {% set cityUnconfirmed = (cityOrders[city].unconfirmed.deliver|length + cityOrders[city].unconfirmed.pickup|length) %}
                 {% set cityNotFinished = cityOrders[city].not_finished|length %}
                 {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished}, 'SonataAdminBundle') %}
-                <li class="city-tab">
+                <li class="city-tab city_tabik-{{ loop.index }}">
                     <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} ({{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }})</a>
                 </li>
             {% endfor %}
@@ -165,12 +183,12 @@
         {% for cityName,city in cityOrders %}
             <div id="city_list-{{ loop.index }}">
                 <ul>
-                    <li>
+                    <li class="city-{{ loop.index }}-unassigned-tab">
                         <a href="#city-{{ loop.index }}-unassigned">
                             {{ 'admin.dispatcher.unassigned'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.unassigned|length }})</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="city-{{ loop.index }}-unconfirmed-tab">
                         <a href="#city-{{ loop.index }}-unconfirmed">
                             {{ 'admin.dispatcher.unconfirmed'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unconfirmed.deliver|length + city.unconfirmed.pickup|length) }})</span>
                         </a>
@@ -200,6 +218,30 @@
             <script type="text/javascript">
                 $(document).ready(function(){
                     $('#city_list-{{ loop.index }}').tabs();
+
+                    if ($('#city_list-{{ loop.index }} span.glyphicon-exclamation-sign').length > 0) {
+                        var tabikText = $('.city_tabik-{{ loop.index }}');
+
+                        if (tabikText.find('span.glyphicon-exclamation-sign').length < 1) {
+                            tabikText.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+                        }
+
+                        if ($('#city-{{ loop.index }}-unassigned span.glyphicon-exclamation-sign').length > 0) {
+                            var smallTabikText = $('.city-{{ loop.index }}-unassigned-tab');
+
+                            if (smallTabikText.find('span.glyphicon-exclamation-sign').length < 1) {
+                                smallTabikText.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+                            }
+                        }
+
+                        if ($('#city-{{ loop.index }}-unconfirmed span.glyphicon-exclamation-sign').length > 0) {
+                            var smallTabikText = $('.city-{{ loop.index }}-unconfirmed-tab');
+
+                            if (smallTabikText.find('span.glyphicon-exclamation-sign').length < 1) {
+                                smallTabikText.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+                            }
+                        }
+                    }
                 });
             </script>
         {% endfor %}

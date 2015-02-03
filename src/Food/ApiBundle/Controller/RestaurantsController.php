@@ -2,15 +2,16 @@
 
 namespace Food\ApiBundle\Controller;
 
-use Food\ApiBundle\Common\Restaurant;
-use Food\ApiBundle\Common\MenuItem;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class RestaurantsController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function getRestaurantsAction(Request $request)
     {
         /**
@@ -159,6 +160,11 @@ class RestaurantsController extends Controller
         return new JsonResponse($cuisines);
     }
 
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function getRestaurantAction($id, Request $request)
     {
         $city = $request->get('city');
@@ -215,28 +221,54 @@ class RestaurantsController extends Controller
         return new JsonResponse($restaurant->data);
     }
 
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function getMenuAction($id, Request $request)
     {
         $updated_at = $request->get('updated_at');
         $menuItems = $this->get('food_api.api')->createMenuByPlaceId($id, $updated_at);
+        $deletedItems = $this->get('food_api.api')->createDeletedByPlaceId($id, $updated_at, $menuItems);
 
         $response = array(
             'menu' => $menuItems,
+            'deleted' => $deletedItems,
             '_meta' => array(
                 'total' => sizeof($menuItems),
                 'offset' => 0,
                 'limit' => 50
             )
         );
-        return new JsonResponse($response);
+        $resp = new JsonResponse($response);
+        $resp->setMaxAge(1);
+        $resp->setSharedMaxAge(1);
+        $date = new \DateTime();
+        $resp->setLastModified($date);
+        return $resp;
     }
 
+    /**
+     * @param int $placeId
+     * @param int $menuItem
+     * @return JsonResponse
+     */
     public function getMenuItemAction($placeId, $menuItem)
     {
         $response = $this->get('food_api.api')->createMenuItemByPlaceIdAndItemId($placeId, $menuItem);
-        return new JsonResponse($response);
+        $resp = new JsonResponse($response);
+        $resp->setMaxAge(1);
+        $resp->setSharedMaxAge(1);
+        $date = new \DateTime();
+        $resp->setLastModified($date);
+        return $resp;
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function getMenuCategoriesAction($id)
     {
         $response = array();

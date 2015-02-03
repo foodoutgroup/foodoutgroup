@@ -462,6 +462,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
             OrderService::$status_finished,
             OrderService::$status_assiged,
             OrderService::$status_completed,
+            OrderService::$status_partialy_completed,
             OrderService::$status_canceled,
         );
 
@@ -777,7 +778,26 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
      */
     public function testSetDeliveryTypeNoOrderException()
     {
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('get', 'getParameter')
+        );
+
+        $logger = $this->getMockBuilder('Monolog\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $orderService = new OrderService();
+        $orderService->setContainer($container);
+
+        $container->expects($this->once())
+            ->method('get')
+            ->with('logger')
+            ->will($this->returnValue($logger));
+
+        $logger->expects($this->once())
+            ->method('error');
+
         $orderService->setDeliveryType('deliver');
     }
 
