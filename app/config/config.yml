@@ -111,6 +111,7 @@ twig:
         currency_alternative: %currency_alternative%
         show_best_offers: %show_best_offers%
         show_apps_download: %show_apps_download%
+        show_is_social: %show_is_social%
         publicdomain: "%publicdomain%"
         google_analytics_uid: "%google_analytics_uid%"
         available_cities: %available_cities%

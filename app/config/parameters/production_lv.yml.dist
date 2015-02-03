@@ -47,6 +47,7 @@ parameters:
     currency_alternative: false
     show_best_offers: false
     show_apps_download: false
+    show_is_social: false
     # naudojam telefonu validacijoms
     country: LV
     country_full: Latvia
