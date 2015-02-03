@@ -13,6 +13,21 @@ class SlugController extends Controller
 {
     public function processAction(Request $request, $slug)
     {
+        if ($_SERVER['REMOTE_ADDR'] != '88.119.87.158' && $_SERVER['REMOTE_ADDR']!="127.0.0.1") {
+            ?>
+            <html>
+            <head>
+                <title>Foodout.lv - coming soon</title>
+            </head>
+            <body>
+            <div style="width: 100%; padding-top: 50px; text-align: center;">
+                <img src="/bundles/foodapp/images/foodout_no_domain.jpg" alt="Foodout.lv" />
+            </div>
+            </body>
+            </html>
+            <?php
+            die();
+        }
         // Check if user is not banned
         $ip = $request->getClientIp();
         // Dude is banned - hit him

@@ -16,6 +16,21 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
+        if ($_SERVER['REMOTE_ADDR'] != '88.119.87.158' && $_SERVER['REMOTE_ADDR']!="127.0.0.1") {
+            ?>
+                <html>
+                <head>
+                    <title>Foodout.lv - coming soon</title>
+                </head>
+                <body>
+                <div style="width: 100%; padding-top: 50px; text-align: center;">
+                    <img src="/bundles/foodapp/images/foodout_no_domain.jpg" alt="Foodout.lv" />
+                </div>
+                </body>
+                </html>
+            <?php
+            die();
+        }
         $miscUtils = $this->get('food.app.utils.misc');
         // Check if user is not banned
         $ip = $request->getClientIp();
