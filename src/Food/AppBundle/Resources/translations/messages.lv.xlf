@@ -748,7 +748,7 @@
       </trans-unit>
       <trans-unit id="620c7ce4e5b0c3f1f527813491a9152f" resname="general.ip_banned_info">
         <source>general.ip_banned_info</source>
-        <target><![CDATA[Atvainojamies! Taču Jūsu IP adrese (%ip%) ir bloķēta.<br />IP adreses tiek bloķētas, ja: apmeklētājs veido nepatiesus pasūtījumus; apmelo, aizskar vai ar citām tīšām darbībām traucē citiem apmeklētājiem vai restorāna darbam.<br /><br />Administrācijas norādītais iemesls: "%reason%".<br /><br />Ja uzskatāt, ka tas ir noticis kļūdas dēļ – sazinieties ar mums <strong><a href="mailto:info@foodout.lt">info@foodout.lt</a></strong> vai pa tālruni <strong>+370 614 17872</strong>]]></target>
+        <target><![CDATA[Atvainojamies! Taču Jūsu IP adrese (%ip%) ir bloķēta.<br />IP adreses tiek bloķētas, ja: apmeklētājs veido nepatiesus pasūtījumus; apmelo, aizskar vai ar citām tīšām darbībām traucē citiem apmeklētājiem vai restorāna darbam.<br /><br />Administrācijas norādītais iemesls: "%reason%".<br /><br />Ja uzskatāt, ka tas ir noticis kļūdas dēļ – sazinieties ar mums <strong><a href="mailto:info@foodout.lv">info@foodout.lv</a></strong> vai pa tālruni <strong>+370 614 17872</strong>]]></target>
       </trans-unit>
       <trans-unit id="7e9bef54e33d4a729ebb1a05ed886696" resname="general.raty.not_rated_yet">
         <source>general.raty.not_rated_yet</source>
@@ -1108,7 +1108,7 @@
       </trans-unit>
       <trans-unit id="0954cd2315bdccc8f1ea6c99749bbc82" resname="profile.phone_placeholder">
         <source>profile.phone_placeholder</source>
-        <target>37060000000</target>
+        <target>37160000000</target>
       </trans-unit>
       <trans-unit id="fc78b66b287d98d485a88f1107c16908" resname="profile.current_password">
         <source>profile.current_password</source>

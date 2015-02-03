@@ -72,7 +72,7 @@
                 </option>
             </constraint>
             <constraint name="Regex">
-                <option name="pattern">/^370\d{8}$/</option>
+                <option name="pattern">/^(370|371)\d{8}$/</option>
                 <option name="groups">
                     <value>FoodProfile</value>
                     <value>Profile</value>

@@ -63,7 +63,7 @@ class GoogleGisService extends ContainerAware
             ->findOneBy(
                 array(
                     'requestAddress' => $address,
-                    'requestCountry' => $this->container->get('country_full')
+                    'requestCountry' => $this->container->getParameter('country_full')
                 )
             );
 
@@ -71,7 +71,7 @@ class GoogleGisService extends ContainerAware
             $resp = $this->getCli()->get(
                 $this->container->getParameter('google.maps_geocode'),
                 array(
-                    'address' => $address.', '.$this->container->get('country_full'),
+                    'address' => $address.', '.$this->container->getParameter('country_full'),
                     'sensor' => 'true',
                     'key' => $this->container->getParameter('google.maps_server_api')
                 )
@@ -79,8 +79,8 @@ class GoogleGisService extends ContainerAware
 
             $geoData = new GeoCache();
             $geoData->setRequestAddress($address)
-                ->setRequestCountry($this->container->get('country_full'))
-                ->setRequestData($address.', '.$this->container->get('country_full'))
+                ->setRequestCountry($this->container->getParameter('country_full'))
+                ->setRequestData($address.', '.$this->container->getParameter('country_full'))
                 ->setRequestDate(new \DateTime("now"))
                 ->setRessponseBody($resp->body)
                 ->setCounter(1);
@@ -252,7 +252,7 @@ class GoogleGisService extends ContainerAware
         $resp = $this->getCli()->get(
             $this->container->getParameter('google.maps_geocode'),
             array(
-                'address' => $street." ".$houseNumber." ".$city.', '.$this->container->get('country_full'),
+                'address' => $street." ".$houseNumber." ".$city.', '.$this->container->getParameter('country_full'),
                 'sensor' => 'true',
                 'key' => $this->container->getParameter('google.maps_server_api')
             )

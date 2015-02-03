@@ -103,9 +103,11 @@
         <p class="img-description">{# pavadinimas produkto, vietove, kaina #}</p>
     </div>
     <div class="site-center">
-        <div class="site-block">
-            {{ render(controller('FoodPlacesBundle:Default:bestOffers')) }}
-        </div>
+        {% if show_best_offers %}
+            <div class="site-block">
+                {{ render(controller('FoodPlacesBundle:Default:bestOffers')) }}
+            </div>
+        {% endif %}
         <div class="site-block">
             {{ render(controller('FoodPlacesBundle:Default:recommended')) }}
         </div>

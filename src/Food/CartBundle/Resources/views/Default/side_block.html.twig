@@ -17,14 +17,18 @@
                         {% set showDiscount = true and dish.dishSizeId.discountPrice != 0%}
                     {% endif %}
                     <div class="sum item {% if showDiscount %}discounted{% endif %}">x {{ currency_display | raw}} {{ dish.dishSizeId.price|number_format(2, ',', ' ') }}
-                        <span class="euro">
-                            /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}
-                        </span>
+                        {% if currency_alternative %}
+                            <span class="euro">
+                                /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}
+                            </span>
+                        {% endif %}
                     </div>
                     {% if showDiscount %}
                         <div class="sum item discount">x {{ currency_display|raw }}{{ dish.dishSizeId.discountPrice|number_format(2, ',', ' ') }}
-                            <span class="euro">
-                            /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.discountPrice)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}
+                            {% if currency_alternative %}
+                                <span class="euro">
+                                /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.discountPrice)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}
+                            {% endif %}
                         </span>
                         </div>
                     {% endif %}
@@ -34,7 +38,12 @@
                     {% for option in dish.options %}
                         <div class="clearfix">
                             <div class="extra" title="{{ option.dishOptionId.name }}">{{ option.dishOptionId.name }}</div>
-                            <div class="extra sum">{{ currency_display|raw }}{{ option.dishOptionId.price|number_format(2, ',', ' ') }}<span class="euro">/&nbsp;{{  misc_utils.getLitas(option.dishOptionId.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span></div>
+                            <div class="extra sum">
+                                {{ currency_display|raw }}{{ option.dishOptionId.price|number_format(2, ',', ' ') }}
+                                {% if currency_alternative %}
+                                    <span class="euro">/&nbsp;{{  misc_utils.getLitas(option.dishOptionId.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
+                                {% endif %}
+                            </div>
                         </div>
                     {% endfor %}
                 {% endif %}
@@ -49,20 +58,30 @@
             {% endif %}
             <div class="total-sum cart clearfix">
                 <div class="fl">{% trans %}cart.block.total_cart{% endtrans %}:</div>
-                <div class="fr"> {{ currency_display|raw }}{{ total_cart|number_format(2, ',', ' ') }}<span class="euro">/ {{  misc_utils.getLitas(total_cart)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}</span></div>
+                <div class="fr"> {{ currency_display|raw }}{{ total_cart|number_format(2, ',', ' ') }}
+                    {% if currency_alternative %}
+                        <span class="euro">/ {{  misc_utils.getLitas(total_cart)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}</span>
+                    {% endif %}
+                </div>
             </div>
             {% if hide_delivery == 0 %}
                 <div class="delivery-price clearfix">
                     <div class="fl">{% trans %}cart.block.delivery_price{% endtrans %}:</div>
                     {% if freeDelivery %}
-                        <div class="fr">{{ currency_display|raw }}0,00<span class="euro">/ 0,00 {{ display_currency_alternative }}</span></div>
+                        <div class="fr">{{ currency_display|raw }}0,00 {% if currency_alternative %}<span class="euro">/ 0,00 {{ display_currency_alternative }}</span>{% endif %}</div>
                     {% else %}
-                        <div class="fr">{{ currency_display|raw }}{{ place.deliveryPrice|number_format(2, ',', ' ') }}<span class="euro">/ {{  misc_utils.getLitas(place.deliveryPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}</span></div>
+                        <div class="fr">{{ currency_display|raw }}{{ place.deliveryPrice|number_format(2, ',', ' ') }}
+                            {% if currency_alternative %}
+                                <span class="euro">/ {{  misc_utils.getLitas(place.deliveryPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}</span>
+                            {% endif %}
+                        </div>
                     {% endif %}
                 </div>
                 <div class="total-sum final clearfix">
                     <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
-                    <div class="fr">{{ currency_display|raw }}{{ total_with_delivery|number_format(2, ',', ' ') }}<span class="euro">/ {{  misc_utils.getLitas(total_with_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}</span></div>
+                    <div class="fr">{{ currency_display|raw }}{{ total_with_delivery|number_format(2, ',', ' ') }}
+                        {% if currency_alternative %}<span class="euro">/ {{  misc_utils.getLitas(total_with_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}</span>{% endif %}
+                    </div>
                 </div>
             {% endif %}
         </div>
@@ -81,7 +100,8 @@
         </div>
         {% endif %}
         {% if hide_delivery == false or place.minimalOnSelfDel %}
-        <div class="delivery-time tac">{% trans %}cart.block.order_sum_minimum{% endtrans %}<br />{{ currency_display|raw }} {{ place.cartMinimum }} <span class="euro">/ {{  misc_utils.getLitas(place.cartMinimum)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>.
+        <div class="delivery-time tac">{% trans %}cart.block.order_sum_minimum{% endtrans %}<br />{{ currency_display|raw }} {{ place.cartMinimum }}
+            {% if currency_alternative %}<span class="euro">/ {{  misc_utils.getLitas(place.cartMinimum)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>{% endif %}.
             {% if place.minimalOnSelfDel == false %}<br />{% trans %}cart.block.order_sum_minimum_take_myself{% endtrans %}{% endif %}
         </div>
         {% endif %}

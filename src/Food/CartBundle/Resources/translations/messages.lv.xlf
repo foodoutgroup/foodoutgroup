@@ -68,7 +68,7 @@
       </trans-unit>
       <trans-unit id="72ac47fdc9d8610d13cc86b4dd35e24f" resname="cart.checkout.phone_placeholder">
         <source>cart.checkout.phone_placeholder</source>
-        <target>37060000000</target>
+        <target>37160000000</target>
       </trans-unit>
       <trans-unit id="bc8439664f3800919e17d58ad5eaff4b" resname="cart.checkout.delivery_comment">
         <source>cart.checkout.delivery_comment</source>
@@ -152,7 +152,7 @@
       </trans-unit>
       <trans-unit id="c162e3ed908d30d5cf806d68393cfd65" resname="cart.checkout.phone_tooltip">
         <source>cart.checkout.phone_tooltip</source>
-        <target>Ievadiet mobilā tālruņa numuru formātā 3706xxxxxxxx</target>
+        <target>Ievadiet mobilā tālruņa numuru formātā 3716xxxxxxxx</target>
       </trans-unit>
       <trans-unit id="2d4e402558401b20f0603da2554047c1" resname="cart.checkout.place_point">
         <source>cart.checkout.place_point</source>
@@ -223,7 +223,7 @@ Viļņa
       </trans-unit>
       <trans-unit id="23071ab407fc9347e2b37d3ebe12758f" resname="order.form.errors.customerphone_format">
         <source>order.form.errors.customerphone_format</source>
-        <target>Norādiet mob. tālruņa numuru formātā 37061234567</target>
+        <target>Norādiet mob. tālruņa numuru formātā 37161234567</target>
       </trans-unit>
       <trans-unit id="e025a73731785c22c69a936e639311dc" resname="order.form.errors.customerphone_not_mobile">
         <source>order.form.errors.customerphone_not_mobile</source>

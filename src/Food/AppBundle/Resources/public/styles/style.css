@@ -1580,6 +1580,9 @@ div.coupon_form_popup {
 .restaurant-menu-item .price {
     line-height: 20px;
 }
+.restaurant-menu-item .price.single {
+    line-height: 32px;
+}
 .detailed-dish-popup .euro {
     font-size: 11px;
     color: #a78f92;

@@ -365,7 +365,7 @@ class NavService extends ContainerAware
 
         $dataToPut = array(
             'Order No_' => $orderNewId,
-            'Phone' => str_replace('370', '8', $order->getUser()->getPhone()),
+            'Phone' => str_replace(array('370', '371'), '8', $order->getUser()->getPhone()),
             'ZipCode' => '', // ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getZipCode() : ''),
             'City' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $order->getAddressId()->getCity() : ''),
             'Street' => $street, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getStreetName(): ''),
@@ -777,7 +777,7 @@ class NavService extends ContainerAware
         $rcCode = !empty($restaurant) ? $restaurant->getInternalCode() : '';
 
         $requestData = array(
-            'Phone'=> str_replace("370", "8", $phone),
+            'Phone'=> str_replace(array('370', '371'), "8", $phone),
             'RestaurantNo' => $rcCode,
             'OrderDate' => str_replace("-", ".", $orderDate),
             'OrderTime' => $orderTime,

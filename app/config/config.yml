@@ -109,7 +109,10 @@ twig:
         currency_iso: "%currency_iso%"
         display_currency_alternative: "%display_currency_alternative%"
         currency_alternative: %currency_alternative%
+        show_best_offers: %show_best_offers%
+        show_apps_download: %show_apps_download%
         publicdomain: "%publicdomain%"
+        google_analytics_uid: "%google_analytics_uid%"
         available_cities: %available_cities%
         vat_size: "%vat%"
         google_maps_api: "%google.maps_api%"
