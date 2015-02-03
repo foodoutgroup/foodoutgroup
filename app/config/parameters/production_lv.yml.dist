@@ -19,3 +19,41 @@ parameters:
     aws_region: eu-west-1
     s3_bucket: foodout-invoice
 
+    available_cities: [Riga]
+    available_locales: [lv, en, ru]
+    available_locales_routing: lv | en | ru
+    time_zone: "Europe/Riga"
+    sms.sender: "Foodout.lv"
+    admin.emails: [mantas@foodout.lt]
+    admin.phones: [37061514333]
+    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, giedrius@foodout.lt]
+    order.city_coordinators:
+        vilnius: []
+        kaunas: [zaneta@foodout.lt]
+        klaipėda: [jurgita@foodout.lt]
+        riga: [paulius@foodout.lt]
+    order.accept_notify_emails: []
+    accounting_email: "buhalterija@foodout.lt"
+    payment.methods:
+        - local
+        - local.card
+        - paysera
+        - swedbank-gateway
+        - swedbank-credit-card-gateway
+        - seb-banklink
+        - nordea-banklink
+    currency_display: '&euro;'
+    currency_iso: EUR
+    display_currency_alternative:  Lt
+    currency_alternative: false
+    show_best_offers: false
+    show_apps_download: false
+    # naudojam telefonu validacijoms
+    country: LV
+    country_full: Latvia
+    vat: 21
+    title: "Foodout"
+    domain: "foodout.lv"
+    publicdomain: "foodout.lv"
+    google_analytics_uid: "UA-50355577-2"
+
