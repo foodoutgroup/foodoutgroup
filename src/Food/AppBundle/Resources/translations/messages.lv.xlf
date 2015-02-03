@@ -340,7 +340,7 @@
       </trans-unit>
       <trans-unit id="5ad57190264dcf453d3f80908aa924de" resname="general.help_slug">
         <source>general.help_slug</source>
-        <target>palīdzība</target>
+        <target>palidziba</target>
       </trans-unit>
       <trans-unit id="9e30081c6301c29c22942527d1d900ab" resname="general.close_btn">
         <source>general.close_btn</source>
