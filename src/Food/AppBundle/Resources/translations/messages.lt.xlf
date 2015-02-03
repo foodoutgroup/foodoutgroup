@@ -738,7 +738,7 @@
         <source>general.email.accounting_report.swedbank-gateway</source>
         <target>Internetu (Swedbank banklink)</target>
       </trans-unit>
-      <trans-unit id="2a27b06725260bba699dd331a49827d8" resname="index.title_page_header">
+      <trans-unit id="2a27b06725260bba699dd331a49827d8_new" resname="index.title_page_header">
         <source>index.title_page_header</source>
         <target><![CDATA[Užsisakykite maistą į namus ar biurą]]></target>
       </trans-unit>
