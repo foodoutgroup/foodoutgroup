@@ -1,273 +1,332 @@
 <?php
 namespace Food\OrderBundle\Tests\Service;
 
+use Symfony\Component\Console\Output\OutputInterface;
+use Doctrine\DBAL\Connection;
 use Food\AppBundle\Test\WebTestCase;
 use Food\OrderBundle\Service\WeeklyReport;
+use Food\AppBundle\Service\GoogleAnalyticsService;
 
 class WeeklyReportTest extends WebTestCase
 {
-    // public function test_get_weekly_report_query()
-    // {
-    //     $weekly_report = new WeeklyReport();
-
-    //     $result = $weekly_report->getWeeklyReportQuery('very specific string');
-
-    //     $this->assertContains('very specific string', $result);
-    // }
-
-    // public function test_get_weekly_data_for_income()
-    // {
-    //     // 1.
-    //     $connection_mock = $this->getMockBuilder('\Doctrine\DBAL\Connection')
-    //                             ->disableOriginalConstructor()
-    //                             ->setMethods(['prepare'])
-    //                             ->getMock();
-
-    //     $stmt_mock = $this->getMockBuilder('\StdClass')
-    //                       ->setMethods(['bindValue', 'execute', 'fetch'])
-    //                       ->getMock();
-
-    //     // 2.
-    //     $connection_mock->expects($this->atLeastOnce())
-    //                     ->method('prepare')
-    //                     ->willReturn($stmt_mock);
-
-    //     $stmt_mock->expects($this->atLeastOnce())
-    //               ->method('fetch')
-    //               ->willReturn(['result' => '3.45']);
-
-    //     $stmt_mock->expects($this->atLeastOnce())
-    //               ->method('execute')
-    //               ->willReturn($stmt_mock);
-
-    //     // 3.
-    //     $weekly_report = new WeeklyReport();
-    //     $weekly_report->setConnection($connection_mock);
-
-    //     // 4.
-    //     $income = $weekly_report->getWeeklyDataFor('income');
-    //     $successful_orders = $weekly_report->getWeeklyDataFor('successful_orders');
-    //     $average_cart = $weekly_report->getWeeklyDataFor('average_cart');
-    //     $average_delivery = $weekly_report->getWeeklyDataFor('average_delivery');
+    public function testTemplatingSetterAndGetter()
+    {
+        $weeklyReport = new WeeklyReport();
 
-    //     // 5.
-    //     $this->assertInternalType('string', $income);
-    //     $this->assertInternalType('string', $successful_orders);
-    //     $this->assertInternalType('string', $average_cart);
-    //     $this->assertInternalType('string', $average_delivery);
-    //     $this->assertSame('3.45', $income);
-    //     $this->assertSame('3.45', $successful_orders);
-    //     $this->assertSame('3.45', $average_cart);
-    //     $this->assertSame('3.45', $average_delivery);
-    // }
+        $param = new \StdClass();
 
-    // public function test_get_weekly_mail_title()
-    // {
-    //     $weekly_report = new WeeklyReport();
+        $setterResult = $weeklyReport->setTemplating($param);
+        $getterResult = $weeklyReport->getTemplating();
 
-    //     $result = $weekly_report->getWeeklyMailTitle();
+        $this->assertSame($setterResult, $weeklyReport);
+        $this->assertSame($getterResult, $param);
+    }
 
-    //     $this->assertInternalType('string', $result);
-    // }
+    public function testGoogleAnalyticsServiceSetterAndGetter()
+    {
+        $weeklyReport = new WeeklyReport();
 
-    // public function test_get_weekly_mail_content()
-    // {
-    //     $templating_mock = $this->getMockBuilder('\Symfony\Bridge\Twig\Form\TwigRenderer')
-    //                             ->disableOriginalConstructor()
-    //                             ->setMethods(['render'])
-    //                             ->getMock();
+        $service = new GoogleAnalyticsService();
 
-    //     $templating_mock->expects($this->once())
-    //                     ->method('render')
-    //                     ->willReturn('content');
+        $setterResult = $weeklyReport->setGoogleAnalyticsService($service);
+        $getterResult = $weeklyReport->getGoogleAnalyticsService();
 
-    //     $weekly_report = new WeeklyReport();
-    //     $weekly_report->setTemplating($templating_mock);
-
-    //     $result = $weekly_report->getWeeklyMailContent(1, 2, 3, 4, 5, 6, 7);
-
-    //     $this->assertInternalType('string', $result);
-    // }
-
-    // public function test_set_and_get_connection()
-    // {
-    //     $weekly_report = new WeeklyReport();
-
-    //     $connection_mock = $this->getMockBuilder('\Doctrine\DBAL\Connection')
-    //                             ->disableOriginalConstructor()
-    //                             ->getMock();
-
-    //     $result = $weekly_report->setConnection($connection_mock);
-
-    //     $this->assertSame($weekly_report, $result);
-    //     $this->assertSame($result->getConnection(), $connection_mock);
-    // }
-
-    // public function test_set_and_get_weekly_report_emails()
-    // {
-    //     $weekly_report = new WeeklyReport();
-
-    //     $result = $weekly_report->setWeeklyReportEmails(['a', 'b']);
+        $this->assertSame($setterResult, $weeklyReport);
+        $this->assertSame($getterResult, $service);
+    }
 
-    //     $this->assertSame($result, $weekly_report);
-    //     $this->assertSame(['a', 'b'], $result->getWeeklyReportEmails());
-    // }
+    public function testOutputSetterAndGetter()
+    {
+        $weeklyReport = new WeeklyReport();
 
-    // public function test_set_and_get_output()
-    // {
-    //     $weekly_report = new WeeklyReport();
+        $output = $this->getMockBuilder('\Symfony\Component\Console\Output\OutputInterface')
+                       ->disableOriginalConstructor()
+                       ->getMock();
 
-    //     $output_mock = $this->getMockBuilder('\Symfony\Component\Console\Output\OutputInterface')
-    //                         ->disableOriginalConstructor()
-    //                         ->getMock();
+        $setterResult = $weeklyReport->setOutput($output);
+        $getterResult = $weeklyReport->getOutput();
 
-    //     $result = $weekly_report->setOutput($output_mock);
+        $this->assertSame($setterResult, $weeklyReport);
+        $this->assertSame($getterResult, $output);
+    }
 
-    //     $this->assertSame($result, $weekly_report);
-    //     $this->assertSame($result->getOutput(), $output_mock);
-    // }
+    public function testWeeklyReportEmailsSetterAndGetter()
+    {
+        $weeklyReport = new WeeklyReport();
 
-    // public function test_set_and_get_table_helper()
-    // {
-    //     $weekly_report = new WeeklyReport();
-
-    //     $table_helper_mock = $this->getMockBuilder('\Symfony\Component\Console\Helper\TableHelper')
-    //                               ->disableOriginalConstructor()
-    //                               ->getMock();
-
-    //     $result = $weekly_report->setTableHelper($table_helper_mock);
-
-    //     $this->assertSame($result, $weekly_report);
-    //     $this->assertSame($result->getTableHelper(), $table_helper_mock);
-    // }
-
-    // public function test_success_weekly_send_mails()
-    // {
-    //     $weekly_report = new WeeklyReport();
-
-    //     $result = $weekly_report->sendWeeklyMails('127.0.0.1', ['127.0.0.1'], 'title', 'content');
-
-    //     $this->assertInternalType('array', $result);
-    // }
-
-    // public function test_failure_weekly_send_mails()
-    // {
-    //     $weekly_report = new WeeklyReport();
-
-    //     $result = $weekly_report->sendWeeklyMails(null, [null, null], 'title', 'content');
-
-    //     $this->assertInternalType('array', $result);
-    // }
-
-    // public function test_send_weekly_report_dry_run()
-    // {
-    //     $output_mock = $this->getMockBuilder('\Symfony\Component\Console\Output\OutputInterface')
-    //                         ->disableOriginalConstructor()
-    //                         ->getMock();
-
-    //     $table_helper_mock = $this->getMockBuilder('\Symfony\Component\Console\Helper\TableHelper')
-    //                               ->disableOriginalConstructor()
-    //                               ->getMock();
+        $emails = ['one', 'two', 'three'];
 
-    //     $weekly_report = $this->getMockBuilder('\Food\OrderBundle\Service\WeeklyReport')
-    //                           ->setMethods(['getWeeklyDataFor', 'getNumberOfPlacesFromLastWeek'])
-    //                           ->getMock();
+        $setterResult = $weeklyReport->setWeeklyReportEmails($emails);
+        $getterResult = $weeklyReport->getWeeklyReportEmails();
 
-    //     $ga_mock = $this->getMockBuilder('\Food\AppBundle\Service\GoogleAnalyticsService')
-    //                     ->disableOriginalConstructor()
-    //                     ->setMethods([])
-    //                     ->getMock();
+        $this->assertSame($setterResult, $weeklyReport);
+        $this->assertSame($getterResult, $emails);
+    }
 
-    //     $weekly_report->setOutput($output_mock);
-    //     $weekly_report->setTableHelper($table_helper_mock);
-    //     $weekly_report->expects($this->any())
-    //                   ->method('getNumberOfPlacesFromLastWeek')
-    //                   ->willReturn('123');
-    //     $weekly_report->expects($this->atLeastOnce())
-    //                   ->method('getWeeklyDataFor')
-    //                   ->willReturn('123');
-    //     $weekly_report->setGoogleAnalyticsService($ga_mock);
+    public function testConnectionSetterAndGetter()
+    {
+        $weeklyReport = new WeeklyReport();
 
-    //     $result = $weekly_report->sendWeeklyReport('127.0.0.1', false);
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+                           ->disableOriginalConstructor()
+                           ->getMock();
 
-    //     $this->assertInternalType('array', $result);
-    //     $this->assertSame(false, $result[0]);
-    // }
+        $setterResult = $weeklyReport->setConnection($connection);
+        $getterResult = $weeklyReport->getConnection();
 
-    // public function test_send_weekly_report_not_dry_run()
-    // {
-    //     $output_mock = $this->getMockBuilder('\Symfony\Component\Console\Output\OutputInterface')
-    //                         ->disableOriginalConstructor()
-    //                         ->getMock();
+        $this->assertSame($setterResult, $weeklyReport);
+        $this->assertSame($getterResult, $connection);
+    }
 
-    //     $table_helper_mock = $this->getMockBuilder('\Symfony\Component\Console\Helper\TableHelper')
-    //                               ->disableOriginalConstructor()
-    //                               ->getMock();
+    public function testGetWeeklyReportQuery()
+    {
+        $weeklyReport = new WeeklyReport();
 
-    //     $weekly_report = $this->getMockBuilder('\Food\OrderBundle\Service\WeeklyReport')
-    //                           ->setMethods(['getWeeklyDataFor', 'getNumberOfPlacesFromLastWeek'])
-    //                           ->getMock();
+        $result1 = $weeklyReport->getWeeklyReportQuery('income');
+        $result2 = $weeklyReport->getWeeklyReportQuery('successful_orders');
+        $result3 = $weeklyReport->getWeeklyReportQuery('average_cart');
 
-    //     $ga_mock = $this->getMockBuilder('\Food\AppBundle\Service\GoogleAnalyticsService')
-    //                     ->disableOriginalConstructor()
-    //                     ->setMethods([])
-    //                     ->getMock();
+        $this->assertInternalType('string', $result1);
+        $this->assertInternalType('string', $result2);
+        $this->assertInternalType('string', $result3);
+    }
 
-    //     $templating_mock = $this->getMockBuilder('\Symfony\Bridge\Twig\Form\TwigRenderer')
-    //                             ->disableOriginalConstructor()
-    //                             ->setMethods(['render'])
-    //                             ->getMock();
+    public function testGetWeeklyDeliveryTimesByRegion()
+    {
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+                           ->disableOriginalConstructor()
+                           ->setMethods(['prepare'])
+                           ->getMock();
 
-    //     $templating_mock->expects($this->once())
-    //                     ->method('render')
-    //                     ->willReturn('content');
+        $stmt = $this->getMockBuilder('\Doctrine\DBAL\Driver\Mysqli\Statement')
+                     ->disableOriginalConstructor()
+                     ->setMethods(['execute', 'fetchAll'])
+                     ->getMock();
 
-    //     $weekly_report->setOutput($output_mock);
-    //     $weekly_report->setTableHelper($table_helper_mock);
-    //     $weekly_report->expects($this->any())
-    //                   ->method('getNumberOfPlacesFromLastWeek')
-    //                   ->willReturn('123');
-    //     $weekly_report->expects($this->atLeastOnce())
-    //                   ->method('getWeeklyDataFor')
-    //                   ->willReturn('123');
-    //     $weekly_report->setGoogleAnalyticsService($ga_mock);
-    //     $weekly_report->setTemplating($templating_mock);
+        $connection->expects($this->once())
+                   ->method('prepare')
+                   ->willReturn($stmt);
 
-    //     $result = $weekly_report->sendWeeklyReport('127.0.0.1', true);
+        $stmt->expects($this->once())
+             ->method('fetchAll')
+             ->willReturn([123, 456]);
 
-    //     $this->assertInternalType('array', $result);
-    // }
+        $weeklyReport = new WeeklyReport();
+        $weeklyReport->setConnection($connection);
 
-    // public function test_get_number_of_places_from_last_week()
-    // {
-    //     $weekly_report = new WeeklyReport();
+        $result = $weeklyReport->getWeeklyDeliveryTimesByRegion();
 
-    //     $connection_mock = $this->getMockBuilder('\Doctrine\DBAL\Connection')
-    //                             ->disableOriginalConstructor()
-    //                             ->setMethods(['prepare'])
-    //                             ->getMock();
+        $this->assertInternalType('array', $result);
+        $this->assertNotEmpty($result);
+    }
 
-    //     $stmt_mock = $this->getMockBuilder('\StdClass')
-    //                       ->setMethods(['bindValue', 'execute', 'fetch'])
-    //                       ->getMock();
+    public function testGetWeeklyDeliveryTime()
+    {
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+                           ->disableOriginalConstructor()
+                           ->setMethods(['prepare'])
+                           ->getMock();
 
-    //     // 2.
-    //     $connection_mock->expects($this->atLeastOnce())
-    //                     ->method('prepare')
-    //                     ->willReturn($stmt_mock);
+        $stmt = $this->getMockBuilder('\Doctrine\DBAL\Driver\Mysqli\Statement')
+                     ->disableOriginalConstructor()
+                     ->setMethods(['execute', 'fetch'])
+                     ->getMock();
 
-    //     $stmt_mock->expects($this->atLeastOnce())
-    //               ->method('fetch')
-    //               ->willReturn(['result' => '3.45']);
+        $connection->expects($this->once())
+                   ->method('prepare')
+                   ->willReturn($stmt);
 
-    //     $stmt_mock->expects($this->atLeastOnce())
-    //               ->method('execute')
-    //               ->willReturn($stmt_mock);
+        $stmt->expects($this->once())
+             ->method('fetch')
+             ->willReturn(['result' => [123, 456]]);
 
-    //     $weekly_report->setConnection($connection_mock);
+        $weeklyReport = new WeeklyReport();
+        $weeklyReport->setConnection($connection);
+
+        $result = $weeklyReport->getWeeklyDeliveryTime();
 
-    //     $result = $weekly_report->getNumberOfPlacesFromLastWeek();
+        $this->assertInternalType('array', $result);
+        $this->assertNotEmpty($result);
+    }
 
-    //     $this->assertSame('3.45', $result);
-    // }
+    public function testGetWeeklyMailTitle()
+    {
+        $weeklyReport = new WeeklyReport();
+
+        $result = $weeklyReport->getWeeklyMailTitle();
+
+        $this->assertInternalType('string', $result);
+    }
+
+    public function testGetWeeklyMailContent()
+    {
+        $templating = $this->getMockBuilder('\StdClass')
+                           ->setMethods(['render'])
+                           ->getMock();
+
+        $templating->expects($this->once())
+                   ->method('render')
+                   ->willReturn('1234');
+
+        $weeklyReport = new WeeklyReport();
+        $weeklyReport->setTemplating($templating);
+
+        $params = new \StdClass();
+        $params->name = '12345';
+
+        $result = $weeklyReport->getWeeklyMailContent($params);
+
+        $this->assertInternalType('string', $result);
+    }
+
+    public function testGetCalculations()
+    {
+        $gaService = $this->getMockBuilder('\Food\AppBundle\Service\GoogleAnalyticsService')
+                          ->setMethods(['getUsers', 'getReturningUsers'])
+                          ->getMock();
+
+        $weeklyReport = $this->getMockBuilder('\Food\OrderBundle\Service\WeeklyReport')
+                            ->setMethods(['getWeeklyDataFor',
+                                          'getWeeklyDeliveryTime',
+                                          'getWeeklyDeliveryTimesByRegion',
+                                          'getNumberOfPlacesFromLastWeek'])
+                            ->getMock();
+        $weeklyReport->setGoogleAnalyticsService($gaService);
+
+        $gaService->expects($this->once())
+                  ->method('getUsers')
+                  ->willReturn(123);
+
+        $gaService->expects($this->once())
+                  ->method('getReturningUsers')
+                  ->willReturn(456);
+
+        $weeklyReport->expects($this->exactly(3))
+                    ->method('getWeeklyDataFor')
+                    ->willReturn(123);
+
+        $weeklyReport->expects($this->once())
+                    ->method('getWeeklyDeliveryTime')
+                    ->willReturn(456);
+
+        $weeklyReport->expects($this->once())
+                    ->method('getWeeklyDeliveryTimesByRegion')
+                    ->willReturn(789);
+
+        $result = $weeklyReport->getCalculations();
+
+        $this->assertInstanceOf('\StdClass', $result);
+    }
+
+    public function testGetWeeklyDataFor()
+    {
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+                           ->disableOriginalConstructor()
+                           ->setMethods(['prepare'])
+                           ->getMock();
+
+        $stmt = $this->getMockBuilder('\Doctrine\DBAL\Driver\Mysqli\Statement')
+                     ->disableOriginalConstructor()
+                     ->setMethods(['execute', 'fetch'])
+                     ->getMock();
+
+        $connection->expects($this->any())
+                   ->method('prepare')
+                   ->willReturn($stmt);
+
+        $stmt->expects($this->any())
+             ->method('fetch')
+             ->willReturn(['result' => '123']);
+
+        $weeklyReport = $this->getMockBuilder('\Food\OrderBundle\Service\WeeklyReport')
+                            ->setMethods(['getWeeklyReportQuery'])
+                            ->getMock();
+        $weeklyReport->setConnection($connection);
+
+        $weeklyReport->expects($this->any())
+                    ->method('getWeeklyReportQuery')
+                    ->willReturn('some string');
+
+        $result1 = $weeklyReport->getWeeklyDataFor('income');
+        $result2 = $weeklyReport->getWeeklyDataFor('successful_orders');
+        $result3 = $weeklyReport->getWeeklyDataFor('average_cart');
+
+        $this->assertInternalType('string', $result1);
+        $this->assertInternalType('string', $result2);
+        $this->assertInternalType('string', $result3);
+    }
+
+    public function testSendWeeklyMails()
+    {
+        $weeklyReport = new WeeklyReport();
+
+        $result = $weeklyReport->sendWeeklyMails('email', [1, 2, 3], 'title', 'content');
+
+        $this->assertInternalType('array', $result);
+    }
+
+    public function testSendWeeklyReport()
+    {
+        $output = $this->getMockBuilder('\Symfony\Component\Console\Output\OutputInterface')
+                       ->setMethods(['writeln'])
+                       ->getMockForAbstractClass();
+
+        $weeklyReport = $this->getMockBuilder('\Food\OrderBundle\Service\WeeklyReport')
+                            ->setMethods(['getCalculations',
+                                          'getWeeklyMailContent',
+                                          'getWeeklyMailTitle',
+                                          'sendWeeklyMails'])
+                            ->getMock();
+        $weeklyReport->setOutput($output);
+
+        $weeklyReport->expects($this->any())
+                    ->method('getCalculations')
+                    ->willReturn(new \StdClass());
+
+        $weeklyReport->expects($this->any())
+                    ->method('getWeeklyMailContent')
+                    ->willReturn('123');
+
+        $weeklyReport->expects($this->any())
+                    ->method('getWeeklyMailTitle')
+                    ->willReturn('4321231');
+
+        $weeklyReport->expects($this->any())
+                    ->method('sendWeeklyMails')
+                    ->willReturn(['some array']);
+
+        $result1 = $weeklyReport->sendWeeklyReport('email', false);
+        $result2 = $weeklyReport->sendWeeklyReport('email', true);
+
+        $this->assertInternalType('array', $result1);
+        $this->assertInternalType('array', $result2);
+    }
+
+    public function testGetNumberOfPlacesFromLastWeek()
+    {
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+                           ->disableOriginalConstructor()
+                           ->setMethods(['prepare'])
+                           ->getMock();
+
+        $stmt = $this->getMockBuilder('\Doctrine\DBAL\Driver\Mysqli\Statement')
+                     ->disableOriginalConstructor()
+                     ->setMethods(['execute', 'fetch'])
+                     ->getMock();
+
+        $connection->expects($this->any())
+                   ->method('prepare')
+                   ->willReturn($stmt);
+
+        $stmt->expects($this->any())
+             ->method('fetch')
+             ->willReturn(['result' => '123']);
+
+        $weeklyReport = new WeeklyReport();
+        $weeklyReport->setConnection($connection);
+
+        $result = $weeklyReport->getNumberOfPlacesFromLastWeek();
+
+        $this->assertInternalType('string', $result);
+    }
 }

@@ -5,7 +5,6 @@ namespace Food\OrderBundle\Service;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\TableHelper;
 use Food\AppBundle\Service\GoogleAnalyticsService;
 
 class DailyReport extends ContainerAware
@@ -17,7 +16,6 @@ class DailyReport extends ContainerAware
     protected $connection;
     protected $dailyReportEmails;
     protected $output;
-    protected $tableHelper;
     protected $googleAnalyticsService;
     protected $templating;
     protected $kpiMap = [
@@ -290,17 +288,6 @@ class DailyReport extends ContainerAware
     public function getOutput()
     {
         return $this->output;
-    }
-
-    public function setTableHelper(TableHelper $tableHelper)
-    {
-        $this->tableHelper = $tableHelper;
-        return $this;
-    }
-
-    public function getTableHelper()
-    {
-        return $this->tableHelper;
     }
 
     public function setGoogleAnalyticsService(GoogleAnalyticsService $service)
