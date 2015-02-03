@@ -1,7 +1,4 @@
 parameters:
-    locale: lv
-    locales: [lv, en, ru]
-
     database_driver: pdo_mysql
     database_host: localhost
     database_port: 3306
@@ -19,8 +16,10 @@ parameters:
     aws_region: eu-west-1
     s3_bucket: foodout-invoice
 
+    locale: lv
+    locales: ["lv", "en", "ru"]
     available_cities: [Riga]
-    available_locales: [lv, en, ru]
+    available_locales: ["lv", "en", "ru"]
     available_locales_routing: lv | en | ru
     time_zone: "Europe/Riga"
     sms.sender: "Foodout.lv"
