@@ -26,14 +26,14 @@ parameters:
     sms.sender: "Foodout.lv"
     admin.emails: [mantas@foodout.lt]
     admin.phones: [37061514333]
-    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, giedrius@foodout.lt]
+    order.notify_emails: [paulius@foodout.lt, giedrius@foodout.lt, baiba@foodout.lv]
     order.city_coordinators:
         vilnius: []
         kaunas: [zaneta@foodout.lt]
         klaipėda: [jurgita@foodout.lt]
         riga: [paulius@foodout.lt]
     order.accept_notify_emails: []
-    accounting_email: "buhalterija@foodout.lt"
+    accounting_email: "jolanta@foodout.lv"
     payment.methods:
         - local
         - local.card
@@ -57,4 +57,6 @@ parameters:
     domain: "foodout.lv"
     publicdomain: "foodout.lv"
     google_analytics_uid: "UA-50355577-2"
+    nav_table_prefix: 'LV Call Center'
+    nav_ws_prefix: 'LV Call Center'
 

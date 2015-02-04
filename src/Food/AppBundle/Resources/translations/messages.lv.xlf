@@ -8,7 +8,7 @@
       </trans-unit>
       <trans-unit id="e79f0a96a14972d5383cff1e3fc00475" resname="index.newsletter">
         <source>index.newsletter</source>
-        <target>Informatīvais biļetens</target>
+        <target>Jaunumi</target>
       </trans-unit>
       <trans-unit id="80ae01ad89a36c878618f64044dd7ae4" resname="index.newsletter_email">
         <source>index.newsletter_email</source>
@@ -16,7 +16,7 @@
       </trans-unit>
       <trans-unit id="4687d99df9fae3b62e92c6b2b9b0e4ef" resname="index.newsletter_subscribe">
         <source>index.newsletter_subscribe</source>
-        <target>Abonē</target>
+        <target>Reģistrēties</target>
       </trans-unit>
       <trans-unit id="330dab2ab36aa511c007b7b9b0f7beb4" resname="index.get_best_offers">
         <source>index.get_best_offers</source>
@@ -164,7 +164,7 @@
       </trans-unit>
       <trans-unit id="6ed5de5936f5473971d03ec26290dbd5" resname="general.newsletter">
         <source>general.newsletter</source>
-        <target>Informatīvais biļetens</target>
+        <target>Jaunumi</target>
       </trans-unit>
       <trans-unit id="2dcd088ae1551425f1d27f0c7c1b597f" resname="general.thank_you">
         <source>general.thank_you</source>

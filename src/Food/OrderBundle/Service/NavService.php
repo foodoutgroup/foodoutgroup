@@ -43,27 +43,27 @@ class NavService extends ContainerAware
 
 //    private $deliveryOrderStatusTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Delivery order status]';
 
-    private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
+    private $headerTable = '[skamb_centras].[dbo].[%1$s$Web ORDER Header]';
 
-    private $lineTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Lines]';
+    private $lineTable = '[skamb_centras].[dbo].[%1$s$Web ORDER Lines]';
 
-    private $orderTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$FoodOut Order]';
+    private $orderTable = '[skamb_centras].[dbo].[%1$s$FoodOut Order]';
 
-    private $messagesTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web Order Messages]';
+    private $messagesTable = '[skamb_centras].[dbo].[%1$s$Web Order Messages]';
 
-    private $itemsTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Item]';
+    private $itemsTable = '[skamb_centras].[dbo].[%1$s$Item]';
 
-    private $deliveryOrderTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery Order]';
+    private $deliveryOrderTable = '[skamb_centras].[dbo].[%1$s$Delivery Order]';
 
-    private $posTransactionLinesTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$POS Trans_ Line]';
+    private $posTransactionLinesTable = '[skamb_centras].[dbo].[%1$s$POS Trans_ Line]';
 
-    private $deliveryOrderStatusTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery order status]';
+    private $deliveryOrderStatusTable = '[skamb_centras].[dbo].[%1$s$Delivery order status]';
 
-    private $contractTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Contract]';
+    private $contractTable = '[skamb_centras].[dbo].[%1$s$Contract]';
 
-    private $customerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Customer]';
+    private $customerTable = '[skamb_centras].[dbo].[%1$s$Customer]';
 
-    private $invoiceTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Foodout Invoice]';
+    private $invoiceTable = '[skamb_centras].[dbo].[%1$s$Foodout Invoice]';
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
@@ -78,7 +78,7 @@ class NavService extends ContainerAware
      */
     public function getHeaderTable()
     {
-        return $this->headerTable;
+        return sprintf($this->headerTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -86,7 +86,7 @@ class NavService extends ContainerAware
      */
     public function getLineTable()
     {
-        return $this->lineTable;
+        return sprintf($this->lineTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -94,7 +94,7 @@ class NavService extends ContainerAware
      */
     public function getOrderTable()
     {
-        return $this->orderTable;
+        return sprintf($this->orderTable,$this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -102,7 +102,7 @@ class NavService extends ContainerAware
      */
     public function getMessagesTable()
     {
-        return $this->messagesTable;
+        return sprintf($this->messagesTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -110,7 +110,7 @@ class NavService extends ContainerAware
      */
     public function getItemsTable()
     {
-        return $this->itemsTable;
+        return sprintf($this->itemsTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -118,7 +118,7 @@ class NavService extends ContainerAware
      */
     public function getDeliveryOrderTable()
     {
-        return $this->deliveryOrderTable;
+        return sprintf($this->deliveryOrderTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -126,7 +126,7 @@ class NavService extends ContainerAware
      */
     public function getPosTransactionLinesTable()
     {
-        return $this->posTransactionLinesTable;
+        return sprintf($this->posTransactionLinesTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -134,12 +134,12 @@ class NavService extends ContainerAware
      */
     public function getDeliveryOrderStatusTable()
     {
-        return $this->deliveryOrderStatusTable;
+        return sprintf($this->deliveryOrderStatusTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     public function getInvoiceTable()
     {
-        return $this->invoiceTable;
+        return sprintf($this->invoiceTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -147,7 +147,7 @@ class NavService extends ContainerAware
      */
     public function getContractTable()
     {
-        return $this->contractTable;
+        return sprintf($this->contractTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -155,7 +155,7 @@ class NavService extends ContainerAware
      */
     public function getCustomerTable()
     {
-        return $this->customerTable;
+        return sprintf($this->customerTable, $this->container->getParameter('nav_table_prefix'));
     }
 
 
@@ -633,7 +633,7 @@ class NavService extends ContainerAware
 
         $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
         // $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
-        $clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija%20Skambučių%20Centras/Codeunit/WEB_Service2";
+        $clientUrl2 = sprintf('http://213.190.40.38:7055/DynamicsNAV/WS/%1$s/Codeunit/WEB_Service2', str_replace(" ", "%20", $this->container->getParameter('nav_ws_prefix')));
 
         stream_wrapper_unregister('http');
         stream_wrapper_register('http', '\Food\OrderBundle\Common\FoNTLMStream') or die("Failed to register protocol");
