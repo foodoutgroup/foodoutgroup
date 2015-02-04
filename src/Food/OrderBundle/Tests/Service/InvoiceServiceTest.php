@@ -26,7 +26,7 @@ class InvoiceServiceTest extends WebTestCase
 
         $filename = $invoiceService->getInvoiceFilename($order);
 
-        $this->assertEquals('foodout_lt_FooTest12245.pdf', $filename);
+        $this->assertRegexp('#foodout_\w{2}_FooTest12245\.pdf#', $filename);
     }
 
     /**
