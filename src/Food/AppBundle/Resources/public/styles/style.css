@@ -196,10 +196,10 @@ input.button {}
 
 /*Header ------------------------------------------*/
 .site-header {}
-.site-header h1 {text-align: center; font-size: 67px; margin: 0px; color: #fff; padding-top: 64px; line-height: 60px; font-weight: normal; letter-spacing: -2.6px; padding-bottom: 44px; text-shadow: 4px 4px 8px #000000;}
+.site-header h1 {text-align: center; font-size: 54px; margin: 0px; color: #fff; padding-top: 24px; line-height: 60px; font-weight: normal; letter-spacing: -2.6px; padding-bottom: 24px; text-shadow: 4px 4px 8px #000000;}
 
 .special-offer-block {position: relative; background-position: center top; background-repeat: no-repeat; background-size: cover;}
-.special-offer-block .site-block {height: 484px; position: relative;}
+.special-offer-block .site-block {height: 320px; position: relative;}
 .special-offer-block .img-description {position: absolute; margin: 0; right: 12px; bottom: 12px; font-size: 10px; text-transform: uppercase; color: #fff;}
 
 /*Food search form*/

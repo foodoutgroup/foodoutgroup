@@ -1167,7 +1167,12 @@ class NavService extends ContainerAware
 
             case 10:
             case 11:
-                if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), OrderService::$status_canceled)) {
+                $status = $order->getOrderStatus();
+
+                $valid1 = $orderService->isValidOrderStatusChange($status, OrderService::$status_canceled);
+                $valid2 = $orderService->isValidOrderStatusChangeWhenCompleted($status, OrderService::$status_canceled);
+
+                if ($valid1 || $valid2) {
                     $orderService->statusCanceled('cili_nav');
                 } else {
                     $logger->error(sprintf(

@@ -1296,6 +1296,19 @@ class OrderService extends ContainerAware
         return false;
     }
 
+    public function isValidOrderStatusChangeWhenCompleted($from, $to)
+    {
+        $fromCompleted = $from == self::$status_completed;
+        $toFailed = $to == self::$status_failed;
+        $toCancelled = $to == self::$status_canceled;
+
+        if ($fromCompleted && ($toFailed || $toCancelled)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * @param string|null $status
      * @return bool
