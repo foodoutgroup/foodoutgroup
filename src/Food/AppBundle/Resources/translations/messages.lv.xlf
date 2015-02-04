@@ -20,7 +20,7 @@
       </trans-unit>
       <trans-unit id="330dab2ab36aa511c007b7b9b0f7beb4" resname="index.get_best_offers">
         <source>index.get_best_offers</source>
-        <target>Mūsu jaunumi meklē Tavu e-pastu.</target>
+        <target>Mūsu jaunumi būs Tavā epastā.</target>
       </trans-unit>
       <trans-unit id="0f5af6d10500595133a032984ec5dca4" resname="index.get_best_offers2">
         <source>index.get_best_offers2</source>
