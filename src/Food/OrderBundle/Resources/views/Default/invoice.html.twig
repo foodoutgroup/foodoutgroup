@@ -25,6 +25,9 @@
             width: 70px;
             white-space: nowrap;
         }
+        .no-wrap {
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
@@ -73,8 +76,8 @@
 <table class="data-table">
     <tr>
         <td class="narrow_col">{% trans %}order.invoice.line_num{% endtrans %}</td>
-        <td style="min-width: 345px;">{% trans %}order.invoice.product_name{% endtrans %}</td>
-        <td style="max-width: 205px;">{% trans %}order.invoice.measure_name{% endtrans %}</td>
+        <td style="min-width: 335px;">{% trans %}order.invoice.product_name{% endtrans %}</td>
+        <td style="max-width: 200px;">{% trans %}order.invoice.measure_name{% endtrans %}</td>
         <td class="narrow_col">{% trans %}order.invoice.quantity{% endtrans %}</td>
         <td class="sum_col">{% trans %}order.invoice.price{% endtrans %}</td>
         <td class="sum_col">{% trans %}order.invoice.sum{% endtrans %}, {{ currency_display|raw }}</td>
@@ -122,7 +125,7 @@
         <td></td>
         <td></td>
         <td></td>
-        <td>{% trans %}order.invoice.sum_no_vat{% endtrans %}:</td>
+        <td class="no-wrap">{% trans %}order.invoice.sum_no_vat{% endtrans %}:</td>
         <td class="sum_col">{{ sum_no_vat|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
         <td class="sum_col">{{ misc_utils.getLitas(sum_no_vat) }} {{ display_currency_alternative }}</td>
     </tr>
@@ -132,7 +135,7 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>{% trans %}order.invoice.delivery{% endtrans %}</td>
+            <td class="no-wrap" style="white-space: nowrap;">{% trans %}order.invoice.delivery{% endtrans %}</td>
             <td class="sum_col">{{ delivery_no_vat|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
             <td class="sum_col">{{ misc_utils.getLitas(order.deliveryPrice) }} {{ display_currency_alternative }}</td>
         </tr>
@@ -143,7 +146,7 @@
         <td></td>
         <td></td>
         <td></td>
-        <td>{% trans %}order.invoice.vat{% endtrans %} {{ vat_size }}%</td>
+        <td class="no-wrap" style="white-space: nowrap;">{% trans %}order.invoice.vat{% endtrans %} {{ vat_size }}%</td>
         <td class="sum_col">{{ vat_sum|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
         <td class="sum_col">{{ misc_utils.getLitas(vat_sum) }} {{ display_currency_alternative }}</td>
     </tr>
@@ -152,7 +155,7 @@
         <td></td>
         <td></td>
         <td></td>
-        <td style="border-top: 1px solid black;">{% trans %}order.invoice.sum_total{% endtrans %}:</td>
+        <td class="no-wrap" style="border-top: 1px solid black;">{% trans %}order.invoice.sum_total{% endtrans %}:</td>
         <td class="sum_col" style="border-top: 1px solid black;">{{ order.total|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
         <td class="sum_col" style="border-top: 1px solid black;">{{  misc_utils.getLitas(order.total)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</td>
     </tr>
