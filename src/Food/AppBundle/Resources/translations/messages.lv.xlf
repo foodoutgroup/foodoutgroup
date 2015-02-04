@@ -40,7 +40,7 @@
       </trans-unit>
       <trans-unit id="bb1fb2fdfdba48c2b3d2ec83e968729c" resname="index.findfood">
         <source>index.findfood</source>
-        <target>Meklēt ēdienu</target>
+        <target>Izvēlies restorānu</target>
       </trans-unit>
       <trans-unit id="1b78b59bfe4159583adb10ffa46bd822" resname="admin.kitchens.list.title">
         <source>admin.kitchens.list.title</source>
