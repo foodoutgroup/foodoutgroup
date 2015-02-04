@@ -740,7 +740,7 @@
       </trans-unit>
       <trans-unit id="02e3d3477fa84ee89d7c8f812fe8d4b1" resname="index.search_form_qlue">
         <source>index.search_form_qlue</source>
-        <target>Ievadiet savu adresi un uzziniet, no kura restorāna varat pasūtīt</target>
+        <target>Ievadiet savu adresi un uzziniet, no kura restorāna iespējams veikt pasūtījumu</target>
       </trans-unit>
       <trans-unit id="ac540ec383eda788715ff2caab8ce97e" resname="general.ip_banned">
         <source>general.ip_banned</source>
