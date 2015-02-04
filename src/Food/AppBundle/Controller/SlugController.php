@@ -13,7 +13,7 @@ class SlugController extends Controller
 {
     public function processAction(Request $request, $slug)
     {
-        if ($_SERVER['REMOTE_ADDR'] != '88.119.87.158' && $_SERVER['REMOTE_ADDR']!="127.0.0.1" && $_SERVER['REMOTE_ADDR']!="80.232.220.207") {
+        if ($_SERVER['REMOTE_ADDR'] != '88.119.87.158' && $_SERVER['REMOTE_ADDR']!="127.0.0.1" && $_SERVER['REMOTE_ADDR']!="80.232.220.207" && $_SERVER['REMOTE_ADDR']!="78.56.52.159") {
             ?>
             <html>
             <head>
