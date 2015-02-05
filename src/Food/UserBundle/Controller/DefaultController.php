@@ -243,9 +243,13 @@ class DefaultController extends Controller
         if ($user) {
             $logger->alert('User instance is about to be refreshed');
 
-            $this->getDoctrine()
-                 ->getManager()
-                 ->refresh($user);
+            try {
+                $this->getDoctrine()
+                     ->getManager()
+                     ->refresh($user);
+            } catch (\Exception $e) {
+                $logger->crit('Cannot refresh User entity. $user: ' . var_export($user, true));
+            }
         }
 
         return $user;
