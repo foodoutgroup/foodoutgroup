@@ -48,12 +48,19 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
             $order = $this->findOrder($data['id'], $services);
 
             // 1. update orders
-            $output->write('[Order ID] = ' . $order->getId() . ': updating total from ' . $order->getTotal() . ' to ' . $data['posted_total'] . '.. ');
+            $output->write('[Order ID] = ' . $order->getId() . ': updating total from ' . $order->getTotal() . ' to ' . $data['posted_total'] . ', delivery total from ' . $order->getDeliveryPrice() . ' to ' . $data['delivery'] . '.. ');
 
-            if ($options->dryRun || $order->getTotal() == $data['posted_total']) {
+            $skipTotal = $order->getTotal() == $data['posted_total'];
+            $skipDeliveryTotal = $order->getDeliveryPrice() == $data['delivery'];
+
+            if ($options->dryRun || ($skipTotal && $skipDeliveryTotal)) {
                 $output->writeln('skipped');
             } else {
-                $order = $this->updateTotal($order, $data['posted_total'], $services);
+                $updateData = new \StdClass();
+                $updateData->total = $data['posted_total'];
+                $updateData->deliveryTotal = $data['delivery'];
+
+                $order = $this->update($order, $updateData, $services);
 
                 $output->writeln('success');
             }
@@ -68,16 +75,22 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 
             // 2. update Navision invoices
             $foodAmount = $this->calculateFoodTotal($data['posted_total'], $order->getDeliveryPrice());
-            $output->write('[Order ID] = ' . $order->getId() . ': update NAV invoice [Food Amount With VAT] from ' . number_format($navInvoice['Food Amount With VAT'], 2, '.', '') . ' to ' . $foodAmount . '.. ');
+            $deliveryAmount = number_format($data['delivery'], 2, '.', '');
+
+            $output->write('[Order ID] = ' . $order->getId() . ': update NAV invoice [Food Amount With VAT] from ' . number_format($navInvoice['Food Amount With VAT'], 2, '.', '') . ' to ' . $foodAmount . ', [Delivery Amount With VAT] from ' . number_format($navInvoice['Delivery Amount With VAT'], 2, '.', '') . ' to ' . $deliveryAmount . '.. ');
+
+            $skipTotal = number_format($navInvoice['Food Amount With VAT'], 2, '.', '') == $foodAmount;
+            $skipDeliveryTotal = number_format($navInvoice['Delivery Amount With VAT'], 2, '.', '') == $deliveryAmount;
 
             if ($options->dryRun ||
                 empty($navInvoice) ||
                 empty($navInvoice['Food Amount With VAT']) ||
-                number_format($navInvoice['Food Amount With VAT'], 2, '.', '') == $foodAmount)
+                ($skipTotal && $skipDeliveryTotal))
             {
                 $output->writeln('skipped');
             } else {
-                $updateWith = ['Food Amount With VAT' => $foodAmount];
+                $updateWith = ['Food Amount With VAT' => $foodAmount,
+                               'Delivery Amount With VAT' => $deliveryAmount];
                 $success = $services->nav->updateNavInvoice($order, $updateWith);
 
                 $output->writeln(!empty($success) ? 'success' : 'failure');
@@ -93,7 +106,7 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 
         $params = ['from' => $from, 'to' => $to, 'city' => 'Vilnius'];
 
-        $result = $qb->select('o.id, p.total AS posted_total')
+        $result = $qb->select('o.id, p.total AS posted_total, p.delivery')
                      ->from('FoodOrderBundle:Order', 'o')
                      ->innerJoin('FoodOrderBundle:PostedDeliveryOrders', 'p', 'WITH', 'p.no = o.navDeliveryOrder')
                      ->where('o.order_date >= :from')
@@ -156,9 +169,10 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
         return $order;
     }
 
-    protected function updateTotal($order, $newTotal, \StdClass $services)
+    protected function update($order, \StdClass $data, \StdClass $services)
     {
-        $order->setTotal($newTotal);
+        $order->setTotal($data->total);
+        $order->setDeliveryPrice($data->deliveryTotal);
 
         $services->em->flush();
 

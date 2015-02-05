@@ -29,6 +29,12 @@ class PostedDeliveryOrders {
     private $total;
 
     /**
+     * @var float
+     * @ORM\Column(name="delivery", type="decimal", precision=8, scale=2, nullable=true)
+     */
+    private $delivery;
+
+    /**
      * Set no
      *
      * @param string $no
@@ -95,5 +101,28 @@ class PostedDeliveryOrders {
     public function getTotal()
     {
         return $this->total;
+    }
+
+    /**
+     * Set delivery
+     *
+     * @param string $delivery
+     * @return PostedDeliveryOrders
+     */
+    public function setDelivery($delivery)
+    {
+        $this->delivery = $delivery;
+    
+        return $this;
+    }
+
+    /**
+     * Get delivery
+     *
+     * @return string 
+     */
+    public function getDelivery()
+    {
+        return $this->delivery;
     }
 }
