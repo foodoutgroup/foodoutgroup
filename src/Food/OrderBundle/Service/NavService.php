@@ -1331,6 +1331,12 @@ class NavService extends ContainerAware
      */
     public function getNewNonFoodoutOrders()
     {
+        if (date('H') < 3) {
+            $theTime = '1754-01-01 00:00:00';
+        } else {
+            $theTime = '1754-01-01 ' . date("H:i:s", strtotime('-3 hour'));
+        }
+
         $query = sprintf(
             "SELECT
                 dOrder.[Order No_] As [OrderNo],
@@ -1394,7 +1400,7 @@ class NavService extends ContainerAware
             $this->getContractTable(),
             $this->getCustomerTable(),
             date('Y-m-d'),
-            '1754-01-01 '.date("H:i:s", strtotime('-2 hour')),
+            $theTime,
             "'Vilnius', 'Kaunas', 'Klaipeda'"
         );
 
