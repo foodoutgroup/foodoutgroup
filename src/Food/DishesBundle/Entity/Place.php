@@ -257,6 +257,7 @@ class Place extends Uploadable implements Translatable
 
     /**
      * @ORM\OneToMany(targetEntity="PlaceReviews", mappedBy="place")
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $reviews;
 
