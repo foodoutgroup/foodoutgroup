@@ -243,7 +243,7 @@ class Place extends Uploadable implements Translatable
     /**
      * @var int
      *
-     * @ORM\Column(name="priority", type="smallint", options={"default":0})
+     * @ORM\Column(name="priority", type="smallint", options={"default":0}, nullable=true)
      */
     private $priority;
 
