@@ -79,6 +79,7 @@ class OrderAdmin extends SonataAdmin
             ->add('mobile', null, array('label' => 'admin.order.ismobile_full'))
             ->add('navDeliveryOrder', null, array('label' => 'admin.order.nav_delivery_order'))
             ->add('sfNumber', null, array('label' => 'admin.order.sf_line'))
+            ->add('orderFromNav', null, array('label' => 'admin.order.order_from_nav'))
         ;
     }
 
@@ -97,9 +98,10 @@ class OrderAdmin extends SonataAdmin
             ->add('place_point_address', 'string', array('label' => 'admin.order.place_point_short'))
             ->add('deliveryType', 'string', array('label' => 'admin.order.delivery_type_short'))
             ->add('order_status', 'string', array('label' => 'admin.order.order_status_short'))
-            ->add('paymentMethod', 'string', array('label' => 'admin.order.payment_method'))
+            ->add('paymentMethod', 'string', array('label' => 'admin.order.payment_method_short'))
             ->add('paymentStatus', 'string', array('label' => 'admin.order.payment_status'))
             ->add('mobile', null, array('label' => 'admin.order.ismobile'))
+            ->add('orderFromNav', null, array('label' => 'admin.order.order_from_nav'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -177,6 +179,9 @@ class OrderAdmin extends SonataAdmin
             ->add('lastUpdate', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.last_update'))
             ->add('lastPaymentError', 'string', array('label' => 'admin.order.last_payment_error'))
             ->add('orderHash', 'string', array('label' => 'admin.order.hash'))
+            ->add('mobile', null, array('label' => 'admin.order.ismobile'))
+            ->add('orderFromNav', null, array('label' => 'admin.order.order_from_nav'))
+            ->add('navDeliveryOrder', null, array('label' => 'admin.order.nav_delivery_order'))
         ;
     }
 

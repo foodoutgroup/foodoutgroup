@@ -226,8 +226,15 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             }
                             $output->writeln('Cleaned address: '.var_export($fixedAddress, true));
 
+                            // Format address
                             $fixedCity = iconv('CP1257', 'UTF-8', $orderData['City']);
+                            $fixedCity = mb_convert_case($fixedCity, MB_CASE_TITLE, "UTF-8");
+                            $output->writeln('Fixed city: '.var_export($fixedCity, true));
+
                             $addressStr = strstr($fixedAddress, ', ' . $fixedCity, true);
+                            $addressStr = mb_convert_case($addressStr, MB_CASE_TITLE, "UTF-8");
+                            $addressStr = str_replace(array('G.', 'Pr.'), array('g.', 'pr.'), $addressStr);
+                            $output->writeln('Fixed street: '.var_export($addressStr, true));
                             $addressData = $gisService->getPlaceData($fixedAddress);
                             $gisService->groupData($addressData, $addressStr, $fixedCity);
 
@@ -259,7 +266,6 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             $order->setAddressId($address);
 
 
-
                             /**
                             cCustomer.[Name] AS CustomerName,
                             cCustomer.[Address] AS CustomerAddress,
@@ -273,9 +279,12 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                                 $cityToSave = $order->getAddressId()->getCity();
                                 if (!empty($orderData['CustomerAddress'])) {
                                     $addressToSave = iconv('CP1257', 'UTF-8', $orderData['CustomerAddress']);
+                                    $addressToSave = mb_convert_case($addressToSave, MB_CASE_TITLE, "UTF-8");
+                                    $addressToSave = str_replace(array('G.', 'Pr.'), array('g.', 'pr.'), $addressToSave);
                                 }
                                 if (!empty($orderData['CustomerCity'])) {
                                     $cityToSave = iconv('CP1257', 'UTF-8', $orderData['CustomerCity']);
+                                    $cityToSave = mb_convert_case($cityToSave, MB_CASE_TITLE, "UTF-8");
                                 }
 
                                 $companyAddress = $addressToSave;
