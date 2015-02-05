@@ -248,7 +248,7 @@ class DefaultController extends Controller
                      ->getManager()
                      ->refresh($user);
             } catch (\Exception $e) {
-                $logger->crit('Cannot refresh User entity. $user: ' . var_export($user, true));
+                $logger->crit('Cannot refresh User entity.');
             }
         }
 
