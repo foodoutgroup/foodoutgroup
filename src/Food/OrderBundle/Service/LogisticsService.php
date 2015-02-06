@@ -327,6 +327,15 @@ class LogisticsService extends ContainerAware
             $writer->writeElement('Qty', $dish->getQuantity());
             $writer->endElement();
         }
+
+        if ($order->getOrderFromNav()) {
+            $writer->startElement("Item");
+            $writer->writeElement('Id', $order->getNavDeliveryOrder());
+            $writer->writeElement('Name', 'Pagal vaztarazti: '.$order->getNavDeliveryOrder());
+            $writer->writeElement('Qty', 1);
+            $writer->endElement();
+        }
+
         // End content block
         $writer->endElement();
 
