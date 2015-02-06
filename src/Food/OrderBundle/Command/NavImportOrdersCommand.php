@@ -155,6 +155,11 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                     $output->writeln('Delivery Date: '.$deliveryDate->format("Y-m-d H:i:s"));
 
                     // Create if not a dry-run
+                    $paymentMethod = "local";
+                    if (isset($orderData['Tender Type']) && $orderData['Tender Type'] == 2)
+                    {
+                        $paymentMethod = "local.card";
+                    }
                     if (!$dryRun) {
                         $order->setOrderDate($orderDate)
                             ->setTotal($orderData['OrderSum'])
@@ -166,7 +171,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             ->setLastUpdated(new \DateTime('now'))
                             ->setNavDeliveryOrder($orderId)
                             ->setOrderFromNav(true)
-                            ->setPaymentMethod('local')
+                            ->setPaymentMethod($paymentMethod)
                             ->setPaymentStatus(OrderService::$paymentStatusComplete)
                             ->setOrderStatus(OrderService::$status_new)
                             ->setLocale($this->getContainer()->getParameter('locale'))
