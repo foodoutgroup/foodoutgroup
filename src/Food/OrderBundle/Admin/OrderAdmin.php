@@ -1,6 +1,7 @@
 <?php
 namespace Food\OrderBundle\Admin;
 
+use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
 use Sonata\AdminBundle\Admin\Admin as SonataAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -27,12 +28,24 @@ class OrderAdmin extends SonataAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('company', 'checkbox', array('label' => 'admin.order.company'))
-            ->add('companyName', 'text', array('label' => 'admin.order.companyName'))
-            ->add('companyCode', 'text', array('label' => 'admin.order.companyCode'))
-            ->add('vatCode', 'text', array('label' => 'admin.order.vatCode'))
-            ->add('companyAddress', 'text', array('label' => 'admin.order.companyAddress'))
+            ->add('company', 'checkbox', array('label' => 'admin.order.company', 'required' => false))
+            ->add('companyName', 'text', array('label' => 'admin.order.companyName', 'required' => false))
+            ->add('companyCode', 'text', array('label' => 'admin.order.companyCode', 'required' => false))
+            ->add('vatCode', 'text', array('label' => 'admin.order.vatCode', 'required' => false))
+            ->add('companyAddress', 'text', array('label' => 'admin.order.companyAddress', 'required' => false))
         ;
+
+        /**
+         * @var Order $order
+         */
+        $order = $this->getSubject();
+
+        if ($order->getOrderFromNav()) {
+            $formMapper->add('total', null, array('label' => 'admin.order.total'));
+        } else {
+            // Non Nav order should not let edit total
+            $formMapper->add('total', null, array('label' => 'admin.order.total', 'disabled' => true));
+        }
     }
 
     /**
