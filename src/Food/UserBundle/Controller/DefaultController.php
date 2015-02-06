@@ -230,6 +230,7 @@ class DefaultController extends Controller
 
     private function user()
     {
+        $em = $this->get('doctrine.orm.entity_manager');
         $sc = $this->get('security.context');
         $logger = $this->get('logger');
 
@@ -243,9 +244,12 @@ class DefaultController extends Controller
         if ($user) {
             $logger->alert('User instance is about to be refreshed');
 
-            $this->getDoctrine()
-                 ->getManager()
-                 ->refresh($user);
+            try {
+                $user = $em->merge($user);
+                $em->refresh($user);
+            } catch (\Exception $e) {
+                $logger->crit('Cannot refresh User entity.');
+            }
         }
 
         return $user;
