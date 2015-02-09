@@ -59,4 +59,11 @@ parameters:
     google_analytics_uid: "UA-50355577-2"
     nav_table_prefix: 'LV Call Center'
     nav_ws_prefix: 'LV Call Center'
+    mailer_api_key: "o8s5m7s5h7s4t8m3l0t2n3u8j9r9m4x5"
+    mailer_notify_on_accept: 30026333
+    mailer_notify_new_user: 30026305
+    mailer_user_reset: 30026299
+    mailer_partialy_deliverer: 30021995
+    mailer_rate_your_food: 30026301
+    mailer_send_invoice: 30026291
 

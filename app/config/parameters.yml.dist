@@ -59,3 +59,10 @@ parameters:
     google_analytics_uid: "UA-50355577-2"
     nav_table_prefix: 'Čilija Skambučių Centras'
     nav_ws_prefix: 'Čilija Skambučių Centras'
+    mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
+    mailer_notify_on_accept: 30010811
+    mailer_notify_new_user: 30009253
+    mailer_user_reset: 30013949
+    mailer_partialy_deliverer: 30021995
+    mailer_rate_your_food: 30009271
+    mailer_send_invoice: 30019657

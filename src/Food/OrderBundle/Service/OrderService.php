@@ -476,7 +476,10 @@ class OrderService extends ContainerAware
 
 
 //        $ml->setVariables( $variables )->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30009269  )->send();
-        $ml->setVariables($variables)->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId(30010811)->send();
+        $ml->setVariables($variables)
+            ->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())
+            ->setId($this->container->getParameter('mailer_notify_on_accept'))
+            ->send();
     }
 
     /**
@@ -626,9 +629,9 @@ class OrderService extends ContainerAware
         );
 
         if ($partialy) {
-            $template = 30021995;
+            $template = $this->container->getParameter('mailer_partialy_deliverer');
         } else {
-            $template = 30009271;
+            $template = $this->container->getParameter('mailer_rate_your_food');
         }
 
         $ml->setVariables($variables)
