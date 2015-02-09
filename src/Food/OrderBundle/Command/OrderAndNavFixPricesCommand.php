@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Food\OrderBundle\Entity\PostedDeliveryOrders;
 
 class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 {
@@ -42,6 +43,7 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 
         $this->checkOptions($options);
 
+        $this->fillPostedOrders($options->from, $options->to, $services);
         $orderData = $this->getOrders($options->from, $options->to, $services);
 
         foreach ($orderData as $data) {
@@ -190,5 +192,32 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
         }
 
         return number_format($postedTotal - $deliveryPrice, 2, '.', '');
+    }
+
+    protected function fillPostedOrders($from, $to, \StdClass $services)
+    {
+        $postedOrdersFromNav = $services->nav->getPostedOrders($from, $to);
+
+        $result = $services->em->transactional(function($em) use ($postedOrdersFromNav) {
+            foreach ($postedOrdersFromNav as $value) {
+                $existingEntity = $em->getRepository('FoodOrderBundle:PostedDeliveryOrders')->findBy(['no' => $value['order_no']]);
+
+                if (!empty($existingEntity)) {
+                    continue;
+                }
+
+                $entity = new PostedDeliveryOrders();
+
+                $entity->setNo($value['order_no']);
+                $entity->setOrderDate(new \DateTime($value['order_date']));
+                $entity->setTotal($value['total']);
+                $entity->setDelivery($value['delivery_total']);
+                $entity->setTenderType($value['tender_type']);
+
+                $em->persist($entity);
+            }
+        });
+
+        return $result;
     }
 }
