@@ -15,7 +15,7 @@ parameters:
     sms.main_provider: "food.infobip"
     sms.sender: "Foodout.lt"
     sms.balance_limit_warn: 20
-    sms.balance_limit_critical: 18
+    sms.balance_limit_critical: 14
     infobip_provider.api_url: "http://api.infobip.com/api/v3/sendsms/json"
     infobip_provider.account_url: "http://api2.infobip.com/api"
     infobip_provider.login: "skanu1"
@@ -83,7 +83,7 @@ parameters:
     logtime.driver_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitDrivers"
     # Ar siusti uzsakyma i isorine (TMS) sistema
     logistics.send_to_external: true
-    logistics.city_filter: ["Klaipėda", "Kaunas"]
+    logistics.city_filter: ["Klaipėda", "Kaunas", "Vilnius"]
     # seb banklink
     seb.banklink.private_key: "/home/skanu.lt/shared/banklinks/seb/private.key"
     seb.banklink.bank_key: "/home/skanu.lt/shared/banklinks/seb/bank.key"
