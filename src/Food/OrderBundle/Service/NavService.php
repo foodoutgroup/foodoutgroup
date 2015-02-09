@@ -1693,7 +1693,8 @@ class NavService extends ContainerAware
                 [Order Date] AS order_date,
                 [Tender Type] AS tender_type,
                 REPLACE([Amount Including VAT],',','.') AS total,
-                REPLACE([Delivery Tax Cash Amount],',','.') AS delivery_total
+                REPLACE([Delivery Tax Cash Amount],',','.') AS delivery_total,
+                REPLACE([Delivery Tax Bank Card Amount],',','.') AS delivery_cc_amount
             FROM %s
             WHERE
                 [Order Date] >= '%s' AND

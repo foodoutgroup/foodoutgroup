@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Food\OrderBundle\Entity\PostedDeliveryOrders;
 
 class OrderAndNavFixPricesCommand extends ContainerAwareCommand
@@ -200,20 +201,26 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 
         $result = $services->em->transactional(function($em) use ($postedOrdersFromNav) {
             foreach ($postedOrdersFromNav as $value) {
-                $existingEntity = $em->getRepository('FoodOrderBundle:PostedDeliveryOrders')->findBy(['no' => $value['order_no']]);
+                $entities = $em->getRepository('FoodOrderBundle:PostedDeliveryOrders')->findBy(['no' => $value['order_no']]);
+                $entities = new ArrayCollection($entities);
 
-                if (!empty($existingEntity)) {
-                    continue;
+                $entity = $entities->first();
+
+                if (empty($entity)) {
+                    $entity = new PostedDeliveryOrders();
                 }
 
-                $entity = new PostedDeliveryOrders();
+                $deliveryTotal = 2 == $value['tender_type']
+                                 ? $value['delivery_cc_amount']
+                                 : $value['delivery_total'];
 
                 $entity->setNo($value['order_no']);
                 $entity->setOrderDate(new \DateTime($value['order_date']));
                 $entity->setTotal($value['total']);
-                $entity->setDelivery($value['delivery_total']);
+                $entity->setDelivery($deliveryTotal);
                 $entity->setTenderType($value['tender_type']);
 
+                $entity = $em->merge($entity);
                 $em->persist($entity);
             }
         });
