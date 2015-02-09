@@ -55,13 +55,18 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 
             $skipTotal = $order->getTotal() == $data['posted_total'];
             $skipDeliveryTotal = $order->getDeliveryPrice() == $data['delivery'];
+            $skipPaymentMethod = !(2 == $data['tender_type']);
 
-            if ($options->dryRun || ($skipTotal && $skipDeliveryTotal)) {
+            if ($options->dryRun || ($skipTotal && $skipDeliveryTotal && $skipPaymentMethod)) {
                 $output->writeln('skipped');
             } else {
                 $updateData = new \StdClass();
                 $updateData->total = $data['posted_total'];
                 $updateData->deliveryTotal = $data['delivery'];
+
+                if (2 == $data['tender_type'] && 'local.card' != $order->getPaymentMethod()) {
+                    $updateData->paymentMethod = 'local.card';
+                }
 
                 $order = $this->update($order, $updateData, $services);
 
@@ -84,16 +89,23 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 
             $skipTotal = number_format($navInvoice['Food Amount With VAT'], 2, '.', '') == $foodAmount;
             $skipDeliveryTotal = number_format($navInvoice['Delivery Amount With VAT'], 2, '.', '') == $deliveryAmount;
+            $skipPaymentMethod = $navInvoice['Payment Method Type'] == $order->getPaymentMethod();
 
             if ($options->dryRun ||
                 empty($navInvoice) ||
                 empty($navInvoice['Food Amount With VAT']) ||
-                ($skipTotal && $skipDeliveryTotal))
+                ($skipTotal && $skipDeliveryTotal && $skipPaymentMethod))
             {
                 $output->writeln('skipped');
             } else {
                 $updateWith = ['Food Amount With VAT' => $foodAmount,
                                'Delivery Amount With VAT' => $deliveryAmount];
+
+                if (!$skipPaymentMethod && 2 == $data['tender_type']) {
+                    $updateWith['Payment Method Type'] = 'local.card';
+                    $updateWith['Payment Method Code'] = 'CC';
+                }
+
                 $success = $services->nav->updateNavInvoice($order, $updateWith);
 
                 $output->writeln(!empty($success) ? 'success' : 'failure');
@@ -109,7 +121,7 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 
         $params = ['from' => $from, 'to' => $to, 'city' => 'Vilnius'];
 
-        $result = $qb->select('o.id, p.total AS posted_total, p.delivery')
+        $result = $qb->select('o.id, p.total AS posted_total, p.delivery, p.tender_type')
                      ->from('FoodOrderBundle:Order', 'o')
                      ->innerJoin('FoodOrderBundle:PostedDeliveryOrders', 'p', 'WITH', 'p.no = o.navDeliveryOrder')
                      ->where('o.order_date >= :from')
@@ -176,6 +188,10 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
     {
         $order->setTotal($data->total);
         $order->setDeliveryPrice($data->deliveryTotal);
+
+        if ($data->paymentMethod) {
+            $order->setPaymentMethod($data->paymentMethod);
+        }
 
         $services->em->flush();
 
