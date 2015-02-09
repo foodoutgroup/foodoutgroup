@@ -189,7 +189,7 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
         $order->setTotal($data->total);
         $order->setDeliveryPrice($data->deliveryTotal);
 
-        if ($data->paymentMethod) {
+        if (!empty($data->paymentMethod)) {
             $order->setPaymentMethod($data->paymentMethod);
         }
 
