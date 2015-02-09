@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Food\OrderBundle\Entity\PostedDeliveryOrders;
 
 class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 {
@@ -42,6 +44,7 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 
         $this->checkOptions($options);
 
+        $this->fillPostedOrders($options->from, $options->to, $services);
         $orderData = $this->getOrders($options->from, $options->to, $services);
 
         foreach ($orderData as $data) {
@@ -190,5 +193,38 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
         }
 
         return number_format($postedTotal - $deliveryPrice, 2, '.', '');
+    }
+
+    protected function fillPostedOrders($from, $to, \StdClass $services)
+    {
+        $postedOrdersFromNav = $services->nav->getPostedOrders($from, $to);
+
+        $result = $services->em->transactional(function($em) use ($postedOrdersFromNav) {
+            foreach ($postedOrdersFromNav as $value) {
+                $entities = $em->getRepository('FoodOrderBundle:PostedDeliveryOrders')->findBy(['no' => $value['order_no']]);
+                $entities = new ArrayCollection($entities);
+
+                $entity = $entities->first();
+
+                if (empty($entity)) {
+                    $entity = new PostedDeliveryOrders();
+                }
+
+                $deliveryTotal = 2 == $value['tender_type']
+                                 ? $value['delivery_cc_amount']
+                                 : $value['delivery_total'];
+
+                $entity->setNo($value['order_no']);
+                $entity->setOrderDate(new \DateTime($value['order_date']));
+                $entity->setTotal($value['total']);
+                $entity->setDelivery($deliveryTotal);
+                $entity->setTenderType($value['tender_type']);
+
+                $entity = $em->merge($entity);
+                $em->persist($entity);
+            }
+        });
+
+        return $result;
     }
 }
