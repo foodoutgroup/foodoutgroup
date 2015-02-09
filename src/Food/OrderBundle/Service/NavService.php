@@ -65,6 +65,8 @@ class NavService extends ContainerAware
 
     private $invoiceTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Foodout Invoice]';
 
+    private $postedDeliveryOrdersTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Posted Delivery Orders]';
+
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
@@ -156,6 +158,11 @@ class NavService extends ContainerAware
     public function getCustomerTable()
     {
         return $this->customerTable;
+    }
+
+    public function getPostedDeliveryOrdersTable()
+    {
+        return $this->postedDeliveryOrdersTable;
     }
 
 
@@ -1674,5 +1681,49 @@ class NavService extends ContainerAware
     public function normalizeStringForNav($value)
     {
         return trim(preg_replace('#\s{2,}#', ' ', $value));
+    }
+
+    public function getPostedOrders($from, $to)
+    {
+        $mssql = $this->container->get('food.mssql');
+
+        $query = "
+            SELECT
+                [Order No_] AS order_no,
+                [Order Date] AS order_date,
+                [Tender Type] AS tender_type,
+                REPLACE([Amount Including VAT],',','.') AS total,
+                REPLACE([Delivery Tax Cash Amount],',','.') AS delivery_total,
+                REPLACE([Delivery Tax Bank Card Amount],',','.') AS delivery_cc_amount
+            FROM %s
+            WHERE
+                [Order Date] >= '%s' AND
+                [Order Date] <= '%s' AND
+                [Sales Type] = 'DELIVERY'";
+        $query = sprintf($query, $this->getPostedDeliveryOrdersTable(), $from, $to);
+
+        $result = $this->initSqlConn()->query($query);
+
+        if (empty($result)) {
+            return null;
+        }
+
+        $resultList = [];
+
+        while ($row = $mssql->fetchArray($result)) {
+            $newRow = [];
+
+            foreach ($row as $key => $value) {
+                if (is_numeric($key)) {
+                    continue;
+                }
+
+                $newRow[$key] = $value;
+            }
+
+            $resultList[] = $newRow;
+        }
+
+        return $resultList;
     }
 }
