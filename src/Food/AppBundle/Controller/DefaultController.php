@@ -20,7 +20,7 @@ class DefaultController extends Controller
             $_SESSION['is_allowed'] = true;
         }
 
-        if ((!isset($_SESSION['is_allowed']) || $_SESSION['is_allowed']!== true) && $_SERVER['REMOTE_ADDR'] != '88.119.87.158' && $_SERVER['REMOTE_ADDR']!="80.232.220.207" && $_SERVER['REMOTE_ADDR']!="78.56.52.159") {
+        if ((!isset($_SESSION['is_allowed']) || $_SESSION['is_allowed']!== true) && $_SERVER['REMOTE_ADDR'] !='54.72.211.80' && $_SERVER['REMOTE_ADDR'] != '88.119.87.158' && $_SERVER['REMOTE_ADDR']!="80.232.220.207" && $_SERVER['REMOTE_ADDR']!="78.56.52.159") {
             ?>
                 <html>
                 <head>
