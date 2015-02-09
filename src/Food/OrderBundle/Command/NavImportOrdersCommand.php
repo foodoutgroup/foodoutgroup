@@ -88,6 +88,11 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                         continue;
                     }
 
+                    $deliveryType = OrderService::$deliveryDeliver;
+                    if ($orderData['Sales Type'] == 'H_TAKEOFF') {
+                        $deliveryType = OrderService::$deliveryPickup;
+                    }
+
                     $restaurantNo = trim($orderData['Restaurant No_']);
                     $placePoint = $navService->getLocalPlacePoint($orderData['Chain'], $restaurantNo);
                     // Skip if placepoint not found - scream for emergency..
@@ -99,7 +104,10 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             $restaurantNo
                         );
                         $output->writeln($skipMessage);
-                        $log->error($skipMessage);
+                        // Dont throw alert if it's only a pickup :D
+                        if ($deliveryType != OrderService::$deliveryPickup) {
+                            $log->error($skipMessage);
+                        }
                         $stats['error']++;
                         continue;
                     }
@@ -116,10 +124,6 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                         );
                     }
 
-                    $deliveryType = OrderService::$deliveryDeliver;
-                    if ($orderData['Sales Type'] == 'H_TAKEOFF') {
-                        $deliveryType = OrderService::$deliveryPickup;
-                    }
                     $output->writeln('Order total: '.$orderData['Amount Incl_ VAT']);
                     $output->writeln('VAT: '.$orderData['VAT %']);
                     $output->writeln('Delivery Amount: '.$orderData['DeliveryAmount']);
