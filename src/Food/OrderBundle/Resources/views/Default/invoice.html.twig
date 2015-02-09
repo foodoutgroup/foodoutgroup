@@ -63,7 +63,7 @@
         {% else %}
             {{ order.companyName }}<br />
             <br />
-            {{ order.companyAddress|capitalize }}<br />
+            {{ order.companyAddress }}<br />
             {% trans %}order.invoice.company_code{% endtrans %} {{ order.companyCode }}<br />
             {% if order.vatCode != '' %}{% trans %}order.invoice.vat_num{% endtrans %} {{ order.vatCode }}{% endif %}<br />
             <br />
