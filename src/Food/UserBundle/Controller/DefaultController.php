@@ -245,10 +245,10 @@ class DefaultController extends Controller
             $logger->alert('User instance is about to be refreshed');
 
             try {
-                // $user = $em->merge($user);
+                $user = $em->merge($user);
                 $em->refresh($user);
             } catch (\Exception $e) {
-                $logger->crit('Cannot refresh User entity. $user is of type ' . gettype($user));
+                $logger->crit('Cannot refresh User entity.');
             }
         }
 
