@@ -159,7 +159,7 @@ class DefaultController extends Controller
             'change_password_errors' => $this->formErrors($form->get('change_password')),
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => $form->isSubmitted(),
-            'user' => $this->user()
+            'user' => $user
         ];
     }
 
@@ -230,29 +230,13 @@ class DefaultController extends Controller
 
     private function user()
     {
-        $em = $this->get('doctrine.orm.entity_manager');
         $sc = $this->get('security.context');
-        $logger = $this->get('logger');
 
         if (!$sc->isGranted('ROLE_USER')) {
             return null;
         }
 
-        $user = $sc->getToken()->getUser();
-
-        // this conditional is mandatory
-        if ($user) {
-            $logger->alert('User instance is about to be refreshed');
-
-            try {
-                $user = $em->merge($user);
-                $em->refresh($user);
-            } catch (\Exception $e) {
-                $logger->crit('Cannot refresh User entity.');
-            }
-        }
-
-        return $user;
+        return $sc->getToken()->getUser();
     }
 
     private function address(User $user)
