@@ -287,7 +287,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                                 $addressToSave = $order->getAddressId()->getAddress();
                                 $cityToSave = $order->getAddressId()->getCity();
                                 if (!empty($orderData['CustomerAddress'])) {
-                                    $addressToSave = iconv('CP1257', 'UTF-8', $orderData['CustomerAddress']);
+                                    $addressToSave = trim(iconv('CP1257', 'UTF-8', $orderData['CustomerAddress']));
                                     $addressToSave = mb_convert_case($addressToSave, MB_CASE_TITLE, "UTF-8");
                                     $addressToSave = str_replace(array('G.', 'Pr.'), array('g.', 'pr.'), $addressToSave);
                                 }
@@ -304,8 +304,8 @@ class NavImportOrdersCommand extends ContainerAwareCommand
 
                                 $order->setCompany(true)
                                     ->setCompanyName(iconv('CP1257', 'UTF-8', $orderData['CustomerName']))
-                                    ->setCompanyCode($orderData['CustomerRegNo'])
-                                    ->setVatCode($orderData['CustomerVatNo'])
+                                    ->setCompanyCode(trim($orderData['CustomerRegNo']))
+                                    ->setVatCode(trim($orderData['CustomerVatNo']))
                                     ->setCompanyAddress($companyAddress);
                             }
 
