@@ -212,7 +212,7 @@ class AjaxController extends Controller
         if (!$coupon) {
             $cont['status'] = false;
             $cont['data']['error'] = $trans->trans('general.coupon.not_active');
-        } else if (!empty($places) && count($places) > 0) {
+        } else if ($places = $coupon->getPlaces() && !empty($places) && count($places) > 0) {
             $found = false;
             foreach ($places as $cPlace) {
                 if ($cPlace->getId() == $placeId) {
