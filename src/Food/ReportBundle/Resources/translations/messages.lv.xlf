@@ -212,7 +212,7 @@
       </trans-unit>
       <trans-unit id="b97ef5e6ab382da2cf8726ef38fcc091" resname="places.recomended_block_title">
         <source>places.recomended_block_title</source>
-        <target>Mūsu ieteicamie restorāni</target>
+        <target>Mūsu ieteiktie restorāni</target>
       </trans-unit>
       <trans-unit id="ff0bc83f13df6076f1fe1eda1481372d" resname="places.recomended_show_more">
         <source>places.recomended_show_more</source>
