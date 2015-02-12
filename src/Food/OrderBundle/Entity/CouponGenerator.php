@@ -30,6 +30,28 @@ class CouponGenerator
     private $name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=255)
+     */
+    private $code;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="randomize", type="boolean")
+     */
+    private $randomize = false;
+
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="cart_amount", type="integer",  nullable=true)
+     */
+    private $cartAmount = 0;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="discount", type="integer",  nullable=true)
@@ -49,18 +71,28 @@ class CouponGenerator
      */
     private $freeDelivery = false;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="code", type="string", length=255)
-     */
-    private $code;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place")
-     * @ORM\JoinColumn(name="place", referencedColumnName="id", nullable=true)
+     * @var bool
+     *
+     * @ORM\Column(name="only_nav", type="boolean")
      */
-    private $place;
+    private $onlyNav = false;
+
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="no_self_delivery", type="boolean")
+     */
+    private $noSelfDelivery = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="single_use", type="boolean")
+     */
+    private $singleUse = false;
 
     /**
      * @ORM\ManyToMany(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="places")
@@ -528,5 +560,120 @@ class CouponGenerator
     public function getDeletedBy()
     {
         return $this->deletedBy;
+    }
+
+    /**
+     * Set cartAmount
+     *
+     * @param integer $cartAmount
+     * @return CouponGenerator
+     */
+    public function setCartAmount($cartAmount)
+    {
+        $this->cartAmount = $cartAmount;
+    
+        return $this;
+    }
+
+    /**
+     * Get cartAmount
+     *
+     * @return integer 
+     */
+    public function getCartAmount()
+    {
+        return $this->cartAmount;
+    }
+
+    /**
+     * Set onlyNav
+     *
+     * @param boolean $onlyNav
+     * @return CouponGenerator
+     */
+    public function setOnlyNav($onlyNav)
+    {
+        $this->onlyNav = $onlyNav;
+    
+        return $this;
+    }
+
+    /**
+     * Get onlyNav
+     *
+     * @return boolean 
+     */
+    public function getOnlyNav()
+    {
+        return $this->onlyNav;
+    }
+
+    /**
+     * Set noSelfDelivery
+     *
+     * @param boolean $noSelfDelivery
+     * @return CouponGenerator
+     */
+    public function setNoSelfDelivery($noSelfDelivery)
+    {
+        $this->noSelfDelivery = $noSelfDelivery;
+    
+        return $this;
+    }
+
+    /**
+     * Get noSelfDelivery
+     *
+     * @return boolean 
+     */
+    public function getNoSelfDelivery()
+    {
+        return $this->noSelfDelivery;
+    }
+
+    /**
+     * Set singleUse
+     *
+     * @param boolean $singleUse
+     * @return CouponGenerator
+     */
+    public function setSingleUse($singleUse)
+    {
+        $this->singleUse = $singleUse;
+    
+        return $this;
+    }
+
+    /**
+     * Get singleUse
+     *
+     * @return boolean 
+     */
+    public function getSingleUse()
+    {
+        return $this->singleUse;
+    }
+
+    /**
+     * Set randomize
+     *
+     * @param boolean $randomize
+     * @return CouponGenerator
+     */
+    public function setRandomize($randomize)
+    {
+        $this->randomize = $randomize;
+    
+        return $this;
+    }
+
+    /**
+     * Get randomize
+     *
+     * @return boolean 
+     */
+    public function getRandomize()
+    {
+        return $this->randomize;
     }
 }

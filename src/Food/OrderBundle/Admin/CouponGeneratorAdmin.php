@@ -6,7 +6,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-class CouponAdmin extends FoodAdmin
+class CouponGeneratorAdmin extends FoodAdmin
 {
     /**
      * Fields to be shown on create/edit forms
@@ -23,7 +23,7 @@ class CouponAdmin extends FoodAdmin
             ->add('discount', null, array('label' => 'admin.coupon.discount', 'required' => false))
             ->add('freeDelivery', null, array('label' => 'admin.coupon.free_delivery', 'required' => false))
             ->add('code', null, array('label' => 'admin.coupon.code', 'required' => true))
-            ->add('places', null, array('label' => 'admin.coupon.place',))
+            ->add('place', null, array('label' => 'admin.coupon.place',))
             ->add('onlyNav', 'checkbox', array('label' => 'admin.coupon.only_nav', 'required' => false))
             ->add('noSelfDelivery','checkbox', array('required' => false))
             ->add('singleUse', 'checkbox', array('label' => 'admin.coupon.single_use', 'required' => false))

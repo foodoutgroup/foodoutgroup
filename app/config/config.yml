@@ -313,6 +313,7 @@ sonata_admin:
                       #- sonata.admin.food.category
                       #- sonata.admin.dish.unit.category
                       - sonata.admin.coupon
+                      - sonata.admin.coupon_generator
                   roles: [ ROLE_ADMIN ]
               acme.admin.group.formanagers:
                   label: admin.group.formanagers
