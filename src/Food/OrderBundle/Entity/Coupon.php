@@ -152,6 +152,7 @@ class Coupon
                 'code' => $this->getCode(),
                 'place_id' => $placeId,
                 'discount' => $this->getDiscount(),
+                'discount_sum' => $this->getDiscountSum(),
                 'active' => $this->getActive(),
                 'single_use' => $this->getSingleUse(),
             );
