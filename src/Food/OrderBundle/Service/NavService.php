@@ -1192,14 +1192,15 @@ class NavService extends ContainerAware
 
             case 0:
             default:
-                // Set delivery order ID if it is not set
-                $deliveryOrderId = $order->getNavDeliveryOrder();
-                if (empty($deliveryOrderId)) {
-                    // TODO pasitikrint lauko pavadinima
-                    $order->setNavDeliveryOrder($navOrder['Delivery Order No_']);
-                }
 
                 break;
+        }
+
+        // Set delivery order ID if it is not set
+        $deliveryOrderId = $order->getNavDeliveryOrder();
+        if (empty($deliveryOrderId)) {
+            // TODO pasitikrint lauko pavadinima
+            $order->setNavDeliveryOrder($navOrder['Delivery Order No_']);
         }
     }
 

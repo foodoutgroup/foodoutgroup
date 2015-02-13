@@ -114,20 +114,6 @@ class PaySeraBillingTest extends \PHPUnit_Framework_TestCase {
         $locale = 'lt';
         $orderHash = '54asds45asf4saf54asf';
 
-        $evpParameters = array(
-            'projectid' => $projectId,
-            'sign_password' => 'omgSoSecure',
-            'orderid' => $orderId,
-            'amount' => $orderTotal*100,
-            'currency' => 'EUR',
-            'country' => 'LT',
-            'accepturl' => $acceptUrl,
-            'cancelurl' => $cancelUrl,
-            'callbackurl' => $callbackUrl,
-            'test' => 1,
-            'time_limit' => date('Y-m-d H:i:s', strtotime('+1 hour')),
-        );
-
 
         $container = $this->getMockBuilder('\Symfony\Component\DependencyInjection\Container')
             ->disableOriginalConstructor()
@@ -202,6 +188,20 @@ class PaySeraBillingTest extends \PHPUnit_Framework_TestCase {
         $logger->expects($this->at(3))
             ->method('alert')
             ->with('++ EVP paduodami paramsai:');
+
+        $evpParameters = array(
+            'projectid' => $projectId,
+            'sign_password' => 'omgSoSecure',
+            'orderid' => $orderId,
+            'amount' => $orderTotal*100,
+            'currency' => 'EUR',
+            'country' => 'LT',
+            'accepturl' => $acceptUrl,
+            'cancelurl' => $cancelUrl,
+            'callbackurl' => $callbackUrl,
+            'test' => 1,
+            'time_limit' => date('Y-m-d H:i:s', strtotime('+1 hour')),
+        );
 
         $logger->expects($this->at(4))
             ->method('alert')

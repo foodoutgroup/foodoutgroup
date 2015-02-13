@@ -611,7 +611,9 @@ input.button {}
 .static-page p a, .error-page p a {color: #b39196;}
 .static-page a span, .error-page a span {text-decoration: underline;}
 .static-page a:hover span, .error-page a:hover span {text-decoration: none;}
-.static-page p strong, .error-page p strong {font-weight: normal;}
+/*.static-page p strong, .error-page p strong {font-weight: normal;}*/
+.error-page p strong {font-weight: normal;}
+.static-page p strong {font-weight: bold;}
 
 /*User page*/
 .full-content {padding: 27px; border-radius: 4px; background: #fff; padding-right: 42px;}
