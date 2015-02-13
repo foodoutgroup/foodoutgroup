@@ -19,18 +19,22 @@ class CouponGeneratorAdmin extends FoodAdmin
     {
         $formMapper
             ->add('name', 'text', array('label' => 'admin.coupon.name',))
+            ->add('cartAmount')
             ->add('discountSum')
             ->add('discount', null, array('label' => 'admin.coupon.discount', 'required' => false))
             ->add('freeDelivery', null, array('label' => 'admin.coupon.free_delivery', 'required' => false))
-            ->add('code', null, array('label' => 'admin.coupon.code', 'required' => true))
-            ->add('place', null, array('label' => 'admin.coupon.place',))
+            ->add('code', null, array('label' => 'admin.coupon.code', 'required'=> false))
+            ->add('randomize','checkbox', array('label'=>'Randomize code', 'required' => false))
+            ->add('places', null, array('label' => 'admin.coupon.place',))
             ->add('onlyNav', 'checkbox', array('label' => 'admin.coupon.only_nav', 'required' => false))
             ->add('noSelfDelivery','checkbox', array('required' => false))
             ->add('singleUse', 'checkbox', array('label' => 'admin.coupon.single_use', 'required' => false))
-            ->add('enableValidateDate', 'checkbox', array('required' => false))
             ->add('validFrom', 'datetime', array('required' => false))
             ->add('validTo', 'datetime', array('required' => false))
-            ->add('active', 'checkbox', array('label' => 'admin.coupon.active', 'required' => false));
+            ->add('active', 'checkbox', array('label' => 'admin.coupon.active', 'required' => false))
+            ->add('templateCode')
+            ->add('generateFrom', 'datetime', array('required' => false))
+            ->add('generateTo', 'datetime', array('required' => false))
         ;
     }
 

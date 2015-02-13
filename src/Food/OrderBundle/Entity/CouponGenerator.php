@@ -32,9 +32,21 @@ class CouponGenerator
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=255)
+     * @ORM\Column(name="code", type="string", length=255, nullable=true)
      */
-    private $code;
+    private $code = "";
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="template_code", type="string", length=255)
+     */
+    private $templateCode;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="places")
+     */
+    private $places;
 
     /**
      * @var bool
@@ -95,11 +107,6 @@ class CouponGenerator
     private $singleUse = false;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="places")
-     */
-    private $places;
-
-    /**
      * @var bool
      *
      * @ORM\Column(name="active", type="boolean")
@@ -119,6 +126,21 @@ class CouponGenerator
      * @ORM\Column(name="valid_to", type="datetime", nullable=true)
      */
     private $validTo;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="generate_from", type="datetime", nullable=true)
+     */
+    private $generateFrom;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="generate_to", type="datetime", nullable=true)
+     */
+    private $generateTo;
+
 
     /**
      * @var \DateTime
@@ -438,29 +460,6 @@ class CouponGenerator
     }
 
     /**
-     * Set place
-     *
-     * @param \Food\DishesBundle\Entity\Place $place
-     * @return CouponGenerator
-     */
-    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
-    {
-        $this->place = $place;
-    
-        return $this;
-    }
-
-    /**
-     * Get place
-     *
-     * @return \Food\DishesBundle\Entity\Place 
-     */
-    public function getPlace()
-    {
-        return $this->place;
-    }
-
-    /**
      * Add places
      *
      * @param \Food\DishesBundle\Entity\Place $places
@@ -486,7 +485,7 @@ class CouponGenerator
     /**
      * Get places
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return Place[]
      */
     public function getPlaces()
     {
@@ -675,5 +674,74 @@ class CouponGenerator
     public function getRandomize()
     {
         return $this->randomize;
+    }
+
+    /**
+     * Set generateFrom
+     *
+     * @param \DateTime $generateFrom
+     * @return CouponGenerator
+     */
+    public function setGenerateFrom($generateFrom)
+    {
+        $this->generateFrom = $generateFrom;
+    
+        return $this;
+    }
+
+    /**
+     * Get generateFrom
+     *
+     * @return \DateTime 
+     */
+    public function getGenerateFrom()
+    {
+        return $this->generateFrom;
+    }
+
+    /**
+     * Set generateTo
+     *
+     * @param \DateTime $generateTo
+     * @return CouponGenerator
+     */
+    public function setGenerateTo($generateTo)
+    {
+        $this->generateTo = $generateTo;
+    
+        return $this;
+    }
+
+    /**
+     * Get generateTo
+     *
+     * @return \DateTime 
+     */
+    public function getGenerateTo()
+    {
+        return $this->generateTo;
+    }
+
+    /**
+     * Set templateCode
+     *
+     * @param string $templateCode
+     * @return CouponGenerator
+     */
+    public function setTemplateCode($templateCode)
+    {
+        $this->templateCode = $templateCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get templateCode
+     *
+     * @return string 
+     */
+    public function getTemplateCode()
+    {
+        return $this->templateCode;
     }
 }

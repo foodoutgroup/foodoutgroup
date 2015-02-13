@@ -665,7 +665,7 @@ class Coupon
     public function addPlace(\Food\DishesBundle\Entity\Place $places)
     {
         $this->places[] = $places;
-    
+
         return $this;
     }
 
