@@ -30,6 +30,40 @@ class CouponGenerator
     private $name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=255, nullable=true)
+     */
+    private $code = "";
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="template_code", type="string", length=255)
+     */
+    private $templateCode;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="places")
+     */
+    private $places;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="randomize", type="boolean")
+     */
+    private $randomize = false;
+
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="cart_amount", type="integer",  nullable=true)
+     */
+    private $cartAmount = 0;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="discount", type="integer",  nullable=true)
@@ -49,23 +83,28 @@ class CouponGenerator
      */
     private $freeDelivery = false;
 
+
     /**
-     * @var string
+     * @var bool
      *
-     * @ORM\Column(name="code", type="string", length=255)
+     * @ORM\Column(name="only_nav", type="boolean")
      */
-    private $code;
+    private $onlyNav = false;
+
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place")
-     * @ORM\JoinColumn(name="place", referencedColumnName="id", nullable=true)
+     * @var bool
+     *
+     * @ORM\Column(name="no_self_delivery", type="boolean")
      */
-    private $place;
+    private $noSelfDelivery = false;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="places")
+     * @var bool
+     *
+     * @ORM\Column(name="single_use", type="boolean")
      */
-    private $places;
+    private $singleUse = false;
 
     /**
      * @var bool
@@ -87,6 +126,21 @@ class CouponGenerator
      * @ORM\Column(name="valid_to", type="datetime", nullable=true)
      */
     private $validTo;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="generate_from", type="datetime", nullable=true)
+     */
+    private $generateFrom;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="generate_to", type="datetime", nullable=true)
+     */
+    private $generateTo;
+
 
     /**
      * @var \DateTime
@@ -406,29 +460,6 @@ class CouponGenerator
     }
 
     /**
-     * Set place
-     *
-     * @param \Food\DishesBundle\Entity\Place $place
-     * @return CouponGenerator
-     */
-    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
-    {
-        $this->place = $place;
-    
-        return $this;
-    }
-
-    /**
-     * Get place
-     *
-     * @return \Food\DishesBundle\Entity\Place 
-     */
-    public function getPlace()
-    {
-        return $this->place;
-    }
-
-    /**
      * Add places
      *
      * @param \Food\DishesBundle\Entity\Place $places
@@ -454,7 +485,7 @@ class CouponGenerator
     /**
      * Get places
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return Place[]
      */
     public function getPlaces()
     {
@@ -528,5 +559,189 @@ class CouponGenerator
     public function getDeletedBy()
     {
         return $this->deletedBy;
+    }
+
+    /**
+     * Set cartAmount
+     *
+     * @param integer $cartAmount
+     * @return CouponGenerator
+     */
+    public function setCartAmount($cartAmount)
+    {
+        $this->cartAmount = $cartAmount;
+    
+        return $this;
+    }
+
+    /**
+     * Get cartAmount
+     *
+     * @return integer 
+     */
+    public function getCartAmount()
+    {
+        return $this->cartAmount;
+    }
+
+    /**
+     * Set onlyNav
+     *
+     * @param boolean $onlyNav
+     * @return CouponGenerator
+     */
+    public function setOnlyNav($onlyNav)
+    {
+        $this->onlyNav = $onlyNav;
+    
+        return $this;
+    }
+
+    /**
+     * Get onlyNav
+     *
+     * @return boolean 
+     */
+    public function getOnlyNav()
+    {
+        return $this->onlyNav;
+    }
+
+    /**
+     * Set noSelfDelivery
+     *
+     * @param boolean $noSelfDelivery
+     * @return CouponGenerator
+     */
+    public function setNoSelfDelivery($noSelfDelivery)
+    {
+        $this->noSelfDelivery = $noSelfDelivery;
+    
+        return $this;
+    }
+
+    /**
+     * Get noSelfDelivery
+     *
+     * @return boolean 
+     */
+    public function getNoSelfDelivery()
+    {
+        return $this->noSelfDelivery;
+    }
+
+    /**
+     * Set singleUse
+     *
+     * @param boolean $singleUse
+     * @return CouponGenerator
+     */
+    public function setSingleUse($singleUse)
+    {
+        $this->singleUse = $singleUse;
+    
+        return $this;
+    }
+
+    /**
+     * Get singleUse
+     *
+     * @return boolean 
+     */
+    public function getSingleUse()
+    {
+        return $this->singleUse;
+    }
+
+    /**
+     * Set randomize
+     *
+     * @param boolean $randomize
+     * @return CouponGenerator
+     */
+    public function setRandomize($randomize)
+    {
+        $this->randomize = $randomize;
+    
+        return $this;
+    }
+
+    /**
+     * Get randomize
+     *
+     * @return boolean 
+     */
+    public function getRandomize()
+    {
+        return $this->randomize;
+    }
+
+    /**
+     * Set generateFrom
+     *
+     * @param \DateTime $generateFrom
+     * @return CouponGenerator
+     */
+    public function setGenerateFrom($generateFrom)
+    {
+        $this->generateFrom = $generateFrom;
+    
+        return $this;
+    }
+
+    /**
+     * Get generateFrom
+     *
+     * @return \DateTime 
+     */
+    public function getGenerateFrom()
+    {
+        return $this->generateFrom;
+    }
+
+    /**
+     * Set generateTo
+     *
+     * @param \DateTime $generateTo
+     * @return CouponGenerator
+     */
+    public function setGenerateTo($generateTo)
+    {
+        $this->generateTo = $generateTo;
+    
+        return $this;
+    }
+
+    /**
+     * Get generateTo
+     *
+     * @return \DateTime 
+     */
+    public function getGenerateTo()
+    {
+        return $this->generateTo;
+    }
+
+    /**
+     * Set templateCode
+     *
+     * @param string $templateCode
+     * @return CouponGenerator
+     */
+    public function setTemplateCode($templateCode)
+    {
+        $this->templateCode = $templateCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get templateCode
+     *
+     * @return string 
+     */
+    public function getTemplateCode()
+    {
+        return $this->templateCode;
     }
 }

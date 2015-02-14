@@ -194,6 +194,7 @@ class Coupon
                 'code' => $this->getCode(),
                 'place_id' => $placeId,
                 'discount' => $this->getDiscount(),
+                'discount_sum' => $this->getDiscountSum(),
                 'active' => $this->getActive(),
                 'single_use' => $this->getSingleUse(),
             );
@@ -665,7 +666,7 @@ class Coupon
     public function addPlace(\Food\DishesBundle\Entity\Place $places)
     {
         $this->places[] = $places;
-    
+
         return $this;
     }
 

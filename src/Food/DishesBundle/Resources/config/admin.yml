@@ -233,6 +233,18 @@ services:
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
 
+
+    sonata.admin.coupon_generator:
+                class: Food\OrderBundle\Admin\CouponGeneratorAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.coupons.generator" }
+                arguments:
+                    - ~
+                    - Food\OrderBundle\Entity\CouponGenerator
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]
+
     sonata.admin.restaurant_orders:
                 class: Food\ReportBundle\Admin\RestaurantOrdersAdmin
                 tags:

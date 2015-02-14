@@ -538,6 +538,8 @@ class OrderService extends ContainerAware
         $order = $this->getOrder();
         $this->chageOrderStatus(self::$status_completed, $source, $statusMessage);
 
+        $this->createDiscountCode($order);
+
         if ($this->getOrder()->getOrderFromNav() == false) {
             $this->sendCompletedMail();
         }
@@ -878,7 +880,11 @@ class OrderService extends ContainerAware
 
             if (!$coupon->getFreeDelivery()) {
                 $discountSize = $coupon->getDiscount();
-                $discountSum = ($sumTotal * $discountSize) / 100;
+                if (!empty($discountSize)) {
+                    $discountSum = ($sumTotal * $discountSize) / 100;
+                } else {
+                    $discountSum = $coupon->getDiscountSum();
+                }
                 $sumTotal = $sumTotal - $discountSum;
 
                 $order->setDiscountSize($discountSize)
@@ -2729,6 +2735,60 @@ class OrderService extends ContainerAware
                     return true;
                 } else {
                     return false;
+                }
+            }
+        }
+    }
+
+    public function createDiscountCode(Order $order)
+    {
+        $generator = $this->container->get('doctrine')->getRepository('FoodOrderBundle:CouponGenerator')->findOneBy(array('active'=>1));
+        if ($generator && ($order->getTotal() - $order->getDeliveryPrice() >= $generator->getCartAmount())) {
+            $nowTime = new \DateTime('NOW');
+            $proceed = true;
+            if ($generator->getGenerateFrom() <= $nowTime && $generator->getGenerateTo() >= $nowTime) {
+                $places = $generator->getPlaces();
+                if (!empty($places) && sizeof($places)) {
+                    $proceed = false;
+                    foreach ($places as $place) {
+                        if ($place->getId() == $order->getPlace()->getId()) {
+                            $proceed = true;
+                        }
+                    }
+                }
+                if ($generator->getNoSelfDelivery()) {
+                    if ($order->getPlace()->getSelfDelivery()) {
+                        $proceed = false;
+                    }
+                }
+                if ($proceed) {
+                    $theCode = $generator->getCode();
+                    if ($generator->getRandomize()) {
+                        $randomStuff = array("niam", "niamniam", "skanu", "foodout");
+                        $theCode = strtoupper($randomStuff[array_rand($randomStuff)]).$order->getId();
+                    }
+                    $newCode = new Coupon;
+                    $newCode->setActive(true)
+                        ->setCode( $theCode )
+                        ->setName( $generator->getName()." - #".$order->getId() )
+                        ->setDiscount( $generator->getDiscount() )
+                        ->setDiscountSum( $generator->getDiscountSum() )
+                        ->setOnlyNav( $generator->getOnlyNav() )
+                        ->setEnableValidateDate( true )
+                        ->setFreeDelivery( $generator->getFreeDelivery() )
+                        ->setSingleUse( $generator->getSingleUse() )
+                        ->setValidFrom( $generator->getValidFrom() )
+                        ->setValidTo( $generator->getValidTo() )
+                        ->setCreatedAt(new \DateTime('NOW'));
+
+                    $this->container->get('food.mailer')
+                        ->setVariable('code', $theCode )
+                        ->setRecipient( $order->getUser()->getEmail() )
+                        ->setId( $generator->getTemplateCode() )
+                        ->send();
+
+                    $this->container->get('doctrine')->getManager()->persist($newCode);
+                    $this->container->get('doctrine')->getManager()->flush();
                 }
             }
         }
