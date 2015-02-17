@@ -11,7 +11,8 @@ parameters:
     available_locales_routing: lt | en | ru
     available_cities: ["Vilnius","Kaunas","Klaipėda"]
     time_zone: "Europe/Vilnius"
-    sms.available_providers: [food.infobip, food.silverstreet]
+#    sms.available_providers: [food.infobip, food.silverstreet]
+    sms.available_providers: [food.infobip]
     sms.main_provider: "food.infobip"
     sms.sender: "Foodout.lt"
     sms.balance_limit_warn: 20
