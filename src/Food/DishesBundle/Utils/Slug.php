@@ -109,17 +109,7 @@ class Slug
      */
     public function stringToSlug($text)
     {
-        $removableChars = array(
-            '"' => '',
-            '„' => '',
-            '“' => '',
-            '+' => '-',
-        );
-        $text = strtr($text, $removableChars);
         $text = preg_replace('#\s+#u', '-', $text);
-
-        $text = preg_replace('~-{2,}~', '-', $text);
-
         return $text;
     }
 

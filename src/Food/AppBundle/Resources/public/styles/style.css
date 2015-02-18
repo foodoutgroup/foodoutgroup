@@ -1645,9 +1645,6 @@ div.coupon_form_popup {
 .wider-radio {
     width: 400px !important;
 }
-#places-change-location-link {
-    margin-top: 7px !important;
-}
 
 /** Discount stuff **/
 .restaurant-menu-item .price.discounted {
