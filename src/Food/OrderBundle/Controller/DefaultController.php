@@ -70,7 +70,7 @@ class DefaultController extends Controller
                     $currentOrderStatus,
                     $this->formToEntityStatus($formStatus)
                 );
-                $this->get('logger')->error($errorMessage);
+                $this->get('logger')->alert($errorMessage);
             }
         }
         return $this->render('FoodOrderBundle:Default:mobile.html.twig', array('order' => $order));
@@ -159,7 +159,9 @@ class DefaultController extends Controller
                     break;
 
                     case 'partialy_completed':
-                        $this->get('food.order')->statusPartialyCompleted('driver_mobile');
+                        if ($currentOrderStatus != OrderService::$status_partialy_completed) {
+                            $this->get('food.order')->statusPartialyCompleted('driver_mobile');
+                        }
                     break;
                 }
                 $this->get('food.order')->saveOrder();
@@ -175,7 +177,7 @@ class DefaultController extends Controller
                     $currentOrderStatus,
                     $this->formToEntityStatus($formStatus)
                 );
-                $this->get('logger')->error($errorMessage);
+                $this->get('logger')->alert($errorMessage);
             }
         }
         return $this->render('FoodOrderBundle:Default:mobile-driver.html.twig', array('order' => $order));
