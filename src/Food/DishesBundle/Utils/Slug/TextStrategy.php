@@ -42,16 +42,13 @@ class TextStrategy extends AbstractStrategy
      */
     public function generate($langId, $textId, $text)
     {
-        // services
         $em = $this->em();
-        $con = $em->getConnection();
-        $slugUtil = $this->service('food.dishes.utils.slug');
-
-        $logger = $this->service('logger');
+        $createNew = true;
 
         $slugs = $this->getSlugs($langId);
         $slug = $this->makeSlug($langId, $text);
         $origSlug = $slug;
+
         if ($this->existsInOrigs($slugs, $slug, $textId)) {
             $cnt = 0;
             while ($this->existsIn($slugs, $slug, $textId)) {
@@ -61,43 +58,46 @@ class TextStrategy extends AbstractStrategy
                 $cnt++;
             }
         }
-        $id = $this->idExistsIn($slugs, $textId);
-        if ($id && $id > 0) {
-            $item = $em->getRepository('FoodAppBundle:Slug')
-                ->find($id);
-        } else {
-            $item = new Slug();
-        }
 
+        $oldItems = $em->getRepository('FoodAppBundle:Slug')
+            ->findBy(array(
+                'item_id' => $textId,
+                'type' => $this->getType(),
+                'lang_id' => $langId,
+            ));
 
-        $item
-            ->setItemId($textId)
-            ->setLangId($langId)
-            ->setType($this->getType())
-            ->setName($slug)
-            ->setOrigName($origSlug)
-            ->setActive(1);
-
-
-        $em->persist($item);
-        $em->flush();
-
-    }
-
-
-    private function idExistsIn($slugs, $id)
-    {
-        foreach ($slugs as $slRow) {
-            if ($slRow['item_id'] == $id) {
-                return $slRow['id'];
+        if ($oldItems) {
+            foreach ($oldItems as $oldItem) {
+                if ($oldItem->getName() == $slug && $oldItem->getLangId() == $langId) {
+                    $oldItem->setActive(true);
+                    $createNew = false;
+                } else if ($oldItem->getName() != $slug) {
+                    $oldItem->setActive(false);
+                }
+                $em->persist($oldItem);
             }
         }
-        return false;
+
+        if ($createNew) {
+            $item = new Slug();
+            $item
+                ->setItemId($textId)
+                ->setLangId($langId)
+                ->setType($this->getType())
+                ->setName($slug)
+                ->setOrigName($origSlug)
+                ->setActive(1);
+
+            $em->persist($item);
+        }
+
+        $em->flush();
     }
 
     /**
      * @param $slugs
      * @param $slug
+     * @param $textId
      * @return bool
      */
     private function existsInOrigs($slugs, $slug, $textId)

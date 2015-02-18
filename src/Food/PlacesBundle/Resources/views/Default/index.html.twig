@@ -1,6 +1,6 @@
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
-{% block title %}{% trans %}general.places{% endtrans %} - {{ page_title }}{% endblock %}
+{% block title %}{% trans %}general.places{% endtrans %} |sutvarkyti mestas ir headerius paciuose puslapiuose. #379 {{ page_title }}{% endblock %}
 
 {% block adnet_retargeting %}
     <!-- Adform Tracking Code BEGIN -->
@@ -82,10 +82,11 @@
     <div class="site-block">
     <div class="page-path clearfix">{#<a href="{{ path('food_homepage') }}">Pradžia</a>#}</div>{# TODO breadcrumbs <a href="#">Restoranai arti Žirmūnų</a>#}
     <div class="page-title">
-        <h1 class="clearfix">
+        <h1>Maistas į namus {{ city_translations[location.city]|trans }}</h1>
+        <h2 class="clearfix">
             <span class="place-counter"></span>
             <a href="#" id="places-change-location-link">{% trans %}places.change_address{% endtrans %}</a>
-        </h1>
+        </h2>
         {% if recommended==0 and ( location == null or (location.not_found == true and location.street_found==true)) %}
             <div class="alert alert2 alert-warning"><li>{% trans %}places.is_not_detailed_search{% endtrans %}</li></div>
         {% endif %}

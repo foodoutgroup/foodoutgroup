@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="verify-webtopay" content="461551ad8deddc3ad0975adb27d1eff4" />
-    <title>{% block title %}{{ page_title }}{% endblock %}</title>
+    <title>
+        {% block title %}{% trans %}general.base_page_title{% endtrans %} | {{ page_title }}{% endblock %}
+    </title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
@@ -112,7 +114,10 @@
 {{ notifications.init|raw }}
 <div class="site">
     <div class="site-top">
-        <div class="site-block clearfix"><a href="{{ path('food_lang_homepage') }}" class="main-logo"><img alt="{{ page_title }}" src="{{ asset('bundles/foodapp/images/logo_food.png') }}"></a>
+        <div class="site-block clearfix">
+            <a href="{{ path('food_lang_homepage') }}" class="main-logo">
+                <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{{ asset('bundles/foodapp/images/logo_food.png') }}" />
+            </a>
             {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
             <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
                 <li><a href="{{ path('food_slug', {'slug': ('general.help_slug'|trans())}) }}"><span>{% trans %}general.help_button{% endtrans %}</span></a></li>
