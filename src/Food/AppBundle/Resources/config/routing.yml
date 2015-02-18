@@ -53,11 +53,35 @@ food_review_create:
     requirements:
         _method: POST
 
+food_slug_locale:
+    pattern:  /{redirLocale}/
+    defaults: { _controller: FoodAppBundle:Redirector:index, redirLocale: ~ }
+    requirements:
+        redirLocale:  "[a-z]{2}"
+
+food_slug_locale2:
+    pattern:  /{redirLocale}
+    defaults: { _controller: FoodAppBundle:Redirector:index, redirLocale: ~ }
+    requirements:
+        redirLocale:  "[a-z]{2}"
+
+food_slug_locale_slug:
+    pattern:  /{redirLocale}/{slug}/
+    defaults: { _controller: FoodAppBundle:Redirector:slug, redirLocale: ~ , slug: ~}
+    requirements:
+        redirLocale:  "[a-z]{2}"
+
+food_slug_locale_slug2:
+    pattern:  /{redirLocale}/{slug}
+    defaults: { _controller: FoodAppBundle:Redirector:slug, redirLocale: ~ , slug: ~}
+    requirements:
+        redirLocale:  "[a-z]{2}"
+
 food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto|monitoring|nagios|banned|logistics|order).+"
+        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto|monitoring|nagios|banned|logistics|order|sitemap)[a-z0-9-\__\"„“\.\+]{4,}"
 
 food_order_nav_test1:
     pattern: /order/nav_test1
