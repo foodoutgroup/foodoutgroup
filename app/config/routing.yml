@@ -82,10 +82,9 @@ food_lets_meet:
 
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
-    prefix:   /
-#    prefix:   /{_locale}/
-#    requirements:
-#        _locale:  "[a-z]{2}"
+    prefix:   /{_locale}/
+    requirements:
+        _locale:  "[a-z]{2}"
 
 
 adminroot:

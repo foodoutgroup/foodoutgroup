@@ -27,7 +27,8 @@ class DefaultController extends Controller
             array(
                 'recommended' => $recommended,
                 'location' => $locData,
-                'city_translations' => $this->cityTranslations
+                'city_translations' => $this->cityTranslations,
+                'default_city' => 'Vilnius'
             )
         );
     }
