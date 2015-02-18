@@ -57,13 +57,13 @@ soanata_user:
 admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
     prefix: /admin
-    #prefix: /{_locale}/admin
+    prefix: /{_locale}/admin
 
 _sonata_admin:
     resource: .
     type: sonata_admin
     prefix: /admin
-    #prefix: /{_locale}/admin
+    prefix: /{_locale}/admin
 
 food_homepage:
     pattern: /
@@ -83,9 +83,9 @@ food_lets_meet:
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
     prefix:   /
-#    prefix:   /{_locale}/
-#    requirements:
-#        _locale:  "[a-z]{2}"
+    prefix:   /{_locale}/
+    requirements:
+        _locale:  "[a-z]{2}"
 
 
 adminroot:
