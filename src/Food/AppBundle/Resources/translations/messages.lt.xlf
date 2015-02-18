@@ -782,18 +782,6 @@
         <source>general.item_quantity</source>
         <target>vnt.</target>
       </trans-unit>
-      <trans-unit id="general.restaurant_logo_alt" resname="general.restaurant_logo_alt">
-        <source>general.restaurant_logo_alt</source>
-        <target>Maistas į namus %restaurant_name%</target>
-      </trans-unit>
-      <trans-unit id="general.base_page_title" resname="general.base_page_title">
-        <source>general.base_page_title</source>
-        <target>Maistas į namus</target>
-      </trans-unit>
-      <trans-unit id="general.restaurant_page_title" resname="general.restaurant_page_title">
-        <source>general.restaurant_page_title</source>
-        <target>%restaurant_name% maistas į namus</target>
-      </trans-unit>
       <trans-unit id="general.cart.success" resname="general.cart.success">
         <source>general.cart.success</source>
         <target><![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 614 17872</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
@@ -1149,18 +1137,6 @@
       <trans-unit id="general.currency_minor_modals" resname="general.currency_minor_modals">
         <source>general.currency_minor_modals</source>
         <target>centas|centai|centų</target>
-      </trans-unit>
-      <trans-unit id="places.in_vilnius" resname="places.in_vilnius">
-          <source>places.in_vilnius</source>
-          <target>Vilniuje</target>
-      </trans-unit>
-      <trans-unit id="places.in_kaunas" resname="places.in_kaunas">
-          <source>places.in_kaunas</source>
-          <target>Kaune</target>
-      </trans-unit>
-      <trans-unit id="places.in_klaipeda" resname="places.in_klaipeda">
-          <source>places.in_klaipeda</source>
-          <target>Klaipėdoje</target>
       </trans-unit>
     </body>
   </file>
