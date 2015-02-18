@@ -20,15 +20,15 @@
             }
 
             var emailField = $(this).find('.newsletter-email');
+            var validationResult = isEmailAddress(emailField.val());
 
             // This is not email!
-            if (!isEmailAddress(emailField.val())) {
-                tooltip.tooltip( "open" );
-
+            if (!validationResult) {
+                emailField.tooltip( "show" );
                 return false;
             }
 
-            emailField.tooltip( "close" );
+            emailField.tooltip( "hide" );
             return true;
         });
     });
