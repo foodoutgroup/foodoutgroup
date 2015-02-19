@@ -8,18 +8,18 @@
         <loc>http://{{ domain }}{{ path('food_places_lt_recommended', {}, false) }}</loc>
         <changefreq>hourly</changefreq>
     </url>
-    {% for locale in availableLocales %}
+    {#{% for locale in availableLocales %}#}
         {% for place in places %}
         <url>
-            <loc>http://{{ domain }}{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place'), '_locale': locale}) }}</loc>
+            <loc>http://{{ domain }}{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place')}) }}</loc>
             <changefreq>daily</changefreq>
         </url>
         {% endfor %}
         {% for page in staticPages %}
             <url>
-                <loc>http://{{ domain }}{{ path('food_slug', {'slug': slug_util.slugByItem(page.id, 'text'), '_locale': locale}) }}</loc>
+                <loc>http://{{ domain }}{{ path('food_slug', {'slug': slug_util.slugByItem(page.id, 'text')}) }}</loc>
                 <changefreq>monthly</changefreq>
             </url>
         {% endfor %}
-    {% endfor %}
+    {#{% endfor %}#}
 </urlset>

@@ -72,7 +72,7 @@ parameters:
         - swedbank-credit-card-gateway
         - seb-banklink
         - nordea-banklink
-    currency_display: '&euro;'
+    currency_display: "&euro;"
     currency_iso: EUR
     display_currency_alternative:  Lt
     # naudojam telefonu validacijoms

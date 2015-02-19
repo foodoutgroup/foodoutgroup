@@ -10,6 +10,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
+    protected $cityTranslations = [
+        'Vilnius' => 'places.in_vilnius',
+        'Kaunas' => 'places.in_kaunas',
+        'Klaipėda' => 'places.in_klaipeda'
+    ];
+
     public function indexAction($recommended = false)
     {
         if ($recommended) {
@@ -20,7 +26,9 @@ class DefaultController extends Controller
             'FoodPlacesBundle:Default:index.html.twig',
             array(
                 'recommended' => $recommended,
-                'location' => $locData
+                'location' => $locData,
+                'city_translations' => $this->cityTranslations,
+                'default_city' => 'Vilnius'
             )
         );
     }
