@@ -51,7 +51,7 @@
             {% endif %}
             <div class="total-sum cart clearfix">
                 <div class="fl">{% trans %}cart.block.total_cart{% endtrans %}:</div>
-                <div class="fr">{{ currency_display|raw }}{{ total_cart|number_format(2, ',', ' ') }}<span class="euro">/ {{ misc_utils.getLitas(total_cart)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span></div>
+                <div class="fr">{{ currency_display|raw }}{{ total_cart|number_format(2, ',', ' ') }} <span class="euro">/ {{ misc_utils.getLitas(total_cart)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span></div>
             </div>
             {% if hide_delivery == 0 %}
                 <div class="delivery-price clearfix">
