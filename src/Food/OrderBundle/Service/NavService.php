@@ -347,6 +347,9 @@ class NavService extends ContainerAware
         $city = $order->getPlacePoint()->getCity();
         $city = str_replace("ė", "e", $city);
         $region = mb_strtoupper($city);
+        if ($region == "RIGA" || $region == "RIGA") {
+            $region = "RYGA";
+        }
 
         $orderDate = $order->getOrderDate();
         $orderDate->add(new \DateInterval('P0DT0H'));
