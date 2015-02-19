@@ -47,6 +47,11 @@ class InfobipProvider implements SmsProviderInterface {
     private $debugEnabled = false;
 
     /**
+     * @var string|null
+     */
+    private $domain = null;
+
+    /**
      * InfoBip sending error statuses. Add here as they update
      * @var array
      *
@@ -169,6 +174,22 @@ class InfobipProvider implements SmsProviderInterface {
             $this->_cli->options['CURLOPT_SSL_VERIFYHOST'] = false;
         }
         return $this->_cli;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getDomain()
+    {
+        return $this->domain;
+    }
+
+    /**
+     * @param null|string $domain
+     */
+    public function setDomain($domain)
+    {
+        $this->domain = $domain;
     }
 
     public function log($message)
@@ -294,6 +315,7 @@ class InfobipProvider implements SmsProviderInterface {
         }
 
         try {
+            $dlrUrl = 'http://'.$this->getDomain().'/messaging-delivery/';
             $response = $this->call(
                 array(
                     array(
@@ -302,6 +324,7 @@ class InfobipProvider implements SmsProviderInterface {
                             str_replace('"', '\"', $message)
                         ),
                         'ValidityPeriod' => '03:30',
+                        'drPushUrl' => $dlrUrl,
                         'recipients' =>
                             array(
                                 array('gsm' => $recipient),
