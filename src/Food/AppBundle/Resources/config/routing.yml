@@ -23,8 +23,8 @@ food_migrator:
     defaults: { _controller: FoodAppBundle:Test:migrateCili }
 
 food_putorder:
-    pattern:  /test/put-order
-    defaults: { _controller: FoodAppBundle:Test:putOrder }
+    pattern:  /test/put-order/{id}
+    defaults: { _controller: FoodAppBundle:Test:putOrder, id: ~ }
 
 food_test_pdf:
     pattern:  /test/pdf

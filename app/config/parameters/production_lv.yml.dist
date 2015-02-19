@@ -18,7 +18,7 @@ parameters:
 
     locale: lv
     locales: ["lv", "en", "ru"]
-    available_cities: [Riga]
+    available_cities: [Ryga]
     available_locales: ["lv", "en", "ru"]
     available_locales_routing: lv | en | ru
     cloudfront_url: images.foodout.lv
@@ -31,7 +31,7 @@ parameters:
         vilnius: []
         kaunas: [zaneta@foodout.lt]
         klaipėda: [jurgita@foodout.lt]
-        riga: [paulius@foodout.lt]
+        ryga: [paulius@foodout.lt]
     order.accept_notify_emails: []
     accounting_email: "jolanta@foodout.lv"
     payment.methods:

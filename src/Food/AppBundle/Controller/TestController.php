@@ -188,15 +188,12 @@ class TestController extends Controller
         );
     }
 
-    public function putOrderAction()
+    public function putOrderAction($id)
     {
-        $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find(2020);
+        $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($id);
         $ns = $this->get('food.nav');
         $ns->putTheOrderToTheNAV($order);
 
-        $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find(2023);
-        $ns = $this->get('food.nav');
-        $ns->putTheOrderToTheNAV($order);
         return new Response('THE END');
     }
 
