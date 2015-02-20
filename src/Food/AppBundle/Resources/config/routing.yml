@@ -53,6 +53,9 @@ food_review_create:
     requirements:
         _method: POST
 
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
 food_slug_locale:
     pattern:  /{redirLocale}/
     defaults: { _controller: FoodAppBundle:Redirector:index, redirLocale: ~ }
@@ -81,7 +84,7 @@ food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|mesto|monitoring|nagios|banned|logistics|order|sitemap)[a-z0-9-\__\"„“\.\+]{4,}"
+        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|routing|places|vietos|mesto|monitoring|nagios|banned|logistics|order|sitemap)[a-z0-9-\__\"„“\.\+]{4,}"
 
 food_order_nav_test1:
     pattern: /order/nav_test1
@@ -151,9 +154,6 @@ food_admin_get_place_unit_categories:
     defaults: {_controller: FoodDishesBundle:DishUnitAdmin:getUnitCategoryOptionsFromPlace}
     options:
         expose: true
-
-fos_js_routing:
-    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
 food_admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
