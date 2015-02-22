@@ -337,6 +337,7 @@ class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
                 'sender' => 'skanu',
                 'text' => 'Pica+iskepe',
                 'ValidityPeriod' => '03:30',
+                'drPushUrl' => 'http:///messaging-delivery/',
                 'recipients' => array(
                     array('gsm' => 37061514333),
                 )
@@ -386,6 +387,7 @@ class MessagesServiceTest extends \PHPUnit_Framework_TestCase {
                 'sender' => 'skanu',
                 'text' => 'Pica+iskepe.+Jei+kas+negerai%2C+skambinkit+%2B37061514333.+Arba+ne%21',
                 'ValidityPeriod' => '03:30',
+                'drPushUrl' => 'http:///messaging-delivery/',
                 'recipients' => array(
                     array('gsm' => 37061514333),
                 )
