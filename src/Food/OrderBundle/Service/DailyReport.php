@@ -9,9 +9,9 @@ use Food\AppBundle\Service\GoogleAnalyticsService;
 
 class DailyReport extends ContainerAware
 {
-    const PHP_1_DAY_AGO = '-1 day';
-    const MYSQL_1_DAY_AGO = 'SUBDATE(CURRENT_DATE, 1)';
-    const MYSQL_0_DAYS_AGO = 'SUBDATE(CURRENT_DATE, 0)';
+    const PHP_1_DAY_AGO = '-20 day';
+    const MYSQL_1_DAY_AGO = 'SUBDATE(CURRENT_DATE, 20)';
+    const MYSQL_0_DAYS_AGO = 'SUBDATE(CURRENT_DATE, 19)';
 
     protected $connection;
     protected $dailyReportEmails;
