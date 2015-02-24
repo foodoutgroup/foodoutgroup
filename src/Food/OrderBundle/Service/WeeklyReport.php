@@ -10,10 +10,10 @@ use Food\AppBundle\Service\GoogleAnalyticsService;
 
 class WeeklyReport extends ContainerAware
 {
-    const PHP_1_DAY_AGO = '-1 day';
-    const PHP_7_DAYS_AGO = '-7 day';
-    const MYSQL_7_DAYS_AGO = 'SUBDATE(CURRENT_DATE, 7)';
-    const MYSQL_0_DAYS_AGO = 'SUBDATE(CURRENT_DATE, 0)';
+    const PHP_1_DAY_AGO = '-2 day';
+    const PHP_7_DAYS_AGO = '-8 day';
+    const MYSQL_7_DAYS_AGO = 'SUBDATE(CURRENT_DATE, 8)';
+    const MYSQL_0_DAYS_AGO = 'SUBDATE(CURRENT_DATE, 1)';
 
     protected $connection;
     protected $weeklyReportEmails;
