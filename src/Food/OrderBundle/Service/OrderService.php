@@ -654,21 +654,39 @@ class OrderService extends ContainerAware
 
         if (empty($orderSeries) || empty($orderSfNumber)) {
             $miscService = $this->container->get('food.app.utils.misc');
+            $invoiceService = $this->container->get('food.invoice');
+
+            // First try to use unused number
 
             try {
-                $sfNumber = (int)$miscService->getParam('sf_next_number');
-                $miscService->setParam('sf_next_number', ($sfNumber + 1));
+                $sfNumber = $invoiceService->getUnusedSfNumber();
             } catch (OptimisticLockException $e) {
-                sleep(1);
-                $sfNumber = (int)$miscService->getParam('sf_next_number');
-                $miscService->setParam('sf_next_number', ($sfNumber + 1));
+                // It was locked.. lets take new one and dont mess with DB
+                $sfNumber = null;
+            } catch (\Exception $e) {
+                $sfNumber = null;
+                $this->container->get('logger')->error('Error while getting unused SF number: '.$e->getMessage());
+            }
 
-                $this->container->get('logger')->alert('--- Had problems receiving SF number');
+            if (empty($sfNumber)) {
+                // We failed. lets take a new one
+                try {
+                    $sfNumber = (int)$miscService->getParam('sf_next_number');
+                    $miscService->setParam('sf_next_number', ($sfNumber + 1));
+                    $this->logOrder($order, 'sf_number_assign', 'Assigning new SF number: '.$sfNumber);
+                } catch (OptimisticLockException $e) {
+                    sleep(1);
+                    $sfNumber = (int)$miscService->getParam('sf_next_number');
+                    $miscService->setParam('sf_next_number', ($sfNumber + 1));
+                    $this->logOrder($order, 'sf_number_assign', 'Assigning new SF number: '.$sfNumber);
+                }
+            } else {
+                // Log da shit for debuging purposes
+                $this->logOrder($order, 'sf_number_assign', 'Assigning old unused SF number: '.$sfNumber);
             }
 
             $order->setSfSeries($this->container->getParameter('invoice.series'));
             $order->setSfNumber($sfNumber);
-
 
             $this->saveOrder();
         }

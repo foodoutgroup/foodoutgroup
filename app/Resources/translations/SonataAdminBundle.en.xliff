@@ -1315,6 +1315,38 @@
                 <target>ID</target>
             </trans-unit>
 
+            <!-- Unused SF numbers -->
+            <trans-unit id="admin.unused_sf_numbers">
+                <source>admin.unused_sf_numbers</source>
+                <target>Unused SF numbers</target>
+            </trans-unit>
+            <trans-unit id="Unused Sf Numbers List">
+                <source>Unused Sf Numbers List</source>
+                <target>Unused SF numbers</target>
+            </trans-unit>
+            <trans-unit id="admin.unused_sf_numbers.sf_number">
+                <source>admin.unused_sf_numbers.sf_number</source>
+                <target>SF number</target>
+            </trans-unit>
+            <trans-unit id="admin.unused_sf_numbers.sf_number_placeholder">
+                <source>admin.unused_sf_numbers.sf_number_placeholder</source>
+                <target>123456</target>
+            </trans-unit>
+            <trans-unit id="admin.unused_sf_numbers.id">
+                <source>admin.unused_sf_numbers.id</source>
+                <target>ID</target>
+            </trans-unit>
+
+            <!-- Coupons generator -->
+            <trans-unit id="admin.coupons.generator">
+                <source>admin.coupons.generator</source>
+                <target>Coupon generator</target>
+            </trans-unit>
+            <trans-unit id="Coupon Generator List">
+                <source>Coupon Generator List</source>
+                <target>Coupon generator</target>
+            </trans-unit>
+
             <!-- Street admin -->
             <trans-unit id="admin.street">
                 <source>admin.street</source>

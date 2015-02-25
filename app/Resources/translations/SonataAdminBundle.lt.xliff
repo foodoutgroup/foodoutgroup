@@ -1367,6 +1367,38 @@
                 <target>ID</target>
             </trans-unit>
 
+            <!-- Unused SF numbers -->
+            <trans-unit id="admin.unused_sf_numbers">
+                <source>admin.unused_sf_numbers</source>
+                <target>Nepanaudoti SF numeriai</target>
+            </trans-unit>
+            <trans-unit id="Unused Sf Numbers List">
+                <source>Unused Sf Numbers List</source>
+                <target>Nepanaudoti SF numeriai</target>
+            </trans-unit>
+            <trans-unit id="admin.unused_sf_numbers.sf_number">
+                <source>admin.unused_sf_numbers.sf_number</source>
+                <target>SF numeris</target>
+            </trans-unit>
+            <trans-unit id="admin.unused_sf_numbers.sf_number_placeholder">
+                <source>admin.unused_sf_numbers.sf_number_placeholder</source>
+                <target>123456</target>
+            </trans-unit>
+            <trans-unit id="admin.unused_sf_numbers.id">
+                <source>admin.unused_sf_numbers.id</source>
+                <target>ID</target>
+            </trans-unit>
+
+            <!-- Coupons generator -->
+            <trans-unit id="admin.coupons.generator">
+                <source>admin.coupons.generator</source>
+                <target>Kuponų generatorius</target>
+            </trans-unit>
+            <trans-unit id="Coupon Generator List">
+                <source>Coupon Generator List</source>
+                <target>Kuponų generatorius</target>
+            </trans-unit>
+
             <!-- Street admin -->
             <trans-unit id="admin.street">
                 <source>admin.street</source>

@@ -2,6 +2,8 @@
 
 namespace Food\OrderBundle\Service;
 
+use Doctrine\ORM\OptimisticLockException;
+use Food\AppBundle\Entity\UnusedSfNumbers;
 use Food\OrderBundle\Entity\InvoiceToSend;
 use Food\OrderBundle\Entity\Order;
 use Symfony\Component\DependencyInjection\ContainerAware;
@@ -287,6 +289,44 @@ class InvoiceService extends ContainerAware
             unlink($filename);
         } else {
             throw new \InvalidArgumentException('User Invoice does not exist. Can not delete');
+        }
+    }
+
+    /**
+     * @param bool $failOnError
+     * @return int|null
+     */
+    public function getUnusedSfNumber($failOnError = false)
+    {
+        $doctrine = $this->container->get('doctrine');
+        $em = $doctrine->getManager();
+        $repo = $doctrine->getRepository('FoodAppBundle:UnusedSfNumbers');
+
+        try {
+            $unusedSfNumber = $repo->findOldest();
+
+            if (!$unusedSfNumber || (!$unusedSfNumber instanceof UnusedSfNumbers)) {
+                return null;
+            }
+
+            $theNumber = $unusedSfNumber->getSfNumber();
+
+            // delete it
+            $em->remove($unusedSfNumber);
+            $em->flush();
+
+            // return it
+            return $theNumber;
+
+        // Rerty on error
+        } catch (OptimisticLockException $e) {
+            if ($failOnError) {
+                return null;
+            }
+
+            sleep(1);
+
+            return $this->getUnusedSfNumber(true);
         }
     }
 }

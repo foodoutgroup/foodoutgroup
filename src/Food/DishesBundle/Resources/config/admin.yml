@@ -222,6 +222,17 @@ services:
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.unused_sf_numbers:
+                class: Food\AppBundle\Admin\UnusedSfNumbersAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.unused_sf_numbers" }
+                arguments:
+                    - ~
+                    - Food\AppBundle\Entity\UnusedSfNumbers
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]
+
     sonata.admin.street:
                 class: Food\AppBundle\Admin\StreetAdmin
                 tags:

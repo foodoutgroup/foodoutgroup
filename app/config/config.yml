@@ -343,6 +343,7 @@ sonata_admin:
                       - sonata.admin.newsletter_subscribers
                       - sonata.admin.banned_ips
                       - sonata.admin.street
+                      - sonata.admin.unused_sf_numbers
                   roles: [ ROLE_ADMIN ]
 #              admin.support:
 #                  items: ~
