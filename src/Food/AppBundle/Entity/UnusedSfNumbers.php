@@ -3,12 +3,14 @@
 namespace Food\AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Food\AppBundle\Entity\UnusedSfNumbers
  *
  * @ORM\Table(name="unused_sf_numbers")
  * @ORM\Entity(repositoryClass="Food\AppBundle\Entity\UnusedSfNumbersRepository")
+ * @UniqueEntity("sf_number")
  */
 class UnusedSfNumbers
 {
