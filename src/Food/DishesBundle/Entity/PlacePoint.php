@@ -902,6 +902,11 @@ class PlacePoint
         return $this->getAddress().', '.$this->getCity();
     }
 
+    public function getToString()
+    {
+        return $this->__toString();
+    }
+
     /**
      * @return array
      */

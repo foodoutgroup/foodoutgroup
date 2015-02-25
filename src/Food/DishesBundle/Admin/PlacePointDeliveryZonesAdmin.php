@@ -15,12 +15,13 @@ class PlacePointDeliveryZonesAdmin extends FoodAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('place', null, array('label' => 'Place'))
-            ->add('placePoint', null, array('label' => 'Point'))
+            ->add('place',  'entity', array('class' => 'Food\DishesBundle\Entity\Place'))
+            ->add('placePoint',  'entity', array('class' => 'Food\DishesBundle\Entity\PlacePoint'))
             ->add('distance', 'text', array('label' => 'Distance'))
             ->add('price', 'text', array('label' => 'Price'))
             ->add('timeFrom', 'text', array('label' => 'Time from', 'required' => false))
             ->add('timeTo', 'text', array('label' => 'Time to', 'required' => false))
+            ->add('active', null, array('required' => false))
             ->end()
         ;
     }
@@ -35,12 +36,14 @@ class PlacePointDeliveryZonesAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('place', null, array('label' => 'Place'))
-            ->addIdentifier('placePoint', 'string', array('label' => 'Point'))
-            ->add('distance', null, array('label' => 'Distance', 'editable' => true))
-            ->add('price', null, array('label' => 'Price', 'editable' => true))
-            ->add('timeFrom', null, array('label' => 'Time From', 'editable' => true))
-            ->add('timeTo', null, array('label' => 'Time To', 'editable' => true))
+            ->addIdentifier('id')
+            ->addIdentifier('place')
+            ->add('placePoint.toString')
+            ->add('distance','string', array('label' => 'Distance', 'editable' => true))
+            ->add('price', 'string', array('label' => 'Price', 'editable' => true))
+            ->add('timeFrom', 'string', array('label' => 'Time From', 'editable' => true))
+            ->add('timeTo', 'string', array('label' => 'Time To', 'editable' => true))
+            ->add('active', 'boolean', array('label' => 'Active', 'editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),

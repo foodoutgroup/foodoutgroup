@@ -119,6 +119,7 @@ twig:
         invoice_series: "%invoice.series%"
 #       Services
         slug_util:    "@food.dishes.utils.slug"
+        places_service: "@food.places"
         dish_service: "@food.dishes"
         order_service: "@food.order"
         static_service: "@food.static"

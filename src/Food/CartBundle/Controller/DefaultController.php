@@ -343,6 +343,16 @@ class DefaultController extends Controller
     {
         $list = $this->getCartService()->getCartDishes($place);
         $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
+        $deliveryTotal = 0;
+        if (!$takeAway) {
+            $placePointMap = $this->container->get('session')->get('point_data');
+            $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+            $deliveryTotal = $this->getCartService()->getDeliveryPrice(
+                $place,
+                $this->get('food.googlegis')->getLocationFromSession(),
+                $pointRecord
+            );
+        }
 
         // If coupon in use
         $applyDiscount = $freeDelivery = false;
@@ -377,7 +387,8 @@ class DefaultController extends Controller
             'list'  => $list,
             'place' => $place,
             'total_cart' => $total_cart,
-            'total_with_delivery' => ($freeDelivery ? $total_cart : ($total_cart + $place->getDeliveryPrice())),
+            'total_with_delivery' => ($freeDelivery ? $total_cart : ($total_cart + $deliveryTotal)),
+            'total_delivery' => $deliveryTotal,
             'inCart' => (int)$inCart,
             'hide_delivery' => $hideDelivery,
             'applyDiscount' => $applyDiscount,

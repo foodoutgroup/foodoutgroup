@@ -25,7 +25,7 @@ class PlacePointDeliveryZones
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="Place", inversedBy="points")
+     * @ORM\ManyToOne(targetEntity="Place")
      * @ORM\JoinColumn(name="place", referencedColumnName="id")
      *
      * @var Place
@@ -114,6 +114,12 @@ class PlacePointDeliveryZones
      * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active = true;
 
     /**
      * Get id
@@ -405,5 +411,28 @@ class PlacePointDeliveryZones
     public function getPlace()
     {
         return $this->place;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     * @return PlacePointDeliveryZones
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }

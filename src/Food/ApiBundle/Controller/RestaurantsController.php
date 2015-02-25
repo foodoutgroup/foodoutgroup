@@ -53,7 +53,8 @@ class RestaurantsController extends Controller
                         'keyword' => $keyword,
                     ),
                     false,
-                    $this->get('food.googlegis')->getLocationFromSession()
+                    $this->get('food.googlegis')->getLocationFromSession(),
+                    $this->container
                 );
             }
         } elseif (!empty($lat) && !empty($lng)) {
@@ -71,7 +72,8 @@ class RestaurantsController extends Controller
                     'keyword' => $keyword
                 ),
                 false,
-                $this->get('food.googlegis')->getLocationFromSession()
+                $this->get('food.googlegis')->getLocationFromSession(),
+                $this->container
             );
         } else {
             $places = array();
@@ -121,7 +123,8 @@ class RestaurantsController extends Controller
                 array(),
                 array(),
                 false,
-                $this->get('food.googlegis')->getLocationFromSession()
+                $this->get('food.googlegis')->getLocationFromSession(),
+                $this->container
             );
         } elseif (!empty($lat) && !empty($lng)) {
             $this->get('food.googlegis')->setLocationToSession(
@@ -134,7 +137,8 @@ class RestaurantsController extends Controller
                 array(),
                 array(),
                 false,
-                $this->get('food.googlegis')->getLocationFromSession()
+                $this->get('food.googlegis')->getLocationFromSession(),
+                $this->container
             );
         } else {
             $places = array();

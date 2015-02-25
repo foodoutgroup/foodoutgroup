@@ -11,9 +11,10 @@ class PlaceRepository extends EntityRepository
      * @param array $filters
      * @param bool $recommended
      * @param array|null $locationData
+     * @param $container
      * @return array
      */
-    public function magicFindByKitchensIds($kitchens, $filters=array(), $recommended = false, $locationData = null)//, $city, $lat, $long)
+    public function magicFindByKitchensIds($kitchens, $filters=array(), $recommended = false, $locationData = null, $container)//, $city, $lat, $long)
     {
         /*
             SET @lat1 = 54.680437, @lon1 = 25.261236, @lat2 = 54.681914, @lon2 = 25.268156;
@@ -76,9 +77,14 @@ class PlaceRepository extends EntityRepository
             $city = $locationData['city'];
         }
 
+
+        $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.active=1 AND ppdz.place_point=pps.id";
+
         $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id
             AND (
-            (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) <= 7
+            (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) <=
+                IF(($maxDistance) IS NULL, ".$container->getParameter('default_delivery_distance').", ($maxDistance))
+
                  OR
                  p.self_delivery = 1
             )
@@ -190,6 +196,57 @@ class PlaceRepository extends EntityRepository
         return $places;
     }
 
+
+    public function getDeliveryPriceForPlacePoint(Place $place, PlacePoint $placePoint, $locationData)
+    {
+        $data = $this->getPlacePointNearWithDistance($place->getId(), $locationData);
+        $deliveryPrice = "SELECT price FROM `place_point_delivery_zones` WHERE place_point=".(int)$data['id']." AND active=1 AND distance >= ".(float)$data['distance']." ORDER BY distance ASC LIMIT 1";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($deliveryPrice);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * @param int $placeId
+     * @param array|null $locationData
+     * @param bool $ignoreSelfDelivery
+     * @return null
+     */
+    public function getPlacePointNearWithDistance($placeId, $locationData, $ignoreSelfDelivery = false)
+    {
+        if (empty($locationData['city']) || empty($locationData['lat'])) {
+            return null;
+        }
+        $city = $locationData['city'];
+        $lat = str_replace(",", ".", $locationData['lat']);
+        $lon = str_replace(",", ".", $locationData['lng']);
+
+        $dh = date("H");
+        $dm = date("i");
+        if (intval($dh) < 6) {
+            $dh = 24 + intval($dh);
+        }
+        $dth = $dh."".$dm;
+        $wd = date("N");
+
+        $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) as distance FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND pp.deleted_at IS NULL AND p.active=1 AND pp.city='".$city."' AND pp.place = $placeId
+            AND (
+                (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <= 7
+                ".(!$ignoreSelfDelivery ? " OR p.self_delivery = 1":"")."
+            )
+            AND '".$dth."' BETWEEN REPLACE(wd".$wd."_start,':','') AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)
+            ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
+
+        $stmt->execute();
+        $places = $stmt->fetchAll();
+        if (!empty($places) && !empty($places[0])) {
+            return $places[0];
+        }
+        return null;
+    }
+
     /**
      * @param int $placeId
      * @param array|null $locationData
@@ -213,7 +270,7 @@ class PlaceRepository extends EntityRepository
         $dth = $dh."".$dm;
         $wd = date("N");
 
-        $subQuery = "SELECT pp.id FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND pp.deleted_at IS NULL AND p.active=1 AND pp.city='".$city."' AND pp.place = $placeId
+        $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND pp.deleted_at IS NULL AND p.active=1 AND pp.city='".$city."' AND pp.place = $placeId
             AND (
                 (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <= 7
                 ".(!$ignoreSelfDelivery ? " OR p.self_delivery = 1":"")."
@@ -261,6 +318,22 @@ class PlaceRepository extends EntityRepository
             $places[] = $this->find($placeRow['id']);
         }
         return $places;
+    }
+
+    public function getMinDeliveryPrice($placeId)
+    {
+        $minPrice = "SELECT MIN(price) as price FROM `place_point_delivery_zones` WHERE active=1 AND place=".(int)$placeId;
+        $stmt = $this->getEntityManager()->getConnection()->prepare($minPrice);
+        $stmt->execute();
+        return $stmt->fetchColumn(0);
+    }
+
+    public function getMaxDeliveryPrice($placeId)
+    {
+        $minPrice = "SELECT MAX(price) as price FROM `place_point_delivery_zones` WHERE active=1 AND place=".(int)$placeId;
+        $stmt = $this->getEntityManager()->getConnection()->prepare($minPrice);
+        $stmt->execute();
+        return $stmt->fetchColumn(0);
     }
 }
 
