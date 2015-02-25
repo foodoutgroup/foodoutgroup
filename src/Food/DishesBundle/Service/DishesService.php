@@ -65,6 +65,17 @@ class DishesService extends ContainerAware {
         return null;
     }
 
+    public function countDiscountSizes($dishId)
+    {
+        $countIt = $this->em()->getRepository('FoodDishesBundle:Dish')->getCountOfDiscountSizes($dishId);
+        if (!empty($countIt) && is_array($countIt)) {
+            return $countIt[0]['cnt'];
+        } elseif (!empty($countIt)) {
+            return $countIt['cnt'];
+        }
+        return null;
+    }
+
     public function getOneDishDiscountPrice($dishId)
     {
         $query = "SELECT ds.discount_price as discount, ds.price, du.short_name FROM dish_size ds, dish_unit du WHERE ds.unit_id = du.id AND ds.deleted_at IS NULL AND ds.discount_price > 0 AND ds.dish_id=".intval($dishId)." ORDER BY (ds.discount_price/ds.price) DESC ";
