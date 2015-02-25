@@ -101,11 +101,25 @@ class DefaultController extends Controller
 
     public function bestOffersAction()
     {
-        return $this->render('FoodPlacesBundle:Default:best_offers.html.twig');
+        $view = 'FoodPlacesBundle:Default:best_offers.html.twig';
+        $options = [
+            'best_offers' => $this->getBestOffers(5)
+        ];
+
+        return $this->render($view, $options);
     }
 
     public function changeLocationAction()
     {
         return $this->render('FoodPlacesBundle:Default:change_location.html.twig');
+    }
+
+    private function getBestOffers($amount)
+    {
+        $items = $this->get('doctrine.orm.entity_manager')
+                      ->getRepository('FoodPlacesBundle:BestOffer')
+                      ->getRandomBestOffers($amount);
+
+        return $items;
     }
 }

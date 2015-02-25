@@ -21,6 +21,17 @@ services:
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.best_offer:
+        class: Food\PlacesBundle\Admin\BestOfferAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.best_offers.best_offers" }
+        arguments:
+            - ~
+            - Food\PlacesBundle\Entity\BestOffer
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
     sonata.admin.dish.size:
         class: Food\DishesBundle\Admin\DishSizeAdmin
         tags:

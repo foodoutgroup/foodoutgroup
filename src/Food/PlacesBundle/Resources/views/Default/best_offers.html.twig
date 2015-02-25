@@ -1,76 +1,23 @@
-<div class="items-list-title clearfix">
-    <h2>{% trans %}places.best_offers_block_title{% endtrans %}</h2>
-</div>
-<div class="items-list clearfix">
-    {#<div class="items-list-col"><a href="http://foodout.lt/lt/cili-pica/" class="cupom-item">
-        <div class="cupon-top"><img src="{{ asset('bundles/foodapp/images/cili33_2.png') }}">
-            <p class="cupon-name">Pica pigiau!</p>
-            <p class="cupon-desc">Akcija galioja užsisakant 30cm picas.</p>
-        </div>
-        <div class="cupon-bottom">
-            <div class="button">Gauk šį pasiūlymą!</div>
-        </div></a>
-    </div>#}
-    {#
-        <div class="items-list-col"><a href="http://foodout.lt/lt/forest/" class="cupom-item">
-                <div class="cupon-top"><img src="{{ asset('bundles/foodapp/images/forest33.jpg') }}">
-                    <p class="cupon-name">Salotos pigiau!</p>
+{% if best_offers %}
+    <div class="items-list-title clearfix">
+        <h2>{% trans %}places.best_offers_block_title{% endtrans %}</h2>
+    </div>
+
+    <div class="items-list clearfix">
+        {% for best_offer in best_offers %}
+            <div class="items-list-col">
+                <a href="{{ best_offer.link }}" class="cupom-item">
+
+                <div class="cupon-top">
+                    <img src="{{ asset(best_offer.getWebPathThumb) }}" width="180" height="177">
+                    <p class="cupon-name" style="margin: 0;">{{ best_offer.title }}</p>
+                    <p class="cupon-desc" style="margin: 0;">{{ best_offer.text }}</p>
                 </div>
+
                 <div class="cupon-bottom">
                     <div class="button">Gauk šį pasiūlymą!</div>
-                </div></a></div>
-        <div class="items-list-col"><a href="http://foodout.lt/lt/soya-1/" class="cupom-item">
-                <div class="cupon-top"><img src="{{ asset('bundles/foodapp/images/soya33.jpg') }}">
-                <p class="cupon-name">Sušiai pigiau!</p>
-        </div>
-        <div class="cupon-bottom">
-            <div class="button">Gauk šį pasiūlymą!</div>
-        </div></a>
+                </div></a>
+            </div>
+        {% endfor %}
     </div>
-    #}
-    <div class="items-list-col"><a href="http://foodout.lt/lt/fokus-pizza/" class="cupom-item">
-        <div class="cupon-top"><img src="{{ asset('bundles/foodapp/images/fokus_discount.jpg') }}">
-            <p class="cupon-name">Picos pigiau!</p>
-            <p class="cupon-desc">Tik Vilniuje!</p>
-        </div>
-        <div class="cupon-bottom">
-            <div class="button">Gauk šį pasiūlymą!</div>
-        </div></a>
-    </div>
-    <div class="items-list-col"><a href="http://foodout.lt/lt/shark-tail-sushi/" class="cupom-item">
-        <div class="cupon-top"><img src="{{ asset('bundles/foodapp/images/shark_tail.png') }}">
-            <p class="cupon-name">Nauji patiekalai!</p>
-            <p class="cupon-desc">Tik Vilniuje!</p>
-        </div>
-        <div class="cupon-bottom">
-            <div class="button">Gauk šį pasiūlymą!</div>
-        </div></a>
-    </div>
-    <div class="items-list-col"><a href="http://www.foodout.lt/lt/cili-kaimas/" class="cupom-item">
-        <div class="cupon-top"><img src="{{ asset('bundles/foodapp/images/Foodout---Banner---Cili-Kaimas---180x177---2-A.png') }}">
-            <p class="cupon-name">Bulviniai patiekalai net -25% pigiau!</p>
-            <p class="cupon-desc" style="margin: 0;">Vilniuje, Kaune, Klaipėdoje</p>
-        </div>
-        <div class="cupon-bottom">
-            <div class="button">Gauk šį pasiūlymą!</div>
-        </div></a>
-    </div>
-    <div class="items-list-col"><a href="http://www.foodout.lt/lt/soya-1/" class="cupom-item">
-        <div class="cupon-top"><img src="{{ asset('bundles/foodapp/images/Foodout---Banner---Soya---180x177---2-A.png') }}">
-            <p class="cupon-name" style="margin: 0;">Karštieji kinų patiekalai -25% pigiau</p>
-            <p class="cupon-desc" style="margin: 0;">Vilniuje, Kaune, Klaipėdoje</p>
-        </div>
-        <div class="cupon-bottom">
-            <div class="button">Gauk šį pasiūlymą!</div>
-        </div></a>
-    </div>
-    <div class="items-list-col"><a href="http://foodout.lt/lt/taco-mexicano/" class="cupom-item">
-        <div class="cupon-top"><img src="{{ asset('bundles/foodapp/images/taco.png') }}">
-            <p class="cupon-name">Akcija galioja darbo dienomis!</p>
-            <p class="cupon-desc">Tik Vilniuje!</p>
-        </div>
-        <div class="cupon-bottom">
-            <div class="button">Gauk šį pasiūlymą!</div>
-        </div></a>
-    </div>
-</div>
+{% endif %}
