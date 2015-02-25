@@ -279,6 +279,7 @@ sonata_admin:
                   items:
                       #- sonata.admin.kitchen
                       - sonata.admin.place
+                      - sonata.admin.place.pointdeliveryzones
                       - sonata.admin.place.reviews
                       - sonata.admin.place.coverphoto
                       #- sonata.admin.dish.unit

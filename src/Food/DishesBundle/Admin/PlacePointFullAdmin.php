@@ -53,6 +53,7 @@ class PlacePointFullAdmin extends FoodAdmin
             ->add('wd6_end', 'text', array('label' => 'admin.point.wd_end'))
             ->add('wd7_start', 'text', array('label' => 'admin.point.wd7_start'))
             ->add('wd7_end', 'text', array('label' => 'admin.point.wd_end'))
+
             ->end()
         ;
     }
@@ -90,6 +91,7 @@ class PlacePointFullAdmin extends FoodAdmin
      */
     public function prePersist($object)
     {
+        $this->_fixZones($object);
         $this->_fixExtendedWorkTime($object);
     }
 
@@ -98,6 +100,7 @@ class PlacePointFullAdmin extends FoodAdmin
      */
     public function preUpdate($object)
     {
+        $this->_fixZones($object);
         $this->_fixExtendedWorkTime($object);
     }
 
@@ -118,6 +121,21 @@ class PlacePointFullAdmin extends FoodAdmin
                 }
             } else {
                 $object->{'setWd'.$i.'EndLong'}($val);
+            }
+        }
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\PlacePoint $object
+     */
+    private function _fixZones($object)
+    {
+        var_dump($_SERVER);
+        foreach ($object->getZones() as $zone) {
+            $zone->setPlacePoint($object);
+            $cAt = $zone->getCreatedAt();
+            if (empty($cAt)) {
+                $zone->setCreatedAt(new \DateTime('now'));
             }
         }
     }

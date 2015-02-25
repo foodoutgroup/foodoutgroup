@@ -319,6 +319,13 @@ class PlacePoint
     private $allowCard = true;
 
     /**
+     * @ORM\OneToMany(targetEntity="PlacePointDeliveryZones", mappedBy="placePoint", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @var PlacePointDeliveryZones[]
+     */
+    private $zones;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -1653,5 +1660,45 @@ class PlacePoint
     public function getUseExternalLogistics()
     {
         return $this->useExternalLogistics;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->zones = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add zones
+     *
+     * @param \Food\DishesBundle\Entity\PlacePointDeliveryZones $zones
+     * @return PlacePoint
+     */
+    public function addZone(\Food\DishesBundle\Entity\PlacePointDeliveryZones $zones)
+    {
+        $this->zones[] = $zones;
+    
+        return $this;
+    }
+
+    /**
+     * Remove zones
+     *
+     * @param \Food\DishesBundle\Entity\PlacePointDeliveryZones $zones
+     */
+    public function removeZone(\Food\DishesBundle\Entity\PlacePointDeliveryZones $zones)
+    {
+        $this->zones->removeElement($zones);
+    }
+
+    /**
+     * Get zones
+     *
+     * @return \Food\DishesBundle\Entity\PlacePointDeliveryZones[]
+     */
+    public function getZones()
+    {
+        return $this->zones;
     }
 }

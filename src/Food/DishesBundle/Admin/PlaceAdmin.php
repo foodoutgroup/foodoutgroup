@@ -177,6 +177,7 @@ class PlaceAdmin extends FoodAdmin
         $securityContext = $this->getContainer()->get('security.context');
         $user = $securityContext->getToken()->getUser();
         $this->_fixPoints($object, $user);
+        $this->_fixZones($object);
         $this->_fixPhotos($object);
         $this->saveFile($object);
         parent::prePersist($object);
@@ -190,6 +191,7 @@ class PlaceAdmin extends FoodAdmin
         $container = $this->getConfigurationPool()->getContainer();
         $securityContext = $container->get('security.context');
         $this->_fixPoints($object, $securityContext->getToken()->getUser());
+        $this->_fixZones($object);
         $this->_fixPhotos($object);
         $this->saveFile($object);
         parent::preUpdate($object);
@@ -211,6 +213,26 @@ class PlaceAdmin extends FoodAdmin
             $createdBy = $point->getCreatedBy();
             if (empty($createdBy)) {
                 $point->setCreatedBy($user);
+            }
+        }
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Place $object
+     */
+    private function _fixZones($object)
+    {
+        $container = $this->getConfigurationPool()->getContainer();
+        foreach ($object->getPoints() as $point) {
+            foreach ($point->getZones() as $zone) {
+                $zone->setPlacePoint($point);
+                $cAt = $zone->getCreatedAt();
+                if (empty($cAt)) {
+                    $zone->setCreatedAt(new \DateTime('now'));
+                }
+                $point->removeZone($zone);
+                $point->addZone($zone);
+                //$container->get('doctrine')->getManager()->persist($zone);
             }
         }
     }
