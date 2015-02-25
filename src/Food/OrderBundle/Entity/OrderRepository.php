@@ -391,7 +391,9 @@ class OrderRepository extends EntityRepository
     public function getOrderCountByDay($dateFrom, $dateTo, $orderStatus=null, $mobile=false)
     {
         if (empty($orderStatus)) {
-            $orderStatus = OrderService::$status_completed;
+            $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_partialy_completed."'";
+        } else {
+            $orderStatus = "'".$orderStatus."'";
         }
 
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
@@ -403,7 +405,7 @@ class OrderRepository extends EntityRepository
             COUNT(o.id) AS order_count
           FROM orders o
           WHERE
-            o.order_status = '{$orderStatus}'
+            o.order_status IN ({$orderStatus})
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
             ".($mobile ? 'AND mobile=1':'')."
           GROUP BY DATE_FORMAT(o.order_date, '%y-%m-%d')
