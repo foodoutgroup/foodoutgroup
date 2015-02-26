@@ -408,7 +408,7 @@
       </trans-unit>
       <trans-unit id="c515ebc67239e3c3555e84b329f7eeba" resname="mobile.place_point_phone">
         <source>mobile.place_point_phone</source>
-        <target>Gatavošanas punkta tālrunis</target>
+        <target>Restorana tālrunis</target>
       </trans-unit>
       <trans-unit id="88456d596941f6ec79d9cd30ae01e8af" resname="mobile.pickup_foodout">
         <source>mobile.pickup_foodout</source>
@@ -916,11 +916,11 @@
       </trans-unit>
       <trans-unit id="328f3dbc63eaba2688308ce1f36114d5" resname="general.new_order.selected_place_point">
         <source>general.new_order.selected_place_point</source>
-        <target>Izvēlēts gatavošanas punkts pēc adreses</target>
+        <target>Pasūtījumu gatavos</target>
       </trans-unit>
       <trans-unit id="e398e7f3c3c3a822d57418a37187a40d" resname="general.new_order.place_point_phone">
         <source>general.new_order.place_point_phone</source>
-        <target>Gatavošanas punkta tālrunis</target>
+        <target>Restorana tālrunis</target>
       </trans-unit>
       <trans-unit id="8372390cc5f731f2446510354d0f0995" resname="general.new_order.client_name">
         <source>general.new_order.client_name</source>
