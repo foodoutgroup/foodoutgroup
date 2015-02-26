@@ -82,6 +82,9 @@ class AjaxController extends Controller
     {
         $respData = array();
         $street = mb_strtoupper($street, 'utf-8');
+        if ($city == "Rīga") {
+            $city = "Ryga";
+        }
         /*
         $street = str_replace("S", "[S|Š]", $street);
         $street = str_replace("A", "[A|Ą]", $street);
@@ -124,7 +127,9 @@ class AjaxController extends Controller
         }
 
         foreach ($streets as $str) {
-            $respData[] = array('value' => $str['name']);
+            if (!empty($str['name']) && $str['name'] != "NULL") {
+                $respData[] = array('value' => $str['name']);
+            }
         }
         $response->setContent(json_encode($respData));
     }

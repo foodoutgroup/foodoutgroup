@@ -89,7 +89,7 @@
                     <select id="index_city">
                         <option value="" disabled {% if formDefaults.city == '' %}selected{% endif %}>{% trans %}index.city{% endtrans %}</option>
                         {% for city in available_cities %}
-                            <option value="{{ city }} {% if formDefaults.city == city or formDefaults.city == city|replace({'ė':'e'}) %}selected{% endif %}">{{ city }}</option>
+                            <option value="{{ city }} {% if formDefaults.city == city or formDefaults.city == city|replace({'ė':'e','y':'ī'}) %}selected{% endif %}">{{ city }}</option>
                         {% endfor %}
                     </select>
 
