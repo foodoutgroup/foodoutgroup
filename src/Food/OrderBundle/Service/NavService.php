@@ -351,6 +351,15 @@ class NavService extends ContainerAware
             $region = "RYGA";
         }
 
+        $city = "";
+        if ($order->getDeliveryType() == OrderService::$deliveryDeliver) {
+            $city = $order->getAddressId()->getCity();
+            $city = strtoupper($city);
+        }
+        if ($city == "RIGA") {
+            $city = "RYGA";
+        }
+
         $orderDate = $order->getOrderDate();
         $orderDate->add(new \DateInterval('P0DT0H'));
         $deliveryDate = $order->getDeliveryTime();
@@ -370,7 +379,7 @@ class NavService extends ContainerAware
             'Order No_' => $orderNewId,
             'Phone' => str_replace(array('370', '371'), '8', $order->getUser()->getPhone()),
             'ZipCode' => '', // ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getZipCode() : ''),
-            'City' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $order->getAddressId()->getCity() : ''),
+            'City' => $city,
             'Street' => $street, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getStreetName(): ''),
             'Street No_' => $houseNr, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getNumberFrom(): ''),
             'Floor' => '',
@@ -460,7 +469,7 @@ class NavService extends ContainerAware
      */
     private function _processLineDelivery(Order $order, $orderNewId, $key)
     {
-        $devPrice = 1.5;
+        $devPrice = $order->getPlace()->getDeliveryPrice();
         $couponCode = $order->getCouponCode();
         if (!empty($couponCode) && strlen($couponCode) > 1) {
             $devPrice = $order->getDeliveryPrice();

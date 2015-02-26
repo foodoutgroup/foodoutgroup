@@ -172,7 +172,7 @@
       </trans-unit>
       <trans-unit id="7aaffcb3d756c2cd540c10c6feafacfa" resname="general.subscribed_newsletter">
         <source>general.subscribed_newsletter</source>
-        <target>Jūs esat abonējuši informatīvo biļetenu</target>
+        <target>Jūs esat reģistrējušies jaunumu saņemšanai</target>
       </trans-unit>
       <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
         <source>general.sms.user.order_accepted</source>
