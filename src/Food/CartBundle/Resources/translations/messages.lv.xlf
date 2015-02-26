@@ -2,6 +2,10 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="lv" datatype="plaintext" original="file.ext">
     <body>
+    <trans-unit id="cart.checkout.main_titlelv" resname="cart.checkout.main_title">
+        <source>cart.checkout.main_title</source>
+        <target>Rīkojums</target>
+    </trans-unit>
       <trans-unit id="c9f932900c061295799f8eee2ba492c6" resname="cart.block.your_order">
         <source>cart.block.your_order</source>
         <target>Jūsu pasūtījums</target>
