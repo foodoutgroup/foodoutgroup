@@ -176,19 +176,19 @@
       </trans-unit>
       <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
         <source>general.sms.user.order_accepted</source>
-        <target>Sveiki! restourant_name apstiprināja Jūsu pasūtījumu. Ēdiena plānotais piegādes laiks ir delivery_time! Ja Jums rodas jautājumi, sazinieties pa tālruni +restourant_phone!</target>
+        <target>Sveiki! restourant_name apstiprinaja Jusu pasutijumu. Ediena planotais piegades laiks ir delivery_time! Ja Jums rodas jautajumi, sazinieties pa talruni +restourant_phone!</target>
       </trans-unit>
       <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
         <source>general.sms.user.order_accepted_pickup</source>
-        <target>Sveiki! restourant_name apstiprināja Jūsu pasūtījumu. Ēdienu varat saņemt delivery_time! Ja Jums rodas jautājumi, sazinieties pa tālruni +restourant_phone!</target>
+        <target>Sveiki! restourant_name apstiprinaja Jusu pasutijumu. Edienu varat sanemt delivery_time! Ja Jums rodas jautajumi, sazinieties pa talruni +restourant_phone!</target>
       </trans-unit>
       <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
         <source>general.sms.client.restourant_cancel</source>
-        <target>Atvainojamies! Restorāns ir atcēlis Jūsu pasūtījumu.</target>
+        <target>Atvainojamies! Restorans ir atcelis Jusu pasutijumu.</target>
       </trans-unit>
       <trans-unit id="30dc3f60ca025a053ed3728a342c566a" resname="general.sms.client.restourant_cancel_banklink">
         <source>general.sms.client.restourant_cancel_banklink</source>
-        <target>Atvainojamies! Restorāns ir atcēlis Jūsu pasūtījumu. Nauda tiks pārskaitīta atpakaļ uz Jūsu kontu.</target>
+        <target>Atvainojamies! Restorans ir atcelis Jusu pasutijumu. Nauda tiks parskaitita atpakal uz Jusu kontu.</target>
       </trans-unit>
       <trans-unit id="74fbe91702c1ee04724c55bde63e654f" resname="general.email.new_order">
         <source>general.email.new_order</source>
@@ -348,19 +348,19 @@
       </trans-unit>
       <trans-unit id="e44e8ff9e4e47e49c926d67bf0112966" resname="general.sms.new_order">
         <source>general.sms.new_order</source>
-        <target>Jauns pasūtījums:</target>
+        <target>Jauns pasutijums:</target>
       </trans-unit>
       <trans-unit id="52d751788d1ab704a9990362e53c1852" resname="general.sms.canceled_order">
         <source>general.sms.canceled_order</source>
-        <target>Pasūtījums #%order_number% ir atcelts:</target>
+        <target>Pasutijums #%order_number% ir atcelts:</target>
       </trans-unit>
       <trans-unit id="6923d196342f158f85d8fbc2903dfbcb" resname="general.sms.order_reminder">
         <source>general.sms.order_reminder</source>
-        <target>Atgādinām, ka Jums ir neapstiprināts pasūtījums:</target>
+        <target>Atgadinam, ka Jums ir neapstiprinats pasutijums:</target>
       </trans-unit>
       <trans-unit id="ddd5593d67b30b671c0533a616aa5398" resname="general.sms.new_order_in_mail">
         <source>general.sms.new_order_in_mail</source>
-        <target>Lūdzam pārbaudīt savu e-pastu, saņēmāt jaunu pasūtījumu</target>
+        <target>Ludzam parbaudit savu e-pastu, sanamat jaunu pasutijumu</target>
       </trans-unit>
       <trans-unit id="047147b3a00263b0c62fd54a32306e95" resname="general.email.partialy_completed">
         <source>general.email.partialy_completed</source>
@@ -368,15 +368,15 @@
       </trans-unit>
       <trans-unit id="3d6f52993727876649fad3f9e2d5c687" resname="general.sms.driver_assigned_order">
         <source>general.sms.driver_assigned_order</source>
-        <target>Piesaistīts jauns pasūtījums:</target>
+        <target>Piesaistits jauns pasutijums:</target>
       </trans-unit>
       <trans-unit id="28ecbd185a859ae613493c195207e5e0" resname="general.sms.user_order_delayed">
         <source>general.sms.user_order_delayed</source>
-        <target>Atvainojamies! Taču lielās pasūtījumu plūsmas dēļ Jūsu pasūtījums tiek atlikts uz delay_time min. un tiks piegādāts pēc delivery_min min. Ja nepiekrītat gaidīt – sazinieties pa tālr. +restourant_phone</target>
+        <target>Atvainojamies! Tacu lielas pasutijumu plusmas del Jusu pasutijums tiek atlikts uz delay_time min. un tiks piegadats pec delivery_min min. Ja nepiekritat gaidit – sazinieties pa talr. +restourant_phone</target>
       </trans-unit>
       <trans-unit id="e7bd53e2c7fa9e93ede0c7b307426c5a" resname="general.sms.user_order_delayed_pickup">
         <source>general.sms.user_order_delayed_pickup</source>
-        <target>Atvainojamies! Taču lielās pasūtījumu plūsmas dēļ Jūsu pasūtījums tiek atlikts uz delay_time min. un tiks sagatavots pēc delivery_min min. Ja nepiekrītat gaidīt – sazinieties pa tālr. +restourant_phone</target>
+        <target>Atvainojamies! Tacu lielass pasutijumu plusmas del Jusu pasutijums tiek atlikts uz delay_time min. un tiks sagatavots pec delivery_min min. Ja nepiekritat gaidit – sazinieties pa talr. +restourant_phone</target>
       </trans-unit>
       <trans-unit id="8036a67ebc0bbfebb10242dfaabceaf3" resname="general.email.user_delayed_subject">
         <source>general.email.user_delayed_subject</source>
