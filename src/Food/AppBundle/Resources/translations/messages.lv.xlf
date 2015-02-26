@@ -412,7 +412,7 @@
       </trans-unit>
       <trans-unit id="88456d596941f6ec79d9cd30ae01e8af" resname="mobile.pickup_foodout">
         <source>mobile.pickup_foodout</source>
-        <target>Ieradīsies “Foodout.lt” kurjers</target>
+        <target>Ieradīsies “Foodout.lv” kurjers</target>
       </trans-unit>
       <trans-unit id="5b47f6677b99741a5b189e0988b90a24" resname="mobile.pickup">
         <source>mobile.pickup</source>
@@ -780,15 +780,19 @@
       </trans-unit>
       <trans-unit id="1794a5ac72303f545a21a31292d40981" resname="general.cart.success">
         <source>general.cart.success</source>
-        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lt”</strong> pa tālruni <strong>+370 614 17872</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
+        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+370 614 17872</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
       </trans-unit>
+        <trans-unit id="general.cart.success_title_lv" resname="general.cart.success_title">
+            <source>general.cart.success_title</source>
+            <target>Sveicieni</target>
+        </trans-unit>
       <trans-unit id="f4c0ca7e7c9982f972d72f90a102c538" resname="general.cart.success_no_place_num">
         <source>general.cart.success_no_place_num</source>
-        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/> Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lt”</strong> pa tālruni <strong>+370 614 17872</strong>.]]></target>
+        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/> Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+370 614 17872</strong>.]]></target>
       </trans-unit>
       <trans-unit id="14f92354734525418e2e676012bdd0f3" resname="general.cart.wait">
         <source>general.cart.wait</source>
-        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tiks nodots restorānam, tiklīdz pabeigsiet apmaksu. <br/> Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>"Foodout.lt"</strong> pa tālruni <strong>+370 614 17872</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
+        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tiks nodots restorānam, tiklīdz pabeigsiet apmaksu. <br/> Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>"Foodout.lv"</strong> pa tālruni <strong>+370 614 17872</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
       </trans-unit>
       <trans-unit id="725e9712f4d5c48bf73110fb0d093b68" resname="reporting.monthly.driver_report.title">
         <source>reporting.monthly.driver_report.title</source>
@@ -968,7 +972,7 @@
       </trans-unit>
       <trans-unit id="0c3a2a3eb79b18168cd46e5feaf473ff" resname="general.email.placeholder">
         <source>general.email.placeholder</source>
-        <target>vietturis@pasts.lt</target>
+        <target>vietturis@pasts.lv</target>
       </trans-unit>
       <trans-unit id="39f0353f53d86358141f42a28840e388" resname="general.name.placeholder">
         <source>general.name.placeholder</source>
@@ -1080,7 +1084,7 @@
       </trans-unit>
       <trans-unit id="a0c3f145b0a75655c804d2981458aca7" resname="login.username_placeholder">
         <source>login.username_placeholder</source>
-        <target>vietturis@pasts.lt</target>
+        <target>vietturis@pasts.lv</target>
       </trans-unit>
       <trans-unit id="ef5a08f361ac7673203e6300769b25a9" resname="login.password_placeholder">
         <source>login.password_placeholder</source>
@@ -1096,7 +1100,7 @@
       </trans-unit>
       <trans-unit id="bc35538bf1c9367fba9efdb845f93e49" resname="registration.email_placeholder">
         <source>registration.email_placeholder</source>
-        <target>vietturis@pasts.lt</target>
+        <target>vietturis@pasts.lv</target>
       </trans-unit>
       <trans-unit id="cd8ca8a825ca00722525ae4f12fcc8d8" resname="registration.password_placeholder">
         <source>registration.password_placeholder</source>

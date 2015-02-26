@@ -786,6 +786,11 @@
         <source>general.cart.success</source>
         <target><![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 614 17872</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
       </trans-unit>
+        <trans-unit id="general.cart.success_title" resname="general.cart.success_title">
+            <source>general.cart.success_title</source>
+            <target>Sveikiname</target>
+        </trans-unit>
+
       <trans-unit id="general.cart.success_no_place_num" resname="general.cart.success_no_place_num">
         <source>general.cart.success_no_place_num</source>
         <target><![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 614 17872</strong>.]]></target>
