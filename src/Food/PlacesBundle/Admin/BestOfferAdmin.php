@@ -23,7 +23,9 @@ class BestOfferAdmin extends FoodAdmin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $options = ['data_class' => null, 'label' => 'admin.best_offers.image'];
+        $options = ['data_class' => null,
+                    'label' => 'admin.best_offers.image',
+                    'required' => false];
 
         if (($pl = $this->getSubject()) && $pl->getImage()) {
             $options['help'] = '<img src="/' . $pl->getWebPathThumb() . '" />';
