@@ -42,6 +42,10 @@
         <source>cart.checkout.delivery_i_pickup</source>
         <target>Paņemšu pats</target>
       </trans-unit>
+        <trans-unit id="91a531cac53e76cf23ca76d224b23c27newlv" resname="cart.checkout.enter_address">
+            <source>cart.checkout.enter_address</source>
+            <target>Ievadiet adresi</target>
+        </trans-unit>
       <trans-unit id="91a531cac53e76cf23ca76d224b23c27" resname="cart.checkout.city">
         <source>cart.checkout.city</source>
         <target>Pilsēta</target>
