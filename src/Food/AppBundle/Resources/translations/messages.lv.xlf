@@ -976,11 +976,11 @@
       </trans-unit>
       <trans-unit id="39f0353f53d86358141f42a28840e388" resname="general.name.placeholder">
         <source>general.name.placeholder</source>
-        <target>Vietturis (vārds)</target>
+        <target>Vārds</target>
       </trans-unit>
       <trans-unit id="90b8834d0f52b43df48744d6772b2a25" resname="general.lastname.placeholder">
         <source>general.lastname.placeholder</source>
-        <target>Vietturis (uzvārds)</target>
+        <target>Uzvārds</target>
       </trans-unit>
       <trans-unit id="629d6754ded3dc1f2128cf7aa2d0b910" resname="general.homepage.meta_title">
         <source>general.homepage.meta_title</source>
