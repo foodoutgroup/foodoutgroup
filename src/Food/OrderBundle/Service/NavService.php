@@ -346,16 +346,13 @@ class NavService extends ContainerAware
 
         $city = $order->getPlacePoint()->getCity();
         $city = str_replace("ė", "e", $city);
+        $city = str_replace("ī", "i", $city);
+        $city = mb_strtoupper($city);
         $region = mb_strtoupper($city);
-        if ($region == "RIGA" || $region == "RIGA") {
+        if ($region == "RIGA") {
             $region = "RYGA";
         }
 
-        $city = "";
-        if ($order->getDeliveryType() == OrderService::$deliveryDeliver) {
-            $city = $order->getAddressId()->getCity();
-            $city = strtoupper($city);
-        }
         if ($city == "RIGA") {
             $city = "RYGA";
         }
