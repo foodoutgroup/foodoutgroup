@@ -47,9 +47,10 @@ class InvoiceService extends ContainerAware
 
     /**
      * @param Order $order
+     * @param boolean $mustDoNavDelete
      * @throws \InvalidArgumentException
      */
-    public function addInvoiceToSend($order)
+    public function addInvoiceToSend($order, $mustDoNavDelete=false)
     {
         if (!$order instanceof Order) {
             throw new \InvalidArgumentException('I need order to plan invoice generation');
@@ -80,6 +81,12 @@ class InvoiceService extends ContainerAware
         $invoiceTask->setOrder($order)
             ->setDateAdded(new \DateTime('now'))
             ->markUnsent();
+
+        if ($mustDoNavDelete) {
+            $invoiceTask->setDeleteFromNav(true);
+        } else {
+            $invoiceTask->setDeleteFromNav(false);
+        }
 
         $em->persist($invoiceTask);
         $em->flush();

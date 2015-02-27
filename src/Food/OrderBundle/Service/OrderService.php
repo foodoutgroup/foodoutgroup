@@ -548,10 +548,10 @@ class OrderService extends ContainerAware
         if ($order->getPlace()->getSendInvoice()
             && !$order->getPlacePointSelfDelivery()
             && $order->getDeliveryType() == OrderService::$deliveryDeliver) {
-            $this->setInvoiceDataForOrder();
+            $mustDoNavDelete = $this->setInvoiceDataForOrder();
 
             // Suplanuojam sf siuntima klientui
-            $this->container->get('food.invoice')->addInvoiceToSend($order);
+            $this->container->get('food.invoice')->addInvoiceToSend($order, $mustDoNavDelete);
         }
         
         return $this;
@@ -644,10 +644,12 @@ class OrderService extends ContainerAware
 
     /**
      * @throws \Exception
+     * @return boolean
      */
     public function setInvoiceDataForOrder()
     {
         $order = $this->getOrder();
+        $mustPerformDelete = false;
 
         $orderSeries = $order->getSfSeries();
         $orderSfNumber = $order->getSfNumber();
@@ -660,6 +662,7 @@ class OrderService extends ContainerAware
 
             try {
                 $sfNumber = $invoiceService->getUnusedSfNumber();
+                $mustPerformDelete = true;
             } catch (OptimisticLockException $e) {
                 // It was locked.. lets take new one and dont mess with DB
                 $sfNumber = null;
@@ -689,6 +692,8 @@ class OrderService extends ContainerAware
             $order->setSfNumber($sfNumber);
 
             $this->saveOrder();
+
+            return $mustPerformDelete;
         }
     }
 
