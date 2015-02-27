@@ -308,8 +308,7 @@ class InvoiceService extends ContainerAware
         $doctrine = $this->container->get('doctrine');
         $em = $doctrine->getManager();
         $repo = $doctrine->getRepository('FoodAppBundle:UnusedSfNumbers');
-// laikinai isjugiam
-        return null;
+
         try {
             $unusedSfNumber = $repo->findOldest();
 
