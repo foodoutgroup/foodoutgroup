@@ -100,7 +100,7 @@
       </trans-unit>
       <trans-unit id="9330627cdb5d1c945003084cf89374b6" resname="cart.checkout.card_on_delivery">
         <source>cart.checkout.card_on_delivery</source>
-        <target>Ar kredītkarti pēc piegādes</target>
+        <target>Ar kredītkarti piegādes brīdī</target>
       </trans-unit>
       <trans-unit id="619e1217b03f57e9d78b922c31b688d4" resname="cart.checkout.classic_seb">
         <source>cart.checkout.classic_seb</source>
@@ -188,7 +188,7 @@
       </trans-unit>
       <trans-unit id="a2983308283353efd4d652372ec45d72" resname="cart.checkout.company_name_placeholder">
         <source>cart.checkout.company_name_placeholder</source>
-        <target><![CDATA[UAB &quot;Įmonė&quot;]]></target>
+        <target><![CDATA[SIA &quot;Kompānija&quot;]]></target>
       </trans-unit>
       <trans-unit id="660e6b50db9cdf2d740cd15fe4535e84" resname="cart.checkout.company_code">
         <source>cart.checkout.company_code</source>
@@ -204,7 +204,7 @@
       </trans-unit>
       <trans-unit id="36ce8084d71a21fff0a643492d9b1a39" resname="cart.checkout.vat_code_placeholder">
         <source>cart.checkout.vat_code_placeholder</source>
-        <target>LT100001234567</target>
+        <target>LV312345678</target>
       </trans-unit>
       <trans-unit id="b194ec7faebc2d1d2033c068b9722b36" resname="cart.checkout.company_address">
         <source>cart.checkout.company_address</source>
@@ -212,10 +212,9 @@
       </trans-unit>
       <trans-unit id="080b1c789ca68c2d0a88575f6ed0d200" resname="cart.checkout.company_address_placeholder">
         <source>cart.checkout.company_address_placeholder</source>
-        <target>Laisves pr. 123,
-LT-01234,
-Viļņa
-</target>
+        <target>Kalnciema iela 87,
+Rīga,
+LV-1046</target>
       </trans-unit>
       <trans-unit id="ec4ed41d3e3b52f147682d3f477e55f0" resname="order.form.errors.no_restaurant_to_deliver">
         <source>order.form.errors.no_restaurant_to_deliver</source>

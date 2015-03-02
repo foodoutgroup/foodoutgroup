@@ -58,7 +58,6 @@ class GoogleGisService extends ContainerAware
                 // Nieko nekeiciam
             }
         }
-
         $cnt = $this->container->get('doctrine')->getRepository('FoodAppBundle:GeoCache')
             ->findOneBy(
                 array(
@@ -137,7 +136,7 @@ class GoogleGisService extends ContainerAware
             $returner['address_orig'] = $address;
             $returner['lat'] = $location->results[0]->geometry->location->lat;
             $returner['lng'] = $location->results[0]->geometry->location->lng;
-        } elseif( !empty( $location->results[0]) && in_array('route', $location->results[0]->types)) {
+        } elseif( !empty( $location->results[0]) && (in_array('route', $location->results[0]->types) || in_array("neighborhood", $location->results[0]->types))) {
             $res = preg_match('/\d\w{0,}$/i', $address, $rezult);
             if (!empty($rezult)) {
                 $crit = $rezult[0];
@@ -145,7 +144,6 @@ class GoogleGisService extends ContainerAware
                 $crit = "0000";
             }
             $resIs = preg_match('/'.$crit.'/', $location->results[0]->address_components[0]->long_name);
-
             if ($res == 0 || $res==1 && $resIs == 1) {
                 $returner['street_found'] = true;
                 $returner['street'] =  $location->results[0]->address_components[0]->long_name;

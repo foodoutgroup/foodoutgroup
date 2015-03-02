@@ -66,3 +66,5 @@ parameters:
     mailer_partialy_deliverer: 30021995
     mailer_rate_your_food: 30009271
     mailer_send_invoice: 30019657
+    yt_video: https://www.youtube.com/v/3zFW6hnuvJY?fs=1&amp;autoplay=
+    yt_embeded: //www.youtube-nocookie.com/embed/3zFW6hnuvJY
