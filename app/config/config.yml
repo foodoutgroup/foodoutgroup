@@ -13,6 +13,7 @@ parameters:
     sms.balance_limit_warn: 5
     sms.balance_limit_critical: 3
     infobip_provider.api_url: "http://api.infobip.com/api/v3/sendsms/json"
+    infobip_provider.secondary_api_url: "http://api2.infobip.com/api/v3/sendsms/json"
     infobip_provider.account_url: "http://api2.infobip.com/api"
     infobip_provider.login: "skanu1"
     infobip_provider.password: "119279"
