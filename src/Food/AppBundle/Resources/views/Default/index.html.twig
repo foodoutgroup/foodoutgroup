@@ -81,7 +81,7 @@
 
     <div style="background-image: url(http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/offer-1.jpg') }});" class="site-header special-offer-block">
         <div class="site-block">
-            <h1>{% trans %}index.title_page_header{% endtrans %}</h1>
+            <h1 class="no-wrap">{% trans %}index.title_page_header{% endtrans %}</h1>
             <form class="search-food-form"  action="{{ path('food_places_' ~ locale ~ '_main') }}" method="get">
                 <p class="title">{% trans %}index.search_form_qlue{% endtrans %}</p>
                 <div class="clearfix">

@@ -1722,3 +1722,5 @@ div.coupon_form_popup {
 .company_data {
     padding-top: 10px;
 }
+
+.no-wrap { white-space: nowrap; }
