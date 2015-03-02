@@ -212,7 +212,7 @@
       </trans-unit>
       <trans-unit id="080b1c789ca68c2d0a88575f6ed0d200" resname="cart.checkout.company_address_placeholder">
         <source>cart.checkout.company_address_placeholder</source>
-        <target>Kalnciema iela 87,
+        <target>Kalnciema iela,
 Rīga,
 LV-1046</target>
       </trans-unit>
