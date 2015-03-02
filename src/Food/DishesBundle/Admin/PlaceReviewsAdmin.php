@@ -3,6 +3,8 @@ namespace Food\DishesBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Food\AppBundle\Filter\PlaceFilter;
+use Food\UserBundle\Entity\UserAddress;
+use FOS\UserBundle\Model\User;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -33,7 +35,33 @@ class PlaceReviewsAdmin extends FoodAdmin
                 'label' => 'admin.created_by',
                 'disabled' => $fieldDisabled,
                 'required' => false,
-            ))
+            ));
+
+        if ($this->isAdmin() && !$fieldDisabled) {
+            $formMapper
+                ->add(
+                    'newuser',
+                    'text',
+                    array(
+                        'mapped' => false,
+                        'label' => 'admin.place.review.created_by_new',
+                        'attr' => array(
+                            'placeholder' => $this->trans('admin.place.review.created_by_new_placeholder')
+                        )
+                    )
+                )
+                ->add(
+                    'newcity',
+                    'text',
+                    array(
+                        'mapped' => false,
+                        'label' => 'admin.place.review.city_new',
+                    )
+                )
+                ->add('createdAt', null, array('format' => 'Y-m-d H:i:s', 'label' => 'admin.place.review.created_at'));
+        }
+
+        $formMapper
             ->add('review', 'textarea', array('label' => 'admin.place.review'))
         ;
     }
@@ -88,5 +116,78 @@ class PlaceReviewsAdmin extends FoodAdmin
 
         $this->setPlaceFilter(new PlaceFilter($this->getSecurityContext()))
             ->setPlaceFilterEnabled(true);
+    }
+
+    /**
+     * Set create date before inserting to database
+     *
+     * @inheritdoc
+     *
+     * @param \Food\DishesBundle\Entity\PlaceReviews $object
+     * @return mixed|void
+     */
+    public function prePersist($object)
+    {
+        // Create new user in whose name we'll be posting this nonsense
+        $uniqid = $_GET['uniqid'];
+        $formData = $this->getRequest()->request->get($uniqid);
+        $newUserName = $formData['newuser'];
+        $newCity = $formData['newcity'];
+
+        $fos = $this->getContainer()->get('fos_user.user_manager');
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $domain = $this->getContainer()->getParameter('domain');
+
+        $possibleUserName = $newUserName.'_comment_dummy@'.$domain;
+        $userCheck = $fos->findUserByEmail($possibleUserName);
+        if (!empty($userCheck) && $userCheck instanceof User && $userCheck->getId())
+        {
+            $exists = true;
+        } else {
+            $exists = false;
+        }
+
+        if ($exists) {
+            $counter = 1;
+            while ($exists) {
+                $possibleUserName = $newUserName.$counter.'_comment_dummy@'.$domain;
+                $userCheck = $fos->findUserByEmail($possibleUserName);
+                if (!empty($userCheck) && $userCheck instanceof User && $userCheck->getId())
+                {
+                    $exists = true;
+                } else {
+                    $exists = false;
+                }
+
+                $counter++;
+            }
+        }
+
+        /**
+         * @var $newUser \Food\UserBundle\Entity\User
+         */
+        $newUser = $fos->createUser();
+        $newUser->setEmail($possibleUserName);
+        $newUser->setFirstname($newUserName);
+        $newUser->setPhone('370600000001');
+        $newUser->setFullyRegistered(false)
+            ->setRoles(array('ROLE_USER'));
+
+        $newUser->setPassword('super_slaptas_dummy_passw');
+        $fos->updateUser($newUser);
+
+        $address = new UserAddress();
+        $address->setCity($newCity)
+            ->setAddress('Laisves pr.')
+            ->setDefault(true)
+            ->setLat('25.00000')
+            ->setLon('25.00000')
+            ->setUser($newUser);
+
+        $em->persist($address);
+        $em->flush();
+
+        $object->setCreatedBy($newUser);
+        $object->setDummy(true);
     }
 }
