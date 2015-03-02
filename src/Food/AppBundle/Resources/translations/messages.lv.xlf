@@ -748,7 +748,7 @@
       </trans-unit>
       <trans-unit id="620c7ce4e5b0c3f1f527813491a9152f" resname="general.ip_banned_info">
         <source>general.ip_banned_info</source>
-        <target><![CDATA[Atvainojamies! Taču Jūsu IP adrese (%ip%) ir bloķēta.<br />IP adreses tiek bloķētas, ja: apmeklētājs veido nepatiesus pasūtījumus; apmelo, aizskar vai ar citām tīšām darbībām traucē citiem apmeklētājiem vai restorāna darbam.<br /><br />Administrācijas norādītais iemesls: "%reason%".<br /><br />Ja uzskatāt, ka tas ir noticis kļūdas dēļ – sazinieties ar mums <strong><a href="mailto:info@foodout.lv">info@foodout.lv</a></strong> vai pa tālruni <strong>+370 614 17872</strong>]]></target>
+        <target><![CDATA[Atvainojamies! Taču Jūsu IP adrese (%ip%) ir bloķēta.<br />IP adreses tiek bloķētas, ja: apmeklētājs veido nepatiesus pasūtījumus; apmelo, aizskar vai ar citām tīšām darbībām traucē citiem apmeklētājiem vai restorāna darbam.<br /><br />Administrācijas norādītais iemesls: "%reason%".<br /><br />Ja uzskatāt, ka tas ir noticis kļūdas dēļ – sazinieties ar mums <strong><a href="mailto:info@foodout.lv">info@foodout.lv</a></strong> vai pa tālruni <strong>+371 67363663</strong>]]></target>
       </trans-unit>
       <trans-unit id="7e9bef54e33d4a729ebb1a05ed886696" resname="general.raty.not_rated_yet">
         <source>general.raty.not_rated_yet</source>
@@ -780,7 +780,7 @@
       </trans-unit>
       <trans-unit id="1794a5ac72303f545a21a31292d40981" resname="general.cart.success">
         <source>general.cart.success</source>
-        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+370 614 17872</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
+        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
       </trans-unit>
         <trans-unit id="general.cart.success_title_lv" resname="general.cart.success_title">
             <source>general.cart.success_title</source>
@@ -788,11 +788,11 @@
         </trans-unit>
       <trans-unit id="f4c0ca7e7c9982f972d72f90a102c538" resname="general.cart.success_no_place_num">
         <source>general.cart.success_no_place_num</source>
-        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/> Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+370 614 17872</strong>.]]></target>
+        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/> Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong>.]]></target>
       </trans-unit>
       <trans-unit id="14f92354734525418e2e676012bdd0f3" resname="general.cart.wait">
         <source>general.cart.wait</source>
-        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tiks nodots restorānam, tiklīdz pabeigsiet apmaksu. <br/> Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>"Foodout.lv"</strong> pa tālruni <strong>+370 614 17872</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
+        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tiks nodots restorānam, tiklīdz pabeigsiet apmaksu. <br/> Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>"Foodout.lv"</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
       </trans-unit>
       <trans-unit id="725e9712f4d5c48bf73110fb0d093b68" resname="reporting.monthly.driver_report.title">
         <source>reporting.monthly.driver_report.title</source>
@@ -967,12 +967,12 @@
         <target>Tr. līdz. vadītājs saņems saiti</target>
       </trans-unit>
       <trans-unit id="c7a66700389e0d08fccb348dc8d62e4c" resname="general.canceled_order.title">
-        <source>general.canceled_order.title</source>
+        <source>general.canceled_order.titlepasts.lv</source>
         <target>Atcelts apmaksātais pasūtījums</target>
       </trans-unit>
       <trans-unit id="0c3a2a3eb79b18168cd46e5feaf473ff" resname="general.email.placeholder">
         <source>general.email.placeholder</source>
-        <target>vietturis@pasts.lv</target>
+        <target>info@epasts.lv</target>
       </trans-unit>
       <trans-unit id="39f0353f53d86358141f42a28840e388" resname="general.name.placeholder">
         <source>general.name.placeholder</source>
