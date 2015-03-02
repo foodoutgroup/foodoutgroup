@@ -18,6 +18,12 @@ class UnusedSfNumbersRepository extends EntityRepository
             ->orderBy('sf.sfNumber', 'ASC')
             ->setMaxResults(1);
 
-        return $qb->getQuery()->getSingleResult();
+        $result = $qb->getQuery()->getResult();
+
+        if (empty($result) || count($result) < 1) {
+            return null;
+        } else {
+            return $result[0];
+        }
     }
 }
