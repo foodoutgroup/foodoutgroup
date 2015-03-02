@@ -134,9 +134,11 @@
     <form method="post">
         {% if order.orderStatus == "assigned" %}
             <button type="submit" name="status" value="completed" class="btn btn-success btn-block">{% trans %}mobile.order_delivered{% endtrans %}</button>
-            <button type="submit" name="status" value="partialy_completed" class="btn btn-warning btn-block">{% trans %}mobile.order_partialy_delivered{% endtrans %}</button>
         {% endif %}
         <a class="btn btn-info btn-block" href="{{ path('driver_mobile_invoice', {hash: order.orderHash}) }}">{% trans %}mobile.invoice_driver{% endtrans %}</a>
-
+        {% if order.orderStatus == "assigned" %}
+            <br />
+            <button type="submit" name="status" value="partialy_completed" class="btn btn-warning btn-block">{% trans %}mobile.order_partialy_delivered{% endtrans %}</button>
+        {% endif %}
     </form>
 {% endblock %}

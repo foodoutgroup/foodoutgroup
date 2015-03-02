@@ -1727,4 +1727,20 @@ class NavService extends ContainerAware
 
         return $resultList;
     }
+
+    /**
+     * Deletes invoice from replication table in NAV so a new one can be imported, bitches...
+     *
+     * @param string $sfNumber
+     */
+    public function deleteInvoiceFromNav($sfNumber)
+    {
+        $mssql = $this->container->get('food.mssql');
+
+        $query = "
+            DELETE FROM %s WHERE [Invoice No_] = '%s'";
+        $query = sprintf($query, $this->getInvoiceTable(), $sfNumber);
+
+        $this->initSqlConn()->query($query);
+    }
 }

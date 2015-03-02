@@ -50,6 +50,12 @@ class InvoiceToSend
     private $lastError = '';
 
     /**
+     * @var bool
+     * @ORM\Column(name="delete_from_nav", type="boolean", nullable=true)
+     */
+    private $deleteFromNav = false;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -202,5 +208,28 @@ class InvoiceToSend
     public function getOrder()
     {
         return $this->order;
+    }
+
+    /**
+     * Set deleteFromNav
+     *
+     * @param boolean $deleteFromNav
+     * @return InvoiceToSend
+     */
+    public function setDeleteFromNav($deleteFromNav)
+    {
+        $this->deleteFromNav = $deleteFromNav;
+    
+        return $this;
+    }
+
+    /**
+     * Get deleteFromNav
+     *
+     * @return boolean 
+     */
+    public function getDeleteFromNav()
+    {
+        return $this->deleteFromNav;
     }
 }

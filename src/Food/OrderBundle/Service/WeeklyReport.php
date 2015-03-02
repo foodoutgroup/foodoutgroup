@@ -62,6 +62,11 @@ class WeeklyReport extends ContainerAware
         'average_cart' => 'SELECT IFNULL(AVG(o.total - IFNULL(o.delivery_price, 0)) / 1.21, 0.0) AS result'
     ];
 
+    /**
+     * @param string $forceEmail
+     * @param boolean $notDryRun
+     * @return array
+     */
     public function sendWeeklyReport($forceEmail, $notDryRun)
     {
         if (!$notDryRun) {
@@ -83,6 +88,9 @@ class WeeklyReport extends ContainerAware
                                       $content);
     }
 
+    /**
+     * @return mixed
+     */
     public function getNumberOfPlacesFromLastWeek()
     {
         $query = '
@@ -101,6 +109,9 @@ class WeeklyReport extends ContainerAware
         return $result['result'];
     }
 
+    /**
+     * @return mixed
+     */
     public function getWeeklyDeliveryTime()
     {
         $query = '
@@ -135,6 +146,9 @@ class WeeklyReport extends ContainerAware
         return $result['result'];
     }
 
+    /**
+     * @return mixed
+     */
     public function getWeeklyDeliveryTimesByRegion()
     {
         $query = '
@@ -173,6 +187,9 @@ class WeeklyReport extends ContainerAware
         return $result;
     }
 
+    /**
+     * @return string
+     */
     public function getWeeklyMailTitle()
     {
         return sprintf('Weekly Foodout.lt report for %s to %s',
@@ -180,6 +197,10 @@ class WeeklyReport extends ContainerAware
                        date('Y-m-d', strtotime(static::PHP_1_DAY_AGO)));
     }
 
+    /**
+     * @param \StdClass $params
+     * @return mixed
+     */
     public function getWeeklyMailContent(\StdClass $params)
     {
         $template = 'FoodOrderBundle:WeeklyReport:email.html.twig';
@@ -193,6 +214,13 @@ class WeeklyReport extends ContainerAware
         return $this->getTemplating()->render($template, $data);
     }
 
+    /**
+     * @param string $forceEmail
+     * @param array $weeklyReportEmails
+     * @param string $title
+     * @param string $content
+     * @return array
+     */
     public function sendWeeklyMails($forceEmail,
                                     $weeklyReportEmails,
                                     $title,
@@ -211,6 +239,10 @@ class WeeklyReport extends ContainerAware
                : [true, '<fg=red>There was at least one error sending mails.</fg=red>'];
     }
 
+    /**
+     * @param $metric
+     * @return mixed
+     */
     public function getWeeklyDataFor($metric)
     {
         $query = $this->getWeeklyReportQuery($metric);
@@ -223,6 +255,10 @@ class WeeklyReport extends ContainerAware
         return $result['result'];
     }
 
+    /**
+     * @param $metric
+     * @return string
+     */
     public function getWeeklyReportQuery($metric)
     {
         $partialSql = $this->sqlMap[$metric];
@@ -250,6 +286,9 @@ class WeeklyReport extends ContainerAware
         return sprintf($query, $partialSql);
     }
 
+    /**
+     * @return \StdClass
+     */
     public function getCalculations()
     {
         // local
@@ -284,56 +323,91 @@ class WeeklyReport extends ContainerAware
         return $calculations;
     }
 
+    /**
+     * @param Connection $connection
+     * @return $this
+     */
     public function setConnection(Connection $connection)
     {
         $this->connection = $connection;
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getConnection()
     {
         return $this->connection;
     }
 
+    /**
+     * @param array $emails
+     * @return $this
+     */
     public function setWeeklyReportEmails(array $emails = [])
     {
         $this->weeklyReportEmails = $emails;
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getWeeklyReportEmails()
     {
         return $this->weeklyReportEmails;
     }
 
+    /**
+     * @param OutputInterface $output
+     * @return $this
+     */
     public function setOutput(OutputInterface $output)
     {
         $this->output = $output;
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getOutput()
     {
         return $this->output;
     }
 
+    /**
+     * @param GoogleAnalyticsService $service
+     * @return $this
+     */
     public function setGoogleAnalyticsService(GoogleAnalyticsService $service)
     {
         $this->googleAnalyticsService = $service;
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getGoogleAnalyticsService()
     {
         return $this->googleAnalyticsService;
     }
 
+    /**
+     * @param $templating
+     * @return $this
+     */
     public function setTemplating($templating)
     {
         $this->templating = $templating;
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getTemplating()
     {
         return $this->templating;

@@ -269,6 +269,10 @@
                 <source>admin.dish_units</source>
                 <target>Matavimo vienetai</target>
             </trans-unit>
+            <trans-unit id="admin.best_offers">
+                <source>admin.best_offers</source>
+                <target>Geriausi pasiūlymai</target>
+            </trans-unit>
             <trans-unit id="admin.unit.name">
                 <source>admin.unit.name</source>
                 <target>Matavimo vienetas</target>
@@ -1363,6 +1367,38 @@
                 <target>ID</target>
             </trans-unit>
 
+            <!-- Unused SF numbers -->
+            <trans-unit id="admin.unused_sf_numbers">
+                <source>admin.unused_sf_numbers</source>
+                <target>Nepanaudoti SF numeriai</target>
+            </trans-unit>
+            <trans-unit id="Unused Sf Numbers List">
+                <source>Unused Sf Numbers List</source>
+                <target>Nepanaudoti SF numeriai</target>
+            </trans-unit>
+            <trans-unit id="admin.unused_sf_numbers.sf_number">
+                <source>admin.unused_sf_numbers.sf_number</source>
+                <target>SF numeris</target>
+            </trans-unit>
+            <trans-unit id="admin.unused_sf_numbers.sf_number_placeholder">
+                <source>admin.unused_sf_numbers.sf_number_placeholder</source>
+                <target>123456</target>
+            </trans-unit>
+            <trans-unit id="admin.unused_sf_numbers.id">
+                <source>admin.unused_sf_numbers.id</source>
+                <target>ID</target>
+            </trans-unit>
+
+            <!-- Coupons generator -->
+            <trans-unit id="admin.coupons.generator">
+                <source>admin.coupons.generator</source>
+                <target>Kuponų generatorius</target>
+            </trans-unit>
+            <trans-unit id="Coupon Generator List">
+                <source>Coupon Generator List</source>
+                <target>Kuponų generatorius</target>
+            </trans-unit>
+
             <!-- Street admin -->
             <trans-unit id="admin.street">
                 <source>admin.street</source>
@@ -1501,6 +1537,34 @@
             <trans-unit id="admin.reports.date_range">
                 <source>admin.reports.date_range</source>
                 <target>Laikotarpis (nuo - iki)</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.title">
+                <source>admin.best_offers.title</source>
+                <target>Pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.link">
+                <source>admin.best_offers.link</source>
+                <target>Akcijos nuoroda</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.text">
+                <source>admin.best_offers.text</source>
+                <target>Tekstas</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.image">
+                <source>admin.best_offers.image</source>
+                <target>Baneris</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.active">
+                <source>admin.best_offers.active</source>
+                <target>Aktyvus</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.best_offers">
+                <source>admin.best_offers.best_offers</source>
+                <target>Geriausi pasiūlymai</target>
+            </trans-unit>
+            <trans-unit id="best-offer-list">
+                <source>Best Offer List</source>
+                <target>Geriausi pasiūlymai</target>
             </trans-unit>
         </body>
     </file>
