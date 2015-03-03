@@ -7,6 +7,8 @@
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyKJYX3Cr4Cn41VR9oaAqbmT8XlbHBY-Q">
     </script>
+    {{ placepoint.place.name }}<br>
+    {{ placepoint.address }}<br>
     <script type="text/javascript">
         function initialize() {
             var zones = [];
@@ -15,7 +17,7 @@
             {% for zone in zones %}
                 zones[naming[theKey]] = {
                     distance: {{ zone.distance }},
-                    color: '#cccccc',
+                    color: '#000000',
                     price: {{ zone.price }}
                 };
                 theKey = theKey + 1;
