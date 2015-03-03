@@ -68,7 +68,7 @@ class DefaultController extends Controller
 
     public function footerAction()
     {
-        $topRatedPlaces = $this->get('food.places')->getTopRatedPlaces(10);
+        $topRatedPlaces = $this->get('food.places')->getTopRatedPlaces(12);
         $staticPages = $this->get('food.static')->getActivePages(10);
         return $this->render(
             'FoodAppBundle:Default:footer_links.html.twig',
