@@ -60,7 +60,10 @@ class PlacePointDeliveryZonesAdmin extends FoodAdmin
      */
     public function prePersist($object)
     {
-
+        $securityContext = $this->getContainer()->get('security.context');
+        $user = $securityContext->getToken()->getUser();
+        $object->setCreatedAt(new DateTime('NOW'));
+        $object->setCreatedBy($user);
     }
 
     /**
