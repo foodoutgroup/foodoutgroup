@@ -70,3 +70,5 @@ parameters:
     mailer_send_invoice: 30026291
     yt_video: https://www.youtube.com/v/D-EkSle0r84?fs=1&amp;autoplay=
     yt_embeded: //www.youtube-nocookie.com/embed/D-EkSle0r84
+    default_delivery_distance: 7
+    default_self_delivey_distance: 10
