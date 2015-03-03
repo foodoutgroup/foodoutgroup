@@ -467,6 +467,7 @@ class OrderRepository extends EntityRepository
     /**
      * @param $timeBack string|null
      * @param boolean $skipImportedFromNav
+     * @param boolean $excludeCompleted
      * @return array
      */
     public function getCurrentNavOrders($timeBack = null, $skipImportedFromNav = false, $excludeCompleted = true)
@@ -491,10 +492,12 @@ class OrderRepository extends EntityRepository
             ->where('o.order_date >= :order_date')
             ->andWhere('p.navision = :navision')
             ->andWhere('o.order_status NOT IN (:order_status)')
+            ->andWhere('o.payment_status = :payment_status')
             ->setParameters(array(
                 'order_date' => new \DateTime($timeBack),
                 'order_status' => $excludeStatuses,
                 'navision' => 1,
+                'payment_status' => OrderService::$paymentStatusComplete,
             ));
 
         if ($skipImportedFromNav) {
