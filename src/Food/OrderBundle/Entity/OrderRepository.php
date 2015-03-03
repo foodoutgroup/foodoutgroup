@@ -492,7 +492,7 @@ class OrderRepository extends EntityRepository
             ->where('o.order_date >= :order_date')
             ->andWhere('p.navision = :navision')
             ->andWhere('o.order_status NOT IN (:order_status)')
-            ->andWhere('o.payment_status = :payment_status')
+            ->andWhere('o.paymentStatus = :payment_status')
             ->setParameters(array(
                 'order_date' => new \DateTime($timeBack),
                 'order_status' => $excludeStatuses,
