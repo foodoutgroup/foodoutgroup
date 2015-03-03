@@ -2,6 +2,7 @@
 namespace Food\AppBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
+use Food\AppBundle\Entity\Driver;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -139,4 +140,34 @@ class DriverAdmin extends FoodAdmin
 //            ->add('content', null, array('label' => 'admin.static.content'))
 //        ;
 //    }
+
+    public function prePersist($object)
+    {
+        $phone = $this->cleanDaPhone($object->getPhone());
+        $object->setPhone($phone);
+
+        parent::prePersist($object);
+    }
+
+    public function preUpdate($object)
+    {
+        $phone = $this->cleanDaPhone($object->getPhone());
+        $object->setPhone($phone);
+
+        parent::preUpdate($object);
+    }
+
+    /**
+     * @param $phone
+     * @return mixed|string
+     */
+    private function cleanDaPhone($phone)
+    {
+        $phone = trim($phone);
+        $phone = str_replace('+', '', $phone);
+        $phone = str_replace(' ', '', $phone);
+
+        return $phone;
+    }
+
 }
