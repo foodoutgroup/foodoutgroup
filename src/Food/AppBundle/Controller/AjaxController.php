@@ -193,6 +193,11 @@ class AjaxController extends Controller
         $response->setContent(json_encode($cont));
     }
 
+    /**
+     * @param Response $response
+     * @param int $placeId
+     * @param string $couponCode
+     */
     private function _ajaxCheckCoupon(Response $response, $placeId, $couponCode)
     {
         $trans = $this->get('translator');
@@ -202,27 +207,65 @@ class AjaxController extends Controller
         );
 
         $coupon = $this->get('food.order')->getCouponByCode($couponCode);
+        $places = $coupon->getPlaces();
 
         if (!$coupon) {
             $cont['status'] = false;
             $cont['data']['error'] = $trans->trans('general.coupon.not_active');
-        } else if ($coupon->getPlace() && $coupon->getPlace()->getId() != $placeId) {
-            $cont['status'] = false;
-            $cont['data']['error'] = $trans->trans(
-                'general.coupon.wrong_place',
-                array('%place_name%' => $coupon->getPlace()->getName())
-            );
-        // Only for navision restaurants
-        } else if ($coupon->getOnlyNav()) {
-            $place = $this->container->get('food.places')->getPlace($placeId);
-
-            if ($place->getNavision()) {
-                $cont['data'] = $coupon->__toArray();
-            } else {
-                $cont['status'] = false;
-                $cont['data']['error'] = $trans->trans('general.coupon.only_cili');
+        } else if (!empty($places) && count($places) > 0) {
+            $found = false;
+            foreach ($places as $cPlace) {
+                if ($cPlace->getId() == $placeId) {
+                    $found = true;
+                }
             }
-        } else {
+
+            if (!$found) {
+                $cont['status'] = false;
+                $cont['data']['error'] = $trans->trans(
+                    'general.coupon.wrong_place'
+                );
+            }
+        }
+
+        // If everything is ok - do additional tests
+        if ($cont['status'] == true) {
+            // Only for navision restaurants
+            if ($coupon->getOnlyNav()) {
+                $place = $this->container->get('food.places')->getPlace($placeId);
+
+                if (!$place->getNavision()) {
+                    $cont['status'] = false;
+                    $cont['data']['error'] = $trans->trans('general.coupon.only_cili');
+                }
+            }
+
+            // Only for non self delivery restaurants
+            if ($coupon->getNoSelfDelivery()) {
+                $place = $this->container->get('food.places')->getPlace($placeId);
+
+                if ($place->getSelfDelivery()) {
+                    $cont['status'] = false;
+                    $cont['data']['error'] = $trans->trans('general.coupon.wrong_place');
+                }
+            }
+
+            // Coupon is still valid
+            $now = date('Y-m-d H:i:s');
+            if ($coupon->getEnableValidateDate()) {
+                if ($coupon->getValidFrom()->format('Y-m-d H:i:s') > $now) {
+                    $cont['status'] = false;
+                    $cont['data']['error'] = $trans->trans('general.coupon.coupon_too_early');
+                }
+
+                if ($coupon->getValidTo()->format('Y-m-d H:i:s') < $now) {
+                    $cont['status'] = false;
+                    $cont['data']['error'] = $trans->trans('general.coupon.coupon_expired');
+                }
+            }
+        }
+
+        if ($cont['status'] == true) {
             $cont['data'] = $coupon->__toArray();
         }
 
