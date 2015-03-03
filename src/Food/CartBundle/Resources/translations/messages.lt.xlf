@@ -350,6 +350,10 @@ Vilnius]]></target>
             <source>cart.block.discount_sum</source>
             <target>Nuolaida</target>
         </trans-unit>
+        <trans-unit id="cart.checkout.phone.prefill_phone_lt" resname="cart.checkout.phone.prefill_phone">
+            <source>cart.checkout.phone.prefill_phone</source>
+            <target></target>
+        </trans-unit>
     </body>
   </file>
 </xliff>
