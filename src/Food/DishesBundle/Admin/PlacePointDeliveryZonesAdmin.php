@@ -62,7 +62,7 @@ class PlacePointDeliveryZonesAdmin extends FoodAdmin
     {
         $securityContext = $this->getContainer()->get('security.context');
         $user = $securityContext->getToken()->getUser();
-        $object->setCreatedAt(new DateTime('NOW'));
+        $object->setCreatedAt(new \DateTime('NOW'));
         $object->setCreatedBy($user);
     }
 
