@@ -16,25 +16,6 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
-        if (isset($_GET['allow_me'])) {
-            $_SESSION['is_allowed'] = true;
-        }
-
-        if ((!isset($_SESSION['is_allowed']) || $_SESSION['is_allowed']!== true) && $_SERVER['REMOTE_ADDR'] !='54.72.211.80' && $_SERVER['REMOTE_ADDR'] != '88.119.87.158' && $_SERVER['REMOTE_ADDR']!="80.232.220.207" && $_SERVER['REMOTE_ADDR']!="78.56.52.159") {
-            ?>
-                <html>
-                <head>
-                    <title>Foodout.lv - coming soon</title>
-                </head>
-                <body>
-                <div style="width: 100%; padding-top: 50px; text-align: center;">
-                    <img src="/bundles/foodapp/images/foodout_no_domain.jpg" alt="Foodout.lv" />
-                </div>
-                </body>
-                </html>
-            <?php
-            die();
-        }
         $miscUtils = $this->get('food.app.utils.misc');
         // Check if user is not banned
         $ip = $request->getClientIp();
