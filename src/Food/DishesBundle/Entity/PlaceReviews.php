@@ -95,6 +95,11 @@ class PlaceReviews
      */
     private $deletedBy;
 
+    function __construct()
+    {
+        $this->createdAt = new \DateTime('now');
+    }
+
     /**
      * @return string
      */

@@ -3,6 +3,7 @@ namespace Food\DishesBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Food\AppBundle\Filter\PlaceFilter;
+use Food\DishesBundle\Entity\PlaceReviews;
 use Food\UserBundle\Entity\UserAddress;
 use FOS\UserBundle\Model\User;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -139,55 +140,90 @@ class PlaceReviewsAdmin extends FoodAdmin
         $domain = $this->getContainer()->getParameter('domain');
 
         $possibleUserName = $newUserName.'_comment_dummy@'.$domain;
-        $userCheck = $fos->findUserByEmail($possibleUserName);
-        if (!empty($userCheck) && $userCheck instanceof User && $userCheck->getId())
-        {
-            $exists = true;
-        } else {
-            $exists = false;
-        }
+        $exists = $this->checkDummyUserExists($possibleUserName, $newCity, $fos);
 
         if ($exists) {
             $counter = 1;
             while ($exists) {
                 $possibleUserName = $newUserName.$counter.'_comment_dummy@'.$domain;
-                $userCheck = $fos->findUserByEmail($possibleUserName);
-                if (!empty($userCheck) && $userCheck instanceof User && $userCheck->getId())
-                {
-                    $exists = true;
-                } else {
-                    $exists = false;
-                }
+
+                $exists = $this->checkDummyUserExists($possibleUserName, $newCity, $fos);
 
                 $counter++;
             }
         }
 
-        /**
-         * @var $newUser \Food\UserBundle\Entity\User
-         */
-        $newUser = $fos->createUser();
-        $newUser->setEmail($possibleUserName);
-        $newUser->setFirstname($newUserName);
-        $newUser->setPhone('370600000001');
-        $newUser->setFullyRegistered(false)
-            ->setRoles(array('ROLE_USER'));
+        // Maby we returned that it does not exist, but we want to reuse it :)
+        $reuseableUser = $userCheck = $fos->findUserByEmail($possibleUserName);
+        if (!empty($userCheck) && $userCheck instanceof User && $userCheck->getId())
+        {
+            $newUser = $reuseableUser;
+        } else {
+            /**
+             * @var $newUser \Food\UserBundle\Entity\User
+             */
+            $newUser = $fos->createUser();
+            $newUser->setEmail($possibleUserName);
+            $newUser->setFirstname($newUserName);
+            $newUser->setPhone('370600000001');
+            $newUser->setFullyRegistered(0)
+                ->setRoles(array('ROLE_USER'));
 
-        $newUser->setPassword('super_slaptas_dummy_passw');
-        $fos->updateUser($newUser);
+            $newUser->setPassword('super_slaptas_dummy_passw');
+            $fos->updateUser($newUser);
 
-        $address = new UserAddress();
-        $address->setCity($newCity)
-            ->setAddress('Laisves pr.')
-            ->setDefault(true)
-            ->setLat('25.00000')
-            ->setLon('25.00000')
-            ->setUser($newUser);
+            $address = new UserAddress();
+            $address->setCity($newCity)
+                ->setAddress('Laisves pr.')
+                ->setDefault(1)
+                ->setLat('25.00000')
+                ->setLon('25.00000')
+                ->setUser($newUser);
 
-        $em->persist($address);
-        $em->flush();
+            $em->persist($address);
+            $em->flush();
+        }
 
         $object->setCreatedBy($newUser);
         $object->setDummy(true);
+    }
+
+    public function postPersist($object)
+    {
+        parent::postPersist($object);
+
+        $placeService = $this->getContainer()->get('food.places');
+
+        $place = $object->getPlace();
+
+        $rating = $placeService->calculateAverageRating($place);
+        $place->setAverageRating($rating);
+        $place->setReviewCount(count($place->getReviews()));
+        $placeService->savePlace($place);
+    }
+
+    /**
+     * @param string $possibleUserName
+     * @param string $newCity
+     * @param $fos
+     * @return bool
+     */
+    private function checkDummyUserExists($possibleUserName, $newCity, $fos)
+    {
+        $userCheck = $fos->findUserByEmail($possibleUserName);
+        if (!empty($userCheck) && $userCheck instanceof User && $userCheck->getId())
+        {
+            $addressCheck = $userCheck->getDefaultAddress();
+
+            if ($addressCheck && $addressCheck->getCity() != $newCity) {
+                $exists = true;
+            } else {
+                $exists = false;
+            }
+        } else {
+            $exists = false;
+        }
+
+        return $exists;
     }
 }

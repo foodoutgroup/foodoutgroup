@@ -24,7 +24,7 @@ class UnusedSfNumbers
     private $id;
 
     /**
-     * @var string
+     * @var integer $sfNumber
      * @ORM\Column(name="sf_number", type="integer")
      */
     private $sfNumber;
