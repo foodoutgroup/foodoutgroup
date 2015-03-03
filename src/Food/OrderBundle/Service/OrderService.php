@@ -871,7 +871,11 @@ class OrderService extends ContainerAware
             }
         }
 
-        $deliveryPrice = $this->getOrder()->getPlace()->getDeliveryPrice();
+        $deliveryPrice = $this->getCartService()->getDeliveryPrice(
+            $this->getOrder()->getPlace(),
+            $this->get('food.googlegis')->getLocationFromSession(),
+            $this->getOrder()->getPlacePoint()
+        );
 
         // Pritaikom nuolaida
         if (!empty($coupon) && $coupon instanceof Coupon) {
@@ -904,7 +908,6 @@ class OrderService extends ContainerAware
         $this->getOrder()->setDeliveryPrice($deliveryPrice);
         $this->getOrder()->setTotal($sumTotal);
         $this->saveOrder();
-
     }
 
     public function markOrderForNav(Order $order = null)

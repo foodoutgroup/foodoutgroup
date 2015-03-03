@@ -512,6 +512,10 @@ class CartService {
 
     public function getDeliveryPrice(Place $place, $locData, PlacePoint $placePoint)
     {
-        return $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $locData);
+        $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $locData);
+        if (empty($deliveryTotal) || $deliveryTotal == 0) {
+            $deliveryTotal = $place->getDeliveryPrice();
+        }
+        return $deliveryTotal;
     }
 }
