@@ -352,6 +352,10 @@ LV-1046</target>
         <source>cart.block.discount_sum</source>
         <target>Atlaide</target>
       </trans-unit>
+      <trans-unit id="cart.checkout.phone.prefill_phone_lv" resname="cart.checkout.phone.prefill_phone">
+          <source>cart.checkout.phone.prefill_phone</source>
+          <target>371</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -120,6 +120,7 @@ twig:
         invoice_series: "%invoice.series%"
 #       Services
         slug_util:    "@food.dishes.utils.slug"
+        places_service: "@food.places"
         dish_service: "@food.dishes"
         order_service: "@food.order"
         static_service: "@food.static"
@@ -280,6 +281,7 @@ sonata_admin:
                   items:
                       #- sonata.admin.kitchen
                       - sonata.admin.place
+                      - sonata.admin.place.pointdeliveryzones
                       - sonata.admin.place.reviews
                       - sonata.admin.place.coverphoto
                       #- sonata.admin.dish.unit

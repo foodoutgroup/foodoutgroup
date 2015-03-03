@@ -8,6 +8,7 @@ use Food\CartBundle\Entity\CartOption;
 use Food\DishesBundle\Entity\DishOption;
 use Food\DishesBundle\Entity\DishSize;
 use Food\DishesBundle\Entity\Place;
+use Food\DishesBundle\Entity\PlacePoint;
 
 
 class CartService {
@@ -507,5 +508,14 @@ class CartService {
             $this->getEm()->remove($cartDish);
             $this->getEm()->flush();
         }
+    }
+
+    public function getDeliveryPrice(Place $place, $locData, PlacePoint $placePoint)
+    {
+        $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $locData);
+        if (empty($deliveryTotal) || $deliveryTotal == 0) {
+            $deliveryTotal = $place->getDeliveryPrice();
+        }
+        return $deliveryTotal;
     }
 }

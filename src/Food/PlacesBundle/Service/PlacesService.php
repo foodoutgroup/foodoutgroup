@@ -221,4 +221,24 @@ class PlacesService extends ContainerAware {
         array_multisort($sortTop,SORT_NUMERIC, SORT_DESC, $sortArr, SORT_NUMERIC, SORT_ASC, $sortArrPrio, SORT_NUMERIC, SORT_DESC, $places);
         return $places;
     }
+
+    public function getMinDeliveryPrice($placeId)
+    {
+        $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMinDeliveryPrice($placeId);
+        if (empty($sum)) {
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            return $place->getDeliveryPrice();
+        }
+        return $sum;
+    }
+
+    public function getMaxDeliveryPrice($placeId)
+    {
+        $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMaxDeliveryPrice($placeId);
+        if (empty($sum)) {
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            return $place->getDeliveryPrice();
+        }
+        return $sum;
+    }
 }
