@@ -376,4 +376,17 @@ class TestController extends Controller
 
         die($date);
     }
+
+    public function zonesAction($id)
+    {
+        $placePoint = $this->container->get('doctrine')->getRepository('FoodDishesBundle:PlacePoint')->find($id);
+        $zones = $placePoint->getZones();
+        return $this->render(
+            'FoodAppBundle:Test:zones.html.twig',
+            array(
+                'placepoint'=>$placePoint,
+                'zones' => $zones
+            )
+        );
+    }
 }
