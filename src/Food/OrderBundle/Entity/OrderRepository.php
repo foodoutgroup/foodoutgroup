@@ -480,6 +480,7 @@ class OrderRepository extends EntityRepository
         $excludeStatuses = [
             OrderService::$status_canceled,
             OrderService::$status_nav_problems,
+            OrderService::$status_pre,
             // TODO temp, nav canot cancel assigned orders
             OrderService::$status_assiged
         ];
