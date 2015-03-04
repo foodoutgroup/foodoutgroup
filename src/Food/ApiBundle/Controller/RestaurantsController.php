@@ -18,8 +18,6 @@ class RestaurantsController extends Controller
          * address,city,lat,lng,cuisines,keyword,offset,limit
          *
          */
-
-
         $address = $request->get('address');
         $city = $request->get('city');
         if (!empty($city)) {

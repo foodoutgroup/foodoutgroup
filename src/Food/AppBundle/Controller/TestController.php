@@ -389,4 +389,43 @@ class TestController extends Controller
             )
         );
     }
+
+    public function devzonesAction($id)
+    {
+        $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($id);
+        $color = array(
+            '#ff0000',
+            '#00ff00',
+            '#0000ff',
+            '#ffcc00',
+            '#cccccc',
+            '#800080',
+            '#800000'
+        );
+        $points = $place->getPoints();
+        $zerZones = array();
+        $pointReturn = array();
+        foreach ($points as $key=>$point) {
+            $zz = $point->getZones();
+            $akey = md5($key);
+            $pointReturn[$akey]['lat'] = $point->getLat();
+            $pointReturn[$akey]['lon'] = $point->getLon();
+            $pointReturn[$akey]['zones'] = array();
+            $pointReturn[$akey]['color'] = $color[$key];
+            $pointReturn[$akey]['address'] = $point->getAddress();
+            foreach ($zz as $k2 => $z) {
+                if ($z->getActive()) {
+                    $pointReturn[$akey]['zones'][] = array(
+                        'distance' => $z->getDistance()
+                    );
+                }
+            }
+        }
+        return $this->render(
+            'FoodAppBundle:Test:devzones.html.twig',
+            array(
+                'points'=> $pointReturn
+            )
+        );
+    }
 }
