@@ -5,7 +5,7 @@ set :scm,         :git
 set :model_manager, "doctrine"
 
 set :user, "skanu.lt"
-set :password, "ca"
+set :password, "veM6hee0"
 
 set :symfony_env_prod, "prod"
 set :clear_controllers, false
