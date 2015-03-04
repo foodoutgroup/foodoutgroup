@@ -1651,7 +1651,8 @@ div.coupon_form_popup {
 
 /** Discount stuff **/
 .restaurant-menu-item .price.discounted {
-    text-decoration: line-through;
+    /* Isjungta Tomo prasymu. Uzduotis #643 */
+    /*text-decoration: line-through;*/
 }
 .restaurant-menu-item .price.discounted.multiline {
     font-size: 12px;
