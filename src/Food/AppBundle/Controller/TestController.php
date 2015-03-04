@@ -413,6 +413,7 @@ class TestController extends Controller
             $pointReturn[$akey]['zones'] = array();
             $pointReturn[$akey]['color'] = $color[$key];
             $pointReturn[$akey]['address'] = $point->getAddress();
+            $pointReturn[$akey]['zones'][] = array("distance"=>0.1);
             foreach ($zz as $k2 => $z) {
                 if ($z->getActive()) {
                     $pointReturn[$akey]['zones'][] = array(
