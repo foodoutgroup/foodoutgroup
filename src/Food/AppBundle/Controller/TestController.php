@@ -398,7 +398,7 @@ class TestController extends Controller
             '#00ff00',
             '#0000ff',
             '#ffcc00',
-            '#cccccc',
+            '#008080',
             '#800080',
             '#800000'
         );
