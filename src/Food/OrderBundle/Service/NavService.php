@@ -1399,7 +1399,7 @@ class NavService extends ContainerAware
             $this->getCustomerTable(),
             date('Y-m-d'),
             '1754-01-01 '.date("H:i:s", strtotime('-2 hour')),
-            "'Vilnius', 'Kaunas', 'Klaipeda'"
+            "'Vilnius', 'Kaunas', 'Klaipeda','Ryga'"
         );
 
         $result = $this->initSqlConn()->query($query);
