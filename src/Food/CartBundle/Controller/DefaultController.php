@@ -346,7 +346,8 @@ class DefaultController extends Controller
         $deliveryTotal = 0;
         if (!$takeAway) {
             $placePointMap = $this->container->get('session')->get('point_data');
-            $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+            var_dump($placePointMap);
+            $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find(1);//$placePointMap[$place->getId()]);
             if (!isset($pointRecord) || empty($pointRecord)) {
                 $deliveryTotal = $place->getDeliveryPrice();
             } else {
