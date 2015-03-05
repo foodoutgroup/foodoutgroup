@@ -336,7 +336,7 @@ class Order
 
     /**
      * @var int
-     * @ORM\Column(name="nav_delivery_order", type="bigint", nullable=true)
+     * @ORM\Column(name="nav_delivery_order", type="string", length=20, nullable=true)
      */
     private $navDeliveryOrder;
 
