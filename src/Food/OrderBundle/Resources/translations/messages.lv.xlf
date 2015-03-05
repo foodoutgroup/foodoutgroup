@@ -118,6 +118,50 @@
         <source>order.invoice.foodout_bank_account</source>
         <target>LT92 7300 0101 3664 5307</target>
       </trans-unit>
+        <trans-unit id="daily_report.metric" resname="daily_report.metric">
+            <source>daily_report.metric</source>
+            <target>Metrics</target>
+        </trans-unit>
+        <trans-unit id="daily_report.value" resname="daily_report.value">
+            <source>daily_report.value</source>
+            <target>Value</target>
+        </trans-unit>
+        <trans-unit id="daily_report.kpi_metric" resname="daily_report.kpi_metric">
+            <source>daily_report.kpi_metric</source>
+            <target>KPI</target>
+        </trans-unit>
+        <trans-unit id="daily_report.income" resname="daily_report.income">
+            <source>daily_report.income</source>
+            <target>Income</target>
+        </trans-unit>
+        <trans-unit id="daily_report.successful_orders" resname="daily_report.successful_orders">
+            <source>daily_report.successful_orders</source>
+            <target>Successful orders</target>
+        </trans-unit>
+        <trans-unit id="daily_report.average_cart_size" resname="daily_report.average_cart_size">
+            <source>daily_report.average_cart_size</source>
+            <target>Cart avg EUR</target>
+        </trans-unit>
+        <trans-unit id="daily_report.average_delivery_time" resname="daily_report.average_delivery_time">
+            <source>daily_report.average_delivery_time</source>
+            <target>AVG delivery time</target>
+        </trans-unit>
+        <trans-unit id="daily_report.unique_users" resname="daily_report.unique_users">
+            <source>daily_report.unique_users</source>
+            <target>Unique visitors</target>
+        </trans-unit>
+        <trans-unit id="daily_report.returning_users" resname="daily_report.returning_users">
+            <source>daily_report.returning_users</source>
+            <target>Returning visitors</target>
+        </trans-unit>
+        <trans-unit id="daily_report.city" resname="daily_report.city">
+            <source>daily_report.city</source>
+            <target>Region</target>
+        </trans-unit>
+        <trans-unit id="weekly_report.places" resname="weekly_report.places">
+            <source>weekly_report.places</source>
+            <target>Restaurants</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>
