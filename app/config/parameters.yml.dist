@@ -70,3 +70,4 @@ parameters:
     yt_embeded: //www.youtube-nocookie.com/embed/3zFW6hnuvJY
     default_delivery_distance: 7
     default_self_delivey_distance: 10
+    google.analytics.view_id: "85237075"

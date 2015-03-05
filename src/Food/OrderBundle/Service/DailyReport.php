@@ -32,22 +32,31 @@ class DailyReport extends ContainerAware
     protected $kpiIncomeMap = [
         '1' => 6704,
         '2' => 6921,
-        '3' => 7955
+        '3' => 2975,
+        '4' => 3252,
+        '5' => 3972
+
     ];
     protected $kpiOrdersMap = [
         '1' => 564,
         '2' => 583,
-        '3' => 670
+        '3' => 183,
+        '4' => 200,
+        '5' => 244
     ];
     protected $kpiCartSizeMap = [
         '1' => 11.8,
         '2' => 11.8,
-        '3' => 11.8
+        '3' => 16.2,
+        '4' => 16.2,
+        '5' => 16.2
     ];
     protected $kpiDeliveryMap = [
         '1' => 60,
         '2' => 60,
-        '3' => 60
+        '3' => 60,
+        '4' => 55,
+        '5' => 55
     ];
 
     protected $sqlMap = [
