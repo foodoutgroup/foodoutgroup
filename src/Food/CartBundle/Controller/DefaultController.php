@@ -346,11 +346,11 @@ class DefaultController extends Controller
         $deliveryTotal = 0;
         if (!$takeAway) {
             $placePointMap = $this->container->get('session')->get('point_data');
-            var_dump($placePointMap);
-            $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find(1);//$placePointMap[$place->getId()]);
-            if (!isset($pointRecord) || empty($pointRecord)) {
+
+            if (empty($placePointMap) || !isset($placePointMap[$place->getId()])) {
                 $deliveryTotal = $place->getDeliveryPrice();
             } else {
+                $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
                 $deliveryTotal = $this->getCartService()->getDeliveryPrice(
                     $place,
                     $this->get('food.googlegis')->getLocationFromSession(),
