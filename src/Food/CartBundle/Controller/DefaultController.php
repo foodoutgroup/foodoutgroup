@@ -347,11 +347,15 @@ class DefaultController extends Controller
         if (!$takeAway) {
             $placePointMap = $this->container->get('session')->get('point_data');
             $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
-            $deliveryTotal = $this->getCartService()->getDeliveryPrice(
-                $place,
-                $this->get('food.googlegis')->getLocationFromSession(),
-                $pointRecord
-            );
+            if (!isset($pointRecord) || empty($pointRecord)) {
+                $deliveryTotal = $place->getDeliveryPrice();
+            } else {
+                $deliveryTotal = $this->getCartService()->getDeliveryPrice(
+                    $place,
+                    $this->get('food.googlegis')->getLocationFromSession(),
+                    $pointRecord
+                );
+            }
         }
 
         // If coupon in use
