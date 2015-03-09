@@ -229,9 +229,12 @@ class PlaceRepository extends EntityRepository
         $dth = $dh."".$dm;
         $wd = date("N");
 
+        $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.active=1 AND ppdz.place_point=pp.id";
+
         $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) as distance FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND pp.deleted_at IS NULL AND p.active=1 AND pp.city='".$city."' AND pp.place = $placeId
             AND (
-                (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <= 7
+                (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <=
+                IF(($maxDistance) IS NULL, 4, ($maxDistance))
                 ".(!$ignoreSelfDelivery ? " OR p.self_delivery = 1":"")."
             )
             AND '".$dth."' BETWEEN REPLACE(wd".$wd."_start,':','') AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)
@@ -241,6 +244,7 @@ class PlaceRepository extends EntityRepository
 
         $stmt->execute();
         $places = $stmt->fetchAll();
+
         if (!empty($places) && !empty($places[0])) {
             return $places[0];
         }
