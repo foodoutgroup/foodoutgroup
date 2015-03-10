@@ -4,8 +4,6 @@ namespace Food\PlacesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
 
 
 class DefaultController extends Controller
@@ -114,6 +112,10 @@ class DefaultController extends Controller
         return $this->render('FoodPlacesBundle:Default:change_location.html.twig');
     }
 
+    /**
+     * @param integer $amount
+     * @return array
+     */
     private function getBestOffers($amount)
     {
         $items = $this->get('doctrine.orm.entity_manager')

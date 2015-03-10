@@ -104,7 +104,7 @@ class CheckUndeliveredMessagesCommandTest extends \PHPUnit_Framework_TestCase
         $smsMessage->setSender($sender);
         $smsMessage->setRecipient($phone);
         $smsMessage->setMessage($errorMessage);
-        $messages = array($smsMessage, $smsMessage);
+        $messages = array($smsMessage, $smsMessage, $smsMessage);
 
         $application = new Application();
         $application->add(new CheckUndeliveredMessagesCommand());
