@@ -431,8 +431,8 @@ class OrderRepository extends EntityRepository
         $deliver = OrderService::$deliveryDeliver;
 
         $dateFrom = new \DateTime("now");
-        $dateToPickup = new \DateTime("-70 minute");
-        $dateToDeliver = new \DateTime("-2 hour");
+        $dateToPickup = new \DateTime("-65 minute");
+        $dateToDeliver = new \DateTime("-90 minute");
 
         $dateFrom1 = $dateFrom->sub(new \DateInterval('PT12H'))->format("Y-m-d h:i:s");
         $dateToPickup = $dateToPickup->format("Y-m-d h:i:s");
