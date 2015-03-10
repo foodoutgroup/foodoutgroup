@@ -43,29 +43,27 @@ class NavService extends ContainerAware
 
 //    private $deliveryOrderStatusTable = '[prototipas6].[dbo].[PROTOTIPAS Skambuciu Centras$Delivery order status]';
 
-    private $headerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
+    private $headerTable = '[skamb_centras].[dbo].[%1$s$Web ORDER Header]';
 
-    private $lineTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Lines]';
+    private $lineTable = '[skamb_centras].[dbo].[%1$s$Web ORDER Lines]';
 
-    private $orderTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$FoodOut Order]';
+    private $orderTable = '[skamb_centras].[dbo].[%1$s$FoodOut Order]';
 
-    private $messagesTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web Order Messages]';
+    private $messagesTable = '[skamb_centras].[dbo].[%1$s$Web Order Messages]';
 
-    private $itemsTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Item]';
+    private $itemsTable = '[skamb_centras].[dbo].[%1$s$Item]';
 
-    private $deliveryOrderTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery Order]';
+    private $deliveryOrderTable = '[skamb_centras].[dbo].[%1$s$Delivery Order]';
 
-    private $posTransactionLinesTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$POS Trans_ Line]';
+    private $posTransactionLinesTable = '[skamb_centras].[dbo].[%1$s$POS Trans_ Line]';
 
-    private $deliveryOrderStatusTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery order status]';
+    private $deliveryOrderStatusTable = '[skamb_centras].[dbo].[%1$s$Delivery order status]';
 
-    private $contractTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Contract]';
+    private $contractTable = '[skamb_centras].[dbo].[%1$s$Contract]';
 
-    private $customerTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Customer]';
+    private $customerTable = '[skamb_centras].[dbo].[%1$s$Customer]';
 
-    private $invoiceTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Foodout Invoice]';
-
-    private $postedDeliveryOrdersTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Posted Delivery Orders]';
+    private $invoiceTable = '[skamb_centras].[dbo].[%1$s$Foodout Invoice]';
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
@@ -80,7 +78,7 @@ class NavService extends ContainerAware
      */
     public function getHeaderTable()
     {
-        return $this->headerTable;
+        return sprintf($this->headerTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -88,7 +86,7 @@ class NavService extends ContainerAware
      */
     public function getLineTable()
     {
-        return $this->lineTable;
+        return sprintf($this->lineTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -96,7 +94,7 @@ class NavService extends ContainerAware
      */
     public function getOrderTable()
     {
-        return $this->orderTable;
+        return sprintf($this->orderTable,$this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -104,7 +102,7 @@ class NavService extends ContainerAware
      */
     public function getMessagesTable()
     {
-        return $this->messagesTable;
+        return sprintf($this->messagesTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -112,7 +110,7 @@ class NavService extends ContainerAware
      */
     public function getItemsTable()
     {
-        return $this->itemsTable;
+        return sprintf($this->itemsTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -120,7 +118,7 @@ class NavService extends ContainerAware
      */
     public function getDeliveryOrderTable()
     {
-        return $this->deliveryOrderTable;
+        return sprintf($this->deliveryOrderTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -128,7 +126,7 @@ class NavService extends ContainerAware
      */
     public function getPosTransactionLinesTable()
     {
-        return $this->posTransactionLinesTable;
+        return sprintf($this->posTransactionLinesTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -136,12 +134,12 @@ class NavService extends ContainerAware
      */
     public function getDeliveryOrderStatusTable()
     {
-        return $this->deliveryOrderStatusTable;
+        return sprintf($this->deliveryOrderStatusTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     public function getInvoiceTable()
     {
-        return $this->invoiceTable;
+        return sprintf($this->invoiceTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -149,7 +147,7 @@ class NavService extends ContainerAware
      */
     public function getContractTable()
     {
-        return $this->contractTable;
+        return sprintf($this->contractTable, $this->container->getParameter('nav_table_prefix'));
     }
 
     /**
@@ -157,12 +155,7 @@ class NavService extends ContainerAware
      */
     public function getCustomerTable()
     {
-        return $this->customerTable;
-    }
-
-    public function getPostedDeliveryOrdersTable()
-    {
-        return $this->postedDeliveryOrdersTable;
+        return sprintf($this->customerTable, $this->container->getParameter('nav_table_prefix'));
     }
 
 
@@ -353,7 +346,16 @@ class NavService extends ContainerAware
 
         $city = $order->getPlacePoint()->getCity();
         $city = str_replace("ė", "e", $city);
+        $city = str_replace("ī", "i", $city);
+        $city = mb_strtoupper($city);
         $region = mb_strtoupper($city);
+        if ($region == "RIGA") {
+            $region = "RYGA";
+        }
+
+        if ($city == "RIGA") {
+            $city = "RYGA";
+        }
 
         $orderDate = $order->getOrderDate();
         $orderDate->add(new \DateInterval('P0DT0H'));
@@ -372,9 +374,9 @@ class NavService extends ContainerAware
 
         $dataToPut = array(
             'Order No_' => $orderNewId,
-            'Phone' => str_replace('370', '8', $order->getUser()->getPhone()),
+            'Phone' => str_replace(array('370', '371'), '8', $order->getUser()->getPhone()),
             'ZipCode' => '', // ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getZipCode() : ''),
-            'City' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $order->getAddressId()->getCity() : ''),
+            'City' => $city,
             'Street' => $street, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getStreetName(): ''),
             'Street No_' => $houseNr, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getNumberFrom(): ''),
             'Floor' => '',
@@ -464,7 +466,7 @@ class NavService extends ContainerAware
      */
     private function _processLineDelivery(Order $order, $orderNewId, $key)
     {
-        $devPrice = 1.5;
+        $devPrice = $order->getPlace()->getDeliveryPrice();
         $couponCode = $order->getCouponCode();
         if (!empty($couponCode) && strlen($couponCode) > 1) {
             $devPrice = $order->getDeliveryPrice();
@@ -551,6 +553,11 @@ class NavService extends ContainerAware
         $amountForInsert = $priceForInsert * $detail->getQuantity();
         $discountAmount = 0;
         $paymentAmount = $amountForInsert;
+
+        $discountInOrder = $detail->getOrderId()->getDiscountSize();
+        if ($discountInOrder > 0) {
+            $discountAmount = $paymentAmount - round($paymentAmount * (100 - $discountInOrder), 2);
+        }
 
         /*
         if ($detail->getDishId()->getShowDiscount()) {
@@ -640,7 +647,7 @@ class NavService extends ContainerAware
 
         $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
         // $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
-        $clientUrl2 = "http://213.190.40.38:7055/DynamicsNAV/WS/Čilija%20Skambučių%20Centras/Codeunit/WEB_Service2";
+        $clientUrl2 = sprintf('http://213.190.40.38:7055/DynamicsNAV/WS/%1$s/Codeunit/WEB_Service2', str_replace(" ", "%20", $this->container->getParameter('nav_ws_prefix')));
 
         stream_wrapper_unregister('http');
         stream_wrapper_register('http', '\Food\OrderBundle\Common\FoNTLMStream') or die("Failed to register protocol");
@@ -784,7 +791,7 @@ class NavService extends ContainerAware
         $rcCode = !empty($restaurant) ? $restaurant->getInternalCode() : '';
 
         $requestData = array(
-            'Phone'=> str_replace("370", "8", $phone),
+            'Phone'=> str_replace(array('370', '371'), "8", $phone),
             'RestaurantNo' => $rcCode,
             'OrderDate' => str_replace("-", ".", $orderDate),
             'OrderTime' => $orderTime,
@@ -1174,12 +1181,7 @@ class NavService extends ContainerAware
 
             case 10:
             case 11:
-                $status = $order->getOrderStatus();
-
-                $valid1 = $orderService->isValidOrderStatusChange($status, OrderService::$status_canceled);
-                $valid2 = $orderService->isValidOrderStatusChangeWhenCompleted($status, OrderService::$status_canceled);
-
-                if ($valid1 || $valid2) {
+                if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), OrderService::$status_canceled)) {
                     $orderService->statusCanceled('cili_nav');
                 } else {
                     $logger->error(sprintf(
@@ -1192,15 +1194,14 @@ class NavService extends ContainerAware
 
             case 0:
             default:
+                // Set delivery order ID if it is not set
+                $deliveryOrderId = $order->getNavDeliveryOrder();
+                if (empty($deliveryOrderId)) {
+                    // TODO pasitikrint lauko pavadinima
+                    $order->setNavDeliveryOrder($navOrder['Delivery Order No_']);
+                }
 
                 break;
-        }
-
-        // Set delivery order ID if it is not set
-        $deliveryOrderId = $order->getNavDeliveryOrder();
-        if (empty($deliveryOrderId)) {
-            // TODO pasitikrint lauko pavadinima
-            $order->setNavDeliveryOrder($navOrder['Delivery Order No_']);
         }
     }
 
@@ -1273,7 +1274,7 @@ class NavService extends ContainerAware
      */
     public function syncDisDescription($date = null)
     {
-        $result = $this->initSqlConn()->query('SELECT [No_], [Description], [Search Description] FROM '.$this->getItemsTable()." WHERE LEN([No_]) > 3 AND [No_] NOT LIKE 'DIS%'");
+        $result = $this->initSqlConn()->query('SELECT [No_], [Description], [Search Description] FROM '.$this->getItemsTable()." WHERE LEN([No_]) > 3 AND [No_] LIKE 'DIS%'");
         if( $result === false) {
             throw new \InvalidArgumentException('Wow Such fail.. Many problems... Such no results?');
         }
@@ -1339,12 +1340,6 @@ class NavService extends ContainerAware
      */
     public function getNewNonFoodoutOrders()
     {
-        if (date('H') < 3) {
-            $theTime = '1754-01-01 00:00:00';
-        } else {
-            $theTime = '1754-01-01 ' . date("H:i:s", strtotime('-3 hour'));
-        }
-
         $query = sprintf(
             "SELECT
                 dOrder.[Order No_] As [OrderNo],
@@ -1408,8 +1403,8 @@ class NavService extends ContainerAware
             $this->getContractTable(),
             $this->getCustomerTable(),
             date('Y-m-d'),
-            $theTime,
-            "'Vilnius', 'Kaunas', 'Klaipeda'"
+            '1754-01-01 '.date("H:i:s", strtotime('-2 hour')),
+            "'Vilnius', 'Kaunas', 'Klaipeda','Ryga'"
         );
 
         $result = $this->initSqlConn()->query($query);
@@ -1682,65 +1677,5 @@ class NavService extends ContainerAware
     public function normalizeStringForNav($value)
     {
         return trim(preg_replace('#\s{2,}#', ' ', $value));
-    }
-
-    public function getPostedOrders($from, $to)
-    {
-        $mssql = $this->container->get('food.mssql');
-
-        $query = "
-            SELECT
-                [Order No_] AS order_no,
-                [Order Date] AS order_date,
-                [Tender Type] AS tender_type,
-                REPLACE([Amount Including VAT],',','.') AS total,
-                REPLACE([Delivery Tax Cash Amount],',','.') AS delivery_total,
-                REPLACE([Delivery Tax Bank Card Amount],',','.') AS delivery_cc_amount
-            FROM %s
-            WHERE
-                [Order Date] >= '%s' AND
-                [Order Date] <= '%s' AND
-                [Sales Type] = 'DELIVERY'";
-        $query = sprintf($query, $this->getPostedDeliveryOrdersTable(), $from, $to);
-
-        $result = $this->initSqlConn()->query($query);
-
-        if (empty($result)) {
-            return null;
-        }
-
-        $resultList = [];
-
-        while ($row = $mssql->fetchArray($result)) {
-            $newRow = [];
-
-            foreach ($row as $key => $value) {
-                if (is_numeric($key)) {
-                    continue;
-                }
-
-                $newRow[$key] = $value;
-            }
-
-            $resultList[] = $newRow;
-        }
-
-        return $resultList;
-    }
-
-    /**
-     * Deletes invoice from replication table in NAV so a new one can be imported, bitches...
-     *
-     * @param string $sfNumber
-     */
-    public function deleteInvoiceFromNav($sfNumber)
-    {
-        $mssql = $this->container->get('food.mssql');
-
-        $query = "
-            DELETE FROM %s WHERE [Invoice No_] = '%s'";
-        $query = sprintf($query, $this->getInvoiceTable(), $sfNumber);
-
-        $this->initSqlConn()->query($query);
     }
 }
