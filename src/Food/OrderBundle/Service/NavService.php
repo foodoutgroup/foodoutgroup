@@ -556,7 +556,7 @@ class NavService extends ContainerAware
 
         $discountInOrder = $detail->getOrderId()->getDiscountSize();
         if ($discountInOrder > 0) {
-            $discountAmount = $paymentAmount - round($paymentAmount * (100 - $discountInOrder), 2);
+            $discountAmount = $paymentAmount - round($paymentAmount * ((100 - intval($discountInOrder))/100), 2);
         }
 
         /*
