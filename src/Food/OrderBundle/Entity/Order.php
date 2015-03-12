@@ -347,6 +347,12 @@ class Order
     private $orderFromNav = false;
 
     /**
+     * @var bool
+     * @ORM\Column(name="late_order_informed", type="boolean", nullable=true)
+     */
+    private $lateOrderInformed = false;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -1778,5 +1784,28 @@ class Order
     public function getNavDriverCode()
     {
         return $this->navDriverCode;
+    }
+
+    /**
+     * Set lateOrderInformed
+     *
+     * @param boolean $lateOrderInformed
+     * @return Order
+     */
+    public function setLateOrderInformed($lateOrderInformed)
+    {
+        $this->lateOrderInformed = $lateOrderInformed;
+    
+        return $this;
+    }
+
+    /**
+     * Get lateOrderInformed
+     *
+     * @return boolean 
+     */
+    public function getLateOrderInformed()
+    {
+        return $this->lateOrderInformed;
     }
 }

@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 use Food\OrderBundle\Service\OrderService;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class OrderRepository extends EntityRepository
 {
@@ -507,5 +508,41 @@ class OrderRepository extends EntityRepository
 
         return $qb->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param \DateTime $date
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getOrdersToBeLate($date)
+    {
+        $orderStatus = "'".OrderService::$status_accepted
+            ."', '".OrderService::$status_assiged
+            ."', '".OrderService::$status_finished
+            ."', '".OrderService::$status_delayed."'";
+        $paymentStatus = OrderService::$paymentStatusComplete;
+        $deliveryType = OrderService::$deliveryDeliver;
+
+        $dateFrom = new \DateTime("-2 hour");
+        $dateFrom = $dateFrom->format("Y-m-d H:i:s");
+        $dateTo = $date->format("Y-m-d H:i:s");
+
+        $query = "
+          SELECT
+            o.id
+          FROM orders o
+          WHERE
+            o.order_status IN ({$orderStatus})
+            AND o.payment_status = '{$paymentStatus}'
+            AND o.delivery_type = '{$deliveryType}'
+            AND o.delivery_time BETWEEN '{$dateFrom}' AND '{$dateTo}'
+            AND o.place_point_self_delivery != 1
+            AND (o.late_order_informed != 1 OR o.late_order_informed IS NULL)
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 }

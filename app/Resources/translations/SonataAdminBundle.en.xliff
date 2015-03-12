@@ -1530,6 +1530,28 @@
                 <source>Best Offer List</source>
                 <target>Best offers</target>
             </trans-unit>
+
+            <!-- Params listas -->
+            <trans-unit id="admin.params">
+                <source>admin.params</source>
+                <target>Parameters</target>
+            </trans-unit>
+            <trans-unit id="Param List">
+                <source>Param List</source>
+                <target>Parameters</target>
+            </trans-unit>
+            <trans-unit id="admin.param.name">
+                <source>admin.param.name</source>
+                <target>Parameter</target>
+            </trans-unit>
+            <trans-unit id="admin.param.id">
+                <source>admin.param.id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="admin.param.value">
+                <source>admin.param.value</source>
+                <target>Value</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

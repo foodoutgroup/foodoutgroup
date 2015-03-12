@@ -2816,4 +2816,16 @@ class OrderService extends ContainerAware
             }
         }
     }
+
+    /**
+     * @param string $timeToDelivery
+     *
+     * @return array
+     */
+    public function getOrdersToBeLate($timeToDelivery)
+    {
+        $date = new \DateTime("-".$timeToDelivery." minute");
+
+        return $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->getOrdersToBeLate($date);
+    }
 }
