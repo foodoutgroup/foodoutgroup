@@ -277,3 +277,14 @@ services:
                     - 'FoodReportBundle:RestaurantOrdersAdmin'
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.params:
+                class: Food\AppBundle\Admin\ParamAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.params" }
+                arguments:
+                    - ~
+                    - Food\AppBundle\Entity\Param
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]

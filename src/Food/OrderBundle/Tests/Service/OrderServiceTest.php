@@ -7,42 +7,9 @@ use Food\OrderBundle\Service\LocalBiller;
 use Food\OrderBundle\Service\OrderService;
 use Food\OrderBundle\Service\PaySera;
 use Food\UserBundle\Entity\User;
+use Food\AppBundle\Test\WebTestCase;
 
-require_once dirname(__DIR__).'/../../../../app/AppKernel.php';
-
-class OrderServiceTest extends \PHPUnit_Framework_TestCase {
-    /**
-     * @var \Symfony\Component\HttpKernel\AppKernel
-     */
-    protected $kernel;
-
-    /**
-     * @var \Symfony\Component\DependencyInjection\Container
-     */
-    protected $container;
-
-    /**
-     * @return null
-     */
-    public function setUp()
-    {
-        $this->kernel = new \AppKernel('test', true);
-        $this->kernel->boot();
-
-        $this->container = $this->kernel->getContainer();
-
-        parent::setUp();
-    }
-
-    /**
-     * @return null
-     */
-    public function tearDown()
-    {
-        $this->kernel->shutdown();
-
-        parent::tearDown();
-    }
+class OrderServiceTest extends WebTestCase {
 
     /**
      * @expectedException \InvalidArgumentException
@@ -60,7 +27,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
     public function testGetPaymentSystemByMethod()
     {
         $orderService = new OrderService();
-        $orderService->setContainer($this->container);
+        $orderService->setContainer($this->getContainer());
 
         $biller = $orderService->getPaymentSystemByMethod('paysera');
         $biller2 = $orderService->getPaymentSystemByMethod('local');
@@ -74,7 +41,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
     public function testIsAvailablePaymentMethod()
     {
         $orderService = new OrderService();
-        $orderService->setContainer($this->container);
+        $orderService->setContainer($this->getContainer());
 
         $isAvailable1 = $orderService->isAvailablePaymentMethod('paysera');
         $isAvailable2 = $orderService->isAvailablePaymentMethod('local');
@@ -491,6 +458,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
         $expected5 = false;
 
         $orderService = new OrderService();
+        $orderService->setContainer($this->getContainer());
 
         $gotValidity1 = $orderService->isValidDeliveryType('pickup');
         $gotValidity2 = $orderService->isValidDeliveryType('atidok');
@@ -514,6 +482,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
         $expected5 = false;
 
         $orderService = new OrderService();
+        $orderService->setContainer($this->getContainer());
 
         $gotValidity1 = $orderService->isAllowedPaymentStatus('complete');
         $gotValidity2 = $orderService->isAllowedPaymentStatus('cancel');
@@ -552,6 +521,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
         $expected20 = true;
 
         $orderService = new OrderService();
+        $orderService->setContainer($this->getContainer());
 
         $gotValidity1 = $orderService->isValidPaymentStatusChange('', '');
         $gotValidity2 = $orderService->isValidPaymentStatusChange('new', '');
@@ -638,6 +608,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
         $expectedValidity38 = false;
 
         $orderService = new OrderService();
+        $orderService->setContainer($this->getContainer());
 
         $gotValidity1 = $orderService->isValidOrderStatusChange('new', 'accepted');
         $gotValidity2 = $orderService->isValidOrderStatusChange('new', 'canceled');
@@ -724,6 +695,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
     public function testGenerateOrderHashException()
     {
         $orderService = new OrderService();
+        $orderService->setContainer($this->getContainer());
         $orderService->generateOrderHash('aa');
     }
 
@@ -735,6 +707,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
         $expectedValidity4 = false;
 
         $orderService = new OrderService();
+        $orderService->setContainer($this->getContainer());
 
         $gotValidity1 = $orderService->isValidDeliveryType('deliver');
         $gotValidity2 = $orderService->isValidDeliveryType('pickup');
@@ -820,6 +793,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
     public function testCreapyFixer()
     {
         $orderService = new OrderService();
+        $orderService->setContainer($this->getContainer());
 
         $expectedString = 'Sesios zasys su sesiais zasyciais. Gerve gyrune gyresi gera gira geroj girioj gerai gerusi.';
         $testedString = 'Šešios žąsys su šešiais žąsyčiais. Gervė gyrūnė gyrėsi gerą girą geroj girioj gerai gėrusi.';
@@ -827,6 +801,73 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase {
         $reality = $orderService->creepyFixer($testedString);
 
         $this->assertEquals($expectedString, $reality);
+    }
+
+    public function testOrdersToBeLate()
+    {
+        $place = $this->getPlace('O maj gad');
+        $point = $this->getPlacePoint($place);
+        $order = $this->getOrder($place, $point, OrderService::$status_assiged);
+        $order2 = $this->getOrder($place, $point, OrderService::$status_assiged);
+        $order3 = $this->getOrder($place, $point, OrderService::$status_assiged);
+        $order4 = $this->getOrder($place, $point, OrderService::$status_delayed);
+
+        $order->setAcceptTime(new \DateTime('-70 minute'))
+            ->setDeliveryType(OrderService::$deliveryDeliver)
+            ->setDeliveryTime(new \DateTime('-21 minute'));
+
+        $order2->setAcceptTime(new \DateTime('-80 minute'))
+            ->setDeliveryType(OrderService::$deliveryDeliver)
+            ->setDeliveryTime(new \DateTime('-12 minute'));
+
+        $order3->setAcceptTime(new \DateTime('-90 minute'))
+            ->setDeliveryType(OrderService::$deliveryDeliver)
+            ->setDeliveryTime(new \DateTime('-9 minute'));
+
+        $order4->setAcceptTime(new \DateTime('-83 minute'))
+            ->setDeliveryType(OrderService::$deliveryDeliver)
+            ->setDeliveryTime(new \DateTime('now'));
+
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $em->persist($order);
+        $em->persist($order2);
+        $em->persist($order3);
+        $em->flush();
+
+        $orderService = $this->getContainer()->get('food.order');
+
+        $expectedResult1 = array(
+            array(
+                'id' => $order->getId(),
+            )
+        );
+        $expectedResult2 = array(
+            array(
+                'id' => $order->getId(),
+            ),
+            array(
+                'id' => $order2->getId(),
+            )
+        );
+        $expectedResult3 = array(
+            array(
+                'id' => $order->getId(),
+            ),
+            array(
+                'id' => $order2->getId(),
+            ),
+            array(
+                'id' => $order3->getId(),
+            ),
+        );
+
+        $actualResult1 = $orderService->getOrdersToBeLate('20');
+        $actualResult2 = $orderService->getOrdersToBeLate('10');
+        $actualResult3 = $orderService->getOrdersToBeLate('5');
+
+        $this->assertEquals($expectedResult1, $actualResult1);
+        $this->assertEquals($expectedResult2, $actualResult2);
+        $this->assertEquals($expectedResult3, $actualResult3);
     }
 
     private function cleanOrderForCompare($orderArray)
