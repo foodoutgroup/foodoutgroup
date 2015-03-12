@@ -873,7 +873,7 @@ class OrderService extends ContainerAware
 
         $deliveryPrice = $this->getCartService()->getDeliveryPrice(
             $this->getOrder()->getPlace(),
-            $this->get('food.googlegis')->getLocationFromSession(),
+            $this->container->get('food.googlegis')->getLocationFromSession(),
             $this->getOrder()->getPlacePoint()
         );
 
