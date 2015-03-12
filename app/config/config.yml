@@ -32,7 +32,7 @@ parameters:
     admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
     admin.phones: [37061514333]
-    order.notify_emails: [birute@foodout.lt, giedrius@foodout.lt]
+    order.notify_emails: [giedrius@foodout.lt]
     #order.notify_emails: [pirminis@gmail.com]
     order.city_coordinators:
         vilnius: []
