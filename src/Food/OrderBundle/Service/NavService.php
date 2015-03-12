@@ -1081,6 +1081,7 @@ class NavService extends ContainerAware
                     WHERE
                         pSumTrans.[Receipt No_] = dOrder.[Order No_]
                         AND pSumTrans.[Deleted] = 0
+                        AND pSumTrans.[Entry Status] = 0
                 ) AS OrderSum
             FROM %s dOrder
             WHERE
@@ -1385,6 +1386,7 @@ class NavService extends ContainerAware
                     WHERE
                         pSumTrans.[Receipt No_] = dOrder.[Order No_]
                         AND pSumTrans.[Deleted] = 0
+                        AND pSumTrans.[Entry Status] = 0
                 ) AS OrderSum,
                 (
                  SELECT TOP 1
