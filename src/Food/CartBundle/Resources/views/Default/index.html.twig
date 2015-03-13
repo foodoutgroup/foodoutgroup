@@ -308,7 +308,7 @@
                                 </select>
                             </div>
                             #}
-                            <div class="form-row form-row-required">
+                            <div class="form-row">
                                 <label>{% trans %}cart.checkout.delivery_comment{% endtrans %}:</label>
                                 <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['customer-comment'] is not empty) %}{{ dataToLoad['customer-comment'] }}{% endif %}</textarea>
                             </div>
