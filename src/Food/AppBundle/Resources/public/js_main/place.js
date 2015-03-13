@@ -251,11 +251,11 @@ var Place = {
                 newTop = this.contentHeight - this.catmenuHeight;
             }
             if(this.catmenuOffset.top < scTop) {
-                this.catmenuObj.css('top', newTop);
+                //this.catmenuObj.css('top', newTop);
             }
             this.cartObj.css('margin-top', newTop+80);
         } else {
-            this.catmenuObj.css('top', 0);
+            // this.catmenuObj.css('top', 0);
             this.cartObj.css('margin-top', 0);
         }
     }

@@ -8,15 +8,13 @@ class BestOfferRepository extends EntityRepository
 {
     public function getRandomBestOffers($amount)
     {
-        $queryBuilder = $this->createQueryBuilder('best_offer')
-                             ->select('best_offer.id')
-                             ->where('best_offer.active = 1');
-
-        $activeIds = array_map([$this, 'filterIds'], $queryBuilder->getQuery()->getResult());
-        $activeIds = array_slice($activeIds, 0, 5);
-
-        if (0 == count($activeIds)) {
-            return [];
+        $query = "SELECT id FROM best_offer WHERE active=1 ORDER BY RAND() LIMIT 5";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $activeIds = array();
+        $offers = $stmt->fetchAll();
+        foreach ($offers as $off) {
+            $activeIds[] = $off['id'];
         }
 
         $queryBuilder = $this->createQueryBuilder('best_offer')
