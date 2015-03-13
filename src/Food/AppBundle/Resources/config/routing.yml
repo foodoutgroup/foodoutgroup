@@ -46,6 +46,10 @@ food_nav_migrator:
     pattern: /test/migrator/{date}
     defaults: { _controller: FoodAppBundle:Test:migrator, date: ~ }
 
+food_game:
+    pattern: /test/game/
+    defaults: { _controller: FoodAppBundle:Test:game }
+
 
 food_review_create:
     pattern: /place/review/{id}

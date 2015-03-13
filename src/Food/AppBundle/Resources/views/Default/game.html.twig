@@ -1,0 +1,27 @@
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+{% block title %}{% trans %}general.wow_game{% endtrans %} | {{ page_title }}{% endblock %}
+
+    {% block body %}
+        <div class="site-center">
+            <div class="site-block">
+                <div class="middle-content">
+                    <div class="static-page">
+                        <div class="static-page-content">
+
+                            {% if showSuccess %}
+                                {# Success message#}
+                            {% elseif showError %}
+                                {# Error message #}
+                            {% else %}
+                                {# The form #}
+                                {{ form_start(form) }}
+                                {{ form_widget(form) }}
+                                {{ form_end(form) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
