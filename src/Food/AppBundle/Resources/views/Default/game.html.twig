@@ -8,17 +8,54 @@
                 <div class="middle-content">
                     <div class="static-page">
                         <div class="static-page-content">
+                            <style>
+                                #gameForm input {
+                                    font-size: 15px;
+                                    padding: 9px 12px;
+                                    border: 1px solid #d8d8d8;
+                                    border-radius: 3px;
+                                    box-shadow: 0 0 1px #f2f2f2;
+                                    box-shadow: 0 0 2px #d0c8c1;
+                                    float: right;
+                                    width: 210px;
+                                }
+                                #gameForm #form div {
+                                    height: 45px;
+                                }
+                                #gameForm #form div label {
+                                    float: left;
+                                    padding-top: 9px;
+                                    width: 118px;
+                                    padding-right: 5px;
+                                    font-size: 15px;
+                                }
+                            </style>
+                            <div class="content" style="display: block; float: left; width: 385px">
+                                {{ content | raw }}
+                            </div>
 
-                            {% if showSuccess %}
-                                {# Success message#}
-                            {% elseif showError %}
-                                {# Error message #}
-                            {% else %}
-                                {# The form #}
-                                {{ form_start(form) }}
-                                {{ form_widget(form) }}
-                                {{ form_end(form) }}
-                            {% endif %}
+
+                            <div style="float: right; width: 360px" id="gameForm">
+                                {% if showSuccess %}
+                                    {# Success message#}
+                                {% elseif showError %}
+                                    {# Error message #}
+                                {% else %}
+                                    {# The form #}
+                                    {{ form_start(form) }}
+                                    {{ form_widget(form) }}
+                                    {{ form_end(form) }}
+                                {% endif %}
+                            </div>
+                            <br clear="all" />
+                            <script>
+                                $(document).ready(function() {
+                                    $("#gameForm select:eq(0)").css('width','80');
+                                    $("#gameForm select:eq(1)").css('width','90');
+                                    $("#gameForm select:eq(2)").css('width','60');
+                                    $('select').selectmenu();
+                                });
+                            </script>
                         </div>
                     </div>
                 </div>

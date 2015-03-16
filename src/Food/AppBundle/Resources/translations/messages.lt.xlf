@@ -1163,9 +1163,38 @@
           <target>Kaune</target>
       </trans-unit>
       <trans-unit id="places.in_klaipeda" resname="places.in_klaipeda">
-          <source>places.in_klaipeda</source>
-          <target>Klaipėdoje</target>
-      </trans-unit>
+        <source>places.in_klaipeda</source>
+        <target>Klaipėdoje</target>
+    </trans-unit>
+    <trans-unit id="food.game.firstname" resname="food.game.firstname">
+        <source>food.game.firstname</source>
+        <target>Vardas</target>
+    </trans-unit>
+    <trans-unit id="food.game.lastname" resname="food.game.lastname">
+        <source>food.game.lastname</source>
+        <target>Pavardė</target>
+    </trans-unit>
+    <trans-unit id="food.game.city" resname="food.game.city">
+        <source>food.game.city</source>
+        <target>Miestas</target>
+    </trans-unit>
+    <trans-unit id="food.game.bdate" resname="food.game.bdate">
+        <source>food.game.bdate</source>
+        <target>Gimimo data</target>
+    </trans-unit>
+    <trans-unit id="food.game.phone" resname="food.game.phone">
+        <source>food.game.phone</source>
+        <target>Telefonas</target>
+    </trans-unit>
+    <trans-unit id="food.game.email" resname="food.game.email">
+        <source>food.game.email</source>
+        <target>El. paštas</target>
+    </trans-unit>
+    <trans-unit id="food.game.register" resname="food.game.register">
+        <source>food.game.register</source>
+        <target>Registruotis</target>
+    </trans-unit>
+
     </body>
   </file>
 </xliff>

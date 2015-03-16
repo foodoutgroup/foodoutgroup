@@ -4,10 +4,11 @@ namespace Food\AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Food\AppBundle\Entity\MarketingUser
- *
+ * @ORM\Entity
  * @ORM\Table(name="marketing_users")
  */
 class MarketingUser
