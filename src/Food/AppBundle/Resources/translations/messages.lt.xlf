@@ -1194,7 +1194,22 @@
         <source>food.game.register</source>
         <target>Registruotis</target>
     </trans-unit>
-
+    <trans-unit id="food.game.empty_field" resname="food.game.empty_field">
+        <source>food.game.empty_field</source>
+        <target>Šis laukas negali būti tuščias</target>
+    </trans-unit>
+    <trans-unit id="food.game.has_error" resname="food.game.has_error">
+        <source>food.game.has_error</source>
+        <target>Oi! Neteisingai įvedėte duomenis.</target>
+    </trans-unit>
+    <trans-unit id="food.game.its_success" resname="food.game.its_success">
+        <source>food.game.its_success</source>
+        <target>Ačiū, Jūs užsiregistravote sėkmingai</target>
+    </trans-unit>
+    <trans-unit id="food.game.agree" resname="food.game.agree">
+        <source>food.game.agree</source>
+        <target><![CDATA[Sutinku su taisyklėmis<br /><a href="rule_url">Taisyklės</a>]]></target>
+    </trans-unit>
     </body>
   </file>
 </xliff>

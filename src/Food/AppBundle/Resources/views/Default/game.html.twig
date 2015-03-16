@@ -39,9 +39,12 @@
                             <div style="float: right; width: 360px" id="gameForm">
                                 {% if showSuccess %}
                                     {# Success message#}
-                                {% elseif showError %}
-                                    {# Error message #}
+                                    <div class="alert alert-success">{% trans %}food.game.its_success{% endtrans %}</div>
                                 {% else %}
+                                    {% if showError %}
+                                        {# Error message #}
+                                        <div class="alert alert-danger">{% trans %}food.game.has_error{% endtrans %}</div>
+                                    {% endif %}
                                     {# The form #}
                                     {{ form_start(form) }}
                                     {{ form_widget(form) }}

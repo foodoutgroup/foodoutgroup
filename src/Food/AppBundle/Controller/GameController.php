@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints\True;
 
 
 class GameController extends Controller
@@ -23,13 +24,32 @@ class GameController extends Controller
         $participant = new MarketingUser();
         $participant->setCreatedAt(new \DateTime("now"));
 
+        $emptyFieldMessage = $this->get('translator')->trans('food.game.empty_field');
+
         $form = $this->createFormBuilder($participant)
-            ->add('firstName', 'text', array('label' => 'food.game.firstname'))
+            ->add('firstName', 'text', array(
+                'label' => 'food.game.firstname',
+                'required' => true,
+                // This error applies to all fields
+                'attr' => array('oninvalid'=>"setCustomValidity('".$emptyFieldMessage."')")))
             ->add('lastName', 'text', array('label' => 'food.game.lastname'))
-            ->add('city', 'text', array('label' => 'food.game.city'))
+            ->add('city', 'text', array('label' => 'food.game.city', 'required' => true))
             ->add('birthDate', 'date', array('label' => 'food.game.bdate'))
-            ->add('phone', 'text', array('label'=>'food.game.phone', 'attr' => array('placeholder' => '370XXXXXXX')))
-            ->add('email', 'text',array('label' => 'food.game.email'))
+            ->add('phone', 'text', array(
+                'label'=>'food.game.phone',
+                'attr' => array('placeholder' => '370XXXXXXX'),
+                'required' => true
+            ))
+            ->add('email', 'text',array('label' => 'food.game.email', 'required' => true))
+            ->add('aggree', 'checkbox', array(
+                'mapped' => false,
+//                'required' => true,
+                'label' => 'food.game.agree',
+                'constraints' => new True(array(
+                    'message' => 'sutik, padla',
+                )),
+                'attr' => array('checked' => ''),
+            ))
             ->add('save', 'submit', array('label' => 'food.game.register'))
             ->getForm();
 
