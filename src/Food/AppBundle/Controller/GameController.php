@@ -53,11 +53,19 @@ class GameController extends Controller
         $data['form'] = $form->createView();
 
         $textData = $this->container->get('food.dishes.utils.slug')->getOneByName('game_text', $this->get('request')->getLocale());
+        $textDataRules = $this->container->get('food.dishes.utils.slug')->getOneByName('game_rules', $this->get('request')->getLocale());
         if (empty($textData)) {
             $data['content'] = "Sukurt puslapi game_text";
         } else {
             $textItem = $this->container->get('doctrine')->getManager()->getRepository('FoodAppBundle:StaticContent')->find($textData->getItemId());
             $data['content'] = $textItem->getContent();
+        }
+
+        if (empty($textDataRules)) {
+            $data['content_rules'] = "Sukurt puslapi game_rules";
+        } else {
+            $textItem = $this->container->get('doctrine')->getManager()->getRepository('FoodAppBundle:StaticContent')->find($textDataRules->getItemId());
+            $data['content_rules'] = $textItem->getContent();
         }
 
         return $this->render(
