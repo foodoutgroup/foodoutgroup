@@ -1378,11 +1378,11 @@
             <!-- Cover photo admin -->
             <trans-unit id="admin.place_cover_photo">
                 <source>admin.place_cover_photo</source>
-                <target>Vietų coveriai</target>
+                <target>Place covers</target>
             </trans-unit>
             <trans-unit id="Place Cover Photo List">
                 <source>Place Cover Photo List</source>
-                <target>Vietų coveriai</target>
+                <target>Place covers</target>
             </trans-unit>
             <trans-unit id="admin.place_cover_photo.place">
                 <source>admin.place_cover_photo.place</source>
@@ -1396,51 +1396,51 @@
             <!-- Reports -->
             <trans-unit id="admin.reports">
                 <source>admin.reports</source>
-                <target>Ataskaitos</target>
+                <target>Reports</target>
             </trans-unit>
             <trans-unit id="admin.reports.place">
                 <source>admin.reports.place</source>
-                <target>Restoranas</target>
+                <target>Restaurant</target>
             </trans-unit>
             <trans-unit id="admin.reports.self_delivery">
                 <source>admin.reports.self_delivery</source>
-                <target>Sava logistika</target>
+                <target>Own logistics</target>
             </trans-unit>
             <trans-unit id="admin.reports.order_count">
                 <source>admin.reports.order_count</source>
-                <target>Kiekis</target>
+                <target>Count</target>
             </trans-unit>
             <trans-unit id="admin.reports.devliver_count">
                 <source>admin.reports.devliver_count</source>
-                <target>Su pristatymu</target>
+                <target>Delivery</target>
             </trans-unit>
             <trans-unit id="admin.reports.pickup_count">
                 <source>admin.reports.pickup_count</source>
-                <target>Atsiėmė vietoje</target>
+                <target>Pickup</target>
             </trans-unit>
             <trans-unit id="admin.reports.order_sum">
                 <source>admin.reports.order_sum</source>
-                <target>Užsakymų suma</target>
+                <target>Orders sum</target>
             </trans-unit>
             <trans-unit id="admin.reports.month">
                 <source>admin.reports.month</source>
-                <target>Mėnuo</target>
+                <target>Month</target>
             </trans-unit>
             <trans-unit id="admin.report.restaurant_orders">
                 <source>admin.report.restaurant_orders</source>
-                <target>Restorano užsakymų kiekis</target>
+                <target>Restaurant orders count</target>
             </trans-unit>
             <trans-unit id="admin.reports.order_count.period">
                 <source>admin.reports.order_count.period</source>
-                <target>Periodas: </target>
+                <target>Period: </target>
             </trans-unit>
             <trans-unit id="admin.reports.group_by_month">
                 <source>admin.reports.group_by_month</source>
-                <target>Grupuoti pagal mėnesį</target>
+                <target>Group by month</target>
             </trans-unit>
             <trans-unit id="admin.reports.date_range">
                 <source>admin.reports.date_range</source>
-                <target>Laikotarpis (nuo - iki)</target>
+                <target>Period (from - till)</target>
             </trans-unit>
 
             <trans-unit id="sonata_administration">
