@@ -2295,7 +2295,8 @@ class OrderService extends ContainerAware
         }
 
         if (0 === strlen($request->get('customer-comment'))) {
-            $formErrors[] = 'order.form.errors.customercomment';
+            // $formErrors[] = 'order.form.errors.customercomment';
+            // UX improvement. Dejom skersa ant commentaro.
         }
 
         $customerEmail = $request->get('customer-email');

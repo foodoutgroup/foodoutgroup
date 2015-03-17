@@ -30,6 +30,7 @@
                                 }
                                 #gameForm .icheckbox {
                                     display: block;
+                                    position: inherit !important;
                                 }
                                 #gameForm .icheckbox input {
                                     width: 30px;
@@ -37,6 +38,13 @@
                                     border: none !important;
                                     box-shadow: 0 0 !important;
                                     margin-top: 11px;
+                                }
+                                .rulesDialog {
+                                    background: none !important;
+                                    background-color: #ffffff !important;
+                                }
+                                #game_rules {
+                                    display: none;
                                 }
                             </style>
                             <div class="content" style="display: block; float: left; width: 385px">
@@ -60,6 +68,9 @@
                                 {% endif %}
                             </div>
                             <br clear="all" />
+                            <div id="game_rules">
+                                {{ content_rules }}
+                            </div>
                             <script>
                                 $(document).ready(function() {
                                     $('label[for="form_aggree"]').html($('label[for="form_aggree"]').text()).css('width', '235px')
@@ -67,7 +78,21 @@
                                     $("#gameForm select:eq(1)").css('width','90');
                                     $("#gameForm select:eq(2)").css('width','60');
                                     $('select').selectmenu();
-                                    {#setCustomValidity('{% trans %}food.game.empty_field{% endtrans %}');#}
+                                    setTimeout(
+                                            function() {
+                                                $("#gameForm .iCheck-helper").remove();
+                                                $('label[for="form_aggree"]').parent().find("input").unbind();
+                                                $('label[for="form_aggree"]').find('a').bind('click', function(e) {
+                                                    $('#game_rules').dialog({
+                                                        dialogClass: 'rulesDialog',
+                                                        modal: true
+                                                    });
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    return false;
+                                                });
+                                            }, 500
+                                    );
                                 });
                             </script>
                         </div>

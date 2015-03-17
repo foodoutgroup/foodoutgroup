@@ -1210,6 +1210,10 @@
         <source>food.game.agree</source>
         <target><![CDATA[Sutinku su taisyklėmis. <a href="rule_url">Taisyklės</a>]]></target>
     </trans-unit>
+    <trans-unit id="general.wow_game" resname="general.wow_game">
+        <source>general.wow_game</source>
+        <target>Registracija žaidimui</target>
+    </trans-unit>
     <trans-unit id="food.marketing.bad_email" resname="food.marketing.bad_email">
         <source>food.marketing.bad_email</source>
         <target>Blogas el.pašto adresas</target>

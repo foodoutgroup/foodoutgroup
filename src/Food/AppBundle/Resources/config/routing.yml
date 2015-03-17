@@ -50,6 +50,9 @@ food_game:
     pattern: /test/game/
     defaults: { _controller: FoodAppBundle:Game:index }
 
+food_game_prod:
+    pattern: /registracija_zaidimui
+    defaults: { _controller: FoodAppBundle:Game:index }
 
 food_review_create:
     pattern: /place/review/{id}
