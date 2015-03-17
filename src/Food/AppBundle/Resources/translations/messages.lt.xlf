@@ -1208,7 +1208,7 @@
     </trans-unit>
     <trans-unit id="food.game.agree" resname="food.game.agree">
         <source>food.game.agree</source>
-        <target><![CDATA[Sutinku su taisyklėmis<br /><a href="rule_url">Taisyklės</a>]]></target>
+        <target><![CDATA[Sutinku su taisyklėmis. <a href="rule_url">Taisyklės</a>]]></target>
     </trans-unit>
     </body>
   </file>

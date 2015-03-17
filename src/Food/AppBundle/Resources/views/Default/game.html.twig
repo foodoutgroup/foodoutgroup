@@ -30,6 +30,16 @@
                                     padding-right: 5px;
                                     font-size: 15px;
                                 }
+                                #gameForm .icheckbox {
+                                    display: block;
+                                }
+                                #gameForm .icheckbox input {
+                                    width: 30px;
+                                    opacity: 1 !important;
+                                    border: none !important;
+                                    box-shadow: 0 0 !important;
+                                    margin-top: 11px;
+                                }
                             </style>
                             <div class="content" style="display: block; float: left; width: 385px">
                                 {{ content | raw }}
@@ -54,6 +64,7 @@
                             <br clear="all" />
                             <script>
                                 $(document).ready(function() {
+                                    $('label[for="form_aggree"]').html($('label[for="form_aggree"]').text()).css('width', '235px')
                                     $("#gameForm select:eq(0)").css('width','80');
                                     $("#gameForm select:eq(1)").css('width','90');
                                     $("#gameForm select:eq(2)").css('width','60');
