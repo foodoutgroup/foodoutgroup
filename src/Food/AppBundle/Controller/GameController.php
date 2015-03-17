@@ -24,17 +24,10 @@ class GameController extends Controller
         $participant = new MarketingUser();
         $participant->setCreatedAt(new \DateTime("now"));
 
-        $emptyFieldMessage = $this->get('translator')->trans('food.game.empty_field');
-
         $form = $this->createFormBuilder($participant)
             ->add('firstName', 'text', array(
                 'label' => 'food.game.firstname',
                 'required' => true,
-                // This error applies to all fields
-//                'attr' => array(
-//                    'oninvalid'=>"setCustomValidity('".$emptyFieldMessage."')",
-//                    'onfocus' => "setCustomValidity('')",
-//                )
             ))
             ->add('lastName', 'text', array('label' => 'food.game.lastname'))
             ->add('city', 'text', array('label' => 'food.game.city', 'required' => true))
