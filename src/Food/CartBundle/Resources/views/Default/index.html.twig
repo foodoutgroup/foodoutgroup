@@ -308,7 +308,7 @@
                                 </select>
                             </div>
                             #}
-                            <div class="form-row form-row-required">
+                            <div class="form-row">
                                 <label>{% trans %}cart.checkout.delivery_comment{% endtrans %}:</label>
                                 <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['customer-comment'] is not empty) %}{{ dataToLoad['customer-comment'] }}{% endif %}</textarea>
                             </div>
@@ -336,7 +336,7 @@
                             </div>
                             <div class="form-row form-row-required custom-checkbox cart-rules">
                                 <label>{% trans %}cart.checkout.cart_rules{% endtrans %}</label>
-                                <input type="checkbox" name="cart_rules" {% if (dataToLoad is not empty and dataToLoad['cart_rules'] is defined and dataToLoad['cart_rules'] is not empty) %}checked="checked"{% endif %} />
+                                <input type="checkbox" name="cart_rules" {% if (dataToLoad is empty or (dataToLoad['cart_rules'] is defined and dataToLoad['cart_rules'] is not empty)) %}checked="checked"{% endif %} />
                             </div>
                             <div class="clearfix"></div>
                             <div class="cupon-info">
