@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="lt" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="Please check this box if you want to proceed." resname="Please check this box if you want to proceed.">
+                <source>Please check this box if you want to proceed.</source>
+                <target>Privalote sutikti, norėdami tęsti</target>
+            </trans-unit>
+            <trans-unit id="Please fill out this field." resname="Please fill out this field.">
+                <source>Please fill out this field.</source>
+                <target>Privalote sutikti, norėdami tęsti</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -31,7 +31,11 @@ class GameController extends Controller
                 'label' => 'food.game.firstname',
                 'required' => true,
                 // This error applies to all fields
-                'attr' => array('oninvalid'=>"setCustomValidity('".$emptyFieldMessage."')")))
+//                'attr' => array(
+//                    'oninvalid'=>"setCustomValidity('".$emptyFieldMessage."')",
+//                    'onfocus' => "setCustomValidity('')",
+//                )
+            ))
             ->add('lastName', 'text', array('label' => 'food.game.lastname'))
             ->add('city', 'text', array('label' => 'food.game.city', 'required' => true))
             ->add('birthDate', 'date', array('label' => 'food.game.bdate'))
