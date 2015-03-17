@@ -1214,6 +1214,18 @@
         <source>general.wow_game</source>
         <target>Registracija žaidimui</target>
     </trans-unit>
+    <trans-unit id="food.marketing.bad_email" resname="food.marketing.bad_email">
+        <source>food.marketing.bad_email</source>
+        <target>Blogas el.pašto adresas</target>
+    </trans-unit>
+    <!--<trans-unit id="Please check this box if you want to proceed." resname="Please check this box if you want to proceed.">-->
+        <!--<source>Please check this box if you want to proceed.</source>-->
+        <!--<target>Privalote sutikti, norėdami tęsti</target>-->
+    <!--</trans-unit>-->
+    <!--<trans-unit id="Please fill out this field." resname="Please fill out this field.">-->
+        <!--<source>Please fill out this field.</source>-->
+        <!--<target>Privalote sutikti, norėdami tęsti</target>-->
+    <!--</trans-unit>-->
     </body>
   </file>
 </xliff>

@@ -59,7 +59,7 @@ class MarketingUser
      *
      * @Assert\NotBlank()
      * @Assert\Email(
-     *     message = "Blogas el.pašto adresas: '{{ value }}'",
+     *     message = "food.marketing.bad_email",
      *     checkMX = false
      * )
      * @ORM\Column(name="email", type="string", length=128)
