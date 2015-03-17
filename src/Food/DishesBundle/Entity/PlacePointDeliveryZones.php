@@ -57,6 +57,12 @@ class PlacePointDeliveryZones
     private $price;
 
     /**
+     * @var float
+     * @ORM\Column(name="cart_size", type="decimal", precision=8, scale=2, nullable=true)
+     */
+    private $cartSize;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="time_from", type="string", length=5, nullable=true)
