@@ -179,7 +179,15 @@
                                                 {{ currency_display|raw }}{{ minPrc }}-{{ maxPrc }}
                                             {% endif %}
                                         </li>
-                                        <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>{{ currency_display|raw }}{{ place.cartMinimum }}</li>
+                                        <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>
+                                            {% set minCart = places_service.minCartPrice(place.id) %}
+                                            {% set maxCart = places_service.maxCartPrice(place.id) %}
+                                            {% if minCart == maxCart %}
+                                                {{ currency_display|raw }}{{ minCart }}
+                                            {% else %}
+                                                {{ currency_display|raw }}{{ minCart }}-{{ maxCart }}
+                                            {% endif %}
+                                        </li>
                                         {% endif %}
                                         <li class="ico-payments hidden"><strong>{% trans %}places.payment_types{% endtrans %}:</strong><span class="payments-data"></span></li>
                                         {% if place.deliveryOptions != 'pickup' %}

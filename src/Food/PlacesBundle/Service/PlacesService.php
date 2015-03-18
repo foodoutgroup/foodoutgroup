@@ -241,4 +241,25 @@ class PlacesService extends ContainerAware {
         }
         return $sum;
     }
+
+    public function getMinCartPrice($placeId)
+    {
+        $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMinCartSize($placeId);
+        if (empty($sum)) {
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            return $place->getCartMinimum();
+        }
+        return $sum;
+    }
+
+    public function getMaxCartPrice($placeId)
+    {
+        $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMaxCartSize($placeId);
+        if (empty($sum)) {
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            return $place->getCartMinimum();
+        }
+        return $sum;
+    }
+
 }

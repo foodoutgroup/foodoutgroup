@@ -35,7 +35,6 @@ class DailyReport extends ContainerAware
         '3' => 2975,
         '4' => 3252,
         '5' => 3972
-
     ];
     protected $kpiOrdersMap = [
         '1' => 564,
