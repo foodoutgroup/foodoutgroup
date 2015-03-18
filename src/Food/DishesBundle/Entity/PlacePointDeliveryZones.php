@@ -441,4 +441,27 @@ class PlacePointDeliveryZones
     {
         return $this->active;
     }
+
+    /**
+     * Set cartSize
+     *
+     * @param string $cartSize
+     * @return PlacePointDeliveryZones
+     */
+    public function setCartSize($cartSize)
+    {
+        $this->cartSize = $cartSize;
+    
+        return $this;
+    }
+
+    /**
+     * Get cartSize
+     *
+     * @return string 
+     */
+    public function getCartSize()
+    {
+        return $this->cartSize;
+    }
 }

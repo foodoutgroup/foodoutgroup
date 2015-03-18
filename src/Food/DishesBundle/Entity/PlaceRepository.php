@@ -339,6 +339,22 @@ class PlaceRepository extends EntityRepository
         $stmt->execute();
         return $stmt->fetchColumn(0);
     }
+
+    public function getMinCartSize($placeId)
+    {
+        $minPrice = "SELECT MIN(cart_size) as price FROM `place_point_delivery_zones` WHERE active=1 AND place=".(int)$placeId;
+        $stmt = $this->getEntityManager()->getConnection()->prepare($minPrice);
+        $stmt->execute();
+        return $stmt->fetchColumn(0);
+    }
+
+    public function getMaxCartSize($placeId)
+    {
+        $minPrice = "SELECT MAX(cart_size) as price FROM `place_point_delivery_zones` WHERE active=1 AND place=".(int)$placeId;
+        $stmt = $this->getEntityManager()->getConnection()->prepare($minPrice);
+        $stmt->execute();
+        return $stmt->fetchColumn(0);
+    }
 }
 
 ?>
