@@ -96,6 +96,16 @@
                                                 });
                                             }, 500
                                     );
+                                    $("#showRules").click(function(e){
+                                        $('#game_rules').dialog({
+                                            dialogClass: 'rulesDialog',
+                                            modal: true,
+                                            width: 600
+                                        });
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        return false;
+                                    });
                                 });
                             </script>
                         </div>
