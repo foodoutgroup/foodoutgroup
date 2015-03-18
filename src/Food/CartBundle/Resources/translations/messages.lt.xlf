@@ -336,7 +336,7 @@ Vilnius]]></target>
         </trans-unit>
         <trans-unit id="general.coupon.wrong_place" resname="general.coupon.wrong_place">
             <source>general.coupon.wrong_place</source>
-            <target>Jūsų pateiktas nuolaidos kuponas galioja tik %place_name% restorane</target>
+            <target>Jūsų pateiktas nuolaidos kuponas negalioja šiame restorane</target>
         </trans-unit>
         <trans-unit id="general.coupon.only_cili" resname="general.coupon.only_cili">
             <source>general.coupon.only_cili</source>
@@ -361,6 +361,14 @@ Vilnius]]></target>
         <trans-unit id="cart.checkout.phone.prefill_phone_lt" resname="cart.checkout.phone.prefill_phone">
             <source>cart.checkout.phone.prefill_phone</source>
             <target></target>
+        </trans-unit>
+        <trans-unit id="general.coupon.coupon_too_early" resname="general.coupon.coupon_too_early">
+            <source>general.coupon.coupon_too_early</source>
+            <target>Kuponas dar neįsigaliojo</target>
+        </trans-unit>
+        <trans-unit id="general.coupon.coupon_expired" resname="general.coupon.coupon_expired">
+            <source>general.coupon.coupon_expired</source>
+            <target>Kuponas jau baigė galioti</target>
         </trans-unit>
     </body>
   </file>

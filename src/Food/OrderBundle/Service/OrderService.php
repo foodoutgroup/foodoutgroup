@@ -885,7 +885,11 @@ class OrderService extends ContainerAware
 
             if (!$coupon->getFreeDelivery()) {
                 $discountSize = $coupon->getDiscount();
-                $discountSum = ($sumTotal * $discountSize) / 100;
+                if (!empty($discountSize)) {
+                    $discountSum = ($sumTotal * $discountSize) / 100;
+                } else {
+                    $discountSum = $coupon->getDiscountSum();
+                }
                 $sumTotal = $sumTotal - $discountSum;
 
                 $order->setDiscountSize($discountSize)

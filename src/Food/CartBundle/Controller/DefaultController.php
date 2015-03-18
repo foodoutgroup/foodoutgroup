@@ -360,7 +360,7 @@ class DefaultController extends Controller
         }
 
         // If coupon in use
-        $applyDiscount = $freeDelivery = false;
+        $applyDiscount = $freeDelivery = $discountInSum = false;
         $discountSize = null;
         $discountSum = null;
         if (!empty($couponCode)) {
@@ -372,7 +372,13 @@ class DefaultController extends Controller
 
                 if (!$freeDelivery) {
                     $discountSize = $coupon->getDiscount();
-                    $discountSum = ($total_cart * $coupon->getDiscount()) / 100;
+                    if (!empty($discountSize)) {
+                        $discountSum = ($total_cart * $coupon->getDiscount()) / 100;
+                    } else {
+                        $discountSize = null;
+                        $discountInSum = true;
+                        $discountSum = $coupon->getDiscountSum();
+                    }
 
                     $total_cart = $total_cart - $discountSum;
                 }
@@ -399,6 +405,7 @@ class DefaultController extends Controller
             'applyDiscount' => $applyDiscount,
             'freeDelivery' => $freeDelivery,
             'discountSize' => $discountSize,
+            'discountInSum' => $discountInSum,
             'discountSum' => $discountSum,
         );
         if ($renderView) {

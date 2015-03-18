@@ -367,6 +367,22 @@
                 <source>admin.place.review.rate</source>
                 <target>Reitingas</target>
             </trans-unit>
+            <trans-unit id="admin.place.review.created_by_new">
+                <source>admin.place.review.created_by_new</source>
+                <target>Naujas vartotojas</target>
+            </trans-unit>
+            <trans-unit id="admin.place.review.created_by_new_placeholder">
+                <source>admin.place.review.created_by_new_placeholder</source>
+                <target>Petras</target>
+            </trans-unit>
+            <trans-unit id="admin.place.review.city_new">
+                <source>admin.place.review.city_new</source>
+                <target>Miestas</target>
+            </trans-unit>
+            <trans-unit id="admin.place.review.created_at">
+                <source>admin.place.review.created_at</source>
+                <target>Komentaro data</target>
+            </trans-unit>
             <trans-unit id="admin.place.recommended">
                 <source>admin.place.recommended</source>
                 <target>Rekomend.</target>

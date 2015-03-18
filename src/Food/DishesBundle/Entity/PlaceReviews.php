@@ -45,6 +45,12 @@ class PlaceReviews
     private $rate;
 
     /**
+     * @var bool
+     * @ORM\Column(name="dummy", type="boolean", nullable=true)
+     */
+    private $dummy = false;
+
+    /**
      * @var \Food\UserBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
@@ -88,6 +94,11 @@ class PlaceReviews
      * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;
+
+    function __construct()
+    {
+        $this->createdAt = new \DateTime('now');
+    }
 
     /**
      * @return string
@@ -315,5 +326,28 @@ class PlaceReviews
     public function getRate()
     {
         return $this->rate;
+    }
+
+    /**
+     * Set dummy
+     *
+     * @param boolean $dummy
+     * @return PlaceReviews
+     */
+    public function setDummy($dummy)
+    {
+        $this->dummy = $dummy;
+    
+        return $this;
+    }
+
+    /**
+     * Get dummy
+     *
+     * @return boolean 
+     */
+    public function getDummy()
+    {
+        return $this->dummy;
     }
 }

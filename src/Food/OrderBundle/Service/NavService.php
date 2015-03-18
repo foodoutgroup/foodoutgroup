@@ -1060,7 +1060,7 @@ class NavService extends ContainerAware
                  FROM %s oStat
                  WHERE
                     [ORDER No_] = dOrder.[Order No_]
-                 ORDER BY [TIME] DESC
+                 ORDER BY [Date] DESC, [TIME] DESC
                  ) AS OrderStatus,
                  (
                     SELECT
