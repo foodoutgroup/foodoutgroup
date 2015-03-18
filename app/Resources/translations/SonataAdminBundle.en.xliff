@@ -1163,6 +1163,10 @@
                 <source>admin.dispatcher.order_status.completed</source>
                 <target>Delivered</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.partialy_completed">
+                <source>admin.dispatcher.order_status.partialy_completed</source>
+                <target>Partialy delivered</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.order_status.finished">
                 <source>admin.dispatcher.order_status.finished</source>
                 <target>Finish (food)</target>
