@@ -19,3 +19,4 @@ parameters:
     aws_region: eu-west-1
     s3_bucket: foodout-invoice
     available_cities: ["Vilnius","Kaunas","Klaipėda"]
+    dispatcher_phones: []

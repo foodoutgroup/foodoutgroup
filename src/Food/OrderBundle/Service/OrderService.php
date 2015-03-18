@@ -1595,6 +1595,25 @@ class OrderService extends ContainerAware
                 }
             }
 
+            $dispatcherPhones = $this->container->getParameter('dispatcher_phones');
+            // If dispatcher phones are set - send them message about new order
+            if (!empty($dispatcherPhones) && is_array($dispatcherPhones)) {
+                $dispatcherMessageText = $translator->trans('general.sms.dispatcher_order', array(
+                    'order_id' => $order->getId(),
+                    'place_name' => $order->getPlaceName(),
+                ));
+
+                foreach($dispatcherPhones as $phoneNum) {
+                    $logger->alert("Sending message to dispatcher about order #".$order->getId()." to number: " . $phoneNum . ' with text "' . $dispatcherMessageText . '"');
+
+                    $messagesToSend[] = array(
+                        'sender' => $smsSenderNumber,
+                        'recipient' => $phoneNum,
+                        'text' => $dispatcherMessageText
+                    );
+                }
+            }
+
             //send multiple messages
             $messagingService->addMultipleMessagesToSend($messagesToSend);
         }
@@ -2307,7 +2326,7 @@ class OrderService extends ContainerAware
         // Validate das phone number :)
         if (0 != strlen($phone)) {
             $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
-            $country = $this->container->getParameter('country');
+            $country = strtoupper($this->container->getParameter('country'));
 
             try {
                 $numberProto = $phoneUtil->parse($phone, $country);
