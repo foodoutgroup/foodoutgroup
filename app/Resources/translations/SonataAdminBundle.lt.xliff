@@ -423,6 +423,10 @@
                 <source>admin.place.chain</source>
                 <target>Grandinė</target>
             </trans-unit>
+            <trans-unit id="admin.place.internal_code" resname="admin.place.internal_code">
+                <source>admin.place.internal_code</source>
+                <target>Padalinio kodas</target>
+            </trans-unit>
 
             <!-- Place points -->
             <trans-unit id="place-point-list">
