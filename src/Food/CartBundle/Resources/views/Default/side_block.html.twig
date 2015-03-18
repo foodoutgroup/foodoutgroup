@@ -100,8 +100,18 @@
         </div>
         {% endif %}
         {% if hide_delivery == false or place.minimalOnSelfDel %}
-        <div class="delivery-time tac">{% trans %}cart.block.order_sum_minimum{% endtrans %}<br />{{ currency_display|raw }} {{ place.cartMinimum }}
-            {% if currency_alternative %}<span class="euro">/ {{  misc_utils.getLitas(place.cartMinimum)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>{% endif %}.
+        <div class="delivery-time tac">{% trans %}cart.block.order_sum_minimum{% endtrans %}<br />
+            {% if display_cart_interval %}
+                {% if cart_from_min == cart_from_max %}
+                    {{ currency_display|raw }} {{ cart_from_min }}
+                {% else %}
+                    {{ currency_display|raw }} {{ cart_from_min }} - {{ cart_from_max }}
+                {% endif %}
+            {% else %}
+                {{ currency_display|raw }} {{ cart_minimum }}
+            {% endif %}
+
+            {% if currency_alternative %}<span class="euro">/ {{  misc_utils.getLitas(cart_minimum)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>{% endif %}.
             {% if place.minimalOnSelfDel == false %}<br />{% trans %}cart.block.order_sum_minimum_take_myself{% endtrans %}{% endif %}
         </div>
         {% endif %}

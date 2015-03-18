@@ -518,4 +518,13 @@ class CartService {
         }
         return $deliveryTotal;
     }
+
+    public function getMinimumCart(Place $place, $locData, PlacePoint $placePoint)
+    {
+        $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getMinimumCartForPlacePoint($place, $placePoint, $locData);
+        if (empty($deliveryTotal) || $deliveryTotal == 0) {
+            $deliveryTotal = $place->getCartMinimum();
+        }
+        return $deliveryTotal;
+    }
 }

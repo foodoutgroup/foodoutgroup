@@ -2197,7 +2197,17 @@ class OrderService extends ContainerAware
                 }
             }
             $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
-            if ($total_cart < $place->getCartMinimum()) {
+
+            $placePointMap = $this->container->get('session')->get('point_data');
+
+            $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+            $cartMinimum = $this->getCartService()->getMinimumCart(
+                $place,
+                $this->container->get('food.googlegis')->getLocationFromSession(),
+                $pointRecord
+            );
+
+            if ($total_cart < $cartMinimum) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum';
             }
 
