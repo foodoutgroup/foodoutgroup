@@ -37,6 +37,12 @@ class Coupon
     private $discount;
 
     /**
+     * @var int
+     * @ORM\Column(name="discount_sum", type="integer",  nullable=true)
+     */
+    private $discountSum;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="free_delivery", type="boolean")
@@ -52,9 +58,14 @@ class Coupon
 
     /**
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place")
-     * @ORM\JoinColumn(name="place", referencedColumnName="id")
+     * @ORM\JoinColumn(name="place", referencedColumnName="id", nullable=true)
      */
     private $place;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="places")
+     */
+    private $places;
 
     /**
      * @var bool
@@ -62,6 +73,15 @@ class Coupon
      * @ORM\Column(name="only_nav", type="boolean")
      */
     private $onlyNav = false;
+
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="no_self_delivery", type="boolean")
+     */
+    private $noSelfDelivery = false;
+
 
     /**
      * @var bool
@@ -76,6 +96,28 @@ class Coupon
      * @ORM\Column(name="single_use", type="boolean")
      */
     private $singleUse = false;
+
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="enable_validate_date", type="boolean")
+     */
+    private $enableValidateDate = false;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="valid_from", type="datetime", nullable=true)
+     */
+    private $validFrom;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="valid_to", type="datetime", nullable=true)
+     */
+    private $validTo;
 
     /**
      * @var \DateTime
@@ -491,5 +533,160 @@ class Coupon
     public function getFreeDelivery()
     {
         return $this->freeDelivery;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->places = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set discountSum
+     *
+     * @param integer $discountSum
+     * @return Coupon
+     */
+    public function setDiscountSum($discountSum)
+    {
+        $this->discountSum = $discountSum;
+
+        return $this;
+    }
+
+    /**
+     * Get discountSum
+     *
+     * @return integer
+     */
+    public function getDiscountSum()
+    {
+        return $this->discountSum;
+    }
+
+    /**
+     * Set noSelfDelivery
+     *
+     * @param boolean $noSelfDelivery
+     * @return Coupon
+     */
+    public function setNoSelfDelivery($noSelfDelivery)
+    {
+        $this->noSelfDelivery = $noSelfDelivery;
+
+        return $this;
+    }
+
+    /**
+     * Get noSelfDelivery
+     *
+     * @return boolean
+     */
+    public function getNoSelfDelivery()
+    {
+        return $this->noSelfDelivery;
+    }
+
+    /**
+     * Set enableValidateDate
+     *
+     * @param boolean $enableValidateDate
+     * @return Coupon
+     */
+    public function setEnableValidateDate($enableValidateDate)
+    {
+        $this->enableValidateDate = $enableValidateDate;
+
+        return $this;
+    }
+
+    /**
+     * Get enableValidateDate
+     *
+     * @return boolean
+     */
+    public function getEnableValidateDate()
+    {
+        return $this->enableValidateDate;
+    }
+
+    /**
+     * Set validFrom
+     *
+     * @param \DateTime $validFrom
+     * @return Coupon
+     */
+    public function setValidFrom($validFrom)
+    {
+        $this->validFrom = $validFrom;
+
+        return $this;
+    }
+
+    /**
+     * Get validFrom
+     *
+     * @return \DateTime
+     */
+    public function getValidFrom()
+    {
+        return $this->validFrom;
+    }
+
+    /**
+     * Set validTo
+     *
+     * @param \DateTime $validTo
+     * @return Coupon
+     */
+    public function setValidTo($validTo)
+    {
+        $this->validTo = $validTo;
+
+        return $this;
+    }
+
+    /**
+     * Get validTo
+     *
+     * @return \DateTime
+     */
+    public function getValidTo()
+    {
+        return $this->validTo;
+    }
+
+    /**
+     * Add places
+     *
+     * @param \Food\DishesBundle\Entity\Place $places
+     * @return Coupon
+     */
+    public function addPlace(\Food\DishesBundle\Entity\Place $places)
+    {
+        $this->places[] = $places;
+
+        return $this;
+    }
+
+    /**
+     * Remove places
+     *
+     * @param \Food\DishesBundle\Entity\Place $places
+     */
+    public function removePlace(\Food\DishesBundle\Entity\Place $places)
+    {
+        $this->places->removeElement($places);
+    }
+
+    /**
+     * Get places
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPlaces()
+    {
+        return $this->places;
     }
 }
