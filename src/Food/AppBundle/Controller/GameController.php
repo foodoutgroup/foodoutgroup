@@ -45,7 +45,7 @@ class GameController extends Controller
                 'constraints' => new True(array(
                     'message' => 'sutik, padla',
                 )),
-                'attr' => array('checked' => '', 'raw' => true),
+                'attr' => array('checked' => false, 'raw' => true),
             ))
             ->add('save', 'submit', array('label' => 'food.game.register'))
             ->getForm();
