@@ -175,7 +175,7 @@ input.button {}
 
 /*-----------------Custom site style-------------------------------------------------------*/
 .site-block {margin: 0 auto; width: 980px;}
-
+.site-block.banner {text-align: center}
 
 .site-top {background: #cd1d36; color: #fff;}
 .site-top .site-block {height: 80px; position: relative;}
