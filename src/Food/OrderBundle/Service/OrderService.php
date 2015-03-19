@@ -1595,6 +1595,11 @@ class OrderService extends ContainerAware
                 }
             }
 
+            //send multiple messages
+            $messagingService->addMultipleMessagesToSend($messagesToSend);
+        }
+
+        if (!$order->getOrderFromNav()) {
             $dispatcherPhones = $this->container->getParameter('dispatcher_phones');
             // If dispatcher phones are set - send them message about new order
             if (!empty($dispatcherPhones) && is_array($dispatcherPhones)) {
@@ -1603,8 +1608,8 @@ class OrderService extends ContainerAware
                     'place_name' => $order->getPlaceName(),
                 ));
 
-                foreach($dispatcherPhones as $phoneNum) {
-                    $logger->alert("Sending message to dispatcher about order #".$order->getId()." to number: " . $phoneNum . ' with text "' . $dispatcherMessageText . '"');
+                foreach ($dispatcherPhones as $phoneNum) {
+                    $logger->alert("Sending message to dispatcher about order #" . $order->getId() . " to number: " . $phoneNum . ' with text "' . $dispatcherMessageText . '"');
 
                     $messagesToSend[] = array(
                         'sender' => $smsSenderNumber,
@@ -1612,10 +1617,9 @@ class OrderService extends ContainerAware
                         'text' => $dispatcherMessageText
                     );
                 }
-            }
 
-            //send multiple messages
-            $messagingService->addMultipleMessagesToSend($messagesToSend);
+                $messagingService->addMultipleMessagesToSend($messagesToSend);
+            }
         }
     }
 
