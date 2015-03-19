@@ -465,29 +465,38 @@ class OrderRepository extends EntityRepository
     /**
      * @param $timeBack string|null
      * @param boolean $skipImportedFromNav
+     * @param boolean $excludeCompleted
      * @return array
      */
-    public function getCurrentNavOrders($timeBack = null, $skipImportedFromNav = false)
+    public function getCurrentNavOrders($timeBack = null, $skipImportedFromNav = false, $excludeCompleted = true)
     {
         if (empty($timeBack)) {
             $timeBack = '-1 day';
         }
         $qb = $this->createQueryBuilder('o');
 
+        $excludeStatuses = [
+            OrderService::$status_canceled,
+            OrderService::$status_nav_problems,
+            OrderService::$status_pre,
+            // TODO temp, nav canot cancel assigned orders
+            OrderService::$status_assiged
+        ];
+
+        if ($excludeCompleted) {
+            $excludeStatuses[] = OrderService::$status_completed;
+        }
+
         $qb->leftJoin('o.place', 'p')
             ->where('o.order_date >= :order_date')
             ->andWhere('p.navision = :navision')
             ->andWhere('o.order_status NOT IN (:order_status)')
+            ->andWhere('o.paymentStatus = :payment_status')
             ->setParameters(array(
                 'order_date' => new \DateTime($timeBack),
-                'order_status' => array(
-                    OrderService::$status_completed,
-                    OrderService::$status_canceled,
-                    OrderService::$status_nav_problems,
-                    // TODO temp, nav canot cancel assigned orders
-                    OrderService::$status_assiged
-                ),
+                'order_status' => $excludeStatuses,
                 'navision' => 1,
+                'payment_status' => OrderService::$paymentStatusComplete,
             ));
 
         if ($skipImportedFromNav) {

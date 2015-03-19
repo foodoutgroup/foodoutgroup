@@ -27,7 +27,7 @@ class NavUnsyncedOrdersCommand extends ContainerAwareCommand
 
         try {
             $em = $this->getContainer()->get('doctrine')->getManager();
-            $orders = $em->getRepository('FoodOrderBundle:Order')->getCurrentNavOrders();
+            $orders = $em->getRepository('FoodOrderBundle:Order')->getCurrentNavOrders(null, true);
             $navService = $this->getContainer()->get('food.nav');
 
             if (!empty($orders) && count($orders) > 0) {
