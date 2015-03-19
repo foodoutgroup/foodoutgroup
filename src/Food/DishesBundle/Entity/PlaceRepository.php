@@ -206,6 +206,15 @@ class PlaceRepository extends EntityRepository
         return $stmt->fetchColumn();
     }
 
+    public function getMinimumCartForPlacePoint(Place $place, PlacePoint $placePoint, $locationData)
+    {
+        $data = $this->getPlacePointNearWithDistance($place->getId(), $locationData);
+        $deliveryPrice = "SELECT cart_size FROM `place_point_delivery_zones` WHERE place_point=".(int)$data['id']." AND active=1 AND distance >= ".(float)$data['distance']." ORDER BY distance ASC LIMIT 1";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($deliveryPrice);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
     /**
      * @param int $placeId
      * @param array|null $locationData
