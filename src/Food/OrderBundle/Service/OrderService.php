@@ -1568,9 +1568,10 @@ class OrderService extends ContainerAware
             $mailer->send($message);
         }
 
+        $smsSenderNumber = $this->container->getParameter('sms.sender');
+
         // Siunciam SMS tik tuo atveju, jei neperduodam per Nav'a
         if (!$order->getPlace()->getNavision()) {
-            $smsSenderNumber = $this->container->getParameter('sms.sender');
             $messagesToSend = array();
 
             $orderMessageRecipients = array(
@@ -1600,6 +1601,7 @@ class OrderService extends ContainerAware
         }
 
         if (!$order->getOrderFromNav()) {
+            $messagesToSend = array();
             $dispatcherPhones = $this->container->getParameter('dispatcher_phones');
             // If dispatcher phones are set - send them message about new order
             if (!empty($dispatcherPhones) && is_array($dispatcherPhones)) {
