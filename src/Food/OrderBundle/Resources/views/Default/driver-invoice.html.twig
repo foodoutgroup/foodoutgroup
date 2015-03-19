@@ -92,11 +92,13 @@
                 <td>{% trans %}mobile.invoice.total_with_vat{% endtrans %}:</td>
                 <td>{{ order.total }} {{ currency_display | raw }}</td>
             </tr>
+            {% if currency_alternative %}
             <tr>
                 <td colspan="2" style="border: none;"></td>
                 <td>{% trans %}mobile.invoice.total_with_vat_ltl{% endtrans %}:</td>
                 <td>{{ misc_utils.getLitas(order.total) }}</td>
             </tr>
+           {% endif %}
         </tbody>
     </table>
     {# Customer information#}
