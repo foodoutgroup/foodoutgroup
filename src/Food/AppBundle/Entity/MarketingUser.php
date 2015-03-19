@@ -262,4 +262,9 @@ class MarketingUser
     {
         return $this->birthDate;
     }
+
+    public function setCreatedBy($user)
+    {
+        // the mock. admin.php wants it
+    }
 }

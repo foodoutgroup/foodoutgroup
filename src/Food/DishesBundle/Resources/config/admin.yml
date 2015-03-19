@@ -145,6 +145,18 @@ services:
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.marketing_user:
+        class: Food\AppBundle\Admin\MarketingUserAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Marketing user" }
+        arguments:
+            - ~
+            - Food\AppBundle\Entity\MarketingUser
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
+
     sonata.admin.dish.unit.category:
             class: Food\DishesBundle\Admin\DishUnitCategoryAdmin
             tags:
