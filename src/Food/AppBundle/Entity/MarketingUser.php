@@ -50,6 +50,12 @@ class MarketingUser
      * @var string
      *
      * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 11,
+     *      max = 12,
+     *      minMessage="Jūsų įvestas tel nr. per trumpas",
+     *      maxMessage="Jūsų įvestas tel nr. per ilgas"
+     * )
      * @ORM\Column(name="phone", type="string", length=16)
      */
     private $phone;
