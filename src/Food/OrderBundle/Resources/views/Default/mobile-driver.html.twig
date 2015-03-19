@@ -55,7 +55,7 @@
                 {% else %}
                     {% trans %}mobile.order.sum{% endtrans %}
                     {% endif %}:
-                </b> {{ order.total }} {{ currency_display|raw }} / {{ misc_utils.getLitas(order.total) }} {{ display_currency_alternative }}
+                </b> {{ order.total }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }} {{ display_currency_alternative }}{% endif %}
             </td>
         </tr>
         <tr>
