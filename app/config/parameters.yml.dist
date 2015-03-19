@@ -71,3 +71,4 @@ parameters:
     default_delivery_distance: 7
     default_self_delivey_distance: 10
     google.analytics.view_id: "85237075"
+    dispatcher_phones: [37126110079]
