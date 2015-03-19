@@ -31,7 +31,7 @@ class GameController extends Controller
             ))
             ->add('lastName', 'text', array('label' => 'food.game.lastname'))
             ->add('city', 'text', array('label' => 'food.game.city', 'required' => true))
-            ->add('birthDate', 'date', array('label' => 'food.game.bdate'))
+            ->add('birthDate', 'date', array('label' => 'food.game.bdate', 'years'=>range('2010', '1940')))
             ->add('phone', 'text', array(
                 'label'=>'food.game.phone',
                 'attr' => array('placeholder' => '370XXXXXXX'),
