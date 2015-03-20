@@ -1225,10 +1225,13 @@ class NavService extends ContainerAware
      */
     public function setDriverFromNav(Order $order, $driverId)
     {
+        $logger = $this->getContainer()->get('logger');
+        $logger->alert('-- setDriverFromNav for order id: '.$order->getId().' with Nav ID: '.$driverId);
         $order->setNavDriverCode($driverId);
         $driver = $this->getDriverByNavId($driverId);
 
         if ($driver instanceof Driver) {
+            $logger->alert('Driver found for order: '.$order->getId().' with driver id: '.$driver->getId());
             $order->setDriver($driver);
         }
     }
@@ -1478,7 +1481,7 @@ class NavService extends ContainerAware
             'extId' => $navDriverId,
         ));
 
-        if (empty($driver) || ($driver instanceof Driver && $driver->getId())) {
+        if (empty($driver) || !($driver instanceof Driver) || !$driver->getId()) {
             $nameParts = str_split($navDriverId, 3);
 
             $driverQueryBuilder = $driverRepo->createQueryBuilder('d')
