@@ -125,7 +125,7 @@ class MenuItem extends ContainerAware
             'currency' => $this->container->getParameter('currency_iso')
         );
         $dishTitle = $dish->getName();
-        $dishTitle = str_replace(array('„', '“'), '"', $dishTitle);
+        $dishTitle = str_replace(array('„', '“', '„','“'), '"', $dishTitle);
         $this->set('item_id', $dish->getId())
             ->set('restaurant_id', $dish->getPlace()->getId())
             ->set('category_id', $categories)
