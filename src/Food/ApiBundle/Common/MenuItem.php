@@ -124,11 +124,13 @@ class MenuItem extends ContainerAware
             'discount_text' => $discountText,
             'currency' => $this->container->getParameter('currency_iso')
         );
+        $dishTitle = $dish->getName();
+        $dishTitle = str_replace(array('„', '“', '„','“'), '"', $dishTitle);
         $this->set('item_id', $dish->getId())
             ->set('restaurant_id', $dish->getPlace()->getId())
             ->set('category_id', $categories)
             ->set('thumbnail_url',$dish->getWebPath())
-            ->set('title', $dish->getName())
+            ->set('title', $dishTitle)
             ->set('ingredients', $dish->getDescription())
             ->set('show_discount', $showDiscount)
             ->set('price_range', $priceRange)
@@ -149,10 +151,11 @@ class MenuItem extends ContainerAware
                 if (!$unit instanceof DishUnit) {
                     continue;
                 }
-
+                $unitTitle = $unit->getName();
+                $unitTitle = str_replace(array('„', '“'), '"', $unitTitle);
                 $options['sizes']['items'][] = array(
                     'option_id' => $size->getId(),
-                    'title' => $unit->getName(),
+                    'title' => $unitTitle,
                     'price_modifier' => $size->getCurrentPrice() * 100,
                     'price_modifier_old' => ($size->getDish()->getShowDiscount() && $size->getDiscountPrice() > 0?  $size->getPrice() * 100 : 0)
 
