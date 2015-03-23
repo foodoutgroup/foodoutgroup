@@ -80,6 +80,12 @@ class NavSyncCommand extends ContainerAwareCommand
                             }
                         }
 
+                        // Keep connection alive
+                        if (!$em->isOpen()) {
+                            $em = $em->create(
+                                $em->getConnection(), $em->getConfiguration());
+                        }
+
                         $em->persist($order);
                     }
                 }
