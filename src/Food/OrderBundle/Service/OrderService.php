@@ -1624,7 +1624,7 @@ class OrderService extends ContainerAware
                     );
                 } else if ($nr == 0) {
                     // Main phone is not mobile
-                    $logger->error('Main phone number for place point of place '.$placePoint->getPlace()->getName().' is set landline - no message sent');
+                    $logger->alert('Main phone number for place point of place '.$placePoint->getPlace()->getName().' is set landline - no message sent');
                 }
             }
 
