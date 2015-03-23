@@ -73,7 +73,7 @@ class DefaultController extends Controller
         */
         $jsonResponseData['block'] = $this->sideBlockAction(
             $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(
-                $request->get('place')
+                $request->get('place', 0)
             ),
             true,
             $request->get('in_cart', false),

@@ -16,10 +16,18 @@ class PlaceController extends Controller
 {
     public function indexAction($id, $slug, $categoryId, Request $request)
     {
+        // If no id - kill yourself
+        if (empty($id)) {
+            return $this->redirect(
+                $this->generateUrl('food_homepage'),
+                307
+            );
+        }
+
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
 
         // Place is incative, why show it?
-        if ($place->getActive() == false) {
+        if (!$place || !$place instanceof Place || $place->getActive() == false) {
             return $this->redirect(
                 $this->generateUrl('food_homepage'),
                 307 // Temporary redirect status
@@ -88,6 +96,12 @@ class PlaceController extends Controller
 
     public function reviewAction($id)
     {
+        if (empty($id)) {
+            return $this->redirect(
+                $this->generateUrl('food_homepage'),
+                307
+            );
+        }
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
         $review = $this->defaultReview($place, $this->user());
 
@@ -102,6 +116,12 @@ class PlaceController extends Controller
 
     public function reviewCreateAction($id, Request $request)
     {
+        if (empty($id)) {
+            return $this->redirect(
+                $this->generateUrl('food_homepage'),
+                307
+            );
+        }
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
         $review = $this->defaultReview($place, $this->user());
         $form = $this->reviewForm($review);
