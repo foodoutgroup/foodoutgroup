@@ -1658,6 +1658,15 @@ div.coupon_form_popup {
     font-size: 11px;
 }
 
+.display-list .restaurant-menu-item .price.discounted.multiline {
+    top: 0px;
+    right: 18px;
+}
+.display-list .restaurant-menu-item .price.discount.multiline {
+    top: 12px;
+
+}
+
 .restaurant-menu-item .price.discount {
     color: #cd1d36;
 }
