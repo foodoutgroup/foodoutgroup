@@ -128,17 +128,16 @@ class Restaurant extends ContainerAware
         $devPrice = 0;
         $devCart = 0;
         if ($weHaveLocationData) {
-            $placePointMap = $locationData;
-
+            $placePointMap = $this->container->get('session')->get('point_data');
             $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
             $devPrice = $this->container->get('food.cart')->getDeliveryPrice(
                 $place,
-                $this->conainer->get('food.googlegis')->getLocationFromSession(),
+                $locationData,
                 $pointRecord
             );
             $devCart = $this->container->get('food.cart')->getMinimumCart(
                 $place,
-                $this->container->get('food.googlegis')->getLocationFromSession(),
+                $locationData,
                 $pointRecord
             );
         }
