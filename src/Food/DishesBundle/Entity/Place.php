@@ -108,6 +108,19 @@ class Place extends Uploadable implements Translatable
     /**
      * @var bool
      *
+     * @ORM\Column(name="show_notification", type="boolean", nullable=true)
+     */
+    private $showNotification = false;
+
+    /**
+     * @var string
+     * @ORM\Column(name="notification_content", type="text", nullable=true)
+     */
+    private $notificationContent;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="discount_prices_enabled", type="boolean", nullable=true)
      */
     private $discountPricesEnabled;
@@ -1624,5 +1637,51 @@ class Place extends Uploadable implements Translatable
     public function getCartMinimumOld()
     {
         return $this->cartMinimumOld;
+    }
+
+    /**
+     * Set showNotification
+     *
+     * @param boolean $showNotification
+     * @return Place
+     */
+    public function setShowNotification($showNotification)
+    {
+        $this->showNotification = $showNotification;
+    
+        return $this;
+    }
+
+    /**
+     * Get showNotification
+     *
+     * @return boolean 
+     */
+    public function getShowNotification()
+    {
+        return $this->showNotification;
+    }
+
+    /**
+     * Set notificationContent
+     *
+     * @param string $notificationContent
+     * @return Place
+     */
+    public function setNotificationContent($notificationContent)
+    {
+        $this->notificationContent = $notificationContent;
+    
+        return $this;
+    }
+
+    /**
+     * Get notificationContent
+     *
+     * @return string 
+     */
+    public function getNotificationContent()
+    {
+        return $this->notificationContent;
     }
 }

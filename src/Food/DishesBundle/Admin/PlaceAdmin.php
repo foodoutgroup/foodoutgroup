@@ -60,6 +60,8 @@ class PlaceAdmin extends FoodAdmin
                 'label' => 'admin.place.kitchens')
             )
             ->add('active', 'checkbox', array('label' => 'admin.active', 'required' => false,))
+            ->add('showNotification', 'checkbox', array('label' => 'Show notification', 'required' => false,))
+            ->add('notificationContent', null, array('label' => 'Notification content', 'attr' => array('class' => 'ckeditor_custom')))
             ->add('new', 'checkbox', array('label' => 'admin.is_new', 'required' => false,))
             ->add('recommended', 'checkbox', array('label' => 'admin.place.recommended', 'required' => false,))
             ->add('top', 'checkbox', array('label' => 'TOP', 'required' => false,))

@@ -104,6 +104,16 @@
                                         {% endif %}
                                     {% endif %}
                                     <div class="menu-title clearfix">
+                                        {% if place.showNotification %}
+                                            <div class="alert alert-danger" id="notificationNotice">
+                                                {{ place.notificationContent|raw }}
+                                            </div>
+                                            <Script>
+                                                $(document).ready(function(){
+                                                    setTimeout(function(){ $('#notificationNotice').fadeOut();}, 7000);
+                                                });
+                                            </Script>
+                                        {% endif %}
                                         <h2 class="fl">{% trans %}places.dishes_title{% endtrans %}{# {{ selectedCategory.name }} #}</h2>
                                         <div class="view-type clearfix">
                                             {% if listType == 'thumbs' %}
