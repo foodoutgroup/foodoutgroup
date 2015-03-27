@@ -100,7 +100,7 @@ class Restaurant extends ContainerAware
      * @param bool $pickUpOnly
      * @return $this
      */
-    public function loadFromEntity(Place $place, PlacePoint $placePoint = null, $pickUpOnly = false)
+    public function loadFromEntity(Place $place, PlacePoint $placePoint = null, $pickUpOnly = false, $locationData = null)
     {
         $kitchens = $place->getKitchens();
         $kitchensForResp = array();
@@ -124,6 +124,25 @@ class Restaurant extends ContainerAware
             $pickUp = true;
             $delivery = false;
         }
+        $weHaveLocationData = (!empty($locationData) ? true: false);
+        $devPrice = 0;
+        $devCart = 0;
+        if ($weHaveLocationData) {
+            $placePointMap = $locationData;
+
+            $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+            $devPrice = $this->container->get('food.cart')->getDeliveryPrice(
+                $place,
+                $this->conainer->get('food.googlegis')->getLocationFromSession(),
+                $pointRecord
+            );
+            $devCart = $this->container->get('food.cart')->getMinimumCart(
+                $place,
+                $this->container->get('food.googlegis')->getLocationFromSession(),
+                $pointRecord
+            );
+        }
+
         $currency = $this->container->getParameter('currency_iso');
         $this
             ->set('restaurant_id', $place->getId())
@@ -153,11 +172,11 @@ class Restaurant extends ContainerAware
                 array(
                     'estimated_time' => $place->getDeliveryTime(),
                     'price' => array(
-                        'amount' => $place->getDeliveryPrice() * 100,
+                        'amount' => (!empty($devPrice) ? ($devPrice * 100) : ($place->getDeliveryPrice() * 100)),
                         'currency' => $currency
                     ),
                     'minimal_order' => array(
-                        'amount' => $place->getCartMinimum() * 100,
+                        'amount' => (!empty($devCart) ? ($devCart * 100) : ($place->getCartMinimum() * 100)),
                         'currency' => $currency
                     ),
                     'minimal_order_pickup' => array(

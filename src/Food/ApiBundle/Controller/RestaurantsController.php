@@ -87,9 +87,13 @@ class RestaurantsController extends Controller
         );
 
         $places = $this->get('food.places')->placesPlacePointsWorkInformation($places);
-
         foreach ($places as $place) {
-            $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place['place'], $place['point']);
+            $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
+                $place['place'],
+                $place['point'],
+                false,
+                $this->get('food.googlegis')->getLocationFromSession()
+            );
             $response['restaurants'][] = $restaurant->data;
         }
 
