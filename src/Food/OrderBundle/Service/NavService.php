@@ -427,8 +427,10 @@ class NavService extends ContainerAware
     {
         $theKey = 1;
         $this->container->get('doctrine')->getManager()->refresh($order);
+        $discountSum = $order->getDiscountSum();
+        $discountSumLeft = $discountSum;
         foreach ($order->getDetails() as $key=>$detail) {
-            $theKey = $this->_processLine($detail, $orderNewId, $theKey);
+            $theKey = $this->_processLine($detail, $orderNewId, $theKey, $discountSum, $discountSumLeft);
             $theKey = $theKey + 1;
         }
 
@@ -507,7 +509,7 @@ class NavService extends ContainerAware
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
-    private function _processLine(OrderDetails $detail, $orderNewId, $key)
+    private function _processLine(OrderDetails $detail, $orderNewId, $key, $discountSum, &$discountSumLeft)
     {
         $this->container->get('doctrine')->getManager()->refresh($detail);
 
@@ -570,6 +572,21 @@ class NavService extends ContainerAware
         $discountInOrder = $detail->getOrderId()->getDiscountSize();
         if ($discountInOrder > 0) {
             $discountAmount = $paymentAmount - round($paymentAmount * ((100 - intval($discountInOrder))/100), 2);
+        }
+        /**
+         * Some freaky ugly magic for havin Cart discount
+         */
+        if (!empty($discountSum)) {
+            $paymentPart = $paymentAmount + $discountAmount;
+            $paymentPercentPart = ceil($detail->getOrderId()->getTotal() / $paymentPart) * 100;
+            $discountPartWouldBe = ceil($discountSum * 100 / $paymentPercentPart);
+            if ($discountSumLeft <= $discountPartWouldBe) {
+                $discountPartWouldBe = $discountSumLeft;
+                $discountSumLeft = 0;
+            } else {
+                $discountSumLeft = $discountSumLeft - $discountPartWouldBe;
+            }
+            $discountAmount = $discountAmount + $discountPartWouldBe;
         }
 
         /*
