@@ -24,6 +24,18 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                 InputOption::VALUE_NONE,
                 'No order will be imported. Just pure debug output'
             )
+            ->addOption(
+                'pause-on-error',
+                null,
+                InputOption::VALUE_NONE,
+                'Make a 5 second pause on error, so error can be read'
+            )
+            ->addOption(
+                'time-shift',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Alter how old orders are imported - enter only integer expresion in hours'
+            )
         ;
 
         mb_internal_encoding('utf-8');
@@ -36,6 +48,14 @@ class NavImportOrdersCommand extends ContainerAwareCommand
         if ($dryRun) {
             $output->writeln('Dry-run. No inserts will be performed');
         }
+        $pauseOnError = $input->getOption('pause-on-error');
+        $timeShift = $input->getOption('time-shift');
+        if (!empty($timeShift)) {
+            $timeShift = '-'.$timeShift.' hour';
+        } else {
+            $timeShift = null;
+        }
+
         try {
             $em = $this->getContainer()->get('doctrine')->getManager();
             $orderService = $this->getContainer()->get('food.order');
@@ -46,7 +66,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
             $log = $this->getContainer()->get('logger');
             $country = $this->getContainer()->getParameter('country');
 
-            $orders = $navService->getNewNonFoodoutOrders();
+            $orders = $navService->getNewNonFoodoutOrders($timeShift);
 
             $stats = array(
                 'found' => count($orders),
@@ -109,6 +129,9 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             $log->error($skipMessage);
                         }
                         $stats['error']++;
+                        if ($pauseOnError) {
+                            sleep(5);
+                        }
                         continue;
                     }
                     $place = $placePoint->getPlace();;

@@ -1164,7 +1164,7 @@ class NavService extends ContainerAware
                 } else if ($order->getOrderStatus() == OrderService::$status_finished) {
                     // do nothing - it is already finished
                 } else {
-                    $logger->error(sprintf(
+                    $logger->alert(sprintf(
                         'Invalid status change detected: Order #%d was marked as "finished" in Cili Nav. His current status: %s',
                         $order->getId(),
                         $order->getOrderStatus()
@@ -1353,12 +1353,17 @@ class NavService extends ContainerAware
     }
 
     /**
+     * @param string|null $dateShift
+     *
      * @return array
      */
-    public function getNewNonFoodoutOrders()
+    public function getNewNonFoodoutOrders($dateShift=null)
     {
-        $theDate = date('Y-m-d', strtotime('-3 hour'));
-        $theTime = '1754-01-01 ' . date("H:i:s", strtotime('-3 hour'));
+        if (empty($dateShift)) {
+            $dateShift = '-3 hour';
+        }
+        $theDate = date('Y-m-d', strtotime($dateShift));
+        $theTime = '1754-01-01 ' . date("H:i:s", strtotime($dateShift));
 
         $query = sprintf(
             "SELECT

@@ -198,7 +198,10 @@ class AjaxController extends Controller
         );
 
         $coupon = $this->get('food.order')->getCouponByCode($couponCode);
-        $places = $coupon->getPlaces();
+        $places = array();
+        if ($coupon) {
+            $places = $coupon->getPlaces();
+        }
 
         if (!$coupon) {
             $cont['status'] = false;

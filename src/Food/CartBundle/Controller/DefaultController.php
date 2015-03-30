@@ -71,10 +71,18 @@ class DefaultController extends Controller
             )
         );
         */
+
+        $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(
+            $request->get('place', 0)
+        );
+
+        // Somehow we've lost the place.. dont crash.. better show nothing
+        if (!$place) {
+            return new Response('');
+        }
+
         $jsonResponseData['block'] = $this->sideBlockAction(
-            $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(
-                $request->get('place')
-            ),
+            $place,
             true,
             $request->get('in_cart', false),
             null,
