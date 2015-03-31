@@ -360,14 +360,14 @@ class NavService extends ContainerAware
         $orderDate = $order->getOrderDate();
         $orderDate->add(new \DateInterval('P0DT0H'));
         $deliveryDate = $order->getDeliveryTime();
-        $deliveryDate->sub(new \DateInterval('P0DT2H'));
+        $deliveryDate->sub(new \DateInterval('P0DT3H'));
 
         $comment = $order->getComment();
 
         if ($order->getPaymentMethod() == "local.card") {
-            $comment.=". Mokesiu kortele";
+            $comment.=". KREDITKARTE";
         } elseif ($order->getPaymentMethod() == "local") {
-            $comment.=". Mokesiu grynais";
+            $comment.=". SKAIDRA NAUDA";
         } else {
 
         }
