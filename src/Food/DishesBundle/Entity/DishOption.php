@@ -60,6 +60,12 @@ class DishOption implements Translatable
     private $code;
 
     /**
+     * @var bool
+     * @ORM\Column(name="first_level",  type="boolean", nullable=true)
+     */
+    private $firstLevel;
+
+    /**
      * @var string
      * @ORM\Column(name="sub_code", type="string", length=45, nullable=true)
      */
@@ -678,5 +684,28 @@ class DishOption implements Translatable
     public function getPriceOld()
     {
         return $this->priceOld;
+    }
+
+    /**
+     * Set firstLevel
+     *
+     * @param boolean $firstLevel
+     * @return DishOption
+     */
+    public function setFirstLevel($firstLevel)
+    {
+        $this->firstLevel = $firstLevel;
+    
+        return $this;
+    }
+
+    /**
+     * Get firstLevel
+     *
+     * @return boolean 
+     */
+    public function getFirstLevel()
+    {
+        return $this->firstLevel;
     }
 }
