@@ -1388,6 +1388,53 @@ class NavService extends ContainerAware
         $theDate = date('Y-m-d', strtotime($dateShift));
         $theTime = '1754-01-01 ' . date("H:i:s", strtotime($dateShift));
 
+        // For weekend recoveries (1 day solid recovery)
+        if (date('d', strtotime('-1 day')) > date('d', strtotime($dateShift))) {
+                $theOtherDate = date('Y-m-d');
+                $theInnerDate = date('Y-m-d', strtotime('-1 day'));
+                $datePart = sprintf(
+                    "(
+                (
+                dOrder.[Date Created] >= '%s'
+                AND dOrder.[Time Created] >= '%s'
+                ) OR (
+                dOrder.[Date Created] >= '%s'
+                AND dOrder.[Time Created] >= '1754-01-01 00:00:00'
+                ) OR (
+                dOrder.[Date Created] >= '%s'
+                AND dOrder.[Time Created] >= '1754-01-01 00:00:00'
+                )
+                )",
+                    $theDate,
+                    $theTime,
+                    $theInnerDate,
+                    $theOtherDate
+                );
+        } elseif (date('d') > date('d', strtotime($dateShift))) {
+            $theOtherDate = date('Y-m-d');
+            $datePart = sprintf(
+                "(
+                (
+                dOrder.[Date Created] >= '%s'
+                AND dOrder.[Time Created] >= '%s'
+                ) OR (
+                dOrder.[Date Created] >= '%s'
+                AND dOrder.[Time Created] >= '1754-01-01 00:00:00'
+                )
+                )",
+                $theDate,
+                $theTime,
+                $theOtherDate
+            );
+        } else {
+            $datePart = sprintf(
+                "dOrder.[Date Created] >= '%s'
+                AND dOrder.[Time Created] >= '%s'",
+                $theDate,
+                $theTime
+            );
+        }
+
         $query = sprintf(
             "SELECT
                 dOrder.[Order No_] As [OrderNo],
@@ -1435,8 +1482,7 @@ class NavService extends ContainerAware
             LEFT JOIN %s cContract ON cContract.[Contract Register No_] = dOrder.[Contract Register No_]
             LEFT JOIN %s cCustomer ON cCustomer.[No_] = cContract.[Customer No_]
             WHERE
-                dOrder.[Date Created] >= '%s'
-                AND dOrder.[Time Created] >= '%s'
+                %s
                 AND dOrder.[Delivery Region] IN (%s)
                 AND dOrder.[FoodOut Order] != 1
                 AND pTrans.[Number] IN ('ZRAW0009996', 'ZRAW0010001', 'ZRAW0010002', 'ZRAW0010190', 'ZRAW0010255')
@@ -1451,8 +1497,7 @@ class NavService extends ContainerAware
             $this->getPosTransactionLinesTable(),
             $this->getContractTable(),
             $this->getCustomerTable(),
-            $theDate,
-            $theTime,
+            $datePart,
             "'Vilnius', 'Kaunas', 'Klaipeda'"
         );
 
