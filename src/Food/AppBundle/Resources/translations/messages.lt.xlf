@@ -176,7 +176,7 @@
       </trans-unit>
       <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
         <source>general.sms.user.order_accepted</source>
-        <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista turetumete gauti per delivery_time! Jei turite dar klausimu susisiekite telefonu +restourant_phone!</target>
+        <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista turetume pristatyti per delivery_time! Jei turite klausimu susisiekite telefonu +37061242093!</target>
       </trans-unit>
       <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
         <source>general.sms.user.order_accepted_pickup</source>
