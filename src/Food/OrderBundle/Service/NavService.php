@@ -1441,6 +1441,7 @@ class NavService extends ContainerAware
                 dOrder.[Phone No_],
                 dOrder.[Date Created],
                 dOrder.[Time Created],
+                dOrder.[Order Date],
                 dOrder.[Contact Pickup Time],
                 dOrder.[Driver ID],
                 dOrder.[Address],

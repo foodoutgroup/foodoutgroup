@@ -160,7 +160,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                         );
 
                         $deliveryDate = new \DateTime(
-                            $orderData['Date Created']->format("Y-m-d")
+                            $orderData['Order Date']->format("Y-m-d")
                             .' '
                             .$orderData['Contact Pickup Time']->format("H:i:s")
                         );
