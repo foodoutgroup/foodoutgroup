@@ -221,7 +221,7 @@ class PlaceRepository extends EntityRepository
      * @param bool $ignoreSelfDelivery
      * @return null
      */
-    public function getPlacePointNearWithDistance($placeId, $locationData, $ignoreSelfDelivery = false)
+    public function getPlacePointNearWithDistance($placeId, $locationData, $ignoreSelfDelivery = false, $ignoreWorkTime = false)
     {
         if (empty($locationData['city']) || empty($locationData['lat'])) {
             return null;
@@ -245,9 +245,13 @@ class PlaceRepository extends EntityRepository
                 (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <=
                 IF(($maxDistance) IS NULL, 4, ($maxDistance))
                 ".(!$ignoreSelfDelivery ? " OR p.self_delivery = 1":"")."
-            )
-            AND '".$dth."' BETWEEN REPLACE(wd".$wd."_start,':','') AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)
-            ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
+            ) ";
+
+        if (!$ignoreWorkTime) {
+            $subQuery.=" AND '".$dth."' BETWEEN REPLACE(wd".$wd."_start,':','') AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)";
+        }
+
+        $subQuery.=" ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
 

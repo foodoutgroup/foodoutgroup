@@ -132,7 +132,9 @@ class Restaurant extends ContainerAware
             if (empty($placePointMap[$place->getId()])) {
                 $ppId = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithDistance(
                     $place->getId(),
-                    $locationData
+                    $locationData,
+                    false,
+                    true
                 );
                 $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($ppId);
             } else {
