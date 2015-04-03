@@ -109,6 +109,7 @@ parameters:
       - s.svitojus@ltkcapital.com
       - jonas@foodout.lt
       - egle@foodout.lt
+      - alex@foodout.lt
     weekly_report_emails:
       <<: *daily_report_emails
 
