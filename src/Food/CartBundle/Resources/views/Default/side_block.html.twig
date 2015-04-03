@@ -56,7 +56,15 @@
             {% if hide_delivery == 0 %}
                 <div class="delivery-price clearfix">
                     <div class="fl">{% trans %}cart.block.delivery_price{% endtrans %}:</div>
-                    <div class="fr">{{ currency_display|raw }}{{ place.deliveryPrice|number_format(2, ',', ' ') }} <span class="euro">/ {{ misc_utils.getLitas(place.deliveryPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span></div>
+                    <div class="fr">
+                        {% if freeDelivery %}
+                            <span class="discount">
+                                <b>{{ currency_display|raw }}0,00 <span class="euro">/ 0,00 {{ display_currency_alternative|raw }}</span></b>
+                            </span>
+                        {% else %}
+                            {{ currency_display|raw }}{{ place.deliveryPrice|number_format(2, ',', ' ') }} <span class="euro">/ {{ misc_utils.getLitas(place.deliveryPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="total-sum final clearfix">
                     <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>

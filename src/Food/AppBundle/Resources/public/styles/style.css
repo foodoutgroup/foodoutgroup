@@ -1681,6 +1681,10 @@ div.coupon_form_popup {
     color: #cd1d36;
 }
 
+.delivery-price .discount {
+    color: #cd1d36;
+}
+
 .dish-size .custom-radio .price.discounted {
     text-decoration: line-through;
 }
