@@ -35,6 +35,8 @@ class LateDeliverySmsCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        /* TODO temporary turning it off :( */
+
         $count = 0;
 
         $messagingService = $this->getContainer()->get('food.messages');
