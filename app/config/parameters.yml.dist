@@ -72,4 +72,4 @@ parameters:
     default_self_delivey_distance: 10
     google.analytics.view_id: "85237075"
     dispatcher_phones: [37126110079]
-    send_sms_on_cancel: true
+    send_sms_on_cancel: false
