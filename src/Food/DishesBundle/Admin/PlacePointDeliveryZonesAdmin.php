@@ -14,9 +14,25 @@ class PlacePointDeliveryZonesAdmin extends FoodAdmin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $this->setTemplate('edit', 'FoodDishesBundle:PlacePointDeliveryZones:admin_place_point_delivery_zone_edit.html.twig');
+        /**
+         * @var EntityManager $em
+         */
+        $em = $this->modelManager->getEntityManager('Food\DishesBundle\Entity\PlacePoint');
+
+        /**
+         * @var QueryBuilder
+         */
+        $categoryQuery = $em->createQueryBuilder('p')
+            ->select('p')
+            ->from('Food\DishesBundle\Entity\PlacePoint', 'p')
+        ;
+
+
         $formMapper
             ->add('place',  'entity', array('class' => 'Food\DishesBundle\Entity\Place'))
             ->add('placePoint',  'entity', array('class' => 'Food\DishesBundle\Entity\PlacePoint'))
+            ->add('placePoint', null, array('query_builder' => $categoryQuery, 'required' => false))
             ->add('distance', 'text', array('label' => 'Distance'))
             ->add('price', 'text', array('label' => 'Price'))
             ->add('cartSize', 'text', array('label' => 'Cart size'))

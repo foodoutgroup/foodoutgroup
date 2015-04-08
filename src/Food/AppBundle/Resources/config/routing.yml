@@ -90,6 +90,12 @@ food_admin_get_place_categories:
     options:
         expose: true
 
+food_admin_get_place_points:
+    pattern: /admin/place/get-points/{placeId}
+    defaults: {_controller: FoodDishesBundle:DishAdmin:getPointsFromPlace}
+    options:
+        expose: true
+
 food_admin_get_place_dish_options:
     pattern: /admin/place/get-dish-options/{placeId}/{uniqueId}
     defaults: {_controller: FoodDishesBundle:DishAdmin:getDishOptionsFromPlace}

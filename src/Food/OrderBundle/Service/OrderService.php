@@ -697,7 +697,7 @@ class OrderService extends ContainerAware
     {
         // If restourant (or Foodout) has canceled order - send informational SMS message to user
         $userPhone = $this->getOrder()->getUser()->getPhone();
-        $smsOnCancel = $this->container->get('send_sms_on_cancel');
+        $smsOnCancel = $this->container->getParameter('send_sms_on_cancel');
         if (!empty($userPhone) && $this->getOrder()->getOrderFromNav() == false && $smsOnCancel) {
             $messagingService = $this->container->get('food.messages');
 
