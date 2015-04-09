@@ -2,6 +2,7 @@
 namespace Food\PlacesBundle\Service;
 
 use Food\DishesBundle\Entity\Place;
+use Food\DishesBundle\Entity\PlacePoint;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\AppBundle\Traits;
 
@@ -220,5 +221,71 @@ class PlacesService extends ContainerAware {
 
         array_multisort($sortTop,SORT_NUMERIC, SORT_DESC, $sortArr, SORT_NUMERIC, SORT_ASC, $sortArrPrio, SORT_NUMERIC, SORT_DESC, $places);
         return $places;
+    }
+
+    /**
+     * @param Place $place
+     * @param PlacePoint|null $placePoint
+     * @param string|null $dateShift
+     * @return array
+     */
+    public function getFullRangeWorkTimes($place, $placePoint=null, $dateShift=null)
+    {
+        if (empty($dateShift)) {
+            $day = date("w");
+        } else {
+            $day = date("w", strtotime($dateShift));
+        }
+        if ($day == 0) $day = 7;
+
+        if (empty($placePoint)) {
+            $placePoints = $place->getPoints();
+
+            $placePoint = $placePoints[0];
+        }
+
+        $from = $placePoint->{'getWd'.$day.'Start'}();
+        $to = $placePoint->{'getWd'.$day.'EndLong'}();
+        if (empty($to)) {
+            $to = $placePoint->{'getWd'.$day.'End'}();
+        }
+//echo "From: ".$from." To: ".$to."<br>";
+        if (strpos($from, ':') === false) {
+            return array();
+        }
+
+        $from = str_replace(':', '', $from);
+        $to = str_replace(':', '', $to);
+        $graph = array();
+
+        if ($to < '0500' && $to >= '0000') {
+            $to = '2400';
+        }
+
+        $from = intval($from);
+        $to = intval($to);
+
+        $i = $from;
+        while($i <= $to) {
+            if ($i%100 == 60) {
+                $i = $i+40;
+            }
+
+            $hour = ($i - ($i%100))/100;
+            if ($hour < 10) {
+                $hour = '0'.$hour;
+            }
+            $minutes = $i%100;
+            if ($minutes == 0) {
+                $minutes = '00';
+            } elseif ($minutes < 10) {
+                $minutes = '0'.$minutes;
+            }
+            $graph[] = $hour.':'.$minutes;
+
+            $i = $i+30;
+        }
+
+        return $graph;
     }
 }

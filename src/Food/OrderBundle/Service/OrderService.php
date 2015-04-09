@@ -48,6 +48,11 @@ class OrderService extends ContainerAware
     public static $status_finished = "finished";
     public static $status_canceled = "canceled";
 
+    /**
+     * Nemaisyti su pre.. cia orderis laikui
+     * @var string
+     */
+    public static $status_preorder = "preorder";
     public static $status_pre = "pre";
     public static $status_nav_problems = "nav_problems";
     public static $status_partialy_completed = "partialy_completed";
@@ -233,9 +238,10 @@ class OrderService extends ContainerAware
      * @param int $placeId
      * @param PlacePoint $placePoint
      * @param boolean $fromConsole
+     * @param string|null $orderDate
      * @return Order
      */
-    public function createOrder($placeId, $placePoint=null, $fromConsole=false)
+    public function createOrder($placeId, $placePoint=null, $fromConsole=false, $orderDate = null)
     {
         $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
         if (empty($placePoint)) {
@@ -262,11 +268,19 @@ class OrderService extends ContainerAware
         $this->order->setPlacePointCity($pointRecord->getCity());
         $this->order->setPlacePointAddress($pointRecord->getAddress());
 
-        $deliveryTime = new \DateTime("now");
-        $deliveryTime->modify("+60 minutes");
+        $this->order->setOrderDate(new \DateTime("now"));
+
+        if (empty($orderDate)) {
+            $deliveryTime = new \DateTime("now");
+            $deliveryTime->modify("+60 minutes");
+        } else {
+            $this->container->get("logger")->alert("----===== - its preorder formating date: ".$orderDate);
+            $deliveryTime = new \DateTime($orderDate);
+        }
 
         $this->order->setUser($user);
-        $this->order->setOrderDate(new \DateTime("now"));
+        $this->container->get("logger")->alert("----=====-------====== Seting delivery time ---=====-------======------");
+        $this->container->get("logger")->alert("----=====-------====== ".$deliveryTime->format("Y-m-d H:i:s")." ---=====-------======------");
         $this->order->setDeliveryTime($deliveryTime);
         $this->order->setDeliveryPrice($placeRecord->getDeliveryPrice());
         $this->order->setVat($this->container->getParameter('vat'));
@@ -843,15 +857,21 @@ class OrderService extends ContainerAware
      * @param PlacePoint $placePoint - placePoint, jei atsiima pats
      * @param bool $selfDelivery - ar klientas atsiims pats?
      * @param Coupon|null $coupon
+     * @param string|null $orderDate
      */
-    public function createOrderFromCart($place, $locale='lt', $user, PlacePoint $placePoint=null, $selfDelivery = false, $coupon = null)
+    public function createOrderFromCart($place, $locale='lt', $user, PlacePoint $placePoint=null, $selfDelivery = false, $coupon = null, $orderDate = null)
     {
-        $this->createOrder($place, $placePoint);
+        $this->createOrder($place, $placePoint, false, $orderDate);
         $this->getOrder()->setDeliveryType(
             ($selfDelivery ? 'pickup' : 'deliver')
         );
         $this->getOrder()->setLocale($locale);
         $this->getOrder()->setUser($user);
+
+        if (!empty($orderDate)) {
+            $this->getOrder()->setOrderStatus(self::$status_preorder);
+        }
+
         $this->saveOrder();
         $sumTotal = 0;
 
@@ -1290,16 +1310,17 @@ class OrderService extends ContainerAware
     public function isValidOrderStatusChange($from, $to)
     {
         $flowLine = array(
-            self::$status_new => 0,
-            self::$status_accepted => 1,
-            self::$status_delayed => 2,
-            self::$status_forwarded => 2,
-            self::$status_finished => 3,
-            self::$status_assiged => 4,
-            self::$status_failed => 4,
-            self::$status_partialy_completed => 5,
-            self::$status_completed => 5,
-            self::$status_canceled => 5,
+            self::$status_preorder => 0,
+            self::$status_new => 1,
+            self::$status_accepted => 2,
+            self::$status_delayed => 3,
+            self::$status_forwarded => 3,
+            self::$status_finished => 4,
+            self::$status_assiged => 5,
+            self::$status_failed => 5,
+            self::$status_partialy_completed => 6,
+            self::$status_completed => 6,
+            self::$status_canceled => 6,
         );
 
         if (empty($from) && !empty($to)) {
@@ -1532,7 +1553,13 @@ class OrderService extends ContainerAware
     public function informPlace($isReminder=false)
     {
         $order = $this->getOrder();
-        if ($order->getOrderStatus()== OrderService::$status_pre) {
+
+        if (
+            in_array(
+                $order->getOrderStatus(),
+                array(OrderService::$status_pre, OrderService::$status_preorder)
+            )
+        ) {
             return;
         }
         if (!$isReminder) {
@@ -2014,6 +2041,7 @@ class OrderService extends ContainerAware
     {
         return array
         (
+            self::$status_preorder,
             self::$status_new,
             self::$status_accepted,
             self::$status_delayed,
@@ -2369,6 +2397,24 @@ class OrderService extends ContainerAware
             }
             if (empty($companyAddress)) {
                 $formErrors[] = 'order.form.errors.empty_company_address';
+            }
+        }
+
+        // Test if correct dates passed to pre order
+        $preOrder = $request->get('pre-order');
+        if ($preOrder == 'it-is') {
+            $orderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
+
+            if ($orderDate < date("Y-m-d H:i", strtotime("-10 minute"))) {
+                $formErrors[] = 'order.form.errors.back_in_time_preorder';
+            }
+
+            if ($orderDate > date("Y-m-d 00:00", strtotime("+2 day"))) {
+                $formErrors[] = 'order.form.errors.back_in_feature_preorder';
+            }
+
+            if ($orderDate != date("Y-m-d H:i", strtotime($orderDate))) {
+                $formErrors[] = 'order.form.errors.not_a_date';
             }
         }
 

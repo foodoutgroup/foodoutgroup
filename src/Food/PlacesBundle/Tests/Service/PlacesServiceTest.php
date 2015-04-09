@@ -2,43 +2,11 @@
 namespace Food\PlacesBundle\Tests\Service;
 
 use Food\DishesBundle\Entity\Place;
+use Food\DishesBundle\Entity\PlacePoint;
 use Food\PlacesBundle\Service\PlacesService;
+use Food\AppBundle\Test\WebTestCase;
 
-require_once dirname(__DIR__).'/../../../../app/AppKernel.php';
-
-class PlacesServiceTest extends \PHPUnit_Framework_TestCase {
-    /**
-     * @var \Symfony\Component\HttpKernel\AppKernel
-     */
-    protected $kernel;
-
-    /**
-     * @var \Symfony\Component\DependencyInjection\Container
-     */
-    protected $container;
-
-    /**
-     * @return null
-     */
-    public function setUp()
-    {
-        $this->kernel = new \AppKernel('test', true);
-        $this->kernel->boot();
-
-        $this->container = $this->kernel->getContainer();
-
-        parent::setUp();
-    }
-
-    /**
-     * @return null
-     */
-    public function tearDown()
-    {
-        $this->kernel->shutdown();
-
-        parent::tearDown();
-    }
+class PlacesServiceTest extends WebTestCase {
 
     public function testSettersGetters()
     {
@@ -377,5 +345,160 @@ class PlacesServiceTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expectedPlace, $gotPlace);
     }
 
+    public function testGetFullRangeWorkTimes()
+    {
+        $placeService = new PlacesService();
+        $place = new Place();
+        $placePoint = new PlacePoint();
 
+        $placePoint->setWd1Start('09:00')
+            ->setWd1End('20:00')
+            ->setWd5Start('10:00')
+            ->setWd5End('01:00')
+            ->setWd7Start('Nedir')
+            ->setWd7End('Nedir');
+
+        $day = date("w");
+
+        $mondayShift = $day - 1;
+        if ($mondayShift < 0) {
+            $mondayShift = "+".(-$mondayShift);
+        } else {
+            $mondayShift = "-".$mondayShift;
+        }
+        $fridayShift = $day - 5;
+        if ($fridayShift < 0) {
+            $fridayShift = "+".(-$fridayShift);
+        } else {
+            $fridayShift = "-".$fridayShift;
+        }
+        $sundayShift = $day - 7;
+        if ($sundayShift < 0) {
+            $sundayShift = "+".(-$sundayShift);
+        } else {
+            $sundayShift = "-".$sundayShift;
+        }
+
+        $mondayGraph = $placeService->getFullRangeWorkTimes($place, $placePoint, $mondayShift." day");
+        $fridayGraph = $placeService->getFullRangeWorkTimes($place, $placePoint, $fridayShift." day");
+        $sundayGraph = $placeService->getFullRangeWorkTimes($place, $placePoint, $sundayShift." day");
+
+        $expectedMondayGraph = array(
+            '09:00',
+            '09:30',
+            '10:00',
+            '10:30',
+            '11:00',
+            '11:30',
+            '12:00',
+            '12:30',
+            '13:00',
+            '13:30',
+            '14:00',
+            '14:30',
+            '15:00',
+            '15:30',
+            '16:00',
+            '16:30',
+            '17:00',
+            '17:30',
+            '18:00',
+            '18:30',
+            '19:00',
+            '19:30',
+            '20:00',
+        );
+
+        $expectedFridayGraph = array(
+            '10:00',
+            '10:30',
+            '11:00',
+            '11:30',
+            '12:00',
+            '12:30',
+            '13:00',
+            '13:30',
+            '14:00',
+            '14:30',
+            '15:00',
+            '15:30',
+            '16:00',
+            '16:30',
+            '17:00',
+            '17:30',
+            '18:00',
+            '18:30',
+            '19:00',
+            '19:30',
+            '20:00',
+            '20:30',
+            '21:00',
+            '21:30',
+            '22:00',
+            '22:30',
+            '23:00',
+            '23:30',
+            '24:00',
+        );
+
+        $expectedSundayGraph = array();
+
+        $this->assertEquals($expectedMondayGraph, $mondayGraph);
+        $this->assertEquals($expectedFridayGraph, $fridayGraph);
+        $this->assertEquals($expectedSundayGraph, $sundayGraph);
+    }
+
+    public function testGetFullRangeWorkTimesNoPoint()
+    {
+        $placeService = new PlacesService();
+        $place = new Place();
+        $placePoint = new PlacePoint();
+
+        $placePoint->setWd1Start('08:00')
+            ->setWd1End('20:00');
+
+        $place->addPoint($placePoint);
+
+        $day = date("w");
+
+        $mondayShift = $day - 1;
+        if ($mondayShift < 0) {
+            $mondayShift = "+".(-$mondayShift);
+        } else {
+            $mondayShift = "-".$mondayShift;
+        }
+
+
+        $mondayGraph = $placeService->getFullRangeWorkTimes($place, null, $mondayShift." day");
+
+        $expectedMondayGraph = array(
+            '08:00',
+            '08:30',
+            '09:00',
+            '09:30',
+            '10:00',
+            '10:30',
+            '11:00',
+            '11:30',
+            '12:00',
+            '12:30',
+            '13:00',
+            '13:30',
+            '14:00',
+            '14:30',
+            '15:00',
+            '15:30',
+            '16:00',
+            '16:30',
+            '17:00',
+            '17:30',
+            '18:00',
+            '18:30',
+            '19:00',
+            '19:30',
+            '20:00',
+        );
+
+        $this->assertEquals($expectedMondayGraph, $mondayGraph);
+    }
 }

@@ -64,7 +64,7 @@ class OrderDetailsOptions
     /**
      * Set dish_option_name
      *
-     * @param DishOption $dishOptionName
+     * @param string $dishOptionName
      * @return OrderDetailsOptions
      */
     public function setDishOptionName($dishOptionName)

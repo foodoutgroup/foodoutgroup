@@ -5,6 +5,7 @@ namespace Food\CartBundle\Controller;
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Place;
 use Food\OrderBundle\Entity\Order;
+use Food\UserBundle\Entity\User;
 use FOS\UserBundle\Model\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -169,6 +170,19 @@ class DefaultController extends Controller
         $formErrors = array();
         $dataToLoad = array();
 
+        // Data preparation for form
+        $placePointMap = $this->container->get('session')->get('point_data');
+        if (!empty($placePointMap) && isset($placePointMap[$placeId]) && !empty($placePointMap[$placeId])) {
+            $pointRecord = $this->container->get('doctrine')
+                ->getRepository('FoodDishesBundle:PlacePoint')
+                ->find($placePointMap[$placeId]);
+        } else {
+            $pointRecord = null;
+        }
+
+        $workingHoursToday = $placeService->getFullRangeWorkTimes($place, $pointRecord);
+        $workingHoursTommorow = $placeService->getFullRangeWorkTimes($place, $pointRecord, '+1 day');
+
         // TODO refactor this nonsense... if is if is if is bullshit...
         // Validate only if post happened
         if ($request->getMethod() == 'POST') {
@@ -251,8 +265,18 @@ class DefaultController extends Controller
 
                 $selfDelivery = ($request->get('delivery-type') == "pickup" ? true : false);
 
-                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon);
+                // Preorder date formation
+                $orderDate = null;
+                $preOrder = $request->get('pre-order');
+                if ($preOrder == 'it-is') {
+                    $orderDate = $request->get('pre_order_date').' '.$request->get('pre_order_time');
+                }
+
+                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $orderDate);
                 $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
+                if ($preOrder == 'it-is') {
+                    $orderService->logOrder(null, 'pre-order', 'Order marked as pre-order', $orderService->getOrder());
+                }
             } else {
                 $orderService->setOrder($order);
                 if ($takeAway) {
@@ -330,7 +354,9 @@ class DefaultController extends Controller
                 'location' => $this->get('food.googlegis')->getLocationFromSession(),
                 'dataToLoad' => $dataToLoad,
                 'submitted' => $request->isMethod('POST'),
-                'testNordea' => $request->query->get('test_nordea')
+                'testNordea' => $request->query->get('test_nordea'),
+                'workingHoursToday' => $workingHoursToday,
+                'workingHoursTommorow' => $workingHoursTommorow,
             )
         );
     }

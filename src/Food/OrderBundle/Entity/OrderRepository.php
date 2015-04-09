@@ -435,9 +435,9 @@ class OrderRepository extends EntityRepository
         $dateToPickup = new \DateTime("-65 minute");
         $dateToDeliver = new \DateTime("-90 minute");
 
-        $dateFrom1 = $dateFrom->sub(new \DateInterval('PT12H'))->format("Y-m-d h:i:s");
-        $dateToPickup = $dateToPickup->format("Y-m-d h:i:s");
-        $dateToDeliver = $dateToDeliver->format("Y-m-d h:i:s");
+        $dateFrom1 = $dateFrom->sub(new \DateInterval('PT12H'))->format("Y-m-d H:i:s");
+        $dateToPickup = $dateToPickup->format("Y-m-d H:i:s");
+        $dateToDeliver = $dateToDeliver->format("Y-m-d H:i:s");
 
         $query = "
           SELECT
@@ -466,6 +466,46 @@ class OrderRepository extends EntityRepository
     }
 
     /**
+     * @return array
+     */
+    public function getPreOrders()
+    {
+        $paymentStatus = OrderService::$paymentStatusComplete;
+        $orderStatus = OrderService::$status_preorder;
+
+        /**
+         * Da logic:
+         *
+         * imam tuos uzsakymus, kurie:
+         *  - statusas - preorder
+         *  - payment - completed
+         *  - delivery type - any
+         *  - kai iki uzsakymo liko valanda +- crono laikas (in case shit happened ir reikia vel tvarkyti orderi - be ready for that)
+         */
+
+        $dateFrom = new \DateTime("+40 minute");
+        $dateTo = new \DateTime("+67 minute");
+
+        $dateFrom = $dateFrom->format("Y-m-d H:i:s");
+        $dateTo = $dateTo->format("Y-m-d H:i:s");
+
+        $query = "
+          SELECT
+            o.id,
+            o.delivery_time
+          FROM orders o
+          WHERE
+            o.order_status IN ('{$orderStatus}')
+            AND o.payment_status = '{$paymentStatus}'
+            AND o.delivery_time BETWEEN '{$dateFrom}' AND '{$dateTo}'
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
      * @param $timeBack string|null
      * @param boolean $skipImportedFromNav
      * @param boolean $excludeCompleted
@@ -479,6 +519,7 @@ class OrderRepository extends EntityRepository
         $qb = $this->createQueryBuilder('o');
 
         $excludeStatuses = [
+            OrderService::$status_preorder,
             OrderService::$status_canceled,
             OrderService::$status_nav_problems,
             OrderService::$status_pre,

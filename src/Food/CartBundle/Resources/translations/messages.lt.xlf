@@ -66,6 +66,22 @@
         <source>cart.checkout.phone</source>
         <target>Telefonas</target>
       </trans-unit>
+      <trans-unit id="cart.checkout.delivery_date" resname="cart.checkout.delivery_date">
+        <source>cart.checkout.delivery_date</source>
+        <target>Pristatymo data</target>
+      </trans-unit>
+      <trans-unit id="cart.checkout.delivery_time" resname="cart.checkout.delivery_time">
+        <source>cart.checkout.delivery_time</source>
+        <target>Pristatymo laikas</target>
+      </trans-unit>
+      <trans-unit id="cart.checkout.order_now" resname="cart.checkout.order_now">
+        <source>cart.checkout.order_now</source>
+        <target>Užsakyti dabar</target>
+      </trans-unit>
+      <trans-unit id="cart.checkout.order_later" resname="cart.checkout.order_later">
+        <source>cart.checkout.order_later</source>
+        <target>Užsakyti vėlesniam laikui</target>
+      </trans-unit>
       <trans-unit id="72ac47fdc9d8610d13cc86b4dd35e24f" resname="cart.checkout.phone_placeholder">
         <source>cart.checkout.phone_placeholder</source>
         <target>37060000000</target>
@@ -317,6 +333,18 @@ Vilnius]]></target>
         <trans-unit id="order.form.errors.payment_type" resname="order.form.errors.payment_type">
             <source>order.form.errors.payment_type</source>
             <target>Pasirinkite atsiskaitymo būdą</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.back_in_time_preorder" resname="order.form.errors.back_in_time_preorder">
+            <source>order.form.errors.back_in_time_preorder</source>
+            <target>Atsiprašome, tačiau užsakymų į praeitį nevežame. Pasitikrinkite pristatymo laiką</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.back_in_feature_preorder" resname="order.form.errors.back_in_feature_preorder">
+            <source>order.form.errors.back_in_feature_preorder</source>
+            <target>Atsiprašome, tačiau užsakymus priimame tik šiandienai ir rytdienai</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.not_a_date" resname="order.form.errors.not_a_date">
+            <source>order.form.errors.not_a_date</source>
+            <target>Įvedėte neteisingą pristatymo datą, pataisykite</target>
         </trans-unit>
         <trans-unit id="general.coupon.text" resname="general.coupon.text">
             <source>general.coupon.text</source>

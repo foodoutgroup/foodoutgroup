@@ -2,6 +2,7 @@
 
 namespace Food\OrderBundle\Controller;
 
+use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -157,7 +158,11 @@ class PaymentsController extends Controller
                     $logger->alert('-- Payment is valid. Procceed with care..');
                     $orderService->setPaymentStatus($orderService::$paymentStatusComplete, 'Paysera billed payment');
                     $orderService->saveOrder();
-                    $orderService->informPlace();
+
+                    // If pre order - do not inform
+                    if ($order->getOrderStatus() != OrderService::$status_preorder) {
+                        $orderService->informPlace();
+                    }
 
                     // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
                     $orderService->deactivateCoupon();

@@ -6,6 +6,9 @@ var Cart = {
         $('.delivery-type-radios input').on('ifChecked', function(event){
             Cart.deliveryTypeChanged($(this).val());
         });
+        $('.order-type-radios input').on('ifChecked', function(event){
+            Cart.orderTypeChanged($(this).val());
+        });
     },
 
     /**
@@ -88,5 +91,21 @@ var Cart = {
             }
             sideBlock.unmask()
         }, 'json');
+    },
+
+    orderTypeChanged: function(deliveryType) {
+        var dateBlock = $('.preorder_dates');
+
+        // do
+        switch (deliveryType) {
+            case 'it-is':
+                dateBlock.removeClass('hidden');
+                break;
+
+            case 'not-this-time':
+            default:
+                dateBlock.addClass('hidden');
+                break;
+        }
     }
 };
