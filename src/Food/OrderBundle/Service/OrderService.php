@@ -1562,6 +1562,7 @@ class OrderService extends ContainerAware
         ) {
             return;
         }
+        // Inform by email about create and if Nav - send it to Nav
         if (!$isReminder) {
             $this->notifyOrderCreate();
         }

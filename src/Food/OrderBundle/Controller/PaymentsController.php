@@ -160,7 +160,7 @@ class PaymentsController extends Controller
                     $orderService->saveOrder();
 
                     // If pre order - do not inform
-                    if ($order->getOrderStatus() != OrderService::$status_preorder) {
+                    if ($order->getOrderStatus() != OrderService::$status_preorder || $order->getPlace()->getNavision()) {
                         $orderService->informPlace();
                     }
 

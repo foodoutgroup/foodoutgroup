@@ -78,7 +78,7 @@ class LocalBiller extends ContainerAware implements BillingInterface {
 
         $this->container->get('food.cart')->clearCart($order->getPlace());
         // If pre order - do not inform
-        if ($order->getOrderStatus() != OrderService::$status_preorder) {
+        if ($order->getOrderStatus() != OrderService::$status_preorder || $order->getPlace()->getNavision()) {
             $orderService->informPlace();
         }
 

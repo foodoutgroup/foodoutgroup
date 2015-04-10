@@ -166,7 +166,6 @@ class NavService extends ContainerAware
     }
 
 
-
     /**
      * @return false|resource
      */
