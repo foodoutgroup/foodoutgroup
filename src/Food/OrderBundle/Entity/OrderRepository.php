@@ -87,6 +87,34 @@ class OrderRepository extends EntityRepository
     }
 
     /**
+     * @param string $city
+     * @return array
+     */
+    public function getOrdersCanceled($city)
+    {
+        $filter = array(
+            'order_status' =>  OrderService::$status_canceled,
+            'place_point_city' => $city,
+            'deliveryType' => OrderService::$deliveryDeliver,
+            'paymentStatus' => OrderService::$paymentStatusComplete,
+            'order_date_between' => array(
+                'from' => new \DateTime('-4 hour'),
+                'to' => new \DateTime('now'),
+            ),
+            'not_nav' => 1,
+            'contacted' => 0
+        );
+
+        $orders = $this->getOrdersByFilter($filter, 'list');
+
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
+
+    /**
      * @var string|null $date
      * @return array
      */
@@ -237,6 +265,10 @@ class OrderRepository extends EntityRepository
 
                     case 'not_nav':
                         $qb->andWhere('o.orderFromNav != :'.$filterName);
+                        break;
+
+                    case 'contacted':
+                        $qb->andWhere('o.clientContacted = :'.$filterName);
                         break;
 
                     default:

@@ -1167,6 +1167,18 @@
                 <source>admin.dispatcher.undelivered</source>
                 <target>Nepristatyti</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.canceled">
+                <source>admin.dispatcher.canceled</source>
+                <target>Atšaukti</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.client_phone">
+                <source>admin.dispatcher.client_phone</source>
+                <target>Užsak. telef.</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.client_contacted">
+                <source>admin.dispatcher.client_contacted</source>
+                <target>Susisiekta su klientu</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.unconfirmed_pickup">
                 <source>admin.dispatcher.unconfirmed_pickup</source>
                 <target>Nepatvirtinti atsiėmimai restorane</target>
@@ -1202,6 +1214,10 @@
             <trans-unit id="admin.dispatcher.order_status.new">
                 <source>admin.dispatcher.order_status.new</source>
                 <target>Naujas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.preorder">
+                <source>admin.dispatcher.order_status.preorder</source>
+                <target>Naujas PreOrder</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.order_status.delayed">
                 <source>admin.dispatcher.order_status.delayed</source>

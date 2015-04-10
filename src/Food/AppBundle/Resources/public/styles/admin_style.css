@@ -80,6 +80,20 @@ td.no-wrap {
     vertical-align: middle;
 }
 
+.client_contacted_check {
+    width: 65px;
+    text-align: center;
+}
+
+.client_contacted_check input.client_contacted {
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(2); /* IE */
+    -moz-transform: scale(2); /* FF */
+    -webkit-transform: scale(2); /* Safari and Chrome */
+    -o-transform: scale(2); /* Opera */
+    padding: 10px;
+}
+
 /* TODO prie buttono nupieski vairiuka */
 /*span.icon_steering_wheel {*/
     /*content: "";*/

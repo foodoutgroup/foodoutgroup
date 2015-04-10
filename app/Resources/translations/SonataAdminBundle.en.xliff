@@ -1119,6 +1119,18 @@
                 <source>admin.dispatcher.undelivered</source>
                 <target>Undelivered</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.canceled">
+                <source>admin.dispatcher.canceled</source>
+                <target>Canceled</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.client_phone">
+                <source>admin.dispatcher.client_phone</source>
+                <target>Client phone</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.client_contacted">
+                <source>admin.dispatcher.client_contacted</source>
+                <target>Client contacted</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.unconfirmed_pickup">
                 <source>admin.dispatcher.unconfirmed_pickup</source>
                 <target>Uncomfirmed pickups</target>
@@ -1154,6 +1166,10 @@
             <trans-unit id="admin.dispatcher.order_status.new">
                 <source>admin.dispatcher.order_status.new</source>
                 <target>New</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.preorder">
+                <source>admin.dispatcher.order_status.preorder</source>
+                <target>New PreOrder</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.order_status.delayed">
                 <source>admin.dispatcher.order_status.delayed</source>

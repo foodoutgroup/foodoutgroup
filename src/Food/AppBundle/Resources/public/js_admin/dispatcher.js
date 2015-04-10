@@ -58,6 +58,11 @@ var Dispatcher = {
             Dispatcher.assignDriver($(this).attr('item-id'));
         });
 
+
+        $(".order_list .client_contacted_check .client_contacted").bind('click', function(){
+            Dispatcher.toggleClientContacted($(this));
+        });
+
         Dispatcher.subscribeForNewOrders();
     },
 
@@ -181,6 +186,30 @@ var Dispatcher = {
                 }
 
                 Dispatcher.subscribeForNewOrders();
+            }
+        );
+    },
+
+    /**
+     * Mark order as contacted with client after cancelation
+     */
+    toggleClientContacted: function(checkbox) {
+        var url = Routing.generate('food_admin_mark_order_contacted', { '_locale': Dispatcher._locale, _sonata_admin: 'sonata.admin.dish' });
+        var contactedStatus = 0;
+        if (checkbox.is(":checked")) {
+            contactedStatus = 1;
+        }
+
+        $.post(
+            url,
+            {
+                'order': checkbox.attr('item-id'),
+                'status': contactedStatus
+            },
+            function(data) {
+                if (data == "YES") {
+                    location.reload();
+                }
             }
         );
     }

@@ -717,29 +717,6 @@ class OrderService extends ContainerAware
      */
     public function statusCanceled($source=null, $statusMessage=null)
     {
-        // If restourant (or Foodout) has canceled order - send informational SMS message to user
-        $userPhone = $this->getOrder()->getUser()->getPhone();
-        if (!empty($userPhone) && $this->getOrder()->getOrderFromNav() == false) {
-            $messagingService = $this->container->get('food.messages');
-
-            // If not paid by banklink or paysera
-            if (in_array($this->getOrder()->getPaymentMethod(), array('local', 'local.card'))) {
-                $messageText = $this->container->get('translator')->trans('general.sms.client.restourant_cancel');
-            // If banklink payment and it is complete - inform that we will return money, because restourant sux!
-            } elseif ($this->getOrder()->getPaymentStatus() == 'complete') {
-                $messageText = $this->container->get('translator')->trans('general.sms.client.restourant_cancel_banklink');
-            }
-
-            if (!empty($messageText)) {
-                $message = $messagingService->createMessage(
-                    $this->container->getParameter('sms.sender'),
-                    $userPhone,
-                    $messageText
-                );
-                $messagingService->saveMessage($message);
-            }
-        }
-
         // Put for logistics to cancel on their side
         $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
 

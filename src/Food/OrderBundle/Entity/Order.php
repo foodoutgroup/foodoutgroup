@@ -353,6 +353,12 @@ class Order
     private $lateOrderInformed = false;
 
     /**
+     * @var bool
+     * @ORM\Column(name="client_contacted", type="boolean", nullable=true)
+     */
+    private $clientContacted = false;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -1807,5 +1813,28 @@ class Order
     public function getLateOrderInformed()
     {
         return $this->lateOrderInformed;
+    }
+
+    /**
+     * Set clientContacted
+     *
+     * @param boolean $clientContacted
+     * @return Order
+     */
+    public function setClientContacted($clientContacted)
+    {
+        $this->clientContacted = $clientContacted;
+    
+        return $this;
+    }
+
+    /**
+     * Get clientContacted
+     *
+     * @return boolean 
+     */
+    public function getClientContacted()
+    {
+        return $this->clientContacted;
     }
 }

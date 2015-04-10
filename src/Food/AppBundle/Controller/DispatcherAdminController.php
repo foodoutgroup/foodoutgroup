@@ -24,6 +24,7 @@ class DispatcherAdminController extends Controller
                     'pickup' => $repo->getOrdersUnconfirmed($city, true),
                 ),
                 'not_finished' => $repo->getOrdersAssigned($city),
+                'canceled' => $repo->getOrdersCanceled($city),
             );
         }
 
@@ -175,5 +176,34 @@ class DispatcherAdminController extends Controller
         }
 
         return new Response('NO');
+    }
+
+    public function markOrderContactedAction(Request $request)
+    {
+        $orderService = $this->get('food.order');
+
+        $orderId = $request->get('order');
+        $status = $request->get('status');
+
+        try {
+            $order = $orderService->getOrderById($orderId);
+
+            $order->setClientContacted((bool)$status);
+            $orderService->saveOrder();
+
+            $message = 'Order #'.$order->getId();
+            if ($status) {
+                $message .= ' client was contacted about cancel';
+            } else {
+                $message .= ' client was not contacted about cancel';
+            }
+            $orderService->logOrder($order, 'client_contacted', $message);
+        } catch (Exception $e) {
+            $this->get('logger')->error('Error occured while marking order as contacted. Error: '.$e->getMessage());
+
+            return new Response('NO');
+        }
+
+        return new Response('YES');
     }
 }
