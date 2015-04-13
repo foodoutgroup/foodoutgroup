@@ -274,13 +274,10 @@ class OrderService extends ContainerAware
             $deliveryTime = new \DateTime("now");
             $deliveryTime->modify("+60 minutes");
         } else {
-            $this->container->get("logger")->alert("----===== - its preorder formating date: ".$orderDate);
             $deliveryTime = new \DateTime($orderDate);
         }
 
         $this->order->setUser($user);
-        $this->container->get("logger")->alert("----=====-------====== Seting delivery time ---=====-------======------");
-        $this->container->get("logger")->alert("----=====-------====== ".$deliveryTime->format("Y-m-d H:i:s")." ---=====-------======------");
         $this->order->setDeliveryTime($deliveryTime);
         $this->order->setDeliveryPrice($placeRecord->getDeliveryPrice());
         $this->order->setVat($this->container->getParameter('vat'));

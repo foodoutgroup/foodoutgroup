@@ -249,7 +249,7 @@ class PlacesService extends ContainerAware {
         if (empty($to)) {
             $to = $placePoint->{'getWd'.$day.'End'}();
         }
-//echo "From: ".$from." To: ".$to."<br>";
+
         if (strpos($from, ':') === false) {
             return array();
         }
@@ -258,7 +258,7 @@ class PlacesService extends ContainerAware {
         $to = str_replace(':', '', $to);
         $graph = array();
 
-        if ($to < '0500' && $to >= '0000') {
+        if (($to < '0500' && $to >= '0000') || $to > '2400') {
             $to = '2400';
         }
 
