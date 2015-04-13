@@ -2,6 +2,7 @@
 
 namespace Food\AppBundle\Controller;
 
+use Doctrine\ORM\OptimisticLockException;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -80,7 +81,18 @@ class DispatcherAdminController extends Controller
         try {
             $orderService->getOrderById($orderId);
 
-            $method = 'status'.ucfirst($status);
+            $method = 'status' . ucfirst($status);
+            if (method_exists($orderService, $method)) {
+                $orderService->$method('dispatcher');
+
+                if ($method == 'statusCanceled') {
+                    $orderService->informPlaceCancelAction();
+                }
+            }
+            $orderService->saveOrder();
+        } catch (OptimisticLockException $e) {
+            // Retry
+            $orderService->getOrderById($orderId);
             if (method_exists($orderService, $method)) {
                 $orderService->$method('dispatcher');
 
