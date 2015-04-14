@@ -42,17 +42,19 @@ class GoogleGisService extends ContainerAware
     }
 
     /**
-     * @param $address
+     * @param string $address
      * @return \stdClass
      */
     public function getPlaceData($address)
     {
-        $addressSplt = explode("-", $address);
-        if (sizeof($addressSplt) > 1) {
-            $tmp = substr($addressSplt[1], 0, 1);
+        if (preg_match("/(\d+\w*\s*-\s*\d+)/i", $address, $matches)) {
+
+            $addressSplt = explode("-", $matches[1]);
+            $tmp = $addressSplt[0];
+
             if ($tmp == intval($tmp)) {
                 $cityDelimeter = explode(",", $address);
-                $address = $addressSplt[0];
+                $address = strstr($address, $matches[1], true) . $tmp;
                 $address.= ", ".end($cityDelimeter);
             } else {
                 // Nieko nekeiciam
