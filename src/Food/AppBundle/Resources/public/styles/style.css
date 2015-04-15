@@ -683,9 +683,9 @@ input.button {}
 .site-footer .site-block {position: relative;}
 .site-footer h5 {color: #fff; margin: 0; font-size: 20px; font-weight: normal; margin-bottom: 4px; letter-spacing: -0.5px; }
 .site-footer .col {float: left; font-size: 15px; letter-spacing: 0.5px; margin-right: 36px; background: url(/bundles/foodapp/images/rep-dot.png) repeat-y right top;}
-.site-footer .col-1 {width: 180px;}
+.site-footer .col-1 {width: 179px;}
 .site-footer .col-2 {width: 190px;}
-.site-footer .col-3 {width: 517px; margin-right: 0px; padding-right: 25px;}
+.site-footer .col-3 {width: 520px; margin-right: 0px; padding-right: 25px;}
 .site-footer .col-4 {width: 220px; float: right; margin-right: 0px; text-align: right; background: none;}
 
 .site-footer li {line-height: 29px;}
@@ -697,7 +697,7 @@ input.button {}
 
 .small-col {width: 193px; line-height: 29px;}
 /* TODO laikinas footerio reitingu isplatinimas */
-.small-col.rating-col {width: 258px;}
+.small-col.rating-col {width: 260px;}
 
 .copyrights {position: absolute; right: 0px; bottom: 2px; font-size: 14px;}
 
