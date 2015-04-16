@@ -9,7 +9,7 @@
                 <a href="{{ best_offer.link }}" class="cupom-item">
 
                 <div class="cupon-top">
-                    <img src="{{ asset(best_offer.getWebPathThumb) }}" width="180" height="177">
+                    <img src="http://{{ cloudfront_url }}{{ asset(best_offer.getWebPathThumb) }}" width="180" height="177">
                     <p class="cupon-name" style="margin: 0;">{{ best_offer.title }}</p>
                     <p class="cupon-desc" style="margin: 0;">{{ best_offer.text }}</p>
                 </div>
