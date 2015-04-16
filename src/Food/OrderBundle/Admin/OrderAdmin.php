@@ -195,6 +195,7 @@ class OrderAdmin extends SonataAdmin
             ->add('mobile', null, array('label' => 'admin.order.ismobile'))
             ->add('orderFromNav', null, array('label' => 'admin.order.order_from_nav'))
             ->add('navDeliveryOrder', null, array('label' => 'admin.order.nav_delivery_order'))
+            ->add('clientContacted', null, array('label' => 'admin.order.client_contacted'))
         ;
     }
 

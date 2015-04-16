@@ -1079,6 +1079,10 @@
                 <source>admin.order.nav_delivery_order</source>
                 <target>Važtaražčio nr.</target>
             </trans-unit>
+            <trans-unit id="admin.order.client_contacted">
+                <source>admin.order.client_contacted</source>
+                <target>Su klientu susisiekta</target>
+            </trans-unit>
             <trans-unit id="admin.order.invoice_added_for_send">
                 <source>admin.order.invoice_added_for_send</source>
                 <target>Sąskaita pridėta siuntimui</target>
