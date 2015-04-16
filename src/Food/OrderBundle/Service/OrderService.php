@@ -1331,7 +1331,8 @@ class OrderService extends ContainerAware
         $toFailed = $to == self::$status_failed;
         $toCancelled = $to == self::$status_canceled;
 
-        if ($fromCompleted && ($toFailed || $toCancelled)) {
+//        if ($fromCompleted && ($toFailed || $toCancelled)) {
+        if ($fromCompleted && ($toFailed)) {
             return true;
         }
 
