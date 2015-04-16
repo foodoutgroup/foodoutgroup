@@ -203,9 +203,9 @@
                 {% set cityUnconfirmed = (cityOrders[city].unconfirmed.deliver|length + cityOrders[city].unconfirmed.pickup|length) %}
                 {% set cityNotFinished = cityOrders[city].not_finished|length %}
                 {% set cityCanceled = cityOrders[city].canceled|length %}
-                {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished}, 'SonataAdminBundle') %}
+                {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished, 'canceledCount': cityCanceled}, 'SonataAdminBundle') %}
                 <li class="city-tab city_tabik-{{ loop.index }}">
-                    <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} ({{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }})</a>
+                    <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} ({{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }}:{{ cityCanceled }})</a>
                 </li>
             {% endfor %}
         </ul>

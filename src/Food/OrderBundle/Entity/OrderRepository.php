@@ -102,7 +102,6 @@ class OrderRepository extends EntityRepository
                 'to' => new \DateTime('now'),
             ),
             'not_nav' => 1,
-            'contacted' => 0
         );
 
         $orders = $this->getOrdersByFilter($filter, 'list');
@@ -265,10 +264,6 @@ class OrderRepository extends EntityRepository
 
                     case 'not_nav':
                         $qb->andWhere('o.orderFromNav != :'.$filterName);
-                        break;
-
-                    case 'contacted':
-                        $qb->andWhere('o.clientContacted = :'.$filterName);
                         break;
 
                     default:
