@@ -2033,19 +2033,20 @@ class OrderService extends ContainerAware
         $wd = date('w');
         if ($wd == 0) $wd = 7;
         $timeFr = $placePoint->{'getWd'.$wd.'Start'}();
+        $timeFrTs = str_replace(":", "", $placePoint->{'getWd'.$wd.'Start'}());
         $timeTo = $placePoint->{'getWd'.$wd.'End'}();
-
+        $timeToTs =  str_replace(":", "", $placePoint->{'getWd'.$wd.'EndLong'}());
+		$currentTime = date("Hi");
+		if (date("H") < 6) {
+			$currentTime+=2400;
+		}
         if(!strpos($timeFr, ':')|| !strpos($timeTo, ':')) {
             $errors[] = "order.form.errors.today_no_work";
         } else {
-            $timeFrTs = strtotime($timeFr);
-            $timeToFs = strtotime($timeTo);
-            if ($timeToFs < $timeFrTs) {
-                $timeToFs+= 60 * 60 * 24;
-            }
-            if ($timeFrTs > date('U')) {
+
+            if ($timeFrTs > $currentTime) {
                 $errors[] = "order.form.errors.isnt_open";
-            } elseif ($timeToFs < date('U')) {
+            } elseif ($timeToTs < $currentTime) {
                 $errors[] = "order.form.errors.is_already_close";
             }
         }
