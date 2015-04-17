@@ -124,9 +124,9 @@ class DishAdmin extends FoodAdmin
         $datagridMapper
             ->add('name', null, array('label' => 'admin.dish.name'));
 
-        if ($this->isAdmin()) {
+        //if ($this->isAdmin()) {
             $datagridMapper->add('place');
-        }
+        //}
 
         $datagridMapper
             //->add('categories')
