@@ -129,11 +129,11 @@ class DishAdmin extends FoodAdmin
         }
 
         $datagridMapper
-            ->add('categories')
-            ->add('options')
-            ->add('recomended', null, array('label' => 'admin.dish.recomended'))
-            ->add('discountPricesEnabled', null, array('label' => 'admin.dish.discount_prices_enabled'))
-            ->add('createdBy', null, array('label' => 'admin.created_by'))
+            //->add('categories')
+            //->add('options')
+            //->add('recomended', 'checkbox', array('label' => 'admin.dish.recomended'))
+            //->add('discountPricesEnabled', 'checkbox', array('label' => 'admin.dish.discount_prices_enabled'))
+            //->add('createdBy', null, array('label' => 'admin.created_by'))
         // TODO isjungiau, nes nenaudojam, o po sonatos update - griuna widget optionsas
 //            ->add(
 //                'createdAt',

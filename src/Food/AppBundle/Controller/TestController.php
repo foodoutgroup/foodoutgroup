@@ -192,9 +192,11 @@ class TestController extends Controller
 
     public function putOrderAction()
     {
-        $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find(2020);
+        $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find(41330);
         $ns = $this->get('food.nav');
         $ns->putTheOrderToTheNAV($order);
+
+        die();
 
         $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find(2023);
         $ns = $this->get('food.nav');

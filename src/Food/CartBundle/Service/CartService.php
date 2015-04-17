@@ -413,6 +413,62 @@ class CartService {
     }
 
     /**
+     * Total nenuolaidiniu prekiu. Reikalinga esant poreikiui perskaiciuoti procentine nuolaida.
+     *
+     * @param Cart[] $cartItems
+     * @return int
+     *
+     * @deprecated
+     */
+    public function getCartTotalOfNonDiscounted($cartItems)
+    {
+        $total = 0;
+        foreach ($cartItems as $cartItem) {
+            $thisDishFitsUs = false;
+            if (!$cartItem->getPlaceId()->getDiscountPricesEnabled()) {
+                $thisDishFitsUs = true;
+            } elseif (!$cartItem->getDishId()->getDiscountPricesEnabled()) {
+                $thisDishFitsUs = true;
+            } elseif ($cartItem->getDishId()->getDiscountPricesEnabled() && $cartItem->getPlaceId()->getDiscountPricesEnabled() && $cartItem->getDishSizeId()->getDiscountPrice() == 0) {
+                $thisDishFitsUs = true;
+            }
+            if ($thisDishFitsUs) {
+                $total += $cartItem->getDishSizeId()->getCurrentPrice() * $cartItem->getQuantity();
+                foreach ($cartItem->getOptions() as $opt) {
+                    $total += $opt->getDishOptionId()->getPrice() * $cartItem->getQuantity();
+                }
+            }
+        }
+        return $total;
+    }
+
+    public function getTotalDiscount($cartItems, $discountPercent)
+    {
+        $total = 0;
+        foreach ($cartItems as $cartItem) {
+            $thisDishFitsUs = false;
+            if (!$cartItem->getPlaceId()->getDiscountPricesEnabled()) {
+                $thisDishFitsUs = true;
+            } elseif (!$cartItem->getDishId()->getDiscountPricesEnabled()) {
+                $thisDishFitsUs = true;
+            } elseif ($cartItem->getDishId()->getDiscountPricesEnabled() && $cartItem->getPlaceId()->getDiscountPricesEnabled() && $cartItem->getDishSizeId()->getDiscountPrice() == 0) {
+                $thisDishFitsUs = true;
+            }
+            $theDish = 0;
+            if ($thisDishFitsUs) {
+                $theDish+= $cartItem->getDishSizeId()->getCurrentPrice() * $cartItem->getQuantity();
+                foreach ($cartItem->getOptions() as $opt) {
+                    $theDish += $opt->getDishOptionId()->getPrice() * $cartItem->getQuantity();
+                }
+                if ($theDish > 0) {
+                    $total+= round(($theDish * $discountPercent / 100), 2);
+                }
+            }
+        }
+        return $total;
+    }
+
+    /**
      * @param \Food\CartBundle\Entity\Cart[] $cartItems
      * @return float|int
      */

@@ -857,15 +857,54 @@ class OrderService extends ContainerAware
 
         $placeObject = $this->container->get('food.places')->getPlace($place);
 
+
+        $deliveryPrice = $this->getOrder()->getPlace()->getDeliveryPrice();
+
+        // Pritaikom nuolaida
+        $discountPercent = 0;
+        if (!empty($coupon) && $coupon instanceof Coupon) {
+            $order = $this->getOrder();
+            $order->setCoupon($coupon)
+                ->setCouponCode($coupon->getCode());
+
+            if (!$coupon->getFreeDelivery()) {
+                $discountSize = $coupon->getDiscount();
+                if (!empty($discountSize)) {
+                    $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
+                    $discountPercent = $discountSize;
+                } else {
+                    $discountSum = $coupon->getDiscountSum();
+                }
+                $sumTotal = $sumTotal - $discountSum;
+                $order->setDiscountSize($discountSize)
+                    ->setDiscountSum($discountSum);
+            } else {
+                $deliveryPrice = 0;
+
+                if ($order->getDiscountSum() == '')
+                {
+                    $order->setDiscountSum(0);
+                }
+            }
+        }
+
         foreach ($this->getCartService()->getCartDishes($placeObject) as $cartDish) {
             $options = $this->getCartService()->getCartDishOptions($cartDish);
+            $price = $cartDish->getDishSizeId()->getCurrentPrice();
+            $origPrice = $cartDish->getDishSizeId()->getPrice();
+            $discountPercentForInsert = 0;
+            if ($origPrice == $price && $discountPercent > 0) {
+                $price = round($origPrice * ((100 - $discountPercent)/100), 2);
+                $discountPercentForInsert = $discountPercent;
+            }
             $dish = new OrderDetails();
             $dish->setDishId($cartDish->getDishId())
                 ->setOrderId($this->getOrder())
                 ->setQuantity($cartDish->getQuantity())
                 ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
-                ->setPrice($cartDish->getDishSizeId()->getCurrentPrice())
-                ->setOrigPrice($cartDish->getDishSizeId()->getPrice())
+                ->setPrice($price)
+                ->setOrigPrice($origPrice)
+                ->setPercentDiscount($discountPercent)
                 ->setDishName($cartDish->getDishId()->getName())
                 ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
                 ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
@@ -890,35 +929,6 @@ class OrderService extends ContainerAware
                 $this->getEm()->flush();
 
                 $sumTotal += $cartDish->getQuantity() * $opt->getDishOptionId()->getPrice();
-            }
-        }
-
-        $deliveryPrice = $this->getOrder()->getPlace()->getDeliveryPrice();
-
-        // Pritaikom nuolaida
-        if (!empty($coupon) && $coupon instanceof Coupon) {
-            $order = $this->getOrder();
-            $order->setCoupon($coupon)
-                ->setCouponCode($coupon->getCode());
-
-            if (!$coupon->getFreeDelivery()) {
-                $discountSize = $coupon->getDiscount();
-                if (!empty($discountSize)) {
-                    $discountSum = ($sumTotal * $discountSize) / 100;
-                } else {
-                    $discountSum = $coupon->getDiscountSum();
-                }
-                $sumTotal = $sumTotal - $discountSum;
-
-                $order->setDiscountSize($discountSize)
-                    ->setDiscountSum($discountSum);
-            } else {
-                $deliveryPrice = 0;
-
-                if ($order->getDiscountSum() == '')
-                {
-                    $order->setDiscountSum(0);
-                }
             }
         }
 

@@ -69,7 +69,7 @@ class OrderAdmin extends SonataAdmin
 
         $datagridMapper
             ->add('id', null, array('label' => 'admin.order.id'))
-            ->add('address_id', null, array('label' => 'admin.order.delivery_address'))
+            //->add('address_id', null, array('label' => 'admin.order.delivery_address'))
             ->add('place_name', null, array('label' => 'admin.order.place_name_short',))
             ->add('order_date', 'doctrine_orm_date_range', array('label' => 'admin.order.order_date'))
             //->add('order_date', 'doctrine_orm_date_range', array(), null, array( 'required' => false,  'attr' => array('class' => 'datepicker')))

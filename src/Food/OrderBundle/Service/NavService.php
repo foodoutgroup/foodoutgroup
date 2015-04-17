@@ -558,25 +558,31 @@ class NavService extends ContainerAware
             }
         }
 
-
-        $data = $this->container->get('doctrine')->getRepository('FoodOrderBundle:NavItems')->find($code);
-        if ($data) {
-            $desc = "'".$data->getDescription()."'";
+        if (!empty($code)) {
+            $data = $this->container->get('doctrine')->getRepository('FoodOrderBundle:NavItems')->find($code);
+            if ($data) {
+                $desc = "'".$data->getDescription()."'";
+            }
         }
 
-        $priceForInsert = $detail->getPrice();
+        $priceForInsert = $detail->getOrigPrice();
         $amountForInsert = $priceForInsert * $detail->getQuantity();
         $discountAmount = 0;
         $paymentAmount = $amountForInsert;
 
         $discountInOrder = $detail->getOrderId()->getDiscountSize();
-        if ($discountInOrder > 0) {
+        if (!($detail->getPrice()!=$detail->getOrigPrice() && $detail->getDishId()->getDiscountPricesEnabled() && $detail->getOrderId()->getPlace()->getDiscountPricesEnabled()) && empty($detail->getPercentDiscount())) {
             $discountAmount = $paymentAmount - round($paymentAmount * ((100 - intval($discountInOrder))/100), 2);
+        } elseif (!($detail->getPrice()!=$detail->getOrigPrice() && $detail->getDishId()->getDiscountPricesEnabled() && $detail->getOrderId()->getPlace()->getDiscountPricesEnabled()) && !empty($detail->getPercentDiscount())) {
+            $discountAmount = $detail->getOrigPrice() - $detail->getPrice();
+        } elseif ($detail->getPrice()!=$detail->getOrigPrice() && $detail->getDishId()->getDiscountPricesEnabled() && $detail->getOrderId()->getPlace()->getDiscountPricesEnabled()) {
+            $discountAmount = $detail->getOrigPrice() - $detail->getPrice();
         }
         /**
          * Some freaky ugly magic for havin Cart discount
          */
-        if (!empty($discountSum)) {
+/*
+        if (0 && !empty($discountSum) && !($detail->getPrice()!=$detail->getOrigPrice() && $detail->getDishId()->getDiscountPricesEnabled() && $detail->getOrderId()->getPlace()->getDiscountPricesEnabled())) {
             $paymentPart = $paymentAmount + $discountAmount;
             $paymentPercentPart = ceil($detail->getOrderId()->getTotal() / $paymentPart) * 100;
             $discountPartWouldBe = ceil($discountSum * 100 / $paymentPercentPart);
@@ -588,7 +594,7 @@ class NavService extends ContainerAware
             }
             $discountAmount = $discountAmount + $discountPartWouldBe;
         }
-
+*/
         /*
         if ($detail->getDishId()->getShowDiscount()) {
             $discountPrice = $detail->getPrice();
