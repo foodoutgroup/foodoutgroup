@@ -405,4 +405,12 @@ class User extends BaseUser
     {
         return $this->apiTokenValidity;
     }
+
+    /**
+     * @return \DateTime
+     */
+    public function getExpiresAt()
+    {
+        return $this->expiresAt;
+    }
 }
