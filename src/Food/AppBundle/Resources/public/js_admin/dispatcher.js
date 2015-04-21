@@ -79,6 +79,7 @@ var Dispatcher = {
     },
 
     showStatusPopup: function(button) {
+        $('.sonata-ba-list').mask();
         var orderId = button.attr('item-id');
         var url = Routing.generate('food_admin_get_order_status_popup', { '_locale': Dispatcher._locale, 'orderId': orderId, _sonata_admin: 'sonata.admin.dish' });
         var tag = $("<div></div>");
@@ -86,6 +87,7 @@ var Dispatcher = {
         $.ajax({
             url: url,
             success: function(data) {
+                $('.sonata-ba-list').unmask();
                 tag.html(data).dialog({
                     title: Dispatcher.getTranslation('change_status_title'),
                     resizable: false,
@@ -98,8 +100,6 @@ var Dispatcher = {
                             $.get(
                                 url,
                                 function(data) {
-                                    // TODO error handlingas
-//                                    console.log('succesas?');
                                     location.reload();
                                 }
                             );
