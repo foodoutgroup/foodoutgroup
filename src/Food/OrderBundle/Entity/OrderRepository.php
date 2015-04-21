@@ -504,7 +504,7 @@ class OrderRepository extends EntityRepository
             OrderService::$status_nav_problems,
             OrderService::$status_pre,
             // TODO temp, nav canot cancel assigned orders
-            OrderService::$status_assiged
+//            OrderService::$status_assiged
         ];
 
         if ($excludeCompleted) {

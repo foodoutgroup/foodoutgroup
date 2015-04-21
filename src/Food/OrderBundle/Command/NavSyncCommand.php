@@ -2,6 +2,7 @@
 namespace Food\OrderBundle\Command;
 
 use Food\OrderBundle\Entity\Order;
+use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -46,6 +47,11 @@ class NavSyncCommand extends ContainerAwareCommand
                     $order = $orderService->getOrderById($orderId);
                     if (!$order instanceof Order) {
                         throw new \Exception('Order from nav not found in local system. Local ID: '.$orderId.' Nav ID:'.$orderData['Order No_']);
+                    }
+
+                    // Localiu orderiu, kurie paskirti - neukeiciam pagal nava... localus tvarkomi lokaliai
+                    if ($order->getOrderStatus() == OrderService::$status_assiged && !$order->getOrderFromNav()) {
+                        continue;
                     }
 
                     $output->writeln(sprintf(
