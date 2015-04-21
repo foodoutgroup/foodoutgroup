@@ -1141,7 +1141,7 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.from_nav">
                 <source>admin.dispatcher.from_nav</source>
-                <target>Iš NAV</target>
+                <target>Išorinis (NAV)</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.order_date">
                 <source>admin.dispatcher.order_date</source>
