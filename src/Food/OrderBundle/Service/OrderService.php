@@ -2241,14 +2241,21 @@ class OrderService extends ContainerAware
                 $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
                 if ($pointRecord) {
                     $isWork = $this->isTodayWork($pointRecord);
+                    $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
                     if (!$isWork) {
-                        $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
                         $theId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(),$locationData);
 
                         $placePointMap[$place->getId()] = $theId;
                         $this->container->get('session')->set('point_data', $placePointMap);
 
                         $formErrors[] = 'order.form.errors.no_restaurant_to_deliver';
+                    } else {
+                        // Double check the place point for corrup detections
+                        $pointForPlace = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(),$locationData);
+                        if (!$pointForPlace) {
+                            // no working placepoint for this restourant
+                            $formErrors[] = 'order.form.errors.wrong_point_for_address';
+                        }
                     }
                 }
             } else {
