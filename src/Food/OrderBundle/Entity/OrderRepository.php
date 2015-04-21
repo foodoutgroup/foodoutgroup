@@ -9,7 +9,7 @@ class OrderRepository extends EntityRepository
 {
     /**
      * @param string $city
-     * @return array
+     * @return array|Order[]
      */
     public function getOrdersUnassigned($city)
     {
@@ -27,7 +27,6 @@ class OrderRepository extends EntityRepository
             'deliveryType' => OrderService::$deliveryDeliver,
             'order_date_more' => $date,
             'paymentStatus' => OrderService::$paymentStatusComplete,
-            'not_nav' => 1
         );
 
         $orders = $this->getOrdersByFilter($filter, 'list');
@@ -42,7 +41,7 @@ class OrderRepository extends EntityRepository
     /**
      * @param string $city
      * @param boolean $pickup
-     * @return array
+     * @return array|Order[]
      */
     public function getOrdersUnconfirmed($city, $pickup = false)
     {
@@ -51,7 +50,6 @@ class OrderRepository extends EntityRepository
             'place_point_city' => $city,
             'deliveryType' => (!$pickup ? OrderService::$deliveryDeliver : OrderService::$deliveryPickup),
             'paymentStatus' => OrderService::$paymentStatusComplete,
-            'not_nav' => 1
         );
 
         $orders = $this->getOrdersByFilter($filter, 'list');
@@ -65,7 +63,7 @@ class OrderRepository extends EntityRepository
 
     /**
      * @param string $city
-     * @return array
+     * @return array|Order[]
      */
     public function getOrdersAssigned($city)
     {
@@ -74,7 +72,6 @@ class OrderRepository extends EntityRepository
             'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
             'paymentStatus' => OrderService::$paymentStatusComplete,
-            'not_nav' => 1
         );
 
         $orders = $this->getOrdersByFilter($filter, 'list');
@@ -88,7 +85,7 @@ class OrderRepository extends EntityRepository
 
     /**
      * @param string $city
-     * @return array
+     * @return array|Order[]
      */
     public function getOrdersCanceled($city)
     {
@@ -101,7 +98,6 @@ class OrderRepository extends EntityRepository
                 'from' => new \DateTime('-4 hour'),
                 'to' => new \DateTime('now'),
             ),
-            'not_nav' => 1,
         );
 
         $orders = $this->getOrdersByFilter($filter, 'list');
@@ -185,7 +181,6 @@ class OrderRepository extends EntityRepository
             ),
             'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
-            'orderFromNav' => 0
         );
         $order = $this->getOrdersByFilter($filter, 'single');
 
@@ -212,7 +207,6 @@ class OrderRepository extends EntityRepository
             'order_status' =>  array(OrderService::$status_new),
             'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
-            'orderFromNav' => 0
         );
         $order = $this->getOrdersByFilter($filter, 'single');
 

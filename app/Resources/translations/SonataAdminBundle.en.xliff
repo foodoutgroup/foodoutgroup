@@ -1087,6 +1087,10 @@
                 <source>admin.dispatcher.order_id</source>
                 <target>ID</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.from_nav">
+                <source>admin.dispatcher.from_nav</source>
+                <target>From NAV</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.order_date">
                 <source>admin.dispatcher.order_date</source>
                 <target>Order date</target>

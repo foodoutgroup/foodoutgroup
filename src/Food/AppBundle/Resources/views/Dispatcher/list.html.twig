@@ -36,6 +36,7 @@
             <tr>
                 <th></th>
                 <th>{{ 'admin.dispatcher.order_id'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.dispatcher.from_nav'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.dispatcher.place'|trans({}, 'SonataAdminBundle') }}</th>
             {% if type != 'canceled' %}
                 <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
@@ -88,8 +89,14 @@
                         {% endif %}
                     </td>
                     <td><a href="{{ path('admin_food_order_order_show', {'id': order.id}) }}" target="_blank">{{ order.id }}</a></td>
+                    <td class="from_nav_ico">
+                        {% if order.orderFromNav %}
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        {% endif %}
+                    </td>
                     <td>
                         {{ order.placeName }}
+                        {% if order.placePoint.internalCode is not empty %} - {{ order.placePoint.internalCode }}{% endif %}
                         {% set placePointPhones = '+'~order.placePoint.phone %}
                         {% if order.placePoint.altPhone1 is not empty%}
                             {% set placePointPhones = placePointPhones ~ '<br />' ~ '+' ~ order.placePoint.altPhone1 %}
@@ -180,9 +187,11 @@
                         {% if order.orderStatusLog|length > 0 %}
                             <span class="glyphicon glyphicon-info-sign status-change-history" title="{{ statusInfo }}"></span>
                         {% endif %}
-                        <button class="btn btn-lg change_status_button" item-id="{{ order.id }}">
-                            {{ 'admin.dispatcher.button_change'|trans({}, 'SonataAdminBundle') }}
-                        </button>
+                        {% if not order.orderFromNav %}
+                            <button class="btn btn-lg change_status_button" item-id="{{ order.id }}">
+                                {{ 'admin.dispatcher.button_change'|trans({}, 'SonataAdminBundle') }}
+                            </button>
+                        {% endif %}
                     </td>
                     {% if type == 'canceled' %}
                     <td class="client_contacted_check">
