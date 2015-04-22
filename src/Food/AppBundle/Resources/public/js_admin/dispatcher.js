@@ -95,6 +95,8 @@ var Dispatcher = {
                     buttons: {
                         // translate buttons
                         "Keisti": function() {
+                            console.log('cia desim maska, kad nieko neprimaigytu daugiau');
+                            $('.sonata-ba-list').mask();
                             var newStatus = $(this).find('.order_status:checked').val();
                             var url = Routing.generate('food_admin_set_order_status', { '_locale': Dispatcher._locale, 'orderId': orderId, 'status': newStatus, _sonata_admin: 'sonata.admin.dish' });
                             $.get(
