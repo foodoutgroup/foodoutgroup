@@ -190,7 +190,7 @@ class Place extends Uploadable implements Translatable
     private $deliveryTimeInfo;
 
     /**
-     * @var int
+     * @var float
      *
      * @ORM\Column(name="cart_minimum", type="float")
      */
@@ -1061,7 +1061,7 @@ class Place extends Uploadable implements Translatable
     /**
      * Get cartMinimum
      *
-     * @return integer 
+     * @return float
      */
     public function getCartMinimum()
     {

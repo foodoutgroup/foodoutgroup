@@ -404,12 +404,12 @@ class CartService {
     {
         $total = 0;
         foreach ($cartItems as $cartItem) {
-            $total += $cartItem->getDishSizeId()->getCurrentPrice() * $cartItem->getQuantity();
+            $total += (int)($cartItem->getDishSizeId()->getCurrentPrice() * 100) * (int)$cartItem->getQuantity();
             foreach ($cartItem->getOptions() as $opt) {
-                $total += $opt->getDishOptionId()->getPrice() * $cartItem->getQuantity();
+                $total += (int)($opt->getDishOptionId()->getPrice() * 100) * (int)$cartItem->getQuantity();
             }
         }
-        return $total;
+        return $total / 100;
     }
 
     /**
