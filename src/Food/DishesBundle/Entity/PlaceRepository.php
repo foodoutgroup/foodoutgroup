@@ -165,7 +165,7 @@ class PlaceRepository extends EntityRepository
                         AND pps.deleted_at is NULL
                         AND pps.city='".$city."'
                         AND pps.place = ".$place['place']->getId()."
-                        AND '".$dth."' BETWEEN  REPLACE(wd".$wd."_start, ':','') AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)
+                        AND '".$dth."' BETWEEN  (REPLACE(wd".$wd."_start, ':','') + 0) AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)
                         AND (
             (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) <= 7
                  OR
@@ -248,7 +248,7 @@ class PlaceRepository extends EntityRepository
             ) ";
 
         if (!$ignoreWorkTime) {
-            $subQuery.=" AND '".$dth."' BETWEEN REPLACE(wd".$wd."_start,':','') AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)";
+            $subQuery.=" AND '".$dth."' BETWEEN (REPLACE(wd".$wd."_start,':','') + 0) AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)";
         }
 
         $subQuery.=" ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
