@@ -1181,7 +1181,11 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.client_phone">
                 <source>admin.dispatcher.client_phone</source>
-                <target>Užsak. telef.</target>
+                <target>Užsak. tel.</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.late_time">
+                <source>admin.dispatcher.late_time</source>
+                <target>Vėluoja</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.client_contacted">
                 <source>admin.dispatcher.client_contacted</source>

@@ -1837,4 +1837,18 @@ class Order
     {
         return $this->clientContacted;
     }
+
+    /**
+     * Calculates how long delivery is late in minutes
+     * @return int
+     */
+    public function getLateMinutes()
+    {
+        $nowStamp = date("U");
+        $deliveryStamp = $this->getDeliveryTime()->format("U");
+
+        $diffMinutes = ceil(($nowStamp - $deliveryStamp) / 60);
+
+        return $diffMinutes;
+    }
 }

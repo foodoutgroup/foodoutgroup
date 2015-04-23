@@ -1131,6 +1131,10 @@
                 <source>admin.dispatcher.client_phone</source>
                 <target>Client phone</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.late_time">
+                <source>admin.dispatcher.late_time</source>
+                <target>Late</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.client_contacted">
                 <source>admin.dispatcher.client_contacted</source>
                 <target>Client contacted</target>

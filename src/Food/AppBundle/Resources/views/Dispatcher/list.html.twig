@@ -43,14 +43,15 @@
             {% endif %}
             {% if type != 'unconfirmed-pickup' %}
                 <th>{{ 'admin.dispatcher.client_address'|trans({}, 'SonataAdminBundle') }}</th>
-            {% if type == 'canceled' %}
                 <th class="self_delivery">{{ 'admin.dispatcher.client_phone'|trans({}, 'SonataAdminBundle') }}</th>
-            {% endif %}
                 <th class="self_delivery">{{ 'admin.dispatcher.self_delivery'|trans({}, 'SonataAdminBundle') }}</th>
             {% endif %}
                 <th class="order_date">{{ 'admin.dispatcher.order_date'|trans({}, 'SonataAdminBundle') }}</th>
             {% if type != 'canceled' %}
                 <th class="order_date">{{ 'admin.dispatcher.delivery_time'|trans({}, 'SonataAdminBundle') }}</th>
+            {% endif %}
+            {% if type == "not_finished" %}
+                <th class="order_date">{{ 'admin.dispatcher.late_time'|trans({}, 'SonataAdminBundle') }}</th>
             {% endif %}
             {% if type != 'canceled' %}
                 <th class="order_date">{{ 'admin.dispatcher.delayed'|trans({}, 'SonataAdminBundle') }}</th>
@@ -74,7 +75,7 @@
                         Dispatcher.recentOrders['{{ cityName }}']['{{ type }}'] = {{ order.id }};
                     </script>
                 {% endif %}
-                {% if (type == 'unconfirmed' and order.orderDate|date_modify("+10 minutes")|date("d H:i") < "now"|date("d H:i")) or (type == 'unassigned' and order.placePointSelfDelivery != true and order.deliveryTime|date_modify("-25 minute")|date("d H:i") < "now"|date("d H:i")) %}
+                {% if (type == 'unconfirmed' and order.orderDate|date_modify("+10 minutes")|date("d H:i") < "now"|date("d H:i")) or (type == 'unassigned' and order.placePointSelfDelivery != true and order.deliveryTime|date_modify("-25 minute")|date("d H:i") < "now"|date("d H:i")) or (type == 'not_finished' and order.placePointSelfDelivery != true and order.deliveryTime|date("d H:i") < "now"|date("d H:i")) %}
                     {% set additional_class = 'late_warning' %}
                 {% else %}
                     {% set additional_class = '' %}
@@ -111,9 +112,7 @@
                 {% endif %}
                 {% if type != 'unconfirmed-pickup' %}
                     <td>{{ order.addressId.address }}</td>
-                    {% if type == 'canceled' %}
-                        <td>{{ order.user.phone }}</td>
-                    {% endif %}
+                    <td>{{ order.user.phone }}</td>
                     <td class="self_delivery">
                         {% if order.placePointSelfDelivery %}
                             <span class="glyphicon glyphicon-ok"></span>
@@ -125,6 +124,15 @@
                     <td class="order_date" title="{{ order.orderDate|date("Y-m-d") }}">{{ order.orderDate|date("H:i") }}</td>
                 {% if type != 'canceled' %}
                     <td class="order_date" title="{{ order.deliveryTime|date("Y-m-d") }}">{{ order.deliveryTime|date("H:i") }}</td>
+                {% endif %}
+                {% if type == "not_finished" %}
+                    <td class="order_date">
+                        {% if order.deliveryTime|date("d H:i") < "now"|date("d H:i") %}
+                            {{ order.lateMinutes }} min
+                        {% else %}
+                            0 min
+                        {% endif %}
+                    </td>
                 {% endif %}
                 {% if type != 'canceled' %}
                     <td class="order_date{% if order.delayed %} delayed-order{% endif %}">

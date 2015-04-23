@@ -9,7 +9,7 @@ h4.padded {
 
 .city_list {
     display: inline-block;
-    width: 1200px;
+    width: 1275px;
     vertical-align: top;
 }
 
@@ -23,7 +23,7 @@ h4.padded {
 }
 
 .order_list {
-    width: 1180px;
+    width: 1200px;
 }
 
 .order_list td,
