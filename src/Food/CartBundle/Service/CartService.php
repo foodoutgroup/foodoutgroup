@@ -404,9 +404,9 @@ class CartService {
     {
         $total = 0;
         foreach ($cartItems as $cartItem) {
-            $total += (int)($cartItem->getDishSizeId()->getCurrentPrice() * 100) * (int)$cartItem->getQuantity();
+            $total += ((float)$cartItem->getDishSizeId()->getCurrentPrice() * 100) * (int)$cartItem->getQuantity();
             foreach ($cartItem->getOptions() as $opt) {
-                $total += (int)($opt->getDishOptionId()->getPrice() * 100) * (int)$cartItem->getQuantity();
+                $total += ((float)$opt->getDishOptionId()->getPrice() * 100) * (int)$cartItem->getQuantity();
             }
         }
         return $total / 100;
