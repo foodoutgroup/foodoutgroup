@@ -92,31 +92,31 @@
       </trans-unit>
       <trans-unit id="aeea36ba9e0a692a0a57973fd619e07b" resname="order.invoice.foodout_company_name">
         <source>order.invoice.foodout_company_name</source>
-        <target>UAB FOODOUT.LT</target>
+        <target>SIA FOODOUT.LV</target>
       </trans-unit>
       <trans-unit id="6ca79c95b994d7290ee472da2685c13a" resname="order.invoice.foodout_address">
         <source>order.invoice.foodout_address</source>
-        <target>Laisves pr. 77C-58, 06155 Viļņa</target>
+        <target>Briņģu iela 2, Rīga, LV-1058</target>
       </trans-unit>
       <trans-unit id="4d5570081b4d115a219699f1e0f47cb6" resname="order.invoice.foodout_company_code">
         <source>order.invoice.foodout_company_code</source>
-        <target>303134580</target>
+        <target>40103764326</target>
       </trans-unit>
       <trans-unit id="90192f734b721d2ebd68d9cb029dcded" resname="order.invoice.foodout_vat_code">
         <source>order.invoice.foodout_vat_code</source>
-        <target>LT100008038519</target>
+        <target>LT40103764326</target>
       </trans-unit>
       <trans-unit id="75a8691f03596b5e994c207702546edf" resname="order.invoice.foodout_bank">
         <source>order.invoice.foodout_bank</source>
-        <target>Swedbank AB</target>
+        <target>Swedbank A/S</target>
       </trans-unit>
       <trans-unit id="cbf43ed78b45b5682bd4b6f3eec4925d" resname="order.invoice.foodout_bank_code">
         <source>order.invoice.foodout_bank_code</source>
-        <target>73000</target>
+        <target></target>
       </trans-unit>
       <trans-unit id="d7de6172e11f7455acc83d9eb33ded7a" resname="order.invoice.foodout_bank_account">
         <source>order.invoice.foodout_bank_account</source>
-        <target>LT92 7300 0101 3664 5307</target>
+        <target>LV72HABA0551038036689</target>
       </trans-unit>
         <trans-unit id="daily_report.metric" resname="daily_report.metric">
             <source>daily_report.metric</source>
