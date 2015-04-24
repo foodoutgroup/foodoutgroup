@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Table(name="unused_sf_numbers")
  * @ORM\Entity(repositoryClass="Food\AppBundle\Entity\UnusedSfNumbersRepository")
- * @UniqueEntity("sf_number")
+ * @UniqueEntity("sfNumber")
  */
 class UnusedSfNumbers
 {

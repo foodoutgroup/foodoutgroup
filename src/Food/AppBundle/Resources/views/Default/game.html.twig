@@ -1,0 +1,123 @@
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+{% block title %}{% trans %}general.wow_game{% endtrans %} | {{ page_title }}{% endblock %}
+
+    {% block body %}
+        <div class="site-center">
+            <div class="site-block">
+                <div class="middle-content">
+                    <img src="/pp_1.jpg" />
+                    <div class="static-page">
+                        <div class="static-page-content">
+                            <style>
+                                #gameForm input {
+                                    font-size: 15px;
+                                    padding: 9px 12px;
+                                    border: 1px solid #d8d8d8;
+                                    border-radius: 3px;
+                                    box-shadow: 0 0 2px #d0c8c1;
+                                    float: right;
+                                    width: 210px;
+                                }
+                                #gameForm #form div {
+                                    height: 45px;
+                                }
+                                #gameForm #form div label {
+                                    float: left;
+                                    padding-top: 9px;
+                                    width: 118px;
+                                    padding-right: 5px;
+                                    font-size: 15px;
+                                }
+                                #gameForm .icheckbox {
+                                    display: block;
+                                    position: inherit !important;
+                                }
+                                #gameForm .icheckbox input {
+                                    width: 30px;
+                                    opacity: 1 !important;
+                                    border: none !important;
+                                    box-shadow: 0 0 !important;
+                                    margin-top: 11px;
+                                }
+                                .rulesDialog {
+                                    background: none !important;
+                                    background-color: #ffffff !important;
+                                }
+                                #game_rules {
+                                    display: none;
+                                }
+                                #gameForm button {
+                                    background-color: #ffcc00;
+                                    padding: 5px 20px;
+                                    border: none;
+                                    font-weight: bold;
+                                    box-shadow: 0 0 2px #888888;
+                                }
+                            </style>
+                            <div class="content" style="display: block; float: left; width: 385px">
+                                {{ content | raw }}
+                            </div>
+
+
+                            <div style="float: right; width: 360px" id="gameForm">
+                                {% if showSuccess %}
+                                    {# Success message#}
+                                    <div class="alert alert-success">{% trans %}food.game.its_success{% endtrans %}</div>
+                                {% else %}
+                                    {% if showError %}
+                                        {# Error message #}
+                                        <div class="alert alert-danger">{% trans %}food.game.has_error{% endtrans %}</div>
+                                    {% endif %}
+                                    {# The form #}
+                                    {{ form_start(form) }}
+                                    {{ form_widget(form) }}
+                                    {{ form_end(form) }}
+                                {% endif %}
+                            </div>
+                            <br clear="all" />
+                            <div id="game_rules">
+                                {{ content_rules | raw }}
+                            </div>
+                            <script>
+                                $(document).ready(function() {
+                                    $('#gameForm div div ul').remove();
+                                    $('label[for="form_aggree"]').html($('label[for="form_aggree"]').text()).css('width', '235px')
+                                    $("#gameForm select:eq(0)").css('width','80');
+                                    $("#gameForm select:eq(1)").css('width','90');
+                                    $("#gameForm select:eq(2)").css('width','60');
+                                    $('select').selectmenu();
+                                    setTimeout(
+                                            function() {
+                                                $("#gameForm .iCheck-helper").remove();
+                                                $('label[for="form_aggree"]').parent().find("input").unbind();
+                                                $('label[for="form_aggree"]').find('a').bind('click', function(e) {
+                                                    $('#game_rules').dialog({
+                                                        dialogClass: 'rulesDialog',
+                                                        modal: true,
+                                                        width: 600
+                                                    });
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    return false;
+                                                });
+                                            }, 500
+                                    );
+                                    $("#showRules").click(function(e){
+                                        $('#game_rules').dialog({
+                                            dialogClass: 'rulesDialog',
+                                            modal: true,
+                                            width: 600
+                                        });
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        return false;
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}

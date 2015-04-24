@@ -154,10 +154,16 @@ class Restaurant extends ContainerAware
         }
 
         $currency = $this->container->getParameter('currency_iso');
+        $restaurantTitle = $place->getName();
+        $restaurantTitle = str_replace(array('„', '“'), '"', $restaurantTitle);
+
+        $restaurantDesc = $place->getDescription();
+        $restaurantDesc = str_replace(array('„', '“'), '"', $restaurantDesc);
+
         $this
             ->set('restaurant_id', $place->getId())
-            ->set('title', $place->getName())
-            ->set('description', $place->getDescription())
+            ->set('title', $restaurantTitle)
+            ->set('description', $restaurantDesc)
             ->set('top', ($place->getTop() ? true: false))
             ->set('cuisine', $kitchensForResp)
             ->set('tags', array()) // @todo FILL IT !!

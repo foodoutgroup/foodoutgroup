@@ -541,6 +541,8 @@ class OrderService extends ContainerAware
         $order = $this->getOrder();
         $this->chageOrderStatus(self::$status_completed, $source, $statusMessage);
 
+        $this->createDiscountCode($order);
+
         if ($this->getOrder()->getOrderFromNav() == false) {
             $this->sendCompletedMail();
         }
@@ -549,10 +551,10 @@ class OrderService extends ContainerAware
         if ($order->getPlace()->getSendInvoice()
             && !$order->getPlacePointSelfDelivery()
             && $order->getDeliveryType() == OrderService::$deliveryDeliver) {
-            $this->setInvoiceDataForOrder();
+            $mustDoNavDelete = $this->setInvoiceDataForOrder();
 
             // Suplanuojam sf siuntima klientui
-            $this->container->get('food.invoice')->addInvoiceToSend($order);
+            $this->container->get('food.invoice')->addInvoiceToSend($order, $mustDoNavDelete);
         }
         
         return $this;
@@ -645,33 +647,56 @@ class OrderService extends ContainerAware
 
     /**
      * @throws \Exception
+     * @return boolean
      */
     public function setInvoiceDataForOrder()
     {
         $order = $this->getOrder();
+        $mustPerformDelete = false;
 
         $orderSeries = $order->getSfSeries();
         $orderSfNumber = $order->getSfNumber();
 
         if (empty($orderSeries) || empty($orderSfNumber)) {
             $miscService = $this->container->get('food.app.utils.misc');
+            $invoiceService = $this->container->get('food.invoice');
+
+            // First try to use unused number
 
             try {
-                $sfNumber = (int)$miscService->getParam('sf_next_number');
-                $miscService->setParam('sf_next_number', ($sfNumber + 1));
+                $sfNumber = $invoiceService->getUnusedSfNumber();
+                $mustPerformDelete = true;
             } catch (OptimisticLockException $e) {
-                sleep(1);
-                $sfNumber = (int)$miscService->getParam('sf_next_number');
-                $miscService->setParam('sf_next_number', ($sfNumber + 1));
+                // It was locked.. lets take new one and dont mess with DB
+                $sfNumber = null;
+            } catch (\Exception $e) {
+                $sfNumber = null;
+                $this->container->get('logger')->error('Error while getting unused SF number: '.$e->getMessage());
+            }
 
-                $this->container->get('logger')->alert('--- Had problems receiving SF number');
+            if (empty($sfNumber)) {
+                // We failed. lets take a new one
+                try {
+                    $sfNumber = (int)$miscService->getParam('sf_next_number');
+                    $miscService->setParam('sf_next_number', ($sfNumber + 1));
+                    $this->logOrder($order, 'sf_number_assign', 'Assigning new SF number: '.$sfNumber);
+                } catch (OptimisticLockException $e) {
+                    sleep(1);
+                    $sfNumber = (int)$miscService->getParam('sf_next_number');
+                    $miscService->setParam('sf_next_number', ($sfNumber + 1));
+                    $this->logOrder($order, 'sf_number_assign', 'Assigning new SF number: '.$sfNumber);
+                }
+            } else {
+                // Log da shit for debuging purposes
+                $this->logOrder($order, 'sf_number_assign', 'Assigning old unused SF number: '.$sfNumber);
             }
 
             $order->setSfSeries($this->container->getParameter('invoice.series'));
             $order->setSfNumber($sfNumber);
 
-
             $this->saveOrder();
+
+            return $mustPerformDelete;
         }
     }
 
@@ -695,30 +720,6 @@ class OrderService extends ContainerAware
      */
     public function statusCanceled($source=null, $statusMessage=null)
     {
-        // If restourant (or Foodout) has canceled order - send informational SMS message to user
-        $userPhone = $this->getOrder()->getUser()->getPhone();
-        $smsOnCancel = $this->container->getParameter('send_sms_on_cancel');
-        if (!empty($userPhone) && $this->getOrder()->getOrderFromNav() == false && $smsOnCancel) {
-            $messagingService = $this->container->get('food.messages');
-
-            // If not paid by banklink or paysera
-            if (in_array($this->getOrder()->getPaymentMethod(), array('local', 'local.card'))) {
-                $messageText = $this->container->get('translator')->trans('general.sms.client.restourant_cancel');
-            // If banklink payment and it is complete - inform that we will return money, because restourant sux!
-            } elseif ($this->getOrder()->getPaymentStatus() == 'complete') {
-                $messageText = $this->container->get('translator')->trans('general.sms.client.restourant_cancel_banklink');
-            }
-
-            if (!empty($messageText)) {
-                $message = $messagingService->createMessage(
-                    $this->container->getParameter('sms.sender'),
-                    $userPhone,
-                    $messageText
-                );
-                $messagingService->saveMessage($message);
-            }
-        }
-
         // Put for logistics to cancel on their side
         $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
 
@@ -1279,6 +1280,7 @@ class OrderService extends ContainerAware
             self::$status_finished => 3,
             self::$status_assiged => 4,
             self::$status_failed => 4,
+            self::$status_partialy_completed => 5,
             self::$status_completed => 5,
             self::$status_canceled => 5,
         );
@@ -1300,6 +1302,20 @@ class OrderService extends ContainerAware
         }
 
         if ($flowLine[$from] <= $flowLine[$to]) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isValidOrderStatusChangeWhenCompleted($from, $to)
+    {
+        $fromCompleted = $from == self::$status_completed;
+        $toFailed = $to == self::$status_failed;
+        $toCancelled = $to == self::$status_canceled;
+
+//        if ($fromCompleted && ($toFailed || $toCancelled)) {
+        if ($fromCompleted && ($toFailed)) {
             return true;
         }
 
@@ -1593,7 +1609,7 @@ class OrderService extends ContainerAware
                     );
                 } else if ($nr == 0) {
                     // Main phone is not mobile
-                    $logger->error('Main phone number for place point of place '.$placePoint->getPlace()->getName().' is set landline - no message sent');
+                    $logger->alert('Main phone number for place point of place '.$placePoint->getPlace()->getName().' is set landline - no message sent');
                 }
             }
 
@@ -2048,19 +2064,20 @@ class OrderService extends ContainerAware
         $wd = date('w');
         if ($wd == 0) $wd = 7;
         $timeFr = $placePoint->{'getWd'.$wd.'Start'}();
+        $timeFrTs = str_replace(":", "", $placePoint->{'getWd'.$wd.'Start'}());
         $timeTo = $placePoint->{'getWd'.$wd.'End'}();
-
+        $timeToTs =  str_replace(":", "", $placePoint->{'getWd'.$wd.'EndLong'}());
+		$currentTime = date("Hi");
+		if (date("H") < 6) {
+			$currentTime+=2400;
+		}
         if(!strpos($timeFr, ':')|| !strpos($timeTo, ':')) {
             $errors[] = "order.form.errors.today_no_work";
         } else {
-            $timeFrTs = strtotime($timeFr);
-            $timeToFs = strtotime($timeTo);
-            if ($timeToFs < $timeFrTs) {
-                $timeToFs+= 60 * 60 * 24;
-            }
-            if ($timeFrTs > date('U')) {
+
+            if ($timeFrTs > $currentTime) {
                 $errors[] = "order.form.errors.isnt_open";
-            } elseif ($timeToFs < date('U')) {
+            } elseif ($timeToTs < $currentTime) {
                 $errors[] = "order.form.errors.is_already_close";
             }
         }
@@ -2265,14 +2282,21 @@ class OrderService extends ContainerAware
                 $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
                 if ($pointRecord) {
                     $isWork = $this->isTodayWork($pointRecord);
+                    $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
                     if (!$isWork) {
-                        $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
                         $theId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(),$locationData);
 
                         $placePointMap[$place->getId()] = $theId;
                         $this->container->get('session')->set('point_data', $placePointMap);
 
                         $formErrors[] = 'order.form.errors.no_restaurant_to_deliver';
+                    } else {
+                        // Double check the place point for corrup detections
+                        $pointForPlace = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(),$locationData);
+                        if (!$pointForPlace) {
+                            // no working placepoint for this restourant
+                            $formErrors[] = 'order.form.errors.wrong_point_for_address';
+                        }
                     }
                 }
             } else {
@@ -2298,7 +2322,8 @@ class OrderService extends ContainerAware
         }
 
         if (0 === strlen($request->get('customer-comment'))) {
-            $formErrors[] = 'order.form.errors.customercomment';
+            // $formErrors[] = 'order.form.errors.customercomment';
+            // UX improvement. Dejom skersa ant commentaro.
         }
 
         $customerEmail = $request->get('customer-email');
@@ -2764,5 +2789,71 @@ class OrderService extends ContainerAware
                 }
             }
         }
+    }
+
+    public function createDiscountCode(Order $order)
+    {
+        $generator = $this->container->get('doctrine')->getRepository('FoodOrderBundle:CouponGenerator')->findOneBy(array('active'=>1));
+        if ($generator && ($order->getTotal() - $order->getDeliveryPrice() >= $generator->getCartAmount())) {
+            $nowTime = new \DateTime('NOW');
+            $proceed = true;
+            if ($generator->getGenerateFrom() <= $nowTime && $generator->getGenerateTo() >= $nowTime) {
+                $places = $generator->getPlaces();
+                if (!empty($places) && sizeof($places)) {
+                    $proceed = false;
+                    foreach ($places as $place) {
+                        if ($place->getId() == $order->getPlace()->getId()) {
+                            $proceed = true;
+                        }
+                    }
+                }
+                if ($generator->getNoSelfDelivery()) {
+                    if ($order->getPlace()->getSelfDelivery()) {
+                        $proceed = false;
+                    }
+                }
+                if ($proceed) {
+                    $theCode = $generator->getCode();
+                    if ($generator->getRandomize()) {
+                        $randomStuff = array("niam", "niamniam", "skanu", "foodout");
+                        $theCode = strtoupper($randomStuff[array_rand($randomStuff)]).$order->getId();
+                    }
+                    $newCode = new Coupon;
+                    $newCode->setActive(true)
+                        ->setCode( $theCode )
+                        ->setName( $generator->getName()." - #".$order->getId() )
+                        ->setDiscount( $generator->getDiscount() )
+                        ->setDiscountSum( $generator->getDiscountSum() )
+                        ->setOnlyNav( $generator->getOnlyNav() )
+                        ->setEnableValidateDate( true )
+                        ->setFreeDelivery( $generator->getFreeDelivery() )
+                        ->setSingleUse( $generator->getSingleUse() )
+                        ->setValidFrom( $generator->getValidFrom() )
+                        ->setValidTo( $generator->getValidTo() )
+                        ->setCreatedAt(new \DateTime('NOW'));
+
+                    $this->container->get('food.mailer')
+                        ->setVariable('code', $theCode )
+                        ->setRecipient( $order->getUser()->getEmail() )
+                        ->setId( $generator->getTemplateCode() )
+                        ->send();
+
+                    $this->container->get('doctrine')->getManager()->persist($newCode);
+                    $this->container->get('doctrine')->getManager()->flush();
+                }
+            }
+        }
+    }
+
+    /**
+     * @param string $timeToDelivery
+     *
+     * @return array
+     */
+    public function getOrdersToBeLate($timeToDelivery)
+    {
+        $date = new \DateTime("-".$timeToDelivery." minute");
+
+        return $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->getOrdersToBeLate($date);
     }
 }

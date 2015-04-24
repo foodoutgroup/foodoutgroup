@@ -176,7 +176,7 @@
       </trans-unit>
       <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
         <source>general.sms.user.order_accepted</source>
-        <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista turetumete gauti per delivery_time! Jei turite dar klausimu susisiekite telefonu +restourant_phone!</target>
+        <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista turetume pristatyti per delivery_time! Jei turite klausimu susisiekite telefonu +37061242093!</target>
       </trans-unit>
       <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
         <source>general.sms.user.order_accepted_pickup</source>
@@ -189,6 +189,10 @@
       <trans-unit id="30dc3f60ca025a053ed3728a342c566a" resname="general.sms.client.restourant_cancel_banklink">
         <source>general.sms.client.restourant_cancel_banklink</source>
         <target>Atsiprasome, restoranas atsauke Jusu uzsakyma. Pinigai bus grazinti i Jusu saskaita</target>
+      </trans-unit>
+      <trans-unit id="general.sms.order_to_be_late" resname="general.sms.order_to_be_late">
+        <source>general.sms.order_to_be_late</source>
+        <target>Informuojame, Jusu uzsakymas jau kelyje. Pristatysime ji per delivery_in min. Turite klausimu, skambinkite 8 612 42093.</target>
       </trans-unit>
       <trans-unit id="74fbe91702c1ee04724c55bde63e654f" resname="general.email.new_order">
         <source>general.email.new_order</source>
@@ -738,9 +742,9 @@
         <source>general.email.accounting_report.swedbank-gateway</source>
         <target>Internetu (Swedbank banklink)</target>
       </trans-unit>
-      <trans-unit id="2a27b06725260bba699dd331a49827d8" resname="index.title_page_header">
+      <trans-unit id="2a27b06725260bba699dd331a49827d8_new" resname="index.title_page_header">
         <source>index.title_page_header</source>
-        <target><![CDATA[Užsisakykite maistą į<br/> namus ar biurą]]></target>
+        <target><![CDATA[Užsisakyk maisto iš +100 restoranų į namus]]></target>
       </trans-unit>
       <trans-unit id="02e3d3477fa84ee89d7c8f812fe8d4b1" resname="index.search_form_qlue">
         <source>index.search_form_qlue</source>
@@ -752,7 +756,7 @@
       </trans-unit>
       <trans-unit id="general.ip_banned_info" resname="general.ip_banned_info">
         <source>general.ip_banned_info</source>
-        <target><![CDATA[Atsiprašome, tačiau Jūsų IP adresas (%ip%) yra užblokuotas.<br />IP adresai blokuojami, jei: lankytojas kuria melagingus užsakymus; smeižia, įžeidžia ar kita tyčine veikla trikdo kitų lankytojų ar restoranų darbą.<br /><br />Administracijos nurodyta priežastis: "%reason%".<br /><br />Jeigu manote, jog tai įvyko per klaidą - susisiekite su mumis <strong><a href="mailto:info@foodout.lt">info@foodout.lt</a></strong> arba telefonu <strong>+370 614 17872</strong>]]></target>
+        <target><![CDATA[Atsiprašome, tačiau Jūsų IP adresas (%ip%) yra užblokuotas.<br />IP adresai blokuojami, jei: lankytojas kuria melagingus užsakymus; smeižia, įžeidžia ar kita tyčine veikla trikdo kitų lankytojų ar restoranų darbą.<br /><br />Administracijos nurodyta priežastis: "%reason%".<br /><br />Jeigu manote, jog tai įvyko per klaidą - susisiekite su mumis <strong><a href="mailto:info@foodout.lt">info@foodout.lt</a></strong> arba telefonu <strong>+370 610 04970</strong>]]></target>
       </trans-unit>
       <trans-unit id="general.raty.not_rated_yet" resname="general.raty.not_rated_yet">
         <source>general.raty.not_rated_yet</source>
@@ -782,9 +786,21 @@
         <source>general.item_quantity</source>
         <target>vnt.</target>
       </trans-unit>
+      <trans-unit id="general.restaurant_logo_alt" resname="general.restaurant_logo_alt">
+        <source>general.restaurant_logo_alt</source>
+        <target>Maistas į namus %restaurant_name%</target>
+      </trans-unit>
+      <trans-unit id="general.base_page_title" resname="general.base_page_title">
+        <source>general.base_page_title</source>
+        <target>Maistas į namus</target>
+      </trans-unit>
+      <trans-unit id="general.restaurant_page_title" resname="general.restaurant_page_title">
+        <source>general.restaurant_page_title</source>
+        <target>%restaurant_name% maistas į namus</target>
+      </trans-unit>
       <trans-unit id="general.cart.success" resname="general.cart.success">
         <source>general.cart.success</source>
-        <target><![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 614 17872</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
+        <target><![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 610 04970</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
       </trans-unit>
         <trans-unit id="general.cart.success_title" resname="general.cart.success_title">
             <source>general.cart.success_title</source>
@@ -793,11 +809,11 @@
 
       <trans-unit id="general.cart.success_no_place_num" resname="general.cart.success_no_place_num">
         <source>general.cart.success_no_place_num</source>
-        <target><![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 614 17872</strong>.]]></target>
+        <target><![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 610 04970</strong>.]]></target>
       </trans-unit>
       <trans-unit id="general.cart.wait" resname="general.cart.wait">
         <source>general.cart.wait</source>
-        <target><![CDATA[Jūsų užsakymas priimtas ir bus perduotas restoranui, kai tik baigsite mokėjimą. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>"Foodout.lt"</strong> telefonu <strong>+370 614 17872</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
+        <target><![CDATA[Jūsų užsakymas priimtas ir bus perduotas restoranui, kai tik baigsite mokėjimą. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>"Foodout.lt"</strong> telefonu <strong>+370 610 04970</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
       </trans-unit>
       <trans-unit id="reporting.monthly.driver_report.title" resname="reporting.monthly.driver_report.title">
         <source>reporting.monthly.driver_report.title</source>
@@ -1143,6 +1159,78 @@
         <source>general.currency_minor_modals</source>
         <target>centas|centai|centų</target>
       </trans-unit>
+      <trans-unit id="places.in_vilnius" resname="places.in_vilnius">
+          <source>places.in_vilnius</source>
+          <target>Vilniuje</target>
+      </trans-unit>
+      <trans-unit id="places.in_kaunas" resname="places.in_kaunas">
+          <source>places.in_kaunas</source>
+          <target>Kaune</target>
+      </trans-unit>
+      <trans-unit id="places.in_klaipeda" resname="places.in_klaipeda">
+        <source>places.in_klaipeda</source>
+        <target>Klaipėdoje</target>
+    </trans-unit>
+    <trans-unit id="food.game.firstname" resname="food.game.firstname">
+        <source>food.game.firstname</source>
+        <target>Vardas</target>
+    </trans-unit>
+    <trans-unit id="food.game.lastname" resname="food.game.lastname">
+        <source>food.game.lastname</source>
+        <target>Pavardė</target>
+    </trans-unit>
+    <trans-unit id="food.game.city" resname="food.game.city">
+        <source>food.game.city</source>
+        <target>Miestas</target>
+    </trans-unit>
+    <trans-unit id="food.game.bdate" resname="food.game.bdate">
+        <source>food.game.bdate</source>
+        <target>Gimimo data</target>
+    </trans-unit>
+    <trans-unit id="food.game.phone" resname="food.game.phone">
+        <source>food.game.phone</source>
+        <target>Telefonas</target>
+    </trans-unit>
+    <trans-unit id="food.game.email" resname="food.game.email">
+        <source>food.game.email</source>
+        <target>El. paštas</target>
+    </trans-unit>
+    <trans-unit id="food.game.register" resname="food.game.register">
+        <source>food.game.register</source>
+        <target>Registruotis</target>
+    </trans-unit>
+    <trans-unit id="food.game.empty_field" resname="food.game.empty_field">
+        <source>food.game.empty_field</source>
+        <target>Šis laukas negali būti tuščias</target>
+    </trans-unit>
+    <trans-unit id="food.game.has_error" resname="food.game.has_error">
+        <source>food.game.has_error</source>
+        <target>Oi! Neteisingai įvedėte duomenis.</target>
+    </trans-unit>
+    <trans-unit id="food.game.its_success" resname="food.game.its_success">
+        <source>food.game.its_success</source>
+        <target>Ačiū, Jūs užsiregistravote sėkmingai</target>
+    </trans-unit>
+    <trans-unit id="food.game.agree" resname="food.game.agree">
+        <source>food.game.agree</source>
+        <target><![CDATA[Sutinku su taisyklėmis. <a href="rule_url">Taisyklės</a>]]></target>
+    </trans-unit>
+    <trans-unit id="general.wow_game" resname="general.wow_game">
+        <source>general.wow_game</source>
+        <target>Registracija žaidimui</target>
+    </trans-unit>
+    <trans-unit id="food.marketing.bad_email" resname="food.marketing.bad_email">
+        <source>food.marketing.bad_email</source>
+        <target>Blogas el.pašto adresas</target>
+    </trans-unit>
+    <!--<trans-unit id="Please check this box if you want to proceed." resname="Please check this box if you want to proceed.">-->
+        <!--<source>Please check this box if you want to proceed.</source>-->
+        <!--<target>Privalote sutikti, norėdami tęsti</target>-->
+    <!--</trans-unit>-->
+    <!--<trans-unit id="Please fill out this field." resname="Please fill out this field.">-->
+        <!--<source>Please fill out this field.</source>-->
+        <!--<target>Privalote sutikti, norėdami tęsti</target>-->
+    <!--</trans-unit>-->
     </body>
   </file>
 </xliff>

@@ -51,11 +51,9 @@ class DailyWeeklyOrderReportCommand extends ContainerAwareCommand
         // services
         $dailyReport = $this->getContainer()->get('food.daily_report');
         $dailyReport->setOutput($output);
-        $dailyReport->setTableHelper($this->getHelper('table'));
 
         $weeklyReport = $this->getContainer()->get('food.weekly_report');
         $weeklyReport->setOutput($output);
-        $weeklyReport->setTableHelper($this->getHelper('table'));
 
         // our options
         $daily = $input->getOption(static::DAILY);

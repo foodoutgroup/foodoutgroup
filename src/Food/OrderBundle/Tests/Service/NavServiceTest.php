@@ -16,8 +16,9 @@ class NavServiceTest extends WebTestCase {
         $expectedMessagesTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web Order Messages]';
         $expectedItemsTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Item]';
         $expectedDeliveryOrderStatus = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery order status]';
+        $expectedPostedDeliveryOrders = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Posted Delivery Orders]';
 
-        $navService = new NavService();
+        $navService = $this->getContainer()->get('food.nav');
 
         $gotDeliveryOrderTable = $navService->getDeliveryOrderTable();
         $gotPosTransactionTable = $navService->getPosTransactionLinesTable();
@@ -27,6 +28,7 @@ class NavServiceTest extends WebTestCase {
         $gotMessagesTable = $navService->getMessagesTable();
         $gotItemsTable = $navService->getItemsTable();
         $gotDeliveryOrderStatus = $navService->getDeliveryOrderStatusTable();
+        $gotPostedDeliveryOrders = $navService->getPostedDeliveryOrdersTable();
 
         $this->assertEquals($expectedDeliveryOrderTable, $gotDeliveryOrderTable);
         $this->assertEquals($expectedPosTransactionTable, $gotPosTransactionTable);
@@ -36,6 +38,7 @@ class NavServiceTest extends WebTestCase {
         $this->assertEquals($expectedMessagesTable, $gotMessagesTable);
         $this->assertEquals($expectedItemsTable, $gotItemsTable);
         $this->assertEquals($expectedDeliveryOrderStatus, $gotDeliveryOrderStatus);
+        $this->assertEquals($expectedPostedDeliveryOrders, $gotPostedDeliveryOrders);
     }
 
     public function testGetNavOrderId()

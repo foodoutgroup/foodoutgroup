@@ -22,11 +22,14 @@ class ApiService extends ContainerAware
 
     /**
      * @param $placeId
-     * @param streing $updated_at
+     * @param string $updated_at
      * @return array
      */
     public function createMenuByPlaceId($placeId, $updated_at = null)
     {
+        if (empty($placeId)) {
+            return array();
+        }
         $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find((int)$placeId);
         if ($place) {
             $returner = array();

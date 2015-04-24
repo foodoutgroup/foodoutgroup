@@ -1,5 +1,7 @@
 <div class="check-block" id="cartmnu">
-    <div class="restaurant-logo tac"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"><img src="http://{{ cloudfront_url }}/{{place.getWebPathThumb}}"></a></div>
+    <div class="restaurant-logo tac">
+        <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"><img alt="{% trans with {'%restaurant_name%': place.name} %}general.restaurant_logo_alt{% endtrans %}" src="http://{{ cloudfront_url }}/{{place.getWebPathThumb}}"></a>
+    </div>
     <h5 class="tac">{% trans %}cart.block.your_order{% endtrans %}</h5>
     {% if list|length > 0 %}
         {% for dish in list %}
@@ -13,13 +15,13 @@
                 <div class="clearfix pad">
                     <div class="count item">{{ dish.quantity }} {% trans %}general.item_quantity{% endtrans %}</div>
                     {% set showDiscount = false %}
-                    {% if dish.dishId.showDiscount  %}
-                        {% set showDiscount = true and dish.dishSizeId.discountPrice != 0%}
+                    {% if dish.dishId.showDiscount and dish.dishSizeId.discountPrice %}
+                        {% set showDiscount = true %}
                     {% endif %}
-                    <div class="sum item {% if showDiscount %}discounted{% endif %}">x {{ currency_display | raw}} {{ dish.dishSizeId.price|number_format(2, ',', ' ') }}
+                    <div class="sum item {% if showDiscount %}discounted{% endif %}">x {{ currency_display|raw }}{{ dish.dishSizeId.price|number_format(2, ',', ' ') }}
                         {% if currency_alternative %}
                             <span class="euro">
-                                /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}
+                                /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.price)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}
                             </span>
                         {% endif %}
                     </div>
@@ -27,7 +29,7 @@
                         <div class="sum item discount">x {{ currency_display|raw }}{{ dish.dishSizeId.discountPrice|number_format(2, ',', ' ') }}
                             {% if currency_alternative %}
                                 <span class="euro">
-                                /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.discountPrice)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}
+                                /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.discountPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}
                             {% endif %}
                         </span>
                         </div>
@@ -41,7 +43,7 @@
                             <div class="extra sum">
                                 {{ currency_display|raw }}{{ option.dishOptionId.price|number_format(2, ',', ' ') }}
                                 {% if currency_alternative %}
-                                    <span class="euro">/&nbsp;{{  misc_utils.getLitas(option.dishOptionId.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
+                                    <span class="euro">/&nbsp;{{  misc_utils.getLitas(option.dishOptionId.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative|raw }}</span>
                                 {% endif %}
                             </div>
                         </div>
@@ -50,17 +52,17 @@
             </div>
         {% endfor %}
         <div class="check-bottom">
-            {% if applyDiscount and not freeDelivery %}
+            {% if applyDiscount %}
                 <div class="discount-sum clearfix">
                     <div class="fl">{% trans %}cart.block.discount_sum{% endtrans %}:</div>
-                    <div class="fr">{{ currency_display | raw }}{{ discountSum|number_format(2, ',', ' ') }}</div>
+                    <div class="fr">{{ currency_display|raw }}{{ discountSum|number_format(2, ',', ' ') }}</div>
                 </div>
             {% endif %}
             <div class="total-sum cart clearfix">
                 <div class="fl">{% trans %}cart.block.total_cart{% endtrans %}:</div>
                 <div class="fr"> {{ currency_display|raw }}{{ total_cart|number_format(2, ',', ' ') }}
                     {% if currency_alternative %}
-                        <span class="euro">/ {{  misc_utils.getLitas(total_cart)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}</span>
+                        <span class="euro">/ {{  misc_utils.getLitas(total_cart)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>
                     {% endif %}
                 </div>
             </div>
@@ -68,11 +70,11 @@
                 <div class="delivery-price clearfix">
                     <div class="fl">{% trans %}cart.block.delivery_price{% endtrans %}:</div>
                     {% if freeDelivery %}
-                        <div class="fr">{{ currency_display|raw }}0,00 {% if currency_alternative %}<span class="euro">/ 0,00 {{ display_currency_alternative }}</span>{% endif %}</div>
+                        <div class="fr">{{ currency_display|raw }}0,00 {% if currency_alternative %}<span class="euro">/ 0,00 {{ display_currency_alternative|raw }}</span>{% endif %}</div>
                     {% else %}
                         <div class="fr">{{ currency_display|raw }}{{ total_delivery|number_format(2, ',', ' ') }}
                             {% if currency_alternative %}
-                                <span class="euro">/ {{  misc_utils.getLitas(total_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}</span>
+                                <span class="euro">/ {{  misc_utils.getLitas(total_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>
                             {% endif %}
                         </div>
                     {% endif %}
@@ -80,7 +82,7 @@
                 <div class="total-sum final clearfix">
                     <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
                     <div class="fr">{{ currency_display|raw }}{{ total_with_delivery|number_format(2, ',', ' ') }}
-                        {% if currency_alternative %}<span class="euro">/ {{  misc_utils.getLitas(total_with_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}</span>{% endif %}
+                        {% if currency_alternative %}<span class="euro">/ {{  misc_utils.getLitas(total_with_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>{% endif %}
                     </div>
                 </div>
             {% endif %}
@@ -111,7 +113,7 @@
                 {{ currency_display|raw }} {{ cart_minimum }}
             {% endif %}
 
-            {% if currency_alternative %}<span class="euro">/ {{  misc_utils.getLitas(cart_minimum)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>{% endif %}.
+            {% if currency_alternative %}<span class="euro">/ {{  misc_utils.getLitas(cart_minimum)|number_format(2, ',', ' ') }}{{ display_currency_alternative|raw }}</span>{% endif %}.
             {% if place.minimalOnSelfDel == false %}<br />{% trans %}cart.block.order_sum_minimum_take_myself{% endtrans %}{% endif %}
         </div>
         {% endif %}

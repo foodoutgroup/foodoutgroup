@@ -42,17 +42,19 @@ class GoogleGisService extends ContainerAware
     }
 
     /**
-     * @param $address
+     * @param string $address
      * @return \stdClass
      */
     public function getPlaceData($address)
     {
-        $addressSplt = explode("-", $address);
-        if (sizeof($addressSplt) > 1) {
-            $tmp = substr($addressSplt[1], 0, 1);
+        if (preg_match("/(\d+\w*\s*-\s*\d+)/i", $address, $matches)) {
+
+            $addressSplt = explode("-", $matches[1]);
+            $tmp = $addressSplt[0];
+
             if ($tmp == intval($tmp)) {
                 $cityDelimeter = explode(",", $address);
-                $address = $addressSplt[0];
+                $address = strstr($address, $matches[1], true) . $tmp;
                 $address.= ", ".end($cityDelimeter);
             } else {
                 // Nieko nekeiciam
@@ -106,18 +108,24 @@ class GoogleGisService extends ContainerAware
         if (sizeof($location->results) > 1) {
             foreach ($location->results as $key=>$rezRow) {
                 $hasIt = false;
+                /*
                 foreach ($rezRow->address_components as $addr) {
                     if (in_array('locality', $addr->types) && in_array('political', $addr->types) && ($addr->short_name == $city || $addr->short_name = str_replace("ė", "e", $city))) {
                         $hasIt = true;
                     }
                 }
+                */
+                /*
                 if (!$hasIt) {
                     unset($location->results[$key]);
                 }
+                */
+                if (!in_array('route', $rezRow->types)) {
+                    unset($location->results[$key]);
+                }
             }
-            $location->results = array_values($location->results);
         }
-
+        $location->results = array_values($location->results);
         $returner = array();
         $returner['not_found'] = true;
         $returner['street_found'] = false;

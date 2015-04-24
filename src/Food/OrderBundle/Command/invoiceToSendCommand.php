@@ -67,19 +67,25 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                     $logger->alert($sendingMessage);
 
                     if (!$dryRun) {
-                        $invoiceService->generateUserInvoice($orderToSend->getOrder());
+                        $order = $orderToSend->getOrder();
+                        $invoiceService->generateUserInvoice($order);
 
                         usleep(300000);
 
-                        $invoiceService->storeUserInvoice($orderToSend->getOrder());
+                        $invoiceService->storeUserInvoice($order);
 
-                        $emails = $invoiceService->sendUserInvoice($orderToSend->getOrder(), $forcedEmail);
+                        $emails = $invoiceService->sendUserInvoice($order, $forcedEmail);
 
                         $orderToSend->setDateSent(new \DateTime('now'))
                                     ->markSent();
 
                         $em->persist($orderToSend);
                         $em->flush();
+
+                        // Remove from nav if this is a reimport
+                        if ($orderToSend->getDeleteFromNav()) {
+                            $nav->deleteInvoiceFromNav($order->getSfSeries().$order->getSfNumber());
+                        }
 
                         // create invoice in NAVISION
                         $nav->sendNavInvoice($orderToSend->getOrder());

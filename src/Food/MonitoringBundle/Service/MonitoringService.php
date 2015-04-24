@@ -2,6 +2,7 @@
 
 namespace Food\MonitoringBundle\Service;
 
+use Food\OrderBundle\Entity\InvoiceToSend;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Component\DependencyInjection\ContainerAware;
@@ -108,6 +109,34 @@ class MonitoringService extends ContainerAware {
         }
 
         return $orders;
+    }
+
+    /**
+     * @return array|InvoiceToSend[]
+     */
+    public function getUnsentInvoices()
+    {
+        $repository = $this->container->get('doctrine')->getRepository('FoodOrderBundle:InvoiceToSend');
+
+        $query = $repository->createQueryBuilder('i')
+            ->where('i.status = :invoice_status')
+            ->andWhere('i.dateAdded > :added_date_start')
+            ->andWhere('i.dateAdded < :added_date_end')
+            ->setParameters(
+                [
+                    'invoice_status' => 'unsent',
+                    'added_date_start' => new \DateTime("-1 hour"),
+                    'added_date_end' => new \DateTime("-14 minute")
+                ]
+            )
+            ->getQuery();
+
+        $invoices = $query->getResult();
+        if (!$invoices) {
+            return array();
+        }
+
+        return $invoices;
     }
 
     /**

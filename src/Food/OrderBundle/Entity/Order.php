@@ -347,6 +347,18 @@ class Order
     private $orderFromNav = false;
 
     /**
+     * @var bool
+     * @ORM\Column(name="late_order_informed", type="boolean", nullable=true)
+     */
+    private $lateOrderInformed = false;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="client_contacted", type="boolean", nullable=true)
+     */
+    private $clientContacted = false;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -1778,5 +1790,65 @@ class Order
     public function getNavDriverCode()
     {
         return $this->navDriverCode;
+    }
+
+    /**
+     * Set lateOrderInformed
+     *
+     * @param boolean $lateOrderInformed
+     * @return Order
+     */
+    public function setLateOrderInformed($lateOrderInformed)
+    {
+        $this->lateOrderInformed = $lateOrderInformed;
+    
+        return $this;
+    }
+
+    /**
+     * Get lateOrderInformed
+     *
+     * @return boolean 
+     */
+    public function getLateOrderInformed()
+    {
+        return $this->lateOrderInformed;
+    }
+
+    /**
+     * Set clientContacted
+     *
+     * @param boolean $clientContacted
+     * @return Order
+     */
+    public function setClientContacted($clientContacted)
+    {
+        $this->clientContacted = $clientContacted;
+    
+        return $this;
+    }
+
+    /**
+     * Get clientContacted
+     *
+     * @return boolean 
+     */
+    public function getClientContacted()
+    {
+        return $this->clientContacted;
+    }
+
+    /**
+     * Calculates how long delivery is late in minutes
+     * @return int
+     */
+    public function getLateMinutes()
+    {
+        $nowStamp = date("U");
+        $deliveryStamp = $this->getDeliveryTime()->format("U");
+
+        $diffMinutes = ceil(($nowStamp - $deliveryStamp) / 60);
+
+        return $diffMinutes;
     }
 }

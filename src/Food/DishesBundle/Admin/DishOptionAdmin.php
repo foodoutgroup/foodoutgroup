@@ -25,6 +25,7 @@ class DishOptionAdmin extends FoodAdmin
             )
         )
         ->add('infocode', 'checkbox', array('label' => 'admin.dish_option.infocode', 'required' => false,))
+        ->add('firstLevel', 'checkbox', array('label' => 'First level', 'required' => false,))
         ->add('code', null, array('label' => 'admin.dish_option.code', 'required' => false))
         ->add('subCode', null, array('label' => 'admin.dish_option.sub_code', 'required' => false))
         ->add('groupName', null, array('label' => 'admin.dish_option.group_name'))

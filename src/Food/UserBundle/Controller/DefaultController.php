@@ -164,7 +164,7 @@ class DefaultController extends Controller
             'change_password_errors' => $this->formErrors($form->get('change_password')),
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => $form->isSubmitted(),
-            'user' => $this->user()
+            'user' => $user
         ];
     }
 
@@ -240,24 +240,12 @@ class DefaultController extends Controller
     private function user()
     {
         $sc = $this->get('security.context');
-        $logger = $this->get('logger');
 
         if (!$sc->isGranted('ROLE_USER')) {
             return null;
         }
 
-        $user = $sc->getToken()->getUser();
-
-        // this conditional is mandatory
-        if ($user) {
-            $logger->alert('User instance is about to be refreshed');
-
-            $this->getDoctrine()
-                 ->getManager()
-                 ->refresh($user);
-        }
-
-        return $user;
+        return $sc->getToken()->getUser();
     }
 
     private function address(User $user)

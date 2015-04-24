@@ -24,6 +24,18 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                 InputOption::VALUE_NONE,
                 'No order will be imported. Just pure debug output'
             )
+            ->addOption(
+                'pause-on-error',
+                null,
+                InputOption::VALUE_NONE,
+                'Make a 5 second pause on error, so error can be read'
+            )
+            ->addOption(
+                'time-shift',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Alter how old orders are imported - enter only integer expresion in hours'
+            )
         ;
 
         mb_internal_encoding('utf-8');
@@ -36,6 +48,14 @@ class NavImportOrdersCommand extends ContainerAwareCommand
         if ($dryRun) {
             $output->writeln('Dry-run. No inserts will be performed');
         }
+        $pauseOnError = $input->getOption('pause-on-error');
+        $timeShift = $input->getOption('time-shift');
+        if (!empty($timeShift)) {
+            $timeShift = '-'.$timeShift.' hour';
+        } else {
+            $timeShift = null;
+        }
+
         try {
             $em = $this->getContainer()->get('doctrine')->getManager();
             $orderService = $this->getContainer()->get('food.order');
@@ -46,7 +66,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
             $log = $this->getContainer()->get('logger');
             $country = $this->getContainer()->getParameter('country');
 
-            $orders = $navService->getNewNonFoodoutOrders();
+            $orders = $navService->getNewNonFoodoutOrders($timeShift);
 
             $stats = array(
                 'found' => count($orders),
@@ -88,6 +108,11 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                         continue;
                     }
 
+                    $deliveryType = OrderService::$deliveryDeliver;
+                    if ($orderData['Sales Type'] == 'H_TAKEOFF') {
+                        $deliveryType = OrderService::$deliveryPickup;
+                    }
+
                     $restaurantNo = trim($orderData['Restaurant No_']);
                     $placePoint = $navService->getLocalPlacePoint($orderData['Chain'], $restaurantNo);
                     // Skip if placepoint not found - scream for emergency..
@@ -99,8 +124,14 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             $restaurantNo
                         );
                         $output->writeln($skipMessage);
-                        $log->error($skipMessage);
+                        // Dont throw alert if it's only a pickup :D
+                        if ($deliveryType != OrderService::$deliveryPickup) {
+                            $log->error($skipMessage);
+                        }
                         $stats['error']++;
+                        if ($pauseOnError) {
+                            sleep(5);
+                        }
                         continue;
                     }
                     $place = $placePoint->getPlace();;
@@ -116,10 +147,6 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                         );
                     }
 
-                    $deliveryType = OrderService::$deliveryDeliver;
-                    if ($orderData['Sales Type'] == 'H_TAKEOFF') {
-                        $deliveryType = OrderService::$deliveryPickup;
-                    }
                     $output->writeln('Order total: '.$orderData['Amount Incl_ VAT']);
                     $output->writeln('VAT: '.$orderData['VAT %']);
                     $output->writeln('Delivery Amount: '.$orderData['DeliveryAmount']);
@@ -133,7 +160,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                         );
 
                         $deliveryDate = new \DateTime(
-                            $orderData['Date Created']->format("Y-m-d")
+                            $orderData['Order Date']->format("Y-m-d")
                             .' '
                             .$orderData['Contact Pickup Time']->format("H:i:s")
                         );
@@ -155,6 +182,11 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                     $output->writeln('Delivery Date: '.$deliveryDate->format("Y-m-d H:i:s"));
 
                     // Create if not a dry-run
+                    $paymentMethod = "local";
+                    if (isset($orderData['Tender Type']) && $orderData['Tender Type'] == 2)
+                    {
+                        $paymentMethod = "local.card";
+                    }
                     if (!$dryRun) {
                         $order->setOrderDate($orderDate)
                             ->setTotal($orderData['OrderSum'])
@@ -166,7 +198,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             ->setLastUpdated(new \DateTime('now'))
                             ->setNavDeliveryOrder($orderId)
                             ->setOrderFromNav(true)
-                            ->setPaymentMethod('local')
+                            ->setPaymentMethod($paymentMethod)
                             ->setPaymentStatus(OrderService::$paymentStatusComplete)
                             ->setOrderStatus(OrderService::$status_new)
                             ->setLocale($this->getContainer()->getParameter('locale'))
@@ -226,8 +258,15 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             }
                             $output->writeln('Cleaned address: '.var_export($fixedAddress, true));
 
+                            // Format address
                             $fixedCity = iconv('CP1257', 'UTF-8', $orderData['City']);
+                            $fixedCity = mb_convert_case($fixedCity, MB_CASE_TITLE, "UTF-8");
+                            $output->writeln('Fixed city: '.var_export($fixedCity, true));
+
                             $addressStr = strstr($fixedAddress, ', ' . $fixedCity, true);
+                            $addressStr = mb_convert_case($addressStr, MB_CASE_TITLE, "UTF-8");
+                            $addressStr = str_replace(array('G.', 'Pr.'), array('g.', 'pr.'), $addressStr);
+                            $output->writeln('Fixed street: '.var_export($addressStr, true));
                             $addressData = $gisService->getPlaceData($fixedAddress);
                             $gisService->groupData($addressData, $addressStr, $fixedCity);
 
@@ -259,7 +298,6 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             $order->setAddressId($address);
 
 
-
                             /**
                             cCustomer.[Name] AS CustomerName,
                             cCustomer.[Address] AS CustomerAddress,
@@ -272,10 +310,13 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                                 $addressToSave = $order->getAddressId()->getAddress();
                                 $cityToSave = $order->getAddressId()->getCity();
                                 if (!empty($orderData['CustomerAddress'])) {
-                                    $addressToSave = iconv('CP1257', 'UTF-8', $orderData['CustomerAddress']);
+                                    $addressToSave = trim(iconv('CP1257', 'UTF-8', $orderData['CustomerAddress']));
+                                    $addressToSave = mb_convert_case($addressToSave, MB_CASE_TITLE, "UTF-8");
+                                    $addressToSave = str_replace(array('G.', 'Pr.'), array('g.', 'pr.'), $addressToSave);
                                 }
                                 if (!empty($orderData['CustomerCity'])) {
                                     $cityToSave = iconv('CP1257', 'UTF-8', $orderData['CustomerCity']);
+                                    $cityToSave = mb_convert_case($cityToSave, MB_CASE_TITLE, "UTF-8");
                                 }
 
                                 $companyAddress = $addressToSave;
@@ -286,8 +327,8 @@ class NavImportOrdersCommand extends ContainerAwareCommand
 
                                 $order->setCompany(true)
                                     ->setCompanyName(iconv('CP1257', 'UTF-8', $orderData['CustomerName']))
-                                    ->setCompanyCode($orderData['CustomerRegNo'])
-                                    ->setVatCode($orderData['CustomerVatNo'])
+                                    ->setCompanyCode(trim($orderData['CustomerRegNo']))
+                                    ->setVatCode(trim($orderData['CustomerVatNo']))
                                     ->setCompanyAddress($companyAddress);
                             }
 

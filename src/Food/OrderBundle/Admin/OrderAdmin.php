@@ -1,6 +1,7 @@
 <?php
 namespace Food\OrderBundle\Admin;
 
+use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
 use Sonata\AdminBundle\Admin\Admin as SonataAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -20,6 +21,30 @@ class OrderAdmin extends SonataAdmin
                 '_sort_order' => 'DESC',
                 '_sort_by'    => 'order_date',
             );
+        }
+    }
+
+    // Fields to be shown on create/edit forms
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        $formMapper
+            ->add('company', 'checkbox', array('label' => 'admin.order.company', 'required' => false))
+            ->add('companyName', 'text', array('label' => 'admin.order.companyName', 'required' => false))
+            ->add('companyCode', 'text', array('label' => 'admin.order.companyCode', 'required' => false))
+            ->add('vatCode', 'text', array('label' => 'admin.order.vatCode', 'required' => false))
+            ->add('companyAddress', 'text', array('label' => 'admin.order.companyAddress', 'required' => false))
+        ;
+
+        /**
+         * @var Order $order
+         */
+        $order = $this->getSubject();
+
+        if ($order->getOrderFromNav()) {
+            $formMapper->add('total', null, array('label' => 'admin.order.total'));
+        } else {
+            // Non Nav order should not let edit total
+            $formMapper->add('total', null, array('label' => 'admin.order.total', 'disabled' => true));
         }
     }
 
@@ -44,7 +69,7 @@ class OrderAdmin extends SonataAdmin
 
         $datagridMapper
             ->add('id', null, array('label' => 'admin.order.id'))
-            ->add('address_id', null, array('label' => 'admin.order.delivery_address'))
+            //->add('address_id', null, array('label' => 'admin.order.delivery_address'))
             ->add('place_name', null, array('label' => 'admin.order.place_name_short',))
             ->add('order_date', 'doctrine_orm_date_range', array('label' => 'admin.order.order_date'))
             //->add('order_date', 'doctrine_orm_date_range', array(), null, array( 'required' => false,  'attr' => array('class' => 'datepicker')))
@@ -65,7 +90,9 @@ class OrderAdmin extends SonataAdmin
             ->add('total', null, array('label' => 'admin.order.total'))
             ->add('couponCode', null, array('label' => 'admin.order.coupon_code'))
             ->add('mobile', null, array('label' => 'admin.order.ismobile_full'))
+            ->add('navDeliveryOrder', null, array('label' => 'admin.order.nav_delivery_order'))
             ->add('sfNumber', null, array('label' => 'admin.order.sf_line'))
+            ->add('orderFromNav', null, array('label' => 'admin.order.order_from_nav'))
         ;
     }
 
@@ -84,14 +111,19 @@ class OrderAdmin extends SonataAdmin
             ->add('place_point_address', 'string', array('label' => 'admin.order.place_point_short'))
             ->add('deliveryType', 'string', array('label' => 'admin.order.delivery_type_short'))
             ->add('order_status', 'string', array('label' => 'admin.order.order_status_short'))
-            ->add('paymentMethod', 'string', array('label' => 'admin.order.payment_method'))
+            ->add('paymentMethod', 'string', array('label' => 'admin.order.payment_method_short'))
             ->add('paymentStatus', 'string', array('label' => 'admin.order.payment_status'))
             ->add('mobile', null, array('label' => 'admin.order.ismobile'))
+            ->add('orderFromNav', null, array('label' => 'admin.order.order_from_nav'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
+                    'edit' => array(),
                     'sendInvoice' => array(
                         'template' => 'FoodOrderBundle:CRUD:list__action_sendInvoice.html.twig'
+                    ),
+                    'downloadInvoice' => array(
+                        'template' => 'FoodOrderBundle:CRUD:list__action_downloadInvoice.html.twig'
                     ),
                 ),
                 'label' => 'admin.actions'
@@ -119,10 +151,6 @@ class OrderAdmin extends SonataAdmin
                     'template' => 'FoodOrderBundle:Admin:order_company_data.html.twig'
                 )
             )
-//            ->add('companyName', null, array('label' => 'admin.order.companyName'))
-//            ->add('companyCode', null, array('label' => 'admin.order.companyCode'))
-//            ->add('vatCode', null, array('label' => 'admin.order.vatCode'))
-//            ->add('companyAddress', null, array('label' => 'admin.order.companyAddress'))
             ->add('userIp', null, array('label' => 'admin.order.user_ip'))
             ->add('deliveryType', 'string', array('label' => 'admin.order.delivery_type'))
             ->add('details', 'sonata_type_collection',
@@ -164,6 +192,10 @@ class OrderAdmin extends SonataAdmin
             ->add('lastUpdate', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.last_update'))
             ->add('lastPaymentError', 'string', array('label' => 'admin.order.last_payment_error'))
             ->add('orderHash', 'string', array('label' => 'admin.order.hash'))
+            ->add('mobile', null, array('label' => 'admin.order.ismobile'))
+            ->add('orderFromNav', null, array('label' => 'admin.order.order_from_nav'))
+            ->add('navDeliveryOrder', null, array('label' => 'admin.order.nav_delivery_order'))
+            ->add('clientContacted', null, array('label' => 'admin.order.client_contacted'))
         ;
     }
 
@@ -175,8 +207,9 @@ class OrderAdmin extends SonataAdmin
      */
     public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
     {
-        $collection->clearExcept(array('list', 'show', 'export'))
-            ->add('sendInvoice', $this->getRouterIdParameter().'/sendInvoice');
+        $collection->clearExcept(array('edit', 'list', 'show', 'export'))
+            ->add('sendInvoice', $this->getRouterIdParameter().'/sendInvoice')
+            ->add('downloadInvoice', $this->getRouterIdParameter().'/downloadInvoice');
     }
 
 }

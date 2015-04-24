@@ -541,7 +541,7 @@ class Coupon
     {
         $this->places = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Set discountSum
      *
@@ -551,14 +551,14 @@ class Coupon
     public function setDiscountSum($discountSum)
     {
         $this->discountSum = $discountSum;
-
+    
         return $this;
     }
 
     /**
      * Get discountSum
      *
-     * @return integer
+     * @return integer 
      */
     public function getDiscountSum()
     {
@@ -574,14 +574,14 @@ class Coupon
     public function setNoSelfDelivery($noSelfDelivery)
     {
         $this->noSelfDelivery = $noSelfDelivery;
-
+    
         return $this;
     }
 
     /**
      * Get noSelfDelivery
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getNoSelfDelivery()
     {
@@ -597,14 +597,14 @@ class Coupon
     public function setEnableValidateDate($enableValidateDate)
     {
         $this->enableValidateDate = $enableValidateDate;
-
+    
         return $this;
     }
 
     /**
      * Get enableValidateDate
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getEnableValidateDate()
     {
@@ -620,14 +620,14 @@ class Coupon
     public function setValidFrom($validFrom)
     {
         $this->validFrom = $validFrom;
-
+    
         return $this;
     }
 
     /**
      * Get validFrom
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getValidFrom()
     {
@@ -643,14 +643,14 @@ class Coupon
     public function setValidTo($validTo)
     {
         $this->validTo = $validTo;
-
+    
         return $this;
     }
 
     /**
      * Get validTo
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getValidTo()
     {
@@ -683,7 +683,7 @@ class Coupon
     /**
      * Get places
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getPlaces()
     {

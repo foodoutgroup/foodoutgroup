@@ -2,10 +2,12 @@
 
 namespace Food\AppBundle\Controller;
 
+use Food\AppBundle\Entity\MarketingUser;
 use Food\OrderBundle\Service\OrderService;
 use Food\OrderBundle\Service\PaySera;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -427,6 +429,49 @@ class TestController extends Controller
             array(
                 'points'=> $pointReturn
             )
+        );
+    }
+
+    public function gameAction(Request $request)
+    {
+        $data = array(
+            'showSuccess' => false,
+            'showError' => false,
+        );
+
+        $participant = new MarketingUser();
+        $participant->setCreatedAt(new \DateTime("now"));
+
+        $form = $this->createFormBuilder($participant)
+            ->add('firstName', 'text')
+            ->add('lastName', 'text')
+            ->add('city', 'text')
+            ->add('birthDate', 'date')
+            ->add('phone', 'text', array('attr' => array('placeholder' => '370XXXXXXX')))
+            ->add('email', 'text')
+            ->add('save', 'submit', array('label' => 'food.game.register'))
+            ->getForm();
+
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            // Do the save
+            $em = $this->container->get('doctrine')->getManager();
+
+            $em->persist($participant);
+            $em->flush();
+
+            $data['showSuccess'] = true;
+        } else if (!$request->isMethod('POST')) {
+            $data['showError'] = true;
+        }
+
+        $data['form'] = $form->createView();
+
+        return $this->render(
+            '@FoodApp/Default/game.html.twig',
+            $data
         );
     }
 }

@@ -175,7 +175,7 @@ input.button {}
 
 /*-----------------Custom site style-------------------------------------------------------*/
 .site-block {margin: 0 auto; width: 980px;}
-
+.site-block.banner {text-align: center}
 
 .site-top {background: #cd1d36; color: #fff;}
 .site-top .site-block {height: 80px; position: relative;}
@@ -196,10 +196,10 @@ input.button {}
 
 /*Header ------------------------------------------*/
 .site-header {}
-.site-header h1 {text-align: center; font-size: 67px; margin: 0px; color: #fff; padding-top: 64px; line-height: 60px; font-weight: normal; letter-spacing: -2.6px; padding-bottom: 44px; text-shadow: 4px 4px 8px #000000;}
+.site-header h1 {text-align: center; font-size: 54px; margin: 0px; color: #fff; padding-top: 24px; line-height: 60px; font-weight: normal; letter-spacing: -2.6px; padding-bottom: 24px; text-shadow: 4px 4px 8px #000000;}
 
 .special-offer-block {position: relative; background-position: center top; background-repeat: no-repeat; background-size: cover;}
-.special-offer-block .site-block {height: 484px; position: relative;}
+.special-offer-block .site-block {height: 320px; position: relative;}
 .special-offer-block .img-description {position: absolute; margin: 0; right: 12px; bottom: 12px; font-size: 10px; text-transform: uppercase; color: #fff;}
 
 /*Food search form*/
@@ -611,7 +611,9 @@ input.button {}
 .static-page p a, .error-page p a {color: #b39196;}
 .static-page a span, .error-page a span {text-decoration: underline;}
 .static-page a:hover span, .error-page a:hover span {text-decoration: none;}
-.static-page p strong, .error-page p strong {font-weight: normal;}
+/*.static-page p strong, .error-page p strong {font-weight: normal;}*/
+.error-page p strong {font-weight: normal;}
+.static-page p strong {font-weight: bold;}
 
 /*User page*/
 .full-content {padding: 27px; border-radius: 4px; background: #fff; padding-right: 42px;}
@@ -681,9 +683,9 @@ input.button {}
 .site-footer .site-block {position: relative;}
 .site-footer h5 {color: #fff; margin: 0; font-size: 20px; font-weight: normal; margin-bottom: 4px; letter-spacing: -0.5px; }
 .site-footer .col {float: left; font-size: 15px; letter-spacing: 0.5px; margin-right: 36px; background: url(/bundles/foodapp/images/rep-dot.png) repeat-y right top;}
-.site-footer .col-1 {width: 180px;}
+.site-footer .col-1 {width: 179px;}
 .site-footer .col-2 {width: 190px;}
-.site-footer .col-3 {width: 517px; margin-right: 0px; padding-right: 25px;}
+.site-footer .col-3 {width: 520px; margin-right: 0px; padding-right: 25px;}
 .site-footer .col-4 {width: 220px; float: right; margin-right: 0px; text-align: right; background: none;}
 
 .site-footer li {line-height: 29px;}
@@ -695,7 +697,7 @@ input.button {}
 
 .small-col {width: 193px; line-height: 29px;}
 /* TODO laikinas footerio reitingu isplatinimas */
-.small-col.rating-col {width: 258px;}
+.small-col.rating-col {width: 260px;}
 
 .copyrights {position: absolute; right: 0px; bottom: 2px; font-size: 14px;}
 
@@ -1646,10 +1648,14 @@ div.coupon_form_popup {
 .wider-radio {
     width: 400px !important;
 }
+#places-change-location-link {
+    margin-top: 7px !important;
+}
 
 /** Discount stuff **/
 .restaurant-menu-item .price.discounted {
-    text-decoration: line-through;
+    /* Isjungta Tomo prasymu. Uzduotis #643 */
+    /*text-decoration: line-through;*/
 }
 .restaurant-menu-item .price.discounted.multiline {
     font-size: 12px;
@@ -1684,6 +1690,10 @@ div.coupon_form_popup {
     text-decoration: line-through;
 }
 .sum.item.discount {
+    color: #cd1d36;
+}
+
+.delivery-price .discount {
     color: #cd1d36;
 }
 
@@ -1729,3 +1739,5 @@ div.coupon_form_popup {
 .company_data {
     padding-top: 10px;
 }
+
+.no-wrap { white-space: nowrap; }

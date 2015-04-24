@@ -269,6 +269,10 @@
                 <source>admin.dish_units</source>
                 <target>Matavimo vienetai</target>
             </trans-unit>
+            <trans-unit id="admin.best_offers">
+                <source>admin.best_offers</source>
+                <target>Geriausi pasiūlymai</target>
+            </trans-unit>
             <trans-unit id="admin.unit.name">
                 <source>admin.unit.name</source>
                 <target>Matavimo vienetas</target>
@@ -823,6 +827,10 @@
                 <source>admin.order.payment_method</source>
                 <target>Mokėjimo būdas</target>
             </trans-unit>
+            <trans-unit id="admin.order.payment_method_short">
+                <source>admin.order.payment_method_short</source>
+                <target>Mok. būdas</target>
+            </trans-unit>
             <trans-unit id="admin.order.payment_status">
                 <source>admin.order.payment_status</source>
                 <target>Mokėjimo būklė</target>
@@ -1051,13 +1059,33 @@
                 <source>admin.order.ismobile_full</source>
                 <target>Mobile</target>
             </trans-unit>
+            <trans-unit id="admin.order.order_from_nav">
+                <source>admin.order.order_from_nav</source>
+                <target>Iš NAV</target>
+            </trans-unit>
             <trans-unit id="admin.order.hash">
                 <source>admin.order.hash</source>
                 <target>Order hash</target>
             </trans-unit>
             <trans-unit id="admin.order.send_invoice">
                 <source>admin.order.send_invoice</source>
-                <target>Siųsti Faktūrą</target>
+                <target>Siųsti SF</target>
+            </trans-unit>
+            <trans-unit id="admin.order.edit_send_invoice">
+                <source>admin.order.edit_send_invoice</source>
+                <target>Redaguoti</target>
+            </trans-unit>
+            <trans-unit id="admin.order.download_invoice">
+                <source>admin.order.download_invoice</source>
+                <target>Atsisiųsti SF</target>
+            </trans-unit>
+            <trans-unit id="admin.order.nav_delivery_order">
+                <source>admin.order.nav_delivery_order</source>
+                <target>Važtaražčio nr.</target>
+            </trans-unit>
+            <trans-unit id="admin.order.client_contacted">
+                <source>admin.order.client_contacted</source>
+                <target>Su klientu susisiekta</target>
             </trans-unit>
             <trans-unit id="admin.order.invoice_added_for_send">
                 <source>admin.order.invoice_added_for_send</source>
@@ -1115,6 +1143,10 @@
                 <source>admin.dispatcher.order_id</source>
                 <target>ID</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.from_nav">
+                <source>admin.dispatcher.from_nav</source>
+                <target>Išorinis (NAV)</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.order_date">
                 <source>admin.dispatcher.order_date</source>
                 <target>Užsak. data</target>
@@ -1146,6 +1178,22 @@
             <trans-unit id="admin.dispatcher.undelivered">
                 <source>admin.dispatcher.undelivered</source>
                 <target>Nepristatyti</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.canceled">
+                <source>admin.dispatcher.canceled</source>
+                <target>Atšaukti</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.client_phone">
+                <source>admin.dispatcher.client_phone</source>
+                <target>Užsak. tel.</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.late_time">
+                <source>admin.dispatcher.late_time</source>
+                <target>Vėluoja</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.client_contacted">
+                <source>admin.dispatcher.client_contacted</source>
+                <target>Susisiekta su klientu</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.unconfirmed_pickup">
                 <source>admin.dispatcher.unconfirmed_pickup</source>
@@ -1182,6 +1230,10 @@
             <trans-unit id="admin.dispatcher.order_status.new">
                 <source>admin.dispatcher.order_status.new</source>
                 <target>Naujas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.preorder">
+                <source>admin.dispatcher.order_status.preorder</source>
+                <target>Naujas PreOrder</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.order_status.delayed">
                 <source>admin.dispatcher.order_status.delayed</source>
@@ -1363,6 +1415,38 @@
                 <target>ID</target>
             </trans-unit>
 
+            <!-- Unused SF numbers -->
+            <trans-unit id="admin.unused_sf_numbers">
+                <source>admin.unused_sf_numbers</source>
+                <target>Nepanaudoti SF numeriai</target>
+            </trans-unit>
+            <trans-unit id="Unused Sf Numbers List">
+                <source>Unused Sf Numbers List</source>
+                <target>Nepanaudoti SF numeriai</target>
+            </trans-unit>
+            <trans-unit id="admin.unused_sf_numbers.sf_number">
+                <source>admin.unused_sf_numbers.sf_number</source>
+                <target>SF numeris</target>
+            </trans-unit>
+            <trans-unit id="admin.unused_sf_numbers.sf_number_placeholder">
+                <source>admin.unused_sf_numbers.sf_number_placeholder</source>
+                <target>123456</target>
+            </trans-unit>
+            <trans-unit id="admin.unused_sf_numbers.id">
+                <source>admin.unused_sf_numbers.id</source>
+                <target>ID</target>
+            </trans-unit>
+
+            <!-- Coupons generator -->
+            <trans-unit id="admin.coupons.generator">
+                <source>admin.coupons.generator</source>
+                <target>Kuponų generatorius</target>
+            </trans-unit>
+            <trans-unit id="Coupon Generator List">
+                <source>Coupon Generator List</source>
+                <target>Kuponų generatorius</target>
+            </trans-unit>
+
             <!-- Street admin -->
             <trans-unit id="admin.street">
                 <source>admin.street</source>
@@ -1501,6 +1585,56 @@
             <trans-unit id="admin.reports.date_range">
                 <source>admin.reports.date_range</source>
                 <target>Laikotarpis (nuo - iki)</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.title">
+                <source>admin.best_offers.title</source>
+                <target>Pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.link">
+                <source>admin.best_offers.link</source>
+                <target>Akcijos nuoroda</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.text">
+                <source>admin.best_offers.text</source>
+                <target>Tekstas</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.image">
+                <source>admin.best_offers.image</source>
+                <target>Baneris</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.active">
+                <source>admin.best_offers.active</source>
+                <target>Aktyvus</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.best_offers">
+                <source>admin.best_offers.best_offers</source>
+                <target>Geriausi pasiūlymai</target>
+            </trans-unit>
+            <trans-unit id="best-offer-list">
+                <source>Best Offer List</source>
+                <target>Geriausi pasiūlymai</target>
+            </trans-unit>
+
+            <!-- Params listas -->
+            <trans-unit id="admin.params">
+                <source>admin.params</source>
+                <target>Parametrai</target>
+            </trans-unit>
+            <trans-unit id="Param List">
+                <source>Param List</source>
+                <target>Parametrai</target>
+            </trans-unit>
+            <trans-unit id="admin.param.name">
+                <source>admin.param.name</source>
+                <target>Parametras</target>
+            </trans-unit>
+            <trans-unit id="admin.param.id">
+                <source>admin.param.id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="admin.param.value">
+                <source>admin.param.value</source>
+                <target>Reikšmė</target>
             </trans-unit>
         </body>
     </file>

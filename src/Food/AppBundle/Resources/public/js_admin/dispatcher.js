@@ -58,6 +58,11 @@ var Dispatcher = {
             Dispatcher.assignDriver($(this).attr('item-id'));
         });
 
+
+        $(".order_list .client_contacted_check .client_contacted").bind('click', function(){
+            Dispatcher.toggleClientContacted($(this));
+        });
+
         Dispatcher.subscribeForNewOrders();
     },
 
@@ -74,6 +79,7 @@ var Dispatcher = {
     },
 
     showStatusPopup: function(button) {
+        $('.sonata-ba-list').mask();
         var orderId = button.attr('item-id');
         var url = Routing.generate('food_admin_get_order_status_popup', { '_locale': Dispatcher._locale, 'orderId': orderId, _sonata_admin: 'sonata.admin.dish' });
         var tag = $("<div></div>");
@@ -81,20 +87,20 @@ var Dispatcher = {
         $.ajax({
             url: url,
             success: function(data) {
+                $('.sonata-ba-list').unmask();
                 tag.html(data).dialog({
                     title: Dispatcher.getTranslation('change_status_title'),
                     resizable: false,
                     modal: true,
                     buttons: {
                         // translate buttons
+                //# TODO neiskeltas LT - LV konfliktas
                         "Ok": function() {
                             var newStatus = $(this).find('.order_status:checked').val();
                             var url = Routing.generate('food_admin_set_order_status', { '_locale': Dispatcher._locale, 'orderId': orderId, 'status': newStatus, _sonata_admin: 'sonata.admin.dish' });
                             $.get(
                                 url,
                                 function(data) {
-                                    // TODO error handlingas
-//                                    console.log('succesas?');
                                     location.reload();
                                 }
                             );
@@ -103,6 +109,7 @@ var Dispatcher = {
                             $( this ).dialog( "close" );
                             $( this ).dialog( "destroy" );
                         },
+                        //# TODO neiskeltas LT - LV konfliktas
                         "Cancel": function() {
                             $( this ).dialog( "close" );
                             $( this ).dialog( "destroy" );
@@ -181,6 +188,30 @@ var Dispatcher = {
                 }
 
                 Dispatcher.subscribeForNewOrders();
+            }
+        );
+    },
+
+    /**
+     * Mark order as contacted with client after cancelation
+     */
+    toggleClientContacted: function(checkbox) {
+        var url = Routing.generate('food_admin_mark_order_contacted', { '_locale': Dispatcher._locale, _sonata_admin: 'sonata.admin.dish' });
+        var contactedStatus = 0;
+        if (checkbox.is(":checked")) {
+            contactedStatus = 1;
+        }
+
+        $.post(
+            url,
+            {
+                'order': checkbox.attr('item-id'),
+                'status': contactedStatus
+            },
+            function(data) {
+                if (data == "YES") {
+                    location.reload();
+                }
             }
         );
     }

@@ -97,17 +97,14 @@ class CheckUndeliveredMessagesCommandTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         // Testable vars
-        $email = 'support@niamniamas.info';
-        $emails = array($email);
         $phone = '37060000000';
-        $sendMessages = true;
         $sender = 'niamniamas.info monitoring';
-        $errorMessage = 'ERROR: 1 undelivered messages!';
+        $errorMessage = 'ERROR: 3 undelivered messages!';
         $smsMessage = new \Food\SmsBundle\Entity\Message();
         $smsMessage->setSender($sender);
         $smsMessage->setRecipient($phone);
         $smsMessage->setMessage($errorMessage);
-        $messages = array($smsMessage);
+        $messages = array($smsMessage, $smsMessage, $smsMessage);
 
         $application = new Application();
         $application->add(new CheckUndeliveredMessagesCommand());
@@ -127,43 +124,6 @@ class CheckUndeliveredMessagesCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getUndeliveredMessagesForRange')
             ->with($this->isInstanceOf('\DateTime'), $this->isInstanceOf('\DateTime'))
             ->will($this->returnValue($messages));
-
-//        $container->expects($this->at(5))
-//            ->method('get')
-//            ->with('food.messages')
-//            ->will($this->returnValue($messagingService));
-//
-//        $container->expects($this->at(6))
-//            ->method('get')
-//            ->with('food.infobip')
-//            ->will($this->returnValue($infobipProvider));
-//
-//        $messagingService->expects($this->once())
-//            ->method('setMessagingProvider')
-//            ->with($infobipProvider);
-//
-//        $container->expects($this->at(7))
-//            ->method('getParameter')
-//            ->with('admin.phones')
-//            ->will($this->returnValue($phones));
-//
-//        $container->expects($this->at(8))
-//            ->method('getParameter')
-//            ->with('sms.sender')
-//            ->will($this->returnValue($sender));
-
-//        $messagingService->expects($this->once())
-//            ->method('createMessage')
-//            ->with($sender, $phone, $errorMessage)
-//            ->will($this->returnValue($smsMessage));
-//
-//        $messagingService->expects($this->once())
-//            ->method('sendMessage')
-//            ->with($smsMessage);
-//
-//        $messagingService->expects($this->once())
-//            ->method('saveMessage')
-//            ->with($smsMessage);
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(

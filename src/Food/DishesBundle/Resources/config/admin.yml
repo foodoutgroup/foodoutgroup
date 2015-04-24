@@ -21,6 +21,17 @@ services:
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.best_offer:
+        class: Food\PlacesBundle\Admin\BestOfferAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.best_offers.best_offers" }
+        arguments:
+            - ~
+            - Food\PlacesBundle\Entity\BestOffer
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
     sonata.admin.dish.size:
         class: Food\DishesBundle\Admin\DishSizeAdmin
         tags:
@@ -146,6 +157,18 @@ services:
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.marketing_user:
+        class: Food\AppBundle\Admin\MarketingUserAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Marketing user" }
+        arguments:
+            - ~
+            - Food\AppBundle\Entity\MarketingUser
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
+
     sonata.admin.dish.unit.category:
             class: Food\DishesBundle\Admin\DishUnitCategoryAdmin
             tags:
@@ -223,6 +246,17 @@ services:
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.unused_sf_numbers:
+                class: Food\AppBundle\Admin\UnusedSfNumbersAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.unused_sf_numbers" }
+                arguments:
+                    - ~
+                    - Food\AppBundle\Entity\UnusedSfNumbers
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]
+
     sonata.admin.street:
                 class: Food\AppBundle\Admin\StreetAdmin
                 tags:
@@ -245,6 +279,18 @@ services:
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
 
+
+    sonata.admin.coupon_generator:
+                class: Food\OrderBundle\Admin\CouponGeneratorAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.coupons.generator" }
+                arguments:
+                    - ~
+                    - Food\OrderBundle\Entity\CouponGenerator
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]
+
     sonata.admin.restaurant_orders:
                 class: Food\ReportBundle\Admin\RestaurantOrdersAdmin
                 tags:
@@ -253,5 +299,16 @@ services:
                     - ~
                     - Food\OrderBundle\Entity\Order
                     - 'FoodReportBundle:RestaurantOrdersAdmin'
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.params:
+                class: Food\AppBundle\Admin\ParamAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.params" }
+                arguments:
+                    - ~
+                    - Food\AppBundle\Entity\Param
+                    - ~
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]

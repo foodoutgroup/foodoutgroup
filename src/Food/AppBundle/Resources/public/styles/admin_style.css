@@ -9,7 +9,7 @@ h4.padded {
 
 .city_list {
     display: inline-block;
-    width: 965px;
+    width: 1275px;
     vertical-align: top;
 }
 
@@ -23,7 +23,7 @@ h4.padded {
 }
 
 .order_list {
-    width: 915px;
+    width: 1200px;
 }
 
 .order_list td,
@@ -50,12 +50,17 @@ h4.padded {
 }
 
 .order_list td.order_status {
-    text-align: right;
+    text-align: center;
     white-space: nowrap;
 }
 
 .order_list td.driver {
     white-space: nowrap;
+}
+
+.order_list td.from_nav_ico {
+    color: #FFA500;
+    text-align: center;
 }
 
 .order_list tr.even,
@@ -78,6 +83,20 @@ td.no-wrap {
 
 .no-wrap span.glyphicon {
     vertical-align: middle;
+}
+
+.client_contacted_check {
+    width: 65px;
+    text-align: center;
+}
+
+.client_contacted_check input.client_contacted {
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(2); /* IE */
+    -moz-transform: scale(2); /* FF */
+    -webkit-transform: scale(2); /* Safari and Chrome */
+    -o-transform: scale(2); /* Opera */
+    padding: 10px;
 }
 
 /* TODO prie buttono nupieski vairiuka */

@@ -2,6 +2,7 @@
 
 namespace Food\SmsBundle\Service;
 
+use Food\OrderBundle\Entity\Order;
 use \Food\SmsBundle\Entity\Message;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -391,7 +392,7 @@ class MessagesService {
             ->andWhere('m.submittedAt <= :sentJustNow')
             ->andWhere('m.timesSent = 1')
             ->setParameter('yesterday', new \DateTime('-1 days'))
-            ->setParameter('sentJustNow', new \DateTime('-5 minutes'))
+            ->setParameter('sentJustNow', new \DateTime('-6 minutes'))
             ->getQuery();
 
         $messages = $query->getResult();
@@ -423,5 +424,23 @@ class MessagesService {
         }
 
         return $messages;
+    }
+
+    /**
+     * @param Order $order
+     * @param null $toBeDelivered
+     */
+    public function informLateOrder($order, $toBeDelivered=null)
+    {
+        $translator = $this->getContainer()->get('translator');
+        $text = $translator->trans('general.sms.order_to_be_late', array('delivery_in' => $toBeDelivered));
+
+        $message = $this->createMessage(
+            $this->getContainer()->getParameter('sms.sender'),
+            $order->getUser()->getPhone(),
+            $text
+        );
+
+        $this->saveMessage($message);
     }
 }

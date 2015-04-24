@@ -30,6 +30,8 @@ class DriversToLogisticCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Temporary off
+        return 0;
         try {
             $logisticsService = $this->getContainer()->get('food.logistics');
             $em = $this->getContainer()->get('doctrine')->getManager();

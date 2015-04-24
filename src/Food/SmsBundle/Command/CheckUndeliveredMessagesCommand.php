@@ -28,7 +28,7 @@ class CheckUndeliveredMessagesCommand extends ContainerAwareCommand
             $unsentMessages = $messagingService->getUndeliveredMessagesForRange($from, $to);
             $messagesCount = count($unsentMessages);
 
-            if ($messagesCount > 0) {
+            if ($messagesCount > 2) {
                 $critical = true;
                 $text = sprintf(
                     '<error>ERROR: %d undelivered messages!</error>',

@@ -2,6 +2,7 @@
 namespace Food\OrderBundle\Command;
 
 use Food\OrderBundle\Entity\Order;
+use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -34,7 +35,7 @@ class NavSyncCommand extends ContainerAwareCommand
             $orderService = $this->getContainer()->get('food.order');
             $navService = $this->getContainer()->get('food.nav');
 
-            $orders = $em->getRepository('FoodOrderBundle:Order')->getCurrentNavOrders();
+            $orders = $em->getRepository('FoodOrderBundle:Order')->getCurrentNavOrders(null, false, false);
 
             if (!empty($orders) && count($orders) > 0) {
                 $navOrders = $navService->getRecentNavOrders($orders);
@@ -46,6 +47,11 @@ class NavSyncCommand extends ContainerAwareCommand
                     $order = $orderService->getOrderById($orderId);
                     if (!$order instanceof Order) {
                         throw new \Exception('Order from nav not found in local system. Local ID: '.$orderId.' Nav ID:'.$orderData['Order No_']);
+                    }
+
+                    // Localiu orderiu, kurie paskirti - neukeiciam pagal nava... localus tvarkomi lokaliai
+                    if ($order->getOrderStatus() == OrderService::$status_assiged && !$order->getOrderFromNav()) {
+                        continue;
                     }
 
                     $output->writeln(sprintf(
@@ -70,7 +76,7 @@ class NavSyncCommand extends ContainerAwareCommand
                     if (!$dryRun) {
                         $navService->changeOrderStatusByNav($order, $orderData);
 
-                        if (!$order->getDriver() && $orderData['Delivery Status'] > 6 && !empty($orderData['Driver ID'])) {
+                        if ($orderData['Delivery Status'] > 6 && !empty($orderData['Driver ID'])) {
                             $navService->setDriverFromNav($order, $orderData['Driver ID']);
                         }
 
@@ -78,6 +84,12 @@ class NavSyncCommand extends ContainerAwareCommand
                             if ($order->getTotal() != sprintf('%0.2f', $orderData['Total Sum'])) {
                                 $order->setTotal($orderData['Total Sum']);
                             }
+                        }
+
+                        // Keep connection alive
+                        if (!$em->isOpen()) {
+                            $em = $em->create(
+                                $em->getConnection(), $em->getConfiguration());
                         }
 
                         $em->persist($order);

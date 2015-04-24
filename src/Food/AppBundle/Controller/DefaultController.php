@@ -68,7 +68,7 @@ class DefaultController extends Controller
 
     public function footerAction()
     {
-        $topRatedPlaces = $this->get('food.places')->getTopRatedPlaces(10);
+        $topRatedPlaces = $this->get('food.places')->getTopRatedPlaces(12);
         $staticPages = $this->get('food.static')->getActivePages(10);
         return $this->render(
             'FoodAppBundle:Default:footer_links.html.twig',
@@ -128,7 +128,7 @@ class DefaultController extends Controller
         $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')
             ->findBy(array('active' => 1));
 
-        $staticPages = $this->get('food.static')->getActivePages(30, false);
+        $staticPages = $this->get('food.static')->getActivePages(30, true);
 
         $response = new Response();
         $response->headers->set('Content-Type', 'xml');

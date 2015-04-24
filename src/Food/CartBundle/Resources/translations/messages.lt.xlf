@@ -222,6 +222,10 @@ Vilnius]]></target>
             <source>order.form.errors.no_restaurant_to_deliver</source>
             <target>Šiuo metu restoranas jau nebegali aptarnauti Jūsų užsakymo.</target>
         </trans-unit>
+        <trans-unit id="order.form.errors.wrong_point_for_address" resname="order.form.errors.wrong_point_for_address">
+            <source>order.form.errors.wrong_point_for_address</source>
+            <target>Atsiprašome, restoranas negali aptarnauti Jūsų užsakymo.</target>
+        </trans-unit>
         <trans-unit id="order.form.errors.customerfirstname" resname="order.form.errors.customerfirstname">
             <source>order.form.errors.customerfirstname</source>
             <target>Įveskite savo vardą</target>

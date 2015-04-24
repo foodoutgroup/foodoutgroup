@@ -4,12 +4,16 @@ namespace Food\PlacesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
 
 
 class DefaultController extends Controller
 {
+    protected $cityTranslations = [
+        'Vilnius' => 'places.in_vilnius',
+        'Kaunas' => 'places.in_kaunas',
+        'Klaipėda' => 'places.in_klaipeda'
+    ];
+
     public function indexAction($recommended = false)
     {
         if ($recommended) {
@@ -20,7 +24,9 @@ class DefaultController extends Controller
             'FoodPlacesBundle:Default:index.html.twig',
             array(
                 'recommended' => $recommended,
-                'location' => $locData
+                'location' => $locData,
+                'city_translations' => $this->cityTranslations,
+                'default_city' => 'Vilnius'
             )
         );
     }
@@ -94,11 +100,29 @@ class DefaultController extends Controller
 
     public function bestOffersAction()
     {
-        return $this->render('FoodPlacesBundle:Default:best_offers.html.twig');
+        $view = 'FoodPlacesBundle:Default:best_offers.html.twig';
+        $options = [
+            'best_offers' => $this->getBestOffers(5)
+        ];
+
+        return $this->render($view, $options);
     }
 
     public function changeLocationAction()
     {
         return $this->render('FoodPlacesBundle:Default:change_location.html.twig');
+    }
+
+    /**
+     * @param integer $amount
+     * @return array
+     */
+    private function getBestOffers($amount)
+    {
+        $items = $this->get('doctrine.orm.entity_manager')
+                      ->getRepository('FoodPlacesBundle:BestOffer')
+                      ->getRandomBestOffers($amount);
+
+        return $items;
     }
 }

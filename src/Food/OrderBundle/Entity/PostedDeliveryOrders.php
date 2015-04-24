@@ -29,6 +29,18 @@ class PostedDeliveryOrders {
     private $total;
 
     /**
+     * @var float
+     * @ORM\Column(name="delivery", type="decimal", precision=8, scale=2, nullable=true)
+     */
+    private $delivery;
+
+    /**
+     * @var string
+     * @ORM\Column(name="tender_type", type="string", nullable=true)
+     */
+    private $tender_type;
+
+    /**
      * Set no
      *
      * @param string $no
@@ -95,5 +107,51 @@ class PostedDeliveryOrders {
     public function getTotal()
     {
         return $this->total;
+    }
+
+    /**
+     * Set delivery
+     *
+     * @param string $delivery
+     * @return PostedDeliveryOrders
+     */
+    public function setDelivery($delivery)
+    {
+        $this->delivery = $delivery;
+
+        return $this;
+    }
+
+    /**
+     * Get delivery
+     *
+     * @return string
+     */
+    public function getDelivery()
+    {
+        return $this->delivery;
+    }
+
+    /**
+     * Set tender_type
+     *
+     * @param string $tenderType
+     * @return PostedDeliveryOrders
+     */
+    public function setTenderType($tenderType)
+    {
+        $this->tender_type = $tenderType;
+    
+        return $this;
+    }
+
+    /**
+     * Get tender_type
+     *
+     * @return string 
+     */
+    public function getTenderType()
+    {
+        return $this->tender_type;
     }
 }

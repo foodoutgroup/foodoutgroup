@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Food\OrderBundle\Entity\PostedDeliveryOrders;
 
 class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 {
@@ -42,18 +44,31 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 
         $this->checkOptions($options);
 
+        $this->fillPostedOrders($options->from, $options->to, $services);
         $orderData = $this->getOrders($options->from, $options->to, $services);
 
         foreach ($orderData as $data) {
             $order = $this->findOrder($data['id'], $services);
 
             // 1. update orders
-            $output->write('[Order ID] = ' . $order->getId() . ': updating total from ' . $order->getTotal() . ' to ' . $data['posted_total'] . '.. ');
+            $output->write('[Order ID] = ' . $order->getId() . ': updating total from ' . $order->getTotal() . ' to ' . $data['posted_total'] . ', delivery total from ' . $order->getDeliveryPrice() . ' to ' . $data['delivery'] . '.. ');
 
-            if ($options->dryRun || $order->getTotal() == $data['posted_total']) {
+            $skipTotal = $order->getTotal() == $data['posted_total'];
+            $skipDeliveryTotal = $order->getDeliveryPrice() == $data['delivery'];
+            $skipPaymentMethod = !(2 == $data['tender_type']);
+
+            if ($options->dryRun || ($skipTotal && $skipDeliveryTotal && $skipPaymentMethod)) {
                 $output->writeln('skipped');
             } else {
-                $order = $this->updateTotal($order, $data['posted_total'], $services);
+                $updateData = new \StdClass();
+                $updateData->total = $data['posted_total'];
+                $updateData->deliveryTotal = $data['delivery'];
+
+                if (2 == $data['tender_type'] && 'local.card' != $order->getPaymentMethod()) {
+                    $updateData->paymentMethod = 'local.card';
+                }
+
+                $order = $this->update($order, $updateData, $services);
 
                 $output->writeln('success');
             }
@@ -68,16 +83,29 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 
             // 2. update Navision invoices
             $foodAmount = $this->calculateFoodTotal($data['posted_total'], $order->getDeliveryPrice());
-            $output->write('[Order ID] = ' . $order->getId() . ': update NAV invoice [Food Amount With VAT] from ' . number_format($navInvoice['Food Amount With VAT'], 2, '.', '') . ' to ' . $foodAmount . '.. ');
+            $deliveryAmount = number_format($data['delivery'], 2, '.', '');
+
+            $output->write('[Order ID] = ' . $order->getId() . ': update NAV invoice [Food Amount With VAT] from ' . number_format($navInvoice['Food Amount With VAT'], 2, '.', '') . ' to ' . $foodAmount . ', [Delivery Amount With VAT] from ' . number_format($navInvoice['Delivery Amount With VAT'], 2, '.', '') . ' to ' . $deliveryAmount . '.. ');
+
+            $skipTotal = number_format($navInvoice['Food Amount With VAT'], 2, '.', '') == $foodAmount;
+            $skipDeliveryTotal = number_format($navInvoice['Delivery Amount With VAT'], 2, '.', '') == $deliveryAmount;
+            $skipPaymentMethod = $navInvoice['Payment Method Type'] == $order->getPaymentMethod();
 
             if ($options->dryRun ||
                 empty($navInvoice) ||
                 empty($navInvoice['Food Amount With VAT']) ||
-                number_format($navInvoice['Food Amount With VAT'], 2, '.', '') == $foodAmount)
+                ($skipTotal && $skipDeliveryTotal && $skipPaymentMethod))
             {
                 $output->writeln('skipped');
             } else {
-                $updateWith = ['Food Amount With VAT' => $foodAmount];
+                $updateWith = ['Food Amount With VAT' => $foodAmount,
+                               'Delivery Amount With VAT' => $deliveryAmount];
+
+                if (!$skipPaymentMethod && 2 == $data['tender_type']) {
+                    $updateWith['Payment Method Type'] = 'local.card';
+                    $updateWith['Payment Method Code'] = 'CC';
+                }
+
                 $success = $services->nav->updateNavInvoice($order, $updateWith);
 
                 $output->writeln(!empty($success) ? 'success' : 'failure');
@@ -93,7 +121,7 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
 
         $params = ['from' => $from, 'to' => $to, 'city' => 'Vilnius'];
 
-        $result = $qb->select('o.id, p.total AS posted_total')
+        $result = $qb->select('o.id, p.total AS posted_total, p.delivery, p.tender_type')
                      ->from('FoodOrderBundle:Order', 'o')
                      ->innerJoin('FoodOrderBundle:PostedDeliveryOrders', 'p', 'WITH', 'p.no = o.navDeliveryOrder')
                      ->where('o.order_date >= :from')
@@ -156,9 +184,14 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
         return $order;
     }
 
-    protected function updateTotal($order, $newTotal, \StdClass $services)
+    protected function update($order, \StdClass $data, \StdClass $services)
     {
-        $order->setTotal($newTotal);
+        $order->setTotal($data->total);
+        $order->setDeliveryPrice($data->deliveryTotal);
+
+        if (!empty($data->paymentMethod)) {
+            $order->setPaymentMethod($data->paymentMethod);
+        }
 
         $services->em->flush();
 
@@ -176,5 +209,38 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
         }
 
         return number_format($postedTotal - $deliveryPrice, 2, '.', '');
+    }
+
+    protected function fillPostedOrders($from, $to, \StdClass $services)
+    {
+        $postedOrdersFromNav = $services->nav->getPostedOrders($from, $to);
+
+        $result = $services->em->transactional(function($em) use ($postedOrdersFromNav) {
+            foreach ($postedOrdersFromNav as $value) {
+                $entities = $em->getRepository('FoodOrderBundle:PostedDeliveryOrders')->findBy(['no' => $value['order_no']]);
+                $entities = new ArrayCollection($entities);
+
+                $entity = $entities->first();
+
+                if (empty($entity)) {
+                    $entity = new PostedDeliveryOrders();
+                }
+
+                $deliveryTotal = 2 == $value['tender_type']
+                                 ? $value['delivery_cc_amount']
+                                 : $value['delivery_total'];
+
+                $entity->setNo($value['order_no']);
+                $entity->setOrderDate(new \DateTime($value['order_date']));
+                $entity->setTotal($value['total']);
+                $entity->setDelivery($deliveryTotal);
+                $entity->setTenderType($value['tender_type']);
+
+                $entity = $em->merge($entity);
+                $em->persist($entity);
+            }
+        });
+
+        return $result;
     }
 }

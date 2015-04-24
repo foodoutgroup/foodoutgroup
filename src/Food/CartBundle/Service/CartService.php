@@ -140,6 +140,10 @@ class CartService {
      */
     public function removeDishByIds($dishId, $cartId, $placeId)
     {
+        if (empty($placeId)) {
+            $this->getContainer()->get('logger')->error('removeDishByIds called without place given. DishId: '.$dishId.' cartId: '.$cartId);
+            return $this;
+        }
         $dish = $this->getEm()->getRepository('FoodDishesBundle:Dish')->find((int)$dishId);
         $place = $this->getEm()->getRepository('FoodDishesBundle:Place')->find((int)$placeId);
         $opts = $this->getEm()->getRepository('FoodCartBundle:CartOption')
@@ -401,12 +405,12 @@ class CartService {
     {
         $total = 0;
         foreach ($cartItems as $cartItem) {
-            $total += $cartItem->getDishSizeId()->getCurrentPrice() * $cartItem->getQuantity();
+            $total += (int)($cartItem->getDishSizeId()->getCurrentPrice() * 100) * (int)$cartItem->getQuantity();
             foreach ($cartItem->getOptions() as $opt) {
-                $total += $opt->getDishOptionId()->getPrice() * $cartItem->getQuantity();
+                $total += (int)($opt->getDishOptionId()->getPrice() * 100) * (int)$cartItem->getQuantity();
             }
         }
-        return $total;
+        return $total / 100;
     }
 
     /**

@@ -14,7 +14,7 @@ food_test_zones:
     pattern: /test/zones/{id}
     defaults: { _controller: FoodAppBundle:Test:zones, id: ~ }
 
-food_test_zones:
+food_test_devzones:
     pattern: /test/devzones/{id}
     defaults: { _controller: FoodAppBundle:Test:devzones, id: ~ }
 
@@ -54,6 +54,13 @@ food_nav_migrator:
     pattern: /test/migrator/{date}
     defaults: { _controller: FoodAppBundle:Test:migrator, date: ~ }
 
+food_game:
+    pattern: /test/game/
+    defaults: { _controller: FoodAppBundle:Game:index }
+
+food_game_prod:
+    pattern: /registracija_zaidimui
+    defaults: { _controller: FoodAppBundle:Game:index }
 
 food_review_create:
     pattern: /place/review/{id}
@@ -61,11 +68,38 @@ food_review_create:
     requirements:
         _method: POST
 
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+food_slug_locale:
+    pattern:  /{redirLocale}/
+    defaults: { _controller: FoodAppBundle:Redirector:index, redirLocale: ~ }
+    requirements:
+        redirLocale:  "[a-z]{2}"
+
+food_slug_locale2:
+    pattern:  /{redirLocale}
+    defaults: { _controller: FoodAppBundle:Redirector:index, redirLocale: ~ }
+    requirements:
+        redirLocale:  "[a-z]{2}"
+
+food_slug_locale_slug:
+    pattern:  /{redirLocale}/{slug}/
+    defaults: { _controller: FoodAppBundle:Redirector:slug, redirLocale: ~ , slug: ~}
+    requirements:
+        redirLocale:  "[a-z]{2}"
+
+food_slug_locale_slug2:
+    pattern:  /{redirLocale}/{slug}
+    defaults: { _controller: FoodAppBundle:Redirector:slug, redirLocale: ~ , slug: ~}
+    requirements:
+        redirLocale:  "[a-z]{2}"
+
 food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|places|vietos|vietas|maina|mesto|monitoring|nagios|banned|logistics|order).+"
+        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|routing|places|vietos|vietas|maina|mesto|monitoring|nagios|banned|logistics|order|sitemap)[a-z0-9-\__\"„“\.\+]{4,}"
 
 food_order_nav_test1:
     pattern: /order/nav_test1
@@ -136,14 +170,19 @@ food_admin_check_new_orders:
     requirements:
           _method:  GET
 
+food_admin_mark_order_contacted:
+    pattern: /admin/dispatcher/mark-contacted/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:markOrderContacted}
+    options:
+        expose: true
+    requirements:
+          _method:  POST
+
 food_admin_get_place_unit_categories:
     pattern: /admin/place/get-unit-categories/{placeId}
     defaults: {_controller: FoodDishesBundle:DishUnitAdmin:getUnitCategoryOptionsFromPlace}
     options:
         expose: true
-
-fos_js_routing:
-    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
 food_admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'

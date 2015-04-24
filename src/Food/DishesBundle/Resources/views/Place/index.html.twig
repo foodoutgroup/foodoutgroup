@@ -1,6 +1,6 @@
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
-{% block title %}{{ place.name }} - {{ page_title }}{% endblock %}
+{% block title %}{% trans with {'%restaurant_name%':place.name} %}general.restaurant_page_title{% endtrans %} | {{ page_title }}{% endblock %}
 
 {% block adnet_retargeting %}
     <!-- Adform Tracking Code BEGIN -->

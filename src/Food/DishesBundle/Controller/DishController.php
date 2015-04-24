@@ -2,6 +2,7 @@
 
 namespace Food\DishesBundle\Controller;
 
+use Food\DishesBundle\Entity\Dish;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -16,8 +17,20 @@ class DishController extends Controller
      */
     public function getDishAction($dish)
     {
-        $dishEnt = $this->getDoctrine()->getRepository('FoodDishesBundle:Dish')->find((int)$dish);
-        $sizeCount = sizeof($dishEnt->getSizes());
+        try {
+            $dishEnt = $this->getDoctrine()->getRepository('FoodDishesBundle:Dish')->find((int)$dish);
+            if ($dishEnt instanceof Dish) {
+                $sizeCount = sizeof($dishEnt->getSizes());
+            } else {
+                return $this->render(
+                    'FoodDishesBundle:Dish:no_dish.html.twig'
+                );
+            }
+        } catch (\Exception $e) {
+            return $this->render(
+                'FoodDishesBundle:Dish:no_dish.html.twig'
+            );
+        }
         $selSize = 1;
         if ($sizeCount == 3) {
             $selSize = 2;

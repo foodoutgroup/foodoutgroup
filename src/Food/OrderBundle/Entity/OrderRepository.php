@@ -3,12 +3,13 @@
 namespace Food\OrderBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 use Food\OrderBundle\Service\OrderService;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class OrderRepository extends EntityRepository
 {
     /**
      * @param string $city
-     * @return array
+     * @return array|Order[]
      */
     public function getOrdersUnassigned($city)
     {
@@ -26,7 +27,6 @@ class OrderRepository extends EntityRepository
             'deliveryType' => OrderService::$deliveryDeliver,
             'order_date_more' => $date,
             'paymentStatus' => OrderService::$paymentStatusComplete,
-            'not_nav' => 1
         );
 
         $orders = $this->getOrdersByFilter($filter, 'list');
@@ -41,7 +41,7 @@ class OrderRepository extends EntityRepository
     /**
      * @param string $city
      * @param boolean $pickup
-     * @return array
+     * @return array|Order[]
      */
     public function getOrdersUnconfirmed($city, $pickup = false)
     {
@@ -50,7 +50,6 @@ class OrderRepository extends EntityRepository
             'place_point_city' => $city,
             'deliveryType' => (!$pickup ? OrderService::$deliveryDeliver : OrderService::$deliveryPickup),
             'paymentStatus' => OrderService::$paymentStatusComplete,
-            'not_nav' => 1
         );
 
         $orders = $this->getOrdersByFilter($filter, 'list');
@@ -64,7 +63,7 @@ class OrderRepository extends EntityRepository
 
     /**
      * @param string $city
-     * @return array
+     * @return array|Order[]
      */
     public function getOrdersAssigned($city)
     {
@@ -73,7 +72,32 @@ class OrderRepository extends EntityRepository
             'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
             'paymentStatus' => OrderService::$paymentStatusComplete,
-            'not_nav' => 1
+        );
+
+        $orders = $this->getOrdersByFilter($filter, 'list');
+
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
+
+    /**
+     * @param string $city
+     * @return array|Order[]
+     */
+    public function getOrdersCanceled($city)
+    {
+        $filter = array(
+            'order_status' =>  OrderService::$status_canceled,
+            'place_point_city' => $city,
+            'deliveryType' => OrderService::$deliveryDeliver,
+            'paymentStatus' => OrderService::$paymentStatusComplete,
+            'order_date_between' => array(
+                'from' => new \DateTime('-4 hour'),
+                'to' => new \DateTime('now'),
+            ),
         );
 
         $orders = $this->getOrdersByFilter($filter, 'list');
@@ -157,7 +181,6 @@ class OrderRepository extends EntityRepository
             ),
             'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
-            'orderFromNav' => 0
         );
         $order = $this->getOrdersByFilter($filter, 'single');
 
@@ -184,7 +207,6 @@ class OrderRepository extends EntityRepository
             'order_status' =>  array(OrderService::$status_new),
             'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
-            'orderFromNav' => 0
         );
         $order = $this->getOrdersByFilter($filter, 'single');
 
@@ -391,7 +413,9 @@ class OrderRepository extends EntityRepository
     public function getOrderCountByDay($dateFrom, $dateTo, $orderStatus=null, $mobile=false)
     {
         if (empty($orderStatus)) {
-            $orderStatus = OrderService::$status_completed;
+            $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_partialy_completed."'";
+        } else {
+            $orderStatus = "'".$orderStatus."'";
         }
 
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
@@ -403,7 +427,7 @@ class OrderRepository extends EntityRepository
             COUNT(o.id) AS order_count
           FROM orders o
           WHERE
-            o.order_status = '{$orderStatus}'
+            o.order_status IN ({$orderStatus})
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
             ".($mobile ? 'AND mobile=1':'')."
           GROUP BY DATE_FORMAT(o.order_date, '%y-%m-%d')
@@ -429,8 +453,8 @@ class OrderRepository extends EntityRepository
         $deliver = OrderService::$deliveryDeliver;
 
         $dateFrom = new \DateTime("now");
-        $dateToPickup = new \DateTime("-70 minute");
-        $dateToDeliver = new \DateTime("-2 hour");
+        $dateToPickup = new \DateTime("-65 minute");
+        $dateToDeliver = new \DateTime("-90 minute");
 
         $dateFrom1 = $dateFrom->sub(new \DateInterval('PT12H'))->format("Y-m-d h:i:s");
         $dateToPickup = $dateToPickup->format("Y-m-d h:i:s");
@@ -480,7 +504,7 @@ class OrderRepository extends EntityRepository
             OrderService::$status_nav_problems,
             OrderService::$status_pre,
             // TODO temp, nav canot cancel assigned orders
-            OrderService::$status_assiged
+//            OrderService::$status_assiged
         ];
 
         if ($excludeCompleted) {
@@ -505,5 +529,41 @@ class OrderRepository extends EntityRepository
 
         return $qb->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param \DateTime $date
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getOrdersToBeLate($date)
+    {
+        $orderStatus = "'".OrderService::$status_accepted
+            ."', '".OrderService::$status_assiged
+            ."', '".OrderService::$status_finished
+            ."', '".OrderService::$status_delayed."'";
+        $paymentStatus = OrderService::$paymentStatusComplete;
+        $deliveryType = OrderService::$deliveryDeliver;
+
+        $dateFrom = new \DateTime("-2 hour");
+        $dateFrom = $dateFrom->format("Y-m-d H:i:s");
+        $dateTo = $date->format("Y-m-d H:i:s");
+
+        $query = "
+          SELECT
+            o.id
+          FROM orders o
+          WHERE
+            o.order_status IN ({$orderStatus})
+            AND o.payment_status = '{$paymentStatus}'
+            AND o.delivery_type = '{$deliveryType}'
+            AND o.delivery_time BETWEEN '{$dateFrom}' AND '{$dateTo}'
+            AND o.place_point_self_delivery != 1
+            AND (o.late_order_informed != 1 OR o.late_order_informed IS NULL)
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 }

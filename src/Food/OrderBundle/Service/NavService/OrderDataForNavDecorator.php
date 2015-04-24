@@ -293,7 +293,8 @@ trait OrderDataForNavDecorator
     protected function getOrderTableName()
     {
         // return '[prototipas6].[dbo].[PROTOTIPAS$FoodOut Order]';
-        return $this->orderTable;
+        //return $this->orderTable;
+        return $this->container->get('food.nav')->getOrderTable();
     }
 
     protected function getOrderFieldNames()
