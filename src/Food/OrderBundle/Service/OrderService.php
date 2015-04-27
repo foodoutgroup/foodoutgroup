@@ -469,8 +469,8 @@ class OrderService extends ContainerAware
             'adresas' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->getAddress() . ", " . $this->getOrder()->getAddressId()->getCity() : "--"),
             'pristatymo_data' => $this->getOrder()->getDeliveryTime()->format('Y-m-d H:i:s'),
             'total_sum' => $this->getOrder()->getTotal(),
-            'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getPlace()->getDeliveryPrice() : 0),
-            'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getPlace()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
+            'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
+            'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
             'invoice' => $invoice
         );
 
