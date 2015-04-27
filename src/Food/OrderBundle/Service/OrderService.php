@@ -2234,7 +2234,6 @@ class OrderService extends ContainerAware
         }
 
         $pointRecord = null;
-
         if (empty($placePointId)) {
             $placePointMap = $this->container->get('session')->get('point_data');
             if (!empty($placePointMap[$place->getId()])) {
@@ -2243,18 +2242,22 @@ class OrderService extends ContainerAware
                     $isWork = $this->isTodayWork($pointRecord);
                     $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
                     if (!$isWork) {
-                        $theId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(),$locationData);
-
-                        $placePointMap[$place->getId()] = $theId;
+                        $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(),$locationData);
+                        $placePointMap[$place->getId()] = $placePointId;
                         $this->container->get('session')->set('point_data', $placePointMap);
-
-                        $formErrors[] = 'order.form.errors.no_restaurant_to_deliver';
+                        if (empty($placePointId)) {
+                            $formErrors[] = 'order.form.errors.no_restaurant_to_deliver';
+                        } else {
+                            $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
+                        }
                     } else {
                         // Double check the place point for corrup detections
                         $pointForPlace = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(),$locationData);
                         if (!$pointForPlace) {
                             // no working placepoint for this restourant
                             $formErrors[] = 'order.form.errors.wrong_point_for_address';
+                        } else {
+                            $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointForPlace);
                         }
                     }
                 }
