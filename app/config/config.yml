@@ -333,10 +333,11 @@ sonata_admin:
                       - sonata.admin.place.reviews
                   roles: [ ROLE_MODERATOR, ROLE_DISPATCHER ]
               admin.orders:
-                label: admin.group.orders
-                label_catalogue: SonataAdminBundle
-                items:
+                  label: admin.group.orders
+                  label_catalogue: SonataAdminBundle
+                  items:
                       - sonata.admin.order
+                  roles: [ ROLE_ADMIN, ROLE_MODERATOR, ROLE_DISPATCHER ]
               admin.system:
                   items: ~
                   item_adds:
