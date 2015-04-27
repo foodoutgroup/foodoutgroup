@@ -88,9 +88,9 @@
                     {# TODO remove city hardcode, damn it... #}
                     <select id="index_city">
                         <option value="" disabled {% if formDefaults.city == '' %}selected{% endif %}>{% trans %}index.city{% endtrans %}</option>
-                        <option value="Vilnius" {% if formDefaults.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
-                        <option value="Kaunas" {% if formDefaults.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
-                        <option value="Klaipėda" {% if formDefaults.city == 'Klaipėda' or formDefaults.city == 'Klaipeda' %}selected{% endif %}>Klaipėda</option>
+                        {% for city in available_cities %}
+                            <option value="{{ city }}" {% if formDefaults.city == city or formDefaults.city == city|replace({'ė':'e','y':'ī'}) %}selected{% endif %}>{{ city }}</option>
+                        {% endfor %}
                     </select>
 
                     {# <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}"  autocomplete="off" > #}
@@ -103,14 +103,17 @@
         <p class="img-description">{# pavadinimas produkto, vietove, kaina #}</p>
     </div>
     <div class="site-center">
-        <div class="site-block">
-            {{ render(controller('FoodPlacesBundle:Default:bestOffers')) }}
-        </div>
-
-            <div class="site-block banner">
-                <a href="http://foodout.lt/lt/registracija_zaidimui"><img src="http://images.foodout.lt/pp_1.jpg"></a>
+        {% if show_best_offers %}
+            <div class="site-block">
+                {{ render(controller('FoodPlacesBundle:Default:bestOffers')) }}
             </div>
+        {% endif %}
 
+        {## TODO neiskeltas LT - LV konfliktas#}
+        {#<div class="site-block banner">#}
+            {#<a href="http://foodout.lt/lt/registracija_zaidimui"><img src="http://images.foodout.lt/pp_1.jpg"></a>#}
+        {#</div>#}
+        
         <div class="site-block">
             {{ render(controller('FoodPlacesBundle:Default:recommended')) }}
         </div>

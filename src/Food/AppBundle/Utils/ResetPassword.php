@@ -11,7 +11,17 @@ class ResetPassword
 
     const RESET_USER_PASSWORD_MAILER_ID = '30013949';
 
+    private $container;
+
     /**
+     * @param Service_con $container
+     */
+    public function setContainer($container)
+    {
+        $this->container = $container;
+    }
+
+   /**
      * Confirmation email
      *
      * @param string $email
@@ -55,7 +65,7 @@ class ResetPassword
 
         $mailer->setVariables(['password_reset_url' => $url])
                ->setRecipient($user->getEmail(), $user->getEmail())
-               ->setId(static::RESET_USER_PASSWORD_MAILER_ID)
+               ->setId($this->container->getParameter('mailer_user_reset'))
                ->send();
     }
 }

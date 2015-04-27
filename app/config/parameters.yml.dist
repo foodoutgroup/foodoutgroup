@@ -11,8 +11,65 @@ parameters:
     mailer_password: null
     locale: lt
     secret: f6180a0fb30e99a1da1e364412f96c3f98cbaa1f
-
     aws_key:
     aws_secret:
     aws_region: eu-west-1
     s3_bucket: foodout-invoice
+
+    locale: lv
+    locales: ["lv", "en", "ru"]
+    available_cities: [Ryga]
+    available_locales: ["lv", "en", "ru"]
+    available_locales_routing: lv | en | ru
+    cloudfront_url: images.foodout.lt
+    time_zone: "Europe/Riga"
+    sms.sender: "Foodout.lv"
+    admin.emails: [mantas@foodout.lt]
+    admin.phones: [37061514333]
+    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, giedrius@foodout.lt]
+    order.city_coordinators:
+        vilnius: []
+        kaunas: [zaneta@foodout.lt]
+        klaipėda: [jurgita@foodout.lt]
+        ryga: [paulius@foodout.lt]
+    order.accept_notify_emails: []
+    accounting_email: "buhalterija@foodout.lt"
+    payment.methods:
+        - local
+        - local.card
+        - paysera
+        - swedbank-gateway
+        - swedbank-credit-card-gateway
+        - seb-banklink
+        - nordea-banklink
+    currency_display: '&euro;'
+    currency_iso: EUR
+    display_currency_alternative:  Lt
+    currency_alternative: false
+    show_best_offers: false
+    show_apps_download: false
+    show_is_social: false
+    # naudojam telefonu validacijoms
+    country: LV
+    country_full: Latvia
+    vat: 21
+    title: "Foodout"
+    domain: "foodout.lv"
+    publicdomain: "foodout.lv"
+    google_analytics_uid: "UA-50355577-2"
+    nav_table_prefix: 'Čilija Skambučių Centras'
+    nav_ws_prefix: 'Čilija Skambučių Centras'
+    mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
+    mailer_notify_on_accept: 30010811
+    mailer_notify_new_user: 30009253
+    mailer_user_reset: 30013949
+    mailer_partialy_deliverer: 30021995
+    mailer_rate_your_food: 30009271
+    mailer_send_invoice: 30019657
+    yt_video: https://www.youtube.com/v/3zFW6hnuvJY?fs=1&amp;autoplay=
+    yt_embeded: //www.youtube-nocookie.com/embed/3zFW6hnuvJY
+    default_delivery_distance: 7
+    default_self_delivey_distance: 10
+    google.analytics.view_id: "85237075"
+    dispatcher_phones: [37126110079]
+    send_sms_on_cancel: false

@@ -22,47 +22,47 @@
     <meta name="msapplication-config" content="none"/>
 
     {% stylesheets 'bundles/foodapp/scripts/jquery-ui/custom-theme/jquery-ui-1.10.3.custom.min.css' filter="cssrewrite" %}
-        <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/scripts/boxer/jquery.fs.boxer.css*'  %}
-        <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/styles/style.css'  %}
-        <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("Ymd") }}" type="text/css"  />
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("Ymd") }}" type="text/css"  />
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/styles/jquery.loadmask.css'  %}
-        <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
     {% endstylesheets %}
 
     {% block javascripts %}
-    <script src="{{ asset('bundles/foodapp/scripts/jquery-1.10.2.min.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/jquery.cycle2.min.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/jquery-ui/jquery-ui-1.10.3.custom.min.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/jquery.ui.selectmenu.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/jquery.raty.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/boxer/jquery.fs.boxer.min.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/icheck/jquery.icheck.min.js') }}">		</script>
-    <script src="{{ asset('bundles/foodapp/scripts/jquery.placeholder.min.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/jquery.loadmask.min.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/jquery.typeahead.js') }}"></script>
-    {# <script src="{{ asset('bundles/foodapp/scripts/mediator.min.js') }}"></script> #}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-    <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/selectivizr-min.js') }}"></script><![endif]-->
-    <!--[if IE 9]><script src="{{ asset('bundles/foodapp/scripts/pie_ie9.js') }}"></script><![endif]-->
-    <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/pie_ie8.js') }}"></script><![endif]-->
-    <script type="text/javascript">
-        $.fn.raty.defaults.noRatedMsg = '{% trans %}general.raty.not_rated_yet{% endtrans %}';
-        $.fn.raty.defaults.hints = [
-            '{% trans %}general.raty.bad{% endtrans %}',
-            '{% trans %}general.raty.poor{% endtrans %}',
-            '{% trans %}general.raty.regular{% endtrans %}',
-            '{% trans %}general.raty.good{% endtrans %}',
-            '{% trans %}general.raty.gorgeous{% endtrans %}'
-        ];
-    </script>
-    <script src="{{ asset('bundles/foodapp/scripts/noty/packaged/jquery.noty.packaged.min.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/bootstrap/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery-1.10.2.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.cycle2.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery-ui/jquery-ui-1.10.3.custom.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.ui.selectmenu.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.raty.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/boxer/jquery.fs.boxer.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/icheck/jquery.icheck.min.js') }}">		</script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.placeholder.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.loadmask.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.typeahead.js') }}"></script>
+        {# <script src="{{ asset('bundles/foodapp/scripts/mediator.min.js') }}"></script> #}
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+        <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/selectivizr-min.js') }}"></script><![endif]-->
+        <!--[if IE 9]><script src="{{ asset('bundles/foodapp/scripts/pie_ie9.js') }}"></script><![endif]-->
+        <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/pie_ie8.js') }}"></script><![endif]-->
+        <script type="text/javascript">
+            $.fn.raty.defaults.noRatedMsg = '{% trans %}general.raty.not_rated_yet{% endtrans %}';
+            $.fn.raty.defaults.hints = [
+                '{% trans %}general.raty.bad{% endtrans %}',
+                '{% trans %}general.raty.poor{% endtrans %}',
+                '{% trans %}general.raty.regular{% endtrans %}',
+                '{% trans %}general.raty.good{% endtrans %}',
+                '{% trans %}general.raty.gorgeous{% endtrans %}'
+            ];
+        </script>
+        <script src="{{ asset('bundles/foodapp/scripts/noty/packaged/jquery.noty.packaged.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/bootstrap/js/bootstrap.min.js') }}"></script>
 
         {% javascripts '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.pack.js'
         '@FoodAppBundle/Resources/public/scripts/fancy/helpers/jquery.fancybox-media.js' %}
@@ -114,10 +114,17 @@
 {{ notifications.init|raw }}
 <div class="site">
     <div class="site-top">
+        {#
+            # TODO neiskeltas LT - LV konfliktas
+            Skirtingi logo
+        #}
+        {#<div class="site-block clearfix"><a href="{{ path('food_lang_homepage') }}" class="main-logo"><img alt="{{ page_title }}" src="{{ asset('bundles/foodapp/images/logo_food2.png') }}"></a>#}
         <div class="site-block clearfix">
             <a href="{{ path('food_lang_homepage') }}" class="main-logo">
                 <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{{ asset('bundles/foodapp/images/logo_food.png') }}" />
             </a>
+            
+            
             {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
             <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
                 <li><a href="{{ path('food_slug', {'slug': ('general.help_slug'|trans())}) }}"><span>{% trans %}general.help_button{% endtrans %}</span></a></li>
@@ -129,19 +136,21 @@
     </div>
 
     {% block body %}{% endblock %}
-    <div class="site-center site-center-bottom">
-    <div class="site-block">
-        <div class="clearfix bottom-blocks">
-            <div class="app-block clearfix"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-view.png') }}">
-                <div class="app-block-inner">
-                    <h3>Foodout.lt tavo kišenėje!</h3>
-                    <p>Užsisakyk maisto į namus ar biurą per iPhone arba Android telefonus. Atsisiųsk nemokamą aplikaciją!.</p>
-                    <div><a target="_BLANK" href="https://itunes.apple.com/us/app/foodout/id919992168"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a target="_BLANK" href="https://play.google.com/store/apps/details?id=co.lemonlabs.android.foodout#"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/g-store.png') }}"></a></div>
+    {% if show_apps_download %}
+        <div class="site-center site-center-bottom">
+            <div class="site-block">
+                <div class="clearfix bottom-blocks">
+                    <div class="app-block clearfix"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-view.png') }}">
+                        <div class="app-block-inner">
+                            <h3>Foodout.lt tavo kišenėje!</h3>
+                            <p>Užsisakyk maisto į namus ar biurą per iPhone arba Android telefonus. Atsisiųsk nemokamą aplikaciją!.</p>
+                            <div><a target="_BLANK" href="https://itunes.apple.com/us/app/foodout/id919992168"><img src="http://{{ cloudfront_url }{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a target="_BLANK" href="https://play.google.com/store/apps/details?id=co.lemonlabs.android.foodout#"><img src="http://{{ cloudfront_url }{{ asset('bundles/foodapp/images/g-store.png') }}"></a></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
+    {% endif %}
 
     {{ render(controller('FoodAppBundle:Default:footer')) }}
 </div>
@@ -160,7 +169,7 @@
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-50355577-1', 'foodout.lt');
+    ga('create', '{{ google_analytics_uid }}', 'auto');
     ga('require', 'displayfeatures');
     ga('send', 'pageview');
     ga('require', 'ec');
@@ -171,7 +180,10 @@
     {#
         {% render(controller('FoodAppBundle:Default:showVideo')) %}
     #}
-
+{#
+    # TODO neiskeltas LT - LV konfliktas
+    LT trackinam papildomai, o LV to nera. Reikia opcijos, kad isjungtume tai LV
+#}
     (function () {
         var a = document.createElement("iframe");
         a.style.cssText = "width: 0; height: 0; border: 0";

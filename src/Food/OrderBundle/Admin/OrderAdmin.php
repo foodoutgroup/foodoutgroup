@@ -71,8 +71,12 @@ class OrderAdmin extends SonataAdmin
             ->add('id', null, array('label' => 'admin.order.id'))
             //->add('address_id', null, array('label' => 'admin.order.delivery_address'))
             ->add('place_name', null, array('label' => 'admin.order.place_name_short',))
-            ->add('order_date', 'doctrine_orm_date_range', array('label' => 'admin.order.order_date'))
+            //->add('order_date', 'doctrine_orm_date_range', array('label' => 'admin.order.order_date'))
+            ->add('order_date', 'doctrine_orm_date_range', array(), null, array('widget' => 'single_text', 'required' => false,  'attr' => array('class' => 'datepicker2')))
             //->add('order_date', 'doctrine_orm_date_range', array(), null, array( 'required' => false,  'attr' => array('class' => 'datepicker')))
+            ->add('city', 'doctrine_orm_callback', array('callback'   => array($this, 'userCityFilter'), 'field_type' => 'text'))
+            ->add('address', 'doctrine_orm_callback', array('callback'   => array($this, 'userAddressFilter'), 'field_type' => 'text'))
+            ->add('phone', 'doctrine_orm_callback', array('callback'   => array($this, 'userPhoneFilter'), 'field_type' => 'text'))
             ->add('userIp', null, array('label' => 'admin.order.user_ip'))
             ->add('order_status',null, array('label' => 'admin.order.order_status'), 'choice', array(
                 'choices' => $statusChoices
@@ -94,6 +98,48 @@ class OrderAdmin extends SonataAdmin
             ->add('sfNumber', null, array('label' => 'admin.order.sf_line'))
             ->add('orderFromNav', null, array('label' => 'admin.order.order_from_nav'))
         ;
+    }
+
+
+    public function userCityFilter($queryBuilder, $alias, $field, $value)
+    {
+        if (!$value || empty($value['value'])) {
+            return;
+        }
+
+        $queryBuilder->join(sprintf('%s.address_id', $alias), 'a');
+        $queryBuilder->andWhere("a.city LIKE :thecity");
+        $queryBuilder->setParameter('thecity', '%'.$value['value'].'%');
+
+        return true;
+    }
+
+
+    public function userAddressFilter($queryBuilder, $alias, $field, $value)
+    {
+        if (!$value || empty($value['value'])) {
+            return;
+        }
+
+        $queryBuilder->join(sprintf('%s.address_id', $alias), 'ad');
+        $queryBuilder->andWhere("ad.address LIKE :theaddress");
+        $queryBuilder->setParameter('theaddress', '%'.$value['value'].'%');
+
+        return true;
+    }
+
+
+    public function userPhoneFilter($queryBuilder, $alias, $field, $value)
+    {
+        if (!$value || empty($value['value'])) {
+            return;
+        }
+
+        $queryBuilder->join(sprintf('%s.user', $alias), 'fu');
+        $queryBuilder->andWhere("fu.phone LIKE :thephone");
+        $queryBuilder->setParameter('thephone', '%'.str_replace("+", "", $value['value']).'%');
+
+        return true;
     }
 
     /**

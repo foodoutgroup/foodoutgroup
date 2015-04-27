@@ -427,6 +427,10 @@
                 <source>admin.place.chain</source>
                 <target>Chain</target>
             </trans-unit>
+            <trans-unit id="admin.place.internal_code" resname="admin.place.internal_code">
+                <source>admin.place.internal_code</source>
+                <target>Internal code</target>
+            </trans-unit>
 
             <!-- Place points -->
             <trans-unit id="place-point-list">
@@ -1055,6 +1059,38 @@
                 <source>admin.order.order_from_nav</source>
                 <target>From NAV</target>
             </trans-unit>
+            <trans-unit id="admin.order.hash">
+                <source>admin.order.hash</source>
+                <target>Order hash</target>
+            </trans-unit>
+            <trans-unit id="admin.order.send_invoice">
+                <source>admin.order.send_invoice</source>
+                <target>Send invoice</target>
+            </trans-unit>
+            <trans-unit id="admin.order.invoice_added_for_send">
+                <source>admin.order.invoice_added_for_send</source>
+                <target>Invoice added for send</target>
+            </trans-unit>
+            <trans-unit id="admin.order.company">
+                <source>admin.order.company</source>
+                <target>Company</target>
+            </trans-unit>
+            <trans-unit id="admin.order.companyName">
+                <source>admin.order.companyName</source>
+                <target>Company name</target>
+            </trans-unit>
+            <trans-unit id="admin.order.companyCode">
+                <source>admin.order.companyCode</source>
+                <target>Company code</target>
+            </trans-unit>
+            <trans-unit id="admin.order.vatCode">
+                <source>admin.order.vatCode</source>
+                <target>VAT code</target>
+            </trans-unit>
+            <trans-unit id="admin.order.companyAddress">
+                <source>admin.order.companyAddress</source>
+                <target>Address</target>
+            </trans-unit>
 
             <!-- Order logas pas sonata admina -->
             <trans-unit id="admin.order.order_log">
@@ -1199,6 +1235,10 @@
                 <source>admin.dispatcher.order_status.completed</source>
                 <target>Delivered</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.partialy_completed">
+                <source>admin.dispatcher.order_status.partialy_completed</source>
+                <target>Partialy delivered</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.order_status.finished">
                 <source>admin.dispatcher.order_status.finished</source>
                 <target>Finish (food)</target>
@@ -1328,11 +1368,11 @@
             <!-- Banned IP listas -->
             <trans-unit id="admin.banned_ips">
                 <source>admin.banned_ips</source>
-                <target>Blokuoti IP adresai</target>
+                <target>Banned IP</target>
             </trans-unit>
             <trans-unit id="Banned Ip List">
                 <source>Banned Ip List</source>
-                <target>Blokuoti IP adresai</target>
+                <target>Banned IP</target>
             </trans-unit>
             <trans-unit id="admin.banned_ip.ip">
                 <source>admin.banned_ip.ip</source>
@@ -1344,11 +1384,11 @@
             </trans-unit>
             <trans-unit id="admin.banned_ip.active">
                 <source>admin.banned_ip.active</source>
-                <target>Aktyvus</target>
+                <target>Active</target>
             </trans-unit>
             <trans-unit id="admin.banned_ip.reason">
                 <source>admin.banned_ip.reason</source>
-                <target>Priežastis</target>
+                <target>Reason</target>
             </trans-unit>
             <trans-unit id="admin.banned_ip.id">
                 <source>admin.banned_ip.id</source>
@@ -1390,15 +1430,15 @@
             <!-- Street admin -->
             <trans-unit id="admin.street">
                 <source>admin.street</source>
-                <target>Gatvės</target>
+                <target>Street</target>
             </trans-unit>
             <trans-unit id="Street List">
                 <source>Street List</source>
-                <target>Gatvės</target>
+                <target>Street</target>
             </trans-unit>
             <trans-unit id="admin.street.city">
                 <source>admin.street.city</source>
-                <target>Miestas</target>
+                <target>City</target>
             </trans-unit>
             <trans-unit id="admin.street.city_placeholder">
                 <source>admin.street.city_placeholder</source>
@@ -1406,7 +1446,7 @@
             </trans-unit>
             <trans-unit id="admin.street.street">
                 <source>admin.street.street</source>
-                <target>Gatvė</target>
+                <target>Street</target>
             </trans-unit>
             <trans-unit id="admin.street.street_placeholder">
                 <source>admin.street.street_placeholder</source>
@@ -1416,11 +1456,11 @@
             <!-- Kuponu listas -->
             <trans-unit id="Coupon List">
                 <source>Coupon List</source>
-                <target>Nuolaidos kuponai</target>
+                <target>Discount coupon</target>
             </trans-unit>
             <trans-unit id="admin.coupons">
                 <source>admin.coupons</source>
-                <target>Nuolaidos kuponai</target>
+                <target>Discount coupon</target>
             </trans-unit>
             <trans-unit id="admin.coupon.id">
                 <source>admin.coupon.id</source>
@@ -1428,35 +1468,35 @@
             </trans-unit>
             <trans-unit id="admin.coupon.name">
                 <source>admin.coupon.name</source>
-                <target>Pavadinimas</target>
+                <target>Name</target>
             </trans-unit>
             <trans-unit id="admin.coupon.discount">
                 <source>admin.coupon.discount</source>
-                <target>Nuolaida (%)</target>
+                <target>Discount (%)</target>
             </trans-unit>
             <trans-unit id="admin.coupon.place">
                 <source>admin.coupon.place</source>
-                <target>Restoranas</target>
+                <target>Restaurant</target>
             </trans-unit>
             <trans-unit id="admin.coupon.only_nav">
                 <source>admin.coupon.only_nav</source>
-                <target>Tik Navision</target>
+                <target>Only Navision</target>
             </trans-unit>
             <trans-unit id="admin.coupon.free_delivery">
                 <source>admin.coupon.free_delivery</source>
-                <target>Nemok. pristatymas</target>
+                <target>Free delivery</target>
             </trans-unit>
             <trans-unit id="admin.coupon.active">
                 <source>admin.coupon.active</source>
-                <target>Aktyvus</target>
+                <target>Active</target>
             </trans-unit>
             <trans-unit id="admin.coupon.single_use">
                 <source>admin.coupon.single_use</source>
-                <target>Vienkartinis</target>
+                <target>Single use</target>
             </trans-unit>
             <trans-unit id="admin.coupon.code">
                 <source>admin.coupon.code</source>
-                <target>Kodas</target>
+                <target>Code</target>
             </trans-unit>
 
             <!-- Cover photo admin -->
@@ -1474,7 +1514,7 @@
             </trans-unit>
             <trans-unit id="admin.place_cover_photo.photo">
                 <source>admin.place_cover_photo.photo</source>
-                <target>Nuotrauka</target>
+                <target>Photo</target>
             </trans-unit>
 
             <!-- Reports -->

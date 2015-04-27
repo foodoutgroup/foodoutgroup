@@ -1582,6 +1582,9 @@ div.coupon_form_popup {
 .restaurant-menu-item .price {
     line-height: 20px;
 }
+.restaurant-menu-item .price.single {
+    line-height: 32px;
+}
 .detailed-dish-popup .euro {
     font-size: 11px;
     color: #a78f92;
@@ -1659,6 +1662,15 @@ div.coupon_form_popup {
 }
 .restaurant-menu-item .price.discounted.multiline .euro{
     font-size: 11px;
+}
+
+.display-list .restaurant-menu-item .price.discounted.multiline {
+    top: 0px;
+    right: 18px;
+}
+.display-list .restaurant-menu-item .price.discount.multiline {
+    top: 12px;
+
 }
 
 .restaurant-menu-item .price.discount {

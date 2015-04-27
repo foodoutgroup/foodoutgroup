@@ -8,6 +8,7 @@ use Food\CartBundle\Entity\CartOption;
 use Food\DishesBundle\Entity\DishOption;
 use Food\DishesBundle\Entity\DishSize;
 use Food\DishesBundle\Entity\Place;
+use Food\DishesBundle\Entity\PlacePoint;
 
 
 class CartService {
@@ -404,9 +405,9 @@ class CartService {
     {
         $total = 0;
         foreach ($cartItems as $cartItem) {
-            $total += (int)($cartItem->getDishSizeId()->getCurrentPrice() * 100) * (int)$cartItem->getQuantity();
+            $total += ((float)$cartItem->getDishSizeId()->getCurrentPrice() * 100) * (int)$cartItem->getQuantity();
             foreach ($cartItem->getOptions() as $opt) {
-                $total += (int)($opt->getDishOptionId()->getPrice() * 100) * (int)$cartItem->getQuantity();
+                $total += ((float)$opt->getDishOptionId()->getPrice() * 100) * (int)$cartItem->getQuantity();
             }
         }
         return $total / 100;
@@ -511,5 +512,23 @@ class CartService {
             $this->getEm()->remove($cartDish);
             $this->getEm()->flush();
         }
+    }
+
+    public function getDeliveryPrice(Place $place, $locData, PlacePoint $placePoint)
+    {
+        $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $locData);
+        if (empty($deliveryTotal) || $deliveryTotal == 0) {
+            $deliveryTotal = $place->getDeliveryPrice();
+        }
+        return $deliveryTotal;
+    }
+
+    public function getMinimumCart(Place $place, $locData, PlacePoint $placePoint)
+    {
+        $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getMinimumCartForPlacePoint($place, $placePoint, $locData);
+        if (empty($deliveryTotal) || $deliveryTotal == 0) {
+            $deliveryTotal = $place->getCartMinimum();
+        }
+        return $deliveryTotal;
     }
 }

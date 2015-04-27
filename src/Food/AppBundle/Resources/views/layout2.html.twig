@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="verify-webtopay" content="461551ad8deddc3ad0975adb27d1eff4" />
+    <title>{% block title %}{{ page_title }}{% endblock %}</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=1000">
+    <meta name="msapplication-config" content="none"/>
+
+    {% stylesheets 'bundles/foodapp/scripts/jquery-ui/custom-theme/jquery-ui-1.10.3.custom.min.css' filter="cssrewrite" %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    {% endstylesheets %}
+    {% stylesheets '@FoodAppBundle/Resources/public/scripts/boxer/jquery.fs.boxer.css*'  %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    {% endstylesheets %}
+    {% stylesheets '@FoodAppBundle/Resources/public/styles/style.css'  %}
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("Ymd") }}" type="text/css"  />
+    {% endstylesheets %}
+    {% stylesheets '@FoodAppBundle/Resources/public/styles/jquery.loadmask.css'  %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    {% endstylesheets %}
+
+    {% block javascripts %}
+        <script src="{{ asset('bundles/foodapp/scripts/jquery-1.10.2.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.cycle2.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery-ui/jquery-ui-1.10.3.custom.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.ui.selectmenu.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.raty.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/boxer/jquery.fs.boxer.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/icheck/jquery.icheck.min.js') }}">		</script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.placeholder.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.loadmask.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.typeahead.js') }}"></script>
+        {# <script src="{{ asset('bundles/foodapp/scripts/mediator.min.js') }}"></script> #}
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+        <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/selectivizr-min.js') }}"></script><![endif]-->
+        <!--[if IE 9]><script src="{{ asset('bundles/foodapp/scripts/pie_ie9.js') }}"></script><![endif]-->
+        <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/pie_ie8.js') }}"></script><![endif]-->
+        <script type="text/javascript">
+            $.fn.raty.defaults.noRatedMsg = '{% trans %}general.raty.not_rated_yet{% endtrans %}';
+            $.fn.raty.defaults.hints = [
+                '{% trans %}general.raty.bad{% endtrans %}',
+                '{% trans %}general.raty.poor{% endtrans %}',
+                '{% trans %}general.raty.regular{% endtrans %}',
+                '{% trans %}general.raty.good{% endtrans %}',
+                '{% trans %}general.raty.gorgeous{% endtrans %}'
+            ];
+        </script>
+        <script src="{{ asset('bundles/foodapp/scripts/noty/packaged/jquery.noty.packaged.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/bootstrap/js/bootstrap.min.js') }}"></script>
+
+        {% javascripts '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.pack.js'
+        '@FoodAppBundle/Resources/public/scripts/fancy/helpers/jquery.fancybox-media.js' %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+        {% stylesheets '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+        {% endstylesheets %}
+
+    {% endblock %}
+    {# Facebook retargeting script for Inspired #}
+    <script>(function() {
+            var _fbq = window._fbq || (window._fbq = []);
+            if (!_fbq.loaded) {
+                var fbds = document.createElement('script');
+                fbds.async = true;
+                fbds.src = '//connect.facebook.net/en_US/fbds.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(fbds, s);
+                _fbq.loaded = true;
+            }
+            _fbq.push(['addPixelId', '1000570273293239']);
+        })();
+        window._fbq = window._fbq || [];
+        window._fbq.push(['track', 'PixelInitialized', {}]);
+    </script>
+    <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=1000570273293239&ev=PixelInitialized" /></noscript>
+</head>
+<body>
+{{ notifications.init|raw }}
+<div class="site">
+    <div class="site-top">
+        <div class="site-block clearfix"><a href="{{ path('food_lang_homepage') }}" class="main-logo"><img alt="{{ page_title }}" src="{{ asset('bundles/foodapp/images/logo_food.png') }}"></a>
+            {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
+            <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
+                <li><a href="{{ path('food_slug', {'slug': ('general.help_slug'|trans())}) }}"><span>{% trans %}general.help_button{% endtrans %}</span></a></li>
+                <li class="login-ico">
+                    {% render(controller('FoodUserBundle:Default:loginButton')) %}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    {% block body %}{% endblock %}
+    <div class="site-center site-center-bottom">
+        <div class="site-block">
+            <div class="clearfix bottom-blocks">
+                <div class="app-block clearfix"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-view.png') }}">
+                    <div class="app-block-inner">
+                        <h3>Foodout.lt tavo kišenėje!</h3>
+                        <p>Užsisakyk maisto į namus ar biurą per iPhone arba Android telefonus. Atsisiųsk nemokamą aplikaciją!.</p>
+                        <div><a target="_BLANK" href="https://itunes.apple.com/us/app/foodout/id919992168"><img src="{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a target="_BLANK" href="https://play.google.com/store/apps/details?id=co.lemonlabs.android.foodout#"><img src="{{ asset('bundles/foodapp/images/g-store.png') }}"></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ render(controller('FoodAppBundle:Default:footer')) }}
+</div>
+
+{{ include('FoodAppBundle:Default:login_register.html.twig') }}
+
+<script src="{{ asset('bundles/foodapp/scripts/common.js')}}"></script>
+<script src="{{ asset('bundles/foodapp/scripts/scripts.js')}}"></script>
+<script type="text/javascript">
+    {# var mediator = new Mediator(); #}
+    {% block jscode %}{% endblock %}
+</script>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-50355577-1', 'foodout.lt');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    ga('require', 'ec');
+
+    {% block ga_js_code %}{% endblock %}
+
+
+    {% render(controller('FoodAppBundle:Default:showVideo')) %}
+</script>
+</body>
+</html>

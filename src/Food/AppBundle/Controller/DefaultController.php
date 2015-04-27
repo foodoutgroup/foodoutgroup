@@ -153,7 +153,7 @@ class DefaultController extends Controller
             return $this->render(
                 'FoodAppBundle:Default:videopopup.js.twig',
                 array(
-                    'video' => 'https://www.youtube.com/v/3zFW6hnuvJY?fs=1&amp;autoplay=1'
+                    'video' => $this->container->getParameter('yt_video')
                 )
             );
         } else {

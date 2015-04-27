@@ -72,7 +72,8 @@ class DefaultController extends Controller
             $kitchens,
             $filters,
             $recommended,
-            $this->get('food.googlegis')->getLocationFromSession()
+            $this->get('food.googlegis')->getLocationFromSession(),
+            $this->container
         );
         $this->get('food.places')->saveRelationPlaceToPoint($places);
         $places = $this->get('food.places')->placesPlacePointsWorkInformation($places);

@@ -94,8 +94,8 @@ var Dispatcher = {
                     modal: true,
                     buttons: {
                         // translate buttons
-                        "Keisti": function() {
-                            $('.sonata-ba-list').mask();
+                //# TODO neiskeltas LT - LV konfliktas
+                        "Ok": function() {
                             var newStatus = $(this).find('.order_status:checked').val();
                             var url = Routing.generate('food_admin_set_order_status', { '_locale': Dispatcher._locale, 'orderId': orderId, 'status': newStatus, _sonata_admin: 'sonata.admin.dish' });
                             $.get(
@@ -109,7 +109,8 @@ var Dispatcher = {
                             $( this ).dialog( "close" );
                             $( this ).dialog( "destroy" );
                         },
-                        "Atšaukti": function() {
+                        //# TODO neiskeltas LT - LV konfliktas
+                        "Cancel": function() {
                             $( this ).dialog( "close" );
                             $( this ).dialog( "destroy" );
                         }

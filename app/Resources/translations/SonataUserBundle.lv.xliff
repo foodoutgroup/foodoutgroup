@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="lv" datatype="plaintext" original="" >
+        <body>
+            <trans-unit id="Bad credentials">
+                <source>Bad credentials</source>
+                <target>Bad credentials</target>
+            </trans-unit>
+            <trans-unit id="The presented password is invalid.">
+                <source>The presented password is invalid.</source>
+                <target>The presented password is invalid.</target>
+            </trans-unit>
+            <trans-unit id="The presented password cannot be empty.">
+                <source>The presented password cannot be empty.</source>
+                <target>The presented password cannot be empty.</target>
+            </trans-unit>
+            <trans-unit id="user_block_logout">
+                <source>user_block_logout</source>
+                <target>Logout</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

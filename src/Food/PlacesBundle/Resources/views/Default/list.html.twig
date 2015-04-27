@@ -85,7 +85,13 @@
                     {% if place.place.deliveryOptions != 'pickup' %}
                     <span class="delivery">{% trans %}place.delivery_info{% endtrans %}:
                         <span>
-                            {{ currency_display|raw }}{{ place.place.deliveryPrice }} / {{ place.place.deliveryTime }}
+                            {% set minPrc = places_service.minDeliveryPrice(place.place.id) %}
+                            {% set maxPrc = places_service.maxDeliveryPrice(place.place.id) %}
+                            {% if minPrc == maxPrc %}
+                                {{ currency_display|raw }}{{ minPrc }} / {{ place.place.deliveryTime }}
+                            {% else %}
+                                {{ currency_display|raw }}{{ minPrc }}-{{ maxPrc }} / {{ place.place.deliveryTime }}
+                            {% endif %}
                             {% if place.place.deliveryTimeInfo is not empty %}
                                 <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.place.deliveryTimeInfo }}"></span>
                             {% endif %}
@@ -98,7 +104,13 @@
                     {% endif %}
                     {% if place.place.deliveryOptions != 'pickup' or (place.place.deliveryOptions == 'pickup' and place.place.minimalOnSelfDel) %}
                     <span class="min-cart-size">{% trans %}place.min_cart_amount{% endtrans %}:
-                        <span>{{ currency_display|raw }}{{ place.place.cartMinimum }}</span>
+                        {% set minCart = places_service.minCartPrice(place.place.id) %}
+                        {% set maxCart = places_service.maxCartPrice(place.place.id) %}
+                        {% if minCart == maxCart %}
+                            <span>{{ currency_display|raw }}{{ minCart }}</span>
+                        {% else %}
+                            <span>{{ currency_display|raw }}{{ minCart }}-{{ maxCart }}</span>
+                        {% endif %}
                     </span>
                     {% endif %}
                 </div>
@@ -134,8 +146,12 @@
         }
         trgt.text(trgt.text().replace("%1", cnt));
         {% if location_show %}
-            if (recommended == 0 && cnt > 0) {
-                trgt.text(trgt.text() + ', {% trans %}places.places_near{% endtrans %} {{ location.address }}');
+            if (!recommended && cnt > 0) {
+                {% set locAdress = '' %}
+                {% if location and location.address_found %}
+                    {% set locAdress=location.address %}
+                {% endif %}
+                trgt.text(trgt.text() + ', {% trans %}places.places_near{% endtrans %} {{ locAdress }}');
             }
         {% endif %}
 

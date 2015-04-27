@@ -17,11 +17,17 @@
                             {% set showDiscount = true %}
                         {% endif %}
                         <strong class="price {% if showDiscount %}discounted{% endif %}">
-                            {{ currency_display|raw }}{{ size.priceLocalized }}<span class="euro">/&nbsp;{{  misc_utils.getLitas(size.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
+                            {{ currency_display|raw }}{{ size.priceLocalized }}
+                            {% if currency_alternative %}
+                                <span class="euro">/&nbsp;{{  misc_utils.getLitas(size.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
+                            {% endif %}
                         </strong>
                         {% if showDiscount %}
                             <strong class="price {% if showDiscount %}discount{% endif %}">
-                                {{ currency_display|raw }}{{ size.discountPrice }}<span class="euro">/&nbsp;{{  misc_utils.getLitas(size.discountPrice)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
+                                {{ currency_display|raw }}{{ size.discountPrice }}
+                                {% if currency_alternative %}
+                                    <span class="euro">/&nbsp;{{  misc_utils.getLitas(size.discountPrice)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
+                                {% endif %}
                             </strong>
                         {% endif %}
                         <input type="radio" {% if loop.index == selectedSize %}checked{% endif %} value="{{ size.id }}" class="dish-size" name="dish-size">
@@ -46,7 +52,12 @@
 
                     {% if option.singleSelect == true %}
                         <label class="custom-radio">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ currency_display|raw }}
-                                {{ option.priceLocalized }}<span class="euro">/&nbsp;{{  misc_utils.getLitas(option.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span></strong>{% endif %}
+                                {{ option.priceLocalized }}
+                                {% if currency_alternative %}
+                                    <span class="euro">/&nbsp;{{  misc_utils.getLitas(option.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
+                                {% endif %}
+
+                                </strong>{% endif %}
                             <input type="radio" name="option[{{ option.groupName }}]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
                         </label>
                     {% endif %}

@@ -582,7 +582,8 @@ class LogisticsService extends ContainerAware
             'Viln' => 'Vilnius',
             'Kaun' => 'Kaunas',
             'Klaip' => 'Klaipėda',
-            'Rig' => 'Riga'
+            'Rig' => 'Riga',
+            'Ryg' => 'Ryga'
         );
 
         // All good, no need to worry

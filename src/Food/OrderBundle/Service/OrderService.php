@@ -469,14 +469,17 @@ class OrderService extends ContainerAware
             'adresas' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->getAddress() . ", " . $this->getOrder()->getAddressId()->getCity() : "--"),
             'pristatymo_data' => $this->getOrder()->getDeliveryTime()->format('Y-m-d H:i:s'),
             'total_sum' => $this->getOrder()->getTotal(),
-            'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getPlace()->getDeliveryPrice() : 0),
-            'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getPlace()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
+            'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
+            'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
             'invoice' => $invoice
         );
 
 
 //        $ml->setVariables( $variables )->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30009269  )->send();
-        $ml->setVariables($variables)->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId(30010811)->send();
+        $ml->setVariables($variables)
+            ->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())
+            ->setId($this->container->getParameter('mailer_notify_on_accept'))
+            ->send();
     }
 
     /**
@@ -628,9 +631,9 @@ class OrderService extends ContainerAware
         );
 
         if ($partialy) {
-            $template = 30021995;
+            $template = $this->container->getParameter('mailer_partialy_deliverer');
         } else {
-            $template = 30009271;
+            $template = $this->container->getParameter('mailer_rate_your_food');
         }
 
         $ml->setVariables($variables)
@@ -870,7 +873,11 @@ class OrderService extends ContainerAware
             }
         }
 
-        $deliveryPrice = $this->getOrder()->getPlace()->getDeliveryPrice();
+        $deliveryPrice = $this->getCartService()->getDeliveryPrice(
+            $this->getOrder()->getPlace(),
+            $this->container->get('food.googlegis')->getLocationFromSession(),
+            $this->getOrder()->getPlacePoint()
+        );
 
         // Pritaikom nuolaida
         if (!empty($coupon) && $coupon instanceof Coupon) {
@@ -907,7 +914,6 @@ class OrderService extends ContainerAware
         $this->getOrder()->setDeliveryPrice($deliveryPrice);
         $this->getOrder()->setTotal($sumTotal);
         $this->saveOrder();
-
     }
 
     public function markOrderForNav(Order $order = null)
@@ -1579,9 +1585,10 @@ class OrderService extends ContainerAware
             $mailer->send($message);
         }
 
+        $smsSenderNumber = $this->container->getParameter('sms.sender');
+
         // Siunciam SMS tik tuo atveju, jei neperduodam per Nav'a
         if (!$order->getPlace()->getNavision()) {
-            $smsSenderNumber = $this->container->getParameter('sms.sender');
             $messagesToSend = array();
 
             $orderMessageRecipients = array(
@@ -1608,6 +1615,30 @@ class OrderService extends ContainerAware
 
             //send multiple messages
             $messagingService->addMultipleMessagesToSend($messagesToSend);
+        }
+
+        if (!$order->getOrderFromNav()) {
+            $messagesToSend = array();
+            $dispatcherPhones = $this->container->getParameter('dispatcher_phones');
+            // If dispatcher phones are set - send them message about new order
+            if (!empty($dispatcherPhones) && is_array($dispatcherPhones)) {
+                $dispatcherMessageText = $translator->trans('general.sms.dispatcher_order', array(
+                    'order_id' => $order->getId(),
+                    'place_name' => $order->getPlaceName(),
+                ));
+
+                foreach ($dispatcherPhones as $phoneNum) {
+                    $logger->alert("Sending message to dispatcher about order #" . $order->getId() . " to number: " . $phoneNum . ' with text "' . $dispatcherMessageText . '"');
+
+                    $messagesToSend[] = array(
+                        'sender' => $smsSenderNumber,
+                        'recipient' => $phoneNum,
+                        'text' => $dispatcherMessageText
+                    );
+                }
+
+                $messagingService->addMultipleMessagesToSend($messagesToSend);
+            }
         }
     }
 
@@ -2209,7 +2240,17 @@ class OrderService extends ContainerAware
                 }
             }
             $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
-            if ($total_cart < $place->getCartMinimum()) {
+
+            $placePointMap = $this->container->get('session')->get('point_data');
+
+            $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+            $cartMinimum = $this->getCartService()->getMinimumCart(
+                $place,
+                $this->container->get('food.googlegis')->getLocationFromSession(),
+                $pointRecord
+            );
+
+            if ($total_cart < $cartMinimum) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum';
             }
 
@@ -2317,7 +2358,7 @@ class OrderService extends ContainerAware
         // Validate das phone number :)
         if (0 != strlen($phone)) {
             $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
-            $country = $this->container->getParameter('country');
+            $country = strtoupper($this->container->getParameter('country'));
 
             try {
                 $numberProto = $phoneUtil->parse($phone, $country);
