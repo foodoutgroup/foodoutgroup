@@ -114,17 +114,11 @@
 {{ notifications.init|raw }}
 <div class="site">
     <div class="site-top">
-        {#
-            # TODO neiskeltas LT - LV konfliktas
-            Skirtingi logo
-        #}
-        {#<div class="site-block clearfix"><a href="{{ path('food_lang_homepage') }}" class="main-logo"><img alt="{{ page_title }}" src="{{ asset('bundles/foodapp/images/logo_food2.png') }}"></a>#}
         <div class="site-block clearfix">
             <a href="{{ path('food_lang_homepage') }}" class="main-logo">
-                <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{{ asset('bundles/foodapp/images/logo_food.png') }}" />
+                <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{% if c %}{{ asset('bundles/foodapp/images/logo_food.png') }}{% else %}{{ asset('bundles/foodapp/images/logo_food2.png') }}{% endif %}" />
             </a>
-            
-            
+
             {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
             <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
                 <li><a href="{{ path('food_slug', {'slug': ('general.help_slug'|trans())}) }}"><span>{% trans %}general.help_button{% endtrans %}</span></a></li>
@@ -184,23 +178,25 @@
     # TODO neiskeltas LT - LV konfliktas
     LT trackinam papildomai, o LV to nera. Reikia opcijos, kad isjungtume tai LV
 #}
-    (function () {
-        var a = document.createElement("iframe");
-        a.style.cssText = "width: 0; height: 0; border: 0";
-        a.src = "javascript:false";
-        var b = function () {
-            setTimeout(function () {
-                var b = a.contentDocument || a.contentWindow.document, c = b.createElement("script");
-                c.src = "//static-trackers.adtarget.me/javascripts/pixel.min.js";
-                c.id = "GIHhtQfW-atm-pixel";
-                c["data-pixel"] = "990d8a91b1fde610d377fae55d911552";
-                c["allow-flash"] = true;
-                b.body.appendChild(c);
-            }, 0);
-        };
-        a.addEventListener ? a.addEventListener("load", b, !1) : a.attachEvent ? a.attachEvent("onload", b) : a.onload = b;
-        document.body.appendChild(a);
-    })();
+    {% if track_conversions %}
+        (function () {
+            var a = document.createElement("iframe");
+            a.style.cssText = "width: 0; height: 0; border: 0";
+            a.src = "javascript:false";
+            var b = function () {
+                setTimeout(function () {
+                    var b = a.contentDocument || a.contentWindow.document, c = b.createElement("script");
+                    c.src = "//static-trackers.adtarget.me/javascripts/pixel.min.js";
+                    c.id = "GIHhtQfW-atm-pixel";
+                    c["data-pixel"] = "990d8a91b1fde610d377fae55d911552";
+                    c["allow-flash"] = true;
+                    b.body.appendChild(c);
+                }, 0);
+            };
+            a.addEventListener ? a.addEventListener("load", b, !1) : a.attachEvent ? a.attachEvent("onload", b) : a.onload = b;
+            document.body.appendChild(a);
+        })();
+    {% endif %}
 
 </script>
 </body>

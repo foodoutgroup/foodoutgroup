@@ -1,3 +1,4 @@
+# This file is auto-generated during the composer install
 parameters:
     database_driver: pdo_mysql
     database_host: 127.0.0.1
@@ -6,24 +7,24 @@ parameters:
     database_user: root
     database_password: null
     mailer_transport: smtp
-    mailer_host: 127.0.0.1
+    mailer_host: null
     mailer_user: null
     mailer_password: null
     locale: lt
     secret: f6180a0fb30e99a1da1e364412f96c3f98cbaa1f
-    aws_key:
-    aws_secret:
+    aws_key: AKIAJN3454YNXAUSJIRA
+    aws_secret: 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
     aws_region: eu-west-1
     s3_bucket: foodout-invoice
 
-    locale: lv
-    locales: ["lv", "en", "ru"]
-    available_cities: [Ryga]
-    available_locales: ["lv", "en", "ru"]
-    available_locales_routing: lv | en | ru
+    locale: lt
+    locales: ["lt", "en", "ru"]
+    available_cities: ["Vilnius", "Kaunas", "Klaipėda"]
+    available_locales: ["lt", "en", "ru"]
+    available_locales_routing: lt | en | ru
     cloudfront_url: images.foodout.lt
-    time_zone: "Europe/Riga"
-    sms.sender: "Foodout.lv"
+    time_zone: "Europe/Vilnius"
+    sms.sender: "Foodout.lt"
     admin.emails: [mantas@foodout.lt]
     admin.phones: [37061514333]
     order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, giedrius@foodout.lt]
@@ -45,18 +46,21 @@ parameters:
     currency_display: '&euro;'
     currency_iso: EUR
     display_currency_alternative:  Lt
-    currency_alternative: false
-    show_best_offers: false
-    show_apps_download: false
-    show_is_social: false
+    currency_alternative: true
+    show_best_offers: true
+    show_game: true
+    show_apps_download: true
+    show_is_social: true
+    track_conversions: true
     # naudojam telefonu validacijoms
-    country: LV
-    country_full: Latvia
+    country: LT
+    country_full: Lithuania
     vat: 21
     title: "Foodout"
-    domain: "foodout.lv"
-    publicdomain: "foodout.lv"
+    domain: "foodout.lt"
+    publicdomain: "foodout.lt"
     google_analytics_uid: "UA-50355577-2"
+    google.analytics.view_id: "85237075"
     nav_table_prefix: 'Čilija Skambučių Centras'
     nav_ws_prefix: 'Čilija Skambučių Centras'
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
@@ -70,6 +74,5 @@ parameters:
     yt_embeded: //www.youtube-nocookie.com/embed/3zFW6hnuvJY
     default_delivery_distance: 7
     default_self_delivey_distance: 10
-    google.analytics.view_id: "85237075"
-    dispatcher_phones: [37126110079]
+    dispatcher_phones: []
     send_sms_on_cancel: false

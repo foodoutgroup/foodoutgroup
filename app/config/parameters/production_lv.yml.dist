@@ -49,8 +49,10 @@ parameters:
     display_currency_alternative:  Lt
     currency_alternative: false
     show_best_offers: false
+    show_game: false
     show_apps_download: false
     show_is_social: false
+    track_conversions: false
     # naudojam telefonu validacijoms
     country: LV
     country_full: Latvia
@@ -59,6 +61,7 @@ parameters:
     domain: "foodout.lv"
     publicdomain: "foodout.lv"
     google_analytics_uid: "UA-50355577-2"
+    google.analytics.view_id: "97303530"
     nav_table_prefix: 'LV Call Center'
     nav_ws_prefix: 'LV Call Center'
     mailer_api_key: "o8s5m7s5h7s4t8m3l0t2n3u8j9r9m4x5"
@@ -72,6 +75,5 @@ parameters:
     yt_embeded: //www.youtube-nocookie.com/embed/D-EkSle0r84
     default_delivery_distance: 3
     default_self_delivey_distance: 7
-    google.analytics.view_id: "97303530"
     dispatcher_phones: [37126110079]
     send_sms_on_cancel: false

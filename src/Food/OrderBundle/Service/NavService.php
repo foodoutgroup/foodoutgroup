@@ -65,7 +65,7 @@ class NavService extends ContainerAware
 
     private $invoiceTable = '[skamb_centras].[dbo].[%1$s$Foodout Invoice]';
 
-    private $postedDeliveryOrdersTable = '[skamb_centras].[dbo].[%1$s$$Posted Delivery Orders]';
+    private $postedDeliveryOrdersTable = '[skamb_centras].[dbo].[%1$s$Posted Delivery Orders]';
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
