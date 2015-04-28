@@ -64,7 +64,11 @@
                 {% endfor %}
                 {% for option in dish.options %}
                     {% if option.singleSelect == false %}
-                        <label class="custom-checkbox">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ currency_display|raw }} {{ option.priceLocalized }}<span class="euro">/&nbsp;{{  misc_utils.getLitas(option.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span></strong>{% endif %}
+                        <label class="custom-checkbox">{{ option.name }}{% if option.price != 0 %}
+                                <strong class="price">+{{ currency_display|raw }} {{ option.priceLocalized }}
+                                    {%  if currency_alternative %}<span class="euro">/&nbsp;{{  misc_utils.getLitas(option.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>{% endif %}
+                                </strong>
+                            {% endif %}
                             <input type="checkbox" name="options[]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
                         </label>
                     {% endif %}
