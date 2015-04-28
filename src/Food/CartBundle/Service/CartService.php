@@ -278,7 +278,7 @@ class CartService {
     /**
      * @param $dish
      * @param $size
-     * @param $quantity
+     * @param int $quantity
      * @param $options
      */
     public function addDishByIds($dish, $size, $quantity, $options = array())
@@ -514,6 +514,12 @@ class CartService {
         }
     }
 
+    /**
+     * @param Place $place
+     * @param $locData
+     * @param PlacePoint $placePoint
+     * @return int
+     */
     public function getDeliveryPrice(Place $place, $locData, PlacePoint $placePoint)
     {
         $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $locData);
@@ -523,6 +529,12 @@ class CartService {
         return $deliveryTotal;
     }
 
+    /**
+     * @param Place $place
+     * @param $locData
+     * @param PlacePoint $placePoint
+     * @return float
+     */
     public function getMinimumCart(Place $place, $locData, PlacePoint $placePoint)
     {
         $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getMinimumCartForPlacePoint($place, $placePoint, $locData);

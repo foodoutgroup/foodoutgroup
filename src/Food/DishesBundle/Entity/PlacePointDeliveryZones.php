@@ -37,20 +37,20 @@ class PlacePointDeliveryZones
      * @ORM\ManyToOne(targetEntity="PlacePoint", inversedBy="zones")
      * @ORM\JoinColumn(name="place_point", referencedColumnName="id")
      *
-     * @var Place
+     * @var PlacePoint
      */
     private $placePoint;
 
 
     /**
-     * @var int
+     * @var float
      *
      * @ORM\Column(name="distance", type="float")
      */
     private $distance;
 
     /**
-     * @var int
+     * @var float
      *
      * @ORM\Column(name="price", type="float")
      */
@@ -77,21 +77,21 @@ class PlacePointDeliveryZones
     private $timeTo;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="edited_at", type="datetime", nullable=true)
      */
     private $editedAt;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
@@ -153,7 +153,7 @@ class PlacePointDeliveryZones
     /**
      * Get distance
      *
-     * @return float 
+     * @return float
      */
     public function getDistance()
     {
@@ -458,7 +458,7 @@ class PlacePointDeliveryZones
     /**
      * Get cartSize
      *
-     * @return string 
+     * @return float
      */
     public function getCartSize()
     {
