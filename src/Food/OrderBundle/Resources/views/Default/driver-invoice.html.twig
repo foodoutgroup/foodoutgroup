@@ -122,19 +122,19 @@
             <td>________________</td>
         </tr>
         <tr>
-            <td>Foodout.lt UAB</td>
+            <td>{% trans %}order.invoice.foodout_company_name{% endtrans %}</td>
             <td>________________</td>
         </tr>
         <tr>
-            <td>{% trans %}mobile.invoice.vat_code{% endtrans %}: LT100008038519</td>
+            <td>{% trans %}mobile.invoice.vat_code{% endtrans %}: {% trans %}order.invoice.foodout_vat_code{% endtrans %}</td>
             <td>{% trans %}mobile.invoice.vat_code{% endtrans %}: ______________</td>
         </tr>
         <tr>
-            <td>{% trans %}mobile.invoice.company_code{% endtrans %}: 303134580</td>
+            <td>{% trans %}mobile.invoice.company_code{% endtrans %}: {% trans %}order.invoice.foodout_company_code{% endtrans %}</td>
             <td>{% trans %}mobile.invoice.company_code{% endtrans %}: ______________</td>
         </tr>
         <tr>
-            <td>Laisvės pr. 77c-58, Vilnius</td>
+            <td>{% trans %}order.invoice.foodout_address{% endtrans %}</td>
             <td>{{ order.addressId.address }}, {{ order.addressId.city }}</td>
         </tr>
         </tbody>

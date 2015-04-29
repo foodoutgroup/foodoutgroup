@@ -1,4 +1,3 @@
-# This file is auto-generated during the composer install
 parameters:
     database_driver: pdo_mysql
     database_host: 127.0.0.1
@@ -27,7 +26,7 @@ parameters:
     sms.sender: "Foodout.lt"
     admin.emails: [mantas@foodout.lt]
     admin.phones: [37061514333]
-    order.notify_emails: [mantas@foodout.lt, paulius@foodout.lt, giedrius@foodout.lt]
+    order.notify_emails: [giedrius@foodout.lt]
     order.city_coordinators:
         vilnius: []
         kaunas: [zaneta@foodout.lt]
