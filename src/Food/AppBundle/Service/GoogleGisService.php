@@ -69,8 +69,7 @@ class GoogleGisService extends ContainerAware
                 )
             );
 
-        //if (!$cnt || $cnt == null) {
-        if (1) {
+        if (!$cnt || $cnt == null) {
             $resp = $this->getCli()->get(
                 $this->container->getParameter('google.maps_geocode'),
                 array(
