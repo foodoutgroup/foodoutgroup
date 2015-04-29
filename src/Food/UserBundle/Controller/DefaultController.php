@@ -116,7 +116,7 @@ class DefaultController extends Controller
         $user = $this->user();
         $address = $this->address($user);
 
-        $citiesConfig = $this->container->get('available_cities');
+        $citiesConfig = $this->container->getParameter('available_cities');
         $cities = array();
         foreach ($citiesConfig as $city) {
             $cities[$city] = $city;
@@ -187,7 +187,7 @@ class DefaultController extends Controller
         $user = $this->user();
         $address = $this->address($user);
 
-        $citiesConfig = $this->container->get('available_cities');
+        $citiesConfig = $this->container->getParameter('available_cities');
         $cities = array();
         foreach ($citiesConfig as $city) {
             $cities[$city] = $city;
