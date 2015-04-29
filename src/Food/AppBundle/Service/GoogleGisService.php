@@ -69,7 +69,8 @@ class GoogleGisService extends ContainerAware
                 )
             );
 
-        if (!$cnt || $cnt == null) {
+        //if (!$cnt || $cnt == null) {
+        if (1) {
             $resp = $this->getCli()->get(
                 $this->container->getParameter('google.maps_geocode'),
                 array(
@@ -121,7 +122,7 @@ class GoogleGisService extends ContainerAware
                     unset($location->results[$key]);
                 }
                 */
-                if (!in_array('route', $rezRow->types)) {
+                if (!in_array('route', $rezRow->types) && !in_array('street_address', $rezRow->types)) {
                     unset($location->results[$key]);
                 }
             }
