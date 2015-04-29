@@ -254,7 +254,7 @@
                                     <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
                                     <select class="custom-select" disabled="true">
                                         {% for city in available_cities %}
-                                            <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or flocation.city == city|replace({'ė':'e'})) %}selected{% endif %}>{{ city }}</option>
+                                            <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e'})) %}selected{% endif %}>{{ city }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
