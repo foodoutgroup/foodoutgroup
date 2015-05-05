@@ -861,6 +861,9 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
     margin-top: 5px;
     border-radius: 3px;
 }
+.partial-work.partial-work-lv {
+    background-image: url('/bundles/foodapp/images/tag-not-working_lv.png');
+}
 .time-popup.time-popup2 {
     left: 30px;
 }
