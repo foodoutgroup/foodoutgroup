@@ -59,6 +59,7 @@ after "deploy:chmod_things", "deploy:cleanup"
 # after "deploy:cleanup", "deploy:airbrake_notify"
 after "deploy:rollback", "symfony:cache:clear"
 
+#
 # Be more verbose by uncommenting the following line
 # logger.level = Logger::MAX_LEVEL
 logger.level = 0
