@@ -133,14 +133,16 @@
                         {# Atsiliepimai #}
                         <div id="detailed-restaurant-review" class="detailed-restaurant-review">
                             <div class="review-title clearfix">
-                                <h3>{{ place.reviewCount }} {% transchoice place.reviews.count %}places.review_choice{% endtranschoice %}</h3>
+                                {# TODO temporary reviews are not shown #}
+                                {#<h3>{{ place.reviewCount }} {% transchoice place.reviews.count %}places.review_choice{% endtranschoice %}</h3>#}
                                 {% if (wasHere and not alreadyWrote) or not app.user %}
                                     <a href="{% if app.user %}#place-review-popup{% else %}#login-register-popup{% endif %}" class="fancy-box">{% trans %}places.add_review{% endtrans %}</a>
                                 {% endif %}
                                 {{ include('FoodDishesBundle:Place:review-popup.html.twig') }}
                             </div>
                             <div class="review-list">
-                                {% for review in place.reviews %}
+                                {# TODO temporary reviews are not shown #}
+                                {#{% for review in place.reviews %}
                                 <div class="review-item clearfix">
                                     <div class="review-person"><img src="/bundles/foodapp/images/person.png">
                                         <p class="name">{{ review.createdBy.getFirstname }}</p>
@@ -157,7 +159,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                {% endfor %}
+                                {% endfor %}#}
                             </div>
                             {#<div class="paginator clearfix"><a href="#" class="prev"></a><a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="next"></a></div>#}
                         </div>

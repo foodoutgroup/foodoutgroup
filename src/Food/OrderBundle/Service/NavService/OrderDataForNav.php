@@ -57,7 +57,8 @@ class OrderDataForNav
         'discountAmountEUR' => 'double',
         'discountPercent' => 'double',
         'totalAmount' => 'double',
-        'totalAmountEUR' => 'double'
+        'totalAmountEUR' => 'double',
+        'sFNumber' => 'string'
     ];
 
     protected $id;
@@ -97,6 +98,7 @@ class OrderDataForNav
     protected $discountPercent;
     protected $totalAmount;
     protected $totalAmountEUR;
+    protected $sFNumber;
 
     public function __set($property, $value)
     {
