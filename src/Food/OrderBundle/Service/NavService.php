@@ -1502,6 +1502,8 @@ class NavService extends ContainerAware
             "'Vilnius', 'Kaunas', 'Klaipeda'"
         );
 
+        $this->container->get("logger")->alert('Nav import query: '.$query);
+
         $result = $this->initSqlConn()->query($query);
         if( $result === false) {
             return array();

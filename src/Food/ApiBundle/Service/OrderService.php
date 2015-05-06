@@ -288,7 +288,9 @@ class OrderService extends ContainerAware
             ),
             'state' => array(
                 'title' => $title,
-                'info_number' => '+'.$order->getPlacePoint()->getPhone(),
+                // TODO Rodome nebe restorano, o dispeceriu nr
+                "info_number" => "+".$this->container->getParameter('dispatcher_contact_phone'),
+//                'info_number' => '+'.$order->getPlacePoint()->getPhone(),
                 'message' => $message
             ),
             'details' => array(

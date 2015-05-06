@@ -356,7 +356,7 @@ class OrderService extends ContainerAware
                             array(
                                 'restourant_name' => $placeName,
                                 'delivery_time' => $this->getOrder()->getPlace()->getDeliveryTime(),
-                                'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone()
+//                                'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone()
                             ),
                             null,
                             $this->getOrder()->getLocale()
@@ -2604,7 +2604,9 @@ class OrderService extends ContainerAware
             array(
                 'delay_time' => $diffInMinutes,
                 'delivery_min' => $deliverIn,
-                'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone(),
+                // TODO rodome nebe restorano, o dispeceriu telefona
+                'restourant_phone' => $this->container->getParameter('dispatcher_contact_phone'),
+//                'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone(),
             )
         );
 
