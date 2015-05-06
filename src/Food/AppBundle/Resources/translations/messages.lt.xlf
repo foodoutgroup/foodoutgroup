@@ -176,11 +176,11 @@
       </trans-unit>
       <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
         <source>general.sms.user.order_accepted</source>
-        <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista turetume pristatyti per delivery_time! Jei turite klausimu susisiekite telefonu +37061242093!</target>
+        <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista turetume pristatyti per delivery_time! Jei turite klausimu susisiekite telefonu +37061004970!</target>
       </trans-unit>
       <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
         <source>general.sms.user.order_accepted_pickup</source>
-        <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista galesite atsiimti po delivery_time! Jei turite dar klausimu susisiekite telefonu +restourant_phone!</target>
+        <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista galesite atsiimti po delivery_time! Jei turite dar klausimu susisiekite telefonu +37061004970!</target>
       </trans-unit>
       <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
         <source>general.sms.client.restourant_cancel</source>
@@ -192,7 +192,7 @@
       </trans-unit>
       <trans-unit id="general.sms.order_to_be_late" resname="general.sms.order_to_be_late">
         <source>general.sms.order_to_be_late</source>
-        <target>Informuojame, Jusu uzsakymas jau kelyje. Pristatysime ji per delivery_in min. Turite klausimu, skambinkite 8 612 42093.</target>
+        <target>Informuojame, Jusu uzsakymas jau kelyje. Pristatysime ji per delivery_in min. Turite klausimu, skambinkite +37061004970.</target>
       </trans-unit>
       <trans-unit id="74fbe91702c1ee04724c55bde63e654f" resname="general.email.new_order">
         <source>general.email.new_order</source>
