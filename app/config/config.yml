@@ -6,7 +6,6 @@ imports:
     - { resource: "@FoodSmsBundle/Resources/config/admin.yml" }
     - { resource: @A2lixTranslationFormBundle/Resources/config/gedmo.xml }
 
-
 parameters:
     nav_table_prefix: "Čilija Skambučių Centras"
     nav_ws_prefix: "Čilija Skambučių Centras"
@@ -19,7 +18,7 @@ parameters:
     sms.main_provider: "food.infobip"
     sms.sender: "Foodout.lt"
     sms.balance_limit_warn: 20
-    sms.balance_limit_critical: 18
+    sms.balance_limit_critical: 14
     infobip_provider.api_url: "http://api.infobip.com/api/v3/sendsms/json"
     infobip_provider.secondary_api_url: "http://api2.infobip.com/api/v3/sendsms/json"
     infobip_provider.account_url: "http://api2.infobip.com/api"
@@ -85,6 +84,7 @@ parameters:
       - alex@foodout.lt
     weekly_report_emails:
       <<: *daily_report_emails
+    dispatcher_contact_phone: "37061004970"
 
 framework:
     #esi:             ~
@@ -318,9 +318,9 @@ sonata_admin:
                       - sonata.admin.place.reviews
                   roles: [ ROLE_MODERATOR, ROLE_DISPATCHER ]
               admin.orders:
-                label: admin.group.orders
-                label_catalogue: SonataAdminBundle
-                items:
+                  label: admin.group.orders
+                  label_catalogue: SonataAdminBundle
+                  items:
                       - sonata.admin.order
                 roles: [ ROLE_ADMIN, ROLE_MODERATOR, ROLE_DISPATCHER ]
               admin.system:

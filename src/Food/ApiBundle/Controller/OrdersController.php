@@ -189,7 +189,9 @@ class OrdersController extends Controller
                     "order_id" => $order->getId(),
                     "status" => array(
                         "title" => $this->get('food_api.order')->convertOrderStatus($order->getOrderStatus()),
-                        "info_number" => "+".$order->getPlacePoint()->getPhone(),
+                        // TODO Rodome nebe restorano, o dispeceriu nr
+                        "info_number" => "+".$this->container->getParameter('dispatcher_contact_phone'),
+//                        "info_number" => "+".$order->getPlacePoint()->getPhone(),
                         "message" => $message
                     )
                 )

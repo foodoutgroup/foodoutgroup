@@ -81,6 +81,7 @@ trait OrderDataForNavDecorator
         $em = $this->container->get('doctrine.orm.entity_manager');
 
         $orderAccData = $this->findOrderAccData($orderId);
+        $order = $em->getRepository('FoodOrderBundle:Order')->find($orderAccData->getOrderId());
 
         $data = new OrderDataForNav();
         $data->id = $orderAccData->getOrderId();
@@ -124,6 +125,7 @@ trait OrderDataForNavDecorator
         $data->discountPercent = (double) $orderAccData->getDiscountPercent();
         $data->totalAmount = (double) $orderAccData->getTotalAmount();
         $data->totalAmountEUR = (double) $orderAccData->getTotalAmountEur();
+        $data->sFNumber = $order->getSfSeries()."".$order->getSfNumber();
 
         return $data;
     }
@@ -335,7 +337,9 @@ trait OrderDataForNavDecorator
                 'Discount Amount EUR',
                 'Discount Percent',
                 'Total Amount',
-                'Total Amount EUR'];
+                'Total Amount EUR',
+                'SF number'
+        ];
     }
 
     protected function getOrderValues(OrderDataForNav $data)
@@ -376,7 +380,9 @@ trait OrderDataForNavDecorator
                    $data->discountAmountEUR,
                    $data->discountPercent,
                    $data->totalAmount,
-                   $data->totalAmountEUR];
+                   $data->totalAmountEUR,
+                   $data->sFNumber
+        ];
         return $this->escapeSingleQuotes($result);
     }
 
