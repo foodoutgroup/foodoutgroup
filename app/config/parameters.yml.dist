@@ -75,3 +75,4 @@ parameters:
     default_self_delivey_distance: 10
     dispatcher_phones: []
     send_sms_on_cancel: false
+    dispatcher_contact_phone: "37061004970"
