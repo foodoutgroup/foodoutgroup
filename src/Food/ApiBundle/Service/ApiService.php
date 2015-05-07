@@ -4,6 +4,7 @@ namespace Food\ApiBundle\Service;
 use Food\ApiBundle\Common\MenuItem;
 use Food\ApiBundle\Common\Restaurant;
 use Food\ApiBundle\Exceptions\ApiException;
+use Food\DishesBundle\Entity\FoodCategory;
 use Food\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -36,16 +37,31 @@ class ApiService extends ContainerAware
             foreach ($place->getDishes() as $dish) {
                 $menuItem = new MenuItem(null, $this->container);
                 if ($dish->getActive()) {
-                    $item = $menuItem->loadFromEntity($dish);
-                    //if (!empty($item)) {
-                    //    if ($updated_at == null || $item['updated_at'] > $updated_at)
-                        $returner[] = $item;
-                    //}
+                    if ($this->_hasAnyActiveCats( $dish->getCategories())) {
+                        $item = $menuItem->loadFromEntity($dish);
+                        //if (!empty($item)) {
+                        //    if ($updated_at == null || $item['updated_at'] > $updated_at)
+                            $returner[] = $item;
+                        //}
+                    }
                 }
             }
             return $returner;
         }
         return array();
+    }
+
+    /**
+     * @param FoodCategory[] $categories
+     */
+    private function _hasAnyActiveCats($categories)
+    {
+        foreach ($categories as $cat) {
+            if ($cat->getActive()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function createDeletedByPlaceId($placeId, $updated_at = null, &$menuItems)
