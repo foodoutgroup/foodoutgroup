@@ -130,7 +130,7 @@
     </script>
     <div class="clearfix">
         <div class="content-lefter">
-            {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {})) }}
+            {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended})) }}
             {{ render(controller('FoodDishesBundle:Place:filtersList')) }}
             <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a>
         </div>
