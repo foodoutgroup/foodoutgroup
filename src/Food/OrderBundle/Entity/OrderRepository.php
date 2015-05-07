@@ -223,6 +223,32 @@ class OrderRepository extends EntityRepository
     }
 
     /**
+     * Gets orders with nav_problem statuses for a given period
+     *
+     * @param string $dateStart
+     * @param string $dateEnd
+     * @return array|Order[]
+     */
+    public function getNavProblems($dateStart, $dateEnd)
+    {
+        $filter = array(
+            'order_status' =>  array(OrderService::$status_nav_problems),
+            'order_date_between' => array(
+                'from' => $dateStart,
+                'to' => $dateEnd,
+            ),
+            'only_to_nav' => 1,
+        );
+        $orders = $this->getOrdersByFilter($filter, 'list');
+
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
+
+    /**
      * @param array $filter
      * @param string $type Type of result expected. Available: ['list', 'single']
      * @throws \InvalidArgumentException
@@ -258,6 +284,12 @@ class OrderRepository extends EntityRepository
 
                     case 'not_nav':
                         $qb->andWhere('o.orderFromNav != :'.$filterName);
+                        break;
+
+                    case 'only_to_nav':
+                        $qb->leftJoin('o.place', 'p', 'o.place = p.id')
+                            ->andWhere('p.navision = 1');
+                        unset($filter['only_to_nav']);
                         break;
 
                     default:

@@ -1827,12 +1827,63 @@ class NavService extends ContainerAware
      */
     public function deleteInvoiceFromNav($sfNumber)
     {
-        $mssql = $this->container->get('food.mssql');
-
         $query = "
             DELETE FROM %s WHERE [Invoice No_] = '%s'";
         $query = sprintf($query, $this->getInvoiceTable(), $sfNumber);
 
         $this->initSqlConn()->query($query);
+    }
+
+    /**
+     * @param Order $order
+     * @return bool
+     */
+    public function isMissingFromWebHeader($order)
+    {
+        $existsInHeader = true;
+        $existsInLines = true;
+        $navId = $this->getNavOrderId($order);
+
+        $query = "
+            SELECT
+                [Order No_] AS order_no,
+            FROM %s
+            WHERE
+                [Order No_] >= '%s'";
+        $query = sprintf(
+            $query,
+            $this->getHeaderTable(),
+            $navId
+        );
+
+        $result = $this->initSqlConn()->query($query);
+
+        if (empty($result)) {
+            $existsInHeader = false;
+        }
+
+        $query = "
+            SELECT
+                [Order No_] AS order_no,
+            FROM %s
+            WHERE
+                [Order No_] >= '%s'";
+        $query = sprintf(
+            $query,
+            $this->getLineTable(),
+            $navId
+        );
+
+        $result = $this->initSqlConn()->query($query);
+
+        if (empty($result)) {
+            $existsInLines = false;
+        }
+
+        if ($existsInHeader || $existsInLines) {
+            return false;
+        }
+
+        return true;
     }
 }
