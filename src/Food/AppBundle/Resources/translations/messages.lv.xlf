@@ -1138,6 +1138,14 @@
         <source>general.currency_minor_modals</source>
         <target>cents|centi|centu</target>
       </trans-unit>
+        <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
+            <source>general.top_contact.worktime</source>
+            <target>1-5. 10-01 h., 6-7. 10 - 03 h.</target>
+        </trans-unit>
+        <trans-unit id="general.top_contact.phone" resname="general.top_contact.phone">
+            <source>general.top_contact.phone</source>
+            <target>+371 67363663</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

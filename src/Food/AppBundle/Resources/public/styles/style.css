@@ -185,14 +185,19 @@ input.button {}
 .contact-phone span {font-size: 10px; letter-spacing: 1.5px; padding-left: 2px;}
 
 /*Top menu*/
-.top-menu {float: right; padding-top: 32px; letter-spacing: 2px;}
-.top-menu li {float: left; margin-right: 59px;}
+.top-menu {float: right; padding-top: 13px; letter-spacing: 2px;}
+.top-menu li { padding-left: 25px; margin-right: 0px; font-size: 11px; margin-top: 5px;}
 .top-menu li:last-child {margin-right: 0;}
 .top-menu .login-ico {padding-left: 25px; background: url(/bundles/foodapp/images/login-ico.png) no-repeat left top;}
-.top-menu a {display: inline-block; text-transform: uppercase; color: #fff; font-size: 14px; text-transform: uppercase;}
-.top-menu span {display: inline-block; padding-bottom: 4px; border-bottom: 1px solid #fff;}
+.top-menu a {display: inline-block; text-transform: uppercase; color: #fff; font-size: 12px; text-transform: uppercase;}
+.top-menu span {display: inline-block; padding-bottom: 2px; border-bottom: 1px solid #fff;}
 .top-menu a:hover {color: #f1b3b3;}
 .top-menu a:hover span {border-bottom: 1px solid #cd1d36;}
+
+.top-contact-block { float: right; margin-top: 16px; margin-right: 10px; padding-right: 10px; border-right: 1px solid #fff; }
+.top-contact-block span {display: block; }
+.top-contact-block .work-time {text-align: right;}
+.top-contact-block .phone {font-size: 28px; font-weight: bold;}
 
 /*Header ------------------------------------------*/
 .site-header {}

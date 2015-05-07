@@ -1223,6 +1223,14 @@
         <source>food.marketing.bad_email</source>
         <target>Blogas el.pašto adresas</target>
     </trans-unit>
+    <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
+        <source>general.top_contact.worktime</source>
+        <target>d.d. 10-01 val., š.s. 10 - 03 val.</target>
+    </trans-unit>
+    <trans-unit id="general.top_contact.phone" resname="general.top_contact.phone">
+        <source>general.top_contact.phone</source>
+        <target>+370 610 04970</target>
+    </trans-unit>
     <!--<trans-unit id="Please check this box if you want to proceed." resname="Please check this box if you want to proceed.">-->
         <!--<source>Please check this box if you want to proceed.</source>-->
         <!--<target>Privalote sutikti, norėdami tęsti</target>-->
