@@ -350,7 +350,6 @@ class NavService extends ContainerAware
             //$this->container->get('doctrine')->getManager()->refresh($orderRow);
         }
 
-
         $city = $order->getPlacePoint()->getCity();
         $city = str_replace("ė", "e", $city);
         $city = str_replace("ī", "i", $city);

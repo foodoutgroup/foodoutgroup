@@ -34,7 +34,7 @@ class RepostOrderToNavOnProblemCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getManager();
         $orderRepository = $em->getRepository('FoodOrderBundle:Order');
         $navService = $this->getContainer()->get('food.nav');
-        $connection = $em->getConnection();
+        $orderService = $this->getContainer()->get('food.order');
         $logger = $this->getContainer()->get('logger');
 
         // options
@@ -92,6 +92,10 @@ class RepostOrderToNavOnProblemCommand extends ContainerAwareCommand
                             $navService->updatePricesNAV($order);
                             sleep(2);
                             $navService->processOrderNAV($order);
+
+                            $orderService->setOrder($order);
+                            $orderService->statusNew('repostToNavOnMissingInNav');
+                            $orderService->saveOrder();
                         }
                     }
                 }
