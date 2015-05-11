@@ -39,13 +39,14 @@ class OrderAdmin extends SonataAdmin
          * @var Order $order
          */
         $order = $this->getSubject();
-
-        if ($order->getOrderFromNav()) {
-            $formMapper->add('total', null, array('label' => 'admin.order.total'));
-        } else {
+        // TODO nutarem su buhalterija, kad visiems rasome - maistas ir nedetalizuojame patiekalu
+//        if ($order->getOrderFromNav()) {
+        $formMapper->add('total', null, array('label' => 'admin.order.total'));
+        $formMapper->add('delivery_price', 'number', array('label' => 'admin.order.delivery_price'));
+        /*} else {
             // Non Nav order should not let edit total
             $formMapper->add('total', null, array('label' => 'admin.order.total', 'disabled' => true));
-        }
+        }*/
     }
 
     /**
