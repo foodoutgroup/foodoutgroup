@@ -88,6 +88,7 @@ class UsersController extends Controller
             $name = $this->getRequestParam('name');
             $email = $this->getRequestParam('email');
             $password = $this->getRequestParam('password');
+            $birthday = $this->getRequestParam('birthday');
 
             $nameParsed = $this->parseName($name);
 
@@ -96,7 +97,8 @@ class UsersController extends Controller
                     'firstname' => $nameParsed['firstname'],
                     'email' => $email,
                     'phone' => $phone,
-                    'password' => $password
+                    'password' => $password,
+                    'birthday' => $birthday,
                 )
             );
 
@@ -137,6 +139,10 @@ class UsersController extends Controller
             } else {
                 $user->setPlainPassword('new-user')
                     ->setFullyRegistered(false);
+            }
+
+            if (!empty($birthday)) {
+                $user->setBirthday(new \DateTime($birthday));
             }
 
             // User hash generation action
