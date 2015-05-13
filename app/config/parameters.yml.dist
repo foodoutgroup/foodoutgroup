@@ -9,8 +9,8 @@ parameters:
     mailer_host: null
     mailer_user: null
     mailer_password: null
-    locale: lt
     secret: f6180a0fb30e99a1da1e364412f96c3f98cbaa1f
+
     aws_key: AKIAJN3454YNXAUSJIRA
     aws_secret: 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
     aws_region: eu-west-1
@@ -26,7 +26,7 @@ parameters:
     sms.sender: "Foodout.lt"
     admin.emails: [mantas@foodout.lt]
     admin.phones: [37061514333]
-    order.notify_emails: [giedrius@foodout.lt]
+    order.notify_emails: []
     order.city_coordinators:
         vilnius: []
         kaunas: [zaneta@foodout.lt]
@@ -58,7 +58,7 @@ parameters:
     title: "Foodout"
     domain: "foodout.lt"
     publicdomain: "foodout.lt"
-    google_analytics_uid: "UA-50355577-2"
+    google_analytics_uid: "UA-50355577-1"
     google.analytics.view_id: "85237075"
     nav_table_prefix: 'Čilija Skambučių Centras'
     nav_ws_prefix: 'Čilija Skambučių Centras'
