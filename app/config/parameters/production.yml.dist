@@ -61,7 +61,7 @@ parameters:
     title: "Foodout"
     domain: "foodout.lt"
     publicdomain: "foodout.lt"
-    google_analytics_uid: "UA-50355577-2"
+    google_analytics_uid: "UA-50355577-1"
     google.analytics.view_id: "85237075"
     nav_table_prefix: 'Čilija Skambučių Centras'
     nav_ws_prefix: 'Čilija Skambučių Centras'
