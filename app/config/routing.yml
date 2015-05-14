@@ -85,6 +85,19 @@ food_lets_meet:
     pattern:  /susipazinkime
     defaults: { _controller: FoodAppBundle:Default:meet }
 
+food_cili_slash:
+    path: /cili/
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /lt/cili-pica
+        permanent: true
+
+food_cili:
+    path: /cili
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /lt/cili-pica
+        permanent: true
 
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
