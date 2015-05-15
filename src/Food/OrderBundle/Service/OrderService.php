@@ -49,6 +49,7 @@ class OrderService extends ContainerAware
     public static $status_canceled = "canceled";
 
     public static $status_pre = "pre";
+    public static $status_unapproved = "unapproved";
     public static $status_nav_problems = "nav_problems";
     public static $status_partialy_completed = "partialy_completed";
 
@@ -295,6 +296,17 @@ class OrderService extends ContainerAware
         $this->logStatusChange($this->getOrder(), $status, $source, $message);
 
         $this->getOrder()->setOrderStatus($status);
+    }
+
+    /**
+     * @param string|null $source
+     * @param string|null $statusMessage
+     * @return $this
+     */
+    public function statusUnapproved($source = null, $statusMessage = null)
+    {
+        $this->chageOrderStatus(self::$status_unapproved, $source, $statusMessage);
+        return $this;
     }
 
     /**
@@ -1273,16 +1285,17 @@ class OrderService extends ContainerAware
     public function isValidOrderStatusChange($from, $to)
     {
         $flowLine = array(
-            self::$status_new => 0,
-            self::$status_accepted => 1,
-            self::$status_delayed => 2,
-            self::$status_forwarded => 2,
-            self::$status_finished => 3,
-            self::$status_assiged => 4,
-            self::$status_failed => 4,
-            self::$status_partialy_completed => 5,
-            self::$status_completed => 5,
-            self::$status_canceled => 5,
+            self::$status_unapproved => 0,
+            self::$status_new => 1,
+            self::$status_accepted => 2,
+            self::$status_delayed => 3,
+            self::$status_forwarded => 3,
+            self::$status_finished => 4,
+            self::$status_assiged => 5,
+            self::$status_failed => 5,
+            self::$status_partialy_completed => 6,
+            self::$status_completed => 6,
+            self::$status_canceled => 6,
         );
 
         if (empty($from) && !empty($to)) {
@@ -1516,7 +1529,8 @@ class OrderService extends ContainerAware
     public function informPlace($isReminder=false)
     {
         $order = $this->getOrder();
-        if ($order->getOrderStatus()== OrderService::$status_pre) {
+        $status = $order->getOrderStatus();
+        if (in_array($status, array(OrderService::$status_pre, OrderService::$status_unapproved))) {
             return;
         }
         if (!$isReminder) {
@@ -1640,6 +1654,78 @@ class OrderService extends ContainerAware
                 $messagingService->addMultipleMessagesToSend($messagesToSend);
             }
         }
+    }
+
+    /**
+     * Inform dispatchers that unapproved order is waiting and needs attention
+     */
+    public function informUnapproved()
+    {
+        $order = $this->getOrder();
+
+        if (empty($order) || !$order instanceof Order) {
+            throw new \Exception('No order, dude, can not inform about unapproved');
+        }
+        $logger = $this->container->get('logger');
+
+        $logger->alert('Informing dispatcher and other personel about unapproved order');
+
+        $translator = $this->container->get('translator');
+
+        $domain = $this->container->getParameter('domain');
+        $notifyEmails = $this->container->getParameter('order.notify_emails');
+        $cityCoordinators = $this->container->getParameter('order.city_coordinators');
+        $dispatchers = $this->container->getParameter('order.accept_notify_emails');
+
+        $userAddress = '';
+        $userAddressObject = $order->getAddressId();
+
+        if (!empty($userAddressObject) && is_object($userAddressObject)) {
+            $userAddress = $order->getAddressId()->getAddress().', '.$order->getAddressId()->getCity();
+        }
+
+        $newOrderText = $translator->trans('general.new_unapproved_order.title');
+
+        $emailMessageText = $newOrderText.' '.$order->getPlace()->getName()."\n"
+            ."OrderId: " . $order->getId()."\n\n"
+            .$translator->trans('general.new_order.selected_place_point').": ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
+            .$translator->trans('general.new_order.place_point_phone').":".$order->getPlacePoint()->getPhone()."\n"
+            ."\n"
+            .$translator->trans('general.new_order.client_name').": ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
+            .$translator->trans('general.new_order.client_address').": ".$userAddress."\n"
+            .$translator->trans('general.new_order.client_phone').": ".$order->getUser()->getPhone()."\n"
+            .$translator->trans('general.new_order.client_email').": ".$order->getUser()->getEmail()."\n"
+            ."\n"
+            .$translator->trans('general.new_order.delivery_type').": ".$order->getDeliveryType()."\n"
+            .$translator->trans('general.new_order.payment_type').": ".$order->getPaymentMethod()."\n"
+            .$translator->trans('general.new_order.payment_status').": ".$order->getPaymentStatus()."\n"
+        ;
+
+        $mailer = $this->container->get('mailer');
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($newOrderText.': '.$order->getPlace()->getName().' (#'.$order->getId().')')
+            ->setFrom('info@'.$domain)
+        ;
+
+        if (!empty($cityCoordinators)) {
+            if (isset($cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')])) {
+                $notifyEmails = array_merge(
+                    $notifyEmails,
+                    $cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')]
+                );
+            }
+        }
+
+        $notifyEmails = array_merge(
+            $notifyEmails,
+            $dispatchers
+        );
+
+        $this->addEmailsToMessage($message, $notifyEmails);
+
+        $message->setBody($emailMessageText);
+        $mailer->send($message);
     }
 
     /**
@@ -2023,6 +2109,7 @@ class OrderService extends ContainerAware
     {
         return array
         (
+            self::$status_unapproved,
             self::$status_new,
             self::$status_accepted,
             self::$status_delayed,
@@ -2682,10 +2769,22 @@ class OrderService extends ContainerAware
      * @return array|\Food\OrderBundle\Entity\Order[]
      * @throws \InvalidArgumentException
      */
-    public function getUserOrders(User $user)
+    public function getUserOrders(User $user, $onlyFinished = false)
     {
         if (!($user instanceof User)) {
             throw new \InvalidArgumentException('Not a user is given, sorry..');
+        }
+
+        $orderStatuses = array(
+            self::$status_accepted,
+            self::$status_assiged,
+            self::$status_delayed,
+            self::$status_finished,
+            self::$status_completed,
+        );
+
+        if ($onlyFinished) {
+            $orderStatuses = array(self::$status_completed, self::$status_partialy_completed);
         }
 
         $em = $this->container->get('doctrine')->getManager();
@@ -2693,13 +2792,7 @@ class OrderService extends ContainerAware
             ->findBy(
                 array(
                     'user' => $user,
-                    'order_status' => array(
-                        self::$status_accepted,
-                        self::$status_assiged,
-                        self::$status_delayed,
-                        self::$status_finished,
-                        self::$status_completed,
-                    )
+                    'order_status' => $orderStatuses
                 ),
                 array(
                     'order_date' => 'DESC',
