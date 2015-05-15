@@ -1051,6 +1051,10 @@
                 <source>admin.order.status.source.cili_nav_update_price</source>
                 <target>Čili Navision update prices</target>
             </trans-unit>
+            <trans-unit id="admin.order.status.source.repostToNavOnMissingInNav">
+                <source>admin.order.status.source.repostToNavOnMissingInNav</source>
+                <target>Čili Navision repost order on fatal error</target>
+            </trans-unit>
             <trans-unit id="admin.order.ismobile">
                 <source>admin.order.ismobile</source>
                 <target>Mob</target>
