@@ -1140,7 +1140,7 @@
       </trans-unit>
         <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
             <source>general.top_contact.worktime</source>
-            <target>1-5. 10-01 h., 6-7. 10 - 03 h.</target>
+            <target>1-5. 10-03 h., 6-7. 10 - 06 h.</target>
         </trans-unit>
         <trans-unit id="general.top_contact.phone" resname="general.top_contact.phone">
             <source>general.top_contact.phone</source>
@@ -1149,6 +1149,10 @@
         <trans-unit id="general.base_page_title" resname="general.base_page_title">
             <source>general.base_page_title</source>
             <target>Pārtikas piegāde</target>
+        </trans-unit>
+        <trans-unit id="general.restaurant_page_title" resname="general.restaurant_page_title">
+            <source>general.restaurant_page_title</source>
+            <target>%restaurant_name% pārtikas piegāde</target>
         </trans-unit>
     </body>
   </file>
