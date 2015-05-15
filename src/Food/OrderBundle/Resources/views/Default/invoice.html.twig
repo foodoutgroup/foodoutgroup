@@ -83,7 +83,8 @@
         <td class="sum_col">{% trans %}order.invoice.sum{% endtrans %}, {{ currency_display|raw }}</td>
         {% if currency_alternative %}<td class="no-border"></td>{% endif %}
     </tr>
-    {% if order.orderFromNav %}
+    {# TODO nutarem su buhalterija, kad visiems rasome - maistas ir nedetalizuojame patiekalu #}
+    {#{% if order.orderFromNav %}#}
         <tr class="no-border-line">
             <td class="narrow_col">1</td>
             <td>{{ 'order.invoice.food_from1822'|trans() }}</td>
@@ -93,7 +94,7 @@
             <td class="sum_col">{{ order.total - order.deliveryPrice }}</td>
             {% if currency_alternative %}<td class="no-border sum_col"></td>{% endif %}
         </tr>
-    {% else %}
+    {#{% else %}
         {% for dish in order.details %}
             <tr class="no-border-line">
                 <td class="narrow_col">{{ loop.index }}</td>
@@ -105,7 +106,7 @@
                 {% if currency_alternative %}<td class="no-border sum_col"></td>{% endif %}
             </tr>
         {% endfor %}
-    {% endif %}
+    {% endif %}#}
 
     {% set sum_no_vat = ((order.total - order.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
 
