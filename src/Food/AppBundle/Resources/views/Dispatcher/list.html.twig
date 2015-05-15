@@ -22,7 +22,7 @@
 {% block side_menu %}{% endblock %}
 
 {% block list_table %}
-    {# type gali buti 'unassigned', 'unconfirmed', 'not_finished' ;) Just in case you need that #}
+    {# type gali buti 'unapproved', 'unassigned', 'unconfirmed', 'not_finished' ;) Just in case you need that #}
     {% macro order_table(order_list, type, cityName) %}
         {% if type == 'unassigned' or type == 'not_finished' %}
         <div class="driver_button">
@@ -195,9 +195,14 @@
                         {% if order.orderStatusLog|length > 0 %}
                             <span class="glyphicon glyphicon-info-sign status-change-history" title="{{ statusInfo }}"></span>
                         {% endif %}
-                        {% if not order.orderFromNav %}
+                        {% if not order.orderFromNav and type != 'unapproved' %}
                             <button class="btn btn-lg change_status_button" item-id="{{ order.id }}">
                                 {{ 'admin.dispatcher.button_change'|trans({}, 'SonataAdminBundle') }}
+                            </button>
+                        {% endif %}
+                        {% if type == 'unapproved' %}
+                            <button class="btn btn-lg approve_button" item-id="{{ order.id }}">
+                                {{ 'admin.dispatcher.approve'|trans({}, 'SonataAdminBundle') }}
                             </button>
                         {% endif %}
                     </td>
@@ -216,19 +221,25 @@
     <div class="city_list todo_nieks_nezino_klases">
         <ul>
             {% for city in cities %}
+                {% set cityUnapproved = cityOrders[city].unapproved|length %}
                 {% set cityUnassigned = cityOrders[city].unassigned|length %}
                 {% set cityUnconfirmed = (cityOrders[city].unconfirmed.deliver|length + cityOrders[city].unconfirmed.pickup|length) %}
                 {% set cityNotFinished = cityOrders[city].not_finished|length %}
                 {% set cityCanceled = cityOrders[city].canceled|length %}
-                {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished, 'canceledCount': cityCanceled}, 'SonataAdminBundle') %}
+                {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unapprovedCount': cityUnassigned, 'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished, 'canceledCount': cityCanceled}, 'SonataAdminBundle') %}
                 <li class="city-tab city_tabik-{{ loop.index }}">
-                    <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} ({{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }}:{{ cityCanceled }})</a>
+                    <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} ({{ cityUnapproved }}:{{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }}:{{ cityCanceled }})</a>
                 </li>
             {% endfor %}
         </ul>
         {% for cityName,city in cityOrders %}
             <div id="city_list-{{ loop.index }}">
                 <ul>
+                    <li class="city-{{ loop.index }}-unapproved-tab">
+                        <a href="#city-{{ loop.index }}-unapproved">
+                            {{ 'admin.dispatcher.unapproved'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.unapproved|length }})</span>
+                        </a>
+                    </li>
                     <li class="city-{{ loop.index }}-unassigned-tab">
                         <a href="#city-{{ loop.index }}-unassigned">
                             {{ 'admin.dispatcher.unassigned'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.unassigned|length }})</span>
@@ -250,6 +261,9 @@
                         </a>
                     </li>
                 </ul>
+                <div id="city-{{ loop.index }}-unapproved">
+                    {{ table.order_table(city.unapproved, 'unapproved', cityName) }}
+                </div>
                 <div id="city-{{ loop.index }}-unassigned">
                     {{ table.order_table(city.unassigned, 'unassigned', cityName) }}
                 </div>

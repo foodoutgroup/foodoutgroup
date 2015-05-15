@@ -40,7 +40,7 @@ var Dispatcher = {
             placement: 'right'
         });
 
-        $(".city-tab a").tooltip({});
+        $(".city-tab a").tooltip({placement: 'bottom'});
 
         $(".order_list.unassigned .order_checkbox, .order_list.not_finished .order_checkbox").bind('click', function(){
             Dispatcher.toggleDriverButton($(this));
@@ -48,6 +48,20 @@ var Dispatcher = {
 
         $(".change_status_button").bind('click', function() {
             Dispatcher.showStatusPopup($(this));
+        });
+
+        $(".approve_button").bind('click', function() {
+            $('.sonata-ba-list').mask();
+            var orderId = $(this).attr('item-id');
+
+            var url = Routing.generate('food_admin_approve_order', { '_locale': Dispatcher._locale, 'orderId': orderId, _sonata_admin: 'sonata.admin.dish' });
+            $.get(
+                url,
+                function(data) {
+                    $('.sonata-ba-list').unmask();
+                    location.reload();
+                }
+            );
         });
 
         $(".get_drivers_button ").bind('click', function() {

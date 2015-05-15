@@ -5,6 +5,7 @@ namespace Food\AppBundle\Tests\Utils;
 use Food\AppBundle\Entity\BannedIp;
 use Food\AppBundle\Test\WebTestCase;
 use Food\AppBundle\Utils\Misc;
+use Food\UserBundle\Entity\User;
 
 class MiscTest extends WebTestCase
 {
@@ -363,5 +364,50 @@ class MiscTest extends WebTestCase
         $this->assertEquals($expectedValue3, $gotText3);
         $this->assertEquals($expectedValue4, $gotText4);
         $this->assertEquals($expectedValue5, $gotText5);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testIsNewOrSuspectedThrowException()
+    {
+        $util = new Misc();
+        $util->setContainer($this->getContainer());
+
+        $util->isNewOrSuspectedUser(null);
+    }
+
+    public function testIsNewOrSuspected()
+    {
+        $util = new Misc();
+        $util->setContainer($this->getContainer());
+
+        $user = $this->getUser();
+        $user->setEmail('a@a.lt');
+
+        $test1 = $util->isNewOrSuspectedUser($user);
+
+        $user->setEmail('antanas@a.lt');
+        $test2 = $util->isNewOrSuspectedUser($user);
+
+        $user->setEmail('antanas@abc.lt');
+        $test3 = $util->isNewOrSuspectedUser($user);
+
+        $user->setEmail('antanas@aantanas.lt');
+        $user->setPhone('37060000000');
+        $test4 = $util->isNewOrSuspectedUser($user);
+
+        $user->setPhone('37061234500');
+        $test5 = $util->isNewOrSuspectedUser($user);
+
+        $user->setPhone('37061512345');
+        $test6 = $util->isNewOrSuspectedUser($user);
+
+        $this->assertTrue($test1);
+        $this->assertTrue($test2);
+        $this->assertTrue($test3);
+        $this->assertTrue($test4);
+        $this->assertTrue($test5);
+        $this->assertTrue($test6);
     }
 }

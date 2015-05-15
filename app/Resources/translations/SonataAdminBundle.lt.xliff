@@ -1175,6 +1175,10 @@
                 <source>admin.dispatcher.unassigned</source>
                 <target>Nepriskirti</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.unapproved">
+                <source>admin.dispatcher.unapproved</source>
+                <target>Nepatikrinti</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.undelivered">
                 <source>admin.dispatcher.undelivered</source>
                 <target>Nepristatyti</target>
@@ -1205,7 +1209,7 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.city_tip">
                 <source>admin.dispatcher.city_tip</source>
-                <target><![CDATA[Nepriskirti: unassignedCount<br />Nepatvirtinti: unconfirmedCount<br />Nepristatyti: notfinishedCount]]></target>
+                <target><![CDATA[Nepatikrinti: unapprovedCount<br />Nepriskirti: unassignedCount<br />Nepatvirtinti: unconfirmedCount<br />Nepristatyti: notfinishedCount<br />Atšaukti: canceledCount]]></target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.place">
                 <source>admin.dispatcher.place</source>
@@ -1226,6 +1230,10 @@
             <trans-unit id="admin.dispatcher.get_drivers">
                 <source>admin.dispatcher.get_drivers</source>
                 <target>Gauti vairuotojus</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.unapproved">
+                <source>admin.dispatcher.order_status.unapproved</source>
+                <target>Nepatikrintas</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.order_status.new">
                 <source>admin.dispatcher.order_status.new</source>
@@ -1278,6 +1286,10 @@
             <trans-unit id="admin.dispatcher.button_change">
                 <source>admin.dispatcher.button_change</source>
                 <target>Keisti</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.approve">
+                <source>admin.dispatcher.approve</source>
+                <target>Tvirtinti</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.button_cancel">
                 <source>admin.dispatcher.button_cancel</source>
