@@ -740,7 +740,7 @@
       </trans-unit>
       <trans-unit id="2a27b06725260bba699dd331a49827d8" resname="index.title_page_header">
         <source>index.title_page_header</source>
-        <target><![CDATA[Pasūtiet ēdienu uz <br/> mājām vai biroju]]></target>
+        <target><![CDATA[Pasūtiet ēdienu uz mājām vai biroju]]></target>
       </trans-unit>
       <trans-unit id="02e3d3477fa84ee89d7c8f812fe8d4b1" resname="index.search_form_qlue">
         <source>index.search_form_qlue</source>
@@ -1145,6 +1145,10 @@
         <trans-unit id="general.top_contact.phone" resname="general.top_contact.phone">
             <source>general.top_contact.phone</source>
             <target>+371 67363663</target>
+        </trans-unit>
+        <trans-unit id="general.base_page_title" resname="general.base_page_title">
+            <source>general.base_page_title</source>
+            <target>Pārtikas piegāde</target>
         </trans-unit>
     </body>
   </file>
