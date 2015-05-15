@@ -9,9 +9,9 @@ imports:
 parameters:
     nav_table_prefix: "Čilija Skambučių Centras"
     nav_ws_prefix: "Čilija Skambučių Centras"
-    available_locales: [lt, en, ru]
-    available_locales_routing: lt | en | ru
-    available_cities: ["Vilnius","Kaunas","Klaipėda"]
+    #available_locales: [lt, en, ru]
+    #available_locales_routing: lt | en | ru
+    #available_cities: ["Vilnius","Kaunas","Klaipėda"]
     time_zone: "Europe/Vilnius"
 #    sms.available_providers: [food.infobip, food.silverstreet]
     sms.available_providers: [food.infobip]
