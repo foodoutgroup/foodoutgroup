@@ -1140,7 +1140,7 @@
       </trans-unit>
         <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
             <source>general.top_contact.worktime</source>
-            <target>1-5. 10-03 h., 6-7. 10 - 06 h.</target>
+            <target>P.O.T.C un Sv., 10-03h Pk., S. 10-06</target>
         </trans-unit>
         <trans-unit id="general.top_contact.phone" resname="general.top_contact.phone">
             <source>general.top_contact.phone</source>

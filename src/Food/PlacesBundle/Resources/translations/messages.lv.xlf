@@ -242,6 +242,10 @@
         <source>places.is_not_detailed_search</source>
         <target>Meklēšana nav precīza, jo neievadījāt precīzu adresi. Pasūtīšanas iespēja būs atkarīga no adreses, kuru ievadīsiet pasūtījuma logā.</target>
       </trans-unit>
+        <trans-unit id="places.header_main_part" resname="places.header_main_part">
+            <source>places.header_main_part</source>
+            <target>Ēdienu piegāde</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>
