@@ -41,7 +41,8 @@ class DefaultController extends Controller
             'FoodPlacesBundle:Default:index.html.twig',
             array(
                 'recommended' => false,
-                'location' => $locData
+                'location' => $locData,
+                'city_translations' => $this->cityTranslations
             )
         );
     }

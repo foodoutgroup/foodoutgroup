@@ -115,6 +115,14 @@
                 <source>admin.point.active</source>
                 <target>Aktyvus</target>
             </trans-unit>
+            <trans-unit id="admin.static.seo_title">
+                <source>admin.static.seo_title</source>
+                <target>SEO Title</target>
+            </trans-unit>
+            <trans-unit id="admin.static.seo_description">
+                <source>admin.static.seo_description</source>
+                <target>SEO Description</target>
+            </trans-unit>
 
             <!-- Bendri puslapio -->
             <trans-unit id="404 Not Found">

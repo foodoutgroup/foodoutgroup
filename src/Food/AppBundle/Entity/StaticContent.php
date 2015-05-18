@@ -122,6 +122,20 @@ class StaticContent implements Translatable
     private $locale;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="seo_title", type="string", length=255)
+     */
+    private $seo_title;
+
+    /**
+     * @var string
+     * @Gedmo\Translatable
+     * @ORM\Column(name="seo_description", type="text", nullable=true)
+     */
+    private $seo_description = null;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -459,5 +473,51 @@ class StaticContent implements Translatable
     public function getVisible()
     {
         return $this->visible;
+    }
+
+    /**
+     * Set seo_title
+     *
+     * @param string $seoTitle
+     * @return StaticContent
+     */
+    public function setSeoTitle($seoTitle)
+    {
+        $this->seo_title = $seoTitle;
+    
+        return $this;
+    }
+
+    /**
+     * Get seo_title
+     *
+     * @return string 
+     */
+    public function getSeoTitle()
+    {
+        return $this->seo_title;
+    }
+
+    /**
+     * Set seo_description
+     *
+     * @param string $seoDescription
+     * @return StaticContent
+     */
+    public function setSeoDescription($seoDescription)
+    {
+        $this->seo_description = $seoDescription;
+    
+        return $this;
+    }
+
+    /**
+     * Get seo_description
+     *
+     * @return string 
+     */
+    public function getSeoDescription()
+    {
+        return $this->seo_description;
     }
 }
