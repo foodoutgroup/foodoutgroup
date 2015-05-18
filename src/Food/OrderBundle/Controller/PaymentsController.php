@@ -2,6 +2,7 @@
 
 namespace Food\OrderBundle\Controller;
 
+use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -96,6 +97,7 @@ class PaymentsController extends Controller
         try {
             $orderService = $this->container->get('food.order');
             $order = $orderService->getOrderByHash($hash);
+            $oldStatus = $order->getPaymentStatus();
 
             $orderService->logPayment(
                 $order,
@@ -119,7 +121,12 @@ class PaymentsController extends Controller
                 }
             }
 
-            return new Response($e->getTraceAsString(), 500);
+            /*
+             * Jei jau buvo fiksuota sekme - necancelinam, bet ir bukim geri - neluzkim ir nerodykim dumpo bet kuriuo atveju
+             */
+            if ($oldStatus != OrderService::$paymentStatusComplete) {
+                throw $e;
+            }
         }
 
         return new RedirectResponse(
