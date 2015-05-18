@@ -78,7 +78,7 @@ class PaymentsController extends Controller
                 $orderService->saveOrder();
             }
 
-            return new Response($e->getTraceAsString(), 500);
+            throw $e;
         }
 
 
@@ -126,6 +126,9 @@ class PaymentsController extends Controller
              */
             if ($oldStatus != OrderService::$paymentStatusComplete) {
                 throw $e;
+            } else {
+                // Redirect to success, callback already approved him for our fod
+                return new RedirectResponse($this->generateUrl('food_cart_success', array('orderHash' => $order->getOrderHash())));
             }
         }
 
