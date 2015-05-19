@@ -22,7 +22,7 @@ use Food\UserBundle\Entity\UserAddress;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/{_locale}/register/create", name="user_register_create")
+     * @Route("/{_locale}/register/create", name="user_register_create", schemes="https")
      * @Template()
      * @Method("POST")
      */
@@ -59,7 +59,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/register", name="user_register")
+     * @Route("/{_locale}/register", name="user_register", schemes="https")
      * @Template("FoodUserBundle:Default:register.html.twig")
      */
     public function registerAction(Request $request)
