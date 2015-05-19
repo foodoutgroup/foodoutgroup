@@ -22,7 +22,7 @@ use Food\UserBundle\Entity\UserAddress;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/{_locale}/register/create", name="user_register_create")
+     * @Route("/{_locale}/register/create", name="user_register_create", schemes={"https"})
      * @Template()
      * @Method("POST")
      */
@@ -44,8 +44,10 @@ class DefaultController extends Controller
         $formHandler->setUser($existingUser);
         $process = $formHandler->process($confirmationEnabled);
 
+        $response = new Response('');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
         if ($process) {
-            return new Response('');
+            return $response;
         }
 
         return $this->render(
@@ -54,7 +56,8 @@ class DefaultController extends Controller
                 'form' => $form->createView(),
                 'errors' => $this->formErrors($form),
                 'submitted' => $form->isSubmitted()
-            ]
+            ],
+            $response
         );
     }
 
