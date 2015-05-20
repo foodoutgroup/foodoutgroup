@@ -19,6 +19,7 @@ class DispatcherAdminController extends Controller
 
         foreach ($availableCities as $city) {
             $cityOrders[$city] = array(
+                'unapproved' => $repo->getOrdersUnapproved($city),
                 'unassigned' => $repo->getOrdersUnassigned($city),
                 'unconfirmed' => array(
                     'deliver' => $repo->getOrdersUnconfirmed($city),
@@ -73,6 +74,18 @@ class DispatcherAdminController extends Controller
                 'currentStatus' => $order->getOrderStatus(),
             )
         );
+    }
+
+    public function approveOrderAction($orderId)
+    {
+        $orderService = $this->get('food.order');
+        $order = $orderService->getOrderById($orderId);
+
+        $orderService->statusNew('approveOrderDispatcher');
+
+        $orderService->informPlace(false);
+
+        return new Response('OK');
     }
 
     public function setOrderStatusAction($orderId, $status)

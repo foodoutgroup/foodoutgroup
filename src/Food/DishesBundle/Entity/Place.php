@@ -847,7 +847,7 @@ class Place extends Uploadable implements Translatable
     /**
      * Get dishes
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return Dish[]
      */
     public function getDishes()
     {

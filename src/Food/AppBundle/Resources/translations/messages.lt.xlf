@@ -936,6 +936,10 @@
           <source>general.new_order.title</source>
           <target>Naujas uzsakymas restoranui</target>
       </trans-unit>
+      <trans-unit id="general.new_unapproved_order.title" resname="general.new_unapproved_order.title">
+          <source>general.new_unapproved_order.title</source>
+          <target>Naujas uzsakymas patvirtinimui!!!</target>
+      </trans-unit>
       <trans-unit id="general.new_order.selected_place_point" resname="general.new_order.selected_place_point">
           <source>general.new_order.selected_place_point</source>
           <target>Parinktas gamybos taskas adresu</target>

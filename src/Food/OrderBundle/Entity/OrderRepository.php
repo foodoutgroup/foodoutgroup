@@ -37,6 +37,33 @@ class OrderRepository extends EntityRepository
 
         return $orders;
     }
+    /**
+     * @param string $city
+     * @return array|Order[]
+     */
+    public function getOrdersUnapproved($city)
+    {
+        $date = new \DateTime();
+        $date->modify("-2 minutes");
+
+        $filter = array(
+            'order_status' =>  array(
+                OrderService::$status_unapproved,
+            ),
+            'place_point_city' => $city,
+            'deliveryType' => OrderService::$deliveryDeliver,
+            'order_date_more' => $date,
+            'paymentStatus' => OrderService::$paymentStatusComplete,
+        );
+
+        $orders = $this->getOrdersByFilter($filter, 'list');
+
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
 
     /**
      * @param string $city
@@ -223,6 +250,32 @@ class OrderRepository extends EntityRepository
     }
 
     /**
+     * Gets orders with nav_problem statuses for a given period
+     *
+     * @param string $dateStart
+     * @param string $dateEnd
+     * @return array|Order[]
+     */
+    public function getNavProblems($dateStart, $dateEnd)
+    {
+        $filter = array(
+            'order_status' =>  array(OrderService::$status_nav_problems),
+            'order_date_between' => array(
+                'from' => $dateStart,
+                'to' => $dateEnd,
+            ),
+            'only_to_nav' => 1,
+        );
+        $orders = $this->getOrdersByFilter($filter, 'list');
+
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
+
+    /**
      * @param array $filter
      * @param string $type Type of result expected. Available: ['list', 'single']
      * @throws \InvalidArgumentException
@@ -258,6 +311,12 @@ class OrderRepository extends EntityRepository
 
                     case 'not_nav':
                         $qb->andWhere('o.orderFromNav != :'.$filterName);
+                        break;
+
+                    case 'only_to_nav':
+                        $qb->leftJoin('o.place', 'p', 'o.place = p.id')
+                            ->andWhere('p.navision = 1');
+                        unset($filter['only_to_nav']);
                         break;
 
                     default:
@@ -503,6 +562,7 @@ class OrderRepository extends EntityRepository
             OrderService::$status_canceled,
             OrderService::$status_nav_problems,
             OrderService::$status_pre,
+            OrderService::$status_unapproved,
             // TODO temp, nav canot cancel assigned orders
 //            OrderService::$status_assiged
         ];
@@ -565,5 +625,27 @@ class OrderRepository extends EntityRepository
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    /**
+     * Get completed orders by phone
+     *
+     * @param srting $phone
+     * @return array|Order[]
+     */
+    public function getCompletedOrdersByPhone($phone)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb->leftJoin('o.user', 'u')
+            ->where('o.order_status IN (:order_status)')
+            ->andWhere('u.phone = :phone_no')
+            ->setParameters(array(
+                'order_status' => array(OrderService::$status_completed, OrderService::$status_partialy_completed),
+                'phone_no' => $phone,
+            ));
+
+        return $qb->getQuery()
+            ->getResult();
     }
 }

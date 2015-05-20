@@ -395,6 +395,9 @@ class UsersControllerTest extends WebTestCase
         $this->assertTrue(($validity < $now));
     }
 
+    /**
+     * Test phone formating and birthday setting
+     */
     public function testRegistrationUnformatedPhoneSuccessful()
     {
         $expectedUserData = array(
@@ -416,6 +419,7 @@ class UsersControllerTest extends WebTestCase
                     "name" => "Testas testuoklis2",
                     "email" => "api_register2@foodout.lt",
                     'password' => 'new_user',
+                    'birthday' => '1986-01-01'
                 )
             )
         );
@@ -436,6 +440,7 @@ class UsersControllerTest extends WebTestCase
         $this->assertEquals('testuoklis2', $newUser->getLastname());
         $this->assertEquals('api_register2@foodout.lt', $newUser->getEmail());
         $this->assertEquals('37060000001', $newUser->getPhone());
+        $this->assertEquals('1986-01-01', $newUser->getBirthday()->format("Y-m-d"));
 
 
         // And now log out the new user
