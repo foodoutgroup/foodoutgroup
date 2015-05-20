@@ -52,6 +52,18 @@ class SeoRecord
     private $places;
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        if (!$this->getId()) {
+            return '';
+        }
+
+        return $this->getId().'-'.$this->getTitle();
+    }
+
+    /**
      * Get id
      *
      * @return integer 
