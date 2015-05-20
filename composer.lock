@@ -74,12 +74,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "a2699501fd104310cad80eb1372cf706cb1723f5"
+                "reference": "0dd5cc6f29d4a75f0fb6f14674981d712b2ece22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a2699501fd104310cad80eb1372cf706cb1723f5",
-                "reference": "a2699501fd104310cad80eb1372cf706cb1723f5",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0dd5cc6f29d4a75f0fb6f14674981d712b2ece22",
+                "reference": "0dd5cc6f29d4a75f0fb6f14674981d712b2ece22",
                 "shasum": ""
             },
             "require": {
@@ -133,7 +133,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2015-05-07 21:41:30"
+            "time": "2015-05-06 20:22:53"
         },
         {
             "name": "beberlei/DoctrineExtensions",
@@ -4403,7 +4403,7 @@
                 }
             ],
             "description": "PHP Library for WebToPay provided services",
-            "time": "2015-03-17 12:39:01"
+            "time": "2015-03-17 13:39:01"
         },
         {
             "name": "webtopay/webtopay-bundle",
