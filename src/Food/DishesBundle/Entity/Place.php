@@ -168,6 +168,11 @@ class Place extends Uploadable implements Translatable
     private $points;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Food\AppBundle\Entity\SeoRecord", mappedBy="places")
+     */
+    private $seorecords = array();
+
+    /**
      * @ORM\OneToMany(targetEntity="PlaceCoverPhoto", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
      *
      * @var ArrayCollection
@@ -1684,5 +1689,51 @@ class Place extends Uploadable implements Translatable
     public function getNotificationContent()
     {
         return $this->notificationContent;
+    }
+
+    /**
+     * Add seorecords
+     *
+     * @param \Food\AppBundle\Entity\SeoRecord $seorecords
+     * @return Place
+     */
+    public function addSeorecord(\Food\AppBundle\Entity\SeoRecord $seorecords)
+    {
+        $this->seorecords[] = $seorecords;
+    
+        return $this;
+    }
+
+    /**
+     * Remove seorecords
+     *
+     * @param \Food\AppBundle\Entity\SeoRecord $seorecords
+     */
+    public function removeSeorecord(\Food\AppBundle\Entity\SeoRecord $seorecords)
+    {
+        $this->seorecords->removeElement($seorecords);
+    }
+
+    /**
+     * Get seorecords
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSeorecords()
+    {
+        return $this->seorecords;
+    }
+
+    public function getSEO($field = 'Title')
+    {
+        $seo_line = "";
+        $seo_records = $this->getSeorecords();
+        if (count($seo_records) > 0) {
+            foreach ($seo_records as $seo_record) {
+                $seo_line .= $seo_record->{'get' . $field}() . " ";
+            }
+            return rtrim($seo_line, " ");
+        }
+        return false;
     }
 }

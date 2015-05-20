@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field%}
+    {% if admin.datagrid.results|length > 0 %}
+        <div>
+            <small>{{ object.getPlacesNames}}</small>
+        </div>
+    {% endif %}
+{% endblock %}

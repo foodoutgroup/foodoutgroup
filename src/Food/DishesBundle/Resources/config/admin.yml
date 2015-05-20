@@ -312,3 +312,14 @@ services:
                     - ~
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.seorecords:
+                class: Food\AppBundle\Admin\SeoRecordAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.seorecord" }
+                arguments:
+                    - ~
+                    - Food\AppBundle\Entity\SeoRecord
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]

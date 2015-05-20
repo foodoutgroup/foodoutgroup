@@ -333,6 +333,7 @@ sonata_admin:
                       - sonata.admin.banned_ips
                       - sonata.admin.street
                       - sonata.admin.unused_sf_numbers
+                      - sonata.admin.seorecords
                   roles: [ ROLE_ADMIN ]
 #              admin.support:
 #                  items: ~

@@ -3,9 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="verify-webtopay" content="461551ad8deddc3ad0975adb27d1eff4" />
-    <title>
-        {% block title %}{% trans %}general.base_page_title{% endtrans %} | {{ page_title }}{% endblock %}
-    </title>
+    <title>{% block title %}{% trans %}general.base_page_title{% endtrans %} | {{ page_title }}{% endblock %}</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
@@ -17,7 +15,7 @@
     <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/mstile-144x144.png">
-    <meta name="description" content="">
+    <meta name="description" content="{% block seo_description %}{% endblock %}">
     <meta name="viewport" content="width=1000">
     <meta name="msapplication-config" content="none"/>
 
