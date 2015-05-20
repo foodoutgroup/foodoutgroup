@@ -269,6 +269,10 @@
                 <source>admin.dish_units</source>
                 <target>Dish units</target>
             </trans-unit>
+            <trans-unit id="admin.best_offers">
+                <source>admin.best_offers</source>
+                <target>Best offers</target>
+            </trans-unit>
             <trans-unit id="admin.unit.name">
                 <source>admin.unit.name</source>
                 <target>Dish unit</target>
@@ -280,6 +284,36 @@
             <trans-unit id="unit">
                 <source>Unit</source>
                 <target>Unit</target>
+            </trans-unit>
+
+            <!-- Best offers -->
+            <trans-unit id="admin.best_offers.title">
+                <source>admin.best_offers.title</source>
+                <target>Title</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.link">
+                <source>admin.best_offers.link</source>
+                <target>Link</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.text">
+                <source>admin.best_offers.text</source>
+                <target>Text</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.image">
+                <source>admin.best_offers.image</source>
+                <target>Image</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.active">
+                <source>admin.best_offers.active</source>
+                <target>Active</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.best_offers">
+                <source>admin.best_offers.best_offers</source>
+                <target>Best offers</target>
+            </trans-unit>
+            <trans-unit id="best-offer-list">
+                <source>Best Offer List</source>
+                <target>Best offers</target>
             </trans-unit>
 
             <!-- Place -->
@@ -1111,6 +1145,10 @@
                 <source>admin.dispatcher.order_id</source>
                 <target>ID</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.from_nav">
+                <source>admin.dispatcher.from_nav</source>
+                <target>From NAV</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.order_date">
                 <source>admin.dispatcher.order_date</source>
                 <target>Order date</target>
@@ -1139,9 +1177,29 @@
                 <source>admin.dispatcher.unassigned</source>
                 <target>Unassigned</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.unapproved">
+                <source>admin.dispatcher.unapproved</source>
+                <target>Unapproved</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.undelivered">
                 <source>admin.dispatcher.undelivered</source>
                 <target>Undelivered</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.canceled">
+                <source>admin.dispatcher.canceled</source>
+                <target>Canceled</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.client_phone">
+                <source>admin.dispatcher.client_phone</source>
+                <target>Client phone</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.late_time">
+                <source>admin.dispatcher.late_time</source>
+                <target>Late</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.client_contacted">
+                <source>admin.dispatcher.client_contacted</source>
+                <target>Client contacted</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.unconfirmed_pickup">
                 <source>admin.dispatcher.unconfirmed_pickup</source>
@@ -1153,7 +1211,7 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.city_tip">
                 <source>admin.dispatcher.city_tip</source>
-                <target><![CDATA[Unassigned: unassignedCount<br />Unconfirmed: unconfirmedCount<br />Undelivered: notfinishedCount]]></target>
+                <target><![CDATA[Unapproved: unapprovedCount<br />Unassigned: unassignedCount<br />Unconfirmed: unconfirmedCount<br />Undelivered: notfinishedCount<br />Canceled: canceledCount]]></target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.place">
                 <source>admin.dispatcher.place</source>
@@ -1175,9 +1233,17 @@
                 <source>admin.dispatcher.get_drivers</source>
                 <target>Get drivers</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.unapproved">
+                <source>admin.dispatcher.order_status.unapproved</source>
+                <target>Unapproved</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.order_status.new">
                 <source>admin.dispatcher.order_status.new</source>
                 <target>New</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.preorder">
+                <source>admin.dispatcher.order_status.preorder</source>
+                <target>New PreOrder</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.order_status.delayed">
                 <source>admin.dispatcher.order_status.delayed</source>
@@ -1222,6 +1288,10 @@
             <trans-unit id="admin.dispatcher.button_change">
                 <source>admin.dispatcher.button_change</source>
                 <target>Change</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.approve">
+                <source>admin.dispatcher.approve</source>
+                <target>Approve</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.button_cancel">
                 <source>admin.dispatcher.button_cancel</source>
@@ -1357,6 +1427,38 @@
             <trans-unit id="admin.banned_ip.id">
                 <source>admin.banned_ip.id</source>
                 <target>ID</target>
+            </trans-unit>
+
+            <!-- Unused SF numbers -->
+            <trans-unit id="admin.unused_sf_numbers">
+                <source>admin.unused_sf_numbers</source>
+                <target>Unused SF numbers</target>
+            </trans-unit>
+            <trans-unit id="Unused Sf Numbers List">
+                <source>Unused Sf Numbers List</source>
+                <target>Unused SF numbers</target>
+            </trans-unit>
+            <trans-unit id="admin.unused_sf_numbers.sf_number">
+                <source>admin.unused_sf_numbers.sf_number</source>
+                <target>SF number</target>
+            </trans-unit>
+            <trans-unit id="admin.unused_sf_numbers.sf_number_placeholder">
+                <source>admin.unused_sf_numbers.sf_number_placeholder</source>
+                <target>123456</target>
+            </trans-unit>
+            <trans-unit id="admin.unused_sf_numbers.id">
+                <source>admin.unused_sf_numbers.id</source>
+                <target>ID</target>
+            </trans-unit>
+
+            <!-- Coupons generator -->
+            <trans-unit id="admin.coupons.generator">
+                <source>admin.coupons.generator</source>
+                <target>Coupon generator</target>
+            </trans-unit>
+            <trans-unit id="Coupon Generator List">
+                <source>Coupon Generator List</source>
+                <target>Coupon generator</target>
             </trans-unit>
 
             <!-- Street admin -->
@@ -1914,6 +2016,28 @@
             <trans-unit id="link_filters">
                 <source>link_filters</source>
                 <target>Filters</target>
+            </trans-unit>
+
+            <!-- Params listas -->
+            <trans-unit id="admin.params">
+                <source>admin.params</source>
+                <target>Parameters</target>
+            </trans-unit>
+            <trans-unit id="Param List">
+                <source>Param List</source>
+                <target>Parameters</target>
+            </trans-unit>
+            <trans-unit id="admin.param.name">
+                <source>admin.param.name</source>
+                <target>Parameter</target>
+            </trans-unit>
+            <trans-unit id="admin.param.id">
+                <source>admin.param.id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="admin.param.value">
+                <source>admin.param.value</source>
+                <target>Value</target>
             </trans-unit>
         </body>
     </file>
