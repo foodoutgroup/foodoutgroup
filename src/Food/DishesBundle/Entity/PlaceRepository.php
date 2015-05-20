@@ -14,7 +14,7 @@ class PlaceRepository extends EntityRepository
      * @param $container
      * @return array
      */
-    public function magicFindByKitchensIds($kitchens, $filters=array(), $recommended = false, $locationData = null, $container)//, $city, $lat, $long)
+    public function magicFindByKitchensIds($kitchens, $filters=array(), $recommended = false, $locationData = null, $container = null)//, $city, $lat, $long)
     {
         /*
             SET @lat1 = 54.680437, @lon1 = 25.261236, @lat2 = 54.681914, @lon2 = 25.268156;
