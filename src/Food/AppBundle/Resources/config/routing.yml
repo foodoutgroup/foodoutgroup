@@ -128,6 +128,12 @@ food_admin_get_order_status_popup:
     options:
         expose: true
 
+food_admin_approve_order:
+    pattern: /admin/dispatcher/approve_order/{orderId}
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:approveOrder}
+    options:
+        expose: true
+
 food_admin_set_order_status:
     pattern: /admin/dispatcher/set-order-status/{orderId}/{status}
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:setOrderStatus}

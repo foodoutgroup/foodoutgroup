@@ -5,6 +5,7 @@ namespace Food\AppBundle\Utils;
 use Food\AppBundle\Entity\Param;
 use Food\AppBundle\Traits;
 use Food\OrderBundle\Entity\Order;
+use Food\UserBundle\Entity\User;
 
 class Misc
 {
@@ -253,5 +254,59 @@ class Misc
         $stmt->execute();
         $driver = $stmt->fetchColumn(0);
         return $driver;
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return boolean
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function isNewOrSuspectedUser($user)
+    {
+        if (empty($user) || !$user instanceof User)
+        {
+            throw new \InvalidArgumentException('To check if user fraudulent - please, pass me a user');
+        }
+
+        $email = $user->getEmail();
+        $orderRepo = $this->getContainer()->get('doctrine')->getRepository('FoodOrderBundle:Order');
+        $orderService = $this->getContainer()->get('food.order');
+        $phone = $user->getPhone();
+
+        $fraudPossible = false;
+
+        // Check if possibly a fraudulent email
+
+        /*
+         * Nepraleidzia tokiu:
+         *  - a@mail.lt
+         *  - petras@a.lt
+         *  - jonas@aaa.lt
+         */
+        if (!preg_match('/[a-zA-Z0-9]{2,}@[a-zA-Z0-9]{4,}\./', $email)) {
+            $fraudPossible = true;
+        }
+
+        // Check if possibly a fraudulent phone
+        if (in_array($phone, array('37060000000', '371'))
+            || strpos($phone, '12345')) {
+            $fraudPossible = true;
+        }
+
+        // Check if there were completed orders from this user
+        $userOrder = $orderService->getUserOrders($user);
+        if (is_array($userOrder) && count($userOrder) > 0) {
+            return false;
+        }
+
+        // Check if there were order with this phone
+        $phoneOrders = $orderRepo->getCompletedOrdersByPhone($phone);
+        if (is_array($userOrder) && count($userOrder) > 0) {
+            return false;
+        }
+
+        return $fraudPossible;
     }
 }
