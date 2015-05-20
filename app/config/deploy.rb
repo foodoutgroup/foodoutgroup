@@ -6,7 +6,7 @@ set :repository,  "git@github.com:Foodout/skanu.lt.git"
 set :scm,         :git
 
 set :model_manager, "doctrine"
-set :branch, "master_latvia_zones_merged"
+set :branch, "master-for-zirgas-merge"
 
 # multi-stage environment
 set :stages,        %w(production staging sandbox taurinas kofeinas pipiras production_lv)
