@@ -20,6 +20,7 @@ class DefaultController extends Controller
             $recommended = true;
         }
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
+
         return $this->render(
             'FoodPlacesBundle:Default:index.html.twig',
             array(
@@ -41,7 +42,8 @@ class DefaultController extends Controller
             'FoodPlacesBundle:Default:index.html.twig',
             array(
                 'recommended' => false,
-                'location' => $locData
+                'location' => $locData,
+                'city_translations' => $this->cityTranslations
             )
         );
     }
@@ -52,32 +54,7 @@ class DefaultController extends Controller
             $recommended = true;
         }
 
-        $kitchens = $request->get('kitchens', "");
-        $filters = $request->get('filters');
-        if (empty($kitchens)) {
-            $kitchens = array();
-        } else {
-            $kitchens = explode(",", $kitchens);
-        }
-
-        $filters = explode(",", $filters);
-        foreach ($kitchens as $kkey=> &$kitchen) {
-            $kitchen = intval($kitchen);
-        }
-        foreach ($filters as $fkey=> &$filter) {
-            $filter = trim($filter);
-        }
-
-        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
-            $kitchens,
-            $filters,
-            $recommended,
-            $this->get('food.googlegis')->getLocationFromSession(),
-            $this->container
-        );
-        $this->get('food.places')->saveRelationPlaceToPoint($places);
-        $places = $this->get('food.places')->placesPlacePointsWorkInformation($places);
-
+        $places = $this->get('food.places')->getPlacesForList($recommended, $request);
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
 
         return $this->render(
@@ -87,7 +64,6 @@ class DefaultController extends Controller
                 'recommended' => ($recommended ? 1:0),
                 'location' => $locData,
                 'location_show' => (empty($locData) ? false : true)
-
             )
         );
     }
