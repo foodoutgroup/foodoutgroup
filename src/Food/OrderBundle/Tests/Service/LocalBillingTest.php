@@ -82,6 +82,10 @@ class LocalBillingTest extends \PHPUnit_Framework_TestCase {
             ->disableOriginalConstructor()
             ->getMock();
 
+        $miscService = $this->getMockBuilder('Food\AppBundle\Utils\Misc')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $order = $this->getMock('\Food\OrderBundle\Entity\Order');
         $place = new Place();
         $orderService = $this->getMock('\Food\OrderBundle\Service\OrderService');
@@ -103,6 +107,15 @@ class LocalBillingTest extends \PHPUnit_Framework_TestCase {
             ->will($this->returnValue($cartService));
 
         $container->expects($this->at(3))
+            ->method('get')
+            ->with('food.app.utils.misc')
+            ->will($this->returnValue($miscService));
+
+        $miscService->expects($this->once())
+            ->method('isNewOrSuspectedUser')
+            ->will($this->returnValue(false));
+
+        $container->expects($this->at(4))
             ->method('get')
             ->with('router')
             ->will($this->returnValue($router));
