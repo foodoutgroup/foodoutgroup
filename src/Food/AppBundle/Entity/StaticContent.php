@@ -123,7 +123,7 @@ class StaticContent implements Translatable
 
     /**
      * @var string
-     *
+     * @Gedmo\Translatable
      * @ORM\Column(name="seo_title", type="string", length=255, nullable=true)
      */
     private $seo_title;
