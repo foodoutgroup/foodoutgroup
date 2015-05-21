@@ -124,7 +124,7 @@ class StaticContent implements Translatable
     /**
      * @var string
      *
-     * @ORM\Column(name="seo_title", type="string", length=255)
+     * @ORM\Column(name="seo_title", type="string", length=255, nullable=true)
      */
     private $seo_title;
 
