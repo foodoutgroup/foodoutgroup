@@ -93,6 +93,7 @@ class PlaceRepository extends EntityRepository
                  OR
                  p.self_delivery = 1
             )
+            AND pps.delivery=1
             ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
         $kitchensQuery = "";
 
@@ -150,11 +151,12 @@ class PlaceRepository extends EntityRepository
 
         $dh = date("H");
         $dm = date("i");
+        $wd = date("N");
         if (intval($dh) < 6) {
             $dh = 24 + intval($dh);
+            $wd = date("N", strtotime("-1 day"));
         }
         $dth = $dh."".$dm;
-        $wd = date("N");
 
         foreach ($places as $pkey=>&$place) {
             //var_dump($place['pp_count']);
@@ -171,6 +173,7 @@ class PlaceRepository extends EntityRepository
                         AND pps.city='".$city."'
                         AND pps.place = ".$place['place']->getId()."
                         AND '".$dth."' BETWEEN  (REPLACE(wd".$wd."_start, ':','') + 0) AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)
+                        AND pps.delivery=1
                         AND (
             (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) <= 7
                  OR
@@ -237,11 +240,12 @@ class PlaceRepository extends EntityRepository
 
         $dh = date("H");
         $dm = date("i");
+        $wd = date("N");
         if (intval($dh) < 6) {
             $dh = 24 + intval($dh);
+            $wd = date("N", strtotime("-1 day"));
         }
         $dth = $dh."".$dm;
-        $wd = date("N");
 
         $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL";
         $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.active=1 AND ppdz.place_point=pp.id";
@@ -257,7 +261,7 @@ class PlaceRepository extends EntityRepository
             $subQuery.=" AND '".$dth."' BETWEEN (REPLACE(wd".$wd."_start,':','') + 0) AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)";
         }
 
-        $subQuery.=" ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
+        $subQuery.=" AND delivery=1 ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
 
@@ -289,11 +293,12 @@ class PlaceRepository extends EntityRepository
 
         $dh = date("H");
         $dm = date("i");
+        $wd = date("N");
         if (intval($dh) < 6) {
             $dh = 24 + intval($dh);
+            $wd = date("N", strtotime("-1 day"));
         }
         $dth = $dh."".$dm;
-        $wd = date("N");
 
         $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND pp.deleted_at IS NULL AND p.active=1 AND pp.city='".$city."' AND pp.place = $placeId
             AND (
@@ -301,6 +306,7 @@ class PlaceRepository extends EntityRepository
                 ".(!$ignoreSelfDelivery ? " OR p.self_delivery = 1":"")."
             )
             AND '".$dth."' BETWEEN (REPLACE(wd".$wd."_start,':','')+0) AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)
+            AND delivery=1
             ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
