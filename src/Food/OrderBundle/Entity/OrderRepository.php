@@ -51,7 +51,6 @@ class OrderRepository extends EntityRepository
                 OrderService::$status_unapproved,
             ),
             'place_point_city' => $city,
-            'deliveryType' => OrderService::$deliveryDeliver,
             'order_date_more' => $date,
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
