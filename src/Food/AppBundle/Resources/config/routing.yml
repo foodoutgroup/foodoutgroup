@@ -10,6 +10,14 @@ food_test_report:
     pattern:  /test/report
     defaults: { _controller: FoodAppBundle:Test:report }
 
+food_test_zones:
+    pattern: /test/zones/{id}
+    defaults: { _controller: FoodAppBundle:Test:zones, id: ~ }
+
+food_test_devzones:
+    pattern: /test/devzones/{id}
+    defaults: { _controller: FoodAppBundle:Test:devzones, id: ~ }
+
 food_test_index:
     pattern:  /test/
     defaults: { _controller: FoodAppBundle:Test:index }
@@ -23,8 +31,8 @@ food_migrator:
     defaults: { _controller: FoodAppBundle:Test:migrateCili }
 
 food_putorder:
-    pattern:  /test/put-order
-    defaults: { _controller: FoodAppBundle:Test:putOrder }
+    pattern:  /test/put-order/{id}
+    defaults: { _controller: FoodAppBundle:Test:putOrder, id: ~ }
 
 food_test_pdf:
     pattern:  /test/pdf
@@ -91,7 +99,7 @@ food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|routing|places|vietos|mesto|monitoring|nagios|banned|logistics|order|sitemap)[a-z0-9-\__\"„“\.\+]{4,}"
+        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|routing|places|vietos|vietas|maina|mesto|monitoring|nagios|banned|logistics|order|sitemap)[a-z0-9-\__\"„“\.\+]{4,}"
 
 food_order_nav_test1:
     pattern: /order/nav_test1
@@ -116,6 +124,12 @@ food_admin_get_place_categories:
     options:
         expose: true
 
+food_admin_get_place_points:
+    pattern: /admin/place/get-points/{placeId}
+    defaults: {_controller: FoodDishesBundle:DishAdmin:getPointsFromPlace}
+    options:
+        expose: true
+
 food_admin_get_place_dish_options:
     pattern: /admin/place/get-dish-options/{placeId}/{uniqueId}
     defaults: {_controller: FoodDishesBundle:DishAdmin:getDishOptionsFromPlace}
@@ -125,6 +139,12 @@ food_admin_get_place_dish_options:
 food_admin_get_order_status_popup:
     pattern: /admin/dispatcher/get_order_status_popup/{orderId}
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:statusPopup}
+    options:
+        expose: true
+
+food_admin_approve_order:
+    pattern: /admin/dispatcher/approve_order/{orderId}
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:approveOrder}
     options:
         expose: true
 
@@ -155,6 +175,14 @@ food_admin_check_new_orders:
         expose: true
     requirements:
           _method:  GET
+
+food_admin_mark_order_contacted:
+    pattern: /admin/dispatcher/mark-contacted/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:markOrderContacted}
+    options:
+        expose: true
+    requirements:
+          _method:  POST
 
 food_admin_get_place_unit_categories:
     pattern: /admin/place/get-unit-categories/{placeId}
@@ -196,6 +224,10 @@ food_place_en:
 food_place_lt:
     resource: "@FoodPlacesBundle/Resources/config/routing_lt.yml"
     prefix:   /vietos
+
+food_place_lv:
+    resource: "@FoodPlacesBundle/Resources/config/routing_lv.yml"
+    prefix:   /vietas
 
 food_place_ru:
     resource: "@FoodPlacesBundle/Resources/config/routing_ru.yml"

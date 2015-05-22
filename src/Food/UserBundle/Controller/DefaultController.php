@@ -115,8 +115,13 @@ class DefaultController extends Controller
         // data
         $user = $this->user();
         $address = $this->address($user);
-        // @TODO tikejaus, kad tituliniam nebeliko hardkodo :| Deja.. Palieku ir cia, iki rankos issities padaryt tvarka
-        $cities = array('Vilnius' => 'Vilnius', 'Kaunas' => 'Kaunas', 'Klaipėda' => 'Klaipėda');
+
+        $citiesConfig = $this->container->getParameter('available_cities');
+        $cities = array();
+        foreach ($citiesConfig as $city) {
+            $cities[$city] = $city;
+        }
+
 
         // embedded form
         $requestData = $request->request->get('food_user_profile');
@@ -182,8 +187,12 @@ class DefaultController extends Controller
         $user = $this->user();
         $address = $this->address($user);
 
-        // @TODO tikejaus, kad tituliniam nebeliko hardkodo :| Deja.. Palieku ir cia, iki rankos issities padaryt tvarka
-        $cities = array('Vilnius' => 'Vilnius', 'Kaunas' => 'Kaunas', 'Klaipėda' => 'Klaipėda');
+        $citiesConfig = $this->container->getParameter('available_cities');
+        $cities = array();
+        foreach ($citiesConfig as $city) {
+            $cities[$city] = $city;
+        }
+
 
         // mega form containts 3 embedded forms
         $form = $this->createProfileMegaForm($user, $address, $cities, '');

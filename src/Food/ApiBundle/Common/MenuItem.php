@@ -91,7 +91,9 @@ class MenuItem extends ContainerAware
 
         $categories = array();
         foreach ($dish->getCategories() as $cat) {
-            $categories[] = $cat->getId();
+            if ($cat->getActive()) {
+                $categories[] = $cat->getId();
+            }
         }
 
         $ds = $this->container->get('food.dishes');

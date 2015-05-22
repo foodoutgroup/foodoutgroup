@@ -81,9 +81,10 @@
         <td class="narrow_col">{% trans %}order.invoice.quantity{% endtrans %}</td>
         <td class="sum_col">{% trans %}order.invoice.price{% endtrans %}</td>
         <td class="sum_col">{% trans %}order.invoice.sum{% endtrans %}, {{ currency_display|raw }}</td>
-        <td class="no-border"></td>
+        {% if currency_alternative %}<td class="no-border"></td>{% endif %}
     </tr>
-    {% if order.orderFromNav %}
+    {# TODO nutarem su buhalterija, kad visiems rasome - maistas ir nedetalizuojame patiekalu #}
+    {#{% if order.orderFromNav %}#}
         <tr class="no-border-line">
             <td class="narrow_col">1</td>
             <td>{{ 'order.invoice.food_from1822'|trans() }}</td>
@@ -91,9 +92,9 @@
             <td class="narrow_col">1</td>
             <td class="sum_col">{{ order.total - order.deliveryPrice }}</td>
             <td class="sum_col">{{ order.total - order.deliveryPrice }}</td>
-            <td class="no-border sum_col"></td>
+            {% if currency_alternative %}<td class="no-border sum_col"></td>{% endif %}
         </tr>
-    {% else %}
+    {#{% else %}
         {% for dish in order.details %}
             <tr class="no-border-line">
                 <td class="narrow_col">{{ loop.index }}</td>
@@ -102,10 +103,10 @@
                 <td class="narrow_col">{{ dish.quantity }}</td>
                 <td class="sum_col">{{ dish.price }}</td>
                 <td class="sum_col">{{ dish.price * dish.quantity }}</td>
-                <td class="no-border sum_col"></td>
+                {% if currency_alternative %}<td class="no-border sum_col"></td>{% endif %}
             </tr>
         {% endfor %}
-    {% endif %}
+    {% endif %}#}
 
     {% set sum_no_vat = ((order.total - order.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
 
@@ -127,7 +128,7 @@
         <td></td>
         <td class="no-wrap">{% trans %}order.invoice.sum_no_vat{% endtrans %}:</td>
         <td class="sum_col">{{ sum_no_vat|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
-        <td class="sum_col">{{ misc_utils.getLitas(sum_no_vat) }} {{ display_currency_alternative }}</td>
+        {% if currency_alternative %}<td class="sum_col">{{ misc_utils.getLitas(sum_no_vat) }} {{ display_currency_alternative }}</td>{% endif %}
     </tr>
     {% if order.deliveryType == 'deliver' %}
         <tr class="no-border-line">
@@ -137,7 +138,7 @@
             <td></td>
             <td class="no-wrap" style="white-space: nowrap;">{% trans %}order.invoice.delivery{% endtrans %}</td>
             <td class="sum_col">{{ delivery_no_vat|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
-            <td class="sum_col">{{ misc_utils.getLitas(order.deliveryPrice) }} {{ display_currency_alternative }}</td>
+            {% if currency_alternative %}<td class="sum_col">{{ misc_utils.getLitas(order.deliveryPrice) }} {{ display_currency_alternative }}</td>{% endif %}
         </tr>
     {% endif %}
 
@@ -148,7 +149,7 @@
         <td></td>
         <td class="no-wrap" style="white-space: nowrap;">{% trans %}order.invoice.vat{% endtrans %} {{ vat_size }}%</td>
         <td class="sum_col">{{ vat_sum|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
-        <td class="sum_col">{{ misc_utils.getLitas(vat_sum) }} {{ display_currency_alternative }}</td>
+        {% if currency_alternative %}<td class="sum_col">{{ misc_utils.getLitas(vat_sum) }} {{ display_currency_alternative }}</td>{% endif %}
     </tr>
     <tr class="no-border-line">
         <td></td>
@@ -157,7 +158,7 @@
         <td></td>
         <td class="no-wrap" style="border-top: 1px solid black;">{% trans %}order.invoice.sum_total{% endtrans %}:</td>
         <td class="sum_col" style="border-top: 1px solid black;">{{ order.total|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
-        <td class="sum_col" style="border-top: 1px solid black;">{{  misc_utils.getLitas(order.total)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</td>
+        {% if currency_alternative %}<td class="sum_col" style="border-top: 1px solid black;">{{  misc_utils.getLitas(order.total)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</td>{% endif %}
     </tr>
 </table>
 <br />

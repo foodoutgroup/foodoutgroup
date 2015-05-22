@@ -77,7 +77,15 @@ class LocalBiller extends ContainerAware implements BillingInterface {
         $orderService->deactivateCoupon();
 
         $this->container->get('food.cart')->clearCart($order->getPlace());
-        $orderService->informPlace();
+
+        $possibleNewUser = $this->container->get('food.app.utils.misc')->isNewOrSuspectedUser($order->getUser());
+
+        if ($possibleNewUser) {
+            $orderService->statusUnapproved('new_order', 'Possible new unreliable user or suspected fraud');
+            $orderService->informUnapproved();
+        } else {
+            $orderService->informPlace();
+        }
 
         $router = $this->container->get('router');
         return $router->generate('food_cart_success', array('orderHash' => $order->getOrderHash()));

@@ -86,7 +86,7 @@ class ArcGisService extends ContainerAware {
         $resp = $this->getCli()->get(
             $this->container->getParameter('arc_gis_geocode_single'),
             array(
-                'text' => $theText.', Lithuania',
+                'text' => $theText.', '.$this->container->getParameter('country_full'),
                 'f' => 'pjson',
                 'token' => $this->getToken(),
                 'outFields' => 'AddNum,StName,City'

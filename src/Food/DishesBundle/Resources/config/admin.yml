@@ -100,6 +100,18 @@ services:
             - [ setTranslationDomain, [SonataAdminBundle]]
             - [ setTemplate, [edit, FoodDishesBundle:Place:place_point_admin.html.twig]]
 
+    sonata.admin.place.pointdeliveryzones:
+        class: Food\DishesBundle\Admin\PlacePointDeliveryZonesAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Delivery Zones" }
+        arguments:
+            - ~
+            - Food\DishesBundle\Entity\PlacePointDeliveryZones
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
+
     sonata.admin.place.coverphoto:
         class: Food\DishesBundle\Admin\PlaceCoverPhotoAdmin
         tags:
@@ -297,6 +309,17 @@ services:
                 arguments:
                     - ~
                     - Food\AppBundle\Entity\Param
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.seorecords:
+                class: Food\AppBundle\Admin\SeoRecordAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.seorecord" }
+                arguments:
+                    - ~
+                    - Food\AppBundle\Entity\SeoRecord
                     - ~
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]

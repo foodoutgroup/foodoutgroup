@@ -22,7 +22,7 @@
 {% block side_menu %}{% endblock %}
 
 {% block list_table %}
-    {# type gali buti 'unassigned', 'unconfirmed', 'not_finished' ;) Just in case you need that #}
+    {# type gali buti 'unapproved', 'unassigned', 'unconfirmed', 'not_finished' ;) Just in case you need that #}
     {% macro order_table(order_list, type, cityName) %}
         {% if type == 'unassigned' or type == 'not_finished' %}
         <div class="driver_button">
@@ -36,21 +36,35 @@
             <tr>
                 <th></th>
                 <th>{{ 'admin.dispatcher.order_id'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.dispatcher.from_nav'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.dispatcher.place'|trans({}, 'SonataAdminBundle') }}</th>
+            {% if type != 'canceled' %}
                 <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
+            {% endif %}
             {% if type != 'unconfirmed-pickup' %}
                 <th>{{ 'admin.dispatcher.client_address'|trans({}, 'SonataAdminBundle') }}</th>
+                <th class="self_delivery">{{ 'admin.dispatcher.client_phone'|trans({}, 'SonataAdminBundle') }}</th>
                 <th class="self_delivery">{{ 'admin.dispatcher.self_delivery'|trans({}, 'SonataAdminBundle') }}</th>
             {% endif %}
                 <th class="order_date">{{ 'admin.dispatcher.order_date'|trans({}, 'SonataAdminBundle') }}</th>
+            {% if type != 'canceled' %}
                 <th class="order_date">{{ 'admin.dispatcher.delivery_time'|trans({}, 'SonataAdminBundle') }}</th>
+            {% endif %}
+            {% if type == "not_finished" %}
+                <th class="order_date">{{ 'admin.dispatcher.late_time'|trans({}, 'SonataAdminBundle') }}</th>
+            {% endif %}
+            {% if type != 'canceled' %}
                 <th class="order_date">{{ 'admin.dispatcher.delayed'|trans({}, 'SonataAdminBundle') }}</th>
+            {% endif %}
                 <th class="narrow_col">{{ 'admin.dispatcher.payment'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.dispatcher.comment'|trans({}, 'SonataAdminBundle') }}</th>
                 {% if type == 'not_finished' %}
                     <th>{{ 'admin.dispatcher.driver'|trans({}, 'SonataAdminBundle') }}</th>
                 {% endif %}
                 <th>{{ 'admin.dispatcher.status'|trans({}, 'SonataAdminBundle') }}</th>
+            {% if type == 'canceled' %}
+                <th class="client_contacted_check">{{ 'admin.dispatcher.client_contacted'|trans({}, 'SonataAdminBundle') }}</th>
+            {% endif %}
             </tr>
             {% for order in order_list %}
                 {% if loop.last %}
@@ -61,7 +75,7 @@
                         Dispatcher.recentOrders['{{ cityName }}']['{{ type }}'] = {{ order.id }};
                     </script>
                 {% endif %}
-                {% if (type == 'unconfirmed' and order.orderDate|date_modify("+10 minutes")|date("d H:i") < "now"|date("d H:i")) or (type == 'unassigned' and order.placePointSelfDelivery != true and order.deliveryTime|date_modify("-25 minute")|date("d H:i") < "now"|date("d H:i")) %}
+                {% if (type == 'unconfirmed' and order.orderDate|date_modify("+10 minutes")|date("d H:i") < "now"|date("d H:i")) or (type == 'unassigned' and order.placePointSelfDelivery != true and order.deliveryTime|date_modify("-25 minute")|date("d H:i") < "now"|date("d H:i")) or (type == 'not_finished' and order.placePointSelfDelivery != true and order.deliveryTime|date("d H:i") < "now"|date("d H:i")) %}
                     {% set additional_class = 'late_warning' %}
                 {% else %}
                     {% set additional_class = '' %}
@@ -76,8 +90,14 @@
                         {% endif %}
                     </td>
                     <td><a href="{{ path('admin_food_order_order_show', {'id': order.id}) }}" target="_blank">{{ order.id }}</a></td>
+                    <td class="from_nav_ico">
+                        {% if order.orderFromNav %}
+                            <span class="glyphicon glyphicon-ok"></span>
+                        {% endif %}
+                    </td>
                     <td>
                         {{ order.placeName }}
+                        {% if order.placePoint.internalCode is not empty %} - {{ order.placePoint.internalCode }}{% endif %}
                         {% set placePointPhones = '+'~order.placePoint.phone %}
                         {% if order.placePoint.altPhone1 is not empty%}
                             {% set placePointPhones = placePointPhones ~ '<br />' ~ '+' ~ order.placePoint.altPhone1 %}
@@ -87,9 +107,12 @@
                         {% endif %}
                         <span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ placePointPhones }}"></span>
                     </td>
+                {% if type != 'canceled' %}
                     <td>{{ order.placePoint.address }}</td>
+                {% endif %}
                 {% if type != 'unconfirmed-pickup' %}
                     <td>{{ order.addressId.address }}</td>
+                    <td>{{ order.user.phone }}</td>
                     <td class="self_delivery">
                         {% if order.placePointSelfDelivery %}
                             <span class="glyphicon glyphicon-ok"></span>
@@ -99,12 +122,25 @@
                     </td>
                 {% endif %}
                     <td class="order_date" title="{{ order.orderDate|date("Y-m-d") }}">{{ order.orderDate|date("H:i") }}</td>
+                {% if type != 'canceled' %}
                     <td class="order_date" title="{{ order.deliveryTime|date("Y-m-d") }}">{{ order.deliveryTime|date("H:i") }}</td>
+                {% endif %}
+                {% if type == "not_finished" %}
+                    <td class="order_date">
+                        {% if order.deliveryTime|date("d H:i") < "now"|date("d H:i") %}
+                            {{ order.lateMinutes }} min
+                        {% else %}
+                            0 min
+                        {% endif %}
+                    </td>
+                {% endif %}
+                {% if type != 'canceled' %}
                     <td class="order_date{% if order.delayed %} delayed-order{% endif %}">
                         {% if order.delayed %}
                             {{ order.delayDuration }} min
                         {% endif %}
                     </td>
+                {% endif %}
                     <td>
                         {% if order.paymentMethod == 'local' %}
                             {{ 'admin.dispatcher.payement.local'|trans({}, 'SonataAdminBundle') }}
@@ -153,14 +189,28 @@
                             {% set statusInfo = statusInfo ~ '</div>' %}
                         {% endif %}
 
-                        {{ ('admin.dispatcher.order_status.' ~ order.orderStatus)|trans({}, 'SonataAdminBundle') }}
+                        {% if type != 'canceled' %}
+                            {{ ('admin.dispatcher.order_status.' ~ order.orderStatus)|trans({}, 'SonataAdminBundle') }}
+                        {% endif %}
                         {% if order.orderStatusLog|length > 0 %}
                             <span class="glyphicon glyphicon-info-sign status-change-history" title="{{ statusInfo }}"></span>
                         {% endif %}
-                        <button class="btn btn-lg change_status_button" item-id="{{ order.id }}">
-                            {{ 'admin.dispatcher.button_change'|trans({}, 'SonataAdminBundle') }}
-                        </button>
+                        {% if not order.orderFromNav and type != 'unapproved' %}
+                            <button class="btn btn-lg change_status_button" item-id="{{ order.id }}">
+                                {{ 'admin.dispatcher.button_change'|trans({}, 'SonataAdminBundle') }}
+                            </button>
+                        {% endif %}
+                        {% if type == 'unapproved' %}
+                            <button class="btn btn-lg approve_button" item-id="{{ order.id }}">
+                                {{ 'admin.dispatcher.approve'|trans({}, 'SonataAdminBundle') }}
+                            </button>
+                        {% endif %}
                     </td>
+                    {% if type == 'canceled' %}
+                    <td class="client_contacted_check">
+                        <input type="checkbox" id="client_contacted_{{ order.id }}" class="client_contacted" item-id="{{ order.id }}" {% if order.clientContacted == 1 %}checked="checked" {% endif %}/>
+                    </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </table>
@@ -171,18 +221,25 @@
     <div class="city_list todo_nieks_nezino_klases">
         <ul>
             {% for city in cities %}
+                {% set cityUnapproved = cityOrders[city].unapproved|length %}
                 {% set cityUnassigned = cityOrders[city].unassigned|length %}
                 {% set cityUnconfirmed = (cityOrders[city].unconfirmed.deliver|length + cityOrders[city].unconfirmed.pickup|length) %}
                 {% set cityNotFinished = cityOrders[city].not_finished|length %}
-                {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished}, 'SonataAdminBundle') %}
+                {% set cityCanceled = cityOrders[city].canceled|length %}
+                {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unapprovedCount': cityUnassigned, 'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished, 'canceledCount': cityCanceled}, 'SonataAdminBundle') %}
                 <li class="city-tab city_tabik-{{ loop.index }}">
-                    <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} ({{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }})</a>
+                    <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} ({{ cityUnapproved }}:{{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }}:{{ cityCanceled }})</a>
                 </li>
             {% endfor %}
         </ul>
         {% for cityName,city in cityOrders %}
             <div id="city_list-{{ loop.index }}">
                 <ul>
+                    <li class="city-{{ loop.index }}-unapproved-tab">
+                        <a href="#city-{{ loop.index }}-unapproved">
+                            {{ 'admin.dispatcher.unapproved'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.unapproved|length }})</span>
+                        </a>
+                    </li>
                     <li class="city-{{ loop.index }}-unassigned-tab">
                         <a href="#city-{{ loop.index }}-unassigned">
                             {{ 'admin.dispatcher.unassigned'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.unassigned|length }})</span>
@@ -198,7 +255,15 @@
                             {{ 'admin.dispatcher.undelivered'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.not_finished|length }})</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="#city-{{ loop.index }}-canceled">
+                            {{ 'admin.dispatcher.canceled'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.canceled|length }})</span>
+                        </a>
+                    </li>
                 </ul>
+                <div id="city-{{ loop.index }}-unapproved">
+                    {{ table.order_table(city.unapproved, 'unapproved', cityName) }}
+                </div>
                 <div id="city-{{ loop.index }}-unassigned">
                     {{ table.order_table(city.unassigned, 'unassigned', cityName) }}
                 </div>
@@ -214,6 +279,9 @@
                 <div id="city-{{ loop.index }}-undelivered">
                     {{ table.order_table(city.not_finished, 'not_finished', cityName) }}
                 </div>
+                <div id="city-{{ loop.index }}-canceled">
+                    {{ table.order_table(city.canceled, 'canceled', cityName) }}
+                </div>
             </div>
             <script type="text/javascript">
                 $(document).ready(function(){
@@ -228,6 +296,14 @@
 
                         if ($('#city-{{ loop.index }}-unassigned span.glyphicon-exclamation-sign').length > 0) {
                             var smallTabikText = $('.city-{{ loop.index }}-unassigned-tab');
+
+                            if (smallTabikText.find('span.glyphicon-exclamation-sign').length < 1) {
+                                smallTabikText.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+                            }
+                        }
+
+                        if ($('#city-{{ loop.index }}-canceled span.glyphicon-exclamation-sign').length > 0) {
+                            var smallTabikText = $('.city-{{ loop.index }}-canceled-tab');
 
                             if (smallTabikText.find('span.glyphicon-exclamation-sign').length < 1) {
                                 smallTabikText.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');

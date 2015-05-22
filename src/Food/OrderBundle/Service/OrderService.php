@@ -49,6 +49,7 @@ class OrderService extends ContainerAware
     public static $status_canceled = "canceled";
 
     public static $status_pre = "pre";
+    public static $status_unapproved = "unapproved";
     public static $status_nav_problems = "nav_problems";
     public static $status_partialy_completed = "partialy_completed";
 
@@ -302,6 +303,17 @@ class OrderService extends ContainerAware
      * @param string|null $statusMessage
      * @return $this
      */
+    public function statusUnapproved($source = null, $statusMessage = null)
+    {
+        $this->chageOrderStatus(self::$status_unapproved, $source, $statusMessage);
+        return $this;
+    }
+
+    /**
+     * @param string|null $source
+     * @param string|null $statusMessage
+     * @return $this
+     */
     public function statusNew($source = null, $statusMessage = null)
     {
         $this->chageOrderStatus(self::$status_new, $source, $statusMessage);
@@ -356,7 +368,7 @@ class OrderService extends ContainerAware
                             array(
                                 'restourant_name' => $placeName,
                                 'delivery_time' => $this->getOrder()->getPlace()->getDeliveryTime(),
-                                'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone()
+//                                'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone()
                             ),
                             null,
                             $this->getOrder()->getLocale()
@@ -469,14 +481,17 @@ class OrderService extends ContainerAware
             'adresas' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->getAddress() . ", " . $this->getOrder()->getAddressId()->getCity() : "--"),
             'pristatymo_data' => $this->getOrder()->getDeliveryTime()->format('Y-m-d H:i:s'),
             'total_sum' => $this->getOrder()->getTotal(),
-            'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getPlace()->getDeliveryPrice() : 0),
-            'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getPlace()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
+            'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
+            'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
             'invoice' => $invoice
         );
 
 
 //        $ml->setVariables( $variables )->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30009269  )->send();
-        $ml->setVariables($variables)->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId(30010811)->send();
+        $ml->setVariables($variables)
+            ->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())
+            ->setId($this->container->getParameter('mailer_notify_on_accept'))
+            ->send();
     }
 
     /**
@@ -628,9 +643,9 @@ class OrderService extends ContainerAware
         );
 
         if ($partialy) {
-            $template = 30021995;
+            $template = $this->container->getParameter('mailer_partialy_deliverer');
         } else {
-            $template = 30009271;
+            $template = $this->container->getParameter('mailer_rate_your_food');
         }
 
         $ml->setVariables($variables)
@@ -717,29 +732,6 @@ class OrderService extends ContainerAware
      */
     public function statusCanceled($source=null, $statusMessage=null)
     {
-        // If restourant (or Foodout) has canceled order - send informational SMS message to user
-        $userPhone = $this->getOrder()->getUser()->getPhone();
-        if (!empty($userPhone) && $this->getOrder()->getOrderFromNav() == false) {
-            $messagingService = $this->container->get('food.messages');
-
-            // If not paid by banklink or paysera
-            if (in_array($this->getOrder()->getPaymentMethod(), array('local', 'local.card'))) {
-                $messageText = $this->container->get('translator')->trans('general.sms.client.restourant_cancel');
-            // If banklink payment and it is complete - inform that we will return money, because restourant sux!
-            } elseif ($this->getOrder()->getPaymentStatus() == 'complete') {
-                $messageText = $this->container->get('translator')->trans('general.sms.client.restourant_cancel_banklink');
-            }
-
-            if (!empty($messageText)) {
-                $message = $messagingService->createMessage(
-                    $this->container->getParameter('sms.sender'),
-                    $userPhone,
-                    $messageText
-                );
-                $messagingService->saveMessage($message);
-            }
-        }
-
         // Put for logistics to cancel on their side
         $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
 
@@ -857,54 +849,15 @@ class OrderService extends ContainerAware
 
         $placeObject = $this->container->get('food.places')->getPlace($place);
 
-
-        $deliveryPrice = $this->getOrder()->getPlace()->getDeliveryPrice();
-
-        // Pritaikom nuolaida
-        $discountPercent = 0;
-        if (!empty($coupon) && $coupon instanceof Coupon) {
-            $order = $this->getOrder();
-            $order->setCoupon($coupon)
-                ->setCouponCode($coupon->getCode());
-
-            if (!$coupon->getFreeDelivery()) {
-                $discountSize = $coupon->getDiscount();
-                if (!empty($discountSize)) {
-                    $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
-                    $discountPercent = $discountSize;
-                } else {
-                    $discountSum = $coupon->getDiscountSum();
-                }
-                $sumTotal = $sumTotal - $discountSum;
-                $order->setDiscountSize($discountSize)
-                    ->setDiscountSum($discountSum);
-            } else {
-                $deliveryPrice = 0;
-
-                if ($order->getDiscountSum() == '')
-                {
-                    $order->setDiscountSum(0);
-                }
-            }
-        }
-
         foreach ($this->getCartService()->getCartDishes($placeObject) as $cartDish) {
             $options = $this->getCartService()->getCartDishOptions($cartDish);
-            $price = $cartDish->getDishSizeId()->getCurrentPrice();
-            $origPrice = $cartDish->getDishSizeId()->getPrice();
-            $discountPercentForInsert = 0;
-            if ($origPrice == $price && $discountPercent > 0) {
-                $price = round($origPrice * ((100 - $discountPercent)/100), 2);
-                $discountPercentForInsert = $discountPercent;
-            }
             $dish = new OrderDetails();
             $dish->setDishId($cartDish->getDishId())
                 ->setOrderId($this->getOrder())
                 ->setQuantity($cartDish->getQuantity())
                 ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
-                ->setPrice($price)
-                ->setOrigPrice($origPrice)
-                ->setPercentDiscount($discountPercent)
+                ->setPrice($cartDish->getDishSizeId()->getCurrentPrice())
+                ->setOrigPrice($cartDish->getDishSizeId()->getPrice())
                 ->setDishName($cartDish->getDishId()->getName())
                 ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
                 ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
@@ -929,6 +882,35 @@ class OrderService extends ContainerAware
                 $this->getEm()->flush();
 
                 $sumTotal += $cartDish->getQuantity() * $opt->getDishOptionId()->getPrice();
+            }
+        }
+
+        $deliveryPrice = $this->getOrder()->getPlace()->getDeliveryPrice();
+
+        // Pritaikom nuolaida
+        if (!empty($coupon) && $coupon instanceof Coupon) {
+            $order = $this->getOrder();
+            $order->setCoupon($coupon)
+                ->setCouponCode($coupon->getCode());
+
+            if (!$coupon->getFreeDelivery()) {
+                $discountSize = $coupon->getDiscount();
+                if (!empty($discountSize)) {
+                    $discountSum = ($sumTotal * $discountSize) / 100;
+                } else {
+                    $discountSum = $coupon->getDiscountSum();
+                }
+                $sumTotal = $sumTotal - $discountSum;
+
+                $order->setDiscountSize($discountSize)
+                    ->setDiscountSum($discountSum);
+            } else {
+                $deliveryPrice = 0;
+
+                if ($order->getDiscountSum() == '')
+                {
+                    $order->setDiscountSum(0);
+                }
             }
         }
 

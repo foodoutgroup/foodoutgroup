@@ -351,7 +351,31 @@ class DefaultController extends Controller
     {
         $list = $this->getCartService()->getCartDishes($place);
         $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
-        //$total_cart_of_non_discount = $this->getCartService()->getCartTotalOfNonDiscounted($list);
+        $cartMinimum = $place->getCartMinimum();
+        $cartFromMin = $this->get('food.places')->getMinCartPrice($place->getId());
+        $cartFromMax = $this->get('food.places')->getMaxCartPrice($place->getId());
+        $displayCartInterval = true;
+        $deliveryTotal = 0;
+        if (!$takeAway) {
+            $placePointMap = $this->container->get('session')->get('point_data');
+
+            if (empty($placePointMap) || !isset($placePointMap[$place->getId()])) {
+                $deliveryTotal = $place->getDeliveryPrice();
+            } else {
+                $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+                $deliveryTotal = $this->getCartService()->getDeliveryPrice(
+                    $place,
+                    $this->get('food.googlegis')->getLocationFromSession(),
+                    $pointRecord
+                );
+                $displayCartInterval = false;
+                $cartMinimum = $this->getCartService()->getMinimumCart(
+                    $place,
+                    $this->get('food.googlegis')->getLocationFromSession(),
+                    $pointRecord
+                );
+            }
+        }
 
         // If coupon in use
         $applyDiscount = $freeDelivery = $discountInSum = false;
@@ -393,7 +417,8 @@ class DefaultController extends Controller
             'list'  => $list,
             'place' => $place,
             'total_cart' => $total_cart,
-            'total_with_delivery' => ($freeDelivery ? $total_cart : ($total_cart + $place->getDeliveryPrice())),
+            'total_with_delivery' => ($freeDelivery ? $total_cart : ($total_cart + $deliveryTotal)),
+            'total_delivery' => $deliveryTotal,
             'inCart' => (int)$inCart,
             'hide_delivery' => $hideDelivery,
             'applyDiscount' => $applyDiscount,
@@ -401,6 +426,10 @@ class DefaultController extends Controller
             'discountSize' => $discountSize,
             'discountInSum' => $discountInSum,
             'discountSum' => $discountSum,
+            'cart_minimum' => $cartMinimum,
+            'cart_from_min' => $cartFromMin,
+            'cart_from_max' => $cartFromMax,
+            'display_cart_interval' => $displayCartInterval
         );
         if ($renderView) {
             return $this->renderView('FoodCartBundle:Default:side_block.html.twig', $params);

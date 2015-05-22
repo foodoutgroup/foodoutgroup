@@ -190,17 +190,12 @@ class TestController extends Controller
         );
     }
 
-    public function putOrderAction()
+    public function putOrderAction($id)
     {
-        $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find(41330);
+        $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($id);
         $ns = $this->get('food.nav');
         $ns->putTheOrderToTheNAV($order);
 
-        die();
-
-        $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find(2023);
-        $ns = $this->get('food.nav');
-        $ns->putTheOrderToTheNAV($order);
         return new Response('THE END');
     }
 
@@ -382,6 +377,59 @@ class TestController extends Controller
 
 
         die($date);
+    }
+
+    public function zonesAction($id)
+    {
+        $placePoint = $this->container->get('doctrine')->getRepository('FoodDishesBundle:PlacePoint')->find($id);
+        $zones = $placePoint->getZones();
+        return $this->render(
+            'FoodAppBundle:Test:zones.html.twig',
+            array(
+                'placepoint'=>$placePoint,
+                'zones' => $zones
+            )
+        );
+    }
+
+    public function devzonesAction($id)
+    {
+        $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($id);
+        $color = array(
+            '#ff0000',
+            '#00ff00',
+            '#0000ff',
+            '#ffcc00',
+            '#008080',
+            '#800080',
+            '#800000'
+        );
+        $points = $place->getPoints();
+        $zerZones = array();
+        $pointReturn = array();
+        foreach ($points as $key=>$point) {
+            $zz = $point->getZones();
+            $akey = md5($key);
+            $pointReturn[$akey]['lat'] = $point->getLat();
+            $pointReturn[$akey]['lon'] = $point->getLon();
+            $pointReturn[$akey]['zones'] = array();
+            $pointReturn[$akey]['color'] = $color[$key];
+            $pointReturn[$akey]['address'] = $point->getAddress();
+            $pointReturn[$akey]['zones'][] = array("distance"=>0.1);
+            foreach ($zz as $k2 => $z) {
+                if ($z->getActive()) {
+                    $pointReturn[$akey]['zones'][] = array(
+                        'distance' => $z->getDistance()
+                    );
+                }
+            }
+        }
+        return $this->render(
+            'FoodAppBundle:Test:devzones.html.twig',
+            array(
+                'points'=> $pointReturn
+            )
+        );
     }
 
     public function gameAction(Request $request)

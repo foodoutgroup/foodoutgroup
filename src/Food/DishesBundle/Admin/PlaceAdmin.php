@@ -60,6 +60,8 @@ class PlaceAdmin extends FoodAdmin
                 'label' => 'admin.place.kitchens')
             )
             ->add('active', 'checkbox', array('label' => 'admin.active', 'required' => false,))
+            ->add('showNotification', 'checkbox', array('label' => 'Show notification', 'required' => false,))
+            ->add('notificationContent', null, array('label' => 'Notification content', 'attr' => array('class' => 'ckeditor_custom')))
             ->add('new', 'checkbox', array('label' => 'admin.is_new', 'required' => false,))
             ->add('recommended', 'checkbox', array('label' => 'admin.place.recommended', 'required' => false,))
             ->add('top', 'checkbox', array('label' => 'TOP', 'required' => false,))
@@ -75,7 +77,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('minimalOnSelfDel', 'checkbox', array('label' => 'admin.place.minimal_on_self_delivery', 'required' => false))
             ->add('cardOnDelivery', 'checkbox', array('label' => 'admin.place.card_on_delivery', 'required' => false))
             ->add('disabledOnlinePayment', 'checkbox', array('label' => 'admin.place.disabled_online_payment', 'required' => false))
-            ->add('priority', null, array('label' => 'admin.place.priority', 'required' => false))
+            ->add('priority', null, array('label' => 'admin.place.priority', 'required' => true))
 
             ->add('file', 'file', $options)
         /*

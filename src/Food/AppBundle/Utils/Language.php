@@ -53,6 +53,11 @@ class Language
             'ы'=>'y', 'э'=>'e', 'ю'=>'u', 'я'=>'ya', 'é'=>'e',
             'ь'=>'', 'ъ' => '',
         ),
+        'lv' => array ( /* Latvian */
+            'ā' => 'a', 'č' => 'c', 'ē' => 'e', 'ģ' => 'g', 'ī' => 'i', 'ķ' => 'k', 'ļ' => 'l', 'ņ' => 'n',
+            'š' => 's', 'ū' => 'u', 'ž' => 'z', 'Ā' => 'A', 'Č' => 'C', 'Ē' => 'E', 'Ģ' => 'G', 'Ī' => 'i',
+            'Ķ' => 'k', 'Ļ' => 'L', 'Ņ' => 'N', 'Š' => 'S', 'Ū' => 'u', 'Ž' => 'Z'
+        ),
     );
 
     /**
@@ -80,6 +85,11 @@ class Language
             'Ф'=>'F', 'Х'=>'H', 'Ц'=>'Ts', 'Ч'=>'Ch',
             'Ш'=>'Sh', 'Щ'=>'Sht', 'Ъ'=>'A', 'Ь'=>'Y',
             'Ю'=>'Yu', 'Я'=>'Ya',
+        ),
+        'lv' => array ( /* Latvian */
+            'ā' => 'a', 'č' => 'c', 'ē' => 'e', 'ģ' => 'g', 'ī' => 'i', 'ķ' => 'k', 'ļ' => 'l', 'ņ' => 'n',
+            'š' => 's', 'ū' => 'u', 'ž' => 'z', 'Ā' => 'A', 'Č' => 'C', 'Ē' => 'E', 'Ģ' => 'G', 'Ī' => 'i',
+            'Ķ' => 'k', 'Ļ' => 'L', 'Ņ' => 'N', 'Š' => 'S', 'Ū' => 'u', 'Ž' => 'Z'
         ),
     );
 
@@ -122,7 +132,7 @@ class Language
      */
     public function removeChars($lang, $text, $toLower = true, $removeSpecialChars=true)
     {
-        if (!in_array($lang, array('lt', 'ru', 'en'))) {
+        if (!in_array($lang, array('lt', 'ru', 'en', 'lv'))) {
             throw new \Exception('Undefined language');
         }
 

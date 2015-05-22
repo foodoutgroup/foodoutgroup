@@ -66,6 +66,8 @@ class NavImportOrdersCommand extends ContainerAwareCommand
             $log = $this->getContainer()->get('logger');
             $country = $this->getContainer()->getParameter('country');
 
+            $log->alert("Nav order import beggins ---------");
+
             $orders = $navService->getNewNonFoodoutOrders($timeShift);
 
             $stats = array(
@@ -74,11 +76,19 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                 'error' => 0,
                 'processed' => 0,
             );
-            $output->writeln('Found '.$stats['found'].' orders to process');
+
+            $logMessage = 'Found '.$stats['found'].' orders to process';
+            $output->writeln($logMessage);
+            $log->alert($logMessage);
+
             if (!empty($orders) && $stats['found'] > 0) {
                 foreach ($orders as $orderId => $orderData) {
-                    $output->writeln('Order #'.$orderData['OrderNo'].' - import started');
-                    $output->writeln('Data: '."\n".var_export($orderData, true));
+                    $logMessage = 'Order #'.$orderData['OrderNo'].' - import started';
+                    $output->writeln($logMessage);
+                    $log->alert($logMessage);
+                    $logMessage = 'Data: '."\n".var_export($orderData, true);
+                    $output->writeln($logMessage);
+                    $log->alert($logMessage);
                     $output->writeln('');
 
                     if ($orderData['OrderStatus'] == 0) {
@@ -97,7 +107,9 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                     // Order already exists - skip it
                     if ($localOrder instanceof Order) {
                         $stats['skipped']++;
-                        $output->writeln('Order #'.$orderData['OrderNo'].' already exists with id #'.$orderId);
+                        $logMessage = 'Order #'.$orderData['OrderNo'].' already exists with id #'.$orderId;
+                        $output->writeln($logMessage);
+                        $log->alert($logMessage);
                         continue;
                     }
 
@@ -360,7 +372,9 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                         $orderService->logOrder($order, 'create', 'Created from Navision');
                     }
 
-                    $output->writeln('Order #'.$orderData['OrderNo'].' - import finished'."\n");
+                    $logMessage = 'Order #'.$orderData['OrderNo'].' - import finished'."\n";
+                    $output->writeln($logMessage);
+                    $log->alert($logMessage);
                 }
 
                 $output->writeln('------------------------------------');

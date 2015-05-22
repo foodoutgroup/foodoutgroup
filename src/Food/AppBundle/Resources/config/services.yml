@@ -51,7 +51,7 @@ services:
     food.reset_password:
         class: Food\AppBundle\Utils\ResetPassword
         calls:
-            - [container, [@service_container]]
+            - [setContainer, [@service_container]]
 
     food.google_analytics:
         class: Food\AppBundle\Service\GoogleAnalyticsService

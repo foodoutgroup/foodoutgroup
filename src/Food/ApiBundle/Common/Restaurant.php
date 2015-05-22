@@ -100,7 +100,7 @@ class Restaurant extends ContainerAware
      * @param bool $pickUpOnly
      * @return $this
      */
-    public function loadFromEntity(Place $place, PlacePoint $placePoint = null, $pickUpOnly = false)
+    public function loadFromEntity(Place $place, PlacePoint $placePoint = null, $pickUpOnly = false, $locationData = null)
     {
         $kitchens = $place->getKitchens();
         $kitchensForResp = array();
@@ -120,10 +120,46 @@ class Restaurant extends ContainerAware
 
         $pickUp = (isset($placePoint) && $placePoint->getPickUp() ? true: false);
         $delivery = (isset($placePoint) && $placePoint->getDelivery() ? true: false);
+        if ($locationData == null) {
+            $delivery = true;
+        }
+        if ($locationData == null)
+        {
+            $pickUp = true;
+        }
         if ($pickUpOnly || $place->getDeliveryOptions() == $place::OPT_ONLY_PICKUP) {
             $pickUp = true;
             $delivery = false;
         }
+        $weHaveLocationData = (!empty($locationData) ? true: false);
+        $devPrice = 0;
+        $devCart = 0;
+        if ($weHaveLocationData) {
+            $placePointMap = $this->container->get('session')->get('point_data');
+            if (empty($placePointMap[$place->getId()])) {
+                $ppId = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithDistance(
+                    $place->getId(),
+                    $locationData,
+                    false,
+                    true
+                );
+                $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($ppId);
+            } else {
+                $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+            }
+
+            $devPrice = $this->container->get('food.cart')->getDeliveryPrice(
+                $place,
+                $locationData,
+                $pointRecord
+            );
+            $devCart = $this->container->get('food.cart')->getMinimumCart(
+                $place,
+                $locationData,
+                $pointRecord
+            );
+        }
+
         $currency = $this->container->getParameter('currency_iso');
         $restaurantTitle = $place->getName();
         $restaurantTitle = str_replace(array('„', '“'), '"', $restaurantTitle);
@@ -159,11 +195,11 @@ class Restaurant extends ContainerAware
                 array(
                     'estimated_time' => $place->getDeliveryTime(),
                     'price' => array(
-                        'amount' => $place->getDeliveryPrice() * 100,
+                        'amount' => (!empty($devPrice) ? ($devPrice * 100) : ($place->getDeliveryPrice() * 100)),
                         'currency' => $currency
                     ),
                     'minimal_order' => array(
-                        'amount' => $place->getCartMinimum() * 100,
+                        'amount' => (!empty($devCart) ? ($devCart * 100) : ($place->getCartMinimum() * 100)),
                         'currency' => $currency
                     ),
                     'minimal_order_pickup' => array(

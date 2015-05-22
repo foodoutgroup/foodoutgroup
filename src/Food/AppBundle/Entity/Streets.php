@@ -123,6 +123,12 @@ class Streets {
 
     /**
      * @var string
+     * @ORM\Column(name="delivery_sub_region", type="string", length=12, nullable=true)
+     */
+    private $deliverySubRegion;
+
+    /**
+     * @var string
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
      */
     private $name;

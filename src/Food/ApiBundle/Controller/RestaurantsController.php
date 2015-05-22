@@ -18,8 +18,6 @@ class RestaurantsController extends Controller
          * address,city,lat,lng,cuisines,keyword,offset,limit
          *
          */
-
-
         $address = $request->get('address');
         $city = $request->get('city');
         if (!empty($city)) {
@@ -53,7 +51,8 @@ class RestaurantsController extends Controller
                         'keyword' => $keyword,
                     ),
                     false,
-                    $this->get('food.googlegis')->getLocationFromSession()
+                    $this->get('food.googlegis')->getLocationFromSession(),
+                    $this->container
                 );
             }
         } elseif (!empty($lat) && !empty($lng)) {
@@ -71,7 +70,8 @@ class RestaurantsController extends Controller
                     'keyword' => $keyword
                 ),
                 false,
-                $this->get('food.googlegis')->getLocationFromSession()
+                $this->get('food.googlegis')->getLocationFromSession(),
+                $this->container
             );
         } else {
             $places = array();
@@ -87,9 +87,13 @@ class RestaurantsController extends Controller
         );
 
         $places = $this->get('food.places')->placesPlacePointsWorkInformation($places);
-
         foreach ($places as $place) {
-            $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place['place'], $place['point']);
+            $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
+                $place['place'],
+                $place['point'],
+                false,
+                $this->get('food.googlegis')->getLocationFromSession()
+            );
             $response['restaurants'][] = $restaurant->data;
         }
 
@@ -121,7 +125,8 @@ class RestaurantsController extends Controller
                 array(),
                 array(),
                 false,
-                $this->get('food.googlegis')->getLocationFromSession()
+                $this->get('food.googlegis')->getLocationFromSession(),
+                $this->container
             );
         } elseif (!empty($lat) && !empty($lng)) {
             $this->get('food.googlegis')->setLocationToSession(
@@ -134,7 +139,8 @@ class RestaurantsController extends Controller
                 array(),
                 array(),
                 false,
-                $this->get('food.googlegis')->getLocationFromSession()
+                $this->get('food.googlegis')->getLocationFromSession(),
+                $this->container
             );
         } else {
             $places = array();

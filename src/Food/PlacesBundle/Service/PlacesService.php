@@ -221,4 +221,78 @@ class PlacesService extends ContainerAware {
         array_multisort($sortTop,SORT_NUMERIC, SORT_DESC, $sortArr, SORT_NUMERIC, SORT_ASC, $sortArrPrio, SORT_NUMERIC, SORT_DESC, $places);
         return $places;
     }
+
+    /**
+     * @param $recommended
+     * @param $request
+     * @return mixed
+     */
+    public function getPlacesForList($recommended, $request)
+    {
+        $kitchens = $request->get('kitchens', "");
+        $filters = $request->get('filters');
+        if (empty($kitchens)) {
+            $kitchens = array();
+        } else {
+            $kitchens = explode(",", $kitchens);
+        }
+
+        $filters = explode(",", $filters);
+        foreach ($kitchens as $kkey=> &$kitchen) {
+            $kitchen = intval($kitchen);
+        }
+        foreach ($filters as $fkey=> &$filter) {
+            $filter = trim($filter);
+        }
+
+        $places = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
+            $kitchens,
+            $filters,
+            $recommended,
+            $this->container->get('food.googlegis')->getLocationFromSession()
+        );
+        $this->container->get('food.places')->saveRelationPlaceToPoint($places);
+        return $this->container->get('food.places')->placesPlacePointsWorkInformation($places);
+    }
+
+    public function getMinDeliveryPrice($placeId)
+    {
+        $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMinDeliveryPrice($placeId);
+        if (empty($sum)) {
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            return $place->getDeliveryPrice();
+        }
+        return $sum;
+    }
+
+    public function getMaxDeliveryPrice($placeId)
+    {
+        $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMaxDeliveryPrice($placeId);
+        if (empty($sum)) {
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            return $place->getDeliveryPrice();
+        }
+        return $sum;
+    }
+
+    public function getMinCartPrice($placeId)
+    {
+        $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMinCartSize($placeId);
+        if (empty($sum)) {
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            return $place->getCartMinimum();
+        }
+        return $sum;
+    }
+
+    public function getMaxCartPrice($placeId)
+    {
+        $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMaxCartSize($placeId);
+        if (empty($sum)) {
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            return $place->getCartMinimum();
+        }
+        return $sum;
+    }
+
 }

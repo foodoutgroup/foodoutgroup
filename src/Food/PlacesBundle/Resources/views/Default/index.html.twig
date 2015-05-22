@@ -82,7 +82,7 @@
     <div class="site-block">
     <div class="page-path clearfix">{#<a href="{{ path('food_homepage') }}">Pradžia</a>#}</div>{# TODO breadcrumbs <a href="#">Restoranai arti Žirmūnų</a>#}
     <div class="page-title">
-        <h1>Maistas į namus{% if location and location.city %} {{ city_translations[location.city]|trans }}{% endif %}</h1>
+        <h1>{% trans %}places.header_main_part{% endtrans %}{% if location and location.city %} {{ city_translations[location.city]|trans }}{% endif %}</h1>
         <h2 class="clearfix">
             <span class="place-counter"></span>
             <a href="#" id="places-change-location-link">{% trans %}places.change_address{% endtrans %}</a>
@@ -130,7 +130,7 @@
     </script>
     <div class="clearfix">
         <div class="content-lefter">
-            {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {})) }}
+            {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended})) }}
             {{ render(controller('FoodDishesBundle:Place:filtersList')) }}
             <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a>
         </div>
@@ -150,7 +150,7 @@
                 </div>
             </div>
             #}
-            {{ render(controller('FoodPlacesBundle:Default:list', {'recommended':recommended})) }}
+            {{ render(controller('FoodPlacesBundle:Default:list', {'recommended': recommended})) }}
         </div>
     </div>
 

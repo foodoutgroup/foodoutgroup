@@ -65,7 +65,7 @@ class NavService extends ContainerAware
 
     private $invoiceTable = '[skamb_centras].[dbo].[%1$s$Foodout Invoice]';
 
-    private $postedDeliveryOrdersTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Posted Delivery Orders]';
+    private $postedDeliveryOrdersTable = '[skamb_centras].[dbo].[%1$s$Posted Delivery Orders]';
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
@@ -162,11 +162,10 @@ class NavService extends ContainerAware
 
     public function getPostedDeliveryOrdersTable()
     {
-        return $this->postedDeliveryOrdersTable;
+        return sprintf($this->postedDeliveryOrdersTable, $this->container->getParameter('nav_table_prefix'));
     }
 
-
-
+    
     /**
      * @return false|resource
      */
@@ -350,7 +349,6 @@ class NavService extends ContainerAware
             //$this->container->get('doctrine')->getManager()->refresh($orderRow);
         }
 
-
         $city = $order->getPlacePoint()->getCity();
         $city = str_replace("ė", "e", $city);
         $city = str_replace("ī", "i", $city);
@@ -378,9 +376,11 @@ class NavService extends ContainerAware
         $comment = $order->getComment();
 
         if ($order->getPaymentMethod() == "local.card") {
-            $comment.=". Mokesiu kortele";
+            $comment.=". KREDITKARTE";
+//            $comment.=". Mokesiu kortele";
         } elseif ($order->getPaymentMethod() == "local") {
-            $comment.=". Mokesiu grynais";
+            $comment.=". SKAIDRA NAUDA";
+//            $comment.=". Mokesiu grynais";
         } else {
 
         }
@@ -1320,7 +1320,7 @@ class NavService extends ContainerAware
      */
     public function syncDisDescription($date = null)
     {
-        $result = $this->initSqlConn()->query('SELECT [No_], [Description], [Search Description] FROM '.$this->getItemsTable()." WHERE LEN([No_]) > 3 AND [No_] NOT LIKE 'DIS%'");
+        $result = $this->initSqlConn()->query('SELECT [No_], [Description], [Search Description] FROM '.$this->getItemsTable()." WHERE LEN([No_]) > 3 AND [No_] LIKE 'DIS%'");
         if( $result === false) {
             throw new \InvalidArgumentException('Wow Such fail.. Many problems... Such no results?');
         }
@@ -1505,8 +1505,10 @@ class NavService extends ContainerAware
             $this->getContractTable(),
             $this->getCustomerTable(),
             $datePart,
-            "'Vilnius', 'Kaunas', 'Klaipeda'"
+            "'Vilnius', 'Kaunas', 'Klaipeda','Ryga'"
         );
+
+        $this->container->get("logger")->alert('Nav import query: '.$query);
 
         $result = $this->initSqlConn()->query($query);
         if( $result === false) {
@@ -1831,12 +1833,63 @@ class NavService extends ContainerAware
      */
     public function deleteInvoiceFromNav($sfNumber)
     {
-        $mssql = $this->container->get('food.mssql');
-
         $query = "
             DELETE FROM %s WHERE [Invoice No_] = '%s'";
         $query = sprintf($query, $this->getInvoiceTable(), $sfNumber);
 
         $this->initSqlConn()->query($query);
+    }
+
+    /**
+     * @param Order $order
+     * @return bool
+     */
+    public function isMissingFromWebHeader($order)
+    {
+        $existsInHeader = true;
+        $existsInLines = true;
+        $navId = $this->getNavOrderId($order);
+
+        $query = "
+            SELECT
+                [Order No_] AS order_no,
+            FROM %s
+            WHERE
+                [Order No_] >= '%s'";
+        $query = sprintf(
+            $query,
+            $this->getHeaderTable(),
+            $navId
+        );
+
+        $result = $this->initSqlConn()->query($query);
+
+        if (empty($result)) {
+            $existsInHeader = false;
+        }
+
+        $query = "
+            SELECT
+                [Order No_] AS order_no,
+            FROM %s
+            WHERE
+                [Order No_] >= '%s'";
+        $query = sprintf(
+            $query,
+            $this->getLineTable(),
+            $navId
+        );
+
+        $result = $this->initSqlConn()->query($query);
+
+        if (empty($result)) {
+            $existsInLines = false;
+        }
+
+        if ($existsInHeader || $existsInLines) {
+            return false;
+        }
+
+        return true;
     }
 }

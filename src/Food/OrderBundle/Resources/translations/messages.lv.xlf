@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="lv" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="0b30c54b7ab2126c255b519b8fb03554" resname="email.dishes.options">
+        <source>email.dishes.options</source>
+        <target>Piedevas</target>
+      </trans-unit>
+      <trans-unit id="b21a86a169eed5f0b078c0f7cac7e318" resname="order.invoice.invoice_title">
+        <source>order.invoice.invoice_title</source>
+        <target>PVN FAKTŪRRĒĶINS</target>
+      </trans-unit>
+      <trans-unit id="1ba279c7023a801bf156731187c06bff" resname="order.invoice.series">
+        <source>order.invoice.series</source>
+        <target>Sērija</target>
+      </trans-unit>
+      <trans-unit id="9e0fbadc0324e4bbcbbd7df7c60b8989" resname="order.invoice.number">
+        <source>order.invoice.number</source>
+        <target>Nr.</target>
+      </trans-unit>
+      <trans-unit id="8a85a7737bd2ee23dc5f86a7f277cb25" resname="order.invoice.seller">
+        <source>order.invoice.seller</source>
+        <target>PĀRDEVĒJS</target>
+      </trans-unit>
+      <trans-unit id="139499777b27dc0529e6dac412f5e236" resname="order.invoice.buyer">
+        <source>order.invoice.buyer</source>
+        <target>PIRCĒJS</target>
+      </trans-unit>
+      <trans-unit id="e055ca8ff77ddb75033c1fe2668d8748" resname="order.invoice.document_date">
+        <source>order.invoice.document_date</source>
+        <target>Dok. datums</target>
+      </trans-unit>
+      <trans-unit id="7a440d48330b94827f14b824c51f6e6a" resname="order.invoice.company_code">
+        <source>order.invoice.company_code</source>
+        <target>Uzņēmuma kods</target>
+      </trans-unit>
+      <trans-unit id="9579c2317c9f8f38c43464172f6eadb7" resname="order.invoice.vat_num">
+        <source>order.invoice.vat_num</source>
+        <target>PVN maks. kods</target>
+      </trans-unit>
+      <trans-unit id="e5c535bb1c99d181b2ba975c83732b8f" resname="order.invoice.bank_code">
+        <source>order.invoice.bank_code</source>
+        <target>Bankas kods</target>
+      </trans-unit>
+      <trans-unit id="dfd4376df1b055f30b11ca8d74291f26" resname="order.invoice.line_num">
+        <source>order.invoice.line_num</source>
+        <target>Kārt. Nr.</target>
+      </trans-unit>
+      <trans-unit id="beac6e68b5836ce63d781c6cf70789d1" resname="order.invoice.product_name">
+        <source>order.invoice.product_name</source>
+        <target>Nosaukums</target>
+      </trans-unit>
+      <trans-unit id="5beca229809b2bd11b7bfb13ff17b139" resname="order.invoice.measure_name">
+        <source>order.invoice.measure_name</source>
+        <target>Mērv.</target>
+      </trans-unit>
+      <trans-unit id="2b26383c211ef47a554c83cc7a7b8448" resname="order.invoice.quantity">
+        <source>order.invoice.quantity</source>
+        <target>Daudzums</target>
+      </trans-unit>
+      <trans-unit id="2e6d9fd8c381ca237fb0d3c3fe300586" resname="order.invoice.price">
+        <source>order.invoice.price</source>
+        <target>Cena</target>
+      </trans-unit>
+      <trans-unit id="46201c71a346f8c95ce22bfae93fce3f" resname="order.invoice.sum">
+        <source>order.invoice.sum</source>
+        <target>Summa</target>
+      </trans-unit>
+      <trans-unit id="cbc7e7961d942385cbd2dc7995cdc4e7" resname="order.invoice.sum_no_vat">
+        <source>order.invoice.sum_no_vat</source>
+        <target>Kopā</target>
+      </trans-unit>
+      <trans-unit id="5a955a1d7ff656c2122aed5243be2c1b" resname="order.invoice.delivery">
+        <source>order.invoice.delivery</source>
+        <target>Piegāde</target>
+      </trans-unit>
+      <trans-unit id="69ffc64c407be59588e59726cd6de178" resname="order.invoice.vat">
+        <source>order.invoice.vat</source>
+        <target>PVN</target>
+      </trans-unit>
+      <trans-unit id="1f1893aab560ca310e91542579f9e515" resname="order.invoice.sum_total">
+        <source>order.invoice.sum_total</source>
+        <target>Maksāt kopā</target>
+      </trans-unit>
+      <trans-unit id="a781c909e1aaad1b1ca3bec2374bdd4c" resname="order.invoice.sum_words">
+        <source>order.invoice.sum_words</source>
+        <target>Summa vārdiem</target>
+      </trans-unit>
+      <trans-unit id="54d888742547f6bf05df1af6a877d1aa" resname="order.invoice.invoice_receiver">
+        <source>order.invoice.invoice_receiver</source>
+        <target>Rēķinu saņēma</target>
+      </trans-unit>
+      <trans-unit id="aeea36ba9e0a692a0a57973fd619e07b" resname="order.invoice.foodout_company_name">
+        <source>order.invoice.foodout_company_name</source>
+        <target>SIA FOODOUT.LV</target>
+      </trans-unit>
+      <trans-unit id="6ca79c95b994d7290ee472da2685c13a" resname="order.invoice.foodout_address">
+        <source>order.invoice.foodout_address</source>
+        <target>Briņģu iela 2, Rīga, LV-1058</target>
+      </trans-unit>
+      <trans-unit id="4d5570081b4d115a219699f1e0f47cb6" resname="order.invoice.foodout_company_code">
+        <source>order.invoice.foodout_company_code</source>
+        <target>40103764326</target>
+      </trans-unit>
+      <trans-unit id="90192f734b721d2ebd68d9cb029dcded" resname="order.invoice.foodout_vat_code">
+        <source>order.invoice.foodout_vat_code</source>
+        <target>LT40103764326</target>
+      </trans-unit>
+      <trans-unit id="75a8691f03596b5e994c207702546edf" resname="order.invoice.foodout_bank">
+        <source>order.invoice.foodout_bank</source>
+        <target>Swedbank A/S</target>
+      </trans-unit>
+      <trans-unit id="cbf43ed78b45b5682bd4b6f3eec4925d" resname="order.invoice.foodout_bank_code">
+        <source>order.invoice.foodout_bank_code</source>
+        <target></target>
+      </trans-unit>
+      <trans-unit id="d7de6172e11f7455acc83d9eb33ded7a" resname="order.invoice.foodout_bank_account">
+        <source>order.invoice.foodout_bank_account</source>
+        <target>LV72HABA0551038036689</target>
+      </trans-unit>
+        <trans-unit id="daily_report.metric" resname="daily_report.metric">
+            <source>daily_report.metric</source>
+            <target>Metrics</target>
+        </trans-unit>
+        <trans-unit id="daily_report.value" resname="daily_report.value">
+            <source>daily_report.value</source>
+            <target>Value</target>
+        </trans-unit>
+        <trans-unit id="daily_report.kpi_metric" resname="daily_report.kpi_metric">
+            <source>daily_report.kpi_metric</source>
+            <target>KPI</target>
+        </trans-unit>
+        <trans-unit id="daily_report.income" resname="daily_report.income">
+            <source>daily_report.income</source>
+            <target>Income</target>
+        </trans-unit>
+        <trans-unit id="daily_report.successful_orders" resname="daily_report.successful_orders">
+            <source>daily_report.successful_orders</source>
+            <target>Successful orders</target>
+        </trans-unit>
+        <trans-unit id="daily_report.average_cart_size" resname="daily_report.average_cart_size">
+            <source>daily_report.average_cart_size</source>
+            <target>Cart avg EUR</target>
+        </trans-unit>
+        <trans-unit id="daily_report.average_delivery_time" resname="daily_report.average_delivery_time">
+            <source>daily_report.average_delivery_time</source>
+            <target>AVG delivery time</target>
+        </trans-unit>
+        <trans-unit id="daily_report.unique_users" resname="daily_report.unique_users">
+            <source>daily_report.unique_users</source>
+            <target>Unique visitors</target>
+        </trans-unit>
+        <trans-unit id="daily_report.returning_users" resname="daily_report.returning_users">
+            <source>daily_report.returning_users</source>
+            <target>Returning visitors</target>
+        </trans-unit>
+        <trans-unit id="daily_report.city" resname="daily_report.city">
+            <source>daily_report.city</source>
+            <target>Region</target>
+        </trans-unit>
+        <trans-unit id="weekly_report.places" resname="weekly_report.places">
+            <source>weekly_report.places</source>
+            <target>Restaurants</target>
+        </trans-unit>
+    </body>
+  </file>
+</xliff>

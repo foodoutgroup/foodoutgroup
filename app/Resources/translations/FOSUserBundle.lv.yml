@@ -1,0 +1,7 @@
+# Form field labels
+form:
+    firstname: "Vārds"
+    lastname: "Uzvārds"
+    phone: "Telefons"
+    city: "Pilsēta"
+    address: Adrese

@@ -39,13 +39,14 @@ class OrderAdmin extends SonataAdmin
          * @var Order $order
          */
         $order = $this->getSubject();
-
-        if ($order->getOrderFromNav()) {
-            $formMapper->add('total', null, array('label' => 'admin.order.total'));
-        } else {
+        // TODO nutarem su buhalterija, kad visiems rasome - maistas ir nedetalizuojame patiekalu
+//        if ($order->getOrderFromNav()) {
+        $formMapper->add('total', null, array('label' => 'admin.order.total'));
+        $formMapper->add('delivery_price', 'number', array('label' => 'admin.order.delivery_price'));
+        /*} else {
             // Non Nav order should not let edit total
             $formMapper->add('total', null, array('label' => 'admin.order.total', 'disabled' => true));
-        }
+        }*/
     }
 
     /**
@@ -71,8 +72,12 @@ class OrderAdmin extends SonataAdmin
             ->add('id', null, array('label' => 'admin.order.id'))
             //->add('address_id', null, array('label' => 'admin.order.delivery_address'))
             ->add('place_name', null, array('label' => 'admin.order.place_name_short',))
-            ->add('order_date', 'doctrine_orm_date_range', array('label' => 'admin.order.order_date'))
+            //->add('order_date', 'doctrine_orm_date_range', array('label' => 'admin.order.order_date'))
+            ->add('order_date', 'doctrine_orm_date_range', array(), null, array('widget' => 'single_text', 'required' => false,  'attr' => array('class' => 'datepicker2')))
             //->add('order_date', 'doctrine_orm_date_range', array(), null, array( 'required' => false,  'attr' => array('class' => 'datepicker')))
+            ->add('city', 'doctrine_orm_callback', array('callback'   => array($this, 'userCityFilter'), 'field_type' => 'text'))
+            ->add('address', 'doctrine_orm_callback', array('callback'   => array($this, 'userAddressFilter'), 'field_type' => 'text'))
+            ->add('phone', 'doctrine_orm_callback', array('callback'   => array($this, 'userPhoneFilter'), 'field_type' => 'text'))
             ->add('userIp', null, array('label' => 'admin.order.user_ip'))
             ->add('order_status',null, array('label' => 'admin.order.order_status'), 'choice', array(
                 'choices' => $statusChoices
@@ -94,6 +99,48 @@ class OrderAdmin extends SonataAdmin
             ->add('sfNumber', null, array('label' => 'admin.order.sf_line'))
             ->add('orderFromNav', null, array('label' => 'admin.order.order_from_nav'))
         ;
+    }
+
+
+    public function userCityFilter($queryBuilder, $alias, $field, $value)
+    {
+        if (!$value || empty($value['value'])) {
+            return;
+        }
+
+        $queryBuilder->join(sprintf('%s.address_id', $alias), 'a');
+        $queryBuilder->andWhere("a.city LIKE :thecity");
+        $queryBuilder->setParameter('thecity', '%'.$value['value'].'%');
+
+        return true;
+    }
+
+
+    public function userAddressFilter($queryBuilder, $alias, $field, $value)
+    {
+        if (!$value || empty($value['value'])) {
+            return;
+        }
+
+        $queryBuilder->join(sprintf('%s.address_id', $alias), 'ad');
+        $queryBuilder->andWhere("ad.address LIKE :theaddress");
+        $queryBuilder->setParameter('theaddress', '%'.$value['value'].'%');
+
+        return true;
+    }
+
+
+    public function userPhoneFilter($queryBuilder, $alias, $field, $value)
+    {
+        if (!$value || empty($value['value'])) {
+            return;
+        }
+
+        $queryBuilder->join(sprintf('%s.user', $alias), 'fu');
+        $queryBuilder->andWhere("fu.phone LIKE :thephone");
+        $queryBuilder->setParameter('thephone', '%'.str_replace("+", "", $value['value']).'%');
+
+        return true;
     }
 
     /**
@@ -195,6 +242,7 @@ class OrderAdmin extends SonataAdmin
             ->add('mobile', null, array('label' => 'admin.order.ismobile'))
             ->add('orderFromNav', null, array('label' => 'admin.order.order_from_nav'))
             ->add('navDeliveryOrder', null, array('label' => 'admin.order.nav_delivery_order'))
+            ->add('clientContacted', null, array('label' => 'admin.order.client_contacted'))
         ;
     }
 

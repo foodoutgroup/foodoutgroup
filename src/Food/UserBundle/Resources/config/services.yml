@@ -22,6 +22,8 @@ services:
     food_user.registration.form.handler:
         class: Food\UserBundle\Service\RegistrationFormHandler
         scope: request
+        calls:
+            - [setContainer,[@service_container]]
         arguments:
             - @fos_user.registration.form
             - @request

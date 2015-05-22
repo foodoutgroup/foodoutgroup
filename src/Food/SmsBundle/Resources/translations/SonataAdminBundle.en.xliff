@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
+        <body>
+            <!-- SMS messaging-->
+            <trans-unit id="Message List">
+                <source>Message List</source>
+                <target>SMS messages</target>
+            </trans-unit>
+            <trans-unit id="admin.messages">
+                <source>admin.messages</source>
+                <target>SMS messages</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.recipient">
+                <source>admin.sms.recipient</source>
+                <target>Recipient</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.sender">
+                <source>admin.sms.sender</source>
+                <target>Sender</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.message">
+                <source>admin.sms.message</source>
+                <target>Message</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.sent">
+                <source>admin.sms.sent</source>
+                <target>Sent</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.delivered">
+                <source>admin.sms.delivered</source>
+                <target>Delivered</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.dlr_id">
+                <source>admin.sms.dlr_id</source>
+                <target>DLR ID</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.submitted_at">
+                <source>admin.sms.submitted_at</source>
+                <target>Submitted at</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.received_at">
+                <source>admin.sms.received_at</source>
+                <target>Received at</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.last_sending_error">
+                <source>admin.sms.last_sending_error</source>
+                <target>Last sending error</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.ext_id">
+                <source>admin.sms.ext_id</source>
+                <target>External ID</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.last_error_date">
+                <source>admin.sms.last_error_date</source>
+                <target>Last error date</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.times_sent">
+                <source>admin.sms.times_sent</source>
+                <target>Times sent</target>
+            </trans-unit>
+            <trans-unit id="admin.sms.smsc">
+                <source>admin.sms.smsc</source>
+                <target>SMS center</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

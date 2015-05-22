@@ -1,0 +1,67 @@
+{#
+
+Sonata edit form extension for ajax filtered food categories
+
+#}
+
+{% extends '@SonataAdmin/CRUD/base_edit.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var place = $("#{{ admin.uniqId }}_place");
+            place.change(updatePlacePoints());
+            place.change();
+
+            function updatePlacePoints(){
+                return function () {
+                    var adminUniqId = '{{ admin.uniqId }}';
+                    var placeId = $("#{{ admin.uniqId }}_place option:selected").val();
+                    var placePoint = $("#{{ admin.uniqId }}_placePoint");
+
+                    var locale = '{{ app.request.get('_locale') }}';
+                    var objectId = '{{ admin.id(object) }}';
+                    var tabContent = $(".sonata-ba-form:first");
+                    // If all fields loaded - we will remove the mask
+                    var allLoaded = 0;
+                    tabContent.mask();
+
+                    // Update food categories
+                    var selectedPP = [];
+                    placePoint.find(':selected').each(function(key, element){
+                        selectedPP.push($(element).val());
+                    });
+                    placePoint.empty();
+
+                    var url = Routing.generate('food_admin_get_place_points', { '_locale': locale, 'placeId': placeId, _sonata_admin: 'sonata.admin.dish', id: objectId });
+                    $.post(url, { placeId: placeId }, function(data){
+                        placePoint.empty().append(data);
+
+                        var shownAsSelected = $('#s2id_{{ admin.uniqId }}_placePoint .select2-search-choice ');
+                        var textsToBeShown = [];
+                        placePoint.find('option').each(function(key, element){
+                            if (selectedPP.indexOf($(element).val()) != -1) {
+                                textsToBeShown.push($(element).html());
+                                $(element).attr('selected', 'selected');
+                            }
+                        });
+
+                        shownAsSelected.each(function(key, element) {
+                            if (textsToBeShown.indexOf($(element).find('div:first').html()) == -1) {
+                                $(element).find('a').trigger('click');
+                            }
+                        });
+
+                        allLoaded+=1;
+                        if (allLoaded == 1) {
+                            tabContent.unmask();
+                        }
+                    },"text");
+
+
+                };
+            }
+        });
+    </script>
+{% endblock %}

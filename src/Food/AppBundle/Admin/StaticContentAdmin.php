@@ -24,7 +24,9 @@ class StaticContentAdmin extends FoodAdmin
                 'translatable_class' => 'Food\AppBundle\Entity\StaticContent',
                 'fields' => array(
                     'title' => array('label' => 'admin.static.title'),
-                    'content' => array('label' => 'admin.static.content', 'attr' => array('class' => 'ckeditor_custom'), )
+                    'content' => array('label' => 'admin.static.content', 'attr' => array('class' => 'ckeditor_custom'), ),
+                    'seo_title' => array('label' => 'admin.static.seo_title', 'required' => false,),
+                    'seo_description' => array('label' => 'admin.static.seo_description', 'required' => false,)
                 )
             ))
             ->add('order', 'integer', array('label' => 'admin.static.order_no'))

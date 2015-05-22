@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+        html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
+    </style>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyKJYX3Cr4Cn41VR9oaAqbmT8XlbHBY-Q">
+    </script>
+    <script type="text/javascript">
+        function initialize() {
+            var zones = [];
+            {% for key, point in points %}
+                {% for key2, zone in point.zones %}
+                zones['{{ key }}{{ key2 }}'] = {
+                    distance: {{ zone.distance }},
+                    color: '{{ point.color }}',
+                    center: { lat: {{ point.lat }}, lng: {{ point.lon }} }
+                };
+                {% endfor %}
+            {% endfor %}
+
+
+            var mapOptions = {
+                center: { lat: 56.945536, lng: 24.092621 },
+                zoom: 12
+            };
+            var map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+            var pointCircle = {};
+
+            for (var zone in zones) {
+                var popcir = {
+                    strokeColor: zones[zone].color,
+                    strokeOpacity: 0.8,
+                    strokeWeight: 4,
+                    fillColor: zones[zone].color,
+                    fillOpacity: 0.15,
+                    map: map,
+                    center: zones[zone].center,
+                    radius: zones[zone].distance * 1000
+                };
+                // Add the circle for this city to the map.
+                pointCircle = new google.maps.Circle(popcir);
+            }
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+</head>
+<body>
+<table>
+    {% for key, point in points %}
+        <tr>
+            <td>{{ point.address }}</td>
+            <td bgcolor="{{ point.color }}">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        </tr>
+    {% endfor %}
+</table>
+<div id="map-canvas"></div>
+</body>
+</html>

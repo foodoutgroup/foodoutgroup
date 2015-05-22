@@ -1,6 +1,7 @@
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
-{% block title %}{% trans with {'%restaurant_name%':place.name} %}general.restaurant_page_title{% endtrans %} | {{ page_title }}{% endblock %}
+{% block title %}{% trans with {'%restaurant_name%':place.name} %}general.restaurant_page_title{% endtrans %}{% if place.getSEO('Title') %} {{ place.getSEO('Title') }}{% endif %} | {{page_title }}{% endblock %}
+{% block seo_description %}{{ place.getSEO('Description') }}{% endblock %}
 
 {% block adnet_retargeting %}
     <!-- Adform Tracking Code BEGIN -->
@@ -104,6 +105,16 @@
                                         {% endif %}
                                     {% endif %}
                                     <div class="menu-title clearfix">
+                                        {% if place.showNotification %}
+                                            <div class="alert alert-danger" id="notificationNotice">
+                                                {{ place.notificationContent|raw }}
+                                            </div>
+                                            <Script>
+                                                $(document).ready(function(){
+                                                    setTimeout(function(){ $('#notificationNotice').fadeOut();}, 15000);
+                                                });
+                                            </Script>
+                                        {% endif %}
                                         <h2 class="fl">{% trans %}places.dishes_title{% endtrans %}{# {{ selectedCategory.name }} #}</h2>
                                         <div class="view-type clearfix">
                                             {% if listType == 'thumbs' %}
@@ -123,14 +134,16 @@
                         {# Atsiliepimai #}
                         <div id="detailed-restaurant-review" class="detailed-restaurant-review">
                             <div class="review-title clearfix">
-                                <h3>{{ place.reviewCount }} {% transchoice place.reviews.count %}places.review_choice{% endtranschoice %}</h3>
+                                {# TODO temporary reviews are not shown #}
+                                {#<h3>{{ place.reviewCount }} {% transchoice place.reviews.count %}places.review_choice{% endtranschoice %}</h3>#}
                                 {% if (wasHere and not alreadyWrote) or not app.user %}
                                     <a href="{% if app.user %}#place-review-popup{% else %}#login-register-popup{% endif %}" class="fancy-box">{% trans %}places.add_review{% endtrans %}</a>
                                 {% endif %}
                                 {{ include('FoodDishesBundle:Place:review-popup.html.twig') }}
                             </div>
                             <div class="review-list">
-                                {% for review in place.reviews %}
+                                {# TODO temporary reviews are not shown #}
+                                {#{% for review in place.reviews %}
                                 <div class="review-item clearfix">
                                     <div class="review-person"><img src="/bundles/foodapp/images/person.png">
                                         <p class="name">{{ review.createdBy.getFirstname }}</p>
@@ -147,7 +160,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                {% endfor %}
+                                {% endfor %}#}
                             </div>
                             {#<div class="paginator clearfix"><a href="#" class="prev"></a><a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="next"></a></div>#}
                         </div>
@@ -170,8 +183,24 @@
                                                 <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
                                             {% endif %}
                                         </li>
-                                        <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>{{ currency_display|raw }}{{ place.deliveryPrice }}</li>
-                                        <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>{{ currency_display|raw }}{{ place.cartMinimum }}</li>
+                                        <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>
+                                            {% set minPrc = places_service.minDeliveryPrice(place.id) %}
+                                            {% set maxPrc = places_service.maxDeliveryPrice(place.id) %}
+                                            {% if minPrc == maxPrc %}
+                                                {{ currency_display|raw }}{{ minPrc }}
+                                            {% else %}
+                                                {{ currency_display|raw }}{{ minPrc }}-{{ maxPrc }}
+                                            {% endif %}
+                                        </li>
+                                        <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>
+                                            {% set minCart = places_service.minCartPrice(place.id) %}
+                                            {% set maxCart = places_service.maxCartPrice(place.id) %}
+                                            {% if minCart == maxCart %}
+                                                {{ currency_display|raw }}{{ minCart }}
+                                            {% else %}
+                                                {{ currency_display|raw }}{{ minCart }}-{{ maxCart }}
+                                            {% endif %}
+                                        </li>
                                         {% endif %}
                                         <li class="ico-payments hidden"><strong>{% trans %}places.payment_types{% endtrans %}:</strong><span class="payments-data"></span></li>
                                         {% if place.deliveryOptions != 'pickup' %}

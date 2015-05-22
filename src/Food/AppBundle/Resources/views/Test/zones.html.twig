@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+        html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
+    </style>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyKJYX3Cr4Cn41VR9oaAqbmT8XlbHBY-Q">
+    </script>
+    {{ placepoint.place.name }}<br>
+    {{ placepoint.address }}<br>
+    <script type="text/javascript">
+        function initialize() {
+            var zones = [];
+            var theKey = 1;
+            var naming = ['pirms', 'antrs', 'trecs', 'ketvirtc', 'penktc'];
+            {% for zone in zones %}
+                zones[naming[theKey]] = {
+                    distance: {{ zone.distance }},
+                    color: '#000000',
+                    price: {{ zone.price }}
+                };
+                theKey = theKey + 1;
+            {% endfor %}
+
+
+            var mapOptions = {
+                center: { lat: {{ placepoint.lat }}, lng: {{ placepoint.lon }} },
+                zoom: 12
+            };
+            var map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+            var pointCircle = {};
+            var cnt = 2;
+            for (var zone in zones) {
+                var popcir = {
+                    strokeColor: zones[zone].color,
+                    strokeOpacity: 0.8,
+                    strokeWeight: 4,
+                    fillColor: zones[zone].color,
+                    fillOpacity: 0.15,
+                    map: map,
+                    center: mapOptions.center,
+                    radius: zones[zone].distance * 1000
+                };
+                // Add the circle for this city to the map.
+                pointCircle = new google.maps.Circle(popcir);
+            }
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+</head>
+<body>
+<div id="map-canvas"></div>
+</body>
+</html>
