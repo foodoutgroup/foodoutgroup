@@ -19,6 +19,8 @@ class RegistrationFormHandler extends OriginalHandler
     protected $router;
     protected $cart;
 
+    private $container;
+
     public function __construct(FormInterface $form,
                                 Request $request,
                                 UserManagerInterface $userManager,
@@ -41,6 +43,11 @@ class RegistrationFormHandler extends OriginalHandler
         $this->foodMailer = $foodMailer;
         $this->router = $router;
         $this->cart = $cart;
+    }
+
+    public function setContainer($container)
+    {
+        $this->container = $container;
     }
 
     /**
@@ -121,7 +128,7 @@ class RegistrationFormHandler extends OriginalHandler
              ->setVariables($variables)
              ->setRecipient($user->getEmail(),
                             $user->getEmail())
-             ->setId(30009253)
+             ->setId($this->container->getParameter('mailer_notify_new_user'))
              ->send();
     }
 }

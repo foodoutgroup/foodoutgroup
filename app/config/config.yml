@@ -7,11 +7,11 @@ imports:
     - { resource: @A2lixTranslationFormBundle/Resources/config/gedmo.xml }
 
 parameters:
-    nav_table_prefix: "Čilija Skambučių Centras"
-    nav_ws_prefix: "Čilija Skambučių Centras"
-    available_locales: [lt, en, ru]
-    available_locales_routing: lt | en | ru
-    available_cities: ["Vilnius","Kaunas","Klaipėda"]
+    #nav_table_prefix: "Čilija Skambučių Centras"
+    #nav_ws_prefix: "Čilija Skambučių Centras"
+    #available_locales: [lt, en, ru]
+    #available_locales_routing: lt | en | ru
+    #available_cities: ["Vilnius","Kaunas","Klaipėda"]
     time_zone: "Europe/Vilnius"
 #    sms.available_providers: [food.infobip, food.silverstreet]
     sms.available_providers: [food.infobip]
@@ -29,20 +29,7 @@ parameters:
     silverstreet_provider.login: "foodout"
     silverstreet_provider.password: "ZQg5ryLS"
     # Situos gal issikelkime i parametru faila pagal aplinka?
-    admin.emails: [mantas@foodout.lt]
     admin.send_monitoring_message: false
-    admin.phones: [37061514333]
-    order.notify_emails: [giedrius@foodout.lt]
-    #order.notify_emails: [pirminis@gmail.com]
-    order.city_coordinators:
-        vilnius: []
-        kaunas: [zaneta@foodout.lt]
-        klaipėda: [jurgita@foodout.lt]
-    order.accept_notify_emails: [vyr.dispeceres@maistoralis.lt]
-    # order.accept_notify_emails: [pirminis@gmail.com]
-    accounting_email: "buhalterija@foodout.lt"
-    title: "Foodout"
-    domain: "foodout.lt"
     arc_gis_user: "skanulabai"
     arc_gis_pass: "labaiskanu"
     arc_gis_client_id: "QTFVE57PzjWLTXOj"
@@ -61,28 +48,11 @@ parameters:
     google.analytics.scopes:
         - "https://www.googleapis.com/auth/analytics.readonly"
     google.analytics.base64_private_key: "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"
-    google.analytics.view_id: "85237075"
     # google.maps_server_api: "AIzaSyANrqCSGWV4b8JRuTPVDdrpmVTytMgBB9M"
     # Possible values: "local", "etaxi"
     active_logistics: "local"
     # Todo situos gal ir iskelsime i paramsus - dependant on install?
-    payment.methods:
-        - local
-        - local.card
-        - paysera
-        - swedbank-gateway
-        - swedbank-credit-card-gateway
-        - seb-banklink
-        - nordea-banklink
-    currency_display: "&euro;"
-    currency_iso: EUR
-    display_currency_alternative:  Lt
-    # naudojam telefonu validacijoms
-    country: LT
-    vat: 21
     evp.test_payments: 0
-    mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
-    cloudfront_url: images.foodout.lt
     logtime.order_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitOrders"
     logtime.driver_url: "http://tms.foodout.lt/IntegrationFoodout/SubmitDrivers"
     # Ar siusti uzsakyma i isorine (TMS) sistema
@@ -98,22 +68,23 @@ parameters:
     # nordea.banklink.mac: LEHTI
     fos_user.template.engine: 'twig'
     invoice.series: FOO
+    # TODO neiskeltas LT - LV konfliktas - PN, kaip sprendziam sita?
     daily_report_emails: &daily_report_emails
       - jonas.s@foodout.lt
-      - juozas@foodout.lt
+#      - juozas@foodout.lt
       - birute@foodout.lt
-      - giedrius@foodout.lt
+#      - giedrius@foodout.lt
       - paulius@foodout.lt
       - mantas@foodout.lt
       - tomas.martunas@gmail.com
       - s.svitojus@ltkcapital.com
       - jonas@foodout.lt
+      - baiba@foodout.lv
       - egle@foodout.lt
       - alex@foodout.lt
       - zaneta@foodout.lt
     weekly_report_emails:
       <<: *daily_report_emails
-    dispatcher_contact_phone: "37061004970"
 
 framework:
     #esi:             ~
@@ -144,15 +115,26 @@ twig:
 #       Vars
         locale:       "%locale%"
         page_title:   "%title%"
+        site_country: "%country%"
         currency_display: "%currency_display%"
         currency_iso: "%currency_iso%"
         display_currency_alternative: "%display_currency_alternative%"
+        currency_alternative: %currency_alternative%
+        show_best_offers: %show_best_offers%
+        show_game: %show_best_offers%
+        show_apps_download: %show_apps_download%
+        show_is_social: %show_is_social%
+        track_conversions: %track_conversions%
+        publicdomain: "%publicdomain%"
+        google_analytics_uid: "%google_analytics_uid%"
+        available_cities: %available_cities%
         vat_size: "%vat%"
         google_maps_api: "%google.maps_api%"
         cloudfront_url: "%cloudfront_url%"
         invoice_series: "%invoice.series%"
 #       Services
         slug_util:    "@food.dishes.utils.slug"
+        places_service: "@food.places"
         dish_service: "@food.dishes"
         order_service: "@food.order"
         static_service: "@food.static"
@@ -314,6 +296,7 @@ sonata_admin:
                   items:
                       #- sonata.admin.kitchen
                       - sonata.admin.place
+                      - sonata.admin.place.pointdeliveryzones
                       - sonata.admin.place.reviews
                       - sonata.admin.place.coverphoto
                       #- sonata.admin.dish.unit
@@ -422,9 +405,6 @@ pirminis_gateway:
     swedbank:
         vtid: "21911859"
         password: "rMUhc7p7"
-        # credentials for testing below
-        # vtid: "88185002"
-        # password: "aXVdnHfZSJmz"
 
 knp_snappy:
     pdf:
@@ -436,3 +416,4 @@ knp_snappy:
         enabled:    false
 #        binary:     /usr/local/bin/wkhtmltoimage
 #        options:    []
+

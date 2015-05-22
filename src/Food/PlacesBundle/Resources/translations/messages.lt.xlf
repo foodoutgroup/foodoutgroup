@@ -249,6 +249,10 @@
             <source>places.is_not_detailed_search</source>
             <target>Paieška nėra tiksli, kadangi neįvedėte tiksliaus adreso. Galimybė užsakyti priklausys nuo adreso kurį įvesite užsakymo lange.</target>
         </trans-unit>
+        <trans-unit id="places.header_main_part" resname="places.header_main_part">
+            <source>places.header_main_part</source>
+            <target>Maistas į namus</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

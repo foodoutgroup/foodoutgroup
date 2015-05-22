@@ -60,12 +60,11 @@ class GoogleGisService extends ContainerAware
                 // Nieko nekeiciam
             }
         }
-
         $cnt = $this->container->get('doctrine')->getRepository('FoodAppBundle:GeoCache')
             ->findOneBy(
                 array(
                     'requestAddress' => $address,
-                    'requestCountry' => 'Lithuania'
+                    'requestCountry' => $this->container->getParameter('country_full')
                 )
             );
 
@@ -73,7 +72,7 @@ class GoogleGisService extends ContainerAware
             $resp = $this->getCli()->get(
                 $this->container->getParameter('google.maps_geocode'),
                 array(
-                    'address' => $address.', Lithuania',
+                    'address' => $address.', '.$this->container->getParameter('country_full'),
                     'sensor' => 'true',
                     'key' => $this->container->getParameter('google.maps_server_api')
                 )
@@ -81,8 +80,8 @@ class GoogleGisService extends ContainerAware
 
             $geoData = new GeoCache();
             $geoData->setRequestAddress($address)
-                ->setRequestCountry('Lithuania')
-                ->setRequestData($address.', Lithuania')
+                ->setRequestCountry($this->container->getParameter('country_full'))
+                ->setRequestData($address.', '.$this->container->getParameter('country_full'))
                 ->setRequestDate(new \DateTime("now"))
                 ->setRessponseBody($resp->body)
                 ->setCounter(1);
@@ -145,7 +144,7 @@ class GoogleGisService extends ContainerAware
             $returner['address_orig'] = $address;
             $returner['lat'] = $location->results[0]->geometry->location->lat;
             $returner['lng'] = $location->results[0]->geometry->location->lng;
-        } elseif( !empty( $location->results[0]) && in_array('route', $location->results[0]->types)) {
+        } elseif( !empty( $location->results[0]) && (in_array('route', $location->results[0]->types) || in_array("neighborhood", $location->results[0]->types))) {
             $res = preg_match('/\d\w{0,}$/i', $address, $rezult);
             if (!empty($rezult)) {
                 $crit = $rezult[0];
@@ -153,7 +152,6 @@ class GoogleGisService extends ContainerAware
                 $crit = "0000";
             }
             $resIs = preg_match('/'.$crit.'/', $location->results[0]->address_components[0]->long_name);
-
             if ($res == 0 || $res==1 && $resIs == 1) {
                 $returner['street_found'] = true;
                 $returner['street'] =  $location->results[0]->address_components[0]->long_name;
@@ -260,7 +258,7 @@ class GoogleGisService extends ContainerAware
         $resp = $this->getCli()->get(
             $this->container->getParameter('google.maps_geocode'),
             array(
-                'address' => $street." ".$houseNumber." ".$city.', Lithuania',
+                'address' => $street." ".$houseNumber." ".$city.', '.$this->container->getParameter('country_full'),
                 'sensor' => 'true',
                 'key' => $this->container->getParameter('google.maps_server_api')
             )

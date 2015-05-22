@@ -87,10 +87,13 @@ class RepostOrderToNavOnProblemCommand extends ContainerAwareCommand
                             $logger->alert($message);
                             $output->writeln($message);
 
+                            $orderService->logOrder($order, 'NAV_re_put_order', 'Trying to reput order to NAV');
                             $navService->putTheOrderToTheNAV($order);
                             sleep(2);
+                            $orderService->logOrder($order, 'NAV_update_prices', 'NAV update prices from Reput command');
                             $navService->updatePricesNAV($order);
                             sleep(2);
+                            $orderService->logOrder($order, 'NAV_process_order', 'NAV process order from Reput command');
                             $navService->processOrderNAV($order);
 
                             $orderService->setOrder($order);

@@ -65,7 +65,7 @@ class NavService extends ContainerAware
 
     private $invoiceTable = '[skamb_centras].[dbo].[%1$s$Foodout Invoice]';
 
-    private $postedDeliveryOrdersTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Posted Delivery Orders]';
+    private $postedDeliveryOrdersTable = '[skamb_centras].[dbo].[%1$s$Posted Delivery Orders]';
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
@@ -162,11 +162,10 @@ class NavService extends ContainerAware
 
     public function getPostedDeliveryOrdersTable()
     {
-        return $this->postedDeliveryOrdersTable;
+        return sprintf($this->postedDeliveryOrdersTable, $this->container->getParameter('nav_table_prefix'));
     }
 
-
-
+    
     /**
      * @return false|resource
      */
@@ -377,9 +376,11 @@ class NavService extends ContainerAware
         $comment = $order->getComment();
 
         if ($order->getPaymentMethod() == "local.card") {
-            $comment.=". Mokesiu kortele";
+            $comment.=". KREDITKARTE";
+//            $comment.=". Mokesiu kortele";
         } elseif ($order->getPaymentMethod() == "local") {
-            $comment.=". Mokesiu grynais";
+            $comment.=". SKAIDRA NAUDA";
+//            $comment.=". Mokesiu grynais";
         } else {
 
         }
@@ -1313,7 +1314,7 @@ class NavService extends ContainerAware
      */
     public function syncDisDescription($date = null)
     {
-        $result = $this->initSqlConn()->query('SELECT [No_], [Description], [Search Description] FROM '.$this->getItemsTable()." WHERE LEN([No_]) > 3 AND [No_] NOT LIKE 'DIS%'");
+        $result = $this->initSqlConn()->query('SELECT [No_], [Description], [Search Description] FROM '.$this->getItemsTable()." WHERE LEN([No_]) > 3 AND [No_] LIKE 'DIS%'");
         if( $result === false) {
             throw new \InvalidArgumentException('Wow Such fail.. Many problems... Such no results?');
         }
@@ -1498,7 +1499,7 @@ class NavService extends ContainerAware
             $this->getContractTable(),
             $this->getCustomerTable(),
             $datePart,
-            "'Vilnius', 'Kaunas', 'Klaipeda'"
+            "'Vilnius', 'Kaunas', 'Klaipeda','Ryga'"
         );
 
         $this->container->get("logger")->alert('Nav import query: '.$query);

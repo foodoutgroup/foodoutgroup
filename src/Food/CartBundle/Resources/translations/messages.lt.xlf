@@ -2,6 +2,10 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="lt" datatype="plaintext" original="file.ext">
     <body>
+        <trans-unit id="cart.checkout.main_titlelt" resname="cart.checkout.main_title">
+            <source>cart.checkout.main_title</source>
+            <target>Užsakymas</target>
+        </trans-unit>
       <trans-unit id="c9f932900c061295799f8eee2ba492c6" resname="cart.block.your_order">
         <source>cart.block.your_order</source>
         <target>Jūsų užsakymas</target>
@@ -42,6 +46,10 @@
         <source>cart.checkout.delivery_i_pickup</source>
         <target>Atsiimsiu pats</target>
       </trans-unit>
+        <trans-unit id="91a531cac53e76cf23ca76d224b23c27new" resname="cart.checkout.enter_address">
+            <source>cart.checkout.enter_address</source>
+            <target>Įveskite adresą</target>
+        </trans-unit>
       <trans-unit id="91a531cac53e76cf23ca76d224b23c27" resname="cart.checkout.city">
         <source>cart.checkout.city</source>
         <target>Miestas</target>
@@ -353,6 +361,10 @@ Vilnius]]></target>
         <trans-unit id="cart.block.discount_sum" resname="cart.block.discount_sum">
             <source>cart.block.discount_sum</source>
             <target>Nuolaida</target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.phone.prefill_phone_lt" resname="cart.checkout.phone.prefill_phone">
+            <source>cart.checkout.phone.prefill_phone</source>
+            <target></target>
         </trans-unit>
         <trans-unit id="general.coupon.coupon_too_early" resname="general.coupon.coupon_too_early">
             <source>general.coupon.coupon_too_early</source>

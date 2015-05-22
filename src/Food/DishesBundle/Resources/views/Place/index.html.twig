@@ -105,6 +105,16 @@
                                         {% endif %}
                                     {% endif %}
                                     <div class="menu-title clearfix">
+                                        {% if place.showNotification %}
+                                            <div class="alert alert-danger" id="notificationNotice">
+                                                {{ place.notificationContent|raw }}
+                                            </div>
+                                            <Script>
+                                                $(document).ready(function(){
+                                                    setTimeout(function(){ $('#notificationNotice').fadeOut();}, 15000);
+                                                });
+                                            </Script>
+                                        {% endif %}
                                         <h2 class="fl">{% trans %}places.dishes_title{% endtrans %}{# {{ selectedCategory.name }} #}</h2>
                                         <div class="view-type clearfix">
                                             {% if listType == 'thumbs' %}
@@ -173,8 +183,24 @@
                                                 <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
                                             {% endif %}
                                         </li>
-                                        <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>{{ currency_display|raw }}{{ place.deliveryPrice }}</li>
-                                        <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>{{ currency_display|raw }}{{ place.cartMinimum }}</li>
+                                        <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>
+                                            {% set minPrc = places_service.minDeliveryPrice(place.id) %}
+                                            {% set maxPrc = places_service.maxDeliveryPrice(place.id) %}
+                                            {% if minPrc == maxPrc %}
+                                                {{ currency_display|raw }}{{ minPrc }}
+                                            {% else %}
+                                                {{ currency_display|raw }}{{ minPrc }}-{{ maxPrc }}
+                                            {% endif %}
+                                        </li>
+                                        <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>
+                                            {% set minCart = places_service.minCartPrice(place.id) %}
+                                            {% set maxCart = places_service.maxCartPrice(place.id) %}
+                                            {% if minCart == maxCart %}
+                                                {{ currency_display|raw }}{{ minCart }}
+                                            {% else %}
+                                                {{ currency_display|raw }}{{ minCart }}-{{ maxCart }}
+                                            {% endif %}
+                                        </li>
                                         {% endif %}
                                         <li class="ico-payments hidden"><strong>{% trans %}places.payment_types{% endtrans %}:</strong><span class="payments-data"></span></li>
                                         {% if place.deliveryOptions != 'pickup' %}

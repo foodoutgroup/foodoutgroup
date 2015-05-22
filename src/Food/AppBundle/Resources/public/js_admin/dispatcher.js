@@ -98,6 +98,28 @@ var Dispatcher = {
         var url = Routing.generate('food_admin_get_order_status_popup', { '_locale': Dispatcher._locale, 'orderId': orderId, _sonata_admin: 'sonata.admin.dish' });
         var tag = $("<div></div>");
 
+        var statusButtons = {};
+
+        statusButtons[Dispatcher.getTranslation('button_change')] = function() {
+            var newStatus = $(this).find('.order_status:checked').val();
+            var url = Routing.generate('food_admin_set_order_status', { '_locale': Dispatcher._locale, 'orderId': orderId, 'status': newStatus, _sonata_admin: 'sonata.admin.dish' });
+            $.get(
+                url,
+                function(data) {
+                    location.reload();
+                }
+            );
+
+            // TODO refresh the page!!!!
+            $( this ).dialog( "close" );
+            $( this ).dialog( "destroy" );
+        };
+
+        statusButtons[Dispatcher.getTranslation('button_cancel')] = function() {
+            $( this ).dialog( "close" );
+            $( this ).dialog( "destroy" );
+        };
+
         $.ajax({
             url: url,
             success: function(data) {
@@ -106,28 +128,7 @@ var Dispatcher = {
                     title: Dispatcher.getTranslation('change_status_title'),
                     resizable: false,
                     modal: true,
-                    buttons: {
-                        // translate buttons
-                        "Keisti": function() {
-                            $('.sonata-ba-list').mask();
-                            var newStatus = $(this).find('.order_status:checked').val();
-                            var url = Routing.generate('food_admin_set_order_status', { '_locale': Dispatcher._locale, 'orderId': orderId, 'status': newStatus, _sonata_admin: 'sonata.admin.dish' });
-                            $.get(
-                                url,
-                                function(data) {
-                                    location.reload();
-                                }
-                            );
-
-                            // TODO refresh the page!!!!
-                            $( this ).dialog( "close" );
-                            $( this ).dialog( "destroy" );
-                        },
-                        "Atšaukti": function() {
-                            $( this ).dialog( "close" );
-                            $( this ).dialog( "destroy" );
-                        }
-                    }
+                    buttons: statusButtons
                 }).dialog('open');
             }
         });

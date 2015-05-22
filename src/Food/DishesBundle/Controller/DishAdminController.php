@@ -25,6 +25,22 @@ class DishAdminController extends Controller
         return new Response($html, 200);
     }
 
+    public function getPointsFromPlaceAction($placeId)
+    {
+        $html = ""; // HTML as response
+        $place = $this->getDoctrine()
+            ->getRepository('FoodDishesBundle:Place')
+            ->find($placeId);
+
+        $placePoints = $place->getPoints();
+
+        foreach($placePoints as $point){
+            $html .= '<option value="'.$point->getId().'" >'.$point->getAddress().', '.$point->getCity().'</option>';
+        }
+
+        return new Response($html, 200);
+    }
+
     public function getDishOptionsFromPlaceAction($placeId, $uniqueId)
     {
         $html = ""; // HTML as response

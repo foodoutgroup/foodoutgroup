@@ -23,7 +23,7 @@
                     {% elseif place.is_work == 2 %}
                         {# IT WORKS. Well some of the points do :D :) #}
                         <span class="tag">
-                            <span class="partial-work"></span>
+                            <span class="partial-work{% if locale == 'lv' %} partial-work-lv{% endif %}"></span>
                             <div class="time-popup time-popup2">{{ order_service.notWorkingPlacesPoints(place.place)|raw }}
                                 <div class="nip"></div>
                             </div>
@@ -32,14 +32,14 @@
                         {# NAH non of it works :) #}
                         {% if place.pp_count == 1 %}
                             <span class="tag">
-                                <img src="/bundles/foodapp/images/tag-not-working.png">
+                                <img src="/bundles/foodapp/images/tag-not-working{% if locale == 'lv' %}_lv{% endif %}.png">
                                 <div class="time-popup">{{ order_service.getTodayWork(place.point) }}
                                     <div class="nip"></div>
                                 </div>
                             </span>
                         {% else %}
                             <span class="tag">
-                                <img src="/bundles/foodapp/images/tag-not-working.png">
+                                <img src="/bundles/foodapp/images/tag-not-working.png{% if locale == 'lv' %}_lv{% endif %}">
                                 <div class="time-popup">{{ order_service.notWorkingPlacesPoints(place.place)|raw }}
                                     <div class="nip"></div>
                                 </div>
@@ -85,7 +85,13 @@
                     {% if place.place.deliveryOptions != 'pickup' %}
                     <span class="delivery">{% trans %}place.delivery_info{% endtrans %}:
                         <span>
-                            {{ currency_display|raw }}{{ place.place.deliveryPrice }} / {{ place.place.deliveryTime }}
+                            {% set minPrc = places_service.minDeliveryPrice(place.place.id) %}
+                            {% set maxPrc = places_service.maxDeliveryPrice(place.place.id) %}
+                            {% if minPrc == maxPrc %}
+                                {{ currency_display|raw }}{{ minPrc }} / {{ place.place.deliveryTime }}
+                            {% else %}
+                                {{ currency_display|raw }}{{ minPrc }}-{{ maxPrc }} / {{ place.place.deliveryTime }}
+                            {% endif %}
                             {% if place.place.deliveryTimeInfo is not empty %}
                                 <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.place.deliveryTimeInfo }}"></span>
                             {% endif %}
@@ -98,7 +104,13 @@
                     {% endif %}
                     {% if place.place.deliveryOptions != 'pickup' or (place.place.deliveryOptions == 'pickup' and place.place.minimalOnSelfDel) %}
                     <span class="min-cart-size">{% trans %}place.min_cart_amount{% endtrans %}:
-                        <span>{{ currency_display|raw }}{{ place.place.cartMinimum }}</span>
+                        {% set minCart = places_service.minCartPrice(place.place.id) %}
+                        {% set maxCart = places_service.maxCartPrice(place.place.id) %}
+                        {% if minCart == maxCart %}
+                            <span>{{ currency_display|raw }}{{ minCart }}</span>
+                        {% else %}
+                            <span>{{ currency_display|raw }}{{ minCart }}-{{ maxCart }}</span>
+                        {% endif %}
                     </span>
                     {% endif %}
                 </div>
@@ -134,8 +146,12 @@
         }
         trgt.text(trgt.text().replace("%1", cnt));
         {% if location_show %}
-            if (recommended == 0 && cnt > 0) {
-                trgt.text(trgt.text() + ', {% trans %}places.places_near{% endtrans %} {{ location.address }}');
+            if (!recommended && cnt > 0) {
+                {% set locAdress = '' %}
+                {% if location and location.address_found %}
+                    {% set locAdress=location.address %}
+                {% endif %}
+                trgt.text(trgt.text() + ', {% trans %}places.places_near{% endtrans %} {{ locAdress }}');
             }
         {% endif %}
 

@@ -201,7 +201,7 @@
     <div class="site-center">
         <div class="site-block">
             <div class="page-title no-page-path">
-                <h1 class="clearfix"><span>Užsakymas</span></h1>
+                <h1 class="clearfix"><span>{% trans %}cart.checkout.main_title{% endtrans %}</span></h1>
             </div>
             <div class="clearfix">
                 <div class="content-lefter-big">
@@ -253,9 +253,9 @@
                                 <div class="form-row form-row-required address-change">
                                     <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
                                     <select class="custom-select" disabled="true">
-                                        <option {% if location and location.city is defined and location.city == 'Vilnius' %}#}selected{% endif %} value="Vilnius">Vilnius</option>
-                                        <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %} value="Kaunas">Kaunas</option>
-                                        <option {% if location and location.city is defined and (location.city == 'Klaipėda' or location.city == 'Klaipeda') %}selected{% endif %} value="Klaipėda">Klaipėda</option>
+                                        {% for city in available_cities %}
+                                            <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e'})) %}selected{% endif %}>{{ city }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                                 <div class="form-row form-row-required address-change">
@@ -296,9 +296,15 @@
                             </div>
                             <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.phone{% endtrans %}: <span title="{% trans %}cart.checkout.phone_tooltip{% endtrans %}" class="tooltip tooltip-icon ui-icon ui-icon-info"></span></label>
-                                <input type="text" name="customer-phone" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" value="{% if (dataToLoad is not empty and dataToLoad['customer-phone'] is not empty) %}{{ dataToLoad['customer-phone'] }}{% else %}{{ app.user.phone|default('') }}{% endif %}" />
+                                <input type="text" id="customer-phone-id" name="customer-phone" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" value="{% if (dataToLoad is not empty and dataToLoad['customer-phone'] is not empty) %}{{ dataToLoad['customer-phone'] }}{% else %}{{ app.user.phone|default('') }}{% endif %}" />
                             </div>
-
+                            <script>
+                                $(document).ready(function(){
+                                    if ($("#customer-phone-id").val()=="") {
+                                        $("#customer-phone-id").val('{% trans %}cart.checkout.phone.prefill_phone{% endtrans %}');
+                                    }
+                                });
+                            </script>
                             {#
                             <div class="form-row">
                                 <label>Pristatymo laikas:</label>

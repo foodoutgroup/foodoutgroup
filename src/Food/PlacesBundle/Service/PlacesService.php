@@ -254,4 +254,45 @@ class PlacesService extends ContainerAware {
         $this->container->get('food.places')->saveRelationPlaceToPoint($places);
         return $this->container->get('food.places')->placesPlacePointsWorkInformation($places);
     }
+
+    public function getMinDeliveryPrice($placeId)
+    {
+        $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMinDeliveryPrice($placeId);
+        if (empty($sum)) {
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            return $place->getDeliveryPrice();
+        }
+        return $sum;
+    }
+
+    public function getMaxDeliveryPrice($placeId)
+    {
+        $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMaxDeliveryPrice($placeId);
+        if (empty($sum)) {
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            return $place->getDeliveryPrice();
+        }
+        return $sum;
+    }
+
+    public function getMinCartPrice($placeId)
+    {
+        $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMinCartSize($placeId);
+        if (empty($sum)) {
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            return $place->getCartMinimum();
+        }
+        return $sum;
+    }
+
+    public function getMaxCartPrice($placeId)
+    {
+        $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMaxCartSize($placeId);
+        if (empty($sum)) {
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            return $place->getCartMinimum();
+        }
+        return $sum;
+    }
+
 }

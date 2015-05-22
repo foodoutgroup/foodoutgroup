@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="lt" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
+    <file source-language="lt" datatype="plaintext" original="SonataAdminBundle.lt.xliff" >
         <body>
             <!-- General -->
             <trans-unit id="admin.visible">
@@ -426,6 +426,10 @@
             <trans-unit id="admin.place.chain" resname="admin.place.chain">
                 <source>admin.place.chain</source>
                 <target>Grandinė</target>
+            </trans-unit>
+            <trans-unit id="admin.place.internal_code" resname="admin.place.internal_code">
+                <source>admin.place.internal_code</source>
+                <target>Padalinio kodas</target>
             </trans-unit>
 
             <!-- Place points -->
