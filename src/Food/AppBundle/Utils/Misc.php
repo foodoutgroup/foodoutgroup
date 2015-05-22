@@ -275,7 +275,7 @@ class Misc
         $orderService = $this->getContainer()->get('food.order');
         $phone = $user->getPhone();
 
-        $fraudPossible = false;
+        $fraudPossible = true;
 
         // Check if possibly a fraudulent email
 
