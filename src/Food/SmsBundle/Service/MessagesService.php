@@ -290,7 +290,7 @@ class MessagesService {
                         // TODO normalus exceptionas, kuri kitaip handlinsim
                         throw new \InvalidArgumentException('Message not found!');
                     } else {
-                        $logger->info(print_r($message, true));
+//                        $logger->info(print_r($message, true));
 
                         $message->setDelivered($messageData['delivered']);
 
