@@ -1113,6 +1113,62 @@
                 <source>admin.order.order_log.message</source>
                 <target>Message</target>
             </trans-unit>
+            <trans-unit id="admin.order.order_system_log">
+                <source>admin.order.order_system_log</source>
+                <target>Order system logs</target>
+            </trans-unit>
+            <trans-unit id="admin.order.messages">
+                <source>admin.order.messages</source>
+                <target>SMS messages</target>
+            </trans-unit>
+            <trans-unit id="admin.order.messages.date">
+                <source>admin.order.messages.date</source>
+                <target>Create date</target>
+            </trans-unit>
+            <trans-unit id="admin.order.messages.send_date">
+                <source>admin.order.messages.send_date</source>
+                <target>Send date</target>
+            </trans-unit>
+            <trans-unit id="admin.order.messages.sender">
+                <source>admin.order.messages.sender</source>
+                <target>Sender</target>
+            </trans-unit>
+            <trans-unit id="admin.order.messages.recipient">
+                <source>admin.order.messages.recipient</source>
+                <target>Receiver</target>
+            </trans-unit>
+            <trans-unit id="admin.order.messages.message">
+                <source>admin.order.messages.message</source>
+                <target>Message</target>
+            </trans-unit>
+            <trans-unit id="admin.order.messages.sent">
+                <source>admin.order.messages.sent</source>
+                <target>Sent</target>
+            </trans-unit>
+            <trans-unit id="admin.order.messages.delivered">
+                <source>admin.order.messages.delivered</source>
+                <target>Delivered</target>
+            </trans-unit>
+            <trans-unit id="admin.order.mail">
+                <source>admin.order.mail</source>
+                <target>Emails</target>
+            </trans-unit>
+            <trans-unit id="admin.order.mail.date">
+                <source>admin.order.mail.date</source>
+                <target>Send date</target>
+            </trans-unit>
+            <trans-unit id="admin.order.mail.source">
+                <source>admin.order.mail.source</source>
+                <target>Source</target>
+            </trans-unit>
+            <trans-unit id="admin.order.mail.template">
+                <source>admin.order.mail.template</source>
+                <target>Template</target>
+            </trans-unit>
+            <trans-unit id="admin.order.mail.params">
+                <source>admin.order.mail.params</source>
+                <target>Params</target>
+            </trans-unit>
 
             <!-- Dispatcher window -->
             <trans-unit id="admin.order.dispatcher">

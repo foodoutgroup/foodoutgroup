@@ -1133,6 +1133,62 @@
                 <source>admin.order.order_log.message</source>
                 <target>Pranešimas</target>
             </trans-unit>
+            <trans-unit id="admin.order.order_system_log">
+                <source>admin.order.order_system_log</source>
+                <target>Užsakymo sisteminiai duomenys</target>
+            </trans-unit>
+            <trans-unit id="admin.order.messages">
+                <source>admin.order.messages</source>
+                <target>SMS žinutės</target>
+            </trans-unit>
+            <trans-unit id="admin.order.messages.date">
+                <source>admin.order.messages.date</source>
+                <target>Sukūrmo data</target>
+            </trans-unit>
+            <trans-unit id="admin.order.messages.send_date">
+                <source>admin.order.messages.send_date</source>
+                <target>Išsiuntimo data</target>
+            </trans-unit>
+            <trans-unit id="admin.order.messages.sender">
+                <source>admin.order.messages.sender</source>
+                <target>Siuntėjas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.messages.recipient">
+                <source>admin.order.messages.recipient</source>
+                <target>Gavėjas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.messages.message">
+                <source>admin.order.messages.message</source>
+                <target>Žinutė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.messages.sent">
+                <source>admin.order.messages.sent</source>
+                <target>Išsiųsta</target>
+            </trans-unit>
+            <trans-unit id="admin.order.messages.delivered">
+                <source>admin.order.messages.delivered</source>
+                <target>Gauta</target>
+            </trans-unit>
+            <trans-unit id="admin.order.mail">
+                <source>admin.order.mail</source>
+                <target>Laiškai</target>
+            </trans-unit>
+            <trans-unit id="admin.order.mail.date">
+                <source>admin.order.mail.date</source>
+                <target>Siuntimo data</target>
+            </trans-unit>
+            <trans-unit id="admin.order.mail.source">
+                <source>admin.order.mail.source</source>
+                <target>Šaltinis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.mail.template">
+                <source>admin.order.mail.template</source>
+                <target>Šablonas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.mail.params">
+                <source>admin.order.mail.params</source>
+                <target>Parametrai</target>
+            </trans-unit>
 
             <!-- Dispatcher window -->
             <trans-unit id="admin.order.dispatcher">

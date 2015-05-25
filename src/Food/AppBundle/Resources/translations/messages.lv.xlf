@@ -176,11 +176,11 @@
       </trans-unit>
       <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
         <source>general.sms.user.order_accepted</source>
-        <target>Sveiki! restourant_name apstiprinaja Jusu pasutijumu. Ediena planotais piegades laiks ir delivery_time! Ja Jums rodas jautajumi, sazinieties pa talruni +restourant_phone!</target>
+        <target>Sveiki! restourant_name apstiprinaja Jusu pasutijumu. Ediena planotais piegades laiks ir delivery_time! Ja Jums rodas jautajumi, sazinieties pa talruni +37167363663!</target>
       </trans-unit>
       <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
         <source>general.sms.user.order_accepted_pickup</source>
-        <target>Sveiki! restourant_name apstiprinaja Jusu pasutijumu. Edienu varat sanemt delivery_time! Ja Jums rodas jautajumi, sazinieties pa talruni +restourant_phone!</target>
+        <target>Sveiki! restourant_name apstiprinaja Jusu pasutijumu. Edienu varat sanemt delivery_time! Ja Jums rodas jautajumi, sazinieties pa talruni +37167363663!</target>
       </trans-unit>
       <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
         <source>general.sms.client.restourant_cancel</source>
@@ -376,11 +376,11 @@
       </trans-unit>
       <trans-unit id="28ecbd185a859ae613493c195207e5e0" resname="general.sms.user_order_delayed">
         <source>general.sms.user_order_delayed</source>
-        <target>Atvainojamies! Tacu lielas pasutijumu plusmas del Jusu pasutijums tiek atlikts uz delay_time min. un tiks piegadats pec delivery_min min. Ja nepiekritat gaidit – sazinieties pa talr. +restourant_phone</target>
+        <target>Atvainojamies! Tacu lielas pasutijumu plusmas del Jusu pasutijums tiek atlikts uz delay_time min. un tiks piegadats pec delivery_min min. Ja nepiekritat gaidit – sazinieties pa talr. +37167363663</target>
       </trans-unit>
       <trans-unit id="e7bd53e2c7fa9e93ede0c7b307426c5a" resname="general.sms.user_order_delayed_pickup">
         <source>general.sms.user_order_delayed_pickup</source>
-        <target>Atvainojamies! Tacu lielass pasutijumu plusmas del Jusu pasutijums tiek atlikts uz delay_time min. un tiks sagatavots pec delivery_min min. Ja nepiekritat gaidit – sazinieties pa talr. +restourant_phone</target>
+        <target>Atvainojamies! Tacu lielass pasutijumu plusmas del Jusu pasutijums tiek atlikts uz delay_time min. un tiks sagatavots pec delivery_min min. Ja nepiekritat gaidit – sazinieties pa talr. +37167363663</target>
       </trans-unit>
       <trans-unit id="8036a67ebc0bbfebb10242dfaabceaf3" resname="general.email.user_delayed_subject">
         <source>general.email.user_delayed_subject</source>

@@ -1,5 +1,8 @@
 {# Uzsakymo logo ispiesimas sonatos admine #}
 <td colspan="2">
+    <b>{{ field_description.options.label|trans({}, 'SonataAdminBundle') }}</b>
+    <br />
+    <br />
     <div class="collapsable">
         <h4 class="padded">{{ 'admin.order.order_log'|trans({}, 'SonataAdminBundle') }}</h4>
         <div id="field_container_details" class="field-container">
@@ -18,6 +21,65 @@
                     <td>{{ orderInfo.message }}</td>
                 </tr>
             {% endfor %}
+            </table>
+        </div>
+    </div>
+    <br />
+    <div class="collapsable">
+        <h4 class="padded">{{ 'admin.order.messages'|trans({}, 'SonataAdminBundle') }}</h4>
+        <div id="field_container_details" class="field-container">
+            <table>
+                <tr>
+                    <th>{{ 'admin.order.messages.date'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.messages.send_date'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.messages.sender'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.messages.recipient'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.messages.message'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.messages.sent'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.messages.delivered'|trans({}, 'SonataAdminBundle') }}</th>
+                </tr>
+                {% for messageInfo in object.smsMessages %}
+                    <tr>
+                        <td style="white-space: nowrap">{{ messageInfo.createdAt|date("Y-m-d H:i:s") }}</td>
+                        <td style="white-space: nowrap">
+                            {% if messageInfo.submittedAt is not null %}
+                                {{ messageInfo.submittedAt|date("Y-m-d H:i:s") }}
+                            {% endif %}
+                        </td>
+                        <td>{{ messageInfo.sender }}</td>
+                        <td>{{ messageInfo.recipient }}</td>
+                        <td>{{ messageInfo.message }}</td>
+                        <td>{% if messageInfo.sent %}{{ 'label_type_yes'|trans({}, 'SonataAdminBundle') }}{% else %}{{ 'label_type_no'|trans({}, 'SonataAdminBundle') }}{% endif %}</td>
+                        <td>
+                            {% if messageInfo.delivered or messageInfo.receivedAt is not null %}
+                                {{ 'label_type_yes'|trans({}, 'SonataAdminBundle') }}
+                            {% else %}
+                                {{ 'label_type_no'|trans({}, 'SonataAdminBundle') }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div><br />
+    <div class="collapsable">
+        <h4 class="padded">{{ 'admin.order.mail'|trans({}, 'SonataAdminBundle') }}</h4>
+        <div id="field_container_details" class="field-container">
+            <table>
+                <tr>
+                    <th>{{ 'admin.order.mail.date'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.mail.source'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.mail.template'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.mail.params'|trans({}, 'SonataAdminBundle') }}</th>
+                </tr>
+                {% for mailInfo in object.orderMailLog %}
+                    <tr>
+                        <td style="white-space: nowrap">{{ mailInfo.eventDate|date("Y-m-d H:i:s") }}</td>
+                        <td>{{ mailInfo.source }}</td>
+                        <td>{{ mailInfo.template }}</td>
+                        <td>{{ mailInfo.params|raw }}</td>
+                    </tr>
+                {% endfor %}
             </table>
         </div>
     </div>

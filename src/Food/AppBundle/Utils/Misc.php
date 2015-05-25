@@ -275,7 +275,7 @@ class Misc
         $orderService = $this->getContainer()->get('food.order');
         $phone = $user->getPhone();
 
-        $fraudPossible = false;
+        $fraudPossible = true;
 
         // Check if possibly a fraudulent email
 
@@ -303,7 +303,7 @@ class Misc
 
         // Check if there were order with this phone
         $phoneOrders = $orderRepo->getCompletedOrdersByPhone($phone);
-        if (is_array($userOrder) && count($userOrder) > 0) {
+        if (is_array($phoneOrders) && count($phoneOrders) > 0) {
             return false;
         }
 

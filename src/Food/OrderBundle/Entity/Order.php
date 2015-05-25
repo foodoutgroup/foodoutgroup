@@ -214,6 +214,18 @@ class Order
     private $orderStatusLog;
 
     /**
+     * @var \Food\OrderBundle\Entity\OrderMailLog $orderMailLog
+     * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\OrderMailLog", mappedBy="order")
+     **/
+    private $orderMailLog;
+
+    /**
+     * @var \Food\SmsBundle\Entity\Message
+     * @ORM\OneToMany(targetEntity="\Food\SmsBundle\Entity\Message", mappedBy="order")
+     **/
+    private $smsMessages;
+
+    /**
      * @var \Food\OrderBundle\Entity\PaymentLog $paymentLog
      * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\PaymentLog", mappedBy="order")
      **/
@@ -1850,5 +1862,84 @@ class Order
         $diffMinutes = ceil(($nowStamp - $deliveryStamp) / 60);
 
         return $diffMinutes;
+    }
+
+    /**
+     * Add messages
+     *
+     * @param \Food\SmsBundle\Entity\Message $messages
+     * @return Order
+     */
+    public function addMessage(\Food\SmsBundle\Entity\Message $messages)
+    {
+        $this->messages[] = $messages;
+    
+        return $this;
+    }
+
+    /**
+     * Remove messages
+     *
+     * @param \Food\SmsBundle\Entity\Message $messages
+     */
+    public function removeSmsMessage(\Food\SmsBundle\Entity\Message $messages)
+    {
+        $this->smsMessages->removeElement($messages);
+    }
+
+    /**
+     * Get messages
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSmsMessages()
+    {
+        return $this->smsMessages;
+    }
+
+    /**
+     * Add orderMailLog
+     *
+     * @param \Food\OrderBundle\Entity\OrderMailLog $orderMailLog
+     * @return Order
+     */
+    public function addOrderMailLog(\Food\OrderBundle\Entity\OrderMailLog $orderMailLog)
+    {
+        $this->orderMailLog[] = $orderMailLog;
+    
+        return $this;
+    }
+
+    /**
+     * Remove orderMailLog
+     *
+     * @param \Food\OrderBundle\Entity\OrderMailLog $orderMailLog
+     */
+    public function removeOrderMailLog(\Food\OrderBundle\Entity\OrderMailLog $orderMailLog)
+    {
+        $this->orderMailLog->removeElement($orderMailLog);
+    }
+
+    /**
+     * Get orderMailLog
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrderMailLog()
+    {
+        return $this->orderMailLog;
+    }
+
+    /**
+     * Add smsMessages
+     *
+     * @param \Food\SmsBundle\Entity\Message $smsMessages
+     * @return Order
+     */
+    public function addSmsMessage(\Food\SmsBundle\Entity\Message $smsMessages)
+    {
+        $this->smsMessages[] = $smsMessages;
+    
+        return $this;
     }
 }
