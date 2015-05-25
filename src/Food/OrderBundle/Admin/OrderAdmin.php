@@ -230,7 +230,7 @@ class OrderAdmin extends SonataAdmin
             )
             ->add('orderLog', 'sonata_type_collection',
                 array(
-                    'label' => 'admin.order.order_log',
+                    'label' => 'admin.order.order_system_log',
                     'template' => 'FoodOrderBundle:Admin:order_log.html.twig'
                 )
             )

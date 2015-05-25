@@ -556,4 +556,27 @@ class Streets {
     {
         return $this->name;
     }
+
+    /**
+     * Set deliverySubRegion
+     *
+     * @param string $deliverySubRegion
+     * @return Streets
+     */
+    public function setDeliverySubRegion($deliverySubRegion)
+    {
+        $this->deliverySubRegion = $deliverySubRegion;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliverySubRegion
+     *
+     * @return string 
+     */
+    public function getDeliverySubRegion()
+    {
+        return $this->deliverySubRegion;
+    }
 }

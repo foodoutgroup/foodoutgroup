@@ -14,6 +14,7 @@ use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Food\OrderBundle\Entity\OrderDetailsOptions;
 use Food\OrderBundle\Entity\OrderLog;
+use Food\OrderBundle\Entity\OrderMailLog;
 use Food\OrderBundle\Entity\OrderStatusLog;
 use Food\OrderBundle\Entity\PaymentLog;
 use Food\UserBundle\Entity\User;
@@ -374,7 +375,7 @@ class OrderService extends ContainerAware
                             $this->getOrder()->getLocale()
                         );
 
-                    $message = $smsService->createMessage($sender, $recipient, $text);
+                    $message = $smsService->createMessage($sender, $recipient, $text, $this->getOrder());
                     $smsService->saveMessage($message);
                 }
             }
@@ -488,10 +489,18 @@ class OrderService extends ContainerAware
 
 
 //        $ml->setVariables( $variables )->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30009269  )->send();
+        $mailTemplate = $this->container->getParameter('mailer_notify_on_accept');
         $ml->setVariables($variables)
             ->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())
-            ->setId($this->container->getParameter('mailer_notify_on_accept'))
+            ->setId($mailTemplate)
             ->send();
+
+        $this->logMailSent(
+            $this->getOrder(),
+            'notify_on_accept',
+            $mailTemplate,
+            $variables
+        );
     }
 
     /**
@@ -520,7 +529,8 @@ class OrderService extends ContainerAware
             $message = $messagingService->createMessage(
                 $this->container->getParameter('sms.sender'),
                 $driver->getPhone(),
-                $messageText
+                $messageText,
+                $this->getOrder()
             );
             $messagingService->saveMessage($message);
         }
@@ -644,8 +654,10 @@ class OrderService extends ContainerAware
 
         if ($partialy) {
             $template = $this->container->getParameter('mailer_partialy_deliverer');
+            $source = 'mailer_partialy_deliverer';
         } else {
             $template = $this->container->getParameter('mailer_rate_your_food');
+            $source = 'mailer_rate_your_food';
         }
 
         $ml->setVariables($variables)
@@ -655,6 +667,13 @@ class OrderService extends ContainerAware
             )
             ->setId($template)
             ->send();
+
+        $this->logMailSent(
+            $this->getOrder(),
+            $source,
+            $template,
+            $variables
+        );
     }
 
     /**
@@ -1619,7 +1638,8 @@ class OrderService extends ContainerAware
                     $messagesToSend[] = array(
                         'sender' => $smsSenderNumber,
                         'recipient' => $phone,
-                        'text' => $messageText
+                        'text' => $messageText,
+                        'order' => $order,
                     );
                 } else if ($nr == 0) {
                     // Main phone is not mobile
@@ -1647,7 +1667,8 @@ class OrderService extends ContainerAware
                     $messagesToSend[] = array(
                         'sender' => $smsSenderNumber,
                         'recipient' => $phoneNum,
-                        'text' => $dispatcherMessageText
+                        'text' => $dispatcherMessageText,
+                        'order' => $order,
                     );
                 }
 
@@ -1793,7 +1814,8 @@ class OrderService extends ContainerAware
                 array(
                     'sender' => $smsSenderNumber,
                     'recipient' => $placePoint->getPhone(),
-                    'text' => $messageText
+                    'text' => $messageText,
+                    'order' => $order,
                 )
             );
 
@@ -1801,14 +1823,16 @@ class OrderService extends ContainerAware
                 $messagesToSend[] = array(
                     'sender' => $smsSenderNumber,
                     'recipient' => $placePointAltPhone1,
-                    'text' => $messageText
+                    'text' => $messageText,
+                    'order' => $order,
                 );
             }
             if (!empty($placePointAltPhone2) && $miscUtils->isMobilePhone($placePointAltPhone2, $country)) {
                 $messagesToSend[] = array(
                     'sender' => $smsSenderNumber,
                     'recipient' => $placePointAltPhone2,
-                    'text' => $messageText
+                    'text' => $messageText,
+                    'order' => $order,
                 );
             }
 
@@ -2089,7 +2113,7 @@ class OrderService extends ContainerAware
      * @param null|string $source
      * @param null|string $message
      */
-    public function logStatusChange($order, $newStatus, $source=null, $message=null)
+    public function logStatusChange($order=null, $newStatus, $source=null, $message=null)
     {
         $log = new OrderStatusLog();
         $log->setOrder($order)
@@ -2098,6 +2122,24 @@ class OrderService extends ContainerAware
             ->setNewStatus($newStatus)
             ->setSource($source)
             ->setMessage($message);
+
+        $this->getEm()->persist($log);
+        $this->getEm()->flush();
+    }
+
+    /**
+     * @param Order $order
+     * @param string $source
+     * @param null|string $params
+     */
+    public function logMailSent($order, $source, $template, $params=null)
+    {
+        $log = new OrderMailLog();
+        $log->setOrder($order)
+            ->setEventDate(new \DateTime('now'))
+            ->setSource($source)
+            ->setTemplate($template)
+            ->setParams(var_export($params, true));
 
         $this->getEm()->persist($log);
         $this->getEm()->flush();
@@ -2747,7 +2789,8 @@ class OrderService extends ContainerAware
             $message = $messagingService->createMessage(
                 $this->container->getParameter('sms.sender'),
                 $userPhone,
-                $messageText
+                $messageText,
+                $this->getOrder()
             );
             $messagingService->saveMessage($message);
         }
@@ -2938,6 +2981,13 @@ class OrderService extends ContainerAware
                         ->setRecipient( $order->getUser()->getEmail() )
                         ->setId( $generator->getTemplateCode() )
                         ->send();
+
+                    $this->logMailSent(
+                        $order,
+                        'create_discount_code',
+                        $generator->getTemplateCode(),
+                        array('code' => $theCode)
+                    );
 
                     $this->container->get('doctrine')->getManager()->persist($newCode);
                     $this->container->get('doctrine')->getManager()->flush();
