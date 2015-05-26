@@ -161,6 +161,11 @@ class Place extends Uploadable implements Translatable
     private $dishes;
 
     /**
+     * @ORM\OneToMany(targetEntity="Food\PlacesBundle\Entity\BestOffer", mappedBy="place")
+     */
+    private $bestOffers;
+
+    /**
      * @ORM\OneToMany(targetEntity="PlacePoint", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
      *
      * @var ArrayCollection
@@ -1735,5 +1740,38 @@ class Place extends Uploadable implements Translatable
             return rtrim($seo_line, " ");
         }
         return false;
+    }
+
+    /**
+     * Add bestOffers
+     *
+     * @param \Food\PlacesBundle\Entity\BestOffer $bestOffers
+     * @return Place
+     */
+    public function addBestOffer(\Food\PlacesBundle\Entity\BestOffer $bestOffers)
+    {
+        $this->bestOffers[] = $bestOffers;
+    
+        return $this;
+    }
+
+    /**
+     * Remove bestOffers
+     *
+     * @param \Food\PlacesBundle\Entity\BestOffer $bestOffers
+     */
+    public function removeBestOffer(\Food\PlacesBundle\Entity\BestOffer $bestOffers)
+    {
+        $this->bestOffers->removeElement($bestOffers);
+    }
+
+    /**
+     * Get bestOffers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBestOffers()
+    {
+        return $this->bestOffers;
     }
 }

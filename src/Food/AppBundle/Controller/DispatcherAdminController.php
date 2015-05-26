@@ -79,7 +79,7 @@ class DispatcherAdminController extends Controller
     public function approveOrderAction($orderId)
     {
         $orderService = $this->get('food.order');
-        $order = $orderService->getOrderById($orderId);
+        $orderService->getOrderById($orderId);
 
         $orderService->statusNew('approveOrderDispatcher');
 

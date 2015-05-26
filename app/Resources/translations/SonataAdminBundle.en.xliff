@@ -1642,6 +1642,10 @@
                 <source>admin.best_offers.title</source>
                 <target>Title</target>
             </trans-unit>
+            <trans-unit id="admin.best_offers.city">
+                <source>admin.best_offers.city</source>
+                <target>City</target>
+            </trans-unit>
             <trans-unit id="admin.best_offers.link">
                 <source>admin.best_offers.link</source>
                 <target>Link</target>
@@ -1665,6 +1669,10 @@
             <trans-unit id="best-offer-list">
                 <source>Best Offer List</source>
                 <target>Best offers</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.place">
+                <source>admin.best_offers.place</source>
+                <target>Restaurant</target>
             </trans-unit>
 
             <!-- Params listas -->
