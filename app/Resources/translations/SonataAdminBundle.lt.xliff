@@ -1602,6 +1602,10 @@
                 <source>admin.best_offers.title</source>
                 <target>Pavadinimas</target>
             </trans-unit>
+            <trans-unit id="admin.best_offers.city">
+                <source>admin.best_offers.city</source>
+                <target>Miestas</target>
+            </trans-unit>
             <trans-unit id="admin.best_offers.link">
                 <source>admin.best_offers.link</source>
                 <target>Akcijos nuoroda</target>
@@ -1625,6 +1629,10 @@
             <trans-unit id="best-offer-list">
                 <source>Best Offer List</source>
                 <target>Geriausi pasiūlymai</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.place">
+                <source>admin.best_offers.place</source>
+                <target>Restoranas</target>
             </trans-unit>
 
             <!-- Params listas -->

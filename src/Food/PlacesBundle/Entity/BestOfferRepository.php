@@ -6,6 +6,11 @@ use Doctrine\ORM\EntityRepository;
 
 class BestOfferRepository extends EntityRepository
 {
+    /**
+     * @param int $amount
+     * @return BestOffer[]|array
+     * @throws \Doctrine\DBAL\DBALException
+     */
     public function getRandomBestOffers($amount)
     {
         $query = "SELECT id FROM best_offer WHERE active=1 ORDER BY RAND() LIMIT 5";
@@ -27,6 +32,33 @@ class BestOfferRepository extends EntityRepository
         return $items;
     }
 
+    /**
+     * @param string|null $city
+     * @return array|BestOffer[]
+     */
+    public function getActiveOffers($city = null)
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->where('o.active = :activity');
+
+        $params = array(
+            'activity' => true,
+        );
+
+        if (!empty($city)) {
+            $qb->andWhere('(o.city IN (:city_filter) OR o.city IS NULL)');
+            $params['city_filter'] = $city;
+        }
+
+        return $qb->setParameters($params)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param $element
+     * @return mixed
+     */
     private function filterIds($element)
     {
         return $element['id'];

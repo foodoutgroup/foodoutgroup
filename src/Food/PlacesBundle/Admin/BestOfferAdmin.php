@@ -28,10 +28,12 @@ class BestOfferAdmin extends FoodAdmin
                     'required' => false];
 
         if (($pl = $this->getSubject()) && $pl->getImage()) {
-            $options['help'] = '<img src="/' . $pl->getWebPathThumb() . '" />';
+            $options['help'] = '<img src="/' . $pl->getWebPath() . '" />';
         }
 
         $formMapper->add('title', 'text', ['label' => 'admin.best_offers.title'])
+                   ->add('city', 'text', ['label' => 'admin.best_offers.city', 'required' => false])
+                   ->add('place', null, ['label' => 'admin.best_offers.place', 'required' => true])
                    ->add('link', 'text', ['label' => 'admin.best_offers.link'])
                    ->add('text', 'textarea', ['label' => 'admin.best_offers.text'])
                    ->add('active', 'checkbox', ['label' => 'admin.best_offers.active', 'required' => false])
@@ -43,6 +45,7 @@ class BestOfferAdmin extends FoodAdmin
     {
         $datagridMapper
             ->add('title', null, ['label' => 'admin.best_offers.title'])
+            ->add('city', null, ['label' => 'admin.best_offers.city'])
             ->add('text', null, ['label' => 'admin.best_offers.text'])
         ;
     }
@@ -52,6 +55,7 @@ class BestOfferAdmin extends FoodAdmin
     {
         $listMapper
             ->addIdentifier('title', 'string', array('label' => 'admin.best_offers.title'))
+            ->addIdentifier('city', 'string', array('label' => 'admin.best_offers.city'))
             ->addIdentifier('link', 'string', array('label' => 'admin.best_offers.link'))
             ->addIdentifier('image', 'string', array('label' => 'admin.best_offers.image', 'template' => 'FoodPlacesBundle:Default:list_image.html.twig'))
             ->addIdentifier('active', 'boolean', array('label' => 'admin.best_offers.active'))

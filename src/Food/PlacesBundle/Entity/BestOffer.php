@@ -4,15 +4,21 @@ namespace Food\PlacesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Food\AppBundle\Entity\Uploadable;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * BestOffer
  *
  * @ORM\Table(name="best_offer")
  * @ORM\Entity(repositoryClass="\Food\PlacesBundle\Entity\BestOfferRepository")
+ * @Callback(methods={"isFileSizeValid"})
  */
 class BestOffer extends Uploadable
 {
+    // megabytes
+    protected $maxFileSize = 1.9;
+
     /**
      * @var integer
      *
@@ -28,6 +34,21 @@ class BestOffer extends Uploadable
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="city", type="string", length=128, nullable=true)
+     */
+    private $city;
+
+    /**
+     * @var \Food\DishesBundle\Entity\Place
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="bestOffers")
+     * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
+     */
+    private $place;
 
     /**
      * @var string
@@ -60,6 +81,12 @@ class BestOffer extends Uploadable
     protected $uploadDir;
     private $file;
 
+    protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
+    protected $multipleThumbs = true;
+    protected $boxSize = array(
+        'type1' => array('w' => 180, 'h' => 177),
+        'type2' => array('w' => 640, 'h' => 480),
+    );
 
     /**
      * Get id
@@ -224,5 +251,58 @@ class BestOffer extends Uploadable
             return '';
         }
         return $this->getTitle();
+    }
+
+    /**
+     * Set city
+     *
+     * @param string $city
+     * @return BestOffer
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+    
+        return $this;
+    }
+
+    /**
+     * Get city
+     *
+     * @return string 
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    public function isFileSizeValid(ExecutionContextInterface $context)
+    {
+        if ($this->getFile() && $this->getFile()->getSize() > round($this->maxFileSize * 1024 * 1024)) {
+            $context->addViolationAt('file', 'Paveiksliukas užima daugiau nei ' . $this->maxFileSize . ' MB vietos.');
+        }
+    }
+
+    /**
+     * Set place
+     *
+     * @param \Food\DishesBundle\Entity\Place $place
+     * @return BestOffer
+     */
+    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
+    {
+        $this->place = $place;
+    
+        return $this;
+    }
+
+    /**
+     * Get place
+     *
+     * @return \Food\DishesBundle\Entity\Place 
+     */
+    public function getPlace()
+    {
+        return $this->place;
     }
 }
