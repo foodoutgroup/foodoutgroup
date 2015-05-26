@@ -28,7 +28,7 @@ class BestOfferAdmin extends FoodAdmin
                     'required' => false];
 
         if (($pl = $this->getSubject()) && $pl->getImage()) {
-            $options['help'] = '<img src="/' . $pl->getWebPath() . '" />';
+            $options['help'] = '<img src="/' . $pl->getWebPathThumb("type1") . '" />';
         }
 
         $formMapper->add('title', 'text', ['label' => 'admin.best_offers.title'])
@@ -58,7 +58,7 @@ class BestOfferAdmin extends FoodAdmin
             ->addIdentifier('city', 'string', array('label' => 'admin.best_offers.city'))
             ->addIdentifier('link', 'string', array('label' => 'admin.best_offers.link'))
             ->addIdentifier('image', 'string', array('label' => 'admin.best_offers.image', 'template' => 'FoodPlacesBundle:Default:list_image.html.twig'))
-            ->addIdentifier('active', 'boolean', array('label' => 'admin.best_offers.active'))
+            ->add('active', 'boolean', array('label' => 'admin.best_offers.active', 'editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),
