@@ -571,11 +571,17 @@ class NavService extends ContainerAware
         $paymentAmount = $amountForInsert;
 
         $discountInOrder = $detail->getOrderId()->getDiscountSize();
-        if (!($detail->getPrice()!=$detail->getOrigPrice() && $detail->getDishId()->getDiscountPricesEnabled() && $detail->getOrderId()->getPlace()->getDiscountPricesEnabled()) && empty($detail->getPercentDiscount())) {
+        $dp = $detail->getPrice();
+        $dop = $detail->getOrigPrice();
+        $discPrcEnabled = $detail->getDishId()->getDiscountPricesEnabled();
+        $placeDiscountPriceEnabled = $detail->getOrderId()->getPlace()->getDiscountPricesEnabled();
+        $detailPercentDiscount = $detail->getPercentDiscount();
+
+        if (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && empty($detailPercentDiscount)) {
             $discountAmount = $paymentAmount - round($paymentAmount * ((100 - intval($discountInOrder))/100), 2);
-        } elseif (!($detail->getPrice()!=$detail->getOrigPrice() && $detail->getDishId()->getDiscountPricesEnabled() && $detail->getOrderId()->getPlace()->getDiscountPricesEnabled()) && !empty($detail->getPercentDiscount())) {
+        } elseif (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && !empty($detailPercentDiscount)) {
             $discountAmount = $detail->getOrigPrice() - $detail->getPrice();
-        } elseif ($detail->getPrice()!=$detail->getOrigPrice() && $detail->getDishId()->getDiscountPricesEnabled() && $detail->getOrderId()->getPlace()->getDiscountPricesEnabled()) {
+        } elseif ($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) {
             $discountAmount = $detail->getOrigPrice() - $detail->getPrice();
         }
         /**
