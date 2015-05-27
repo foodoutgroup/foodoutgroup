@@ -891,4 +891,37 @@ class Dish extends Uploadable implements Translatable
     {
         return $this->showPublicPrice;
     }
+
+    /**
+     * Add dates
+     *
+     * @param \Food\DishesBundle\Entity\DishDate $dates
+     * @return Dish
+     */
+    public function addDate(\Food\DishesBundle\Entity\DishDate $dates)
+    {
+        $this->dates[] = $dates;
+    
+        return $this;
+    }
+
+    /**
+     * Remove dates
+     *
+     * @param \Food\DishesBundle\Entity\DishDate $dates
+     */
+    public function removeDate(\Food\DishesBundle\Entity\DishDate $dates)
+    {
+        $this->dates->removeElement($dates);
+    }
+
+    /**
+     * Get dates
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDates()
+    {
+        return $this->dates;
+    }
 }
