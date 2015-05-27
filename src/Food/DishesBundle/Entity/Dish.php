@@ -197,6 +197,28 @@ class Dish extends Uploadable implements Translatable
      */
     protected $file;
 
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="check_even_odd_week", type="boolean")
+     */
+    private $checkEvenOddWeek = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="even_week", type="boolean")
+     */
+    private $evenWeek = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="use_date_interval", type="boolean")
+     */
+    private $useDateInterval = false;
+
     protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
     protected $multipleThumbs = true;
     protected $boxSize = array(
@@ -923,5 +945,74 @@ class Dish extends Uploadable implements Translatable
     public function getDates()
     {
         return $this->dates;
+    }
+
+    /**
+     * Set checkEvenOddWeek
+     *
+     * @param boolean $checkEvenOddWeek
+     * @return Dish
+     */
+    public function setCheckEvenOddWeek($checkEvenOddWeek)
+    {
+        $this->checkEvenOddWeek = $checkEvenOddWeek;
+    
+        return $this;
+    }
+
+    /**
+     * Get checkEvenOddWeek
+     *
+     * @return boolean 
+     */
+    public function getCheckEvenOddWeek()
+    {
+        return $this->checkEvenOddWeek;
+    }
+
+    /**
+     * Set evenWeek
+     *
+     * @param boolean $evenWeek
+     * @return Dish
+     */
+    public function setEvenWeek($evenWeek)
+    {
+        $this->evenWeek = $evenWeek;
+    
+        return $this;
+    }
+
+    /**
+     * Get evenWeek
+     *
+     * @return boolean 
+     */
+    public function getEvenWeek()
+    {
+        return $this->evenWeek;
+    }
+
+    /**
+     * Set useDateInterval
+     *
+     * @param boolean $useDateInterval
+     * @return Dish
+     */
+    public function setUseDateInterval($useDateInterval)
+    {
+        $this->useDateInterval = $useDateInterval;
+    
+        return $this;
+    }
+
+    /**
+     * Get useDateInterval
+     *
+     * @return boolean 
+     */
+    public function getUseDateInterval()
+    {
+        return $this->useDateInterval;
     }
 }
