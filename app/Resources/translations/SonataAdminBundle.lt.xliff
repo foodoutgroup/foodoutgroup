@@ -206,6 +206,24 @@
                 <source>admin.dish.active_list</source>
                 <target>Aktyv.</target>
             </trans-unit>
+
+            <trans-unit id="admin.dish.check_even_odd_week">
+                <source>admin.dish.check_even_odd_week</source>
+                <target>Aktyvus lyginėmis / nelyginėmis savaitėmis</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.even_week">
+                <source>admin.dish.even_week</source>
+                <target>[x] Lyginės / [ ] Nelyginės savaitės</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.check_even_odd_week_list">
+                <source>admin.dish.check_even_odd_week_list</source>
+                <target>Aktyv.L/N.Sav.</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.use_date_interval">
+                <source>admin.dish.use_date_interval</source>
+                <target>Rodymas pagal datas</target>
+            </trans-unit>
+
             <trans-unit id="admin.dishes.sizes">
                 <source>admin.dishes.sizes</source>
                 <target>Dydžiai/porcijos</target>
@@ -218,6 +236,13 @@
                 <source>admin.dishes.time_to</source>
                 <target>Gamyba iki</target>
             </trans-unit>
+
+            <!-- Rodymo datos -->
+            <trans-unit id="admin.dish_date">
+                <source>admin.dish_date</source>
+                <target>Rodymo datos</target>
+            </trans-unit>
+
             <!-- Dish options -->
             <trans-unit id="admin.dish_options">
                 <source>admin.dish_options</source>

@@ -206,6 +206,22 @@
                 <source>admin.dish.active_list</source>
                 <target>Actv.</target>
             </trans-unit>
+            <trans-unit id="admin.dish.check_even_odd_week">
+                <source>admin.dish.check_even_odd_week</source>
+                <target>Active Even / Odd weeks</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.even_week">
+                <source>admin.dish.even_week</source>
+                <target>[x] Even / [ ] Odd weeks</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.check_even_odd_week_list">
+                <source>admin.dish.check_even_odd_week_list</source>
+                <target>Actv.E/O.Week</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.use_date_interval">
+                <source>admin.dish.use_date_interval</source>
+                <target>Use date interval</target>
+            </trans-unit>
             <trans-unit id="admin.dishes.sizes">
                 <source>admin.dishes.sizes</source>
                 <target>Sizes</target>
@@ -286,6 +302,11 @@
                 <target>Unit</target>
             </trans-unit>
 
+            <!-- Rodymo datos -->
+            <trans-unit id="admin.dish_date">
+                <source>admin.dish_date</source>
+                <target>Show at dates</target>
+            </trans-unit>
             <!-- Place -->
             <trans-unit id="admin.menu.places">
                 <source>admin.menu.places</source>
