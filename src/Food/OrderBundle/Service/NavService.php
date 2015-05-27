@@ -648,12 +648,12 @@ class NavService extends ContainerAware
                     'Entry Type' => ($opt->getDishOptionId()->getFirstLevel() ? 0 : 1),
                     'No_' => "'".$code."'",
                     'Description' => "'".$desc."'",
-                    'Quantity' => 0,
-                    'Price' => 0,
+                    'Quantity' => ($opt->getDishOptionId()->getFirstLevel() ? $opt->getOrderDetail()->getQuantity() : 0),
+                    'Price' => ($opt->getDishOptionId()->getFirstLevel() ? $opt->getDishOptionId()->getPrice() : 0),
                     'Parent Line' => ($opt->getDishOptionId()->getFirstLevel() ? 0 : $key),
-                    'Amount' => 0,
+                    'Amount' => ($opt->getDishOptionId()->getFirstLevel() ? ($opt->getOrderDetail()->getQuantity() * $opt->getDishOptionId()->getPrice()): 0),
                     'Discount Amount' => 0,
-                    'Payment' => 0,
+                    'Payment' => ($opt->getDishOptionId()->getFirstLevel() ? ($opt->getOrderDetail()->getQuantity() * $opt->getDishOptionId()->getPrice()): 0),
                     'Value' => "''"
                 );
                 $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
