@@ -878,6 +878,7 @@ class OrderService extends ContainerAware
 
         // Pritaikom nuolaida
         $discountPercent = 0;
+
         if (!empty($coupon) && $coupon instanceof Coupon) {
             $order = $this->getOrder();
             $order->setCoupon($coupon)
@@ -891,7 +892,6 @@ class OrderService extends ContainerAware
                 } else {
                     $discountSum = $coupon->getDiscountSum();
                 }
-                $sumTotal = $sumTotal - $discountSum;
                 $order->setDiscountSize($discountSize)
                     ->setDiscountSum($discountSum);
             } else {
@@ -912,6 +912,8 @@ class OrderService extends ContainerAware
             if ($origPrice == $price && $discountPercent > 0) {
                 $price = round($origPrice * ((100 - $discountPercent)/100), 2);
                 $discountPercentForInsert = $discountPercent;
+            } elseif ($discountSum > 0) {
+
             }
             $dish = new OrderDetails();
             $dish->setDishId($cartDish->getDishId())
@@ -2391,6 +2393,9 @@ class OrderService extends ContainerAware
                 $this->container->get('logger')->error('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm');
             }
 
+            /**
+             * @todo Possible problems in the future here :)
+             */
             $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
             $cartMinimum = $this->getCartService()->getMinimumCart(
                 $place,
