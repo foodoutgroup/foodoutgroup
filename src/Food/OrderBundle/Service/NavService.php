@@ -882,6 +882,14 @@ class NavService extends ContainerAware
                         $description = $option->getDishOptionId()->getName();
                     }
                     $lineNo = $lineNo + 1;
+                    if ($option->getDishOptionId()->getFirstLevel()) {
+                        $parencyLineNo = 0;
+                        $entryType = 0;
+                    } else {
+                        $parencyLineNo = $origLineNo;
+                        $entryType = 1;
+                    }
+
 
                     $lineMap[$lineNo] = array(
                         'parent' => $origLineNo,
@@ -890,8 +898,8 @@ class NavService extends ContainerAware
 
                     $requestData['Lines'][] = array('Line' => array(
                         'LineNo' => $lineNo,
-                        'ParentLineNo' => $origLineNo,
-                        'EntryType' => 1,
+                        'ParentLineNo' => $parencyLineNo,
+                        'EntryType' => $entryType,
                         'ItemNo' => $optionCode,
                         'Description' => mb_substr($description, 0, 30, 'utf-8'),
                         'Quantity' => $cart->getQuantity(),
@@ -917,7 +925,7 @@ class NavService extends ContainerAware
 
             return $returner;
         }
-
+        
         ob_start();
         @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQUEST", print_r($requestData, true), "FROM: info@foodout.lt");
         $response = $this->getWSConnection()->FoodOutValidateOrder(

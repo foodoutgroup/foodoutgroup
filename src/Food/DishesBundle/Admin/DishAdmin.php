@@ -112,6 +112,7 @@ class DishAdmin extends FoodAdmin
                 )
             )
             ->add('discountPricesEnabled', 'checkbox', array('label' => 'admin.dish.discount_prices_enabled', 'required' => false,))
+            ->add('noDiscounts', 'checkbox', array('label' => 'No discounts', 'required' => false,))
             ->add('options', null, array('query_builder' => $optionsQuery,'expanded' => true, 'multiple' => true, 'required' => false))
             ->add('recomended', 'checkbox', array('label' => 'admin.dish.recomended', 'required' => false,))
             ->add('active', 'checkbox', array('label' => 'admin.dish.active', 'required' => false,))
@@ -178,7 +179,7 @@ class DishAdmin extends FoodAdmin
             ->add('discountPricesEnabled', null, array('label' => 'admin.dish.discount_prices_enabled', 'editable' => true))
             ->add('recomended', null, array('label' => 'admin.dish.recomended_list', 'editable' => true))
             ->add('active', null, array('label' => 'admin.dish.active_list', 'editable' => true))
-            ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
+            //->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
             ->add('_action', 'actions', array(

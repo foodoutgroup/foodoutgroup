@@ -152,6 +152,13 @@ class Dish extends Uploadable implements Translatable
     /**
      * @var bool
      *
+     * @ORM\Column(name="no_discounts", type="boolean", nullable=true)
+     */
+    private $noDiscounts = false;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="recomended", type="boolean")
      */
     private $recomended = false;
@@ -823,5 +830,28 @@ class Dish extends Uploadable implements Translatable
         if ($this->getFile() && $this->getFile()->getSize() > round($this->maxFileSize * 1024 * 1024)) {
             $context->addViolationAt('file', 'Paveiksliukas užima daugiau nei ' . $this->maxFileSize . ' MB vietos.');
         }
+    }
+
+    /**
+     * Set noDiscounts
+     *
+     * @param boolean $noDiscounts
+     * @return Dish
+     */
+    public function setNoDiscounts($noDiscounts)
+    {
+        $this->noDiscounts = $noDiscounts;
+    
+        return $this;
+    }
+
+    /**
+     * Get noDiscounts
+     *
+     * @return boolean 
+     */
+    public function getNoDiscounts()
+    {
+        return $this->noDiscounts;
     }
 }

@@ -2085,7 +2085,6 @@ class OrderService extends ContainerAware
             .$translator->trans('general.new_order.client_address').": ".$userAddress."\n"
             .$translator->trans('general.new_order.client_phone').": ".$order->getUser()->getPhone()."\n"
             .$translator->trans('general.new_order.client_email').": ".$order->getUser()->getEmail()."\n"
-            ."\n" if ($total_cart < $place->getCartMinimum()) {
             .$translator->trans('general.new_order.delivery_type').": ".$order->getDeliveryType()."\n"
             .$translator->trans('general.new_order.payment_type').": ".$order->getPaymentMethod()."\n"
             .$translator->trans('general.new_order.payment_status').": ".$order->getPaymentStatus()."\n"

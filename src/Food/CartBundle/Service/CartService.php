@@ -443,6 +443,11 @@ class CartService {
         return $total;
     }
 
+    /**
+     * @param $cartItems
+     * @param $discountPercent
+     * @return float|int
+     */
     public function getTotalDiscount($cartItems, $discountPercent)
     {
         $total = 0;
@@ -454,6 +459,9 @@ class CartService {
                 $thisDishFitsUs = true;
             } elseif ($cartItem->getDishId()->getDiscountPricesEnabled() && $cartItem->getPlaceId()->getDiscountPricesEnabled() && $cartItem->getDishSizeId()->getDiscountPrice() == 0) {
                 $thisDishFitsUs = true;
+            }
+            if ($cartItem->getDishId()->getNoDiscounts()) {
+                $thisDishFitsUs = false;
             }
             $theDish = 0;
             if ($thisDishFitsUs) {
