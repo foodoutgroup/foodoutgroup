@@ -122,6 +122,13 @@ class Dish extends Uploadable implements Translatable
     private $categories;
 
     /**
+     * @ORM\OneToMany(targetEntity="DishDate", mappedBy="dish", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @var ArrayCollection
+     */
+    private $dates;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="time_from", type="string", length=5, nullable=true)
