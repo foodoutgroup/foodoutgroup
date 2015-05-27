@@ -33,7 +33,8 @@ class OrderService extends ContainerAware
                     FO::$status_new,
                     FO::$status_accepted,
                     FO::$status_delayed,
-                    FO::$status_assiged
+                    FO::$status_assiged,
+                    FO::$status_unapproved
                 )
             );
 
