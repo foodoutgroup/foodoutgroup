@@ -580,9 +580,9 @@ class NavService extends ContainerAware
         if (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && empty($detailPercentDiscount)) {
             $discountAmount = $paymentAmount - round($paymentAmount * ((100 - intval($discountInOrder))/100), 2);
         } elseif (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && !empty($detailPercentDiscount)) {
-            $discountAmount = $detail->getOrigPrice() - $detail->getPrice();
+            $discountAmount = ($detail->getOrigPrice() - $detail->getPrice()) * $detail->getQuantity();
         } elseif ($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) {
-            $discountAmount = $detail->getOrigPrice() - $detail->getPrice();
+            $discountAmount = ($detail->getOrigPrice() - $detail->getPrice()) * $detail->getQuantity();
         }
         /**
          * Some freaky ugly magic for havin Cart discount
