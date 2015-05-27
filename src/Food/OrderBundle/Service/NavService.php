@@ -1062,7 +1062,7 @@ class NavService extends ContainerAware
 
         $query = sprintf(
             '
-            SELECT [Order No_], SUM(Amount) AS total
+            SELECT [Order No_], SUM([Amount] + [Discount Amount]) AS total
             FROM %s
             WHERE
               [Order No_] IN ( %s )
