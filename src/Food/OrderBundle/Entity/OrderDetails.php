@@ -68,6 +68,12 @@ class OrderDetails
     private $origPrice;
 
     /**
+     * @var bool
+     * @ORM\Column(name="percent_discount", type="integer", nullable=true)
+     */
+    private $percentDiscount = 0;
+
+    /**
      * @var OrderDetailsOptions[]
      *
      * @ORM\OneToMany(targetEntity="OrderDetailsOptions", mappedBy="order_detail")
@@ -330,5 +336,28 @@ class OrderDetails
     public function getOrigPrice()
     {
         return $this->origPrice;
+    }
+
+    /**
+     * Set percentDiscount
+     *
+     * @param integer $percentDiscount
+     * @return OrderDetails
+     */
+    public function setPercentDiscount($percentDiscount)
+    {
+        $this->percentDiscount = $percentDiscount;
+    
+        return $this;
+    }
+
+    /**
+     * Get percentDiscount
+     *
+     * @return integer 
+     */
+    public function getPercentDiscount()
+    {
+        return $this->percentDiscount;
     }
 }

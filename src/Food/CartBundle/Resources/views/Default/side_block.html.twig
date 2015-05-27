@@ -15,8 +15,8 @@
                 <div class="clearfix pad">
                     <div class="count item">{{ dish.quantity }} {% trans %}general.item_quantity{% endtrans %}</div>
                     {% set showDiscount = false %}
-                    {% if dish.dishId.showDiscount  %}
-                        {% set showDiscount = true and dish.dishSizeId.discountPrice != 0%}
+                    {% if dish.dishId.showDiscount and dish.dishSizeId.discountPrice %}
+                        {% set showDiscount = true and dish.dishSizeId.discountPrice != 0 %}
                     {% endif %}
                     <div class="sum item {% if showDiscount %}discounted{% endif %}">x {{ currency_display|raw }}{{ dish.dishSizeId.price|number_format(2, ',', ' ') }}
                         {% if currency_alternative %}

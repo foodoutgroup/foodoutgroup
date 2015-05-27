@@ -1638,8 +1638,7 @@ class OrderService extends ContainerAware
                     $messagesToSend[] = array(
                         'sender' => $smsSenderNumber,
                         'recipient' => $phone,
-                        'text' => $messageText,
-                        'order' => $order,
+                        'text' => $messageText
                     );
                 } else if ($nr == 0) {
                     // Main phone is not mobile
@@ -2086,7 +2085,7 @@ class OrderService extends ContainerAware
             .$translator->trans('general.new_order.client_address').": ".$userAddress."\n"
             .$translator->trans('general.new_order.client_phone').": ".$order->getUser()->getPhone()."\n"
             .$translator->trans('general.new_order.client_email').": ".$order->getUser()->getEmail()."\n"
-            ."\n"
+            ."\n" if ($total_cart < $place->getCartMinimum()) {
             .$translator->trans('general.new_order.delivery_type').": ".$order->getDeliveryType()."\n"
             .$translator->trans('general.new_order.payment_type').": ".$order->getPaymentMethod()."\n"
             .$translator->trans('general.new_order.payment_status').": ".$order->getPaymentStatus()."\n"
@@ -2113,7 +2112,7 @@ class OrderService extends ContainerAware
      * @param null|string $source
      * @param null|string $message
      */
-    public function logStatusChange($order=null, $newStatus, $source=null, $message=null)
+    public function logStatusChange($order, $newStatus, $source=null, $message=null)
     {
         $log = new OrderStatusLog();
         $log->setOrder($order)
@@ -2122,24 +2121,6 @@ class OrderService extends ContainerAware
             ->setNewStatus($newStatus)
             ->setSource($source)
             ->setMessage($message);
-
-        $this->getEm()->persist($log);
-        $this->getEm()->flush();
-    }
-
-    /**
-     * @param Order $order
-     * @param string $source
-     * @param null|string $params
-     */
-    public function logMailSent($order, $source, $template, $params=null)
-    {
-        $log = new OrderMailLog();
-        $log->setOrder($order)
-            ->setEventDate(new \DateTime('now'))
-            ->setSource($source)
-            ->setTemplate($template)
-            ->setParams(var_export($params, true));
 
         $this->getEm()->persist($log);
         $this->getEm()->flush();
