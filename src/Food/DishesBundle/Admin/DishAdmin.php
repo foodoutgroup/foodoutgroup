@@ -129,7 +129,7 @@ class DishAdmin extends FoodAdmin
         //}
 
         $datagridMapper
-            //->add('categories')
+            ->add('categories')
             //->add('options')
             //->add('recomended', 'checkbox', array('label' => 'admin.dish.recomended'))
             //->add('discountPricesEnabled', 'checkbox', array('label' => 'admin.dish.discount_prices_enabled'))
