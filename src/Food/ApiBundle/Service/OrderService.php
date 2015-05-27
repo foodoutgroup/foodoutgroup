@@ -414,6 +414,7 @@ class OrderService extends ContainerAware
     {
         $statusMap = array(
             FO::$status_new => 'accepted',
+            FO::$status_unapproved => 'accepted',
             FO::$status_accepted => 'preparing',
             FO::$status_assiged => 'preparing',
             FO::$status_forwarded => 'preparing',
