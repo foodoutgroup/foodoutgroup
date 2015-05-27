@@ -916,7 +916,7 @@ class NavService extends ContainerAware
                 }
             }
         }
-
+        @mail("paulius@foodout.lt", "CILI NVB VALIDATE LINES ".date("Y-m-d H:i:s"), print_r($requestData, true), "FROM: info@foodout.lt");
         // this is more like anomaly than a rule
         if (empty($requestData['Lines'])) {
             $returner = [
@@ -933,14 +933,14 @@ class NavService extends ContainerAware
         }
         
         ob_start();
-        @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQUEST", print_r($requestData, true), "FROM: info@foodout.lt");
+        @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQUEST ".date("Y-m-d H:i:s"), print_r($requestData, true), "FROM: info@foodout.lt");
         $response = $this->getWSConnection()->FoodOutValidateOrder(
             array(
                 'params' => $requestData,
                 'errors' => array()
             )
         );
-        @mail("paulius@foodout.lt", "CILI NVB VALIDATE RESPONSE", print_r($response, true), "FROM: info@foodout.lt");
+        @mail("paulius@foodout.lt", "CILI NVB VALIDATE RESPONSE".date("Y-m-d H:i:s"), print_r($response, true), "FROM: info@foodout.lt");
         ob_end_clean();
 
         $prbDish = "";
