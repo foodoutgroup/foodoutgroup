@@ -4,7 +4,6 @@ namespace Food\ApiBundle\Tests\Controller;
 
 use Food\AppBundle\Test\WebTestCase;
 use Food\PlacesBundle\Entity\BestOffer;
-use Food\UserBundle\Entity\User;
 
 class OffersControllerTest extends WebTestCase
 {

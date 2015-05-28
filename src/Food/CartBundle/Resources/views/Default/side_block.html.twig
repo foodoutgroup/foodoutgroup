@@ -90,6 +90,25 @@
         {% if total_cart < place.cartMinimum and hide_delivery == false %}
             <div class="alert alert-warning text-center">{{ 'cart.didnt_reach_min_cart'|trans }}</div>
         {% endif %}
+
+        {# Delivery type choice #}
+        {% if place.deliveryOptions == 'delivery_and_pickup' and inCart == false %}
+            <div class="cart_delivery_type">
+                {% trans %}cart.block.delivery_type{% endtrans %} <span class="delivery-type-tooltip" title="{% trans %}cart.block.delivery_type.tooltip{% endtrans %}">&nbsp;</span><br />
+                <br />
+                <label class="custom-radio">
+                    <input type="radio" name="delivery_type" value="deliver" {% if not takeAway %}checked="checked"{% endif %}>
+                    {% trans %}cart.checkout.delivery_to_home{% endtrans %}
+                </label>
+                <label class="custom-radio">
+                    <input type="radio" name="delivery_type" value="pickup" {% if takeAway %}checked="checked"{% endif %}>
+                    {% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
+                </label>
+                <br />
+            </div>
+        {% endif %}
+
+        {# Order  button #}
         {% if inCart == false %}
             <a href="{{ path('food_cart', { 'placeId' : place.id, 'takeAway': hide_delivery }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
         {% endif %}
@@ -122,9 +141,27 @@
             <h5 class="tac">{% trans %}cart.block.your_order_empty{% endtrans %}</h5>
         </div>
     {% endif %}
+
     <script type="application/javascript">
         $(document).ready(function(){
-            $('.delivery-time-info-cart').tooltip();
+            $('.delivery-time-info-cart, .delivery-type-tooltip').tooltip();
+            $('#cartmnu input').iCheck();
+        });
+        var takeAway = 0;
+        $('#cartmnu').on('ifToggled', '.cart_delivery_type input',function (event) {
+            if (event.target.checked) {
+                if (event.target.value == 'pickup') {
+                    takeAway = 1;
+                }
+                $('.content-righter-small').mask();
+                var url = Routing.generate('food_cart_action', { 'action': 'set_delivery', '_locale': '{{ locale }}', 'place': {{ place.id }}, in_cart: 0, coupon_code: '', take_away: takeAway  });
+                $.post(url, function (response) {
+                    if (typeof(response.block) != "undefined") {
+                        $('.content-righter-small').unmask();
+                        $('.check-block').replaceWith(response.block);
+                    }
+                }, 'json');
+            }
         });
     </script>
 </div>
