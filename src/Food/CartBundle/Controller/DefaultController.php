@@ -61,6 +61,9 @@ class DefaultController extends Controller
                 break;
             case 'remove-option':
                 break;
+            case 'set_delivery':
+                $this->_actionSetDelivery($request);
+                break;
             case 'refresh':
                 break;
         }
@@ -120,6 +123,16 @@ class DefaultController extends Controller
             $request->get('dish_id'),
             $request->get('cart_id'),
             $request->get('place')
+        );
+    }
+
+    /**
+     * @param Request $request
+     */
+    private function _actionSetDelivery($request)
+    {
+        $this->container->get('session')->set(
+            'cart_delivery_'.$request->get('place'), $request->get('take_away', false)
         );
     }
 
@@ -356,6 +369,13 @@ class DefaultController extends Controller
         $cartFromMax = $this->get('food.places')->getMaxCartPrice($place->getId());
         $displayCartInterval = true;
         $deliveryTotal = 0;
+
+        $sessionTakeAway = $this->container->get('session')->get('cart_delivery_'.$place->getId(), null);
+        if ($sessionTakeAway !== null) {
+//            $takeAway = $sessionTakeAway;
+            // TODO think about it
+        }
+
         if (!$takeAway) {
             $placePointMap = $this->container->get('session')->get('point_data');
 
@@ -428,7 +448,8 @@ class DefaultController extends Controller
             'cart_minimum' => $cartMinimum,
             'cart_from_min' => $cartFromMin,
             'cart_from_max' => $cartFromMax,
-            'display_cart_interval' => $displayCartInterval
+            'display_cart_interval' => $displayCartInterval,
+            'takeAway' => $takeAway,
         );
         if ($renderView) {
             return $this->renderView('FoodCartBundle:Default:side_block.html.twig', $params);
