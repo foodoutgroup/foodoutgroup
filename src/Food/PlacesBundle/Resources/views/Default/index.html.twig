@@ -60,9 +60,9 @@
                 selectedKitchens += ','+$($filters[i]).val()
             }
             params['delivery_type'] = $(".content-righter .list-top-filters .delivery-type-filter a.selected").attr('data-type');
-            params['recommended'] = {{ recommended }};
+            params['recommended'] = '{{ recommended }}';
 
-            var kitchenParams = { 'recommended': {{ recommended }}, 'delivery_type': params['delivery_type'], 'selected_kitchens': selectedKitchens};
+            var kitchenParams = { 'recommended': '{{ recommended }}', 'delivery_type': params['delivery_type'], 'selected_kitchens': selectedKitchens};
 
             $.get('{{ path('food_kitchens_filter') }}', kitchenParams, function(resp) {
                 var $container = $('.content-lefter');
