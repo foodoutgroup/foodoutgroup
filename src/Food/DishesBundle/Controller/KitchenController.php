@@ -27,9 +27,21 @@ class KitchenController extends Controller
             $recommended = true;
         }
 
+        $recommendedFromRequest = $request->get('recommended', null);
+        if ($recommendedFromRequest !== null) {
+            $recommended = (bool)$recommendedFromRequest;
+        }
+
+        $selectedKitchens = $request->get('selected_kitchens', '');
+        if (!empty($selectedKitchens)) {
+            $selectedKitchens = explode(',', $selectedKitchens);
+        } else {
+            $selectedKitchens = array();
+        }
+
         $list = $this->getKitchens($recommended, $request);
 
-        return $this->render('FoodDishesBundle:Kitchen:list_items.html.twig', array('list' => $list));
+        return $this->render('FoodDishesBundle:Kitchen:list_items.html.twig', array('list' => $list, 'selected_kitchens' => $selectedKitchens));
     }
 
     /**

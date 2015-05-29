@@ -23,12 +23,19 @@
 
 {% block jscode %}
     $(document).ready(function() {
-        $(".filters-list input").on('ifChecked', function(event) {
+        $(".content-lefter").on('ifChecked', '.filters-list input', function(event) {
             $(this).attr('checked', true);
             submitKitchens();
         });
 
-        $(".filters-list input").on('ifUnchecked', function(event) {
+        // Delivery type filter
+        $(".content-righter").on('click', '.list-top-filters .delivery-type-filter a', function(event) {
+            $(".content-righter .list-top-filters .delivery-type-filter a.selected").removeClass('selected');
+            $(event.target).addClass('selected');
+            submitKitchens();
+        });
+
+        $(".content-lefter").on('ifUnchecked', '.filters-list input', function(event) {
             $(this).attr('checked', false);
             submitKitchens();
         });
@@ -43,17 +50,33 @@
 
             var params = {kitchens: '', filters: ''};
             var tmpName = "";
+            var selectedKitchens = '';
             for(i = 0; i < $filters.length; i++) {
                 tmpName = $($filters[i]).attr('name').replace("[]","");
                 if (params[tmpName]!="") {
                     params[tmpName]+=",";
                 }
                 params[tmpName] += $($filters[i]).val();
+                selectedKitchens += ','+$($filters[i]).val()
             }
+            params['delivery_type'] = $(".content-righter .list-top-filters .delivery-type-filter a.selected").attr('data-type');
+            params['recommended'] = '{{ recommended }}';
 
+            var kitchenParams = { 'recommended': '{{ recommended }}', 'delivery_type': params['delivery_type'], 'selected_kitchens': selectedKitchens};
+
+            $.get('{{ path('food_kitchens_filter') }}', kitchenParams, function(resp) {
+                var $container = $('.content-lefter');
+                $container.find('.filter-title').remove();
+                $container.find('.filters-list').remove();
+                $container.prepend(resp);
+                $container.iCheck();
+            });
+
+            $('.content-righter').mask();
             $.post('{{ path('food_places_filter') }}', params, function(resp) {
                 var $container = $('.content-righter');
                 $container.find('.restaurants-list').remove();
+                $container.unmask();
                 $container.append(resp);
 
                 $('.restoran-rating').raty({
@@ -135,21 +158,25 @@
             <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a>
         </div>
         <div class="content-righter">
-            {#
             <div class="restaurants-list-controls clearfix">
-                <form class="list-search-form fl">
-                    <input type="text" placeholder="{% trans %}places.search_placeholder{% endtrans %}">
-                    <input type="submit" value="">
-                </form>
+                {#<form class="list-search-form fl">#}
+                    {#<input type="text" placeholder="{% trans %}places.search_placeholder{% endtrans %}">#}
+                    {#<input type="submit" value="">#}
+                {#</form>#}
                 <div class="list-top-filters clearfix fr">
-                    <div class="label">{% trans %}places.order_by{% endtrans %}:</div>
+                    <div class="delivery-type-filter">
+                        <div class="label">{% trans %}places.filter_by_delivery{% endtrans %}:</div>
+                        <a href="#" data-type="delivery_and_pickup" {% if delivery_type_filer == 'delivery_and_pickup' %}class="selected"{% endif %}>{% trans %}places.filter_delivery_and_pickup{% endtrans %}</a>
+                        <a href="#" data-type="delivery" {% if delivery_type_filer == 'delivery' %}class="selected"{% endif %}>{% trans %}places.filter_delivery{% endtrans %}</a>
+                        <a href="#" data-type="pickup" {% if delivery_type_filer == 'pickup' %}class="selected"{% endif %}>{% trans %}places.filter_pickup{% endtrans %}</a>
+                    </div>
+                    {#<div class="label">{% trans %}places.order_by{% endtrans %}:</div>
                     <a href="#">{% trans %}places.sort_by_relevance{% endtrans %}</a>
                     <a href="#" class="selected">{% trans %}places.sort_by_rating{% endtrans %}</a>
                     <a href="#">{% trans %}places.sort_by_delivery_price{% endtrans %}</a>
-                    <a href="#">{% trans %}places.sort_by_distance{% endtrans %}</a>
+                    <a href="#">{% trans %}places.sort_by_distance{% endtrans %}</a>#}
                 </div>
             </div>
-            #}
             {{ render(controller('FoodPlacesBundle:Default:list', {'recommended': recommended})) }}
         </div>
     </div>

@@ -153,6 +153,22 @@
         <source>places.search_placeholder</source>
         <target>Paieška...</target>
       </trans-unit>
+      <trans-unit id="places.filter_by_delivery" resname="places.filter_by_delivery">
+        <source>places.filter_by_delivery</source>
+        <target>Rodyti</target>
+      </trans-unit>
+      <trans-unit id="places.filter_delivery_and_pickup" resname="places.filter_delivery_and_pickup">
+        <source>places.filter_delivery_and_pickup</source>
+        <target>Pristatymas ir atsiėmimas</target>
+      </trans-unit>
+        <trans-unit id="places.filter_pickup" resname="places.filter_pickup">
+            <source>places.filter_pickup</source>
+            <target>Atsiėmimas</target>
+        </trans-unit>
+      <trans-unit id="places.filter_delivery" resname="places.filter_delivery">
+        <source>places.filter_delivery</source>
+        <target>Pristatymas</target>
+      </trans-unit>
       <trans-unit id="3ae217e1cb532beeb4c2445d53826bb9" resname="places.order_by">
         <source>places.order_by</source>
         <target>Rūšiuoti pagal</target>

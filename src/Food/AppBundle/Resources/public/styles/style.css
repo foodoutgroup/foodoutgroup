@@ -312,7 +312,8 @@ input.button {}
 .item-righter .button {display: block; border-radius: 3px; text-align: center; text-transform: uppercase; line-height: 36px; background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x left top; text-shadow: 0 1px 1px #759a04; box-shadow: 0 1px 1px #c0c0c0; font-size: 10px; height: 36px; margin-top: 25px; color: #fff; letter-spacing: 1.5px;}
 .item-righter .button span {display: inline-block; padding: 0 16px; background: url(/bundles/foodapp/images/button-arrow-3.png) no-repeat right center; line-height: 38px;}
 
-.list-top-filters {padding-top: 11px; width: 430px; letter-spacing: 0.4px;}
+/*.list-top-filters {padding-top: 11px; width: 430px; letter-spacing: 0.4px;}*/
+.list-top-filters {padding-top: 11px; padding-bottom: 10px; width: 440px; letter-spacing: 0.4px;}
 .list-top-filters .label {float: left; margin-right: 8px; line-height: 18px;}
 .list-top-filters a {float: left; line-height: 17px; padding: 0 8px; padding-top: 1px; border-radius: 3px; margin-right: 2px; color: #b39196;}
 .list-top-filters .selected {background: #b39196; color: #fff;}
@@ -1749,3 +1750,18 @@ div.coupon_form_popup {
 }
 
 .no-wrap { white-space: nowrap; }
+
+.cart_delivery_type label {
+    font-size: 12px;
+    padding-bottom: 10px;
+}
+.cart_delivery_type .delivery-type-tooltip {
+    background: url(/bundles/foodapp/images/question.png) no-repeat left center;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+.custom-radio.disabled {
+    cursor: default;
+    color: #c5c5c5;
+}

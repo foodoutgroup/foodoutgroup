@@ -238,6 +238,11 @@ food_places_filter:
     pattern: /places/filter/
     defaults: { _controller: FoodPlacesBundle:Default:list }
 
+food_kitchens_filter:
+    pattern: /kitchens/filter/
+    defaults: { _controller: FoodDishesBundle:Kitchen:kitchenlist }
+    options:
+        expose: true
 
 static:
     path:     /static/{id}
