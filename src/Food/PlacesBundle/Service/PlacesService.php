@@ -231,6 +231,7 @@ class PlacesService extends ContainerAware {
     {
         $kitchens = $request->get('kitchens', "");
         $filters = $request->get('filters');
+        $deliveryType = $request->get('delivery_type', '');
         if (empty($kitchens)) {
             $kitchens = array();
         } else {
@@ -238,6 +239,9 @@ class PlacesService extends ContainerAware {
         }
 
         $filters = explode(",", $filters);
+        if (!empty($deliveryType)) {
+            $filters['delivery_type'] = $deliveryType;
+        }
         foreach ($kitchens as $kkey=> &$kitchen) {
             $kitchen = intval($kitchen);
         }

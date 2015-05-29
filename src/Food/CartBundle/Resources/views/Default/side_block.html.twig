@@ -92,16 +92,16 @@
         {% endif %}
 
         {# Delivery type choice #}
-        {% if place.deliveryOptions == 'delivery_and_pickup' and inCart == false %}
+        {% if inCart == false %}
             <div class="cart_delivery_type">
                 {% trans %}cart.block.delivery_type{% endtrans %} <span class="delivery-type-tooltip" title="{% trans %}cart.block.delivery_type.tooltip{% endtrans %}">&nbsp;</span><br />
                 <br />
-                <label class="custom-radio">
-                    <input type="radio" name="delivery_type" value="deliver" {% if not takeAway %}checked="checked"{% endif %}>
+                <label class="custom-radio{% if place.deliveryOptions == "pickup" %} disabled{% endif %}">
+                    <input type="radio" name="delivery_type" value="deliver" {% if not takeAway %}checked="checked"{% endif %}{% if place.deliveryOptions == "pickup" %} disabled="disabled"{% endif %}>
                     {% trans %}cart.checkout.delivery_to_home{% endtrans %}
                 </label>
-                <label class="custom-radio">
-                    <input type="radio" name="delivery_type" value="pickup" {% if takeAway %}checked="checked"{% endif %}>
+                <label class="custom-radio{% if place.deliveryOptions == "delivery" %} disabled{% endif %}">
+                    <input type="radio" name="delivery_type" value="pickup" {% if takeAway %}checked="checked"{% endif %}{% if place.deliveryOptions == "delivery" %} disabled="disabled"{% endif %}>
                     {% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
                 </label>
                 <br />

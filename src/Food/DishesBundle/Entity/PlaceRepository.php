@@ -112,6 +112,24 @@ class PlaceRepository extends EntityRepository
                         }
                         break;
 
+                    case 'delivery_type':
+                        if (!empty($filterValue)) {
+                            switch($filterValue) {
+//                                case 'delivery_and_pickup':
+//                                    $placeFilter .= ' AND p.delivery_options = "delivery_and_pickup"';
+//                                    break;
+                                case 'delivery':
+                                    $placeFilter .= ' AND p.delivery_options IN ("delivery_and_pickup", "delivery")';
+                                    break;
+                                case 'pickup':
+                                    $placeFilter .= ' AND p.delivery_options IN ("delivery_and_pickup", "pickup")';
+                                    break;
+                                default:
+                                    // Do nothing ;)
+                            }
+                        }
+                    break;
+
                     default:
                 }
             }
@@ -125,13 +143,13 @@ class PlaceRepository extends EntityRepository
         }
 
         if ($recommended) {
-            if (!empty($kitchensQuery)) {
-                $kitchensQuery.= "AND recommended=1";
-            } else {
-                $kitchensQuery.= " recommended=1";
-            }
+//            if (!empty($kitchensQuery)) {
+                $kitchensQuery.= " AND recommended=1";
+//            } else {
+//                $kitchensQuery.= " recommended=1";
+//            }
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL ".$placeFilter.$otherFilters." AND ".$kitchensQuery." GROUP BY p.id ORDER BY p.priority DESC, RAND()";
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL ".$placeFilter.$otherFilters.$kitchensQuery." GROUP BY p.id ORDER BY p.priority DESC, RAND()";
         } elseif ($lat == null || $lon == null) {
             if ($city == null) {
                 $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";

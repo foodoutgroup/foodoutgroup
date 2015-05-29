@@ -27,7 +27,8 @@ class DefaultController extends Controller
                 'recommended' => $recommended,
                 'location' => $locData,
                 'city_translations' => $this->cityTranslations,
-                'default_city' => 'Vilnius'
+                'default_city' => 'Vilnius',
+                'delivery_type_filer' => 'delivery_and_pickup', // TODO saving or other cool feature
             )
         );
     }
@@ -43,7 +44,8 @@ class DefaultController extends Controller
             array(
                 'recommended' => false,
                 'location' => $locData,
-                'city_translations' => $this->cityTranslations
+                'city_translations' => $this->cityTranslations,
+                'delivery_type_filer' => 'delivery_and_pickup', // TODO saving or other cool feature
             )
         );
     }
@@ -52,6 +54,10 @@ class DefaultController extends Controller
     {
         if ($recommended) {
             $recommended = true;
+        }
+        $recommendedFromRequest = $request->get('recommended', null);
+        if ($recommendedFromRequest !== null) {
+            $recommended = (bool)$recommendedFromRequest;
         }
 
         $places = $this->get('food.places')->getPlacesForList($recommended, $request);
