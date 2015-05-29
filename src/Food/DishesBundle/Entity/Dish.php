@@ -159,6 +159,13 @@ class Dish extends Uploadable implements Translatable
     /**
      * @var bool
      *
+     * @ORM\Column(name="show_public_price", type="boolean", nullable=true)
+     */
+    private $showPublicPrice = false;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="recomended", type="boolean")
      */
     private $recomended = false;
@@ -853,5 +860,28 @@ class Dish extends Uploadable implements Translatable
     public function getNoDiscounts()
     {
         return $this->noDiscounts;
+    }
+
+    /**
+     * Set showPublicPrice
+     *
+     * @param boolean $showPublicPrice
+     * @return Dish
+     */
+    public function setShowPublicPrice($showPublicPrice)
+    {
+        $this->showPublicPrice = $showPublicPrice;
+    
+        return $this;
+    }
+
+    /**
+     * Get showPublicPrice
+     *
+     * @return boolean 
+     */
+    public function getShowPublicPrice()
+    {
+        return $this->showPublicPrice;
     }
 }

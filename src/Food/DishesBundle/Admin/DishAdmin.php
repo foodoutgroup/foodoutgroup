@@ -113,6 +113,7 @@ class DishAdmin extends FoodAdmin
             )
             ->add('discountPricesEnabled', 'checkbox', array('label' => 'admin.dish.discount_prices_enabled', 'required' => false,))
             ->add('noDiscounts', 'checkbox', array('label' => 'No discounts', 'required' => false,))
+            ->add('showPublicPrice', 'checkbox', array('label' => 'Public price', 'required' => false,))
             ->add('options', null, array('query_builder' => $optionsQuery,'expanded' => true, 'multiple' => true, 'required' => false))
             ->add('recomended', 'checkbox', array('label' => 'admin.dish.recomended', 'required' => false,))
             ->add('active', 'checkbox', array('label' => 'admin.dish.active', 'required' => false,))

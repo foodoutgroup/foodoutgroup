@@ -60,6 +60,41 @@ class DishRepository extends EntityRepository
      * @param int $dishId
      * @return array
      */
+    public function getSmallestPublicPrice($dishId)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('d, s.publicPrice')
+            ->from('\Food\DishesBundle\Entity\Dish', 'd')
+            ->join('d.sizes', 's')
+            ->where('d.id = '.$dishId)
+            ->andWhere('d.active = 1')
+            ->orderBy('s.publicPrice', 'DESC')
+        ;
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $dishId
+     * @return array
+     */
+    public function getLargestPublicPrice($dishId)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('d, s.publicPrice')
+            ->from('\Food\DishesBundle\Entity\Dish', 'd')
+            ->join('d.sizes', 's')
+            ->where('d.id = '.$dishId)
+            ->andWhere('d.active = 1')
+            ->orderBy('s.publicPrice', 'ASC')
+        ;
+        return $qb->getQuery()->getResult();
+    }
+
+
+    /**
+     * @param int $dishId
+     * @return array
+     */
     public function getSmallestDiscountPrice($dishId)
     {
         /*
