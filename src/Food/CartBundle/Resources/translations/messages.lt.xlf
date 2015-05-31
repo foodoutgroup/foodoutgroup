@@ -154,6 +154,10 @@
             <source>cart.checkout.place_point_not_in_radius</source>
             <target>Jūsų adresu restoranas negali pristatyti užsakymo.</target>
         </trans-unit>
+        <trans-unit id="cart.checkout.pickup_tooltip" resname="cart.checkout.pickup_tooltip">
+            <source>cart.checkout.pickup_tooltip</source>
+            <target>Pasirinkite artimiausią restoraną iš kurio atsiimsite užsakymą</target>
+        </trans-unit>
         <trans-unit id="cart.checkout.no_delivery_choose_what_to_do" resname="cart.checkout.no_delivery_choose_what_to_do">
             <source>cart.checkout.no_delivery_choose_what_to_do</source>
             <target>Jūsų adresas yra didesniu atstumu nei vykdomas pristatymas. Pasirinkite arba "Atsiimsiu pats", arba rinkitės iš kitų restoranų kurie gali pristatyti JUMS maistą.</target>
