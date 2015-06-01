@@ -1761,6 +1761,12 @@ div.coupon_form_popup {
     height: 16px;
     display: inline-block;
 }
+.takeaway-yep .checkout-pickup-place-tooltip {
+    background: url(/bundles/foodapp/images/question.png) no-repeat left center;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
 .custom-radio.disabled {
     cursor: default;
     color: #c5c5c5;

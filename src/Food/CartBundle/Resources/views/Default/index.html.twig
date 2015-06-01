@@ -74,7 +74,7 @@
                 }
             }).siblings('.ui-dialog-titlebar').remove();
         }
-        $('.tooltip').tooltip();
+        $('.tooltip, .checkout-pickup-place-tooltip').tooltip();
 
         $('#coupon_form').bind('submit', function() {
             $('.coupon_form_popup .button-submit').trigger('click');
@@ -271,7 +271,7 @@
                             {#% else %#}
                             <div class="takeaway-yep {% if takeAway == true %}show{% endif %}">
                                 <div class="form-row form-row-required">
-                                    <label>{% trans %}cart.checkout.place_point{% endtrans %}:</label>
+                                    <label>{% trans %}cart.checkout.place_point{% endtrans %}: <span class="checkout-pickup-place-tooltip" title="{% trans %}cart.checkout.pickup_tooltip{% endtrans %}">&nbsp;</span></label>
                                     <select class="custom-select" name="place_point">
                                         {% for point in place.points %}
                                             {% if point.active and point.public and point.pickUp %}

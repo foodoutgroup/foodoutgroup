@@ -154,6 +154,10 @@
         <source>cart.checkout.place_point_not_in_radius</source>
         <target>Uz Jūsu adresi restorāns nevar piegādāt pasūtījumu.</target>
       </trans-unit>
+        <trans-unit id="cart.checkout.pickup_tooltip" resname="cart.checkout.pickup_tooltip">
+            <source>cart.checkout.pickup_tooltip</source>
+            <target>Izvēlieties tuvāko restorānu, no kuras pievienojušās kārtībā</target>
+        </trans-unit>
       <trans-unit id="1dad9530fac5a77fbb8af41d6e506f1a" resname="cart.checkout.no_delivery_choose_what_to_do">
         <source>cart.checkout.no_delivery_choose_what_to_do</source>
         <target>Jūsu adrese ir lielākā attālumā, nekā pasūtījums tiek izpildīts. Izvēlieties “Paņemšu pats”, vai arī izvēlieties no citiem restorāniem, kuri JUMS var piegādāt ēdienu.</target>
