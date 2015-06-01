@@ -56,6 +56,9 @@ class OrderService extends ContainerAware
      */
     public function createOrder(Request $requestOrig, JsonRequest $request, $isThisPre = false)
     {
+        $logger = $this->get('logger');
+        $logger->alert("=================");
+        $logger->alert("orderService->createOrder called");
         /**
          * {
             "basket_id": 1,
@@ -101,6 +104,8 @@ class OrderService extends ContainerAware
 
         $em = $this->container->get('doctrine')->getManager();
         $serviceVar = $request->get('service');
+        $logger->alert('Service var givven: ');
+        $logger->alert(var_export($serviceVar, true));
         $pp = null; // placePoint :D - jei automatu - tai NULL :D
         if ($serviceVar['type'] == "pickup") {
             $pp = $em->getRepository('FoodDishesBundle:PlacePoint')->find($serviceVar['location_id']);
