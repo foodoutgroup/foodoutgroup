@@ -33,7 +33,7 @@
         });
     });
 </script>
-<div class="site-block clearfix footer-top">
+<div class="clearfix newsletter-outer-block">
     <div class="newsletter-block">
         <div class="newsletter-block-inner clearfix">
         <h4>{% trans %}index.newsletter{% endtrans %}</h4>
@@ -41,10 +41,10 @@
                 <input type="text" name ="newsletter_email" class="newsletter-email" placeholder="{% trans %}index.newsletter_email{% endtrans %}" title="{% trans %}index.newsletter_provide_email{% endtrans %}">
                 <input type="submit" value="{% trans %}index.newsletter_subscribe{% endtrans %}">
             </form>
+            <ul class="menu pros-list">
+                <li>{% trans %}index.get_best_offers{% endtrans %}</li>
+                <li>{% trans %}index.get_best_offers2{% endtrans %}</li>
+            </ul>
         </div>
     </div>
-    <ul class="menu pros-list">
-        <li>{% trans %}index.get_best_offers{% endtrans %}</li>
-        <li>{% trans %}index.get_best_offers2{% endtrans %}</li>
-    </ul>
 </div>

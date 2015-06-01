@@ -520,14 +520,38 @@ input.button {}
 .app-block-inner p {color: #543f42; line-height: 17px; font-size: 12px; margin-top: 14px; margin-bottom: 26px;}
 .app-block a {display: inline-block; margin-right: 10px;}
 
-.newsletter-block {float: right; width: 342px; background: #fff; padding: 19px; border-radius: 5px;}
+/* Old */
+/*.newsletter-block {float: right; width: 342px; background: #fff; padding: 19px; border-radius: 5px;}
 .newsletter-block h4 {margin: 0; font-size: 30px; line-height: 30px; color: #513d28; letter-spacing: -1.6px;}
 .newsletter-block p {color: #543f42; line-height: 17px; font-size: 12px; margin-top: 9px; margin-bottom: 19px;}
 
 .newsletter-form {}
 .newsletter-form input[type="text"] {float: left; float: left; border: 1px solid #e1ddd6; background: #fff; padding: 8px 16px; line-height: 18px; height: 18px; width: 180px; font-size: 15px; border-radius: 3px; margin-right: 8px;}
-.newsletter-form input[type="submit"] {float: left; float: left; height: 36px; background: url(/bundles/foodapp/images/big-button-2.png) no-repeat right center; border-radius: 3px; box-shadow: 0 1px 2px #769c04; border: none; color: #fff; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; width: 120px; text-shadow: 0 1px 0 #769C03; line-height: 34px; border: 1px solid #88b305;}
+.newsletter-form input[type="submit"] {float: left; float: left; height: 36px; background: url(/bundles/foodapp/images/big-button-2.png) no-repeat right center; border-radius: 3px; box-shadow: 0 1px 2px #769c04; border: none; color: #fff; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; width: 120px; text-shadow: 0 1px 0 #769C03; line-height: 34px; border: 1px solid #88b305;}*/
 
+.newsletter-block {  float: right;
+    width: 942px;
+    background: #cd1d36;
+    padding: 19px 19px 10px 19px;
+    border-radius: 5px;
+}
+.newsletter-block h4 {
+    margin: 0;
+    font-size: 30px;
+    line-height: 30px;
+    color: #fff;
+    letter-spacing: -1.6px;
+    float: left;
+    width: 265px;
+    padding-top: 15px;
+}
+.newsletter-block p {color: #543f42; line-height: 17px; font-size: 12px; margin-top: 9px; margin-bottom: 19px;}
+
+.newsletter-outer-block { margin-bottom: 40px; }
+
+.newsletter-form { }
+.newsletter-form input[type="text"] {float: left; float: left; border: 1px solid #e1ddd6; background: #fff; padding: 8px 16px; line-height: 18px; height: 18px; width: 180px; font-size: 15px; border-radius: 3px; margin-right: 8px; margin-top: 12px;}
+.newsletter-form input[type="submit"] {float: left; float: left; height: 36px; background: url(/bundles/foodapp/images/big-button-2.png) no-repeat right center; border-radius: 3px; box-shadow: 0 1px 2px #769c04; border: none; color: #fff; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; width: 120px; text-shadow: 0 1px 0 #769C03; line-height: 34px; border: 1px solid #88b305; margin-top: 12px;}
 
 .newsletter-wide {padding-top: 94px; padding-bottom: 62px;}
 .newsletter-wide .newsletter-block {float: none; width: auto; padding: 37px;}
