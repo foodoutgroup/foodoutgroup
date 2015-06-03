@@ -120,12 +120,18 @@
             {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
             <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
                 <li><a href="{{ path('food_slug', {'slug': ('general.help_slug'|trans())}) }}"><span>{% trans %}general.help_button{% endtrans %}</span></a></li>
+            </ul>
+            <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
                 <li class="login-ico">
                     {% render(controller('FoodUserBundle:Default:loginButton')) %}
                 </li>
             </ul>
+            <div class="separator"></div>
             <div class="top-contact-block">
-                <span class="work-time">{% trans %}general.top_contact.worktime{% endtrans %}</span>
+                <span class="work-time">
+                    <span>{% trans %}general.top_contact.worktime_days{% endtrans %}</span>
+                    <span>{% trans %}general.top_contact.worktime{% endtrans %}</span>
+                </span>
                 <span class="phone">{% trans %}general.top_contact.phone{% endtrans %}</span>
             </div>
         </div>

@@ -178,14 +178,22 @@ input.button {}
 .site-block.banner {text-align: center}
 
 .site-top {background: #cd1d36; color: #fff;}
-.site-top .site-block {height: 80px; position: relative;}
+.site-top .site-block {height: 60px; position: relative;}
 .main-logo {position: absolute; left: -4px; top: 11px; z-index: 10;}
+.main-logo img {height: 40px;}
+.site-top .separator {
+    float: right;
+    margin-right: 15px;
+    margin-top: 8px;
+    border-right: 1px solid #fff;
+    height: 44px;
+}
 
 .contact-phone {margin: 0; position: absolute; font-size: 14px; text-transform: uppercase; padding-left: 15px; background: url(/bundles/foodapp/images/mobile-ico.png) no-repeat left 2px; left: 267px; top: 32px; letter-spacing: 2px;}
 .contact-phone span {font-size: 10px; letter-spacing: 1.5px; padding-left: 2px;}
 
 /*Top menu*/
-.top-menu {float: right; padding-top: 13px; letter-spacing: 2px;}
+.top-menu {float: right; padding-top: 15px; letter-spacing: 2px;}
 .top-menu li { padding-left: 25px; margin-right: 0px; font-size: 11px; margin-top: 5px;}
 .top-menu li:last-child {margin-right: 0;}
 .top-menu .login-ico {padding-left: 25px; background: url(/bundles/foodapp/images/login-ico.png) no-repeat left top;}
@@ -194,10 +202,10 @@ input.button {}
 .top-menu a:hover {color: #f1b3b3;}
 .top-menu a:hover span {border-bottom: 1px solid #cd1d36;}
 
-.top-contact-block { float: right; margin-top: 16px; margin-right: 10px; padding-right: 10px; border-right: 1px solid #fff; }
-.top-contact-block span {display: block; }
-.top-contact-block .work-time {text-align: right;}
-.top-contact-block .phone {font-size: 28px; font-weight: bold;}
+.top-contact-block { float: right; margin-right: 5px; margin-top: 5px; padding-right: 10px; padding-left: 10px; }
+.top-contact-block span {display: inline-block; }
+.top-contact-block .work-time {text-align: left; margin-top: 6px;}
+.top-contact-block .phone {font-size: 24px; font-weight: bold; margin-top: 10px; margin-left: 5px; vertical-align: bottom; }
 
 /*Header ------------------------------------------*/
 .site-header {}

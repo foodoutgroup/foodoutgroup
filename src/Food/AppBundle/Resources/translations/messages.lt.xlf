@@ -1227,9 +1227,13 @@
         <source>food.marketing.bad_email</source>
         <target>Blogas el.pašto adresas</target>
     </trans-unit>
+    <trans-unit id="general.top_contact.worktime_days" resname="general.top_contact.worktime_days">
+        <source>general.top_contact.worktime_days</source>
+        <target><![CDATA[I - V<br />VI - VII]]></target>
+    </trans-unit>
     <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
         <source>general.top_contact.worktime</source>
-        <target>d.d. 10-01 val., š.s. 10 - 03 val.</target>
+        <target><![CDATA[10 - 01 val.<br />10 - 03 val.]]></target>
     </trans-unit>
     <trans-unit id="general.top_contact.phone" resname="general.top_contact.phone">
         <source>general.top_contact.phone</source>
