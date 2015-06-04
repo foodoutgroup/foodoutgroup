@@ -186,7 +186,7 @@ var Dispatcher = {
             function() {
                 Dispatcher.checkForNewOrders();
             },
-            60000
+            61000
         );
     },
 
