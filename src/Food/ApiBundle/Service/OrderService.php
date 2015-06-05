@@ -56,7 +56,7 @@ class OrderService extends ContainerAware
      */
     public function createOrder(Request $requestOrig, JsonRequest $request, $isThisPre = false)
     {
-        $logger = $this->get('logger');
+        $logger = $this->container->get('logger');
         $logger->alert("=================");
         $logger->alert("orderService->createOrder called");
         /**
