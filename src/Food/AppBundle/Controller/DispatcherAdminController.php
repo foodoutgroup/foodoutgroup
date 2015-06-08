@@ -194,6 +194,13 @@ class DispatcherAdminController extends Controller
                     }
                 }
             }
+        } else {
+            if ($repo->hasNewUnassignedOrder()) {
+                $needUpdate = true;
+            }
+            if ($repo->hasNewUnconfirmedOrder()) {
+                $needUpdate = true;
+            }
         }
 
         if ($needUpdate) {

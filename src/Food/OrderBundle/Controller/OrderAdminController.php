@@ -11,11 +11,17 @@ class OrderAdminController extends Controller
      * @param null $id
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws \Exception
      */
     public function sendInvoiceAction($id = null)
     {
         $orderService = $this->get('food.order');
         $order = $orderService->getOrderById($id);
+
+        if (!$order->getPlace()->getSendInvoice()) {
+            throw new \Exception('Place has disabled invoices - cant send invoice to user');
+        }
 
         $orderSfSeries = $order->getSfSeries();
         if (empty($orderSfSeries)) {

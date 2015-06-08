@@ -193,11 +193,11 @@ class OrderRepository extends EntityRepository
     }
 
     /**
-     * @param string $city
-     * @param int $id
+     * @param string|null $city
+     * @param int|null $id
      * @return bool
      */
-    public function hasNewUnassignedOrder($city, $id)
+    public function hasNewUnassignedOrder($city=null, $id=null)
     {
         $filter = array(
             'order_status' =>  array(
@@ -205,13 +205,20 @@ class OrderRepository extends EntityRepository
                 OrderService::$status_delayed,
                 OrderService::$status_finished
             ),
-            'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
         );
+        if (!empty($city)) {
+            $filter['place_point_city'] = $city;
+        }
+
         $order = $this->getOrdersByFilter($filter, 'single');
 
         if (!$order) {
             return false;
+        }
+
+        if (empty($id)) {
+            return true;
         }
 
         $order = $order[0];
@@ -223,21 +230,28 @@ class OrderRepository extends EntityRepository
     }
 
     /**
-     * @param string $city
-     * @param int $id
+     * @param string|null $city
+     * @param int|null $id
      * @return bool
      */
-    public function hasNewUnconfirmedOrder($city, $id)
+    public function hasNewUnconfirmedOrder($city=null, $id=null)
     {
         $filter = array(
             'order_status' =>  array(OrderService::$status_new),
-            'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
         );
+        if (!empty($city)) {
+            $filter['place_point_city'] = $city;
+        }
+
         $order = $this->getOrdersByFilter($filter, 'single');
 
         if (!$order) {
             return false;
+        }
+
+        if (empty($id)) {
+            return true;
         }
 
         $order = $order[0];

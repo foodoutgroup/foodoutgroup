@@ -8,7 +8,7 @@
       </trans-unit>
       <trans-unit id="e79f0a96a14972d5383cff1e3fc00475" resname="index.newsletter">
         <source>index.newsletter</source>
-        <target>Naujienlaiškis</target>
+        <target>Užsiprenumeruokite:</target>
       </trans-unit>
       <trans-unit id="80ae01ad89a36c878618f64044dd7ae4" resname="index.newsletter_email">
         <source>index.newsletter_email</source>
@@ -744,7 +744,7 @@
       </trans-unit>
       <trans-unit id="2a27b06725260bba699dd331a49827d8_new" resname="index.title_page_header">
         <source>index.title_page_header</source>
-        <target><![CDATA[Užsisakyk maisto iš +100 restoranų į namus]]></target>
+        <target><![CDATA[Taupykite laiką! Užsisakykite maisto<br />į namus, biurą ar išsinešti!]]></target>
       </trans-unit>
       <trans-unit id="02e3d3477fa84ee89d7c8f812fe8d4b1" resname="index.search_form_qlue">
         <source>index.search_form_qlue</source>
@@ -1227,9 +1227,13 @@
         <source>food.marketing.bad_email</source>
         <target>Blogas el.pašto adresas</target>
     </trans-unit>
+    <trans-unit id="general.top_contact.worktime_days" resname="general.top_contact.worktime_days">
+        <source>general.top_contact.worktime_days</source>
+        <target><![CDATA[I - V<br />VI - VII]]></target>
+    </trans-unit>
     <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
         <source>general.top_contact.worktime</source>
-        <target>d.d. 10-01 val., š.s. 10 - 03 val.</target>
+        <target><![CDATA[10 - 01 val.<br />10 - 03 val.]]></target>
     </trans-unit>
     <trans-unit id="general.top_contact.phone" resname="general.top_contact.phone">
         <source>general.top_contact.phone</source>

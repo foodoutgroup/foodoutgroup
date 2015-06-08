@@ -201,6 +201,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                     }
                     if (!$dryRun) {
                         $order->setOrderDate($orderDate)
+                            ->setDeliveryTime($deliveryDate)
                             ->setTotal($orderData['OrderSum'])
                             ->setDeliveryPrice($orderData['DeliveryAmount'])
                             ->setDeliveryType($deliveryType)

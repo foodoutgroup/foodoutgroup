@@ -857,6 +857,10 @@
                 <source>admin.order.payment_method</source>
                 <target>Payment type</target>
             </trans-unit>
+            <trans-unit id="admin.order.payment_method_short">
+                <source>admin.order.payment_method_short</source>
+                <target>Payment type</target>
+            </trans-unit>
             <trans-unit id="admin.order.payment_status">
                 <source>admin.order.payment_status</source>
                 <target>Payment status</target>
@@ -1080,6 +1084,18 @@
             <trans-unit id="admin.order.ismobile_full">
                 <source>admin.order.ismobile_full</source>
                 <target>Mobile</target>
+            </trans-unit>
+            <trans-unit id="admin.order.order_from_nav">
+                <source>admin.order.order_from_nav</source>
+                <target>From NAV</target>
+            </trans-unit>
+            <trans-unit id="admin.order.nav_delivery_order">
+                <source>admin.order.nav_delivery_order</source>
+                <target>Bill of landing no</target>
+            </trans-unit>
+            <trans-unit id="admin.order.client_contacted">
+                <source>admin.order.client_contacted</source>
+                <target>Client contacted</target>
             </trans-unit>
             <trans-unit id="admin.order.hash">
                 <source>admin.order.hash</source>

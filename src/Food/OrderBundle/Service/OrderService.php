@@ -480,7 +480,7 @@ class OrderService extends ContainerAware
             'maisto_ruosejas' => $this->getOrder()->getPlacePoint()->getAddress(),
             'uzsakymas' => $this->getOrder()->getId(),
             'adresas' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->getAddress() . ", " . $this->getOrder()->getAddressId()->getCity() : "--"),
-            'pristatymo_data' => $this->getOrder()->getDeliveryTime()->format('Y-m-d H:i:s'),
+            'pristatymo_data' => $this->getOrder()->getPlace()->getDeliveryTime(),
             'total_sum' => $this->getOrder()->getTotal(),
             'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
             'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
