@@ -130,6 +130,10 @@ class PlacesService extends ContainerAware {
      */
     public function getPlacePointData($pointId)
     {
+        // TODO Trying to catch fatal when searching for PlacePoint
+        if (empty($pointId)) {
+            $this->getContainer()->get('logger')->error('Trying to find PlacePoint without ID in PlacesService - getPlacePointData');
+        }
         return $this->em()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
     }
 
