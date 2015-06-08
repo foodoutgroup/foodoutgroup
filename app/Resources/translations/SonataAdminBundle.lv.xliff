@@ -1093,6 +1093,10 @@
                 <source>admin.order.nav_delivery_order</source>
                 <target>Bill of landing no</target>
             </trans-unit>
+            <trans-unit id="admin.order.client_contacted">
+                <source>admin.order.client_contacted</source>
+                <target>Client contacted</target>
+            </trans-unit>
             <trans-unit id="admin.order.hash">
                 <source>admin.order.hash</source>
                 <target>Order hash</target>
