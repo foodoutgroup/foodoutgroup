@@ -1187,6 +1187,10 @@
                 <source>admin.dispatcher.from_nav</source>
                 <target>From NAV</target>
             </trans-unit>
+            <trans-unit id="admin.order.nav_delivery_order">
+                <source>admin.order.nav_delivery_order</source>
+                <target>Bill of landing no</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.order_date">
                 <source>admin.dispatcher.order_date</source>
                 <target>Order date</target>
