@@ -367,7 +367,7 @@
                                 <div class="select-payment clearfix">
                                     <label class="custom-radio">
                                         <img alt="Nordea" src="http://{{ cloudfront_url }}/bundles/foodapp/images/nordea-small.png">
-                                        <input type="radio" name="payment-type" value="nordea-banklink"/>
+                                        <input type="radio" name="payment-type" value="nordea-banklink"{% if order is not null and order.paymentMethod == 'nordea-banklink' %} checked="checked"{% endif %}/>
                                     </label>
                                 </div>
                                 <div class="select-payment clearfix">
@@ -377,7 +377,7 @@
                                         <img alt="Visa" src="http://{{ cloudfront_url }}/bundles/foodapp/images/visa-small.png">
                                         <img alt="Maestro" src="http://{{ cloudfront_url }}/bundles/foodapp/images/maestro-small.png">
                                         <img alt="Visa Electron" src="http://{{ cloudfront_url }}/bundles/foodapp/images/visa-electron-small.png">
-                                        <input type="radio" name="payment-type" value="swedbank-credit-card-gateway"/>
+                                        <input type="radio" name="payment-type" value="swedbank-credit-card-gateway"{% if order is not null and order.paymentMethod == 'swedbank-credit-card-gateway' %} checked="checked"{% endif %}/>
                                     </label>
                                 </div>
                                 <div class="select-bank clearfix">
@@ -387,7 +387,7 @@
                                     </label>
                                     <label class="custom-radio">
                                         <img alt="SEB" src="http://{{ cloudfront_url }}/bundles/foodapp/images/bank-seb.png">
-                                        <input type="radio" name="payment-type" value="seb-banklink"/>
+                                        <input type="radio" name="payment-type" value="seb-banklink"{% if order is not null and order.paymentMethod == 'seb-banklink' %} checked="checked"{% endif %}/>
                                     </label>
                                     <label class="custom-radio">
                                         <img alt="Danske Bank" src="http://{{ cloudfront_url }}/bundles/foodapp/images/bank-db.png">
@@ -399,8 +399,7 @@
                                     </label>
                                     <label class="custom-radio">
                                         <img alt="Swedbank" src="http://{{ cloudfront_url }}/bundles/foodapp/images/bank-swb.png">
-                                        {#<input type="radio" name="payment-type" value="swedbank-gateway"/>#}
-                                        <input type="radio" name="payment-type" value="paysera"/>
+                                        <input type="radio" name="payment-type" value="swedbank-gateway"{% if order is not null and order.paymentMethod == 'swedbank-gateway' %} checked="checked"{% endif %}/>
                                     </label>
                                     <label class="custom-radio">
                                         <img alt="DNB" src="http://{{ cloudfront_url }}/bundles/foodapp/images/bank-dnb.png">

@@ -1,6 +1,7 @@
 <?php
 namespace Food\OrderBundle\Command;
 
+use Doctrine\ORM\OptimisticLockException;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -46,7 +47,7 @@ class NavSyncCommand extends ContainerAwareCommand
                 foreach ($navOrders as $orderId => $orderData) {
                     $order = $orderService->getOrderById($orderId);
                     if (!$order instanceof Order) {
-                        throw new \Exception('Order from nav not found in local system. Local ID: '.$orderId.' Nav ID:'.$orderData['Order No_']);
+                        throw new \Exception('Order from nav not found in local system. Local ID: ' . $orderId . ' Nav ID:' . $orderData['Order No_']);
                     }
 
                     // Localiu orderiu, kurie paskirti - neukeiciam pagal nava... localus tvarkomi lokaliai
@@ -93,14 +94,16 @@ class NavSyncCommand extends ContainerAwareCommand
                         }
 
                         $em->persist($order);
+
+                        // Save modified order if not a dry run - dont move down logic - Optimistic lock exception prevents all orders being saved :(
+                        if (!$dryRun) {
+                            $em->flush();
+                        }
                     }
                 }
-
-                // Save all modified orders if not a dry run
-                if (!$dryRun) {
-                    $em->flush();
-                }
             }
+        } catch (OptimisticLockException $e) {
+            $output->writeln('Failed saving changes for order one order - Order row was locked. Will try the next run');
         } catch (\Exception $e) {
             $output->writeln('Error syncing orders with Nav');
             $output->writeln('Error: '.$e->getMessage());

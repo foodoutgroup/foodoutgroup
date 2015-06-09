@@ -143,8 +143,18 @@ class Restaurant extends ContainerAware
                     false,
                     true
                 );
+
+                // TODO Trying to catch fatal when searching for PlacePoint
+                if (empty($ppId)) {
+                    $this->container->get('logger')->error('Trying to find PlacePoint without ID in Restaurant - loadFromEntity find 1');
+                }
+
                 $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($ppId);
             } else {
+                // TODO Trying to catch fatal when searching for PlacePoint
+                if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
+                    $this->container->get('logger')->error('Trying to find PlacePoint without ID in Restaurant - loadFromEntity find 2');
+                }
                 $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
             }
 

@@ -109,6 +109,10 @@ class OrderService extends ContainerAware
         $logger->alert(var_export($serviceVar, true));
         $pp = null; // placePoint :D - jei automatu - tai NULL :D
         if ($serviceVar['type'] == "pickup") {
+            // TODO Trying to catch fatal when searching for PlacePoint
+            if (empty($serviceVar['location_id'])) {
+                $this->container->get('logger')->error('Trying to find PlacePoint without ID in Api OrderService - createOrder');
+            }
             $pp = $em->getRepository('FoodDishesBundle:PlacePoint')->find($serviceVar['location_id']);
         }
 
