@@ -382,6 +382,10 @@ class DefaultController extends Controller
             if (empty($placePointMap) || !isset($placePointMap[$place->getId()])) {
                 $deliveryTotal = $place->getDeliveryPrice();
             } else {
+                // TODO Trying to catch fatal when searching for PlacePoint
+                if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
+                    $this->container->get('logger')->error('Trying to find PlacePoint without ID in CartBundle Default controller - sideBlockAction');
+                }
                 $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
                 $deliveryTotal = $this->getCartService()->getDeliveryPrice(
                     $place,
