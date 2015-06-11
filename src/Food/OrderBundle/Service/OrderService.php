@@ -2375,6 +2375,11 @@ class OrderService extends ContainerAware
 
             $placePointMap = $this->container->get('session')->get('point_data');
 
+            // TODO Trying to catch fatal when searching for PlacePoint
+            if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
+                $this->container->get('logger')->error('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm');
+            }
+
             $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
             $cartMinimum = $this->getCartService()->getMinimumCart(
                 $place,
