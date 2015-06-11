@@ -740,7 +740,7 @@
       </trans-unit>
       <trans-unit id="2a27b06725260bba699dd331a49827d8" resname="index.title_page_header">
         <source>index.title_page_header</source>
-        <target><![CDATA[Letaupiet laiku! Pasūtot ēdienu<br />uz mājām, darbu vai saņemot restorānā!]]></target>
+        <target><![CDATA[Ietaupiet laiku! Pasūtot ēdienu<br />uz mājām, darbu vai saņemot restorānā!]]></target>
       </trans-unit>
       <trans-unit id="02e3d3477fa84ee89d7c8f812fe8d4b1" resname="index.search_form_qlue">
         <source>index.search_form_qlue</source>
@@ -1144,7 +1144,7 @@
         </trans-unit>
         <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
             <source>general.top_contact.worktime</source>
-            <target><![CDATA[10 - 03 val.<br />10 - 06 val.]]></target>
+            <target><![CDATA[10 - 03 h.<br />10 - 06 h.]]></target>
         </trans-unit>
         <trans-unit id="general.top_contact.phone" resname="general.top_contact.phone">
             <source>general.top_contact.phone</source>
