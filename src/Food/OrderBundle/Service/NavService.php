@@ -558,25 +558,37 @@ class NavService extends ContainerAware
             }
         }
 
-
-        $data = $this->container->get('doctrine')->getRepository('FoodOrderBundle:NavItems')->find($code);
-        if ($data) {
-            $desc = "'".$data->getDescription()."'";
+        if (!empty($code)) {
+            $data = $this->container->get('doctrine')->getRepository('FoodOrderBundle:NavItems')->find($code);
+            if ($data) {
+                $desc = "'".$data->getDescription()."'";
+            }
         }
 
-        $priceForInsert = $detail->getPrice();
+        $priceForInsert = $detail->getOrigPrice();
         $amountForInsert = $priceForInsert * $detail->getQuantity();
         $discountAmount = 0;
         $paymentAmount = $amountForInsert;
 
         $discountInOrder = $detail->getOrderId()->getDiscountSize();
-        if ($discountInOrder > 0) {
+        $dp = $detail->getPrice();
+        $dop = $detail->getOrigPrice();
+        $discPrcEnabled = $detail->getDishId()->getDiscountPricesEnabled();
+        $placeDiscountPriceEnabled = $detail->getOrderId()->getPlace()->getDiscountPricesEnabled();
+        $detailPercentDiscount = $detail->getPercentDiscount();
+
+        if (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && empty($detailPercentDiscount)) {
             $discountAmount = $paymentAmount - round($paymentAmount * ((100 - intval($discountInOrder))/100), 2);
+        } elseif (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && !empty($detailPercentDiscount)) {
+            $discountAmount = ($detail->getOrigPrice() - $detail->getPrice()) * $detail->getQuantity();
+        } elseif ($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) {
+            $discountAmount = ($detail->getOrigPrice() - $detail->getPrice()) * $detail->getQuantity();
         }
         /**
          * Some freaky ugly magic for havin Cart discount
          */
-        if (!empty($discountSum)) {
+/*
+        if (0 && !empty($discountSum) && !($detail->getPrice()!=$detail->getOrigPrice() && $detail->getDishId()->getDiscountPricesEnabled() && $detail->getOrderId()->getPlace()->getDiscountPricesEnabled())) {
             $paymentPart = $paymentAmount + $discountAmount;
             $paymentPercentPart = ceil($detail->getOrderId()->getTotal() / $paymentPart) * 100;
             $discountPartWouldBe = ceil($discountSum * 100 / $paymentPercentPart);
@@ -588,7 +600,7 @@ class NavService extends ContainerAware
             }
             $discountAmount = $discountAmount + $discountPartWouldBe;
         }
-
+*/
         /*
         if ($detail->getDishId()->getShowDiscount()) {
             $discountPrice = $detail->getPrice();
@@ -636,12 +648,12 @@ class NavService extends ContainerAware
                     'Entry Type' => ($opt->getDishOptionId()->getFirstLevel() ? 0 : 1),
                     'No_' => "'".$code."'",
                     'Description' => "'".$desc."'",
-                    'Quantity' => 0,
-                    'Price' => 0,
+                    'Quantity' => ($opt->getDishOptionId()->getFirstLevel() ? $opt->getOrderDetail()->getQuantity() : 0),
+                    'Price' => ($opt->getDishOptionId()->getFirstLevel() ? $opt->getDishOptionId()->getPrice() : 0),
                     'Parent Line' => ($opt->getDishOptionId()->getFirstLevel() ? 0 : $key),
-                    'Amount' => 0,
+                    'Amount' => ($opt->getDishOptionId()->getFirstLevel() ? ($opt->getOrderDetail()->getQuantity() * $opt->getDishOptionId()->getPrice()): 0),
                     'Discount Amount' => 0,
-                    'Payment' => 0,
+                    'Payment' => ($opt->getDishOptionId()->getFirstLevel() ? ($opt->getOrderDetail()->getQuantity() * $opt->getDishOptionId()->getPrice()): 0),
                     'Value' => "''"
                 );
                 $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
@@ -876,6 +888,14 @@ class NavService extends ContainerAware
                         $description = $option->getDishOptionId()->getName();
                     }
                     $lineNo = $lineNo + 1;
+                    if ($option->getDishOptionId()->getFirstLevel()) {
+                        $parencyLineNo = 0;
+                        $entryType = 0;
+                    } else {
+                        $parencyLineNo = $origLineNo;
+                        $entryType = 1;
+                    }
+
 
                     $lineMap[$lineNo] = array(
                         'parent' => $origLineNo,
@@ -884,8 +904,8 @@ class NavService extends ContainerAware
 
                     $requestData['Lines'][] = array('Line' => array(
                         'LineNo' => $lineNo,
-                        'ParentLineNo' => $origLineNo,
-                        'EntryType' => 1,
+                        'ParentLineNo' => $parencyLineNo,
+                        'EntryType' => $entryType,
                         'ItemNo' => $optionCode,
                         'Description' => mb_substr($description, 0, 30, 'utf-8'),
                         'Quantity' => $cart->getQuantity(),
@@ -896,7 +916,7 @@ class NavService extends ContainerAware
                 }
             }
         }
-
+        @mail("paulius@foodout.lt", "CILI NVB VALIDATE LINES ".date("Y-m-d H:i:s"), print_r($requestData, true), "FROM: info@foodout.lt");
         // this is more like anomaly than a rule
         if (empty($requestData['Lines'])) {
             $returner = [
@@ -911,16 +931,16 @@ class NavService extends ContainerAware
 
             return $returner;
         }
-
+        
         ob_start();
-        @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQUEST", print_r($requestData, true), "FROM: info@foodout.lt");
+        @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQUEST ".date("Y-m-d H:i:s"), print_r($requestData, true), "FROM: info@foodout.lt");
         $response = $this->getWSConnection()->FoodOutValidateOrder(
             array(
                 'params' => $requestData,
                 'errors' => array()
             )
         );
-        @mail("paulius@foodout.lt", "CILI NVB VALIDATE RESPONSE", print_r($response, true), "FROM: info@foodout.lt");
+        @mail("paulius@foodout.lt", "CILI NVB VALIDATE RESPONSE".date("Y-m-d H:i:s"), print_r($response, true), "FROM: info@foodout.lt");
         ob_end_clean();
 
         $prbDish = "";
@@ -1042,7 +1062,7 @@ class NavService extends ContainerAware
 
         $query = sprintf(
             '
-            SELECT [Order No_], SUM(Amount) AS total
+            SELECT [Order No_], SUM([Amount] + [Discount Amount]) AS total
             FROM %s
             WHERE
               [Order No_] IN ( %s )

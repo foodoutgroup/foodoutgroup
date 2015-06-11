@@ -62,6 +62,12 @@ class DishSize
 
     /**
      * @var double
+     * @ORM\Column(name="public_price", type="decimal", scale=2, nullable=true)
+     */
+    private $publicPrice;
+
+    /**
+     * @var double
      *
      * @ORM\Column(name="price_old", type="decimal", scale=2, nullable=true)
      */
@@ -442,5 +448,28 @@ class DishSize
     public function getDiscountPriceOld()
     {
         return $this->discountPriceOld;
+    }
+
+    /**
+     * Set publicPrice
+     *
+     * @param string $publicPrice
+     * @return DishSize
+     */
+    public function setPublicPrice($publicPrice)
+    {
+        $this->publicPrice = $publicPrice;
+    
+        return $this;
+    }
+
+    /**
+     * Get publicPrice
+     *
+     * @return string 
+     */
+    public function getPublicPrice()
+    {
+        return $this->publicPrice;
     }
 }

@@ -43,6 +43,28 @@ class DishesService extends ContainerAware {
         return null;
     }
 
+    public function getSmallestDishPublicPrice($dishId)
+    {
+        $prices = $this->em()->getRepository('FoodDishesBundle:Dish')->getSmallestPublicPrice($dishId);
+        if (!empty($prices) && is_array($prices)) {
+            return $prices[0]['publicPrice'];
+        } elseif (!empty($prices)) {
+            return $prices['publicPrice'];
+        }
+        return null;
+    }
+
+    public function getLargestDishPublicPrice($dishId)
+    {
+        $prices = $this->em()->getRepository('FoodDishesBundle:Dish')->getLargestPublicPrice($dishId);
+        if (!empty($prices) && is_array($prices)) {
+            return $prices[0]['publicPrice'];
+        } elseif (!empty($prices)) {
+            return $prices['publicPrice'];
+        }
+        return null;
+    }
+
     public function getSmallestDishDiscountPrice($dishId)
     {
         $prices = $this->em()->getRepository('FoodDishesBundle:Dish')->getSmallestDiscountPrice($dishId);

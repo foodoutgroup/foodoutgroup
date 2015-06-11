@@ -52,6 +52,7 @@ class OrdersController extends Controller
      */
     public function createOrderAction(Request $request)
     {
+        $this->logActionParams('createOrder action', $request);
         $this->_theJudge($request);
         mail("paulius@foodout.lt", "FOO LOGS", print_r($request->getContent(), true), "FROM: test@foodout.lt");
         try {
@@ -74,6 +75,7 @@ class OrdersController extends Controller
      */
     public function createOrderPreAction(Request $request)
     {
+        $this->logActionParams('createOrderPre action', $request);
         $this->_theJudge($request);
         @mail("paulius@foodout.lt", "FOO LOGS PRE", print_r($request->getContent(), true), "FROM: test@foodout.lt");
         try {
@@ -97,6 +99,7 @@ class OrdersController extends Controller
      */
     public function getOrderDetailsAction($id, Request $request)
     {
+        $this->logActionParams('getOrderDetails action', $request);
         $this->_theJudge($request);
         try {
             $order = $this->get('food.order')->getOrderById($id);
@@ -130,6 +133,7 @@ class OrdersController extends Controller
      */
     public function confirmOrderAction($id)
     {
+        $this->logActionParams('confirmOrder action', $id);
         mb_internal_encoding('utf-8');
 
         try {
@@ -168,6 +172,7 @@ class OrdersController extends Controller
      */
     public function getOrderStatusAction($id)
     {
+        $this->logActionParams('getOrderStatus action', $id);
         try {
             $order = $this->get('food.order')->getOrderById($id);
 
@@ -205,5 +210,25 @@ class OrdersController extends Controller
                 array('error' => 'server error', 'description' => null)
             );
         }
+    }
+
+    /**
+     * For debuging purpose only - log request data and action name for easy debug
+     *
+     * @param string $action
+     * @param array|Request $params
+     */
+    protected function logActionParams($action, $params)
+    {
+        $logger = $this->get('logger');
+
+        if ($params instanceof Request) {
+            $params = $params->request->all();
+        }
+
+        $logger->alert('=============================== '.$action.' =====================================');
+        $logger->alert('Request params:');
+        $logger->alert(var_export($params, true));
+        $logger->alert('=========================================================');
     }
 }

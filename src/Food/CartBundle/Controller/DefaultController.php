@@ -415,7 +415,7 @@ class DefaultController extends Controller
                 if (!$freeDelivery) {
                     $discountSize = $coupon->getDiscount();
                     if (!empty($discountSize)) {
-                        $discountSum = ($total_cart * $coupon->getDiscount()) / 100;
+                        $discountSum = $this->getCartService()->getTotalDiscount($list,$coupon->getDiscount());
                     } else {
                         $discountSize = null;
                         $discountInSum = true;
@@ -426,6 +426,7 @@ class DefaultController extends Controller
                 }
             }
         }
+
 
         // Jei restorane galima tik atsiimti arba, jei zmogus rinkosi, kad jis atsiimas, arba jei yra uzsakymas ir fiksuotas atsiemimas vietoje - neskaiciuojam pristatymo
         if ($place->getDeliveryOptions() == Place::OPT_ONLY_PICKUP ||

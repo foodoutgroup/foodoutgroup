@@ -33,7 +33,8 @@ class OrderService extends ContainerAware
                     FO::$status_new,
                     FO::$status_accepted,
                     FO::$status_delayed,
-                    FO::$status_assiged
+                    FO::$status_assiged,
+                    FO::$status_unapproved
                 )
             );
 
@@ -56,6 +57,9 @@ class OrderService extends ContainerAware
      */
     public function createOrder(Request $requestOrig, JsonRequest $request, $isThisPre = false)
     {
+        $logger = $this->container->get('logger');
+        $logger->alert("=================");
+        $logger->alert("orderService->createOrder called");
         /**
          * {
             "basket_id": 1,
@@ -101,6 +105,8 @@ class OrderService extends ContainerAware
 
         $em = $this->container->get('doctrine')->getManager();
         $serviceVar = $request->get('service');
+        $logger->alert('Service var givven: ');
+        $logger->alert(var_export($serviceVar, true));
         $pp = null; // placePoint :D - jei automatu - tai NULL :D
         if ($serviceVar['type'] == "pickup") {
             // TODO Trying to catch fatal when searching for PlacePoint
@@ -412,6 +418,7 @@ class OrderService extends ContainerAware
     {
         $statusMap = array(
             FO::$status_new => 'accepted',
+            FO::$status_unapproved => 'accepted',
             FO::$status_accepted => 'preparing',
             FO::$status_assiged => 'preparing',
             FO::$status_forwarded => 'preparing',
