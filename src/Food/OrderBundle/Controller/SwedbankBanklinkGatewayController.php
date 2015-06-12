@@ -32,4 +32,9 @@ class SwedbankBanklinkGatewayController extends Controller
     {
         return $this->successAction($request);
     }
+
+    public function callbackAction(Request $request)
+    {
+        return $this->handleCalback($request);
+    }
 }
