@@ -147,7 +147,6 @@ trait ReturnDecorator
     {
         // services
         $orderService = $this->get('food.order');
-        $gateway = $this->get('pirminis_banklink_gateway');
         $cartService = $this->get('food.cart');
         $navService = $this->get('food.nav');
         $em = $this->get('doctrine')->getManager();
@@ -156,7 +155,7 @@ trait ReturnDecorator
         $dom = simplexml_load_string($request->getContent());
 
         // get order
-        $purchases = $dom->xpath('//APMTxn//Purchase');
+        $purchases = $dom->xpath('//Event//Purchase');
 
         if (empty($purchases)) {
             $logger->error("Swedbank callback gave XML without purchases part");
@@ -172,8 +171,6 @@ trait ReturnDecorator
 
         $attributes = (array)$purchase->attributes();
         $transactionId = $attributes['@attributes']['TransactionId'];
-
-//        echo 'trans-id: '.$transactionId;
 
         if (empty($transactionId)) {
             $logger->error("Swedbank callback without trans ID received :(");
@@ -196,13 +193,8 @@ trait ReturnDecorator
         $authorizeStatus = $dom->xpath('//Purchase//Status');
         $authorizeStatus = reset($authorizeStatus);
 
-        $mainStatus = $dom->xpath('//status');
-        $mainStatus = reset($mainStatus);
-
-//        echo  "Statusas: ".$authorizeStatus."\n\n";
-
         // is order paid? let's find out!
-        if ($authorizeStatus == 'AUTHORISED' && $mainStatus == 1) {
+        if ($authorizeStatus == 'AUTHORISED') {
             $this->logPaidAndFinish('Swedbank Banklink Gateway billed payment',
                                     $orderService,
                                     $order,
