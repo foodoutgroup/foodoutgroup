@@ -25,19 +25,6 @@ trait RedirectDecorator
                          'success_url' => $this->getSuccessUrl($locale),
                          'failure_url' => $this->getFailureUrl($locale),
                          'language' => $locale);
-        if ($_SERVER['REMOTE_ADDR'] == '88.119.206.236') {
-            $options = array('order_id' => substr($order->getId() . '_' . time(),
-                0,
-                16),
-//                'price' => (string)round($order->getTotal() * 100),
-                'price' => '1',
-                'email' => $order->getUser()->getEmail(),
-                'transaction_datetime' => date('Y-m-d H:i:s'),
-                'comment' => 'Foodout.lt uzsakymas #' . $order->getId(),
-                'success_url' => $this->getSuccessUrl($locale),
-                'failure_url' => $this->getFailureUrl($locale),
-                'language' => $locale);
-        }
 
         $gateway->set_options($options);
 
