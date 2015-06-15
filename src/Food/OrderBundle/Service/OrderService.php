@@ -2377,7 +2377,12 @@ class OrderService extends ContainerAware
 
             // TODO Trying to catch fatal when searching for PlacePoint
             if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
-                $this->container->get('logger')->error('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm');
+                $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm');
+                // Mapping not found, lets try to remap
+                $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
+                $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(),$locationData);
+                $placePointMap[$place->getId()] = $placePointId;
+                $this->container->get('session')->set('point_data', $placePointMap);
             }
 
             $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
