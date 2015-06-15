@@ -154,6 +154,10 @@ trait ReturnDecorator
 
         $dom = simplexml_load_string($request->getContent());
 
+        if (!$dom instanceof \SimpleXMLElement) {
+            $logger->error('Not an XML is given in Swedbank callback handler. What we got is: '.$request->getContent());
+        }
+
         // get order
         $purchases = $dom->xpath('//Event//Purchase');
 
