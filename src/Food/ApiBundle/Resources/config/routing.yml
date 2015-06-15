@@ -179,3 +179,8 @@ food_api_best_offers:
     pattern: /offers/{city}
     defaults: { _controller: FoodApiBundle:Offers:get}
     methods: [GET]
+
+food_api_get_static_content:
+    pattern: /staticcontent/{id}
+    defaults: { _controller: FoodApiBundle:StaticContent:process}
+    methods: [GET]
