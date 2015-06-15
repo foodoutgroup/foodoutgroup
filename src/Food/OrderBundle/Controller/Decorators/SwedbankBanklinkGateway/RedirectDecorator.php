@@ -25,6 +25,7 @@ trait RedirectDecorator
                          'success_url' => $this->getSuccessUrl($locale),
                          'failure_url' => $this->getFailureUrl($locale),
                          'language' => $locale);
+
         $gateway->set_options($options);
 
         $form = $gateway->form_for('swedbank');

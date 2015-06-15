@@ -187,23 +187,23 @@
     #}
 
     {% if track_conversions %}
-        (function () {
-            var a = document.createElement("iframe");
-            a.style.cssText = "width: 0; height: 0; border: 0; display: none;";
-            a.src = "javascript:false";
-            var b = function () {
-                setTimeout(function () {
-                    var b = a.contentDocument || a.contentWindow.document, c = b.createElement("script");
-                    c.src = "//static-trackers.adtarget.me/javascripts/pixel.min.js";
-                    c.id = "GIHhtQfW-atm-pixel";
-                    c["data-pixel"] = "990d8a91b1fde610d377fae55d911552";
-                    c["allow-flash"] = true;
-                    b.body.appendChild(c);
-                }, 0);
-            };
-            a.addEventListener ? a.addEventListener("load", b, !1) : a.attachEvent ? a.attachEvent("onload", b) : a.onload = b;
-            document.body.appendChild(a);
-        })();
+    (function () {
+        var a = document.createElement("iframe");
+        a.style.cssText = "width: 0; height: 0; border: 0; display: none;";
+        a.src = "javascript:false";
+        var b = function () {
+            setTimeout(function () {
+                var b = a.contentDocument || a.contentWindow.document, c = b.createElement("script");
+                c.src = "//static-trackers.adtarget.me/javascripts/pixel.min.js";
+                c.id = "GIHhtQfW-atm-pixel";
+                c["data-pixel"] = "990d8a91b1fde610d377fae55d911552";
+                c["allow-flash"] = true;
+                b.body.appendChild(c);
+            }, 0);
+        };
+        a.addEventListener ? a.addEventListener("load", b, !1) : a.attachEvent ? a.attachEvent("onload", b) : a.onload = b;
+        document.body.appendChild(a);
+    })();
     {% endif %}
 
 </script>

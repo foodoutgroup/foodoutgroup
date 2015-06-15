@@ -403,6 +403,10 @@ trsteel_ckeditor:
 # Payment gateway
 pirminis_gateway:
     swedbank:
+        #Testing
+#        vtid: "88185002"
+#        password: "aXVdnHfZSJmz"
+        #Prod
         vtid: "21911859"
         password: "rMUhc7p7"
 
