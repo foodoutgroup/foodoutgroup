@@ -11,8 +11,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class NavSyncCommand extends ContainerAwareCommand
 {
+    private $timeStart;
+
     protected function configure()
     {
+        $this->timeStart = microtime(true);
+
         $this
             ->setName('order:nav:sync')
             ->setDescription('Sync navision order status')
@@ -38,7 +42,8 @@ class NavSyncCommand extends ContainerAwareCommand
 
             $orders = $em->getRepository('FoodOrderBundle:Order')->getCurrentNavOrders(null, false, false);
 
-            if (!empty($orders) && count($orders) > 0) {
+            $orderCount = count($orders);
+            if (!empty($orders) && $orderCount > 0) {
                 $navOrders = $navService->getRecentNavOrders($orders);
                 $ordersFromNav = $navService->getImportedOrdersStatus($orders);
 
@@ -102,6 +107,15 @@ class NavSyncCommand extends ContainerAwareCommand
                     }
                 }
             }
+
+            $timeSpent = microtime(true) - $this->timeStart;
+            $output->writeln(sprintf('<info>%d orders status updates in %0.2f seconds</info>', $orderCount, $timeSpent));
+            // Log performance data
+            $this->getContainer()->get('logger')->alert(sprintf(
+                '[Performance] Nav sync status cron. Synced %d orders in %0.2f seconds',
+                $orderCount,
+                $timeSpent
+            ));
         } catch (OptimisticLockException $e) {
             $output->writeln('Failed saving changes for order one order - Order row was locked. Will try the next run');
         } catch (\Exception $e) {
