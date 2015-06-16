@@ -2559,7 +2559,7 @@ class OrderService extends ContainerAware
             );
             if (!$data['valid']) {
                 $formHasErrors = true;
-                if ($data['errcode']['code'] == "2") {
+                if ($data['errcode']['code'] == "2" || $data['errcode']['code'] == "3") {
                     $formErrors[] = array(
                         'message' => 'order.form.errors.problems_with_dish',
                         'text' => $data['errcode']['problem_dish']

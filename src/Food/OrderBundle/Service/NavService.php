@@ -944,7 +944,7 @@ class NavService extends ContainerAware
         ob_end_clean();
 
         $prbDish = "";
-        if ($response->return_value == 2) {
+        if ($response->return_value == 2 || $response->return_value == 3) {
             if ($lineMap[$response->errors->Error->SubCode]['parent'] == 0) {
                 $prbDish = $lineMap[$response->errors->Error->SubCode]['name'];
             } else {
