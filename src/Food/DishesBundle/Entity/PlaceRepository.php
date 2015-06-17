@@ -293,6 +293,53 @@ class PlaceRepository extends EntityRepository
     }
 
     /**
+     * Backup solution for API. Finds place point with lowest cart and delivery price
+     *
+     * @param int $placeId
+     * @param array|null $locationData
+     * @param boolean $ignoreWorkTime
+     * @return float|null
+     */
+    public function getCheapestPlacePoint($placeId, $locationData, $ignoreWorkTime = false)
+    {
+        $city = null;
+        if (isset($locationData['city']) && !empty($locationData['city'])) {
+            $city = $locationData['city'];
+        }
+
+        $dh = date("H");
+        $dm = date("i");
+        $wd = date("N");
+        if (intval($dh) < 6) {
+            $dh = 24 + intval($dh);
+            $wd = date("N", strtotime("-1 day"));
+        }
+        $dth = $dh."".$dm;
+
+        $subQuery = "SELECT pp.id FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND pp.public=1 AND pp.deleted_at IS NULL AND p.active=1 AND pp.place = $placeId";
+
+        if (!empty($city)) {
+            $subQuery.= " AND pp.city='".$city."'";
+        }
+
+        if (!$ignoreWorkTime) {
+            $subQuery.=" AND '".$dth."' BETWEEN (REPLACE(wd".$wd."_start,':','') + 0) AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)";
+        }
+
+        $subQuery.=" AND delivery=1 ORDER BY pp.delivery_time ASC, fast DESC LIMIT 1";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
+
+        $stmt->execute();
+        $places = $stmt->fetchAll();
+
+        if (!empty($places) && !empty($places[0])) {
+            return $places[0];
+        }
+        return null;
+    }
+
+    /**
      * @param int $placeId
      * @param array|null $locationData
      * @param bool $ignoreSelfDelivery
