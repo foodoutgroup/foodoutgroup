@@ -20,7 +20,7 @@
         </trans-unit>
         <trans-unit id="cart.block.delivery_type.tooltip" resname="cart.block.delivery_type.tooltip">
             <source>cart.block.delivery_type.tooltip</source>
-            <target>Piegāde / atsaukšana location atlasāt nākamajā solī</target>
+            <target>Nākamajā solī izvēlieties piegādes adresi  vai restorāna adresi, ja vēlaties pasūtījumu saņemt uz vietas</target>
         </trans-unit>
       <trans-unit id="ace667964c9c1c5c29134999deae92c0" resname="cart.block.total">
         <source>cart.block.total</source>
@@ -156,7 +156,7 @@
       </trans-unit>
         <trans-unit id="cart.checkout.pickup_tooltip" resname="cart.checkout.pickup_tooltip">
             <source>cart.checkout.pickup_tooltip</source>
-            <target>Izvēlieties tuvāko restorānu, no kuras pievienojušās kārtībā</target>
+            <target>Izvēlieties restorānu, kurā vēlaties saņemt pasūtījumu</target>
         </trans-unit>
       <trans-unit id="1dad9530fac5a77fbb8af41d6e506f1a" resname="cart.checkout.no_delivery_choose_what_to_do">
         <source>cart.checkout.no_delivery_choose_what_to_do</source>
@@ -360,6 +360,10 @@ LV-1046</target>
         <source>general.coupon.popup_link</source>
         <target><![CDATA[Ja Jums ir kupons, ievadiet <a href="#coupon" class="fancy-box">tā kodu šeit</a>]]></target>
       </trans-unit>
+        <trans-unit id="general.coupon.note_text" resname="general.coupon.note_text">
+            <source>general.coupon.note_text</source>
+            <target>* Kods neattiecas uz akcijas ēdieniem (atlaides nesummējas). Neattiecas uz kuponiem – ar kuriem var norēķināties par visu pasūtījumu.</target>
+        </trans-unit>
       <trans-unit id="212330b0b2cb9e05238f54569644dbcd" resname="cart.block.discount_sum">
         <source>cart.block.discount_sum</source>
         <target>Atlaide</target>
