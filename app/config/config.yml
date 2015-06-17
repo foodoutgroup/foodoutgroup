@@ -121,6 +121,7 @@ twig:
         display_currency_alternative: "%display_currency_alternative%"
         currency_alternative: %currency_alternative%
         show_best_offers: %show_best_offers%
+        show_delfi_banner: %show_delfi_banner%
         show_game: %show_best_offers%
         show_apps_download: %show_apps_download%
         show_is_social: %show_is_social%

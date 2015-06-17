@@ -205,13 +205,18 @@ class Misc
 
     /**
      * @param string $name
+     * @param boolean $noException
      * @return string
      * @throws \Exception
      */
-    public function getParam($name)
+    public function getParam($name, $noException=false)
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
         $parameter = $em->getRepository('Food\AppBundle\Entity\Param')->findOneBy(array('param' => $name));
+
+        if ($noException && !$parameter instanceof Param) {
+            return null;
+        }
 
         if (!$parameter instanceof Param) {
             throw new \Exception('Parameter not found');
