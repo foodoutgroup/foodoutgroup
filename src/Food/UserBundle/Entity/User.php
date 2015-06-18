@@ -448,7 +448,7 @@ class User extends BaseUser
      * @param \DateTime $expiresAt
      * @retun User
      */
-    public function setExpiresAt($expiresAt)
+    public function setExpiresAt(\DateTime $expiresAt)
     {
         $this->expiresAt = $expiresAt;
 
