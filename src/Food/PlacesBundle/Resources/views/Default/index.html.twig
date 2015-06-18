@@ -29,8 +29,8 @@
         });
 
         // Delivery type filter
-        $(".content-righter").on('click', '.list-top-filters .delivery-type-filter a', function(event) {
-            $(".content-righter .list-top-filters .delivery-type-filter a.selected").removeClass('selected');
+        $(".site-block").on('click', '.restaurants-list-top-filters .delivery-type-filter a', function(event) {
+            $(".site-block .restaurants-list-top-filters .delivery-type-filter a.selected").removeClass('selected');
             $(event.target).addClass('selected');
             submitKitchens();
         });
@@ -59,7 +59,7 @@
                 params[tmpName] += $($filters[i]).val();
                 selectedKitchens += ','+$($filters[i]).val()
             }
-            params['delivery_type'] = $(".content-righter .list-top-filters .delivery-type-filter a.selected").attr('data-type');
+            params['delivery_type'] = $(".site-block .restaurants-list-top-filters .delivery-type-filter a.selected").attr('data-type');
             params['recommended'] = '{{ recommended }}';
 
             var kitchenParams = { 'recommended': '{{ recommended }}', 'delivery_type': params['delivery_type'], 'selected_kitchens': selectedKitchens};
@@ -151,6 +151,13 @@
             });
         // ]]>
     </script>
+    <div class="restaurants-list-top-filters">
+        <div class="delivery-type-filter">
+            <div class="label">{% trans %}places.filter_by_delivery{% endtrans %}:</div>
+            <a href="#" data-type="delivery" {% if delivery_type_filer == 'delivery' or delivery_type_filer == 'delivery_and_pickup' %}class="selected"{% endif %}>{% trans %}places.filter_delivery{% endtrans %}</a>
+            <a href="#" data-type="pickup" {% if delivery_type_filer == 'pickup' %}class="selected"{% endif %}>{% trans %}places.filter_pickup{% endtrans %}</a>
+        </div>
+    </div>
     <div class="clearfix">
         <div class="content-lefter">
             {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended})) }}
@@ -158,11 +165,11 @@
             <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a>
         </div>
         <div class="content-righter">
-            <div class="restaurants-list-controls clearfix">
-                {#<form class="list-search-form fl">#}
-                    {#<input type="text" placeholder="{% trans %}places.search_placeholder{% endtrans %}">#}
-                    {#<input type="submit" value="">#}
-                {#</form>#}
+            {#<div class="restaurants-list-controls clearfix">
+                &#123;&#35;<form class="list-search-form fl">&#35;&#125;
+                    &#123;&#35;<input type="text" placeholder="{% trans %}places.search_placeholder{% endtrans %}">&#35;&#125;
+                    &#123;&#35;<input type="submit" value="">&#35;&#125;
+                &#123;&#35;</form>&#35;&#125;
                 <div class="list-top-filters clearfix fr">
                     <div class="delivery-type-filter">
                         <div class="label">{% trans %}places.filter_by_delivery{% endtrans %}:</div>
@@ -170,13 +177,13 @@
                         <a href="#" data-type="delivery" {% if delivery_type_filer == 'delivery' %}class="selected"{% endif %}>{% trans %}places.filter_delivery{% endtrans %}</a>
                         <a href="#" data-type="pickup" {% if delivery_type_filer == 'pickup' %}class="selected"{% endif %}>{% trans %}places.filter_pickup{% endtrans %}</a>
                     </div>
-                    {#<div class="label">{% trans %}places.order_by{% endtrans %}:</div>
+                    <div class="label">{% trans %}places.order_by{% endtrans %}:</div>
                     <a href="#">{% trans %}places.sort_by_relevance{% endtrans %}</a>
                     <a href="#" class="selected">{% trans %}places.sort_by_rating{% endtrans %}</a>
                     <a href="#">{% trans %}places.sort_by_delivery_price{% endtrans %}</a>
-                    <a href="#">{% trans %}places.sort_by_distance{% endtrans %}</a>#}
+                    <a href="#">{% trans %}places.sort_by_distance{% endtrans %}</a>
                 </div>
-            </div>
+            </div>#}
             {{ render(controller('FoodPlacesBundle:Default:list', {'recommended': recommended})) }}
         </div>
     </div>
