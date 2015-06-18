@@ -53,7 +53,7 @@ parameters:
     show_game: true
     show_apps_download: true
     show_is_social: true
-    show_delfi_banner: true
+    show_delfi_banner: false
     track_conversions: true
     # naudojam telefonu validacijoms
     country: LT
