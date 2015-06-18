@@ -146,7 +146,13 @@ class Restaurant extends ContainerAware
 
                 // TODO Trying to catch fatal when searching for PlacePoint
                 if (empty($ppId)) {
-                    $this->container->get('logger')->error('Trying to find PlacePoint without ID in Restaurant - loadFromEntity find 1');
+//                    $this->container->get('logger')->error('Trying to find PlacePoint without ID in Restaurant - loadFromEntity find 1');
+                    // If no place point found near - just find the cheapest one for prices and cart size...
+                    $ppId = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getCheapestPlacePoint(
+                        $place->getId(),
+                        $locationData,
+                        true
+                    );
                 }
 
                 $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($ppId);

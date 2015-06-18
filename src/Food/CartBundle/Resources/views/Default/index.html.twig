@@ -348,6 +348,8 @@
                             <div class="cupon-info">
                                 {% trans %}general.coupon.popup_link{% endtrans %}
                                 <input type="hidden" name="coupon_code" id="coupon_code" value="{% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{{ dataToLoad['coupon_code'] }}{% endif %}" />
+                                <br /><br />
+                                <div class="alert alert-info">{% trans %}general.coupon.note_text{% endtrans %}</div>
                             </div>
                             <h2 class="section-2">2. {% trans %}cart.checkout.block_title_secure_payment{% endtrans %}</h2>
                             <div class="select-payment clearfix">

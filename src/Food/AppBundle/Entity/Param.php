@@ -29,7 +29,7 @@ class Param
 
     /**
      * @var string
-     * @ORM\Column(name="value", type="string", length=254)
+     * @ORM\Column(name="value", type="text")
      */
     private $value;
 

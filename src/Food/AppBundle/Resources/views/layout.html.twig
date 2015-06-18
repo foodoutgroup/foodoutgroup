@@ -107,10 +107,12 @@
         </noscript>
         <!-- Adform Tracking Code END -->
     {% endblock %}
+    {% block delfi_js %}{% endblock %}
 </head>
 <body>
 {{ notifications.init|raw }}
 <div class="site">
+    {% block delfi_banner %}{% endblock %}
     <div class="site-top">
         <div class="site-block clearfix">
             <a href="{{ path('food_lang_homepage') }}" class="main-logo">

@@ -78,7 +78,12 @@ class LocalBiller extends ContainerAware implements BillingInterface {
 
         $this->container->get('food.cart')->clearCart($order->getPlace());
 
-        $possibleNewUser = $this->container->get('food.app.utils.misc')->isNewOrSuspectedUser($order->getUser());
+        // Unapproved logic should not affect mobile users
+        if (!$order->getMobile()) {
+            $possibleNewUser = $this->container->get('food.app.utils.misc')->isNewOrSuspectedUser($order->getUser());
+        } else {
+            $possibleNewUser = false;
+        }
 
         if ($possibleNewUser) {
             $orderService->statusUnapproved('new_order', 'Possible new unreliable user or suspected fraud');

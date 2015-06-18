@@ -77,6 +77,18 @@
 
 {% block title %}{% trans %}general.base_page_title{% endtrans %} | {{ page_title }}{% endblock %}
 
+{% block delfi_js %}
+    {% if show_delfi_banner %}
+       {{ misc_utils.param('delfiJs', true)|raw }}
+    {% endif %}
+{% endblock %}
+
+{% block delfi_banner %}
+    {% if show_delfi_banner %}
+       {{ misc_utils.param('delfiBanner', true)|raw }}
+    {% endif %}
+{% endblock %}
+
 {% block body %}
 
     <div style="background-image: url(http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/offer-1.jpg') }});" class="site-header special-offer-block">

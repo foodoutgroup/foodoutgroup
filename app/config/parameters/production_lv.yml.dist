@@ -52,6 +52,7 @@ parameters:
     show_game: false
     show_apps_download: false
     show_is_social: false
+    show_delfi_banner: false
     track_conversions: false
     # naudojam telefonu validacijoms
     country: LV
