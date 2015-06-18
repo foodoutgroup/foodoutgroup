@@ -423,6 +423,9 @@ class DefaultController extends Controller
                     }
 
                     $total_cart = $total_cart - $discountSum;
+                    if ($total_cart < 0) {
+                        $total_cart = 0;
+                    }
                 }
             }
         }
