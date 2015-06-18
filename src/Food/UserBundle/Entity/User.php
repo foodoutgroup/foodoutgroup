@@ -462,15 +462,4 @@ class User extends BaseUser
     {
         return $this->credentialsExpireAt;
     }
-
-    /**
-     * @param \DateTime $credentialsExpireAt
-     * @return User
-     */
-    public function setCredentialsExpireAt($credentialsExpireAt)
-    {
-        $this->credentialsExpireAt = $credentialsExpireAt;
-
-        return $this;
-    }
 }
