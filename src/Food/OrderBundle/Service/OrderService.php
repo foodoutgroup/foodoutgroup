@@ -905,6 +905,11 @@ class OrderService extends ContainerAware
         /**
          * Na daugiau kintamuju jau nebesugalvojau :/
          */
+        $discountOverTotal = 0;
+        if ($discountSum > $preSum) {
+            $discountOverTotal = $discountSum - $preSum;
+            $discountSum = $preSum;
+        }
         $discountSumLeft = $discountSum;
         $discountSumTotal = $discountSum;
         $discountUsed = 0;
@@ -970,6 +975,13 @@ class OrderService extends ContainerAware
                 $this->getEm()->flush();
 
                 $sumTotal += $cartDish->getQuantity() * $opt->getDishOptionId()->getPrice();
+            }
+        }
+
+        if ($discountOverTotal > 0) {
+            $deliveryPrice = $deliveryPrice - $discountOverTotal;
+            if ($deliveryPrice < 0) {
+                $deliveryPrice = 0;
             }
         }
 
