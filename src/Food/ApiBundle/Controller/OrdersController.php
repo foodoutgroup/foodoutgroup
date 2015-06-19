@@ -152,6 +152,7 @@ class OrdersController extends Controller
             $this->get('food.order')->setOrder($order);
             $this->get('food.order')->statusNew('api');
             $this->get('food.order')->saveOrder();
+            $this->get('food.order')->billOrder();
             $this->get('food.order')->informPlace();
 
             return new JsonResponse($this->get('food_api.order')->getOrderForResponse($order));
