@@ -1817,3 +1817,39 @@ div.coupon_form_popup {
     cursor: default;
     color: #c5c5c5;
 }
+/* Restaurant delivery type filters */
+.restaurants-list-top-filters {
+    padding-top: 12px;
+    padding-left: 15px;
+    padding-bottom: 9px;
+    padding-right: 10px;
+    letter-spacing: 0.4px;
+    zoom: 1;
+    float: right;
+    font-family: 'avenirbook';
+    font-size: 12px;
+    color: #55422e;
+    margin-top: -68px;
+    border-radius: 5px;
+    background-color: #fff;
+}
+.restaurants-list-top-filters .label {
+    float: left;
+    padding-right: 5px;
+    padding-top: 2px
+}
+.restaurants-list-top-filters .selected {
+    background: #b39196;
+    color: #fff;
+}
+.restaurants-list-top-filters a {
+    float: left;
+    line-height: 17px;
+    padding: 1px 5px 2px;
+    border-radius: 3px;
+    color: #b39196;
+    margin: 0 2px 0 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    text-decoration: none;
+}

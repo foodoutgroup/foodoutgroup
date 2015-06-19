@@ -443,4 +443,23 @@ class User extends BaseUser
     {
         return $this->birthday;
     }
+
+    /**
+     * @param \DateTime $expiresAt
+     * @return User
+     */
+    public function setExpiresAt(\DateTime $expiresAt)
+    {
+        $this->expiresAt = $expiresAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCredentialsExpireAt()
+    {
+        return $this->credentialsExpireAt;
+    }
 }
