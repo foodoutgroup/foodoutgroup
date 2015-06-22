@@ -4,6 +4,7 @@ namespace Food\ApiBundle\Service;
 
 use Food\ApiBundle\Common\JsonRequest;
 use Food\OrderBundle\Entity\Order;
+use Food\OrderBundle\Entity\Coupon;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
 use Food\OrderBundle\Service\OrderService as FO;
@@ -71,6 +72,9 @@ class OrderService extends ContainerAware
                     "flat_number": 2,
                    "city": "Vilnius",
                     "comments": "Duru kodas 1234"
+            },
+            "discount": {
+                "code": "123456"
             }
          }
         <!-- OR -->
@@ -129,10 +133,25 @@ class OrderService extends ContainerAware
             );
         }
 
+        // Discount code validation
+        $coupon = null;
+        $discountVar = $request->get('discount');
+        if (!empty($discountVar) && !empty($discountVar['code'])) {
+            $coupon = $this->container->get('food.order')->getCouponByCode($discountVar['code']);
+            if (empty($coupon)) {
+                throw new ApiException(
+                    'Coupon Not found',
+                    404,
+                    array(
+                        'error' => 'Coupon Not found',
+                        'description' => $this->container->get('translator')->trans('api.orders.coupon_does_not_exists')
+                    )
+                );
+            }
+        }
 
         $cartService = $this->getCartService();
         $cartService->setNewSessionId($basket->getSession());
-
         $place = $basket->getPlaceId();
         if ($serviceVar['type'] != "pickup") {
             $list = $cartService->getCartDishes($basket->getPlaceId());
@@ -193,6 +212,7 @@ class OrderService extends ContainerAware
                         true
                     )
                 );
+
             }
         } elseif ($basket->getPlaceId()->getMinimalOnSelfDel()) {
             $list = $cartService->getCartDishes($basket->getPlaceId());
@@ -217,7 +237,8 @@ class OrderService extends ContainerAware
             $requestOrig->getLocale(),
             $user,
             $pp,
-            ($serviceVar['type'] == "pickup" ? true : false)
+            ($serviceVar['type'] == "pickup" ? true : false),
+            $coupon
         );
 
         $os->setMobileOrder(true);
@@ -264,9 +285,10 @@ class OrderService extends ContainerAware
                 'id' => $os->getOrder()->getId()
             )
         );
+
         $this->container->get('doctrine')->getManager()->refresh($order);
 
-        return $this->getOrderForResponse($order);
+        return $this->getOrderForResponse($order, $coupon, $list);
     }
 
     public function getCartService()
@@ -278,10 +300,12 @@ class OrderService extends ContainerAware
      * @todo - FIX TO THE EPIC COMMON LEVEL
      *
      * @param Order $order
+     * @param Coupon $coupon
+     * @param $list
      *
      * @return array
      */
-    public function getOrderForResponse(Order $order)
+    public function getOrderForResponse(Order $order, Coupon $coupon = null, $list = null)
     {
         $message = $this->getOrderStatusMessage($order);
 
@@ -290,12 +314,28 @@ class OrderService extends ContainerAware
             $title = "waiting_user_confirmation";
         }
 
+        $discount = array();
+        if (!empty($coupon)) {
+            $discountSum = null;
+            $discountSize = $coupon->getDiscount();
+            if (!empty($discountSize) && !empty($list)) {
+                $discountSum = $this->getCartService()->getTotalDiscount($list, $coupon->getDiscount());
+            } else {
+                $discountSize = null;
+                $discountSum = $coupon->getDiscountSum();
+            }
+            $discount['code'] = $coupon->getCode();
+            $discount['discount_sum'] = $discountSum;
+            //$discount['discount_size'] = $discountSize;
+        }
+
         $returner = array(
             'order_id' => $order->getId(),
             'total_price' => array(
                 'amount' => $order->getTotal()*100,
                 'currency' => $this->container->getParameter('currency_iso')
             ),
+            'discount' => $discount,
             'state' => array(
                 'title' => $title,
                 // TODO Rodome nebe restorano, o dispeceriu nr
