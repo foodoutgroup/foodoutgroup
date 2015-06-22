@@ -155,6 +155,10 @@ class OrdersController extends Controller
             $this->get('food.order')->billOrder();
             $this->get('food.order')->informPlace();
 
+            // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
+            $this->container->get('food.order')->setOrder($order);
+            $this->container->get('food.order')->deactivateCoupon();
+
             return new JsonResponse($this->get('food_api.order')->getOrderForResponse($order));
         }  catch (ApiException $e) {
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());

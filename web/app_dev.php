@@ -1,5 +1,27 @@
 <?php
 
+// The redirect test from one way to another... or how foodout was sold to delfi
+$domain = $_SERVER['HTTP_HOST'];
+$method = $_SERVER['REQUEST_METHOD'];
+$url = $_SERVER['REQUEST_URI'];
+
+
+$rdDomains = array('foodout.lt', 'www.foodout.lt');
+$newUrl = 'foodout.1000receptu.lt';
+//$rdDomains = array('skanu');
+//$newUrl = 'so.skanu';
+
+// Check pattern
+$pattern = '/\/(api|admin|test|invoice|payments|call_center|newsletter|ajax|js|routing|monitoring|nagios|logistics|order|sitemap|success|o|r|o\-spr)\//i';
+
+// Das logic
+if (in_array($domain, $rdDomains) && $method == 'GET' && !preg_match($pattern, $url)) {
+    header('Location: http://'.$newUrl.$url, null, 302);
+    die();
+}
+
+/* Delfi promo end */
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
 
