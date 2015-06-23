@@ -1853,3 +1853,6 @@ div.coupon_form_popup {
     vertical-align: baseline;
     text-decoration: none;
 }
+.alert_not_detailed_search {
+    width: 675px;
+}
