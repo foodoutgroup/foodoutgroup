@@ -90,11 +90,11 @@
         <source>admin.point.active</source>
         <target>Aktīvs</target>
       </trans-unit>
-      <trans-unit id="e1e410cac45db85136792b6d662b199b" resname="admin.static.seo_title">
+      <trans-unit id="admin.static.seo_title" resname="admin.static.seo_title">
         <source>admin.static.seo_title</source>
         <target>SEO Title</target>
       </trans-unit>
-      <trans-unit id="e1e410cac45db85136792b6d662b199b" resname="admin.static.seo_description">
+      <trans-unit id="admin.static.seo_description" resname="admin.static.seo_description">
         <source>admin.static.seo_description</source>
         <target>SEO Description</target>
       </trans-unit>
