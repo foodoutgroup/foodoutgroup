@@ -2111,6 +2111,28 @@
                 <source>admin.param.value</source>
                 <target>Value</target>
             </trans-unit>
+
+            <!-- SEO -->
+            <trans-unit id="admin.seorecord">
+                <source>admin.seorecord</source>
+                <target>SEO</target>
+            </trans-unit>
+            <trans-unit id="admin.seorecord.name">
+                <source>admin.seorecord.name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="admin.seorecord.title">
+                <source>admin.seorecord.title</source>
+                <target>SEO Title</target>
+            </trans-unit>
+            <trans-unit id="admin.seorecord.description">
+                <source>admin.seorecord.description</source>
+                <target>SEO Description</target>
+            </trans-unit>
+            <trans-unit id="admin.seorecord.places">
+                <source>admin.seorecord.places</source>
+                <target>Places</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

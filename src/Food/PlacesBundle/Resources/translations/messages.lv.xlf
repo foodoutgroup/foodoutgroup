@@ -90,6 +90,14 @@
         <source>admin.point.active</source>
         <target>Aktīvs</target>
       </trans-unit>
+      <trans-unit id="e1e410cac45db85136792b6d662b199b" resname="admin.static.seo_title">
+        <source>admin.static.seo_title</source>
+        <target>SEO Title</target>
+      </trans-unit>
+      <trans-unit id="e1e410cac45db85136792b6d662b199b" resname="admin.static.seo_description">
+        <source>admin.static.seo_description</source>
+        <target>SEO Description</target>
+      </trans-unit>
       <trans-unit id="1e6cd917ed71a1241e4bedc29264bd98" resname="404 Not Found">
         <source>404 Not Found</source>
         <target>Atvainojamies! Lapa nav atrasta.</target>
