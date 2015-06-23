@@ -82,8 +82,8 @@ class PlaceRepository extends EntityRepository
          *  This stuff needs to be deprecated. And parameter removed.
          */
 
-        $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL";
-        $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.active=1 AND ppdz.place_point=pps.id";
+        $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL";
+        $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pps.id";
 
         $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id
             AND (
@@ -265,8 +265,8 @@ class PlaceRepository extends EntityRepository
         }
         $dth = $dh."".$dm;
 
-        $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL";
-        $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.active=1 AND ppdz.place_point=pp.id";
+        $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL";
+        $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id";
 
         $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) as distance FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND pp.deleted_at IS NULL AND p.active=1 AND pp.city='".$city."' AND pp.place = $placeId
             AND (
@@ -418,7 +418,7 @@ class PlaceRepository extends EntityRepository
 
     public function getMinDeliveryPrice($placeId)
     {
-        $minPrice = "SELECT MIN(price) as price FROM `place_point_delivery_zones` WHERE active=1 AND place=".(int)$placeId;
+        $minPrice = "SELECT MIN(price) as price FROM `place_point_delivery_zones` WHERE deleted_at IS NULL AND active=1 AND place=".(int)$placeId;
         $stmt = $this->getEntityManager()->getConnection()->prepare($minPrice);
         $stmt->execute();
         return $stmt->fetchColumn(0);
@@ -426,7 +426,7 @@ class PlaceRepository extends EntityRepository
 
     public function getMaxDeliveryPrice($placeId)
     {
-        $minPrice = "SELECT MAX(price) as price FROM `place_point_delivery_zones` WHERE active=1 AND place=".(int)$placeId;
+        $minPrice = "SELECT MAX(price) as price FROM `place_point_delivery_zones` WHERE deleted_at IS NULL AND active=1 AND place=".(int)$placeId;
         $stmt = $this->getEntityManager()->getConnection()->prepare($minPrice);
         $stmt->execute();
         return $stmt->fetchColumn(0);
@@ -434,7 +434,7 @@ class PlaceRepository extends EntityRepository
 
     public function getMinCartSize($placeId)
     {
-        $minPrice = "SELECT MIN(cart_size) as price FROM `place_point_delivery_zones` WHERE active=1 AND place=".(int)$placeId;
+        $minPrice = "SELECT MIN(cart_size) as price FROM `place_point_delivery_zones` WHERE deleted_at IS NULL AND active=1 AND place=".(int)$placeId;
         $stmt = $this->getEntityManager()->getConnection()->prepare($minPrice);
         $stmt->execute();
         return $stmt->fetchColumn(0);
@@ -442,7 +442,7 @@ class PlaceRepository extends EntityRepository
 
     public function getMaxCartSize($placeId)
     {
-        $minPrice = "SELECT MAX(cart_size) as price FROM `place_point_delivery_zones` WHERE active=1 AND place=".(int)$placeId;
+        $minPrice = "SELECT MAX(cart_size) as price FROM `place_point_delivery_zones` WHERE deleted_at IS NULL AND active=1 AND place=".(int)$placeId;
         $stmt = $this->getEntityManager()->getConnection()->prepare($minPrice);
         $stmt->execute();
         return $stmt->fetchColumn(0);
