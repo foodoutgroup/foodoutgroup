@@ -300,17 +300,19 @@ input.button {}
 .list-search-form input[type="text"] {float: left; border: none; padding: 12px 10px; height: 16px; width: 213px; padding-left: 0px;}
 .list-search-form input[type="submit"] {position: absolute; left: 4px; top: 0px; width: 32px; height: 40px; background: url(/bundles/foodapp/images/search-ico.png) no-repeat center center; border: none;}
 
-.restaurant-item {padding: 19px 30px; padding-left: 15px; border-bottom: 1px solid #ebe2d9; position: relative;}
+.restaurant-item {padding: 15px 30px; padding-left: 15px; border-bottom: 1px solid #ebe2d9; position: relative;}
 .restaurant-item:hover {box-shadow: 0 0px 8px #e3ded9; z-index: 20;}
 .discount-tag {position: absolute; right: 231px; top: 27px; background: red; color: #fff; line-height: 18px; padding: 0 8px; padding-top: 2px;}
 .restaurant-item .logo {width: 120px; float: left; text-align: center; margin-right: 20px;}
 .restaurant-item .item-center {width: 380px; float: left;}
 .restaurant-item .item-righter {width: 170px; float: right; padding-top: 11px;}
 .restaurant-item .name {margin: 0; margin-top: 9px; letter-spacing: 1px;}
-.restaurant-item .desc {margin: 0; margin-top: 2px; margin-bottom: 25px; letter-spacing: 0.5px;}
+.restaurant-item .desc {margin: 0; margin-top: 2px; margin-bottom: 12px; letter-spacing: 0.5px;}
 
 .restaurant-item .delivery,
 .restaurant-item .min-cart-size {padding-left: 20px;}
+.restaurant-item .select-place-point {display: block; margin-top: 2px;}
+.restaurant-item .select-place-point a { color: #000000;}
 .restaurant-item .delivery {background: url(/bundles/foodapp/images/delivery-ico.png) no-repeat left 2px; margin-right: 36px;}
 .restaurant-item .pickup {background: url(/bundles/foodapp/images/pickup-ico.png) no-repeat left 2px; margin-right: 36px; color: #55422e; padding-left: 13px; letter-spacing: 0.5px;}
 .restaurant-item .min-cart-size {background: url(/bundles/foodapp/images/cart-ico.png) no-repeat left 1px;}

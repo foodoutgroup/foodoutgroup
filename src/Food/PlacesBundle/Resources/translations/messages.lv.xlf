@@ -198,6 +198,10 @@
         <source>place.min_cart_amount</source>
         <target>Min. grozs</target>
       </trans-unit>
+        <trans-unit id="place.select_place_to_pickup" resname="place.select_place_to_pickup">
+            <source>place.select_place_to_pickup</source>
+            <target>Izvēlieties vietu, kur vēlaties saņemt pasūtījumu</target>
+        </trans-unit>
       <trans-unit id="4962db963b0f0d3cd2bc1b571272710b" resname="places.reviews_count">
         <source>places.reviews_count</source>
         <target>Novērtējums|novērtējumi|novērtējumu</target>
