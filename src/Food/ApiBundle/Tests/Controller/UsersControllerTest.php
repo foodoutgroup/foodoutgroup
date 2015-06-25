@@ -320,8 +320,19 @@ class UsersControllerTest extends WebTestCase
         );
 
         $this->assertEquals('Food\ApiBundle\Controller\UsersController::registerAction', $this->client->getRequest()->attributes->get('_controller'));
-        $this->assertEquals(409 , $this->client->getResponse()->getStatusCode());
-        $this->assertTrue((strpos($this->client->getResponse()->getContent(), 'User exists') !== false));
+        // Logic changed. Now we allow existing users to be overriden :(
+//        $this->assertEquals(409 , $this->client->getResponse()->getStatusCode());
+//        $this->assertTrue((strpos($this->client->getResponse()->getContent(), 'User exists') !== false));
+        $this->assertEquals(200 , $this->client->getResponse()->getStatusCode());
+        $expectedUserData = array(
+            "phone" => $this->getExpectedExampleNumber(),
+            "name" => "Testas testuoklis",
+            "email" => "api_register@foodout.lt",
+            "refresh_token" => '',
+        );
+        $this->assertTrue(!empty($userData['session_token']));
+        unset($userData['session_token']);
+        $this->assertEquals($expectedUserData, $userData);
     }
 
     public function testRegistrationSuccessful()
