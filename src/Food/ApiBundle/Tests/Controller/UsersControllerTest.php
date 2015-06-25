@@ -330,6 +330,7 @@ class UsersControllerTest extends WebTestCase
             "email" => "api_register@foodout.lt",
             "refresh_token" => '',
         );
+        $userData = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertTrue(!empty($userData['session_token']));
         unset($userData['session_token']);
         $this->assertEquals($expectedUserData, $userData);
