@@ -325,9 +325,10 @@ class UsersControllerTest extends WebTestCase
 //        $this->assertTrue((strpos($this->client->getResponse()->getContent(), 'User exists') !== false));
         $this->assertEquals(200 , $this->client->getResponse()->getStatusCode());
         $expectedUserData = array(
+            "user_id" => 2,
             "phone" => $this->getExpectedExampleNumber(),
             "name" => "Testas testuoklis",
-            "email" => "api_register@foodout.lt",
+            "email" => "api_tester@foodout.lt",
             "refresh_token" => '',
         );
         $userData = json_decode($this->client->getResponse()->getContent(), true);
