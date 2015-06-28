@@ -675,6 +675,22 @@
                 <source>admin.users.division_codes</source>
                 <target>Division codes</target>
             </trans-unit>
+            <trans-unit id="admin.users.company_name">
+                <source>admin.users.company_name</source>
+                <target>Company name</target>
+            </trans-unit>
+            <trans-unit id="admin.users.company_code">
+                <source>admin.users.company_code</source>
+                <target>Company code</target>
+            </trans-unit>
+            <trans-unit id="admin.users.vat_code">
+                <source>admin.users.vat_code</source>
+                <target>VAT code</target>
+            </trans-unit>
+            <trans-unit id="admin.users.company_address">
+                <source>admin.users.company_address</source>
+                <target>Company address</target>
+            </trans-unit>
             <trans-unit id="admin.users_dision_code.id">
                 <source>admin.users_dision_code.id</source>
                 <target>ID</target>

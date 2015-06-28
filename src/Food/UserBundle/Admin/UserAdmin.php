@@ -43,6 +43,7 @@ class UserAdmin extends SonataUserAdmin {
             ->add('phone', null, array('label' => 'admin.users.phone'))
             ->add('place')
             ->add('isBussinesClient', null, array('label' => 'admin.users.bussines_client'))
+            ->add('companyName', null, array('label' => 'admin.users.company_name'))
         ;
     }
 
@@ -122,6 +123,10 @@ class UserAdmin extends SonataUserAdmin {
                 ->end()
                 ->with('admin.users.bussines_management')
                 ->add('isBussinesClient', null, array('required' => false, 'label' => 'admin.users.bussines_client'))
+                ->add('companyName', null, array('required' => false, 'label' => 'admin.users.company_name'))
+                ->add('companyCode', null, array('required' => false, 'label' => 'admin.users.company_code'))
+                ->add('vatCode', null, array('required' => false, 'label' => 'admin.users.vat_code'))
+                ->add('company_address', null, array('required' => false, 'label' => 'admin.users.company_address'))
                 ->add('divisionCodes', 'sonata_type_collection',
                     array('required' => false, 'label' => 'admin.users.division_codes'),
                     array(
