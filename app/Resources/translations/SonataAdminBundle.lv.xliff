@@ -663,6 +663,26 @@
                 <source>ROLE_SUPPORT</source>
                 <target>Support</target>
             </trans-unit>
+            <trans-unit id="admin.users.bussines_management">
+                <source>admin.users.bussines_management</source>
+                <target>Bussines client management</target>
+            </trans-unit>
+            <trans-unit id="admin.users.bussines_client">
+                <source>admin.users.bussines_client</source>
+                <target>Bussines client</target>
+            </trans-unit>
+            <trans-unit id="admin.users.division_codes">
+                <source>admin.users.division_codes</source>
+                <target>Division codes</target>
+            </trans-unit>
+            <trans-unit id="admin.users_dision_code.id">
+                <source>admin.users_dision_code.id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="admin.users_dision_code.code">
+                <source>admin.users_dision_code.code</source>
+                <target>Code</target>
+            </trans-unit>
 
             <!-- Static content -->
             <trans-unit id="admin.static">

@@ -658,6 +658,26 @@
                 <source>ROLE_SUPPORT</source>
                 <target>Pagalba</target>
             </trans-unit>
+            <trans-unit id="admin.users.bussines_management">
+                <source>admin.users.bussines_management</source>
+                <target>Verslo klientų valdymas</target>
+            </trans-unit>
+            <trans-unit id="admin.users.bussines_client">
+                <source>admin.users.bussines_client</source>
+                <target>Verslo klientas</target>
+            </trans-unit>
+            <trans-unit id="admin.users.division_codes">
+                <source>admin.users.division_codes</source>
+                <target>Padalinių kodai</target>
+            </trans-unit>
+            <trans-unit id="admin.users_dision_code.id">
+                <source>admin.users_dision_code.id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="admin.users_dision_code.code">
+                <source>admin.users_dision_code.code</source>
+                <target>Kodas</target>
+            </trans-unit>
 
             <!-- Static content -->
             <trans-unit id="admin.static">

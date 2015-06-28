@@ -17,6 +17,7 @@ class UserAdmin extends SonataUserAdmin {
             ->add('place', 'text', array('label' => 'admin.users.place'))
             ->add('enabled', null, array('editable' => true, 'label' => 'admin.users.enabled'))
             ->add('locked', null, array('editable' => true, 'label' => 'admin.users.locked'))
+            ->add('isBussinesClient', null, array('editable' => true, 'label' => 'admin.users.bussines_client'))
             ->add('lastLogin', null, array('format' => 'Y-m-d H:i:s', 'label' => 'admin.users.last_login'))
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -41,6 +42,7 @@ class UserAdmin extends SonataUserAdmin {
             ->add('email', null, array('label' => 'admin.users.email'))
             ->add('phone', null, array('label' => 'admin.users.phone'))
             ->add('place')
+            ->add('isBussinesClient', null, array('label' => 'admin.users.bussines_client'))
         ;
     }
 
@@ -117,6 +119,17 @@ class UserAdmin extends SonataUserAdmin {
                 )
                 ->add('locked', null, array('required' => false, 'label' => 'admin.users.locked'))
                 ->add('enabled', null, array('required' => false, 'label' => 'admin.users.enabled'))
+                ->end()
+                ->with('admin.users.bussines_management')
+                ->add('isBussinesClient', null, array('required' => false, 'label' => 'admin.users.bussines_client'))
+                ->add('divisionCodes', 'sonata_type_collection',
+                    array('required' => false, 'label' => 'admin.users.division_codes'),
+                    array(
+                        'edit' => 'inline',
+                        'inline' => 'table',
+//                        'template' => 'FoodDishesBundle:Default:point_inline_edit.html.twig'
+                    )
+                )
                 ->end()
             ;
         }
