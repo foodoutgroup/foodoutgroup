@@ -150,4 +150,39 @@ class UserAdmin extends SonataUserAdmin {
         return $this->getConfigurationPool()->getContainer()->get('fos_user.user_manager');
     }
 
+
+    /**
+     * If user is a moderator - set place, as he can not choose it. Chuck Norris protection is active
+     *
+     * @param \Food\DishesBundle\Entity\Dish $object
+     * @return void
+     */
+    public function prePersist($object)
+    {
+
+        parent::prePersist($object);
+        $this->fixRelations($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Dish $object
+     * @return void
+     */
+    public function preUpdate($object)
+    {
+        $this->fixRelations($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Dish $object
+     */
+    private function fixRelations($object)
+    {
+        $divisions = $object->getDivisionCodes();
+        if (!empty($divisions)) {
+            foreach ($divisions as $division) {
+                $division->setUser($object);
+            }
+        }
+    }
 }
