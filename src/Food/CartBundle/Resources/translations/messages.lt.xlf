@@ -228,8 +228,14 @@
 LT-01234,
 Vilnius]]></target>
         </trans-unit>
-
-
+        <trans-unit id="cart.checkout.company_division_code" resname="cart.checkout.company_division_code">
+            <source>cart.checkout.company_division_code</source>
+            <target>Padalinio kodas</target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.company_division_code_placeholder" resname="cart.checkout.company_division_code_placeholder">
+            <source>cart.checkout.company_division_code_placeholder</source>
+            <target>FOODBUHALT</target>
+        </trans-unit>
         <trans-unit id="order.form.errors.no_restaurant_to_deliver" resname="order.form.errors.no_restaurant_to_deliver">
             <source>order.form.errors.no_restaurant_to_deliver</source>
             <target>Šiuo metu restoranas jau nebegali aptarnauti Jūsų užsakymo.</target>

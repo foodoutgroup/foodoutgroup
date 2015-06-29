@@ -228,6 +228,14 @@
 Rīga,
 LV-1046</target>
       </trans-unit>
+      <trans-unit id="cart.checkout.company_division_code" resname="cart.checkout.company_division_code">
+          <source>cart.checkout.company_division_code</source>
+          <target>Padalinio kodas</target>
+      </trans-unit>
+      <trans-unit id="cart.checkout.company_division_code_placeholder" resname="cart.checkout.company_division_code_placeholder">
+          <source>cart.checkout.company_division_code_placeholder</source>
+          <target>FOODBUHALT</target>
+      </trans-unit>
       <trans-unit id="ec4ed41d3e3b52f147682d3f477e55f0" resname="order.form.errors.no_restaurant_to_deliver">
         <source>order.form.errors.no_restaurant_to_deliver</source>
         <target>Šobrīd restorāns vairs nevar apkalpot Jūsu pasūtījumu.</target>
