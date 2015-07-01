@@ -150,8 +150,9 @@
                 {% set locAdress = '' %}
                 {% if location and location.address_found %}
                     {% set locAdress=location.address %}
+                    {% set locFlat=location.flat %}
                 {% endif %}
-                trgt.text(trgt.text() + ', {% trans %}places.places_near{% endtrans %} {{ locAdress }}');
+                trgt.text(trgt.text() + ', {% trans %}places.places_near{% endtrans %} {{ locAdress }}{% if locFlat %} - {{ locFlat }}{% endif %}');
             }
         {% endif %}
 

@@ -288,6 +288,16 @@ class User extends BaseUser
         return $this->address[0];
     }
 
+    public function getCurrentDefaultAddress()
+    {
+        $address = null;
+        if (!empty($this->address)) {
+            foreach($this->address as $address) {
+            }
+        }
+        return $address;
+    }
+
     /**
      * Add address
      *

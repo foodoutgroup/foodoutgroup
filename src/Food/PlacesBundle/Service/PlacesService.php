@@ -303,4 +303,29 @@ class PlacesService extends ContainerAware {
         return $sum;
     }
 
+    public function getCurrentUserAddresses() {
+        $current_user = $this->container->get('security.context')->getToken()->getUser();
+        $all_user_address = array();
+        if (!empty($current_user) && is_array($current_user)) {
+            $all_user_address = $this->container->get('doctrine')->getRepository('FoodUserBundle:UserAddress')
+                ->findBy(array(
+                    'user' => $current_user,
+                ));
+        }
+        return $all_user_address;
+    }
+
+    public function getCurrentUserAddress($city, $address) {
+        $current_user = $this->container->get('security.context')->getToken()->getUser();
+        $user_address = array();
+        if (!empty($current_user) && is_array($current_user) && !empty($city) && !empty($address)) {
+            $user_address = $this->container->get('doctrine')->getRepository('FoodUserBundle:UserAddress')
+                ->findOneBy(array(
+                    'user' => $current_user,
+                    'city' => $city,
+                    'address' => $address,
+                ));
+        }
+        return $user_address;
+    }
 }

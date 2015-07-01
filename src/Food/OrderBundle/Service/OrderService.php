@@ -819,10 +819,11 @@ class OrderService extends ContainerAware
      * @param string $address
      * @param string $lat
      * @param string $lon
+     * @param string $comment
      *
      * @return UserAddress
      */
-    public function createAddressMagic($user, $city, $address, $lat, $lon)
+    public function createAddressMagic($user, $city, $address, $lat, $lon, $comment)
     {
         $userAddress = $this->getEm()
             ->getRepository('Food\UserBundle\Entity\UserAddress')
@@ -834,15 +835,17 @@ class OrderService extends ContainerAware
 
         if (!$userAddress) {
             $userAddress = new UserAddress();
-            $userAddress->setUser($user)
-                ->setCity($city)
-                ->setAddress($address)
-                ->setLat($lat)
-                ->setLon($lon);
-
-            $this->getEm()->persist($userAddress);
-            $this->getEm()->flush();
         }
+
+        $userAddress->setUser($user)
+            ->setCity($city)
+            ->setAddress($address)
+            ->setLat($lat)
+            ->setLon($lon)
+            ->setComment($comment);
+
+        $this->getEm()->persist($userAddress);
+        $this->getEm()->flush();
 
         return $userAddress;
     }

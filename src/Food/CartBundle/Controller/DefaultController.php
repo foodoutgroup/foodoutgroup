@@ -210,6 +210,26 @@ class DefaultController extends Controller
             $dataToLoad = $request->request->all();
         }
 
+        // PreLoad UserAddress Begin
+        $address = null;
+        $session = $request->getSession();
+        $locationData = $session->get('locationData');
+        $current_user = $this->container->get('security.context')->getToken()->getUser();
+
+        if (!empty($locationData) && !empty($current_user) && is_array($current_user)) {
+            $address = $placeService->getCurrentUserAddress($locationData['city'], $locationData['address']);
+        }
+
+        if (empty($address) && !empty($current_user) && is_array($current_user)) {
+            $defaultUserAddress = $current_user->getCurrentDefaultAddress();
+            if (!empty($defaultUserAddress)) {
+                $loc_city = $defaultUserAddress->getCity();
+                $loc_address = $defaultUserAddress->getAddress();
+                $address = $placeService->getCurrentUserAddress($loc_city, $loc_address);
+            }
+        }
+        // PreLoad UserAddress End
+
         if ($request->getMethod() == 'POST' && !$formHasErrors) {
             // Jei vede kupona - uzsikraunam
             $couponCode = $request->get('coupon_code');
@@ -314,14 +334,21 @@ class DefaultController extends Controller
             // Update order with recent address information. but only if we need to deliver
             if ($deliveryType == $orderService::$deliveryDeliver) {
                 $locationData = $googleGisService->getLocationFromSession();
+                $em = $this->getDoctrine()->getManager();
                 $address = $orderService->createAddressMagic(
                     $user,
                     $locationData['city'],
                     $locationData['address_orig'],
                     (string)$locationData['lat'],
-                    (string)$locationData['lng']
+                    (string)$locationData['lng'],
+                    $customerComment
                 );
                 $orderService->getOrder()->setAddressId($address);
+                // Set user default address
+                if (!$user->getDefaultAddress()) {
+                    $em->persist($address);
+                    $user->addAddress($address);
+                }
             }
             $orderService->saveOrder();
 
@@ -342,6 +369,8 @@ class DefaultController extends Controller
                 'takeAway' => ($takeAway ? true : false),
                 'location' => $this->get('food.googlegis')->getLocationFromSession(),
                 'dataToLoad' => $dataToLoad,
+                'userAddress' => $address,
+                'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'submitted' => $request->isMethod('POST'),
                 'testNordea' => $request->query->get('test_nordea')
             )
