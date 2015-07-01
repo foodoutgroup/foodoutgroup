@@ -28,7 +28,7 @@ class OffersController extends Controller
     {
         try {
             $repo = $this->get('doctrine')->getRepository('FoodPlacesBundle:BestOffer');
-            $offers = $repo->getActiveOffers($city);
+            $offers = $repo->getActiveOffers($city, true);
 
             $offersToShow = array();
 
