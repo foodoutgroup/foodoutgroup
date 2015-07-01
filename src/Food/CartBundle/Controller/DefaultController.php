@@ -230,6 +230,21 @@ class DefaultController extends Controller
             if (empty($order)) {
                 $userEmail = $request->get('customer-email');
                 $userPhone = $request->get('customer-phone');
+                $userFirstName = $request->get('customer-firstname');
+                $userLastName = $request->get('customer-lastname', null);
+                if (!empty($userPhone)) {
+                    $formatedPhone = $miscUtils->formatPhone($userPhone, $country);
+
+                    if (!empty($formatedPhone)) {
+                        $userPhone = $formatedPhone;
+                    }
+                }
+                $userData = array(
+                    'email' => $userEmail,
+                    'phone' => $userPhone,
+                    'firstname' => $userFirstName,
+                    'lastname' => $userLastName,
+                );
 
                 $user = $fosUserManager->findUserByEmail($userEmail);
 
@@ -241,17 +256,10 @@ class DefaultController extends Controller
                     $user->setUsername($userEmail);
                     $user->setEmail($userEmail);
                     $user->setFullyRegistered(false);
-                    $user->setFirstname($request->get('customer-firstname'));
-                    $user->setLastname($request->get('customer-lastname', null));
-
+                    $user->setFirstname($userFirstName);
+                    $user->setLastname($userLastName);
                     if (!empty($userPhone)) {
-                        $formatedPhone = $miscUtils->formatPhone($userPhone, $country);
-
-                        if (!empty($formatedPhone)) {
-                            $user->setPhone($formatedPhone);
-                        } else {
-                            $user->setPhone($userPhone);
-                        }
+                        $user->setPhone($userPhone);
                     }
 
                     // TODO gal cia normaliai generuosim desra-sasyskos-random krap ir siusim useriui emailu ir dar iloginsim
@@ -264,7 +272,7 @@ class DefaultController extends Controller
 
                 $selfDelivery = ($request->get('delivery-type') == "pickup" ? true : false);
 
-                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon);
+                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData);
                 $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
             } else {
                 $orderService->setOrder($order);

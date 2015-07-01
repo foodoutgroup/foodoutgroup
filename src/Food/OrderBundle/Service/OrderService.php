@@ -13,6 +13,7 @@ use Food\OrderBundle\Entity\Coupon;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Food\OrderBundle\Entity\OrderDetailsOptions;
+use Food\OrderBundle\Entity\OrderExtra;
 use Food\OrderBundle\Entity\OrderLog;
 use Food\OrderBundle\Entity\OrderMailLog;
 use Food\OrderBundle\Entity\OrderStatusLog;
@@ -854,8 +855,9 @@ class OrderService extends ContainerAware
      * @param PlacePoint $placePoint - placePoint, jei atsiima pats
      * @param bool $selfDelivery - ar klientas atsiims pats?
      * @param Coupon|null $coupon
+     * @param array|null $userData
      */
-    public function createOrderFromCart($place, $locale='lt', $user, PlacePoint $placePoint=null, $selfDelivery = false, $coupon = null)
+    public function createOrderFromCart($place, $locale='lt', $user, PlacePoint $placePoint=null, $selfDelivery = false, $coupon = null, $userData = null)
     {
         $this->createOrder($place, $placePoint);
         $this->getOrder()->setDeliveryType(
@@ -864,6 +866,26 @@ class OrderService extends ContainerAware
         $this->getOrder()->setLocale($locale);
         $this->getOrder()->setUser($user);
         $this->saveOrder();
+
+
+        // save extra order data to separate table
+        $orderExtra = new OrderExtra();
+        $orderExtra->setOrder($this->getOrder());
+
+        if (!empty($userData)) {
+            $orderExtra->setFirstname($userData['firstname'])
+                ->setLastname($userData['lastname'])
+                ->setPhone($userData['phone'])
+                ->setEmail($userData['email']);
+        } else {
+            $orderExtra->setFirstname($user->getFirstname())
+                ->setLastname($user->getLastname())
+                ->setPhone($user->getPhone())
+                ->setEmail($user->getEmail());
+        }
+
+        $this->getOrder()->setOrderExtra($orderExtra);
+
         $sumTotal = 0;
 
         $placeObject = $this->container->get('food.places')->getPlace($place);

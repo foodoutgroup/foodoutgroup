@@ -371,6 +371,12 @@ class Order
     private $clientContacted = false;
 
     /**
+     * @var \Food\OrderBundle\Entity\OrderExtra
+     * @ORM\OneToOne(targetEntity="\Food\OrderBundle\Entity\OrderExtra", mappedBy="order", cascade={"persist"})
+     **/
+    private $orderExtra;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -1941,5 +1947,28 @@ class Order
         $this->smsMessages[] = $smsMessages;
     
         return $this;
+    }
+
+    /**
+     * Set orderExtra
+     *
+     * @param \Food\OrderBundle\Entity\OrderExtra $orderExtra
+     * @return Order
+     */
+    public function setOrderExtra(\Food\OrderBundle\Entity\OrderExtra $orderExtra = null)
+    {
+        $this->orderExtra = $orderExtra;
+    
+        return $this;
+    }
+
+    /**
+     * Get orderExtra
+     *
+     * @return \Food\OrderBundle\Entity\OrderExtra 
+     */
+    public function getOrderExtra()
+    {
+        return $this->orderExtra;
     }
 }
