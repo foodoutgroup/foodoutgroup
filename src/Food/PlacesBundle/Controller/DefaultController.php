@@ -64,6 +64,7 @@ class DefaultController extends Controller
         if ($recommendedFromRequest !== null) {
             $recommended = (bool)$recommendedFromRequest;
         }
+        $listType = $request->get('delivery_type', 'delivery');
 
         $places = $this->get('food.places')->getPlacesForList($recommended, $request);
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
@@ -74,7 +75,8 @@ class DefaultController extends Controller
                 'places' => $places,
                 'recommended' => ($recommended ? 1:0),
                 'location' => $locData,
-                'location_show' => (empty($locData) ? false : true)
+                'location_show' => (empty($locData) ? false : true),
+                'list_type' => $listType
             )
         );
     }

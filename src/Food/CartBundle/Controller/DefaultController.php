@@ -452,6 +452,15 @@ class DefaultController extends Controller
                     }
 
                     $total_cart = $total_cart - $discountSum;
+                    if ($total_cart < 0) {
+                        if ($coupon->getFullOrderCovers()) {
+                            $deliveryTotal = $deliveryTotal + $total_cart;
+                            if ($deliveryTotal < 0) {
+                                $deliveryTotal = 0;
+                            }
+                        }
+                        $total_cart = 0;
+                    }
                 }
             }
         }

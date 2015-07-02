@@ -200,12 +200,16 @@
       </trans-unit>
       <trans-unit id="8b57ab866aabb96702c1df5c85d589fc" resname="place.pickup_info">
         <source>place.pickup_info</source>
-        <target>Tikai paņemt uz vietas</target>
+        <target>Atsaukt pēc</target>
       </trans-unit>
       <trans-unit id="de03d40f9e854231164bfbbfdbfa52f9" resname="place.min_cart_amount">
         <source>place.min_cart_amount</source>
         <target>Min. grozs</target>
       </trans-unit>
+        <trans-unit id="place.select_place_to_pickup" resname="place.select_place_to_pickup">
+            <source>place.select_place_to_pickup</source>
+            <target>Izvēlieties vietu, kur vēlaties saņemt pasūtījumu</target>
+        </trans-unit>
       <trans-unit id="4962db963b0f0d3cd2bc1b571272710b" resname="places.reviews_count">
         <source>places.reviews_count</source>
         <target>Novērtējums|novērtējumi|novērtējumu</target>

@@ -36,6 +36,7 @@ class BestOfferAdmin extends FoodAdmin
                    ->add('place', null, ['label' => 'admin.best_offers.place', 'required' => true])
                    ->add('link', 'text', ['label' => 'admin.best_offers.link'])
                    ->add('text', 'textarea', ['label' => 'admin.best_offers.text'])
+                   ->add('useUrl', 'checkbox', ['label' => 'admin.best_offers.use_url', 'required' => false])
                    ->add('active', 'checkbox', ['label' => 'admin.best_offers.active', 'required' => false])
                    ->add('file', 'file', $options);
     }
@@ -47,6 +48,7 @@ class BestOfferAdmin extends FoodAdmin
             ->add('title', null, ['label' => 'admin.best_offers.title'])
             ->add('city', null, ['label' => 'admin.best_offers.city'])
             ->add('text', null, ['label' => 'admin.best_offers.text'])
+            ->add('useUrl', null, ['label' => 'admin.best_offers.use_url'])
         ;
     }
 

@@ -48,6 +48,7 @@ class WebTestCase extends SymfonyWebTestCase
             ->setDeliveryPrice(5)
             ->setCartMinimum(5)
             ->setDeliveryTime('1 val.')
+            ->setPickupTime('30 min')
             ->setSelfDelivery(false)
             ->setCardOnDelivery(false)
             ->setNew(false)

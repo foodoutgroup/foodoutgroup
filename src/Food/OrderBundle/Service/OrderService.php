@@ -870,16 +870,90 @@ class OrderService extends ContainerAware
         $sumTotal = 0;
 
         $placeObject = $this->container->get('food.places')->getPlace($place);
+        $preSum = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
 
+        $deliveryPrice = $this->getCartService()->getDeliveryPrice(
+            $this->getOrder()->getPlace(),
+            $this->container->get('food.googlegis')->getLocationFromSession(),
+            $this->getOrder()->getPlacePoint()
+        );
+
+        // Pritaikom nuolaida
+        $discountPercent = 0;
+
+        if (!empty($coupon) && $coupon instanceof Coupon) {
+            $order = $this->getOrder();
+            $order->setCoupon($coupon)
+                ->setCouponCode($coupon->getCode());
+
+            if (!$coupon->getFreeDelivery()) {
+                $discountSize = $coupon->getDiscount();
+                if (!empty($discountSize)) {
+                    $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
+                    $discountPercent = $discountSize;
+                } else {
+                    $discountSum = $coupon->getDiscountSum();
+                }
+                $order->setDiscountSize($discountSize)
+                    ->setDiscountSum($discountSum);
+            } else {
+                $deliveryPrice = 0;
+
+                if ($order->getDiscountSum() == '')
+                {
+                    $order->setDiscountSum(0);
+                }
+            }
+        }
+        /**
+         * Na daugiau kintamuju jau nebesugalvojau :/
+         */
+        $discountOverTotal = 0;
+        if ($discountSum > $preSum) {
+            $discountOverTotal = $discountSum - $preSum;
+            $discountSum = $preSum;
+        }
+        $discountSumLeft = $discountSum;
+        $discountSumTotal = $discountSum;
+        $discountUsed = 0;
+        $relationPart = $discountSum / $preSum;
         foreach ($this->getCartService()->getCartDishes($placeObject) as $cartDish) {
             $options = $this->getCartService()->getCartDishOptions($cartDish);
+            $price = $cartDish->getDishSizeId()->getCurrentPrice();
+            $origPrice = $cartDish->getDishSizeId()->getPrice();
+            $discountPercentForInsert = 0;
+            if ($origPrice == $price && $discountPercent > 0) {
+                $price = round($origPrice * ((100 - $discountPercent)/100), 2);
+                $discountPercentForInsert = $discountPercent;
+            } elseif ($discountSumLeft > 0) {
+                /**
+                 * Uz toki graba ash degsiu pragare.... :/
+                 */
+                $priceForInsert = $price;
+                $discountPart = (float)ceil($price * $cartDish->getQuantity() * $relationPart * 100) / 100;
+                if ($discountPart < $discountSumLeft) {
+                    $discountSum = $discountPart;
+                } else {
+                    if ($discountUsed + $discountPart > $discountSumTotal) {
+                        $discountSum = $discountSumTotal - $discountUsed;
+                    } else {
+                        $discountSum = $discountSumLeft;
+                    }
+                }
+                $discountSum = sprintf('%0.2f', (float)ceil($discountSum / $cartDish->getQuantity() * 100) / 100);
+                $priceForInsert = $price - $discountSum;
+                $discountSumLeft = sprintf('%0.2f', $discountSumLeft) - $discountSum;
+                $discountUsed = $discountUsed + $discountSum;
+                $price = $priceForInsert;
+            }
             $dish = new OrderDetails();
             $dish->setDishId($cartDish->getDishId())
                 ->setOrderId($this->getOrder())
                 ->setQuantity($cartDish->getQuantity())
                 ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
-                ->setPrice($cartDish->getDishSizeId()->getCurrentPrice())
-                ->setOrigPrice($cartDish->getDishSizeId()->getPrice())
+                ->setPrice($price)
+                ->setOrigPrice($origPrice)
+                ->setPercentDiscount($discountPercentForInsert)
                 ->setDishName($cartDish->getDishId()->getName())
                 ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
                 ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
@@ -888,7 +962,7 @@ class OrderService extends ContainerAware
             $this->getEm()->persist($dish);
             $this->getEm()->flush();
 
-            $sumTotal += $cartDish->getQuantity() * $cartDish->getDishSizeId()->getCurrentPrice();
+            $sumTotal += $cartDish->getQuantity() * $price;
 
             foreach ($options as $opt) {
                 $orderOpt = new OrderDetailsOptions();
@@ -907,36 +981,10 @@ class OrderService extends ContainerAware
             }
         }
 
-        $deliveryPrice = $this->getCartService()->getDeliveryPrice(
-            $this->getOrder()->getPlace(),
-            $this->container->get('food.googlegis')->getLocationFromSession(),
-            $this->getOrder()->getPlacePoint()
-        );
-
-        // Pritaikom nuolaida
-        if (!empty($coupon) && $coupon instanceof Coupon) {
-            $order = $this->getOrder();
-            $order->setCoupon($coupon)
-                ->setCouponCode($coupon->getCode());
-
-            if (!$coupon->getFreeDelivery()) {
-                $discountSize = $coupon->getDiscount();
-                if (!empty($discountSize)) {
-                    $discountSum = ($sumTotal * $discountSize) / 100;
-                } else {
-                    $discountSum = $coupon->getDiscountSum();
-                }
-                $sumTotal = $sumTotal - $discountSum;
-
-                $order->setDiscountSize($discountSize)
-                    ->setDiscountSum($discountSum);
-            } else {
+        if ($discountOverTotal > 0) {
+            $deliveryPrice = $deliveryPrice - $discountOverTotal;
+            if ($deliveryPrice < 0) {
                 $deliveryPrice = 0;
-
-                if ($order->getDiscountSum() == '')
-                {
-                    $order->setDiscountSum(0);
-                }
             }
         }
 
@@ -2388,6 +2436,9 @@ class OrderService extends ContainerAware
                 $this->container->get('session')->set('point_data', $placePointMap);
             }
 
+            /**
+             * @todo Possible problems in the future here :)
+             */
             $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
             $cartMinimum = $this->getCartService()->getMinimumCart(
                 $place,
