@@ -307,7 +307,7 @@ class DefaultController extends Controller
                 $userPhone = $user->getPhone();
             }
 
-            if ($userPhone != $user->getPhone()) {
+            if ($userPhone != $user->getPhone() && !$user->getIsBussinesClient()) {
                 $formatedPhone = $miscUtils->formatPhone($userPhone, $country);
 
                 if (!empty($formatedPhone)) {
