@@ -32,7 +32,7 @@
 #}
 <div class="form-row">
     <label>{% trans %}cart.checkout.delivery_comment{% endtrans %}:</label>
-    <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['customer-comment'] is not empty) %}{{ dataToLoad['customer-comment'] }}{% endif %}</textarea>
+    <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['customer-comment'] is not empty) %}{{ dataToLoad['customer-comment'] }}{% else %}{{ userAddress.getComment|default('') }}{% endif %}</textarea>
 </div>
 <div class="form-row custom-checkbox checkbox-right">
     <label>{% trans %}cart.checkout.company{% endtrans %}:</label>
