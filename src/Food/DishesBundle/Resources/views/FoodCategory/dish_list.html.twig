@@ -14,7 +14,7 @@
         {% set largestPrice = dish_service.largestDishPrice(dish.id) %}
     {% endif %}
     {% set showByHours = order_service.isOrderableByTime(dish) %}
-    <div class="restaurant-menu-item {% if showByHours == false %}disabled_dish{% endif %}">
+    <div class="restaurant-menu-item {% if showByHours == false %}disabled_dish{% endif %}" id="dish{{ dish.id }}">
         {% if dish.getWebPathThumb('type1') is not empty %}
             {% if listType == 'thumbs' %}
                 {% set largeImgClass = '' %}

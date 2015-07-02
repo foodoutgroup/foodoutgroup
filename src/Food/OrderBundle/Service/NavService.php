@@ -1866,7 +1866,7 @@ class NavService extends ContainerAware
 
         $query = "
             SELECT
-                [Order No_] AS order_no,
+                [Order No_] AS order_no
             FROM %s
             WHERE
                 [Order No_] >= '%s'";
@@ -1884,7 +1884,7 @@ class NavService extends ContainerAware
 
         $query = "
             SELECT
-                [Order No_] AS order_no,
+                [Order No_] AS order_no
             FROM %s
             WHERE
                 [Order No_] >= '%s'";

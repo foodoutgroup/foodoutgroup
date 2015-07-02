@@ -219,7 +219,7 @@ class Misc
         }
 
         if (!$parameter instanceof Param) {
-            throw new \Exception('Parameter not found');
+            throw new \Exception('Parameter "'.$name.'" not found');
         }
 
         return $parameter->getValue();

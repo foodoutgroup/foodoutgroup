@@ -20,6 +20,7 @@ class CouponAdmin extends FoodAdmin
         $formMapper
             ->add('name', 'text', array('label' => 'admin.coupon.name',))
             ->add('discountSum')
+            ->add('fullOrderCovers', null, array('required' => false))
             ->add('discount', null, array('label' => 'admin.coupon.discount', 'required' => false))
             ->add('freeDelivery', null, array('label' => 'admin.coupon.free_delivery', 'required' => false))
             ->add('code', null, array('label' => 'admin.coupon.code', 'required' => true))

@@ -104,8 +104,14 @@
                 </div>
             {% endif %}
         </div>
-        {% if total_cart < place.cartMinimum and hide_delivery == false %}
-            <div class="alert alert-warning text-center">{{ 'cart.didnt_reach_min_cart'|trans }}</div>
+        {% if discountInSum %}
+            {% if total_cart + discountSum < place.cartMinimum and hide_delivery == false %}
+                <div class="alert alert-warning text-center">{{ 'cart.didnt_reach_min_cart'|trans }}</div>
+            {% endif %}
+        {% else %}
+            {% if total_cart < place.cartMinimum and hide_delivery == false %}
+                <div class="alert alert-warning text-center">{{ 'cart.didnt_reach_min_cart'|trans }}</div>
+            {% endif %}
         {% endif %}
 
         {# Delivery type choice #}

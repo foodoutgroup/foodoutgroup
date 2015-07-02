@@ -72,6 +72,13 @@ class BestOffer extends Uploadable
     private $active;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="use_url", type="boolean", nullable=true)
+     */
+    private $useUrl = false;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="image", type="string", length=255)
@@ -304,5 +311,28 @@ class BestOffer extends Uploadable
     public function getPlace()
     {
         return $this->place;
+    }
+
+    /**
+     * Set useUrl
+     *
+     * @param boolean $useUrl
+     * @return BestOffer
+     */
+    public function setUseUrl($useUrl)
+    {
+        $this->useUrl = $useUrl;
+    
+        return $this;
+    }
+
+    /**
+     * Get useUrl
+     *
+     * @return boolean 
+     */
+    public function getUseUrl()
+    {
+        return $this->useUrl;
     }
 }

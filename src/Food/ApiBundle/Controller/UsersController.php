@@ -104,7 +104,8 @@ class UsersController extends Controller
 
             // User exists???
             $existingUser = $um->findUserByEmail($email);
-            if ($existingUser && $existingUser->getFullyRegistered()) {
+            // Temporary by Egle request allowing anonymous registers and orders
+            /*if ($existingUser && $existingUser->getFullyRegistered()) {
                 throw new ApiException(
                     'User '.$email.' exists',
                     409,
@@ -113,7 +114,8 @@ class UsersController extends Controller
                         'description' => $translator->trans('registration.user.exists'),
                     )
                 );
-            } elseif ($existingUser && !$existingUser->getFullyRegistered()) {
+            } else*/
+            if ($existingUser) {
                 $user = $existingUser;
             }
 
@@ -128,17 +130,19 @@ class UsersController extends Controller
                 $user->setLastname($nameParsed['lastname']);
             }
 
-            if (!empty($password)) {
-                $user->setPlainPassword($password)
-                     ->setFullyRegistered(true);
+            if (!$existingUser || $existingUser && !$existingUser->getFullyRegistered()) {
+                if (!empty($password)) {
+                    $user->setPlainPassword($password)
+                        ->setFullyRegistered(true);
 
-                // TODO turi ateiti emailas apie registracija - kolkas neeina :(
-                // TODO reikia issiaiskinti kur dingo FosUserEventai...
+                    // TODO turi ateiti emailas apie registracija - kolkas neeina :(
+                    // TODO reikia issiaiskinti kur dingo FosUserEventai...
 //                $event = new UserEvent($user, $request);
 //                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
-            } else {
-                $user->setPlainPassword('new-user')
-                    ->setFullyRegistered(false);
+                } else {
+                    $user->setPlainPassword('new-user')
+                        ->setFullyRegistered(false);
+                }
             }
 
             if (!empty($birthday)) {

@@ -42,7 +42,8 @@ class DishController extends Controller
             array(
                 'dish' => $dishEnt,
                 'selectedSize' => $selSize,
-                'cart' => null
+                'cart' => null,
+                'place' => $dishEnt->getPlace()
             )
         );
     }

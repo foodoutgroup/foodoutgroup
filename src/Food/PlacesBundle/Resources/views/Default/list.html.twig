@@ -82,7 +82,7 @@
                     {% endfor %}
                 </p>
                 <div class="details">
-                    {% if place.place.deliveryOptions != 'pickup' %}
+                    {% if place.place.deliveryOptions != 'pickup' and list_type == 'delivery' %}
                     <span class="delivery">{% trans %}place.delivery_info{% endtrans %}:
                         <span>
                             {% set minPrc = places_service.minDeliveryPrice(place.place.id) %}
@@ -98,7 +98,7 @@
                         </span>
                     </span>
                     {% else %}
-                    <span class="pickup">{% trans %}place.pickup_info{% endtrans %}
+                    <span class="pickup">{% trans %}place.pickup_info{% endtrans %}: {{ place.place.pickupTime }}
                         <span></span>
                     </span>
                     {% endif %}
@@ -113,6 +113,7 @@
                         {% endif %}
                     </span>
                     {% endif %}
+                    <span class="select-place-point"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}#detailed-restaurant-info">{% trans %}place.select_place_to_pickup{% endtrans %}</a></span>
                 </div>
             </div>
             <!-- <div class="discount-tag"></div> -->
