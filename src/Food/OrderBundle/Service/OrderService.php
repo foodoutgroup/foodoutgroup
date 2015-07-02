@@ -823,7 +823,7 @@ class OrderService extends ContainerAware
      *
      * @return UserAddress
      */
-    public function createAddressMagic($user, $city, $address, $lat, $lon, $comment)
+    public function createAddressMagic($user, $city, $address, $lat, $lon, $comment = null)
     {
         $userAddress = $this->getEm()
             ->getRepository('Food\UserBundle\Entity\UserAddress')
