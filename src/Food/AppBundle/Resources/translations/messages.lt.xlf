@@ -38,6 +38,10 @@
         <source>index.house</source>
         <target>Namas</target>
       </trans-unit>
+      <trans-unit id="index.flat" resname="index.flat">
+        <source>index.flat</source>
+        <target>Butas</target>
+      </trans-unit>
       <trans-unit id="bb1fb2fdfdba48c2b3d2ec83e968729c" resname="index.findfood">
         <source>index.findfood</source>
         <target>Ieškoti maisto</target>

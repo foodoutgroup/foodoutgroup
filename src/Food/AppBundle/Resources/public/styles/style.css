@@ -230,7 +230,7 @@ input.button {}
 .special-offer-block .img-description {position: absolute; margin: 0; right: 12px; bottom: 12px; font-size: 10px; text-transform: uppercase; color: #fff;}
 
 /*Food search form*/
-.search-food-form {background: url(/bundles/foodapp/images/search-bg.png) no-repeat center top; width: 826px; margin: 0 auto; min-height: 172px; padding-top: 46px; padding-left: 35px;}
+.search-food-form {background: url(/bundles/foodapp/images/search-bg.png) no-repeat center top; width: 834px; margin: 0 auto; min-height: 172px; padding-top: 46px; padding-left: 27px;}
 .search-food-form .title {font-size: 17px; color: #4d090a; text-align: center; margin: 0; padding-bottom: 15px; padding-right: 63px; letter-spacing: 0.6px;}
 .search-food-form input[type="text"] {float: left; border: 1px solid #e1ddd6; background: #fff; padding: 20px 16px; line-height: 18px; height: 18px; width: 191px; font-size: 15px; border-radius: 5px 0 0 5px;}
 .search-food-form input[type="text"].input-street {margin-right: 13px; border-left: none; border-radius: 0 5px 5px 0; width: 254px;}
@@ -300,17 +300,19 @@ input.button {}
 .list-search-form input[type="text"] {float: left; border: none; padding: 12px 10px; height: 16px; width: 213px; padding-left: 0px;}
 .list-search-form input[type="submit"] {position: absolute; left: 4px; top: 0px; width: 32px; height: 40px; background: url(/bundles/foodapp/images/search-ico.png) no-repeat center center; border: none;}
 
-.restaurant-item {padding: 19px 30px; padding-left: 15px; border-bottom: 1px solid #ebe2d9; position: relative;}
+.restaurant-item {padding: 15px 30px; padding-left: 15px; border-bottom: 1px solid #ebe2d9; position: relative;}
 .restaurant-item:hover {box-shadow: 0 0px 8px #e3ded9; z-index: 20;}
 .discount-tag {position: absolute; right: 231px; top: 27px; background: red; color: #fff; line-height: 18px; padding: 0 8px; padding-top: 2px;}
 .restaurant-item .logo {width: 120px; float: left; text-align: center; margin-right: 20px;}
 .restaurant-item .item-center {width: 380px; float: left;}
 .restaurant-item .item-righter {width: 170px; float: right; padding-top: 11px;}
 .restaurant-item .name {margin: 0; margin-top: 9px; letter-spacing: 1px;}
-.restaurant-item .desc {margin: 0; margin-top: 2px; margin-bottom: 25px; letter-spacing: 0.5px;}
+.restaurant-item .desc {margin: 0; margin-top: 2px; margin-bottom: 12px; letter-spacing: 0.5px;}
 
 .restaurant-item .delivery,
 .restaurant-item .min-cart-size {padding-left: 20px;}
+.restaurant-item .select-place-point {display: block; margin-top: 2px;}
+.restaurant-item .select-place-point a { color: #000000;}
 .restaurant-item .delivery {background: url(/bundles/foodapp/images/delivery-ico.png) no-repeat left 2px; margin-right: 36px;}
 .restaurant-item .pickup {background: url(/bundles/foodapp/images/pickup-ico.png) no-repeat left 2px; margin-right: 36px; color: #55422e; padding-left: 13px; letter-spacing: 0.5px;}
 .restaurant-item .min-cart-size {background: url(/bundles/foodapp/images/cart-ico.png) no-repeat left 1px;}
@@ -1350,7 +1352,7 @@ div.coupon_form_popup {
     border-left: medium none;
     border-radius: 0 5px 5px 0;
     margin-right: 13px;
-    width: 91px;
+    width: 100px;
 }
 
 .coupon_form_popup input[type="text"] {width: 324px; height: 17px; font-size: 15px; padding: 9px 12px; border: 1px solid #d8d8d8; border-radius: 3px; box-shadow: 0 0 1px #f2f2f2; box-shadow: 0 0 2px #d0c8c1;}
@@ -1852,4 +1854,7 @@ div.coupon_form_popup {
     font-size: 100%;
     vertical-align: baseline;
     text-decoration: none;
+}
+.alert_not_detailed_search {
+    width: 675px;
 }

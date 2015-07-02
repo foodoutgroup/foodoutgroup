@@ -34,16 +34,23 @@ class BestOfferRepository extends EntityRepository
 
     /**
      * @param string|null $city
+     * @param boolean $forMobile
      * @return array|BestOffer[]
      */
-    public function getActiveOffers($city = null)
+    public function getActiveOffers($city = null, $forMobile = false)
     {
         $qb = $this->createQueryBuilder('o')
             ->where('o.active = :activity');
 
+
         $params = array(
             'activity' => true,
         );
+
+        if ($forMobile) {
+            $qb->andWhere('o.useUrl != :use_url');
+            $params['use_url'] = true;
+        }
 
         if (!empty($city)) {
             $qb->andWhere('(o.city IN (:city_filter) OR o.city IS NULL)');

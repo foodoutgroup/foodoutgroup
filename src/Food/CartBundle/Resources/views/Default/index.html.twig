@@ -371,7 +371,7 @@
             </div>
         </div>
     </div>
-    {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'change-address', hideQlu: true} %}
+    {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'change-address', hideQlu: true, usr_address: userAllAddress} %}
     <div class="hidden">
         <div id="rules" class="cart_rules_content">
             <div class="cart_rules_inner">{{ static_service.getPage(slug_util.oneByName('ordering_rules', locale).itemId).content|raw }}</div>

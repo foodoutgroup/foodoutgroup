@@ -27,10 +27,10 @@ class AjaxController extends Controller
                 $this->_ajaxFindStreetHouse($response,$request->get('city'), $request->get('street'), $request->get('house'));
                 break;
             case 'find-address':
-                $this->_ajaxActFindAddress($response,$request->get('city'), $request->get('address'));
+                $this->_ajaxActFindAddress($response,$request->get('city'), $request->get('address'), $request);
                 break;
             case 'find-address-and-recount':
-                $this->_ajaxActFindAddress($response,$request->get('city'), $request->get('address'));
+                $this->_ajaxActFindAddress($response,$request->get('city'), $request->get('address'), $request);
                 $this->_isPlaceInRadius($response, intval($request->get('place')));
                 break;
             case 'check-coupon':
@@ -50,8 +50,9 @@ class AjaxController extends Controller
      * @param Response $response
      * @param string $city
      * @param string $address
+     * @param Request $request
      */
-    private function _ajaxActFindAddress(Response $response, $city, $address)
+    private function _ajaxActFindAddress(Response $response, $city, $address, Request $request)
     {
         $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
         $locationInfo = $this->get('food.googlegis')->groupData($location, $address, $city);
@@ -71,6 +72,10 @@ class AjaxController extends Controller
         }
         if (!$locationInfo['street_found']) {
             $respData['str'] = 1;
+        }
+        if (!empty($respData) && $respData['success'] == 1 && $respData['adr'] == 1) {
+            $session = $request->getSession();
+            $session->set('locationData', array('address' => $address, 'city' => $city));
         }
         $response->setContent(json_encode(array(
             'data' => $respData

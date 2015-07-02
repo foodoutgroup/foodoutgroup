@@ -132,6 +132,13 @@ class GoogleGisService extends ContainerAware
         $returner['address_found'] = false;
         $returner['status'] = $location->status;
 
+        $miscUtils = $this->container->get('food.app.utils.misc');
+        $addressData = $miscUtils->parseAddress($address);
+        $returner['flat'] = '';
+        if (!empty($addressData)) {
+            $returner['flat'] = $addressData['flat'];
+        }
+
         if( !empty( $location->results[0]) && (in_array('street_address', $location->results[0]->types) || in_array('premise', $location->results[0]->types))) {
             $returner['not_found'] = false;
             $returner['street_found'] = true;

@@ -11,7 +11,7 @@
         </div>
         <div class="form-row form-row-required city-row width463">
             <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
-            <select class="custom-select">
+            <select id="address_city" class="custom-select">
                 {% for city in available_cities %}
                     <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e'})) %}selected{% endif %}>{{ city }}</option>
                 {% endfor %}
@@ -21,8 +21,34 @@
             <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
             <input type="text"
                    id="address"
+                   list="user_address"
                    value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}"
                    placeholder="{{ 'index.street'|trans }}" />
+            {% if usr_address %}
+                <datalist id="user_address">
+                    {% for address in usr_address %}
+                        <option data-city="{{ address.city }}" value="{{ address.address }}" label="{{ address.address }}">
+                    {% endfor %}
+                </datalist>
+            {% endif %}
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $("#address").on('input', function(){
+                        var $input = $(this);
+                        var val = $input.val();
+                        var selected_city = null;
+                        var list = $input.attr('list');
+                        $('#' + list + ' option').filter(function() {
+                            if ($(this).val() === val) {
+                                selected_city = $(this).data('city');
+                                $('option:selected', '#address_city').removeAttr('selected');
+                                $('#address_city').find('option[value="' + selected_city + '"]').attr("selected", true);
+                                bind_custom_select();
+                            }
+                        });
+                    });
+                });
+            </script>
         </div>
     </div>
     <div id="place-point-not-found">

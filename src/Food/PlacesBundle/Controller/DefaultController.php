@@ -20,6 +20,7 @@ class DefaultController extends Controller
             $recommended = true;
         }
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
+        $placeService = $this->get('food.places');
 
         return $this->render(
             'FoodPlacesBundle:Default:index.html.twig',
@@ -28,6 +29,7 @@ class DefaultController extends Controller
                 'location' => $locData,
                 'city_translations' => $this->cityTranslations,
                 'default_city' => 'Vilnius',
+                'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'delivery_type_filer' => 'delivery_and_pickup', // TODO saving or other cool feature
             )
         );
@@ -39,12 +41,15 @@ class DefaultController extends Controller
         $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", $city);
         $this->get('food.googlegis')->setCityOnlyToSession($city);
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
+        $placeService = $this->get('food.places');
+
         return $this->render(
             'FoodPlacesBundle:Default:index.html.twig',
             array(
                 'recommended' => false,
                 'location' => $locData,
                 'city_translations' => $this->cityTranslations,
+                'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'delivery_type_filer' => 'delivery_and_pickup', // TODO saving or other cool feature
             )
         );
@@ -59,6 +64,7 @@ class DefaultController extends Controller
         if ($recommendedFromRequest !== null) {
             $recommended = (bool)$recommendedFromRequest;
         }
+        $listType = $request->get('delivery_type', 'delivery');
 
         $places = $this->get('food.places')->getPlacesForList($recommended, $request);
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
@@ -69,7 +75,8 @@ class DefaultController extends Controller
                 'places' => $places,
                 'recommended' => ($recommended ? 1:0),
                 'location' => $locData,
-                'location_show' => (empty($locData) ? false : true)
+                'location_show' => (empty($locData) ? false : true),
+                'list_type' => $listType
             )
         );
     }

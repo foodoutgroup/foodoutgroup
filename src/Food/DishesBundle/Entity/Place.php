@@ -208,6 +208,13 @@ class Place extends Uploadable implements Translatable
     /**
      * @var string
      *
+     * @ORM\Column(name="pickup_time", type="string")
+     */
+    private $pickupTime;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="delivery_time_info", type="string", nullable=true)
      */
     private $deliveryTimeInfo;
@@ -1773,5 +1780,28 @@ class Place extends Uploadable implements Translatable
     public function getBestOffers()
     {
         return $this->bestOffers;
+    }
+
+    /**
+     * Set pickupTime
+     *
+     * @param string $pickupTime
+     * @return Place
+     */
+    public function setPickupTime($pickupTime)
+    {
+        $this->pickupTime = $pickupTime;
+    
+        return $this;
+    }
+
+    /**
+     * Get pickupTime
+     *
+     * @return string 
+     */
+    public function getPickupTime()
+    {
+        return $this->pickupTime;
     }
 }

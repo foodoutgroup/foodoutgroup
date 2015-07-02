@@ -11,7 +11,7 @@ set :branch, "master"
 # multi-stage environment
 set :stages,        %w(production staging sandbox taurinas kofeinas pipiras production_lv)
 # isijungiam kada reik :)
-set :default_stage, "staging"
+set :default_stage, "production"
 set :stage_dir,     "app/config/deploy"
 require 'capistrano/ext/multistage'
 

@@ -1723,6 +1723,10 @@
                 <source>admin.best_offers.active</source>
                 <target>Active</target>
             </trans-unit>
+            <trans-unit id="admin.best_offers.use_url">
+                <source>admin.best_offers.use_url</source>
+                <target>Use url</target>
+            </trans-unit>
             <trans-unit id="admin.best_offers.best_offers">
                 <source>admin.best_offers.best_offers</source>
                 <target>Best offers</target>
