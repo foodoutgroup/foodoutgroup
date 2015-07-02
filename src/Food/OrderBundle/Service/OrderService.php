@@ -346,7 +346,7 @@ class OrderService extends ContainerAware
     {
         // Inform poor user, that his order was accepted
         if ($this->getOrder()->getOrderStatus() == self::$status_new) {
-            $recipient = $this->getOrder()->getUser()->getPhone();
+            $recipient = $this->getOrder()->getOrderExtra()->getPhone();
 
             // SMS siunciam tik tuo atveju jei orderis ne is callcentro
             if ($this->getOrder()->getOrderFromNav() == false) {
@@ -492,7 +492,7 @@ class OrderService extends ContainerAware
 //        $ml->setVariables( $variables )->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30009269  )->send();
         $mailTemplate = $this->container->getParameter('mailer_notify_on_accept');
         $ml->setVariables($variables)
-            ->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())
+            ->setRecipient($this->getOrder()->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
             ->setId($mailTemplate)
             ->send();
 
@@ -663,8 +663,8 @@ class OrderService extends ContainerAware
 
         $ml->setVariables($variables)
             ->setRecipient(
-                $this->getOrder()->getUser()->getEmail(),
-                $this->getOrder()->getUser()->getEmail()
+                $this->getOrder()->getOrderExtra()->getEmail(),
+                $this->getOrder()->getOrderExtra()->getEmail()
             )
             ->setId($template)
             ->send();
@@ -1787,8 +1787,8 @@ class OrderService extends ContainerAware
             ."\n"
             .$translator->trans('general.new_order.client_name').": ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
             .$translator->trans('general.new_order.client_address').": ".$userAddress."\n"
-            .$translator->trans('general.new_order.client_phone').": ".$order->getUser()->getPhone()."\n"
-            .$translator->trans('general.new_order.client_email').": ".$order->getUser()->getEmail()."\n"
+            .$translator->trans('general.new_order.client_phone').": ".$order->getOrderExtra()->getPhone()."\n"
+            .$translator->trans('general.new_order.client_email').": ".$order->getOrderExtra()->getEmail()."\n"
             ."\n"
             .$translator->trans('general.new_order.delivery_type').": ".$order->getDeliveryType()."\n"
             .$translator->trans('general.new_order.payment_type').": ".$order->getPaymentMethod()."\n"
@@ -1942,8 +1942,8 @@ class OrderService extends ContainerAware
             .$translator->trans('general.new_order.selected_place_point').": ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
             .$translator->trans('general.new_order.place_point_phone').":".$order->getPlacePoint()->getPhone()."\n"
             ."\n"
-            .$translator->trans('general.new_order.client_name').": ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
-            .$translator->trans('general.new_order.client_phone').": ".$order->getUser()->getPhone()."\n"
+            .$translator->trans('general.new_order.client_name').": ".$order->getOrderExtra()->getFirstname().' '.$order->getOrderExtra()->getLastname()."\n"
+            .$translator->trans('general.new_order.client_phone').": ".$order->getOrderExtra()->getPhone()."\n"
             ."\n"
             .$translator->trans('general.new_order.delivery_type').": ".$order->getDeliveryType()."\n"
             .$translator->trans('general.new_order.payment_type').": ".$order->getPaymentMethod()."\n"
@@ -2070,8 +2070,8 @@ class OrderService extends ContainerAware
             ."\n"
             .$translator->trans('general.new_order.client_name').": ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
             .$translator->trans('general.new_order.client_address').": ".$userAddress."\n"
-            .$translator->trans('general.new_order.client_phone').": ".$order->getUser()->getPhone()."\n"
-            .$translator->trans('general.new_order.client_email').": ".$order->getUser()->getEmail()."\n"
+            .$translator->trans('general.new_order.client_phone').": ".$order->getOrderExtra()->getPhone()."\n"
+            .$translator->trans('general.new_order.client_email').": ".$order->getOrderExtra()->getEmail()."\n"
             ."\n"
             .$translator->trans('general.new_order.delivery_type').": ".$order->getDeliveryType()."\n"
             .$translator->trans('general.new_order.payment_type').": ".$order->getPaymentMethod()."\n"
@@ -2157,8 +2157,8 @@ class OrderService extends ContainerAware
             ."\n"
             .$translator->trans('general.new_order.client_name').": ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
             .$translator->trans('general.new_order.client_address').": ".$userAddress."\n"
-            .$translator->trans('general.new_order.client_phone').": ".$order->getUser()->getPhone()."\n"
-            .$translator->trans('general.new_order.client_email').": ".$order->getUser()->getEmail()."\n"
+            .$translator->trans('general.new_order.client_phone').": ".$order->getOrderExtra()->getPhone()."\n"
+            .$translator->trans('general.new_order.client_email').": ".$order->getOrderExtra()->getEmail()."\n"
             ."\n"
             .$translator->trans('general.new_order.delivery_type').": ".$order->getDeliveryType()."\n"
             .$translator->trans('general.new_order.payment_type').": ".$order->getPaymentMethod()."\n"
@@ -2846,9 +2846,9 @@ class OrderService extends ContainerAware
 //        var_dump($diffInMinutes);
 
         // Lets inform the user, that the order was delayed :(
-        $user = $this->getOrder()->getUser();
-        $userPhone = $user->getPhone();
-        $userEmail = $user->getEmail();
+        $orderExtra = $this->getOrder()->getOrderExtra();
+        $userPhone = $orderExtra->getPhone();
+        $userEmail = $orderExtra->getEmail();
 
         $translator = $this->container->get('translator');
         $domain = $this->container->getParameter('domain');
@@ -3064,7 +3064,7 @@ class OrderService extends ContainerAware
 
                     $this->container->get('food.mailer')
                         ->setVariable('code', $theCode )
-                        ->setRecipient( $order->getUser()->getEmail() )
+                        ->setRecipient( $order->getOrderExtra()->getEmail() )
                         ->setId( $generator->getTemplateCode() )
                         ->send();
 

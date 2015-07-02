@@ -387,7 +387,7 @@ class NavService extends ContainerAware
 
         $dataToPut = array(
             'Order No_' => $orderNewId,
-            'Phone' => str_replace(array('370', '371'), '8', $order->getUser()->getPhone()),
+            'Phone' => str_replace(array('370', '371'), '8', $order->getOrderExtra()->getPhone()),
             'ZipCode' => '', // ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getZipCode() : ''),
             'City' => $city,
             'Street' => $street, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getStreetName(): ''),
