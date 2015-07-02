@@ -254,7 +254,7 @@
                                     <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
                                     <select class="custom-select" disabled="true">
                                         {% for city in available_cities %}
-                                            <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e'})) %}selected{% endif %}>{{ city }}</option>
+                                            <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e'})) %}selected{% else %}{% if userAddress and userAddress.city is defined and (userAddress.city == city or userAddress.city == city|replace({'ė':'e'})) %}selected{% endif %}{% endif %}>{{ city }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -262,7 +262,7 @@
                                     <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
                                     <input type="text"
                                            id="address"
-                                           value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% endif %}"
+                                           value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% else %}{{ userAddress.address|default('') }}{% endif %}"
                                            placeholder="{{ 'index.street'|trans }}"
                                            readonly>
                                 </div>

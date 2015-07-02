@@ -216,11 +216,11 @@ class DefaultController extends Controller
         $locationData = $session->get('locationData');
         $current_user = $this->container->get('security.context')->getToken()->getUser();
 
-        if (!empty($locationData) && !empty($current_user) && is_array($current_user)) {
+        if (!empty($locationData) && !empty($current_user) && is_object($current_user)) {
             $address = $placeService->getCurrentUserAddress($locationData['city'], $locationData['address']);
         }
 
-        if (empty($address) && !empty($current_user) && is_array($current_user)) {
+        if (empty($address) && !empty($current_user) && is_object($current_user)) {
             $defaultUserAddress = $current_user->getCurrentDefaultAddress();
             if (!empty($defaultUserAddress)) {
                 $loc_city = $defaultUserAddress->getCity();
