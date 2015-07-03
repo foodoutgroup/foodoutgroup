@@ -1156,7 +1156,7 @@
         </trans-unit>
         <trans-unit id="food.game.bdate" resname="food.game.bdate">
             <source>food.game.bdate</source>
-            <target>Dzimšanas datums</target>
+            <target>Dzimšanas d.</target>
         </trans-unit>
         <trans-unit id="food.game.phone" resname="food.game.phone">
             <source>food.game.phone</source>
