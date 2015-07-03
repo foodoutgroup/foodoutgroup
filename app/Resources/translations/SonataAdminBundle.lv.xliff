@@ -369,6 +369,10 @@
                 <source>admin.place.delivery_time</source>
                 <target>Deliv. time</target>
             </trans-unit>
+            <trans-unit id="admin.place.pickup_time">
+                <source>admin.place.pickup_time</source>
+                <target>Pickup time</target>
+            </trans-unit>
             <trans-unit id="admin.place.delivery_time_info">
                 <source>admin.place.delivery_time_info</source>
                 <target>Extra.deliv.info</target>
@@ -439,7 +443,7 @@
             </trans-unit>
             <trans-unit id="admin.place.priority">
                 <source>admin.place.priority</source>
-                <target>Peiority</target>
+                <target>Priority</target>
             </trans-unit>
             <trans-unit id="admin.place.delivery_options">
                 <source>admin.place.delivery_options</source>
