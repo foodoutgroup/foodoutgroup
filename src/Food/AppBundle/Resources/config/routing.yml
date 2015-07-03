@@ -62,6 +62,10 @@ food_game_prod:
     pattern: /registracija_zaidimui
     defaults: { _controller: FoodAppBundle:Game:index }
 
+food_game_prod_lv:
+    pattern: /registracija_speli
+    defaults: { _controller: FoodAppBundle:Game:index }
+
 food_review_create:
     pattern: /place/review/{id}
     defaults: { _controller: FoodDishesBundle:Place:reviewCreate }
