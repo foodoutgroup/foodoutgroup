@@ -2564,6 +2564,43 @@ class OrderService extends ContainerAware
             }
         }
 
+        // Validate bussines client
+        $user = $this->get('security.context')->getToken()->getUser();
+        $loggedIn = true;
+
+        if (!$user instanceof User) {
+            $loggedIn = false;
+            $user = $this->container->get('fos_user.user_manager')->findUserByEmail($customerEmail);
+        }
+        if ($user instanceof User) {
+            if ($user->getIsBussinesClient()) {
+                // Bussines client must be logged in
+                if (!$loggedIn) {
+                    $formErrors[] = 'order.form.errors.bussines_client_not_loggedin';
+                } else {
+                    // Bussines client must enter correct division code
+                    $givenDivisionCode = $request->get('company_division_code', '');
+                    if (!empty($givenDivisionCode)) {
+                        $correctDivisionCodes = $user->getDivisionCodes();
+                        $codeCorrect = false;
+
+                        foreach ($divisionCodes as $divisionCode) {
+                            if ($divisionCode == $givenDivisionCode) {
+                                $codeCorrect = true;
+                                break;
+                            }
+                        }
+
+                        if (!$codeCorrect) {
+                            $formErrors[] = 'order.form.errors.division_code_incorrect';
+                        }
+                    } else {
+                        $formErrors[] = 'order.form.errors.empty_division_code';
+                    }
+                }
+            }
+        }
+
         if (0 === strlen($request->get('payment-type'))) {
             $formErrors[] = 'order.form.errors.payment_type';
         }
