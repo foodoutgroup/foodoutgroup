@@ -1971,4 +1971,30 @@ class Order
     {
         return $this->orderExtra;
     }
+
+    /**
+     * @return string
+     */
+    public function getUserContact()
+    {
+        if (!$this->getId()) {
+            return '';
+        }
+        $userContactData = $this->getOrderExtra()->getFirstname();
+        $surname = $this->getOrderExtra()->getLastname();
+        $email = $this->getOrderExtra()->getEmail();
+        $phone = $this->getOrderExtra()->getPhone();
+
+        if (!empty($surname)) {
+            $userContactData .= ' '.$surname;
+        }
+        if (!empty($email)) {
+            $userContactData .= ', '.$email;
+        }
+        if (!empty($phone)) {
+            $userContactData .= ', '.$phone;
+        }
+
+        return $userContactData;
+    }
 }
