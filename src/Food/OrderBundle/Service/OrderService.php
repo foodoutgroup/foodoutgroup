@@ -2584,7 +2584,7 @@ class OrderService extends ContainerAware
                         $correctDivisionCodes = $user->getDivisionCodes();
                         $codeCorrect = false;
 
-                        foreach ($divisionCodes as $divisionCode) {
+                        foreach ($correctDivisionCodes as $divisionCode) {
                             if ($divisionCode == $givenDivisionCode) {
                                 $codeCorrect = true;
                                 break;
