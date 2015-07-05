@@ -109,7 +109,7 @@
             </tr>
         {% endif %}
         <tr>
-            <td colspan="5"><strong>{% trans %}mobile.customer_phone{% endtrans %}:</strong> <a href="tel:+{{ order.user.phone }}">+{{ order.user.phone }}</td>
+            <td colspan="5"><strong>{% trans %}mobile.customer_phone{% endtrans %}:</strong> <a href="tel:+{{ order.orderExtra.phone }}">+{{ order.orderExtra.phone }}</td>
         </tr>
         <tr>
             <th colspan="5">{% trans %}mobile.comment{% endtrans %}</th>
