@@ -112,7 +112,7 @@
                 {% endif %}
                 {% if type != 'unconfirmed-pickup' %}
                     <td>{{ order.addressId.address }}</td>
-                    <td>{{ order.user.phone }}</td>
+                    <td>{{ order.orderExtra.phone }}</td>
                     <td class="self_delivery">
                         {% if order.placePointSelfDelivery %}
                             <span class="glyphicon glyphicon-ok"></span>
