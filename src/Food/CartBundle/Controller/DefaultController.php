@@ -339,6 +339,12 @@ class DefaultController extends Controller
                     ->setCompanyAddress($request->get('company_address'));
             }
 
+            if ($user->getIsBussinesClient()) {
+                $orderService->getOrder()
+                    ->setIsCorporateClient(true)
+                    ->setDivisionCode($request->get('company_division_code'));
+            }
+
             // Update order with recent address information. but only if we need to deliver
             if ($deliveryType == $orderService::$deliveryDeliver) {
                 $locationData = $googleGisService->getLocationFromSession();

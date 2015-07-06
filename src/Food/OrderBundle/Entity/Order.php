@@ -307,6 +307,18 @@ class Order
 
     /**
      * @var bool
+     * @ORM\Column(name="is_corporate_client", type="boolean", nullable=true)
+     */
+    private $isCorporateClient = false;
+
+    /**
+     * @var string
+     * @ORM\Column(name="division_code", type="string", length=60, nullable=true)
+     */
+    private $divisionCode;
+
+    /**
+     * @var bool
      * @ORM\Column(name="reminded", type="boolean", nullable=true)
      */
     private $reminded = false;
@@ -1996,5 +2008,51 @@ class Order
         }
 
         return $userContactData;
+    }
+
+    /**
+     * Set divisionCode
+     *
+     * @param string $divisionCode
+     * @return Order
+     */
+    public function setDivisionCode($divisionCode)
+    {
+        $this->divisionCode = $divisionCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get divisionCode
+     *
+     * @return string 
+     */
+    public function getDivisionCode()
+    {
+        return $this->divisionCode;
+    }
+
+    /**
+     * Set isCorporateClient
+     *
+     * @param boolean $isCorporateClient
+     * @return Order
+     */
+    public function setIsCorporateClient($isCorporateClient)
+    {
+        $this->isCorporateClient = $isCorporateClient;
+    
+        return $this;
+    }
+
+    /**
+     * Get isCorporateClient
+     *
+     * @return boolean 
+     */
+    public function getIsCorporateClient()
+    {
+        return $this->isCorporateClient;
     }
 }

@@ -573,7 +573,8 @@ class OrderService extends ContainerAware
         // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
         if ($order->getPlace()->getSendInvoice()
             && !$order->getPlacePointSelfDelivery()
-            && $order->getDeliveryType() == OrderService::$deliveryDeliver) {
+            && $order->getDeliveryType() == OrderService::$deliveryDeliver
+            && !$order->getIsCorporateClient()) {
             $mustDoNavDelete = $this->setInvoiceDataForOrder();
 
             // Suplanuojam sf siuntima klientui
