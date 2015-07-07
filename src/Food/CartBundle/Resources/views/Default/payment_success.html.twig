@@ -64,6 +64,17 @@
 {% endblock %}
 
 {% block body %}
+    <!-- mailersoft begin -->
+    <script type="text/javascript">
+        {% for item in order.details %}
+        _ml.push({'_conversion_data':  { value: {{ item.price }}, amount: {{ item.quantity }}, title: '{{ item.dishName }}', product_code: '{{ item.id }}' }});
+        {% endfor %}
+
+        window.onload = function(){
+            _mler.sendConversion({order_title: 'Order no. {{ order.id }}', order_id: '{{ order.id }}', currency: '{{ currency_iso }}'});
+        };
+    </script>
+    <!-- mailersoft end -->
     {% javascripts '@FoodAppBundle/Resources/public/js_main/order.js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
