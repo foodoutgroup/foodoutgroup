@@ -1164,7 +1164,7 @@
         </trans-unit>
         <trans-unit id="food.game.phone_placeholder" resname="food.game.phone_placeholder">
             <source>food.game.phone_placeholder</source>
-            <target>370xxxxxxxx</target>
+            <target>371xxxxxxxx</target>
         </trans-unit>
         <trans-unit id="food.game.email" resname="food.game.email">
             <source>food.game.email</source>
