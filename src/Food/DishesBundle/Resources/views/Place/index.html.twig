@@ -176,6 +176,9 @@
                                                 {% if loop.index != 1 %}, {% endif %}{{ kitchen.name }}
                                             {% endfor %}
                                         </li>
+                                        <li class="ico-pickup">
+                                            <strong>{% trans %}place.pickup_info{% endtrans %}:</strong>{{ place.pickupTime }}
+                                        </li>
                                         {% if place.deliveryOptions != 'pickup' %}
                                         <li class="ico-time">
                                             <strong>{% trans %}places.delivery_time{% endtrans %}:</strong>{{ place.deliveryTime }}
@@ -209,9 +212,9 @@
                                     </ul>
                                 </div>
                                 <div class="restaurant-info-righter simple-content">
-                                    <p class="restaurant-description">{{ place.description|raw|nl2br }}</p>
                                     {% if placePoints is not empty %}
-                                        <select class="custom-select">
+                                        <label for="place-select">{% trans %}places.select_place_point{% endtrans %}:</label>
+                                        <select id="place-select" class="custom-select">
                                             {% for point in placePoints%}
                                                 <option value="{{ point.id }}">{{ point.address }}, {{ point.city }}</option>
                                             {% endfor %}
@@ -219,6 +222,7 @@
                                         <div class="location-work-hours clearfix">
                                             <div class="lefter" id="restaurant-map-location" style="height: 300px;width: 300px;"></div>
                                             <div class="righter">
+                                                <h3>{% trans %}places.work_hours{% endtrans %}:</h3>
                                                 <table class="work-times">
                                                     <tr>
                                                         <td>{% trans %}general.monday{% endtrans %}</td>
@@ -252,6 +256,7 @@
                                             </div>
                                         </div>
                                     {% endif %}
+                                    <p class="restaurant-description">{{ place.description|raw|nl2br }}</p>
                                 </div>
                             </div>
                         </div>
