@@ -127,22 +127,45 @@
                 $('.company_data').addClass('hidden');
             }
         });
-
-        {#$('#today_date').on('click', function(event){
+        {#
+        // Holy shit. Delete it...
+        $('#today_date').on('click', function(event){
+            console.log('TODAY DAY CLICKED');
             if ($(this).is('checked')) {
+                console.log('TODAY DAY IS CHECKED');
                 $('.today_times').removeClass('hidden').attr('disabled', false);
                 $('.tommorow_times').addClass('hidden').attr('disabled', true);
             }
         });
         $('#tommorow_date').on('click', function(event){
+            console.log('TOMORROW DAY CLICKED');
             if ($(this).is('checked')) {
+                console.log('TOMORROW DAY IS CHECKED');
                 $('.today_times').addClass('hidden').attr('disabled', true);
                 $('.tommorow_times').removeClass('hidden').attr('disabled', false);
             }
-        });#}
+        });
+        #}
+
+        var orderingHours = [];
+        {% for day, dayInfo in workingHoursForInterval %}
+            orderingHours['{{ day }}'] = [{% for hourInfo in  dayInfo%}{% if loop.index0 != 0 %},{% endif %}'{{ hourInfo }}'{% endfor %}];
+        {% endfor %}
+
+
+        $("#pre_order_date").on( "selectmenuselect", function( event, ui ) {
+            changeTheTimes(ui.value);
+        });
+        function changeTheTimes(newDate) {
+            var newHtml = "";
+            for (var cnt = 0; cnt < orderingHours[newDate].length; cnt++) {
+                newHtml+='<option value="'+orderingHours[newDate][cnt]+'">'+orderingHours[newDate][cnt]+'</option>' + "\n";
+            }
+            $("#pre_order_time").html(newHtml).selectmenu();
+        }
+
     });
 {% endblock %}
-
 {% block ga_js_code %}
     $(document).ready(
         function() {
@@ -190,7 +213,6 @@
     );
 {% endblock %}
 {% block body %}
-
     {% include 'FoodDishesBundle:Place:dish_cart_partial.html.twig' %}
 
     {% javascripts '@FoodAppBundle/Resources/public/js_main/order.js' %}
@@ -326,7 +348,13 @@
                             <div class="preorder_dates {% if dataToLoad is empty or (dataToLoad is not empty and dataToLoad['pre-order'] is not empty and dataToLoad['pre-order'] == "not-this-time") %}hidden{% endif %}" >
                                 <div class="form-row">
                                     <label>{% trans %}cart.checkout.delivery_date{% endtrans %}:</label>
-                                    <select class="custom-select" name="pre_order_date">
+                                    <select class="custom-select" name="pre_order_date" id="pre_order_date">
+                                        {% for dayCounter in 0 .. (workingDaysCount-1) %}
+                                            <option value="{{ "+#{dayCounter} day"|date("Y-m-d") }}" {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "+#{dayCounter} day"|date("Y-m-d")) %}selected="selected"{% endif %}>
+                                                {{ "+#{dayCounter} day"|date()|localizeddate('none', 'none', locale, null, 'eeee, MMM d')|capitalize }} d.
+                                            </option>
+                                        {% endfor %}
+                                        {#
                                         {% if workingHoursToday is not empty%}
                                             <option id="today_date" value='{{ "now"|date("Y-m-d") }}' {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "now"|date("Y-m-d")) %}selected="selected"{% endif %}>
                                                 {{ "now"|date()|localizeddate('none', 'none', locale, null, 'eeee, MMM d')|capitalize }} d.
@@ -337,19 +365,23 @@
                                                 {{ "+1 day"|date()|localizeddate('none', 'none', locale, null, 'eeee, MMM d')|capitalize }} d.
                                             </option>
                                         {% endif %}
+                                        #}
                                     </select>
                                 </div><div class="form-row">
                                     <label>{% trans %}cart.checkout.delivery_time{% endtrans %}:</label>
-                                    <select class="custom-select today_times {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "+1 day"|date("Y-m-d")) %}hidden{% endif %}" name="pre_order_time" {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "+1 day"|date("Y-m-d")) %}disabled="disabled" {% endif %}>
-                                        <div class="today_times" >
-                                        {% for time in workingHoursToday %}
-                                            {% if time > ("+1 hour")|date("H:i") %}
-                                            <option value="{{ time }}" {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "now"|date("Y-m-d")) %}selected="selected"{% endif %}>
-                                                {{ time }}
-                                            </option>
-                                            {% endif %}
-                                        {% endfor %}
+                                    <select id="pre_order_time" class="custom-select today_times {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "+1 day"|date("Y-m-d")) %}hidden{% endif %}" name="pre_order_time" {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "+1 day"|date("Y-m-d")) %}disabled="disabled" {% endif %}>
+                                            {#
+                                                                                    <div class="today_times" >
+                                            {% for time in workingHoursToday %}
+                                                {% if time > ("+1 hour")|date("H:i") %}
+                                                <option value="{{ time }}" {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "now"|date("Y-m-d")) %}selected="selected"{% endif %}>
+                                                    {{ time }}
+                                                </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        #}
                                     </select>
+                                    {#
                                     <select class="custom-select tommorow_times {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "now"|date("Y-m-d")) %}hidden{% endif %}" name="pre_order_time_tommorow" {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "now"|date("Y-m-d")) %}disabled="disabled"{% endif %}">
                                         {% for time in workingHoursTommorow %}
                                             <option value="{{ time }}" {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "now"|date("Y-m-d")) %}selected="selected"{% endif %}>
@@ -357,6 +389,7 @@
                                             </option>
                                         {% endfor %}
                                     </select>
+                                    #}
                                 </div>
                             </div>
                             {# Preorder block end #}

@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultController extends Controller
 {
     /**
-     * @var CartService
+     * @var CartServiceworkingHoursToday
      */
     private $cartService;
 
@@ -180,8 +180,16 @@ class DefaultController extends Controller
             $pointRecord = null;
         }
 
+        $workingHoursForInterval = array();
+        $workingDaysCount = 4;
+        for($i = 0; $i <= $workingDaysCount; $i++) {
+            $workingHoursForInterval[date("Y-m-d", strtotime("+".$i." day"))] = $placeService->getFullRangeWorkTimes($place, $pointRecord, "+".$i." day");
+        }
+
+        /**
         $workingHoursToday = $placeService->getFullRangeWorkTimes($place, $pointRecord);
         $workingHoursTommorow = $placeService->getFullRangeWorkTimes($place, $pointRecord, '+1 day');
+         **/
 
         // TODO refactor this nonsense... if is if is if is bullshit...
         // Validate only if post happened
@@ -355,8 +363,8 @@ class DefaultController extends Controller
                 'dataToLoad' => $dataToLoad,
                 'submitted' => $request->isMethod('POST'),
                 'testNordea' => $request->query->get('test_nordea'),
-                'workingHoursToday' => $workingHoursToday,
-                'workingHoursTommorow' => $workingHoursTommorow,
+                'workingHoursForInterval' => $workingHoursForInterval,
+                'workingDaysCount' => $workingDaysCount
             )
         );
     }

@@ -266,6 +266,7 @@ class PlacesService extends ContainerAware {
         $to = intval($to);
 
         $i = $from;
+
         while($i <= $to) {
             if ($i%100 == 60) {
                 $i = $i+40;
