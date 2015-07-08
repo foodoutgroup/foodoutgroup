@@ -6,6 +6,7 @@ use Food\AppBundle\Entity\Driver;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
+use Food\OrderBundle\Entity\OrderExtra;
 use Food\OrderBundle\Entity\OrderToLogistics;
 use Food\OrderBundle\Service\LogisticsService;
 use Food\OrderBundle\Service\OrderService;
@@ -625,6 +626,11 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $user->setFirstname('Mantas')
             ->setPhone('37061514333');
 
+        $orderExtra = new OrderExtra();
+        $orderExtra->setPhone('37061514333')
+            ->setFirstname('Mantas');
+        $order->setOrderExtra($orderExtra);
+
         /**
          * @var UserAddress $userAddress
          */
@@ -788,6 +794,11 @@ class LogisticsServiceTest extends \PHPUnit_Framework_TestCase {
         $user = new User();
         $user->setFirstname('Mantas')
             ->setPhone('37061514333');
+
+        $orderExtra = new OrderExtra();
+        $orderExtra->setPhone('37061514333')
+            ->setFirstname('Mantas');
+        $order->setOrderExtra($orderExtra);
 
         /**
          * @var UserAddress $userAddress

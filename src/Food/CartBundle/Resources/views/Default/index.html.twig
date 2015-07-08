@@ -303,17 +303,17 @@
                             </div>
                             <h2 class="section-2">2. {% trans %}cart.checkout.block_title_secure_payment{% endtrans %}</h2>
                             <div class="select-payment clearfix">
-                                <label class="custom-radio">{% trans %}cart.checkout.cash_on_delivery{% endtrans %}
+                                <label class="custom-radio">{% if app.user.isBussinesClient|default(false) %}{% trans %}cart.checkout.corporate_pay{% endtrans %}{% else %}{% trans %}cart.checkout.cash_on_delivery{% endtrans %}{% endif %}
                                     <input type="radio" name="payment-type" value="local"{% if (order is not null and order.paymentMethod == 'local') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local') or (dataToLoad is empty) %} checked="checked"{% endif %}>
                                 </label>
-                                {% if takeAway != true and place.cardOnDelivery %}
+                                {% if takeAway != true and place.cardOnDelivery and not app.user.isBussinesClient|default(false) %}
                                 <label class="custom-radio for_hiding">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
                                     <input type="radio" name="payment-type" value="local.card"{% if (order is not null and order.paymentMethod == 'local.card') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local.card') %} checked="checked"{% endif %}>
                                 </label>
                                 {% endif %}
                             </div>
 
-                            {% if not place.disabledOnlinePayment %}
+                            {% if not place.disabledOnlinePayment and not app.user.isBussinesClient|default(false)%}
                             {# TODO kolkas viskas rodo i Paysera#}
                             <div class="for_hiding">
                                 <div class="select-payment clearfix">

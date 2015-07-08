@@ -161,6 +161,59 @@ class InvoiceService extends ContainerAware
         );
     }
 
+
+    /**
+     *
+     * @param Order[] $orders
+     *
+     * @throws \InvalidArgumentException
+     * @throws \Exception
+     */
+    public function generateCorporateInvoice($orders)
+    {
+        if (empty($orders)) {
+            throw new \InvalidArgumentException('Cannot generate invoice PDF without orders');
+        }
+
+        $file = $this->getInvoiceFilename($orders[0]);
+        $filename = $this->getInvoicePath().$file;
+
+        $this->container->get('logger')->alert(
+            sprintf(
+                'Generating user invoice for Corportate Orders by user #%d | with SF data: %s | Filename: %s | Filepath: %s',
+                $orders[0]->getId(),
+                $orders[0]->getSfLine(),
+                $file,
+                $filename
+            )
+        );
+
+        $orderByDivision = array();
+        foreach ($orders as $order) {
+            if (!isset($orderByDivision[$order->getDivisionCode()])) {
+                $orderByDivision[$order->getDivisionCode()] = array($order);
+            } else {
+                $orderByDivision[$order->getDivisionCode()][] = $order;
+            }
+        }
+
+        // Generate new invoice file
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
+
+        $this->container->get('knp_snappy.pdf')->generateFromHtml(
+            $this->container->get('templating')->render(
+                'FoodOrderBundle:Default:corporate_invoice.html.twig',
+                array(
+                    'orders'  => $orderByDivision,
+                    'mainOrder' => $orders[0],
+                )
+            ),
+            $filename
+        );
+    }
+
     /**
      * @param Order $order
      * @throws \Exception
@@ -281,13 +334,90 @@ class InvoiceService extends ContainerAware
                     $variablesForLog
                 );
             }
+        }
 
-            // TODO - panaikinti debugini siuntima...
-//            $ml->setVariables($variables)
-//                ->setRecipient('mantas@foodout.lt', 'mantas@foodout.lt')
-//                ->addAttachment($fileName, file_get_contents($file))
-//                ->setId(30019657)
-//                ->send();
+        return $emails;
+    }
+
+    /**
+     * @param Order $order
+     * @param string|null $forcedEmail
+     *
+     * @throws \InvalidArgumentException
+     * @return array
+     */
+    public function sendCorporateInvoice($order, $forcedEmail = null)
+    {
+        if (!$order instanceof Order) {
+            throw new \InvalidArgumentException('Cannot send invoice PDF without order');
+        }
+
+        if (!empty($forcedEmail)) {
+            $emails = array($forcedEmail);
+        } else {
+            $emails = array();
+
+            $userEmail = $order->getUser()->getEmail();
+
+            if (!$order->getOrderFromNav() || ($userEmail != ($order->getUser()->getPhone().'@foodout.lt'))) {
+                $emails[] = $userEmail;
+            }
+
+//            $placeFinanceMail = $order->getPlacePoint()->getInvoiceEmail();
+
+//            if (!empty($placeFinanceMail)) {
+//                $emails[] = $placeFinanceMail;
+//            }
+        }
+
+        $ml = $this->container->get('food.mailer');
+        $logger = $this->container->get('logger');
+
+        $fileName = $this->getInvoiceFilename($order);
+        $file = 'https://s3-eu-west-1.amazonaws.com/foodout-invoice/pdf/'.$fileName;
+
+        $variables = array(
+            'uzsakymo_data' => $order->getOrderDate()->format("Y-m"),
+        );
+
+        $logger->alert(sprintf(
+            'Invoice preparation for sending: Corporate user id: #%d | Invoice: %s | Email count: %d',
+            $order->getUser()->getId(),
+            $order->getSfLine(),
+            count($emails)
+        ));
+
+        if (!empty($emails)) {
+            foreach ($emails as $email) {
+                $logger->alert(sprintf(
+                    'Siunciama saskaita corporate faktura klientui #%d el.pastu: %s. Fakturos failas: %s',
+                    $order->getUser()->getId(),
+                    $email,
+                    $fileName
+                ));
+
+                // TODO this is a temp fix for Mailer lite api
+                $ml->removeAttachments()
+                    ->resetVariables()
+                    ->flush();
+
+                $mailTemplate = $this->container->getParameter('mailer_send_corporate_invoice');
+                $mailerResponse = $ml->setVariables($variables)
+                    ->setRecipient($email, $email)
+                    ->addAttachment($fileName, file_get_contents($file))
+                    ->setId($mailTemplate)
+                    ->send();
+                $logger->alert('Mailer responded (for order #' . $order->getId() . '): ' . var_export($mailerResponse, true));
+
+                $variablesForLog = $variables;
+                $variablesForLog['filename'] = $fileName;
+                $this->container->get('food.order')->logMailSent(
+                    $order,
+                    'invoice_send',
+                    $mailTemplate,
+                    $variablesForLog
+                );
+            }
         }
 
         return $emails;

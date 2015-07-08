@@ -2566,7 +2566,7 @@ class OrderService extends ContainerAware
         }
 
         // Validate bussines client
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->container->get('security.context')->getToken()->getUser();
         $loggedIn = true;
 
         if (!$user instanceof User) {

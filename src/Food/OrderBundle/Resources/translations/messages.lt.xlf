@@ -46,6 +46,10 @@
                 <source>order.invoice.line_num</source>
                 <target>Eil. Nr.</target>
             </trans-unit>
+            <trans-unit id="order.invoice.order_no" resname="order.invoice.order_no">
+                <source>order.invoice.order_no</source>
+                <target>Užsakymo Nr.</target>
+            </trans-unit>
             <trans-unit id="order.invoice.product_name" resname="order.invoice.product_name">
                 <source>order.invoice.product_name</source>
                 <target>Pavadinimas</target>

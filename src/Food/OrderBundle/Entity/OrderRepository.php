@@ -661,4 +661,26 @@ class OrderRepository extends EntityRepository
         return $qb->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return array|Order[]
+     */
+    public function getCorporateOrdersForInvoice()
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb->where('o.order_status IN (:order_status)')
+        ->andWhere('o.isCorporateClient = :corporate_cl')
+        ->andWhere('o.order_date BETWEEN :date_start AND :date_end')
+        ->andWhere('o.sfNumber IS NULL')
+        ->setParameters(array(
+            'order_status' => array(OrderService::$status_completed, OrderService::$status_partialy_completed),
+            'corporate_cl' => 1,
+            'date_start' => new \DateTime(date("Y-m-01 00:00:01")),
+            'date_end' => new \DateTime("now")
+        ));
+
+        return $qb->getQuery()
+            ->getResult();
+    }
 }

@@ -106,6 +106,10 @@
         <source>cart.checkout.cash_on_delivery</source>
         <target>Grynais pristatymo metu</target>
       </trans-unit>
+      <trans-unit id="cart.checkout.corporate_pay" resname="cart.checkout.corporate_pay">
+        <source>cart.checkout.corporate_pay</source>
+        <target>Pavedimu mėnesio gale</target>
+      </trans-unit>
       <trans-unit id="9330627cdb5d1c945003084cf89374b6" resname="cart.checkout.card_on_delivery">
         <source>cart.checkout.card_on_delivery</source>
         <target>Kredito kortele po pristatymo</target>
@@ -347,6 +351,10 @@ Vilnius]]></target>
         <trans-unit id="order.form.errors.payment_type" resname="order.form.errors.payment_type">
             <source>order.form.errors.payment_type</source>
             <target>Pasirinkite atsiskaitymo būdą</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.division_code_incorrect" resname="order.form.errors.division_code_incorrect">
+            <source>order.form.errors.division_code_incorrect</source>
+            <target>Nurodėte neteisingą padalinio kodą</target>
         </trans-unit>
         <trans-unit id="general.coupon.text" resname="general.coupon.text">
             <source>general.coupon.text</source>

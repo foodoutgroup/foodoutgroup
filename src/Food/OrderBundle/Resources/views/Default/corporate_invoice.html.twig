@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <style type="text/css">
+        .data-table {
+            width: 100%; border: none;
+            border-spacing: 1px;
+        }
+        .data-table td {
+            border: 1px solid #000000;
+            padding-left: 5px;
+        }
+        .data-table td.no-border,
+        .data-table tr.no-border-line td {
+            border: none;
+        }
+        .data-table td.narrow_col {
+            width: 50px;
+            text-align: center;
+        }
+        .data-table td.sum_col {
+            text-align: right;
+            padding-right: 5px;
+            width: 70px;
+            white-space: nowrap;
+        }
+        .no-wrap {
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+<div style="text-align: center">
+    <h1>{% trans %}order.invoice.invoice_title{% endtrans %}</h1>
+    <br />
+    <h3>{% trans %}order.invoice.series{% endtrans %} {{ mainOrder.sfSeries }} {% trans %}order.invoice.number{% endtrans %} {{ mainOrder.sfNumber }}</h3>
+</div>
+<br />
+<br />
+<div style="width: 100%;">
+    <div style="display: inline-block; width: 49%;">
+        {% trans %}order.invoice.seller{% endtrans %}<br />
+        {% trans %}order.invoice.foodout_company_name{% endtrans %}<br />
+        <br />
+        {% trans %}order.invoice.foodout_address{% endtrans %}<br />
+        {% trans %}order.invoice.company_code{% endtrans %} {% trans %}order.invoice.foodout_company_code{% endtrans %}<br />
+        {% trans %}order.invoice.vat_num{% endtrans %} {% trans %}order.invoice.foodout_vat_code{% endtrans %}<br />
+        {% trans %}order.invoice.foodout_bank{% endtrans %}<br />
+        {% trans %}order.invoice.bank_code{% endtrans %} {% trans %}order.invoice.foodout_bank_code{% endtrans %}<br />
+        A/s {% trans %}order.invoice.foodout_bank_account{% endtrans %}<br />
+    </div>
+    <div style="display: inline-block; width: 49%; vertical-align: top;">
+        {% trans %}order.invoice.buyer{% endtrans %}<br />
+        {{ mainOrder.user.companyName }}<br />
+        <br />
+        {{ mainOrder.user.companyAddress }}<br />
+        {% trans %}order.invoice.company_code{% endtrans %} {{ mainOrder.user.companyCode }}<br />
+        {% if mainOrder.user.vatCode != '' %}{% trans %}order.invoice.vat_num{% endtrans %} {{ mainOrder.user.vatCode }}{% endif %}<br />
+        <br />
+        {% trans %}order.invoice.document_date{% endtrans %}: {{ "now"|date("Y m d") }}<br />
+    </div>
+</div>
+<br />
+<br />
+<table class="data-table">
+    <tr>
+        <td class="narrow_col">{% trans %}order.invoice.line_num{% endtrans %}</td>
+        <td style="min-width: 335px;">{% trans %}order.invoice.order_no{% endtrans %}</td>
+        <td class="sum_col">{% trans %}order.invoice.sum{% endtrans %}, {{ currency_display|raw }}</td>
+    </tr>
+    {% set sum_no_vat = 0 %}
+    {% set delivery_no_vat = 0 %}
+    {% set vat_sum = 0 %}
+    {% set orders_total = 0 %}
+    {% set delivery_total = 0 %}
+
+    {% for key, divOrders in orders %}
+        <tr>
+            <td colspan="4">Padalinio {{ key }} užsakymai:</td>
+        </tr>
+        {% for order in divOrders %}
+            <tr class="no-border-line">
+                <td class="narrow_col">{{ loop.index }}</td>
+                <td>#{{ order.id }}</td>
+                <td class="sum_col">{{ order.total - order.deliveryPrice }}</td>
+            </tr>
+
+            {% set orders_total = orders_total + order.total %}
+            {% set delivery_total = delivery_total + order.deliveryPrice %}
+
+            {% if order.deliveryType == 'deliver' %}
+                {% set sum_no_vat = sum_no_vat + (((order.total - order.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2)) %}
+                {% set delivery_no_vat =  delivery_no_vat + ((order.deliveryPrice / (( vat_size / 100 ) + 1))|round(2)) %}
+            {% else %}
+                {% set sum_no_vat = sum_no_vat + (((order.total) / (( vat_size / 100 ) + 1))|round(2)) %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    {% set vat_sum = orders_total - sum_no_vat - delivery_no_vat %}
+
+    <tr class="no-border-line"><td colspan="4">&nbsp;</td></tr>
+    <tr class="no-border-line">
+        <td></td>
+        <td class="no-wrap">{% trans %}order.invoice.sum_no_vat{% endtrans %}:</td>
+        <td class="sum_col">{{ sum_no_vat|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
+    </tr>
+    <tr class="no-border-line">
+        <td></td>
+        <td class="no-wrap" style="white-space: nowrap;">{% trans %}order.invoice.delivery{% endtrans %}</td>
+        <td class="sum_col">{{ delivery_no_vat|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
+    </tr>
+
+    <tr class="no-border-line">
+        <td></td>
+        <td class="no-wrap" style="white-space: nowrap;">{% trans %}order.invoice.vat{% endtrans %} {{ vat_size }}%</td>
+        <td class="sum_col">{{ vat_sum|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
+    </tr>
+    <tr class="no-border-line">
+        <td></td>
+        <td class="no-wrap" style="border-top: 1px solid black;">{% trans %}order.invoice.sum_total{% endtrans %}:</td>
+        <td class="sum_col" style="border-top: 1px solid black;">{{ orders_total|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
+    </tr>
+</table>
+<br />
+<br />
+<div>{% trans %}order.invoice.sum_words{% endtrans %}: {{ misc_utils.priceToText(orders_total)|capitalize }}</div>
+<br />
+<br />
+<br />
+<div>{% trans %}order.invoice.invoice_receiver{% endtrans %}: __________________________________________________________</div>
+</body>
+</html>
