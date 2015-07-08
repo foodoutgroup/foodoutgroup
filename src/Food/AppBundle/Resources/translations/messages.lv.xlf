@@ -1142,6 +1142,58 @@
         <source>general.currency_minor_modals</source>
         <target>cents|centi|centu</target>
       </trans-unit>
+        <trans-unit id="food.game.firstname" resname="food.game.firstname">
+            <source>food.game.firstname</source>
+            <target>Vārds</target>
+        </trans-unit>
+        <trans-unit id="food.game.lastname" resname="food.game.lastname">
+            <source>food.game.lastname</source>
+            <target>Uzvārds</target>
+        </trans-unit>
+        <trans-unit id="food.game.city" resname="food.game.city">
+            <source>food.game.city</source>
+            <target>Pilsēta</target>
+        </trans-unit>
+        <trans-unit id="food.game.bdate" resname="food.game.bdate">
+            <source>food.game.bdate</source>
+            <target>Dzimšanas d.</target>
+        </trans-unit>
+        <trans-unit id="food.game.phone" resname="food.game.phone">
+            <source>food.game.phone</source>
+            <target>Telefona nr.</target>
+        </trans-unit>
+        <trans-unit id="food.game.phone_placeholder" resname="food.game.phone_placeholder">
+            <source>food.game.phone_placeholder</source>
+            <target>371xxxxxxxx</target>
+        </trans-unit>
+        <trans-unit id="food.game.email" resname="food.game.email">
+            <source>food.game.email</source>
+            <target>E-pasts</target>
+        </trans-unit>
+        <trans-unit id="food.game.register" resname="food.game.register">
+            <source>food.game.register</source>
+            <target>Reģistrēties</target>
+        </trans-unit>
+        <trans-unit id="food.game.empty_field" resname="food.game.empty_field">
+            <source>food.game.empty_field</source>
+            <target>Šis laukums nedrīkst būt tukšs</target>
+        </trans-unit>
+        <trans-unit id="food.game.has_error" resname="food.game.has_error">
+            <source>food.game.has_error</source>
+            <target>Atvainojiet! Jūs esat ievadījis nepareizus datus.</target>
+        </trans-unit>
+        <trans-unit id="food.game.its_success" resname="food.game.its_success">
+            <source>food.game.its_success</source>
+            <target>Paldies, jums ir pierakstījies veiksmīgi</target>
+        </trans-unit>
+        <trans-unit id="food.game.agree" resname="food.game.agree">
+            <source>food.game.agree</source>
+            <target><![CDATA[Piekrītu lietošanas noteikumiem. <a href="rule_url">Noteikumi</a>]]></target>
+        </trans-unit>
+        <trans-unit id="general.wow_game" resname="general.wow_game">
+            <source>general.wow_game</source>
+            <target>Reģistrēties spēles</target>
+        </trans-unit>
         <trans-unit id="general.top_contact.worktime_days" resname="general.top_contact.worktime_days">
             <source>general.top_contact.worktime_days</source>
             <target><![CDATA[I - IV,VII<br />V - VI]]></target>

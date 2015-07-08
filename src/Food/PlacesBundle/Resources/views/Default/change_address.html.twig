@@ -33,7 +33,7 @@
             {% endif %}
             <script type="text/javascript">
                 $(document).ready(function(){
-                    $("#address").on('input', function(){
+                    $("input[id='address']").on('input', function(){
                         var $input = $(this);
                         var val = $input.val();
                         var selected_city = null;

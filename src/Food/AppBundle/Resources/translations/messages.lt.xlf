@@ -1199,6 +1199,12 @@
         <source>food.game.phone</source>
         <target>Telefonas</target>
     </trans-unit>
+        <trans-unit id="food.game.phone_placeholder" resname="food.game.phone_placeholder">
+            <source>food.game.phone_placeholder</source>
+            <target>370xxxxxxxx</target>
+        </trans-unit>
+
+
     <trans-unit id="food.game.email" resname="food.game.email">
         <source>food.game.email</source>
         <target>El. paštas</target>
@@ -1233,11 +1239,11 @@
     </trans-unit>
     <trans-unit id="general.top_contact.worktime_days" resname="general.top_contact.worktime_days">
         <source>general.top_contact.worktime_days</source>
-        <target><![CDATA[I - V<br />VI - VII]]></target>
+        <target><![CDATA[VII - IV<br />V - I]]></target>
     </trans-unit>
     <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
         <source>general.top_contact.worktime</source>
-        <target><![CDATA[10 - 01 val.<br />10 - 03 val.]]></target>
+        <target><![CDATA[10 - 23 val.<br />10 - 01 val.]]></target>
     </trans-unit>
     <trans-unit id="general.top_contact.phone" resname="general.top_contact.phone">
         <source>general.top_contact.phone</source>

@@ -306,7 +306,7 @@ class PlacesService extends ContainerAware {
     public function getCurrentUserAddresses() {
         $current_user = $this->container->get('security.context')->getToken()->getUser();
         $all_user_address = array();
-        if (!empty($current_user) && is_array($current_user)) {
+        if (!empty($current_user) && is_object($current_user)) {
             $all_user_address = $this->container->get('doctrine')->getRepository('FoodUserBundle:UserAddress')
                 ->findBy(array(
                     'user' => $current_user,
@@ -318,7 +318,7 @@ class PlacesService extends ContainerAware {
     public function getCurrentUserAddress($city, $address) {
         $current_user = $this->container->get('security.context')->getToken()->getUser();
         $user_address = array();
-        if (!empty($current_user) && is_array($current_user) && !empty($city) && !empty($address)) {
+        if (!empty($current_user) && is_object($current_user) && !empty($city) && !empty($address)) {
             $user_address = $this->container->get('doctrine')->getRepository('FoodUserBundle:UserAddress')
                 ->findOneBy(array(
                     'user' => $current_user,

@@ -360,6 +360,10 @@
                 <source>admin.place.delivery_time</source>
                 <target>Prist. trukmė</target>
             </trans-unit>
+            <trans-unit id="admin.place.pickup_time">
+                <source>admin.place.pickup_time</source>
+                <target>Atsiemim. trukmė</target>
+            </trans-unit>
             <trans-unit id="admin.place.delivery_time_info">
                 <source>admin.place.delivery_time_info</source>
                 <target>Papild. trukm. info.</target>

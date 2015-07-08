@@ -327,8 +327,11 @@ class OrderService extends ContainerAware
                 $discountSum = $coupon->getDiscountSum();
             }
             $discount['code'] = $coupon->getCode();
+            if ($discountSum > 0) {
+                $discountSum = $discountSum * 100;
+            }
             $discount['discount_sum'] = $discountSum;
-            //$discount['discount_size'] = $discountSize;
+            $discount['discount_size'] = $discountSize;
         }
 
         $returner = array(

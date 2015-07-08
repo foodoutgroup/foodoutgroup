@@ -903,6 +903,7 @@ class OrderService extends ContainerAware
 
         // Pritaikom nuolaida
         $discountPercent = 0;
+        $discountSum = 0;
 
         if (!empty($coupon) && $coupon instanceof Coupon) {
             $order = $this->getOrder();
