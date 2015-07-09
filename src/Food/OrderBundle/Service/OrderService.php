@@ -2407,7 +2407,7 @@ class OrderService extends ContainerAware
                 $formErrors[] = 'order.form.errors.back_in_time_preorder';
             }
 
-            if ($orderDate > date("Y-m-d 00:00", strtotime("+2 day"))) {
+            if ($orderDate > date("Y-m-d 00:00", strtotime("+4 day"))) {
                 $formErrors[] = 'order.form.errors.back_in_feature_preorder';
             }
 

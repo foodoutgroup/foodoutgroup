@@ -340,7 +340,7 @@ Vilnius]]></target>
         </trans-unit>
         <trans-unit id="order.form.errors.back_in_feature_preorder" resname="order.form.errors.back_in_feature_preorder">
             <source>order.form.errors.back_in_feature_preorder</source>
-            <target>Atsiprašome, tačiau užsakymus priimame tik šiandienai ir rytdienai</target>
+            <target>Prašau pasirinkti pristatymo datą iš pateikiamų</target>
         </trans-unit>
         <trans-unit id="order.form.errors.not_a_date" resname="order.form.errors.not_a_date">
             <source>order.form.errors.not_a_date</source>
