@@ -5,6 +5,7 @@ namespace Food\CartBundle\Controller;
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Place;
 use Food\OrderBundle\Entity\Order;
+use Food\UserBundle\Entity\User;
 use FOS\UserBundle\Model\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -267,6 +268,17 @@ class DefaultController extends Controller
                 );
 
                 $user = $fosUserManager->findUserByEmail($userEmail);
+
+                // If bussines user - load it from here please
+                try {
+                    $tmpUser = $this->container->get('security.context')->getToken()->getUser();
+
+                    if ($tmpUser instanceof User && $tmpUser->getId() && $tmpUser->getIsBussinesClient()) {
+                        $user = $tmpUser;
+                    }
+                } catch (\Exception $e) {
+                    // do nothing for now. Todo logging
+                }
 
                 if (empty($user) || !$user->getId()) {
                     /**
