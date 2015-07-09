@@ -369,7 +369,17 @@
                                     </select>
                                 </div><div class="form-row">
                                     <label>{% trans %}cart.checkout.delivery_time{% endtrans %}:</label>
-                                    <select id="pre_order_time" class="custom-select today_times {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "+1 day"|date("Y-m-d")) %}hidden{% endif %}" name="pre_order_time" {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "+1 day"|date("Y-m-d")) %}disabled="disabled" {% endif %}>
+                                    <select id="pre_order_time" class="custom-select today_times {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty ) %}hidden{% endif %}" name="pre_order_time" >
+                                        {% if dataToLoad is not empty and dataToLoad['pre_order_date'] %}
+                                            {% set useDateForPre = dataToLoad['pre_order_date'] %}
+                                        {% else %}
+                                            {% set useDateForPre = "now"|date("Y-m-d") %}
+                                        {% endif %}
+                                        {% for hourInfo in  workingHoursForInterval[useDateForPre] %}
+                                            <option value="{{ hourInfo }}" {% if dataToLoad is not empty and dataToLoad['pre_order_time'] and dataToLoad['pre_order_time'] == hourInfo%}selected{% endif %} >{{ hourInfo }}</option>
+                                        {% endfor %}
+
+
                                             {#
                                                                                     <div class="today_times" >
                                             {% for time in workingHoursToday %}
