@@ -74,7 +74,7 @@
                 }
             }).siblings('.ui-dialog-titlebar').remove();
         }
-        $('.tooltip').tooltip();
+        $('.tooltip, .checkout-pickup-place-tooltip').tooltip();
 
         $('#coupon_form').bind('submit', function() {
             $('.coupon_form_popup .button-submit').trigger('click');
@@ -236,7 +236,7 @@
     <div class="site-center">
         <div class="site-block">
             <div class="page-title no-page-path">
-                <h1 class="clearfix"><span>Užsakymas</span></h1>
+                <h1 class="clearfix"><span>{% trans %}cart.checkout.main_title{% endtrans %}</span></h1>
             </div>
             <div class="clearfix">
                 <div class="content-lefter-big">
@@ -288,16 +288,16 @@
                                 <div class="form-row form-row-required address-change">
                                     <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
                                     <select class="custom-select" disabled="true">
-                                        <option {% if location and location.city is defined and location.city == 'Vilnius' %}#}selected{% endif %} value="Vilnius">Vilnius</option>
-                                        <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %} value="Kaunas">Kaunas</option>
-                                        <option {% if location and location.city is defined and (location.city == 'Klaipėda' or location.city == 'Klaipeda') %}selected{% endif %} value="Klaipėda">Klaipėda</option>
+                                        {% for city in available_cities %}
+                                            <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e'})) %}selected{% else %}{% if userAddress and userAddress.city is defined and (userAddress.city == city or userAddress.city == city|replace({'ė':'e'})) %}selected{% endif %}{% endif %}>{{ city }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                                 <div class="form-row form-row-required address-change">
                                     <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
                                     <input type="text"
                                            id="address"
-                                           value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% endif %}"
+                                           value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% else %}{{ userAddress.address|default('') }}{% endif %}"
                                            placeholder="{{ 'index.street'|trans }}"
                                            readonly>
                                 </div>
@@ -306,7 +306,7 @@
                             {#% else %#}
                             <div class="takeaway-yep {% if takeAway == true %}show{% endif %}">
                                 <div class="form-row form-row-required">
-                                    <label>{% trans %}cart.checkout.place_point{% endtrans %}:</label>
+                                    <label>{% trans %}cart.checkout.place_point{% endtrans %}: <span class="checkout-pickup-place-tooltip" title="{% trans %}cart.checkout.pickup_tooltip{% endtrans %}">&nbsp;</span></label>
                                     <select class="custom-select" name="place_point">
                                         {% for point in place.points %}
                                             {% if point.active and point.public and point.pickUp %}
@@ -331,8 +331,15 @@
                             </div>
                             <div class="form-row form-row-required">
                                 <label>{% trans %}cart.checkout.phone{% endtrans %}: <span title="{% trans %}cart.checkout.phone_tooltip{% endtrans %}" class="tooltip tooltip-icon ui-icon ui-icon-info"></span></label>
-                                <input type="text" name="customer-phone" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" value="{% if (dataToLoad is not empty and dataToLoad['customer-phone'] is not empty) %}{{ dataToLoad['customer-phone'] }}{% else %}{{ app.user.phone|default('') }}{% endif %}" />
+                                <input type="text" id="customer-phone-id" name="customer-phone" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" value="{% if (dataToLoad is not empty and dataToLoad['customer-phone'] is not empty) %}{{ dataToLoad['customer-phone'] }}{% else %}{{ app.user.phone|default('') }}{% endif %}" />
                             </div>
+                            <script>
+                                $(document).ready(function(){
+                                    if ($("#customer-phone-id").val()=="") {
+                                        $("#customer-phone-id").val('{% trans %}cart.checkout.phone.prefill_phone{% endtrans %}');
+                                    }
+                                });
+                            </script>
                             {# Preorder block#}
                             <div class="form-row">
                                 <label><br></label>
@@ -405,7 +412,7 @@
                             {# Preorder block end #}
                             <div class="form-row">
                                 <label>{% trans %}cart.checkout.delivery_comment{% endtrans %}:</label>
-                                <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['customer-comment'] is not empty) %}{{ dataToLoad['customer-comment'] }}{% endif %}</textarea>
+                                <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['customer-comment'] is not empty) %}{{ dataToLoad['customer-comment'] }}{% else %}{{ userAddress.getComment|default('') }}{% endif %}</textarea>
                             </div>
                             <div class="form-row custom-checkbox checkbox-right">
                                 <label>{% trans %}cart.checkout.company{% endtrans %}:</label>
@@ -437,6 +444,8 @@
                             <div class="cupon-info">
                                 {% trans %}general.coupon.popup_link{% endtrans %}
                                 <input type="hidden" name="coupon_code" id="coupon_code" value="{% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{{ dataToLoad['coupon_code'] }}{% endif %}" />
+                                <br /><br />
+                                <div class="alert alert-info">{% trans %}general.coupon.note_text{% endtrans %}</div>
                             </div>
                             <h2 class="section-2">2. {% trans %}cart.checkout.block_title_secure_payment{% endtrans %}</h2>
                             <div class="select-payment clearfix">
@@ -456,7 +465,7 @@
                                 <div class="select-payment clearfix">
                                     <label class="custom-radio">
                                         <img alt="Nordea" src="http://{{ cloudfront_url }}/bundles/foodapp/images/nordea-small.png">
-                                        <input type="radio" name="payment-type" value="nordea-banklink"/>
+                                        <input type="radio" name="payment-type" value="nordea-banklink"{% if order is not null and order.paymentMethod == 'nordea-banklink' %} checked="checked"{% endif %}/>
                                     </label>
                                 </div>
                                 <div class="select-payment clearfix">
@@ -466,7 +475,7 @@
                                         <img alt="Visa" src="http://{{ cloudfront_url }}/bundles/foodapp/images/visa-small.png">
                                         <img alt="Maestro" src="http://{{ cloudfront_url }}/bundles/foodapp/images/maestro-small.png">
                                         <img alt="Visa Electron" src="http://{{ cloudfront_url }}/bundles/foodapp/images/visa-electron-small.png">
-                                        <input type="radio" name="payment-type" value="swedbank-credit-card-gateway"/>
+                                        <input type="radio" name="payment-type" value="swedbank-credit-card-gateway"{% if order is not null and order.paymentMethod == 'swedbank-credit-card-gateway' %} checked="checked"{% endif %}/>
                                     </label>
                                 </div>
                                 <div class="select-bank clearfix">
@@ -476,7 +485,7 @@
                                     </label>
                                     <label class="custom-radio">
                                         <img alt="SEB" src="http://{{ cloudfront_url }}/bundles/foodapp/images/bank-seb.png">
-                                        <input type="radio" name="payment-type" value="seb-banklink"/>
+                                        <input type="radio" name="payment-type" value="seb-banklink"{% if order is not null and order.paymentMethod == 'seb-banklink' %} checked="checked"{% endif %}/>
                                     </label>
                                     <label class="custom-radio">
                                         <img alt="Danske Bank" src="http://{{ cloudfront_url }}/bundles/foodapp/images/bank-db.png">
@@ -488,7 +497,7 @@
                                     </label>
                                     <label class="custom-radio">
                                         <img alt="Swedbank" src="http://{{ cloudfront_url }}/bundles/foodapp/images/bank-swb.png">
-                                        <input type="radio" name="payment-type" value="swedbank-gateway"/>
+                                        <input type="radio" name="payment-type" value="swedbank-gateway"{% if order is not null and order.paymentMethod == 'swedbank-gateway' %} checked="checked"{% endif %}/>
                                     </label>
                                     <label class="custom-radio">
                                         <img alt="DNB" src="http://{{ cloudfront_url }}/bundles/foodapp/images/bank-dnb.png">
@@ -508,7 +517,7 @@
             </div>
         </div>
     </div>
-    {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'change-address', hideQlu: true} %}
+    {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'change-address', hideQlu: true, usr_address: userAllAddress} %}
     <div class="hidden">
         <div id="rules" class="cart_rules_content">
             <div class="cart_rules_inner">{{ static_service.getPage(slug_util.oneByName('ordering_rules', locale).itemId).content|raw }}</div>

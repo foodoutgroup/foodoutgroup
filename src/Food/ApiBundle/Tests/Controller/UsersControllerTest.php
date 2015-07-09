@@ -56,7 +56,7 @@ class UsersControllerTest extends WebTestCase
                 array(
                     'name' => '',
                     'email' => '',
-                    'phone' => '37061514000',
+                    'phone' => $this->getExpectedExampleNumber(),
                     'password' => ''
                 )
             )
@@ -77,7 +77,7 @@ class UsersControllerTest extends WebTestCase
                 array(
                     'name' => 'Testuoklis',
                     'email' => '',
-                    'phone' => '37061514000',
+                    'phone' => $this->getExpectedExampleNumber(),
                     'password' => ''
                 )
             )
@@ -230,7 +230,7 @@ class UsersControllerTest extends WebTestCase
             json_encode(
                 array(
                     'email' => 'non_existing@mail.com',
-                    'phone' => '37061111000',
+                    'phone' => $this->getExpectedExampleNumber(),
                     'password' => 'wrong'
                 )
             )
@@ -252,7 +252,7 @@ class UsersControllerTest extends WebTestCase
             json_encode(
                 array(
                     'email' => 'api_tester@foodout.lt',
-                    'phone' => '37061111111',
+                    'phone' => $this->getExpectedExampleNumber(),
                     'password' => 'wrong'
                 )
             )
@@ -284,7 +284,7 @@ class UsersControllerTest extends WebTestCase
             json_encode(
                 array(
                     'email' => 'api_tester@foodout.lt',
-                    'phone' => '37061111111',
+                    'phone' => $this->getExpectedExampleNumber(),
                     'password' => '1234567'
                 )
             )
@@ -311,7 +311,7 @@ class UsersControllerTest extends WebTestCase
             array(),
             json_encode(
                 array(
-                    "phone" => "37060000000",
+                    "phone" => $this->getExpectedExampleNumber(),
                     "name" => "Testas testuoklis",
                     "email" => "api_tester@foodout.lt",
                     'password' => 'new_user',
@@ -320,14 +320,27 @@ class UsersControllerTest extends WebTestCase
         );
 
         $this->assertEquals('Food\ApiBundle\Controller\UsersController::registerAction', $this->client->getRequest()->attributes->get('_controller'));
-        $this->assertEquals(409 , $this->client->getResponse()->getStatusCode());
-        $this->assertTrue((strpos($this->client->getResponse()->getContent(), 'User exists') !== false));
+        // Logic changed. Now we allow existing users to be overriden :(
+//        $this->assertEquals(409 , $this->client->getResponse()->getStatusCode());
+//        $this->assertTrue((strpos($this->client->getResponse()->getContent(), 'User exists') !== false));
+        $this->assertEquals(200 , $this->client->getResponse()->getStatusCode());
+        $expectedUserData = array(
+            "user_id" => 2,
+            "phone" => $this->getExpectedExampleNumber(),
+            "name" => "Testas testuoklis",
+            "email" => "api_tester@foodout.lt",
+            "refresh_token" => '',
+        );
+        $userData = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertTrue(!empty($userData['session_token']));
+        unset($userData['session_token']);
+        $this->assertEquals($expectedUserData, $userData);
     }
 
     public function testRegistrationSuccessful()
     {
         $expectedUserData = array(
-            "phone" => "37060000000",
+            "phone" => $this->getExpectedExampleNumber(),
             "name" => "Testas testuoklis",
             "email" => "api_register@foodout.lt",
             "refresh_token" => '',
@@ -341,7 +354,7 @@ class UsersControllerTest extends WebTestCase
             array(),
             json_encode(
                 array(
-                    "phone" => "37060000000",
+                    "phone" => $this->getExpectedExampleNumber(),
                     "name" => "Testas testuoklis",
                     "email" => "api_register@foodout.lt",
                     'password' => 'new_user',
@@ -364,7 +377,7 @@ class UsersControllerTest extends WebTestCase
         $this->assertEquals('Testas', $newUser->getFirstname());
         $this->assertEquals('testuoklis', $newUser->getLastname());
         $this->assertEquals('api_register@foodout.lt', $newUser->getEmail());
-        $this->assertEquals('37060000000', $newUser->getPhone());
+        $this->assertEquals($this->getExpectedExampleNumber(), $newUser->getPhone());
 
 
         // And now log out the new user
@@ -395,10 +408,13 @@ class UsersControllerTest extends WebTestCase
         $this->assertTrue(($validity < $now));
     }
 
+    /**
+     * Test phone formating and birthday setting
+     */
     public function testRegistrationUnformatedPhoneSuccessful()
     {
         $expectedUserData = array(
-            "phone" => "37060000001",
+            "phone" => $this->getExpectedExampleNumber(),
             "name" => "Testas testuoklis2",
             "email" => "api_register2@foodout.lt",
             "refresh_token" => '',
@@ -412,10 +428,11 @@ class UsersControllerTest extends WebTestCase
             array(),
             json_encode(
                 array(
-                    "phone" => "860000001",
+                    "phone" => $this->getExampleNationalNumber(),
                     "name" => "Testas testuoklis2",
                     "email" => "api_register2@foodout.lt",
                     'password' => 'new_user',
+                    'birthday' => '1986-01-01'
                 )
             )
         );
@@ -435,9 +452,10 @@ class UsersControllerTest extends WebTestCase
         $this->assertEquals('Testas', $newUser->getFirstname());
         $this->assertEquals('testuoklis2', $newUser->getLastname());
         $this->assertEquals('api_register2@foodout.lt', $newUser->getEmail());
-        $this->assertEquals('37060000001', $newUser->getPhone());
+        $this->assertEquals($this->getExpectedExampleNumber(), $newUser->getPhone());
+        $this->assertEquals('1986-01-01', $newUser->getBirthday()->format("Y-m-d"));
 
-
+        
         // And now log out the new user
         $this->client->request(
             'DELETE',
@@ -474,5 +492,47 @@ class UsersControllerTest extends WebTestCase
 
         $userData = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertEquals($expectedUserData, $userData);
+    }
+
+    protected function getCountryCode()
+    {
+        $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+        $countryCode = $this->getContainer()->getParameter('country');
+
+        try {
+            $numberProto = $phoneUtil->parse($this->getExampleNationalNumber(), $countryCode);
+        } catch (\libphonenumber\NumberParseException $e) {
+            return null;
+        }
+
+        return $numberProto->getCountryCode();
+    }
+
+    protected function getExampleNationalNumber()
+    {
+        $countryCode = $this->getContainer()->getParameter('country');
+
+        switch ($countryCode) {
+            case 'LT':
+                return '862529986';
+            case 'LV':
+                return '63912511';
+        }
+
+        return '';
+    }
+
+    protected function getExpectedExampleNumber()
+    {
+        $countryCode = $this->getContainer()->getParameter('country');
+
+        switch ($countryCode) {
+            case 'LT':
+                return '37062529986';
+            case 'LV':
+                return '37163912511';
+        }
+
+        return '';
     }
 }

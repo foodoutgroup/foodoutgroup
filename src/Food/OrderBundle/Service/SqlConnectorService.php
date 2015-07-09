@@ -62,7 +62,6 @@ class SqlConnectorService extends ContainerAware
     public function query($query)
     {
         $query = iconv('UTF-8', 'cp1257//TRANSLIT//IGNORE', $query);
-
         if ($this->isWin) {
             return $this->_queryWin($query);
         } else {
@@ -81,8 +80,10 @@ class SqlConnectorService extends ContainerAware
         $rez = @sqlsrv_query($this->conn , $query);
 
         if (false === $rez) {
+            $err = sqlsrv_errors();
+            @mail("paulius@foodout.lt", "MSSQL ERROR DUMP WIN ".date("Y-m-d H:i:s"),$query."\n\n\n".print_r($err, true), "FROM: info@foodout.lt");
             $logger->crit('Windows: query(' . $query . ') failed: ' .
-                          print_r(sqlsrv_errors(), true));
+                          print_r($err, true));
         }
 
         return $rez;
@@ -99,8 +100,10 @@ class SqlConnectorService extends ContainerAware
         $rez = @mssql_query($query, $this->conn);
 
         if (false === $rez) {
+            $err = mssql_get_last_message();
+            @mail("paulius@foodout.lt", "MSSQL ERROR DUMP NIX ".date("Y-m-d H:i:s"),$query."\n\n\n".print_r($err, true), "FROM: info@foodout.lt");
             $logger->crit('Unix: query(' . $query . ') failed: ' .
-                          print_r(mssql_get_last_message(), true));
+                          print_r($err, true));
         }
 
         return $rez;

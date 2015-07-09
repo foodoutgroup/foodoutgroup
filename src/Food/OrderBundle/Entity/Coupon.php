@@ -50,6 +50,13 @@ class Coupon
     private $freeDelivery = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="full_order_cover", type="boolean")
+     */
+    private $fullOrderCovers = false;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=255)
@@ -688,5 +695,28 @@ class Coupon
     public function getPlaces()
     {
         return $this->places;
+    }
+
+    /**
+     * Set fullOrderCovers
+     *
+     * @param boolean $fullOrderCovers
+     * @return Coupon
+     */
+    public function setFullOrderCovers($fullOrderCovers)
+    {
+        $this->fullOrderCovers = $fullOrderCovers;
+    
+        return $this;
+    }
+
+    /**
+     * Get fullOrderCovers
+     *
+     * @return boolean 
+     */
+    public function getFullOrderCovers()
+    {
+        return $this->fullOrderCovers;
     }
 }

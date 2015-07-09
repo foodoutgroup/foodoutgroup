@@ -52,6 +52,7 @@ class OrdersController extends Controller
      */
     public function createOrderAction(Request $request)
     {
+        $this->logActionParams('createOrder action', $request);
         $this->_theJudge($request);
         mail("paulius@foodout.lt", "FOO LOGS", print_r($request->getContent(), true), "FROM: test@foodout.lt");
         try {
@@ -74,6 +75,7 @@ class OrdersController extends Controller
      */
     public function createOrderPreAction(Request $request)
     {
+        $this->logActionParams('createOrderPre action', $request);
         $this->_theJudge($request);
         @mail("paulius@foodout.lt", "FOO LOGS PRE", print_r($request->getContent(), true), "FROM: test@foodout.lt");
         try {
@@ -97,6 +99,7 @@ class OrdersController extends Controller
      */
     public function getOrderDetailsAction($id, Request $request)
     {
+        $this->logActionParams('getOrderDetails action', $request);
         $this->_theJudge($request);
         try {
             $order = $this->get('food.order')->getOrderById($id);
@@ -130,6 +133,7 @@ class OrdersController extends Controller
      */
     public function confirmOrderAction($id)
     {
+        $this->logActionParams('confirmOrder action', $id);
         mb_internal_encoding('utf-8');
 
         try {
@@ -148,7 +152,12 @@ class OrdersController extends Controller
             $this->get('food.order')->setOrder($order);
             $this->get('food.order')->statusNew('api');
             $this->get('food.order')->saveOrder();
+            $this->get('food.order')->billOrder();
             $this->get('food.order')->informPlace();
+
+            // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
+            $this->container->get('food.order')->setOrder($order);
+            $this->container->get('food.order')->deactivateCoupon();
 
             return new JsonResponse($this->get('food_api.order')->getOrderForResponse($order));
         }  catch (ApiException $e) {
@@ -168,6 +177,7 @@ class OrdersController extends Controller
      */
     public function getOrderStatusAction($id)
     {
+        $this->logActionParams('getOrderStatus action', $id);
         try {
             $order = $this->get('food.order')->getOrderById($id);
 
@@ -189,7 +199,9 @@ class OrdersController extends Controller
                     "order_id" => $order->getId(),
                     "status" => array(
                         "title" => $this->get('food_api.order')->convertOrderStatus($order->getOrderStatus()),
-                        "info_number" => "+".$order->getPlacePoint()->getPhone(),
+                        // TODO Rodome nebe restorano, o dispeceriu nr
+                        "info_number" => "+".$this->container->getParameter('dispatcher_contact_phone'),
+//                        "info_number" => "+".$order->getPlacePoint()->getPhone(),
                         "message" => $message
                     )
                 )
@@ -203,5 +215,25 @@ class OrdersController extends Controller
                 array('error' => 'server error', 'description' => null)
             );
         }
+    }
+
+    /**
+     * For debuging purpose only - log request data and action name for easy debug
+     *
+     * @param string $action
+     * @param array|Request $params
+     */
+    protected function logActionParams($action, $params)
+    {
+        $logger = $this->get('logger');
+
+        if ($params instanceof Request) {
+            $params = $params->request->all();
+        }
+
+        $logger->alert('=============================== '.$action.' =====================================');
+        $logger->alert('Request params:');
+        $logger->alert(var_export($params, true));
+        $logger->alert('=========================================================');
     }
 }

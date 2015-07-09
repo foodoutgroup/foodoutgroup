@@ -2,6 +2,7 @@
 
 namespace Food\AppBundle\Controller;
 
+use Doctrine\ORM\OptimisticLockException;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,12 +19,14 @@ class DispatcherAdminController extends Controller
 
         foreach ($availableCities as $city) {
             $cityOrders[$city] = array(
+                'unapproved' => $repo->getOrdersUnapproved($city),
                 'unassigned' => $repo->getOrdersUnassigned($city),
                 'unconfirmed' => array(
                     'deliver' => $repo->getOrdersUnconfirmed($city),
                     'pickup' => $repo->getOrdersUnconfirmed($city, true),
                 ),
                 'not_finished' => $repo->getOrdersAssigned($city),
+                'canceled' => $repo->getOrdersCanceled($city),
             );
         }
 
@@ -73,6 +76,18 @@ class DispatcherAdminController extends Controller
         );
     }
 
+    public function approveOrderAction($orderId)
+    {
+        $orderService = $this->get('food.order');
+        $orderService->getOrderById($orderId);
+
+        $orderService->statusNew('approveOrderDispatcher');
+
+        $orderService->informPlace(false);
+
+        return new Response('OK');
+    }
+
     public function setOrderStatusAction($orderId, $status)
     {
         $orderService = $this->get('food.order');
@@ -80,7 +95,18 @@ class DispatcherAdminController extends Controller
         try {
             $orderService->getOrderById($orderId);
 
-            $method = 'status'.ucfirst($status);
+            $method = 'status' . ucfirst($status);
+            if (method_exists($orderService, $method)) {
+                $orderService->$method('dispatcher');
+
+                if ($method == 'statusCanceled') {
+                    $orderService->informPlaceCancelAction();
+                }
+            }
+            $orderService->saveOrder();
+        } catch (OptimisticLockException $e) {
+            // Retry
+            $orderService->getOrderById($orderId);
             if (method_exists($orderService, $method)) {
                 $orderService->$method('dispatcher');
 
@@ -168,6 +194,13 @@ class DispatcherAdminController extends Controller
                     }
                 }
             }
+        } else {
+            if ($repo->hasNewUnassignedOrder()) {
+                $needUpdate = true;
+            }
+            if ($repo->hasNewUnconfirmedOrder()) {
+                $needUpdate = true;
+            }
         }
 
         if ($needUpdate) {
@@ -175,5 +208,34 @@ class DispatcherAdminController extends Controller
         }
 
         return new Response('NO');
+    }
+
+    public function markOrderContactedAction(Request $request)
+    {
+        $orderService = $this->get('food.order');
+
+        $orderId = $request->get('order');
+        $status = $request->get('status');
+
+        try {
+            $order = $orderService->getOrderById($orderId);
+
+            $order->setClientContacted((bool)$status);
+            $orderService->saveOrder();
+
+            $message = 'Order #'.$order->getId();
+            if ($status) {
+                $message .= ' client was contacted about cancel';
+            } else {
+                $message .= ' client was not contacted about cancel';
+            }
+            $orderService->logOrder($order, 'client_contacted', $message);
+        } catch (Exception $e) {
+            $this->get('logger')->error('Error occured while marking order as contacted. Error: '.$e->getMessage());
+
+            return new Response('NO');
+        }
+
+        return new Response('YES');
     }
 }

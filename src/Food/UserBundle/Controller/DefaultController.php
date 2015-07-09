@@ -18,6 +18,7 @@ use Food\UserBundle\Form\Type\UserAddressFormType;
 use Food\UserBundle\Form\Type\ChangePasswordFormType;
 use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
+use Food\OrderBundle\Service\OrderService;
 
 class DefaultController extends Controller
 {
@@ -108,6 +109,7 @@ class DefaultController extends Controller
     {
         // services
         $userManager = $this->container->get('fos_user.user_manager');
+        $orderService = $this->get('food.order');
         $em = $this->getDoctrine()->getManager();
         $translator = $this->get('translator');
         $flashbag = $this->get('session')->getFlashBag();
@@ -115,8 +117,13 @@ class DefaultController extends Controller
         // data
         $user = $this->user();
         $address = $this->address($user);
-        // @TODO tikejaus, kad tituliniam nebeliko hardkodo :| Deja.. Palieku ir cia, iki rankos issities padaryt tvarka
-        $cities = array('Vilnius' => 'Vilnius', 'Kaunas' => 'Kaunas', 'Klaipėda' => 'Klaipėda');
+
+        $citiesConfig = $this->container->getParameter('available_cities');
+        $cities = array();
+        foreach ($citiesConfig as $city) {
+            $cities[$city] = $city;
+        }
+
 
         // embedded form
         $requestData = $request->request->get('food_user_profile');
@@ -127,15 +134,32 @@ class DefaultController extends Controller
 
         // address validation
         if ($form->get('address')->isValid()) {
+            $form_city = $form->get('address')->get('city')->getData();
+            $form_address = $form->get('address')->get('address')->getData();
+
             $address
-                ->setCity($form->get('address')->get('city')->getData())
-                ->setAddress($form->get('address')->get('address')->getData())
+                ->setCity($form_city)
+                ->setAddress($form_address)
             ;
 
             if (!$user->getDefaultAddress()) {
                 $em->persist($address);
                 $user->addAddress($address);
             }
+
+            // Store UserAddress Begin
+            $gs = $this->get('food.googlegis');
+            $location = $gs->getPlaceData($form_address . ', ' . $form_city);
+            $locationInfo = $gs->groupData($location, $form_address, $form_city);
+            $orderService->createAddressMagic(
+                $user,
+                $locationInfo['city'],
+                $locationInfo['address_orig'],
+                (string)$locationInfo['lat'],
+                (string)$locationInfo['lng'],
+                ''
+            );
+            // Store UserAddress End
         }
 
         // password validation
@@ -182,8 +206,12 @@ class DefaultController extends Controller
         $user = $this->user();
         $address = $this->address($user);
 
-        // @TODO tikejaus, kad tituliniam nebeliko hardkodo :| Deja.. Palieku ir cia, iki rankos issities padaryt tvarka
-        $cities = array('Vilnius' => 'Vilnius', 'Kaunas' => 'Kaunas', 'Klaipėda' => 'Klaipėda');
+        $citiesConfig = $this->container->getParameter('available_cities');
+        $cities = array();
+        foreach ($citiesConfig as $city) {
+            $cities[$city] = $city;
+        }
+
 
         // mega form containts 3 embedded forms
         $form = $this->createProfileMegaForm($user, $address, $cities, '');

@@ -21,7 +21,7 @@
                 </option>
             </constraint>
             <constraint name="Regex">
-                <option name="pattern">/^[a-zA-Zą-žĄ-Ž\s]*$/</option>
+                <option name="pattern">/^[a-zA-Zą-žĄ-Žā-žĀ-Žа-яА-Я\s]*$/</option>
                 <option name="message">fos_user.firstname.letters_spaces_only</option>
                 <option name="groups">
                     <value>Registration</value>
@@ -44,7 +44,7 @@
                 </option>
             </constraint>
             <constraint name="Regex">
-                <option name="pattern">/^[a-zA-Zą-žĄ-Ž\s]*$/</option>
+                <option name="pattern">/^[a-zA-Zą-žĄ-Žā-žĀ-Žа-яА-Я\s]*$/</option>
                 <option name="message">fos_user.lastname.letters_spaces_only</option>
                 <option name="groups">
                     <value>Registration</value>
@@ -72,7 +72,7 @@
                 </option>
             </constraint>
             <constraint name="Regex">
-                <option name="pattern">/^370\d{8}$/</option>
+                <option name="pattern">/^(370|371)\d{8}$/</option>
                 <option name="groups">
                     <value>FoodProfile</value>
                     <value>Profile</value>

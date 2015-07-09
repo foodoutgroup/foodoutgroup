@@ -118,10 +118,11 @@ class MessagesService {
      * @param string $sender
      * @param string $recipient
      * @param string $text
+     * @param Order|null
      *
      * @return Message
      */
-    public function createMessage($sender=null, $recipient=null, $text=null)
+    public function createMessage($sender=null, $recipient=null, $text=null, $order=null)
     {
         $message = new Message();
         $message->setCreatedAt(new \DateTime("now"));
@@ -136,6 +137,9 @@ class MessagesService {
         }
         if (!empty($text)) {
             $message->setMessage($text);
+        }
+        if (!empty($order)) {
+            $message->setOrder($order);
         }
 
         return $message;
@@ -159,11 +163,12 @@ class MessagesService {
      * @param string|null $sender
      * @param string|null $recipient
      * @param string|null $text
+     * @param Order|null $order
      * @return Message
      */
-    public function addMessageToSend($sender=null, $recipient=null, $text=null)
+    public function addMessageToSend($sender=null, $recipient=null, $text=null, $order=null)
     {
-        $message = $this->createMessage($sender, $recipient, $text);
+        $message = $this->createMessage($sender, $recipient, $text, $order);
         $this->saveMessage($message);
 
         return $message;
@@ -184,7 +189,7 @@ class MessagesService {
 
         if (!empty($messages)) {
             foreach($messages as $message) {
-                $addedMessages[] = $this->addMessageToSend($message['sender'], $message['recipient'], $message['text']);
+                $addedMessages[] = $this->addMessageToSend($message['sender'], $message['recipient'], $message['text'], $message['order']);
             }
         }
 
@@ -285,7 +290,7 @@ class MessagesService {
                         // TODO normalus exceptionas, kuri kitaip handlinsim
                         throw new \InvalidArgumentException('Message not found!');
                     } else {
-                        $logger->info(print_r($message, true));
+//                        $logger->info(print_r($message, true));
 
                         $message->setDelivered($messageData['delivered']);
 

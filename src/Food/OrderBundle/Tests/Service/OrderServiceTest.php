@@ -423,6 +423,7 @@ class OrderServiceTest extends WebTestCase {
     {
         $expectedOrderStatuses = array(
             OrderService::$status_preorder,
+            OrderService::$status_unapproved,
             OrderService::$status_new,
             OrderService::$status_accepted,
             OrderService::$status_delayed,

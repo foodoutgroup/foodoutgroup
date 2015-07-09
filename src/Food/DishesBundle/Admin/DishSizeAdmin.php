@@ -60,6 +60,7 @@ class DishSizeAdmin extends FoodAdmin
         $formMapper->add('code')
             ->add('price')
             ->add('discountPrice')
+            ->add('publicPrice')
         ;
     }
 
@@ -84,6 +85,7 @@ class DishSizeAdmin extends FoodAdmin
             ->add('unit')
             ->add('options')
             ->add('price')
+            ->add('publicPrice')
             ->add('recomended', null, array('label' => 'admin.dish.recomended', 'editable' => true))
             ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))

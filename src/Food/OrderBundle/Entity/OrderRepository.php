@@ -9,7 +9,7 @@ class OrderRepository extends EntityRepository
 {
     /**
      * @param string $city
-     * @return array
+     * @return array|Order[]
      */
     public function getOrdersUnassigned($city)
     {
@@ -27,7 +27,32 @@ class OrderRepository extends EntityRepository
             'deliveryType' => OrderService::$deliveryDeliver,
             'order_date_more' => $date,
             'paymentStatus' => OrderService::$paymentStatusComplete,
-            'not_nav' => 1
+        );
+
+        $orders = $this->getOrdersByFilter($filter, 'list');
+
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
+    /**
+     * @param string $city
+     * @return array|Order[]
+     */
+    public function getOrdersUnapproved($city)
+    {
+        $date = new \DateTime();
+        $date->modify("-2 minutes");
+
+        $filter = array(
+            'order_status' =>  array(
+                OrderService::$status_unapproved,
+            ),
+            'place_point_city' => $city,
+            'order_date_more' => $date,
+            'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
         $orders = $this->getOrdersByFilter($filter, 'list');
@@ -42,7 +67,7 @@ class OrderRepository extends EntityRepository
     /**
      * @param string $city
      * @param boolean $pickup
-     * @return array
+     * @return array|Order[]
      */
     public function getOrdersUnconfirmed($city, $pickup = false)
     {
@@ -51,7 +76,6 @@ class OrderRepository extends EntityRepository
             'place_point_city' => $city,
             'deliveryType' => (!$pickup ? OrderService::$deliveryDeliver : OrderService::$deliveryPickup),
             'paymentStatus' => OrderService::$paymentStatusComplete,
-            'not_nav' => 1
         );
 
         $orders = $this->getOrdersByFilter($filter, 'list');
@@ -65,7 +89,7 @@ class OrderRepository extends EntityRepository
 
     /**
      * @param string $city
-     * @return array
+     * @return array|Order[]
      */
     public function getOrdersAssigned($city)
     {
@@ -74,7 +98,32 @@ class OrderRepository extends EntityRepository
             'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
             'paymentStatus' => OrderService::$paymentStatusComplete,
-            'not_nav' => 1
+        );
+
+        $orders = $this->getOrdersByFilter($filter, 'list');
+
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
+
+    /**
+     * @param string $city
+     * @return array|Order[]
+     */
+    public function getOrdersCanceled($city)
+    {
+        $filter = array(
+            'order_status' =>  OrderService::$status_canceled,
+            'place_point_city' => $city,
+            'deliveryType' => OrderService::$deliveryDeliver,
+            'paymentStatus' => OrderService::$paymentStatusComplete,
+            'order_date_between' => array(
+                'from' => new \DateTime('-4 hour'),
+                'to' => new \DateTime('now'),
+            ),
         );
 
         $orders = $this->getOrdersByFilter($filter, 'list');
@@ -144,11 +193,11 @@ class OrderRepository extends EntityRepository
     }
 
     /**
-     * @param string $city
-     * @param int $id
+     * @param string|null $city
+     * @param int|null $id
      * @return bool
      */
-    public function hasNewUnassignedOrder($city, $id)
+    public function hasNewUnassignedOrder($city=null, $id=null)
     {
         $filter = array(
             'order_status' =>  array(
@@ -156,14 +205,20 @@ class OrderRepository extends EntityRepository
                 OrderService::$status_delayed,
                 OrderService::$status_finished
             ),
-            'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
-            'orderFromNav' => 0
         );
+        if (!empty($city)) {
+            $filter['place_point_city'] = $city;
+        }
+
         $order = $this->getOrdersByFilter($filter, 'single');
 
         if (!$order) {
             return false;
+        }
+
+        if (empty($id)) {
+            return true;
         }
 
         $order = $order[0];
@@ -175,22 +230,28 @@ class OrderRepository extends EntityRepository
     }
 
     /**
-     * @param string $city
-     * @param int $id
+     * @param string|null $city
+     * @param int|null $id
      * @return bool
      */
-    public function hasNewUnconfirmedOrder($city, $id)
+    public function hasNewUnconfirmedOrder($city=null, $id=null)
     {
         $filter = array(
             'order_status' =>  array(OrderService::$status_new),
-            'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
-            'orderFromNav' => 0
         );
+        if (!empty($city)) {
+            $filter['place_point_city'] = $city;
+        }
+
         $order = $this->getOrdersByFilter($filter, 'single');
 
         if (!$order) {
             return false;
+        }
+
+        if (empty($id)) {
+            return true;
         }
 
         $order = $order[0];
@@ -199,6 +260,32 @@ class OrderRepository extends EntityRepository
             return true;
         }
         return false;
+    }
+
+    /**
+     * Gets orders with nav_problem statuses for a given period
+     *
+     * @param string $dateStart
+     * @param string $dateEnd
+     * @return array|Order[]
+     */
+    public function getNavProblems($dateStart, $dateEnd)
+    {
+        $filter = array(
+            'order_status' =>  array(OrderService::$status_nav_problems),
+            'order_date_between' => array(
+                'from' => $dateStart,
+                'to' => $dateEnd,
+            ),
+            'only_to_nav' => 1,
+        );
+        $orders = $this->getOrdersByFilter($filter, 'list');
+
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
     }
 
     /**
@@ -237,6 +324,12 @@ class OrderRepository extends EntityRepository
 
                     case 'not_nav':
                         $qb->andWhere('o.orderFromNav != :'.$filterName);
+                        break;
+
+                    case 'only_to_nav':
+                        $qb->leftJoin('o.place', 'p', 'o.place = p.id')
+                            ->andWhere('p.navision = 1');
+                        unset($filter['only_to_nav']);
                         break;
 
                     default:
@@ -523,8 +616,9 @@ class OrderRepository extends EntityRepository
             OrderService::$status_canceled,
             OrderService::$status_nav_problems,
             OrderService::$status_pre,
+            OrderService::$status_unapproved,
             // TODO temp, nav canot cancel assigned orders
-            OrderService::$status_assiged
+//            OrderService::$status_assiged
         ];
 
         if ($excludeCompleted) {
@@ -585,5 +679,27 @@ class OrderRepository extends EntityRepository
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    /**
+     * Get completed orders by phone
+     *
+     * @param srting $phone
+     * @return array|Order[]
+     */
+    public function getCompletedOrdersByPhone($phone)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb->leftJoin('o.user', 'u')
+            ->where('o.order_status IN (:order_status)')
+            ->andWhere('u.phone = :phone_no')
+            ->setParameters(array(
+                'order_status' => array(OrderService::$status_completed, OrderService::$status_partialy_completed),
+                'phone_no' => $phone,
+            ));
+
+        return $qb->getQuery()
+            ->getResult();
     }
 }

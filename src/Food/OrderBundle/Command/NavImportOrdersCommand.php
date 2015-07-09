@@ -24,6 +24,18 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                 InputOption::VALUE_NONE,
                 'No order will be imported. Just pure debug output'
             )
+            ->addOption(
+                'pause-on-error',
+                null,
+                InputOption::VALUE_NONE,
+                'Make a 5 second pause on error, so error can be read'
+            )
+            ->addOption(
+                'time-shift',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Alter how old orders are imported - enter only integer expresion in hours'
+            )
         ;
 
         mb_internal_encoding('utf-8');
@@ -36,6 +48,14 @@ class NavImportOrdersCommand extends ContainerAwareCommand
         if ($dryRun) {
             $output->writeln('Dry-run. No inserts will be performed');
         }
+        $pauseOnError = $input->getOption('pause-on-error');
+        $timeShift = $input->getOption('time-shift');
+        if (!empty($timeShift)) {
+            $timeShift = '-'.$timeShift.' hour';
+        } else {
+            $timeShift = null;
+        }
+
         try {
             $em = $this->getContainer()->get('doctrine')->getManager();
             $orderService = $this->getContainer()->get('food.order');
@@ -46,7 +66,9 @@ class NavImportOrdersCommand extends ContainerAwareCommand
             $log = $this->getContainer()->get('logger');
             $country = $this->getContainer()->getParameter('country');
 
-            $orders = $navService->getNewNonFoodoutOrders();
+            $log->alert("Nav order import beggins ---------");
+
+            $orders = $navService->getNewNonFoodoutOrders($timeShift);
 
             $stats = array(
                 'found' => count($orders),
@@ -54,11 +76,19 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                 'error' => 0,
                 'processed' => 0,
             );
-            $output->writeln('Found '.$stats['found'].' orders to process');
+
+            $logMessage = 'Found '.$stats['found'].' orders to process';
+            $output->writeln($logMessage);
+            $log->alert($logMessage);
+
             if (!empty($orders) && $stats['found'] > 0) {
                 foreach ($orders as $orderId => $orderData) {
-                    $output->writeln('Order #'.$orderData['OrderNo'].' - import started');
-                    $output->writeln('Data: '."\n".var_export($orderData, true));
+                    $logMessage = 'Order #'.$orderData['OrderNo'].' - import started';
+                    $output->writeln($logMessage);
+                    $log->alert($logMessage);
+                    $logMessage = 'Data: '."\n".var_export($orderData, true);
+                    $output->writeln($logMessage);
+                    $log->alert($logMessage);
                     $output->writeln('');
 
                     if ($orderData['OrderStatus'] == 0) {
@@ -77,7 +107,9 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                     // Order already exists - skip it
                     if ($localOrder instanceof Order) {
                         $stats['skipped']++;
-                        $output->writeln('Order #'.$orderData['OrderNo'].' already exists with id #'.$orderId);
+                        $logMessage = 'Order #'.$orderData['OrderNo'].' already exists with id #'.$orderId;
+                        $output->writeln($logMessage);
+                        $log->alert($logMessage);
                         continue;
                     }
 
@@ -109,6 +141,9 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             $log->error($skipMessage);
                         }
                         $stats['error']++;
+                        if ($pauseOnError) {
+                            sleep(5);
+                        }
                         continue;
                     }
                     $place = $placePoint->getPlace();;
@@ -137,7 +172,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                         );
 
                         $deliveryDate = new \DateTime(
-                            $orderData['Date Created']->format("Y-m-d")
+                            $orderData['Order Date']->format("Y-m-d")
                             .' '
                             .$orderData['Contact Pickup Time']->format("H:i:s")
                         );
@@ -166,6 +201,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                     }
                     if (!$dryRun) {
                         $order->setOrderDate($orderDate)
+                            ->setDeliveryTime($deliveryDate)
                             ->setTotal($orderData['OrderSum'])
                             ->setDeliveryPrice($orderData['DeliveryAmount'])
                             ->setDeliveryType($deliveryType)
@@ -337,7 +373,9 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                         $orderService->logOrder($order, 'create', 'Created from Navision');
                     }
 
-                    $output->writeln('Order #'.$orderData['OrderNo'].' - import finished'."\n");
+                    $logMessage = 'Order #'.$orderData['OrderNo'].' - import finished'."\n";
+                    $output->writeln($logMessage);
+                    $log->alert($logMessage);
                 }
 
                 $output->writeln('------------------------------------');

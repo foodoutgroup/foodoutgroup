@@ -28,12 +28,15 @@ class BestOfferAdmin extends FoodAdmin
                     'required' => false];
 
         if (($pl = $this->getSubject()) && $pl->getImage()) {
-            $options['help'] = '<img src="/' . $pl->getWebPathThumb() . '" />';
+            $options['help'] = '<img src="/' . $pl->getWebPathThumb("type1") . '" />';
         }
 
         $formMapper->add('title', 'text', ['label' => 'admin.best_offers.title'])
+                   ->add('city', 'text', ['label' => 'admin.best_offers.city', 'required' => false])
+                   ->add('place', null, ['label' => 'admin.best_offers.place', 'required' => true])
                    ->add('link', 'text', ['label' => 'admin.best_offers.link'])
                    ->add('text', 'textarea', ['label' => 'admin.best_offers.text'])
+                   ->add('useUrl', 'checkbox', ['label' => 'admin.best_offers.use_url', 'required' => false])
                    ->add('active', 'checkbox', ['label' => 'admin.best_offers.active', 'required' => false])
                    ->add('file', 'file', $options);
     }
@@ -43,7 +46,9 @@ class BestOfferAdmin extends FoodAdmin
     {
         $datagridMapper
             ->add('title', null, ['label' => 'admin.best_offers.title'])
+            ->add('city', null, ['label' => 'admin.best_offers.city'])
             ->add('text', null, ['label' => 'admin.best_offers.text'])
+            ->add('useUrl', null, ['label' => 'admin.best_offers.use_url'])
         ;
     }
 
@@ -52,9 +57,10 @@ class BestOfferAdmin extends FoodAdmin
     {
         $listMapper
             ->addIdentifier('title', 'string', array('label' => 'admin.best_offers.title'))
+            ->addIdentifier('city', 'string', array('label' => 'admin.best_offers.city'))
             ->addIdentifier('link', 'string', array('label' => 'admin.best_offers.link'))
-            ->addIdentifier('image', 'string', array('label' => 'admin.best_offers.image', 'template' => 'FoodPlacesBundle:Default:list_image.html.twig'))
-            ->addIdentifier('active', 'boolean', array('label' => 'admin.best_offers.active'))
+            ->addIdentifier('image', 'string', array('label' => 'admin.best_offers.image', 'template' => 'FoodPlacesBundle:Default:list_type1_image.html.twig'))
+            ->add('active', 'boolean', array('label' => 'admin.best_offers.active', 'editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),

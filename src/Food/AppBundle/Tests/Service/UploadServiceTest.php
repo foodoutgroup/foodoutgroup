@@ -142,7 +142,8 @@ class UploadServiceTest extends \PHPUnit_Framework_TestCase
         );
 
         $theFile = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->disableOriginalConstructor()
+            ->enableOriginalConstructor()
+            ->setConstructorArgs([tempnam(sys_get_temp_dir(), ''), 'dummy'])
             ->getMock();
 
         $userId = 11;
@@ -187,7 +188,8 @@ class UploadServiceTest extends \PHPUnit_Framework_TestCase
         );
 
         $theFile = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->disableOriginalConstructor()
+            ->enableOriginalConstructor()
+            ->setConstructorArgs([tempnam(sys_get_temp_dir(), ''), 'dummy'])
             ->getMock();
 
         $userId = 11;
@@ -236,7 +238,8 @@ class UploadServiceTest extends \PHPUnit_Framework_TestCase
         );
 
         $theFile = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->disableOriginalConstructor()
+            ->enableOriginalConstructor()
+            ->setConstructorArgs([tempnam(sys_get_temp_dir(), ''), 'dummy'])
             ->getMock();
 
         $userId = 24;
@@ -305,7 +308,8 @@ class UploadServiceTest extends \PHPUnit_Framework_TestCase
         );
 
         $theFile = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->disableOriginalConstructor()
+            ->enableOriginalConstructor()
+            ->setConstructorArgs([tempnam(sys_get_temp_dir(), ''), 'dummy'])
             ->getMock();
 
         $userId = 24;

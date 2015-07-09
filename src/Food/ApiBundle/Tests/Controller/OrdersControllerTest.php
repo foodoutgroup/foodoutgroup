@@ -29,7 +29,8 @@ class OrdersControllerTest extends WebTestCase
             "order_id" => $orderNew->getId(),
             "status" => array(
                 "title" => 'accepted',
-                "info_number" => "+".$orderNew->getPlacePoint()->getPhone(),
+                // TODO Rodome nebe restorano, o dispeceriu nr
+                "info_number" => "+".$this->getContainer()->getParameter('dispatcher_contact_phone'),
                 "message" => ''
             )
         );
@@ -56,7 +57,7 @@ class OrdersControllerTest extends WebTestCase
             "order_id" => $orderFinished->getId(),
             "status" => array(
                 "title" => 'prepared',
-                "info_number" => "+".$orderFinished->getPlacePoint()->getPhone(),
+                "info_number" => "+".$this->getContainer()->getParameter('dispatcher_contact_phone'),
                 "message" => ''
             )
         );
@@ -90,7 +91,7 @@ class OrdersControllerTest extends WebTestCase
             "order_id" => $orderDelayed->getId(),
             "status" => array(
                 "title" => $orderDelayed->getOrderStatus(),
-                "info_number" => "+".$orderDelayed->getPlacePoint()->getPhone(),
+                "info_number" => "+".$this->getContainer()->getParameter('dispatcher_contact_phone'),
                 "message" => $this->getContainer()->get('translator')->trans(
                         'mobile.order_status.order_delayed',
                         array('%delayTime%' => $orderDelayed->getDelayDuration())
@@ -142,9 +143,10 @@ class OrdersControllerTest extends WebTestCase
                 'amount' => 10000,
                 'currency' => 'EUR'
             ),
+            'discount' => array(),
             'state' => array(
                 'title' => 'accepted',
-                'info_number' => '+37061212122',
+                'info_number' => '+37061004970',
                 'message' => ''
             ),
             'details' => array(
@@ -200,9 +202,10 @@ class OrdersControllerTest extends WebTestCase
                 'amount' => 10000,
                 'currency' => 'EUR'
             ),
+            'discount' => array(),
             'state' => array(
                 'title' => 'accepted',
-                'info_number' => '+37061212122',
+                'info_number' => '+37061004970',
                 'message' => ''
             ),
             'details' => array(

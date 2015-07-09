@@ -122,6 +122,13 @@ class Dish extends Uploadable implements Translatable
     private $categories;
 
     /**
+     * @ORM\OneToMany(targetEntity="DishDate", mappedBy="dish", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @var ArrayCollection
+     */
+    private $dates;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="time_from", type="string", length=5, nullable=true)
@@ -152,6 +159,20 @@ class Dish extends Uploadable implements Translatable
     /**
      * @var bool
      *
+     * @ORM\Column(name="no_discounts", type="boolean", nullable=true)
+     */
+    private $noDiscounts = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="show_public_price", type="boolean", nullable=true)
+     */
+    private $showPublicPrice = false;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="recomended", type="boolean")
      */
     private $recomended = false;
@@ -175,6 +196,28 @@ class Dish extends Uploadable implements Translatable
      * @var object
      */
     protected $file;
+
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="check_even_odd_week", type="boolean")
+     */
+    private $checkEvenOddWeek = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="even_week", type="boolean")
+     */
+    private $evenWeek = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="use_date_interval", type="boolean")
+     */
+    private $useDateInterval = false;
 
     protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
     protected $multipleThumbs = true;
@@ -823,5 +866,153 @@ class Dish extends Uploadable implements Translatable
         if ($this->getFile() && $this->getFile()->getSize() > round($this->maxFileSize * 1024 * 1024)) {
             $context->addViolationAt('file', 'Paveiksliukas užima daugiau nei ' . $this->maxFileSize . ' MB vietos.');
         }
+    }
+
+    /**
+     * Set noDiscounts
+     *
+     * @param boolean $noDiscounts
+     * @return Dish
+     */
+    public function setNoDiscounts($noDiscounts)
+    {
+        $this->noDiscounts = $noDiscounts;
+    
+        return $this;
+    }
+
+    /**
+     * Get noDiscounts
+     *
+     * @return boolean 
+     */
+    public function getNoDiscounts()
+    {
+        return $this->noDiscounts;
+    }
+
+    /**
+     * Set showPublicPrice
+     *
+     * @param boolean $showPublicPrice
+     * @return Dish
+     */
+    public function setShowPublicPrice($showPublicPrice)
+    {
+        $this->showPublicPrice = $showPublicPrice;
+    
+        return $this;
+    }
+
+    /**
+     * Get showPublicPrice
+     *
+     * @return boolean 
+     */
+    public function getShowPublicPrice()
+    {
+        return $this->showPublicPrice;
+    }
+
+    /**
+     * Add dates
+     *
+     * @param \Food\DishesBundle\Entity\DishDate $dates
+     * @return Dish
+     */
+    public function addDate(\Food\DishesBundle\Entity\DishDate $dates)
+    {
+        $this->dates[] = $dates;
+    
+        return $this;
+    }
+
+    /**
+     * Remove dates
+     *
+     * @param \Food\DishesBundle\Entity\DishDate $dates
+     */
+    public function removeDate(\Food\DishesBundle\Entity\DishDate $dates)
+    {
+        $this->dates->removeElement($dates);
+    }
+
+    /**
+     * Get dates
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDates()
+    {
+        return $this->dates;
+    }
+
+    /**
+     * Set checkEvenOddWeek
+     *
+     * @param boolean $checkEvenOddWeek
+     * @return Dish
+     */
+    public function setCheckEvenOddWeek($checkEvenOddWeek)
+    {
+        $this->checkEvenOddWeek = $checkEvenOddWeek;
+    
+        return $this;
+    }
+
+    /**
+     * Get checkEvenOddWeek
+     *
+     * @return boolean 
+     */
+    public function getCheckEvenOddWeek()
+    {
+        return $this->checkEvenOddWeek;
+    }
+
+    /**
+     * Set evenWeek
+     *
+     * @param boolean $evenWeek
+     * @return Dish
+     */
+    public function setEvenWeek($evenWeek)
+    {
+        $this->evenWeek = $evenWeek;
+    
+        return $this;
+    }
+
+    /**
+     * Get evenWeek
+     *
+     * @return boolean 
+     */
+    public function getEvenWeek()
+    {
+        return $this->evenWeek;
+    }
+
+    /**
+     * Set useDateInterval
+     *
+     * @param boolean $useDateInterval
+     * @return Dish
+     */
+    public function setUseDateInterval($useDateInterval)
+    {
+        $this->useDateInterval = $useDateInterval;
+    
+        return $this;
+    }
+
+    /**
+     * Get useDateInterval
+     *
+     * @return boolean 
+     */
+    public function getUseDateInterval()
+    {
+        return $this->useDateInterval;
     }
 }

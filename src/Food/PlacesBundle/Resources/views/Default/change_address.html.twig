@@ -1,6 +1,6 @@
 <div style="display: none">
     <div id="{{ id }}" class="delivery-info-form">
-        <div class="page-title"><span class="h1">Įveskite adresą</span></div>
+        <div class="page-title"><span class="h1">{% trans %}cart.checkout.enter_address{% endtrans %}</span></div>
         {% if hideQlu == false %}
             <div class="form-row form-row-required city-row width463" class="search-qlue">
             <p class="title">{% trans %}index.search_form_qlue{% endtrans %}</p>
@@ -11,18 +11,44 @@
         </div>
         <div class="form-row form-row-required city-row width463">
             <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
-            <select class="custom-select">
-                <option {% if location and location.city is defined and location.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
-                <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
-                <option {% if location and location.city is defined and (location.city == 'Klaipėda' or location.city == 'Klaipeda') %}selected{% endif %}>Klaipėda</option>
+            <select id="address_city" class="custom-select">
+                {% for city in available_cities %}
+                    <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e'})) %}selected{% endif %}>{{ city }}</option>
+                {% endfor %}
             </select>
         </div>
         <div class="form-row form-row-required address-row width463">
             <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
             <input type="text"
                    id="address"
+                   list="user_address"
                    value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}"
                    placeholder="{{ 'index.street'|trans }}" />
+            {% if usr_address %}
+                <datalist id="user_address">
+                    {% for address in usr_address %}
+                        <option data-city="{{ address.city }}" value="{{ address.address }}" label="{{ address.address }}">
+                    {% endfor %}
+                </datalist>
+            {% endif %}
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $("input[id='address']").on('input', function(){
+                        var $input = $(this);
+                        var val = $input.val();
+                        var selected_city = null;
+                        var list = $input.attr('list');
+                        $('#' + list + ' option').filter(function() {
+                            if ($(this).val() === val) {
+                                selected_city = $(this).data('city');
+                                $('option:selected', '#address_city').removeAttr('selected');
+                                $('#address_city').find('option[value="' + selected_city + '"]').attr("selected", true);
+                                bind_custom_select();
+                            }
+                        });
+                    });
+                });
+            </script>
         </div>
     </div>
     <div id="place-point-not-found">

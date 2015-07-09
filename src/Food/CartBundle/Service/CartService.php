@@ -8,6 +8,7 @@ use Food\CartBundle\Entity\CartOption;
 use Food\DishesBundle\Entity\DishOption;
 use Food\DishesBundle\Entity\DishSize;
 use Food\DishesBundle\Entity\Place;
+use Food\DishesBundle\Entity\PlacePoint;
 
 
 class CartService {
@@ -277,7 +278,7 @@ class CartService {
     /**
      * @param $dish
      * @param $size
-     * @param $quantity
+     * @param int $quantity
      * @param $options
      */
     public function addDishByIds($dish, $size, $quantity, $options = array())
@@ -404,9 +405,73 @@ class CartService {
     {
         $total = 0;
         foreach ($cartItems as $cartItem) {
-            $total += $cartItem->getDishSizeId()->getCurrentPrice() * $cartItem->getQuantity();
+            $total += ((float)$cartItem->getDishSizeId()->getCurrentPrice() * 100) * (int)$cartItem->getQuantity();
             foreach ($cartItem->getOptions() as $opt) {
-                $total += $opt->getDishOptionId()->getPrice() * $cartItem->getQuantity();
+                $total += ((float)$opt->getDishOptionId()->getPrice() * 100) * (int)$cartItem->getQuantity();
+            }
+        }
+        return $total / 100;
+    }
+
+    /**
+     * Total nenuolaidiniu prekiu. Reikalinga esant poreikiui perskaiciuoti procentine nuolaida.
+     *
+     * @param Cart[] $cartItems
+     * @return int
+     *
+     * @deprecated
+     */
+    public function getCartTotalOfNonDiscounted($cartItems)
+    {
+        $total = 0;
+        foreach ($cartItems as $cartItem) {
+            $thisDishFitsUs = false;
+            if (!$cartItem->getPlaceId()->getDiscountPricesEnabled()) {
+                $thisDishFitsUs = true;
+            } elseif (!$cartItem->getDishId()->getDiscountPricesEnabled()) {
+                $thisDishFitsUs = true;
+            } elseif ($cartItem->getDishId()->getDiscountPricesEnabled() && $cartItem->getPlaceId()->getDiscountPricesEnabled() && $cartItem->getDishSizeId()->getDiscountPrice() == 0) {
+                $thisDishFitsUs = true;
+            }
+            if ($thisDishFitsUs) {
+                $total += $cartItem->getDishSizeId()->getCurrentPrice() * $cartItem->getQuantity();
+                foreach ($cartItem->getOptions() as $opt) {
+                    $total += $opt->getDishOptionId()->getPrice() * $cartItem->getQuantity();
+                }
+            }
+        }
+        return $total;
+    }
+
+    /**
+     * @param $cartItems
+     * @param $discountPercent
+     * @return float|int
+     */
+    public function getTotalDiscount($cartItems, $discountPercent)
+    {
+        $total = 0;
+        foreach ($cartItems as $cartItem) {
+            $thisDishFitsUs = false;
+            if (!$cartItem->getPlaceId()->getDiscountPricesEnabled()) {
+                $thisDishFitsUs = true;
+            } elseif (!$cartItem->getDishId()->getDiscountPricesEnabled()) {
+                $thisDishFitsUs = true;
+            } elseif ($cartItem->getDishId()->getDiscountPricesEnabled() && $cartItem->getPlaceId()->getDiscountPricesEnabled() && $cartItem->getDishSizeId()->getDiscountPrice() == 0) {
+                $thisDishFitsUs = true;
+            }
+            if ($cartItem->getDishId()->getNoDiscounts()) {
+                $thisDishFitsUs = false;
+            }
+            $theDish = 0;
+            if ($thisDishFitsUs) {
+                $theDish+= $cartItem->getDishSizeId()->getCurrentPrice() * $cartItem->getQuantity();
+                foreach ($cartItem->getOptions() as $opt) {
+                    $theDish += $opt->getDishOptionId()->getPrice() * $cartItem->getQuantity();
+                }
+                if ($theDish > 0) {
+                    $total+= round(($theDish * $discountPercent / 100), 2);
+                }
             }
         }
         return $total;
@@ -511,5 +576,35 @@ class CartService {
             $this->getEm()->remove($cartDish);
             $this->getEm()->flush();
         }
+    }
+
+    /**
+     * @param Place $place
+     * @param $locData
+     * @param PlacePoint $placePoint
+     * @return int
+     */
+    public function getDeliveryPrice(Place $place, $locData, PlacePoint $placePoint)
+    {
+        $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $locData);
+        if (empty($deliveryTotal) || $deliveryTotal == 0) {
+            $deliveryTotal = $place->getDeliveryPrice();
+        }
+        return $deliveryTotal;
+    }
+
+    /**
+     * @param Place $place
+     * @param $locData
+     * @param PlacePoint $placePoint
+     * @return float
+     */
+    public function getMinimumCart(Place $place, $locData, PlacePoint $placePoint)
+    {
+        $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getMinimumCartForPlacePoint($place, $placePoint, $locData);
+        if (empty($deliveryTotal) || $deliveryTotal == 0) {
+            $deliveryTotal = $place->getCartMinimum();
+        }
+        return $deliveryTotal;
     }
 }

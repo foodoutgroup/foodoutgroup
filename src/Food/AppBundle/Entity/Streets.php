@@ -123,6 +123,12 @@ class Streets {
 
     /**
      * @var string
+     * @ORM\Column(name="delivery_sub_region", type="string", length=12, nullable=true)
+     */
+    private $deliverySubRegion;
+
+    /**
+     * @var string
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
      */
     private $name;
@@ -549,5 +555,28 @@ class Streets {
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set deliverySubRegion
+     *
+     * @param string $deliverySubRegion
+     * @return Streets
+     */
+    public function setDeliverySubRegion($deliverySubRegion)
+    {
+        $this->deliverySubRegion = $deliverySubRegion;
+    
+        return $this;
+    }
+
+    /**
+     * Get deliverySubRegion
+     *
+     * @return string 
+     */
+    public function getDeliverySubRegion()
+    {
+        return $this->deliverySubRegion;
     }
 }

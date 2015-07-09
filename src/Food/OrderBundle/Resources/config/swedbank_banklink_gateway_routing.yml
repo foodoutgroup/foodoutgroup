@@ -9,6 +9,10 @@ swedbank_gateway_success:
     pattern: /success
     defaults: { _controller: FoodOrderBundle:SwedbankBanklinkGateway:success }
 
+swedbank_gateway_callback:
+    pattern: /callback
+    defaults: { _controller: FoodOrderBundle:SwedbankBanklinkGateway:callback }
+
 swedbank_gateway_failure:
     pattern: /failure
     defaults: { _controller: FoodOrderBundle:SwedbankBanklinkGateway:failure }

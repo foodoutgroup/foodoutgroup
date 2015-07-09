@@ -15,6 +15,7 @@ var Cart = {
      * @var Object formObject
      */
     submitOrder: function(formObject) {
+        $('.content-lefter-big').mask();
         var isPickup,
             deliveryAction,
             pickupAction,
@@ -36,6 +37,7 @@ var Cart = {
             formObject.attr('action', isPickup ? pickupAction : deliveryAction)
                       .submit();
         } else {
+            $('.content-lefter-big').unmask();
             return false;
         }
     },

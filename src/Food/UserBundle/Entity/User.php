@@ -70,6 +70,13 @@ class User extends BaseUser
      */
     private $apiTokenValidity = null;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="birthday", type="date", nullable=true)
+     */
+    private $birthday = null;
+
     public function __construct()
     {
         parent::__construct();
@@ -281,6 +288,16 @@ class User extends BaseUser
         return $this->address[0];
     }
 
+    public function getCurrentDefaultAddress()
+    {
+        $address = null;
+        if (!empty($this->address)) {
+            foreach($this->address as $address) {
+            }
+        }
+        return $address;
+    }
+
     /**
      * Add address
      *
@@ -404,5 +421,55 @@ class User extends BaseUser
     public function getApiTokenValidity()
     {
         return $this->apiTokenValidity;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getExpiresAt()
+    {
+        return $this->expiresAt;
+    }
+
+    /**
+     * Set birthday
+     *
+     * @param \DateTime $birthday
+     * @return User
+     */
+    public function setBirthday($birthday)
+    {
+        $this->birthday = $birthday;
+    
+        return $this;
+    }
+
+    /**
+     * Get birthday
+     *
+     * @return \DateTime 
+     */
+    public function getBirthday()
+    {
+        return $this->birthday;
+    }
+
+    /**
+     * @param \DateTime $expiresAt
+     * @return User
+     */
+    public function setExpiresAt(\DateTime $expiresAt)
+    {
+        $this->expiresAt = $expiresAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCredentialsExpireAt()
+    {
+        return $this->credentialsExpireAt;
     }
 }

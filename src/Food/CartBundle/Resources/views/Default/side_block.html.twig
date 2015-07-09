@@ -15,18 +15,32 @@
                 <div class="clearfix pad">
                     <div class="count item">{{ dish.quantity }} {% trans %}general.item_quantity{% endtrans %}</div>
                     {% set showDiscount = false %}
-                    {% if dish.dishId.showDiscount  %}
-                        {% set showDiscount = true %}
+                    {% if dish.dishId.showDiscount and dish.dishSizeId.discountPrice %}
+                        {% set showDiscount = true and dish.dishSizeId.discountPrice != 0 %}
                     {% endif %}
-                    <div class="sum item {% if showDiscount %}discounted{% endif %}">x {{ currency_display|raw }}{{ dish.dishSizeId.price|number_format(2, ',', ' ') }}
-                        <span class="euro">
-                            /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.price)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}
-                        </span>
-                    </div>
+                    {% if dish.dishId.showPublicPrice %}
+                        <div class="sum item {% if showDiscount %}discounted{% endif %}">x {{ currency_display|raw }}{{ dish.dishSizeId.publicPrice|number_format(2, ',', ' ') }}
+                            {% if currency_alternative %}
+                                <span class="euro">
+                                    /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.publicPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}
+                                </span>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="sum item {% if showDiscount %}discounted{% endif %}">x {{ currency_display|raw }}{{ dish.dishSizeId.price|number_format(2, ',', ' ') }}
+                            {% if currency_alternative %}
+                                <span class="euro">
+                                    /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.price)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}
+                                </span>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                     {% if showDiscount %}
                         <div class="sum item discount">x {{ currency_display|raw }}{{ dish.dishSizeId.discountPrice|number_format(2, ',', ' ') }}
-                            <span class="euro">
-                            /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.discountPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}
+                            {% if currency_alternative %}
+                                <span class="euro">
+                                /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.discountPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}
+                            {% endif %}
                         </span>
                         </div>
                     {% endif %}
@@ -36,7 +50,19 @@
                     {% for option in dish.options %}
                         <div class="clearfix">
                             <div class="extra" title="{{ option.dishOptionId.name }}">{{ option.dishOptionId.name }}</div>
-                            <div class="extra sum">{{ currency_display|raw }}{{ option.dishOptionId.price|number_format(2, ',', ' ') }}<span class="euro">/&nbsp;{{ misc_utils.getLitas(option.dishOptionId.price)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span></div>
+                            <div class="extra sum">
+                                {% if dish.dishId.showPublicPrice %}
+                                    {{ currency_display|raw }}{{ '0'|number_format(2, ',', ' ') }}
+                                    {% if currency_alternative %}
+                                        <span class="euro">/&nbsp;{{  '0'|number_format(2, ',', ' ') }}{{ display_currency_alternative|raw }}</span>
+                                    {% endif %}
+                                {% else %}
+                                    {{ currency_display|raw }}{{ option.dishOptionId.price|number_format(2, ',', ' ') }}
+                                    {% if currency_alternative %}
+                                        <span class="euro">/&nbsp;{{  misc_utils.getLitas(option.dishOptionId.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative|raw }}</span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
                         </div>
                     {% endfor %}
                 {% endif %}
@@ -51,22 +77,61 @@
             {% endif %}
             <div class="total-sum cart clearfix">
                 <div class="fl">{% trans %}cart.block.total_cart{% endtrans %}:</div>
-                <div class="fr">{{ currency_display|raw }}{{ total_cart|number_format(2, ',', ' ') }} <span class="euro">/ {{ misc_utils.getLitas(total_cart)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span></div>
+                <div class="fr"> {{ currency_display|raw }}{{ total_cart|number_format(2, ',', ' ') }}
+                    {% if currency_alternative %}
+                        <span class="euro">/ {{  misc_utils.getLitas(total_cart)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>
+                    {% endif %}
+                </div>
             </div>
             {% if hide_delivery == 0 %}
                 <div class="delivery-price clearfix">
                     <div class="fl">{% trans %}cart.block.delivery_price{% endtrans %}:</div>
-                    <div class="fr">{{ currency_display|raw }}{{ place.deliveryPrice|number_format(2, ',', ' ') }} <span class="euro">/ {{ misc_utils.getLitas(place.deliveryPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span></div>
+                    {% if freeDelivery %}
+                        <div class="fr">{{ currency_display|raw }}0,00 {% if currency_alternative %}<span class="euro">/ 0,00 {{ display_currency_alternative|raw }}</span>{% endif %}</div>
+                    {% else %}
+                        <div class="fr">{{ currency_display|raw }}{{ total_delivery|number_format(2, ',', ' ') }}
+                            {% if currency_alternative %}
+                                <span class="euro">/ {{  misc_utils.getLitas(total_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="total-sum final clearfix">
                     <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
-                    <div class="fr">{{ currency_display|raw }}{{ total_with_delivery|number_format(2, ',', ' ') }} <span class="euro">/ {{ misc_utils.getLitas(total_with_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span></div>
+                    <div class="fr">{{ currency_display|raw }}{{ total_with_delivery|number_format(2, ',', ' ') }}
+                        {% if currency_alternative %}<span class="euro">/ {{  misc_utils.getLitas(total_with_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>{% endif %}
+                    </div>
                 </div>
             {% endif %}
         </div>
-        {% if total_cart < place.cartMinimum and hide_delivery == false %}
-            <div class="alert alert-warning text-center">{{ 'cart.didnt_reach_min_cart'|trans }}</div>
+        {% if discountInSum %}
+            {% if total_cart + discountSum < place.cartMinimum and hide_delivery == false %}
+                <div class="alert alert-warning text-center">{{ 'cart.didnt_reach_min_cart'|trans }}</div>
+            {% endif %}
+        {% else %}
+            {% if total_cart < place.cartMinimum and hide_delivery == false %}
+                <div class="alert alert-warning text-center">{{ 'cart.didnt_reach_min_cart'|trans }}</div>
+            {% endif %}
         {% endif %}
+
+        {# Delivery type choice #}
+        {% if inCart == false %}
+            <div class="cart_delivery_type">
+                {% trans %}cart.block.delivery_type{% endtrans %} <span class="delivery-type-tooltip" title="{% trans %}cart.block.delivery_type.tooltip{% endtrans %}">&nbsp;</span><br />
+                <br />
+                <label class="custom-radio{% if place.deliveryOptions == "pickup" %} disabled{% endif %}">
+                    <input type="radio" name="delivery_type" value="deliver" {% if not takeAway %}checked="checked"{% endif %}{% if place.deliveryOptions == "pickup" %} disabled="disabled"{% endif %}>
+                    {% trans %}cart.checkout.delivery_to_home{% endtrans %}
+                </label>
+                <label class="custom-radio{% if place.deliveryOptions == "delivery" %} disabled{% endif %}">
+                    <input type="radio" name="delivery_type" value="pickup" {% if takeAway %}checked="checked"{% endif %}{% if place.deliveryOptions == "delivery" %} disabled="disabled"{% endif %}>
+                    {% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
+                </label>
+                <br />
+            </div>
+        {% endif %}
+
+        {# Order  button #}
         {% if inCart == false %}
             <a href="{{ path('food_cart', { 'placeId' : place.id, 'takeAway': hide_delivery }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
         {% endif %}
@@ -79,7 +144,18 @@
         </div>
         {% endif %}
         {% if hide_delivery == false or place.minimalOnSelfDel %}
-        <div class="delivery-time tac">{% trans %}cart.block.order_sum_minimum{% endtrans %}<br />{{ currency_display|raw }}{{ place.cartMinimum }} <span class="euro">/ {{  misc_utils.getLitas(place.cartMinimum)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>.
+        <div class="delivery-time tac">{% trans %}cart.block.order_sum_minimum{% endtrans %}<br />
+            {% if display_cart_interval %}
+                {% if cart_from_min == cart_from_max %}
+                    {{ currency_display|raw }} {{ cart_from_min }}
+                {% else %}
+                    {{ currency_display|raw }} {{ cart_from_min }} - {{ cart_from_max }}
+                {% endif %}
+            {% else %}
+                {{ currency_display|raw }} {{ cart_minimum }}
+            {% endif %}
+
+            {% if currency_alternative %}<span class="euro">/ {{  misc_utils.getLitas(cart_minimum)|number_format(2, ',', ' ') }}{{ display_currency_alternative|raw }}</span>{% endif %}.
             {% if place.minimalOnSelfDel == false %}<br />{% trans %}cart.block.order_sum_minimum_take_myself{% endtrans %}{% endif %}
         </div>
         {% endif %}
@@ -88,9 +164,27 @@
             <h5 class="tac">{% trans %}cart.block.your_order_empty{% endtrans %}</h5>
         </div>
     {% endif %}
+
     <script type="application/javascript">
         $(document).ready(function(){
-            $('.delivery-time-info-cart').tooltip();
+            $('.delivery-time-info-cart, .delivery-type-tooltip').tooltip();
+            $('#cartmnu input').iCheck();
+        });
+        var takeAway = 0;
+        $('#cartmnu').on('ifToggled', '.cart_delivery_type input',function (event) {
+            if (event.target.checked) {
+                if (event.target.value == 'pickup') {
+                    takeAway = 1;
+                }
+                $('.content-righter-small').mask();
+                var url = Routing.generate('food_cart_action', { 'action': 'set_delivery', '_locale': '{{ locale }}', 'place': {{ place.id }}, in_cart: 0, coupon_code: '', take_away: takeAway  });
+                $.post(url, function (response) {
+                    if (typeof(response.block) != "undefined") {
+                        $('.content-righter-small').unmask();
+                        $('.check-block').replaceWith(response.block);
+                    }
+                }, 'json');
+            }
         });
     </script>
 </div>

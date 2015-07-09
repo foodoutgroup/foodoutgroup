@@ -61,7 +61,7 @@ class Seb extends AbstractBanklink
 
     public function getBankUrl()
     {
-        return 'https://ebankas.seb.lt/cgi-bin/vbint.sh/vbnet.w';
+        return 'https://e.seb.lt/banklink/in';
     }
 
     public function mac($data = array(), $vkService = 0)

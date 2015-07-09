@@ -3,6 +3,7 @@
 namespace Food\SmsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Food\OrderBundle\Entity\Order;
 
 /**
  * Food category
@@ -20,6 +21,14 @@ class Message
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var Order
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\OrderBundle\Entity\Order", inversedBy="smsMessages")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=true)
+     */
+    private $order;
 
     /**
      * @var string
@@ -466,5 +475,28 @@ class Message
     public function getSecondaryExtId()
     {
         return $this->secondaryExtId;
+    }
+
+    /**
+     * Set order
+     *
+     * @param \Food\OrderBundle\Entity\Order $order
+     * @return Message
+     */
+    public function setOrder(\Food\OrderBundle\Entity\Order $order = null)
+    {
+        $this->order = $order;
+    
+        return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return \Food\OrderBundle\Entity\Order
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 }

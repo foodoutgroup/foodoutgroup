@@ -28,19 +28,21 @@ class DefaultController extends Controller
             'city' => '',
             'address' => '',
             'house' => '',
+            'flat' => '',
         );
 
         $user = $this->getUser();
 
         if ($user instanceof User) {
-            $defaultUserAddress = $user->getDefaultAddress();
+            $defaultUserAddress = $user->getCurrentDefaultAddress();
             if (!empty($defaultUserAddress)) {
                 $addressData = $miscUtils->parseAddress($defaultUserAddress->getAddress());
 
                 $formDefaults = array(
                     'city' => $defaultUserAddress->getCity(),
                     'address' => $addressData['street'],
-                    'house' => $addressData['house']
+                    'house' => $addressData['house'],
+                    'flat' => $addressData['flat']
                 );
             }
         }
@@ -54,7 +56,8 @@ class DefaultController extends Controller
             $formDefaults = array(
                 'city' => $sessionLocation['city'],
                 'address' => $addressData['street'],
-                'house' => $addressData['house']
+                'house' => $addressData['house'],
+                'flat' => $addressData['flat']
             );
         }
 
@@ -153,7 +156,7 @@ class DefaultController extends Controller
             return $this->render(
                 'FoodAppBundle:Default:videopopup.js.twig',
                 array(
-                    'video' => 'https://www.youtube.com/v/3zFW6hnuvJY?fs=1&amp;autoplay=1'
+                    'video' => $this->container->getParameter('yt_video')
                 )
             );
         } else {

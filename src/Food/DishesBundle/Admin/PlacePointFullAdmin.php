@@ -53,6 +53,7 @@ class PlacePointFullAdmin extends FoodAdmin
             ->add('wd6_end', 'text', array('label' => 'admin.point.wd_end'))
             ->add('wd7_start', 'text', array('label' => 'admin.point.wd7_start'))
             ->add('wd7_end', 'text', array('label' => 'admin.point.wd_end'))
+
             ->end()
         ;
     }

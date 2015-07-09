@@ -1,10 +1,20 @@
+{% if currency_alternative == false %}
+    {% set priceClass = "single" %}
+{% else %}
+    {% set priceClass = "" %}
+{% endif %}
 <div class="menu-title clearfix"><h2 class="fl clearfix" id="{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}</h2></div>
 <div class="clearfix restaurant-menu{% if listType == 'list' %} display-list{% endif %}">
 {% for dish in dishes %}
-    {% set smallestPrice = dish_service.smallestDishPrice(dish.id) %}
-    {% set largestPrice = dish_service.largestDishPrice(dish.id) %}
+    {% if dish.showPublicPrice %}
+        {% set smallestPrice = dish_service.smallestDishPublicPrice(dish.id) %}
+        {% set largestPrice = dish_service.largestDishPublicPrice(dish.id) %}
+    {% else %}
+        {% set smallestPrice = dish_service.smallestDishPrice(dish.id) %}
+        {% set largestPrice = dish_service.largestDishPrice(dish.id) %}
+    {% endif %}
     {% set showByHours = order_service.isOrderableByTime(dish) %}
-    <div class="restaurant-menu-item {% if showByHours == false %}disabled_dish{% endif %}">
+    <div class="restaurant-menu-item {% if showByHours == false %}disabled_dish{% endif %}" id="dish{{ dish.id }}">
         {% if dish.getWebPathThumb('type1') is not empty %}
             {% if listType == 'thumbs' %}
                 {% set largeImgClass = '' %}
@@ -34,29 +44,35 @@
                 {% else %}
                     {% set multiLine = true %}
                 {% endif %}
-                <span class="price {% if hasDiscount %}discounted{% endif %} {% if hasDiscount and multiLine %}multiline{% endif %}">
+                <span class="price {% if hasDiscount %}discounted{% endif %} {% if hasDiscount and multiLine %}multiline{% endif %} {{ priceClass }}">
                     {% if smallestPrice == largestPrice %}
                         {{ currency_display | raw}} {{ smallestPrice|replace({'.': ','}) }}
-                        <span class="euro">
-                            {{ misc_utils.getLitas(smallestPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}
-                        </span>
+                        {% if currency_alternative %}
+                            <span class="euro">
+                                {{ misc_utils.getLitas(smallestPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}
+                            </span>
+                        {% endif %}
                     {% else %}
                         {{ currency_display | raw}} {{ smallestPrice|replace({'.': ','}) }} - {{ largestPrice|replace({'.': ','}) }}
-                        <span class="euro">
-                            {{  misc_utils.getLitas(smallestPrice)|number_format(2, ',', ' ') }} - {{  misc_utils.getLitas(largestPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}
-                        </span>
+                        {% if currency_alternative %}
+                            <span class="euro">
+                                {{  misc_utils.getLitas(smallestPrice)|number_format(2, ',', ' ') }} - {{  misc_utils.getLitas(largestPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}
+                            </span>
+                        {% endif %}
                     {% endif %}
                 </span>
                 {% if hasDiscount %}
                     {% set smallestDiscountPrice = dish_service.smallestDishDiscountPrice(dish.id) %}
                     {% set largestDiscountPrice = dish_service.largestDishDiscountPrice(dish.id) %}
                     {% set hasDiscountCount = dish_service.countDiscountSizes(dish.id) %}
-                    <span class="price {% if hasDiscount %}discount{% endif %} {% if hasDiscount and multiLine %}multiline{% endif %}">
+                    <span class="price {% if hasDiscount %}discount{% endif %} {% if hasDiscount and multiLine %}multiline{% endif %} {{ priceClass }}">
                     {% if smallestDiscountPrice == largestDiscountPrice %}
                         {{ currency_display | raw}} {{ smallestDiscountPrice|replace({'.': ','}) }}
-                        <span class="euro">
-                            {{ misc_utils.getLitas(smallestDiscountPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}
-                        </span>
+                        {% if currency_alternative %}
+                            <span class="euro">
+                                {{ misc_utils.getLitas(smallestDiscountPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}
+                            </span>
+                        {% endif %}
                     {% else %}
                         {% set showNormalDiscount = true %}
                         {% if smallestPrice == smallestDiscountPrice and  largestPrice == largestDiscountPrice %}
@@ -72,9 +88,11 @@
                         {% endif %}
                         {% if showNormalDiscount %}
                             {{ currency_display | raw}} {{ smallestDiscountPrice|replace({'.': ','}) }} - {{ largestDiscountPrice|replace({'.': ','}) }}
-                            <span class="euro">
-                                {{  misc_utils.getLitas(smallestDiscountPrice)|number_format(2, ',', ' ') }} - {{  misc_utils.getLitas(largestDiscountPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}
-                            </span>
+                            {% if currency_alternative %}
+                                <span class="euro">
+                                    {{  misc_utils.getLitas(smallestDiscountPrice)|number_format(2, ',', ' ') }} - {{  misc_utils.getLitas(largestDiscountPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative }}
+                                </span>
+                            {% endif %}
                         {% else %}
                             {{ discountStr }}
                         {% endif %}

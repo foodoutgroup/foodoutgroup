@@ -77,6 +77,18 @@
 
 {% block title %}{% trans %}general.base_page_title{% endtrans %} | {{ page_title }}{% endblock %}
 
+{% block delfi_js %}
+    {% if show_delfi_banner %}
+       {{ misc_utils.param('delfiJs', true)|raw }}
+    {% endif %}
+{% endblock %}
+
+{% block delfi_banner %}
+    {% if show_delfi_banner %}
+       {{ misc_utils.param('delfiBanner', true)|raw }}
+    {% endif %}
+{% endblock %}
+
 {% block body %}
 
     <div style="background-image: url(http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/offer-1.jpg') }});" class="site-header special-offer-block">
@@ -88,14 +100,14 @@
                     {# TODO remove city hardcode, damn it... #}
                     <select id="index_city">
                         <option value="" disabled {% if formDefaults.city == '' %}selected{% endif %}>{% trans %}index.city{% endtrans %}</option>
-                        <option value="Vilnius" {% if formDefaults.city == 'Vilnius' %}selected{% endif %}>Vilnius</option>
-                        <option value="Kaunas" {% if formDefaults.city == 'Kaunas' %}selected{% endif %}>Kaunas</option>
-                        <option value="Klaipėda" {% if formDefaults.city == 'Klaipėda' or formDefaults.city == 'Klaipeda' %}selected{% endif %}>Klaipėda</option>
+                        {% for city in available_cities %}
+                            <option value="{{ city }}" {% if formDefaults.city == city or formDefaults.city == city|replace({'ė':'e','y':'ī'}) %}selected{% endif %}>{{ city }}</option>
+                        {% endfor %}
                     </select>
 
                     {# <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}"  autocomplete="off" > #}
                     <input type="text" id="index_address" placeholder="{% trans %}index.street{% endtrans %}" class="input-street" autocomplete="off" value="{{ formDefaults.address }}" />
-                    <input type="text" id="index_house" placeholder="{% trans %}index.house{% endtrans %}" class="input-house" autocomplete="off" value="{{ formDefaults.house }}" />
+                    <input type="text" id="index_house" placeholder="{% trans %}index.house{% endtrans %} - {% trans %}index.flat{% endtrans %}" class="input-house" autocomplete="off" value="{{ formDefaults.house }}{% if formDefaults.flat %} - {{ formDefaults.flat }}{% endif %}" />
                     <input type="submit" id="index_submit" value="{% trans %}index.findfood{% endtrans %}" />
                 </div>
             </form>
@@ -103,12 +115,27 @@
         <p class="img-description">{# pavadinimas produkto, vietove, kaina #}</p>
     </div>
     <div class="site-center">
-        <div class="site-block">
-            {{ render(controller('FoodPlacesBundle:Default:bestOffers')) }}
-        </div>
-        <div class="site-block banner">
-            <a href="http://foodout.lt/lt/registracija_zaidimui"><img src="http://images.foodout.lt/pr_1.gif"></a>
-        </div>
+        {% if show_best_offers %}
+            <div class="site-block">
+                {{ render(controller('FoodPlacesBundle:Default:bestOffers')) }}
+            </div>
+        {% endif %}
+
+        {% if show_game %}
+            <div class="site-block banner">
+
+                <!--/*
+                *
+                * Revive Adserver Asynchronous JS Tag
+                * - Generated with Revive Adserver v3.2.1
+                *
+                */-->
+
+                <ins data-revive-zoneid="8" data-revive-id="12b88dd43b1c40010eb436263abc6451"></ins>
+                <script async src="//ads.foodout.lt/delivery/asyncjs.php"></script>
+            </div>
+        {% endif %}
+
         <div class="site-block">
             {{ render(controller('FoodPlacesBundle:Default:recommended')) }}
         </div>

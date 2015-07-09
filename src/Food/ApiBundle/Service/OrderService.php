@@ -4,6 +4,7 @@ namespace Food\ApiBundle\Service;
 
 use Food\ApiBundle\Common\JsonRequest;
 use Food\OrderBundle\Entity\Order;
+use Food\OrderBundle\Entity\Coupon;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
 use Food\OrderBundle\Service\OrderService as FO;
@@ -34,6 +35,7 @@ class OrderService extends ContainerAware
                     FO::$status_accepted,
                     FO::$status_delayed,
                     FO::$status_assiged
+                    //,FO::$status_unapproved
                 )
             );
 
@@ -56,6 +58,9 @@ class OrderService extends ContainerAware
      */
     public function createOrder(Request $requestOrig, JsonRequest $request, $isThisPre = false)
     {
+        $logger = $this->container->get('logger');
+        $logger->alert("=================");
+        $logger->alert("orderService->createOrder called");
         /**
          * {
             "basket_id": 1,
@@ -67,6 +72,9 @@ class OrderService extends ContainerAware
                     "flat_number": 2,
                    "city": "Vilnius",
                     "comments": "Duru kodas 1234"
+            },
+            "discount": {
+                "code": "123456"
             }
          }
         <!-- OR -->
@@ -101,8 +109,14 @@ class OrderService extends ContainerAware
 
         $em = $this->container->get('doctrine')->getManager();
         $serviceVar = $request->get('service');
+        $logger->alert('Service var givven: ');
+        $logger->alert(var_export($serviceVar, true));
         $pp = null; // placePoint :D - jei automatu - tai NULL :D
         if ($serviceVar['type'] == "pickup") {
+            // TODO Trying to catch fatal when searching for PlacePoint
+            if (empty($serviceVar['location_id'])) {
+                $this->container->get('logger')->error('Trying to find PlacePoint without ID in Api OrderService - createOrder');
+            }
             $pp = $em->getRepository('FoodDishesBundle:PlacePoint')->find($serviceVar['location_id']);
         }
 
@@ -119,10 +133,25 @@ class OrderService extends ContainerAware
             );
         }
 
+        // Discount code validation
+        $coupon = null;
+        $discountVar = $request->get('discount');
+        if (!empty($discountVar) && !empty($discountVar['code'])) {
+            $coupon = $this->container->get('food.order')->getCouponByCode($discountVar['code']);
+            if (empty($coupon)) {
+                throw new ApiException(
+                    'Coupon Not found',
+                    404,
+                    array(
+                        'error' => 'Coupon Not found',
+                        'description' => $this->container->get('translator')->trans('api.orders.coupon_does_not_exists')
+                    )
+                );
+            }
+        }
 
         $cartService = $this->getCartService();
         $cartService->setNewSessionId($basket->getSession());
-
         $place = $basket->getPlaceId();
         if ($serviceVar['type'] != "pickup") {
             $list = $cartService->getCartDishes($basket->getPlaceId());
@@ -183,6 +212,7 @@ class OrderService extends ContainerAware
                         true
                     )
                 );
+
             }
         } elseif ($basket->getPlaceId()->getMinimalOnSelfDel()) {
             $list = $cartService->getCartDishes($basket->getPlaceId());
@@ -207,7 +237,8 @@ class OrderService extends ContainerAware
             $requestOrig->getLocale(),
             $user,
             $pp,
-            ($serviceVar['type'] == "pickup" ? true : false)
+            ($serviceVar['type'] == "pickup" ? true : false),
+            $coupon
         );
 
         $os->setMobileOrder(true);
@@ -248,15 +279,18 @@ class OrderService extends ContainerAware
             );
         }
         $os->saveOrder();
-        $billingUrl = $os->billOrder();
+        if (!$isThisPre) {
+            $billingUrl = $os->billOrder();
+        }
         $order = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->findOneBy(
             array(
                 'id' => $os->getOrder()->getId()
             )
         );
+
         $this->container->get('doctrine')->getManager()->refresh($order);
 
-        return $this->getOrderForResponse($order);
+        return $this->getOrderForResponse($order, $coupon, $list);
     }
 
     public function getCartService()
@@ -268,10 +302,12 @@ class OrderService extends ContainerAware
      * @todo - FIX TO THE EPIC COMMON LEVEL
      *
      * @param Order $order
+     * @param Coupon $coupon
+     * @param $list
      *
      * @return array
      */
-    public function getOrderForResponse(Order $order)
+    public function getOrderForResponse(Order $order, Coupon $coupon = null, $list = null)
     {
         $message = $this->getOrderStatusMessage($order);
 
@@ -280,15 +316,36 @@ class OrderService extends ContainerAware
             $title = "waiting_user_confirmation";
         }
 
+        $discount = array();
+        if (!empty($coupon)) {
+            $discountSum = null;
+            $discountSize = $coupon->getDiscount();
+            if (!empty($discountSize) && !empty($list)) {
+                $discountSum = $this->getCartService()->getTotalDiscount($list, $coupon->getDiscount());
+            } else {
+                $discountSize = null;
+                $discountSum = $coupon->getDiscountSum();
+            }
+            $discount['code'] = $coupon->getCode();
+            if ($discountSum > 0) {
+                $discountSum = $discountSum * 100;
+            }
+            $discount['discount_sum'] = $discountSum;
+            $discount['discount_size'] = $discountSize;
+        }
+
         $returner = array(
             'order_id' => $order->getId(),
             'total_price' => array(
                 'amount' => $order->getTotal()*100,
                 'currency' => $this->container->getParameter('currency_iso')
             ),
+            'discount' => $discount,
             'state' => array(
                 'title' => $title,
-                'info_number' => '+'.$order->getPlacePoint()->getPhone(),
+                // TODO Rodome nebe restorano, o dispeceriu nr
+                "info_number" => "+".$this->container->getParameter('dispatcher_contact_phone'),
+//                'info_number' => '+'.$order->getPlacePoint()->getPhone(),
                 'message' => $message
             ),
             'details' => array(
@@ -406,6 +463,7 @@ class OrderService extends ContainerAware
     {
         $statusMap = array(
             FO::$status_new => 'accepted',
+            FO::$status_unapproved => 'accepted',
             FO::$status_accepted => 'preparing',
             FO::$status_assiged => 'preparing',
             FO::$status_forwarded => 'preparing',

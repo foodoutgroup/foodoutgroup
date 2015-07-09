@@ -9,9 +9,9 @@ set :model_manager, "doctrine"
 set :branch, "master"
 
 # multi-stage environment
-set :stages,        %w(production staging sandbox taurinas kofeinas pipiras)
+set :stages,        %w(production staging sandbox taurinas kofeinas pipiras production_lv)
 # isijungiam kada reik :)
-set :default_stage, "production"
+set :default_stage, "staging"
 set :stage_dir,     "app/config/deploy"
 require 'capistrano/ext/multistage'
 
@@ -59,6 +59,7 @@ after "deploy:chmod_things", "deploy:cleanup"
 # after "deploy:cleanup", "deploy:airbrake_notify"
 after "deploy:rollback", "symfony:cache:clear"
 
+#
 # Be more verbose by uncommenting the following line
 # logger.level = Logger::MAX_LEVEL
 logger.level = 0

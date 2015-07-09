@@ -1,7 +1,7 @@
 {# Sekmingo apmokejimo pranesimas #}
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
-{% block title %}Apmokėjimas sėkmingas - {{ page_title }}{% endblock %}
+{% block title %}{% trans %}general.cart.success_title{% endtrans %} - {{ page_title }}{% endblock %}
 
 {% block adnet_retargeting %}
     <!-- Adform Tracking Code BEGIN -->
@@ -64,6 +64,17 @@
 {% endblock %}
 
 {% block body %}
+    <!-- mailersoft begin -->
+    <script type="text/javascript">
+        {% for item in order.details %}
+        _ml.push({'_conversion_data':  { value: {{ item.price }}, amount: {{ item.quantity }}, title: '{{ item.dishName }}', product_code: '{{ item.id }}' }});
+        {% endfor %}
+
+        window.onload = function(){
+            _mler.sendConversion({order_title: 'Order no. {{ order.id }}', order_id: '{{ order.id }}', currency: '{{ currency_iso }}'});
+        };
+    </script>
+    <!-- mailersoft end -->
     {% javascripts '@FoodAppBundle/Resources/public/js_main/order.js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -71,7 +82,7 @@
         <div class="site-block">
             <div class="middle-content">
                 <div class="cupon-page">
-                    <h1>Sveikiname!</h1>
+                    <h1>{% trans %}general.cart.success_title{% endtrans %}!</h1>
                     {#<p>Jūsų užsakymas priimtas ir turėtų pasiekti jus per <strong>{{ order.placePoint.deliveryTime }}</strong> minučių. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitumų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 687 44359</strong>. &#123;&#35;Savo užsakymą <a href="#" class="delivery-location-ico"><span>galite sekti čia</span></a>&#35;&#125;</p>#}
                     <p>
                         {% if order.placePoint.phoneNiceFormat|length > 4 %}

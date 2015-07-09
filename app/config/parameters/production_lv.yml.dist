@@ -1,0 +1,81 @@
+parameters:
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: 3306
+    database_name: foodout_lv
+    database_user: foodout_lv
+    database_password: U7P9OK7LV9LF5ZN
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: f6180a0fb30e99a1da1e364412f96c3f98cbaa1f
+
+    aws_key: AKIAJN3454YNXAUSJIRA
+    aws_secret: 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
+    aws_region: eu-west-1
+    s3_bucket: foodout-invoice
+
+    locale: lv
+    locales: ["lv", "en", "ru"]
+    available_cities: [Rīga]
+    available_locales: ["lv", "en", "ru"]
+    available_locales_routing: lv | en | ru
+    cloudfront_url: images.foodout.lv
+    time_zone: "Europe/Riga"
+    sms.sender: "Foodout.lv"
+    admin.emails: [mantas@foodout.lt]
+    admin.phones: [37061514333]
+    order.notify_emails: [paulius@foodout.lt, giedrius@foodout.lt, baiba@foodout.lv]
+    order.city_coordinators:
+        vilnius: []
+        kaunas: [zaneta@foodout.lt]
+        klaipėda: [jurgita@foodout.lt]
+        ryga: [paulius@foodout.lt]
+        riga: [paulius@foodout.lt]
+        rīga: [paulius@foodout.lt]
+    order.accept_notify_emails: []
+    accounting_email: "jolanta@foodout.lv"
+    payment.methods:
+        - local
+        - local.card
+        - paysera
+        - swedbank-gateway
+        - swedbank-credit-card-gateway
+        - seb-banklink
+        - nordea-banklink
+    currency_display: '&euro;'
+    currency_iso: EUR
+    display_currency_alternative:  Lt
+    currency_alternative: false
+    show_best_offers: false
+    show_game: false
+    show_apps_download: false
+    show_is_social: false
+    show_delfi_banner: false
+    track_conversions: false
+    # naudojam telefonu validacijoms
+    country: LV
+    country_full: Latvia
+    vat: 21
+    title: "Foodout"
+    domain: "foodout.lv"
+    publicdomain: "foodout.lv"
+    google_analytics_uid: "UA-50355577-2"
+    google.analytics.view_id: "97303530"
+    nav_table_prefix: 'LV Call Center'
+    nav_ws_prefix: 'LV Call Center'
+    mailer_api_key: "o8s5m7s5h7s4t8m3l0t2n3u8j9r9m4x5"
+    mailer_notify_on_accept: 30026333
+    mailer_notify_new_user: 30026305
+    mailer_user_reset: 30026299
+    mailer_partialy_deliverer: 30021995
+    mailer_rate_your_food: 30026301
+    mailer_send_invoice: 30026291
+    yt_video: https://www.youtube.com/v/D-EkSle0r84?fs=1&amp;autoplay=
+    yt_embeded: //www.youtube-nocookie.com/embed/D-EkSle0r84
+    default_delivery_distance: 3
+    default_self_delivey_distance: 7
+    dispatcher_phones: [37126110079]
+    send_sms_on_cancel: false
+    dispatcher_contact_phone: "37126110079"

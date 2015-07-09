@@ -48,6 +48,12 @@ class UserAddress
     private $lon;
 
     /**
+     * @var string
+     * @ORM\Column(name="comment", type="text", nullable=true)
+     */
+    private $comment = null;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="is_default", type="integer", length=1)
@@ -238,5 +244,28 @@ class UserAddress
     public function getLon()
     {
         return $this->lon;
+    }
+
+    /**
+     * Set comment
+     *
+     * @param string $comment
+     * @return UserAddress
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+    
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return string 
+     */
+    public function getComment()
+    {
+        return $this->comment;
     }
 }

@@ -23,12 +23,19 @@
 
 {% block jscode %}
     $(document).ready(function() {
-        $(".filters-list input").on('ifChecked', function(event) {
+        $(".content-lefter").on('ifChecked', '.filters-list input', function(event) {
             $(this).attr('checked', true);
             submitKitchens();
         });
 
-        $(".filters-list input").on('ifUnchecked', function(event) {
+        // Delivery type filter
+        $(".site-block").on('click', '.restaurants-list-top-filters .delivery-type-filter a', function(event) {
+            $(".site-block .restaurants-list-top-filters .delivery-type-filter a.selected").removeClass('selected');
+            $(event.target).addClass('selected');
+            submitKitchens();
+        });
+
+        $(".content-lefter").on('ifUnchecked', '.filters-list input', function(event) {
             $(this).attr('checked', false);
             submitKitchens();
         });
@@ -43,17 +50,33 @@
 
             var params = {kitchens: '', filters: ''};
             var tmpName = "";
+            var selectedKitchens = '';
             for(i = 0; i < $filters.length; i++) {
                 tmpName = $($filters[i]).attr('name').replace("[]","");
                 if (params[tmpName]!="") {
                     params[tmpName]+=",";
                 }
                 params[tmpName] += $($filters[i]).val();
+                selectedKitchens += ','+$($filters[i]).val()
             }
+            params['delivery_type'] = $(".site-block .restaurants-list-top-filters .delivery-type-filter a.selected").attr('data-type');
+            params['recommended'] = '{{ recommended }}';
 
+            var kitchenParams = { 'recommended': '{{ recommended }}', 'delivery_type': params['delivery_type'], 'selected_kitchens': selectedKitchens};
+
+            $.get('{{ path('food_kitchens_filter') }}', kitchenParams, function(resp) {
+                var $container = $('.content-lefter');
+                $container.find('.filter-title').remove();
+                $container.find('.filters-list').remove();
+                $container.prepend(resp);
+                $container.iCheck();
+            });
+
+            $('.content-righter').mask();
             $.post('{{ path('food_places_filter') }}', params, function(resp) {
                 var $container = $('.content-righter');
                 $container.find('.restaurants-list').remove();
+                $container.unmask();
                 $container.append(resp);
 
                 $('.restoran-rating').raty({
@@ -82,16 +105,16 @@
     <div class="site-block">
     <div class="page-path clearfix">{#<a href="{{ path('food_homepage') }}">Pradžia</a>#}</div>{# TODO breadcrumbs <a href="#">Restoranai arti Žirmūnų</a>#}
     <div class="page-title">
-        <h1>Maistas į namus{% if location and location.city %} {{ city_translations[location.city]|trans }}{% endif %}</h1>
+        <h1>{% trans %}places.header_main_part{% endtrans %}{% if location and location.city %} {{ city_translations[location.city]|trans }}{% endif %}</h1>
         <h2 class="clearfix">
             <span class="place-counter"></span>
             <a href="#" id="places-change-location-link">{% trans %}places.change_address{% endtrans %}</a>
         </h2>
         {% if recommended==0 and ( location == null or (location.not_found == true and location.street_found==true)) %}
-            <div class="alert alert2 alert-warning"><li>{% trans %}places.is_not_detailed_search{% endtrans %}</li></div>
+            <div class="alert alert2 alert-warning alert_not_detailed_search"><li>{% trans %}places.is_not_detailed_search{% endtrans %}</li></div>
         {% endif %}
     </div>
-    {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'places-change-address', hideQlu: false} %}
+    {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'places-change-address', hideQlu: false, usr_address: userAllAddress} %}
     <script type="text/javascript">
         // <![CDATA[
             $(document).ready(function() {
@@ -128,29 +151,40 @@
             });
         // ]]>
     </script>
+    <div class="restaurants-list-top-filters">
+        <div class="delivery-type-filter">
+            <div class="label">{% trans %}places.filter_by_delivery{% endtrans %}:</div>
+            <a href="#" data-type="delivery" {% if delivery_type_filer == 'delivery' or delivery_type_filer == 'delivery_and_pickup' %}class="selected"{% endif %}>{% trans %}places.filter_delivery{% endtrans %}</a>
+            <a href="#" data-type="pickup" {% if delivery_type_filer == 'pickup' %}class="selected"{% endif %}>{% trans %}places.filter_pickup{% endtrans %}</a>
+        </div>
+    </div>
     <div class="clearfix">
         <div class="content-lefter">
-            {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {})) }}
+            {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended})) }}
             {{ render(controller('FoodDishesBundle:Place:filtersList')) }}
             <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a>
         </div>
         <div class="content-righter">
-            {#
-            <div class="restaurants-list-controls clearfix">
-                <form class="list-search-form fl">
-                    <input type="text" placeholder="{% trans %}places.search_placeholder{% endtrans %}">
-                    <input type="submit" value="">
-                </form>
+            {#<div class="restaurants-list-controls clearfix">
+                &#123;&#35;<form class="list-search-form fl">&#35;&#125;
+                    &#123;&#35;<input type="text" placeholder="{% trans %}places.search_placeholder{% endtrans %}">&#35;&#125;
+                    &#123;&#35;<input type="submit" value="">&#35;&#125;
+                &#123;&#35;</form>&#35;&#125;
                 <div class="list-top-filters clearfix fr">
+                    <div class="delivery-type-filter">
+                        <div class="label">{% trans %}places.filter_by_delivery{% endtrans %}:</div>
+                        <a href="#" data-type="delivery_and_pickup" {% if delivery_type_filer == 'delivery_and_pickup' %}class="selected"{% endif %}>{% trans %}places.filter_delivery_and_pickup{% endtrans %}</a>
+                        <a href="#" data-type="delivery" {% if delivery_type_filer == 'delivery' %}class="selected"{% endif %}>{% trans %}places.filter_delivery{% endtrans %}</a>
+                        <a href="#" data-type="pickup" {% if delivery_type_filer == 'pickup' %}class="selected"{% endif %}>{% trans %}places.filter_pickup{% endtrans %}</a>
+                    </div>
                     <div class="label">{% trans %}places.order_by{% endtrans %}:</div>
                     <a href="#">{% trans %}places.sort_by_relevance{% endtrans %}</a>
                     <a href="#" class="selected">{% trans %}places.sort_by_rating{% endtrans %}</a>
                     <a href="#">{% trans %}places.sort_by_delivery_price{% endtrans %}</a>
                     <a href="#">{% trans %}places.sort_by_distance{% endtrans %}</a>
                 </div>
-            </div>
-            #}
-            {{ render(controller('FoodPlacesBundle:Default:list', {'recommended':recommended})) }}
+            </div>#}
+            {{ render(controller('FoodPlacesBundle:Default:list', {'recommended': recommended})) }}
         </div>
     </div>
 

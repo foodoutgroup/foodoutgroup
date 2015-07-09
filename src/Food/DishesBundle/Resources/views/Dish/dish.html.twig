@@ -1,3 +1,11 @@
+<script>
+    if(!window.jQuery)
+    {
+        var whereToGo = '{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') })}}#dish{{ dish.id }}';
+        window.location.href = whereToGo;
+    }
+</script>
+
 <div id="detailed-dish-popup">
     <form class="popup detailed-dish-popup">
         {% if dish.getWebPathThumb('type3') is not empty %}
@@ -16,12 +24,24 @@
                         {% if dish.showDiscount and size.discountPrice != 0 %}
                             {% set showDiscount = true %}
                         {% endif %}
+                        {% if dish.showPublicPrice %}
+                            {% set zePrice = size.publicPrice %}
+                        {% else %}
+                            {% set zePrice = size.price %}
+                        {% endif %}
                         <strong class="price {% if showDiscount %}discounted{% endif %}">
-                            {{ currency_display|raw }}{{ size.priceLocalized }}<span class="euro">/&nbsp;{{  misc_utils.getLitas(size.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
+                            {{ currency_display|raw }}{{ zePrice }}
+
+                            {% if currency_alternative %}
+                                <span class="euro">/&nbsp;{{  misc_utils.getLitas(zePrice)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
+                            {% endif %}
                         </strong>
                         {% if showDiscount %}
                             <strong class="price {% if showDiscount %}discount{% endif %}">
-                                {{ currency_display|raw }}{{ size.discountPrice }}<span class="euro">/&nbsp;{{  misc_utils.getLitas(size.discountPrice)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
+                                {{ currency_display|raw }}{{ size.discountPrice }}
+                                {% if currency_alternative %}
+                                    <span class="euro">/&nbsp;{{  misc_utils.getLitas(size.discountPrice)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
+                                {% endif %}
                             </strong>
                         {% endif %}
                         <input type="radio" {% if loop.index == selectedSize %}checked{% endif %} value="{{ size.id }}" class="dish-size" name="dish-size">
@@ -45,15 +65,24 @@
                     {% set optCounter = optCounter+1 %}
 
                     {% if option.singleSelect == true %}
-                        <label class="custom-radio">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ currency_display|raw }}
-                                {{ option.priceLocalized }}<span class="euro">/&nbsp;{{  misc_utils.getLitas(option.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span></strong>{% endif %}
+                        <label class="custom-radio">{{ option.name }}{% if option.price != 0 and dish.showPublicPrice == false %}<strong class="price">+{{ currency_display|raw }}
+                                {{ option.priceLocalized }}
+                                {% if currency_alternative %}
+                                    <span class="euro">/&nbsp;{{  misc_utils.getLitas(option.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
+                                {% endif %}
+
+                                </strong>{% endif %}
                             <input type="radio" name="option[{{ option.groupName }}]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
                         </label>
                     {% endif %}
                 {% endfor %}
                 {% for option in dish.options %}
                     {% if option.singleSelect == false %}
-                        <label class="custom-checkbox">{{ option.name }}{% if option.price != 0 %}<strong class="price">+{{ currency_display|raw }} {{ option.priceLocalized }}<span class="euro">/&nbsp;{{  misc_utils.getLitas(option.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span></strong>{% endif %}
+                        <label class="custom-checkbox">{{ option.name }}{% if option.price != 0 and dish.showPublicPrice==false %}
+                                <strong class="price">+{{ currency_display|raw }} {{ option.priceLocalized }}
+                                    {%  if currency_alternative %}<span class="euro">/&nbsp;{{  misc_utils.getLitas(option.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>{% endif %}
+                                </strong>
+                            {% endif %}
                             <input type="checkbox" name="options[]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
                         </label>
                     {% endif %}
@@ -72,7 +101,12 @@
                 {{ dish.place.alcoholRules|nl2br }}
             </div>
         </div>
-
         <div class="popup-controls"><a href="#" class="button-submit add-to-cart"><span>{% trans %}dish.add_to_cart{% endtrans %}</span></a></div>
     </form>
 </div>
+<script>
+    if(!window.jQuery)
+    {
+        document.getElementById('detailed-dish-popup').setAttribute('style', 'display: none');
+    }
+</script>

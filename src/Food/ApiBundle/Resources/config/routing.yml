@@ -168,3 +168,19 @@ food_api_get_image:
     pattern: /images/
     defaults: { _controller: FoodApiBundle:Images:image}
     methods: [GET]
+
+# Best Offers
+food_api_best_offers_all:
+    pattern: /offers/
+    defaults: { _controller: FoodApiBundle:Offers:get}
+    methods: [GET]
+
+food_api_best_offers:
+    pattern: /offers/{city}
+    defaults: { _controller: FoodApiBundle:Offers:get}
+    methods: [GET]
+
+food_api_get_static_content:
+    pattern: /staticcontent/{id}
+    defaults: { _controller: FoodApiBundle:StaticContent:process}
+    methods: [GET]

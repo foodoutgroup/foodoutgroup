@@ -18,3 +18,65 @@ parameters:
     aws_secret: vHxRlOq4PUuo067t5xvy8r09lPBIhtb01m5yk4ZA
     aws_region: eu-west-1
     s3_bucket: foodout-invoice
+
+    locale: lt
+    locales: ["lt", "en", "ru"]
+    available_cities: ["Vilnius", "Kaunas", "Klaipėda"]
+    available_locales: ["lt", "en", "ru"]
+    available_locales_routing: lt | en | ru
+    cloudfront_url: images.foodout.lt
+    time_zone: "Europe/Vilnius"
+    sms.sender: "Foodout.lt"
+    admin.emails: [mantas@foodout.lt]
+    admin.phones: [37061514333]
+    order.notify_emails: []
+    order.city_coordinators:
+        vilnius: []
+        kaunas: [zaneta@foodout.lt]
+        klaipėda: [jurgita@foodout.lt]
+        ryga: [paulius@foodout.lt]
+    order.accept_notify_emails: []
+    accounting_email: "buhalterija@foodout.lt"
+    payment.methods:
+        - local
+        - local.card
+        - paysera
+        - swedbank-gateway
+        - swedbank-credit-card-gateway
+        - seb-banklink
+        - nordea-banklink
+    currency_display: '&euro;'
+    currency_iso: EUR
+    display_currency_alternative:  Lt
+    currency_alternative: true
+    show_best_offers: true
+    show_game: true
+    show_apps_download: true
+    show_is_social: true
+    show_delfi_banner: false
+    track_conversions: true
+    # naudojam telefonu validacijoms
+    country: LT
+    country_full: Lithuania
+    vat: 21
+    title: "Foodout"
+    domain: "foodout.lt"
+    publicdomain: "foodout.lt"
+    google_analytics_uid: "UA-50355577-2"
+    google.analytics.view_id: "85237075"
+    nav_table_prefix: 'Čilija Skambučių Centras'
+    nav_ws_prefix: 'Čilija Skambučių Centras'
+    mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
+    mailer_notify_on_accept: 30010811
+    mailer_notify_new_user: 30009253
+    mailer_user_reset: 30013949
+    mailer_partialy_deliverer: 30021995
+    mailer_rate_your_food: 30009271
+    mailer_send_invoice: 30019657
+    yt_video: https://www.youtube.com/v/3zFW6hnuvJY?fs=1&amp;autoplay=
+    yt_embeded: //www.youtube-nocookie.com/embed/3zFW6hnuvJY
+    default_delivery_distance: 7
+    default_self_delivey_distance: 10
+    dispatcher_phones: []
+    send_sms_on_cancel: false
+    dispatcher_contact_phone: "37061004970"

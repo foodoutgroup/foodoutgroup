@@ -3,9 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="verify-webtopay" content="461551ad8deddc3ad0975adb27d1eff4" />
-    <title>
-        {% block title %}{% trans %}general.base_page_title{% endtrans %} | {{ page_title }}{% endblock %}
-    </title>
+    <title>{% block title %}{% trans %}general.base_page_title{% endtrans %} | {{ page_title }}{% endblock %}</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
@@ -17,52 +15,52 @@
     <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/mstile-144x144.png">
-    <meta name="description" content="">
+    <meta name="description" content="{% block seo_description %}{% endblock %}">
     <meta name="viewport" content="width=1000">
     <meta name="msapplication-config" content="none"/>
 
     {% stylesheets 'bundles/foodapp/scripts/jquery-ui/custom-theme/jquery-ui-1.10.3.custom.min.css' filter="cssrewrite" %}
-        <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/scripts/boxer/jquery.fs.boxer.css*'  %}
-        <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/styles/style.css'  %}
-        <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("Ymd") }}" type="text/css"  />
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("Ymd") }}" type="text/css"  />
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/styles/jquery.loadmask.css'  %}
-        <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
     {% endstylesheets %}
 
     {% block javascripts %}
-    <script src="{{ asset('bundles/foodapp/scripts/jquery-1.10.2.min.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/jquery.cycle2.min.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/jquery-ui/jquery-ui-1.10.3.custom.min.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/jquery.ui.selectmenu.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/jquery.raty.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/boxer/jquery.fs.boxer.min.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/icheck/jquery.icheck.min.js') }}">		</script>
-    <script src="{{ asset('bundles/foodapp/scripts/jquery.placeholder.min.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/jquery.loadmask.min.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/jquery.typeahead.js') }}"></script>
-    {# <script src="{{ asset('bundles/foodapp/scripts/mediator.min.js') }}"></script> #}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-    <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/selectivizr-min.js') }}"></script><![endif]-->
-    <!--[if IE 9]><script src="{{ asset('bundles/foodapp/scripts/pie_ie9.js') }}"></script><![endif]-->
-    <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/pie_ie8.js') }}"></script><![endif]-->
-    <script type="text/javascript">
-        $.fn.raty.defaults.noRatedMsg = '{% trans %}general.raty.not_rated_yet{% endtrans %}';
-        $.fn.raty.defaults.hints = [
-            '{% trans %}general.raty.bad{% endtrans %}',
-            '{% trans %}general.raty.poor{% endtrans %}',
-            '{% trans %}general.raty.regular{% endtrans %}',
-            '{% trans %}general.raty.good{% endtrans %}',
-            '{% trans %}general.raty.gorgeous{% endtrans %}'
-        ];
-    </script>
-    <script src="{{ asset('bundles/foodapp/scripts/noty/packaged/jquery.noty.packaged.min.js') }}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/bootstrap/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery-1.10.2.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.cycle2.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery-ui/jquery-ui-1.10.3.custom.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.ui.selectmenu.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.raty.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/boxer/jquery.fs.boxer.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/icheck/jquery.icheck.min.js') }}">		</script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.placeholder.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.loadmask.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/jquery.typeahead.js') }}"></script>
+        {# <script src="{{ asset('bundles/foodapp/scripts/mediator.min.js') }}"></script> #}
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+        <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/selectivizr-min.js') }}"></script><![endif]-->
+        <!--[if IE 9]><script src="{{ asset('bundles/foodapp/scripts/pie_ie9.js') }}"></script><![endif]-->
+        <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/pie_ie8.js') }}"></script><![endif]-->
+        <script type="text/javascript">
+            $.fn.raty.defaults.noRatedMsg = '{% trans %}general.raty.not_rated_yet{% endtrans %}';
+            $.fn.raty.defaults.hints = [
+                '{% trans %}general.raty.bad{% endtrans %}',
+                '{% trans %}general.raty.poor{% endtrans %}',
+                '{% trans %}general.raty.regular{% endtrans %}',
+                '{% trans %}general.raty.good{% endtrans %}',
+                '{% trans %}general.raty.gorgeous{% endtrans %}'
+            ];
+        </script>
+        <script src="{{ asset('bundles/foodapp/scripts/noty/packaged/jquery.noty.packaged.min.js') }}"></script>
+        <script src="{{ asset('bundles/foodapp/scripts/bootstrap/js/bootstrap.min.js') }}"></script>
 
         {% javascripts '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.pack.js'
         '@FoodAppBundle/Resources/public/scripts/fancy/helpers/jquery.fancybox-media.js' %}
@@ -109,39 +107,67 @@
         </noscript>
         <!-- Adform Tracking Code END -->
     {% endblock %}
+    {% block delfi_js %}{% endblock %}
+
+    <!-- mailersoft begin -->
+    <script type="text/javascript">
+        var _ml = _ml || [];
+        _ml.push({account_code: 'x8e0d0o9o9y6t6n7'});
+        (function() {
+            var mlo = document.createElement('script'); mlo.type = 'text/javascript'; mlo.async = true; mlo.src = '//app.mailersoft.com/ecommerce/v4/track.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mlo, s);
+        })();
+    </script>
+    <!-- mailersoft end -->
 </head>
 <body>
 {{ notifications.init|raw }}
 <div class="site">
+    {% block delfi_banner %}{% endblock %}
     <div class="site-top">
         <div class="site-block clearfix">
             <a href="{{ path('food_lang_homepage') }}" class="main-logo">
-                <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{{ asset('bundles/foodapp/images/logo_food.png') }}" />
+                <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{% if site_country == 'LT' %}{{ asset('bundles/foodapp/images/logo_food.png') }}{% else %}{{ asset('bundles/foodapp/images/logo_food2.png') }}{% endif %}" />
             </a>
+
             {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
             <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
                 <li><a href="{{ path('food_slug', {'slug': ('general.help_slug'|trans())}) }}"><span>{% trans %}general.help_button{% endtrans %}</span></a></li>
+            </ul>
+            <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
                 <li class="login-ico">
                     {% render(controller('FoodUserBundle:Default:loginButton')) %}
                 </li>
             </ul>
+            <div class="separator"></div>
+            <div class="top-contact-block">
+                <span class="work-time">
+                    <span>{% trans %}general.top_contact.worktime_days{% endtrans %}</span>
+                    <span>{% trans %}general.top_contact.worktime{% endtrans %}</span>
+                </span>
+                <span class="phone">{% trans %}general.top_contact.phone{% endtrans %}</span>
+            </div>
         </div>
     </div>
 
     {% block body %}{% endblock %}
-    <div class="site-center site-center-bottom">
-    <div class="site-block">
-        <div class="clearfix bottom-blocks">
-            <div class="app-block clearfix"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-view.png') }}">
-                <div class="app-block-inner">
-                    <h3>Foodout.lt tavo kišenėje!</h3>
-                    <p>Užsisakyk maisto į namus ar biurą per iPhone arba Android telefonus. Atsisiųsk nemokamą aplikaciją!.</p>
-                    <div><a target="_BLANK" href="https://itunes.apple.com/us/app/foodout/id919992168"><img src="{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a target="_BLANK" href="https://play.google.com/store/apps/details?id=co.lemonlabs.android.foodout#"><img src="{{ asset('bundles/foodapp/images/g-store.png') }}"></a></div>
+    {% if show_apps_download %}
+        <div class="site-center site-center-bottom">
+            <div class="site-block">
+                <div class="clearfix bottom-blocks">
+
+                    {% include 'FoodAppBundle:Default:bottom_block.html.twig' %}
+
+                    <div class="app-block clearfix"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-view.png') }}">
+                        <div class="app-block-inner">
+                            <h3>Foodout.lt tavo kišenėje!</h3>
+                            <p>Užsisakyk maisto į namus ar biurą per iPhone arba Android telefonus. Atsisiųsk nemokamą aplikaciją!.</p>
+                            <div><a target="_BLANK" href="https://itunes.apple.com/us/app/foodout/id919992168"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a target="_BLANK" href="https://play.google.com/store/apps/details?id=co.lemonlabs.android.foodout#"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/g-store.png') }}"></a></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
+    {% endif %}
 
     {{ render(controller('FoodAppBundle:Default:footer')) }}
 </div>
@@ -160,7 +186,7 @@
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-50355577-1', 'foodout.lt');
+    ga('create', '{{ google_analytics_uid }}', 'auto');
     ga('require', 'displayfeatures');
     ga('send', 'pageview');
     ga('require', 'ec');
@@ -172,9 +198,10 @@
         {% render(controller('FoodAppBundle:Default:showVideo')) %}
     #}
 
+    {% if track_conversions %}
     (function () {
         var a = document.createElement("iframe");
-        a.style.cssText = "width: 0; height: 0; border: 0";
+        a.style.cssText = "width: 0; height: 0; border: 0; display: none;";
         a.src = "javascript:false";
         var b = function () {
             setTimeout(function () {
@@ -189,6 +216,7 @@
         a.addEventListener ? a.addEventListener("load", b, !1) : a.attachEvent ? a.attachEvent("onload", b) : a.onload = b;
         document.body.appendChild(a);
     })();
+    {% endif %}
 
 </script>
 </body>

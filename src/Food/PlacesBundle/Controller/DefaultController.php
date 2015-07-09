@@ -20,13 +20,17 @@ class DefaultController extends Controller
             $recommended = true;
         }
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
+        $placeService = $this->get('food.places');
+
         return $this->render(
             'FoodPlacesBundle:Default:index.html.twig',
             array(
                 'recommended' => $recommended,
                 'location' => $locData,
                 'city_translations' => $this->cityTranslations,
-                'default_city' => 'Vilnius'
+                'default_city' => 'Vilnius',
+                'userAllAddress' => $placeService->getCurrentUserAddresses(),
+                'delivery_type_filer' => 'delivery_and_pickup', // TODO saving or other cool feature
             )
         );
     }
@@ -37,11 +41,16 @@ class DefaultController extends Controller
         $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", $city);
         $this->get('food.googlegis')->setCityOnlyToSession($city);
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
+        $placeService = $this->get('food.places');
+
         return $this->render(
             'FoodPlacesBundle:Default:index.html.twig',
             array(
                 'recommended' => false,
-                'location' => $locData
+                'location' => $locData,
+                'city_translations' => $this->cityTranslations,
+                'userAllAddress' => $placeService->getCurrentUserAddresses(),
+                'delivery_type_filer' => 'delivery_and_pickup', // TODO saving or other cool feature
             )
         );
     }
@@ -51,32 +60,13 @@ class DefaultController extends Controller
         if ($recommended) {
             $recommended = true;
         }
-
-        $kitchens = $request->get('kitchens', "");
-        $filters = $request->get('filters');
-        if (empty($kitchens)) {
-            $kitchens = array();
-        } else {
-            $kitchens = explode(",", $kitchens);
+        $recommendedFromRequest = $request->get('recommended', null);
+        if ($recommendedFromRequest !== null) {
+            $recommended = (bool)$recommendedFromRequest;
         }
+        $listType = $request->get('delivery_type', 'delivery');
 
-        $filters = explode(",", $filters);
-        foreach ($kitchens as $kkey=> &$kitchen) {
-            $kitchen = intval($kitchen);
-        }
-        foreach ($filters as $fkey=> &$filter) {
-            $filter = trim($filter);
-        }
-
-        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
-            $kitchens,
-            $filters,
-            $recommended,
-            $this->get('food.googlegis')->getLocationFromSession()
-        );
-        $this->get('food.places')->saveRelationPlaceToPoint($places);
-        $places = $this->get('food.places')->placesPlacePointsWorkInformation($places);
-
+        $places = $this->get('food.places')->getPlacesForList($recommended, $request);
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
 
         return $this->render(
@@ -85,8 +75,8 @@ class DefaultController extends Controller
                 'places' => $places,
                 'recommended' => ($recommended ? 1:0),
                 'location' => $locData,
-                'location_show' => (empty($locData) ? false : true)
-
+                'location_show' => (empty($locData) ? false : true),
+                'list_type' => $listType
             )
         );
     }

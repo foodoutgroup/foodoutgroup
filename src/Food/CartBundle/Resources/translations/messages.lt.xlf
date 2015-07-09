@@ -2,6 +2,10 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="lt" datatype="plaintext" original="file.ext">
     <body>
+        <trans-unit id="cart.checkout.main_titlelt" resname="cart.checkout.main_title">
+            <source>cart.checkout.main_title</source>
+            <target>Užsakymas</target>
+        </trans-unit>
       <trans-unit id="c9f932900c061295799f8eee2ba492c6" resname="cart.block.your_order">
         <source>cart.block.your_order</source>
         <target>Jūsų užsakymas</target>
@@ -9,6 +13,14 @@
       <trans-unit id="ef66c3099bc075bfc93b091b1b012ac5" resname="cart.block.delivery_price">
         <source>cart.block.delivery_price</source>
         <target>Pristatymas</target>
+      </trans-unit>
+      <trans-unit id="cart.block.delivery_type" resname="cart.block.delivery_type">
+        <source>cart.block.delivery_type</source>
+        <target>Pristatymo būdas:</target>
+      </trans-unit>
+      <trans-unit id="cart.block.delivery_type.tooltip" resname="cart.block.delivery_type.tooltip">
+        <source>cart.block.delivery_type.tooltip</source>
+        <target>Pristatymo / atsiėmimo vietą pasirinksite kitame žingsnyje</target>
       </trans-unit>
       <trans-unit id="ace667964c9c1c5c29134999deae92c0" resname="cart.block.total">
         <source>cart.block.total</source>
@@ -42,6 +54,10 @@
         <source>cart.checkout.delivery_i_pickup</source>
         <target>Atsiimsiu pats</target>
       </trans-unit>
+        <trans-unit id="91a531cac53e76cf23ca76d224b23c27new" resname="cart.checkout.enter_address">
+            <source>cart.checkout.enter_address</source>
+            <target>Įveskite adresą</target>
+        </trans-unit>
       <trans-unit id="91a531cac53e76cf23ca76d224b23c27" resname="cart.checkout.city">
         <source>cart.checkout.city</source>
         <target>Miestas</target>
@@ -154,6 +170,10 @@
             <source>cart.checkout.place_point_not_in_radius</source>
             <target>Jūsų adresu restoranas negali pristatyti užsakymo.</target>
         </trans-unit>
+        <trans-unit id="cart.checkout.pickup_tooltip" resname="cart.checkout.pickup_tooltip">
+            <source>cart.checkout.pickup_tooltip</source>
+            <target>Pasirinkite artimiausią restoraną iš kurio atsiimsite užsakymą</target>
+        </trans-unit>
         <trans-unit id="cart.checkout.no_delivery_choose_what_to_do" resname="cart.checkout.no_delivery_choose_what_to_do">
             <source>cart.checkout.no_delivery_choose_what_to_do</source>
             <target>Jūsų adresas yra didesniu atstumu nei vykdomas pristatymas. Pasirinkite arba "Atsiimsiu pats", arba rinkitės iš kitų restoranų kurie gali pristatyti JUMS maistą.</target>
@@ -230,6 +250,10 @@ Vilnius]]></target>
             <source>order.form.errors.no_restaurant_to_deliver</source>
             <target>Šiuo metu restoranas jau nebegali aptarnauti Jūsų užsakymo.</target>
         </trans-unit>
+        <trans-unit id="order.form.errors.wrong_point_for_address" resname="order.form.errors.wrong_point_for_address">
+            <source>order.form.errors.wrong_point_for_address</source>
+            <target>Atsiprašome, restoranas negali aptarnauti Jūsų užsakymo.</target>
+        </trans-unit>
         <trans-unit id="order.form.errors.customerfirstname" resname="order.form.errors.customerfirstname">
             <source>order.form.errors.customerfirstname</source>
             <target>Įveskite savo vardą</target>
@@ -280,15 +304,15 @@ Vilnius]]></target>
         </trans-unit>
         <trans-unit id="order.form.errors.today_no_work" resname="order.form.errors.today_no_work">
             <source>order.form.errors.today_no_work</source>
-            <target>Restoranas šiandien nedirba.</target>
+            <target>Restoranas nedirba.</target>
         </trans-unit>
         <trans-unit id="order.form.errors.isnt_open" resname="order.form.errors.isnt_open">
             <source>order.form.errors.isnt_open</source>
-            <target>Restoranas šiandien dar nepradėjo dirbti.</target>
+            <target>Restoranas dar nedirba.</target>
         </trans-unit>
         <trans-unit id="order.form.errors.is_already_close" resname="order.form.errors.is_already_close">
             <source>order.form.errors.is_already_close</source>
-            <target>Restoranas šiandien jau nebedirba.</target>
+            <target>Restoranas jau nebedirba.</target>
         </trans-unit>
         <trans-unit id="order.form.errors.cart_rules" resname="order.form.errors.cart_rules">
             <source>order.form.errors.cart_rules</source>
@@ -374,9 +398,17 @@ Vilnius]]></target>
             <source>general.coupon.popup_link</source>
             <target><![CDATA[Jei turite kuponą, įveskite <a href="#coupon" class="fancy-box">jo kodą čia</a>]]></target>
         </trans-unit>
+        <trans-unit id="general.coupon.note_text" resname="general.coupon.note_text">
+            <source>general.coupon.note_text</source>
+            <target>* Kodas negalioja akcijinėms prekėms bei alkoholiniams gėrimams (nuolaidos nesumuojamos). Tai netaikoma nuolaidų kuponams, kuriais galima padengti visą užsakymo sumą.</target>
+        </trans-unit>
         <trans-unit id="cart.block.discount_sum" resname="cart.block.discount_sum">
             <source>cart.block.discount_sum</source>
             <target>Nuolaida</target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.phone.prefill_phone_lt" resname="cart.checkout.phone.prefill_phone">
+            <source>cart.checkout.phone.prefill_phone</source>
+            <target></target>
         </trans-unit>
         <trans-unit id="general.coupon.coupon_too_early" resname="general.coupon.coupon_too_early">
             <source>general.coupon.coupon_too_early</source>

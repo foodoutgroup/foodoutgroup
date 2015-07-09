@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="lv" datatype="plaintext" original="file.ext">
+    <body>
+    <trans-unit id="cart.checkout.main_titlelv" resname="cart.checkout.main_title">
+        <source>cart.checkout.main_title</source>
+        <target>Pasūtījums</target>
+    </trans-unit>
+      <trans-unit id="c9f932900c061295799f8eee2ba492c6" resname="cart.block.your_order">
+        <source>cart.block.your_order</source>
+        <target>Jūsu pasūtījums</target>
+      </trans-unit>
+      <trans-unit id="ef66c3099bc075bfc93b091b1b012ac5" resname="cart.block.delivery_price">
+        <source>cart.block.delivery_price</source>
+        <target>Piegāde</target>
+      </trans-unit>
+        <trans-unit id="cart.block.delivery_type" resname="cart.block.delivery_type">
+            <source>cart.block.delivery_type</source>
+            <target>Piegāde veids:</target>
+        </trans-unit>
+        <trans-unit id="cart.block.delivery_type.tooltip" resname="cart.block.delivery_type.tooltip">
+            <source>cart.block.delivery_type.tooltip</source>
+            <target>Nākamajā solī izvēlieties piegādes adresi  vai restorāna adresi, ja vēlaties pasūtījumu saņemt uz vietas</target>
+        </trans-unit>
+      <trans-unit id="ace667964c9c1c5c29134999deae92c0" resname="cart.block.total">
+        <source>cart.block.total</source>
+        <target>Kopā</target>
+      </trans-unit>
+      <trans-unit id="cdb14f28caaf6c3aef4236ac7972219b" resname="cart.block.delivery_time">
+        <source>cart.block.delivery_time</source>
+        <target>Piegādes laiks</target>
+      </trans-unit>
+      <trans-unit id="426a1f73799f95d0ba9bd1a78adbdf79" resname="cart.block.your_order_empty">
+        <source>cart.block.your_order_empty</source>
+        <target>Izvēlieties ēdienus</target>
+      </trans-unit>
+      <trans-unit id="c1774d38928cffe44ff5fecf48ca395a" resname="cart.block.edit_row">
+        <source>cart.block.edit_row</source>
+        <target>Rediģēt</target>
+      </trans-unit>
+      <trans-unit id="da8a8494c54d8801c5e01d138431577d" resname="cart.block.order_btn">
+        <source>cart.block.order_btn</source>
+        <target>Pasūtīt</target>
+      </trans-unit>
+      <trans-unit id="b8c9a22a673a26c53288e0d2cdb7c327" resname="cart.checkout.block_title_delivery">
+        <source>cart.checkout.block_title_delivery</source>
+        <target>Piegāde</target>
+      </trans-unit>
+      <trans-unit id="ab9dbc0e8b931d30795a4bcbeee01531" resname="cart.checkout.delivery_to_home">
+        <source>cart.checkout.delivery_to_home</source>
+        <target>Piegāde uz mājām</target>
+      </trans-unit>
+      <trans-unit id="5934b3ea4d66d942ef9715da9d6fca1d" resname="cart.checkout.delivery_i_pickup">
+        <source>cart.checkout.delivery_i_pickup</source>
+        <target>Paņemšu pats</target>
+      </trans-unit>
+        <trans-unit id="91a531cac53e76cf23ca76d224b23c27newlv" resname="cart.checkout.enter_address">
+            <source>cart.checkout.enter_address</source>
+            <target>Ievadiet adresi</target>
+        </trans-unit>
+      <trans-unit id="91a531cac53e76cf23ca76d224b23c27" resname="cart.checkout.city">
+        <source>cart.checkout.city</source>
+        <target>Pilsēta</target>
+      </trans-unit>
+      <trans-unit id="5559d6cd38328adde3eba8dcb958f91b" resname="cart.checkout.address">
+        <source>cart.checkout.address</source>
+        <target>Adrese</target>
+      </trans-unit>
+      <trans-unit id="6238d9b3ece11579e33552e5ae583d8c" resname="cart.checkout.firstname">
+        <source>cart.checkout.firstname</source>
+        <target>Vārds</target>
+      </trans-unit>
+      <trans-unit id="287f18ef4dab2171b43253d3bb3e9b5c" resname="cart.checkout.lastname">
+        <source>cart.checkout.lastname</source>
+        <target>Uzvārds</target>
+      </trans-unit>
+      <trans-unit id="6f5a03e2e6bd05aeb7121ccd70d3ac72" resname="cart.checkout.email">
+        <source>cart.checkout.email</source>
+        <target>E-pasts</target>
+      </trans-unit>
+      <trans-unit id="6c62969aa8128ea121c45f3fb049bec3" resname="cart.checkout.phone">
+        <source>cart.checkout.phone</source>
+        <target>Tālrunis</target>
+      </trans-unit>
+      <trans-unit id="72ac47fdc9d8610d13cc86b4dd35e24f" resname="cart.checkout.phone_placeholder">
+        <source>cart.checkout.phone_placeholder</source>
+        <target>37160000000</target>
+      </trans-unit>
+      <trans-unit id="bc8439664f3800919e17d58ad5eaff4b" resname="cart.checkout.delivery_comment">
+        <source>cart.checkout.delivery_comment</source>
+        <target>Papildu informācija</target>
+      </trans-unit>
+      <trans-unit id="8555a82ace5d18fb4c639a73d209c761" resname="cart.checkout.cart_rules">
+        <source>cart.checkout.cart_rules</source>
+        <target><![CDATA[Iepazinos un piekrītu <a href="#rules" name="order_rules" class="fancy-box">noteikumiem</a>]]></target>
+      </trans-unit>
+      <trans-unit id="58234b47f3f611cffbbd19bbaaa7dd73" resname="cart.checkout.delivery_comment_placeholder">
+        <source>cart.checkout.delivery_comment_placeholder</source>
+        <target>Ievadiet kāpņutelpas kodu, stāvu un citu kurjeram noderīgo informāciju…</target>
+      </trans-unit>
+      <trans-unit id="dff708f5d1b6a869b2c01aca17e8d7b0" resname="cart.checkout.block_title_secure_payment">
+        <source>cart.checkout.block_title_secure_payment</source>
+        <target>Droša apmaksa</target>
+      </trans-unit>
+      <trans-unit id="51401b79dc9570ffe18190d54b163466" resname="cart.checkout.cash_on_delivery">
+        <source>cart.checkout.cash_on_delivery</source>
+        <target>Skaidrā naudā piegādes brīdī</target>
+      </trans-unit>
+      <trans-unit id="9330627cdb5d1c945003084cf89374b6" resname="cart.checkout.card_on_delivery">
+        <source>cart.checkout.card_on_delivery</source>
+        <target>Ar kredītkarti piegādes brīdī</target>
+      </trans-unit>
+      <trans-unit id="619e1217b03f57e9d78b922c31b688d4" resname="cart.checkout.classic_seb">
+        <source>cart.checkout.classic_seb</source>
+        <target>SEB banklinks</target>
+      </trans-unit>
+      <trans-unit id="0807b1af0e15e3805073e4e778a4d7bf" resname="cart.checkout.classic_nordea">
+        <source>cart.checkout.classic_nordea</source>
+        <target>Nordea banklinks</target>
+      </trans-unit>
+      <trans-unit id="5e267e9f2dff02db4e03719bdeaa20b5" resname="cart.checkout.gateway_cc">
+        <source>cart.checkout.gateway_cc</source>
+        <target>Ar karti internetā</target>
+      </trans-unit>
+      <trans-unit id="5b0b0f2241e36a0423ebd56b4890ef8a" resname="cart.checkout.gateway_banklink">
+        <source>cart.checkout.gateway_banklink</source>
+        <target>Swedbank banklinks</target>
+      </trans-unit>
+      <trans-unit id="e03c0471e61e194d66faffb54af1ce45" resname="cart.checkout.button_get_back">
+        <source>cart.checkout.button_get_back</source>
+        <target>ATPAKAĻ</target>
+      </trans-unit>
+      <trans-unit id="ee13b89787248624f1722ac29170fc85" resname="cart.checkout.button_order">
+        <source>cart.checkout.button_order</source>
+        <target>Pasūtīt</target>
+      </trans-unit>
+      <trans-unit id="e03b2e3719dfe3a72bcc59d62ae09bde" resname="cart.block.remove_row">
+        <source>cart.block.remove_row</source>
+        <target>Dzēst</target>
+      </trans-unit>
+      <trans-unit id="28435c7899c2cd41b83b8d15c05cb370" resname="cart.checkout.address_change_change">
+        <source>cart.checkout.address_change_change</source>
+        <target>Mainīt</target>
+      </trans-unit>
+      <trans-unit id="fd022aa10e027747c7660b3503777e00" resname="cart.checkout.address_change_cancel">
+        <source>cart.checkout.address_change_cancel</source>
+        <target>Atcelt</target>
+      </trans-unit>
+      <trans-unit id="33469b92ec70252868f2174c8df310f4" resname="cart.checkout.address_not_found">
+        <source>cart.checkout.address_not_found</source>
+        <target>Adrese nav atrasta vai neeksistē</target>
+      </trans-unit>
+      <trans-unit id="f105376d982e3db78840a45ee1c2058c" resname="cart.checkout.place_point_not_in_radius">
+        <source>cart.checkout.place_point_not_in_radius</source>
+        <target>Uz Jūsu adresi restorāns nevar piegādāt pasūtījumu.</target>
+      </trans-unit>
+        <trans-unit id="cart.checkout.pickup_tooltip" resname="cart.checkout.pickup_tooltip">
+            <source>cart.checkout.pickup_tooltip</source>
+            <target>Izvēlieties restorānu, kurā vēlaties saņemt pasūtījumu</target>
+        </trans-unit>
+      <trans-unit id="1dad9530fac5a77fbb8af41d6e506f1a" resname="cart.checkout.no_delivery_choose_what_to_do">
+        <source>cart.checkout.no_delivery_choose_what_to_do</source>
+        <target>Jūsu adrese ir lielākā attālumā, nekā pasūtījums tiek izpildīts. Izvēlieties “Paņemšu pats”, vai arī izvēlieties no citiem restorāniem, kuri JUMS var piegādāt ēdienu.</target>
+      </trans-unit>
+      <trans-unit id="13b2b823ad56b3ef1dbf0ed44e27f6bf" resname="cart.checkout.i_will_take_it">
+        <source>cart.checkout.i_will_take_it</source>
+        <target>Paņemšu pats</target>
+      </trans-unit>
+      <trans-unit id="59695da208c9a8d57522bc06bcc498f8" resname="cart.checkout.show_me_places">
+        <source>cart.checkout.show_me_places</source>
+        <target>Rādīt restorānus</target>
+      </trans-unit>
+      <trans-unit id="c162e3ed908d30d5cf806d68393cfd65" resname="cart.checkout.phone_tooltip">
+        <source>cart.checkout.phone_tooltip</source>
+        <target>Ievadiet mobilā tālruņa numuru formātā 3716xxxxxxxx</target>
+      </trans-unit>
+      <trans-unit id="2d4e402558401b20f0603da2554047c1" resname="cart.checkout.place_point">
+        <source>cart.checkout.place_point</source>
+        <target>Paņemsiet no</target>
+      </trans-unit>
+      <trans-unit id="7514943cab195016aa2dc77e1ccedd86" resname="cart.block.order_sum_minimum">
+        <source>cart.block.order_sum_minimum</source>
+        <target>Minimālais grozs:</target>
+      </trans-unit>
+      <trans-unit id="f511b18d084e7b20db00ec6e9056ff4a" resname="cart.block.total_cart">
+        <source>cart.block.total_cart</source>
+        <target>Grozs</target>
+      </trans-unit>
+      <trans-unit id="c5695bbff2ae9f0f9900879a78333792" resname="cart.block.order_sum_minimum_take_myself">
+        <source>cart.block.order_sum_minimum_take_myself</source>
+        <target>Netiek piemērots, ja pasūtījumu saņemsiet pats.</target>
+      </trans-unit>
+      <trans-unit id="15cf73927b3147ad20a83c6190738a33" resname="cart.checkout.company">
+        <source>cart.checkout.company</source>
+        <target>Būs nepieciešams faktūrrēķins</target>
+      </trans-unit>
+      <trans-unit id="5e41ec95e1520d7684b8ea3fcd54aaf0" resname="cart.checkout.company_name">
+        <source>cart.checkout.company_name</source>
+        <target>Uzņēmums</target>
+      </trans-unit>
+      <trans-unit id="a2983308283353efd4d652372ec45d72" resname="cart.checkout.company_name_placeholder">
+        <source>cart.checkout.company_name_placeholder</source>
+        <target><![CDATA[SIA &quot;Kompānija&quot;]]></target>
+      </trans-unit>
+      <trans-unit id="660e6b50db9cdf2d740cd15fe4535e84" resname="cart.checkout.company_code">
+        <source>cart.checkout.company_code</source>
+        <target>Uzņēmuma kods</target>
+      </trans-unit>
+      <trans-unit id="9db68aeba984d7672a416e6e8a605402" resname="cart.checkout.company_code_placeholder">
+        <source>cart.checkout.company_code_placeholder</source>
+        <target>312345678</target>
+      </trans-unit>
+      <trans-unit id="50a4dedb8c30abb0bbb59aaf23027595" resname="cart.checkout.vat_code">
+        <source>cart.checkout.vat_code</source>
+        <target>PVN kods</target>
+      </trans-unit>
+      <trans-unit id="36ce8084d71a21fff0a643492d9b1a39" resname="cart.checkout.vat_code_placeholder">
+        <source>cart.checkout.vat_code_placeholder</source>
+        <target>LV312345678</target>
+      </trans-unit>
+      <trans-unit id="b194ec7faebc2d1d2033c068b9722b36" resname="cart.checkout.company_address">
+        <source>cart.checkout.company_address</source>
+        <target>Adrese</target>
+      </trans-unit>
+      <trans-unit id="080b1c789ca68c2d0a88575f6ed0d200" resname="cart.checkout.company_address_placeholder">
+        <source>cart.checkout.company_address_placeholder</source>
+        <target>Kalnciema iela,
+Rīga,
+LV-1046</target>
+      </trans-unit>
+      <trans-unit id="ec4ed41d3e3b52f147682d3f477e55f0" resname="order.form.errors.no_restaurant_to_deliver">
+        <source>order.form.errors.no_restaurant_to_deliver</source>
+        <target>Šobrīd restorāns vairs nevar apkalpot Jūsu pasūtījumu.</target>
+      </trans-unit>
+      <trans-unit id="041ccc82a63a553b94ac896157a39255" resname="order.form.errors.customerfirstname">
+        <source>order.form.errors.customerfirstname</source>
+        <target>Ievadiet savu vārdu</target>
+      </trans-unit>
+      <trans-unit id="90180bce95b1b4e78c6abd315c7bf7ab" resname="order.form.errors.customerphone">
+        <source>order.form.errors.customerphone</source>
+        <target>Norādiet mob. tālruņa numuru</target>
+      </trans-unit>
+      <trans-unit id="23071ab407fc9347e2b37d3ebe12758f" resname="order.form.errors.customerphone_format">
+        <source>order.form.errors.customerphone_format</source>
+        <target>Norādiet mob. tālruņa numuru formātā 37161234567</target>
+      </trans-unit>
+      <trans-unit id="e025a73731785c22c69a936e639311dc" resname="order.form.errors.customerphone_not_mobile">
+        <source>order.form.errors.customerphone_not_mobile</source>
+        <target>Norādītais tālruņa numurs nav mobilais</target>
+      </trans-unit>
+      <trans-unit id="9038b9bec3dd48f2645e4098a9c830d3" resname="order.form.errors.customercomment">
+        <source>order.form.errors.customercomment</source>
+        <target>Ievadiet komentāru</target>
+      </trans-unit>
+      <trans-unit id="6df28e79bdcddcb5740a5c1ffed88856" resname="order.form.errors.customeremail">
+        <source>order.form.errors.customeremail</source>
+        <target>Nav ievadīta e-pasta adrese</target>
+      </trans-unit>
+      <trans-unit id="97fab045f6d8727b7625f367f741f366" resname="order.form.errors.customeremail_invalid">
+        <source>order.form.errors.customeremail_invalid</source>
+        <target>Nederīgs e-pasts. Ievadiet savu e-pastu formātā: vietturis@pasts.lt</target>
+      </trans-unit>
+      <trans-unit id="84303d12af569e21cbeee9305ae08483" resname="order.form.errors.customeraddr">
+        <source>order.form.errors.customeraddr</source>
+        <target>Nav norādīta adrese</target>
+      </trans-unit>
+      <trans-unit id="83ea96d5f96289448b69ccb9bdd242db" resname="order.form.errors.cartlessthanminimum">
+        <source>order.form.errors.cartlessthanminimum</source>
+        <target><![CDATA[<b>Pasūtījums nav sasniedzis minimālo groza summu<b>]]></target>
+      </trans-unit>
+      <trans-unit id="d62deaf68cd58d034ada33a84254ff0d" resname="order.form.errors.cartlessthanminimum_on_pickup">
+        <source>order.form.errors.cartlessthanminimum_on_pickup</source>
+        <target><![CDATA[<b>Pasūtījums nav sasniedzis minimālo groza summu.<b>]]></target>
+      </trans-unit>
+      <trans-unit id="c791cb38d8b0d23ea1179beedf9f97a3" resname="order.form.errors.dont_make_item">
+        <source>order.form.errors.dont_make_item</source>
+        <target>Ēdiens šobrīd netiek gatavots: %text%</target>
+      </trans-unit>
+      <trans-unit id="c3b331684ed850f249031b6fe1ed0eca" resname="order.form.errors.emptycart">
+        <source>order.form.errors.emptycart</source>
+        <target>Jūsu grozs ir tukšs. Izvēlieties ēdienus no ēdienkartes</target>
+      </trans-unit>
+      <trans-unit id="2a76d0c4caa7390bbc18247a0e00563f" resname="order.form.errors.today_no_work">
+        <source>order.form.errors.today_no_work</source>
+        <target>Restorāns šodien nestrādā.</target>
+      </trans-unit>
+      <trans-unit id="2d9d88472e94ad829fa2f7c7d9f13642" resname="order.form.errors.isnt_open">
+        <source>order.form.errors.isnt_open</source>
+        <target>Restorāns šodien vēl nesāka strādāt.</target>
+      </trans-unit>
+      <trans-unit id="b501b1c7739a3e93d3ed630acebc8705" resname="order.form.errors.is_already_close">
+        <source>order.form.errors.is_already_close</source>
+        <target>Restorāns šodien vairs nestrādā.</target>
+      </trans-unit>
+      <trans-unit id="b199e15e9919f7ae2cbbb203fe00831b" resname="order.form.errors.cart_rules">
+        <source>order.form.errors.cart_rules</source>
+        <target>Jums ir jāpiekrīt vietnes noteikumiem</target>
+      </trans-unit>
+      <trans-unit id="3cc0ff936b763f979e923a4f5f495878" resname="order.form.errors.problems_with_dish">
+        <source>order.form.errors.problems_with_dish</source>
+        <target><![CDATA[Pašlaik nevaram Jums pagatavot ēdienu – <b>%text%</b>. Dzēsiet to un izvēlieties citu ēdienu no ēdienkartes.]]></target>
+      </trans-unit>
+      <trans-unit id="236641d3f887c423ae8dc07748bb2ab6" resname="order.form.errors.nav_restaurant_no_work">
+        <source>order.form.errors.nav_restaurant_no_work</source>
+        <target><![CDATA[</b>Restorāns pašlaik nevar pieņemt Jūsu pasūtījumu</b>]]></target>
+      </trans-unit>
+      <trans-unit id="5349963f8e5902761a19aac205945412" resname="order.form.errors.nav_restaurant_no_setted">
+        <source>order.form.errors.nav_restaurant_no_setted</source>
+        <target><![CDATA[</b>Restorāns pašlaik nav pieejams.</b>]]></target>
+      </trans-unit>
+      <trans-unit id="89c7ba0a99f0254aa42c6c36eb0086d2" resname="order.form.errors.nav_empty_cart">
+        <source>order.form.errors.nav_empty_cart</source>
+        <target><![CDATA[</b>Grozā nav ēdienu.</b>]]></target>
+      </trans-unit>
+      <trans-unit id="775b54e93fa250672a8a515a02ae628d" resname="order.form.errors.empty_company">
+        <source>order.form.errors.empty_company</source>
+        <target>Ievadiet uzņēmumu, kuram vēlaties saņemt faktūrrēķinu</target>
+      </trans-unit>
+      <trans-unit id="0ebab691046b948a4b8a4e6e34d18d7a" resname="order.form.errors.empty_company_code">
+        <source>order.form.errors.empty_company_code</source>
+        <target>Ievadiet uzņēmuma kodu</target>
+      </trans-unit>
+      <trans-unit id="28a7dbc75bcb85a46c77823116bb92aa" resname="order.form.errors.empty_vat_code">
+        <source>order.form.errors.empty_vat_code</source>
+        <target>Ievadiet PVN maksātāja kodu</target>
+      </trans-unit>
+      <trans-unit id="21a4dd55a70aca96926ca409fc8fdb48" resname="order.form.errors.empty_company_address">
+        <source>order.form.errors.empty_company_address</source>
+        <target>Ievadiet uzņēmuma reģistrācijas adresi</target>
+      </trans-unit>
+      <trans-unit id="4cf2b8edf6eb5b9da8e0ec037ed6d8ad" resname="general.cart_rules_slug">
+        <source>general.cart_rules_slug</source>
+        <target>ordering_rules</target>
+      </trans-unit>
+      <trans-unit id="8b54322aede733212721a203d55c3613" resname="order.form.errors.payment_type">
+        <source>order.form.errors.payment_type</source>
+        <target>Izvēlieties apmaksas veidu</target>
+      </trans-unit>
+      <trans-unit id="a5c4e99137a4fcf01026615f367170d0" resname="general.coupon.text">
+        <source>general.coupon.text</source>
+        <target>Ievadiet atlaižu kupona kodu</target>
+      </trans-unit>
+      <trans-unit id="49f53bb3502a46a5e04852e173bc6360" resname="general.coupon.submit_button">
+        <source>general.coupon.submit_button</source>
+        <target>Piemērot atlaidi</target>
+      </trans-unit>
+      <trans-unit id="c6fee0f8a0475d0de75db12f2dfbaed7" resname="general.coupon.wrong_place">
+        <source>general.coupon.wrong_place</source>
+        <target>Jūsu iesniegtais atlaides kupons ir derīgs tikai restorānā %place_name%</target>
+      </trans-unit>
+      <trans-unit id="d44dde9542edf7888909042f5f16645d" resname="general.coupon.wrong_place_simple">
+        <source>general.coupon.wrong_place_simple</source>
+        <target>Jūsu iesniegtais atlaides kupons šajā restorānā nav derīgs. Pārbaudiet kupona kodu</target>
+      </trans-unit>
+      <trans-unit id="e5e171e2183ae1de5135cc5b77356dab" resname="general.coupon.not_active">
+        <source>general.coupon.not_active</source>
+        <target>Jūsu iesniegtais atlaides kupons nav derīgs.</target>
+      </trans-unit>
+      <trans-unit id="4662323b071299ea9efc51711689cc8f" resname="general.coupon.popup_link">
+        <source>general.coupon.popup_link</source>
+        <target><![CDATA[Ja Jums ir kupons, ievadiet <a href="#coupon" class="fancy-box">tā kodu šeit</a>]]></target>
+      </trans-unit>
+        <trans-unit id="general.coupon.note_text" resname="general.coupon.note_text">
+            <source>general.coupon.note_text</source>
+            <target>* Kods neattiecas uz akcijas ēdieniem (atlaides nesummējas). Neattiecas uz kuponiem – ar kuriem var norēķināties par visu pasūtījumu.</target>
+        </trans-unit>
+      <trans-unit id="212330b0b2cb9e05238f54569644dbcd" resname="cart.block.discount_sum">
+        <source>cart.block.discount_sum</source>
+        <target>Atlaide</target>
+      </trans-unit>
+      <trans-unit id="cart.checkout.phone.prefill_phone_lv" resname="cart.checkout.phone.prefill_phone">
+          <source>cart.checkout.phone.prefill_phone</source>
+          <target>371</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

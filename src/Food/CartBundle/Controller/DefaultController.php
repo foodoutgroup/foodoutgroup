@@ -62,6 +62,9 @@ class DefaultController extends Controller
                 break;
             case 'remove-option':
                 break;
+            case 'set_delivery':
+                $this->_actionSetDelivery($request);
+                break;
             case 'refresh':
                 break;
         }
@@ -121,6 +124,16 @@ class DefaultController extends Controller
             $request->get('dish_id'),
             $request->get('cart_id'),
             $request->get('place')
+        );
+    }
+
+    /**
+     * @param Request $request
+     */
+    private function _actionSetDelivery($request)
+    {
+        $this->container->get('session')->set(
+            'cart_delivery_'.$request->get('place'), $request->get('take_away', false)
         );
     }
 
@@ -218,6 +231,26 @@ class DefaultController extends Controller
         if ($formHasErrors) {
             $dataToLoad = $request->request->all();
         }
+
+        // PreLoad UserAddress Begin
+        $address = null;
+        $session = $request->getSession();
+        $locationData = $session->get('locationData');
+        $current_user = $this->container->get('security.context')->getToken()->getUser();
+
+        if (!empty($locationData) && !empty($current_user) && is_object($current_user)) {
+            $address = $placeService->getCurrentUserAddress($locationData['city'], $locationData['address']);
+        }
+
+        if (empty($address) && !empty($current_user) && is_object($current_user)) {
+            $defaultUserAddress = $current_user->getCurrentDefaultAddress();
+            if (!empty($defaultUserAddress)) {
+                $loc_city = $defaultUserAddress->getCity();
+                $loc_address = $defaultUserAddress->getAddress();
+                $address = $placeService->getCurrentUserAddress($loc_city, $loc_address);
+            }
+        }
+        // PreLoad UserAddress End
 
         if ($request->getMethod() == 'POST' && !$formHasErrors) {
             // Jei vede kupona - uzsikraunam
@@ -333,14 +366,21 @@ class DefaultController extends Controller
             // Update order with recent address information. but only if we need to deliver
             if ($deliveryType == $orderService::$deliveryDeliver) {
                 $locationData = $googleGisService->getLocationFromSession();
+                $em = $this->getDoctrine()->getManager();
                 $address = $orderService->createAddressMagic(
                     $user,
                     $locationData['city'],
                     $locationData['address_orig'],
                     (string)$locationData['lat'],
-                    (string)$locationData['lng']
+                    (string)$locationData['lng'],
+                    $customerComment
                 );
                 $orderService->getOrder()->setAddressId($address);
+                // Set user default address
+                if (!$user->getDefaultAddress()) {
+                    $em->persist($address);
+                    $user->addAddress($address);
+                }
             }
             $orderService->saveOrder();
 
@@ -361,6 +401,8 @@ class DefaultController extends Controller
                 'takeAway' => ($takeAway ? true : false),
                 'location' => $this->get('food.googlegis')->getLocationFromSession(),
                 'dataToLoad' => $dataToLoad,
+                'userAddress' => $address,
+                'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'submitted' => $request->isMethod('POST'),
                 'testNordea' => $request->query->get('test_nordea'),
                 'workingHoursForInterval' => $workingHoursForInterval,
@@ -385,6 +427,42 @@ class DefaultController extends Controller
     {
         $list = $this->getCartService()->getCartDishes($place);
         $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
+        $cartMinimum = $place->getCartMinimum();
+        $cartFromMin = $this->get('food.places')->getMinCartPrice($place->getId());
+        $cartFromMax = $this->get('food.places')->getMaxCartPrice($place->getId());
+        $displayCartInterval = true;
+        $deliveryTotal = 0;
+
+        $sessionTakeAway = $this->container->get('session')->get('cart_delivery_'.$place->getId(), null);
+        if ($sessionTakeAway !== null) {
+//            $takeAway = $sessionTakeAway;
+            // TODO think about it
+        }
+
+        if (!$takeAway) {
+            $placePointMap = $this->container->get('session')->get('point_data');
+
+            if (empty($placePointMap) || !isset($placePointMap[$place->getId()])) {
+                $deliveryTotal = $place->getDeliveryPrice();
+            } else {
+                // TODO Trying to catch fatal when searching for PlacePoint
+                if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
+                    $this->container->get('logger')->error('Trying to find PlacePoint without ID in CartBundle Default controller - sideBlockAction');
+                }
+                $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+                $deliveryTotal = $this->getCartService()->getDeliveryPrice(
+                    $place,
+                    $this->get('food.googlegis')->getLocationFromSession(),
+                    $pointRecord
+                );
+                $displayCartInterval = false;
+                $cartMinimum = $this->getCartService()->getMinimumCart(
+                    $place,
+                    $this->get('food.googlegis')->getLocationFromSession(),
+                    $pointRecord
+                );
+            }
+        }
 
         // If coupon in use
         $applyDiscount = $freeDelivery = $discountInSum = false;
@@ -400,7 +478,7 @@ class DefaultController extends Controller
                 if (!$freeDelivery) {
                     $discountSize = $coupon->getDiscount();
                     if (!empty($discountSize)) {
-                        $discountSum = ($total_cart * $coupon->getDiscount()) / 100;
+                        $discountSum = $this->getCartService()->getTotalDiscount($list,$coupon->getDiscount());
                     } else {
                         $discountSize = null;
                         $discountInSum = true;
@@ -408,9 +486,19 @@ class DefaultController extends Controller
                     }
 
                     $total_cart = $total_cart - $discountSum;
+                    if ($total_cart < 0) {
+                        if ($coupon->getFullOrderCovers()) {
+                            $deliveryTotal = $deliveryTotal + $total_cart;
+                            if ($deliveryTotal < 0) {
+                                $deliveryTotal = 0;
+                            }
+                        }
+                        $total_cart = 0;
+                    }
                 }
             }
         }
+
 
         // Jei restorane galima tik atsiimti arba, jei zmogus rinkosi, kad jis atsiimas, arba jei yra uzsakymas ir fiksuotas atsiemimas vietoje - neskaiciuojam pristatymo
         if ($place->getDeliveryOptions() == Place::OPT_ONLY_PICKUP ||
@@ -425,7 +513,8 @@ class DefaultController extends Controller
             'list'  => $list,
             'place' => $place,
             'total_cart' => $total_cart,
-            'total_with_delivery' => ($freeDelivery ? $total_cart : ($total_cart + $place->getDeliveryPrice())),
+            'total_with_delivery' => ($freeDelivery ? $total_cart : ($total_cart + $deliveryTotal)),
+            'total_delivery' => $deliveryTotal,
             'inCart' => (int)$inCart,
             'hide_delivery' => $hideDelivery,
             'applyDiscount' => $applyDiscount,
@@ -433,6 +522,11 @@ class DefaultController extends Controller
             'discountSize' => $discountSize,
             'discountInSum' => $discountInSum,
             'discountSum' => $discountSum,
+            'cart_minimum' => $cartMinimum,
+            'cart_from_min' => $cartFromMin,
+            'cart_from_max' => $cartFromMax,
+            'display_cart_interval' => $displayCartInterval,
+            'takeAway' => $takeAway,
         );
         if ($renderView) {
             return $this->renderView('FoodCartBundle:Default:side_block.html.twig', $params);

@@ -34,7 +34,7 @@ class GameController extends Controller
             ->add('birthDate', 'date', array('label' => 'food.game.bdate', 'years'=>range('2010', '1940')))
             ->add('phone', 'text', array(
                 'label'=>'food.game.phone',
-                'attr' => array('placeholder' => '370XXXXXXX'),
+                'attr' => array('placeholder' => $this->container->get('translator')->trans('food.game.phone_placeholder')),
                 'required' => true
             ))
             ->add('email', 'text',array('label' => 'food.game.email', 'required' => true))

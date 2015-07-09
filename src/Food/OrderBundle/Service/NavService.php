@@ -65,7 +65,7 @@ class NavService extends ContainerAware
 
     private $invoiceTable = '[skamb_centras].[dbo].[%1$s$Foodout Invoice]';
 
-    private $postedDeliveryOrdersTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Posted Delivery Orders]';
+    private $postedDeliveryOrdersTable = '[skamb_centras].[dbo].[%1$s$Posted Delivery Orders]';
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
@@ -162,10 +162,10 @@ class NavService extends ContainerAware
 
     public function getPostedDeliveryOrdersTable()
     {
-        return $this->postedDeliveryOrdersTable;
+        return sprintf($this->postedDeliveryOrdersTable, $this->container->getParameter('nav_table_prefix'));
     }
 
-
+    
     /**
      * @return false|resource
      */
@@ -349,7 +349,6 @@ class NavService extends ContainerAware
             //$this->container->get('doctrine')->getManager()->refresh($orderRow);
         }
 
-
         $city = $order->getPlacePoint()->getCity();
         $city = str_replace("ė", "e", $city);
         $city = str_replace("ī", "i", $city);
@@ -366,14 +365,22 @@ class NavService extends ContainerAware
         $orderDate = $order->getOrderDate();
         $orderDate->add(new \DateInterval('P0DT0H'));
         $deliveryDate = $order->getDeliveryTime();
-        $deliveryDate->sub(new \DateInterval('P0DT2H'));
+        $deliveryDate->sub(new \DateInterval('P0DT3H'));
+        /**
+         * This thing is when we move to daytime saving mode.
+         * @todo put to the CONFIG or make AUTO
+         *
+         * $deliveryDate->sub(new \DateInterval('P0DT2H'));
+         */
 
         $comment = $order->getComment();
 
         if ($order->getPaymentMethod() == "local.card") {
-            $comment.=". Mokesiu kortele";
+            $comment.=". KREDITKARTE";
+//            $comment.=". Mokesiu kortele";
         } elseif ($order->getPaymentMethod() == "local") {
-            $comment.=". Mokesiu grynais";
+            $comment.=". SKAIDRA NAUDA";
+//            $comment.=". Mokesiu grynais";
         } else {
 
         }
@@ -420,8 +427,10 @@ class NavService extends ContainerAware
     {
         $theKey = 1;
         $this->container->get('doctrine')->getManager()->refresh($order);
+        $discountSum = $order->getDiscountSum();
+        $discountSumLeft = $discountSum;
         foreach ($order->getDetails() as $key=>$detail) {
-            $theKey = $this->_processLine($detail, $orderNewId, $theKey);
+            $theKey = $this->_processLine($detail, $orderNewId, $theKey, $discountSum, $discountSumLeft);
             $theKey = $theKey + 1;
         }
 
@@ -500,7 +509,7 @@ class NavService extends ContainerAware
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
-    private function _processLine(OrderDetails $detail, $orderNewId, $key)
+    private function _processLine(OrderDetails $detail, $orderNewId, $key, $discountSum, &$discountSumLeft)
     {
         $this->container->get('doctrine')->getManager()->refresh($detail);
 
@@ -549,22 +558,49 @@ class NavService extends ContainerAware
             }
         }
 
-
-        $data = $this->container->get('doctrine')->getRepository('FoodOrderBundle:NavItems')->find($code);
-        if ($data) {
-            $desc = "'".$data->getDescription()."'";
+        if (!empty($code)) {
+            $data = $this->container->get('doctrine')->getRepository('FoodOrderBundle:NavItems')->find($code);
+            if ($data) {
+                $desc = "'".$data->getDescription()."'";
+            }
         }
 
-        $priceForInsert = $detail->getPrice();
+        $priceForInsert = $detail->getOrigPrice();
         $amountForInsert = $priceForInsert * $detail->getQuantity();
         $discountAmount = 0;
         $paymentAmount = $amountForInsert;
 
         $discountInOrder = $detail->getOrderId()->getDiscountSize();
-        if ($discountInOrder > 0) {
-            $discountAmount = $paymentAmount - round($paymentAmount * ((100 - intval($discountInOrder))/100), 2);
-        }
+        $dp = $detail->getPrice();
+        $dop = $detail->getOrigPrice();
+        $discPrcEnabled = $detail->getDishId()->getDiscountPricesEnabled();
+        $placeDiscountPriceEnabled = $detail->getOrderId()->getPlace()->getDiscountPricesEnabled();
+        $detailPercentDiscount = $detail->getPercentDiscount();
 
+        if (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && empty($detailPercentDiscount)) {
+            $discountAmount = $paymentAmount - round($paymentAmount * ((100 - intval($discountInOrder))/100), 2);
+        } elseif (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && !empty($detailPercentDiscount)) {
+            $discountAmount = ($detail->getOrigPrice() - $detail->getPrice()) * $detail->getQuantity();
+        } elseif ($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) {
+            $discountAmount = ($detail->getOrigPrice() - $detail->getPrice()) * $detail->getQuantity();
+        }
+        /**
+         * Some freaky ugly magic for havin Cart discount
+         */
+/*
+        if (0 && !empty($discountSum) && !($detail->getPrice()!=$detail->getOrigPrice() && $detail->getDishId()->getDiscountPricesEnabled() && $detail->getOrderId()->getPlace()->getDiscountPricesEnabled())) {
+            $paymentPart = $paymentAmount + $discountAmount;
+            $paymentPercentPart = ceil($detail->getOrderId()->getTotal() / $paymentPart) * 100;
+            $discountPartWouldBe = ceil($discountSum * 100 / $paymentPercentPart);
+            if ($discountSumLeft <= $discountPartWouldBe) {
+                $discountPartWouldBe = $discountSumLeft;
+                $discountSumLeft = 0;
+            } else {
+                $discountSumLeft = $discountSumLeft - $discountPartWouldBe;
+            }
+            $discountAmount = $discountAmount + $discountPartWouldBe;
+        }
+*/
         /*
         if ($detail->getDishId()->getShowDiscount()) {
             $discountPrice = $detail->getPrice();
@@ -609,15 +645,15 @@ class NavService extends ContainerAware
                 $dataToPut = array(
                     'Order No_' => $orderNewId,
                     'Line No_' => $okeyCounter,
-                    'Entry Type' => 1,
+                    'Entry Type' => ($opt->getDishOptionId()->getFirstLevel() ? 0 : 1),
                     'No_' => "'".$code."'",
                     'Description' => "'".$desc."'",
-                    'Quantity' => 0,
-                    'Price' => 0,
-                    'Parent Line' => $key,
-                    'Amount' => 0,
+                    'Quantity' => ($opt->getDishOptionId()->getFirstLevel() ? $opt->getOrderDetail()->getQuantity() : 0),
+                    'Price' => ($opt->getDishOptionId()->getFirstLevel() ? $opt->getDishOptionId()->getPrice() : 0),
+                    'Parent Line' => ($opt->getDishOptionId()->getFirstLevel() ? 0 : $key),
+                    'Amount' => ($opt->getDishOptionId()->getFirstLevel() ? ($opt->getOrderDetail()->getQuantity() * $opt->getDishOptionId()->getPrice()): 0),
                     'Discount Amount' => 0,
-                    'Payment' => 0,
+                    'Payment' => ($opt->getDishOptionId()->getFirstLevel() ? ($opt->getOrderDetail()->getQuantity() * $opt->getDishOptionId()->getPrice()): 0),
                     'Value' => "''"
                 );
                 $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
@@ -852,6 +888,14 @@ class NavService extends ContainerAware
                         $description = $option->getDishOptionId()->getName();
                     }
                     $lineNo = $lineNo + 1;
+                    if ($option->getDishOptionId()->getFirstLevel()) {
+                        $parencyLineNo = 0;
+                        $entryType = 0;
+                    } else {
+                        $parencyLineNo = $origLineNo;
+                        $entryType = 1;
+                    }
+
 
                     $lineMap[$lineNo] = array(
                         'parent' => $origLineNo,
@@ -860,8 +904,8 @@ class NavService extends ContainerAware
 
                     $requestData['Lines'][] = array('Line' => array(
                         'LineNo' => $lineNo,
-                        'ParentLineNo' => $origLineNo,
-                        'EntryType' => 1,
+                        'ParentLineNo' => $parencyLineNo,
+                        'EntryType' => $entryType,
                         'ItemNo' => $optionCode,
                         'Description' => mb_substr($description, 0, 30, 'utf-8'),
                         'Quantity' => $cart->getQuantity(),
@@ -872,7 +916,7 @@ class NavService extends ContainerAware
                 }
             }
         }
-
+        @mail("paulius@foodout.lt", "CILI NVB VALIDATE LINES ".date("Y-m-d H:i:s"), print_r($requestData, true), "FROM: info@foodout.lt");
         // this is more like anomaly than a rule
         if (empty($requestData['Lines'])) {
             $returner = [
@@ -887,20 +931,20 @@ class NavService extends ContainerAware
 
             return $returner;
         }
-
+        
         ob_start();
-        @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQUEST", print_r($requestData, true), "FROM: info@foodout.lt");
+        @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQUEST ".date("Y-m-d H:i:s"), print_r($requestData, true), "FROM: info@foodout.lt");
         $response = $this->getWSConnection()->FoodOutValidateOrder(
             array(
                 'params' => $requestData,
                 'errors' => array()
             )
         );
-        @mail("paulius@foodout.lt", "CILI NVB VALIDATE RESPONSE", print_r($response, true), "FROM: info@foodout.lt");
+        @mail("paulius@foodout.lt", "CILI NVB VALIDATE RESPONSE".date("Y-m-d H:i:s"), print_r($response, true), "FROM: info@foodout.lt");
         ob_end_clean();
 
         $prbDish = "";
-        if ($response->return_value == 2) {
+        if ($response->return_value == 2 || $response->return_value == 3) {
             if ($lineMap[$response->errors->Error->SubCode]['parent'] == 0) {
                 $prbDish = $lineMap[$response->errors->Error->SubCode]['name'];
             } else {
@@ -1018,7 +1062,7 @@ class NavService extends ContainerAware
 
         $query = sprintf(
             '
-            SELECT [Order No_], SUM(Amount) AS total
+            SELECT [Order No_], SUM([Amount] + [Discount Amount]) AS total
             FROM %s
             WHERE
               [Order No_] IN ( %s )
@@ -1290,7 +1334,7 @@ class NavService extends ContainerAware
      */
     public function syncDisDescription($date = null)
     {
-        $result = $this->initSqlConn()->query('SELECT [No_], [Description], [Search Description] FROM '.$this->getItemsTable()." WHERE LEN([No_]) > 3 AND [No_] NOT LIKE 'DIS%'");
+        $result = $this->initSqlConn()->query('SELECT [No_], [Description], [Search Description] FROM '.$this->getItemsTable()." WHERE LEN([No_]) > 3 AND [No_] LIKE 'DIS%'");
         if( $result === false) {
             throw new \InvalidArgumentException('Wow Such fail.. Many problems... Such no results?');
         }
@@ -1352,12 +1396,64 @@ class NavService extends ContainerAware
     }
 
     /**
+     * @param string|null $dateShift
+     *
      * @return array
      */
-    public function getNewNonFoodoutOrders()
+    public function getNewNonFoodoutOrders($dateShift=null)
     {
-        $theDate = date('Y-m-d', strtotime('-3 hour'));
-        $theTime = '1754-01-01 ' . date("H:i:s", strtotime('-3 hour'));
+        if (empty($dateShift)) {
+            $dateShift = '-3 hour';
+        }
+        $theDate = date('Y-m-d', strtotime($dateShift));
+        $theTime = '1754-01-01 ' . date("H:i:s", strtotime($dateShift));
+
+        // For weekend recoveries (1 day solid recovery)
+        if (date('d', strtotime('-1 day')) > date('d', strtotime($dateShift))) {
+                $theOtherDate = date('Y-m-d');
+                $theInnerDate = date('Y-m-d', strtotime('-1 day'));
+                $datePart = sprintf(
+                    "(
+                (
+                dOrder.[Date Created] >= '%s'
+                AND dOrder.[Time Created] >= '%s'
+                ) OR (
+                dOrder.[Date Created] >= '%s'
+                AND dOrder.[Time Created] >= '1754-01-01 00:00:00'
+                ) OR (
+                dOrder.[Date Created] >= '%s'
+                AND dOrder.[Time Created] >= '1754-01-01 00:00:00'
+                )
+                )",
+                    $theDate,
+                    $theTime,
+                    $theInnerDate,
+                    $theOtherDate
+                );
+        } elseif (date('d') > date('d', strtotime($dateShift))) {
+            $theOtherDate = date('Y-m-d');
+            $datePart = sprintf(
+                "(
+                (
+                dOrder.[Date Created] >= '%s'
+                AND dOrder.[Time Created] >= '%s'
+                ) OR (
+                dOrder.[Date Created] >= '%s'
+                AND dOrder.[Time Created] >= '1754-01-01 00:00:00'
+                )
+                )",
+                $theDate,
+                $theTime,
+                $theOtherDate
+            );
+        } else {
+            $datePart = sprintf(
+                "dOrder.[Date Created] >= '%s'
+                AND dOrder.[Time Created] >= '%s'",
+                $theDate,
+                $theTime
+            );
+        }
 
         $query = sprintf(
             "SELECT
@@ -1365,6 +1461,7 @@ class NavService extends ContainerAware
                 dOrder.[Phone No_],
                 dOrder.[Date Created],
                 dOrder.[Time Created],
+                dOrder.[Order Date],
                 dOrder.[Contact Pickup Time],
                 dOrder.[Driver ID],
                 dOrder.[Address],
@@ -1406,8 +1503,7 @@ class NavService extends ContainerAware
             LEFT JOIN %s cContract ON cContract.[Contract Register No_] = dOrder.[Contract Register No_]
             LEFT JOIN %s cCustomer ON cCustomer.[No_] = cContract.[Customer No_]
             WHERE
-                dOrder.[Date Created] >= '%s'
-                AND dOrder.[Time Created] >= '%s'
+                %s
                 AND dOrder.[Delivery Region] IN (%s)
                 AND dOrder.[FoodOut Order] != 1
                 AND pTrans.[Number] IN ('ZRAW0009996', 'ZRAW0010001', 'ZRAW0010002', 'ZRAW0010190', 'ZRAW0010255')
@@ -1422,10 +1518,11 @@ class NavService extends ContainerAware
             $this->getPosTransactionLinesTable(),
             $this->getContractTable(),
             $this->getCustomerTable(),
-            $theDate,
-            $theTime,
-            "'Vilnius', 'Kaunas', 'Klaipeda'"
+            $datePart,
+            "'Vilnius', 'Kaunas', 'Klaipeda','Ryga'"
         );
+
+        $this->container->get("logger")->alert('Nav import query: '.$query);
 
         $result = $this->initSqlConn()->query($query);
         if( $result === false) {
@@ -1750,12 +1847,63 @@ class NavService extends ContainerAware
      */
     public function deleteInvoiceFromNav($sfNumber)
     {
-        $mssql = $this->container->get('food.mssql');
-
         $query = "
             DELETE FROM %s WHERE [Invoice No_] = '%s'";
         $query = sprintf($query, $this->getInvoiceTable(), $sfNumber);
 
         $this->initSqlConn()->query($query);
+    }
+
+    /**
+     * @param Order $order
+     * @return bool
+     */
+    public function isMissingFromWebHeader($order)
+    {
+        $existsInHeader = true;
+        $existsInLines = true;
+        $navId = $this->getNavOrderId($order);
+
+        $query = "
+            SELECT
+                [Order No_] AS order_no
+            FROM %s
+            WHERE
+                [Order No_] >= '%s'";
+        $query = sprintf(
+            $query,
+            $this->getHeaderTable(),
+            $navId
+        );
+
+        $result = $this->initSqlConn()->query($query);
+
+        if (empty($result)) {
+            $existsInHeader = false;
+        }
+
+        $query = "
+            SELECT
+                [Order No_] AS order_no
+            FROM %s
+            WHERE
+                [Order No_] >= '%s'";
+        $query = sprintf(
+            $query,
+            $this->getLineTable(),
+            $navId
+        );
+
+        $result = $this->initSqlConn()->query($query);
+
+        if (empty($result)) {
+            $existsInLines = false;
+        }
+
+        if ($existsInHeader || $existsInLines) {
+            return false;
+        }
+
+        return true;
     }
 }

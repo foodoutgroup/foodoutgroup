@@ -136,4 +136,130 @@ trait ReturnDecorator
 
         return $this->render($view, ['order' => $order]);
     }
+
+    /**
+     * TODO Laikinai viskas cia - po to iskelinesime is Jonelio personal repos ir viska nafig refaktorinsim nes cia ne darbas...
+     * @param Request $request
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function handleCalback(Request $request)
+    {
+        // services
+        $orderService = $this->get('food.order');
+        $cartService = $this->get('food.cart');
+        $navService = $this->get('food.nav');
+        $em = $this->get('doctrine')->getManager();
+        $logger = $this->get('logger');
+
+        $dom = simplexml_load_string($request->getContent());
+
+        if (!$dom instanceof \SimpleXMLElement) {
+            $logger->error('Not an XML is given in Swedbank callback handler. What we got is: '.$request->getContent());
+        }
+
+        // get order
+        $purchases = $dom->xpath('//Event//Purchase');
+
+        if (empty($purchases)) {
+            $logger->error("Swedbank callback gave XML without purchases part");
+            throw new \Exception('Wrong XML format from Swedbank');
+        }
+
+        $purchase = reset($purchases);
+
+        if (empty($purchase)) {
+            $logger->error("Swedbank callback gave XML without purchase part");
+            throw new \Exception('Wrong XML format from Swedbank');
+        }
+
+        $attributes = (array)$purchase->attributes();
+        $transactionId = $attributes['@attributes']['TransactionId'];
+
+        if (empty($transactionId)) {
+            $logger->error("Swedbank callback without trans ID received :(");
+            throw new \Exception("Wrong XML format from Swedbank");
+        }
+
+        // extract actual order id. say thanks to swedbank requirements
+        $transactionIdSplit = explode('_', $transactionId);
+        $orderId = !empty($transactionIdSplit[0]) ? $transactionIdSplit[0] : 0;
+
+        try {
+            $order = $em->getRepository('FoodOrderBundle:Order')
+                        ->find($orderId, LockMode::OPTIMISTIC);
+            $orderService->setOrder($order);
+        } catch (\Exception $e) {
+            $logger->error("Error during swedbank callback: ".$e->getMessage());
+            throw $e;
+        }
+
+        $authorizeStatus = $dom->xpath('//Purchase//Status');
+        $authorizeStatus = reset($authorizeStatus);
+
+        // is order paid? let's find out!
+        if ($authorizeStatus == 'AUTHORISED') {
+            $this->logPaidAndFinish('Swedbank Banklink Gateway billed payment',
+                                    $orderService,
+                                    $order,
+                                    $cartService,
+                                    $em,
+                                    $navService,
+                                    $logger);
+
+            return new Response('<Response>OK</Response>');
+        // is order payment accepted and is currently processing?
+        } elseif ($authorizeStatus == 'REQUIRES_INVESTIGATION') {
+            // log
+            $logger->alert("==========================\nprocessing payment action for Swedbank Gateway Banklink came\n====================================\n");
+            $logger->alert("Request data: ".var_export($request->query->all(), true));
+            $logger->alert('-----------------------------------------------------------');
+
+            // log
+            $logger->alert('Processing order ' . $order->getId());
+
+            $this->logProcessingAndFinish(
+                'Swedbank Banklink Gateway payment started',
+                $orderService,
+                $order,
+                $cartService);
+
+            return new Response('<Response>OK</Response>');
+        // is payment cancelled due to reasons?
+        } elseif ($authorizeStatus == 'CANCELLED') {
+            // log
+            $logger->alert("==========================\ncancel payment action for Swedbank Gateway Banklink came\n====================================\n");
+            $logger->alert("Request data: ".var_export($request->query->all(), true));
+            $logger->alert('-----------------------------------------------------------');
+
+            // log
+            $logger->alert('Cancelling order ' . $order->getId());
+
+            $this->logFailureAndFinish(
+                'Swedbank Banklink Gateway payment canceled',
+                $orderService,
+                $order,
+                $logger);
+
+            return new Response('<Response>OK</Response>');
+        // did we get error from the bank? :(
+//        } elseif ($gateway->is_error('swedbank', $request)) {
+            // TODO handling
+//            $view = 'FoodOrderBundle:Payments:' .
+//                    'swedbank_gateway/error.html.twig';
+//            return $this->render($view, ['order' => $order]);
+        // was there a communication error with/in bank?
+//        } elseif ($gateway->communication_error('swedbank', $request)) {
+            // TODO handling
+//            $view = 'FoodOrderBundle:Payments:' .
+//                    'swedbank_gateway/communication_error.html.twig';
+//            return $this->render($view, ['order' => $order]);
+//        } else {
+            // TODO handling
+//            $view = 'FoodOrderBundle:Payments:' .
+//                    'swedbank_gateway/something_wrong.html.twig';
+        }
+
+        return new Response('<Response>ERROR</Response>');
+    }
 }

@@ -10,6 +10,14 @@
     </file>
     <file source-language="lt" datatype="plaintext" original="file.ext">
         <body>
+            <trans-unit id="api.orders.coupon_does_not_exists" resname="api.orders.coupon_does_not_exists">
+                <source>api.orders.coupon_does_not_exists</source>
+                <target>Atsiprašome, kodas negalioja, arba yra panaudotas</target>
+            </trans-unit>
+        </body>
+    </file>
+    <file source-language="lt" datatype="plaintext" original="file.ext">
+        <body>
             <trans-unit id="api.orders.user_not_authorized" resname="api.orders.user_not_authorized">
                 <source>api.orders.user_not_authorized</source>
                 <target>Neprijungtas vartotojas</target>

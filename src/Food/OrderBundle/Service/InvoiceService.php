@@ -264,12 +264,22 @@ class InvoiceService extends ContainerAware
                     ->resetVariables()
                     ->flush();
 
+                $mailTemplate = $this->container->getParameter('mailer_send_invoice');
                 $mailerResponse = $ml->setVariables($variables)
                     ->setRecipient($email, $email)
                     ->addAttachment($fileName, file_get_contents($file))
-                    ->setId(30019657)
+                    ->setId($mailTemplate)
                     ->send();
                 $logger->alert('Mailer responded (for order #' . $order->getId() . '): ' . var_export($mailerResponse, true));
+
+                $variablesForLog = $variables;
+                $variablesForLog['filename'] = $fileName;
+                $this->container->get('food.order')->logMailSent(
+                    $order,
+                    'invoice_send',
+                    $mailTemplate,
+                    $variablesForLog
+                );
             }
 
             // TODO - panaikinti debugini siuntima...

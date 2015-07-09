@@ -6,7 +6,7 @@
         <div class="site-center">
             <div class="site-block">
                 <div class="middle-content">
-                    <img src="/pr_2.jpg" />
+                    {#<img src="/pp_1.jpg" />#}
                     <div class="static-page">
                         <div class="static-page-content">
                             <style>
@@ -39,6 +39,7 @@
                                     border: none !important;
                                     box-shadow: 0 0 !important;
                                     margin-top: 11px;
+                                    visibilty: visible !important;
                                 }
                                 .rulesDialog {
                                     background: none !important;
@@ -90,6 +91,7 @@
                                     setTimeout(
                                             function() {
                                                 $("#gameForm .iCheck-helper").remove();
+                                                $("#gameForm .icheckbox input").css("visibility", "visible");
                                                 $('label[for="form_aggree"]').parent().find("input").unbind();
                                                 $('label[for="form_aggree"]').find('a').bind('click', function(e) {
                                                     $('#game_rules').dialog({

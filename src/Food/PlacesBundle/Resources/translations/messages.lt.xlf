@@ -153,6 +153,22 @@
         <source>places.search_placeholder</source>
         <target>Paieška...</target>
       </trans-unit>
+      <trans-unit id="places.filter_by_delivery" resname="places.filter_by_delivery">
+        <source>places.filter_by_delivery</source>
+        <target>Rodyti</target>
+      </trans-unit>
+      <trans-unit id="places.filter_delivery_and_pickup" resname="places.filter_delivery_and_pickup">
+        <source>places.filter_delivery_and_pickup</source>
+        <target>Pristatymas ir atsiėmimas</target>
+      </trans-unit>
+        <trans-unit id="places.filter_pickup" resname="places.filter_pickup">
+            <source>places.filter_pickup</source>
+            <target>Atsiėmimas</target>
+        </trans-unit>
+      <trans-unit id="places.filter_delivery" resname="places.filter_delivery">
+        <source>places.filter_delivery</source>
+        <target>Pristatymas</target>
+      </trans-unit>
       <trans-unit id="3ae217e1cb532beeb4c2445d53826bb9" resname="places.order_by">
         <source>places.order_by</source>
         <target>Rūšiuoti pagal</target>
@@ -179,12 +195,16 @@
       </trans-unit>
       <trans-unit id="place.pickup_info" resname="place.pickup_info">
         <source>place.pickup_info</source>
-        <target>Tik atsiimti vietoje</target>
+        <target>Atsiimsite po</target>
       </trans-unit>
       <trans-unit id="de03d40f9e854231164bfbbfdbfa52f9" resname="place.min_cart_amount">
         <source>place.min_cart_amount</source>
         <target>Min. krepšelis</target>
       </trans-unit>
+        <trans-unit id="place.select_place_to_pickup" resname="place.select_place_to_pickup">
+            <source>place.select_place_to_pickup</source>
+            <target>Pasirink iš kur atsiimsi</target>
+        </trans-unit>
       <trans-unit id="4962db963b0f0d3cd2bc1b571272710b" resname="places.reviews_count">
         <source>places.reviews_count</source>
         <target>Įvertinimas|Įvertinimai|Įvertinimų</target>
@@ -248,6 +268,10 @@
         <trans-unit id="places.is_not_detailed_search" resname="places.is_not_detailed_search">
             <source>places.is_not_detailed_search</source>
             <target>Paieška nėra tiksli, kadangi neįvedėte tiksliaus adreso. Galimybė užsakyti priklausys nuo adreso kurį įvesite užsakymo lange.</target>
+        </trans-unit>
+        <trans-unit id="places.header_main_part" resname="places.header_main_part">
+            <source>places.header_main_part</source>
+            <target>Maistas į namus</target>
         </trans-unit>
     </body>
   </file>

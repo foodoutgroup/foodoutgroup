@@ -27,10 +27,10 @@ class AjaxController extends Controller
                 $this->_ajaxFindStreetHouse($response,$request->get('city'), $request->get('street'), $request->get('house'));
                 break;
             case 'find-address':
-                $this->_ajaxActFindAddress($response,$request->get('city'), $request->get('address'));
+                $this->_ajaxActFindAddress($response,$request->get('city'), $request->get('address'), $request);
                 break;
             case 'find-address-and-recount':
-                $this->_ajaxActFindAddress($response,$request->get('city'), $request->get('address'));
+                $this->_ajaxActFindAddress($response,$request->get('city'), $request->get('address'), $request);
                 $this->_isPlaceInRadius($response, intval($request->get('place')));
                 break;
             case 'check-coupon':
@@ -50,8 +50,9 @@ class AjaxController extends Controller
      * @param Response $response
      * @param string $city
      * @param string $address
+     * @param Request $request
      */
-    private function _ajaxActFindAddress(Response $response, $city, $address)
+    private function _ajaxActFindAddress(Response $response, $city, $address, Request $request)
     {
         $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
         $locationInfo = $this->get('food.googlegis')->groupData($location, $address, $city);
@@ -72,6 +73,10 @@ class AjaxController extends Controller
         if (!$locationInfo['street_found']) {
             $respData['str'] = 1;
         }
+        if (!empty($respData) && $respData['success'] == 1 && $respData['adr'] == 1) {
+            $session = $request->getSession();
+            $session->set('locationData', array('address' => $address, 'city' => $city));
+        }
         $response->setContent(json_encode(array(
             'data' => $respData
         )));
@@ -82,6 +87,9 @@ class AjaxController extends Controller
     {
         $respData = array();
         $street = mb_strtoupper($street, 'utf-8');
+        if ($city == "Rīga") {
+            $city = "Ryga";
+        }
         /*
         $street = str_replace("S", "[S|Š]", $street);
         $street = str_replace("A", "[A|Ą]", $street);
@@ -110,21 +118,27 @@ class AjaxController extends Controller
         $stmt->bindValue(2, "%$street%");
         $stmt->execute();
         $streets = $stmt->fetchAll();
-
         $gs = $this->get('food.googlegis');
 
         foreach ($streets as $key=>&$streetRow) {
             if (empty($street['name'])) {
-                $data = $gs->getPlaceData($streetRow['street_name'].",".$city.",".$city);
+                $data = $gs->getPlaceData($streetRow['street_name'].",".$city);
+                //var_dump($data);
                 $gdata = $gs->groupData($data, $streetRow['street_name'], $city);
-                $streetRow['name'] = $gdata['street_short'];
+                if (isset($gdata['street_short']) && !empty($gdata['street_short'])) {
+                    $streetRow['name'] = $gdata['street_short'];
+                } else {
+
+                }
                 $sql = "UPDATE nav_streets SET `name`='".$streetRow['name']."' WHERE delivery_region='".$city."' AND street_name='".$streetRow['street_name']."'";
                 $conn->query($sql);
             }
         }
 
         foreach ($streets as $str) {
-            $respData[] = array('value' => $str['name']);
+            if (!empty($str['name']) && $str['name'] != "NULL") {
+                $respData[] = array('value' => $str['name']);
+            }
         }
         $response->setContent(json_encode($respData));
     }

@@ -6,19 +6,23 @@ use Doctrine\ORM\EntityRepository;
 class DishRepository extends EntityRepository
 {
 
-    /**
-     * @param integer $categoryId
-     * @return array
-     */
     public function getCategoryActiveDishes($categoryId)
     {
+        $currentWeek = date('W') % 2 == 1; # 1 - odd 0 - even
+        $currentWeek = $currentWeek ? 0 : 1;
+
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('d')
             ->from('\Food\DishesBundle\Entity\Dish', 'd')
             ->join('d.categories', 'c')
+            ->leftJoin('d.dates', 'dd', 'WITH', 'dd.dish = d.id')
             ->where('c.id = '.$categoryId)
-            ->andWhere('d.active = 1');
-
+            ->andWhere('d.active = 1
+                AND ((d.useDateInterval = 1 AND :curr_date >= dd.start AND :curr_date <= dd.end) OR (d.useDateInterval = 0)
+                AND (d.checkEvenOddWeek = 1 AND d.evenWeek = :curr_week) OR (d.checkEvenOddWeek = 0))
+            ')
+            ->setParameter('curr_date', date('Y-m-d'))
+            ->setParameter('curr_week', $currentWeek);
         return $qb->getQuery()->getResult();
     }
 
@@ -55,6 +59,41 @@ class DishRepository extends EntityRepository
             ;
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * @param int $dishId
+     * @return array
+     */
+    public function getSmallestPublicPrice($dishId)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('d, s.publicPrice')
+            ->from('\Food\DishesBundle\Entity\Dish', 'd')
+            ->join('d.sizes', 's')
+            ->where('d.id = '.$dishId)
+            ->andWhere('d.active = 1')
+            ->orderBy('s.publicPrice', 'DESC')
+        ;
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $dishId
+     * @return array
+     */
+    public function getLargestPublicPrice($dishId)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('d, s.publicPrice')
+            ->from('\Food\DishesBundle\Entity\Dish', 'd')
+            ->join('d.sizes', 's')
+            ->where('d.id = '.$dishId)
+            ->andWhere('d.active = 1')
+            ->orderBy('s.publicPrice', 'ASC')
+        ;
+        return $qb->getQuery()->getResult();
+    }
+
 
     /**
      * @param int $dishId

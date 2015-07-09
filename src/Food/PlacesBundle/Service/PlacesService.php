@@ -131,6 +131,10 @@ class PlacesService extends ContainerAware {
      */
     public function getPlacePointData($pointId)
     {
+        // TODO Trying to catch fatal when searching for PlacePoint
+        if (empty($pointId)) {
+            $this->getContainer()->get('logger')->error('Trying to find PlacePoint without ID in PlacesService - getPlacePointData');
+        }
         return $this->em()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
     }
 
@@ -221,6 +225,109 @@ class PlacesService extends ContainerAware {
 
         array_multisort($sortTop,SORT_NUMERIC, SORT_DESC, $sortArr, SORT_NUMERIC, SORT_ASC, $sortArrPrio, SORT_NUMERIC, SORT_DESC, $places);
         return $places;
+    }
+
+    /**
+     * @param $recommended
+     * @param $request
+     * @return mixed
+     */
+    public function getPlacesForList($recommended, $request)
+    {
+        $kitchens = $request->get('kitchens', "");
+        $filters = $request->get('filters');
+        $deliveryType = $request->get('delivery_type', '');
+        if (empty($kitchens)) {
+            $kitchens = array();
+        } else {
+            $kitchens = explode(",", $kitchens);
+        }
+
+        $filters = explode(",", $filters);
+        if (!empty($deliveryType)) {
+            $filters['delivery_type'] = $deliveryType;
+        }
+        foreach ($kitchens as $kkey=> &$kitchen) {
+            $kitchen = intval($kitchen);
+        }
+        foreach ($filters as $fkey=> &$filter) {
+            $filter = trim($filter);
+        }
+
+        $places = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
+            $kitchens,
+            $filters,
+            $recommended,
+            $this->container->get('food.googlegis')->getLocationFromSession()
+        );
+        $this->container->get('food.places')->saveRelationPlaceToPoint($places);
+        return $this->container->get('food.places')->placesPlacePointsWorkInformation($places);
+    }
+
+    public function getMinDeliveryPrice($placeId)
+    {
+        $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMinDeliveryPrice($placeId);
+        if (empty($sum)) {
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            return $place->getDeliveryPrice();
+        }
+        return $sum;
+    }
+
+    public function getMaxDeliveryPrice($placeId)
+    {
+        $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMaxDeliveryPrice($placeId);
+        if (empty($sum)) {
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            return $place->getDeliveryPrice();
+        }
+        return $sum;
+    }
+
+    public function getMinCartPrice($placeId)
+    {
+        $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMinCartSize($placeId);
+        if (empty($sum)) {
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            return $place->getCartMinimum();
+        }
+        return $sum;
+    }
+
+    public function getMaxCartPrice($placeId)
+    {
+        $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMaxCartSize($placeId);
+        if (empty($sum)) {
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            return $place->getCartMinimum();
+        }
+        return $sum;
+    }
+
+    public function getCurrentUserAddresses() {
+        $current_user = $this->container->get('security.context')->getToken()->getUser();
+        $all_user_address = array();
+        if (!empty($current_user) && is_object($current_user)) {
+            $all_user_address = $this->container->get('doctrine')->getRepository('FoodUserBundle:UserAddress')
+                ->findBy(array(
+                    'user' => $current_user,
+                ));
+        }
+        return $all_user_address;
+    }
+
+    public function getCurrentUserAddress($city, $address) {
+        $current_user = $this->container->get('security.context')->getToken()->getUser();
+        $user_address = array();
+        if (!empty($current_user) && is_object($current_user) && !empty($city) && !empty($address)) {
+            $user_address = $this->container->get('doctrine')->getRepository('FoodUserBundle:UserAddress')
+                ->findOneBy(array(
+                    'user' => $current_user,
+                    'city' => $city,
+                    'address' => $address,
+                ));
+        }
+        return $user_address;
     }
 
     /**
