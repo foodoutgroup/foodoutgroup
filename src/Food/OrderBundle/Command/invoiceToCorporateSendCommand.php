@@ -108,7 +108,7 @@ class InvoiceToCorporateSendCommand extends ContainerAwareCommand
                         $emails = $invoiceService->sendCorporateInvoice($userOrders[0], $forcedEmail);
 
                         // create invoice in NAVISION
-                        // TODO
+                        // Nuspresta kolkas nesiust. Buhalterija pati susikels
 //                        $nav->sendNavInvoice($userOrders);
 
                         $sentMessage = 'Invoice sent to emails: '.implode(', ', $emails);

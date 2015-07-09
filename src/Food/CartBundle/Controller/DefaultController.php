@@ -342,7 +342,12 @@ class DefaultController extends Controller
             if ($user->getIsBussinesClient()) {
                 $orderService->getOrder()
                     ->setIsCorporateClient(true)
-                    ->setDivisionCode($request->get('company_division_code'));
+                    ->setDivisionCode($request->get('company_division_code'))
+                    ->setCompany(true)
+                    ->setCompanyName($user->getCompanyName())
+                    ->setCompanyCode($user->getCompanyCode())
+                    ->setVatCode($user->getVatCode())
+                    ->setCompanyAddress($user->getCompanyAddress());
             }
 
             // Update order with recent address information. but only if we need to deliver

@@ -3,6 +3,7 @@ namespace Food\OrderBundle\Command;
 
 use Food\AppBundle\Entity\Driver;
 use Food\OrderBundle\Entity\Order;
+use Food\OrderBundle\Entity\OrderExtra;
 use Food\OrderBundle\Service\OrderService;
 use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
@@ -252,6 +253,17 @@ class NavImportOrdersCommand extends ContainerAwareCommand
 
                             $userService->updateUser($user);
                         }
+
+                        // save extra order data to separate table
+                        $orderExtra = new OrderExtra();
+                        $orderExtra->setOrder($this->getOrder());
+
+                        $orderExtra->setFirstname($user->getFirstname())
+                            ->setLastname($user->getLastname())
+                            ->setPhone($user->getPhone())
+                            ->setEmail($user->getEmail());
+
+                        $order->setOrderExtra($orderExtra);
 
                         // if delivery, only then you mess with address
                         if ($deliveryType != OrderService::$deliveryPickup) {

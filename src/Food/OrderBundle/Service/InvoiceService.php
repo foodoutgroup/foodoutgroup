@@ -352,6 +352,8 @@ class InvoiceService extends ContainerAware
             throw new \InvalidArgumentException('Cannot send invoice PDF without order');
         }
 
+        $mailer = $this->container->get('mailer');
+
         if (!empty($forcedEmail)) {
             $emails = array($forcedEmail);
         } else {
@@ -418,6 +420,17 @@ class InvoiceService extends ContainerAware
                     $variablesForLog
                 );
             }
+
+            // send sf to financing. TODO - translations bitch please
+            $message = \Swift_Message::newInstance()
+                ->setSubject('Foodout.lt - nauja verslo kliento faktura')
+                ->setFrom('info@foodout.lt')
+            ;
+            $message->addTo('buhalterija@foodout.lt');
+//            $message->addTo('mantas@foodout.lt');
+            $message->setBody('Siunciame kliento '.$order->getUser()->getCompanyName().' jungtine faktura. Prasome isitraukti i NAV');
+            $message->attach(\Swift_Attachment::fromPath($file));
+            $mailer->send($message);
         }
 
         return $emails;

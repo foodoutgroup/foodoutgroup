@@ -240,7 +240,7 @@
                                             <input type="radio" name="delivery-type" value="deliver"{% if ((order is not null and order.deliveryType == 'deliver') or order is null) and takeAway == false %} checked="checked"{% endif %}>
                                         </label>
                                     {% endif %}
-                                    {% if place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'pickup' %}
+                                    {% if (place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'pickup') and not app.user.isBussinesClient|default(false) %}
                                         <label class="custom-radio">{% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
                                             <input type="radio" name="delivery-type" value="pickup"{% if (order is not null and order.deliveryType == 'pickup') or takeAway == true %} checked="checked"{% endif %}>
                                         </label>
