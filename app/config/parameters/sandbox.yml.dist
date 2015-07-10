@@ -45,7 +45,7 @@ parameters:
     currency_display: '&euro;'
     currency_iso: EUR
     display_currency_alternative:  Lt
-    currency_alternative: true
+    currency_alternative: false
     show_best_offers: true
     show_game: true
     show_apps_download: true
