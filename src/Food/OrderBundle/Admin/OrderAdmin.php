@@ -190,7 +190,7 @@ class OrderAdmin extends SonataAdmin
             ->add('order_date', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.order_date'))
             ->add('place_name', 'string', array('label' => 'admin.order.place_name', 'editable' => false,))
             ->add('place_point_address', 'string', array('label' => 'admin.order.place_point'))
-            ->add('contact', null, array('label' => 'admin.order.user'))
+            ->add('user.contact', null, array('label' => 'admin.order.user'))
             ->add('address_id', null, array('label' => 'admin.order.delivery_address'))
             ->add('company', 'sonata_type_collection',
                 array(
