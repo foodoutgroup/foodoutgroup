@@ -86,14 +86,19 @@
                         <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
                             <div class="clearfix">
                                 <div class="menu-lefter" id="catmnu">
-                                    <h4>{% trans %}places.food_categories{% endtrans %}:</h4>
-                                    <ul class="menu">
-                                        {% for category in placeCategories %}
-                                            <li {# {% if category.id == selectedCategory.id %} class="active"{% endif %} #}>
-                                                <a href="#{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}<span>{{ category.activeDishesCount }}</span></a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
+                                    <div class="dropdown">
+                                        <button id="dLabel" class="button" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            {% trans %}places.food_categories{% endtrans %}
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu scrollable-menu menu" aria-labelledby="dLabel">
+                                            {% for category in placeCategories %}
+                                                <li {# {% if category.id == selectedCategory.id %} class="active"{% endif %} #}>
+                                                    <a href="#{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}<span>{{ category.activeDishesCount }}</span></a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
                                 </div>
                         {# Meniu #}
                                 <div class="menu-righter">
