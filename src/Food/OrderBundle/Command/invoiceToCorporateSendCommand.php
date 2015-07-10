@@ -34,7 +34,6 @@ class InvoiceToCorporateSendCommand extends ContainerAwareCommand
         try {
             $logger = $this->getContainer()->get('logger');
             $invoiceService = $this->getContainer()->get('food.invoice');
-            $nav = $this->getContainer()->get('food.nav');
             $miscService = $this->getContainer()->get('food.app.utils.misc');
             $sfSeries = $this->getContainer()->getParameter('invoice.series');
             $em = $this->getContainer()->get('doctrine')->getManager();

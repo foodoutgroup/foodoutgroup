@@ -650,7 +650,7 @@ class User extends BaseUser
     /**
      * Get divisionCodes
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection|UserDivisionCode[]
      */
     public function getDivisionCodes()
     {

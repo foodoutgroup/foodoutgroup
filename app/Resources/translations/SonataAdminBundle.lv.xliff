@@ -707,6 +707,10 @@
                 <source>admin.users_dision_code.code</source>
                 <target>Code</target>
             </trans-unit>
+            <trans-unit id="admin.users_dision_code.division">
+                <source>admin.users_dision_code.division</source>
+                <target>Division</target>
+            </trans-unit>
 
             <!-- Static content -->
             <trans-unit id="admin.static">
@@ -1172,6 +1176,18 @@
             <trans-unit id="admin.order.companyAddress">
                 <source>admin.order.companyAddress</source>
                 <target>Address</target>
+            </trans-unit>
+            <trans-unit id="admin.order.division_code">
+                <source>admin.order.division_code</source>
+                <target>Division code</target>
+            </trans-unit>
+            <trans-unit id="admin.order.division_name">
+                <source>admin.order.division_name</source>
+                <target>Division name</target>
+            </trans-unit>
+            <trans-unit id="admin.order.corporate_client_name">
+                <source>admin.order.corporate_client_name</source>
+                <target>Order taker</target>
             </trans-unit>
 
             <!-- Order logas pas sonata admina -->

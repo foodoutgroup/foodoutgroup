@@ -698,6 +698,10 @@
                 <source>admin.users_dision_code.code</source>
                 <target>Kodas</target>
             </trans-unit>
+            <trans-unit id="admin.users_dision_code.division">
+                <source>admin.users_dision_code.division</source>
+                <target>Padalinys</target>
+            </trans-unit>
 
             <!-- Static content -->
             <trans-unit id="admin.static">
@@ -1179,6 +1183,18 @@
             <trans-unit id="admin.order.companyAddress">
                 <source>admin.order.companyAddress</source>
                 <target>Adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.division_code">
+                <source>admin.order.division_code</source>
+                <target>Padalinio kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.division_name">
+                <source>admin.order.division_name</source>
+                <target>Padalinio pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.corporate_client_name">
+                <source>admin.order.corporate_client_name</source>
+                <target>Užsakovas</target>
             </trans-unit>
 
             <!-- Order logas pas sonata admina -->

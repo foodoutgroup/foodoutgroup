@@ -14,6 +14,7 @@ class UserDivisionCodeAdmin extends SonataUserAdmin {
         $listMapper
             ->addIdentifier('id', null, array('label' => 'admin.users_dision_code.id'))
             ->add('code', 'text', array('label' => 'admin.users_dision_code.code'))
+            ->add('division', 'text', array('label' => 'admin.users_dision_code.division'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),
@@ -32,6 +33,7 @@ class UserDivisionCodeAdmin extends SonataUserAdmin {
         $filterMapper
             ->add('id')
             ->add('code', null, array('label' => 'admin.users_dision_code.code'))
+            ->add('division', null, array('label' => 'admin.users_dision_code.division'))
         ;
     }
 
@@ -42,6 +44,7 @@ class UserDivisionCodeAdmin extends SonataUserAdmin {
     {
         $formMapper
             ->add('code', 'text', array('label' => 'admin.users_dision_code.code', 'required' => true))
+            ->add('division', 'text', array('label' => 'admin.users_dision_code.division', 'required' => true))
         ;
     }
 }

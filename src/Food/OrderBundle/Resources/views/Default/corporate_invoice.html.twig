@@ -77,7 +77,7 @@
 
     {% for key, divOrders in orders %}
         <tr>
-            <td colspan="4">Padalinio {{ key }} užsakymai:</td>
+            <td colspan="4">{{ misc_utils.divisionName(mainOrder.user, key) }} padalinys:</td>
         </tr>
         {% for order in divOrders %}
             <tr class="no-border-line">

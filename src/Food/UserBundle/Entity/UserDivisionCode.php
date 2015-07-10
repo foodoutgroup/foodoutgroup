@@ -27,6 +27,13 @@ class UserDivisionCode
     private $code;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="division", type="string", length=256)
+     */
+    private $division;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="divisionCodes")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
@@ -96,5 +103,28 @@ class UserDivisionCode
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set division
+     *
+     * @param string $division
+     * @return UserDivisionCode
+     */
+    public function setDivision($division)
+    {
+        $this->division = $division;
+    
+        return $this;
+    }
+
+    /**
+     * Get division
+     *
+     * @return string 
+     */
+    public function getDivision()
+    {
+        return $this->division;
     }
 }
