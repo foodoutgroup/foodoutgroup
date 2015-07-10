@@ -542,7 +542,12 @@ input.button {}
 .items-list-title .button,
 .dropdown .button,
 .items-bottom .button {float: right; line-height: 21px; background: url(/bundles/foodapp/images/button-grad.png) repeat-x left top; border-radius: 3px; font-size: 10px; text-transform: uppercase; color: #fff; box-shadow: 0 1px 1px #779e04; padding: 0 21px; margin-top: 10px; padding-top: 3px; padding-bottom: 1px; letter-spacing: 1.6px; border: 1px solid #88b405; width: 136px; text-align: center;}
-
+.dropdown .button .caret {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background: url(/bundles/foodapp/images/caret-down.png) no-repeat;
+}
 
 /*Cupons list*/
 .cupom-item {text-align: center; margin-bottom: 5px; display: inline-block;}
