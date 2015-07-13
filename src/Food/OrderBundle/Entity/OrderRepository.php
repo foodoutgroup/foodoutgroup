@@ -353,7 +353,8 @@ class OrderRepository extends EntityRepository
                         break;
 
                     case 'not_solved':
-                        $qb->andWhere('o.problemSolved != :'.$filterName);
+                        $qb->andWhere('(o.problemSolved != 1 OR o.problemSolved IS NULL)');
+                        unset($filter['not_solved']);
                         break;
 
                     case 'only_to_nav':
