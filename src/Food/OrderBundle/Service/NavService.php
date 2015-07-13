@@ -325,6 +325,14 @@ class NavService extends ContainerAware
 
     public function putTheOrderToTheNAV(Order $order)
     {
+
+        @mail(
+            "paulius@foodout.lt",
+            "putTheOrderToTheNAV backtrace #".$order->getId(),
+            print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 0), true),
+            "FROM: info@foodout.lt"
+        );
+
         $orderNewId = $this->getNavOrderId($order);
 
         $orderRow = null;
