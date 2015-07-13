@@ -256,7 +256,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
 
                         // save extra order data to separate table
                         $orderExtra = new OrderExtra();
-                        $orderExtra->setOrder($this->getOrder());
+                        $orderExtra->setOrder($order);
 
                         $orderExtra->setFirstname($user->getFirstname())
                             ->setLastname($user->getLastname())
