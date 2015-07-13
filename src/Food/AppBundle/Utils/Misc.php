@@ -314,4 +314,34 @@ class Misc
 
         return $fraudPossible;
     }
+
+    /**
+     * @param $user
+     * @param $code
+     * @return string
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getDivisionName($user, $code)
+    {
+        if (!$user instanceof User) {
+            throw new \InvalidArgumentException('GetDivision name called without user');
+        }
+        if (empty($code)) {
+            throw new \InvalidArgumentException('GetDivision name called without code');
+        }
+
+        $repo = $this->getContainer()->get('doctrine')->getRepository('FoodUserBundle:UserDivisionCode');
+
+        $division = $repo->findOneBy(array(
+            'user' => $user,
+            'code' => $code,
+        ));
+
+        if (!$division) {
+            return '';
+        }
+
+        return $division->getDivision();
+    }
 }

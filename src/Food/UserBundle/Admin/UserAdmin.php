@@ -17,6 +17,7 @@ class UserAdmin extends SonataUserAdmin {
             ->add('place', 'text', array('label' => 'admin.users.place'))
             ->add('enabled', null, array('editable' => true, 'label' => 'admin.users.enabled'))
             ->add('locked', null, array('editable' => true, 'label' => 'admin.users.locked'))
+            ->add('isBussinesClient', null, array('editable' => true, 'label' => 'admin.users.bussines_client'))
             ->add('lastLogin', null, array('format' => 'Y-m-d H:i:s', 'label' => 'admin.users.last_login'))
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -41,6 +42,8 @@ class UserAdmin extends SonataUserAdmin {
             ->add('email', null, array('label' => 'admin.users.email'))
             ->add('phone', null, array('label' => 'admin.users.phone'))
             ->add('place')
+            ->add('isBussinesClient', null, array('label' => 'admin.users.bussines_client'))
+            ->add('companyName', null, array('label' => 'admin.users.company_name'))
         ;
     }
 
@@ -118,6 +121,21 @@ class UserAdmin extends SonataUserAdmin {
                 ->add('locked', null, array('required' => false, 'label' => 'admin.users.locked'))
                 ->add('enabled', null, array('required' => false, 'label' => 'admin.users.enabled'))
                 ->end()
+                ->with('admin.users.bussines_management')
+                ->add('isBussinesClient', null, array('required' => false, 'label' => 'admin.users.bussines_client'))
+                ->add('companyName', null, array('required' => false, 'label' => 'admin.users.company_name'))
+                ->add('companyCode', null, array('required' => false, 'label' => 'admin.users.company_code'))
+                ->add('vatCode', null, array('required' => false, 'label' => 'admin.users.vat_code'))
+                ->add('company_address', null, array('required' => false, 'label' => 'admin.users.company_address'))
+                ->add('divisionCodes', 'sonata_type_collection',
+                    array('required' => false, 'label' => 'admin.users.division_codes'),
+                    array(
+                        'edit' => 'inline',
+                        'inline' => 'table',
+//                        'template' => 'FoodDishesBundle:Default:point_inline_edit.html.twig'
+                    )
+                )
+                ->end()
             ;
         }
     }
@@ -132,4 +150,39 @@ class UserAdmin extends SonataUserAdmin {
         return $this->getConfigurationPool()->getContainer()->get('fos_user.user_manager');
     }
 
+
+    /**
+     * If user is a moderator - set place, as he can not choose it. Chuck Norris protection is active
+     *
+     * @param \Food\DishesBundle\Entity\Dish $object
+     * @return void
+     */
+    public function prePersist($object)
+    {
+
+        parent::prePersist($object);
+        $this->fixRelations($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Dish $object
+     * @return void
+     */
+    public function preUpdate($object)
+    {
+        $this->fixRelations($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Dish $object
+     */
+    private function fixRelations($object)
+    {
+        $divisions = $object->getDivisionCodes();
+        if (!empty($divisions)) {
+            foreach ($divisions as $division) {
+                $division->setUser($object);
+            }
+        }
+    }
 }

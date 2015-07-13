@@ -1,3 +1,9 @@
 <a href="{{ path('user_profile') }}" class="profile-button">
-    <span>{% trans with {'%firstname%': language_utils.name(user.firstname, locale)} %}general.profile_button{% endtrans %}</span>
+    <span>
+        {% if app.user.isBussinesClient|default(false) %}
+            {% trans with {'%firstname%': user.firstname} %}general.profile_button{% endtrans %}
+        {% else %}
+            {% trans with {'%firstname%': language_utils.name(user.firstname, locale)} %}general.profile_button{% endtrans %}
+        {% endif %}
+    </span>
 </a>

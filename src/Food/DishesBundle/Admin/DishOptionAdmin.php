@@ -49,7 +49,6 @@ class DishOptionAdmin extends FoodAdmin
             ->add('code', null, array('label' => 'admin.dish_option.code'))
             ->add('subCode', null, array('label' => 'admin.dish_option.sub_code'))
             ->add('price', null, array('label' => 'admin.dish_option.price'))
-            ->add('createdBy', null, array('label' => 'admin.created_by'))
 //            ->add(
 //                'createdAt',
 //                'doctrine_orm_datetime_range',

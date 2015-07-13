@@ -307,6 +307,18 @@ class Order
 
     /**
      * @var bool
+     * @ORM\Column(name="is_corporate_client", type="boolean", nullable=true)
+     */
+    private $isCorporateClient = false;
+
+    /**
+     * @var string
+     * @ORM\Column(name="division_code", type="string", length=60, nullable=true)
+     */
+    private $divisionCode;
+
+    /**
+     * @var bool
      * @ORM\Column(name="reminded", type="boolean", nullable=true)
      */
     private $reminded = false;
@@ -369,6 +381,12 @@ class Order
      * @ORM\Column(name="client_contacted", type="boolean", nullable=true)
      */
     private $clientContacted = false;
+
+    /**
+     * @var \Food\OrderBundle\Entity\OrderExtra
+     * @ORM\OneToOne(targetEntity="\Food\OrderBundle\Entity\OrderExtra", mappedBy="order", cascade={"persist"})
+     **/
+    private $orderExtra;
 
     /**
      * @return string
@@ -1941,5 +1959,100 @@ class Order
         $this->smsMessages[] = $smsMessages;
     
         return $this;
+    }
+
+    /**
+     * Set orderExtra
+     *
+     * @param \Food\OrderBundle\Entity\OrderExtra $orderExtra
+     * @return Order
+     */
+    public function setOrderExtra(\Food\OrderBundle\Entity\OrderExtra $orderExtra = null)
+    {
+        $this->orderExtra = $orderExtra;
+    
+        return $this;
+    }
+
+    /**
+     * Get orderExtra
+     *
+     * @return \Food\OrderBundle\Entity\OrderExtra 
+     */
+    public function getOrderExtra()
+    {
+        return $this->orderExtra;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserContact()
+    {
+        if (!$this->getId()) {
+            return '';
+        }
+        $userContactData = $this->getOrderExtra()->getFirstname();
+        $surname = $this->getOrderExtra()->getLastname();
+        $email = $this->getOrderExtra()->getEmail();
+        $phone = $this->getOrderExtra()->getPhone();
+
+        if (!empty($surname)) {
+            $userContactData .= ' '.$surname;
+        }
+        if (!empty($email)) {
+            $userContactData .= ', '.$email;
+        }
+        if (!empty($phone)) {
+            $userContactData .= ', '.$phone;
+        }
+
+        return $userContactData;
+    }
+
+    /**
+     * Set divisionCode
+     *
+     * @param string $divisionCode
+     * @return Order
+     */
+    public function setDivisionCode($divisionCode)
+    {
+        $this->divisionCode = $divisionCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get divisionCode
+     *
+     * @return string 
+     */
+    public function getDivisionCode()
+    {
+        return $this->divisionCode;
+    }
+
+    /**
+     * Set isCorporateClient
+     *
+     * @param boolean $isCorporateClient
+     * @return Order
+     */
+    public function setIsCorporateClient($isCorporateClient)
+    {
+        $this->isCorporateClient = $isCorporateClient;
+    
+        return $this;
+    }
+
+    /**
+     * Get isCorporateClient
+     *
+     * @return boolean 
+     */
+    public function getIsCorporateClient()
+    {
+        return $this->isCorporateClient;
     }
 }

@@ -279,7 +279,7 @@ class LogisticsService extends ContainerAware
         //End coordinates block
         $writer->endElement();
         $writer->writeElement('CustomerName', $order->getUser()->getFirstname());
-        $writer->writeElement('Phone', $order->getUser()->getPhone());
+        $writer->writeElement('Phone', $order->getOrderExtra()->getPhone());
         $writer->writeElement('CustomerComment', $order->getComment());
         // End delivery block
         $writer->endElement();

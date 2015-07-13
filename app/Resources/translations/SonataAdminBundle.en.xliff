@@ -658,6 +658,42 @@
                 <source>ROLE_SUPPORT</source>
                 <target>Support</target>
             </trans-unit>
+            <trans-unit id="admin.users.bussines_management">
+                <source>admin.users.bussines_management</source>
+                <target>Bussines client management</target>
+            </trans-unit>
+            <trans-unit id="admin.users.bussines_client">
+                <source>admin.users.bussines_client</source>
+                <target>Bussines client</target>
+            </trans-unit>
+            <trans-unit id="admin.users.division_codes">
+                <source>admin.users.division_codes</source>
+                <target>Division codes</target>
+            </trans-unit>
+            <trans-unit id="admin.users.company_name">
+                <source>admin.users.company_name</source>
+                <target>Company name</target>
+            </trans-unit>
+            <trans-unit id="admin.users.company_code">
+                <source>admin.users.company_code</source>
+                <target>Company code</target>
+            </trans-unit>
+            <trans-unit id="admin.users.vat_code">
+                <source>admin.users.vat_code</source>
+                <target>VAT code</target>
+            </trans-unit>
+            <trans-unit id="admin.users.company_address">
+                <source>admin.users.company_address</source>
+                <target>Company address</target>
+            </trans-unit>
+            <trans-unit id="admin.users_dision_code.code">
+                <source>admin.users_dision_code.code</source>
+                <target>Code</target>
+            </trans-unit>
+            <trans-unit id="admin.users_dision_code.division">
+                <source>admin.users_dision_code.division</source>
+                <target>Division</target>
+            </trans-unit>
 
             <!-- Static content -->
             <trans-unit id="admin.static">
@@ -1119,6 +1155,18 @@
             <trans-unit id="admin.order.companyAddress">
                 <source>admin.order.companyAddress</source>
                 <target>Address</target>
+            </trans-unit>
+            <trans-unit id="admin.order.division_code">
+                <source>admin.order.division_code</source>
+                <target>Division code</target>
+            </trans-unit>
+            <trans-unit id="admin.order.division_name">
+                <source>admin.order.division_name</source>
+                <target>Division name</target>
+            </trans-unit>
+            <trans-unit id="admin.order.corporate_client_name">
+                <source>admin.order.corporate_client_name</source>
+                <target>Order taker</target>
             </trans-unit>
 
             <!-- Order logas pas sonata admina -->

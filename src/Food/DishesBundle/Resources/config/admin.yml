@@ -155,6 +155,17 @@ services:
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.users_division_code:
+        class: Food\UserBundle\Admin\UserDivisionCodeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Users", label: "admin.users_division_code" }
+        arguments:
+            - ~
+            - Food\UserBundle\Entity\UserDivisionCode
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
     sonata.admin.static:
         class: Food\AppBundle\Admin\StaticContentAdmin
         tags:

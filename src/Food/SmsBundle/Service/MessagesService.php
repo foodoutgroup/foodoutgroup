@@ -442,7 +442,7 @@ class MessagesService {
 
         $message = $this->createMessage(
             $this->getContainer()->getParameter('sms.sender'),
-            $order->getUser()->getPhone(),
+            $order->getOrderExtra()->getPhone(),
             $text
         );
 

@@ -136,8 +136,8 @@ class OrderAdmin extends SonataAdmin
             return;
         }
 
-        $queryBuilder->join(sprintf('%s.user', $alias), 'fu');
-        $queryBuilder->andWhere("fu.phone LIKE :thephone");
+        $queryBuilder->join(sprintf('%s.orderExtra', $alias), 'oe');
+        $queryBuilder->andWhere("oe.phone LIKE :thephone");
         $queryBuilder->setParameter('thephone', '%'.str_replace("+", "", $value['value']).'%');
 
         return true;
