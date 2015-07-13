@@ -383,6 +383,12 @@ class Order
     private $clientContacted = false;
 
     /**
+     * @var bool
+     * @ORM\Column(name="problem_solved", type="boolean", nullable=true)
+     */
+    private $problemSolved = false;
+
+    /**
      * @var \Food\OrderBundle\Entity\OrderExtra
      * @ORM\OneToOne(targetEntity="\Food\OrderBundle\Entity\OrderExtra", mappedBy="order", cascade={"persist"})
      **/
@@ -2054,5 +2060,28 @@ class Order
     public function getIsCorporateClient()
     {
         return $this->isCorporateClient;
+    }
+
+    /**
+     * Set problemSolved
+     *
+     * @param boolean $problemSolved
+     * @return Order
+     */
+    public function setProblemSolved($problemSolved)
+    {
+        $this->problemSolved = $problemSolved;
+    
+        return $this;
+    }
+
+    /**
+     * Get problemSolved
+     *
+     * @return boolean 
+     */
+    public function getProblemSolved()
+    {
+        return $this->problemSolved;
     }
 }

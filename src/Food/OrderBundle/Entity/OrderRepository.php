@@ -136,6 +136,32 @@ class OrderRepository extends EntityRepository
     }
 
     /**
+     * @param string $city
+     * @return array|Order[]
+     */
+    public function getOrdersNavProblems($city)
+    {
+        $filter = array(
+            'order_status' =>  OrderService::$status_nav_problems,
+            'place_point_city' => $city,
+            'paymentStatus' => OrderService::$paymentStatusComplete,
+            'order_date_between' => array(
+                'from' => new \DateTime('-4 hour'),
+                'to' => new \DateTime('now'),
+            ),
+            'not_solved' => true,
+        );
+
+        $orders = $this->getOrdersByFilter($filter, 'list');
+
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
+
+    /**
      * @var string|null $date
      * @return array
      */
@@ -324,6 +350,10 @@ class OrderRepository extends EntityRepository
 
                     case 'not_nav':
                         $qb->andWhere('o.orderFromNav != :'.$filterName);
+                        break;
+
+                    case 'not_solved':
+                        $qb->andWhere('o.problemSolved != :'.$filterName);
                         break;
 
                     case 'only_to_nav':

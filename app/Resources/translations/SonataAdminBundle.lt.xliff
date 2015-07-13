@@ -1328,6 +1328,10 @@
                 <source>admin.dispatcher.canceled</source>
                 <target>Atšaukti</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.nav_problems">
+                <source>admin.dispatcher.nav_problems</source>
+                <target>Probleminiai</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.client_phone">
                 <source>admin.dispatcher.client_phone</source>
                 <target>Užsak. tel.</target>
@@ -1340,6 +1344,10 @@
                 <source>admin.dispatcher.client_contacted</source>
                 <target>Susisiekta su klientu</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.problem_solved">
+                <source>admin.dispatcher.problem_solved</source>
+                <target>Išspręsta</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.unconfirmed_pickup">
                 <source>admin.dispatcher.unconfirmed_pickup</source>
                 <target>Nepatvirtinti atsiėmimai restorane</target>
@@ -1350,7 +1358,7 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.city_tip">
                 <source>admin.dispatcher.city_tip</source>
-                <target><![CDATA[Nepatikrinti: unapprovedCount<br />Nepriskirti: unassignedCount<br />Nepatvirtinti: unconfirmedCount<br />Nepristatyti: notfinishedCount<br />Atšaukti: canceledCount]]></target>
+                <target><![CDATA[Nepatikrinti: unapprovedCount<br />Nepriskirti: unassignedCount<br />Nepatvirtinti: unconfirmedCount<br />Nepristatyti: notfinishedCount<br />Atšaukti: canceledCount<br />Probleminiai: navProblemsCount]]></target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.place">
                 <source>admin.dispatcher.place</source>

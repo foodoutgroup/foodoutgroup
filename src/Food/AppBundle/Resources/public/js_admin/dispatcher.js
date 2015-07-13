@@ -77,6 +77,10 @@ var Dispatcher = {
             Dispatcher.toggleClientContacted($(this));
         });
 
+        $(".order_list .problem_solved_check .client_contacted").bind('click', function(){
+            Dispatcher.toggleProblemSolved($(this));
+        });
+
         Dispatcher.subscribeForNewOrders();
     },
 
@@ -221,6 +225,30 @@ var Dispatcher = {
             {
                 'order': checkbox.attr('item-id'),
                 'status': contactedStatus
+            },
+            function(data) {
+                if (data == "YES") {
+                    location.reload();
+                }
+            }
+        );
+    },
+
+    /**
+     * Mark order problem as solved
+     */
+    toggleProblemSolved: function(checkbox) {
+        var url = Routing.generate('food_admin_mark_order_problem_solved', { '_locale': Dispatcher._locale, _sonata_admin: 'sonata.admin.dish' });
+        var solvedStatus = 0;
+        if (checkbox.is(":checked")) {
+            solvedStatus = 1;
+        }
+
+        $.post(
+            url,
+            {
+                'order': checkbox.attr('item-id'),
+                'status': solvedStatus
             },
             function(data) {
                 if (data == "YES") {

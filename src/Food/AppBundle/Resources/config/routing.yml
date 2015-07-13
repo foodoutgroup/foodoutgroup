@@ -188,6 +188,14 @@ food_admin_mark_order_contacted:
     requirements:
           _method:  POST
 
+food_admin_mark_order_problem_solved:
+    pattern: /admin/dispatcher/mark-solved/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:markOrderSolved}
+    options:
+        expose: true
+    requirements:
+          _method:  POST
+
 food_admin_get_place_unit_categories:
     pattern: /admin/place/get-unit-categories/{placeId}
     defaults: {_controller: FoodDishesBundle:DishUnitAdmin:getUnitCategoryOptionsFromPlace}

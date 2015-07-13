@@ -1308,6 +1308,10 @@
                 <source>admin.dispatcher.canceled</source>
                 <target>Canceled</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.nav_problems">
+                <source>admin.dispatcher.nav_problems</source>
+                <target>Problems</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.client_phone">
                 <source>admin.dispatcher.client_phone</source>
                 <target>Client phone</target>
@@ -1320,6 +1324,10 @@
                 <source>admin.dispatcher.client_contacted</source>
                 <target>Client contacted</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.problem_solved">
+                <source>admin.dispatcher.problem_solved</source>
+                <target>Solved</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.unconfirmed_pickup">
                 <source>admin.dispatcher.unconfirmed_pickup</source>
                 <target>Uncomfirmed pickups</target>
@@ -1330,7 +1338,7 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.city_tip">
                 <source>admin.dispatcher.city_tip</source>
-                <target><![CDATA[Unapproved: unapprovedCount<br />Unassigned: unassignedCount<br />Unconfirmed: unconfirmedCount<br />Undelivered: notfinishedCount<br />Canceled: canceledCount]]></target>
+                <target><![CDATA[Unapproved: unapprovedCount<br />Unassigned: unassignedCount<br />Unconfirmed: unconfirmedCount<br />Undelivered: notfinishedCount<br />Canceled: canceledCount<br />Problems: navProblemsCount]]></target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.place">
                 <source>admin.dispatcher.place</source>
