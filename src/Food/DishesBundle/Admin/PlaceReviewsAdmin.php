@@ -75,7 +75,7 @@ class PlaceReviewsAdmin extends FoodAdmin
                 ->add('place');
         }
         $datagridMapper
-            ->add('createdBy', null, array('label' => 'admin.created_by'))
+//            ->add('createdBy', null, array('label' => 'admin.created_by'))
 //            ->add(
 //                'createdAt',
 //                'doctrine_orm_datetime_range',

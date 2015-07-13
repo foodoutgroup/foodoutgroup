@@ -73,7 +73,7 @@ class DishUnitAdmin extends FoodAdmin
             $datagridMapper->add('place');
         }
 
-        $datagridMapper->add('createdBy', null, array('label' => 'admin.created_by'))
+//        $datagridMapper->add('createdBy', null, array('label' => 'admin.created_by'))
 //            ->add(
 //                'createdAt',
 //                'doctrine_orm_datetime_range',
@@ -98,7 +98,7 @@ class DishUnitAdmin extends FoodAdmin
 //                    'attr' => array('class' => 'datepicker')
 //                )
 //            )
-        ;
+//        ;
     }
 
     // Fields to be shown on lists

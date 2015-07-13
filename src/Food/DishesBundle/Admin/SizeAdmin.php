@@ -84,7 +84,7 @@ class SizeAdmin extends FoodAdmin
         $datagridMapper
             ->add('name', null, array('label' => 'admin.size.name'))
             ->add('place')
-            ->add('createdBy', null, array('label' => 'admin.created_by'))
+//            ->add('createdBy', null, array('label' => 'admin.created_by'))
 //            ->add(
 //                'createdAt',
 //                'doctrine_orm_datetime_range',
