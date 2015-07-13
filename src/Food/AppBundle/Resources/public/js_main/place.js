@@ -265,13 +265,13 @@ var Place = {
     },
     moveBlocks: function(init) {
         var windowTop = $(window).scrollTop();
-        if (this.catmenuOffset.top < windowTop || init == true) {
+        if (this.catmenuOffset.top < windowTop || (init == true && this.cartOffset.top < windowTop)) {
             this.catmenuObj.css({position: 'fixed', top: 0});
         } else {
             this.catmenuObj.css('position', 'static');
         }
 
-        if (this.cartOffset.top < windowTop || init == true) {
+        if (this.cartOffset.top < windowTop || (init == true && this.cartOffset.top < windowTop)) {
             this.cartObj.css({position: 'fixed', top: '10px'});
         } else {
             this.cartObj.css('position', 'static');
