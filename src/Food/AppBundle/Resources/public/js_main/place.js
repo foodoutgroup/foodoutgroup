@@ -236,7 +236,9 @@ var Place = {
     },
     catmenuObj: null,
     catmenuHeight: 0,
+    cartHeight: 0,
     catmenuOffset: {},
+    cartOffset: {},
     contentHeight: 0,
     cartObj: null,
     initWindowScroll: function() {
@@ -244,25 +246,35 @@ var Place = {
         this.cartObj = $("#cartmnu");
         this.catmenuOffset = this.catmenuObj.offset();
         this.catmenuHeight = this.catmenuObj.height();
+        this.cartOffset = this.cartObj.offset();
+        this.cartHeight = this.cartObj.height();
         $(window).bind('scroll', function(){
             Place.moveBlocks();
         });
+        Place.initCartScroll();
     },
-    moveBlocks: function() {
-        var scTop = $(document).scrollTop();
-        this.contentHeight = $('#detailed-restaurant-menu').height()-30;
-        var newTop = scTop - this.catmenuOffset.top;
-        if (this.catmenuOffset.top < scTop+80) {
-            if (newTop + this.catmenuHeight > this.contentHeight) {
-                newTop = this.contentHeight - this.catmenuHeight;
-            }
-            if(this.catmenuOffset.top < scTop) {
-                this.catmenuObj.css('top', newTop);
-            }
-            this.cartObj.css('margin-top', newTop+80);
+    initCartScroll: function() {
+        this.cartObj = $("#cartmnu");
+        this.cartOffset = this.cartObj.offset();
+        this.cartHeight = this.cartObj.height();
+        if ($('.check-item').length <= 5) {
+            this.cartObj.css('overflow', 'visible').removeClass('no-before');
         } else {
-            this.catmenuObj.css('top', 0);
-            this.cartObj.css('margin-top', 0);
+            this.cartObj.css('overflow-y', 'auto').addClass('no-before');
+        }
+    },
+    moveBlocks: function(init) {
+        var windowTop = $(window).scrollTop();
+        if (this.catmenuOffset.top < windowTop || (init == true && this.cartOffset.top < windowTop)) {
+            this.catmenuObj.css({position: 'fixed', top: 0});
+        } else {
+            this.catmenuObj.css('position', 'static');
+        }
+
+        if (this.cartOffset.top < windowTop || (init == true && this.cartOffset.top < windowTop)) {
+            this.cartObj.css({position: 'fixed', top: '10px'});
+        } else {
+            this.cartObj.css('position', 'static');
         }
     }
 }

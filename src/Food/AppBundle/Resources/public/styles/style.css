@@ -646,7 +646,27 @@ input.button {}
 
 
 /*Check block*/
-.check-block {background: #fff; border-radius: 4px; padding: 13px; position: relative;}
+.check-block {
+    position: relative;
+    padding: 13px;
+    max-width: 154px;
+    background: #fff;
+    border-radius: 4px;
+    max-height: 925px;
+    max-height: 95vh !important;
+    overflow: auto;
+    overflow-x: hidden;
+    z-index: 10;
+}
+.check-block::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 4px;
+}
+.check-block::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: #cd1d36;
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.75);
+}
 .check-block:before {
     display: inline-block;
     content: '';
@@ -657,6 +677,9 @@ input.button {}
     width: 182px;
     height: 18px;
     bottom: -6px;
+}
+.check-block.no-before:before {
+    display: none;
 }
 .check-block h5 {color: #55422e; font-size: 18px; font-weight: normal; margin-top: 11px; margin-bottom: 11px;}
 .check-item {padding: 10px 3px; border-top: 1px dashed #a9a197;}
