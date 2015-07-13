@@ -333,7 +333,7 @@ class NavService extends ContainerAware
         $flatNr = "";
         if ($order->getAddressId()) {
             $target = $order->getAddressId()->getAddress();
-            preg_match('/(([0-9]{1,3})[-|\s]{0,4}([0-9]{0,3}))$/i', $target, $errz);
+            preg_match('/(([0-9]{1,3}[a-z]{0,1})[-|\s]{0,4}([0-9]{0,3}))$/i', $target, $errz);
             $street = trim(str_replace($errz[0], '', $target));
             $houseNr = (!empty($errz[2]) ? $errz[2] : '');
             $flatNr = (!empty($errz[3]) ? $errz[3] : '');
@@ -577,7 +577,7 @@ class NavService extends ContainerAware
         $placeDiscountPriceEnabled = $detail->getOrderId()->getPlace()->getDiscountPricesEnabled();
         $detailPercentDiscount = $detail->getPercentDiscount();
 
-        if (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && empty($detailPercentDiscount)) {
+        if (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && empty($detailPercentDiscount) && $discountInOrder > 0) {
             $discountAmount = $paymentAmount - round($paymentAmount * ((100 - intval($discountInOrder))/100), 2);
         } elseif (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && !empty($detailPercentDiscount)) {
             $discountAmount = ($detail->getOrigPrice() - $detail->getPrice()) * $detail->getQuantity();

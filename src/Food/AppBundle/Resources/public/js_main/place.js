@@ -13,6 +13,12 @@ $(document).ready(function() {
             Place.showPointMap(Place.lastPointData, true);
         }
     } );
+
+    // Categories dropdown max-height
+    var scrollable_menu = $('.scrollable-menu');
+    if (typeof scrollable_menu != "undefined" && scrollable_menu.length) {
+        scrollable_menu.css('max-height', $(window.top).height() - 365);
+    }
 });
 
 var Place = {
@@ -251,11 +257,11 @@ var Place = {
                 newTop = this.contentHeight - this.catmenuHeight;
             }
             if(this.catmenuOffset.top < scTop) {
-                //this.catmenuObj.css('top', newTop);
+                this.catmenuObj.css('top', newTop);
             }
             this.cartObj.css('margin-top', newTop+80);
         } else {
-            // this.catmenuObj.css('top', 0);
+            this.catmenuObj.css('top', 0);
             this.cartObj.css('margin-top', 0);
         }
     }

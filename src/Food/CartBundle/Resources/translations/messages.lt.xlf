@@ -298,15 +298,15 @@ Vilnius]]></target>
         </trans-unit>
         <trans-unit id="order.form.errors.today_no_work" resname="order.form.errors.today_no_work">
             <source>order.form.errors.today_no_work</source>
-            <target>Restoranas šiandien nedirba.</target>
+            <target>Restoranas nedirba.</target>
         </trans-unit>
         <trans-unit id="order.form.errors.isnt_open" resname="order.form.errors.isnt_open">
             <source>order.form.errors.isnt_open</source>
-            <target>Restoranas šiandien dar nepradėjo dirbti.</target>
+            <target>Restoranas dar nedirba.</target>
         </trans-unit>
         <trans-unit id="order.form.errors.is_already_close" resname="order.form.errors.is_already_close">
             <source>order.form.errors.is_already_close</source>
-            <target>Restoranas šiandien jau nebedirba.</target>
+            <target>Restoranas jau nebedirba.</target>
         </trans-unit>
         <trans-unit id="order.form.errors.cart_rules" resname="order.form.errors.cart_rules">
             <source>order.form.errors.cart_rules</source>
