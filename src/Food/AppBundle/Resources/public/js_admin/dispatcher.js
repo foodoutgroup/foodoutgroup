@@ -77,7 +77,7 @@ var Dispatcher = {
             Dispatcher.toggleClientContacted($(this));
         });
 
-        $(".order_list .problem_solved_check .client_contacted").bind('click', function(){
+        $(".order_list .problem_solved_check .problem_solved").bind('click', function(){
             Dispatcher.toggleProblemSolved($(this));
         });
 

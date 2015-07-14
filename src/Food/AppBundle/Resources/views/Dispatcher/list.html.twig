@@ -215,8 +215,8 @@
                     </td>
                     {% endif %}
                     {% if type == 'nav_problems' %}
-                    <td class="client_contacted_check">
-                        <input type="checkbox" id="solved_{{ order.id }}" class="problem_solced" item-id="{{ order.id }}" {% if order.problemSolved == 1 %}checked="checked" {% endif %}/>
+                    <td class="problem_solved_check">
+                        <input type="checkbox" id="solved_{{ order.id }}" class="problem_solved" item-id="{{ order.id }}" {% if order.problemSolved == 1 %}checked="checked" {% endif %}/>
                     </td>
                     {% endif %}
                 </tr>
