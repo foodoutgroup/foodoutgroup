@@ -649,7 +649,7 @@ input.button {}
 .check-block {
     position: relative;
     padding: 13px;
-    max-width: 154px;
+    width: 154px;
     background: #fff;
     border-radius: 4px;
     max-height: 925px;
