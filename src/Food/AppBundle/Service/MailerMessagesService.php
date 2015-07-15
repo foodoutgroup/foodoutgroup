@@ -203,4 +203,11 @@ class MailerMessagesService extends MailerRestBaseService
 
         return $this->execute( 'POST', $data );
     }
+
+    public function addAll($subscribers, $resubscribe = 0) {
+        $this->path = $this->url . 'subscribers/' . $this->id . '/';
+        $data['resubscribe'] = $resubscribe;
+        $data['subscribers'] = $subscribers;
+        return $this->execute('POST', $data, 'import');
+    }
 }
