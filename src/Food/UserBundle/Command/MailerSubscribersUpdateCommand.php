@@ -16,7 +16,7 @@ class MailerSubscribersUpdateCommand extends ContainerAwareCommand
             ->setName('mailer:subscribers:update')
             ->setDescription('Update subscribers list for mailer.lt')
             ->setHelp('You must specify a list ID --list_id option. Ex.: 2023873 (more at: foodout.mailer.lt/groups/)')
-            ->addOption('list_id', null, InputOption::VALUE_REQUIRED, 'Specifiy a list ID, for example: --list_id 2023873')
+            ->addOption('list_id', null, InputOption::VALUE_REQUIRED, 'Specify a list ID, for example: --list_id 2023873')
         ;
     }
 
