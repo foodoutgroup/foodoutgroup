@@ -329,7 +329,7 @@ class NavService extends ContainerAware
         @mail(
             "paulius@foodout.lt",
             "putTheOrderToTheNAV backtrace #".$order->getId(),
-            print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 0), true),
+            date("Y-m-d H:i:s")."\n\n\n".print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 0), true),
             "FROM: info@foodout.lt"
         );
 
