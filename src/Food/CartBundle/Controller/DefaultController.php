@@ -432,7 +432,7 @@ class DefaultController extends Controller
 
         $sessionTakeAway = $this->container->get('session')->get('cart_delivery_'.$place->getId(), null);
         if ($sessionTakeAway !== null) {
-//            $takeAway = $sessionTakeAway;
+            $takeAway = $sessionTakeAway;
             // TODO think about it
         }
 

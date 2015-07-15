@@ -172,16 +172,20 @@
         });
         var takeAway = 0;
         $('#cartmnu').on('ifToggled', '.cart_delivery_type input',function (event) {
+            var hadSticky = $('.check-block').hasClass('sticky');
             if (event.target.checked) {
                 if (event.target.value == 'pickup') {
                     takeAway = 1;
                 }
-                $('.content-righter-small').mask();
+                $('.check-block').mask();
                 var url = Routing.generate('food_cart_action', { 'action': 'set_delivery', '_locale': '{{ locale }}', 'place': {{ place.id }}, in_cart: 0, coupon_code: '', take_away: takeAway  });
                 $.post(url, function (response) {
                     if (typeof(response.block) != "undefined") {
-                        $('.content-righter-small').unmask();
-                        $('.check-block').replaceWith(response.block);
+                        $('.check-block').replaceWith(response.block).unmask();
+                        if (hadSticky) {
+                            Place.initCartScroll();
+                            Place.moveBlocks(true);
+                        }
                     }
                 }, 'json');
             }

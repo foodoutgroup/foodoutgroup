@@ -654,9 +654,20 @@ input.button {}
     border-radius: 4px;
     max-height: 925px;
     max-height: 95vh !important;
-    overflow: auto;
-    overflow-x: hidden;
     z-index: 10;
+}
+.check-block.overflow_auto {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.sticky {
+    position: fixed;
+}
+.menu-lefter.sticky {
+    top: 0px;
+}
+.check-block.sticky {
+    top: 10px;
 }
 .check-block::-webkit-scrollbar {
     -webkit-appearance: none;
@@ -678,7 +689,7 @@ input.button {}
     height: 18px;
     bottom: -6px;
 }
-.check-block.no-before:before {
+.check-block.overflow_auto:before {
     display: none;
 }
 .check-block h5 {color: #55422e; font-size: 18px; font-weight: normal; margin-top: 11px; margin-bottom: 11px;}
