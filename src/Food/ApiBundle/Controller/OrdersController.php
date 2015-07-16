@@ -41,7 +41,7 @@ class OrdersController extends Controller
             $errBody = $e->getMessage();
             $errBody.= "\n\n\n";
             $errBody.= $e->getTraceAsString();
-            @mail("paulius@foodout.lt", "GET ORDERS ERROR ".date("Y-m-s"), $errBody, "FROM: info@foodout.lt");
+            @mail("paulius@foodout.lt", "GET ORDERS ERROR ".date("Y-m-d H:i:s"), $errBody, "FROM: info@foodout.lt");
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
@@ -68,7 +68,7 @@ class OrdersController extends Controller
             $errBody = $e->getMessage();
             $errBody.= "\n\n\n";
             $errBody.= $e->getTraceAsString();
-            @mail("paulius@foodout.lt", "CREATE ORDER ERROR ".date("Y-m-s"), $errBody, "FROM: info@foodout.lt");
+            @mail("paulius@foodout.lt", "CREATE ORDER ERROR ".date("Y-m-d H:i:s"), $errBody, "FROM: info@foodout.lt");
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
@@ -95,7 +95,7 @@ class OrdersController extends Controller
             $errBody = $e->getMessage();
             $errBody.= "\n\n\n";
             $errBody.= $e->getTraceAsString();
-            @mail("paulius@foodout.lt", "CREATE ORDER PRE ERROR ".date("Y-m-s"), $errBody, "FROM: info@foodout.lt");
+            @mail("paulius@foodout.lt", "CREATE ORDER PRE ERROR ".date("Y-m-d H:i:s"), $errBody, "FROM: info@foodout.lt");
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
@@ -134,7 +134,7 @@ class OrdersController extends Controller
             $errBody = $e->getMessage();
             $errBody.= "\n\n\n";
             $errBody.= $e->getTraceAsString();
-            @mail("paulius@foodout.lt", "GET ORDER DETAILS ERROR ".date("Y-m-s"), $errBody, "FROM: info@foodout.lt");
+            @mail("paulius@foodout.lt", "GET ORDER DETAILS ERROR ".date("Y-m-d H:i:s"), $errBody, "FROM: info@foodout.lt");
 
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
@@ -183,7 +183,7 @@ class OrdersController extends Controller
             $errBody = $e->getMessage();
             $errBody.= "\n\n\n";
             $errBody.= $e->getTraceAsString();
-            @mail("paulius@foodout.lt", "CONFIRM ORDER ERROR ".date("Y-m-s"), $errBody, "FROM: info@foodout.lt");
+            @mail("paulius@foodout.lt", "CONFIRM ORDER ERROR ".date("Y-m-d H:i:s"), $errBody, "FROM: info@foodout.lt");
 
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
@@ -234,7 +234,7 @@ class OrdersController extends Controller
             $errBody = $e->getMessage();
             $errBody.= "\n\n\n";
             $errBody.= $e->getTraceAsString();
-            @mail("paulius@foodout.lt", "GET ORDER STATUS ERROR ".date("Y-m-s"), $errBody, "FROM: info@foodout.lt");
+            @mail("paulius@foodout.lt", "GET ORDER STATUS ERROR ".date("Y-m-d H:i:s"), $errBody, "FROM: info@foodout.lt");
 
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
