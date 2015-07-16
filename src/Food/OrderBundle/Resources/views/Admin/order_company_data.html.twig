@@ -23,6 +23,20 @@
                     <td>{{ 'admin.order.companyAddress'|trans({}, 'SonataAdminBundle') }}</td>
                     <td>{{ object.companyAddress|nl2br }}</td>
                 </tr>
+                {% if object.isCorporateClient %}
+                    <tr>
+                        <td>{{ 'admin.order.division_code'|trans({}, 'SonataAdminBundle') }}</td>
+                        <td>{{ object.divisionCode }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'admin.order.division_name'|trans({}, 'SonataAdminBundle') }}</td>
+                        <td>{{ misc_utils.divisionName(object.user, object.divisionCode) }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'admin.order.corporate_client_name'|trans({}, 'SonataAdminBundle') }}</td>
+                        <td>{{ object.orderExtra.firstname }} {{ object.orderExtra.lastname }} {{ object.orderExtra.email }} {{ object.orderExtra.phone }}</td>
+                    </tr>
+                {% endif %}
             </table>
         </div>
     </div>

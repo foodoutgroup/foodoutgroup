@@ -389,7 +389,7 @@ trait OrderDataForNavDecorator
     protected function escapeSingleQuotes(array $data)
     {
         return array_map(
-            function($val) { return str_replace("'", "\\'", $val); },
+            function($val) { return str_replace("'", "", $val); },
             $data);
     }
 

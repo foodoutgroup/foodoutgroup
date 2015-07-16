@@ -22,7 +22,7 @@
 {% block side_menu %}{% endblock %}
 
 {% block list_table %}
-    {# type gali buti 'unapproved', 'unassigned', 'unconfirmed', 'not_finished' ;) Just in case you need that #}
+    {# type gali buti 'unapproved', 'unassigned', 'unconfirmed', 'not_finished', 'canceled', 'nav_problems' ;) Just in case you need that #}
     {% macro order_table(order_list, type, cityName) %}
         {% if type == 'unassigned' or type == 'not_finished' %}
         <div class="driver_button">
@@ -64,6 +64,9 @@
                 <th>{{ 'admin.dispatcher.status'|trans({}, 'SonataAdminBundle') }}</th>
             {% if type == 'canceled' %}
                 <th class="client_contacted_check">{{ 'admin.dispatcher.client_contacted'|trans({}, 'SonataAdminBundle') }}</th>
+            {% endif %}
+            {% if type == 'nav_problems' %}
+                <th class="problem_solved_check">{{ 'admin.dispatcher.problem_solved'|trans({}, 'SonataAdminBundle') }}</th>
             {% endif %}
             </tr>
             {% for order in order_list %}
@@ -112,7 +115,7 @@
                 {% endif %}
                 {% if type != 'unconfirmed-pickup' %}
                     <td>{{ order.addressId.address }}</td>
-                    <td>{{ order.user.phone }}</td>
+                    <td>{{ order.orderExtra.phone }}</td>
                     <td class="self_delivery">
                         {% if order.placePointSelfDelivery %}
                             <span class="glyphicon glyphicon-ok"></span>
@@ -211,6 +214,11 @@
                         <input type="checkbox" id="client_contacted_{{ order.id }}" class="client_contacted" item-id="{{ order.id }}" {% if order.clientContacted == 1 %}checked="checked" {% endif %}/>
                     </td>
                     {% endif %}
+                    {% if type == 'nav_problems' %}
+                    <td class="problem_solved_check">
+                        <input type="checkbox" id="solved_{{ order.id }}" class="problem_solved" item-id="{{ order.id }}" {% if order.problemSolved == 1 %}checked="checked" {% endif %}/>
+                    </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </table>
@@ -226,9 +234,10 @@
                 {% set cityUnconfirmed = (cityOrders[city].unconfirmed.deliver|length + cityOrders[city].unconfirmed.pickup|length) %}
                 {% set cityNotFinished = cityOrders[city].not_finished|length %}
                 {% set cityCanceled = cityOrders[city].canceled|length %}
-                {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unapprovedCount': cityUnassigned, 'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished, 'canceledCount': cityCanceled}, 'SonataAdminBundle') %}
+                {% set cityNavProblems = cityOrders[city].nav_problems|length %}
+                {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unapprovedCount': cityUnassigned, 'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished, 'canceledCount': cityCanceled, 'navProblemsCount': cityNavProblems}, 'SonataAdminBundle') %}
                 <li class="city-tab city_tabik-{{ loop.index }}">
-                    <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} ({{ cityUnapproved }}:{{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }}:{{ cityCanceled }})</a>
+                    <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} ({{ cityUnapproved }}:{{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }}:{{ cityCanceled }}:{{ cityNavProblems }})</a>
                 </li>
             {% endfor %}
         </ul>
@@ -260,6 +269,11 @@
                             {{ 'admin.dispatcher.canceled'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.canceled|length }})</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="#city-{{ loop.index }}-navproblems">
+                            {{ 'admin.dispatcher.nav_problems'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.nav_problems|length }})</span>
+                        </a>
+                    </li>
                 </ul>
                 <div id="city-{{ loop.index }}-unapproved">
                     {{ table.order_table(city.unapproved, 'unapproved', cityName) }}
@@ -281,6 +295,9 @@
                 </div>
                 <div id="city-{{ loop.index }}-canceled">
                     {{ table.order_table(city.canceled, 'canceled', cityName) }}
+                </div>
+                <div id="city-{{ loop.index }}-navproblems">
+                    {{ table.order_table(city.nav_problems, 'nav_problems', cityName) }}
                 </div>
             </div>
             <script type="text/javascript">
@@ -304,6 +321,14 @@
 
                         if ($('#city-{{ loop.index }}-canceled span.glyphicon-exclamation-sign').length > 0) {
                             var smallTabikText = $('.city-{{ loop.index }}-canceled-tab');
+
+                            if (smallTabikText.find('span.glyphicon-exclamation-sign').length < 1) {
+                                smallTabikText.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+                            }
+                        }
+
+                        if ($('#city-{{ loop.index }}-navproblems span.glyphicon-exclamation-sign').length > 0) {
+                            var smallTabikText = $('.city-{{ loop.index }}-navproblems-tab');
 
                             if (smallTabikText.find('span.glyphicon-exclamation-sign').length < 1) {
                                 smallTabikText.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');

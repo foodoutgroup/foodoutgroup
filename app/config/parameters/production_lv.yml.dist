@@ -72,6 +72,7 @@ parameters:
     mailer_partialy_deliverer: 30021995
     mailer_rate_your_food: 30026301
     mailer_send_invoice: 30026291
+    mailer_send_corporate_invoice: 41585359_to_change
     yt_video: https://www.youtube.com/v/D-EkSle0r84?fs=1&amp;autoplay=
     yt_embeded: //www.youtube-nocookie.com/embed/D-EkSle0r84
     default_delivery_distance: 3

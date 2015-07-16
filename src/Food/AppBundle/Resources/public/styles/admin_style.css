@@ -90,7 +90,8 @@ td.no-wrap {
     text-align: center;
 }
 
-.client_contacted_check input.client_contacted {
+.client_contacted_check input.client_contacted,
+.problem_solved_check input.problem_solved {
     /* Double-sized Checkboxes */
     -ms-transform: scale(2); /* IE */
     -moz-transform: scale(2); /* FF */

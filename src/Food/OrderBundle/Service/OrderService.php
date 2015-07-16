@@ -13,6 +13,7 @@ use Food\OrderBundle\Entity\Coupon;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDetails;
 use Food\OrderBundle\Entity\OrderDetailsOptions;
+use Food\OrderBundle\Entity\OrderExtra;
 use Food\OrderBundle\Entity\OrderLog;
 use Food\OrderBundle\Entity\OrderMailLog;
 use Food\OrderBundle\Entity\OrderStatusLog;
@@ -356,7 +357,7 @@ class OrderService extends ContainerAware
     {
         // Inform poor user, that his order was accepted
         if ($this->getOrder()->getOrderStatus() == self::$status_new) {
-            $recipient = $this->getOrder()->getUser()->getPhone();
+            $recipient = $this->getOrder()->getOrderExtra()->getPhone();
 
             // SMS siunciam tik tuo atveju jei orderis ne is callcentro
             if ($this->getOrder()->getOrderFromNav() == false) {
@@ -502,7 +503,7 @@ class OrderService extends ContainerAware
 //        $ml->setVariables( $variables )->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30009269  )->send();
         $mailTemplate = $this->container->getParameter('mailer_notify_on_accept');
         $ml->setVariables($variables)
-            ->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())
+            ->setRecipient($this->getOrder()->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
             ->setId($mailTemplate)
             ->send();
 
@@ -583,7 +584,8 @@ class OrderService extends ContainerAware
         // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
         if ($order->getPlace()->getSendInvoice()
             && !$order->getPlacePointSelfDelivery()
-            && $order->getDeliveryType() == OrderService::$deliveryDeliver) {
+            && $order->getDeliveryType() == OrderService::$deliveryDeliver
+            && !$order->getIsCorporateClient()) {
             $mustDoNavDelete = $this->setInvoiceDataForOrder();
 
             // Suplanuojam sf siuntima klientui
@@ -673,8 +675,8 @@ class OrderService extends ContainerAware
 
         $ml->setVariables($variables)
             ->setRecipient(
-                $this->getOrder()->getUser()->getEmail(),
-                $this->getOrder()->getUser()->getEmail()
+                $this->getOrder()->getOrderExtra()->getEmail(),
+                $this->getOrder()->getOrderExtra()->getEmail()
             )
             ->setId($template)
             ->send();
@@ -868,9 +870,10 @@ class OrderService extends ContainerAware
      * @param PlacePoint $placePoint - placePoint, jei atsiima pats
      * @param bool $selfDelivery - ar klientas atsiims pats?
      * @param Coupon|null $coupon
+     * @param array|null $userData
      * @param string|null $orderDate
      */
-    public function createOrderFromCart($place, $locale='lt', $user, PlacePoint $placePoint=null, $selfDelivery = false, $coupon = null, $orderDate = null)
+    public function createOrderFromCart($place, $locale='lt', $user, PlacePoint $placePoint=null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null)
     {
         $this->createOrder($place, $placePoint, false, $orderDate);
         $this->getOrder()->setDeliveryType(
@@ -884,6 +887,26 @@ class OrderService extends ContainerAware
         }
 
         $this->saveOrder();
+
+
+        // save extra order data to separate table
+        $orderExtra = new OrderExtra();
+        $orderExtra->setOrder($this->getOrder());
+
+        if (!empty($userData)) {
+            $orderExtra->setFirstname($userData['firstname'])
+                ->setLastname($userData['lastname'])
+                ->setPhone($userData['phone'])
+                ->setEmail($userData['email']);
+        } else {
+            $orderExtra->setFirstname($user->getFirstname())
+                ->setLastname($user->getLastname())
+                ->setPhone($user->getPhone())
+                ->setEmail($user->getEmail());
+        }
+
+        $this->getOrder()->setOrderExtra($orderExtra);
+
         $sumTotal = 0;
 
         $placeObject = $this->container->get('food.places')->getPlace($place);
@@ -1790,8 +1813,8 @@ class OrderService extends ContainerAware
             ."\n"
             .$translator->trans('general.new_order.client_name').": ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
             .$translator->trans('general.new_order.client_address').": ".$userAddress."\n"
-            .$translator->trans('general.new_order.client_phone').": ".$order->getUser()->getPhone()."\n"
-            .$translator->trans('general.new_order.client_email').": ".$order->getUser()->getEmail()."\n"
+            .$translator->trans('general.new_order.client_phone').": ".$order->getOrderExtra()->getPhone()."\n"
+            .$translator->trans('general.new_order.client_email').": ".$order->getOrderExtra()->getEmail()."\n"
             ."\n"
             .$translator->trans('general.new_order.delivery_type').": ".$order->getDeliveryType()."\n"
             .$translator->trans('general.new_order.payment_type').": ".$order->getPaymentMethod()."\n"
@@ -1945,8 +1968,8 @@ class OrderService extends ContainerAware
             .$translator->trans('general.new_order.selected_place_point').": ".$order->getPlacePoint()->getAddress().', '.$order->getPlacePoint()->getCity()."\n"
             .$translator->trans('general.new_order.place_point_phone').":".$order->getPlacePoint()->getPhone()."\n"
             ."\n"
-            .$translator->trans('general.new_order.client_name').": ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
-            .$translator->trans('general.new_order.client_phone').": ".$order->getUser()->getPhone()."\n"
+            .$translator->trans('general.new_order.client_name').": ".$order->getOrderExtra()->getFirstname().' '.$order->getOrderExtra()->getLastname()."\n"
+            .$translator->trans('general.new_order.client_phone').": ".$order->getOrderExtra()->getPhone()."\n"
             ."\n"
             .$translator->trans('general.new_order.delivery_type').": ".$order->getDeliveryType()."\n"
             .$translator->trans('general.new_order.payment_type').": ".$order->getPaymentMethod()."\n"
@@ -2073,8 +2096,8 @@ class OrderService extends ContainerAware
             ."\n"
             .$translator->trans('general.new_order.client_name').": ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
             .$translator->trans('general.new_order.client_address').": ".$userAddress."\n"
-            .$translator->trans('general.new_order.client_phone').": ".$order->getUser()->getPhone()."\n"
-            .$translator->trans('general.new_order.client_email').": ".$order->getUser()->getEmail()."\n"
+            .$translator->trans('general.new_order.client_phone').": ".$order->getOrderExtra()->getPhone()."\n"
+            .$translator->trans('general.new_order.client_email').": ".$order->getOrderExtra()->getEmail()."\n"
             ."\n"
             .$translator->trans('general.new_order.delivery_type').": ".$order->getDeliveryType()."\n"
             .$translator->trans('general.new_order.payment_type').": ".$order->getPaymentMethod()."\n"
@@ -2160,8 +2183,8 @@ class OrderService extends ContainerAware
             ."\n"
             .$translator->trans('general.new_order.client_name').": ".$order->getUser()->getFirstname().' '.$order->getUser()->getLastname()."\n"
             .$translator->trans('general.new_order.client_address').": ".$userAddress."\n"
-            .$translator->trans('general.new_order.client_phone').": ".$order->getUser()->getPhone()."\n"
-            .$translator->trans('general.new_order.client_email').": ".$order->getUser()->getEmail()."\n"
+            .$translator->trans('general.new_order.client_phone').": ".$order->getOrderExtra()->getPhone()."\n"
+            .$translator->trans('general.new_order.client_email').": ".$order->getOrderExtra()->getEmail()."\n"
             ."\n"
             .$translator->trans('general.new_order.delivery_type').": ".$order->getDeliveryType()."\n"
             .$translator->trans('general.new_order.payment_type').": ".$order->getPaymentMethod()."\n"
@@ -2454,10 +2477,18 @@ class OrderService extends ContainerAware
 
             // TODO Trying to catch fatal when searching for PlacePoint
             if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
-                $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm');
+                $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 1');
                 // Mapping not found, lets try to remap
                 $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
                 $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(),$locationData);
+                $placePointMap[$place->getId()] = $placePointId;
+                $this->container->get('session')->set('point_data', $placePointMap);
+            }
+
+            // TODO - if still no PlacePoint info - pick fasterst or cheapest as in earlier solution
+            if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
+                $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 2');
+                $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCheapestPlacePoint($place->getId(),$locationData);
                 $placePointMap[$place->getId()] = $placePointId;
                 $this->container->get('session')->set('point_data', $placePointMap);
             }
@@ -2565,6 +2596,43 @@ class OrderService extends ContainerAware
 
             if ($emailErrors->count() > 0) {
                 $formErrors[] = 'order.form.errors.customeremail_invalid';
+            }
+        }
+
+        // Validate bussines client
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $loggedIn = true;
+
+        if (!$user instanceof User) {
+            $loggedIn = false;
+            $user = $this->container->get('fos_user.user_manager')->findUserByEmail($customerEmail);
+        }
+        if ($user instanceof User) {
+            if ($user->getIsBussinesClient()) {
+                // Bussines client must be logged in
+                if (!$loggedIn) {
+                    $formErrors[] = 'order.form.errors.bussines_client_not_loggedin';
+                } else {
+                    // Bussines client must enter correct division code
+                    $givenDivisionCode = $request->get('company_division_code', '');
+                    if (!empty($givenDivisionCode)) {
+                        $correctDivisionCodes = $user->getDivisionCodes();
+                        $codeCorrect = false;
+
+                        foreach ($correctDivisionCodes as $divisionCode) {
+                            if ($divisionCode == $givenDivisionCode) {
+                                $codeCorrect = true;
+                                break;
+                            }
+                        }
+
+                        if (!$codeCorrect) {
+                            $formErrors[] = 'order.form.errors.division_code_incorrect';
+                        }
+                    } else {
+                        $formErrors[] = 'order.form.errors.empty_division_code';
+                    }
+                }
             }
         }
 
@@ -2868,9 +2936,9 @@ class OrderService extends ContainerAware
 //        var_dump($diffInMinutes);
 
         // Lets inform the user, that the order was delayed :(
-        $user = $this->getOrder()->getUser();
-        $userPhone = $user->getPhone();
-        $userEmail = $user->getEmail();
+        $orderExtra = $this->getOrder()->getOrderExtra();
+        $userPhone = $orderExtra->getPhone();
+        $userEmail = $orderExtra->getEmail();
 
         $translator = $this->container->get('translator');
         $domain = $this->container->getParameter('domain');
@@ -3086,7 +3154,7 @@ class OrderService extends ContainerAware
 
                     $this->container->get('food.mailer')
                         ->setVariable('code', $theCode )
-                        ->setRecipient( $order->getUser()->getEmail() )
+                        ->setRecipient( $order->getOrderExtra()->getEmail() )
                         ->setId( $generator->getTemplateCode() )
                         ->send();
 

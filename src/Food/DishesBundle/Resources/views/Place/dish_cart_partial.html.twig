@@ -19,6 +19,7 @@
                     dishBlock.find('.counter').foodCounter(0, 50, 1);
                     dishBlock.find('.button-submit.add-to-cart:not(.has-bind)').addClass('has-bind').bind('click', function() {
                         addToCart();
+                        return false;
                     });
                     var inputs = $('.dish-ingredients').find('input[type="radio"]');
                     var groupNames = [];
@@ -39,6 +40,11 @@
                         groupElements[i].closest('.iradio').addClass('checked');
                     }
                 }
+            },
+            helpers: {
+                overlay: {
+                    locked: false
+                }
             }
         });
         $('.fancy-box.remove').fancybox({
@@ -48,7 +54,13 @@
                 dishRemoveBlock = $('#detailed-dish-popup-remove');
                 dishRemoveBlock.find('.remove-from-cart:not(.has-bind)').addClass('has-bind').bind('click', function() {
                     removeFromCart();
+                    return false;
                 });
+            },
+            helpers: {
+                overlay: {
+                    locked: false
+                }
             }
         });
     };
@@ -66,6 +78,8 @@
             }
             dishRemoveBlock.unmask();
             $.fancybox.close();
+            Place.initCartScroll();
+            Place.moveBlocks(true);
         }, 'json');
     }
 
@@ -105,6 +119,8 @@
                                         }
                                         dishBlock.unmask();
                                         $.fancybox.close();
+                                        Place.initCartScroll();
+                                        Place.moveBlocks(true);
                                     }, 'json');
                                 }
                             },
@@ -127,6 +143,8 @@
                     }
                     dishBlock.unmask();
                     $.fancybox.close();
+                    Place.initCartScroll();
+                    Place.moveBlocks(true);
                 }, 'json');
             }
         }

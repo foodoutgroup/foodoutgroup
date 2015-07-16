@@ -662,6 +662,46 @@
                 <source>ROLE_SUPPORT</source>
                 <target>Pagalba</target>
             </trans-unit>
+            <trans-unit id="admin.users.bussines_management">
+                <source>admin.users.bussines_management</source>
+                <target>Verslo klientų valdymas</target>
+            </trans-unit>
+            <trans-unit id="admin.users.bussines_client">
+                <source>admin.users.bussines_client</source>
+                <target>Verslo klientas</target>
+            </trans-unit>
+            <trans-unit id="admin.users.division_codes">
+                <source>admin.users.division_codes</source>
+                <target>Padalinių kodai</target>
+            </trans-unit>
+            <trans-unit id="admin.users.company_name">
+                <source>admin.users.company_name</source>
+                <target>Įmonė</target>
+            </trans-unit>
+            <trans-unit id="admin.users.company_code">
+                <source>admin.users.company_code</source>
+                <target>Įmonės kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.users.vat_code">
+                <source>admin.users.vat_code</source>
+                <target>PVM kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.users.company_address">
+                <source>admin.users.company_address</source>
+                <target>Įmonės adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.users_dision_code.id">
+                <source>admin.users_dision_code.id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="admin.users_dision_code.code">
+                <source>admin.users_dision_code.code</source>
+                <target>Kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.users_dision_code.division">
+                <source>admin.users_dision_code.division</source>
+                <target>Padalinys</target>
+            </trans-unit>
 
             <!-- Static content -->
             <trans-unit id="admin.static">
@@ -1144,6 +1184,18 @@
                 <source>admin.order.companyAddress</source>
                 <target>Adresas</target>
             </trans-unit>
+            <trans-unit id="admin.order.division_code">
+                <source>admin.order.division_code</source>
+                <target>Padalinio kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.division_name">
+                <source>admin.order.division_name</source>
+                <target>Padalinio pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.corporate_client_name">
+                <source>admin.order.corporate_client_name</source>
+                <target>Užsakovas</target>
+            </trans-unit>
 
             <!-- Order logas pas sonata admina -->
             <trans-unit id="admin.order.order_log">
@@ -1276,6 +1328,10 @@
                 <source>admin.dispatcher.canceled</source>
                 <target>Atšaukti</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.nav_problems">
+                <source>admin.dispatcher.nav_problems</source>
+                <target>Probleminiai</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.client_phone">
                 <source>admin.dispatcher.client_phone</source>
                 <target>Užsak. tel.</target>
@@ -1288,6 +1344,10 @@
                 <source>admin.dispatcher.client_contacted</source>
                 <target>Susisiekta su klientu</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.problem_solved">
+                <source>admin.dispatcher.problem_solved</source>
+                <target>Išspręsta</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.unconfirmed_pickup">
                 <source>admin.dispatcher.unconfirmed_pickup</source>
                 <target>Nepatvirtinti atsiėmimai restorane</target>
@@ -1298,7 +1358,7 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.city_tip">
                 <source>admin.dispatcher.city_tip</source>
-                <target><![CDATA[Nepatikrinti: unapprovedCount<br />Nepriskirti: unassignedCount<br />Nepatvirtinti: unconfirmedCount<br />Nepristatyti: notfinishedCount<br />Atšaukti: canceledCount]]></target>
+                <target><![CDATA[Nepatikrinti: unapprovedCount<br />Nepriskirti: unassignedCount<br />Nepatvirtinti: unconfirmedCount<br />Nepristatyti: notfinishedCount<br />Atšaukti: canceledCount<br />Probleminiai: navProblemsCount]]></target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.place">
                 <source>admin.dispatcher.place</source>

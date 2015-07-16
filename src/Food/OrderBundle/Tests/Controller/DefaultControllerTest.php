@@ -4,6 +4,7 @@ namespace Food\OrderBundle\Tests\Controller;
 
 use Food\OrderBundle\Controller\DefaultController;
 use Food\AppBundle\Test\WebTestCase;
+use Food\OrderBundle\Entity\OrderExtra;
 
 class DefaultControllerTest extends WebTestCase
 {
@@ -47,6 +48,13 @@ class DefaultControllerTest extends WebTestCase
         $hash = $orderService->generateOrderHash($order);
         $order->setOrderHash($hash);
         $order->setUser($this->getUser());
+        $orderExtra = new OrderExtra();
+        $orderExtra->setOrder($order)
+            ->setFirstname($this->getUser()->getFirstname())
+            ->setLastname($this->getUser()->getLastname())
+            ->setEmail($this->getUser()->getEmail())
+            ->setPhone($this->getUser()->getPhone());
+        $order->setOrderExtra($orderExtra);
         $orderService->saveOrder();
 
         $this->client->request('GET', '/o/'.$hash.'/');
@@ -72,6 +80,13 @@ class DefaultControllerTest extends WebTestCase
         $hash = $orderService->generateOrderHash($order);
         $order->setOrderHash($hash);
         $order->setUser($this->getUser());
+        $orderExtra = new OrderExtra();
+        $orderExtra->setOrder($order)
+            ->setFirstname($this->getUser()->getFirstname())
+            ->setLastname($this->getUser()->getLastname())
+            ->setEmail($this->getUser()->getEmail())
+            ->setPhone($this->getUser()->getPhone());
+        $order->setOrderExtra($orderExtra);
         $orderService->saveOrder();
 
         $this->client->request('GET', '/o-spr/'.$hash.'/');
@@ -100,6 +115,13 @@ class DefaultControllerTest extends WebTestCase
         $hash = $orderService->generateOrderHash($order);
         $order->setOrderHash($hash);
         $order->setUser($this->getUser());
+        $orderExtra = new OrderExtra();
+        $orderExtra->setOrder($order)
+            ->setFirstname($this->getUser()->getFirstname())
+            ->setLastname($this->getUser()->getLastname())
+            ->setEmail($this->getUser()->getEmail())
+            ->setPhone($this->getUser()->getPhone());
+        $order->setOrderExtra($orderExtra);
         $orderService->saveOrder();
 
         $this->client->request('GET', '/d/'.$hash.'/');

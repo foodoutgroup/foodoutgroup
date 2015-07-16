@@ -18,7 +18,7 @@ parameters:
     sms.main_provider: "food.infobip"
     sms.sender: "Foodout.lt"
     sms.balance_limit_warn: 20
-    sms.balance_limit_critical: 14
+    sms.balance_limit_critical: 12
     infobip_provider.api_url: "http://api.infobip.com/api/v3/sendsms/json"
     infobip_provider.secondary_api_url: "http://api2.infobip.com/api/v3/sendsms/json"
     infobip_provider.account_url: "http://api2.infobip.com/api"

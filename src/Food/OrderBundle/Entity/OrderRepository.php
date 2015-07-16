@@ -136,6 +136,32 @@ class OrderRepository extends EntityRepository
     }
 
     /**
+     * @param string $city
+     * @return array|Order[]
+     */
+    public function getOrdersNavProblems($city)
+    {
+        $filter = array(
+            'order_status' =>  OrderService::$status_nav_problems,
+            'place_point_city' => $city,
+            'paymentStatus' => OrderService::$paymentStatusComplete,
+            'order_date_between' => array(
+                'from' => new \DateTime('-4 hour'),
+                'to' => new \DateTime('now'),
+            ),
+            'not_solved' => true,
+        );
+
+        $orders = $this->getOrdersByFilter($filter, 'list');
+
+        if (!$orders) {
+            return array();
+        }
+
+        return $orders;
+    }
+
+    /**
      * @var string|null $date
      * @return array
      */
@@ -324,6 +350,11 @@ class OrderRepository extends EntityRepository
 
                     case 'not_nav':
                         $qb->andWhere('o.orderFromNav != :'.$filterName);
+                        break;
+
+                    case 'not_solved':
+                        $qb->andWhere('(o.problemSolved != 1 OR o.problemSolved IS NULL)');
+                        unset($filter['not_solved']);
                         break;
 
                     case 'only_to_nav':
@@ -698,6 +729,28 @@ class OrderRepository extends EntityRepository
                 'order_status' => array(OrderService::$status_completed, OrderService::$status_partialy_completed),
                 'phone_no' => $phone,
             ));
+
+        return $qb->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return array|Order[]
+     */
+    public function getCorporateOrdersForInvoice()
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb->where('o.order_status IN (:order_status)')
+        ->andWhere('o.isCorporateClient = :corporate_cl')
+        ->andWhere('o.order_date BETWEEN :date_start AND :date_end')
+        ->andWhere('o.sfNumber IS NULL')
+        ->setParameters(array(
+            'order_status' => array(OrderService::$status_completed, OrderService::$status_partialy_completed),
+            'corporate_cl' => 1,
+            'date_start' => new \DateTime(date("Y-m-01 00:00:01")),
+            'date_end' => new \DateTime("now")
+        ));
 
         return $qb->getQuery()
             ->getResult();

@@ -28,6 +28,12 @@ class OrderAdminController extends Controller
             $orderService->setInvoiceDataForOrder();
         }
 
+        // Double check as we had an impossible error by not adding invoice for generation
+        $orderSfSeries = $order->getSfSeries();
+        if (empty($orderSfSeries)) {
+            $this->container->get('logger')->error('sendInvoiceAction in OrderAdmin did not set SF series..');
+        }
+
         $this->get('food.invoice')->addInvoiceToSend($order);
 
         $this->get('session')->getFlashBag()->add(

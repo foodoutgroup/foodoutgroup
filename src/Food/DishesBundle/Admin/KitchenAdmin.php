@@ -52,7 +52,7 @@ class KitchenAdmin extends FoodAdmin
         $datagridMapper
             ->add('name', null, array('label' => 'admin.kitchen.name'))
             ->add('visible', null, array('label' => 'admin.visible'))
-            ->add('createdBy', null, array('label' => 'admin.created_by'))
+//            ->add('createdBy', null, array('label' => 'admin.created_by'))
 //            ->add(
 //                'createdAt',
 //                'doctrine_orm_datetime_range',

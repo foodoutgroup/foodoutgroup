@@ -27,6 +27,7 @@ class DispatcherAdminController extends Controller
                 ),
                 'not_finished' => $repo->getOrdersAssigned($city),
                 'canceled' => $repo->getOrdersCanceled($city),
+                'nav_problems' => $repo->getOrdersNavProblems($city),
             );
         }
 
@@ -232,6 +233,35 @@ class DispatcherAdminController extends Controller
             $orderService->logOrder($order, 'client_contacted', $message);
         } catch (Exception $e) {
             $this->get('logger')->error('Error occured while marking order as contacted. Error: '.$e->getMessage());
+
+            return new Response('NO');
+        }
+
+        return new Response('YES');
+    }
+
+    public function markOrderSolvedAction(Request $request)
+    {
+        $orderService = $this->get('food.order');
+
+        $orderId = $request->get('order');
+        $status = $request->get('status');
+
+        try {
+            $order = $orderService->getOrderById($orderId);
+
+            $order->setProblemSolved((bool)$status);
+            $orderService->saveOrder();
+
+            $message = 'Order #'.$order->getId();
+            if ($status) {
+                $message .= ' problem marked solved';
+            } else {
+                $message .= ' problem marked not solved';
+            }
+            $orderService->logOrder($order, 'problem_solved', $message);
+        } catch (Exception $e) {
+            $this->get('logger')->error('Error occured while marking order as problem solved. Error: '.$e->getMessage());
 
             return new Response('NO');
         }

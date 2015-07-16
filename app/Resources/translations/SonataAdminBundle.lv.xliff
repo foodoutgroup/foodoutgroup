@@ -671,6 +671,46 @@
                 <source>ROLE_SUPPORT</source>
                 <target>Support</target>
             </trans-unit>
+            <trans-unit id="admin.users.bussines_management">
+                <source>admin.users.bussines_management</source>
+                <target>Bussines client management</target>
+            </trans-unit>
+            <trans-unit id="admin.users.bussines_client">
+                <source>admin.users.bussines_client</source>
+                <target>Bussines client</target>
+            </trans-unit>
+            <trans-unit id="admin.users.division_codes">
+                <source>admin.users.division_codes</source>
+                <target>Division codes</target>
+            </trans-unit>
+            <trans-unit id="admin.users.company_name">
+                <source>admin.users.company_name</source>
+                <target>Company name</target>
+            </trans-unit>
+            <trans-unit id="admin.users.company_code">
+                <source>admin.users.company_code</source>
+                <target>Company code</target>
+            </trans-unit>
+            <trans-unit id="admin.users.vat_code">
+                <source>admin.users.vat_code</source>
+                <target>VAT code</target>
+            </trans-unit>
+            <trans-unit id="admin.users.company_address">
+                <source>admin.users.company_address</source>
+                <target>Company address</target>
+            </trans-unit>
+            <trans-unit id="admin.users_dision_code.id">
+                <source>admin.users_dision_code.id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="admin.users_dision_code.code">
+                <source>admin.users_dision_code.code</source>
+                <target>Code</target>
+            </trans-unit>
+            <trans-unit id="admin.users_dision_code.division">
+                <source>admin.users_dision_code.division</source>
+                <target>Division</target>
+            </trans-unit>
 
             <!-- Static content -->
             <trans-unit id="admin.static">
@@ -1137,6 +1177,18 @@
                 <source>admin.order.companyAddress</source>
                 <target>Address</target>
             </trans-unit>
+            <trans-unit id="admin.order.division_code">
+                <source>admin.order.division_code</source>
+                <target>Division code</target>
+            </trans-unit>
+            <trans-unit id="admin.order.division_name">
+                <source>admin.order.division_name</source>
+                <target>Division name</target>
+            </trans-unit>
+            <trans-unit id="admin.order.corporate_client_name">
+                <source>admin.order.corporate_client_name</source>
+                <target>Order taker</target>
+            </trans-unit>
 
             <!-- Order logas pas sonata admina -->
             <trans-unit id="admin.order.order_log">
@@ -1269,6 +1321,10 @@
                 <source>admin.dispatcher.canceled</source>
                 <target>Canceled</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.nav_problems">
+                <source>admin.dispatcher.nav_problems</source>
+                <target>Problems</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.client_phone">
                 <source>admin.dispatcher.client_phone</source>
                 <target>Client phone</target>
@@ -1281,6 +1337,10 @@
                 <source>admin.dispatcher.client_contacted</source>
                 <target>Client contacted</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.problem_solved">
+                <source>admin.dispatcher.problem_solved</source>
+                <target>Solved</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.unconfirmed_pickup">
                 <source>admin.dispatcher.unconfirmed_pickup</source>
                 <target>Uncomfirmed pickups</target>
@@ -1291,7 +1351,7 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.city_tip">
                 <source>admin.dispatcher.city_tip</source>
-                <target><![CDATA[Unapproved: unapprovedCount<br />Unassigned: unassignedCount<br />Unconfirmed: unconfirmedCount<br />Undelivered: notfinishedCount<br />Canceled: canceledCount]]></target>
+                <target><![CDATA[Unapproved: unapprovedCount<br />Unassigned: unassignedCount<br />Unconfirmed: unconfirmedCount<br />Undelivered: notfinishedCount<br />Canceled: canceledCount<br />Problems: navProblemsCount]]></target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.place">
                 <source>admin.dispatcher.place</source>
