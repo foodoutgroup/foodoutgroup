@@ -47,8 +47,12 @@ class WeeklyReport extends ContainerAware
         '4' => 7722,
         '5' => 8021,
         '6' => 8398,
-        '7' => 7779,
-        '8' => 8297
+        '7' => 8013,
+        '8' => 8514,
+        '9' => 13224,
+        '10' => 15470,
+        '11' => 17558,
+        '12' => 19903
     ];
     protected $kpiOrdersMap = [
         '1' => 564,
@@ -57,8 +61,12 @@ class WeeklyReport extends ContainerAware
         '4' => 620,
         '5' => 644,
         '6' => 674,
-        '7' => 610,
-        '8' => 649
+        '7' => 381,
+        '8' => 440,
+        '9' => 659,
+        '10' => 774,
+        '11' => 875,
+        '12' => 990
     ];
     protected $kpiCartSizeMap = [
         '1' => 11.8,
@@ -67,8 +75,12 @@ class WeeklyReport extends ContainerAware
         '4' => 12.4,
         '5' => 12.4,
         '6' => 12.4,
-        '7' => 12,7,
-        '8' => 12.7
+        '7' => 14.54,
+        '8' => 13.31,
+        '9' => 13.84,
+        '10' => 13.82,
+        '11' => 13.88,
+        '12' => 13.93,
     ];
     protected $kpiDeliveryMap = [
         '1' => 60,
@@ -78,7 +90,11 @@ class WeeklyReport extends ContainerAware
         '5' => 55,
         '6' => 55,
         '7' => 55,
-        '8' => 55
+        '8' => 55,
+        '9' => 55,
+        '10' => 55,
+        '11' => 55,
+        '12' => 55
     ];
 
     protected $sqlMap = [
