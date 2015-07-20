@@ -79,14 +79,21 @@ class DispatcherAdminController extends Controller
 
     public function approveOrderAction($orderId)
     {
-        $orderService = $this->get('food.order');
-        $orderService->getOrderById($orderId);
+        try {
+            $orderService = $this->get('food.order');
+            $orderService->getOrderById($orderId);
 
-        $orderService->statusNew('approveOrderDispatcher');
+            $orderService->statusNew('approveOrderDispatcher');
 
-        $orderService->informPlace(false);
+            $orderService->saveOrder();
 
-        return new Response('OK');
+            $orderService->informPlace(false);
+
+            return new Response('OK');
+        } catch (\Exception $e) {
+            $this->container->get('logger')->error('Error while approving order: #'.$orderId.' error:'.$e->getMessage());
+            return new Response('Error');
+        }
     }
 
     public function setOrderStatusAction($orderId, $status)
