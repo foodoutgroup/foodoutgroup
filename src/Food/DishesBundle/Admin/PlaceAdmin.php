@@ -249,6 +249,74 @@ class PlaceAdmin extends FoodAdmin
     }
 
     /**
+     * Synch da epic place points :)
+     *
+     * @param Place $object
+     */
+    public function synchDaPlacePoints($object)
+    {
+        if ($object->getId() == 63) {
+            $dc = $this->getContainer()->get('doctrine');
+            $clone = $dc->getRepository('FoodDishesBundle:Place')->find(142);
+
+            $query = "SELECT * FROM place_point WHERE place = ".$object->getId();
+            $stmt = $dc->getConnection()->prepare($query);
+            $stmt->execute();
+            $pointsOrig = $stmt->fetchAll();
+
+            $query = "SELECT * FROM place_point WHERE place = ".$clone->getId();
+            $stmt = $dc->getConnection()->prepare($query);
+            $stmt->execute();
+            $pointsClone = $stmt->fetchAll();
+
+            $pointsCloneRelation = array();
+            foreach ($pointsClone as $point) {
+                $pointsCloneRelation[$point['parent_id']] = $point['id'];
+            }
+            foreach ($pointsOrig as $point) {
+                if (!empty($pointsCloneRelation[$point['id']])) {
+                    $fieldsForUpdate = array();
+                    foreach ($point as $field=>$val) {
+                        $fieldsForUpdate[$field] = $val;
+                    }
+                    unset($fieldsForUpdate['id']);
+                    unset($fieldsForUpdate['place']);
+                    unset($fieldsForUpdate['parent_id']);
+                    unset($fieldsForUpdate['no_replication']);
+                    unset($fieldsForUpdate['edited_by']);
+                    unset($fieldsForUpdate['deleted_by']);
+                    $queryParts = array();
+                    foreach ($fieldsForUpdate as $field=>$val) {
+                        $queryParts[]= "`".$field."` = '".$val."'";
+                    }
+                    $query = "UPDATE place_point SET ";
+                    $query.= implode(",", $queryParts);
+                    $query.= " WHERE id=".$pointsCloneRelation[$point['id']];
+                    $stmt = $dc->getConnection()->prepare($query);
+                    $stmt->execute();
+                } else {
+                    $fieldsForInsert = array();
+                    foreach ($point as $field=>$val) {
+                        $fieldsForInsert[$field] = $val;
+                    }
+                    unset($fieldsForInsert['id']);
+                    $fieldsForInsert['place'] = $clone->getId();
+                    $fieldsForInsert['parent_id'] = $point['id'];
+                    $fieldsForInsert['no_replication'] = 1;
+                    $fieldsForInsert['edited_by'] = 1;
+                    $fieldsForInsert['deleted_by'] = 1;
+
+                    $query = "INSERT INTO place_point (`".implode("`,`",array_keys($fieldsForInsert))."`)";
+                    $query.= " VALUES('".implode("','", $fieldsForInsert)."')";
+
+                    $stmt = $dc->getConnection()->prepare($query);
+                    $stmt->execute();
+                }
+            }
+        }
+    }
+
+    /**
      * @param \Food\DishesBundle\Entity\Place $object
      */
     public function postPersist($object)
@@ -262,6 +330,7 @@ class PlaceAdmin extends FoodAdmin
     public function postUpdate($object)
     {
         $this->fixSlugs($object);
+        $this->synchDaPlacePoints($object);
     }
 
     /**
