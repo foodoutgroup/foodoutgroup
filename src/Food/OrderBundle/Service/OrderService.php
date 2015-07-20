@@ -356,20 +356,21 @@ class OrderService extends ContainerAware
                     $sender = $this->container->getParameter('sms.sender');
 
                     $translation = 'general.sms.user.order_accepted';
-                    if ($this->getOrder()->getDeliveryType() == 'pickup') {
+                    if ($this->getOrder()->getDeliveryType() == self::$deliveryPickup) {
                         $translation = 'general.sms.user.order_accepted_pickup';
                     }
 
                     $placeName = $this->container->get('food.app.utils.language')
                         ->removeChars('lt', $this->getOrder()->getPlaceName(), false, false);
                     $placeName = ucfirst($placeName);
+                    $place = $this->getOrder()->getPlace();
 
                     $text = $this->container->get('translator')
                         ->trans(
                             $translation,
                             array(
                                 'restourant_name' => $placeName,
-                                'delivery_time' => $this->getOrder()->getPlace()->getDeliveryTime(),
+                                'delivery_time' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $place->getDeliveryTime() : $place->getPickupTime()),
 //                                'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone()
                             ),
                             null,
@@ -490,7 +491,14 @@ class OrderService extends ContainerAware
 
 
 //        $ml->setVariables( $variables )->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30009269  )->send();
-        $mailTemplate = $this->container->getParameter('mailer_notify_on_accept');
+
+        // Pickup sablonas kitoks
+        if ($this->getOrder()->getDeliveryType() == self::$deliveryPickup) {
+            $mailTemplate = $this->container->getParameter('mailer_notify_pickup_on_accept');
+        } else {
+            $mailTemplate = $this->container->getParameter('mailer_notify_on_accept');
+        }
+
         $ml->setVariables($variables)
             ->setRecipient($this->getOrder()->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
             ->setId($mailTemplate)

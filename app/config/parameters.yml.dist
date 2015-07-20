@@ -65,6 +65,7 @@ parameters:
     nav_ws_prefix: 'Čilija Skambučių Centras'
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
     mailer_notify_on_accept: 30010811
+    mailer_notify_pickup_on_accept: 41582385
     mailer_notify_new_user: 30009253
     mailer_user_reset: 30013949
     mailer_partialy_deliverer: 30021995
