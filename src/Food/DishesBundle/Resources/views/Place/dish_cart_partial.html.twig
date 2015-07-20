@@ -12,6 +12,7 @@
         $('.fancy-box').fancybox({
             padding : 0,
             scrolling: 'visible',
+            fitToView : false,
             afterShow: function(e) {
                 dishBlock = $('#detailed-dish-popup');
                 if (dishBlock.length > 0) {
@@ -50,6 +51,7 @@
         $('.fancy-box.remove').fancybox({
             padding : 0,
             scrolling: 'visible',
+            fitToView : false,
             afterShow: function(e) {
                 dishRemoveBlock = $('#detailed-dish-popup-remove');
                 dishRemoveBlock.find('.remove-from-cart:not(.has-bind)').addClass('has-bind').bind('click', function() {

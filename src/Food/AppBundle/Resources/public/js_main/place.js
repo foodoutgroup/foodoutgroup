@@ -257,7 +257,7 @@ var Place = {
         this.cartObj = $("#cartmnu");
         this.cartOffset = this.cartObj.offset();
         this.cartHeight = this.cartObj.height();
-        if ($('.check-item').length <= 4) {
+        if ($('.check-item').length <= 4 && $(window).height() >= 750) {
             this.cartObj.removeClass('overflow_auto');
         } else {
             this.cartObj.addClass('overflow_auto');
