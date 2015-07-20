@@ -91,13 +91,25 @@ class RepostOrderToNavOnProblemCommand extends ContainerAwareCommand
                             $navService->putTheOrderToTheNAV($order);
                             sleep(2);
                             $orderService->logOrder($order, 'NAV_update_prices', 'NAV update prices from Reput command');
-                            $navService->updatePricesNAV($order);
+                            $returnerPrices = $navService->updatePricesNAV($order);
                             sleep(2);
                             $orderService->logOrder($order, 'NAV_process_order', 'NAV process order from Reput command');
-                            $navService->processOrderNAV($order);
+                            $returnerProccess = $navService->processOrderNAV($order);
 
                             $orderService->setOrder($order);
-                            $orderService->statusNew('repostToNavOnMissingInNav');
+
+                            if($returnerPrices->return_value != "TRUE") {
+                                // Problems updating price
+                                $orderService->logStatusChange($order, $orderService::$status_nav_problems, 'cili_nav_update_price');
+                                $order->setOrderStatus($orderService::$status_nav_problems);
+                            } else if ($returnerProccess->return_value != "TRUE") {
+                                // Problems processing order in nav
+                                $orderService->logStatusChange($order, $orderService::$status_nav_problems, 'cili_nav_process');
+                                $order->setOrderStatus($orderService::$status_nav_problems);
+                            } else {
+                                $orderService->statusNew('repostToNavOnMissingInNav');
+                            }
+
                             $orderService->saveOrder();
                         }
                     }
