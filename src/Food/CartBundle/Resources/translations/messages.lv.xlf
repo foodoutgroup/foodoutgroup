@@ -344,6 +344,10 @@ LV-1046</target>
         <source>order.form.errors.payment_type</source>
         <target>Izvēlieties apmaksas veidu</target>
       </trans-unit>
+        <trans-unit id="order.form.errors.bussines_client_not_loggedin" resname="order.form.errors.bussines_client_not_loggedin">
+            <source>order.form.errors.bussines_client_not_loggedin</source>
+            <target>Bussines clients must login</target>
+        </trans-unit>
       <trans-unit id="a5c4e99137a4fcf01026615f367170d0" resname="general.coupon.text">
         <source>general.coupon.text</source>
         <target>Ievadiet atlaižu kupona kodu</target>

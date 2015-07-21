@@ -356,6 +356,10 @@ Vilnius]]></target>
             <source>order.form.errors.division_code_incorrect</source>
             <target>Nurodėte neteisingą padalinio kodą</target>
         </trans-unit>
+        <trans-unit id="order.form.errors.bussines_client_not_loggedin" resname="order.form.errors.bussines_client_not_loggedin">
+            <source>order.form.errors.bussines_client_not_loggedin</source>
+            <target>Esate verslo klientas. Prašome prisijungti</target>
+        </trans-unit>
         <trans-unit id="general.coupon.text" resname="general.coupon.text">
             <source>general.coupon.text</source>
             <target>Įveskite nuolaidos kupono kodą</target>
