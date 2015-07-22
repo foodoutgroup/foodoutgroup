@@ -85,7 +85,7 @@ class OrdersController extends Controller
     {
         $this->logActionParams('createOrderPre action', $request);
         $this->_theJudge($request);
-        @mail("paulius@foodout.lt", "FOO LOGS PRE", print_r($request->getContent(), true), "FROM: test@foodout.lt");
+        @mail("paulius@foodout.lt", "FOO LOGS PRE ".date("Y-m-d H:i:s"), print_r($request->getContent(), true), "FROM: test@foodout.lt");
         try {
             $requestJson = new JsonRequest($request);
             return new JsonResponse($this->get('food_api.order')->createOrder($request, $requestJson, true));

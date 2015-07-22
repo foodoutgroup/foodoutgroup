@@ -470,6 +470,7 @@ class OrderService extends ContainerAware
             FO::$status_forwarded => 'preparing',
             FO::$status_delayed => 'delayed',
             FO::$status_completed => 'completed',
+            FO::$status_partialy_completed => 'completed',
             FO::$status_failed => 'failed',
             FO::$status_finished => 'prepared',
             FO::$status_canceled => 'canceled',
