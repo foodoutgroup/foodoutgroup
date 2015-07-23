@@ -537,6 +537,9 @@ input.button {}
 .items-list-col {width: 180px; float: left;}
 .items-list-col.even, .items-list-col.even a {background-color: #f5f0eb;}
 .items-list-col:last-child {margin-right: 0;}
+.items-list.recommended_list {
+    padding-bottom: 12px;
+}
 
 /*Items list*/
 .items-list-title {padding-top: 65px; padding-bottom: 25px;}
@@ -551,7 +554,7 @@ input.button {}
     background: url(/bundles/foodapp/images/caret-down.png) no-repeat;
 }
 .best-offers-top-line {
-    padding-top: 5px;
+    padding-top: 12px;
 }
 
 /*Cupons list*/
