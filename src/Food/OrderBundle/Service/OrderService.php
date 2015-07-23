@@ -495,6 +495,11 @@ class OrderService extends ContainerAware
         // Pickup sablonas kitoks
         if ($this->getOrder()->getDeliveryType() == self::$deliveryPickup) {
             $mailTemplate = $this->container->getParameter('mailer_notify_pickup_on_accept');
+
+            // Cili express omg hack :( TODO isimt sita velnio ismisla ir nueit ispazinties :(
+            if ($this->getOrder()->getPlace()->getId() == 142 && $this->container->getParameter('country') == 'LT') {
+                $mailTemplate = 41586573;
+            }
         } else {
             $mailTemplate = $this->container->getParameter('mailer_notify_on_accept');
         }
