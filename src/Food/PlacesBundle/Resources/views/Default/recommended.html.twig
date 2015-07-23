@@ -1,9 +1,9 @@
-<div class="items-list-title clearfix">
+{#<div class="items-list-title clearfix">
     <h2>{% trans %}places.recomended_block_title{% endtrans %}</h2><a href="{{ path('food_places_' ~ locale ~ '_recommended') }}" class="button">{% trans %}places.recomended_show_more{% endtrans %}</a>
-</div>
+</div>#}
 <div class="items-list clearfix">
     {% for place in places %}
-        <div class="items-list-col">
+        <div class="items-list-col{{ loop.index%2 ? '' : ' even' }}">
             <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="restoran-item">
                 <div class="restoran-item-top"><img alt="{% trans with {'%restaurant_name%': place.name} %}general.restaurant_logo_alt{% endtrans %}" src="http://{{ cloudfront_url }}/uploads/places/thumb_{{ place.logo }}" /></div>
                 <p class="restoran-name">{{ place.name }}</p>

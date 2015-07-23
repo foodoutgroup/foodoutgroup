@@ -27,7 +27,6 @@
 
 
 
-
 @font-face {
     font-family: 'avenir_next_condensedbold';
     src: url('/bundles/foodapp/styles/avenirnextcondensed-webfont.eot');
@@ -532,8 +531,11 @@ input.button {}
 
 
 /*Items lists*/
-.items-list {padding-bottom: 6px;}
-.items-list-col {width: 180px; float: left; margin-right: 20px;}
+/*.items-list {padding-bottom: 6px;}
+.items-list-col {width: 180px; float: left; margin-right: 20px;}*/
+.items-list {padding-bottom: 6px; padding-left: 40px;}
+.items-list-col {width: 180px; float: left;}
+.items-list-col.even {background-color: #f5f0eb;}
 .items-list-col:last-child {margin-right: 0;}
 
 /*Items list*/
