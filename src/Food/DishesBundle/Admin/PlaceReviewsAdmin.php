@@ -74,7 +74,7 @@ class PlaceReviewsAdmin extends FoodAdmin
             $datagridMapper
                 ->add('place');
         }
-        $datagridMapper
+//        $datagridMapper
 //            ->add('createdBy', null, array('label' => 'admin.created_by'))
 //            ->add(
 //                'createdAt',
@@ -88,7 +88,7 @@ class PlaceReviewsAdmin extends FoodAdmin
 //                    'attr' => array('class' => 'datepicker')
 //                )
 //            )
-        ;
+//        ;
     }
 
     // Fields to be shown on lists
