@@ -131,6 +131,16 @@
             </div>
         {% endif %}
 
+        {# TODO pakeisi id i tikra #}
+        {% if place.id == 142 and site_country == 'LT' %}
+            <div class="mylimiausia_pickup_block">
+                <img src="{{ asset('bundles/foodapp/images/draugeliu_korteles.png') }}"/>
+                <div style="margin-bottom: 10px; margin-top: 5px;">
+                    Pasiūlymas galioja nuo 15 val. tik su DRAUGŲ ar MYLIMIAUSIA lojalumo kortele ATSIIMANT patiekalus restorane<br />
+                </div>
+            </div>
+        {% endif %}
+
         {# Order  button #}
         {% if inCart == false %}
             <a href="{{ path('food_cart', { 'placeId' : place.id, 'takeAway': hide_delivery }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
