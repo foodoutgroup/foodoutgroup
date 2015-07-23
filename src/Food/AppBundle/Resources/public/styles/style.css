@@ -535,7 +535,7 @@ input.button {}
 .items-list-col {width: 180px; float: left; margin-right: 20px;}*/
 .items-list {padding-bottom: 6px; padding-left: 40px;}
 .items-list-col {width: 180px; float: left;}
-.items-list-col.even {background-color: #f5f0eb;}
+.items-list-col.even, .items-list-col.even a {background-color: #f5f0eb;}
 .items-list-col:last-child {margin-right: 0;}
 
 /*Items list*/
