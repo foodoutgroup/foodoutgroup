@@ -550,6 +550,9 @@ input.button {}
     height: 5px;
     background: url(/bundles/foodapp/images/caret-down.png) no-repeat;
 }
+.best-offers-top-line {
+    padding-top: 5px;
+}
 
 /*Cupons list*/
 .cupom-item {text-align: center; margin-bottom: 5px; display: inline-block;}
