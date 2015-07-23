@@ -287,7 +287,15 @@ class PlaceAdmin extends FoodAdmin
                     unset($fieldsForUpdate['deleted_by']);
                     $queryParts = array();
                     foreach ($fieldsForUpdate as $field=>$val) {
-                        $queryParts[]= "`".$field."` = '".$val."'";
+                        if ($field == "deleted_at") {
+                            if ($val == "") {
+                                $queryParts[]= "`".$field."` = NULL";
+                            } else {
+                                $queryParts[]= "`".$field."` = '".$val."'";
+                            }
+                        } else {
+                            $queryParts[]= "`".$field."` = '".$val."'";
+                        }
                     }
                     $query = "UPDATE place_point SET ";
                     $query.= implode(",", $queryParts);
@@ -305,9 +313,13 @@ class PlaceAdmin extends FoodAdmin
                     $fieldsForInsert['no_replication'] = 1;
                     $fieldsForInsert['edited_by'] = 1;
                     $fieldsForInsert['deleted_by'] = 1;
+                    if ($fieldsForInsert['deleted_at'] == ""){
+                        $fieldsForInsert['deleted_at'] = "NULL";
+                    }
 
                     $query = "INSERT INTO place_point (`".implode("`,`",array_keys($fieldsForInsert))."`)";
                     $query.= " VALUES('".implode("','", $fieldsForInsert)."')";
+                    $query = str_replace("'NULL'", "NULL", $query);
 
                     $stmt = $dc->getConnection()->prepare($query);
                     $stmt->execute();
