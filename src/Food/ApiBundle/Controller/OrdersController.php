@@ -94,6 +94,16 @@ class OrdersController extends Controller
         } catch (\Exception $e) {
             $errBody = $e->getMessage();
             $errBody.= "\n\n\n";
+            $errBody.= "POST\n";
+            $errBody.= print_r($_POST, true);
+            $errBody.= "\n\n\n";
+            $errBody.= "GET\n";
+            $errBody.= print_r($_GET, true);
+            $errBody.= "\n\n\n";
+            $errBody.= "REQUEST BODY\n";
+            $errBody.= print_r(file_get_contents('php://input'), true);
+
+            $errBody.= "\n\n\n";
             $errBody.= $e->getTraceAsString();
             @mail("paulius@foodout.lt", "CREATE ORDER PRE ERROR ".date("Y-m-d H:i:s"), $errBody, "FROM: info@foodout.lt");
             return new JsonResponse(
