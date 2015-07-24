@@ -1,9 +1,9 @@
 {% if best_offers %}
-    <div class="items-list-title clearfix">
+    {#<div class="items-list-title clearfix">
         <h2>{% trans %}places.best_offers_block_title{% endtrans %}</h2>
-    </div>
+    </div>#}
 
-    <div class="items-list clearfix">
+    <div class="items-list clearfix best-offers-top-line">
         {% for best_offer in best_offers %}
             <div class="items-list-col">
                 <a href="{% if best_offer.place is not null and not best_offer.useUrl %}{{ path('food_slug', {'slug': slug_util.slugByItem(best_offer.place.id, 'place') }) }}{% else %}{{ best_offer.link }}{% endif %}" class="cupom-item">
