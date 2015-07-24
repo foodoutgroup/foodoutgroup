@@ -21,6 +21,9 @@
                         <input type="checkbox" name="kitchens[]" value="{{ item.id }}" {% if item.id in selected_kitchens %}checked="checked"{% endif %}>
                     </label>
                 </li>
+                <li>
+                    <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a>
+                </li>
             {% endfor %}
         </ul>
     </div>

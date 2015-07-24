@@ -99,6 +99,15 @@
                                             {% endfor %}
                                         </ul>
                                     </div>
+
+                                    {% if place.id == 63 and site_country == 'LT' and "now"|date("H") > 15 %}
+                                        {# Link to Cili Express #}
+                                        <div class="express-button">
+                                            <a href="{{ path('food_cili_express') }}">
+                                                <img alt="Čili Express" src="{{ asset('bundles/foodapp/images/button_ciliekspress.png') }}" />
+                                            </a>
+                                        </div>
+                                    {% endif %}
                                 </div>
                         {# Meniu #}
                                 <div class="menu-righter">
