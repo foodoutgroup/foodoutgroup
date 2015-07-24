@@ -100,7 +100,7 @@
                                         </ul>
                                     </div>
 
-                                    {% if place.id == 63 and site_country == 'LT' and "now"|date("H") > 15 %}
+                                    {% if place.id == 63 and site_country == 'LT' and "now"|date("H") >= 15 %}
                                         {# Link to Cili Express #}
                                         <div class="express-button">
                                             <a href="{{ path('food_cili_express') }}">
