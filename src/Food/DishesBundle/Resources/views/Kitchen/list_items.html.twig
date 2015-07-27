@@ -15,14 +15,14 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu scrollable-menu menu" aria-labelledby="dLabel">
+            <li>
+                <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a>
+            </li>
             {% for item in list %}
                 <li>
                     <label class="custom-checkbox">{{ item.name }}<span class="count">{{ item.placeCount }}</span>
                         <input type="checkbox" name="kitchens[]" value="{{ item.id }}" {% if item.id in selected_kitchens %}checked="checked"{% endif %}>
                     </label>
-                </li>
-                <li>
-                    <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a>
                 </li>
             {% endfor %}
         </ul>
