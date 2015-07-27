@@ -257,24 +257,24 @@ var Place = {
         this.cartObj = $("#cartmnu");
         this.cartOffset = this.cartObj.offset();
         this.cartHeight = this.cartObj.height();
-        if ($('.check-item').length <= 5) {
-            this.cartObj.css('overflow', 'visible').removeClass('no-before');
+        if ($('.check-item').length <= 4 && $(window).height() >= 750) {
+            this.cartObj.removeClass('overflow_auto');
         } else {
-            this.cartObj.css('overflow-y', 'auto').addClass('no-before');
+            this.cartObj.addClass('overflow_auto');
         }
     },
     moveBlocks: function(init) {
         var windowTop = $(window).scrollTop();
         if (this.catmenuOffset.top < windowTop || (init == true && this.cartOffset.top < windowTop)) {
-            this.catmenuObj.css({position: 'fixed', top: 0});
+            this.catmenuObj.addClass('sticky');
         } else {
-            this.catmenuObj.css('position', 'static');
+            this.catmenuObj.removeClass('sticky');
         }
 
         if (this.cartOffset.top < windowTop || (init == true && this.cartOffset.top < windowTop)) {
-            this.cartObj.css({position: 'fixed', top: '10px'});
+            this.cartObj.addClass('sticky');
         } else {
-            this.cartObj.css('position', 'static');
+            this.cartObj.removeClass('sticky');
         }
     }
 }

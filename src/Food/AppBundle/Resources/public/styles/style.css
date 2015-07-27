@@ -27,7 +27,6 @@
 
 
 
-
 @font-face {
     font-family: 'avenir_next_condensedbold';
     src: url('/bundles/foodapp/styles/avenirnextcondensed-webfont.eot');
@@ -473,7 +472,7 @@ input.button {}
 .filter-title {color: #b39196; font-size: 10px; text-transform: uppercase; line-height: 17px; padding: 17px 20px; letter-spacing: 1.7px; padding-bottom: 14px;}
 
 .filters-list {border-bottom: 1px solid #ebe2d9;}
-.food-type-filters {padding-bottom: 9px;}
+.food-type-filters {padding-bottom: 9px; padding-left: 20px;}
 .filters-list .custom-checkbox {margin-bottom: 11px; margin-left: 20px; margin-right: 20px; padding-left: 23px;}
 .custom-checkbox .count {position: absolute; right: 3px; top: 3px; font-size: 10px; color: #b39196;}
 
@@ -532,9 +531,15 @@ input.button {}
 
 
 /*Items lists*/
-.items-list {padding-bottom: 6px;}
-.items-list-col {width: 180px; float: left; margin-right: 20px;}
+/*.items-list {padding-bottom: 6px;}
+.items-list-col {width: 180px; float: left; margin-right: 20px;}*/
+.items-list {padding-bottom: 6px; padding-left: 40px;}
+.items-list-col {width: 180px; float: left;}
+.items-list-col.even, .items-list-col.even a {background-color: #f5f0eb;}
 .items-list-col:last-child {margin-right: 0;}
+.items-list.recommended_list {
+    padding-bottom: 12px;
+}
 
 /*Items list*/
 .items-list-title {padding-top: 65px; padding-bottom: 25px;}
@@ -547,6 +552,9 @@ input.button {}
     width: 5px;
     height: 5px;
     background: url(/bundles/foodapp/images/caret-down.png) no-repeat;
+}
+.best-offers-top-line {
+    padding-top: 12px;
 }
 
 /*Cupons list*/
@@ -649,14 +657,26 @@ input.button {}
 .check-block {
     position: relative;
     padding: 13px;
-    max-width: 154px;
+    width: 154px;
     background: #fff;
     border-radius: 4px;
     max-height: 925px;
     max-height: 95vh !important;
-    overflow: auto;
-    overflow-x: hidden;
     z-index: 10;
+}
+.check-block.overflow_auto {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.sticky {
+    position: fixed;
+}
+.menu-lefter.sticky {
+    top: 0px;
+    z-index: 10;
+}
+.check-block.sticky {
+    top: 10px;
 }
 .check-block::-webkit-scrollbar {
     -webkit-appearance: none;
@@ -678,7 +698,7 @@ input.button {}
     height: 18px;
     bottom: -6px;
 }
-.check-block.no-before:before {
+.check-block.overflow_auto:before {
     display: none;
 }
 .check-block h5 {color: #55422e; font-size: 18px; font-weight: normal; margin-top: 11px; margin-bottom: 11px;}
@@ -2088,4 +2108,19 @@ div.coupon_form_popup {
 }
 .alert_not_detailed_search {
     width: 675px;
+}
+
+.banners > div {
+    padding-bottom: 5px;
+}
+
+.express-button {
+    padding-top: 5px;
+}
+.express-button img {
+    width: 144px;
+}
+
+#catmnu .dropdown button.button {
+    width: 140px;
 }

@@ -720,8 +720,10 @@ class NavService extends ContainerAware
             $client = $this->getWSConnection();
             $return = $client->FoodOutUpdatePrices(array('pInt' =>(int)$orderId));
             ob_end_clean();
+            $order = $this->getContainer()->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($order->getId());
+            $this->getContainer()->get('doctrine')->getManager()->refresh($order);
             $order->setNavPriceUpdated(true);
-            $this->getContainer()->get('doctrine')->getManager()->merge($order);
+            $this->getContainer()->get('doctrine')->getManager()->persist($order);
             $this->getContainer()->get('doctrine')->getManager()->flush();
         } else {
             $return = true;
@@ -1554,7 +1556,7 @@ class NavService extends ContainerAware
     public function getLocalPlacePoint($chain, $restaurantNo)
     {
         $repo = $this->getContainer()->get('doctrine')->getRepository('FoodDishesBundle:PlacePoint');
-        $pPoint = $repo->findOneBy(array('internal_code' => $restaurantNo));
+        $pPoint = $repo->findOneBy(array('internal_code' => $restaurantNo, 'parentId' => null));
 
         if (!$pPoint instanceof PlacePoint || $pPoint->getId() == '')
         {
@@ -1570,6 +1572,19 @@ class NavService extends ContainerAware
                     $chain,
                     $pPoint->getPlace()->getChain()
                 ));
+        }
+
+        if ($pPoint->getParentId() !== null) {
+            $this->getContainer()->get('logger')
+                ->alert(sprintf(
+                    'Found placePoint for restaurant no "%s" with id: %d but it has parent. Parent will be selected',
+                    $restaurantNo,
+                    $pPoint->getId(),
+                    $chain,
+                    $pPoint->getPlace()->getChain()
+                ));
+
+            $pPoint = $repo->find($pPoint->getParentId());
         }
 
         return $pPoint;

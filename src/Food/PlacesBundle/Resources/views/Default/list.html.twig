@@ -102,7 +102,8 @@
                         <span></span>
                     </span>
                     {% endif %}
-                    {% if place.place.deliveryOptions != 'pickup' or (place.place.deliveryOptions == 'pickup' and place.place.minimalOnSelfDel) %}
+
+                    {% if (list_type != 'delivery' and place.place.minimalOnSelfDel) or (list_type == 'delivery' and place.place.deliveryOptions != 'pickup') or (place.place.deliveryOptions == 'pickup' and place.place.minimalOnSelfDel) %}
                     <span class="min-cart-size">{% trans %}place.min_cart_amount{% endtrans %}:
                         {% set minCart = places_service.minCartPrice(place.place.id) %}
                         {% set maxCart = places_service.maxCartPrice(place.place.id) %}

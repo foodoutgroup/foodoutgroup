@@ -162,7 +162,35 @@
         <div class="content-lefter">
             {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended})) }}
             {{ render(controller('FoodDishesBundle:Place:filtersList')) }}
-            <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a>
+
+            <div class="banners">
+                {% if site_country == 'LT' %}
+                    <div>
+                        <ins data-revive-zoneid="13" data-revive-id="12b88dd43b1c40010eb436263abc6451"></ins>
+                    </div>
+
+                    <div>
+                        <ins data-revive-zoneid="14" data-revive-id="12b88dd43b1c40010eb436263abc6451"></ins>
+                    </div>
+
+                    <div>
+                        <ins data-revive-zoneid="15" data-revive-id="12b88dd43b1c40010eb436263abc6451"></ins>
+                    </div>
+                {% else %}
+                    <div>
+                        <ins data-revive-zoneid="18" data-revive-id="12b88dd43b1c40010eb436263abc6451"></ins>
+                    </div>
+
+                    <div>
+                        <ins data-revive-zoneid="17" data-revive-id="12b88dd43b1c40010eb436263abc6451"></ins>
+                    </div>
+
+                    <div>
+                        <ins data-revive-zoneid="19" data-revive-id="12b88dd43b1c40010eb436263abc6451"></ins>
+                    </div>
+                {% endif %}
+                <script async src="//ads.foodout.lt/delivery/asyncjs.php"></script>
+            </div>
         </div>
         <div class="content-righter">
             {#<div class="restaurants-list-controls clearfix">

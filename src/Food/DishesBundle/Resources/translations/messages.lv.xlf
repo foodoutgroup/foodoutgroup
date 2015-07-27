@@ -20,7 +20,7 @@
       </trans-unit>
       <trans-unit id="0a951587b898b69f4e5b5cfdf92e7852" resname="places.select_kitchen">
         <source>places.select_kitchen</source>
-        <target>Izvēlies virtuvi</target>
+        <target>Virtuve</target>
       </trans-unit>
       <trans-unit id="62b1dc63ada5280847a9887717d0aeb0" resname="places.count">
         <source>places.count</source>

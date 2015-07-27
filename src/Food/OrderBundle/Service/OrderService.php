@@ -367,20 +367,21 @@ class OrderService extends ContainerAware
                     $sender = $this->container->getParameter('sms.sender');
 
                     $translation = 'general.sms.user.order_accepted';
-                    if ($this->getOrder()->getDeliveryType() == 'pickup') {
+                    if ($this->getOrder()->getDeliveryType() == self::$deliveryPickup) {
                         $translation = 'general.sms.user.order_accepted_pickup';
                     }
 
                     $placeName = $this->container->get('food.app.utils.language')
                         ->removeChars('lt', $this->getOrder()->getPlaceName(), false, false);
                     $placeName = ucfirst($placeName);
+                    $place = $this->getOrder()->getPlace();
 
                     $text = $this->container->get('translator')
                         ->trans(
                             $translation,
                             array(
                                 'restourant_name' => $placeName,
-                                'delivery_time' => $this->getOrder()->getPlace()->getDeliveryTime(),
+                                'delivery_time' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $place->getDeliveryTime() : $place->getPickupTime()),
 //                                'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone()
                             ),
                             null,
@@ -501,7 +502,19 @@ class OrderService extends ContainerAware
 
 
 //        $ml->setVariables( $variables )->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30009269  )->send();
-        $mailTemplate = $this->container->getParameter('mailer_notify_on_accept');
+
+        // Pickup sablonas kitoks
+        if ($this->getOrder()->getDeliveryType() == self::$deliveryPickup) {
+            $mailTemplate = $this->container->getParameter('mailer_notify_pickup_on_accept');
+
+            // Cili express omg hack :( TODO isimt sita velnio ismisla ir nueit ispazinties :(
+            if ($this->getOrder()->getPlace()->getId() == 142 && $this->container->getParameter('country') == 'LT') {
+                $mailTemplate = 41586573;
+            }
+        } else {
+            $mailTemplate = $this->container->getParameter('mailer_notify_on_accept');
+        }
+
         $ml->setVariables($variables)
             ->setRecipient($this->getOrder()->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
             ->setId($mailTemplate)
@@ -2052,7 +2065,7 @@ class OrderService extends ContainerAware
             $this->logOrder($order, 'NAV_update_prices');
             $returner = $nav->updatePricesNAV($orderRenew);
             sleep(1);
-
+            $this->logOrder($order, 'NAV_update_prices_return', 'returner', $returner->return_value);
             if($returner->return_value == "TRUE") {
                 $this->logOrder($order, 'NAV_process_order');
                 $returner = $nav->processOrderNAV($orderRenew);
@@ -2060,16 +2073,20 @@ class OrderService extends ContainerAware
 
                 } else {
                     // Problems processing order in nav
+                    $order = $this->getEm()->getRepository('FoodOrderBundle:Order')->find($order->getId());
+                    $this->getEm()->refresh($order);
                     $this->logStatusChange($order, self::$status_nav_problems, 'cili_nav_process');
                     $order->setOrderStatus(self::$status_nav_problems);
-                    $this->getEm()->merge($order);
+                    $this->getEm()->persist($order);
                     $this->getEm()->flush();
                 }
             } else {
                 // Problems updating price
+                $order = $this->getEm()->getRepository('FoodOrderBundle:Order')->find($order->getId());
+                $this->getEm()->refresh($order);
                 $this->logStatusChange($order, self::$status_nav_problems, 'cili_nav_update_price');
                 $order->setOrderStatus(self::$status_nav_problems);
-                $this->getEm()->merge($order);
+                $this->getEm()->persist($order);
                 $this->getEm()->flush();
             }
         }

@@ -370,6 +370,21 @@ class PlacePoint
      */
     private $deletedBy;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="parent_id", type="string", length=10, nullable=true)
+     */
+    private $parentId;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="no_replication", type="boolean", nullable=true)
+     */
+    private $noReplication = false;
+
     public function getElement()
     {
         return '';
@@ -1705,5 +1720,51 @@ class PlacePoint
     public function getZones()
     {
         return $this->zones;
+    }
+
+    /**
+     * Set parentId
+     *
+     * @param string $parentId
+     * @return PlacePoint
+     */
+    public function setParentId($parentId)
+    {
+        $this->parentId = $parentId;
+    
+        return $this;
+    }
+
+    /**
+     * Get parentId
+     *
+     * @return string 
+     */
+    public function getParentId()
+    {
+        return $this->parentId;
+    }
+
+    /**
+     * Set noReplication
+     *
+     * @param boolean $noReplication
+     * @return PlacePoint
+     */
+    public function setNoReplication($noReplication)
+    {
+        $this->noReplication = $noReplication;
+    
+        return $this;
+    }
+
+    /**
+     * Get noReplication
+     *
+     * @return boolean 
+     */
+    public function getNoReplication()
+    {
+        return $this->noReplication;
     }
 }

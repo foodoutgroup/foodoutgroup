@@ -462,6 +462,7 @@ class OrderService extends ContainerAware
     public function convertOrderStatus($status)
     {
         $statusMap = array(
+            FO::$status_nav_problems => 'accepted',
             FO::$status_new => 'accepted',
             FO::$status_unapproved => 'accepted',
             FO::$status_accepted => 'preparing',
@@ -469,6 +470,7 @@ class OrderService extends ContainerAware
             FO::$status_forwarded => 'preparing',
             FO::$status_delayed => 'delayed',
             FO::$status_completed => 'completed',
+            FO::$status_partialy_completed => 'completed',
             FO::$status_failed => 'failed',
             FO::$status_finished => 'prepared',
             FO::$status_canceled => 'canceled',

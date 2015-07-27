@@ -99,6 +99,20 @@ food_cili:
         path: /lt/cili-pica
         permanent: true
 
+food_cili_express:
+    path: /ciliexpress
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /lt/ciliexpress
+        permanent: true
+
+food_cili_express_slash:
+    path: /ciliexpress/
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /lt/ciliexpress
+        permanent: true
+
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
     prefix:   /{_locale}/

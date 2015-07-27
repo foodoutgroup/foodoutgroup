@@ -131,6 +131,16 @@
             </div>
         {% endif %}
 
+        {# TODO pakeisi id i tikra #}
+        {% if place.id == 142 and site_country == 'LT' %}
+            <div class="mylimiausia_pickup_block">
+                <img src="{{ asset('bundles/foodapp/images/draugeliu_korteles.png') }}"/>
+                <div style="margin-bottom: 10px; margin-top: 5px;">
+                    Pasiūlymas galioja nuo 15 val. tik su DRAUGŲ ar MYLIMIAUSIA lojalumo kortele ATSIIMANT patiekalus restorane<br />
+                </div>
+            </div>
+        {% endif %}
+
         {# Order  button #}
         {% if inCart == false %}
             <a href="{{ path('food_cart', { 'placeId' : place.id, 'takeAway': hide_delivery }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
@@ -172,16 +182,20 @@
         });
         var takeAway = 0;
         $('#cartmnu').on('ifToggled', '.cart_delivery_type input',function (event) {
+            var hadSticky = $('.check-block').hasClass('sticky');
             if (event.target.checked) {
                 if (event.target.value == 'pickup') {
                     takeAway = 1;
                 }
-                $('.content-righter-small').mask();
+                $('.check-block').mask();
                 var url = Routing.generate('food_cart_action', { 'action': 'set_delivery', '_locale': '{{ locale }}', 'place': {{ place.id }}, in_cart: 0, coupon_code: '', take_away: takeAway  });
                 $.post(url, function (response) {
                     if (typeof(response.block) != "undefined") {
-                        $('.content-righter-small').unmask();
-                        $('.check-block').replaceWith(response.block);
+                        $('.check-block').replaceWith(response.block).unmask();
+                        if (hadSticky) {
+                            Place.initCartScroll();
+                            Place.moveBlocks(true);
+                        }
                     }
                 }, 'json');
             }
