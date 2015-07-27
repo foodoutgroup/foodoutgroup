@@ -618,10 +618,12 @@ class OrderRepository extends EntityRepository
             o.id,
             o.delivery_time
           FROM orders o
+          LEFT JOIN place p ON p.id = o.place_id
           WHERE
             o.order_status IN ('{$orderStatus}')
             AND o.payment_status = '{$paymentStatus}'
             AND o.delivery_time BETWEEN '{$dateFrom}' AND '{$dateTo}'
+            AND (p.navision != 1 OR p.navision IS NULL)
         ";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);

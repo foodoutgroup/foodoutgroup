@@ -86,7 +86,7 @@
                     {#<p>Jūsų užsakymas priimtas ir turėtų pasiekti jus per <strong>{{ order.placePoint.deliveryTime }}</strong> minučių. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitumų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 687 44359</strong>. &#123;&#35;Savo užsakymą <a href="#" class="delivery-location-ico"><span>galite sekti čia</span></a>&#35;&#125;</p>#}
                     <p>
                         {% if order.placePoint.phoneNiceFormat|length > 4 %}
-                            {% if order.orderStatus == 'pre' %}
+                            {% if order.orderStatus == 'preorder' %}
                                 {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success_pre{% endtrans %}
                             {% else %}
                                 {% trans with {'%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success{% endtrans %}

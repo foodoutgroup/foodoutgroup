@@ -40,7 +40,7 @@ class CloseOrdersCommand extends ContainerAwareCommand
                     $order = $orderService->getOrderById($order['id']);
 
                     if (!$order) {
-                        $this->getContainer()->get('logger')->error('CloseOrdersCommand could not oepn order #'.$order['id']);
+                        $this->getContainer()->get('logger')->error('CloseOrdersCommand could not open order #'.$order['id']);
                         continue;
                     }
 

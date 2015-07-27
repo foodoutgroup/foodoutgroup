@@ -46,6 +46,11 @@ class PreorderStartCommand extends ContainerAwareCommand
                         continue;
                     }
 
+                    if ($order->getPlace()->getNavision()) {
+                        $this->getContainer()->get('logger')->alert('PreOrder starter skipped order #'.$order['id'].' Nav orders should not be here. They are already posted');
+                        continue;
+                    }
+
                     $orderService->logOrder($order, 'pre-order', 'PreOrder started by cron as it was 1 hour left till delivery');
                     $orderService->statusNew('preOrder-start');
 
