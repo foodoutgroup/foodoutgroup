@@ -790,6 +790,10 @@
         <source>general.cart.success</source>
         <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
       </trans-unit>
+      <trans-unit id="general.cart.success_pre" resname="general.cart.success_pre">
+        <source>general.cart.success_pre</source>
+        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams %order_date%. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
+      </trans-unit>
         <trans-unit id="general.cart.success_title_lv" resname="general.cart.success_title">
             <source>general.cart.success_title</source>
             <target>Sveicieni</target>
