@@ -2049,16 +2049,20 @@ class OrderService extends ContainerAware
 
                 } else {
                     // Problems processing order in nav
+                    $order = $this->getEm()->getRepository('FoodOrderBundle:Order')->find($order->getId());
+                    $this->getEm()->refresh($order);
                     $this->logStatusChange($order, self::$status_nav_problems, 'cili_nav_process');
                     $order->setOrderStatus(self::$status_nav_problems);
-                    $this->getEm()->merge($order);
+                    $this->getEm()->persist($order);
                     $this->getEm()->flush();
                 }
             } else {
                 // Problems updating price
+                $order = $this->getEm()->getRepository('FoodOrderBundle:Order')->find($order->getId());
+                $this->getEm()->refresh($order);
                 $this->logStatusChange($order, self::$status_nav_problems, 'cili_nav_update_price');
                 $order->setOrderStatus(self::$status_nav_problems);
-                $this->getEm()->merge($order);
+                $this->getEm()->persist($order);
                 $this->getEm()->flush();
             }
         }
