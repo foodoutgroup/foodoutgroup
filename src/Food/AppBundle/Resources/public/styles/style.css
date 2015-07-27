@@ -2109,3 +2109,18 @@ div.coupon_form_popup {
 .alert_not_detailed_search {
     width: 675px;
 }
+
+.banners > div {
+    padding-bottom: 5px;
+}
+
+.express-button {
+    padding-top: 5px;
+}
+.express-button img {
+    width: 144px;
+}
+
+#catmnu .dropdown button.button {
+    width: 140px;
+}

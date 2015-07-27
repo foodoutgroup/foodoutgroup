@@ -30,13 +30,13 @@ class PlaceReviewsAdmin extends FoodAdmin
                 ->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'))
                 ->add('rate', null, array('label' => 'admin.place.review.rate'));
         }
-        $formMapper
-            ->add('createdBy', 'entity', array(
-                'class' => 'Food\UserBundle\Entity\User',
-                'label' => 'admin.created_by',
-                'disabled' => $fieldDisabled,
-                'required' => false,
-            ));
+//        $formMapper
+//            ->add('createdBy', 'entity', array(
+//                'class' => 'Food\UserBundle\Entity\User',
+//                'label' => 'admin.created_by',
+//                'disabled' => $fieldDisabled,
+//                'required' => false,
+//            ));
 
         if ($this->isAdmin() && !$fieldDisabled) {
             $formMapper
