@@ -720,8 +720,10 @@ class NavService extends ContainerAware
             $client = $this->getWSConnection();
             $return = $client->FoodOutUpdatePrices(array('pInt' =>(int)$orderId));
             ob_end_clean();
+            $order = $this->getContainer()->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($order->getId());
+            $this->getContainer()->get('doctrine')->getManager()->refresh($order);
             $order->setNavPriceUpdated(true);
-            $this->getContainer()->get('doctrine')->getManager()->merge($order);
+            $this->getContainer()->get('doctrine')->getManager()->persist($order);
             $this->getContainer()->get('doctrine')->getManager()->flush();
         } else {
             $return = true;
