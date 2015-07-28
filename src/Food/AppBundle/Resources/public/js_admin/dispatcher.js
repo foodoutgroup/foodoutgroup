@@ -82,6 +82,19 @@ var Dispatcher = {
         });
 
         Dispatcher.subscribeForNewOrders();
+
+        // Preload sounds
+        ion.sound({
+            sounds: [
+                {name: "door_bell"},
+            ],
+
+            // main config
+            path: "/bundles/foodapp/js_admin/ion.sound/sounds/",
+            preload: true,
+            multiplay: true,
+            volume: 0.9
+        });
     },
 
     toggleDriverButton: function(checkbox) {
@@ -202,6 +215,8 @@ var Dispatcher = {
             { 'orders': Dispatcher.recentOrders},
             function(data) {
                 if (data == "YES") {
+                    // play a sound for new order
+                    ion.sound.play("door_bell");
                     location.reload();
                 }
 
