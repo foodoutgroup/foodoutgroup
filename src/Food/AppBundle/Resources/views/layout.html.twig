@@ -119,20 +119,21 @@
     </script>
     <!-- mailersoft end -->
 
-    {% if site_country == 'LT' %}
-        {# Revive Ads init for foodout.lt #}
+    {# TODO Pasalinti jei neveiks vis dar.. Revive Single page load multiple banners #}
+    {#{% if site_country == 'LT' %}
+        &#123;&#35; Revive Ads init for foodout.lt &#35;&#125;
         <script type="text/javascript">
             var OA_zones = {
-                'zone1' : 13, 'zone2' : 14, 'zona3' : 15
+                'zone-22' : 14, 'zona-a': 8,'zone-1' : 13, 'zona-3' : 15
             };
 //            console.log('preloadinam zonu identifikatorius');
 //            console.log(OA_zones);
 //            console.log('bandom uzsikraut revive single page loader scripta');
         </script>
-        <script type='text/javascript' src='http://ads.foodout.lt/delivery/spcjs.php?id=2'></script>
+        &#123;&#35;<script type='text/javascript' src='http://ads.foodout.lt/delivery/spcjs.php'></script>&#35;&#125;
     {% elseif site_country == 'LV' %}
-        {# Revive Ads init for foodout.lv #}
-    {% endif %}
+        &#123;&#35; Revive Ads init for foodout.lv &#35;&#125;
+    {% endif %}#}
 </head>
 <body>
 {{ notifications.init|raw }}
