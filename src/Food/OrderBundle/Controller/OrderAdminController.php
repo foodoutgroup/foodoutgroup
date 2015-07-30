@@ -146,8 +146,9 @@ class OrderAdminController extends Controller
     public function getDataSourceIterator(Request $request)
     {
         $where = "";
-        if($request->get('filters') != 'reset' && !empty($request->get('filter'))) {
-            $params = $request->get('filter');
+        $filters = $request->get('filters');
+        $params = $request->get('filter');
+        if($filters != 'reset' && !empty($params)) {
             $prepare_val = function($val) {
                 if (ctype_digit($val)) {
                     $val = (int) $val;
