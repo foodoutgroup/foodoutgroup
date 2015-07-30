@@ -53,6 +53,15 @@
                     });
                 });
             }
+
+            $(".datepicker2").each(function(){
+                this.type = "text";
+            });
+            $(".datepicker2").datepicker({
+                changeMonth: true,
+                changeYear: true
+            });
+            $.datepicker.setDefaults($.datepicker.regional['lt']);
         });
     </script>
 {% endblock %}
