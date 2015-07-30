@@ -121,16 +121,13 @@
 
         {% if show_game %}
             <div class="site-block banner">
-
-                <!--/*
-                *
-                * Revive Adserver Asynchronous JS Tag
-                * - Generated with Revive Adserver v3.2.1
-                *
-                */-->
-
-                <ins data-revive-zoneid="8" data-revive-id="12b88dd43b1c40010eb436263abc6451"></ins>
-                <script async src="//ads.foodout.lt/delivery/asyncjs.php"></script>
+                {% if site_country == 'LT' %}
+                    <ins data-revive-zoneid="8" data-revive-id="12b88dd43b1c40010eb436263abc6451"></ins>
+                    <script async src="//ads.foodout.lt/delivery/asyncjs.php"></script>
+                {% elseif site_country == 'LV' %}
+                    <ins data-revive-zoneid="16" data-revive-id="12b88dd43b1c40010eb436263abc6451"></ins>
+                    <script async src="//ads.foodout.lt/delivery/asyncjs.php"></script>
+                {% endif %}
             </div>
         {% endif %}
 

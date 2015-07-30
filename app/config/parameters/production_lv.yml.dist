@@ -49,7 +49,7 @@ parameters:
     display_currency_alternative:  Lt
     currency_alternative: false
     show_best_offers: false
-    show_game: false
+    show_game: true
     show_apps_download: false
     show_is_social: false
     show_delfi_banner: false
