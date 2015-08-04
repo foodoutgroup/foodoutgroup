@@ -28,7 +28,7 @@
       </trans-unit>
       <trans-unit id="index.get_this_offer" resname="index.get_this_offer">
         <source>index.get_this_offer</source>
-        <target>Get šo piedāvājumu!</target>
+        <target>PASŪTI</target>
       </trans-unit>
       <trans-unit id="be95147756721360c95dba571491c885" resname="index.city">
         <source>index.city</source>
