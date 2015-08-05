@@ -395,6 +395,12 @@ class Order
     private $orderExtra;
 
     /**
+     * @var bool
+     * @ORM\Column(name="order_picked", type="boolean", nullable=true)
+     */
+    private $order_picked = false;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -2083,5 +2089,28 @@ class Order
     public function getProblemSolved()
     {
         return $this->problemSolved;
+    }
+
+    /**
+     * Set order_picked
+     *
+     * @param boolean $orderPicked
+     * @return Order
+     */
+    public function setOrderPicked($orderPicked)
+    {
+        $this->order_picked = $orderPicked;
+    
+        return $this;
+    }
+
+    /**
+     * Get order_picked
+     *
+     * @return boolean 
+     */
+    public function getOrderPicked()
+    {
+        return $this->order_picked;
     }
 }

@@ -133,12 +133,16 @@
     </table>
     <form method="post">
         {% if order.orderStatus == "assigned" %}
+            {% if order.orderPicked == false %}
+            <button type="submit" name="status" value="picked-up" class="btn btn-success btn-block">{% trans %}mobile.order_picked_up{% endtrans %}</button>
+            <br>
+            {% endif %}
             <button type="submit" name="status" value="completed" class="btn btn-success btn-block">{% trans %}mobile.order_delivered{% endtrans %}</button>
         {% endif %}
         <a class="btn btn-info btn-block" href="{{ path('driver_mobile_invoice', {hash: order.orderHash}) }}">{% trans %}mobile.invoice_driver{% endtrans %}</a>
-        {% if order.orderStatus == "assigned" %}
+        {#{% if order.orderStatus == "assigned" %}
             <br />
             <button type="submit" name="status" value="partialy_completed" class="btn btn-warning btn-block">{% trans %}mobile.order_partialy_delivered{% endtrans %}</button>
-        {% endif %}
+        {% endif %}#}
     </form>
 {% endblock %}

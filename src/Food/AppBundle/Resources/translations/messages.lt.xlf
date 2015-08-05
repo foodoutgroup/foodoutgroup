@@ -238,6 +238,10 @@
         <source>mobile.order_delivered</source>
         <target>Pristačiau užsakymą</target>
       </trans-unit>
+      <trans-unit id="mobile.order_picked_up" resname="mobile.order_picked_up">
+        <source>mobile.order_picked_up</source>
+        <target>Paėmiau užsakymą</target>
+      </trans-unit>
       <trans-unit id="mobile.order_partialy_delivered" resname="mobile.order_partialy_delivered">
         <source>mobile.order_partialy_delivered</source>
         <target>Pristačiau dalį užsakymo (klientas dalies nepriėmė)</target>
