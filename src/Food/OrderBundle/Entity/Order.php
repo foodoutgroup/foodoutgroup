@@ -238,6 +238,12 @@ class Order
     private $orderLog;
 
     /**
+     * @var \Food\OrderBundle\Entity\OrderDeliveryLog $orderDeliveryLog
+     * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\OrderDeliveryLog", mappedBy="order")
+     **/
+    private $orderDeliveryLog;
+
+    /**
      * @var \DateTime
      * @ORM\Column(name="accept_time", type="datetime", nullable=true)
      */
@@ -2112,5 +2118,38 @@ class Order
     public function getOrderPicked()
     {
         return $this->order_picked;
+    }
+
+    /**
+     * Add orderDeliveryLog
+     *
+     * @param \Food\OrderBundle\Entity\OrderDeliveryLog $orderDeliveryLog
+     * @return Order
+     */
+    public function addOrderDeliveryLog(\Food\OrderBundle\Entity\OrderDeliveryLog $orderDeliveryLog)
+    {
+        $this->orderDeliveryLog[] = $orderDeliveryLog;
+    
+        return $this;
+    }
+
+    /**
+     * Remove orderDeliveryLog
+     *
+     * @param \Food\OrderBundle\Entity\OrderDeliveryLog $orderDeliveryLog
+     */
+    public function removeOrderDeliveryLog(\Food\OrderBundle\Entity\OrderDeliveryLog $orderDeliveryLog)
+    {
+        $this->orderDeliveryLog->removeElement($orderDeliveryLog);
+    }
+
+    /**
+     * Get orderDeliveryLog
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrderDeliveryLog()
+    {
+        return $this->orderDeliveryLog;
     }
 }
