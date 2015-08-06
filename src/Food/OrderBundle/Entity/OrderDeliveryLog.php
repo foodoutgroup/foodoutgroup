@@ -121,4 +121,18 @@ class OrderDeliveryLog
     {
         return $this->order;
     }
+
+    /**
+     * Counts difference in minutes
+     *
+     * @param \DateTime $firstEvent
+     * @param \DateTime $secondEvent
+     *
+     * @return integer
+     */
+    public function getDiff($firstEvent, $secondEvent)
+    {
+        $interval = $firstEvent->diff($secondEvent, true);
+        return $interval->format('%i');
+    }
 }

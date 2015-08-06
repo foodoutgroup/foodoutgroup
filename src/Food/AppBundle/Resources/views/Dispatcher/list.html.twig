@@ -51,6 +51,7 @@
                 <th class="order_date">{{ 'admin.dispatcher.delivery_time'|trans({}, 'SonataAdminBundle') }}</th>
             {% endif %}
             {% if type == "not_finished" %}
+                <th class="order_date">{{ 'admin.dispatcher.picked_up'|trans({}, 'SonataAdminBundle') }}</th>
                 <th class="order_date">{{ 'admin.dispatcher.late_time'|trans({}, 'SonataAdminBundle') }}</th>
             {% endif %}
             {% if type != 'canceled' %}
@@ -129,6 +130,13 @@
                     <td class="order_date" title="{{ order.deliveryTime|date("Y-m-d") }}">{{ order.deliveryTime|date("H:i") }}</td>
                 {% endif %}
                 {% if type == "not_finished" %}
+                    <td class="order_date">
+                        {% if order.orderPicked %}
+                            <span class="glyphicon glyphicon-ok"></span>
+                        {% else %}
+                            <span class="glyphicon glyphicon-remove"></span>
+                        {% endif %}
+                    </td>
                     <td class="order_date">
                         {% if order.deliveryTime|date("d H:i") < "now"|date("d H:i") %}
                             {{ order.lateMinutes }} min
