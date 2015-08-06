@@ -526,17 +526,70 @@ class OrderService extends ContainerAware
     public function statusAssigned($source = null, $statusMessage = null)
     {
         // Inform poor user, that his order was accepted
-        $driver = $this->getOrder()->getDriver();
+        $order = $this->getOrder();
+        $driver = $order->getDriver();
         if ($driver->getType() == 'local') {
             $messagingService = $this->container->get('food.messages');
             $logger = $this->container->get('logger');
 
             // Inform driver about new order that was assigned to him
             $orderConfirmRoute = $this->container->get('router')
-                ->generate('drivermobile', array('hash' => $this->getOrder()->getOrderHash()), true);
+                ->generate('drivermobile', array('hash' => $order->getOrderHash()), true);
 
-            $messageText = $this->container->get('translator')->trans('general.sms.driver_assigned_order')
-                . $orderConfirmRoute;
+            $restaurant_title = $order->getPlace()->getName();
+            $internal_code = $order->getPlacePoint()->getInternalCode();
+            if (!empty($internal_code)) {
+                $restaurant_title = $restaurant_title . " - " . $internal_code;
+            }
+
+            $restaurant_address = $order->getAddressId()->getAddress() . " " . $order->getAddressId()->getCity();
+            $curr_locale = $this->container->getParameter('locale');
+            $languageUtil = $this->container->get('food.app.utils.language');
+
+            $messageText = $languageUtil->removeChars(
+                $curr_locale,
+                $this->container->get('translator')->trans(
+                    'general.sms.driver_assigned_order',
+                    array(
+                        'restaurant_title' => $restaurant_title,
+                        'restaurant_address' => $restaurant_address,
+                        'deliver_time' => $order->getOrderDate()->format("H:i")
+                    )
+                ) . $orderConfirmRoute,
+                false
+            );
+
+            $max_len = 160;
+            $all_message_len = mb_strlen($messageText, 'UTF-8');
+            if ($all_message_len > $max_len) {
+                $restaurant_title_len = mb_strlen($restaurant_title, 'UTF-8');
+                $restaurant_address_len = mb_strlen($restaurant_address, 'UTF-8');
+                $too_long_len = ($all_message_len - $max_len);
+
+                if ($restaurant_title_len > 30 && $restaurant_address_len > 30) {
+                    $restaurant_title = mb_strimwidth($restaurant_title, 0, ($restaurant_title_len - $too_long_len / 2), '');
+                    $restaurant_address = mb_strimwidth($restaurant_address, 0, ($restaurant_address_len - $too_long_len / 2), '');
+                } else {
+                    if ($restaurant_title_len > $too_long_len) {
+                        $restaurant_title = mb_strimwidth($restaurant_title, 0, ($restaurant_title_len - $too_long_len), '');
+                    } elseif($restaurant_address_len > $too_long_len) {
+                        $restaurant_address = mb_strimwidth($restaurant_address, 0, ($restaurant_address_len - $too_long_len), '');
+                    }
+                }
+
+                $messageText = $languageUtil->removeChars(
+                    $curr_locale,
+                    $this->container->get('translator')->trans(
+                        'general.sms.driver_assigned_order',
+                        array(
+                            'restaurant_title' => $restaurant_title,
+                            'restaurant_address' => $restaurant_address,
+                            'deliver_time' => $order->getOrderDate()->format("H:i")
+                        )
+                    ) . $orderConfirmRoute,
+                    false
+                );
+            }
 
             $logger->alert("Sending message for driver about assigned order to number: " . $driver->getPhone() . ' with text "' . $messageText . '"');
 
@@ -544,7 +597,7 @@ class OrderService extends ContainerAware
                 $this->container->getParameter('sms.sender'),
                 $driver->getPhone(),
                 $messageText,
-                $this->getOrder()
+                $order
             );
             $messagingService->saveMessage($message);
         }
