@@ -159,6 +159,7 @@ class DefaultController extends Controller
                     break;
 
                     case 'picked-up':
+                        $orderService->logDeliveryEvent($orderService->getOrder(), 'order_pickedup');
                         $orderService->getOrder()->setOrderPicked(true);
                     break;
 

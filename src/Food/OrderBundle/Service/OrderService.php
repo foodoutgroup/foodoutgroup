@@ -11,6 +11,7 @@ use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Coupon;
 use Food\OrderBundle\Entity\Order;
+use Food\OrderBundle\Entity\OrderDeliveryLog;
 use Food\OrderBundle\Entity\OrderDetails;
 use Food\OrderBundle\Entity\OrderDetailsOptions;
 use Food\OrderBundle\Entity\OrderExtra;
@@ -404,6 +405,8 @@ class OrderService extends ContainerAware
             $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
         }
 
+        $this->logDeliveryEvent($this->getOrder(), 'order_accepted');
+
         return $this;
     }
 
@@ -549,6 +552,8 @@ class OrderService extends ContainerAware
             $messagingService->saveMessage($message);
         }
 
+        $this->logDeliveryEvent($this->getOrder(), 'order_assigned');
+
         $this->chageOrderStatus(self::$status_assiged, $source, $statusMessage);
 
         return $this;
@@ -575,6 +580,7 @@ class OrderService extends ContainerAware
     public function statusCompleted($source = null, $statusMessage = null)
     {
         $order = $this->getOrder();
+        $this->logDeliveryEvent($this->getOrder(), 'order_completed');
         $this->chageOrderStatus(self::$status_completed, $source, $statusMessage);
 
         $this->createDiscountCode($order);
@@ -755,6 +761,7 @@ class OrderService extends ContainerAware
     public function statusFinished($source=null, $statusMessage=null)
     {
         $this->chageOrderStatus(self::$status_finished, $source, $statusMessage);
+        $this->logDeliveryEvent($this->getOrder(), 'order_finished');
         return $this;
     }
 
@@ -774,6 +781,8 @@ class OrderService extends ContainerAware
             $this->informPaidOrderCanceled();
         }
 
+        $this->logDeliveryEvent($this->getOrder(), 'order_canceled');
+
         $this->chageOrderStatus(self::$status_canceled, $source, $statusMessage);
         return $this;
     }
@@ -787,6 +796,8 @@ class OrderService extends ContainerAware
     public function statusDelayed($source=null, $statusMessage=null)
     {
         $this->chageOrderStatus(self::$status_delayed, $source, $statusMessage);
+
+        $this->logDeliveryEvent($this->getOrder(), 'order_delayed');
 
         // Inform logistics
         $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
@@ -2214,6 +2225,21 @@ class OrderService extends ContainerAware
             ->setNewStatus($newStatus)
             ->setSource($source)
             ->setMessage($message);
+
+        $this->getEm()->persist($log);
+        $this->getEm()->flush();
+    }
+
+    /**
+     * @param Order $order
+     * @param string $event
+     */
+    public function logDeliveryEvent($order=null, $event)
+    {
+        $log = new OrderDeliveryLog();
+        $log->setOrder($order)
+            ->setEventDate(new \DateTime('now'))
+            ->setEvent($event);
 
         $this->getEm()->persist($log);
         $this->getEm()->flush();
