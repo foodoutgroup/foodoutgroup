@@ -89,7 +89,7 @@
             <th colspan="5">{% trans %}mobile.place_point_address{% endtrans %}</th>
         </tr>
         <tr>
-            <td colspan="5">{{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.city }}</td>
+            <td colspan="5"><a itemprop="address" href="https://maps.google.com?saddr=Current+Location&daddr={{ order.placePoint.address }}, {{ order.placePoint.city }}" target="_blank">{{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.city }}</a></td>
         </tr>
         <tr>
             <th colspan="5">{% trans %}mobile.place_point_phone{% endtrans %}</th>
@@ -101,13 +101,19 @@
             <th colspan="5">{% trans %}mobile.delivery_destination{% endtrans %}</th>
         </tr>
         <tr>
-            <td colspan="5">{{ order.addressId.address }}, {{ order.addressId.city }}</td>
+            <td colspan="5"><a itemprop="address" href="https://maps.google.com?saddr=Current+Location&daddr={{ order.addressId.address }}, {{ order.addressId.city }}" target="_blank">{{ order.addressId.address }}, {{ order.addressId.city }}</a></td>
         </tr>
         <tr>
             <th colspan="5">{% trans %}mobile.customer_phone{% endtrans %}</th>
         </tr>
         <tr>
             <td colspan="5"><a href="tel:+{{ order.orderExtra.phone }}">+{{ order.orderExtra.phone }}</a></td>
+        </tr>
+        <tr>
+            <th colspan="5">{% trans %}mobile.dispatcher_contact_phone{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5"><a href="tel:+{{ dispatcher_contact_phone }}">+{{ dispatcher_contact_phone }}</a></td>
         </tr>
         <tr>
             <th colspan="5">{% trans %}mobile.comment{% endtrans %}</th>

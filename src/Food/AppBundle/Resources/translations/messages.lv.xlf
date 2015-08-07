@@ -510,6 +510,10 @@
         <source>mobile.customer_phone</source>
         <target>Pasūtītāja tālr.</target>
       </trans-unit>
+      <trans-unit id="mobile.dispatcher_contact_phone" resname="mobile.dispatcher_contact_phone">
+        <source>mobile.dispatcher_contact_phone</source>
+        <target>Dispečers tālr.</target>
+      </trans-unit>
       <trans-unit id="6b992ec872e88f6be09ab06f8cceb76e" resname="mobile.order_time">
         <source>mobile.order_time</source>
         <target>Pasūtījuma laiks</target>

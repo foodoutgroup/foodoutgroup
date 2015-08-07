@@ -180,7 +180,13 @@ class DefaultController extends Controller
                 $this->get('logger')->alert($errorMessage);
             }
         }
-        return $this->render('FoodOrderBundle:Default:mobile-driver.html.twig', array('order' => $order));
+        return $this->render(
+            'FoodOrderBundle:Default:mobile-driver.html.twig',
+            array(
+                'order' => $order,
+                'dispatcher_contact_phone' => $this->container->getParameter('dispatcher_contact_phone'),
+            )
+        );
     }
 
     /**
