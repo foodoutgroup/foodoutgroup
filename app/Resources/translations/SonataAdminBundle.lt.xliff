@@ -892,6 +892,10 @@
                 <source>admin.order.order_status</source>
                 <target>Užsakymo būklė</target>
             </trans-unit>
+            <trans-unit id="admin.order.order_delivery_log">
+                <source>admin.order.order_delivery_log</source>
+                <target>Pristatymo laikai</target>
+            </trans-unit>
             <trans-unit id="admin.order.payment_method">
                 <source>admin.order.payment_method</source>
                 <target>Mokėjimo būdas</target>
@@ -1124,6 +1128,14 @@
                 <source>admin.order.status.source.repostToNavOnMissingInNav</source>
                 <target>Čili Navision repost order on fatal error</target>
             </trans-unit>
+            <trans-unit id="admin.order.delivery_log.event">
+                <source>admin.order.delivery_log.event</source>
+                <target>Įvykis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.time_elapsed">
+                <source>admin.order.delivery_log.time_elapsed</source>
+                <target>Praėjus</target>
+            </trans-unit>
             <trans-unit id="admin.order.ismobile">
                 <source>admin.order.ismobile</source>
                 <target>Mob</target>
@@ -1339,6 +1351,10 @@
             <trans-unit id="admin.dispatcher.late_time">
                 <source>admin.dispatcher.late_time</source>
                 <target>Vėluoja</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.picked_up">
+                <source>admin.dispatcher.picked_up</source>
+                <target>Paimtas</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.client_contacted">
                 <source>admin.dispatcher.client_contacted</source>
