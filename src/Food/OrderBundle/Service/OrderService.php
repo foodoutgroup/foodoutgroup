@@ -553,7 +553,7 @@ class OrderService extends ContainerAware
                     array(
                         'restaurant_title' => $restaurant_title,
                         'restaurant_address' => $restaurant_address,
-                        'deliver_time' => $order->getOrderDate()->format("H:i")
+                        'deliver_time' => $order->getDeliveryTime()->format("H:i")
                     )
                 ) . $orderConfirmRoute,
                 false
