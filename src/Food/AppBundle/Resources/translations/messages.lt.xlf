@@ -380,7 +380,7 @@
       </trans-unit>
       <trans-unit id="3d6f52993727876649fad3f9e2d5c687" resname="general.sms.driver_assigned_order">
         <source>general.sms.driver_assigned_order</source>
-        <target>Priskirtas naujas uzsakymas: </target>
+        <target>Naujas uzsakymas is: restaurant_title i restaurant_address, iki deliver_time </target>
       </trans-unit>
       <trans-unit id="28ecbd185a859ae613493c195207e5e0" resname="general.sms.user_order_delayed">
         <source>general.sms.user_order_delayed</source>
