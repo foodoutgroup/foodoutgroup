@@ -184,7 +184,7 @@ class DefaultController extends Controller
             'FoodOrderBundle:Default:mobile-driver.html.twig',
             array(
                 'order' => $order,
-                'dispatcher_contact_phone' => $this->container->getParameter('dispatcher_contact_phone'),
+                'call_centre_phone' => $this->container->getParameter('call_centre_phone'),
             )
         );
     }
