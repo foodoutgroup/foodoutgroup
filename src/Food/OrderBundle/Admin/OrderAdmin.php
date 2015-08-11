@@ -215,6 +215,12 @@ class OrderAdmin extends SonataAdmin
             ->add('sfLine', 'string', array('label' => 'admin.order.sf_line'))
             ->add('comment', 'string', array('label' => 'admin.order.comment'))
             ->add('place_comment', 'string', array('label' => 'admin.order.place_comment'))
+            ->add('order_delivery_log', 'sonata_type_collection',
+                array(
+                    'label' => 'admin.order.order_delivery_log',
+                    'template' => 'FoodOrderBundle:Admin:order_delivery_log.html.twig'
+                )
+            )
             ->add('order_status', 'sonata_type_collection',
                 array(
                     'label' => 'admin.order.order_status',

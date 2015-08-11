@@ -152,19 +152,24 @@ class DefaultController extends Controller
         if ($request->isMethod('post')) {
             // Validate stats change, and then perform :P
             $formStatus = $request->get('status');
-            if ($orderService->isValidOrderStatusChange($currentOrderStatus, $this->formToEntityStatus($formStatus))) {
+            if ($formStatus == 'picked-up' || $orderService->isValidOrderStatusChange($currentOrderStatus, $this->formToEntityStatus($formStatus))) {
                 switch($formStatus) {
                     case 'completed':
-                        $this->get('food.order')->statusCompleted('driver_mobile');
+                        $orderService->statusCompleted('driver_mobile');
+                    break;
+
+                    case 'picked-up':
+                        $orderService->logDeliveryEvent($orderService->getOrder(), 'order_pickedup');
+                        $orderService->getOrder()->setOrderPicked(true);
                     break;
 
                     case 'partialy_completed':
                         if ($currentOrderStatus != OrderService::$status_partialy_completed) {
-                            $this->get('food.order')->statusPartialyCompleted('driver_mobile');
+                            $orderService->statusPartialyCompleted('driver_mobile');
                         }
                     break;
                 }
-                $this->get('food.order')->saveOrder();
+                $orderService->saveOrder();
 
                 return $this->redirect(
                     $this->generateUrl('drivermobile', array('hash' => $hash))

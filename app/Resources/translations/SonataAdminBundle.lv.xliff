@@ -901,6 +901,10 @@
                 <source>admin.order.order_status</source>
                 <target>Order status</target>
             </trans-unit>
+            <trans-unit id="admin.order.order_delivery_log">
+                <source>admin.order.order_delivery_log</source>
+                <target>Delivery times</target>
+            </trans-unit>
             <trans-unit id="admin.order.payment_method">
                 <source>admin.order.payment_method</source>
                 <target>Payment type</target>
@@ -1125,6 +1129,14 @@
                 <source>admin.order.status.source.cili_nav_update_price</source>
                 <target>Cili Navision update prices</target>
             </trans-unit>
+            <trans-unit id="admin.order.delivery_log.event">
+                <source>admin.order.delivery_log.event</source>
+                <target>Event</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.time_elapsed">
+                <source>admin.order.delivery_log.time_elapsed</source>
+                <target>Elapsed</target>
+            </trans-unit>
             <trans-unit id="admin.order.ismobile">
                 <source>admin.order.ismobile</source>
                 <target>Mob</target>
@@ -1332,6 +1344,10 @@
             <trans-unit id="admin.dispatcher.late_time">
                 <source>admin.dispatcher.late_time</source>
                 <target>Late</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.picked_up">
+                <source>admin.dispatcher.picked_up</source>
+                <target>Picked</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.client_contacted">
                 <source>admin.dispatcher.client_contacted</source>
