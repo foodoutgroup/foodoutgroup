@@ -1772,7 +1772,7 @@
             </trans-unit>
             <trans-unit id="admin.reports.order_date">
                 <source>admin.reports.order_date</source>
-                <target>Order Date & time</target>
+                <target>Order Date <![CDATA[&]]> time</target>
             </trans-unit>
             <trans-unit id="admin.reports.total">
                 <source>admin.reports.total</source>
