@@ -1220,11 +1220,11 @@
         </trans-unit>
         <trans-unit id="general.base_page_title" resname="general.base_page_title">
             <source>general.base_page_title</source>
-            <target>Pārtikas piegāde</target>
+            <target>Ēdienu piegāde</target>
         </trans-unit>
         <trans-unit id="general.restaurant_page_title" resname="general.restaurant_page_title">
             <source>general.restaurant_page_title</source>
-            <target>%restaurant_name% pārtikas piegāde</target>
+            <target>%restaurant_name% ēdienu piegāde</target>
         </trans-unit>
     </body>
   </file>
