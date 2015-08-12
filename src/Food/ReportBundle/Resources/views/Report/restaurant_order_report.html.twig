@@ -1,0 +1,226 @@
+{# Restoranu uzsakymo counto reportas - wow, much name #}
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script srt="{{ asset('bundles/foodapp/scripts/jquery-ui/datepicker-lt.js') }}"></script>
+    <script src="{{ asset('bundles/foodreport/js/reports.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            Report.bindEvents();
+
+            var toggle_btn = $('.toggle_btn');
+            if (toggle_btn.length > 0) {
+                toggle_btn.click(function(e) {
+                    e.preventDefault();
+                    var my_table = $($(this).attr('href'));
+                    var old_val = $(this).data('closetitle');
+                    var new_val = $(this).data('opentitle');
+
+                    if (my_table.is(':visible')) {
+                        $(this).html(old_val);
+                        my_table.hide();
+                    } else {
+                        $(this).html(new_val);
+                        my_table.show();
+                        window.location.hash = this.hash;
+                    }
+                });
+            }
+
+            // ScrollTo
+            function GoToTarget(target) {
+                var targetbox = $('[name="'+ target +'"]').length > 0 ? $('[name="'+ target +'"]') : $('#' + target);
+                if (targetbox.length > 0) {
+                    targetbox.show();
+                    $('html, body').animate({
+                        scrollTop: targetbox.offset().top - 72
+                    }, 500);
+                }
+            }
+
+            function hashChanged(hash) {
+                var hash;
+                hash = hash.replace(/#/g, '');
+                //console.log('changed: ' + hash);
+                GoToTarget(hash);
+            }
+
+            var UrlHash = window.location.hash;
+            if (UrlHash != '') {
+                UrlHash = UrlHash.replace(/#/g, '');
+                //console.log('loaded: ' + UrlHash);
+                GoToTarget(UrlHash);
+            }
+
+            if ("onhashchange" in window) { // event supported?
+                window.onhashchange = function () {
+                    hashChanged(window.location.hash);
+                }
+            } else { // event not supported:
+                var storedHash = window.location.hash;
+                window.setInterval(function () {
+                    if (window.location.hash != storedHash) {
+                        storedHash = window.location.hash;
+                        hashChanged(storedHash);
+                    }
+                }, 100);
+            }
+
+        });
+    </script>
+{% endblock %}
+
+{% block actions %}{% endblock %}
+
+{% block side_menu %}{% endblock %}
+
+{% block list_table %}
+    <style type="text/css">
+        div.sidebar.span2 {
+            display: none !important;
+        }
+        table.reports_list, table.reports_list tr th {
+            border: 1px solid #888;
+        }
+        table.reports_list.details {
+            width: 100%;
+        }
+        .collapsable {
+            display: none;
+        }
+    </style>
+    <div class="report">
+        <h2>{{ 'admin.report.restaurant_orders_report'|trans({}, 'SonataAdminBundle') }}{% if user.getPlace and not isAdmin %}: {{ user.getPlace.getName }}{% endif %}</h2>
+        <h3>{{ 'admin.reports.order_count.period'|trans({}, 'SonataAdminBundle') }} {{ dateFrom|date("Y-m-d") }} - {{ dateTo|date("Y-m-d") }}</h3>
+        <table class="reports_list">
+            <tr>
+                <th>{{ 'admin.reports.orderid'|trans({}, 'SonataAdminBundle') }}</th>
+                {% if isAdmin %}
+                    <th>{{ 'admin.reports.place'|trans({}, 'SonataAdminBundle') }}</th>
+                {% endif %}
+                <th>{{ 'admin.reports.order_date'|trans({}, 'SonataAdminBundle') }}</th>
+                {% if groupMonth == true %}
+                    <th>{{ 'admin.reports.month'|trans({}, 'SonataAdminBundle') }}</th>
+                {% endif %}
+                <th>{{ 'admin.reports.total'|trans({}, 'SonataAdminBundle') }} ({{ currency_display|raw }})</th>
+                <th>{{ 'admin.reports.place_point_address'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.order_status'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.payment_status'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.delivery_type'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.accept_time'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.delivery_pickup_time'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.delivery_time'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.order_basket'|trans({}, 'SonataAdminBundle') }}</th>
+            </tr>
+            {% for order in stats %}
+                <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">
+                    <td class="center">{{ order.id }}</td>
+                    {% if isAdmin %}
+                        <td class="center">{{ order.place_name }}</td>
+                    {% endif %}
+                    <td class="center">{{ order.order_date }}</td>
+                    {% if groupMonth == true %}
+                        <td class="center">{{ order.month }}</td>
+                    {% endif %}
+                    <td class="center">{{ order.total }}</td>
+                    <td class="center narrow">{{ order.place_point_address }}</td>
+                    <td class="center narrow">{{ order.order_status }}</td>
+                    <td class="center narrow">{{ order.payment_status }}</td>
+                    <td class="center narrow">{{ order.delivery_type }}</td>
+                    <td class="center">{{ order.accept_time }}</td>
+                    <td class="center">{{ order.delivery_pickup_time }}</td>
+                    <td class="center">{{ order.delivery_time }}</td>
+                    <td class="center">
+                        {# Uzsakymo detaliu ispiesimas sonata admine prie orderio Show formos #}
+                        {% if order.details is not empty %}
+                            <a href="#order_detail_{{ order.id }}" class="toggle_btn btn btn-default" title="" data-closetitle="Show Details" data-opentitle="Hide Details">Show Details</a>
+                            <div id="order_detail_{{ order.id }}" class="collapsable">
+                                <div id="field_container_details" class="field-container">
+                                    <table class="reports_list details">
+                                        <tr>
+                                            <th>{{ 'admin.order.details.dish_name'|trans({}, 'SonataAdminBundle') }}</th>
+                                            <th>{{ 'admin.order.details.price'|trans({}, 'SonataAdminBundle') }}</th>
+                                            <th>{{ 'admin.order.details.quantity'|trans({}, 'SonataAdminBundle') }}</th>
+                                            <th>{{ 'admin.order.details.sum'|trans({}, 'SonataAdminBundle') }}</th>
+                                            <th>{{ 'admin.order.details.dish_unit'|trans({}, 'SonataAdminBundle') }}</th>
+                                            <th>{{ 'admin.order.details.dish_size_code'|trans({}, 'SonataAdminBundle') }}</th>
+                                            <th>{{ 'admin.order.details.options'|trans({}, 'SonataAdminBundle') }}</th>
+                                        </tr>
+                                        {% for detail in order.details %}
+                                            <tr>
+                                                <td>{{ detail.dish_name }}</td>
+                                                <td>{{ detail.price }} {{ currency_display|raw }}</td>
+                                                <td>{{ detail.quantity }}</td>
+                                                <td>{{ detail.price * detail.quantity }} {{ currency_display|raw }}</td>
+                                                <td>{{ detail.dish_unit_name }}</td>
+                                                <td>{{ detail.dish_size_code }}</td>
+                                                <td>
+                                                    {% if detail.options is not empty %}
+                                                        <table>
+                                                            <tr>
+                                                                <th>{{ 'admin.order.details.option_name'|trans({}, 'SonataAdminBundle') }}</th>
+                                                                <th>{{ 'admin.order.details.price'|trans({}, 'SonataAdminBundle') }}</th>
+                                                                <th>{{ 'admin.order.details.option_code'|trans({}, 'SonataAdminBundle') }}</th>
+                                                            </tr>
+                                                            {% for option in detail.options %}
+                                                                <tr>
+                                                                    <td>{{ option.dishOptionName }}</td>
+                                                                    <td>{{ option.price }} {{ currency_display|raw }}</td>
+                                                                    <td>{{ option.dishOptionCode }}</td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </table>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block list_filters %}
+    <div class="sonata-ba-filter span2">
+        <form class="sonata-filter-form " action="{{ path('food_reports_restaurant_orders_report_list') }}" method="GET">
+            <fieldset class="filter_legend">
+                <legend class="filter_legend">{{ 'label_filters'|trans({}, 'SonataAdminBundle') }}</legend>
+                <div class="filter_container">
+                    <div>
+                        {% if isAdmin %}
+                            <div class="clearfix">
+                                <label for="filter_place_name_value">{{ 'admin.reports.place'|trans({}, 'SonataAdminBundle') }}</label>
+                                <select name="place[]" multiple="multiple">
+                                    <option value=""></option>
+                                    {% for place in places %}
+                                        <option value="{{ place.id }}"{% if place.id in placesSelected %}selected="selected"{% endif %}>{{ place.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% endif %}
+                        <div class="clearfix">
+                            <label for="filter_order_date_value">{{ 'admin.reports.date_range'|trans({}, 'SonataAdminBundle') }}</label>
+                            <input type="text" name="date_from" class="date_pick" value="{% if dateFrom %}{{ dateFrom|date("Y-m-d") }}{% endif %}" />
+                            <input type="text" name="date_to" class="date_pick" value="{% if dateTo %}{{ dateTo|date("Y-m-d") }}{% endif %}" />
+                        </div>
+                        <div class="clearfix">
+                            {{ 'admin.reports.group_by_month'|trans({}, 'SonataAdminBundle') }}
+                            <input type="checkbox" name="group_month"{% if groupMonth == true %}checked="checked"{% endif %} />
+                            <br /><br />
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="{{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}">
+                    <a class="btn" href="{{ path('food_reports_restaurant_orders_report_list') }}">{{ 'link_reset_filter'|trans({}, 'SonataAdminBundle') }}</a>
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

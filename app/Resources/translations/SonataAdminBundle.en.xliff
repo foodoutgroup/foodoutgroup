@@ -1703,6 +1703,14 @@
                 <source>admin.reports.place</source>
                 <target>Restoranas</target>
             </trans-unit>
+            <trans-unit id="admin.restaurant">
+                <source>admin.restaurant</source>
+                <target>Restoranas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.restaurant_orders_report">
+                <source>admin.report.restaurant_orders_report</source>
+                <target>Užsakymų ataskaita restoranui</target>
+            </trans-unit>
             <trans-unit id="admin.reports.self_delivery">
                 <source>admin.reports.self_delivery</source>
                 <target>Sava logistika</target>
@@ -1782,6 +1790,52 @@
             <trans-unit id="admin.best_offers.place">
                 <source>admin.best_offers.place</source>
                 <target>Restaurant</target>
+            </trans-unit>
+
+            <!-- Places Reports -->
+            <trans-unit id="admin.reports.orderid">
+                <source>admin.reports.orderid</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.order_date">
+                <source>admin.reports.order_date</source>
+                <target>Data laikas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.total">
+                <source>admin.reports.total</source>
+                <target>Suma</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.place_point_address">
+                <source>admin.reports.place_point_address</source>
+                <target>Adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.order_status">
+                <source>admin.reports.order_status</source>
+                <target>Užsakymo būsena</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.payment_status">
+                <source>admin.reports.payment_status</source>
+                <target>Mokėjimo būsena</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.delivery_type">
+                <source>admin.reports.delivery_type</source>
+                <target>Pristatymo būdas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.accept_time">
+                <source>admin.reports.accept_time</source>
+                <target>Restorano priėmimo laikas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.delivery_pickup_time">
+                <source>admin.reports.delivery_pickup_time</source>
+                <target>Pristatymo paėmimo laikas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.delivery_time">
+                <source>admin.reports.delivery_time</source>
+                <target>Pristatymo laikas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.order_basket">
+                <source>admin.reports.order_basket</source>
+                <target>Krepšelis</target>
             </trans-unit>
 
             <!-- Params listas -->

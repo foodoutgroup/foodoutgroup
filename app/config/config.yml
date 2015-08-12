@@ -306,7 +306,7 @@ sonata_admin:
                       #- sonata.admin.dish.unit.category
                       - sonata.admin.coupon
                       - sonata.admin.coupon_generator
-                  roles: [ ROLE_MODERATOR, ROLE_DISPATCHER ]
+                  roles: [ ROLE_DISPATCHER ]
               acme.admin.group.formanagers:
                   label: admin.group.formanagers
                   label_catalogue: SonataAdminBundle
@@ -317,13 +317,13 @@ sonata_admin:
 #                      kolkas neveikia
 #                      - sonata.admin.place.pointfull
                       - sonata.admin.place.reviews
-                  roles: [ ROLE_MODERATOR, ROLE_DISPATCHER ]
+                  roles: [ ROLE_DISPATCHER, ROLE_MODERATOR ]
               admin.orders:
                   label: admin.group.orders
                   label_catalogue: SonataAdminBundle
                   items:
                       - sonata.admin.order
-                  roles: [ ROLE_ADMIN, ROLE_MODERATOR, ROLE_DISPATCHER ]
+                  roles: [ ROLE_ADMIN, ROLE_DISPATCHER, ROLE_MODERATOR ]
               admin.system:
                   items: ~
                   item_adds:
@@ -347,6 +347,11 @@ sonata_admin:
                       - sonata.admin.restaurant_orders
                       - sonata.admin.marketing_user
                   roles: [ ROLE_ADMIN ]
+              admin.restaurant:
+                  items: ~
+                  item_adds:
+                      - sonata.admin.restaurant_orders_report
+                  roles: [ ROLE_ADMIN, ROLE_MODERATOR ]
               admin.dispatcher:
                   items: ~
                   item_adds:
