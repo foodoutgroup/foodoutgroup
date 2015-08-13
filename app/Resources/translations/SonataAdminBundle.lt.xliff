@@ -1804,6 +1804,56 @@
                 <target>Restoranas</target>
             </trans-unit>
 
+            <!-- Latency report -->
+            <trans-unit id="admin.report.latency_report">
+                <source>admin.report.latency_report</source>
+                <target>Trukmės ataskaita</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.day">
+                <source>admin.reports.day</source>
+                <target>Diena</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.accepted_in">
+                <source>admin.reports.latency.accepted_in</source>
+                <target>Priimta per (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.finished_in">
+                <source>admin.reports.latency.finished_in</source>
+                <target>Pagaminta per (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.assigned_in">
+                <source>admin.reports.latency.assigned_in</source>
+                <target>Paskirta per (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.pickedup_in">
+                <source>admin.reports.latency.pickedup_in</source>
+                <target>Paimta per per (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.completed_in">
+                <source>admin.reports.latency.completed_in</source>
+                <target>Pristatyta per (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.total_order_time">
+                <source>admin.reports.latency.total_order_time</source>
+                <target>Vidutinė užsakymo trukmė (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.orders_in_question">
+                <source>admin.reports.latency.orders_in_question</source>
+                <target>Užsakymų laikotarpyje</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.group_by_day">
+                <source>admin.reports.group_by_day</source>
+                <target>Grupuoti pagal dieną</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.slow_five_title">
+                <source>admin.reports.latency.slow_five_title</source>
+                <target>TOP 5 lėčiausi</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.slow_five">
+                <source>admin.reports.latency.slow_five</source>
+                <target>TOP5</target>
+            </trans-unit>
+
             <!-- Params listas -->
             <trans-unit id="admin.params">
                 <source>admin.params</source>

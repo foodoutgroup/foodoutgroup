@@ -1,0 +1,122 @@
+{# Restoranu uzsakymo counto reportas - wow, much name #}
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script srt="{{ asset('bundles/foodapp/scripts/jquery-ui/datepicker-lt.js') }}"></script>
+    <script src="{{ asset('bundles/foodreport/js/reports.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            Report.bindEvents();
+        });
+    </script>
+{% endblock %}
+
+{% block actions %}{% endblock %}
+
+{% block side_menu %}{% endblock %}
+
+{% block list_table %}
+    <style type="text/css">div.sidebar.span2 { display: none !important; }</style>
+    <div class="report">
+        <h2>{{ 'admin.report.latency_report'|trans({}, 'SonataAdminBundle') }}</h2>
+        <h3>{{ 'admin.reports.order_count.period'|trans({}, 'SonataAdminBundle') }} {{ dateFrom|date("Y-m-d") }} - {{ dateTo|date("Y-m-d") }}</h3>
+        <table class="reports_list">
+            <tr>
+                <th>{{ 'admin.reports.place'|trans({}, 'SonataAdminBundle') }}</th>
+                {% if groupDay == true %}
+                    <th>{{ 'admin.reports.day'|trans({}, 'SonataAdminBundle') }}</th>
+                {% endif %}
+                <th>{{ 'admin.reports.latency.orders_in_question'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.latency.accepted_in'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.latency.finished_in'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.latency.assigned_in'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.latency.pickedup_in'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.latency.completed_in'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.latency.total_order_time'|trans({}, 'SonataAdminBundle') }}</th>
+            </tr>
+            {% for place in stats %}
+                <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">
+                    <td>{{ place.place_name }}</td>
+                    {% if groupDay == true %}
+                        <td class="center">{{ place.day }}</td>
+                    {% endif %}
+                    <td class="center narrow">{{ place.orders_in_question }}</td>
+                    <td class="center">
+                        {{ place.accepted_in|number_format(2, ',') }}
+                        {% if place.accepted_in > 0 %}
+                            <button type="button" class="btn btn-lg btn-primary late_orders" data-html="true" data-toggle="popover" data-trigger="focus" title="{{ 'admin.reports.latency.slow_five_title'|trans({}, 'SonataAdminBundle') }}" data-content="{% for slowAccepts in place.slowest.order_accepted %}<div><a href='{{ path('admin_food_order_order_show', {'id': slowAccepts.order_id}) }}'>{{ slowAccepts.order_id }}</a> ({{ slowAccepts.duration|number_format(2, ',') }} min)</div>{% endfor %}">{{ 'admin.reports.latency.slow_five'|trans({}, 'SonataAdminBundle') }}</button>
+                        {% endif %}
+                    </td>
+                    <td class="center">
+                        {{ place.finished_in|number_format(2, ',') }}
+                        {% if place.finished_in > 0 %}
+                            <button type="button" class="btn btn-lg btn-primary late_orders" data-html="true" data-toggle="popover" data-trigger="focus" title="{{ 'admin.reports.latency.slow_five_title'|trans({}, 'SonataAdminBundle') }}" data-content="{% for slowFinish in place.slowest.order_finished %}<div><a href='{{ path('admin_food_order_order_show', {'id': slowFinish.order_id}) }}'>{{ slowFinish.order_id }}</a> ({{ slowFinish.duration|number_format(2, ',') }} min)</div>{% endfor %}">{{ 'admin.reports.latency.slow_five'|trans({}, 'SonataAdminBundle') }}</button>
+                        {% endif %}
+                    </td>
+                    <td class="center">
+                        {{ place.assigned_in|number_format(2, ',') }}
+                        {% if place.assigned_in > 0 %}
+                            <button type="button" class="btn btn-lg btn-primary late_orders" data-html="true" data-toggle="popover" data-trigger="focus" title="{{ 'admin.reports.latency.slow_five_title'|trans({}, 'SonataAdminBundle') }}" data-content="{% for slowAssign in place.slowest.order_assigned %}<div><a href='{{ path('admin_food_order_order_show', {'id': slowAssign.order_id}) }}'>{{ slowAssign.order_id }}</a> ({{ slowAssign.duration|number_format(2, ',') }} min)</div>{% endfor %}">{{ 'admin.reports.latency.slow_five'|trans({}, 'SonataAdminBundle') }}</button>
+                        {% endif %}
+                    </td>
+                    <td class="center">
+                        {{ place.pickedup_in|number_format(2, ',') }}
+                        {% if place.pickedup_in > 0 %}
+                            <button type="button" class="btn btn-lg btn-primary late_orders" data-html="true" data-toggle="popover" data-trigger="focus" title="{{ 'admin.reports.latency.slow_five_title'|trans({}, 'SonataAdminBundle') }}" data-content="{% for slowPickedup in place.slowest.order_pickedup %}<div><a href='{{ path('admin_food_order_order_show', {'id': slowPickedup.order_id}) }}'>{{ slowPickedup.order_id }}</a> ({{ slowPickedup.duration|number_format(2, ',') }} min)</div>{% endfor %}">{{ 'admin.reports.latency.slow_five'|trans({}, 'SonataAdminBundle') }}</button>
+                        {% endif %}
+                    </td>
+                    <td class="center">
+                        {{ place.completed_in|number_format(2, ',') }}
+                        {% if place.completed_in > 0 %}
+                            <button type="button" class="btn btn-lg btn-primary late_orders" data-html="true" data-toggle="popover" data-trigger="focus" title="{{ 'admin.reports.latency.slow_five_title'|trans({}, 'SonataAdminBundle') }}" data-content="{% for slowComplete in place.slowest.order_completed %}<div><a href='{{ path('admin_food_order_order_show', {'id': slowComplete.order_id}) }}'>{{ slowComplete.order_id }}</a> ({{ slowComplete.duration|number_format(2, ',') }} min)</div>{% endfor %}">{{ 'admin.reports.latency.slow_five'|trans({}, 'SonataAdminBundle') }}</button>
+                        {% endif %}
+                    </td>
+                    <td class="center narrow">{{ place.order_in|number_format(2, ',') }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block list_filters %}
+<div class="sonata-ba-filter span2">
+    <form class="sonata-filter-form " action="{{ path('food_reports_latency_list') }}" method="GET">
+        <fieldset class="filter_legend">
+            <legend class="filter_legend">{{ 'label_filters'|trans({}, 'SonataAdminBundle') }}</legend>
+            <div class="filter_container">
+                <div>
+                    <div class="clearfix">
+                        <label for="filter_place_name_value">{{ 'admin.reports.place'|trans({}, 'SonataAdminBundle') }}</label>
+                        <select name="place[]" multiple="multiple">
+                            <option value=""></option>
+                            {% for place in places %}
+                                <option value="{{ place.id }}"{% if place.id in placesSelected %}selected="selected"{% endif %}>{{ place.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="clearfix">
+                        <label for="filter_order_date_value">{{ 'admin.reports.date_range'|trans({}, 'SonataAdminBundle') }}</label>
+                        <input type="text" name="date_from" class="date_pick" value="{{ dateFrom|date("Y-m-d") }}" />
+                        <input type="text" name="date_to" class="date_pick" value="{{ dateTo|date("Y-m-d") }}" />
+                    </div>
+                    <div class="clearfix">
+                        {{ 'admin.reports.group_by_day'|trans({}, 'SonataAdminBundle') }}
+                        <input type="checkbox" name="group_day"{% if groupDay == true %}checked="checked"{% endif %} />
+                        <br /><br />
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <input type="submit" class="btn btn-primary" value="{{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}">
+                <a class="btn" href="{{ path('food_reports_latency_list') }}">{{ 'link_reset_filter'|trans({}, 'SonataAdminBundle') }}</a>
+            </div>
+
+        </fieldset>
+    </form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.late_orders.btn').popover();
+    });
+</script>
+{% endblock %}

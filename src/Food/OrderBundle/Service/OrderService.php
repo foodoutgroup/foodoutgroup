@@ -2236,13 +2236,84 @@ class OrderService extends ContainerAware
      */
     public function logDeliveryEvent($order=null, $event)
     {
+        $sinceLast = 0;
+        // TODO paskutinio evento laika paimam ir paskaiciuojam diffa sekundziu tikslumu - uzsakaugom prie logo legvesnei matkei
+        switch($event) {
+            case 'order_accepted':
+                $sinceLast = date("U") - $order->getOrderDate()->getTimestamp();
+                break;
+
+            case 'order_delayed':
+            case 'order_finished':
+                $logData = $this->getDeliveryLogActionEntry($order, 'order_accepted');
+
+                $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                break;
+
+
+            case 'order_assigned':
+                $logData = $this->getDeliveryLogActionEntry($order, 'order_finished');
+
+                if (!$logData || !$logData instanceof OrderDeliveryLog) {
+                    $logData = $this->getDeliveryLogActionEntry($order, 'order_accepted');
+                }
+
+                $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                break;
+
+            case 'order_pickedup':
+                $logData = $this->getDeliveryLogActionEntry($order, 'order_assigned');
+
+                $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                break;
+
+            case 'order_completed':
+                $logData = $this->getDeliveryLogActionEntry($order, 'order_assigned');
+
+                if (!$logData || !$logData instanceof OrderDeliveryLog) {
+                    $logData = $this->getDeliveryLogActionEntry($order, 'order_accepted');
+                }
+
+                $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                break;
+
+            case 'order_canceled':
+                $logData = $this->getDeliveryLogActionEntry($order, 'order_accepted');
+
+                $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                break;
+        }
+
         $log = new OrderDeliveryLog();
         $log->setOrder($order)
             ->setEventDate(new \DateTime('now'))
-            ->setEvent($event);
+            ->setEvent($event)
+            ->setSinceLast($sinceLast);
 
         $this->getEm()->persist($log);
         $this->getEm()->flush();
+    }
+
+    /**
+     * @param Order $order
+     * @param string $event
+     * @return OrderDeliveryLog
+     */
+    public function getDeliveryLogActionEntry($order, $event)
+    {
+        if (!$order instanceof Order) {
+            throw new \InvalidArgumentException('Not an order given. Can not retriev delivery data');
+        }
+        if (empty($event)) {
+            throw new \InvalidArgumentException('No event given - can not retrieve delivery data');
+        }
+
+        $repo = $this->container->get('doctrine')->getRepository('FoodOrderBundle:OrderDeliveryLog');
+
+        return $repo->findOneBy(array(
+            'order' => $order,
+            'event' => $event
+        ));
     }
 
     /**

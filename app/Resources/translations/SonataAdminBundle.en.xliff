@@ -1697,51 +1697,51 @@
             <!-- Reports -->
             <trans-unit id="admin.reports">
                 <source>admin.reports</source>
-                <target>Ataskaitos</target>
+                <target>Reports</target>
             </trans-unit>
             <trans-unit id="admin.reports.place">
                 <source>admin.reports.place</source>
-                <target>Restoranas</target>
+                <target>Restaurant</target>
             </trans-unit>
             <trans-unit id="admin.reports.self_delivery">
                 <source>admin.reports.self_delivery</source>
-                <target>Sava logistika</target>
+                <target>Self delivery</target>
             </trans-unit>
             <trans-unit id="admin.reports.order_count">
                 <source>admin.reports.order_count</source>
-                <target>Kiekis</target>
+                <target>Count</target>
             </trans-unit>
             <trans-unit id="admin.reports.devliver_count">
                 <source>admin.reports.devliver_count</source>
-                <target>Su pristatymu</target>
+                <target>With delivery</target>
             </trans-unit>
             <trans-unit id="admin.reports.pickup_count">
                 <source>admin.reports.pickup_count</source>
-                <target>Atsiėmė vietoje</target>
+                <target>Picked up</target>
             </trans-unit>
             <trans-unit id="admin.reports.order_sum">
                 <source>admin.reports.order_sum</source>
-                <target>Užsakymų suma</target>
+                <target>Order sum</target>
             </trans-unit>
             <trans-unit id="admin.reports.month">
                 <source>admin.reports.month</source>
-                <target>Mėnuo</target>
+                <target>Month</target>
             </trans-unit>
             <trans-unit id="admin.report.restaurant_orders">
                 <source>admin.report.restaurant_orders</source>
-                <target>Restorano užsakymų kiekis</target>
+                <target>Restorant orders report</target>
             </trans-unit>
             <trans-unit id="admin.reports.order_count.period">
                 <source>admin.reports.order_count.period</source>
-                <target>Periodas: </target>
+                <target>Period: </target>
             </trans-unit>
             <trans-unit id="admin.reports.group_by_month">
                 <source>admin.reports.group_by_month</source>
-                <target>Grupuoti pagal mėnesį</target>
+                <target>Group by month</target>
             </trans-unit>
             <trans-unit id="admin.reports.date_range">
                 <source>admin.reports.date_range</source>
-                <target>Laikotarpis (nuo - iki)</target>
+                <target>Period (from - till)</target>
             </trans-unit>
             <trans-unit id="admin.best_offers.title">
                 <source>admin.best_offers.title</source>
@@ -1782,6 +1782,56 @@
             <trans-unit id="admin.best_offers.place">
                 <source>admin.best_offers.place</source>
                 <target>Restaurant</target>
+            </trans-unit>
+
+            <!-- Latency report -->
+            <trans-unit id="admin.report.latency_report">
+                <source>admin.report.latency_report</source>
+                <target>Latency report</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.day">
+                <source>admin.reports.day</source>
+                <target>Day</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.accepted_in">
+                <source>admin.reports.latency.accepted_in</source>
+                <target>Accepted in (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.finished_in">
+                <source>admin.reports.latency.finished_in</source>
+                <target>Finished in (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.assigned_in">
+                <source>admin.reports.latency.assigned_in</source>
+                <target>Assigned in (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.pickedup_in">
+                <source>admin.reports.latency.pickedup_in</source>
+                <target>Piceked-up in (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.completed_in">
+                <source>admin.reports.latency.completed_in</source>
+                <target>Deliverd in (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.total_order_time">
+                <source>admin.reports.latency.total_order_time</source>
+                <target>Average order duration (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.orders_in_question">
+                <source>admin.reports.latency.orders_in_question</source>
+                <target>Orders in period</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.group_by_day">
+                <source>admin.reports.group_by_day</source>
+                <target>Group by day</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.slow_five_title">
+                <source>admin.reports.latency.slow_five_title</source>
+                <target>TOP 5 slowest</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.slow_five">
+                <source>admin.reports.latency.slow_five</source>
+                <target>Slowest</target>
             </trans-unit>
 
             <!-- Params listas -->

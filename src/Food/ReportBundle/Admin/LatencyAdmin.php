@@ -4,10 +4,10 @@ namespace Food\ReportBundle\Admin;
 use Sonata\AdminBundle\Admin\Admin as SonataAdmin;
 
 
-class RestaurantOrdersAdmin extends SonataAdmin
+class LatencyAdmin extends SonataAdmin
 {
-    protected $baseRouteName = 'food_reports_restaurant_orders';
-    protected $baseRoutePattern = 'reports/orders';
+    protected $baseRouteName = 'food_reports_latency';
+    protected $baseRoutePattern = 'reports/latency';
 
     /**
      * @param \Sonata\AdminBundle\Route\RouteCollection $collection
@@ -20,32 +20,3 @@ class RestaurantOrdersAdmin extends SonataAdmin
         $collection->clearExcept(array('list'));
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -510,6 +510,124 @@ class OrderRepository extends EntityRepository
     /**
      * @param \DateTime $dateFrom
      * @param \DateTime $dateTo
+     * @param array $placeIds
+     * @param bool $groupDay
+     *
+     * @return array
+     */
+    public function getLatencyReport($dateFrom, $dateTo, $placeIds = array(), $groupDay=false)
+    {
+        $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_partialy_completed."'";
+        $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 23:59:59");
+
+        $placesFilter = '';
+        if (!empty($placeIds)) {
+            $placesFilter = ' AND o.place_id IN ('.implode(', ', $placeIds).')';
+        }
+
+        $groupByDayDate = $groupByDay = $groupByDayOrder = '';
+        if ($groupDay) {
+            $groupByDayDate = 'DATE_FORMAT(o.order_date, "%Y-%m-%d") AS day,';
+            $groupByDay = ', DATE_FORMAT(o.order_date, "%Y-%m-%d")';
+            $groupByDayOrder = 'DATE_FORMAT(o.order_date, "%Y-%m-%d") DESC, ';
+        }
+
+        $query = "
+          SELECT
+              COUNT( o.id ) AS  'orders_in_question',
+              p.`name` AS 'place_name',
+              p.`id` AS 'place_id',
+              {$groupByDayDate}
+              AVG(
+                (
+                  SELECT (`since_last` /60)
+                  FROM order_delivery_log
+                  WHERE order_id = o.id
+                    AND  `event` =  'order_accepted' )
+                ) AS  'accepted_in',
+              AVG(
+                (
+                    SELECT (`since_last` /60)
+                    FROM order_delivery_log
+                    WHERE order_id = o.id
+                      AND  `event` =  'order_finished' )
+                ) AS  'finished_in',
+            AVG(
+                (
+                    SELECT (`since_last` /60)
+                    FROM order_delivery_log
+                    WHERE order_id = o.id
+                      AND  `event` =  'order_assigned' )
+              ) AS  'assigned_in',
+            AVG(
+              (
+                    SELECT (`since_last` /60)
+                    FROM order_delivery_log
+                    WHERE order_id = o.id
+                      AND  `event` =  'order_pickedup' )
+              ) AS  'pickedup_in',
+            AVG(
+              (
+                    SELECT (`since_last` /60)
+                    FROM order_delivery_log
+                    WHERE order_id = o.id
+                      AND  `event` =  'order_completed' )
+              ) AS  'completed_in',
+            AVG(
+              (
+                    SELECT (TIMEDIFF(`event_date`, o.`order_date`))/60
+                    FROM order_delivery_log
+                    WHERE order_id = o.id
+                      AND `event` = 'order_completed')
+              ) AS 'order_in'
+            FROM  `orders` o
+            LEFT JOIN  `place` p ON p.id = o.`place_id`
+            WHERE
+              o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}'
+              AND o.order_status IN ({$orderStatus})
+              {$placesFilter}
+            GROUP BY o.`place_id`{$groupByDay}
+            ORDER BY {$groupByDayOrder} 'accepted_in' DESC
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function getSlowestOrderForEvent($event, $placeId, $dateFrom, $dateTo)
+    {
+        $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_partialy_completed."'";
+        $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 23:59:59");
+
+        $placesFilter = ' AND o.place_id = "'.$placeId.'"';
+
+        $query = "
+          SELECT
+              o.id AS 'order_id',
+              (odl.`since_last` / 60) AS 'duration'
+            FROM  `orders` o
+            LEFT JOIN `place` p ON p.id = o.`place_id`
+            LEFT JOIN `order_delivery_log` odl ON odl.`order_id` = O.`id`
+            WHERE
+              o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}'
+              AND o.order_status IN ({$orderStatus})
+              AND odl.event = '{$event}'
+              {$placesFilter}
+            ORDER BY odl.`since_last` DESC
+            LIMIT 5
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return  $stmt->fetchAll();;
+    }
+
+    /**
+     * @param \DateTime $dateFrom
+     * @param \DateTime $dateTo
      * @param string $orderStatus
      * @return array
      */

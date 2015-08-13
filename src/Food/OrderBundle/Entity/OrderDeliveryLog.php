@@ -37,6 +37,12 @@ class OrderDeliveryLog
      */
     private $event;
 
+    /**
+     * @var string
+     * @ORM\Column(name="since_last", type="integer", length=10)
+     */
+    private $since_last;
+
     public function __construct()
     {
         $this->event_date = new \DateTime("now");
@@ -134,5 +140,28 @@ class OrderDeliveryLog
     {
         $interval = $firstEvent->diff($secondEvent, true);
         return $interval->format('%i');
+    }
+
+    /**
+     * Set since_last
+     *
+     * @param integer $sinceLast
+     * @return OrderDeliveryLog
+     */
+    public function setSinceLast($sinceLast)
+    {
+        $this->since_last = $sinceLast;
+    
+        return $this;
+    }
+
+    /**
+     * Get since_last
+     *
+     * @return integer 
+     */
+    public function getSinceLast()
+    {
+        return $this->since_last;
     }
 }
