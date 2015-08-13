@@ -1196,7 +1196,7 @@
         </trans-unit>
         <trans-unit id="food.game.its_success" resname="food.game.its_success">
             <source>food.game.its_success</source>
-            <target>Paldies, jums ir pierakstījies veiksmīgi</target>
+            <target>Paldies, ka reģistrējies!</target>
         </trans-unit>
         <trans-unit id="food.game.agree" resname="food.game.agree">
             <source>food.game.agree</source>
