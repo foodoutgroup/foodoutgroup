@@ -85,6 +85,13 @@ class MarketingUser
     private $birthDate;
 
     /**
+     * @var String
+     *
+     * @ORM\Column(name="entry_key", type="string", length=254, nullable=true)
+     */
+    private $entryKey = null;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -271,5 +278,28 @@ class MarketingUser
     public function setCreatedBy($user)
     {
         // the mock. admin.php wants it
+    }
+
+    /**
+     * Set entryKey
+     *
+     * @param string $entryKey
+     * @return MarketingUser
+     */
+    public function setEntryKey($entryKey)
+    {
+        $this->entryKey = $entryKey;
+    
+        return $this;
+    }
+
+    /**
+     * Get entryKey
+     *
+     * @return string 
+     */
+    public function getEntryKey()
+    {
+        return $this->entryKey;
     }
 }
