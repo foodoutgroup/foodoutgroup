@@ -622,7 +622,7 @@ class OrderRepository extends EntityRepository
               (odl.`since_last` / 60) AS 'duration'
             FROM  `orders` o
             LEFT JOIN `place` p ON p.id = o.`place_id`
-            LEFT JOIN `order_delivery_log` odl ON odl.`order_id` = O.`id`
+            LEFT JOIN `order_delivery_log` odl ON odl.`order_id` = o.`id`
             WHERE
               o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}'
               AND o.order_status IN ({$orderStatus})
