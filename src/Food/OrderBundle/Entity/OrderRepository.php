@@ -544,42 +544,54 @@ class OrderRepository extends EntityRepository
                   SELECT (`since_last` /60)
                   FROM order_delivery_log
                   WHERE order_id = o.id
-                    AND  `event` =  'order_accepted' )
+                    AND  `event` =  'order_accepted'
+                  LIMIT 1
+                  )
                 ) AS  'accepted_in',
               AVG(
                 (
                     SELECT (`since_last` /60)
                     FROM order_delivery_log
                     WHERE order_id = o.id
-                      AND  `event` =  'order_finished' )
+                      AND  `event` =  'order_finished'
+                    LIMIT 1
+                  )
                 ) AS  'finished_in',
             AVG(
                 (
                     SELECT (`since_last` /60)
                     FROM order_delivery_log
                     WHERE order_id = o.id
-                      AND  `event` =  'order_assigned' )
+                      AND  `event` =  'order_assigned'
+                    LIMIT 1
+                  )
               ) AS  'assigned_in',
             AVG(
               (
                     SELECT (`since_last` /60)
                     FROM order_delivery_log
                     WHERE order_id = o.id
-                      AND  `event` =  'order_pickedup' )
+                      AND  `event` =  'order_pickedup'
+                    LIMIT 1
+                  )
               ) AS  'pickedup_in',
             AVG(
               (
                     SELECT (`since_last` /60)
                     FROM order_delivery_log
                     WHERE order_id = o.id
-                      AND  `event` =  'order_completed' )
+                      AND  `event` =  'order_completed'
+                    LIMIT 1
+                  )
               ) AS  'completed_in',
             AVG(
               (
                     SELECT (TIMEDIFF(`event_date`, o.`order_date`))/60
                     FROM order_delivery_log
                     WHERE order_id = o.id
-                      AND `event` = 'order_completed')
+                      AND `event` = 'order_completed'
+                    LIMIT 1
+                )
               ) AS 'order_in'
             FROM  `orders` o
             LEFT JOIN  `place` p ON p.id = o.`place_id`
