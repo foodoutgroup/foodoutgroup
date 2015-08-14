@@ -832,4 +832,90 @@ class OrderRepository extends EntityRepository
         return $qb->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param \DateTime $dateFrom
+     * @param \DateTime $dateTo
+     * @param array $placeIds
+     * @param bool $groupMonth
+     *
+     * @return array
+     */
+    public function getPlacesOrdersForRange($dateFrom = false, $dateTo = false, $placeIds = array(), $groupMonth=false)
+    {
+        $orderStatus = OrderService::$status_completed;
+        $dates_filter = "";
+        if (!empty($dateFrom) && !empty($dateTo)) {
+            $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
+            $dateTo = $dateTo->format("Y-m-d 23:59:59");
+            $dates_filter = " AND (o.order_date BETWEEN '".$dateFrom."' AND '".$dateTo."')";
+        }
+
+        $placesFilter = '';
+        if (!empty($placeIds)) {
+            $placesFilter = ' AND o.place_id IN ('.implode(', ', $placeIds).')';
+        }
+
+        $groupByMonthDate = $groupByMonth = $groupByMonthOrder = '';
+        if ($groupMonth) {
+            $groupByMonthDate = ', DATE_FORMAT(o.order_date, "%Y-%m") AS month';
+            $groupByMonth = ', DATE_FORMAT(o.order_date, "%Y-%m")';
+            $groupByMonthOrder = 'DATE_FORMAT(o.order_date, "%Y-%m") DESC, ';
+        }
+
+        $query = "
+          SELECT
+            o.id,
+            p.name AS place_name,
+            o.order_date,
+            o.total,
+            o.place_point_address,
+            o.order_status,
+            o.payment_status,
+            o.delivery_type,
+            o.accept_time,
+            (select event_date from order_delivery_log odl where odl.order_id = o.id AND odl.event = 'order_pickedup' LIMIT 1) as delivery_pickup_time,
+            o.delivery_time
+            {$groupByMonthDate}
+          FROM orders o
+          LEFT JOIN place p ON p.id = o.place_id
+          WHERE
+            o.order_status = '{$orderStatus}'
+            {$dates_filter}
+            {$placesFilter}
+          GROUP BY o.id{$groupByMonth}
+          ORDER BY {$groupByMonthOrder} ". (empty($placesFilter) ? ' o.place_name ASC, o.id DESC ' : ' o.id DESC ') ."
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * @param bool|false $order_id
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getOrderDetails($order_id = false)
+    {
+        $query = "SELECT
+            od.id,
+            od.dish_name AS dish_name,
+            od.price AS price,
+            od.quantity AS quantity,
+            od.dish_unit_name AS dish_unit_name,
+            od.dish_size_code AS dish_size_code,
+            od.order_id AS order_id
+            FROM  order_details od WHERE od.order_id = '{$order_id}'
+        ";
+
+        $stmt = $this->getEntityManager()
+            ->getConnection()
+            ->prepare($query);
+
+        $stmt->execute();
+        $orders_detail = $stmt->fetchAll();
+        return $orders_detail;
+    }
 }

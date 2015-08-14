@@ -59,12 +59,12 @@ food_game:
     defaults: { _controller: FoodAppBundle:Game:index }
 
 food_game_prod:
-    pattern: /registracija_zaidimui
-    defaults: { _controller: FoodAppBundle:Game:index }
+    pattern: /registracija_zaidimui/{key}
+    defaults: { _controller: FoodAppBundle:Game:index, key: ~ }
 
 food_game_prod_lv:
-    pattern: /registracija_speli
-    defaults: { _controller: FoodAppBundle:Game:index }
+    pattern: /registracija_speli/{key}
+    defaults: { _controller: FoodAppBundle:Game:index, key: ~ }
 
 food_review_create:
     pattern: /place/review/{id}

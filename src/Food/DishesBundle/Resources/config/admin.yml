@@ -322,6 +322,17 @@ services:
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.restaurant_orders_report:
+                class: Food\ReportBundle\Admin\RestaurantOrdersReportAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.report.restaurant_orders_report" }
+                arguments:
+                    - ~
+                    - Food\OrderBundle\Entity\Order
+                    - 'FoodReportBundle:RestaurantOrdersReportAdmin'
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]
+
     sonata.admin.latency:
                 class: Food\ReportBundle\Admin\LatencyAdmin
                 tags:
