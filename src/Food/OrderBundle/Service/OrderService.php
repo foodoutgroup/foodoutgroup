@@ -2301,7 +2301,11 @@ class OrderService extends ContainerAware
                 case 'order_finished':
                     $logData = $this->getDeliveryLogActionEntry($order, 'order_accepted');
 
-                    $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    if ($logData instanceof OrderDeliveryLog) {
+                        $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    } else {
+                        $sinceLast = $order->getOrderDate()->getTimestamp();
+                    }
                     break;
 
 
@@ -2312,13 +2316,21 @@ class OrderService extends ContainerAware
                         $logData = $this->getDeliveryLogActionEntry($order, 'order_accepted');
                     }
 
-                    $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    if ($logData instanceof OrderDeliveryLog) {
+                        $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    } else {
+                        $sinceLast = $order->getOrderDate()->getTimestamp();
+                    }
                     break;
 
                 case 'order_pickedup':
                     $logData = $this->getDeliveryLogActionEntry($order, 'order_assigned');
 
-                    $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    if ($logData instanceof OrderDeliveryLog) {
+                        $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    } else {
+                        $sinceLast = $order->getOrderDate()->getTimestamp();
+                    }
                     break;
 
                 case 'order_completed':
@@ -2328,13 +2340,21 @@ class OrderService extends ContainerAware
                         $logData = $this->getDeliveryLogActionEntry($order, 'order_accepted');
                     }
 
-                    $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    if ($logData instanceof OrderDeliveryLog) {
+                        $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    } else {
+                        $sinceLast = $order->getOrderDate()->getTimestamp();
+                    }
                     break;
 
                 case 'order_canceled':
                     $logData = $this->getDeliveryLogActionEntry($order, 'order_accepted');
 
-                    $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    if ($logData instanceof OrderDeliveryLog) {
+                        $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    } else {
+                        $sinceLast = $order->getOrderDate()->getTimestamp();
+                    }
                     break;
             }
 
