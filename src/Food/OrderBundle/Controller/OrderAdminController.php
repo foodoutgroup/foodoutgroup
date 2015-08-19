@@ -171,8 +171,12 @@ class OrderAdminController extends Controller
                                         $b++;
                                     }
                                 }
-                                if (!empty($range)) {
+                                if (!empty($range) && !empty($value['value']['start']) && !empty($value['value']['end'])) {
                                     $where .= " AND (o.order_date BETWEEN " . $range . ')';
+                                } elseif (!empty($range) && !empty($value['value']['start']) && empty($value['value']['end'])) {
+                                    $where .= " AND (o.order_date >= '" . str_replace("'", "", $value['value']['start']) . "')";
+                                } elseif (!empty($range) && !empty($value['value']['end']) && empty($value['value']['start'])) {
+                                    $where .= " AND (o.order_date <= '" . str_replace("'", "", $value['value']['end']) . "')";
                                 }
                             }
                             break;
