@@ -27,6 +27,13 @@ class User extends BaseUser
     /**
      * @var string
      *
+     * @ORM\Column(name="facebook_id", type="string", length=255, nullable=true)
+     */
+    private $facebook_id;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="firstname", type="string", length=255, nullable=true)
      */
     private $firstname = null;
@@ -655,5 +662,28 @@ class User extends BaseUser
     public function getDivisionCodes()
     {
         return $this->divisionCodes;
+    }
+
+    /**
+     * Set facebook_id
+     *
+     * @param string $facebookId
+     * @return User
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebook_id = $facebookId;
+    
+        return $this;
+    }
+
+    /**
+     * Get facebook_id
+     *
+     * @return string 
+     */
+    public function getFacebookId()
+    {
+        return $this->facebook_id;
     }
 }
