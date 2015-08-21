@@ -95,6 +95,7 @@ class UsersController extends Controller
 
             if (!empty($facebook_id)) {
                 $email = $facebook_id . "@foodout.lt";
+                $password = $facebook_id;
                 $this->validateUserRegister(
                     array(
                         'firstname' => $nameParsed['firstname'],
@@ -120,6 +121,21 @@ class UsersController extends Controller
             } else {
                 $existingUser = $um->findUserByEmail($email);
             }
+
+            // Check only for FB users xz about not FB users, ask Egle why "Temporary" check is disabled
+            if ($existingUser && $existingUser->getFullyRegistered() && !empty($facebook_id)) {
+                throw new ApiException(
+                    'User '.$email.' exists',
+                    409,
+                    array(
+                        'error' => 'User exists',
+                        'email' => $email,
+                        'firstname' => $nameParsed['firstname'],
+                        'description' => $translator->trans('registration.user.exists'),
+                    )
+                );
+            }
+
             // Temporary by Egle request allowing anonymous registers and orders
             /*if ($existingUser && $existingUser->getFullyRegistered()) {
                 throw new ApiException(
