@@ -27,72 +27,11 @@ class DailyReport extends ContainerAware
         '6' => 1.3,
         '7' => 1.0
     ];
-    protected $kpiPlacesMap = [
-        '1' => 83,
-        '2' => 92,
-        '3' => 84,
-        '4' => 92,
-        '5' => 100,
-        '6' => 108,
-        '7' => 116,
-        '8' => 1024
-    ];
-    protected $kpiIncomeMap = [
-        '1' => 6704,
-        '2' => 6921,
-        '3' => 7955,
-        '4' => 7722,
-        '5' => 8021,
-        '6' => 8398,
-        '7' => 8013,
-        '8' => 8514,
-        '9' => 13224,
-        '10' => 15470,
-        '11' => 17558,
-        '12' => 19903
-    ];
-    protected $kpiOrdersMap = [
-        '1' => 564,
-        '2' => 583,
-        '3' => 670,
-        '4' => 620,
-        '5' => 644,
-        '6' => 674,
-        '7' => 381,
-        '8' => 440,
-        '9' => 659,
-        '10' => 774,
-        '11' => 875,
-        '12' => 990
-    ];
-    protected $kpiCartSizeMap = [
-        '1' => 11.8,
-        '2' => 11.8,
-        '3' => 11.8,
-        '4' => 12.4,
-        '5' => 12.4,
-        '6' => 12.4,
-        '7' => 14.54,
-        '8' => 13.31,
-        '9' => 13.84,
-        '10' => 13.82,
-        '11' => 13.88,
-        '12' => 13.93,
-    ];
-    protected $kpiDeliveryMap = [
-        '1' => 60,
-        '2' => 60,
-        '3' => 60,
-        '4' => 55,
-        '5' => 55,
-        '6' => 55,
-        '7' => 55,
-        '8' => 55,
-        '9' => 55,
-        '10' => 55,
-        '11' => 55,
-        '12' => 55
-    ];
+    protected $kpiPlacesMap = [];
+    protected $kpiIncomeMap = [];
+    protected $kpiOrdersMap = [];
+    protected $kpiCartSizeMap = [];
+    protected $kpiDeliveryMap = [];
 
     protected $sqlMap = [
         'income' => 'SELECT IFNULL(SUM(o.total - IFNULL(o.delivery_price, 0.0)) / 1.21, 0.0) AS result',
@@ -356,5 +295,28 @@ class DailyReport extends ContainerAware
     public function getTemplating()
     {
         return $this->templating;
+    }
+
+    public function setParameters()
+    {
+        $today = date("Ym");
+        $todaySh = date("m");
+        $yestr = date("Ym", strtotime("-1 day"));
+        $yestrSh = date("m", strtotime("-1 day"));
+
+        $this->kpiPlacesMap[$todaySh] = $this->container->getParameter('place'.$today);
+        $this->kpiPlacesMap[$yestrSh] = $this->container->getParameter('place'.$yestr);
+
+        $this->kpiIncomeMap[$todaySh] = $this->container->getParameter('income'.$today);
+        $this->kpiIncomeMap[$yestrSh] = $this->container->getParameter('income'.$yestr);
+
+        $this->kpiOrdersMap[$todaySh] = $this->container->getParameter('order'.$today);
+        $this->kpiOrdersMap[$yestrSh] = $this->container->getParameter('order'.$yestr);
+
+        $this->kpiCartSizeMap[$todaySh] = $this->container->getParameter('cartsize'.$today);
+        $this->kpiCartSizeMap[$yestrSh] = $this->container->getParameter('cartsize'.$yestr);
+
+        $this->kpiDeliveryMap[$todaySh] = $this->container->getParameter('delivery'.$today);
+        $this->kpiDeliveryMap[$yestrSh] = $this->container->getParameter('delivery'.$yestr);
     }
 }

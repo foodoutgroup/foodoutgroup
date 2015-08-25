@@ -1,5 +1,6 @@
 imports:
     - { resource: parameters.yml }
+    - { resource: kpi.yml }
     - { resource: security.yml }
     - { resource: "@FoodCartBundle/Resources/config/services.yml" }
     - { resource: "@FoodDishesBundle/Resources/config/admin.yml" }
