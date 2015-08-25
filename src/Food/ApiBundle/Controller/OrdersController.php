@@ -255,6 +255,76 @@ class OrdersController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getCouponAction(Request $request)
+    {
+        $this->_theJudge($request);
+        try {
+            $coupon = null;
+            $requestJson = new JsonRequest($request);
+            $code = $requestJson->get('code');
+            $this->logActionParams('getCoupon action', $code);
+
+            if (!empty($code)) {
+                $coupon = $this->get('food.order')->getCouponByCode($code);
+                if (!empty($coupon)) {
+                    $arr_places = array();
+                    $places = $coupon->getPlaces();
+                    if (!empty($places) && count($places) > 0) {
+                        foreach ($places as $place) {
+                            $arr_places[$place->getId()] = $place->getName();
+                        }
+                    }
+
+                    $response = array(
+                        'id' => $coupon->getId(),
+                        'name' => $coupon->getName(),
+                        'code' => $coupon->getCode(),
+                        'discount' => $coupon->getDiscount(),
+                        'discount_sum' => $coupon->getDiscountSum(),
+                        'free_delivery' => $coupon->getFreeDelivery(),
+                        'single_use' => $coupon->getSingleUse(),
+                        'no_self_delivery' => $coupon->getNoSelfDelivery(), // Only for non self delivery restaurants
+                        'enable_validate_date' => $coupon->getEnableValidateDate(),
+                        'valid_from' => ($coupon->getValidFrom() != null ? $coupon->getValidFrom()->format('Y-m-d H:i:s') : null),
+                        'valid_to' => ($coupon->getValidTo() != null ? $coupon->getValidTo()->format('Y-m-d H:i:s') : null),
+                        'places' => $arr_places,
+                    );
+                    return new JsonResponse($response);
+                } else {
+                    throw new ApiException(
+                        'Coupon Not found',
+                        404,
+                        array(
+                            'error' => 'Coupon Not found',
+                            'description' => $this->get('translator')->trans('api.orders.coupon_does_not_exists')
+                        )
+                    );
+                }
+            } else {
+                throw new ApiException(
+                    'Coupon Code Is Empty',
+                    404,
+                    array(
+                        'error' => 'Coupon Code Is Empty',
+                        'description' => $this->get('translator')->trans('api.orders.coupon_empty')
+                    )
+                );
+            }
+        }  catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+    }
+
+    /**
      * For debuging purpose only - log request data and action name for easy debug
      *
      * @param string $action
