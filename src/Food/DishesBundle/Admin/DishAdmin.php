@@ -253,7 +253,7 @@ class DishAdmin extends FoodAdmin
             foreach ($dishSizes as $size) {
                 if (!empty($size->getDish() != null)) {
                     $query = $em->createQuery(
-                        "DELETE FROM Food\CartBundle\Entity\Cart c WHERE c.dish_id = " . $size->getDish()->getId()
+                        "DELETE FROM cart c WHERE c.dish_id = " . $size->getDish()->getId()
                     );
                     $query->execute();
                 }
