@@ -148,7 +148,7 @@ class DailyReport extends ContainerAware
 
     public function getDailyMailTitle()
     {
-        return sprintf('Daily '.$this->container->getParameter('domain').' report for %s',
+        return sprintf('Daily '.$this->container->getParameter('publicdomain').' report for %s',
                        date('Y-m-d', strtotime(static::PHP_1_DAY_AGO)));
     }
 
