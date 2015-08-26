@@ -80,7 +80,7 @@
                         <div id="detailed-restaurant" class="detailed-resturant">
                         <ul>
                             <li><a href="#detailed-restaurant-menu">{% trans %}places.menu{% endtrans %}</a></li>
-                            <li><a href="#detailed-restaurant-review">{% trans %}places.reviews{% endtrans %}</a></li>
+                            {#<li><a href="#detailed-restaurant-review">{% trans %}places.reviews{% endtrans %}</a></li>#}
                             <li class="last restaurant-info-tab"><a href="#detailed-restaurant-info">{% trans %}places.information{% endtrans %}</a></li>
                         </ul>
                         <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
@@ -146,18 +146,18 @@
                             </div>
                         </div>
                         {# Atsiliepimai #}
-                        <div id="detailed-restaurant-review" class="detailed-restaurant-review">
+                        {#<div id="detailed-restaurant-review" class="detailed-restaurant-review">
                             <div class="review-title clearfix">
-                                {# TODO temporary reviews are not shown #}
-                                {#<h3>{{ place.reviewCount }} {% transchoice place.reviews.count %}places.review_choice{% endtranschoice %}</h3>#}
+                                &#123;&#35; TODO temporary reviews are not shown &#35;&#125;
+                                &#123;&#35;<h3>{{ place.reviewCount }} {% transchoice place.reviews.count %}places.review_choice{% endtranschoice %}</h3>&#35;&#125;
                                 {% if (wasHere and not alreadyWrote) or not app.user %}
                                     <a href="{% if app.user %}#place-review-popup{% else %}#login-register-popup{% endif %}" class="fancy-box">{% trans %}places.add_review{% endtrans %}</a>
                                 {% endif %}
                                 {{ include('FoodDishesBundle:Place:review-popup.html.twig') }}
                             </div>
                             <div class="review-list">
-                                {# TODO temporary reviews are not shown #}
-                                {#{% for review in place.reviews %}
+                                &#123;&#35; TODO temporary reviews are not shown &#35;&#125;
+                                &#123;&#35;{% for review in place.reviews %}
                                 <div class="review-item clearfix">
                                     <div class="review-person"><img src="/bundles/foodapp/images/person.png">
                                         <p class="name">{{ review.createdBy.getFirstname }}</p>
@@ -174,10 +174,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                {% endfor %}#}
+                                {% endfor %}&#35;&#125;
                             </div>
-                            {#<div class="paginator clearfix"><a href="#" class="prev"></a><a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="next"></a></div>#}
-                        </div>
+                            &#123;&#35;<div class="paginator clearfix"><a href="#" class="prev"></a><a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="next"></a></div>&#35;&#125;
+                        </div>#}
                         {# Restorano informacija #}
                         <div id="detailed-restaurant-info" class="detailed-restaurant-info">
                             <h3>{% trans %}places.about_place{% endtrans %}</h3>
