@@ -395,9 +395,9 @@ class WeeklyReport extends ContainerAware
 
     public function setParameters()
     {
-        $today = date("Ym");
+        $today = date("ym");
         $todaySh = date("m");
-        $yestr = date("Ym", strtotime("-1 day"));
+        $yestr = date("ym", strtotime("-1 day"));
         $yestrSh = date("m", strtotime("-1 day"));
 
         $this->kpiPlacesMap[$todaySh] = $container->getParameter('place'.$today);
