@@ -352,9 +352,10 @@ class OrderRepository extends EntityRepository
                         break;
 
                     case 'is_problem':
-                        $qb->andWhere('o.order_status = :problem_status OR (o.paymentStatus IN (:problem_payment_status) AND o.order_date > :problem_date_time)');
+                        $qb->andWhere('o.order_status = :problem_status OR (o.paymentStatus IN (:problem_payment_status) AND o.order_date > :problem_date_time AND o.order_status != :problem_excluded_status)');
                         unset($filter['is_problem']);
                         $filter['problem_status'] = OrderService::$status_nav_problems;
+                        $filter['problem_excluded_status'] = OrderService::$status_pre;
                         $filter['problem_payment_status'] = array(OrderService::$paymentStatusWait, OrderService::$paymentStatusWaitFunds);
                         $filter['problem_date_time'] = new \DateTime('-5 minute');
                         break;
