@@ -298,15 +298,15 @@ Vilnius]]></target>
         </trans-unit>
         <trans-unit id="order.form.errors.today_no_work" resname="order.form.errors.today_no_work">
             <source>order.form.errors.today_no_work</source>
-            <target>Restoranas nedirba.</target>
+            <target>Apgailestaujame, restoranas nedirba.</target>
         </trans-unit>
         <trans-unit id="order.form.errors.isnt_open" resname="order.form.errors.isnt_open">
             <source>order.form.errors.isnt_open</source>
-            <target>Restoranas dar nedirba.</target>
+            <target>Apgailestaujame, restoranas dar nedirba.</target>
         </trans-unit>
         <trans-unit id="order.form.errors.is_already_close" resname="order.form.errors.is_already_close">
             <source>order.form.errors.is_already_close</source>
-            <target>Restoranas jau nebedirba.</target>
+            <target>Apgailestaujame, restoranas jau nebedirba.</target>
         </trans-unit>
         <trans-unit id="order.form.errors.cart_rules" resname="order.form.errors.cart_rules">
             <source>order.form.errors.cart_rules</source>

@@ -112,7 +112,7 @@
                         {# Meniu #}
                                 <div class="menu-righter">
                                     {% if placePointsAll|length == 1 %}
-                                        {% if order_service.isTodayWork(placePointsAll[0]) == false %}
+                                        {% if isTodayNoOneWantsToWork == true %}
                                             <div class="alert alert-danger">
                                                 {{ order_service.workTimeErrorsReturn(placePointsAll[0])|trans }}
                                             </div>

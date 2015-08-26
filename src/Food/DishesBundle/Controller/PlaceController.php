@@ -54,6 +54,7 @@ class PlaceController extends Controller
 */
         $wasHere = $this->wasHere($place, $this->user());
         $alreadyWrote = $this->alreadyWrote($place, $this->user());
+        $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
         return $this->render(
             'FoodDishesBundle:Place:index.html.twig',
             array(
@@ -65,6 +66,7 @@ class PlaceController extends Controller
                 'placePoints' => $placePoints,
                 'placePointsAll' => $placePointsAll,
                 'listType' => $listType,
+                'isTodayNoOneWantsToWork' => $isTodayNoOneWantsToWork,
             )
         );
     }
