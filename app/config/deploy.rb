@@ -67,6 +67,7 @@ logger.level = 0
 # copy parameters.yml to specific env
 set :parameters_dir, "app/config/parameters"
 set :parameters_file, false
+set :kpi_file, false
 
 task :upload_parameters do
   origin_file = parameters_dir + "/" + parameters_file if parameters_dir && parameters_file
