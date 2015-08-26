@@ -172,7 +172,7 @@ class WeeklyReport extends ContainerAware
      */
     public function getWeeklyMailTitle()
     {
-        return sprintf('Weekly Foodout.lt report for %s to %s',
+        return sprintf('Weekly '.$this->container->getParameter('domain').' report for %s to %s',
                        date('Y-m-d', strtotime(static::PHP_7_DAYS_AGO)),
                        date('Y-m-d', strtotime(static::PHP_1_DAY_AGO)));
     }
