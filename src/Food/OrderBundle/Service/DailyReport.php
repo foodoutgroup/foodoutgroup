@@ -300,9 +300,9 @@ class DailyReport extends ContainerAware
     public function setParameters($container)
     {
         $today = date("ym");
-        $todaySh = date("m");
+        $todaySh = date("n");
         $yestr = date("ym", strtotime("-1 day"));
-        $yestrSh = date("m", strtotime("-1 day"));
+        $yestrSh = date("n", strtotime("-1 day"));
 
         $this->kpiPlacesMap[$todaySh] = $container->getParameter('place'.$today);
         $this->kpiPlacesMap[$yestrSh] = $container->getParameter('place'.$yestr);
