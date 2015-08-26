@@ -393,7 +393,7 @@ class WeeklyReport extends ContainerAware
         return $this->templating;
     }
 
-    public function setParameters()
+    public function setParameters($container)
     {
         $today = date("ym");
         $todaySh = date("m");
