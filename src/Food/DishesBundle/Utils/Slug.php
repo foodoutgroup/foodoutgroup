@@ -84,7 +84,10 @@ class Slug
     public function getSlugByItem($itemId, $type)
     {
         $item = $this->repo('FoodAppBundle:Slug')->findOneBy(
-            array('item_id' => $itemId, 'type' => $type, 'lang_id' => $this->getLocale(), 'active' => 1)
+            array(
+                'item_id' => $itemId, 'type' => $type,
+                'lang_id' => $this->getLocale(), 'active' => 1
+            )
         );
 
         if ($item) {
