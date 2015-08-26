@@ -92,7 +92,7 @@ services:
             - [setDailyReportEmails, ["%daily_report_emails%"]]
             - [setGoogleAnalyticsService, ["@food.google_analytics"]]
             - [setTemplating, ["@templating"]]
-            - [setParameters]
+            - [setParameters, ["@service_container"]]
             - [setContainer, ["@service_container"]]
 
     food.weekly_report:
@@ -102,7 +102,7 @@ services:
             - [setWeeklyReportEmails, ["%weekly_report_emails%"]]
             - [setGoogleAnalyticsService, ["@food.google_analytics"]]
             - [setTemplating, ["@templating"]]
-            - [setParameters]
+            - [setParameters, ["@service_container"]]
             - [setContainer, ["@service_container"]]
 
     # this is not part of gateway-bundle. it is part of main app.

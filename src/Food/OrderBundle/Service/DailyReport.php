@@ -297,26 +297,26 @@ class DailyReport extends ContainerAware
         return $this->templating;
     }
 
-    public function setParameters()
+    public function setParameters($container)
     {
         $today = date("Ym");
         $todaySh = date("m");
         $yestr = date("Ym", strtotime("-1 day"));
         $yestrSh = date("m", strtotime("-1 day"));
 
-        $this->kpiPlacesMap[$todaySh] = $this->container->getParameter('place'.$today);
-        $this->kpiPlacesMap[$yestrSh] = $this->container->getParameter('place'.$yestr);
+        $this->kpiPlacesMap[$todaySh] = $container->getParameter('place'.$today);
+        $this->kpiPlacesMap[$yestrSh] = $container->getParameter('place'.$yestr);
 
-        $this->kpiIncomeMap[$todaySh] = $this->container->getParameter('income'.$today);
-        $this->kpiIncomeMap[$yestrSh] = $this->container->getParameter('income'.$yestr);
+        $this->kpiIncomeMap[$todaySh] = $container->getParameter('income'.$today);
+        $this->kpiIncomeMap[$yestrSh] = $container->getParameter('income'.$yestr);
 
-        $this->kpiOrdersMap[$todaySh] = $this->container->getParameter('order'.$today);
-        $this->kpiOrdersMap[$yestrSh] = $this->container->getParameter('order'.$yestr);
+        $this->kpiOrdersMap[$todaySh] = $container->getParameter('order'.$today);
+        $this->kpiOrdersMap[$yestrSh] = $container->getParameter('order'.$yestr);
 
-        $this->kpiCartSizeMap[$todaySh] = $this->container->getParameter('cartsize'.$today);
-        $this->kpiCartSizeMap[$yestrSh] = $this->container->getParameter('cartsize'.$yestr);
+        $this->kpiCartSizeMap[$todaySh] = $container->getParameter('cartsize'.$today);
+        $this->kpiCartSizeMap[$yestrSh] = $container->getParameter('cartsize'.$yestr);
 
-        $this->kpiDeliveryMap[$todaySh] = $this->container->getParameter('delivery'.$today);
-        $this->kpiDeliveryMap[$yestrSh] = $this->container->getParameter('delivery'.$yestr);
+        $this->kpiDeliveryMap[$todaySh] = $container->getParameter('delivery'.$today);
+        $this->kpiDeliveryMap[$yestrSh] = $container->getParameter('delivery'.$yestr);
     }
 }
