@@ -27,7 +27,7 @@ class DispatcherAdminController extends Controller
                 ),
                 'not_finished' => $repo->getOrdersAssigned($city),
                 'canceled' => $repo->getOrdersCanceled($city),
-                'nav_problems' => $repo->getOrdersNavProblems($city),
+                'nav_problems' => $repo->getOrdersProblems($city),
             );
         }
 

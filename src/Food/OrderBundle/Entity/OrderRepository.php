@@ -139,12 +139,11 @@ class OrderRepository extends EntityRepository
      * @param string $city
      * @return array|Order[]
      */
-    public function getOrdersNavProblems($city)
+    public function getOrdersProblems($city)
     {
         $filter = array(
-            'order_status' =>  OrderService::$status_nav_problems,
+            'is_problem' => true,
             'place_point_city' => $city,
-            'paymentStatus' => OrderService::$paymentStatusComplete,
             'order_date_between' => array(
                 'from' => new \DateTime('-4 hour'),
                 'to' => new \DateTime('now'),
@@ -350,6 +349,14 @@ class OrderRepository extends EntityRepository
 
                     case 'not_nav':
                         $qb->andWhere('o.orderFromNav != :'.$filterName);
+                        break;
+
+                    case 'is_problem':
+                        $qb->andWhere('o.order_status = :problem_status OR (o.paymentStatus IN (:problem_payment_status) AND o.order_date > :problem_date_time)');
+                        unset($filter['is_problem']);
+                        $filter['problem_status'] = OrderService::$status_nav_problems;
+                        $filter['problem_payment_status'] = array(OrderService::$paymentStatusWait, OrderService::$paymentStatusWaitFunds);
+                        $filter['problem_date_time'] = new \DateTime('-5 minute');
                         break;
 
                     case 'not_solved':

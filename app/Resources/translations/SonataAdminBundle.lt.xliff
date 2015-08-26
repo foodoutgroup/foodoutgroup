@@ -1364,6 +1364,18 @@
                 <source>admin.dispatcher.problem_solved</source>
                 <target>Išspręsta</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.problem_type">
+                <source>admin.dispatcher.problem_type</source>
+                <target>Problem. tipas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payment_wait_problem">
+                <source>admin.dispatcher.payment_wait_problem</source>
+                <target>Laukiama mokėjimo</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.nav_problems_type">
+                <source>admin.dispatcher.nav_problems_type</source>
+                <target>NAV problema</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.unconfirmed_pickup">
                 <source>admin.dispatcher.unconfirmed_pickup</source>
                 <target>Nepatvirtinti atsiėmimai restorane</target>

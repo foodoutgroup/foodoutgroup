@@ -67,6 +67,7 @@
                 <th class="client_contacted_check">{{ 'admin.dispatcher.client_contacted'|trans({}, 'SonataAdminBundle') }}</th>
             {% endif %}
             {% if type == 'nav_problems' %}
+                <th class="problem_type">{{ 'admin.dispatcher.problem_type'|trans({}, 'SonataAdminBundle') }}</th>
                 <th class="problem_solved_check">{{ 'admin.dispatcher.problem_solved'|trans({}, 'SonataAdminBundle') }}</th>
             {% endif %}
             </tr>
@@ -223,6 +224,13 @@
                     </td>
                     {% endif %}
                     {% if type == 'nav_problems' %}
+                    <td>
+                        {% if order.order_status == 'nav_problems' %}
+                            {{ 'admin.dispatcher.nav_problems_type'|trans({}, 'SonataAdminBundle') }}
+                        {% else %}
+                            {{ 'admin.dispatcher.payment_wait_problem'|trans({}, 'SonataAdminBundle') }}
+                        {% endif %}
+                    </td>
                     <td class="problem_solved_check">
                         <input type="checkbox" id="solved_{{ order.id }}" class="problem_solved" item-id="{{ order.id }}" {% if order.problemSolved == 1 %}checked="checked" {% endif %}/>
                     </td>
