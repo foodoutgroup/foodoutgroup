@@ -76,7 +76,7 @@
       </trans-unit>
       <trans-unit id="2a5d4d12eceaf831f2410429e3ca36db" resname="places.information">
         <source>places.information</source>
-        <target>Informacija</target>
+        <target>Kaip rasti restoraną</target>
       </trans-unit>
       <trans-unit id="2ad4aed8aed8e7bade514a402f54e857" resname="places.food_categories">
         <source>places.food_categories</source>
