@@ -239,7 +239,7 @@ class DishAdmin extends FoodAdmin
     public function preUpdate($object)
     {
         $this->fixRelations($object);
-        $this->deleteCartItem($object);
+        //$this->deleteCartItem($object);
         $this->saveFile($object);
     }
 
