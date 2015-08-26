@@ -93,6 +93,7 @@ services:
             - [setGoogleAnalyticsService, ["@food.google_analytics"]]
             - [setTemplating, ["@templating"]]
             - [setParameters]
+            - [setContainer, ["@service_container"]]
 
     food.weekly_report:
         class: Food\OrderBundle\Service\WeeklyReport
@@ -102,6 +103,7 @@ services:
             - [setGoogleAnalyticsService, ["@food.google_analytics"]]
             - [setTemplating, ["@templating"]]
             - [setParameters]
+            - [setContainer, ["@service_container"]]
 
     # this is not part of gateway-bundle. it is part of main app.
     # we simply register banklink event listener that handles third party
