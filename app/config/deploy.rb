@@ -36,7 +36,7 @@ ssh_options[:forward_agent] = true
 ssh_options[:port] = 22
 default_run_options[:pty] = true
 
-set :shared_files,      ["app/config/parameters.yml"]
+set :shared_files,      ["app/config/parameters.yml", "app/config/kpi.yml"]
 set :shared_children,     ["bin", app_path + "/logs", web_path + "/uploads", web_path + "/images", "web/images", app_path + "/var"]
 set :writable_dirs,     ["bin", app_path + "/cache", app_path + "/logs", web_path + "/images", app_path + "/cache/dev", app_path + "/cache/prod", web_path + "/images/cache"]
 set :composer_options, "--verbose"
@@ -75,6 +75,9 @@ task :upload_parameters do
     #ext = File.extname(parameters_file)
     ext = '.yml'
     relative_path = "app/config/parameters" + ext
+    print "  *** relative path: "
+    print relative_path
+    print "\n"
 
     if shared_files && shared_files.include?(relative_path)
       destination_file = shared_path + "/" + relative_path
@@ -93,6 +96,9 @@ task :upload_kpi do
       #ext = File.extname(kpi_file)
       ext = '.yml'
       relative_path = "app/config/kpi" + ext
+      print "  *** relative path: "
+      print relative_path
+      print "\n"
 
       if shared_files && shared_files.include?(relative_path)
         destination_file_kpi = shared_path + "/" + relative_path
