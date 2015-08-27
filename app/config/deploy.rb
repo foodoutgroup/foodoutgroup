@@ -11,7 +11,7 @@ set :branch, "master"
 # multi-stage environment
 set :stages,        %w(production staging sandbox taurinas kofeinas pipiras production_lv)
 # isijungiam kada reik :)
-set :default_stage, "production_lv"
+set :default_stage, "staging"
 set :stage_dir,     "app/config/deploy"
 require 'capistrano/ext/multistage'
 
@@ -62,7 +62,7 @@ after "deploy:rollback", "symfony:cache:clear"
 #
 # Be more verbose by uncommenting the following line
 # logger.level = Logger::MAX_LEVEL
-logger.level = Logger::MAX_LEVEL
+logger.level = 0
 
 # copy parameters.yml to specific env
 set :parameters_dir, "app/config/parameters"
