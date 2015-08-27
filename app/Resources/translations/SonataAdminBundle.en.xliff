@@ -1344,6 +1344,18 @@
                 <source>admin.dispatcher.problem_solved</source>
                 <target>Solved</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.problem_type">
+                <source>admin.dispatcher.problem_type</source>
+                <target>Problem type</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payment_wait_problem">
+                <source>admin.dispatcher.payment_wait_problem</source>
+                <target>Payment wait</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.nav_problems_type">
+                <source>admin.dispatcher.nav_problems_type</source>
+                <target>NAV problem</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.unconfirmed_pickup">
                 <source>admin.dispatcher.unconfirmed_pickup</source>
                 <target>Uncomfirmed pickups</target>
