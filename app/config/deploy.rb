@@ -88,20 +88,20 @@ task :upload_parameters do
 end
 
 task :upload_kpi do
-    origin_file = parameters_dir + "/" + kpi_file if kpi_file && kpi_file
-    if origin_file && File.exists?(origin_file)
+    origin_file_kpi = parameters_dir + "/" + kpi_file if parameters_dir && kpi_file
+    if origin_file_kpi && File.exists?(origin_file_kpi)
       #ext = File.extname(kpi_file)
       ext = '.yml'
       relative_path = "app/config/kpi" + ext
 
       if shared_files && shared_files.include?(relative_path)
-        destination_file = shared_path + "/" + relative_path
+        destination_file_kpi = shared_path + "/" + relative_path
       else
-        destination_file = latest_release + "/" + relative_path
+        destination_file_kpi = latest_release + "/" + relative_path
       end
-      try_sudo "mkdir -p #{File.dirname(destination_file)}"
+      try_sudo "mkdir -p #{File.dirname(destination_file_kpi)}"
 
-      top.upload(origin_file, destination_file)
+      top.upload(origin_file_kpi, destination_file_kpi)
     end
 end
 
