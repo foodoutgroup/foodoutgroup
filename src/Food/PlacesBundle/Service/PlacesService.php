@@ -243,6 +243,11 @@ class PlacesService extends ContainerAware {
             $kitchens = explode(",", $kitchens);
         }
 
+        // TODO lets debug this strange scenario :(
+        if (is_array($filters)) {
+            $this->getContainer()->get('logger')->error('getPlacesForList filters param got array -cant be. Array contents: '.var_export($filters, true));
+        }
+
         $filters = explode(",", $filters);
         if (!empty($deliveryType)) {
             $filters['delivery_type'] = $deliveryType;

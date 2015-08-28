@@ -7,7 +7,7 @@ use Sonata\AdminBundle\Admin\Admin as SonataAdmin;
 class RestaurantOrdersAdmin extends SonataAdmin
 {
     protected $baseRouteName = 'food_reports_restaurant_orders';
-    protected $baseRoutePattern = 'reports';
+    protected $baseRoutePattern = 'reports/orders';
 
     /**
      * @param \Sonata\AdminBundle\Route\RouteCollection $collection

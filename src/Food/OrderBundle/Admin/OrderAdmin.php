@@ -3,13 +3,14 @@ namespace Food\OrderBundle\Admin;
 
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
-use Sonata\AdminBundle\Admin\Admin as SonataAdmin;
+use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Food\AppBundle\Filter\PlaceFilter;
 
 
-class OrderAdmin extends SonataAdmin
+class OrderAdmin extends FoodAdmin
 {
     public function __construct($code, $class, $baseControllerName)
     {
@@ -99,6 +100,11 @@ class OrderAdmin extends SonataAdmin
             ->add('sfNumber', null, array('label' => 'admin.order.sf_line'))
             ->add('orderFromNav', null, array('label' => 'admin.order.order_from_nav'))
         ;
+
+        // Remove Fields For Restaurant User (Moderator)
+        if ($this->isModerator()) {
+            $datagridMapper->remove('place_name');
+        }
     }
 
 
@@ -176,6 +182,25 @@ class OrderAdmin extends SonataAdmin
                 'label' => 'admin.actions'
             ))
         ;
+
+        $this->setPlaceFilter(new PlaceFilter($this->getSecurityContext()))
+            ->setPlaceFilterEnabled(true);
+    }
+
+    /**
+     * If user is a moderator - set place, as he can not choose it. Chuck Norris protection is active
+     */
+    public function prePersist($object)
+    {
+        if ($this->isModerator()) {
+            /**
+             * @var Place $place
+             */
+            $place = $this->modelManager->find('Food\DishesBundle\Entity\Place', $this->getUser()->getPlace()->getId());
+
+            $object->setPlace($place);
+        }
+        parent::prePersist($object);
     }
 
     /**
@@ -215,6 +240,12 @@ class OrderAdmin extends SonataAdmin
             ->add('sfLine', 'string', array('label' => 'admin.order.sf_line'))
             ->add('comment', 'string', array('label' => 'admin.order.comment'))
             ->add('place_comment', 'string', array('label' => 'admin.order.place_comment'))
+            ->add('order_delivery_log', 'sonata_type_collection',
+                array(
+                    'label' => 'admin.order.order_delivery_log',
+                    'template' => 'FoodOrderBundle:Admin:order_delivery_log.html.twig'
+                )
+            )
             ->add('order_status', 'sonata_type_collection',
                 array(
                     'label' => 'admin.order.order_status',
@@ -244,6 +275,17 @@ class OrderAdmin extends SonataAdmin
             ->add('navDeliveryOrder', null, array('label' => 'admin.order.nav_delivery_order'))
             ->add('clientContacted', null, array('label' => 'admin.order.client_contacted'))
         ;
+
+        // Remove Fields For Restaurant User (Moderator)
+        if ($this->isModerator()) {
+            $showMapper->remove('user.contact');
+            $showMapper->remove('address_id');
+            $showMapper->remove('company');
+            $showMapper->remove('comment');
+            $showMapper->remove('orderLog');
+            $showMapper->remove('driverContact');
+            $showMapper->remove('orderHash');
+        }
     }
 
     /**
@@ -258,5 +300,4 @@ class OrderAdmin extends SonataAdmin
             ->add('sendInvoice', $this->getRouterIdParameter().'/sendInvoice')
             ->add('downloadInvoice', $this->getRouterIdParameter().'/downloadInvoice');
     }
-
 }

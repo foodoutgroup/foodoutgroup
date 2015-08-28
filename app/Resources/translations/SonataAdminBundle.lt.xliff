@@ -892,6 +892,10 @@
                 <source>admin.order.order_status</source>
                 <target>Užsakymo būklė</target>
             </trans-unit>
+            <trans-unit id="admin.order.order_delivery_log">
+                <source>admin.order.order_delivery_log</source>
+                <target>Pristatymo laikai</target>
+            </trans-unit>
             <trans-unit id="admin.order.payment_method">
                 <source>admin.order.payment_method</source>
                 <target>Mokėjimo būdas</target>
@@ -1124,6 +1128,14 @@
                 <source>admin.order.status.source.repostToNavOnMissingInNav</source>
                 <target>Čili Navision repost order on fatal error</target>
             </trans-unit>
+            <trans-unit id="admin.order.delivery_log.event">
+                <source>admin.order.delivery_log.event</source>
+                <target>Įvykis</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.time_elapsed">
+                <source>admin.order.delivery_log.time_elapsed</source>
+                <target>Praėjus</target>
+            </trans-unit>
             <trans-unit id="admin.order.ismobile">
                 <source>admin.order.ismobile</source>
                 <target>Mob</target>
@@ -1340,6 +1352,10 @@
                 <source>admin.dispatcher.late_time</source>
                 <target>Vėluoja</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.picked_up">
+                <source>admin.dispatcher.picked_up</source>
+                <target>Paimtas</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.client_contacted">
                 <source>admin.dispatcher.client_contacted</source>
                 <target>Susisiekta su klientu</target>
@@ -1347,6 +1363,18 @@
             <trans-unit id="admin.dispatcher.problem_solved">
                 <source>admin.dispatcher.problem_solved</source>
                 <target>Išspręsta</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.problem_type">
+                <source>admin.dispatcher.problem_type</source>
+                <target>Problem. tipas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payment_wait_problem">
+                <source>admin.dispatcher.payment_wait_problem</source>
+                <target>Laukiama mokėjimo</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.nav_problems_type">
+                <source>admin.dispatcher.nav_problems_type</source>
+                <target>NAV problema</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.unconfirmed_pickup">
                 <source>admin.dispatcher.unconfirmed_pickup</source>
@@ -1707,6 +1735,14 @@
                 <source>admin.reports.place</source>
                 <target>Restoranas</target>
             </trans-unit>
+            <trans-unit id="admin.restaurant">
+                <source>admin.restaurant</source>
+                <target>Restoranas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.restaurant_orders_report">
+                <source>admin.report.restaurant_orders_report</source>
+                <target>Užsakymų ataskaita restoranui</target>
+            </trans-unit>
             <trans-unit id="admin.reports.self_delivery">
                 <source>admin.reports.self_delivery</source>
                 <target>Sava logistika</target>
@@ -1786,6 +1822,102 @@
             <trans-unit id="admin.best_offers.place">
                 <source>admin.best_offers.place</source>
                 <target>Restoranas</target>
+            </trans-unit>
+
+            <!-- Places Reports -->
+            <trans-unit id="admin.reports.orderid">
+                <source>admin.reports.orderid</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.order_date">
+                <source>admin.reports.order_date</source>
+                <target>Data laikas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.total">
+                <source>admin.reports.total</source>
+                <target>Suma</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.place_point_address">
+                <source>admin.reports.place_point_address</source>
+                <target>Adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.order_status">
+                <source>admin.reports.order_status</source>
+                <target>Užsakymo būsena</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.payment_status">
+                <source>admin.reports.payment_status</source>
+                <target>Mokėjimo būsena</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.delivery_type">
+                <source>admin.reports.delivery_type</source>
+                <target>Pristatymo būdas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.accept_time">
+                <source>admin.reports.accept_time</source>
+                <target>Restorano priėmimo laikas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.delivery_pickup_time">
+                <source>admin.reports.delivery_pickup_time</source>
+                <target>Pristatymo paėmimo laikas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.delivery_time">
+                <source>admin.reports.delivery_time</source>
+                <target>Pristatymo laikas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.order_basket">
+                <source>admin.reports.order_basket</source>
+                <target>Krepšelis</target>
+            </trans-unit>
+
+            <!-- Latency report -->
+            <trans-unit id="admin.report.latency_report">
+                <source>admin.report.latency_report</source>
+                <target>Trukmės ataskaita</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.day">
+                <source>admin.reports.day</source>
+                <target>Diena</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.accepted_in">
+                <source>admin.reports.latency.accepted_in</source>
+                <target>Priimta per (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.finished_in">
+                <source>admin.reports.latency.finished_in</source>
+                <target>Pagaminta per (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.assigned_in">
+                <source>admin.reports.latency.assigned_in</source>
+                <target>Paskirta per (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.pickedup_in">
+                <source>admin.reports.latency.pickedup_in</source>
+                <target>Paimta per per (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.completed_in">
+                <source>admin.reports.latency.completed_in</source>
+                <target>Pristatyta per (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.total_order_time">
+                <source>admin.reports.latency.total_order_time</source>
+                <target>Vidutinė užsakymo trukmė (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.orders_in_question">
+                <source>admin.reports.latency.orders_in_question</source>
+                <target>Užsakymų laikotarpyje</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.group_by_day">
+                <source>admin.reports.group_by_day</source>
+                <target>Grupuoti pagal dieną</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.slow_five_title">
+                <source>admin.reports.latency.slow_five_title</source>
+                <target>TOP 5 lėčiausi</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.slow_five">
+                <source>admin.reports.latency.slow_five</source>
+                <target>TOP5</target>
             </trans-unit>
 
             <!-- Params listas -->

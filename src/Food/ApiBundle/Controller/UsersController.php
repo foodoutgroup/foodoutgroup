@@ -89,21 +89,53 @@ class UsersController extends Controller
             $email = $this->getRequestParam('email');
             $password = $this->getRequestParam('password');
             $birthday = $this->getRequestParam('birthday');
+            $facebook_id = $this->getRequestParam('facebook_id');
 
             $nameParsed = $this->parseName($name);
 
-            $this->validateUserRegister(
-                array(
-                    'firstname' => $nameParsed['firstname'],
-                    'email' => $email,
-                    'phone' => $phone,
-                    'password' => $password,
-                    'birthday' => $birthday,
-                )
-            );
+            if (!empty($facebook_id)) {
+                $email = $facebook_id . "@foodout.lt";
+                $password = $facebook_id;
+                $this->validateUserRegister(
+                    array(
+                        'firstname' => $nameParsed['firstname'],
+                        'email' => $email,
+                        'facebook_id' => $facebook_id,
+                    )
+                );
+            } else {
+                $this->validateUserRegister(
+                    array(
+                        'firstname' => $nameParsed['firstname'],
+                        'email' => $email,
+                        'phone' => $phone,
+                        'password' => $password,
+                        'birthday' => $birthday,
+                    )
+                );
+            }
 
             // User exists???
-            $existingUser = $um->findUserByEmail($email);
+            if (!empty($facebook_id)) {
+                $existingUser = $um->findUserBy(array('facebook_id' => $facebook_id));
+            } else {
+                $existingUser = $um->findUserByEmail($email);
+            }
+
+            // Check only for FB users xz about not FB users, ask Egle why "Temporary" check is disabled
+            if ($existingUser && $existingUser->getFullyRegistered() && !empty($facebook_id)) {
+                throw new ApiException(
+                    'User '.$email.' exists',
+                    409,
+                    array(
+                        'error' => 'User exists',
+                        'email' => $email,
+                        'firstname' => $nameParsed['firstname'],
+                        'description' => $translator->trans('registration.user.exists'),
+                    )
+                );
+            }
+
             // Temporary by Egle request allowing anonymous registers and orders
             /*if ($existingUser && $existingUser->getFullyRegistered()) {
                 throw new ApiException(
@@ -128,6 +160,10 @@ class UsersController extends Controller
 
             if (!empty($nameParsed['lastname'])) {
                 $user->setLastname($nameParsed['lastname']);
+            }
+
+            if (!empty($facebook_id)) {
+                $user->setFacebookId($facebook_id);
             }
 
             if (!$existingUser || $existingUser && !$existingUser->getFullyRegistered()) {
@@ -363,13 +399,18 @@ class UsersController extends Controller
         try {
             $this->parseRequestBody($request);
             // TODO after testing - remove!
+            // TODO After Seeing This Disgusting Stuff I'll Never Eat Fast Food Again
             $this->logActionParams('Login action', $this->requestParams);
             $username = $this->getRequestParam('email');
             $password = $this->getRequestParam('password', 'new-user');
             $phone = $this->getRequestParam('phone');
+            $facebook_id = $this->getRequestParam('facebook_id');
 
             $um = $this->getUserManager();
             $user = $um->findUserByUsername($username);
+            if(!$user){
+                $user = $um->findUserBy(array('facebook_id' => $facebook_id));
+            }
             if(!$user){
                 $user = $um->findUserByEmail($username);
             }
@@ -380,8 +421,13 @@ class UsersController extends Controller
             if(!$user instanceof User){
                 throw new ApiException("User not found", 400, array('error' => 'User not found', 'description' => null));
             }
-            if(!$this->checkUserPassword($user, $password)){
-                throw new ApiException("Wrong password", 400, array('error' => 'Wrong password', 'description' => null));
+
+            if (!empty($facebook_id) && $user->getFacebookId() !== $facebook_id) {
+                throw new ApiException("Wrong FacebookID", 400, array('error' => 'User not found, please fill the registration form', 'description' => null));
+            } elseif (empty($facebook_id)) {
+                if(!$this->checkUserPassword($user, $password)){
+                    throw new ApiException("Wrong password", 400, array('error' => 'Wrong password', 'description' => null));
+                }
             }
 
             // Check if session is started. Start if not started
@@ -537,11 +583,13 @@ class UsersController extends Controller
             );
         }
 
-        if (empty($data['phone'])) {
-            $error = array(
-                'error' => 'Phone empty',
-                'description' => $translator->trans('registration.phone.is_empty')
-            );
+        if (empty($data['facebook_id'])) {
+            if (empty($data['phone'])) {
+                $error = array(
+                    'error' => 'Phone empty',
+                    'description' => $translator->trans('registration.phone.is_empty')
+                );
+            }
         }
 
         if (!empty($error)) {

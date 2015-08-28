@@ -460,6 +460,7 @@ class DefaultController extends Controller
         $cartMinimum = $place->getCartMinimum();
         $cartFromMin = $this->get('food.places')->getMinCartPrice($place->getId());
         $cartFromMax = $this->get('food.places')->getMaxCartPrice($place->getId());
+        $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
         $displayCartInterval = true;
         $deliveryTotal = 0;
 
@@ -557,6 +558,7 @@ class DefaultController extends Controller
             'cart_from_max' => $cartFromMax,
             'display_cart_interval' => $displayCartInterval,
             'takeAway' => $takeAway,
+            'isTodayNoOneWantsToWork' => $isTodayNoOneWantsToWork,
         );
         if ($renderView) {
             return $this->renderView('FoodCartBundle:Default:side_block.html.twig', $params);

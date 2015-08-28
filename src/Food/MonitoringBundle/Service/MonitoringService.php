@@ -97,7 +97,7 @@ class MonitoringService extends ContainerAware {
                 [
                     'order_status' => OrderService::$status_new,
                     'payment_status' => OrderService::$paymentStatusComplete,
-                    'date' => new \DateTime("-22 minute"),
+                    'date' => new \DateTime("-8 minute"),
                     'oldest_date' => new \DateTime("-1 day")
                 ]
             )
@@ -163,7 +163,7 @@ class MonitoringService extends ContainerAware {
                         OrderService::$status_forwarded,
                     ),
                     'payment_status' => OrderService::$paymentStatusComplete,
-                    'date' => new \DateTime("+25 minute"),
+                    'date' => new \DateTime("+27 minute"),
                     'oldest_date' => new \DateTime("-1 day"),
                     'delivery_type' => OrderService::$deliveryPickup,
                 ]

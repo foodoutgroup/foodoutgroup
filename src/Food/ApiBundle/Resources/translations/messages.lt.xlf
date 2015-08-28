@@ -12,7 +12,15 @@
         <body>
             <trans-unit id="api.orders.coupon_does_not_exists" resname="api.orders.coupon_does_not_exists">
                 <source>api.orders.coupon_does_not_exists</source>
-                <target>Atsiprašome, kodas negalioja, arba yra panaudotas</target>
+                <target>Atsiprašome, kodas negalioja</target>
+            </trans-unit>
+        </body>
+    </file>
+    <file source-language="lt" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="api.orders.coupon_empty" resname="api.orders.coupon_empty">
+                <source>api.orders.coupon_empty</source>
+                <target>Nenurodytas nuolaidos kodas</target>
             </trans-unit>
         </body>
     </file>

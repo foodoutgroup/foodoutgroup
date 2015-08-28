@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="lv" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="api.orders.basket_does_not_exists" resname="api.orders.basket_does_not_exists">
+                <source>api.orders.basket_does_not_exists</source>
+                <target>Cart does not exists</target>
+            </trans-unit>
+        </body>
+    </file>
+    <file source-language="lv" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="api.orders.coupon_does_not_exists" resname="api.orders.coupon_does_not_exists">
+                <source>api.orders.coupon_does_not_exists</source>
+                <target>Sorry, code is not valid</target>
+            </trans-unit>
+        </body>
+    </file>
+    <file source-language="lv" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="api.orders.coupon_empty" resname="api.orders.coupon_empty">
+                <source>api.orders.coupon_empty</source>
+                <target>There is no such code</target>
+            </trans-unit>
+        </body>
+    </file>
+    <file source-language="lv" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="api.orders.user_not_authorized" resname="api.orders.user_not_authorized">
+                <source>api.orders.user_not_authorized</source>
+                <target>User Not Authorized</target>
+            </trans-unit>
+        </body>
+    </file>
+    <file source-language="lv" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="api.orders.order_to_small" resname="api.orders.order_to_small">
+                <source>api.orders.order_to_small</source>
+                <target>Order To Small</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

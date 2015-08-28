@@ -11,6 +11,7 @@ use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Coupon;
 use Food\OrderBundle\Entity\Order;
+use Food\OrderBundle\Entity\OrderDeliveryLog;
 use Food\OrderBundle\Entity\OrderDetails;
 use Food\OrderBundle\Entity\OrderDetailsOptions;
 use Food\OrderBundle\Entity\OrderExtra;
@@ -415,6 +416,8 @@ class OrderService extends ContainerAware
             $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
         }
 
+        $this->logDeliveryEvent($this->getOrder(), 'order_accepted');
+
         return $this;
     }
 
@@ -537,17 +540,70 @@ class OrderService extends ContainerAware
     public function statusAssigned($source = null, $statusMessage = null)
     {
         // Inform poor user, that his order was accepted
-        $driver = $this->getOrder()->getDriver();
+        $order = $this->getOrder();
+        $driver = $order->getDriver();
         if ($driver->getType() == 'local') {
             $messagingService = $this->container->get('food.messages');
             $logger = $this->container->get('logger');
 
             // Inform driver about new order that was assigned to him
             $orderConfirmRoute = $this->container->get('router')
-                ->generate('drivermobile', array('hash' => $this->getOrder()->getOrderHash()), true);
+                ->generate('drivermobile', array('hash' => $order->getOrderHash()), true);
 
-            $messageText = $this->container->get('translator')->trans('general.sms.driver_assigned_order')
-                . $orderConfirmRoute;
+            $restaurant_title = $order->getPlace()->getName();
+            $internal_code = $order->getPlacePoint()->getInternalCode();
+            if (!empty($internal_code)) {
+                $restaurant_title = $restaurant_title . " - " . $internal_code;
+            }
+
+            $restaurant_address = $order->getAddressId()->getAddress() . " " . $order->getAddressId()->getCity();
+            $curr_locale = $this->container->getParameter('locale');
+            $languageUtil = $this->container->get('food.app.utils.language');
+
+            $messageText = $languageUtil->removeChars(
+                $curr_locale,
+                $this->container->get('translator')->trans(
+                    'general.sms.driver_assigned_order',
+                    array(
+                        'restaurant_title' => $restaurant_title,
+                        'restaurant_address' => $restaurant_address,
+                        'deliver_time' => $order->getDeliveryTime()->format("H:i")
+                    )
+                ) . $orderConfirmRoute,
+                false
+            );
+
+            $max_len = 160;
+            $all_message_len = mb_strlen($messageText, 'UTF-8');
+            if ($all_message_len > $max_len) {
+                $restaurant_title_len = mb_strlen($restaurant_title, 'UTF-8');
+                $restaurant_address_len = mb_strlen($restaurant_address, 'UTF-8');
+                $too_long_len = ($all_message_len - $max_len);
+
+                if ($restaurant_title_len > 30 && $restaurant_address_len > 30) {
+                    $restaurant_title = mb_strimwidth($restaurant_title, 0, ($restaurant_title_len - $too_long_len / 2), '');
+                    $restaurant_address = mb_strimwidth($restaurant_address, 0, ($restaurant_address_len - $too_long_len / 2), '');
+                } else {
+                    if ($restaurant_title_len > $too_long_len) {
+                        $restaurant_title = mb_strimwidth($restaurant_title, 0, ($restaurant_title_len - $too_long_len), '');
+                    } elseif($restaurant_address_len > $too_long_len) {
+                        $restaurant_address = mb_strimwidth($restaurant_address, 0, ($restaurant_address_len - $too_long_len), '');
+                    }
+                }
+
+                $messageText = $languageUtil->removeChars(
+                    $curr_locale,
+                    $this->container->get('translator')->trans(
+                        'general.sms.driver_assigned_order',
+                        array(
+                            'restaurant_title' => $restaurant_title,
+                            'restaurant_address' => $restaurant_address,
+                            'deliver_time' => $order->getOrderDate()->format("H:i")
+                        )
+                    ) . $orderConfirmRoute,
+                    false
+                );
+            }
 
             $logger->alert("Sending message for driver about assigned order to number: " . $driver->getPhone() . ' with text "' . $messageText . '"');
 
@@ -555,10 +611,12 @@ class OrderService extends ContainerAware
                 $this->container->getParameter('sms.sender'),
                 $driver->getPhone(),
                 $messageText,
-                $this->getOrder()
+                $order
             );
             $messagingService->saveMessage($message);
         }
+
+        $this->logDeliveryEvent($this->getOrder(), 'order_assigned');
 
         $this->chageOrderStatus(self::$status_assiged, $source, $statusMessage);
 
@@ -586,6 +644,7 @@ class OrderService extends ContainerAware
     public function statusCompleted($source = null, $statusMessage = null)
     {
         $order = $this->getOrder();
+        $this->logDeliveryEvent($this->getOrder(), 'order_completed');
         $this->chageOrderStatus(self::$status_completed, $source, $statusMessage);
 
         $this->createDiscountCode($order);
@@ -766,6 +825,7 @@ class OrderService extends ContainerAware
     public function statusFinished($source=null, $statusMessage=null)
     {
         $this->chageOrderStatus(self::$status_finished, $source, $statusMessage);
+        $this->logDeliveryEvent($this->getOrder(), 'order_finished');
         return $this;
     }
 
@@ -785,6 +845,8 @@ class OrderService extends ContainerAware
             $this->informPaidOrderCanceled();
         }
 
+        $this->logDeliveryEvent($this->getOrder(), 'order_canceled');
+
         $this->chageOrderStatus(self::$status_canceled, $source, $statusMessage);
         return $this;
     }
@@ -798,6 +860,8 @@ class OrderService extends ContainerAware
     public function statusDelayed($source=null, $statusMessage=null)
     {
         $this->chageOrderStatus(self::$status_delayed, $source, $statusMessage);
+
+        $this->logDeliveryEvent($this->getOrder(), 'order_delayed');
 
         // Inform logistics
         $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
@@ -2247,6 +2311,116 @@ class OrderService extends ContainerAware
 
         $this->getEm()->persist($log);
         $this->getEm()->flush();
+    }
+
+    /**
+     * @param Order $order
+     * @param string $event
+     */
+    public function logDeliveryEvent($order=null, $event)
+    {
+        try {
+            $sinceLast = 0;
+            // TODO paskutinio evento laika paimam ir paskaiciuojam diffa sekundziu tikslumu - uzsakaugom prie logo legvesnei matkei
+            switch ($event) {
+                case 'order_accepted':
+                    $sinceLast = date("U") - $order->getOrderDate()->getTimestamp();
+                    break;
+
+                case 'order_delayed':
+                case 'order_finished':
+                    $logData = $this->getDeliveryLogActionEntry($order, 'order_accepted');
+
+                    if ($logData instanceof OrderDeliveryLog) {
+                        $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    } else {
+                        $sinceLast = $order->getOrderDate()->getTimestamp();
+                    }
+                    break;
+
+
+                case 'order_assigned':
+                    $logData = $this->getDeliveryLogActionEntry($order, 'order_finished');
+
+                    if (!$logData || !$logData instanceof OrderDeliveryLog) {
+                        $logData = $this->getDeliveryLogActionEntry($order, 'order_accepted');
+                    }
+
+                    if ($logData instanceof OrderDeliveryLog) {
+                        $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    } else {
+                        $sinceLast = $order->getOrderDate()->getTimestamp();
+                    }
+                    break;
+
+                case 'order_pickedup':
+                    $logData = $this->getDeliveryLogActionEntry($order, 'order_assigned');
+
+                    if ($logData instanceof OrderDeliveryLog) {
+                        $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    } else {
+                        $sinceLast = $order->getOrderDate()->getTimestamp();
+                    }
+                    break;
+
+                case 'order_completed':
+                    $logData = $this->getDeliveryLogActionEntry($order, 'order_assigned');
+
+                    if (!$logData || !$logData instanceof OrderDeliveryLog) {
+                        $logData = $this->getDeliveryLogActionEntry($order, 'order_accepted');
+                    }
+
+                    if ($logData instanceof OrderDeliveryLog) {
+                        $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    } else {
+                        $sinceLast = $order->getOrderDate()->getTimestamp();
+                    }
+                    break;
+
+                case 'order_canceled':
+                    $logData = $this->getDeliveryLogActionEntry($order, 'order_accepted');
+
+                    if ($logData instanceof OrderDeliveryLog) {
+                        $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    } else {
+                        $sinceLast = $order->getOrderDate()->getTimestamp();
+                    }
+                    break;
+            }
+
+            $log = new OrderDeliveryLog();
+            $log->setOrder($order)
+                ->setEventDate(new \DateTime('now'))
+                ->setEvent($event)
+                ->setSinceLast($sinceLast);
+
+            $this->getEm()->persist($log);
+            $this->getEm()->flush();
+        } catch (\Exception $e) {
+            $this->container->get('logger')->error('Error happened: '.$e->getMessage());
+        }
+    }
+
+    /**
+     * @param Order $order
+     * @param string $event
+     * @return OrderDeliveryLog
+     */
+    public function getDeliveryLogActionEntry($order, $event)
+    {
+        if (!$order instanceof Order) {
+            throw new \InvalidArgumentException('Not an order given. Can not retriev delivery data');
+        }
+        if (empty($event)) {
+            throw new \InvalidArgumentException('No event given - can not retrieve delivery data');
+        }
+
+        $repo = $this->container->get('doctrine')->getRepository('FoodOrderBundle:OrderDeliveryLog');
+
+        return $repo->findOneBy(array(
+            'order' => $order,
+            'event' => $event
+        ));
     }
 
     /**

@@ -26,6 +26,10 @@
             <source>index.get_best_offers2</source>
             <target>Jos pažada atnešti skaniausias žinias ir specialius pasiūlymus.</target>
         </trans-unit>
+        <trans-unit id="index.get_this_offer" resname="index.get_this_offer">
+            <source>index.get_this_offer</source>
+            <target>Gauk šį pasiūlymą!</target>
+        </trans-unit>
       <trans-unit id="be95147756721360c95dba571491c885" resname="index.city">
         <source>index.city</source>
         <target>Pasirinkite miestą</target>
@@ -234,6 +238,10 @@
         <source>mobile.order_delivered</source>
         <target>Pristačiau užsakymą</target>
       </trans-unit>
+      <trans-unit id="mobile.order_picked_up" resname="mobile.order_picked_up">
+        <source>mobile.order_picked_up</source>
+        <target>Paėmiau užsakymą</target>
+      </trans-unit>
       <trans-unit id="mobile.order_partialy_delivered" resname="mobile.order_partialy_delivered">
         <source>mobile.order_partialy_delivered</source>
         <target>Pristačiau dalį užsakymo (klientas dalies nepriėmė)</target>
@@ -376,7 +384,7 @@
       </trans-unit>
       <trans-unit id="3d6f52993727876649fad3f9e2d5c687" resname="general.sms.driver_assigned_order">
         <source>general.sms.driver_assigned_order</source>
-        <target>Priskirtas naujas uzsakymas: </target>
+        <target>Naujas uzsakymas is: restaurant_title i restaurant_address, iki deliver_time </target>
       </trans-unit>
       <trans-unit id="28ecbd185a859ae613493c195207e5e0" resname="general.sms.user_order_delayed">
         <source>general.sms.user_order_delayed</source>
@@ -505,6 +513,10 @@
       <trans-unit id="e0e188c6f3a31f7c0c241e260d7c442b" resname="mobile.customer_phone">
         <source>mobile.customer_phone</source>
         <target>Užsakovo tel.</target>
+      </trans-unit>
+      <trans-unit id="mobile.dispatcher_contact_phone" resname="mobile.dispatcher_contact_phone">
+        <source>mobile.dispatcher_contact_phone</source>
+        <target>Dispečerių tel.</target>
       </trans-unit>
       <trans-unit id="6b992ec872e88f6be09ab06f8cceb76e" resname="mobile.order_time">
         <source>mobile.order_time</source>
@@ -1243,7 +1255,7 @@
     </trans-unit>
     <trans-unit id="general.top_contact.worktime_days" resname="general.top_contact.worktime_days">
         <source>general.top_contact.worktime_days</source>
-        <target><![CDATA[VII - IV<br />V - I]]></target>
+        <target><![CDATA[VII - IV<br />V - VI]]></target>
     </trans-unit>
     <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
         <source>general.top_contact.worktime</source>

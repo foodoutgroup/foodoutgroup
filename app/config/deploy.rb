@@ -36,14 +36,14 @@ ssh_options[:forward_agent] = true
 ssh_options[:port] = 22
 default_run_options[:pty] = true
 
-set :shared_files,      ["app/config/parameters.yml"]
+set :shared_files,      ["app/config/parameters.yml", "app/config/kpi.yml"]
 set :shared_children,     ["bin", app_path + "/logs", web_path + "/uploads", web_path + "/images", "web/images", app_path + "/var"]
 set :writable_dirs,     ["bin", app_path + "/cache", app_path + "/logs", web_path + "/images", app_path + "/cache/dev", app_path + "/cache/prod", web_path + "/images/cache"]
 set :composer_options, "--verbose"
 # Testing purpose
 # set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader --no-progress"
 
-set :keep_releases, 20
+set :keep_releases, 8
 
 namespace :deploy do
     desc "chmod things"
@@ -67,6 +67,7 @@ logger.level = 0
 # copy parameters.yml to specific env
 set :parameters_dir, "app/config/parameters"
 set :parameters_file, false
+set :kpi_file, false
 
 task :upload_parameters do
   origin_file = parameters_dir + "/" + parameters_file if parameters_dir && parameters_file
@@ -74,6 +75,9 @@ task :upload_parameters do
     #ext = File.extname(parameters_file)
     ext = '.yml'
     relative_path = "app/config/parameters" + ext
+    print "  *** relative path: "
+    print relative_path
+    print "\n"
 
     if shared_files && shared_files.include?(relative_path)
       destination_file = shared_path + "/" + relative_path
@@ -86,4 +90,25 @@ task :upload_parameters do
   end
 end
 
-after 'deploy:setup', 'upload_parameters'
+task :upload_kpi do
+    origin_file_kpi = parameters_dir + "/" + kpi_file if parameters_dir && kpi_file
+    if origin_file_kpi && File.exists?(origin_file_kpi)
+      #ext = File.extname(kpi_file)
+      ext = '.yml'
+      relative_path = "app/config/kpi" + ext
+      print "  *** relative path: "
+      print relative_path
+      print "\n"
+
+      if shared_files && shared_files.include?(relative_path)
+        destination_file_kpi = shared_path + "/" + relative_path
+      else
+        destination_file_kpi = latest_release + "/" + relative_path
+      end
+      try_sudo "mkdir -p #{File.dirname(destination_file_kpi)}"
+
+      top.upload(origin_file_kpi, destination_file_kpi)
+    end
+end
+
+after 'deploy:setup', 'upload_parameters', 'upload_kpi'

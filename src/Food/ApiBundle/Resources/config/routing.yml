@@ -117,6 +117,11 @@ food_api_order_status2:
     defaults: { _controller: FoodApiBundle:Orders:getOrderStatus}
     methods: [GET]
 
+food_api_coupons:
+    pattern: /coupons
+    defaults: { _controller: FoodApiBundle:Orders:getCoupon}
+    methods: [POST]
+
 food_api_find_address:
     pattern: /address
     defaults: { _controller: FoodApiBundle:Address:findAddress}

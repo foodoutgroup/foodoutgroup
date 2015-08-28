@@ -22,6 +22,7 @@ class GameController extends Controller
         );
 
         $participant = new MarketingUser();
+        $participant->setEntryKey($request->get('key'));
         $participant->setCreatedAt(new \DateTime("now"));
 
         $form = $this->createFormBuilder($participant)

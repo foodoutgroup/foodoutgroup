@@ -901,6 +901,10 @@
                 <source>admin.order.order_status</source>
                 <target>Order status</target>
             </trans-unit>
+            <trans-unit id="admin.order.order_delivery_log">
+                <source>admin.order.order_delivery_log</source>
+                <target>Delivery times</target>
+            </trans-unit>
             <trans-unit id="admin.order.payment_method">
                 <source>admin.order.payment_method</source>
                 <target>Payment type</target>
@@ -1125,6 +1129,14 @@
                 <source>admin.order.status.source.cili_nav_update_price</source>
                 <target>Cili Navision update prices</target>
             </trans-unit>
+            <trans-unit id="admin.order.delivery_log.event">
+                <source>admin.order.delivery_log.event</source>
+                <target>Event</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.time_elapsed">
+                <source>admin.order.delivery_log.time_elapsed</source>
+                <target>Elapsed</target>
+            </trans-unit>
             <trans-unit id="admin.order.ismobile">
                 <source>admin.order.ismobile</source>
                 <target>Mob</target>
@@ -1333,6 +1345,10 @@
                 <source>admin.dispatcher.late_time</source>
                 <target>Late</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.picked_up">
+                <source>admin.dispatcher.picked_up</source>
+                <target>Picked</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.client_contacted">
                 <source>admin.dispatcher.client_contacted</source>
                 <target>Client contacted</target>
@@ -1340,6 +1356,18 @@
             <trans-unit id="admin.dispatcher.problem_solved">
                 <source>admin.dispatcher.problem_solved</source>
                 <target>Solved</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.problem_type">
+                <source>admin.dispatcher.problem_type</source>
+                <target>Problem type</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.payment_wait_problem">
+                <source>admin.dispatcher.payment_wait_problem</source>
+                <target>Payment wait</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.nav_problems_type">
+                <source>admin.dispatcher.nav_problems_type</source>
+                <target>NAV problem</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.unconfirmed_pickup">
                 <source>admin.dispatcher.unconfirmed_pickup</source>
@@ -1700,6 +1728,14 @@
                 <source>admin.reports.place</source>
                 <target>Restaurant</target>
             </trans-unit>
+            <trans-unit id="admin.restaurant">
+                <source>admin.restaurant</source>
+                <target>Restaurant</target>
+            </trans-unit>
+            <trans-unit id="admin.report.restaurant_orders_report">
+                <source>admin.report.restaurant_orders_report</source>
+                <target>Orders Report For Restaurant</target>
+            </trans-unit>
             <trans-unit id="admin.reports.self_delivery">
                 <source>admin.reports.self_delivery</source>
                 <target>Own logistics</target>
@@ -1739,6 +1775,102 @@
             <trans-unit id="admin.reports.date_range">
                 <source>admin.reports.date_range</source>
                 <target>Period (from - till)</target>
+            </trans-unit>
+
+            <!-- Places Reports -->
+            <trans-unit id="admin.reports.orderid">
+                <source>admin.reports.orderid</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.order_date">
+                <source>admin.reports.order_date</source>
+                <target>Order Date <![CDATA[&]]> time</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.total">
+                <source>admin.reports.total</source>
+                <target>Order Amount</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.place_point_address">
+                <source>admin.reports.place_point_address</source>
+                <target>Restaurant location address</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.order_status">
+                <source>admin.reports.order_status</source>
+                <target>Order Status</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.payment_status">
+                <source>admin.reports.payment_status</source>
+                <target>Payment Status</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.delivery_type">
+                <source>admin.reports.delivery_type</source>
+                <target>Delivery Type</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.accept_time">
+                <source>admin.reports.accept_time</source>
+                <target>Restaurant Acceptance Time</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.delivery_pickup_time">
+                <source>admin.reports.delivery_pickup_time</source>
+                <target>Delivery Pickup Time</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.delivery_time">
+                <source>admin.reports.delivery_time</source>
+                <target>Delivery Time</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.order_basket">
+                <source>admin.reports.order_basket</source>
+                <target>Order Basket (txt)</target>
+            </trans-unit>
+
+            <!-- Latency report -->
+            <trans-unit id="admin.report.latency_report">
+                <source>admin.report.latency_report</source>
+                <target>Latency report</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.day">
+                <source>admin.reports.day</source>
+                <target>Day</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.accepted_in">
+                <source>admin.reports.latency.accepted_in</source>
+                <target>Accepted in (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.finished_in">
+                <source>admin.reports.latency.finished_in</source>
+                <target>Finished in (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.assigned_in">
+                <source>admin.reports.latency.assigned_in</source>
+                <target>Assigned in (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.pickedup_in">
+                <source>admin.reports.latency.pickedup_in</source>
+                <target>Piceked-up in (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.completed_in">
+                <source>admin.reports.latency.completed_in</source>
+                <target>Deliverd in (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.total_order_time">
+                <source>admin.reports.latency.total_order_time</source>
+                <target>Average order duration (min)</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.orders_in_question">
+                <source>admin.reports.latency.orders_in_question</source>
+                <target>Orders in period</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.group_by_day">
+                <source>admin.reports.group_by_day</source>
+                <target>Group by day</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.slow_five_title">
+                <source>admin.reports.latency.slow_five_title</source>
+                <target>TOP 5 slowest</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.latency.slow_five">
+                <source>admin.reports.latency.slow_five</source>
+                <target>Slowest</target>
             </trans-unit>
 
             <trans-unit id="sonata_administration">

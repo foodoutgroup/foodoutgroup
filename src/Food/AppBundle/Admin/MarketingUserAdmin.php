@@ -24,6 +24,7 @@ class MarketingUserAdmin extends FoodAdmin
             ->add('phone', 'text', array('label' => 'Phone'))
             ->add('email', 'text', array('label' => 'Email'))
             ->add('birthDate', null, array('label' => 'B-day'))
+            ->add('entryKey', 'text', array('label' => 'Entry Key', 'required' => false))
         ;
     }
 
@@ -37,7 +38,8 @@ class MarketingUserAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('city', null, array('label' => 'City'));
+            ->add('city', null, array('label' => 'City'))
+            ->add('entryKey', null, array('label' => 'Entry Key'));
         ;
     }
 
@@ -57,7 +59,8 @@ class MarketingUserAdmin extends FoodAdmin
             ->add('city', 'text', array('label' => 'City'))
             ->add('phone', 'text', array('label' => 'Phone'))
             ->add('email', 'text', array('label' => 'Email'))
-            ->add('birthDate', null, array('label' => 'B-day'))
+            ->add('birthDate', 'datetime', array('format' => 'Y-m-d', 'label' => 'B-day'))
+            ->add('entryKey', 'string', array('label' => 'Entry Key'))
         ;
     }
 }

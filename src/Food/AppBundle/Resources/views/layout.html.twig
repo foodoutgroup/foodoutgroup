@@ -118,6 +118,22 @@
         })();
     </script>
     <!-- mailersoft end -->
+
+    {# TODO Pasalinti jei neveiks vis dar.. Revive Single page load multiple banners #}
+    {#{% if site_country == 'LT' %}
+        &#123;&#35; Revive Ads init for foodout.lt &#35;&#125;
+        <script type="text/javascript">
+            var OA_zones = {
+                'zone-22' : 14, 'zona-a': 8,'zone-1' : 13, 'zona-3' : 15
+            };
+//            console.log('preloadinam zonu identifikatorius');
+//            console.log(OA_zones);
+//            console.log('bandom uzsikraut revive single page loader scripta');
+        </script>
+        &#123;&#35;<script type='text/javascript' src='http://ads.foodout.lt/delivery/spcjs.php'></script>&#35;&#125;
+    {% elseif site_country == 'LV' %}
+        &#123;&#35; Revive Ads init for foodout.lv &#35;&#125;
+    {% endif %}#}
 </head>
 <body>
 {{ notifications.init|raw }}
@@ -186,10 +202,12 @@
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    ga('create', '{{ google_analytics_uid }}', 'auto');
+    ga('create', '{{ google_analytics_uid }}', 'auto', {'allowLinker': true });
     ga('require', 'displayfeatures');
+    ga('require', 'linker');
     ga('send', 'pageview');
     ga('require', 'ec');
+    ga('linker:autoLink', ['{{ publicdomain }}', '1000receptu.lt']);
 
     {% block ga_js_code %}{% endblock %}
 

@@ -1,5 +1,6 @@
 imports:
     - { resource: parameters.yml }
+    - { resource: kpi.yml }
     - { resource: security.yml }
     - { resource: "@FoodCartBundle/Resources/config/services.yml" }
     - { resource: "@FoodDishesBundle/Resources/config/admin.yml" }
@@ -70,19 +71,16 @@ parameters:
     invoice.series: FOO
     # TODO neiskeltas LT - LV konfliktas - PN, kaip sprendziam sita?
     daily_report_emails: &daily_report_emails
-      - jonas.s@foodout.lt
-#      - juozas@foodout.lt
-      - birute@foodout.lt
-#      - giedrius@foodout.lt
+      #- birute@foodout.lt
       - paulius@foodout.lt
-      - mantas@foodout.lt
-      - tomas.martunas@gmail.com
-      - s.svitojus@ltkcapital.com
-      - jonas@foodout.lt
-      - baiba@foodout.lv
-      - egle@foodout.lt
-      - alex@foodout.lt
-      - zaneta@foodout.lt
+      #- mantas@foodout.lt
+      #- tomas.martunas@gmail.com
+      #- s.svitojus@ltkcapital.com
+      #- jonas@foodout.lt
+      #- baiba@foodout.lv
+      #- egle@foodout.lt
+      #- alex@foodout.lt
+      #- zaneta@foodout.lt
     weekly_report_emails:
       <<: *daily_report_emails
 
@@ -122,7 +120,7 @@ twig:
         currency_alternative: %currency_alternative%
         show_best_offers: %show_best_offers%
         show_delfi_banner: %show_delfi_banner%
-        show_game: %show_best_offers%
+        show_game: %show_game%
         show_apps_download: %show_apps_download%
         show_is_social: %show_is_social%
         track_conversions: %track_conversions%
@@ -306,7 +304,7 @@ sonata_admin:
                       #- sonata.admin.dish.unit.category
                       - sonata.admin.coupon
                       - sonata.admin.coupon_generator
-                  roles: [ ROLE_MODERATOR, ROLE_DISPATCHER ]
+                  roles: [ ROLE_DISPATCHER ]
               acme.admin.group.formanagers:
                   label: admin.group.formanagers
                   label_catalogue: SonataAdminBundle
@@ -317,13 +315,13 @@ sonata_admin:
 #                      kolkas neveikia
 #                      - sonata.admin.place.pointfull
                       - sonata.admin.place.reviews
-                  roles: [ ROLE_MODERATOR, ROLE_DISPATCHER ]
+                  roles: [ ROLE_DISPATCHER, ROLE_MODERATOR ]
               admin.orders:
                   label: admin.group.orders
                   label_catalogue: SonataAdminBundle
                   items:
                       - sonata.admin.order
-                  roles: [ ROLE_ADMIN, ROLE_MODERATOR, ROLE_DISPATCHER ]
+                  roles: [ ROLE_ADMIN, ROLE_DISPATCHER, ROLE_MODERATOR ]
               admin.system:
                   items: ~
                   item_adds:
@@ -345,8 +343,14 @@ sonata_admin:
                   items: ~
                   item_adds:
                       - sonata.admin.restaurant_orders
+                      - sonata.admin.latency
                       - sonata.admin.marketing_user
                   roles: [ ROLE_ADMIN ]
+              admin.restaurant:
+                  items: ~
+                  item_adds:
+                      - sonata.admin.restaurant_orders_report
+                  roles: [ ROLE_ADMIN, ROLE_MODERATOR ]
               admin.dispatcher:
                   items: ~
                   item_adds:

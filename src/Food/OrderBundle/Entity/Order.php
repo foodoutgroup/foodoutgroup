@@ -4,6 +4,7 @@ namespace Food\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Food\AppBundle\Entity\Driver;
+use Food\OrderBundle\Service\OrderService;
 
 /**
  * @ORM\Table(name="orders", indexes={@ORM\Index(name="nav_delivery_order_idx", columns={"nav_delivery_order"})})
@@ -238,6 +239,12 @@ class Order
     private $orderLog;
 
     /**
+     * @var \Food\OrderBundle\Entity\OrderDeliveryLog $orderDeliveryLog
+     * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\OrderDeliveryLog", mappedBy="order")
+     **/
+    private $orderDeliveryLog;
+
+    /**
      * @var \DateTime
      * @ORM\Column(name="accept_time", type="datetime", nullable=true)
      */
@@ -393,6 +400,12 @@ class Order
      * @ORM\OneToOne(targetEntity="\Food\OrderBundle\Entity\OrderExtra", mappedBy="order", cascade={"persist"})
      **/
     private $orderExtra;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="order_picked", type="boolean", nullable=true)
+     */
+    private $order_picked = false;
 
     /**
      * @return string
@@ -1881,9 +1894,42 @@ class Order
     public function getLateMinutes()
     {
         $nowStamp = date("U");
-        $deliveryStamp = $this->getDeliveryTime()->format("U");
 
-        $diffMinutes = ceil(($nowStamp - $deliveryStamp) / 60);
+        switch($this->getOrderStatus()) {
+            case OrderService::$status_new:
+                $add = new \DateInterval('PT2M');
+                $orderStamp = $this->getOrderDate()->add($add)->format("U");
+
+                $diffMinutes = ceil(($nowStamp - $orderStamp) / 60);
+                break;
+
+            case OrderService::$status_accepted:
+                $add = new \DateInterval('PT8M');
+                $orderStamp = $this->getOrderDate()->add($add)->format("U");
+
+                $diffMinutes = ceil(($nowStamp - $orderStamp) / 60);
+                break;
+
+            case OrderService::$status_delayed:
+                $add = new \DateInterval('PT2M');
+                $orderStamp = $this->getOrderDate()->add($add)->format("U");
+
+                $diffMinutes = ceil(($nowStamp - $orderStamp) / 60);
+                break;
+
+            case OrderService::$status_assiged:
+                $deliveryStamp = $this->getDeliveryTime()->format("U");
+
+                $diffMinutes = ceil(($nowStamp - $deliveryStamp) / 60);
+                break;
+
+            case OrderService::$status_unapproved:
+                $add = new \DateInterval('PT2M');
+                $orderStamp = $this->getOrderDate()->add($add)->format("U");
+
+                $diffMinutes = ceil(($nowStamp - $orderStamp) / 60);
+                break;
+        }
 
         return $diffMinutes;
     }
@@ -2083,5 +2129,106 @@ class Order
     public function getProblemSolved()
     {
         return $this->problemSolved;
+    }
+
+    /**
+     * Set order_picked
+     *
+     * @param boolean $orderPicked
+     * @return Order
+     */
+    public function setOrderPicked($orderPicked)
+    {
+        $this->order_picked = $orderPicked;
+    
+        return $this;
+    }
+
+    /**
+     * Get order_picked
+     *
+     * @return boolean 
+     */
+    public function getOrderPicked()
+    {
+        return $this->order_picked;
+    }
+
+    /**
+     * Add orderDeliveryLog
+     *
+     * @param \Food\OrderBundle\Entity\OrderDeliveryLog $orderDeliveryLog
+     * @return Order
+     */
+    public function addOrderDeliveryLog(\Food\OrderBundle\Entity\OrderDeliveryLog $orderDeliveryLog)
+    {
+        $this->orderDeliveryLog[] = $orderDeliveryLog;
+    
+        return $this;
+    }
+
+    /**
+     * Remove orderDeliveryLog
+     *
+     * @param \Food\OrderBundle\Entity\OrderDeliveryLog $orderDeliveryLog
+     */
+    public function removeOrderDeliveryLog(\Food\OrderBundle\Entity\OrderDeliveryLog $orderDeliveryLog)
+    {
+        $this->orderDeliveryLog->removeElement($orderDeliveryLog);
+    }
+
+    /**
+     * Get orderDeliveryLog
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrderDeliveryLog()
+    {
+        return $this->orderDeliveryLog;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLate()
+    {
+        switch($this->getOrderStatus()) {
+            case OrderService::$status_new:
+                $add = new \DateInterval('PT2M');
+                if ($this->getOrderDate()->add($add)->format('d H:i') < date('d H:i')) {
+                    return true;
+                }
+                break;
+
+            case OrderService::$status_accepted:
+                $add = new \DateInterval('PT8M');
+                if ($this->getOrderDate()->add($add)->format('d H:i') < date('d H:i')) {
+                    return true;
+                }
+                break;
+
+            case OrderService::$status_delayed:
+                // TODO other maths to add delay.. but delay is unaceptable
+                $add = new \DateInterval('PT10M');
+                if ($this->getOrderDate()->add($add)->format('d H:i') < date('d H:i')) {
+                    return true;
+                }
+                break;
+
+            case OrderService::$status_assiged:
+                if ($this->getDeliveryTime()->format("d H:i") < date("d H:i")) {
+                    return true;
+                }
+                break;
+
+            case OrderService::$status_unapproved:
+                $add = new \DateInterval('PT2M');
+                if ($this->getOrderDate()->add($add)->format('d H:i') < date('d H:i')) {
+                    return true;
+                }
+                break;
+        }
+
+        return false;
     }
 }

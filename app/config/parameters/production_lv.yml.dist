@@ -48,8 +48,8 @@ parameters:
     currency_iso: EUR
     display_currency_alternative:  Lt
     currency_alternative: false
-    show_best_offers: false
-    show_game: false
+    show_best_offers: true
+    show_game: true
     show_apps_download: false
     show_is_social: false
     show_delfi_banner: false
@@ -81,3 +81,4 @@ parameters:
     dispatcher_phones: [37126110079]
     send_sms_on_cancel: false
     dispatcher_contact_phone: "37126110079"
+    call_centre_phone: "37126110079"
