@@ -71,19 +71,19 @@ parameters:
     invoice.series: FOO
     # TODO neiskeltas LT - LV konfliktas - PN, kaip sprendziam sita?
     daily_report_emails: &daily_report_emails
-      - jonas.s@foodout.lt
+#      - jonas.s@foodout.lt
 #      - juozas@foodout.lt
-      - birute@foodout.lt
+      #- birute@foodout.lt
 #      - giedrius@foodout.lt
       - paulius@foodout.lt
-      - mantas@foodout.lt
-      - tomas.martunas@gmail.com
-      - s.svitojus@ltkcapital.com
-      - jonas@foodout.lt
-      - baiba@foodout.lv
-      - egle@foodout.lt
-      - alex@foodout.lt
-      - zaneta@foodout.lt
+      #- mantas@foodout.lt
+      #- tomas.martunas@gmail.com
+      #- s.svitojus@ltkcapital.com
+      #- jonas@foodout.lt
+      #- baiba@foodout.lv
+      #- egle@foodout.lt
+      #- alex@foodout.lt
+      #- zaneta@foodout.lt
     weekly_report_emails:
       <<: *daily_report_emails
 
