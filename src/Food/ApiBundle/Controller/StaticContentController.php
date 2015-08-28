@@ -40,7 +40,7 @@ class StaticContentController extends Controller
 
             $response = array(
                 'title' => $staticPage->getTitle(),
-                'content' => $staticPage->getContent(),
+                'content' => $this->container->get('food.app.utils.misc')->stripFaqVideo($staticPage->getContent()),
             );
 
             return new JsonResponse($response);
