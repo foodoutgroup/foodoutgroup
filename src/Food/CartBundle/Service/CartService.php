@@ -414,6 +414,30 @@ class CartService {
     }
 
     /**
+     * @param \Food\CartBundle\Entity\Cart[] $cartItems
+     * @return float|int
+     */
+    public function getCartTotalApi($cartItems/*, $place*/)
+    {
+        $total = 0;
+        foreach ($cartItems as $cartItem) {
+            $totalPart = ((float)$cartItem->getDishSizeId()->getCurrentPrice() * 100) * (int)$cartItem->getQuantity();
+            if ($cartItem->getDishId()->getShowPublicPrice()) {
+                $totalPart = ((float)$cartItem->getDishSizeId()->getPublicPrice() * 100) * (int)$cartItem->getQuantity();
+            }
+            $total += $totalPart;
+            foreach ($cartItem->getOptions() as $opt) {
+                $totalOpt = ((float)$opt->getDishOptionId()->getPrice() * 100) * (int)$cartItem->getQuantity();
+                if ($cartItem->getDishId()->getShowPublicPrice()) {
+                    $totalOpt = 0;
+                }
+                $total += $totalOpt;
+            }
+        }
+        return $total / 100;
+    }
+
+    /**
      * Total nenuolaidiniu prekiu. Reikalinga esant poreikiui perskaiciuoti procentine nuolaida.
      *
      * @param Cart[] $cartItems

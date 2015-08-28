@@ -235,10 +235,14 @@ class MenuItem extends ContainerAware
                     );
                     $items = array();
                     foreach ($optionsRow['single'] as $opt) {
+                        $priceMod = $opt->getPrice() * 100;
+                        if ($dish->getShowPublicPrice()) {
+                            $priceMod = 0;
+                        }
                         $items[] = array(
                             'option_id' => $opt->getId(),
                             'title' => $opt->getName(),
-                            'price_modifier' => $opt->getPrice() * 100
+                            'price_modifier' => $priceMod
                         );
                     }
                     $optionList['default'] = $items[0]['option_id'];
@@ -255,11 +259,15 @@ class MenuItem extends ContainerAware
                     $items = array();
 
                     foreach ($optionsRow['multi'] as $opt) {
+                        $priceMod = $opt->getPrice() * 100;
+                        if ($dish->getShowPublicPrice()) {
+                            $priceMod = 0;
+                        }
                         $items[] = array(
                             'option_id' => $opt->getId(),
                             'title' => $opt->getName(),
                             'default' => false,
-                            'price_modifier' => $opt->getPrice() * 100
+                            'price_modifier' => $priceMod
 
                         );
                     }

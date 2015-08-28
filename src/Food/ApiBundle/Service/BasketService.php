@@ -216,7 +216,7 @@ class BasketService extends ContainerAware
         );
         $basket->set('expires', (date("U") + (3600 * 24 * 7)));
 
-        $total = $this->container->get('food.cart')->getCartTotal($cartItems, $basketInfo->getPlaceId()) * 100;
+        $total = $this->container->get('food.cart')->getCartTotalApi($cartItems, $basketInfo->getPlaceId()) * 100;
         $discount = 0;
         if ($basketInfo->getPlaceId()->getDiscountPricesEnabled()) {
             $discount = ($this->container->get('food.cart')->getCartTotalOld($cartItems, $basketInfo->getPlaceId()) * 100) - $total;
