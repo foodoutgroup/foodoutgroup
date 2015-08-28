@@ -151,6 +151,14 @@ class DishRepository extends EntityRepository
         return $stmt->fetchAll();
     }
 
+    public function getCountOfDiscountSizes($dishId)
+    {
+        $query = "SELECT COUNT(*) as cnt FROM dish_size WHERE deleted_at IS NULL AND discount_price > 0 AND dish_id=".intval($dishId);
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
     /**
      * @param int $dishId
      * @return bool
