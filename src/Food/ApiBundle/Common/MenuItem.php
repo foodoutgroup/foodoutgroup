@@ -104,6 +104,17 @@ class MenuItem extends ContainerAware
         $minOld = ($showDiscount ? $ds->getSmallestDishPrice($dish->getId()) * 100 : 0);
         $maxOld = ($showDiscount ? $ds->getLargestDishPrice($dish->getId()) * 100 : 0);
 
+        /**
+         * Yes public price funkcionalumas
+         */
+        if ($dish->getShowPublicPrice()) {
+            $minimum = $ds->getSmallestDishPublicPrice($dish->getId()) * 100;
+            $maximum = $ds->getLargestDishPublicPrice($dish->getId()) * 100;
+            $minOld = 0;
+            $maxOld = 0;
+            $showDiscount = false;
+        }
+
         $discountText = "";
         if ($showDiscount) {
             $diff = ($ds->getLargestDishDiscountPrice($dish->getId()) / $ds->getLargestDishPrice($dish->getId())) * 100 - 100;
@@ -155,11 +166,19 @@ class MenuItem extends ContainerAware
                 }
                 $unitTitle = $unit->getName();
                 $unitTitle = str_replace(array('„', '“'), '"', $unitTitle);
+
+                $price = ($dish->getShowPublicPrice() ? 0 : $size->getCurrentPrice() * 100);
+                $priceOld = ($size->getDish()->getShowDiscount() && $size->getDiscountPrice() > 0?  $size->getPrice() * 100 : 0);
+
+                if ($dish->getShowPublicPrice()) {
+                    $price = 0;
+                    $priceOld = 0;
+                }
                 $options['sizes']['items'][] = array(
                     'option_id' => $size->getId(),
                     'title' => $unitTitle,
-                    'price_modifier' => $size->getCurrentPrice() * 100,
-                    'price_modifier_old' => ($size->getDish()->getShowDiscount() && $size->getDiscountPrice() > 0?  $size->getPrice() * 100 : 0)
+                    'price_modifier' => $price,
+                    'price_modifier_old' => $priceOld
 
                 );
             }

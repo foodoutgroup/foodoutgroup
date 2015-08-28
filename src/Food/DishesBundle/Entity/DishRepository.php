@@ -143,9 +143,9 @@ class DishRepository extends EntityRepository
         return $stmt->fetchAll();
     }
 
-    public function getCountOfDiscountSizes($dishId)
+    public function getSmallestPublicPriceApi($dishId)
     {
-        $query = "SELECT COUNT(*) as cnt FROM dish_size WHERE deleted_at IS NULL AND discount_price > 0 AND dish_id=".intval($dishId);
+        $query = "SELECT IF(public_price < 1 OR public_price IS NULL OR public_price ='' , price, public_price) as publicPrice FROM dish_size WHERE deleted_at IS NULL AND dish_id=".intval($dishId)." ORDER BY IF(public_price < 1 OR public_price IS NULL OR public_price ='', price, public_price) ASC";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();
