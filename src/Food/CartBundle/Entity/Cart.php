@@ -35,8 +35,8 @@ class Cart
     private $cart_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishSize", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="dish_size_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishSize")
+     * @ORM\JoinColumn(name="dish_size_id", referencedColumnName="id")
      * @ORM\Id
      */
     private $dish_size_id;
