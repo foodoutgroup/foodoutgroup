@@ -239,27 +239,7 @@ class DishAdmin extends FoodAdmin
     public function preUpdate($object)
     {
         $this->fixRelations($object);
-        //$this->deleteCartItem($object);
         $this->saveFile($object);
-    }
-
-    /**
-     * @param \Food\DishesBundle\Entity\Dish $object
-     */
-    public function deleteCartItem($object) {
-        $dishSizes = $object->getSizes();
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        if (!empty($dishSizes)) {
-            foreach ($dishSizes as $size) {
-                if ($size->getDish() != null) {
-                    $query = $em->createQuery(
-                        "DELETE FROM Food\CartBundle\Entity\Cart c WHERE c.dish_size_id = " . $size->getId()
-                    );
-                    $query->execute();
-                }
-            }
-            $em->flush();
-        }
     }
 
     /**
