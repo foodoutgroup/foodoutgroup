@@ -18,6 +18,22 @@
     </file>
     <file source-language="lt" datatype="plaintext" original="file.ext">
         <body>
+            <trans-unit id="api.orders.coupon_does_not_exists" resname="api.orders.coupon_too_early">
+                <source>api.orders.coupon_too_early</source>
+                <target>Kuponas dar neįsigaliojo</target>
+            </trans-unit>
+        </body>
+    </file>
+    <file source-language="lt" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="api.orders.coupon_does_not_exists" resname="api.orders.coupon_expired">
+                <source>api.orders.coupon_expired</source>
+                <target>Kuponas jau baigė galioti</target>
+            </trans-unit>
+        </body>
+    </file>
+    <file source-language="lt" datatype="plaintext" original="file.ext">
+        <body>
             <trans-unit id="api.orders.coupon_empty" resname="api.orders.coupon_empty">
                 <source>api.orders.coupon_empty</source>
                 <target>Nenurodytas nuolaidos kodas</target>
