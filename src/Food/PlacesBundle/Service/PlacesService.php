@@ -374,7 +374,8 @@ class PlacesService extends ContainerAware {
             $to = '2400';
         }
 
-        $from = intval($from);
+        // +100 nes duodam restoranui atsidaryt, negali gi pristatyt ta pacia valanda, kai atsidare restoranas :D
+        $from = intval($from)+100;
         $to = intval($to);
 
         $i = $from;
