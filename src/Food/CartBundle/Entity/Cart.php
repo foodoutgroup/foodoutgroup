@@ -36,7 +36,7 @@ class Cart
 
     /**
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishSize")
-     * @ORM\JoinColumn(name="dish_size_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="dish_size_id", referencedColumnName="id")
      * @ORM\Id
      */
     private $dish_size_id;
