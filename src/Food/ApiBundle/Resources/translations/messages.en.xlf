@@ -18,6 +18,22 @@
     </file>
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
+            <trans-unit id="api.orders.coupon_does_not_exists" resname="api.orders.coupon_too_early">
+                <source>api.orders.coupon_too_early</source>
+                <target>Sorry, the code you entered is not valid yet.</target>
+            </trans-unit>
+        </body>
+    </file>
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="api.orders.coupon_does_not_exists" resname="api.orders.coupon_expired">
+                <source>api.orders.coupon_expired</source>
+                <target>Sorry, code is expired</target>
+            </trans-unit>
+        </body>
+    </file>
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
             <trans-unit id="api.orders.coupon_empty" resname="api.orders.coupon_empty">
                 <source>api.orders.coupon_empty</source>
                 <target>There is no such code</target>

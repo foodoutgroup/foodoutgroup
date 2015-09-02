@@ -103,6 +103,11 @@ class ShoppingBasketItem extends ContainerAware
      */
     public function loadFromEntity(Cart $cartItem)
     {
+        $amount = $this->_contDaPriceOfAll($cartItem) * 100;
+        $amountOld = ($cartItem->getDishId()->getShowDiscount() && $cartItem->getDishSizeId()->getDiscountPrice() > 0 ? $this->_contDaPriceOfAllOld($cartItem) * 100 : 0);
+        if ($cartItem->getDishId()->getShowPublicPrice()) {
+            $amountOld = 0;
+        }
         $this->set('basket_item_id', $cartItem->getCartId()) // @todo - ar tikrai ?? :)
             ->set('item_id', $cartItem->getDishId()->getId())
             ->set('count', $cartItem->getQuantity())
@@ -112,8 +117,8 @@ class ShoppingBasketItem extends ContainerAware
             ->set(
                 'price',
                 array(
-                    'amount' => $this->_contDaPriceOfAll($cartItem) * 100, // @todo
-                    'amount_old' => ($cartItem->getDishId()->getShowDiscount() && $cartItem->getDishSizeId()->getDiscountPrice() > 0 ? $this->_contDaPriceOfAllOld($cartItem) * 100 : 0),
+                    'amount' => $amount,
+                    'amount_old' => $amountOld,
                     'currency' => $this->container->getParameter('currency_iso')
                 )
             );
@@ -143,7 +148,7 @@ class ShoppingBasketItem extends ContainerAware
     private function _contDaPriceOfAll(Cart $cartItem)
     {
         $cartItem->setEm($this->container->get('doctrine'));
-        return $this->container->get('food.cart')->getCartTotal(array($cartItem), $cartItem->getPlaceId());
+        return $this->container->get('food.cart')->getCartTotalApi(array($cartItem), $cartItem->getPlaceId());
     }
 
     /**

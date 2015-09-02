@@ -155,7 +155,7 @@ class OrderService extends ContainerAware
         $place = $basket->getPlaceId();
         if ($serviceVar['type'] != "pickup") {
             $list = $cartService->getCartDishes($basket->getPlaceId());
-            $total_cart = $cartService->getCartTotal($list/*, $place*/);
+            $total_cart = $cartService->getCartTotalApi($list/*, $place*/);
             if ($total_cart < $place->getCartMinimum()) {
                 throw new ApiException(
                     'Order Too Small',

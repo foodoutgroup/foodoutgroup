@@ -543,7 +543,7 @@ class DefaultController extends Controller
         $params = array(
             'list'  => $list,
             'place' => $place,
-            'total_cart' => $total_cart,
+            'total_cart' => sprintf('%.2f',$total_cart),
             'total_with_delivery' => ($freeDelivery ? $total_cart : ($total_cart + $deliveryTotal)),
             'total_delivery' => $deliveryTotal,
             'inCart' => (int)$inCart,
@@ -553,7 +553,7 @@ class DefaultController extends Controller
             'discountSize' => $discountSize,
             'discountInSum' => $discountInSum,
             'discountSum' => $discountSum,
-            'cart_minimum' => $cartMinimum,
+            'cart_minimum' => sprintf('%.2f',$cartMinimum),
             'cart_from_min' => $cartFromMin,
             'cart_from_max' => $cartFromMax,
             'display_cart_interval' => $displayCartInterval,

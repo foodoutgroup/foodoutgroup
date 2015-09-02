@@ -489,7 +489,7 @@ class OrderRepository extends EntityRepository
         $query = "
           SELECT
             o.place_id,
-            p.name AS place_name,
+            o.place_name AS place_name,
             p.self_delivery AS self_delivery,
             COUNT(o.id) AS order_count,
             SUM(o.total) AS order_sum,
@@ -506,7 +506,7 @@ class OrderRepository extends EntityRepository
             o.order_status = '{$orderStatus}'
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
             {$placesFilter}
-          GROUP BY o.place_id{$groupByMonth}
+          GROUP BY COALESCE(o.place_id, o.place_name){$groupByMonth}
           ORDER BY {$groupByMonthOrder}order_count DESC
         ";
 
