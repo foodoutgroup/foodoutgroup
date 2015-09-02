@@ -344,4 +344,12 @@ class Misc
 
         return $division->getDivision();
     }
+
+    public function stripFaqVideo($text)
+    {
+        $text = str_replace("{{ faq_video }}", "", $text);
+        $text = str_replace("&nbsp; ", "&nbsp;", $text);
+        $text = preg_replace('/\<p\>(&nbsp;){2,}\<\/p\>/', "", $text);
+        return $text;
+    }
 }

@@ -263,6 +263,7 @@ class OrdersController extends Controller
         $this->_theJudge($request);
         try {
             $coupon = null;
+            $now = date('Y-m-d H:i:s');
             $requestJson = new JsonRequest($request);
             $code = $requestJson->get('code');
             $this->logActionParams('getCoupon action', $code);
@@ -270,6 +271,31 @@ class OrdersController extends Controller
             if (!empty($code)) {
                 $coupon = $this->get('food.order')->getCouponByCode($code);
                 if (!empty($coupon)) {
+                    // Coupon is still valid Begin
+                    if ($coupon->getEnableValidateDate()) {
+                        if ($coupon->getValidFrom()->format('Y-m-d H:i:s') > $now) {
+                            throw new ApiException(
+                                'Coupon Not Valid Yet',
+                                404,
+                                array(
+                                    'error' => 'Coupon Not Valid Yet',
+                                    'description' => $this->get('translator')->trans('api.orders.coupon_too_early')
+                                )
+                            );
+                        }
+                        if ($coupon->getValidTo()->format('Y-m-d H:i:s') < $now) {
+                            throw new ApiException(
+                                'Coupon Expired',
+                                404,
+                                array(
+                                    'error' => 'Coupon Expired',
+                                    'description' => $this->get('translator')->trans('api.orders.coupon_expired')
+                                )
+                            );
+                        }
+                    }
+                    // Coupon is still valid End
+
                     $arr_places = array();
                     $places = $coupon->getPlaces();
                     if (!empty($places) && count($places) > 0) {
