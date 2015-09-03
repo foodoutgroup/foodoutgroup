@@ -99,12 +99,12 @@ class CheckUndeliveredMessagesCommandTest extends \PHPUnit_Framework_TestCase
         // Testable vars
         $phone = '37060000000';
         $sender = 'niamniamas.info monitoring';
-        $errorMessage = 'ERROR: 3 undelivered messages!';
+        $errorMessage = 'ERROR: 4 undelivered messages!';
         $smsMessage = new \Food\SmsBundle\Entity\Message();
         $smsMessage->setSender($sender);
         $smsMessage->setRecipient($phone);
         $smsMessage->setMessage($errorMessage);
-        $messages = array($smsMessage, $smsMessage, $smsMessage);
+        $messages = array($smsMessage, $smsMessage, $smsMessage, $smsMessage);
 
         $application = new Application();
         $application->add(new CheckUndeliveredMessagesCommand());
