@@ -92,7 +92,7 @@
         </trans-unit>
         <trans-unit id="cart.checkout.delivery_time" resname="cart.checkout.delivery_time">
             <source>cart.checkout.delivery_time</source>
-            <target>Laikas</target>
+            <target>Laiks</target>
         </trans-unit>
         <trans-unit id="cart.checkout.order_now" resname="cart.checkout.order_now">
             <source>cart.checkout.order_now</source>
@@ -100,7 +100,7 @@
         </trans-unit>
         <trans-unit id="cart.checkout.order_later" resname="cart.checkout.order_later">
             <source>cart.checkout.order_later</source>
-            <target>Užsakyti vėlesniam laikui</target>
+            <target>Rezervējiet vēlāk</target>
         </trans-unit>
       <trans-unit id="bc8439664f3800919e17d58ad5eaff4b" resname="cart.checkout.delivery_comment">
         <source>cart.checkout.delivery_comment</source>
