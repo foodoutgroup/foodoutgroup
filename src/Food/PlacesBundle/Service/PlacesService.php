@@ -381,8 +381,10 @@ class PlacesService extends ContainerAware {
         // jei restoranas jau dirba ilgiau nei valanda - nuo dabar duodam užsakyt tik po valandos, jei kalbam apie siandien
         if ($dateShift == 0 && $from <= date("Hi")) {
             $from = intval(date('H').'00') + 100;
-            if (date('i') > 0) {
+            if (date('i') > 0 && date('i') <= 30) {
                 $from = $from + 30;
+            } else if (date('i') > 30) {
+                $from = $from +100;
             }
         }
 
