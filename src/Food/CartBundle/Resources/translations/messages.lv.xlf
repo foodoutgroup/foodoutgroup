@@ -86,6 +86,22 @@
         <source>cart.checkout.phone_placeholder</source>
         <target>37160000000</target>
       </trans-unit>
+        <trans-unit id="cart.checkout.delivery_date" resname="cart.checkout.delivery_date">
+            <source>cart.checkout.delivery_date</source>
+            <target>Datums</target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.delivery_time" resname="cart.checkout.delivery_time">
+            <source>cart.checkout.delivery_time</source>
+            <target>Laikas</target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.order_now" resname="cart.checkout.order_now">
+            <source>cart.checkout.order_now</source>
+            <target>Pasūtiet tagad</target>
+        </trans-unit>
+        <trans-unit id="cart.checkout.order_later" resname="cart.checkout.order_later">
+            <source>cart.checkout.order_later</source>
+            <target>Užsakyti vėlesniam laikui</target>
+        </trans-unit>
       <trans-unit id="bc8439664f3800919e17d58ad5eaff4b" resname="cart.checkout.delivery_comment">
         <source>cart.checkout.delivery_comment</source>
         <target>Papildu informācija</target>
