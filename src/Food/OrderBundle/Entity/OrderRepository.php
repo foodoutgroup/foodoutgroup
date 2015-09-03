@@ -746,7 +746,7 @@ class OrderRepository extends EntityRepository
          */
 
         $dateFrom = new \DateTime("+40 minute");
-        $dateTo = new \DateTime("+67 minute");
+        $dateTo = new \DateTime("+69 minute");
 
         $dateFrom = $dateFrom->format("Y-m-d H:i:s");
         $dateTo = $dateTo->format("Y-m-d H:i:s");
