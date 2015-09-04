@@ -106,6 +106,13 @@ food_cili_express:
         path: /lt/ciliexpress
         permanent: true
 
+food_cili_greita:
+    path: /ciligreita
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /lt/cili-greita
+        permanent: true
+
 food_cili_express_slash:
     path: /ciliexpress/
     defaults:
