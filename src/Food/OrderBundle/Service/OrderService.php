@@ -368,8 +368,17 @@ class OrderService extends ContainerAware
                     $sender = $this->container->getParameter('sms.sender');
 
                     $translation = 'general.sms.user.order_accepted';
+                    // Preorder message differs
+                    if ($this->getOrder()->getPreorder()) {
+                        $translation = 'general.sms.user.order_accepted_preorder';
+                    }
+
                     if ($this->getOrder()->getDeliveryType() == self::$deliveryPickup) {
                         $translation = 'general.sms.user.order_accepted_pickup';
+
+                        if ($this->getOrder()->getPreorder()) {
+                            $translation = 'general.sms.user.order_accepted_pickup_preorder';
+                        }
                     }
 
                     $placeName = $this->container->get('food.app.utils.language')
@@ -383,6 +392,7 @@ class OrderService extends ContainerAware
                             array(
                                 'restourant_name' => $placeName,
                                 'delivery_time' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $place->getDeliveryTime() : $place->getPickupTime()),
+                                'pre_delivery_time' => ($this->getOrder()->getDeliveryTime()->format('m-d H:i')),
 //                                'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone()
                             ),
                             null,
@@ -960,7 +970,8 @@ class OrderService extends ContainerAware
         $this->getOrder()->setUser($user);
 
         if (!empty($orderDate)) {
-            $this->getOrder()->setOrderStatus(self::$status_preorder);
+            $this->getOrder()->setOrderStatus(self::$status_preorder)
+                ->setPreorder(true);
         }
 
         $this->saveOrder();

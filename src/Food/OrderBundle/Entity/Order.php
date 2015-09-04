@@ -355,6 +355,12 @@ class Order
 
     /**
      * @var bool
+     * @ORM\Column(name="preorder", type="boolean", nullable=true)
+     */
+    private $preorder = false;
+
+    /**
+     * @var bool
      * @ORM\Column(name="nav_price_update", type="boolean", nullable=true)
      */
     private $navPriceUpdated = false;
@@ -2230,5 +2236,28 @@ class Order
         }
 
         return false;
+    }
+
+    /**
+     * Set preorder
+     *
+     * @param boolean $preorder
+     * @return Order
+     */
+    public function setPreorder($preorder)
+    {
+        $this->preorder = $preorder;
+    
+        return $this;
+    }
+
+    /**
+     * Get preorder
+     *
+     * @return boolean 
+     */
+    public function getPreorder()
+    {
+        return $this->preorder;
     }
 }

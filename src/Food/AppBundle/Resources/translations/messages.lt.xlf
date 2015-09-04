@@ -186,9 +186,17 @@
         <source>general.sms.user.order_accepted</source>
         <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista turetume pristatyti per delivery_time! Jei turite klausimu susisiekite telefonu +37061004970!</target>
       </trans-unit>
+      <trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
+        <source>general.sms.user.order_accepted_preorder</source>
+        <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista turetume pristatyti pre_delivery_time! Jei turite klausimu susisiekite telefonu +37061004970!</target>
+      </trans-unit>
       <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
         <source>general.sms.user.order_accepted_pickup</source>
         <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista galesite atsiimti po delivery_time! Jei turite dar klausimu susisiekite telefonu +37061004970!</target>
+      </trans-unit>
+      <trans-unit id="general.sms.user.order_accepted_pickup_preorder" resname="general.sms.user.order_accepted_pickup_preorder">
+        <source>general.sms.user.order_accepted_pickup_preorder</source>
+        <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista galesite atsiimti pre_delivery_time! Jei turite dar klausimu susisiekite telefonu +37061004970!</target>
       </trans-unit>
       <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
         <source>general.sms.client.restourant_cancel</source>
