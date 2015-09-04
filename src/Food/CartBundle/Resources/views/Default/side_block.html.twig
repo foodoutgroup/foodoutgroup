@@ -131,15 +131,15 @@
             </div>
         {% endif %}
 
-        {# TODO pakeisi id i tikra #}
-        {% if place.id == 142 and site_country == 'LT' %}
+        {# Cili Express blokelis su informacija, kad nuolaida taikoma tik su kortele #}
+        {#{% if place.id == 142 and site_country == 'LT' %}
             <div class="mylimiausia_pickup_block">
                 <img src="{{ asset('bundles/foodapp/images/draugeliu_korteles.png') }}"/>
                 <div style="margin-bottom: 10px; margin-top: 5px;">
                     Pasiūlymas galioja nuo 15 val. tik su DRAUGŲ ar MYLIMIAUSIA lojalumo kortele ATSIIMANT patiekalus restorane<br />
                 </div>
             </div>
-        {% endif %}
+        {% endif %}#}
 
         {# Order  button #}
         {% if inCart == false %}
