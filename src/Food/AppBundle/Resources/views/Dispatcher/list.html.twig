@@ -93,6 +93,9 @@
                         {% if additional_class != '' %}
                             <span class="glyphicon glyphicon-exclamation-sign"></span>
                         {% endif %}
+                        {% if order.preorder %}
+                            <span class="glyphicon glyphicon-time"></span>
+                        {% endif %}
                     </td>
                     <td><a href="{{ path('admin_food_order_order_show', {'id': order.id}) }}" target="_blank">{{ order.id }}</a></td>
                     <td class="from_nav_ico">
