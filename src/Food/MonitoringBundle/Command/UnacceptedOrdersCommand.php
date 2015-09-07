@@ -27,6 +27,7 @@ class UnacceptedOrdersCommand extends ContainerAwareCommand
 
         try {
             $unacceptedOrders = $monitoringService->getUnacceptedOrders();
+            $this->getContainer()->get('doctrine')->getConnection()->close();
             $ordersCount = count($unacceptedOrders);
 
             if ($ordersCount > 0) {

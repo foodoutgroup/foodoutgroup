@@ -27,6 +27,7 @@ class UnassignedOrdersCommand extends ContainerAwareCommand
 
         try {
             $unassignedOrders = $monitoringService->getUnassignedOrders();
+            $this->getContainer()->get('doctrine')->getConnection()->close();
             $ordersCount = count($unassignedOrders);
 
             if ($ordersCount > 0) {

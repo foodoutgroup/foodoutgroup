@@ -49,7 +49,7 @@ class NavOrderPriceMonitorCommand extends ContainerAwareCommand
             /**
              * @var $orders Order[]
              */
-            $orders = $em->getRepository('FoodOrderBundle:Order')->getCurrentNavOrders('-5 minute', true);
+            $orders = $em->getRepository('FoodOrderBundle:Order')->getCurrentNavOrders('-6 minute', true);
             $navService = $this->getContainer()->get('food.nav');
 
             if (!empty($orders) && count($orders) > 0) {

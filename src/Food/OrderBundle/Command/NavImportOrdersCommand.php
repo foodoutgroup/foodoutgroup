@@ -401,6 +401,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                 // Save all created orders if not a dry run
                 if (!$dryRun) {
                     $em->flush();
+                    $this->getContainer()->get('doctrine')->getConnection()->close();
                 }
             }
         } catch (\Exception $e) {
