@@ -1199,7 +1199,7 @@ class NavService extends ContainerAware
             case 5:
                 // 7-as - assigned, bet nezinom kuriam vairui, tai darom tik accepta
             case 7:
-                if ($order->getOrderStatus() == OrderService::$status_new) {
+                if (in_array($order->getOrderStatus(), array(OrderService::$status_new, OrderService::$status_preorder))) {
                     $orderService->statusAccepted('cili_nav');
                 }
                 break;
@@ -1210,7 +1210,7 @@ class NavService extends ContainerAware
                 break;
 
             case 6:
-                if ($order->getOrderStatus() == OrderService::$status_new) {
+                if (in_array($order->getOrderStatus(), array(OrderService::$status_new, OrderService::$status_preorder))) {
                     // First mark as accepted, for user information
                     $orderService->statusAccepted('cili_nav');
                     $orderService->statusFinished('cili_nav');
