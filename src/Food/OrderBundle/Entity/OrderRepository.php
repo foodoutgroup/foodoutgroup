@@ -784,7 +784,6 @@ class OrderRepository extends EntityRepository
         $qb = $this->createQueryBuilder('o');
 
         $excludeStatuses = [
-            OrderService::$status_preorder,
             OrderService::$status_canceled,
             OrderService::$status_nav_problems,
             OrderService::$status_pre,
