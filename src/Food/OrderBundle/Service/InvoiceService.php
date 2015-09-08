@@ -48,20 +48,21 @@ class InvoiceService extends ContainerAware
     /**
      * @param Order $order
      * @param boolean $mustDoNavDelete
+     * @param boolean $skipChecks
      * @throws \InvalidArgumentException
      */
-    public function addInvoiceToSend($order, $mustDoNavDelete=false)
+    public function addInvoiceToSend($order, $mustDoNavDelete=false, $skipChecks=false)
     {
         if (!$order instanceof Order) {
             throw new \InvalidArgumentException('I need order to plan invoice generation');
         }
 
         // Invoice sending is not turned on
-        if (!$order->getPlace()->getSendInvoice()) {
+        if (!$order->getPlace()->getSendInvoice() && !$skipChecks) {
             return;
         }
 
-        if ($order->getPlacePointSelfDelivery() || $order->getDeliveryType() == OrderService::$deliveryPickup) {
+        if (($order->getPlacePointSelfDelivery() || $order->getDeliveryType() == OrderService::$deliveryPickup) && !$skipChecks) {
             return;
         }
 

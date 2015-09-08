@@ -29,9 +29,10 @@ class OrderAdminController extends Controller
         $orderService = $this->get('food.order');
         $order = $orderService->getOrderById($id);
 
-        if (!$order->getPlace()->getSendInvoice()) {
-            throw new \Exception('Place has disabled invoices - cant send invoice to user');
-        }
+        // Leidziame siusti bet kam
+//        if (!$order->getPlace()->getSendInvoice()) {
+//            throw new \Exception('Place has disabled invoices - cant send invoice to user');
+//        }
 
         $orderSfSeries = $order->getSfSeries();
         if (empty($orderSfSeries)) {
@@ -44,7 +45,7 @@ class OrderAdminController extends Controller
             $this->container->get('logger')->error('sendInvoiceAction in OrderAdmin did not set SF series..');
         }
 
-        $this->get('food.invoice')->addInvoiceToSend($order);
+        $this->get('food.invoice')->addInvoiceToSend($order, false, true);
 
         $this->get('session')->getFlashBag()->add(
             'success',
