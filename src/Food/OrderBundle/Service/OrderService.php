@@ -408,9 +408,11 @@ class OrderService extends ContainerAware
             $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
 
             if ($this->getOrder()->getOrderFromNav() == false) {
-                $dt = new \DateTime('now');
-                $dt->add(new \DateInterval('P0DT1H0M0S'));
-                $this->getOrder()->setDeliveryTime($dt);
+                if (!$this->getOrder()->getPreorder()) {
+                    $dt = new \DateTime('now');
+                    $dt->add(new \DateInterval('P0DT1H0M0S'));
+                    $this->getOrder()->setDeliveryTime($dt);
+                }
                 $this->saveOrder();
                 $this->_notifyOnAccepted();
 
