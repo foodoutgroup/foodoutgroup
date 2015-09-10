@@ -357,7 +357,7 @@ class OrderService extends ContainerAware
     public function statusAccepted($source = null, $statusMessage = null)
     {
         // Inform poor user, that his order was accepted
-        if ($this->getOrder()->getOrderStatus() == self::$status_new) {
+        if (in_array($this->getOrder()->getOrderStatus(), array(self::$status_new, self::$status_preorder))) {
             $recipient = $this->getOrder()->getOrderExtra()->getPhone();
 
             // SMS siunciam tik tuo atveju jei orderis ne is callcentro
