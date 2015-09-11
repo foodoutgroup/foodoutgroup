@@ -5,6 +5,8 @@ use Food\ApiBundle\Common\MenuItem;
 use Food\ApiBundle\Common\Restaurant;
 use Food\ApiBundle\Exceptions\ApiException;
 use Food\DishesBundle\Entity\FoodCategory;
+use Food\DishesBundle\Entity\Place;
+use Food\DishesBundle\Entity\PlacePoint;
 use Food\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -15,10 +17,19 @@ class ApiService extends ContainerAware
     public function getSessionId() {
         return $this->container->get('session')->getId();
     }
-    public function createRestaurantFromPlace($place, $placePoint, $pickUpOnly = false, $locationData = null)
+
+    /**
+     * @param Place $place
+     * @param PlacePoint $placePoint
+     * @param bool|false $pickUpOnly
+     * @param null|array $locationData
+     * @param string|null $deliveryType
+     * @return Restaurant
+     */
+    public function createRestaurantFromPlace($place, $placePoint, $pickUpOnly = false, $locationData = null, $deliveryType = null)
     {
         $restaurant = new Restaurant(null, $this->container);
-        return $restaurant->loadFromEntity($place, $placePoint, $pickUpOnly, $locationData);
+        return $restaurant->loadFromEntity($place, $placePoint, $pickUpOnly, $locationData, $deliveryType);
     }
 
     /**

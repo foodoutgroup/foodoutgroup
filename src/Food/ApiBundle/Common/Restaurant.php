@@ -98,9 +98,11 @@ class Restaurant extends ContainerAware
      * @param Place $place
      * @param PlacePoint $placePoint
      * @param bool $pickUpOnly
+     * @param array|null $locationData
+     * @param string|null $deliveryType
      * @return $this
      */
-    public function loadFromEntity(Place $place, PlacePoint $placePoint = null, $pickUpOnly = false, $locationData = null)
+    public function loadFromEntity(Place $place, PlacePoint $placePoint = null, $pickUpOnly = false, $locationData = null, $deliveryType = null)
     {
         $kitchens = $place->getKitchens();
         $kitchensForResp = array();
@@ -209,7 +211,7 @@ class Restaurant extends ContainerAware
             ->set(
                 'delivery_options',
                 array(
-                    'estimated_time' => $place->getDeliveryTime(),
+                    'estimated_time' => ((!empty($deliveryType) && $deliveryType == 'pickup') ? $place->getPickupTime() : $place->getDeliveryTime()),
                     'price' => array(
                         'amount' => (!empty($devPrice) ? ($devPrice * 100) : ($place->getDeliveryPrice() * 100)),
                         'currency' => $currency
