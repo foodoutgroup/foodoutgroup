@@ -402,7 +402,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                 $output->writeln('Orders with error: '.$stats['error']);
                 $output->writeln('Orders processed: '.$stats['processed']);
                 $output->writeln(sprintf('Process duration: %0.2fs', (microtime(true) - $startTime)));
-                $log->alert(sprintf('NAV import process duration: %0.2fs', (microtime(true) - $startTime)));
+                $log->alert(sprintf('[Performance] NAV import process duration: %0.2fs', (microtime(true) - $startTime)));
 
                 // Save all created orders if not a dry run
                 if (!$dryRun) {
