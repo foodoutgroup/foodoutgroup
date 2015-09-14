@@ -389,8 +389,8 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                     $output->writeln($logMessage);
                     $log->alert($logMessage);
 
-                    // Protection that cron jobs wont overlap. If we are near 5 minutes (lest leave some buffer - 280s) in processing - lets kill it. The next cron will continue
-                    if ((microtime(true) - $startTime) >= 280) {
+                    // Protection that cron jobs wont overlap. If we are near 5 minutes in processing - lets kill it. The next cron will continue
+                    if ((microtime(true) - $startTime) >= 265) {
                         throw new \Exception('Nav import is taking too long. Overlaping protection. Cron duration'.sprintf('$0.2fs', (microtime(true) - $startTime)));
                     }
                 }
