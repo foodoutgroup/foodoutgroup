@@ -143,11 +143,7 @@
 
         {# Order  button #}
         {% if inCart == false %}
-            {% if isTodayNoOneWantsToWork == true %}
-                <a href="#top" class="order-button disabled">{% trans %}cart.block.order_btn{% endtrans %}</a>
-            {% else %}
-                <a href="{{ path('food_cart', { 'placeId' : place.id, 'takeAway': hide_delivery }) }}" class="order-button{% if isTodayNoOneWantsToWork == true %} disabled{% endif %}">{% trans %}cart.block.order_btn{% endtrans %}</a>
-            {% endif %}
+            <a href="{{ path('food_cart', { 'placeId' : place.id, 'takeAway': hide_delivery }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
         {% endif %}
         {% if hide_delivery == false %}
         <div class="delivery-time tac">
