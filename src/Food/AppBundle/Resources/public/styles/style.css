@@ -713,12 +713,6 @@ input.button {}
 .check-bottom .fr {text-align: right;}
 .check-block .total-sum {font-size: 14px;}
 .check-block .order-button {display: block; height: 46px; background: url(/bundles/foodapp/images/big-button-3.png) no-repeat right center; padding-left: 20px; padding-right: 40px; border-radius: 5px; box-shadow: 0 1px 2px #b3afad; border: none; color: #fff; font-size: 18px; text-transform: uppercase; padding-top: 0px; padding-bottom: 0px; text-shadow: 0 1px 0 #74932b; line-height: 48px; letter-spacing: 1px; border: 1px solid #85b005;}
-.check-block .order-button.disabled {
-    background: url(/bundles/foodapp/images/big-button-3-disabled.png) no-repeat right center;
-    border: 1px solid #5E5F5B;
-    text-shadow: 0 1px 0 #0C0C0C;
-    cursor: default;
-}
 .check-block .delivery-time {padding-top: 12px; padding-bottom: 12px; color: #bea2a6;}
 
 
