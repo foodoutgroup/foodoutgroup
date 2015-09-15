@@ -9,7 +9,7 @@ set :model_manager, "doctrine"
 set :branch, "master"
 
 # multi-stage environment
-set :stages,        %w(production staging sandbox taurinas kofeinas pipiras production_lv)
+set :stages,        %w(production staging sandbox taurinas kofeinas pipiras production_lv dev)
 # isijungiam kada reik :)
 set :default_stage, "staging"
 set :stage_dir,     "app/config/deploy"

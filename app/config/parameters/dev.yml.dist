@@ -2,9 +2,9 @@ parameters:
     database_driver: pdo_mysql
     database_host: localhost
     database_port: 3306
-    database_name: sandbox
-    database_user: sandbox
-    database_password: zeesh4ieLaeShuePh3ohbai3iekoo4p
+    database_name: dev
+    database_user: dev
+    database_password: ooc8Choo5Ohth5Lah6muthoh4baemue
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null
@@ -16,11 +16,11 @@ parameters:
     aws_region: eu-west-1
     s3_bucket: foodout-invoice
 
-    locale: en
-    locales: ["en", "lt", "ru"]
+    locale: lt
+    locales: ["lt", "en", "ru"]
     available_cities: ["Vilnius", "Kaunas", "Klaipėda"]
-    available_locales: [ "en", "lt", "ru"]
-    available_locales_routing:  en | lt | ru
+    available_locales: ["lt", "en", "ru"]
+    available_locales_routing: lt | en | ru
     cloudfront_url: images.foodout.lt
     time_zone: "Europe/Vilnius"
     sms.sender: "Foodout.lt"
