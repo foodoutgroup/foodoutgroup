@@ -1,13 +1,13 @@
 #set :domain,      "192.168.10.113"
 set :domain,      "amazingsales-parado.data.lt"
 #set :deploy_to,   "/home/foodout/"
-set :deploy_to,   "/home/sandbox.foodout.lt/"
+set :deploy_to,   "/home/dev.foodout.lt/"
 
 set :scm,         :git
 set :model_manager, "doctrine"
 
-set :user, "sandbox"
-set :password, "eishae8Quoneichogh2eejie0aezoh9"
+set :user, "dev"
+set :password, "chaebah5bi7quoonuSaegoh3Eigeish"
 
 set :symfony_env_prod, "prod"
 ssh_options[:keys] = ["/home/foodout/.ssh/id_rsa"]
@@ -22,4 +22,4 @@ role :db,         domain, :primary => true       # This is where Symfony2 migrat
 #set :skype_topic, "skanu.lt"
 
 # parameters file
-set :parameters_file, "sandbox.yml.dist"
+set :parameters_file, "dev.yml.dist"
