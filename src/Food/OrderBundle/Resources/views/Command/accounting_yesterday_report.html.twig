@@ -29,6 +29,7 @@
                 <th>#</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.sf_number{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.time{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.preorder{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.place{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.place_point{% endtrans %}</th>
                 <th>{% trans %}reporting.driver{% endtrans %}</th>
@@ -52,6 +53,13 @@
                     <td>{{ order.id }}</td>
                     <td>{{ order.sfSeries }} {{ order.sfNumber }}</td>
                     <td>{{ order.orderDate|date("H:i") }}</td>
+                    <td>
+                        {% if order.preorder %}
+                            {% trans %}yes{% endtrans %} ({{ order.deliveryTime|date("Y-m-d H:i") }})
+                        {% else %}
+                            {% trans %}no{% endtrans %}
+                        {% endif %}
+                    </td>
                     <td>{{ order.placeName }}</td>
                     <td>{{ order.placePointAddress }}, {{ order.placePointCity }}</td>
                     <td>
@@ -94,6 +102,7 @@
                 <th>#</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.sf_number{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.time{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.preorder{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.place{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.place_point{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.payment_type{% endtrans %}</th>
@@ -116,6 +125,13 @@
                     <td>{{ order.id }}</td>
                     <td>{{ order.sfSeries }} {{ order.sfNumber }}</td>
                     <td>{{ order.orderDate|date("H:i") }}</td>
+                    <td>
+                        {% if order.preorder %}
+                            {% trans %}yes{% endtrans %} ({{ order.deliveryTime|date("Y-m-d H:i") }})
+                        {% else %}
+                            {% trans %}no{% endtrans %}
+                        {% endif %}
+                    </td>
                     <td>{{ order.placeName }}</td>
                     <td>{{ order.placePointAddress }}, {{ order.placePointCity }}</td>
                     <td>{{ ('general.email.accounting_report.' ~ order.paymentMethod)|trans() }}</td>
@@ -151,6 +167,7 @@
                 <th>#</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.sf_number{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.time{% endtrans %}</th>
+                <th>{% trans %}reporting.daily.yesterday_orders.preorder{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.place{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.place_point{% endtrans %}</th>
                 <th>{% trans %}reporting.daily.yesterday_orders.payment_type{% endtrans %}</th>
@@ -171,6 +188,13 @@
                     <td>{{ order.id }}</td>
                     <td>{{ order.sfSeries }} {{ order.sfNumber }}</td>
                     <td>{{ order.orderDate|date("H:i") }}</td>
+                    <td>
+                        {% if order.preOrder %}
+                            {% trans %}yes{% endtrans %} ({{ order.deliveryTime|date("Y-m-d H:i") }})
+                        {% else %}
+                            {% trans %}no{% endtrans %}
+                        {% endif %}
+                    </td>
                     <td>{{ order.placeName }}</td>
                     <td>{{ order.placePointAddress }}, {{ order.placePointCity }}</td>
                     <td>{{ ('mobile.payment.' ~ order.paymentMethod)|trans() }}</td>

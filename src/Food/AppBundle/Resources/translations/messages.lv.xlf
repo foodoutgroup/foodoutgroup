@@ -918,6 +918,10 @@
         <source>reporting.daily.yesterday_orders.total_with_vat_no_brake</source>
         <target>Kopā (ar PVN)</target>
       </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.preorder" resname="reporting.daily.yesterday_orders.preorder">
+        <source>reporting.daily.yesterday_orders.preorder</source>
+        <target><![CDATA[Preorder<br />(delivery date)]]></target>
+      </trans-unit>
       <trans-unit id="a0bf255f39b5cbccb042f7dc5f993d00" resname="reporting.daily.yesterday_orders.total_pickup">
         <source>reporting.daily.yesterday_orders.total_pickup</source>
         <target>Kopā paņemot (ar PVN)</target>

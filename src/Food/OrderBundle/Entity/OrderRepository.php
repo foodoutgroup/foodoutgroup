@@ -175,7 +175,7 @@ class OrderRepository extends EntityRepository
         }
 
         $filter = array(
-            'order_status' =>  array(OrderService::$status_completed),
+            'daily_grouped_report' =>  true,
             'order_date_between' => array('from' => $dateFrom, 'to' => $dateTo),
         );
 
@@ -369,6 +369,13 @@ class OrderRepository extends EntityRepository
                         $qb->leftJoin('o.place', 'p', 'o.place = p.id')
                             ->andWhere('p.navision = 1');
                         unset($filter['only_to_nav']);
+                        break;
+
+                    case 'daily_grouped_report':
+                        $qb->andWhere('o.order_status = :problem_status OR (o.preorder = 1 AND o.order_status NOT IN (:preorder_status_list))');
+                        unset($filter['daily_grouped_report']);
+                        $filter['problem_status'] = OrderService::$status_completed;
+                        $filter['preorder_status_list'] = array(OrderService::$status_canceled, OrderService::$status_failed);
                         break;
 
                     default:

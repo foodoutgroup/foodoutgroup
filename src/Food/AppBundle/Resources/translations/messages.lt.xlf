@@ -932,6 +932,10 @@
         <source>reporting.daily.yesterday_orders.total_with_vat</source>
         <target><![CDATA[Viso<br />(su PVM)]]></target>
       </trans-unit>
+      <trans-unit id="reporting.daily.yesterday_orders.preorder" resname="reporting.daily.yesterday_orders.preorder">
+        <source>reporting.daily.yesterday_orders.preorder</source>
+        <target><![CDATA[Užsak. laikui<br />(pristatymo data)]]></target>
+      </trans-unit>
       <trans-unit id="reporting.daily.yesterday_orders.total_with_vat_no_brake" resname="reporting.daily.yesterday_orders.total_with_vat_no_brake">
         <source>reporting.daily.yesterday_orders.total_with_vat_no_brake</source>
         <target><![CDATA[Viso (su PVM)]]></target>
