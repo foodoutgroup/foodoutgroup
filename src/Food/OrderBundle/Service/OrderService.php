@@ -357,7 +357,7 @@ class OrderService extends ContainerAware
     public function statusAccepted($source = null, $statusMessage = null)
     {
         // Inform poor user, that his order was accepted
-        if ($this->getOrder()->getOrderStatus() == self::$status_new) {
+        if (in_array($this->getOrder()->getOrderStatus(), array(self::$status_new, self::$status_preorder))) {
             $recipient = $this->getOrder()->getOrderExtra()->getPhone();
 
             // SMS siunciam tik tuo atveju jei orderis ne is callcentro
@@ -408,9 +408,11 @@ class OrderService extends ContainerAware
             $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
 
             if ($this->getOrder()->getOrderFromNav() == false) {
-                $dt = new \DateTime('now');
-                $dt->add(new \DateInterval('P0DT1H0M0S'));
-                $this->getOrder()->setDeliveryTime($dt);
+                if (!$this->getOrder()->getPreorder()) {
+                    $dt = new \DateTime('now');
+                    $dt->add(new \DateInterval('P0DT1H0M0S'));
+                    $this->getOrder()->setDeliveryTime($dt);
+                }
                 $this->saveOrder();
                 $this->_notifyOnAccepted();
 

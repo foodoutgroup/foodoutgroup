@@ -388,6 +388,23 @@ class PlacesService extends ContainerAware {
             }
         }
 
+        // If restaurant starts at a dumbt time, that is not our wanted 00 or 30 - fix dat crap
+        $minutes = $from%100;
+        if ($minutes != 0 && $minutes != 30) {
+            $hour = ($from - ($from%100))/100;
+
+            if ($minutes < 30) {
+                $minutes = '30';
+            } else {
+                $minutes = '00';
+                $hour++;
+            }
+            if ($hour < 10) {
+                $hour = '0'.$hour;
+            }
+            $from = $hour.$minutes;
+        }
+
         $i = $from;
 
         while($i <= $to) {

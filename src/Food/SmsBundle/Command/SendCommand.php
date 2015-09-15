@@ -97,6 +97,8 @@ class SendCommand extends ContainerAwareCommand
 
             throw $e;
         }
+
+        $this->getContainer()->get('doctrine')->getConnection()->close();
     }
 
     /**

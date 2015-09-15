@@ -97,7 +97,8 @@ class RestaurantsController extends Controller
                 $place['place'],
                 $place['point'],
                 false,
-                $this->get('food.googlegis')->getLocationFromSession()
+                $this->get('food.googlegis')->getLocationFromSession(),
+                $delivery_type
             );
             $response['restaurants'][] = $restaurant->data;
         }

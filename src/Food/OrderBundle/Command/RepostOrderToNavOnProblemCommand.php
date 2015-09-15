@@ -115,6 +115,8 @@ class RepostOrderToNavOnProblemCommand extends ContainerAwareCommand
                     }
                 }
             }
+
+            $this->getContainer()->get('doctrine')->getConnection()->close();
         } catch (\Exception $e) {
             $message = 'An error happened while running RepostOrderToNavOnProblems command. Error: '.$e->getMessage();
             $logger->error($message);

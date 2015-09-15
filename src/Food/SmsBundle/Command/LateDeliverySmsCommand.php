@@ -77,6 +77,8 @@ class LateDeliverySmsCommand extends ContainerAwareCommand
             $timeSpent = microtime(true) - $this->timeStart;
             $output->writeln(sprintf('<info>%d messages sent in %0.2f seconds</info>', $count, $timeSpent));
 
+            $this->getContainer()->get('doctrine')->getConnection()->close();
+
         } catch (\InvalidArgumentException $e) {
             $output->writeln('<error>Sorry, lazy programmer left a bug :(</error>');
             $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));

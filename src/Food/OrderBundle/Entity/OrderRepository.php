@@ -780,10 +780,10 @@ class OrderRepository extends EntityRepository
         if (empty($timeBack)) {
             $timeBack = '-1 day';
         }
+        $timeBackPreorder = '-3 day';
         $qb = $this->createQueryBuilder('o');
 
         $excludeStatuses = [
-            OrderService::$status_preorder,
             OrderService::$status_canceled,
             OrderService::$status_nav_problems,
             OrderService::$status_pre,
@@ -797,12 +797,13 @@ class OrderRepository extends EntityRepository
         }
 
         $qb->leftJoin('o.place', 'p')
-            ->where('o.order_date >= :order_date')
+            ->where('(o.order_date >= :order_date AND (o.preorder = 0 OR o.preorder IS NULL)) OR (o.order_date >= :pre_order_date AND o.preorder = 1)')
             ->andWhere('p.navision = :navision')
             ->andWhere('o.order_status NOT IN (:order_status)')
             ->andWhere('o.paymentStatus = :payment_status')
             ->setParameters(array(
                 'order_date' => new \DateTime($timeBack),
+                'pre_order_date' => new \DateTime($timeBackPreorder),
                 'order_status' => $excludeStatuses,
                 'navision' => 1,
                 'payment_status' => OrderService::$paymentStatusComplete,

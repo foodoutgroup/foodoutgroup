@@ -764,7 +764,7 @@
       </trans-unit>
       <trans-unit id="2a27b06725260bba699dd331a49827d8" resname="index.title_page_header">
         <source>index.title_page_header</source>
-        <target><![CDATA[Ietaupiet laiku! Pasūtot ēdienu<br />uz mājām, darbu vai saņemot restorānā!]]></target>
+        <target><![CDATA[Dažādi restorāni vienuviet!]]></target>
       </trans-unit>
       <trans-unit id="02e3d3477fa84ee89d7c8f812fe8d4b1" resname="index.search_form_qlue">
         <source>index.search_form_qlue</source>

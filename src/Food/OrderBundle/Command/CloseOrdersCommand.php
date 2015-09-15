@@ -57,6 +57,7 @@ class CloseOrdersCommand extends ContainerAwareCommand
 
             if ($processedOrders > 0) {
                 $em->flush();
+                $this->getContainer()->get('doctrine')->getConnection()->close();
             }
 
             $output->writeln('Orders processed: '.$processedOrders);

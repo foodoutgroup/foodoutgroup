@@ -35,6 +35,8 @@ class OrderReminderCommand extends ContainerAwareCommand
                     $output->writeln('Reminder message sent to: '.$order->getPlaceName().' for order #'.$order->getId());
                 }
             }
+            // Close DB connection. Dont leave crap
+            $this->getContainer()->get('doctrine')->getConnection()->close();
         } catch (\Exception $e) {
             $output->writeln('Error generating report');
             $output->writeln('Error: '.$e->getMessage());

@@ -26,6 +26,7 @@ class CheckUnsentMessagesCommand extends ContainerAwareCommand
         $to = new \DateTime("-5 minutes");
         try {
             $unsentMessages = $messagingService->getUnsentMessagesForRange($from, $to);
+            $this->getContainer()->get('doctrine')->getConnection()->close();
             $messagesCount = count($unsentMessages);
 
             if ($messagesCount > 0) {

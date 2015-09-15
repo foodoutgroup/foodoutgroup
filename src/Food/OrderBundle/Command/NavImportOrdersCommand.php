@@ -388,6 +388,11 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                     $logMessage = 'Order #'.$orderData['OrderNo'].' - import finished'."\n";
                     $output->writeln($logMessage);
                     $log->alert($logMessage);
+
+                    // Protection that cron jobs wont overlap. If we are near 5 minutes in processing - lets kill it. The next cron will continue
+                    if ((microtime(true) - $startTime) >= 265) {
+                        throw new \Exception('Nav import is taking too long. Overlaping protection. Cron duration'.sprintf('$0.2fs', (microtime(true) - $startTime)));
+                    }
                 }
 
                 $output->writeln('------------------------------------');
@@ -397,10 +402,12 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                 $output->writeln('Orders with error: '.$stats['error']);
                 $output->writeln('Orders processed: '.$stats['processed']);
                 $output->writeln(sprintf('Process duration: %0.2fs', (microtime(true) - $startTime)));
+                $log->alert(sprintf('[Performance] NAV import process duration: %0.2fs', (microtime(true) - $startTime)));
 
                 // Save all created orders if not a dry run
                 if (!$dryRun) {
                     $em->flush();
+                    $this->getContainer()->get('doctrine')->getConnection()->close();
                 }
             }
         } catch (\Exception $e) {

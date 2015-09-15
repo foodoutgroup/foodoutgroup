@@ -42,6 +42,7 @@ class MonthlyDriverReportCommand extends ContainerAwareCommand
             $mailer = $this->getContainer()->get('mailer');
 
             $orders = $repo->getDriversMonthlyOrderCount();
+            $this->getContainer()->get('doctrine')->getConnection()->close();
 
             $message = \Swift_Message::newInstance()
                 ->setSubject($this->getContainer()->getParameter('title').': '.$translator->trans('general.email.driver_monthly_report'))

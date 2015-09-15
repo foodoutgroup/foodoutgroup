@@ -40,6 +40,7 @@ class UncompleteOrdersCommand extends ContainerAwareCommand
 
         try {
             $unfinishedOrders = $monitoringService->getUnfinishedOrdersForRange($from, $to);
+            $this->getContainer()->get('doctrine')->getConnection()->close();
             $ordersCount = count($unfinishedOrders);
 
             if ($ordersCount > 0) {

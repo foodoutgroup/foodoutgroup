@@ -32,6 +32,7 @@ class NavUnsyncedOrdersCommand extends ContainerAwareCommand
 
             if (!empty($orders) && count($orders) > 0) {
                 $navOrders = $navService->getRecentNavOrders($orders);
+                $this->getContainer()->get('doctrine')->getConnection()->close();
                 $ordersCount = count($orders);
                 $navOrdersCount = count($navOrders);
 

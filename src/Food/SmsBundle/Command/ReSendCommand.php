@@ -79,6 +79,8 @@ class ReSendCommand extends ContainerAwareCommand
             }
 
             $output->writeln(sprintf('<info>%d messages sent</info>', $count));
+
+            $this->getContainer()->get('doctrine')->getConnection()->close();
         } catch (\InvalidArgumentException $e) {
             $output->writeln('<error>Sorry, lazy programmer left a bug :(</error>');
             $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));

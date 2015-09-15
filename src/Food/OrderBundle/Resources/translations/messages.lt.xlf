@@ -104,7 +104,7 @@
             </trans-unit>
             <trans-unit id="order.invoice.foodout_address" resname="order.invoice.foodout_address">
                 <source>order.invoice.foodout_address</source>
-                <target>Laisvės pr. 77C-58, 06155 Vilnius</target>
+                <target>Algirdo g. 51A, 03216 Vilnius</target>
             </trans-unit>
             <trans-unit id="order.invoice.foodout_company_code" resname="order.invoice.foodout_company_code">
                 <source>order.invoice.foodout_company_code</source>

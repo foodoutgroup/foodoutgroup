@@ -27,6 +27,7 @@ class UnsentInvoicesCommand extends ContainerAwareCommand
 
         try {
             $unsentInvoices = $monitoringService->getUnsentInvoices();
+            $this->getContainer()->get('doctrine')->getConnection()->close();
             $invoiceCount = count($unsentInvoices);
 
             if ($invoiceCount > 0) {

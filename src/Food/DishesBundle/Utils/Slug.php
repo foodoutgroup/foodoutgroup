@@ -120,6 +120,11 @@ class Slug
             '(' => '',
             ')' => '',
             '.' => '',
+            '!' => '',
+            '?' => '',
+            ',' => '',
+            '*' => '',
+            '%' => '',
         );
         $text = strtr($text, $removableChars);
         $text = preg_replace('#\s+#u', '-', $text);
