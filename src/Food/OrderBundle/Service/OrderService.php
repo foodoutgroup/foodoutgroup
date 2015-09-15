@@ -1774,8 +1774,15 @@ class OrderService extends ContainerAware
             $orderSmsTextTranslation = $translator->trans('general.sms.order_reminder');
             $orderTextTranslation = $translator->trans('general.email.order_reminder');
         } else {
-            $orderConfirmRoute = $this->container->get('router')
-                ->generate('ordermobile', array('hash' => $order->getOrderHash()), true);
+            // Jei preorder - sms siuncia cronas ir nezino apie esama domena..
+            if ($order->getPreorder()) {
+                $orderConfirmRoute = 'http://'.$domain
+                    .$this->container->get('router')
+                    ->generate('ordermobile', array('hash' => $order->getOrderHash()));
+            } else {
+                $orderConfirmRoute = $this->container->get('router')
+                    ->generate('ordermobile', array('hash' => $order->getOrderHash()), true);
+            }
 
             $orderSmsTextTranslation = $translator->trans('general.sms.new_order');
             $orderTextTranslation = $translator->trans('general.email.new_order');
