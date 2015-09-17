@@ -51,11 +51,12 @@ class DefaultController extends Controller
 
     public function indexCityAction($city, $slug_filter = false, Request $request)
     {
+        $city = ucfirst($city);
+        $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", $city);
+
         $strip_chars = function($value) {
             return str_replace(array("ī", "ė"), array("i", "e"), $value);
         };
-        $city = ucfirst($city);
-        $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", $city);
 
         $availableCities = $this->container->getParameter('available_cities');
         $availableCities = array_map("mb_strtolower", $availableCities);
