@@ -39,6 +39,10 @@
                 <source>admin.dish.recomended</source>
                 <target>Rekomenduojama</target>
             </trans-unit>
+            <trans-unit id="label.alias">
+                <source>label.alias</source>
+                <target>Alias</target>
+            </trans-unit>
             <trans-unit id="admin.place.slogan">
                 <source>admin.place.slogan</source>
                 <target>Šūkis</target>

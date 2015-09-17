@@ -21,7 +21,7 @@
             {% for item in list %}
                 <li>
                     <label class="custom-checkbox">{{ item.name }}<span class="count">{{ item.placeCount }}</span>
-                        <input type="checkbox" name="kitchens[]" value="{{ item.id }}" {% if item.id in selected_kitchens %}checked="checked"{% endif %}>
+                        <input type="checkbox" name="kitchens[]" data-slug="{{ slug_util.slugByItem(item.id, 'kitchen') }}" data-name="{{ item.name }}" value="{{ item.id }}" {% if item.id in selected_kitchens %}checked="checked"{% endif %}>
                     </label>
                 </li>
             {% endfor %}

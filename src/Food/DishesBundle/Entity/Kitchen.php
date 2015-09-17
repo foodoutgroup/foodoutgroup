@@ -39,6 +39,14 @@ class Kitchen extends Uploadable implements Translatable
     /**
      * @var string
      *
+     * @Gedmo\Translatable
+     * @ORM\Column(name="alias", type="string", length=255, nullable=true)
+     */
+    private $alias;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="logo", type="string", length=100, nullable=true)
      */
     private $logo;
@@ -181,6 +189,17 @@ class Kitchen extends Uploadable implements Translatable
         return $res['name'];
     }
 
+    /**
+     * @param EntityManager $em
+     * @return string
+     */
+    public function getOrigAlias(\Doctrine\ORM\EntityManager $em)
+    {
+        $query = $em->createQuery("SELECT o.alias FROM FoodDishesBundle:Kitchen as o WHERE o.id=:id")
+            ->setParameter('id', $this->getId());
+        $res = ($query->getSingleResult());
+        return $res['alias'];
+    }
     /**
      * Get id
      *
@@ -493,5 +512,28 @@ class Kitchen extends Uploadable implements Translatable
     public function getDeletedBy()
     {
         return $this->deletedBy;
+    }
+
+    /**
+     * Set alias
+     *
+     * @param string $alias
+     * @return Kitchen
+     */
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+    
+        return $this;
+    }
+
+    /**
+     * Get alias
+     *
+     * @return string 
+     */
+    public function getAlias()
+    {
+        return $this->alias;
     }
 }

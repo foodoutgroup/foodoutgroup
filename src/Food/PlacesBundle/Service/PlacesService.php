@@ -228,11 +228,40 @@ class PlacesService extends ContainerAware {
     }
 
     /**
+     * @param string $slug_filter
+     * @param $request
+     * @param bool|false $names
+     * @return array
+     */
+    public function getKitchensFromSlug($slug_filter = '', $request, $names = false) {
+        $kitchens = array();
+        $slugs = explode("/", $slug_filter);
+        foreach ($slugs as $skey=> &$slug) {
+            $item_by_slug = $this->container->get('doctrine')->getManager()
+                ->getRepository('FoodAppBundle:Slug')
+                ->findOneBy(array('name' => str_replace('#', '', trim($slug)), 'type' => 'kitchen', 'lang_id' => $request->getLocale()));
+            if (!empty($item_by_slug)) {
+                if ($names == false) {
+                    $kitchens[] = $item_by_slug->getItemId();
+                } else {
+                    $kitchen = $this->container->get('doctrine')
+                        ->getRepository('FoodDishesBundle:Kitchen')->find($item_by_slug->getItemId());
+                    if (!empty($kitchen)) {
+                        $kitchens[] = $kitchen->getName();
+                    }
+                }
+            }
+        }
+        return $kitchens;
+    }
+
+    /**
      * @param $recommended
      * @param $request
+     * @param $slug_filter
      * @return mixed
      */
-    public function getPlacesForList($recommended, $request)
+    public function getPlacesForList($recommended, $request, $slug_filter = false)
     {
         $kitchens = $request->get('kitchens', "");
         $filters = $request->get('filters');
@@ -241,6 +270,10 @@ class PlacesService extends ContainerAware {
             $kitchens = array();
         } else {
             $kitchens = explode(",", $kitchens);
+        }
+
+        if (!empty($slug_filter)) {
+            $kitchens = $this->getKitchensFromSlug($slug_filter, $request);
         }
 
         // TODO lets debug this strange scenario :(
@@ -252,6 +285,7 @@ class PlacesService extends ContainerAware {
         if (!empty($deliveryType)) {
             $filters['delivery_type'] = $deliveryType;
         }
+
         foreach ($kitchens as $kkey=> &$kitchen) {
             $kitchen = intval($kitchen);
         }

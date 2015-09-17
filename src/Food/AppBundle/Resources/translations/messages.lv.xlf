@@ -50,6 +50,12 @@
         <source>index.findfood</source>
         <target>Meklēt</target>
       </trans-unit>
+
+      <trans-unit id="kitchen.filter.slug" resname="kitchen.filter.slug">
+        <source>kitchen.filter.slug</source>
+        <target>restorani-ar-virtuvi</target>
+      </trans-unit>
+
       <trans-unit id="1b78b59bfe4159583adb10ffa46bd822" resname="admin.kitchens.list.title">
         <source>admin.kitchens.list.title</source>
         <target>__admin.kitchens.list.title</target>

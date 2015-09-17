@@ -21,7 +21,7 @@ class KitchenController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function kitchenlistAction($recommended = false, Request $request)
+    public function kitchenlistAction($recommended = false, $slug_filter = false, Request $request)
     {
         if ($recommended) {
             $recommended = true;
@@ -36,12 +36,26 @@ class KitchenController extends Controller
         if (!empty($selectedKitchens)) {
             $selectedKitchens = explode(',', $selectedKitchens);
         } else {
-            $selectedKitchens = array();
+            $selectedKitchens = $this->get('food.places')->getKitchensFromSlug($slug_filter, $request);
+        }
+
+        $selectedKitchensSlugs = $request->get('selected_kitchens_slugs', '');
+        if (!empty($selectedKitchensSlugs)) {
+            $selectedKitchensSlugs = explode(',', $selectedKitchensSlugs);
+        } else {
+            $selectedKitchensSlugs = array();
         }
 
         $list = $this->getKitchens($recommended, $request);
 
-        return $this->render('FoodDishesBundle:Kitchen:list_items.html.twig', array('list' => $list, 'selected_kitchens' => $selectedKitchens));
+        return $this->render(
+            'FoodDishesBundle:Kitchen:list_items.html.twig',
+            array(
+                'list' => $list,
+                'selected_kitchens' => $selectedKitchens,
+                'selected_kitchens_slugs' => $selectedKitchensSlugs,
+            )
+        );
     }
 
     /**

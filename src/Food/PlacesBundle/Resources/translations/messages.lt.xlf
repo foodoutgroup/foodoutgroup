@@ -39,6 +39,11 @@
         <target>Rekomenduojama</target>
       </trans-unit>
 
+      <trans-unit id="label.alias" resname="label.alias">
+        <source>label.alias</source>
+        <target>Alias</target>
+      </trans-unit>
+
       <trans-unit id="admin.dish.time_from" resname="admin.dish.time_from">
               <source>admin.dish.time_from</source>
               <target>Laikas nuo</target>
