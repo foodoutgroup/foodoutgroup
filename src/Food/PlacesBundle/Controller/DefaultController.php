@@ -25,7 +25,7 @@ class DefaultController extends Controller
         $availableCities = $this->container->getParameter('available_cities');
         $availableCities = array_map("mb_strtolower", $availableCities);
         if (!empty($locData['city']) && in_array(mb_strtolower($locData['city']), $availableCities)) {
-            $city_url = $this->generateUrl('food_city_' . lcfirst($locData['city']), [], true);
+            $city_url = $this->generateUrl('food_city_' . str_replace("ī", "i", lcfirst($locData['city'])), [], true);
         } else {
             $city_url = $this->generateUrl('food_city_vilnius', [], true);
         }
@@ -50,6 +50,7 @@ class DefaultController extends Controller
     {
         $city = ucfirst($city);
         $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", $city);
+        $city = str_replace("ī", "i", $city);
 
         $availableCities = $this->container->getParameter('available_cities');
         $availableCities = array_map("mb_strtolower", $availableCities);
