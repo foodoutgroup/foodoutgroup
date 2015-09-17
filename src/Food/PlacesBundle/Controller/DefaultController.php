@@ -11,7 +11,10 @@ class DefaultController extends Controller
     protected $cityTranslations = [
         'Vilnius' => 'places.in_vilnius',
         'Kaunas' => 'places.in_kaunas',
-        'Klaipėda' => 'places.in_klaipeda'
+        'Klaipėda' => 'places.in_klaipeda',
+        'Klaipeda' => 'places.in_klaipeda',
+        'Riga' => 'places.in_riga',
+        'Rīga' => 'places.in_riga'
     ];
 
     public function indexAction($recommended = false)
@@ -25,7 +28,7 @@ class DefaultController extends Controller
         $availableCities = $this->container->getParameter('available_cities');
         $availableCities = array_map("mb_strtolower", $availableCities);
         if (!empty($locData['city']) && in_array(mb_strtolower($locData['city']), $availableCities)) {
-            $city_url = $this->generateUrl('food_city_' . str_replace("ī", "i", lcfirst($locData['city'])), [], true);
+            $city_url = $this->generateUrl('food_city_' . str_replace(array("ī", "ė"), array("i", "e"), lcfirst($locData['city'])), [], true);
         } else {
             $city_url = $this->generateUrl('food_city_vilnius', [], true);
         }
@@ -48,12 +51,17 @@ class DefaultController extends Controller
 
     public function indexCityAction($city, $slug_filter = false, Request $request)
     {
+        $strip_chars = function($value) {
+            return str_replace(array("ī", "ė"), array("i", "e"), $value);
+        };
         $city = ucfirst($city);
         $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", $city);
-        $city = str_replace("ī", "i", $city);
 
         $availableCities = $this->container->getParameter('available_cities');
         $availableCities = array_map("mb_strtolower", $availableCities);
+        $availableCities = array_map($strip_chars, $availableCities);
+
+        $city = $strip_chars($city);
         if (!empty($city) && in_array(mb_strtolower($city), $availableCities)) {
             $city_url = $this->generateUrl('food_city_' . lcfirst($city), [], true);
         } else {

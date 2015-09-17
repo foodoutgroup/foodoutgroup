@@ -1172,6 +1172,10 @@
         <source>general.currency_modals</source>
         <target>eiro|eiro|eiro</target>
       </trans-unit>
+      <trans-unit id="places.in_riga" resname="places.in_riga">
+        <source>places.in_riga</source>
+        <target>Rīga</target>
+      </trans-unit>
       <trans-unit id="6663122b040f929c5f977c84b09089d9" resname="general.currency_minor_modals">
         <source>general.currency_minor_modals</source>
         <target>cents|centi|centu</target>
