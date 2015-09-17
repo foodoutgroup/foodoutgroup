@@ -47,7 +47,7 @@
 
             $('#index_submit').click(function(e){
                 if ($('#index_city').val() !="" && $('#index_city').val() != null && $('#index_address').val()=="") {
-                    var url = '{{ path('food_lang_homepage') }}' + $('#index_city').val();
+                    var url = '{{ path('food_lang_homepage') }}' + $('#index_city option:selected').data('cityurl');
                     window.location.href = url;
                 } else {
                     getCrds();
@@ -99,9 +99,9 @@
                 <div class="clearfix">
                     {# TODO remove city hardcode, damn it... #}
                     <select id="index_city">
-                        <option value="" disabled {% if formDefaults.city == '' %}selected{% endif %}>{% trans %}index.city{% endtrans %}</option>
+                        <option value="" data-cityurl="" disabled {% if formDefaults.city == '' %}selected{% endif %}>{% trans %}index.city{% endtrans %}</option>
                         {% for city in available_cities %}
-                            <option value="{{ city }}" {% if formDefaults.city == city or formDefaults.city == city|replace({'ė':'e','y':'ī'}) %}selected{% endif %}>{{ city }}</option>
+                            <option value="{{ city }}" data-cityurl="{{ city|replace({'ė':'e','y':'ī','ī':'i'}) }}" {% if formDefaults.city == city or formDefaults.city == city|replace({'ė':'e','y':'ī'}) %}selected{% endif %}>{{ city }}</option>
                         {% endfor %}
                     </select>
 
