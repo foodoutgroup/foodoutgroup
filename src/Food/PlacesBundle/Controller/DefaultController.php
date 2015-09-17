@@ -25,9 +25,7 @@ class DefaultController extends Controller
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
         $placeService = $this->get('food.places');
 
-        $availableCities = $this->container->getParameter('available_cities');
-        $availableCities = array_map("mb_strtolower", $availableCities);
-        if (!empty($locData['city']) && in_array(mb_strtolower($locData['city']), $availableCities)) {
+        if (!empty($locData['city'])) {
             $city_url = $this->generateUrl('food_city_' . str_replace(array("ī", "ė"), array("i", "e"), lcfirst($locData['city'])), [], true);
         } else {
             $city_url = $this->generateUrl('food_city_vilnius', [], true);
@@ -54,16 +52,7 @@ class DefaultController extends Controller
         $city = ucfirst($city);
         $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", $city);
 
-        $strip_chars = function($value) {
-            return str_replace(array("ī", "ė"), array("i", "e"), $value);
-        };
-
-        $availableCities = $this->container->getParameter('available_cities');
-        $availableCities = array_map("mb_strtolower", $availableCities);
-        $availableCities = array_map($strip_chars, $availableCities);
-
-        $city = $strip_chars($city);
-        if (!empty($city) && in_array(mb_strtolower($city), $availableCities)) {
+        if (!empty($city)) {
             $city_url = $this->generateUrl('food_city_' . lcfirst($city), [], true);
         } else {
             $city = 'Vilnius';
