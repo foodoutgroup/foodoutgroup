@@ -297,11 +297,11 @@ food_city_kaunas:
 
 food_city_klaipeda:
     pattern: /Klaipeda
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipėda}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipeda}
 
 food_city_riga:
     pattern: /Riga
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Rīga}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga}
 
 food_city_vilnius_slash:
     pattern: /Vilnius/
@@ -313,11 +313,11 @@ food_city_kaunas_slash:
 
 food_city_klaipeda_slash:
     pattern: /Klaipeda/
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipėda}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipeda}
 
 food_city_riga_slash:
     pattern: /Riga/
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Rīga}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga}
 
 food_city_vilnius_slash_filter:
     pattern: /Vilnius/{slug_filter}
@@ -333,12 +333,12 @@ food_city_kaunas_slash_filter:
 
 food_city_klaipeda_slash_filter:
     pattern: /Klaipeda/{slug_filter}
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipėda, slug_filter: ~}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipeda, slug_filter: ~}
     requirements:
         slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
 
 food_city_riga_slash_filter:
     pattern: /Riga/{slug_filter}
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Rīga, slug_filter: ~}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga, slug_filter: ~}
     requirements:
         slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
