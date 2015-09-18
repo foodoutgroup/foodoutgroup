@@ -48,7 +48,6 @@ food_dishes:
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
-
 soanata_user:
     resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
     # prefix: /admin
@@ -74,8 +73,6 @@ _sonata_admin:
 food_homepage:
     pattern: /
     defaults: { _controller: FoodAppBundle:Default:index }
-
-
 
 food_applikacija:
     pattern:  /aplikacijos
@@ -122,10 +119,9 @@ food_cili_express_slash:
 
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
-    prefix:   /{_locale}/
-    requirements:
-        _locale:  "[a-z]{2}"
-
+#    prefix:   /{_locale}/
+#    requirements:
+#        _locale:  "[a-z]{2}"
 
 adminroot:
     path: /admin/

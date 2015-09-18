@@ -103,7 +103,7 @@ food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|maina|mesto|monitoring|nagios|banned|logistics|order|sitemap)[a-z0-9-\__\"„“\.\+]{4,}"
+        slug : "^(?!admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|maina|mesto|monitoring|nagios|banned|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Riga)[a-z0-9-\__\"„“\.\+]{4,}"
 
 food_order_nav_test1:
     pattern: /order/nav_test1
@@ -285,3 +285,60 @@ food_newsletter_subscribe:
 food_newsletter_thank:
     pattern: /newsletter/thank/
     defaults: { _controller: FoodAppBundle:Default:newsletterThank}
+
+# Miestai
+food_city_vilnius:
+    pattern: /Vilnius
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Vilnius}
+
+food_city_kaunas:
+    pattern: /Kaunas
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kaunas}
+
+food_city_klaipeda:
+    pattern: /Klaipeda
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipeda}
+
+food_city_riga:
+    pattern: /Riga
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga}
+
+food_city_vilnius_slash:
+    pattern: /Vilnius/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Vilnius}
+
+food_city_kaunas_slash:
+    pattern: /Kaunas/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kaunas}
+
+food_city_klaipeda_slash:
+    pattern: /Klaipeda/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipeda}
+
+food_city_riga_slash:
+    pattern: /Riga/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga}
+
+food_city_vilnius_slash_filter:
+    pattern: /Vilnius/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Vilnius, slug_filter: ~}
+    requirements:
+        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
+food_city_kaunas_slash_filter:
+    pattern: /Kaunas/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kaunas, slug_filter: ~}
+    requirements:
+        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
+food_city_klaipeda_slash_filter:
+    pattern: /Klaipeda/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipeda, slug_filter: ~}
+    requirements:
+        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
+food_city_riga_slash_filter:
+    pattern: /Riga/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga, slug_filter: ~}
+    requirements:
+        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"

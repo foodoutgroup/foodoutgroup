@@ -15,3 +15,9 @@ food_places_lv_city:
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: ~}
     requirements:
         city : "^(?!ieteicama|maina).+"
+
+food_places_lt_city_filter:
+    pattern:  /{city}/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: ~, slug_filter: ~}
+    requirements:
+        city : "^(?!ieteicama|maina).+"

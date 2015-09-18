@@ -11,7 +11,10 @@ class DefaultController extends Controller
     protected $cityTranslations = [
         'Vilnius' => 'places.in_vilnius',
         'Kaunas' => 'places.in_kaunas',
-        'Klaipėda' => 'places.in_klaipeda'
+        'Klaipėda' => 'places.in_klaipeda',
+        'Klaipeda' => 'places.in_klaipeda',
+        'Riga' => 'places.in_riga',
+        'Rīga' => 'places.in_riga'
     ];
 
     public function indexAction($recommended = false)
@@ -22,6 +25,12 @@ class DefaultController extends Controller
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
         $placeService = $this->get('food.places');
 
+        if (!empty($locData['city'])) {
+            $city_url = $this->generateUrl('food_city_' . str_replace(array("ī", "ė"), array("i", "e"), lcfirst($locData['city'])), [], true);
+        } else {
+            $city_url = $this->generateUrl('food_city_vilnius', [], true);
+        }
+
         return $this->render(
             'FoodPlacesBundle:Default:index.html.twig',
             array(
@@ -31,17 +40,29 @@ class DefaultController extends Controller
                 'default_city' => 'Vilnius',
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'delivery_type_filer' => 'delivery_and_pickup', // TODO saving or other cool feature
+                'slug_filter' => null,
+                'city_url' => $city_url,
+                'selected_kitchens_names' => array(),
             )
         );
     }
 
-    public function indexCityAction($city)
+    public function indexCityAction($city, $slug_filter = false, Request $request)
     {
         $city = ucfirst($city);
         $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", $city);
+
+        if (!empty($city)) {
+            $city_url = $this->generateUrl('food_city_' . lcfirst($city), [], true);
+        } else {
+            $city = 'Vilnius';
+            $city_url = $this->generateUrl('food_city_vilnius', [], true);
+        }
+
         $this->get('food.googlegis')->setCityOnlyToSession($city);
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
         $placeService = $this->get('food.places');
+        $selectedKitchensNames = $placeService->getKitchensFromSlug($slug_filter, $request, true);
 
         return $this->render(
             'FoodPlacesBundle:Default:index.html.twig',
@@ -51,11 +72,14 @@ class DefaultController extends Controller
                 'city_translations' => $this->cityTranslations,
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'delivery_type_filer' => 'delivery_and_pickup', // TODO saving or other cool feature
+                'slug_filter' => $slug_filter,
+                'city_url' => $city_url,
+                'selected_kitchens_names' => $selectedKitchensNames,
             )
         );
     }
 
-    public function listAction($recommended = false, Request $request)
+    public function listAction($recommended = false, $slug_filter = false, Request $request)
     {
         if ($recommended) {
             $recommended = true;
@@ -64,9 +88,10 @@ class DefaultController extends Controller
         if ($recommendedFromRequest !== null) {
             $recommended = (bool)$recommendedFromRequest;
         }
+
         $listType = $request->get('delivery_type', 'delivery');
 
-        $places = $this->get('food.places')->getPlacesForList($recommended, $request);
+        $places = $this->get('food.places')->getPlacesForList($recommended, $request, $slug_filter);
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
 
         return $this->render(

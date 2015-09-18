@@ -50,6 +50,12 @@
         <source>index.findfood</source>
         <target>Meklēt</target>
       </trans-unit>
+
+      <trans-unit id="kitchen.filter.slug" resname="kitchen.filter.slug">
+        <source>kitchen.filter.slug</source>
+        <target>restorani-ar-virtuvi</target>
+      </trans-unit>
+
       <trans-unit id="1b78b59bfe4159583adb10ffa46bd822" resname="admin.kitchens.list.title">
         <source>admin.kitchens.list.title</source>
         <target>__admin.kitchens.list.title</target>
@@ -1165,6 +1171,10 @@
       <trans-unit id="1356e0d24463239b30996f6239c0ff83" resname="general.currency_modals">
         <source>general.currency_modals</source>
         <target>eiro|eiro|eiro</target>
+      </trans-unit>
+      <trans-unit id="places.in_riga" resname="places.in_riga">
+        <source>places.in_riga</source>
+        <target>Rīga</target>
       </trans-unit>
       <trans-unit id="6663122b040f929c5f977c84b09089d9" resname="general.currency_minor_modals">
         <source>general.currency_minor_modals</source>

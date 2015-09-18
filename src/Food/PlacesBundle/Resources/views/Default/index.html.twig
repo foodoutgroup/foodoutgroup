@@ -1,6 +1,6 @@
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
-{% block title %}{% trans %}general.places{% endtrans %} | {{ page_title }}{% endblock %}
+{% block title %}{% trans %}general.places{% endtrans %}{% if selected_kitchens_names %}: {% for name in selected_kitchens_names %}{{ name }}{% if not loop.last %} - {% endif %}{% endfor %}{% endif %} | {{ page_title }}{% endblock %}
 
 {% block adnet_retargeting %}
     <!-- Adform Tracking Code BEGIN -->
@@ -51,18 +51,22 @@
             var params = {kitchens: '', filters: ''};
             var tmpName = "";
             var selectedKitchens = '';
+            var selectedKitchensSlugs = '';
+            var selectedKitchensNames = '';
             for(i = 0; i < $filters.length; i++) {
                 tmpName = $($filters[i]).attr('name').replace("[]","");
                 if (params[tmpName]!="") {
                     params[tmpName]+=",";
                 }
                 params[tmpName] += $($filters[i]).val();
-                selectedKitchens += ','+$($filters[i]).val()
+                selectedKitchens += ','+$($filters[i]).val();
+                selectedKitchensSlugs += ','+$($filters[i]).data('slug');
+                selectedKitchensNames += ','+$($filters[i]).data('name');
             }
             params['delivery_type'] = $(".site-block .restaurants-list-top-filters .delivery-type-filter a.selected").attr('data-type');
             params['recommended'] = '{{ recommended }}';
 
-            var kitchenParams = { 'recommended': '{{ recommended }}', 'delivery_type': params['delivery_type'], 'selected_kitchens': selectedKitchens};
+            var kitchenParams = { 'recommended': '{{ recommended }}', 'delivery_type': params['delivery_type'], 'selected_kitchens': selectedKitchens, 'selected_kitchens_slugs': selectedKitchensSlugs};
 
             $.get('{{ path('food_kitchens_filter') }}', kitchenParams, function(resp) {
                 var $container = $('.content-lefter');
@@ -71,6 +75,49 @@
                 $container.prepend(resp);
                 $container.iCheck();
             });
+
+            var _url_slug_for_all = '{% trans %}kitchen.filter.slug{% endtrans %}';
+            var _kitchens_count = 0;
+            var _kitchens_array = selectedKitchens.split(',');
+            $.each(_kitchens_array, function(i){
+                if (_kitchens_array[i] !== '') {
+                    _kitchens_count += 1;
+                }
+            });
+
+            var _page_url = '';
+            var _kitchensSlug_array = selectedKitchensSlugs.split(',');
+            $.each(_kitchensSlug_array, function(i){
+                if (_kitchensSlug_array[i] !== '') {
+                    _page_url += _kitchensSlug_array[i] + '/';
+                }
+            });
+
+            var _page_title = '%s | {{ page_title }}';
+            var _title_row = '';
+            var _kitchensName_array = selectedKitchensNames.split(',');
+            $.each(_kitchensName_array, function(i){
+                if (_kitchensName_array[i] !== '') {
+                    _title_row += _kitchensName_array[i] + ' - ';
+                }
+            });
+
+            var remove_last_slash = function(url) {
+                if (url.charAt(url.length - 1) == "/") {
+                    url = url.substr(0, url.length - 1);
+                }
+                return url;
+            };
+
+            var currentUrl = remove_last_slash('{{ city_url }}');
+            var new_url = currentUrl + '/' + _page_url;
+
+            document.title = _page_title.replace(/%s/g, '{% trans %}general.places{% endtrans %}' + (_title_row !== '' ? ': ' : '') + _title_row.substr(0, _title_row.length - 3));
+            if (_kitchens_count > 1) {
+                window.history.pushState("string", document.title, currentUrl + '/' + _url_slug_for_all + '/' + _page_url);
+            } else {
+                window.history.pushState("string", document.title, new_url.replace(_url_slug_for_all + '/', ''));
+            }
 
             $('.content-righter').mask();
             $.post('{{ path('food_places_filter') }}', params, function(resp) {
@@ -160,7 +207,7 @@
     </div>
     <div class="clearfix">
         <div class="content-lefter">
-            {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended})) }}
+            {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended, 'slug_filter': slug_filter})) }}
             {{ render(controller('FoodDishesBundle:Place:filtersList')) }}
 
             <div class="banners">
@@ -223,7 +270,7 @@
                     <a href="#">{% trans %}places.sort_by_distance{% endtrans %}</a>
                 </div>
             </div>#}
-            {{ render(controller('FoodPlacesBundle:Default:list', {'recommended': recommended})) }}
+            {{ render(controller('FoodPlacesBundle:Default:list', {'recommended': recommended, 'slug_filter': slug_filter})) }}
         </div>
     </div>
 

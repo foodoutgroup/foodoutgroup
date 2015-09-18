@@ -36,6 +36,7 @@ class KitchenAdmin extends FoodAdmin
                 'translatable_class' => 'Food\DishesBundle\Entity\Kitchen',
                 'fields' => array(
                     'name' => array('label' => 'label.name'),
+                    'alias' => array('label' => 'label.alias', 'required' => false),
                 )
             ))
             //->add('file', 'file', $options)
@@ -51,6 +52,7 @@ class KitchenAdmin extends FoodAdmin
     {
         $datagridMapper
             ->add('name', null, array('label' => 'admin.kitchen.name'))
+            ->add('alias', null, array('label' => 'admin.kitchen.alias'))
             ->add('visible', null, array('label' => 'admin.visible'))
 //            ->add('createdBy', null, array('label' => 'admin.created_by'))
 //            ->add(
@@ -151,22 +153,47 @@ class KitchenAdmin extends FoodAdmin
     private function fixSlugs($object)
     {
         $origName = $object->getOrigName($this->modelManager->getEntityManager('FoodDishesBundle:Kitchen'));
+        $origAlias = $object->getOrigAlias($this->modelManager->getEntityManager('FoodDishesBundle:Kitchen'));
         $locales = $this->getContainer()->getParameter('available_locales');
         $textsForSlugs = array();
+        $alias_textsForSlugs = array();
+        $all_alias_textsForSlugs = array();
         foreach($object->getTranslations()->getValues() as $row) {
             if ($row->getField() == "name") {
                 $textsForSlugs[$row->getLocale()] = $row->getContent();
+            }
+            if ($row->getField() == "alias") {
+                $alias_textsForSlugs[$row->getLocale()] = $row->getContent();
             }
         }
         foreach ($locales as $loc) {
             if (!isset($textsForSlugs[$loc])) {
                 $textsForSlugs[$loc] = $origName;
             }
+            if (!isset($alias_textsForSlugs[$loc])) {
+                $alias_textsForSlugs[$loc] = $origAlias;
+            }
+        }
+
+        if (count($alias_textsForSlugs) > 0) {
+            foreach($alias_textsForSlugs as $key => $value) {
+                if (!empty($value)) {
+                    $values = explode(',', $value);
+                    foreach ($values as $val) {
+                        $all_alias_textsForSlugs[$key][] = trim($val);
+                    }
+                }
+            }
         }
 
         $languages = $this->getContainer()->get('food.app.utils.language')->getAll();
         $slugUtelyte = $this->getContainer()->get('food.dishes.utils.slug');
         foreach ($languages as $loc) {
+            if (count($all_alias_textsForSlugs) > 0) {
+                foreach($all_alias_textsForSlugs[$loc] as $aliasText) {
+                    $slugUtelyte->generateForKitchens($loc, $object->getId(), $aliasText);
+                }
+            }
             $slugUtelyte->generateForKitchens($loc, $object->getId(), $textsForSlugs[$loc]);
         }
     }
