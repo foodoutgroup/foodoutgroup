@@ -491,11 +491,11 @@ class NavService extends ContainerAware
      */
     private function _processLineDelivery(Order $order, $orderNewId, $key)
     {
-        $devPrice = $order->getPlace()->getDeliveryPrice();
-        $couponCode = $order->getCouponCode();
-        if (!empty($couponCode) && strlen($couponCode) > 1) {
+        //$devPrice = $order->getPlace()->getDeliveryPrice();
+        //$couponCode = $order->getCouponCode();
+        //if (!empty($couponCode) && strlen($couponCode) > 1) {
             $devPrice = $order->getDeliveryPrice();
-        }
+        //}
 
         $dataToPut = array(
             'Order No_' => $orderNewId,
