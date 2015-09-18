@@ -28,7 +28,9 @@ class DefaultController extends Controller
         if (!empty($locData['city'])) {
             $city_url = $this->generateUrl('food_city_' . str_replace(array("ī", "ė"), array("i", "e"), lcfirst($locData['city'])), [], true);
         } else {
-            $city_url = $this->generateUrl('food_city_vilnius', [], true);
+            $availableCities = $this->container->getParameter('available_cities');
+            $city_name = str_replace(array('ė', 'ī'), array('e', 'i'), lcfirst(reset($availableCities)));
+            $city_url = $this->generateUrl('food_city_' . (!empty($city_name) ? $city_name : 'vilnius'), [], true);
         }
 
         return $this->render(
@@ -55,8 +57,10 @@ class DefaultController extends Controller
         if (!empty($city)) {
             $city_url = $this->generateUrl('food_city_' . lcfirst($city), [], true);
         } else {
-            $city = 'Vilnius';
-            $city_url = $this->generateUrl('food_city_vilnius', [], true);
+            $availableCities = $this->container->getParameter('available_cities');
+            $city_name = str_replace(array('ė', 'ī'), array('e', 'i'), lcfirst(reset($availableCities)));
+            $city = ucfirst($city_name);
+            $city_url = $this->generateUrl('food_city_' . (!empty($city_name) ? $city_name : 'vilnius'), [], true);
         }
 
         $this->get('food.googlegis')->setCityOnlyToSession($city);
