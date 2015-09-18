@@ -19,6 +19,7 @@ parameters:
     locale: en
     locales: ["en", "lt", "ru"]
     available_cities: ["Vilnius", "Kaunas", "Klaipėda"]
+    available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda"]
     available_locales: [ "en", "lt", "ru"]
     available_locales_routing:  en | lt | ru
     cloudfront_url: images.foodout.lt

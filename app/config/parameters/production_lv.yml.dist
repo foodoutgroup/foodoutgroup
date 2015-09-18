@@ -18,7 +18,8 @@ parameters:
 
     locale: lv
     locales: ["lv", "en", "ru"]
-    available_cities: [Rīga]
+    available_cities: ["Rīga"]
+    available_cities_slugs: ["Riga"]
     available_locales: ["lv", "en", "ru"]
     available_locales_routing: lv | en | ru
     cloudfront_url: images.foodout.lv

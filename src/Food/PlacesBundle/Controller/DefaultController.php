@@ -24,12 +24,12 @@ class DefaultController extends Controller
         }
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
         $placeService = $this->get('food.places');
+        $availableCitiesSlugs = $this->container->getParameter('available_cities_slugs');
 
-        if (!empty($locData['city'])) {
-            $city_url = $this->generateUrl('food_city_' . str_replace(array("ī", "ė"), array("i", "e"), lcfirst($locData['city'])), [], true);
+        if (!empty($locData['city']) && in_array(mb_strtolower($locData['city']), $availableCitiesSlugs)) {echo 1;
+            $city_url = $this->generateUrl('food_city_' . lcfirst($locData['city']), [], true);
         } else {
-            $availableCities = $this->container->getParameter('available_cities');
-            $city_name = str_replace(array('ė', 'ī'), array('e', 'i'), lcfirst(reset($availableCities)));
+            $city_name = lcfirst(reset($availableCitiesSlugs));
             $city_url = $this->generateUrl('food_city_' . (!empty($city_name) ? $city_name : 'vilnius'), [], true);
         }
 
@@ -53,12 +53,13 @@ class DefaultController extends Controller
     {
         $city = ucfirst($city);
         $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", $city);
+        $availableCitiesSlugs = $this->container->getParameter('available_cities_slugs');
+        $availableCitiesSlugs = array_map("mb_strtolower", $availableCitiesSlugs);
 
-        if (!empty($city)) {
+        if (!empty($city) && in_array(mb_strtolower($city), $availableCitiesSlugs)) {
             $city_url = $this->generateUrl('food_city_' . lcfirst($city), [], true);
         } else {
-            $availableCities = $this->container->getParameter('available_cities');
-            $city_name = str_replace(array('ė', 'ī'), array('e', 'i'), lcfirst(reset($availableCities)));
+            $city_name = lcfirst(reset($availableCitiesSlugs));
             $city = ucfirst($city_name);
             $city_url = $this->generateUrl('food_city_' . (!empty($city_name) ? $city_name : 'vilnius'), [], true);
         }

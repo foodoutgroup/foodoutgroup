@@ -13,6 +13,7 @@ parameters:
     #available_locales: [lt, en, ru]
     #available_locales_routing: lt | en | ru
     #available_cities: ["Vilnius","Kaunas","Klaipėda"]
+    #available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda"]
     time_zone: "Europe/Vilnius"
 #    sms.available_providers: [food.infobip, food.silverstreet]
     sms.available_providers: [food.infobip]
@@ -127,6 +128,7 @@ twig:
         publicdomain: "%publicdomain%"
         google_analytics_uid: "%google_analytics_uid%"
         available_cities: %available_cities%
+        available_cities_slugs: %available_cities_slugs%
         vat_size: "%vat%"
         google_maps_api: "%google.maps_api%"
         cloudfront_url: "%cloudfront_url%"

@@ -101,7 +101,7 @@
                     <select id="index_city">
                         <option value="" data-cityurl="" disabled {% if formDefaults.city == '' %}selected{% endif %}>{% trans %}index.city{% endtrans %}</option>
                         {% for city in available_cities %}
-                            <option value="{{ city }}" data-cityurl="{{ city|replace({'ė':'e','y':'ī','ī':'i'}) }}" {% if formDefaults.city == city or formDefaults.city == city|replace({'ė':'e','y':'ī'}) %}selected{% endif %}>{{ city }}</option>
+                            <option value="{{ city }}" data-cityurl="{{ city|replace({'ė':'e','ī':'i'}) }}" {% if formDefaults.city == city or formDefaults.city == city|replace({'ė':'e','ī':'i'}) %}selected{% endif %}>{{ city }}</option>
                         {% endfor %}
                     </select>
 
