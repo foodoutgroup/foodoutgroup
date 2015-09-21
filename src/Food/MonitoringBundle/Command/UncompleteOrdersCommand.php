@@ -31,7 +31,7 @@ class UncompleteOrdersCommand extends ContainerAwareCommand
         $monitoringService = $this->getContainer()->get('food.monitoring');
 
         $from = new \DateTime(
-            date("Y-m-d 00:00:01", strtotime("-3 day"))
+            date("Y-m-d 00:00:01", strtotime("-4 day"))
         );
         $to = new \DateTime(
             date("Y-m-d 23:59:59", strtotime("-1 day"))
