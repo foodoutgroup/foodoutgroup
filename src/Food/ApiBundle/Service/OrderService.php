@@ -316,22 +316,26 @@ class OrderService extends ContainerAware
             $title = "waiting_user_confirmation";
         }
 
+        // If coupon in use
         $discount = array();
+        $discountSize = null;
+        $discountSum = null;
         if (!empty($coupon)) {
-            $discountSum = null;
-            $discountSize = $coupon->getDiscount();
-            if (!empty($discountSize) && !empty($list)) {
-                $discountSum = $this->getCartService()->getTotalDiscount($list, $coupon->getDiscount());
-            } else {
-                $discountSize = null;
-                $discountSum = $coupon->getDiscountSum();
+            $freeDelivery = $coupon->getFreeDelivery();
+            if (!$freeDelivery) {
+                $discountSize = $coupon->getDiscount();
+                if (!empty($discountSize) && !empty($list)) {
+                    $discountSum = $this->getCartService()->getTotalDiscount($list, $coupon->getDiscount());
+                } else {
+                    $discountSize = null;
+                    $discountSum = $coupon->getDiscountSum();
+                }
             }
-            $discount['code'] = $coupon->getCode();
-            if ($discountSum > 0) {
-                $discountSum = $discountSum * 100;
-            }
+
+            $discountSum = $discountSum > 0 ? $discountSum * 100 : $discountSum;
             $discount['discount_sum'] = $discountSum;
             $discount['discount_size'] = $discountSize;
+            $discount['total_sum_with_discount'] = $order->getTotal() * 100;
         }
 
         $returner = array(
