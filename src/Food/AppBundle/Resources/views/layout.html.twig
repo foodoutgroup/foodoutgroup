@@ -142,7 +142,7 @@
     <div class="site-top">
         <div class="site-block clearfix">
             <a href="{{ path('food_lang_homepage') }}" class="main-logo">
-                <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{% if site_country == 'LT' %}{{ asset('bundles/foodapp/images/logo_basketball_lt.png') }}{#{{ asset('bundles/foodapp/images/logo_food.png') }}#}{% else %}{#{{ asset('bundles/foodapp/images/logo_food2.png') }}#}{{ asset('bundles/foodapp/images/logo_basketball_lv.png') }}{% endif %}" />
+                <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{% if site_country == 'LT' %}{{ asset('bundles/foodapp/images/logo_food.png') }}{% else %}{{ asset('bundles/foodapp/images/logo_food2.png') }}{% endif %}" />
             </a>
 
             {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
