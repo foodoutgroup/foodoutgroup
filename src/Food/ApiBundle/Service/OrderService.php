@@ -318,18 +318,10 @@ class OrderService extends ContainerAware
 
         // If coupon in use
         $discount = null;
-        $discountSize = null;
-        $discountSum = null;
         $coupon = $order->getCoupon();
         if (!empty($coupon)) {
-            if (!empty($order->getDiscountSize())) {
-                $discountSize = $order->getDiscountSize();
-            }
-            if (!empty($order->getDiscountSum())) {
-                $discountSum = $order->getDiscountSum() * 100;
-            }
-            $discount['discount_sum'] = $discountSum;
-            $discount['discount_size'] = $discountSize;
+            $discount['discount_sum'] = $order->getDiscountSum() * 100;
+            $discount['discount_size'] = $order->getDiscountSize();
             $discount['total_sum_with_discount'] = $order->getTotal() * 100;
         }
 
