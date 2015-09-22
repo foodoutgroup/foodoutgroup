@@ -432,6 +432,12 @@ class TestController extends Controller
         );
     }
 
+    public function betaCodeAction()
+    {
+        echo $this->get('food.order')->getBetaCode();
+        return new Response();
+    }
+
     public function gameAction(Request $request)
     {
         $data = array(

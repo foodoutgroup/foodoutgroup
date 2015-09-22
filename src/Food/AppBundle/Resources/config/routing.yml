@@ -18,6 +18,10 @@ food_test_devzones:
     pattern: /test/devzones/{id}
     defaults: { _controller: FoodAppBundle:Test:devzones, id: ~ }
 
+food_test_betacode:
+    pattern: /test/beta_code/
+    defaults: { _controller: FoodAppBundle:Test:betaCode }
+
 food_test_index:
     pattern:  /test/
     defaults: { _controller: FoodAppBundle:Test:index }

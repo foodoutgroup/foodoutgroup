@@ -503,6 +503,12 @@ class OrderService extends ContainerAware
 
         */
 
+        // TODO temp Beta.lt code
+        $betaCode = '';
+        if ($this->container->get('food.app.utils.misc')->getParam('beta_code_on', true) == 'on') {
+            $betaCode = $this->getBetaCode();
+        }
+
         $variables = array(
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
             'maisto_ruosejas' => $this->getOrder()->getPlacePoint()->getAddress(),
@@ -512,7 +518,8 @@ class OrderService extends ContainerAware
             'total_sum' => $this->getOrder()->getTotal(),
             'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
             'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
-            'invoice' => $invoice
+            'invoice' => $invoice,
+            'beta.lt_kodas' => $betaCode,
         );
 
 
@@ -3399,5 +3406,39 @@ class OrderService extends ContainerAware
         $date = new \DateTime("-".$timeToDelivery." minute");
 
         return $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->getOrdersToBeLate($date);
+    }
+
+    /**
+     * @return string
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getBetaCode()
+    {
+        $repo = $this->container->get('doctrine')->getRepository('FoodOrderBundle:BetaCoupon');
+        $em = $this->container->get('doctrine')->getEntityManager();
+
+        $query = "
+          SELECT
+            bc.id,
+            bc.coupon_code
+          FROM beta_coupons bc
+          ORDER BY bc.id ASC
+          LIMIT 1
+        ";
+
+        $stmt = $em->getConnection()->prepare($query);
+        $stmt->execute();
+        $result =  $stmt->fetchAll();
+
+        $code = $result[0];
+
+        $codeEntity = $repo->find($code['id']);
+
+        $theCode = $codeEntity->getCode();
+
+        $em->remove($codeEntity);
+        $em->flush();
+
+        return $theCode;
     }
 }
