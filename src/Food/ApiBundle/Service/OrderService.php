@@ -290,7 +290,7 @@ class OrderService extends ContainerAware
 
         $this->container->get('doctrine')->getManager()->refresh($order);
 
-        return $this->getOrderForResponse($order, $coupon, $list);
+        return $this->getOrderForResponse($order);
     }
 
     public function getCartService()
@@ -307,7 +307,7 @@ class OrderService extends ContainerAware
      *
      * @return array
      */
-    public function getOrderForResponse(Order $order, Coupon $coupon = null, $list = null)
+    public function getOrderForResponse(Order $order)
     {
         $message = $this->getOrderStatusMessage($order);
 
@@ -317,22 +317,17 @@ class OrderService extends ContainerAware
         }
 
         // If coupon in use
-        $discount = array();
+        $discount = null;
         $discountSize = null;
         $discountSum = null;
+        $coupon = $order->getCoupon();
         if (!empty($coupon)) {
-            $freeDelivery = $coupon->getFreeDelivery();
-            if (!$freeDelivery) {
-                $discountSize = $coupon->getDiscount();
-                if (!empty($discountSize) && !empty($list)) {
-                    $discountSum = $this->getCartService()->getTotalDiscount($list, $coupon->getDiscount());
-                } else {
-                    $discountSize = null;
-                    $discountSum = $coupon->getDiscountSum();
-                }
+            if (!empty($order->getDiscountSize())) {
+                $discountSize = $order->getDiscountSize();
             }
-
-            $discountSum = $discountSum > 0 ? $discountSum * 100 : $discountSum;
+            if (!empty($order->getDiscountSum())) {
+                $discountSum = $order->getDiscountSum() * 100;
+            }
             $discount['discount_sum'] = $discountSum;
             $discount['discount_size'] = $discountSize;
             $discount['total_sum_with_discount'] = $order->getTotal() * 100;
@@ -341,7 +336,7 @@ class OrderService extends ContainerAware
         $returner = array(
             'order_id' => $order->getId(),
             'total_price' => array(
-                'amount' => $order->getTotal()*100,
+                'amount' => $order->getTotal() * 100,
                 'currency' => $this->container->getParameter('currency_iso')
             ),
             'discount' => $discount,

@@ -143,7 +143,7 @@ class OrdersControllerTest extends WebTestCase
                 'amount' => 10000,
                 'currency' => 'EUR'
             ),
-            'discount' => array(),
+            'discount' => null,
             'state' => array(
                 'title' => 'accepted',
                 'info_number' => '+37061004970',
@@ -202,7 +202,7 @@ class OrdersControllerTest extends WebTestCase
                 'amount' => 10000,
                 'currency' => 'EUR'
             ),
-            'discount' => array(),
+            'discount' => null,
             'state' => array(
                 'title' => 'accepted',
                 'info_number' => '+37061004970',

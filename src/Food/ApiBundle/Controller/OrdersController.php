@@ -309,7 +309,7 @@ class OrdersController extends Controller
                         'name' => $coupon->getName(),
                         'code' => $coupon->getCode(),
                         'discount' => $coupon->getDiscount(),
-                        'discount_sum' => $coupon->getDiscountSum(),
+                        'discount_sum' => $coupon->getDiscountSum() * 100,
                         'free_delivery' => $coupon->getFreeDelivery(),
                         'single_use' => $coupon->getSingleUse(),
                         'no_self_delivery' => $coupon->getNoSelfDelivery(), // Only for non self delivery restaurants
