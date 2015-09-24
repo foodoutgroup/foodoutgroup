@@ -14,6 +14,9 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ApiService extends ContainerAware
 {
+    /**
+     * @return string
+     */
     public function getSessionId() {
         return $this->container->get('session')->getId();
     }
@@ -45,9 +48,29 @@ class ApiService extends ContainerAware
         $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find((int)$placeId);
         if ($place) {
             $returner = array();
+            $currentWeek = date('W') % 2 == 1; # 1 - odd 0 - even
+            $currentTime = date("H:i");
             foreach ($place->getDishes() as $dish) {
                 $menuItem = new MenuItem(null, $this->container);
                 if ($dish->getActive()) {
+                    // Is even check on and this is even week?
+                    if ($dish->getCheckEvenOddWeek()) {
+                        if (($dish->getEvenWeek() && $currentWeek) || (!$dish->getEvenWeek() && !$currentWeek)) {
+                            // Skip this dish as it is wrong wee
+                            continue;
+                        }
+                    }
+
+                    // Is time check on and its time to show?
+                    $timeFrom = $dish->getTimeFrom();
+                    $timeTo = $dish->getTimeTo();
+                    if (empty($timeFrom) && !empty($timeTo)) {
+                        if (!($currentTime >= $timeFrom && $currentTime <= $timeTo)) {
+                            // Skip this dish. It is not the right time to show
+                            continue;
+                        }
+                    }
+
                     if ($this->_hasAnyActiveCats( $dish->getCategories())) {
                         $item = $menuItem->loadFromEntity($dish);
                         //if (!empty($item)) {
@@ -64,6 +87,7 @@ class ApiService extends ContainerAware
 
     /**
      * @param FoodCategory[] $categories
+     * @return bool
      */
     private function _hasAnyActiveCats($categories)
     {
@@ -75,6 +99,12 @@ class ApiService extends ContainerAware
         return false;
     }
 
+    /**
+     * @param int $placeId
+     * @param null $updated_at
+     * @param $menuItems
+     * @return array
+     */
     public function createDeletedByPlaceId($placeId, $updated_at = null, &$menuItems)
     {
         $query = "SELECT id,photo, deleted_at  FROM dish WHERE place_id=".intval($placeId)." AND (active=0 OR deleted_at IS NOT NULL)";
@@ -115,6 +145,11 @@ class ApiService extends ContainerAware
         return array();
     }
 
+    /**
+     * @param int $placeId
+     * @param int $menuItem
+     * @return array
+     */
     public function createMenuItemByPlaceIdAndItemId($placeId, $menuItem)
     {
         $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find((int)$placeId);
