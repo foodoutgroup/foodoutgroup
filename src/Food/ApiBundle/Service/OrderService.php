@@ -302,8 +302,6 @@ class OrderService extends ContainerAware
      * @todo - FIX TO THE EPIC COMMON LEVEL
      *
      * @param Order $order
-     * @param Coupon $coupon
-     * @param $list
      *
      * @return array
      */
@@ -391,6 +389,7 @@ class OrderService extends ContainerAware
                 'count' => $detail->getQuantity(),
                 'price' => array(
                     'amount' => $sum * 100,
+                    'old_amount' => $sum * 100 + ($order->getDiscountSum() * 100),
                     'currency' => $currency
                 )
             );

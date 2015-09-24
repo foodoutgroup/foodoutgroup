@@ -211,13 +211,14 @@ class PlacesService extends ContainerAware {
                     if ($this->container->get('food.order')->isTodayNoOneWantsToWork($place['place'])) {
                         $place['is_work'] = 9;
                     } else {
-                        $place['is_work'] = 2;
+                        //$place['is_work'] = 2;
+                        $place['is_work'] = 1;
                     }
                 }
             }
-            if ($place['place']->getNavision()) {
+            /*if ($place['place']->getNavision()) {
                 $place['show_top'] = 1;
-            }
+            }*/
             $sortArrPrio[] = intval($place['priority']);// + ($place['place']->getNavision() ? 20:0);
             $sortArr[] = $place['is_work'];
             $sortTop[] = $place['show_top'];
