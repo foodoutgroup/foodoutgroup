@@ -1068,7 +1068,7 @@ class OrderService extends ContainerAware
                  * Uz toki graba ash degsiu pragare.... :/
                  */
                 $priceForInsert = $price;
-                $discountPart = (float)ceil($price * $cartDish->getQuantity() * $relationPart * 100) / 100;
+                $discountPart = (float)round($price * $cartDish->getQuantity() * $relationPart * 100, 2) / 100;
                 if ($discountPart < $discountSumLeft) {
                     $discountSum = $discountPart;
                 } else {
@@ -1078,9 +1078,9 @@ class OrderService extends ContainerAware
                         $discountSum = $discountSumLeft;
                     }
                 }
-                $discountSum = sprintf('%0.2f', (float)ceil($discountSum / $cartDish->getQuantity() * 100) / 100);
+                $discountSum = (float)round($discountSum / $cartDish->getQuantity() * 100, 2) / 100;
                 $priceForInsert = $price - $discountSum;
-                $discountSumLeft = sprintf('%0.2f', $discountSumLeft) - $discountSum;
+                $discountSumLeft = $discountSumLeft - $discountSum;
                 $discountUsed = $discountUsed + $discountSum;
                 $price = $priceForInsert;
             }
