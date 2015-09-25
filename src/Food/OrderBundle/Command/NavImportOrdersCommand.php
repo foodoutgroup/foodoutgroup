@@ -147,7 +147,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                         }
                         continue;
                     }
-                    $place = $placePoint->getPlace();;
+                    $place = $placePoint->getPlace();
                     $output->writeln('Place for order: '.$place->getName().' ('.$place->getId().')');
                     $output->writeln('Placepoint for order: '.$placePoint->getAddress().' ('.$placePoint->getId().')'."\n");
 
@@ -378,6 +378,17 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                         }
 
                         $order->setUser($user);
+
+                        // Paskutiniu metu daug duplikatu issoka be userio ir adreso. Darom papildoma checka, nes useris turi but, o deliveriui - Adresas
+                        $testUser = $order->getUser();
+                        $testAddress = $order->getAddressId();
+                        if (!$testUser->getId() || ($order->getDeliveryType() == OrderService::$deliveryDeliver && !$testAddress->getId())) {
+                            $messageNoUser = 'Error importing from NAV. Order with no user and address. Skipping this order';
+                            $output->writeln($messageNoUser);
+                            $log->alert($messageNoUser);
+                            $stats['error']++;
+                            continue;
+                        }
 
                         $stats['processed']++;
                         $em->persist($order);
