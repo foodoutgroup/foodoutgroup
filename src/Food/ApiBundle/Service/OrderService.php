@@ -290,7 +290,7 @@ class OrderService extends ContainerAware
 
         $this->container->get('doctrine')->getManager()->refresh($order);
 
-        return $this->getOrderForResponse($order);
+        return $this->getOrderForResponse($order, $list);
     }
 
     public function getCartService()
@@ -302,10 +302,11 @@ class OrderService extends ContainerAware
      * @todo - FIX TO THE EPIC COMMON LEVEL
      *
      * @param Order $order
+     * @param $list
      *
      * @return array
      */
-    public function getOrderForResponse(Order $order)
+    public function getOrderForResponse(Order $order, $list = false)
     {
         $message = $this->getOrderStatusMessage($order);
 
@@ -314,19 +315,27 @@ class OrderService extends ContainerAware
             $title = "waiting_user_confirmation";
         }
 
+        if (!empty($list)) {
+            $total_sum = (($this->getCartService()->getCartTotal($list) * 100));
+            $total_sum = $total_sum + ($order->getDeliveryPrice() * 100);
+        } else {
+            $total_sum = ($order->getTotal() * 100)  + ($order->getDiscountSum() * 100);
+        }
+
         // If coupon in use
         $discount = null;
         $coupon = $order->getCoupon();
         if (!empty($coupon)) {
             $discount['discount_sum'] = $order->getDiscountSum() * 100;
             $discount['discount_size'] = $order->getDiscountSize();
-            $discount['total_sum_with_discount'] = $order->getTotal() * 100;
+            $discount['total_sum_with_discount'] = $total_sum - ($order->getDiscountSum() * 100);
         }
 
         $returner = array(
             'order_id' => $order->getId(),
             'total_price' => array(
-                'amount' => $order->getTotal() * 100,
+                //'amount' => $order->getTotal() * 100,
+                'amount' => $total_sum,
                 'currency' => $this->container->getParameter('currency_iso')
             ),
             'discount' => $discount,
@@ -378,9 +387,11 @@ class OrderService extends ContainerAware
     {
         $returner = array();
         $currency = $this->container->getParameter('currency_iso');
+
         foreach ($order->getDetails() as $detail) {
             $sum = 0;
-            $sum+= $detail->getPrice() * $detail->getQuantity();
+            //$sum+= $detail->getPrice() * $detail->getQuantity();
+            $sum+= $detail->getOrigPrice() * $detail->getQuantity();
             foreach ($detail->getOptions() as $option) {
                 $sum+= $option->getPrice() * $option->getQuantity();
             }
@@ -389,7 +400,6 @@ class OrderService extends ContainerAware
                 'count' => $detail->getQuantity(),
                 'price' => array(
                     'amount' => $sum * 100,
-                    'old_amount' => $sum * 100 + ($order->getDiscountSum() * 100),
                     'currency' => $currency
                 )
             );
