@@ -1366,7 +1366,7 @@ class NavService extends ContainerAware
             case 'local':
                 return 'CASH';
             case 'local.card':
-                return 'CC';
+                return 'CC_SEB';
             case 'paysera':
                 return 'BANK_PAYSE';
             case 'swedbank-gateway':

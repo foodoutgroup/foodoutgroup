@@ -319,7 +319,12 @@ class OrderService extends ContainerAware
             $total_sum = (($this->getCartService()->getCartTotal($list) * 100));
             $total_sum = $total_sum + ($order->getDeliveryPrice() * 100);
         } else {
-            $total_sum = ($order->getTotal() * 100)  + ($order->getDiscountSum() * 100);
+            $order_total = ($order->getTotal() * 100);
+            if ($order_total > 0) {
+                $total_sum = $order_total + ($order->getDiscountSum() * 100);
+            } else {
+                $total_sum = $order_total;
+            }
         }
 
         // If coupon in use
@@ -328,7 +333,15 @@ class OrderService extends ContainerAware
         if (!empty($coupon)) {
             $discount['discount_sum'] = $order->getDiscountSum() * 100;
             $discount['discount_size'] = $order->getDiscountSize();
-            $discount['total_sum_with_discount'] = $total_sum - ($order->getDiscountSum() * 100);
+            $total_sum_with_discount = $total_sum - ($order->getDiscountSum() * 100);
+            if ($total_sum_with_discount < 0) {
+                $total_sum_with_discount = 0;
+                $total_sum = 0;
+                if (!$coupon->getFreeDelivery()) {
+                    $total_sum = ($order->getDeliveryPrice() * 100);
+                }
+            }
+            $discount['total_sum_with_discount'] = $total_sum_with_discount;
         }
 
         $returner = array(
