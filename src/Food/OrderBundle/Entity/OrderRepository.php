@@ -120,7 +120,7 @@ class OrderRepository extends EntityRepository
             'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
             'paymentStatus' => OrderService::$paymentStatusComplete,
-            'order_date_between' => array(
+            'order_date_between_with_preorder' => array(
                 'from' => new \DateTime('-4 hour'),
                 'to' => new \DateTime('now'),
             ),
@@ -341,6 +341,15 @@ class OrderRepository extends EntityRepository
                         unset($filter['order_date_between']);
                         $filter['order_date_between_from'] = $filterValue['from'];
                         $filter['order_date_between_to'] = $filterValue['to'];
+                        break;
+
+                    case 'order_date_between_with_preorder':
+                        $qb->andWhere('(o.order_date BETWEEN :order_date_between_from AND :order_date_between_to) OR (o.preorder = 1 AND o.deliveryTime BETWEEN :order_date_between_from_pre AND :order_date_between_to_pre)');
+                        unset($filter['order_date_between_with_preorder']);
+                        $filter['order_date_between_from'] = $filterValue['from'];
+                        $filter['order_date_between_to'] = $filterValue['to'];
+                        $filter['order_date_between_from_pre'] = $filterValue['from'];
+                        $filter['order_date_between_to_pre'] = $filterValue['to'];
                         break;
 
                     case 'order_status':
