@@ -106,11 +106,17 @@
         </div>
         {% if discountInSum %}
             {% if total_cart + discountSum < place.cartMinimum and hide_delivery == false %}
-                <div class="alert alert-warning text-center">{{ 'cart.didnt_reach_min_cart'|trans }}</div>
+                <div class="alert alert-warning text-center min-cart-message">
+                    <span>{{ 'cart.didnt_reach_min_cart'|trans }}</span>
+                    <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button">{{ 'cart.go_back_to_place'|trans }}</a>
+                </div>
             {% endif %}
         {% else %}
             {% if total_cart < place.cartMinimum and hide_delivery == false %}
-                <div class="alert alert-warning text-center">{{ 'cart.didnt_reach_min_cart'|trans }}</div>
+                <div class="alert alert-warning text-center min-cart-message">
+                    <span>{{ 'cart.didnt_reach_min_cart'|trans }}</span>
+                    <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button">{{ 'cart.go_back_to_place'|trans }}</a>
+                </div>
             {% endif %}
         {% endif %}
 

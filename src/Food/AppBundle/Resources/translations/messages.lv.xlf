@@ -1124,6 +1124,10 @@
         <source>cart.didnt_reach_min_cart</source>
         <target>Grozā nav minimālās summas</target>
       </trans-unit>
+      <trans-unit id="cart.go_back_to_place" resname="cart.go_back_to_place">
+          <source>cart.go_back_to_place</source>
+          <target>Pievienot ēdieni</target>
+      </trans-unit>
       <trans-unit id="a0c3f145b0a75655c804d2981458aca7" resname="login.username_placeholder">
         <source>login.username_placeholder</source>
         <target>vietturis@pasts.lv</target>
