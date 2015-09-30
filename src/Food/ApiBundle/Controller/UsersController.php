@@ -235,17 +235,24 @@ class UsersController extends Controller
             $user = $security->getToken()->getUser();
 
             $phone = $this->getRequestParam('phone');
+            $email = $this->getRequestParam('email');
             $name = $this->getRequestParam('name');
 
             $nameParsed = $this->parseName($name);
+            $email = filter_var($email, FILTER_SANITIZE_EMAIL);
             $this->validateUserCommon(
                 array(
                     'firstname' => $nameParsed['firstname'],
+                    'email' => $email,
                     'phone' => $phone,
                 )
             );
             if (!empty($phone)) {
                 $user->setPhone($miscUtil->formatPhone($phone, $this->container->getParameter('country')));
+            }
+
+            if (!empty($email)) {
+                $user->setEmail($email);
             }
 
             if (!empty($name)) {
@@ -581,6 +588,20 @@ class UsersController extends Controller
                 'error' => 'Firstname empty',
                 'description' => $translator->trans('registration.firstname.is_empty')
             );
+        }
+
+        if (empty($data['email'])) {
+            $error = array(
+                'error' => 'Email empty',
+                'description' => $translator->trans('registration.email.is_empty')
+            );
+        } else {
+            if (filter_var($data['email'], FILTER_VALIDATE_EMAIL) === false) {
+                $error = array(
+                    'error' => 'Email invalid',
+                    'description' => $translator->trans('food.marketing.bad_email')
+                );
+            }
         }
 
         if (empty($data['facebook_id'])) {
