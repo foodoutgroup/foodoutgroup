@@ -212,4 +212,25 @@ class ApiService extends ContainerAware
             $security->setToken($token);
         }
     }
+
+    /**
+     * @param User $user
+     * @return bool
+     * @throws ApiException
+     */
+    public function isRealEmailSet(User $user)
+    {
+        if (!$user instanceof User) {
+            throw new ApiException('User does not exist', 400, array('error' => 'User does not exist', 'description' => null));
+        }
+
+        $email = $user->getEmail();
+        $phone = $user->getPhone();
+        $facebook_id = $user->getFacebookId();
+
+        if (($email == ($facebook_id.'@foodout.lt')) || ($email == ($phone.'@foodout.lt'))) {
+            return false;
+        }
+        return true;
+    }
 }
