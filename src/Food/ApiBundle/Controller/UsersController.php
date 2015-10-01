@@ -200,7 +200,8 @@ class UsersController extends Controller
                 'name' => $user->getFullName(),
                 'email' => $user->getEmail(),
                 'session_token' => $hash,
-                'refresh_token' => ''
+                'refresh_token' => '',
+                'isRealEmailSet' => $this->get('food_api.api')->isRealEmailSet($user)
             );
 
             return new JsonResponse($response);
@@ -269,6 +270,7 @@ class UsersController extends Controller
                 'phone' => $user->getPhone(),
                 'name' => $user->getFullName(),
                 'email' => $user->getEmail(),
+                'isRealEmailSet' => $this->get('food_api.api')->isRealEmailSet($user)
             );
 
             return new JsonResponse($response);
@@ -459,7 +461,8 @@ class UsersController extends Controller
                 'name' => $user->getFullName(),
                 'email' => $user->getEmail(),
                 'session_token' => $hash,
-                'refresh_token' => ''
+                'refresh_token' => '',
+                'isRealEmailSet' => $this->get('food_api.api')->isRealEmailSet($user)
             );
 
             return new JsonResponse($response);
