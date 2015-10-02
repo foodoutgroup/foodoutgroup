@@ -714,7 +714,36 @@ input.button {}
 .check-block .total-sum {font-size: 14px;}
 .check-block .order-button {display: block; height: 46px; background: url(/bundles/foodapp/images/big-button-3.png) no-repeat right center; padding-left: 20px; padding-right: 40px; border-radius: 5px; box-shadow: 0 1px 2px #b3afad; border: none; color: #fff; font-size: 18px; text-transform: uppercase; padding-top: 0px; padding-bottom: 0px; text-shadow: 0 1px 0 #74932b; line-height: 48px; letter-spacing: 1px; border: 1px solid #85b005;}
 .check-block .delivery-time {padding-top: 12px; padding-bottom: 12px; color: #bea2a6;}
-
+.check-block .min-cart-message {
+    color: red;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 0;
+}
+.check-block .min-cart-message span {
+    display: block;
+    padding: 15px 0 0;
+}
+.check-block .min-cart-message .button {
+    margin: 0 5px 15px;
+    display: block;
+    line-height: 21px;
+    background: url(/bundles/foodapp/images/button-grad.png) repeat-x left top;
+    border-radius: 3px;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #fff;
+    box-shadow: 0 1px 1px #779e04;
+    padding: 0 5px;
+    margin-top: 10px;
+    padding-top: 3px;
+    padding-bottom: 1px;
+    letter-spacing: 1.6px;
+    border: 1px solid #88b405;
+    text-align: center;
+    width: 130px;
+    font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+}
 
 /*Reviews*/
 .detailed-resturant .detailed-restaurant-review {padding-right: 19px;}
@@ -836,7 +865,7 @@ input.button {}
 .delivery-info-form input[type="password"],
 .delivery-info-form input[type="email"] {height: 17px;}
 .delivery-info-form textarea {height: 93px;}
-.delivery-info-form select {width: 335px;}
+.delivery-info-form select {width: 333px;}
 .delivery-info-form textarea.company_address {height: 60px;}
 
 .delivery-info-form .section-2 {margin-top: 48px; padding-bottom: 33px; margin-bottom: 21px;}

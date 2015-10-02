@@ -1149,6 +1149,10 @@
           <source>cart.didnt_reach_min_cart</source>
           <target>Krepšelis nesiekia minimalios sumos</target>
       </trans-unit>
+      <trans-unit id="cart.go_back_to_place" resname="cart.go_back_to_place">
+          <source>cart.go_back_to_place</source>
+          <target>Pridėti patiekalų</target>
+      </trans-unit>
       <trans-unit id="login.username_placeholder" resname="login.username_placeholder">
           <source>login.username_placeholder</source>
           <target>vardenis@pastas.lt</target>

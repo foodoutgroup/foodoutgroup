@@ -89,9 +89,6 @@ class PlaceRepository extends EntityRepository
             AND (
             (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) <=
                 IF(($maxDistance) IS NULL, (".$defaultZone."), ($maxDistance))
-
-                 OR
-                 p.self_delivery = 1
             )
             AND pps.delivery=1
             ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
@@ -194,8 +191,7 @@ class PlaceRepository extends EntityRepository
                         AND pps.delivery=1
                         AND (
             (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) <= 7
-                 OR
-                 p.self_delivery = 1
+
             )
             ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1"
             ;
@@ -267,12 +263,14 @@ class PlaceRepository extends EntityRepository
 
         $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL";
         $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id";
-
+        /**
+         * @todo check the need of self delivery
+         */
         $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) as distance FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND pp.deleted_at IS NULL AND p.active=1 AND pp.city='".$city."' AND pp.place = $placeId
             AND (
                 (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <=
                 IF(($maxDistance) IS NULL, ($defaultZone), ($maxDistance))
-                ".(!$ignoreSelfDelivery ? " OR p.self_delivery = 1":"")."
+                ".(!$ignoreSelfDelivery ? "":"")."
             ) ";
 
         if (!$ignoreWorkTime) {
@@ -364,11 +362,14 @@ class PlaceRepository extends EntityRepository
             $wd = date("N", strtotime("-1 day"));
         }
         $dth = $dh."".$dm;
+        /**
+         * @todo check the need of self delivery
+         */
 
         $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND pp.deleted_at IS NULL AND p.active=1 AND pp.city='".$city."' AND pp.place = $placeId
             AND (
                 (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <= 7
-                ".(!$ignoreSelfDelivery ? " OR p.self_delivery = 1":"")."
+                ".(!$ignoreSelfDelivery ? "":"")."
             )
             AND '".$dth."' BETWEEN (REPLACE(wd".$wd."_start,':','')+0) AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)
             AND delivery=1
