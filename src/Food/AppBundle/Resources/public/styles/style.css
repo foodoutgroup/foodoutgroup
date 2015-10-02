@@ -865,7 +865,7 @@ input.button {}
 .delivery-info-form input[type="password"],
 .delivery-info-form input[type="email"] {height: 17px;}
 .delivery-info-form textarea {height: 93px;}
-.delivery-info-form select {width: 335px;}
+.delivery-info-form select {width: 333px;}
 .delivery-info-form textarea.company_address {height: 60px;}
 
 .delivery-info-form .section-2 {margin-top: 48px; padding-bottom: 33px; margin-bottom: 21px;}
