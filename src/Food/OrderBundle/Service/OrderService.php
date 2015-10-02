@@ -335,6 +335,17 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param string|null $source
+     * @param string|null $statusMessage
+     * @return $this
+     */
+    public function statusNewPreorder($source = null, $statusMessage = null)
+    {
+        $this->chageOrderStatus(self::$status_preorder, $source, $statusMessage);
+        return $this;
+    }
+
+    /**
      * When payment has failed
      *
      * @param string|null $source

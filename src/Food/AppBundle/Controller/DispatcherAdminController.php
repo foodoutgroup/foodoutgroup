@@ -83,11 +83,17 @@ class DispatcherAdminController extends Controller
             $orderService = $this->get('food.order');
             $orderService->getOrderById($orderId);
 
-            $orderService->statusNew('approveOrderDispatcher');
+            if (!$orderService->getOrder()->getPreorder()) {
+                $orderService->statusNew('approveOrderDispatcher');
+            } else {
+                $orderService->statusNewPreorder('approveOrderDispatcher');
+            }
 
             $orderService->saveOrder();
 
-            $orderService->informPlace(false);
+            if (!$orderService->getOrder()->getPreorder()) {
+                $orderService->informPlace(false);
+            }
 
             return new Response('OK');
         } catch (\Exception $e) {
