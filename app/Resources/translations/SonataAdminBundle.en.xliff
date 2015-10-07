@@ -1855,6 +1855,10 @@
                 <source>admin.report.latency_report</source>
                 <target>Latency report</target>
             </trans-unit>
+            <trans-unit id="admin.report.driver_latency_report">
+                <source>admin.report.driver_latency_report</source>
+                <target>Driver latency report</target>
+            </trans-unit>
             <trans-unit id="admin.reports.day">
                 <source>admin.reports.day</source>
                 <target>Day</target>
@@ -1898,6 +1902,28 @@
             <trans-unit id="admin.reports.latency.slow_five">
                 <source>admin.reports.latency.slow_five</source>
                 <target>Slowest</target>
+            </trans-unit>
+
+            <!-- Driver Latency report -->
+            <trans-unit id="admin.reports.driver_latency.driver">
+                <source>admin.reports.driver_latency.driver</source>
+                <target>Driver</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.driver_latency.total_orders">
+                <source>admin.reports.driver_latency.total_orders</source>
+                <target>Total orders</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.driver_latency.late_orders">
+                <source>admin.reports.driver_latency.late_orders</source>
+                <target>Late orders</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.driver_latency.late_orders_percent">
+                <source>admin.reports.driver_latency.late_orders_percent</source>
+                <target>Late orders %</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.driver_latency.average_latency">
+                <source>admin.reports.driver_latency.average_latency</source>
+                <target>Average latency</target>
             </trans-unit>
 
             <!-- Params listas -->

@@ -346,6 +346,7 @@ sonata_admin:
                   item_adds:
                       - sonata.admin.restaurant_orders
                       - sonata.admin.latency
+                      - sonata.admin.driver_latency
                       - sonata.admin.marketing_user
                   roles: [ ROLE_ADMIN ]
               admin.restaurant:

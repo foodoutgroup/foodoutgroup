@@ -178,4 +178,49 @@ class ReportService extends ContainerAware
         ksort($data);
         return $data;
     }
+
+    /**
+     * @return array
+     */
+    public function calculateDriverLatencyLastMonth()
+    {
+        $driverRepo = $this->getDoctrine()->getRepository('FoodAppBundle:Driver');
+
+        $latencyRawData = $driverRepo->getLastMonthLatency();
+
+        $formatedDriverData = array();
+
+        if (!empty($latencyRawData)) {
+            foreach ($latencyRawData as $driverData) {
+                if (!isset($formatedDriverData[$driverData['driver_id']])) {
+                    // initiate base stats
+                    $formatedDriverData[$driverData['driver_id']] = array(
+                        'name' => $driverData['name'],
+                        'totalOrders' => 0,
+                        'lateOrders' => 0,
+                        'avgLatency' => 0,
+                        'lateOrdersPercent' => 0,
+                        'totalLatency' => 0,
+                    );
+                }
+
+                $formatedDriverData[$driverData['driver_id']]['totalOrders']++;
+                if ($driverData['time_difference_seconds'] > 0) {
+                    $formatedDriverData[$driverData['driver_id']]['lateOrders']++;
+                    $formatedDriverData[$driverData['driver_id']]['totalLatency'] = $formatedDriverData[$driverData['driver_id']]['totalLatency'] + $driverData['time_difference_seconds'];
+                }
+            }
+
+            // Now count the stats
+            foreach ($formatedDriverData as &$formateData) {
+                if ($formateData['lateOrders'] > 0) {
+                    $formateData['lateOrdersPercent'] = round(($formateData['lateOrders']*100) / $formateData['totalOrders'], 2);
+
+                    $formateData['avgLatency'] = round($formateData['totalLatency'] / $formateData['lateOrders'], 2);
+                }
+            }
+        }
+
+        return $formatedDriverData;
+    }
 }

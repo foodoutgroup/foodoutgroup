@@ -344,6 +344,17 @@ services:
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.driver_latency:
+                class: Food\ReportBundle\Admin\DriverLatencyAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.report.driver_latency_report" }
+                arguments:
+                    - ~
+                    - Food\OrderBundle\Entity\Order
+                    - 'FoodReportBundle:DriverLatencyAdmin'
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]
+
     sonata.admin.params:
                 class: Food\AppBundle\Admin\ParamAdmin
                 tags:

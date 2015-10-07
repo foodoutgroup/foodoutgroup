@@ -1,0 +1,54 @@
+{# Restoranu uzsakymo counto reportas - wow, much name #}
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script srt="{{ asset('bundles/foodapp/scripts/jquery-ui/datepicker-lt.js') }}"></script>
+    <script src="{{ asset('bundles/foodreport/js/reports.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+//            Report.bindEvents();
+        });
+    </script>
+{% endblock %}
+
+{% block actions %}{% endblock %}
+
+{% block side_menu %}{% endblock %}
+
+{% block list_table %}
+    <style type="text/css">div.sidebar.span2 { display: none !important; }</style>
+    <div class="report">
+        <h2>{{ 'admin.report.driver_latency_report'|trans({}, 'SonataAdminBundle') }}</h2>
+        <h3>{{ 'admin.reports.order_count.period'|trans({}, 'SonataAdminBundle') }} {{ "-1 month"|date("Y-m-01") }} - {{ "-1 month"|date("Y-m-t") }}</h3>
+        <table class="reports_list">
+            <tr>
+                <th>{{ 'admin.reports.driver_latency.driver'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.driver_latency.total_orders'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.driver_latency.late_orders'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.driver_latency.late_orders_percent'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.driver_latency.average_latency'|trans({}, 'SonataAdminBundle') }}</th>
+            </tr>
+            {% for driver in stats %}
+                <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">
+                    <td>{{ driver.name }}</td>
+                    <td class="center narrow">{{ driver.totalOrders }}</td>
+                    <td class="center narrow">{{ driver.lateOrders }}</td>
+                    <td class="center narrow">{{ driver.lateOrdersPercent }} %</td>
+                    <td class="center narrow">{{ (driver.avgLatency / 60)|number_format(2, ',') }} min.</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block list_filters %}
+<div class="sonata-ba-filter span2">
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+//        $('.late_orders.btn').popover();
+    });
+</script>
+{% endblock %}

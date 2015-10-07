@@ -46,4 +46,45 @@ class DriverRepository extends EntityRepository
         $stmt->execute();
         return $stmt->fetchAll();
     }
+
+    /**
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getLastMonthLatency()
+    {
+        $dateStart = date('Y-m-01', strtotime('-1 month'));
+        $dateEnd = date('Y-m-t', strtotime('-1 month'));
+
+        $query = "
+        SELECT
+            o.driver_id,
+            d.name,
+            TIME_TO_SEC(
+              TIMEDIFF(
+                (
+                    SELECT osl.event_date
+                    FROM order_status_log osl
+                    WHERE
+                        osl.order_id = o.id
+                        AND osl.new_status = 'completed'
+                    LIMIT 1
+                ),
+                o.delivery_time
+            )) AS 'time_difference_seconds'
+        FROM `orders` o
+        LEFT JOIN drivers d ON d.id = o.driver_id
+        WHERE
+            o.order_date BETWEEN '{$dateStart}' AND '{$dateEnd}'
+            AND o.delivery_type = 'deliver'
+            AND o.order_status IN ('completed', 'partialy_completed')
+            AND o.driver_id IS NOT NULL
+        ORDER BY o.driver_id ASC
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()
+            ->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }
