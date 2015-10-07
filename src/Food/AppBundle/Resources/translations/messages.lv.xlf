@@ -1128,10 +1128,6 @@
           <source>cart.go_back_to_place</source>
           <target>Pievienot ēdieni</target>
       </trans-unit>
-      <trans-unit id="cart.left_to_free_delivery" resname="cart.left_to_free_delivery">
-          <source>cart.left_to_free_delivery</source>
-          <target><![CDATA[Iki <b class="red">nemokamo pristatymo</b><br />Jums liko <b>&euro; %left_sum%</b>]]></target>
-      </trans-unit>
       <trans-unit id="a0c3f145b0a75655c804d2981458aca7" resname="login.username_placeholder">
         <source>login.username_placeholder</source>
         <target>vietturis@pasts.lv</target>
@@ -1246,11 +1242,11 @@
         </trans-unit>
         <trans-unit id="general.top_contact.worktime_days" resname="general.top_contact.worktime_days">
             <source>general.top_contact.worktime_days</source>
-            <target><![CDATA[VII - III,VII<br />IV - VI]]></target>
+            <target><![CDATA[I - IV,VII<br />V - VI]]></target>
         </trans-unit>
         <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
             <source>general.top_contact.worktime</source>
-            <target><![CDATA[10 - 02 h.<br />10 - 03 h.]]></target>
+            <target><![CDATA[10 - 03 h.<br />10 - 06 h.]]></target>
         </trans-unit>
         <trans-unit id="general.top_contact.phone" resname="general.top_contact.phone">
             <source>general.top_contact.phone</source>

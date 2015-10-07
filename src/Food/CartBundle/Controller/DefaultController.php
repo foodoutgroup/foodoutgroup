@@ -461,9 +461,6 @@ class DefaultController extends Controller
         $cartFromMin = $this->get('food.places')->getMinCartPrice($place->getId());
         $cartFromMax = $this->get('food.places')->getMaxCartPrice($place->getId());
         $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
-        $miscService = $this->get('food.app.utils.misc');
-        $enable_free_delivery_for_big_basket = $miscService->getParam('enable_free_delivery_for_big_basket');
-        $free_delivery_price = $miscService->getParam('free_delivery_price');
         $displayCartInterval = true;
         $deliveryTotal = 0;
 
@@ -543,23 +540,6 @@ class DefaultController extends Controller
             $hideDelivery = false;
         }
 
-        // Nemokamas pristatymas dideliam krepseliui
-        $self_delivery = $place->getSelfDelivery();
-        $left_sum = 0;
-        if ($enable_free_delivery_for_big_basket) {
-            // Jeigu musu logistika, tada taikom nemokamo pristatymo logika
-            if ($self_delivery) {
-                // Kiek liko iki nemokamo pristatymo
-                if ($free_delivery_price > $total_cart) {
-                    $left_sum = sprintf('%.2f', $free_delivery_price - $total_cart);
-                }
-                // Krepselio suma pasieke nemokamo pristatymo suma
-                if ($left_sum == 0) {
-                    $deliveryTotal = 0;
-                }
-            }
-        }
-
         $params = array(
             'list'  => $list,
             'place' => $place,
@@ -579,10 +559,6 @@ class DefaultController extends Controller
             'display_cart_interval' => $displayCartInterval,
             'takeAway' => $takeAway,
             'isTodayNoOneWantsToWork' => $isTodayNoOneWantsToWork,
-            'free_delivery_price' => $free_delivery_price,
-            'left_sum' => $left_sum,
-            'self_delivery' => $self_delivery,
-            'enable_free_delivery_for_big_basket' => $enable_free_delivery_for_big_basket,
         );
         if ($renderView) {
             return $this->renderView('FoodCartBundle:Default:side_block.html.twig', $params);

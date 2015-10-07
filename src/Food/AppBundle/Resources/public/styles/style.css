@@ -744,18 +744,6 @@ input.button {}
     width: 130px;
     font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
 }
-.check-block .alert.left-to-free-message {
-    padding: 5px 6px;
-    border: 1px solid #DBA6A5;
-    background-color: #FEF5F6;
-}
-.check-block .alert.left-to-free-message span {
-    color: #3C2913;
-    font-size: 12px;
-}
-.check-block .alert.left-to-free-message b.red {
-    color: #CE0E2A;
-}
 
 /*Reviews*/
 .detailed-resturant .detailed-restaurant-review {padding-right: 19px;}

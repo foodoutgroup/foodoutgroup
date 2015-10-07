@@ -120,15 +120,6 @@
             {% endif %}
         {% endif %}
 
-        {# Nemokamas pristatymas nuo 25 eur #}
-        {% if enable_free_delivery_for_big_basket %}
-            {% if left_sum > 0 and self_delivery %}
-                <div class="alert alert-warning text-left left-to-free-message">
-                    <span>{% trans with {'%left_sum%': left_sum} %}cart.left_to_free_delivery{% endtrans %}</span>
-                </div>
-            {% endif %}
-        {% endif %}
-
         {# Delivery type choice #}
         {% if inCart == false %}
             <div class="cart_delivery_type">

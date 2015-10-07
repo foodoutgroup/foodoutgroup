@@ -459,8 +459,7 @@ class OrderService extends ContainerAware
 
         if ($order->getDeliveryType() == FO::$deliveryDeliver) {
             $returner['price'] = array(
-                //'amount' => $order->getPlace()->getDeliveryPrice()*100,
-                'amount' => $order->getDeliveryPrice() * 100,
+                'amount' => $order->getPlace()->getDeliveryPrice()*100,
                 'currency' => $this->container->getParameter('currency_iso'),
             );
         }
