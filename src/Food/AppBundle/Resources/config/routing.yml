@@ -46,6 +46,10 @@ food_test_invoice:
     pattern:  /test/invoice
     defaults: { _controller: FoodAppBundle:Test:invoice }
 
+food_test_time_format:
+    pattern:  /test/time-format
+    defaults: { _controller: FoodAppBundle:Test:timeParse }
+
 food_nav_test1:
     pattern: /test/nav/test1
     defaults: { _controller: FoodAppBundle:Test:nav1 }

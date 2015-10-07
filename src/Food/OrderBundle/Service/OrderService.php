@@ -420,8 +420,16 @@ class OrderService extends ContainerAware
 
             if ($this->getOrder()->getOrderFromNav() == false) {
                 if (!$this->getOrder()->getPreorder()) {
+                    $miscService = $this->container->get('food.app.utils.misc');
+
+                    $timeShift = $miscService->parseTimeToMinutes($this->getOrder()->getPlacePoint()->getDeliveryTime());
+
+                    if (empty($timeShift) || $timeShift <= 0) {
+                        $timeShift = 60;
+                    }
+
                     $dt = new \DateTime('now');
-                    $dt->add(new \DateInterval('P0DT1H0M0S'));
+                    $dt->add(new \DateInterval('P0DT0H'.$timeShift.'M0S'));
                     $this->getOrder()->setDeliveryTime($dt);
                 }
                 $this->saveOrder();

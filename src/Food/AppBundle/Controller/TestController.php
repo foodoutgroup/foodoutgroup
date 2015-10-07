@@ -480,4 +480,57 @@ class TestController extends Controller
             $data
         );
     }
+
+    public function timeParseAction()
+    {
+        echo "=== Time parse test === <br><br>";
+
+        $miscUtil = $this->get('food.app.utils.misc');
+
+        $ver1 = "1 val.";
+        $ver2 = "45 min.";
+        $ver3 = "1 val";
+        $ver4 = "59 min";
+        $ver5 = "1.5 val";
+        $ver6 = "1,5 val";
+        $ver7 = "90-120 min.";
+
+        echo sprintf(
+            'Text: "%s" - Result in minutes %d<br>',
+            $ver1,
+            $miscUtil->parseTimeToMinutes($ver1)
+        );
+        echo sprintf(
+            'Text: "%s" - Result in minutes %d<br>',
+            $ver2,
+            $miscUtil->parseTimeToMinutes($ver2)
+        );
+        echo sprintf(
+            'Text: "%s" - Result in minutes %d<br>',
+            $ver3,
+            $miscUtil->parseTimeToMinutes($ver3)
+        );
+        echo sprintf(
+            'Text: "%s" - Result in minutes %d<br>',
+            $ver4,
+            $miscUtil->parseTimeToMinutes($ver4)
+        );
+        echo sprintf(
+            'Text: "%s" - Result in minutes %s<br>',
+            $ver5,
+            $miscUtil->parseTimeToMinutes($ver5)
+        );
+        echo sprintf(
+            'Text: "%s" - Result in minutes %d<br>',
+            $ver6,
+            $miscUtil->parseTimeToMinutes($ver6)
+        );
+        echo sprintf(
+            'Text: "%s" - Result in minutes %d<br>',
+            $ver7,
+            $miscUtil->parseTimeToMinutes($ver7)
+        );
+
+        return new Response();
+    }
 }

@@ -352,4 +352,34 @@ class Misc
         $text = preg_replace('/\<p\>(&nbsp;){2,}\<\/p\>/', "", $text);
         return $text;
     }
+
+    /**
+     * Parse from idiotic string like "1.5 val" to minutes
+     *
+     * @param string $time
+     * @return int
+     */
+    public function parseTimeToMinutes($time)
+    {
+        $possibleStrings = array('min.', 'val.', 'min', 'val');
+
+        $time = str_replace($possibleStrings, '', $time);
+        $time = str_replace(',', '.', $time);
+
+        if (strpos($time, '-') !== false) {
+            $parts = explode('-', $time);
+
+            $time = $parts[1];
+        }
+
+        $floatValue = floatval($time);
+
+        if ($floatValue > 5) {
+            $minutes = $floatValue;
+        } else {
+            $minutes = $floatValue*60;
+        }
+
+        return $minutes;
+    }
 }
