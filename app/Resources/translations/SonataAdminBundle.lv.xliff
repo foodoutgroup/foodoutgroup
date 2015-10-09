@@ -853,6 +853,10 @@
                 <source>admin.order.order_date</source>
                 <target>Order date</target>
             </trans-unit>
+            <trans-unit id="admin.order.delivery_time">
+                <source>admin.order.delivery_time</source>
+                <target>Deliver till</target>
+            </trans-unit>
             <trans-unit id="admin.order.place_name_short">
                 <source>admin.order.place_name_short</source>
                 <target>Place</target>

@@ -844,6 +844,10 @@
                 <source>admin.order.order_date</source>
                 <target>Užsakymo data</target>
             </trans-unit>
+            <trans-unit id="admin.order.delivery_time">
+                <source>admin.order.delivery_time</source>
+                <target>Pristatyti iki</target>
+            </trans-unit>
             <trans-unit id="admin.order.place_name_short">
                 <source>admin.order.place_name_short</source>
                 <target>Restor.</target>
