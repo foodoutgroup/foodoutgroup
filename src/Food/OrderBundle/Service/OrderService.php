@@ -275,8 +275,16 @@ class OrderService extends ContainerAware
         $this->order->setOrderDate(new \DateTime("now"));
 
         if (empty($orderDate)) {
+            $miscService = $this->container->get('food.app.utils.misc');
+
+            $timeShift = $miscService->parseTimeToMinutes($pointRecord->getDeliveryTime());
+
+            if (empty($timeShift) || $timeShift <= 0) {
+                $timeShift = 60;
+            }
+
             $deliveryTime = new \DateTime("now");
-            $deliveryTime->modify("+60 minutes");
+            $deliveryTime->modify("+".$timeShift." minutes");
         } else {
             $deliveryTime = new \DateTime($orderDate);
         }
@@ -424,6 +432,7 @@ class OrderService extends ContainerAware
 
                     $timeShift = $miscService->parseTimeToMinutes($this->getOrder()->getPlacePoint()->getDeliveryTime());
 
+                    $this->logOrder($this->getOrder(), 'calculating_delivery_time', 'Setting delivery time with a parsed value of '.$timeShift.' minutes');
                     if (empty($timeShift) || $timeShift <= 0) {
                         $timeShift = 60;
                     }
