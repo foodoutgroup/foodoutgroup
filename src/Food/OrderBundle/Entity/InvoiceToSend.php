@@ -5,7 +5,7 @@ namespace Food\OrderBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="invoice_to_send")
+ * @ORM\Table(name="invoice_to_send", indexes={@ORM\Index(name="status_idx", columns={"status"})})
  * @ORM\Entity(repositoryClass="Food\OrderBundle\Entity\InvoiceToSendRepository")
  */
 class InvoiceToSend

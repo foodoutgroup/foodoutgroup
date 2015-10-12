@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityManager;
 /**
  * Kitchen
  *
- * @ORM\Table(name="kitchen")
+ * @ORM\Table(name="kitchen", indexes={@ORM\Index(name="visible_idx", columns={"visible"})})
  * @ORM\Entity
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\KitchenLocalized")

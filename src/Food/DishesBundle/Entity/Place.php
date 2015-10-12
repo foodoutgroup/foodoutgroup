@@ -13,7 +13,7 @@ use Symfony\Component\Validator\ExecutionContextInterface;
 /**
  * Client
  *
- * @ORM\Table(name="place")
+ * @ORM\Table(name="place", indexes={@ORM\Index(name="active_idx", columns={"active"}),@ORM\Index(name="recommended_idx", columns={"recommended"}),@ORM\Index(name="new_idx", columns={"new"})})
  * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\PlaceRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\PlaceLocalized")

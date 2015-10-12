@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Food\AppBundle\Entity\Driver
  *
- * @ORM\Table(name="drivers")
+ * @ORM\Table(name="drivers", indexes={@ORM\Index(name="active_idx", columns={"active"}), @ORM\Index(name="city_idx", columns={"city"})})
  * @ORM\Entity(repositoryClass="Food\AppBundle\Entity\DriverRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */

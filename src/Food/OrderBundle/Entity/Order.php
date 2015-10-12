@@ -7,7 +7,7 @@ use Food\AppBundle\Entity\Driver;
 use Food\OrderBundle\Service\OrderService;
 
 /**
- * @ORM\Table(name="orders", indexes={@ORM\Index(name="nav_delivery_order_idx", columns={"nav_delivery_order"})})
+ * @ORM\Table(name="orders", indexes={@ORM\Index(name="nav_delivery_order_idx", columns={"nav_delivery_order"}),@ORM\Index(name="oder_status_idx", columns={"order_status"}),@ORM\Index(name="payment_status_idx", columns={"payment_status"}),@ORM\Index(name="place_point_city_idx", columns={"place_point_city"}),@ORM\Index(name="delivery_type_idx", columns={"delivery_type"})})
  * @ORM\Entity(repositoryClass="Food\OrderBundle\Entity\OrderRepository")
  */
 class Order
