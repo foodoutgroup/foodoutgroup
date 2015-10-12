@@ -91,7 +91,7 @@ class DispatcherAdminController extends Controller
 
             $orderService->saveOrder();
 
-            if (!$orderService->getOrder()->getPreorder()) {
+            if (!$orderService->getOrder()->getPreorder() || $orderService->getOrder()->getPlace()->getNavision()) {
                 $orderService->informPlace(false);
             }
 
