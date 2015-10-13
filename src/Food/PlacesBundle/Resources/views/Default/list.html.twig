@@ -39,7 +39,7 @@
                             </span>
                         {% else %}
                             <span class="tag">
-                                <img src="/bundles/foodapp/images/tag-not-working.png{% if locale == 'lv' %}_lv{% endif %}">
+                                <img src="/bundles/foodapp/images/tag-not-working{% if locale == 'lv' %}_lv{% endif %}.png">
                                 <div class="time-popup">{{ order_service.notWorkingPlacesPoints(place.place)|raw }}
                                     <div class="nip"></div>
                                 </div>
