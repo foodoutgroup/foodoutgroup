@@ -1287,6 +1287,13 @@ class NavService extends ContainerAware
 
         if ($driver instanceof Driver) {
             $logger->alert('Driver found for order: '.$order->getId().' with driver id: '.$driver->getId());
+            // Its a problematic orders. Please investigate it
+            if (!$order->getDriver()->getId()) {
+                $logger->error(
+                    '[Nav Status Sync] Order got Driver without ID. Order ID: '.$order->getId().' Driver NAV ID: '.$driverId
+                );
+                return;
+            }
             $order->setDriver($driver);
         }
     }
