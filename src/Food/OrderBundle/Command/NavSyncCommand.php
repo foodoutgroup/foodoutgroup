@@ -2,6 +2,7 @@
 namespace Food\OrderBundle\Command;
 
 use Doctrine\ORM\OptimisticLockException;
+use Food\AppBundle\Entity\Driver;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -88,6 +89,14 @@ class NavSyncCommand extends ContainerAwareCommand
 
                             if ($orderData['Delivery Status'] > 6 && !empty($orderData['Driver ID'])) {
                                 $navService->setDriverFromNav($order, $orderData['Driver ID']);
+
+                                // Its a problematic orders. Please investigate it
+                                if ($order->getDriver() instanceof Driver && !$order->getDriver()->getId()) {
+                                    $this->getContainer()->get('logger')->error(
+                                        '[Nav Status Sync] Order got Driver without ID. Order ID: '.$order->getId().' Driver NAV ID: '.$orderData['Driver ID']
+                                    );
+                                    continue;
+                                }
                             }
 
                             if ($order->getOrderFromNav() && isset($orderData['Total Sum']) && !empty($orderData['Total Sum'])) {
