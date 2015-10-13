@@ -194,6 +194,9 @@
         $(document).ready(function(){
             $('.delivery-time-info-cart, .delivery-type-tooltip').tooltip();
             $('#cartmnu input').iCheck();
+            if ($('.delivery-info-form').length > 0 && !$('#cartmnu').hasClass('overflow_auto')) {
+                $('#cartmnu').addClass('overflow_auto');
+            }
         });
         var takeAway = 0;
         $('#cartmnu').on('ifToggled', '.cart_delivery_type input',function (event) {

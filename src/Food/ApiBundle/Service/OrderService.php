@@ -403,8 +403,8 @@ class OrderService extends ContainerAware
 
         foreach ($order->getDetails() as $detail) {
             $sum = 0;
-            //$sum+= $detail->getPrice() * $detail->getQuantity();
-            $sum+= $detail->getOrigPrice() * $detail->getQuantity();
+            $sum+= $detail->getPrice() * $detail->getQuantity();
+            //$sum+= $detail->getOrigPrice() * $detail->getQuantity();
             foreach ($detail->getOptions() as $option) {
                 $sum+= $option->getPrice() * $option->getQuantity();
             }
