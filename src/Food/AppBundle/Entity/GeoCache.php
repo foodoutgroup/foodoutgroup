@@ -5,7 +5,7 @@ namespace Food\AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="geo_cache", options={"engine"="MyISAM"})
+ * @ORM\Table(name="geo_cache", options={"engine"="MyISAM"}, indexes={@ORM\Index(name="request_data_idx", columns={"request_data"}), @ORM\Index(name="request_city_idx", columns={"request_city"}), @ORM\Index(name="request_address_id", columns={"request_address"})})
  * @ORM\Entity
  */
 class GeoCache {
