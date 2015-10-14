@@ -166,13 +166,13 @@
     </div>
 
     {% block body %}{% endblock %}
-    {% if show_apps_download %}
         <div class="site-center site-center-bottom">
             <div class="site-block">
                 <div class="clearfix bottom-blocks">
 
                     {% include 'FoodAppBundle:Default:bottom_block.html.twig' %}
 
+                    {% if show_apps_download %}
                     <div class="app-block clearfix"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-view.png') }}">
                         <div class="app-block-inner">
                             <h3>Foodout.lt tavo kišenėje!</h3>
@@ -180,10 +180,10 @@
                             <div><a target="_BLANK" href="https://itunes.apple.com/us/app/foodout/id919992168"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a target="_BLANK" href="https://play.google.com/store/apps/details?id=co.lemonlabs.android.foodout#"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/g-store.png') }}"></a></div>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
-    {% endif %}
 
     {{ render(controller('FoodAppBundle:Default:footer')) }}
 </div>
