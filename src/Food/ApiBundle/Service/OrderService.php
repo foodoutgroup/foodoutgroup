@@ -404,15 +404,15 @@ class OrderService extends ContainerAware
         foreach ($order->getDetails() as $detail) {
             $sum = 0;
             $sum+= $detail->getPrice() * $detail->getQuantity();
-            //$sum+= $detail->getOrigPrice() * $detail->getQuantity();
             foreach ($detail->getOptions() as $option) {
                 $sum+= $option->getPrice() * $option->getQuantity();
             }
+            $sum = sprintf("%.0f", ($sum * 100));
             $returner[] = array(
                 'title' => $detail->getDishName(), //.', '.$detail->getDishUnitName(), Po pokalbio su shernu - laikinai skipinam papildoma info.
                 'count' => $detail->getQuantity(),
                 'price' => array(
-                    'amount' => $sum * 100,
+                    'amount' => $sum,
                     'currency' => $currency
                 )
             );
