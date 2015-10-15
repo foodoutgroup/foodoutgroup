@@ -1126,7 +1126,7 @@
       </trans-unit>
       <trans-unit id="cart.go_back_to_place" resname="cart.go_back_to_place">
           <source>cart.go_back_to_place</source>
-          <target>Pievienot ēdieni</target>
+          <target>Pievienot ēdienus</target>
       </trans-unit>
       <trans-unit id="cart.left_to_free_delivery" resname="cart.left_to_free_delivery">
           <source>cart.left_to_free_delivery</source>
