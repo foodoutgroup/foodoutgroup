@@ -331,7 +331,7 @@ class OrderDetails
     /**
      * Get origPrice
      *
-     * @return string 
+     * @return float
      */
     public function getOrigPrice()
     {
