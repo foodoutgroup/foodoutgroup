@@ -3,6 +3,7 @@
 namespace Food\AppBundle\Controller;
 
 use Doctrine\ORM\OptimisticLockException;
+use Food\OrderBundle\Service\OrderService;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,19 +18,71 @@ class DispatcherAdminController extends Controller
         $cityOrders = array();
         $availableCities = $placeService->getAvailableCities();
 
-        foreach ($availableCities as $city) {
-            $cityOrders[$city] = array(
-                'unapproved' => $repo->getOrdersUnapproved($city),
-                'unassigned' => $repo->getOrdersUnassigned($city),
-                'unconfirmed' => array(
-                    'deliver' => $repo->getOrdersUnconfirmed($city),
-                    'pickup' => $repo->getOrdersUnconfirmed($city, true),
-                ),
-                'not_finished' => $repo->getOrdersAssigned($city),
-                'canceled' => $repo->getOrdersCanceled($city),
-                'nav_problems' => $repo->getOrdersProblems($city),
-            );
+        // TODO This is first stage optimization - 3/4 times less querys, more php work. Next stage - one query??
+        $unapproved = $repo->getOrdersUnapproved();
+        $unassigned = $repo->getOrdersUnassigned();
+        $unconfirmed = $repo->getOrdersUnconfirmed(null, null, true);
+        $notFinished = $repo->getOrdersAssigned();
+        $canceled = $repo->getOrdersCanceled();
+        $navProblems = $repo->getOrdersProblems();
+
+        // Preload city data
+        foreach($availableCities as $city) {
+                $cityOrders[$city] = array(
+                    'unapproved' => array(),
+                    'unassigned' => array(),
+                    'unconfirmed' => array(
+                        'deliver' => array(),
+                        'pickup' => array(),
+                    ),
+                    'not_finished' => array(),
+                    'canceled' => array(),
+                    'nav_problems' => array(),
+                );
         }
+
+        foreach($unapproved as $order) {
+            $cityOrders[$order->getPlacePointCity()]['unapproved'][] = $order;
+        }
+
+        foreach($unassigned as $order) {
+            $cityOrders[$order->getPlacePointCity()]['unassigned'][] = $order;
+        }
+
+        foreach($unconfirmed as $order) {
+            if ($order->getDeliveryType() == OrderService::$deliveryDeliver) {
+                $cityOrders[$order->getPlacePointCity()]['unconfirmed']['deliver'][] = $order;
+            } else {
+                $cityOrders[$order->getPlacePointCity()]['unconfirmed']['pickup'][] = $order;
+            }
+        }
+
+        foreach($notFinished as $order) {
+            $cityOrders[$order->getPlacePointCity()]['not_finished'][] = $order;
+        }
+
+        foreach($canceled as $order) {
+            $cityOrders[$order->getPlacePointCity()]['canceled'][] = $order;
+        }
+
+        foreach($navProblems as $order) {
+            $cityOrders[$order->getPlacePointCity()]['nav_problems'][] = $order;
+        }
+
+        // Old slow code
+//        foreach ($availableCities as $city) {
+//            $cityOrders[$city] = array(
+//                'unapproved' => $repo->getOrdersUnapproved($city),
+//                'unassigned' => $repo->getOrdersUnassigned($city),
+//                'unconfirmed' => array(
+//                    'deliver' => $repo->getOrdersUnconfirmed($city),
+//                    'pickup' => $repo->getOrdersUnconfirmed($city, true),
+//                ),
+//                'not_finished' => $repo->getOrdersAssigned($city),
+//                'canceled' => $repo->getOrdersCanceled($city),
+//                'nav_problems' => $repo->getOrdersProblems($city),
+//            );
+//        }
 
         return $this->render(
             'FoodAppBundle:Dispatcher:list.html.twig',

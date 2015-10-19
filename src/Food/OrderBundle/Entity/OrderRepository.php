@@ -8,10 +8,10 @@ use Symfony\Component\Validator\Constraints\DateTime;
 class OrderRepository extends EntityRepository
 {
     /**
-     * @param string $city
+     * @param string|null $city
      * @return array|Order[]
      */
-    public function getOrdersUnassigned($city)
+    public function getOrdersUnassigned($city = null)
     {
         $date = new \DateTime();
         $date->modify("-2 minutes");
@@ -23,11 +23,14 @@ class OrderRepository extends EntityRepository
                 OrderService::$status_finished,
                 OrderService::$status_forwarded,
             ),
-            'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
             'order_date_more' => $date,
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
+
+        if (!empty($city)) {
+            $filter['place_point_city'] = $city;
+        }
 
         $orders = $this->getOrdersByFilter($filter, 'list');
 
@@ -38,10 +41,10 @@ class OrderRepository extends EntityRepository
         return $orders;
     }
     /**
-     * @param string $city
+     * @param string|null $city
      * @return array|Order[]
      */
-    public function getOrdersUnapproved($city)
+    public function getOrdersUnapproved($city = null)
     {
         $date = new \DateTime();
         $date->modify("-2 minutes");
@@ -50,10 +53,12 @@ class OrderRepository extends EntityRepository
             'order_status' =>  array(
                 OrderService::$status_unapproved,
             ),
-            'place_point_city' => $city,
             'order_date_more' => $date,
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
+        if (!empty($city)) {
+            $filter['place_point_city'] = $city;
+        }
 
         $orders = $this->getOrdersByFilter($filter, 'list');
 
@@ -65,18 +70,25 @@ class OrderRepository extends EntityRepository
     }
 
     /**
-     * @param string $city
+     * @param string|null $city
      * @param boolean $pickup
+     * @param boolean $forceBoth
      * @return array|Order[]
      */
-    public function getOrdersUnconfirmed($city, $pickup = false)
+    public function getOrdersUnconfirmed($city=null, $pickup = false, $forceBoth=false)
     {
         $filter = array(
             'order_status' =>  array(OrderService::$status_new, OrderService::$status_preorder),
-            'place_point_city' => $city,
-            'deliveryType' => (!$pickup ? OrderService::$deliveryDeliver : OrderService::$deliveryPickup),
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
+
+        if (!$forceBoth) {
+            $filter['deliveryType'] = (!$pickup ? OrderService::$deliveryDeliver : OrderService::$deliveryPickup);
+        }
+
+        if (!empty($city)) {
+            $filter['place_point_city'] = $city;
+        }
 
         $orders = $this->getOrdersByFilter($filter, 'list');
 
@@ -88,18 +100,21 @@ class OrderRepository extends EntityRepository
     }
 
     /**
-     * @param string $city
+     * @param string|null $city
      * @return array|Order[]
      */
-    public function getOrdersAssigned($city)
+    public function getOrdersAssigned($city=null)
     {
         $filter = array(
             'order_status' =>  OrderService::$status_assiged,
-            'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
+        if (!empty($city)) {
+            $filter['place_point_city'] = $city;
+        }
+
         $orders = $this->getOrdersByFilter($filter, 'list');
 
         if (!$orders) {
@@ -110,14 +125,13 @@ class OrderRepository extends EntityRepository
     }
 
     /**
-     * @param string $city
+     * @param string|null $city
      * @return array|Order[]
      */
-    public function getOrdersCanceled($city)
+    public function getOrdersCanceled($city=null)
     {
         $filter = array(
             'order_status' =>  OrderService::$status_canceled,
-            'place_point_city' => $city,
             'deliveryType' => OrderService::$deliveryDeliver,
             'paymentStatus' => OrderService::$paymentStatusComplete,
             'order_date_between_with_preorder' => array(
@@ -126,6 +140,10 @@ class OrderRepository extends EntityRepository
             ),
         );
 
+        if (!empty($city)) {
+            $filter['place_point_city'] = $city;
+        }
+
         $orders = $this->getOrdersByFilter($filter, 'list');
 
         if (!$orders) {
@@ -136,20 +154,23 @@ class OrderRepository extends EntityRepository
     }
 
     /**
-     * @param string $city
+     * @param string|null $city
      * @return array|Order[]
      */
-    public function getOrdersProblems($city)
+    public function getOrdersProblems($city=null)
     {
         $filter = array(
             'is_problem' => true,
-            'place_point_city' => $city,
             'order_date_between' => array(
                 'from' => new \DateTime('-4 hour'),
                 'to' => new \DateTime('now'),
             ),
             'not_solved' => true,
         );
+
+        if (!empty($city)) {
+            $filter['place_point_city'] = $city;
+        }
 
         $orders = $this->getOrdersByFilter($filter, 'list');
 
