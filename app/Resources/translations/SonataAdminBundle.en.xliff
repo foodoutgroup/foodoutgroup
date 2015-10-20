@@ -368,6 +368,14 @@
                 <source>admin.place.delivery_price</source>
                 <target>Deliv. price</target>
             </trans-unit>
+            <trans-unit id="admin.place.cart_drink_limit">
+                <source>admin.place.cart_drink_limit</source>
+                <target>Drink cart limit</target>
+            </trans-unit>
+            <trans-unit id="admin.place.cart_food_limit">
+                <source>admin.place.cart_food_limit</source>
+                <target>Food cart limit</target>
+            </trans-unit>
             <trans-unit id="admin.place.cart_minimum">
                 <source>admin.place.cart_minimum</source>
                 <target>Min. cart</target>

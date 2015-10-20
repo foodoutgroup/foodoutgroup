@@ -2838,6 +2838,51 @@ class OrderService extends ContainerAware
             $this->workTimeErrors($pointRecord, $formErrors);
         }
 
+        // Basket max items limits
+        $basketDrinkLimit = $place->getBasketLimitDrinks();
+        $basketFoodLimit = $place->getBasketLimitFood();
+        if (!empty($basketFoodLimit) && $basketFoodLimit > 0)
+        {
+            $foods = $this->getCartService()->getCartDishes($place);
+            $foodDishCount = 0;
+
+            foreach ($foods as $dish) {
+                $foodCat = $dish->getDishId()->getCategories();
+                if (!$foodCat[0]->getDrinks()) {
+                    $foodDishCount = $foodDishCount + (1 * $dish->getQuantity());
+                }
+
+                if ($foodDishCount > $basketFoodLimit) {
+                    $formErrors[] = array(
+                        'message' => 'order.form.errors.dishLimit',
+                        'text' => $basketFoodLimit
+                    );
+                    break;
+                }
+            }
+        }
+
+        if (!empty($basketDrinkLimit) && $basketDrinkLimit > 0)
+        {
+            $foods = $this->getCartService()->getCartDishes($place);
+            $foodDishCount = 0;
+
+            foreach ($foods as $dish) {
+                $foodCat = $dish->getDishId()->getCategories();
+                if ($foodCat[0]->getDrinks()) {
+                    $foodDishCount = $foodDishCount + (1 * $dish->getQuantity());
+                }
+
+                if ($foodDishCount > $basketDrinkLimit) {
+                    $formErrors[] = array(
+                        'message' => 'order.form.errors.drinkLimit',
+                        'text' => $basketFoodLimit
+                    );
+                    break;
+                }
+            }
+        }
+
         $phone = $request->get('customer-phone');
 
         if (0 === strlen($request->get('customer-firstname'))) {

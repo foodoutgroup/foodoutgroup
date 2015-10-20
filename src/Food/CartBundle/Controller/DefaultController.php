@@ -466,6 +466,10 @@ class DefaultController extends Controller
         $free_delivery_price = $miscService->getParam('free_delivery_price');
         $displayCartInterval = true;
         $deliveryTotal = 0;
+        $basketErrors = array(
+            'foodQuantityError' => false,
+            'drinkQuantityError' => false,
+        );
 
         $sessionTakeAway = $this->container->get('session')->get('cart_delivery_'.$place->getId(), null);
         if ($sessionTakeAway !== null) {
@@ -495,6 +499,43 @@ class DefaultController extends Controller
                     $this->get('food.googlegis')->getLocationFromSession(),
                     $pointRecord
                 );
+            }
+
+            // Check cart limits
+            $basketDrinkLimit = $place->getBasketLimitDrinks();
+            $basketFoodLimit = $place->getBasketLimitFood();
+            if (!empty($basketFoodLimit) && $basketFoodLimit > 0)
+            {
+                $foodDishCount = 0;
+
+                foreach ($list as $dish) {
+                    $foodCat = $dish->getDishId()->getCategories();
+                    if (!$foodCat[0]->getDrinks()) {
+                        $foodDishCount = $foodDishCount + (1 * $dish->getQuantity());
+                    }
+
+                    if ($foodDishCount > $basketFoodLimit) {
+                        $basketErrors['foodQuantityError'] = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!empty($basketDrinkLimit) && $basketDrinkLimit > 0)
+            {
+                $foodDishCount = 0;
+
+                foreach ($list as $dish) {
+                    $foodCat = $dish->getDishId()->getCategories();
+                    if ($foodCat[0]->getDrinks()) {
+                        $foodDishCount = $foodDishCount + (1 * $dish->getQuantity());
+                    }
+
+                    if ($foodDishCount > $basketDrinkLimit) {
+                        $basketErrors['drinkQuantityError'] = true;
+                        break;
+                    }
+                }
             }
         }
 
@@ -583,6 +624,7 @@ class DefaultController extends Controller
             'left_sum' => $left_sum,
             'self_delivery' => $self_delivery,
             'enable_free_delivery_for_big_basket' => $enable_free_delivery_for_big_basket,
+            'basket_errors' => $basketErrors
         );
         if ($renderView) {
             return $this->renderView('FoodCartBundle:Default:side_block.html.twig', $params);

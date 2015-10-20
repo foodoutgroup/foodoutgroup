@@ -297,12 +297,27 @@ class Place extends Uploadable implements Translatable
      * @ORM\Column(name="average_rating", type="float")
      */
     private $averageRating = 0;
+
     /**
      * @var int
      *
      * @ORM\Column(name="review_count", type="integer")
      */
     private $reviewCount = 0;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="basket_limit_food", type="integer", nullable=true)
+     */
+    private $basketLimitFood = 0;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="basket_limit_drinks", type="integer", nullable=true)
+     */
+    private $basketLimitDrinks = 0;
 
     /**
      * @var bool
@@ -1803,5 +1818,51 @@ class Place extends Uploadable implements Translatable
     public function getPickupTime()
     {
         return $this->pickupTime;
+    }
+
+    /**
+     * Set basketLimitFood
+     *
+     * @param integer $basketLimitFood
+     * @return Place
+     */
+    public function setBasketLimitFood($basketLimitFood)
+    {
+        $this->basketLimitFood = $basketLimitFood;
+    
+        return $this;
+    }
+
+    /**
+     * Get basketLimitFood
+     *
+     * @return integer 
+     */
+    public function getBasketLimitFood()
+    {
+        return $this->basketLimitFood;
+    }
+
+    /**
+     * Set basketLimitDrinks
+     *
+     * @param integer $basketLimitDrinks
+     * @return Place
+     */
+    public function setBasketLimitDrinks($basketLimitDrinks)
+    {
+        $this->basketLimitDrinks = $basketLimitDrinks;
+    
+        return $this;
+    }
+
+    /**
+     * Get basketLimitDrinks
+     *
+     * @return integer 
+     */
+    public function getBasketLimitDrinks()
+    {
+        return $this->basketLimitDrinks;
     }
 }

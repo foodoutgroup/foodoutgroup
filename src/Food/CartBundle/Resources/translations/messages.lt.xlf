@@ -272,6 +272,14 @@ Vilnius]]></target>
             <source>order.form.errors.customerphone</source>
             <target>Nurodykite mob. telefono numerį</target>
         </trans-unit>
+        <trans-unit id="order.form.errors.dishLimit" resname="order.form.errors.dishLimit">
+            <source>order.form.errors.dishLimit</source>
+            <target>Dėmesio! Šiame restorane galite pasirinkti ne daugiau kaip %text% patiekalus. Prašome sumažinti patiekalų kiekį arba pasirinkti kitą restoraną iš Foodout.lt . Skanaus pasirinkimo!</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.drinkLimit" resname="order.form.errors.drinkLimit">
+            <source>order.form.errors.drinkLimit</source>
+            <target>Dėmesio! Šiame restorane galite pasirinkti ne daugiau kaip %text% gėrimus. Prašome sumažinti gėrimų kiekį arba pasirinkti kitą restoraną iš Foodout.lt . Skanaus pasirinkimo!</target>
+        </trans-unit>
         <trans-unit id="order.form.errors.customerphone_format" resname="order.form.errors.customerphone_format">
             <source>order.form.errors.customerphone_format</source>
             <target>Nurodykite mob. telefono numerį formatu 37061234567</target>
