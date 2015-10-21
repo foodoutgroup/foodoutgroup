@@ -5,6 +5,7 @@ namespace Food\CartBundle\Controller;
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Place;
 use Food\OrderBundle\Entity\Order;
+use Food\OrderBundle\Service\OrderService;
 use Food\UserBundle\Entity\User;
 use FOS\UserBundle\Model\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -63,6 +64,7 @@ class DefaultController extends Controller
             case 'remove-option':
                 break;
             case 'set_delivery':
+            case 'empty':
                 $this->_actionSetDelivery($request);
                 break;
             case 'refresh':
@@ -90,7 +92,6 @@ class DefaultController extends Controller
             true,
             $request->get('in_cart', false),
             null,
-            $request->get('take_away', false),
             $request->get('coupon_code', null)
         );
 
@@ -132,9 +133,16 @@ class DefaultController extends Controller
      */
     private function _actionSetDelivery($request)
     {
+        // @TODO: check, maybe it is not required anymore?
         $this->container->get('session')->set(
             'cart_delivery_'.$request->get('place'), $request->get('take_away', false)
         );
+
+        $this->container
+            ->get('session')
+            ->set('delivery_type', $request->get('take_away', false) ?
+                OrderService::$deliveryPickup :
+                OrderService::$deliveryDeliver);
     }
 
     /**
@@ -324,14 +332,14 @@ class DefaultController extends Controller
                 }
 
                 $selfDelivery = ($request->get('delivery-type') == "pickup" ? true : false);
-                
+
                 // Preorder date formation
                 $orderDate = null;
                 $preOrder = $request->get('pre-order');
                 if ($preOrder == 'it-is') {
                     $orderDate = $request->get('pre_order_date').' '.$request->get('pre_order_time');
                 }
-                
+
                 $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData, $orderDate);
                 $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
                 if ($preOrder == 'it-is') {
@@ -448,16 +456,14 @@ class DefaultController extends Controller
      * @param bool $renderView
      * @param bool $inCart
      * @param null|Order $order
-     * @param null|bool $takeAway
      * @param null|string $couponCode
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function sideBlockAction(Place $place, $renderView = false, $inCart = false, $order = null, $takeAway = null, $couponCode = null)
+    public function sideBlockAction(Place $place, $renderView = false, $inCart = false, $order = null, $couponCode = null)
     {
         $list = $this->getCartService()->getCartDishes($place);
         $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
-        $cartMinimum = $place->getCartMinimum();
         $cartFromMin = $this->get('food.places')->getMinCartPrice($place->getId());
         $cartFromMax = $this->get('food.places')->getMaxCartPrice($place->getId());
         $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
@@ -467,18 +473,18 @@ class DefaultController extends Controller
         $displayCartInterval = true;
         $deliveryTotal = 0;
 
-        $sessionTakeAway = $this->container->get('session')->get('cart_delivery_'.$place->getId(), null);
-        if ($sessionTakeAway !== null) {
-            $takeAway = $sessionTakeAway;
-            // TODO think about it
-        }
+        $takeAway = ($this->container->get('session')->get('delivery_type', false) == OrderService::$deliveryPickup);
 
-        if (!$takeAway) {
+        if ($takeAway) {
+            $displayCartInterval = false;
+        } else {
             $placePointMap = $this->container->get('session')->get('point_data');
+
+            $gis = $this->get('food.googlegis')->getLocationFromSession();
 
             if (empty($placePointMap) || !isset($placePointMap[$place->getId()])) {
                 $deliveryTotal = $place->getDeliveryPrice();
-            } else {
+            } elseif (!$gis['not_found']) {
                 // TODO Trying to catch fatal when searching for PlacePoint
                 if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
                     $this->container->get('logger')->error('Trying to find PlacePoint without ID in CartBundle Default controller - sideBlockAction');
@@ -486,13 +492,13 @@ class DefaultController extends Controller
                 $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
                 $deliveryTotal = $this->getCartService()->getDeliveryPrice(
                     $place,
-                    $this->get('food.googlegis')->getLocationFromSession(),
+                    $gis,
                     $pointRecord
                 );
                 $displayCartInterval = false;
-                $cartMinimum = $this->getCartService()->getMinimumCart(
+                $cartFromMin = $this->getCartService()->getMinimumCart(
                     $place,
-                    $this->get('food.googlegis')->getLocationFromSession(),
+                    $gis,
                     $pointRecord
                 );
             }
@@ -573,8 +579,7 @@ class DefaultController extends Controller
             'discountSize' => $discountSize,
             'discountInSum' => $discountInSum,
             'discountSum' => $discountSum,
-            'cart_minimum' => sprintf('%.2f',$cartMinimum),
-            'cart_from_min' => $cartFromMin,
+            'cart_from_min' => sprintf('%.2f',$cartFromMin),
             'cart_from_max' => $cartFromMax,
             'display_cart_interval' => $displayCartInterval,
             'takeAway' => $takeAway,

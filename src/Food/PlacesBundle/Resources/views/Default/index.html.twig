@@ -201,8 +201,8 @@
     <div class="restaurants-list-top-filters">
         <div class="delivery-type-filter">
             <div class="label">{% trans %}places.filter_by_delivery{% endtrans %}:</div>
-            <a href="#" data-type="delivery" {% if delivery_type_filer == 'delivery' or delivery_type_filer == 'delivery_and_pickup' %}class="selected"{% endif %}>{% trans %}places.filter_delivery{% endtrans %}</a>
-            <a href="#" data-type="pickup" {% if delivery_type_filer == 'pickup' %}class="selected"{% endif %}>{% trans %}places.filter_pickup{% endtrans %}</a>
+            <a href="#" data-type="delivery" {% if delivery_type_filter == 'deliver' %}class="selected"{% endif %}>{% trans %}places.filter_delivery{% endtrans %}</a>
+            <a href="#" data-type="pickup" {% if delivery_type_filter == 'pickup' %}class="selected"{% endif %}>{% trans %}places.filter_pickup{% endtrans %}</a>
         </div>
     </div>
     <div class="clearfix">

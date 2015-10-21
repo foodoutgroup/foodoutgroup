@@ -3,6 +3,7 @@ namespace Food\PlacesBundle\Service;
 
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
+use Food\OrderBundle\Service\OrderService;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\AppBundle\Traits;
 
@@ -266,7 +267,8 @@ class PlacesService extends ContainerAware {
     {
         $kitchens = $request->get('kitchens', "");
         $filters = $request->get('filters');
-        $deliveryType = $request->get('delivery_type', '');
+        $deliveryType = $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver);
+
         if (empty($kitchens)) {
             $kitchens = array();
         } else {

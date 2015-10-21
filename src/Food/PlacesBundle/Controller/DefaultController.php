@@ -2,6 +2,7 @@
 
 namespace Food\PlacesBundle\Controller;
 
+use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -41,7 +42,7 @@ class DefaultController extends Controller
                 'city_translations' => $this->cityTranslations,
                 'default_city' => 'Vilnius',
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
-                'delivery_type_filer' => 'delivery_and_pickup', // TODO saving or other cool feature
+                'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver),
                 'slug_filter' => null,
                 'city_url' => $city_url,
                 'selected_kitchens_names' => array(),
@@ -76,7 +77,7 @@ class DefaultController extends Controller
                 'location' => $locData,
                 'city_translations' => $this->cityTranslations,
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
-                'delivery_type_filer' => 'delivery_and_pickup', // TODO saving or other cool feature
+                'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver),
                 'slug_filter' => $slug_filter,
                 'city_url' => $city_url,
                 'selected_kitchens_names' => $selectedKitchensNames,
@@ -94,8 +95,6 @@ class DefaultController extends Controller
             $recommended = (bool)$recommendedFromRequest;
         }
 
-        $listType = $request->get('delivery_type', 'delivery');
-
         $places = $this->get('food.places')->getPlacesForList($recommended, $request, $slug_filter);
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
 
@@ -106,7 +105,7 @@ class DefaultController extends Controller
                 'recommended' => ($recommended ? 1:0),
                 'location' => $locData,
                 'location_show' => (empty($locData) ? false : true),
-                'list_type' => $listType
+                'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver)
             )
         );
     }

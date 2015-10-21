@@ -104,24 +104,16 @@
                 </div>
             {% endif %}
         </div>
-        {% if discountInSum %}
-            {% if total_cart + discountSum < place.cartMinimum and hide_delivery == false %}
-                <div class="alert alert-warning text-center min-cart-message">
-                    <span>{{ 'cart.didnt_reach_min_cart'|trans }}</span>
-                    <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button">{{ 'cart.go_back_to_place'|trans }}</a>
-                </div>
-            {% endif %}
-        {% else %}
-            {% if total_cart < place.cartMinimum and hide_delivery == false %}
-                <div class="alert alert-warning text-center min-cart-message">
-                    <span>{{ 'cart.didnt_reach_min_cart'|trans }}</span>
-                    <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button">{{ 'cart.go_back_to_place'|trans }}</a>
-                </div>
-            {% endif %}
+        {# Cart minimum sum #}
+        {% if hide_delivery == false and ((discountInSum and total_cart + discountSum < cart_from_min) or (total_cart < cart_from_min)) %}
+            <div class="alert alert-warning text-center min-cart-message">
+                <span>{{ 'cart.didnt_reach_min_cart'|trans }}</span>
+                <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button">{{ 'cart.go_back_to_place'|trans }}</a>
+            </div>
         {% endif %}
 
         {# Nemokamas pristatymas nuo 25 eur #}
-        {% if enable_free_delivery_for_big_basket %}
+        {% if takeAway == false and enable_free_delivery_for_big_basket %}
             {% if left_sum > 0 and self_delivery == 0 %}
                 <div class="alert alert-warning text-left left-to-free-message">
                     <span>{% trans with {'%left_sum%': left_sum} %}cart.left_to_free_delivery{% endtrans %}</span>
@@ -177,7 +169,7 @@
                     {{ currency_display|raw }} {{ cart_from_min }} - {{ cart_from_max }}
                 {% endif %}
             {% else %}
-                {{ currency_display|raw }} {{ cart_minimum }}
+                {{ currency_display|raw }} {{ cart_from_min }}
             {% endif %}
 
             {% if currency_alternative %}<span class="euro">/ {{  misc_utils.getLitas(cart_minimum)|number_format(2, ',', ' ') }}{{ display_currency_alternative|raw }}</span>{% endif %}.

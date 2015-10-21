@@ -32,6 +32,18 @@ class KitchenController extends Controller
             $recommended = (bool)$recommendedFromRequest;
         }
 
+        if ($deliveryType = $request->get('delivery_type', false)) {
+            switch($deliveryType) {
+                // @TODO: delivery == deliver
+                case 'delivery':
+                    $this->container->get('session')->set('delivery_type', 'deliver');
+                    break;
+                case 'pickup':
+                    $this->container->get('session')->set('delivery_type', 'pickup');
+                    break;
+            }
+        }
+
         $selectedKitchens = $request->get('selected_kitchens', '');
         if (!empty($selectedKitchens)) {
             $selectedKitchens = explode(',', $selectedKitchens);
