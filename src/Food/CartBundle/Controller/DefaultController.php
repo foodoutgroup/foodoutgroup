@@ -131,13 +131,8 @@ class DefaultController extends Controller
     /**
      * @param Request $request
      */
-    private function _actionSetDelivery($request)
+    private function _actionSetDelivery(Request $request)
     {
-        // @TODO: check, maybe it is not required anymore?
-        $this->container->get('session')->set(
-            'cart_delivery_'.$request->get('place'), $request->get('take_away', false)
-        );
-
         $this->container
             ->get('session')
             ->set('delivery_type', $request->get('take_away', false) ?

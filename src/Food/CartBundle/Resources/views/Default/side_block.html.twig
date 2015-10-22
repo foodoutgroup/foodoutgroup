@@ -166,7 +166,7 @@
                 {% if cart_from_min == cart_from_max %}
                     {{ currency_display|raw }} {{ cart_from_min }}
                 {% else %}
-                    {{ currency_display|raw }} {{ cart_from_min }} - {{ cart_from_max }}
+                    {{ currency_display|raw }} {{ cart_from_min }} - {{ cart_from_max }} <span class="delivery-time-tooltip" title="{% trans %}cart.block.delivery_time.tooltip{% endtrans %}">&nbsp;</span>
                 {% endif %}
             {% else %}
                 {{ currency_display|raw }} {{ cart_from_min }}
@@ -184,7 +184,7 @@
 
     <script type="application/javascript">
         $(document).ready(function(){
-            $('.delivery-time-info-cart, .delivery-type-tooltip').tooltip();
+            $('.delivery-time-info-cart, .delivery-type-tooltip, .delivery-time-tooltip').tooltip();
             $('#cartmnu input').iCheck();
             if ($('.delivery-info-form').length > 0 && !$('#cartmnu').hasClass('overflow_auto')) {
                 $('#cartmnu').addClass('overflow_auto');

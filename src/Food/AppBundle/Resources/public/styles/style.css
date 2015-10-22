@@ -2096,7 +2096,8 @@ div.coupon_form_popup {
     font-size: 12px;
     padding-bottom: 10px;
 }
-.cart_delivery_type .delivery-type-tooltip {
+.cart_delivery_type .delivery-type-tooltip,
+.delivery-time .delivery-time-tooltip {
     background: url(/bundles/foodapp/images/question.png) no-repeat left center;
     width: 16px;
     height: 16px;

@@ -2,6 +2,7 @@
 
 namespace Food\DishesBundle\Controller;
 
+use Food\OrderBundle\Service\OrderService;
 use Sonata\DoctrineORMAdminBundle\Tests\Filter\QueryBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,12 +35,12 @@ class KitchenController extends Controller
 
         if ($deliveryType = $request->get('delivery_type', false)) {
             switch($deliveryType) {
-                // @TODO: delivery == deliver
+                // @TODO: delivery !== deliver
                 case 'delivery':
-                    $this->container->get('session')->set('delivery_type', 'deliver');
+                    $this->container->get('session')->set('delivery_type', OrderService::$deliveryDeliver);
                     break;
                 case 'pickup':
-                    $this->container->get('session')->set('delivery_type', 'pickup');
+                    $this->container->get('session')->set('delivery_type', OrderService::$deliveryPickup);
                     break;
             }
         }

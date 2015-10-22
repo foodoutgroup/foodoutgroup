@@ -22,6 +22,10 @@
         <source>cart.block.delivery_type.tooltip</source>
         <target>Pristatymo / atsiėmimo vietą pasirinksite kitame žingsnyje</target>
       </trans-unit>
+      <trans-unit id="cart.block.delivery_time.tooltip" resname="cart.block.delivery_time.tooltip">
+        <source>cart.block.delivery_time.tooltip</source>
+        <target>Tikslią vertę sužinosite įvedę pristatymo adresą</target>
+      </trans-unit>
       <trans-unit id="ace667964c9c1c5c29134999deae92c0" resname="cart.block.total">
         <source>cart.block.total</source>
         <target>Viso</target>

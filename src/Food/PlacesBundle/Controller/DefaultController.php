@@ -95,6 +95,18 @@ class DefaultController extends Controller
             $recommended = (bool)$recommendedFromRequest;
         }
 
+        if ($deliveryType = $request->get('delivery_type', false)) {
+            switch($deliveryType) {
+                // @TODO: delivery !== deliver
+                case 'delivery':
+                    $this->container->get('session')->set('delivery_type', OrderService::$deliveryDeliver);
+                    break;
+                case 'pickup':
+                    $this->container->get('session')->set('delivery_type', OrderService::$deliveryPickup);
+                    break;
+            }
+        }
+
         $places = $this->get('food.places')->getPlacesForList($recommended, $request, $slug_filter);
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
 
