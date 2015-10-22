@@ -120,23 +120,20 @@ class Restaurant extends ContainerAware
             }
         }
 
-        $pickUp = (isset($placePoint) && $placePoint->getPickUp() ? true: false);
-        $delivery = (isset($placePoint) && $placePoint->getDelivery() ? true: false);
-        if ($locationData == null) {
-            $delivery = true;
-        }
-        if ($locationData == null)
-        {
-            $pickUp = true;
-        }
         if ($pickUpOnly || $place->getDeliveryOptions() == $place::OPT_ONLY_PICKUP) {
             $pickUp = true;
             $delivery = false;
+        } elseif ($locationData == null) {
+            $delivery = true;
+            $pickUp = true;
+        } else {
+            $pickUp = (isset($placePoint) && $placePoint->getPickUp() ? true: false);
+            $delivery = (isset($placePoint) && $placePoint->getDelivery() ? true: false);
         }
-        $weHaveLocationData = (!empty($locationData) ? true: false);
+
         $devPrice = 0;
         $devCart = 0;
-        if ($weHaveLocationData) {
+        if (!empty($locationData)) {
             $placePointMap = $this->container->get('session')->get('point_data');
             if (empty($placePointMap[$place->getId()])) {
                 $ppId = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithDistance(
@@ -217,11 +214,11 @@ class Restaurant extends ContainerAware
                         'currency' => $currency
                     ),
                     'minimal_order' => array(
-                        'amount' => (!empty($devCart) ? ($devCart * 100) : ($place->getCartMinimum() * 100)),
+                        'amount' => (!empty($devCart) ? ($devCart * 100) : ($this->container->get('food.places')->getMinCartPrice($place->getId()) * 100)),
                         'currency' => $currency
                     ),
                     'minimal_order_pickup' => array(
-                        'amount' => ($place->getMinimalOnSelfDel() ?  $place->getCartMinimum() * 100 : 0),
+                        'amount' => ($place->getMinimalOnSelfDel() ?  $this->container->get('food.places')->getMinCartPrice($place->getId()) * 100 : 0),
                         'currency' => $currency
                     )
                 )
