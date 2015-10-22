@@ -22,6 +22,10 @@
             <source>cart.block.delivery_type.tooltip</source>
             <target>Nākamajā solī izvēlieties piegādes adresi  vai restorāna adresi, ja vēlaties pasūtījumu saņemt uz vietas</target>
         </trans-unit>
+      <trans-unit id="cart.block.delivery_time.tooltip" resname="cart.block.delivery_time.tooltip">
+        <source>cart.block.delivery_time.tooltip</source>
+        <target>Jūs uzzināsiet precīzu cenu, kad ievadīsiet piegādes adresi</target>
+      </trans-unit>
       <trans-unit id="ace667964c9c1c5c29134999deae92c0" resname="cart.block.total">
         <source>cart.block.total</source>
         <target>Kopā</target>
