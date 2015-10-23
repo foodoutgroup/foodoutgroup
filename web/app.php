@@ -16,7 +16,7 @@ $newUrl = 'foodout.1000receptu.lt';
 //$newUrl = 'so.skanu';
 
 // Check pattern
-$pattern = '/\/(api|admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|routing|monitoring|nagios|logistics|order|sitemap|o|r|o\-spr)(\/|$)/i';
+$pattern = '/\/(api|admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|routing|monitoring|nagios|logistics|order|sitemap|o|r|o\-spr|messaging\-delivery)(\/|$)/i';
 
 // Das logic
 if (in_array($domain, $rdDomains) && $method == 'GET' && !preg_match($pattern, $url)) {
