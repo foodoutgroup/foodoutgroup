@@ -410,7 +410,8 @@ class CartService {
                 $total += ((float)$opt->getDishOptionId()->getPrice() * 100) * (int)$cartItem->getQuantity();
             }
         }
-        return $total / 100;
+        $total = sprintf("%01.2f", $total / 100);
+        return $total;
     }
 
     /**
@@ -629,6 +630,7 @@ class CartService {
         if (empty($deliveryTotal) || $deliveryTotal == 0) {
             $deliveryTotal = $place->getCartMinimum();
         }
+        $deliveryTotal = sprintf("%01.2f", $deliveryTotal);
         return $deliveryTotal;
     }
 }
