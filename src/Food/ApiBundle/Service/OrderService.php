@@ -404,7 +404,19 @@ class OrderService extends ContainerAware
         foreach ($order->getDetails() as $detail) {
             $sum = 0;
             //$sum+= $detail->getPrice() * $detail->getQuantity();
-            $sum+= $detail->getOrigPrice() * $detail->getQuantity(); // egles prasymu rodom orig_price
+            if ($detail->getDishId()->getDiscountPricesEnabled() && $order->getPlace()->getDiscountPricesEnabled()) {
+                $current_price = $detail->getOrigPrice();
+                $sizes = $detail->getDishId()->getSizes();
+                foreach ($sizes as $size) {
+                    if ($size->getUnit()->getId() == $detail->getDishUnitId()) {
+                        $current_price = $size->getCurrentPrice();
+                    }
+                }
+                $sum+= $current_price * $detail->getQuantity();
+            } else {
+                $sum+= $detail->getOrigPrice() * $detail->getQuantity(); // egles prasymu rodom orig_price
+            }
+
             foreach ($detail->getOptions() as $option) {
                 $sum+= $option->getPrice() * $option->getQuantity();
             }
