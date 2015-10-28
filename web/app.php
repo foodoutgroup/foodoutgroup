@@ -16,12 +16,13 @@ $newUrl = 'foodout.1000receptu.lt';
 //$newUrl = 'so.skanu';
 
 // Check pattern
-$pattern = '/\/(api|admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|routing|monitoring|nagios|logistics|order|sitemap|o|r|o\-spr|messaging\-delivery)(\/|$)/i';
+$pattern = '/\/(api|admin|cart|test|invoice|payments|call_center|newsletter|ajax|js|routing|monitoring|nagios|logistics|order|sitemap|o|r|o\-spr)(\/|$)/i';
 
 // Das logic
 if (in_array($domain, $rdDomains) && $method == 'GET' && !preg_match($pattern, $url)) {
-    header('Location: http://'.$newUrl.$url, null, 302);
-    die();
+    // kol delfis nenukreiptas - isjungiam redirecta
+//    header('Location: http://'.$newUrl.$url, null, 302);
+//    die();
 }
 
 /* Delfi promo end */
