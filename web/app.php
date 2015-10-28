@@ -20,9 +20,8 @@ $pattern = '/\/(api|admin|cart|test|invoice|payments|call_center|newsletter|ajax
 
 // Das logic
 if (in_array($domain, $rdDomains) && $method == 'GET' && !preg_match($pattern, $url)) {
-    // kol delfis nenukreiptas - isjungiam redirecta
-//    header('Location: http://'.$newUrl.$url, null, 302);
-//    die();
+    header('Location: http://'.$newUrl.$url, null, 302);
+    die();
 }
 
 /* Delfi promo end */
