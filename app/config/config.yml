@@ -421,7 +421,7 @@ pirminis_gateway:
 knp_snappy:
     pdf:
         enabled:    true
-        binary:     /usr/local/bin/wkhtmltopdf
+        binary:     /usr/bin/wkhtmltopdf
 #        binary:     'C:\wkhtmltopdf\bin\wkhtmltopdf.exe'
         options:    []
     image:
