@@ -11,7 +11,7 @@ set :branch, "master"
 # multi-stage environment
 set :stages,        %w(production staging sandbox taurinas kofeinas pipiras production_lv dev)
 # isijungiam kada reik :)
-set :default_stage, "production"
+set :default_stage, "staging"
 set :stage_dir,     "app/config/deploy"
 require 'capistrano/ext/multistage'
 
@@ -43,7 +43,7 @@ set :composer_options, "--verbose"
 # Testing purpose
 # set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader --no-progress"
 
-set :keep_releases, 8
+set :keep_releases, 7
 
 namespace :deploy do
     desc "chmod things"

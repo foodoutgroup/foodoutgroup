@@ -1,10 +1,10 @@
-set :domain,      "amazingsales-parado.data.lt"
+set :domain,      "foodout.lt"
 set :deploy_to,   "/home/labai.skanu.lt/"
 
 set :scm,         :git
 set :model_manager, "doctrine"
 
-set :user, "skanu.lt"
+set :user, "skanu"
 set :password, "veM6hee0"
 
 set :symfony_env_prod, "prod"
