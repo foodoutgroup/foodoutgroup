@@ -256,13 +256,13 @@ var Place = {
 
                     var workTimesHolder = $('.work-times');
 
-                    workTimesHolder.find('.wd1 span').html(data.workTime.wd1_start + ' - ' + data.workTime.wd1_end);
-                    workTimesHolder.find('.wd2 span').html(data.workTime.wd2_start + ' - ' + data.workTime.wd2_end);
-                    workTimesHolder.find('.wd3 span').html(data.workTime.wd3_start + ' - ' + data.workTime.wd3_end);
-                    workTimesHolder.find('.wd4 span').html(data.workTime.wd4_start + ' - ' + data.workTime.wd4_end);
-                    workTimesHolder.find('.wd5 span').html(data.workTime.wd5_start + ' - ' + data.workTime.wd5_end);
-                    workTimesHolder.find('.wd6 span').html(data.workTime.wd6_start + ' - ' + data.workTime.wd6_end);
-                    workTimesHolder.find('.wd7 span').html(data.workTime.wd7_start + ' - ' + data.workTime.wd7_end);
+                    workTimesHolder.find('.wd1 span').html(data.workTime.wd1);
+                    workTimesHolder.find('.wd2 span').html(data.workTime.wd2);
+                    workTimesHolder.find('.wd3 span').html(data.workTime.wd3);
+                    workTimesHolder.find('.wd4 span').html(data.workTime.wd4);
+                    workTimesHolder.find('.wd5 span').html(data.workTime.wd5);
+                    workTimesHolder.find('.wd6 span').html(data.workTime.wd6);
+                    workTimesHolder.find('.wd7 span').html(data.workTime.wd7);
 
                     if (Place.informationTabOpened) {
                         Place.showPointMap(data, false);

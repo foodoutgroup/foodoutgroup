@@ -172,130 +172,53 @@ class PlacePoint
     private $place;
 
     /**
-     * @var string
-     * @ORM\Column(name="wd1_start", type="string", length=5)
+     * @ORM\OneToMany(targetEntity="PlacePointWorkTime", mappedBy="placePoint", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @var PlacePointWorkTime[]
      */
-    private $wd1_start;
+    private $work_times;
 
     /**
      * @var string
-     * @ORM\Column(name="wd1_end", type="string", length=5)
+     * @ORM\Column
      */
-    private $wd1_end;
+    private $wd1;
 
     /**
      * @var string
-     * @ORM\Column(name="wd2_start", type="string", length=5)
+     * @ORM\Column
      */
-    private $wd2_start;
+    private $wd2;
 
     /**
      * @var string
-     * @ORM\Column(name="wd2_end", type="string", length=5)
+     * @ORM\Column
      */
-    private $wd2_end;
+    private $wd3;
 
     /**
      * @var string
-     * @ORM\Column(name="wd3_start", type="string", length=5)
+     * @ORM\Column
      */
-    private $wd3_start;
+    private $wd4;
 
     /**
      * @var string
-     * @ORM\Column(name="wd3_end", type="string", length=5)
+     * @ORM\Column
      */
-    private $wd3_end;
+    private $wd5;
 
     /**
      * @var string
-     * @ORM\Column(name="wd4_start", type="string", length=5)
+     * @ORM\Column
      */
-    private $wd4_start;
+    private $wd6;
 
     /**
      * @var string
-     * @ORM\Column(name="wd4_end", type="string", length=5)
+     * @ORM\Column
      */
-    private $wd4_end;
-
-    /**
-     * @var string
-     * @ORM\Column(name="wd5_start", type="string", length=5)
-     */
-    private $wd5_start;
-
-    /**
-     * @var string
-     * @ORM\Column(name="wd5_end", type="string", length=5)
-     */
-    private $wd5_end;
-
-    /**
-     * @var string
-     * @ORM\Column(name="wd6_start", type="string", length=5)
-     */
-    private $wd6_start;
-
-    /**
-     * @var string
-     * @ORM\Column(name="wd6_end", type="string", length=5)
-     */
-    private $wd6_end;
-
-    /**
-     * @var string
-     * @ORM\Column(name="wd7_start", type="string", length=5)
-     */
-    private $wd7_start;
-
-    /**
-     * @var string
-     * @ORM\Column(name="wd7_end", type="string", length=5)
-     */
-    private $wd7_end;
-
-    /**
-     * @var string
-     * @ORM\Column(name="wd1_end_long", type="string", length=5, nullable=true)
-     */
-    private $wd1_end_long;
-
-    /**
-     * @var string
-     * @ORM\Column(name="wd2_end_long", type="string", length=5, nullable=true)
-     */
-    private $wd2_end_long;
-
-    /**
-     * @var string
-     * @ORM\Column(name="wd3_end_long", type="string", length=5, nullable=true)
-     */
-    private $wd3_end_long;
-
-    /**
-     * @var string
-     * @ORM\Column(name="wd4_end_long", type="string", length=5, nullable=true)
-     */
-    private $wd4_end_long;
-
-    /**
-     * @var string
-     * @ORM\Column(name="wd5_end_long", type="string", length=5, nullable=true)
-     */
-    private $wd5_end_long;
-
-    /**
-     * @var string
-     * @ORM\Column(name="wd6_end_long", type="string", length=5, nullable=true)
-     */
-    private $wd6_end_long;
-
-    /**
-     * @var string
-     * @ORM\Column(name="wd7_end_long", type="string", length=5, nullable=true)
-     */
-    private $wd7_end_long;
+    private $wd7;
 
     /**
      * @var bool
@@ -585,328 +508,6 @@ class PlacePoint
     }
 
     /**
-     * Set wd1_start
-     *
-     * @param string $wd1Start
-     * @return PlacePoint
-     */
-    public function setWd1Start($wd1Start)
-    {
-        $this->wd1_start = $wd1Start;
-    
-        return $this;
-    }
-
-    /**
-     * Get wd1_start
-     *
-     * @return string 
-     */
-    public function getWd1Start()
-    {
-        return $this->wd1_start;
-    }
-
-    /**
-     * Set wd1_end
-     *
-     * @param string $wd1End
-     * @return PlacePoint
-     */
-    public function setWd1End($wd1End)
-    {
-        $this->wd1_end = $wd1End;
-    
-        return $this;
-    }
-
-    /**
-     * Get wd1_end
-     *
-     * @return string 
-     */
-    public function getWd1End()
-    {
-        return $this->wd1_end;
-    }
-
-    /**
-     * Set wd2_start
-     *
-     * @param string $wd2Start
-     * @return PlacePoint
-     */
-    public function setWd2Start($wd2Start)
-    {
-        $this->wd2_start = $wd2Start;
-    
-        return $this;
-    }
-
-    /**
-     * Get wd2_start
-     *
-     * @return string 
-     */
-    public function getWd2Start()
-    {
-        return $this->wd2_start;
-    }
-
-    /**
-     * Set wd2_end
-     *
-     * @param string $wd2End
-     * @return PlacePoint
-     */
-    public function setWd2End($wd2End)
-    {
-        $this->wd2_end = $wd2End;
-    
-        return $this;
-    }
-
-    /**
-     * Get wd2_end
-     *
-     * @return string 
-     */
-    public function getWd2End()
-    {
-        return $this->wd2_end;
-    }
-
-    /**
-     * Set wd3_start
-     *
-     * @param string $wd3Start
-     * @return PlacePoint
-     */
-    public function setWd3Start($wd3Start)
-    {
-        $this->wd3_start = $wd3Start;
-    
-        return $this;
-    }
-
-    /**
-     * Get wd3_start
-     *
-     * @return string 
-     */
-    public function getWd3Start()
-    {
-        return $this->wd3_start;
-    }
-
-    /**
-     * Set wd3_end
-     *
-     * @param string $wd3End
-     * @return PlacePoint
-     */
-    public function setWd3End($wd3End)
-    {
-        $this->wd3_end = $wd3End;
-    
-        return $this;
-    }
-
-    /**
-     * Get wd3_end
-     *
-     * @return string 
-     */
-    public function getWd3End()
-    {
-        return $this->wd3_end;
-    }
-
-    /**
-     * Set wd4_start
-     *
-     * @param string $wd4Start
-     * @return PlacePoint
-     */
-    public function setWd4Start($wd4Start)
-    {
-        $this->wd4_start = $wd4Start;
-    
-        return $this;
-    }
-
-    /**
-     * Get wd4_start
-     *
-     * @return string 
-     */
-    public function getWd4Start()
-    {
-        return $this->wd4_start;
-    }
-
-    /**
-     * Set wd4_end
-     *
-     * @param string $wd4End
-     * @return PlacePoint
-     */
-    public function setWd4End($wd4End)
-    {
-        $this->wd4_end = $wd4End;
-    
-        return $this;
-    }
-
-    /**
-     * Get wd4_end
-     *
-     * @return string 
-     */
-    public function getWd4End()
-    {
-        return $this->wd4_end;
-    }
-
-    /**
-     * Set wd5_start
-     *
-     * @param string $wd5Start
-     * @return PlacePoint
-     */
-    public function setWd5Start($wd5Start)
-    {
-        $this->wd5_start = $wd5Start;
-    
-        return $this;
-    }
-
-    /**
-     * Get wd5_start
-     *
-     * @return string 
-     */
-    public function getWd5Start()
-    {
-        return $this->wd5_start;
-    }
-
-    /**
-     * Set wd5_end
-     *
-     * @param string $wd5End
-     * @return PlacePoint
-     */
-    public function setWd5End($wd5End)
-    {
-        $this->wd5_end = $wd5End;
-    
-        return $this;
-    }
-
-    /**
-     * Get wd5_end
-     *
-     * @return string 
-     */
-    public function getWd5End()
-    {
-        return $this->wd5_end;
-    }
-
-    /**
-     * Set wd6_start
-     *
-     * @param string $wd6Start
-     * @return PlacePoint
-     */
-    public function setWd6Start($wd6Start)
-    {
-        $this->wd6_start = $wd6Start;
-    
-        return $this;
-    }
-
-    /**
-     * Get wd6_start
-     *
-     * @return string 
-     */
-    public function getWd6Start()
-    {
-        return $this->wd6_start;
-    }
-
-    /**
-     * Set wd6_end
-     *
-     * @param string $wd6End
-     * @return PlacePoint
-     */
-    public function setWd6End($wd6End)
-    {
-        $this->wd6_end = $wd6End;
-    
-        return $this;
-    }
-
-    /**
-     * Get wd6_end
-     *
-     * @return string 
-     */
-    public function getWd6End()
-    {
-        return $this->wd6_end;
-    }
-
-    /**
-     * Set wd7_start
-     *
-     * @param string $wd7Start
-     * @return PlacePoint
-     */
-    public function setWd7Start($wd7Start)
-    {
-        $this->wd7_start = $wd7Start;
-    
-        return $this;
-    }
-
-    /**
-     * Get wd7_start
-     *
-     * @return string 
-     */
-    public function getWd7Start()
-    {
-        return $this->wd7_start;
-    }
-
-    /**
-     * Set wd7_end
-     *
-     * @param string $wd7End
-     * @return PlacePoint
-     */
-    public function setWd7End($wd7End)
-    {
-        $this->wd7_end = $wd7End;
-    
-        return $this;
-    }
-
-    /**
-     * Get wd7_end
-     *
-     * @return string 
-     */
-    public function getWd7End()
-    {
-        return $this->wd7_end;
-    }
-
-    /**
      * @return string
      */
     public function __toString()
@@ -949,20 +550,13 @@ class PlacePoint
             'allowCash' => $this->getAllowCash(),
             'allowCard' => $this->getAllowCard(),
             'workTime' => array(
-                'wd1_start' => $this->getWd1Start(),
-                'wd1_end' => $this->getWd1End(),
-                'wd2_start' => $this->getWd2Start(),
-                'wd2_end' => $this->getWd2End(),
-                'wd3_start' => $this->getWd3Start(),
-                'wd3_end' => $this->getWd3End(),
-                'wd4_start' => $this->getWd4Start(),
-                'wd4_end' => $this->getWd4End(),
-                'wd5_start' => $this->getWd5Start(),
-                'wd5_end' => $this->getWd5End(),
-                'wd6_start' => $this->getWd6Start(),
-                'wd6_end' => $this->getWd6End(),
-                'wd7_start' => $this->getWd7Start(),
-                'wd7_end' => $this->getWd7End(),
+                'wd1' => $this->getWd1(),
+                'wd2' => $this->getWd2(),
+                'wd3' => $this->getWd3(),
+                'wd4' => $this->getWd4(),
+                'wd5' => $this->getWd5(),
+                'wd6' => $this->getWd6(),
+                'wd7' => $this->getWd7(),
             ),
         );
     }
@@ -1499,164 +1093,148 @@ class PlacePoint
     }
 
     /**
-     * Set wd1_end_long
+     * Add worktime
      *
-     * @param string $wd1EndLong
+     * @param \Food\DishesBundle\Entity\PlacePointWorkTime $workTime
      * @return PlacePoint
      */
-    public function setWd1EndLong($wd1EndLong)
+    public function addWorkTime(\Food\DishesBundle\Entity\PlacePointWorkTime $workTime)
     {
-        $this->wd1_end_long = $wd1EndLong;
-    
+        $this->work_times[] = $workTime;
+
         return $this;
     }
 
     /**
-     * Get wd1_end_long
+     * Remove zones
      *
-     * @return string 
+     * @param \Food\DishesBundle\Entity\PlacePointWorkTime $zones
      */
-    public function getWd1EndLong()
+    public function removeWorkTime(\Food\DishesBundle\Entity\PlacePointWorkTime $workTime)
     {
-        return $this->wd1_end_long;
+        $this->work_times->removeElement($workTime);
     }
 
     /**
-     * Set wd2_end_long
+     * Get zones
      *
-     * @param string $wd2EndLong
-     * @return PlacePoint
+     * @return \Food\DishesBundle\Entity\PlacePointWorkTime[]
      */
-    public function setWd2EndLong($wd2EndLong)
+    public function getWorkTime()
     {
-        $this->wd2_end_long = $wd2EndLong;
-    
-        return $this;
+        return $this->work_times;
     }
 
     /**
-     * Get wd2_end_long
-     *
-     * @return string 
+     * @return string
      */
-    public function getWd2EndLong()
+    public function getWd1()
     {
-        return $this->wd2_end_long;
+        return $this->wd1;
     }
 
     /**
-     * Set wd3_end_long
-     *
-     * @param string $wd3EndLong
-     * @return PlacePoint
+     * @param string $wd1
      */
-    public function setWd3EndLong($wd3EndLong)
+    public function setWd1($wd1)
     {
-        $this->wd3_end_long = $wd3EndLong;
-    
-        return $this;
+        $this->wd1 = $this->_sanitize($wd1);
     }
 
     /**
-     * Get wd3_end_long
-     *
-     * @return string 
+     * @return string
      */
-    public function getWd3EndLong()
+    public function getWd2()
     {
-        return $this->wd3_end_long;
+        return $this->wd2;
     }
 
     /**
-     * Set wd4_end_long
-     *
-     * @param string $wd4EndLong
-     * @return PlacePoint
+     * @param string $wd2
      */
-    public function setWd4EndLong($wd4EndLong)
+    public function setWd2($wd2)
     {
-        $this->wd4_end_long = $wd4EndLong;
-    
-        return $this;
+        $this->wd2 = $this->_sanitize($wd2);
     }
 
     /**
-     * Get wd4_end_long
-     *
-     * @return string 
+     * @return string
      */
-    public function getWd4EndLong()
+    public function getWd3()
     {
-        return $this->wd4_end_long;
+        return $this->wd3;
     }
 
     /**
-     * Set wd5_end_long
-     *
-     * @param string $wd5EndLong
-     * @return PlacePoint
+     * @param string $wd3
      */
-    public function setWd5EndLong($wd5EndLong)
+    public function setWd3($wd3)
     {
-        $this->wd5_end_long = $wd5EndLong;
-    
-        return $this;
+        $this->wd3 = $this->_sanitize($wd3);
     }
 
     /**
-     * Get wd5_end_long
-     *
-     * @return string 
+     * @return string
      */
-    public function getWd5EndLong()
+    public function getWd4()
     {
-        return $this->wd5_end_long;
+        return $this->wd4;
     }
 
     /**
-     * Set wd6_end_long
-     *
-     * @param string $wd6EndLong
-     * @return PlacePoint
+     * @param string $wd4
      */
-    public function setWd6EndLong($wd6EndLong)
+    public function setWd4($wd4)
     {
-        $this->wd6_end_long = $wd6EndLong;
-    
-        return $this;
+        $this->wd4 = $this->_sanitize($wd4);
     }
 
     /**
-     * Get wd6_end_long
-     *
-     * @return string 
+     * @return string
      */
-    public function getWd6EndLong()
+    public function getWd5()
     {
-        return $this->wd6_end_long;
+        return $this->wd5;
     }
 
     /**
-     * Set wd7_end_long
-     *
-     * @param string $wd7EndLong
-     * @return PlacePoint
+     * @param string $wd5
      */
-    public function setWd7EndLong($wd7EndLong)
+    public function setWd5($wd5)
     {
-        $this->wd7_end_long = $wd7EndLong;
-    
-        return $this;
+        $this->wd5 = $this->_sanitize($wd5);
     }
 
     /**
-     * Get wd7_end_long
-     *
-     * @return string 
+     * @return string
      */
-    public function getWd7EndLong()
+    public function getWd6()
     {
-        return $this->wd7_end_long;
+        return $this->wd6;
+    }
+
+    /**
+     * @param string $wd6
+     */
+    public function setWd6($wd6)
+    {
+        $this->wd6 = $this->_sanitize($wd6);
+    }
+
+    /**
+     * @return string
+     */
+    public function getWd7()
+    {
+        return $this->wd7;
+    }
+
+    /**
+     * @param string $wd7
+     */
+    public function setWd7($wd7)
+    {
+        $this->wd7 = $this->_sanitize($wd7);
     }
 
     /**
@@ -1687,6 +1265,7 @@ class PlacePoint
     public function __construct()
     {
         $this->zones = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->work_times = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -1766,5 +1345,16 @@ class PlacePoint
     public function getNoReplication()
     {
         return $this->noReplication;
+    }
+
+    /**
+     * Sanitizes time string
+     *
+     * @param $string
+     * @return string
+     */
+    private function _sanitize($string)
+    {
+        return preg_replace(array('/[^\s\d\pL:-]/iu', '/\s\s+/'), array('', ' '), $string);
     }
 }

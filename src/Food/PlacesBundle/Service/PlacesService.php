@@ -501,79 +501,167 @@ class PlacesService extends ContainerAware
             $placePoint = $placePoints[0];
         }
 
-        $from = $placePoint->{'getWd' . $day . 'Start'}();
-        $to = $placePoint->{'getWd' . $day . 'EndLong'}();
-        if (empty($to)) {
-            $to = $placePoint->{'getWd' . $day . 'End'}();
-        }
-
-        if (strpos($from, ':') === false) {
-            return [];
-        }
-
-        $from = str_replace(':', '', $from);
-        $to = str_replace(':', '', $to);
-        $graph = [];
-
-        if (($to < '0500' && $to >= '0000') || $to > '2400') {
-            $to = '2400';
-        }
-
-        // +100 nes duodam restoranui atsidaryt, negali gi pristatyt ta pacia valanda, kai atsidare restoranas :D
-        $from = intval($from) + 100;
-        $to = intval($to);
-
-        // jei restoranas jau dirba ilgiau nei valanda - nuo dabar duodam užsakyt tik po valandos, jei kalbam apie siandien
-        if ($dateShift == 0 && $from <= date("Hi", strtotime('+30 minute'))) {
-            $from = intval(date('H') . '00') + 100;
-            if (date('i') > 0 && date('i') <= 30) {
-                $from = $from + 30;
-            } else if (date('i') > 30) {
-                $from = $from + 100;
+        $workTime = $placePoint->{'getWd'.$day}();
+        $intervals = explode(' ', $workTime);
+        $firstOnDay = true;
+        $graph = array();
+        foreach ($intervals as $interval) {
+            if (strpos($interval, '-') === false) {
+                continue;
             }
-        }
-
-        // If restaurant starts at a dumbt time, that is not our wanted 00 or 30 - fix dat crap
-        $minutes = $from % 100;
-        if ($minutes != 0 && $minutes != 30) {
-            $hour = ($from - ($from % 100)) / 100;
-
-            if ($minutes < 30) {
-                $minutes = '30';
+            list($start, $end) = explode('-', $interval);
+            if (strpos($start, ':') !== false) {
+                list($startHour, $startMin) = explode(':', $start);
             } else {
-                $minutes = '00';
-                $hour++;
+                $startHour = $start;
+                $startMin = 0;
             }
-            if ($hour < 10) {
-                $hour = '0' . $hour;
+
+            if (strpos($end, ':') !== false) {
+                list($endHour, $endMin) = explode(':', $end);
+            } else {
+                $endHour = $end;
+                $endMin = 0;
             }
-            $from = $hour . $minutes;
+
+            if ($endHour < $startHour || $endHour == $startHour && $endMin < $startMin) {
+                $endHour = 24;
+                $endMin = 0;
+            }
+
+            // fix start time
+            if ($startMin > 0 && $startMin < 30) {
+                $startMin = 30;
+            } elseif ($startMin > 30) {
+                $startHour++;
+                $startMin = 0;
+            }
+
+            // fix end time
+            if ($endMin > 0 && $endMin < 30) {
+                $endMin = 0;
+            } elseif ($startMin > 30) {
+                $endMin = 30;
+            }
+
+
+            $strtime = $firstOnDay ? '+1 hour' : '+30 minute';
+
+            if (0 != $dateShift ||
+                (date('H', strtotime($strtime)) < $startHour ||
+                    date('H', strtotime($strtime)) == $startHour && date('i', strtotime($strtime)) < $startMin)
+            ) {
+                // first open on day +1h
+                if ($firstOnDay) {
+                    $startHour++;
+
+                // else +30min
+                } elseif ($startMin) {
+                    $startHour++;
+                    $startMin = 0;
+                } else {
+                    $startMin = 30;
+                }
+            } else {
+                $startHour = date('H', strtotime('+1 hour'));
+                if (date('i') > 30) {
+                    $startMin = 0;
+                    $startHour++;
+                } else {
+                    $startMin = 30;
+                }
+            }
+
+            while ($startHour < $endHour || $startHour == $endHour && $startMin <= $endMin) {
+                $graph[] = sprintf('%02d:%02d', $startHour, $startMin);
+                $startMin += 30;
+                if (60 == $startMin) {
+                    $startHour++;
+                    $startMin = 0;
+                }
+            }
+
+            $firstOnDay = false;
         }
 
-        $i = $from;
+        natsort($graph);
 
-        while ($i <= $to) {
-            if ($i % 100 == 60) {
-                $i = $i + 40;
-            }
-
-            $hour = ($i - ($i % 100)) / 100;
-            if ($hour < 10) {
-                $hour = '0' . $hour;
-            }
-            $minutes = $i % 100;
-            if ($minutes == 0) {
-                $minutes = '00';
-            } elseif ($minutes < 10) {
-                $minutes = '0' . $minutes;
-            }
-            $graph[] = $hour . ':' . $minutes;
-
-            $i = $i + 30;
-        }
-
-        return $graph;
+        return array_unique($graph);
+//
+//        $from = $placePoint->{'getWd'.$day.'Start'}();
+//        $to = $placePoint->{'getWd'.$day.'EndLong'}();
+//        if (empty($to)) {
+//            $to = $placePoint->{'getWd'.$day.'End'}();
+//        }
+//
+//        if (strpos($from, ':') === false) {
+//            return array();
+//        }
+//
+//        $from = str_replace(':', '', $from);
+//        $to = str_replace(':', '', $to);
+//        $graph = array();
+//
+//        if (($to < '0500' && $to >= '0000') || $to > '2400') {
+//            $to = '2400';
+//        }
+//
+//        // +100 nes duodam restoranui atsidaryt, negali gi pristatyt ta pacia valanda, kai atsidare restoranas :D
+//        $from = intval($from)+100;
+//        $to = intval($to);
+//
+//        // jei restoranas jau dirba ilgiau nei valanda - nuo dabar duodam užsakyt tik po valandos, jei kalbam apie siandien
+//        if ($dateShift == 0 && $from <= date("Hi", strtotime('+30 minute'))) {
+//            $from = intval(date('H').'00') + 100;
+//            if (date('i') > 0 && date('i') <= 30) {
+//                $from = $from + 30;
+//            } else if (date('i') > 30) {
+//                $from = $from +100;
+//            }
+//        }
+//
+//        // If restaurant starts at a dumbt time, that is not our wanted 00 or 30 - fix dat crap
+//        $minutes = $from%100;
+//        if ($minutes != 0 && $minutes != 30) {
+//            $hour = ($from - ($from%100))/100;
+//
+//            if ($minutes < 30) {
+//                $minutes = '30';
+//            } else {
+//                $minutes = '00';
+//                $hour++;
+//            }
+//            if ($hour < 10) {
+//                $hour = '0'.$hour;
+//            }
+//            $from = $hour.$minutes;
+//        }
+//
+//        $i = $from;
+//
+//        while($i <= $to) {
+//            if ($i%100 == 60) {
+//                $i = $i+40;
+//            }
+//
+//            $hour = ($i - ($i%100))/100;
+//            if ($hour < 10) {
+//                $hour = '0'.$hour;
+//            }
+//            $minutes = $i%100;
+//            if ($minutes == 0) {
+//                $minutes = '00';
+//            } elseif ($minutes < 10) {
+//                $minutes = '0'.$minutes;
+//            }
+//            $graph[] = $hour.':'.$minutes;
+//
+//            $i = $i+30;
+//        }
+//
+//        return $graph;
     }
+
 
     /**
      * @param Place $place

@@ -40,8 +40,6 @@ class Restaurant extends ContainerAware
         ),
         'is_working' => false,
         'is_taking_orders' => false,
-        'order_hours' => array(),
-        'work_hours' => array(),
         'locations' => array(),
     );
 
@@ -239,27 +237,8 @@ class Restaurant extends ContainerAware
             )
             ->set('is_working', !$this->container->get('food.order')->isTodayNoOneWantsToWork($place))
             ->set('is_taking_orders', !$this->container->get('food.order')->isTodayNoOneWantsToWork($place))
-            ->set('order_hours', (isset($placePoint) ? $this->_getWorkHoursOfPlacePoint($placePoint) : null))
-            ->set('work_hours', (isset($placePoint) ? $this->_getWorkHoursOfPlacePoint($placePoint) : null))
             ->set('locations', $this->_getLocationsForResponse($place, $placePoint));
         return $this;
-    }
-
-    /**
-     * @param PlacePoint $point
-     * @return array
-     */
-    private function _getWorkHoursOfPlacePoint(PlacePoint $point)
-    {
-        return array(
-            (strpos($point->getWd1Start(), ":") > 0 ? array($point->getWd1Start(),$point->getWd1End()) : array()),
-            (strpos($point->getWd2Start(), ":") > 0 ? array($point->getWd2Start(),$point->getWd2End()) : array()),
-            (strpos($point->getWd3Start(), ":") > 0 ? array($point->getWd3Start(),$point->getWd3End()) : array()),
-            (strpos($point->getWd4Start(), ":") > 0 ? array($point->getWd4Start(),$point->getWd4End()) : array()),
-            (strpos($point->getWd5Start(), ":") > 0 ? array($point->getWd5Start(),$point->getWd5End()) : array()),
-            (strpos($point->getWd6Start(), ":") > 0 ? array($point->getWd6Start(),$point->getWd6End()) : array()),
-            (strpos($point->getWd7Start(), ":") > 0 ? array($point->getWd7Start(),$point->getWd7End()) : array())
-        );
     }
 
     /**
@@ -283,7 +262,6 @@ class Restaurant extends ContainerAware
                         'longitude' => $point->getLon()
                     ),
                     'is_working' => $this->container->get('food.order')->isTodayWork($point),
-                    'work_hours' => $this->_getWorkHoursOfPlacePoint($point),
                     'phone_number' => $point->getPhone(),
                     /*
                     'services' => array(

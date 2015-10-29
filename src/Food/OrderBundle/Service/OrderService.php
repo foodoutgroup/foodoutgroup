@@ -2785,10 +2785,10 @@ class OrderService extends ContainerAware
     {
         $wd = date('w');
         if ($wd == 0) $wd = 7;
-        $timeFr = $placePoint->{'getWd'.$wd.'Start'}();
-        $timeFrTs = str_replace(":", "", $placePoint->{'getWd'.$wd.'Start'}());
-        $timeTo = $placePoint->{'getWd'.$wd.'End'}();
-        $timeToTs =  str_replace(":", "", $placePoint->{'getWd'.$wd.'EndLong'}());
+        $timeFr = $placePoint->{'getWd'.$wd}();
+        $timeFrTs = str_replace(":", "", $placePoint->{'getWd'.$wd}());
+        $timeTo = $placePoint->{'getWd'.$wd}();
+        $timeToTs =  str_replace(":", "", $placePoint->{'getWd'.$wd}());
         $currentTime = date("Hi");
         if (date("H") < 6) {
             $currentTime+=2400;
@@ -2882,42 +2882,14 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @deprecated
+     *
      * @param PlacePoint $placePoint
      * @return bool
      */
     public function isTodayWork(PlacePoint $placePoint)
     {
-        $totalH = date("H");
-        $totalM = date("i");
-        $wd = date('w');
-
-        if ($totalH < 6) {
-            $totalH = $totalH + 24;
-            $wd = $wd - 1;
-        }
-        if ($wd < 0) $wd = 7 + $wd;
-        if ($wd == 0) $wd = 7;
-
-        $frm = $placePoint->{'getWd'.$wd.'Start'}();
-        $tot = $placePoint->{'getWd'.$wd.'EndLong'}();
-        if (empty($tot)) {
-            $tot = $placePoint->{'getWd'.$wd.'End'}();
-        }
-        $timeFr = str_replace(":", "", $frm);
-        $timeTo = str_replace(":", "", $tot);
-
-        $total = $totalH."".$totalM;
-
-        if(!strpos($frm, ':')) {
-            return false;
-        } else {
-            if ($timeFr > $total) {
-                return false;
-            } elseif ($timeTo < $total) {
-                return false;
-            }
-        }
-        return true;
+        return $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->isPlacePointWorks($placePoint);
     }
 
     /**
@@ -2938,9 +2910,41 @@ class OrderService extends ContainerAware
         );
         $wd = date('w');
         if ($wd == 0) $wd = 7;
-        $timeFr = $placePoint->{'getWd'.$wd.'Start'}();
-        $timeTo = $placePoint->{'getWd'.$wd.'End'}();
-        return ($showDayNumber ? $wdays[$wd]." " : ""). $timeFr." - ".$timeTo;
+        $workTime = $placePoint->{'getWd'.$wd}();
+        $intervals = explode(' ', $workTime);
+        $times = array();
+        foreach ($intervals as $interval) {
+            if (strpos($interval, '-') !== false) {
+                list($start, $end) = explode('-', $interval);
+                if (strpos($start, ':') !== false) {
+                    list($startHour, $startMin) = explode(':', $start);
+                } else {
+                    $startHour = $start;
+                    $startMin = 0;
+                }
+
+                if (strpos($end, ':') !== false) {
+                    list($endHour, $endMin) = explode(':', $end);
+                } else {
+                    $endHour = $end;
+                    $endMin = 0;
+                }
+                if ('fa' == $locale) {
+                    array_unshift($times, sprintf("%02d:%02d-%02d:%02d", $endHour, $endMin, $startHour, $startMin));
+                } else {
+                    $times[] = sprintf("%02d:%02d-%02d:%02d", $startHour, $startMin, $endHour, $endMin);
+                }
+            } elseif ('fa' == $locale)  {
+                array_unshift($times, $interval);
+            } else {
+                $times[] = $interval;
+            }
+        }
+        $time = implode(' ', $times);
+        if ($locale == 'fa') {
+            return $time . ($showDayNumber ? " " . $wdays[$wd] : "");
+        }
+        return ($showDayNumber ? $wdays[$wd]." " : ""). $time;
     }
 
     /**

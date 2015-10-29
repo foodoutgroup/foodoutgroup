@@ -452,6 +452,29 @@ class PlaceRepository extends EntityRepository
         $stmt->execute();
         return $stmt->fetchColumn(0);
     }
+
+    public function isPlacePointWorks(PlacePoint $placePoint)
+    {
+        $wd = date('w');
+        if ($wd == 0) $wd = 7;
+        $totalH = date("H");
+        $totalM = date("i");
+        $count = 'SELECT count(id)
+                  FROM `place_point_work_time`
+                  WHERE week_day = '.$wd.'
+                    AND (
+                        (start_hour < '.$totalH.' OR
+                            (start_hour <= '.$totalH.' AND start_min <= '.$totalM.')
+                        ) AND (
+                        (end_hour >= '.$totalH.' AND end_min >= '.$totalM.') OR
+                            end_hour > '.$totalH.'))
+                    AND `place_point` = '.$placePoint->getId().'
+                    LIMIT 1';
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($count);
+        $stmt->execute();
+        return (boolean) $stmt->fetchColumn(0);
+    }
 }
 
 ?>

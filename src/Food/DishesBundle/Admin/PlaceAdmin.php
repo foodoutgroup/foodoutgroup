@@ -3,6 +3,8 @@ namespace Food\DishesBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Food\DishesBundle\Entity\Place;
+use Food\DishesBundle\Entity\PlacePoint;
+use Food\DishesBundle\Entity\PlacePointWorkTime;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -212,7 +214,7 @@ class PlaceAdmin extends FoodAdmin
     {
         foreach ($object->getPoints() as $point) {
             $point->setPlace($object);
-            $this->_fixExtendedWorkTime($point);
+            $this->_fixWorkTime($point);
             $cAt = $point->getCreatedAt();
             if (empty($cAt)) {
                 $point->setCreatedAt(new \DateTime('now'));
@@ -227,23 +229,75 @@ class PlaceAdmin extends FoodAdmin
     /**
      * @param \Food\DishesBundle\Entity\PlacePoint $object
      */
-    private function _fixExtendedWorkTime($object)
-    {
-        for($i = 1; $i<=7; $i++) {
-            $wt = explode(":", $object->{'getWd'.$i.'End'}());
-            $val = $object->{'getWd'.$i.'End'}();
-            if (sizeof($wt) == 2) {
-                if ($wt[0] <= 6) {
-                    $wt[0] = $wt[0] + 24;
-                    $object->{'setWd'.$i.'EndLong'}(implode("", $wt));
-                } else {
-                    $object->{'setWd'.$i.'EndLong'}(implode("", $wt));
+    private function _fixWorkTime(PlacePoint $object) {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        foreach ($object->getWorkTime() as $workTime) {
+            $em->remove($workTime);
+        }
+
+        for ($i = 1; $i <= 7; $i++) {
+            $workTime = $object->{'getWd'.$i}();
+            $intervals = explode(' ', $workTime);
+            foreach ($intervals as $interval) {
+                if (strpos($interval, '-') === false) {
+                    continue;
                 }
-            } else {
-                $object->{'setWd'.$i.'EndLong'}($val);
+                list($start, $end) = explode('-', $interval);
+                if (strpos($start, ':') !== false) {
+                    list($startHour, $startMin) = explode(':', $start);
+                } else {
+                    $startHour = $start;
+                    $startMin = 0;
+                }
+
+                if (strpos($end, ':') !== false) {
+                    list($endHour, $endMin) = explode(':', $end);
+                } else {
+                    $endHour = $end;
+                    $endMin = 0;
+                }
+
+                // if start time is later thant end time, then we should split it
+                if ($endHour < $startHour || $endHour == $startHour && $endMin < $startMin) {
+                    $ppwt = new PlacePointWorkTime();
+                    $ppwt->setPlacePoint($object)
+                        ->setWeekDay($i)
+                        ->setStartHour($startHour)
+                        ->setStartMin($startMin)
+                        ->setEndHour(0)
+                        ->setEndMin(0);
+
+                    $em->persist($ppwt);
+
+                    // 00:00 - 00:00 must be excluded
+                    if ($endHour != 0 || $endMin != 0) {
+                        $ppwt = new PlacePointWorkTime();
+                        $ppwt->setPlacePoint($object)
+                            ->setWeekDay($i < 7 ? $i + 1 : 1)
+                            ->setStartHour(0)
+                            ->setStartMin(0)
+                            ->setEndHour($endHour)
+                            ->setEndMin($endMin);
+
+                        $em->persist($ppwt);
+                    }
+                } else {
+                    $ppwt = new PlacePointWorkTime();
+                    $ppwt->setPlacePoint($object)
+                        ->setWeekDay($i)
+                        ->setStartHour($startHour)
+                        ->setStartMin($startMin)
+                        ->setEndHour($endHour)
+                        ->setEndMin($endMin);
+
+                    $em->persist($ppwt);
+                }
             }
         }
+
+        $em->flush();
     }
+
     /**
      * @param \Food\DishesBundle\Entity\Place $object
      */
