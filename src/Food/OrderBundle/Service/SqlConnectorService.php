@@ -36,7 +36,7 @@ class SqlConnectorService extends ContainerAware
         $this->conn = @sqlsrv_connect( $serverName, $connectionInfo);
 
         if (false === $this->conn) {
-            $logger->crit('Windows: cannot connect to NAV SQL server.');
+            $logger->critical('Windows: cannot connect to NAV SQL server.');
             return false;
         }
 
@@ -51,7 +51,7 @@ class SqlConnectorService extends ContainerAware
         $this->conn = @mssql_pconnect($server.":".$port, $user, $password);
 
         if (false === $this->conn) {
-            $logger->crit('Unix: cannot connect to NAV SQL server.');
+            $logger->critical('Unix: cannot connect to NAV SQL server.');
             return false;
         }
 

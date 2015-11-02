@@ -27,7 +27,7 @@ parameters:
     sms.sender: "Foodout.lv"
     admin.emails: [mantas@foodout.lt]
     admin.phones: [37061514333]
-    order.notify_emails: [paulius@foodout.lt, giedrius@foodout.lt, baiba@foodout.lv]
+    order.notify_emails: []
     order.city_coordinators:
         vilnius: []
         kaunas: [zaneta@foodout.lt]
