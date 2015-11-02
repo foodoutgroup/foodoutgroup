@@ -32,9 +32,9 @@ parameters:
     admin.phones: [37061514333]
     order.notify_emails: []
     order.city_coordinators:
-        vilnius: []
-        kaunas: [zaneta@foodout.lt]
-        klaipėda: [jurgita@foodout.lt]
+        vilnius: [birute@foodout.lt]
+        kaunas: [zaneta@foodout.lt, birute@foodout.lt]
+        klaipėda: [jurgita@foodout.lt, birute@foodout.lt]
         ryga: [paulius@foodout.lt]
     order.accept_notify_emails: []
     accounting_email: "buhalterija@foodout.lt"
