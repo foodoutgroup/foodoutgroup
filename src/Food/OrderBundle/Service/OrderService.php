@@ -1625,7 +1625,7 @@ class OrderService extends ContainerAware
         }
 
         $hash = md5(
-            $userString.$order->getOrderDate()->getTimestamp().$order->getAddressId()
+            $userString.$order->getOrderDate()->getTimestamp().$order->getAddressId().microtime()
         );
 
         return $hash;
