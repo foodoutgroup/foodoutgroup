@@ -51,7 +51,7 @@ parameters:
     currency_alternative: false
     show_best_offers: true
     show_game: true
-    show_apps_download: false
+    show_apps_download: true
     show_is_social: false
     show_delfi_banner: false
     track_conversions: false
