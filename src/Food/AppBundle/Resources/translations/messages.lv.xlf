@@ -1256,6 +1256,14 @@
             <source>general.top_contact.phone</source>
             <target>+371 67363663</target>
         </trans-unit>
+        <trans-unit id="general.app_block.header" resname="general.app_block.header">
+            <source>general.app_block.header</source>
+            <target>Foodout.lv Tavā kabatā!</target>
+        </trans-unit>
+        <trans-unit id="general.app_block.promo_text" resname="general.app_block.promo_text">
+            <source>general.app_block.promo_text</source>
+            <target>Pasūti ēdienu uz mājām vai ofisu no sava iPhone vai Android telefona. Lejupielādē bezmaksas aplikāciju!</target>
+        </trans-unit>
         <trans-unit id="general.base_page_title" resname="general.base_page_title">
             <source>general.base_page_title</source>
             <target>Ēdienu piegāde</target>
