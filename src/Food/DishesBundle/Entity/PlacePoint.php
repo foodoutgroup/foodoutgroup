@@ -1377,36 +1377,4 @@ class PlacePoint
         return $this->work_times;
     }
 
-    /**
-     * Add districts
-     *
-     * @param \Food\AppBundle\Entity\District $districts
-     * @return PlacePoint
-     */
-    public function addDistrict(\Food\AppBundle\Entity\District $districts)
-    {
-        $this->districts[] = $districts;
-
-        return $this;
-    }
-
-    /**
-     * Remove districts
-     *
-     * @param \Food\AppBundle\Entity\District $districts
-     */
-    public function removeDistrict(\Food\AppBundle\Entity\District $districts)
-    {
-        $this->districts->removeElement($districts);
-    }
-
-    /**
-     * Get districts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getDistricts()
-    {
-        return $this->districts;
-    }
 }

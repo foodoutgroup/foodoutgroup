@@ -166,12 +166,8 @@ class PlaceRepository extends EntityRepository
 
         $dh = date("H");
         $dm = date("i");
-        $wd = date("N");
-        //~ if (intval($dh) < 6) {
-            //~ $dh = 24 + intval($dh);
-            //~ $wd = date("N", strtotime("-1 day"));
-        //~ }
-        //~ $dth = $dh."".$dm;
+        $wd = date('w');
+        if ($wd == 0) $wd = 7;
 
         foreach ($places as $pkey=>&$place) {
             //var_dump($place['pp_count']);
@@ -185,11 +181,11 @@ class PlaceRepository extends EntityRepository
                     WHERE
                         p.id = pps.place
                         AND pps.id = ppwt.place_point
-                        AND ppwt.week_day = ".$wd."
                         AND pps.active=1
                         AND pps.deleted_at is NULL
                         AND pps.city='".$city."'
                         AND pps.place = ".$place['place']->getId()."
+                        AND ppwt.week_day = ".$wd."
                         AND '".$dh."' BETWEEN ppwt.start_hour AND ppwt.end_hour
                         AND '".$dm."' BETWEEN ppwt.start_min AND ppwt.end_min
                         AND pps.delivery=1
@@ -273,8 +269,20 @@ class PlaceRepository extends EntityRepository
         }
 
         if ($recommended) {
-            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL ".$placeFilter.$otherFilters.$kitchensQuery." AND recommended=1 GROUP BY p.id ORDER BY p.priority DESC, RAND()";
+            $ppCounter = "SELECT COUNT(*) 
+                         FROM place_point ppc 
+                         WHERE ppc.active=1 
+                          AND ppc.deleted_at IS NULL 
+                          AND ppc.place = p.id";
+
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count, p.priority, p.navision FROM place p, place_point pp 
+                     WHERE pp.place = p.id 
+                        AND p.active=1 
+                        AND pp.active = 1 
+                        AND pp.deleted_at IS NULL ".$placeFilter.$otherFilters.$kitchensQuery." 
+                        AND recommended=1 
+                     GROUP BY p.id 
+                     ORDER BY p.priority DESC, RAND()";
         } else {
                 $ppCounter = "SELECT COUNT(*)
                               FROM place_point ppc
@@ -283,6 +291,7 @@ class PlaceRepository extends EntityRepository
                                 AND ppc.deleted_at IS NULL
                                 AND npp.neighbourhood_id='".$neighbourhoodId."'
                                 AND ppc.place = p.id";
+
                 $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (".$ppCounter.") as pp_count, p.priority, p.navision
                             FROM place p, place_point pp, neighbourhood_place_point npp
                             WHERE pp.place = p.id
@@ -343,12 +352,8 @@ class PlaceRepository extends EntityRepository
 
         $dh = date("H");
         $dm = date("i");
-        $wd = date("N");
-        //~ if (intval($dh) < 6) {
-            //~ $dh = 24 + intval($dh);
-            //~ $wd = date("N", strtotime("-1 day"));
-        //~ }
-        //~ $dth = $dh."".$dm;
+        $wd = date('w');
+        if ($wd == 0) $wd = 7;
 
         $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL";
         $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id";
@@ -357,7 +362,6 @@ class PlaceRepository extends EntityRepository
                     FROM place_point pp, place p ".((!$ignoreWorkTime) ? ", place_point_work_time ppwt" : "")."
                     WHERE p.id = pp.place
                     ".((!$ignoreWorkTime) ? "AND pp.id = ppwt.place_point" : "")."
-                        AND pp.id = ppwt.place_point
                         AND pp.active=1
                         AND pp.deleted_at IS NULL
                         AND p.active=1
@@ -370,7 +374,8 @@ class PlaceRepository extends EntityRepository
             ) ";
 
         if (!$ignoreWorkTime) {
-            $subQuery .= "AND '".$dh."' BETWEEN ppwt.start_hour AND ppwt.end_hour AND '".$dm."' BETWEEN ppwt.start_min AND ppwt.end_min";
+            $subQuery .= " AND ppwt.week_day = ".$wd;
+            $subQuery .= " AND '".$dh."' BETWEEN ppwt.start_hour AND ppwt.end_hour AND '".$dm."' BETWEEN ppwt.start_min AND ppwt.end_min";
         }
 
         $subQuery.=" AND delivery=1 ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
@@ -403,21 +408,26 @@ class PlaceRepository extends EntityRepository
 
         $dh = date("H");
         $dm = date("i");
-        $wd = date("N");
-        if (intval($dh) < 6) {
-            $dh = 24 + intval($dh);
-            $wd = date("N", strtotime("-1 day"));
-        }
-        $dth = $dh."".$dm;
+        $wd = date('w');
+        if ($wd == 0) $wd = 7;
 
-        $subQuery = "SELECT pp.id FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND pp.public=1 AND pp.deleted_at IS NULL AND p.active=1 AND pp.place = $placeId";
+        $subQuery = "SELECT pp.id 
+                    FROM place_point pp, place p ".((!$ignoreWorkTime) ? ", place_point_work_time ppwt" : "")." 
+                    WHERE p.id = pp.place 
+                    ".((!$ignoreWorkTime) ? "AND pp.id = ppwt.place_point" : "")."
+                      AND pp.active=1 
+                      AND pp.public=1 
+                      AND pp.deleted_at IS NULL 
+                      AND p.active=1 
+                      AND pp.place = $placeId";
 
         if (!empty($city)) {
             $subQuery.= " AND pp.city='".$city."'";
         }
 
         if (!$ignoreWorkTime) {
-            $subQuery.=" AND '".$dth."' BETWEEN (REPLACE(wd".$wd."_start,':','') + 0) AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)";
+            $subQuery .= " AND ppwt.week_day = ".$wd;
+            $subQuery .= " AND '".$dh."' BETWEEN ppwt.start_hour AND ppwt.end_hour AND '".$dm."' BETWEEN ppwt.start_min AND ppwt.end_min";
         }
 
         $subQuery.=" AND delivery=1 ORDER BY pp.delivery_time ASC, fast DESC LIMIT 1";
@@ -452,12 +462,8 @@ class PlaceRepository extends EntityRepository
 
         $dh = date("H");
         $dm = date("i");
-        $wd = date("N");
-        if (intval($dh) < 6) {
-            $dh = 24 + intval($dh);
-            $wd = date("N", strtotime("-1 day"));
-        }
-        $dth = $dh."".$dm;
+        $wd = date('w');
+        if ($wd == 0) $wd = 7;
         /**
          * @todo check the need of self delivery
          */
@@ -465,15 +471,25 @@ class PlaceRepository extends EntityRepository
         $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL";
         $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id";
 
-        $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) FROM place_point pp, place p WHERE p.id = pp.place AND pp.active=1 AND pp.deleted_at IS NULL AND p.active=1 AND pp.city='".$city."' AND pp.place = $placeId
-            AND (
-                (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <=
-                IF(($maxDistance) IS NULL, ($defaultZone), ($maxDistance))
-                ".(!$ignoreSelfDelivery ? "":"")."
-            )
-            AND '".$dth."' BETWEEN (REPLACE(wd".$wd."_start,':','')+0) AND IF(wd".$wd."_end_long IS NULL, wd".$wd."_end, wd".$wd."_end_long)
-            AND delivery=1
-            ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
+        $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) 
+                    FROM place_point pp, place p, place_point_work_time ppwt
+                    WHERE p.id = pp.place 
+                      AND pp.id = ppwt.place_point
+                      AND pp.active=1 
+                      AND pp.deleted_at IS NULL 
+                      AND p.active=1 
+                      AND pp.city='".$city."' 
+                      AND pp.place = $placeId
+                      AND (
+                        (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <=
+                        IF(($maxDistance) IS NULL, ($defaultZone), ($maxDistance))
+                        ".(!$ignoreSelfDelivery ? "":"")."
+                    )
+                      AND ppwt.week_day = ".$wd."
+                      AND '".$dh."' BETWEEN ppwt.start_hour AND ppwt.end_hour
+                      AND '".$dm."' BETWEEN ppwt.start_min AND ppwt.end_min
+                      AND delivery=1
+                    ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
 
@@ -575,5 +591,3 @@ class PlaceRepository extends EntityRepository
         return (boolean) $stmt->fetchColumn(0);
     }
 }
-
-?>
