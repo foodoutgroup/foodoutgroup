@@ -253,7 +253,7 @@ class Misc
 
     /**
      * @param Param $param
-     * @param $newValue
+     * @param $oldValue
      */
     public function logParamChange($param = null, $oldValue)
     {
