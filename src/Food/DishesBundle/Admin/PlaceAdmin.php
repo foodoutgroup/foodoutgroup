@@ -248,6 +248,7 @@ class PlaceAdmin extends FoodAdmin
         foreach ($object->getWorkTimes() as $workTime) {
             $em->remove($workTime);
         }
+        $em->flush();
 
         for ($i = 1; $i <= 7; $i++) {
             $workTime = $object->{'getWd'.$i}();
