@@ -255,7 +255,7 @@ class Misc
      * @param Param $param
      * @param $newValue
      */
-    public function logParamChange($param = null, $newValue)
+    public function logParamChange($param = null, $oldValue)
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
         $user = $this->getContainer()->get('security.context')->getToken()->getUser();
@@ -263,13 +263,12 @@ class Misc
         $log = new ParamLog();
         $log->setParam($param)
             ->setEventDate(new \DateTime('now'))
-            ->setOldValue($param->getValue())
-            ->setNewValue($newValue)
+            ->setOldValue($oldValue)
+            ->setNewValue($param->getValue())
             ->setUser($user)
         ;
 
         $em->persist($log);
-        $em->flush();
     }
 
     /**
