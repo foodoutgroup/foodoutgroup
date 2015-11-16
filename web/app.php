@@ -22,6 +22,16 @@
 //    die();
 //}
 
+// After delfi promo - save SEO points
+$domain = $_SERVER['HTTP_HOST'];
+$method = $_SERVER['REQUEST_METHOD'];
+$url = $_SERVER['REQUEST_URI'];
+
+if ($domain == 'foodout.1000receptu.lt' && $method == 'GET') {
+    header('Location: http://foodout.lt'.$url, null, 301);
+    die();
+}
+
 /* Delfi promo end */
 
 use Symfony\Component\ClassLoader\ApcClassLoader;
