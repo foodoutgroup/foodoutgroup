@@ -89,7 +89,7 @@ class PlacePoint
     /**
      * @var string
      *
-     * @ORM\Column(name="city", type="string", length=255)
+     * @ORM\Column(name="city", type="string", length=255, nullable=true)
      */
     private $city;
 
@@ -161,7 +161,6 @@ class PlacePoint
      * @ORM\Column(name="use_external_logistics", type="boolean")
      */
     private $useExternalLogistics = true;
-
 
     /**
      * @ORM\ManyToOne(targetEntity="Place", inversedBy="points")
@@ -293,7 +292,6 @@ class PlacePoint
      */
     private $deletedBy;
 
-
     /**
      * @var string
      *
@@ -316,7 +314,7 @@ class PlacePoint
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -332,14 +330,14 @@ class PlacePoint
     public function setAddress($address)
     {
         $this->address = $address;
-    
+
         return $this;
     }
 
     /**
      * Get address
      *
-     * @return string 
+     * @return string
      */
     public function getAddress()
     {
@@ -355,14 +353,14 @@ class PlacePoint
     public function setCity($city)
     {
         $this->city = $city;
-    
+
         return $this;
     }
 
     /**
      * Get city
      *
-     * @return string 
+     * @return string
      */
     public function getCity()
     {
@@ -378,14 +376,14 @@ class PlacePoint
     public function setCoords($coords)
     {
         $this->coords = $coords;
-    
+
         return $this;
     }
 
     /**
      * Get coords
      *
-     * @return string 
+     * @return string
      */
     public function getCoords()
     {
@@ -401,14 +399,14 @@ class PlacePoint
     public function setActive($active)
     {
         $this->active = $active;
-    
+
         return $this;
     }
 
     /**
      * Get active
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActive()
     {
@@ -424,14 +422,14 @@ class PlacePoint
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -447,14 +445,14 @@ class PlacePoint
     public function setEditedAt($editedAt)
     {
         $this->editedAt = $editedAt;
-    
+
         return $this;
     }
 
     /**
      * Get editedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEditedAt()
     {
@@ -470,14 +468,14 @@ class PlacePoint
     public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
-    
+
         return $this;
     }
 
     /**
      * Get deletedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDeletedAt()
     {
@@ -493,14 +491,14 @@ class PlacePoint
     public function setPlace(Place $place = null)
     {
         $this->place = $place;
-    
+
         return $this;
     }
 
     /**
      * Get place
      *
-     * @return \Food\DishesBundle\Entity\Place 
+     * @return \Food\DishesBundle\Entity\Place
      */
     public function getPlace()
     {
@@ -570,14 +568,14 @@ class PlacePoint
     public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
     {
         $this->createdBy = $createdBy;
-    
+
         return $this;
     }
 
     /**
      * Get createdBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getCreatedBy()
     {
@@ -593,14 +591,14 @@ class PlacePoint
     public function setEditedBy(\Food\UserBundle\Entity\User $editedBy = null)
     {
         $this->editedBy = $editedBy;
-    
+
         return $this;
     }
 
     /**
      * Get editedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getEditedBy()
     {
@@ -616,14 +614,14 @@ class PlacePoint
     public function setDeletedBy(\Food\UserBundle\Entity\User $deletedBy = null)
     {
         $this->deletedBy = $deletedBy;
-    
+
         return $this;
     }
 
     /**
      * Get deletedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getDeletedBy()
     {
@@ -639,14 +637,14 @@ class PlacePoint
     public function setDeliveryTime($deliveryTime)
     {
         $this->deliveryTime = $deliveryTime;
-    
+
         return $this;
     }
 
     /**
      * Get deliveryTime
      *
-     * @return string 
+     * @return string
      */
     public function getDeliveryTime()
     {
@@ -662,14 +660,14 @@ class PlacePoint
     public function setPickUp($pickUp)
     {
         $this->pickUp = $pickUp;
-    
+
         return $this;
     }
 
     /**
      * Get pickUp
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getPickUp()
     {
@@ -685,14 +683,14 @@ class PlacePoint
     public function setDelivery($delivery)
     {
         $this->delivery = $delivery;
-    
+
         return $this;
     }
 
     /**
      * Get delivery
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDelivery()
     {
@@ -708,14 +706,14 @@ class PlacePoint
     public function setLon($lon)
     {
         $this->lon = $lon;
-    
+
         return $this;
     }
 
     /**
      * Get lon
      *
-     * @return string 
+     * @return string
      */
     public function getLon()
     {
@@ -731,14 +729,14 @@ class PlacePoint
     public function setLat($lat)
     {
         $this->lat = $lat;
-    
+
         return $this;
     }
 
     /**
      * Get lat
      *
-     * @return string 
+     * @return string
      */
     public function getLat()
     {
@@ -754,14 +752,14 @@ class PlacePoint
     public function setFast($fast)
     {
         $this->fast = $fast;
-    
+
         return $this;
     }
 
     /**
      * Get fast
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getFast()
     {
@@ -777,14 +775,14 @@ class PlacePoint
     public function setPublic($public)
     {
         $this->public = $public;
-    
+
         return $this;
     }
 
     /**
      * Get public
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getPublic()
     {
@@ -800,14 +798,14 @@ class PlacePoint
     public function setAllowCash($allowCash)
     {
         $this->allowCash = $allowCash;
-    
+
         return $this;
     }
 
     /**
      * Get allowCash
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getAllowCash()
     {
@@ -823,14 +821,14 @@ class PlacePoint
     public function setAllowCard($allowCard)
     {
         $this->allowCard = $allowCard;
-    
+
         return $this;
     }
 
     /**
      * Get allowCard
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getAllowCard()
     {
@@ -846,14 +844,14 @@ class PlacePoint
     public function setPhone($phone)
     {
         $this->phone = $phone;
-    
+
         return $this;
     }
 
     /**
      * Get phone
      *
-     * @return string 
+     * @return string
      */
     public function getPhone()
     {
@@ -869,14 +867,14 @@ class PlacePoint
     public function setCompanyCode($companyCode)
     {
         $this->company_code = $companyCode;
-    
+
         return $this;
     }
 
     /**
      * Get company_code
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyCode()
     {
@@ -892,14 +890,14 @@ class PlacePoint
     public function setEmail($email)
     {
         $this->email = $email;
-    
+
         return $this;
     }
 
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -915,14 +913,14 @@ class PlacePoint
     public function setAltPhone1($altPhone1)
     {
         $this->altPhone1 = $altPhone1;
-    
+
         return $this;
     }
 
     /**
      * Get altPhone1
      *
-     * @return string 
+     * @return string
      */
     public function getAltPhone1()
     {
@@ -938,14 +936,14 @@ class PlacePoint
     public function setAltPhone2($altPhone2)
     {
         $this->altPhone2 = $altPhone2;
-    
+
         return $this;
     }
 
     /**
      * Get altPhone2
      *
-     * @return string 
+     * @return string
      */
     public function getAltPhone2()
     {
@@ -961,14 +959,14 @@ class PlacePoint
     public function setAltEmail1($altEmail1)
     {
         $this->altEmail1 = $altEmail1;
-    
+
         return $this;
     }
 
     /**
      * Get altEmail1
      *
-     * @return string 
+     * @return string
      */
     public function getAltEmail1()
     {
@@ -984,14 +982,14 @@ class PlacePoint
     public function setAltEmail2($altEmail2)
     {
         $this->altEmail2 = $altEmail2;
-    
+
         return $this;
     }
 
     /**
      * Get altEmail2
      *
-     * @return string 
+     * @return string
      */
     public function getAltEmail2()
     {
@@ -1007,14 +1005,14 @@ class PlacePoint
     public function setDeliveryTimeInfo($deliveryTimeInfo)
     {
         $this->deliveryTimeInfo = $deliveryTimeInfo;
-    
+
         return $this;
     }
 
     /**
      * Get deliveryTimeInfo
      *
-     * @return string 
+     * @return string
      */
     public function getDeliveryTimeInfo()
     {
@@ -1055,14 +1053,14 @@ class PlacePoint
     public function setInternalCode($internalCode)
     {
         $this->internal_code = $internalCode;
-    
+
         return $this;
     }
 
     /**
      * Get internal_code
      *
-     * @return string 
+     * @return string
      */
     public function getInternalCode()
     {
@@ -1078,14 +1076,14 @@ class PlacePoint
     public function setInvoiceEmail($invoiceEmail)
     {
         $this->invoiceEmail = $invoiceEmail;
-    
+
         return $this;
     }
 
     /**
      * Get invoiceEmail
      *
-     * @return string 
+     * @return string
      */
     public function getInvoiceEmail()
     {
@@ -1116,16 +1114,6 @@ class PlacePoint
     }
 
     /**
-     * Get zones
-     *
-     * @return \Food\DishesBundle\Entity\PlacePointWorkTime[]
-     */
-    public function getWorkTime()
-    {
-        return $this->work_times;
-    }
-
-    /**
      * @return string
      */
     public function getWd1()
@@ -1135,10 +1123,13 @@ class PlacePoint
 
     /**
      * @param string $wd1
+     * @return PlacePoint
      */
     public function setWd1($wd1)
     {
         $this->wd1 = $this->_sanitize($wd1);
+
+        return $this;
     }
 
     /**
@@ -1151,10 +1142,13 @@ class PlacePoint
 
     /**
      * @param string $wd2
+     * @return PlacePoint
      */
     public function setWd2($wd2)
     {
         $this->wd2 = $this->_sanitize($wd2);
+
+        return $this;
     }
 
     /**
@@ -1167,10 +1161,13 @@ class PlacePoint
 
     /**
      * @param string $wd3
+     * @return PlacePoint
      */
     public function setWd3($wd3)
     {
         $this->wd3 = $this->_sanitize($wd3);
+
+        return $this;
     }
 
     /**
@@ -1183,10 +1180,13 @@ class PlacePoint
 
     /**
      * @param string $wd4
+     * @return PlacePoint
      */
     public function setWd4($wd4)
     {
         $this->wd4 = $this->_sanitize($wd4);
+
+        return $this;
     }
 
     /**
@@ -1199,10 +1199,13 @@ class PlacePoint
 
     /**
      * @param string $wd5
+     * @return PlacePoint
      */
     public function setWd5($wd5)
     {
         $this->wd5 = $this->_sanitize($wd5);
+
+        return $this;
     }
 
     /**
@@ -1215,10 +1218,13 @@ class PlacePoint
 
     /**
      * @param string $wd6
+     * @return PlacePoint
      */
     public function setWd6($wd6)
     {
         $this->wd6 = $this->_sanitize($wd6);
+
+        return $this;
     }
 
     /**
@@ -1231,10 +1237,13 @@ class PlacePoint
 
     /**
      * @param string $wd7
+     * @return PlacePoint
      */
     public function setWd7($wd7)
     {
         $this->wd7 = $this->_sanitize($wd7);
+
+        return $this;
     }
 
     /**
@@ -1246,14 +1255,14 @@ class PlacePoint
     public function setUseExternalLogistics($useExternalLogistics)
     {
         $this->useExternalLogistics = $useExternalLogistics;
-    
+
         return $this;
     }
 
     /**
      * Get useExternalLogistics
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getUseExternalLogistics()
     {
@@ -1267,7 +1276,7 @@ class PlacePoint
         $this->zones = new \Doctrine\Common\Collections\ArrayCollection();
         $this->work_times = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Add zones
      *
@@ -1277,7 +1286,7 @@ class PlacePoint
     public function addZone(\Food\DishesBundle\Entity\PlacePointDeliveryZones $zones)
     {
         $this->zones[] = $zones;
-    
+
         return $this;
     }
 
@@ -1310,14 +1319,14 @@ class PlacePoint
     public function setParentId($parentId)
     {
         $this->parentId = $parentId;
-    
+
         return $this;
     }
 
     /**
      * Get parentId
      *
-     * @return string 
+     * @return string
      */
     public function getParentId()
     {
@@ -1333,14 +1342,14 @@ class PlacePoint
     public function setNoReplication($noReplication)
     {
         $this->noReplication = $noReplication;
-    
+
         return $this;
     }
 
     /**
      * Get noReplication
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getNoReplication()
     {
@@ -1356,5 +1365,48 @@ class PlacePoint
     private function _sanitize($string)
     {
         return preg_replace(array('/[^\s\d\pL:-]/iu', '/\s\s+/'), array('', ' '), $string);
+    }
+
+    /**
+     * Get work_times
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getWorkTimes()
+    {
+        return $this->work_times;
+    }
+
+    /**
+     * Add districts
+     *
+     * @param \Food\AppBundle\Entity\District $districts
+     * @return PlacePoint
+     */
+    public function addDistrict(\Food\AppBundle\Entity\District $districts)
+    {
+        $this->districts[] = $districts;
+
+        return $this;
+    }
+
+    /**
+     * Remove districts
+     *
+     * @param \Food\AppBundle\Entity\District $districts
+     */
+    public function removeDistrict(\Food\AppBundle\Entity\District $districts)
+    {
+        $this->districts->removeElement($districts);
+    }
+
+    /**
+     * Get districts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDistricts()
+    {
+        return $this->districts;
     }
 }
