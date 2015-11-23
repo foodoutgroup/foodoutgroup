@@ -214,9 +214,15 @@ class RestaurantsController extends Controller
             $searchCrit,
             true
         );
+
         if (!empty($pointId)) {
             $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
-            $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, $placePoint);
+            $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
+                $place,
+                $placePoint,
+                false,
+                $this->get('food.googlegis')->getLocationFromSession()
+            );
         } else {
             $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
                 $place->getId(),
@@ -224,9 +230,14 @@ class RestaurantsController extends Controller
             );
             if (!empty($pointId)) {
                 $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
-                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, $placePoint, true);
+                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
+                    $place,
+                    $placePoint,
+                    false,
+                    $this->get('food.googlegis')->getLocationFromSession()
+                );
             } else {
-                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, null);
+                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, null, false, $this->get('food.googlegis')->getLocationFromSession());
             }
         }
 
