@@ -330,7 +330,7 @@ class MessagesService {
     }
 
     /**
-     * @return array
+     * @return array|Message[]
      */
     public function getUnsentMessages()
     {
