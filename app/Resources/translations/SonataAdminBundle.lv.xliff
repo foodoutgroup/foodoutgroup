@@ -1497,6 +1497,10 @@
                 <source>admin.dispatcher.client_contacted</source>
                 <target>Client contacted</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.restaurant_contacted">
+                <source>admin.dispatcher.restaurant_contacted</source>
+                <target>Restaurant contacted</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.problem_solved">
                 <source>admin.dispatcher.problem_solved</source>
                 <target>Solved</target>

@@ -1132,6 +1132,49 @@ class OrderService extends ContainerAware
 
     /**
      * @param \Food\UserBundle\Entity\User $user
+     * @param array $location
+     * @param UserAddress $userAddress
+     *
+     * @return UserAddress
+     */
+    public function createAddressFromLocation($user, $location, $comment = null)
+    {
+        $params = array(
+                'user' => $user,
+                'cities' => $location['city_id'],
+                'address' => $location['address'],
+        );
+        if ($this->container->getParameter('neighbourhoods')) {
+            if (empty($location['neighbourhood_id'])) {
+                throw new \InvalidArgumentException("An empty variable is not allowed on our company!");
+            }
+            $params['neighbourhood'] = $location['neighbourhood_id'];
+        }
+
+        $userAddress = $this->getEm()
+            ->getRepository('Food\UserBundle\Entity\UserAddress')
+            ->findOneBy($params);
+
+        if (!$userAddress) {
+            $userAddress = new UserAddress();
+        }
+
+        $userAddress->setUser($user)
+            ->setCities($this->getEm()->getRepository('FoodAppBundle:Cities')->find($location['city_id']))
+            ->setAddress($location['address'])
+            ->setComment($comment);
+        if ($this->container->getParameter('neighbourhoods')) {
+            $userAddress->setNeighbourhood($this->getEm()->getRepository('FoodAppBundle:Neighbourhood')->find($location['neighbourhood_id']));
+        }
+
+        $this->getEm()->persist($userAddress);
+        $this->getEm()->flush();
+
+        return $userAddress;
+    }
+
+    /**
+     * @param \Food\UserBundle\Entity\User $user
      * @param string $city
      * @param string $address
      * @param string $lat
@@ -2781,26 +2824,41 @@ class OrderService extends ContainerAware
      * @param array $errors
      * @todo fix laiku poslinkiai
      */
-    private  function workTimeErrors(PlacePoint $placePoint, &$errors)
+    private function workTimeErrors(PlacePoint $placePoint, &$errors, $dateTime = null)
     {
-        $wd = date('w');
-        if ($wd == 0) $wd = 7;
-        $timeFr = $placePoint->{'getWd'.$wd}();
-        $timeFrTs = str_replace(":", "", $placePoint->{'getWd'.$wd}());
-        $timeTo = $placePoint->{'getWd'.$wd}();
-        $timeToTs =  str_replace(":", "", $placePoint->{'getWd'.$wd}());
-        $currentTime = date("Hi");
-        if (date("H") < 6) {
-            $currentTime+=2400;
-        }
-        if(!strpos($timeFr, ':')|| !strpos($timeTo, ':')) {
-            $errors[] = "order.form.errors.today_no_work";
+        if ($dateTime) {
+            $ts = strtotime($dateTime);
         } else {
+            $ts = time();
+        }
 
-            if ($timeFrTs > $currentTime) {
+        $wd = date('w', $ts);
+        if ($wd == 0) $wd = 7;
+        $hour = date('H', $ts);
+        $minute = date('i', $ts);
+
+        $todayError = $openError = $closeError = true;
+        if (!$this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->isPlacePointWorks($placePoint, $ts)) {
+
+            foreach ($placePoint->getWorkTimes() as $workTime) {
+                if ($workTime->getWeekDay() == $wd) {
+                    $todayError = false;
+                    if ($workTime->getStartHour() < $hour || $workTime->getStartHour() == $hour && $workTime->getStartMin() < $minute) {
+                        $openError = false;
+                    }
+                    if ($workTime->getStartHour() > $hour || $workTime->getStartHour() == $hour && $workTime->getStartMin() > $minute) {
+                        $closeError = false;
+                    }
+                }
+            }
+            if ($todayError) {
+                $errors[] = "order.form.errors.today_no_work";
+            } elseif ($openError) {
                 $errors[] = "order.form.errors.isnt_open";
-            } elseif ($timeToTs < $currentTime) {
+            } elseif ($closeError) {
                 $errors[] = "order.form.errors.is_already_close";
+            } else {
+                $errors[] = "order.form.errors.is_currently_close";
             }
         }
     }
@@ -2899,6 +2957,7 @@ class OrderService extends ContainerAware
      */
     public function getTodayWork(PlacePoint $placePoint, $showDayNumber = true)
     {
+        $locale = $this->container->get('food.dishes.utils.slug')->getLocale();
         $wdays = array(
             '1' =>'I',
             '2' =>'II',
@@ -3203,7 +3262,25 @@ class OrderService extends ContainerAware
             $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
         }
 
-        if ($pointRecord != null) {
+        // Test if correct dates passed to pre order
+        $preOrder = $request->get('pre-order');
+        if ($preOrder == 'it-is') {
+            $orderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
+
+            if ($orderDate < date("Y-m-d H:i", strtotime("-10 minute"))) {
+                $formErrors[] = 'order.form.errors.back_in_time_preorder';
+            }
+
+            if ($orderDate > date("Y-m-d 00:00", strtotime("+4 day"))) {
+                $formErrors[] = 'order.form.errors.back_in_feature_preorder';
+            }
+
+            if ($orderDate != date("Y-m-d H:i", strtotime($orderDate))) {
+                $formErrors[] = 'order.form.errors.not_a_date';
+            } elseif (!is_null($pointRecord)) {
+                $this->workTimeErrors($pointRecord, $formErrors, $orderDate);
+            }
+        } elseif (!is_null($pointRecord)) {
             $this->workTimeErrors($pointRecord, $formErrors);
         }
 
@@ -3309,24 +3386,6 @@ class OrderService extends ContainerAware
             }
             if (empty($companyAddress)) {
                 $formErrors[] = 'order.form.errors.empty_company_address';
-            }
-        }
-
-        // Test if correct dates passed to pre order
-        $preOrder = $request->get('pre-order');
-        if ($preOrder == 'it-is') {
-            $orderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
-
-            if ($orderDate < date("Y-m-d H:i", strtotime("-10 minute"))) {
-                $formErrors[] = 'order.form.errors.back_in_time_preorder';
-            }
-
-            if ($orderDate > date("Y-m-d 00:00", strtotime("+4 day"))) {
-                $formErrors[] = 'order.form.errors.back_in_feature_preorder';
-            }
-
-            if ($orderDate != date("Y-m-d H:i", strtotime($orderDate))) {
-                $formErrors[] = 'order.form.errors.not_a_date';
             }
         }
 

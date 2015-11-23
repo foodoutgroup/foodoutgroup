@@ -1533,6 +1533,10 @@
                 <source>admin.dispatcher.client_contacted</source>
                 <target>Susisiekta su klientu</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.restaurant_contacted">
+                <source>admin.dispatcher.restaurant_contacted</source>
+                <target>Susisiekta su restoranu</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.problem_solved">
                 <source>admin.dispatcher.problem_solved</source>
                 <target>Išspręsta</target>
