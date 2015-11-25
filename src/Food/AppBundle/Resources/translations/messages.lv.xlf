@@ -436,7 +436,7 @@
         <source>mobile.restourant_place_point_address</source>
         <target>Gatavošanas punkts</target>
       </trans-unit>
-      <trans-unit id="34e780a20dd8982964b54edd9425ffe3" resname="mobile.restaurant_delivery_price">
+      <trans-unit id="mobile.restaurant_delivery_price" resname="mobile.restaurant_delivery_price">
         <source>mobile.restaurant_delivery_price</source>
         <target>Delivery (with VAT)</target>
       </trans-unit>
