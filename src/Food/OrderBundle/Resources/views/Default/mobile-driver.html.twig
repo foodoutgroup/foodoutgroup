@@ -60,7 +60,7 @@
         </tr>
         {% if order.deliveryType == 'deliver' %}
             <tr>
-                <th colspan="5"><b>{% trans %}mobile.restaurant_delivery_price{% endtrans %}:</b> {{ order.deliveryPrice }}</th>
+                <td colspan="5"><b>{% trans %}mobile.restaurant_delivery_price{% endtrans %}:</b> {{ order.deliveryPrice }} {{ currency_display|raw }}</td>
             </tr>
         {% endif %}
         <tr>
