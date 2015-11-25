@@ -58,6 +58,11 @@
                 </b> {{ order.total }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }} {{ display_currency_alternative }}{% endif %}
             </td>
         </tr>
+        {% if order.deliveryType == 'deliver' %}
+            <tr>
+                <th colspan="5"><b>{% trans %}mobile.restaurant_delivery_price{% endtrans %}:</b> {{ order.deliveryPrice }}</th>
+            </tr>
+        {% endif %}
         <tr>
             <th colspan="5">{% trans %}mobile.payment{% endtrans %}</th>
         </tr>

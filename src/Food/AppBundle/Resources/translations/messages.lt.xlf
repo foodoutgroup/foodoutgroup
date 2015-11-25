@@ -436,6 +436,10 @@
         <source>mobile.restourant_place_point_address</source>
         <target>Gamybos taškas</target>
       </trans-unit>
+      <trans-unit id="34e780a20dd8982964b54edd9425ffe3" resname="mobile.restaurant_delivery_price">
+        <source>mobile.restaurant_delivery_price</source>
+        <target>Pristatymas (su PVM)</target>
+      </trans-unit>
       <trans-unit id="c515ebc67239e3c3555e84b329f7eeba" resname="mobile.place_point_phone">
         <source>mobile.place_point_phone</source>
         <target>Gamybos taško telefonas</target>
