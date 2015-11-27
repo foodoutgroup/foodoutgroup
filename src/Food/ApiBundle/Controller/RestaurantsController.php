@@ -237,7 +237,7 @@ class RestaurantsController extends Controller
                     $this->get('food.googlegis')->getLocationFromSession()
                 );
             } else {
-                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, null, false, $this->get('food.googlegis')->getLocationFromSession());
+                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, null);
             }
         }
 
