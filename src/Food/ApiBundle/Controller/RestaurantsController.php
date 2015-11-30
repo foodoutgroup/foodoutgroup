@@ -194,11 +194,15 @@ class RestaurantsController extends Controller
         if (!empty($city) && !empty($address)) {
             $placeData = $this->get('food.googlegis')->getPlaceData($address.",", $city);
             $locationInfo = $this->get('food.googlegis')->groupData($placeData, $address, $city);
-            $searchCrit = array(
-                'city' => $locationInfo['city'],
-                'lat' => $locationInfo['lat'],
-                'lng' => $locationInfo['lng']
-            );
+            if (isset($locationInfo['city'])) {
+                $searchCrit['city'] = $locationInfo['city'];
+            }
+            if (isset($locationInfo['lat'])) {
+                $searchCrit['lat'] = $locationInfo['lat'];
+            }
+            if (isset($locationInfo['lng'])) {
+                $searchCrit['lng'] = $locationInfo['lng'];
+            }
         } elseif (!empty($lat) && !empty($lng)) {
             $data = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
             $searchCrit = array(
