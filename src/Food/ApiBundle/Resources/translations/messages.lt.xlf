@@ -48,6 +48,22 @@
             </trans-unit>
         </body>
     </file>
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="api.orders.user_phone_empty" resname="api.orders.user_phone_empty">
+                <source>api.orders.user_phone_empty</source>
+                <target>Prašome įvesti telefono numerį savo paskyroje</target>
+            </trans-unit>
+        </body>
+    </file>
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="api.orders.user_phone_invalid" resname="api.orders.user_phone_invalid">
+                <source>api.orders.user_phone_invalid</source>
+                <target>Neteisingas telefono numeris</target>
+            </trans-unit>
+        </body>
+    </file>
     <file source-language="lt" datatype="plaintext" original="file.ext">
         <body>
             <trans-unit id="api.orders.order_to_small" resname="api.orders.order_to_small">
