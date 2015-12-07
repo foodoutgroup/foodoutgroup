@@ -2963,6 +2963,16 @@ class OrderService extends ContainerAware
             } else if ($coupon->getPlace() && $coupon->getPlace()->getId() != $place->getId()) {
                 $formErrors[] = 'general.coupon.wrong_place_simple';
             }
+
+            // TODO temporary hack for studentas coupon
+            if ($coupon->getCode() == 'STUDENTAS' && $takeAway) {
+                $formErrors[] = 'general.coupon.only_delivery';
+            }
+        }
+
+        // TODO temporary hack for studentas coupon
+        if (mb_strtolower($request->get('coupon_code'), 'utf8') == 'studentas' && $takeAway) {
+            $formErrors[] = 'general.coupon.only_delivery';
         }
 
         // Validate das phone number :)
