@@ -418,7 +418,7 @@ Vilnius]]></target>
         </trans-unit>
         <trans-unit id="general.coupon.only_delivery" resname="general.coupon.only_delivery">
             <source>general.coupon.only_delivery</source>
-            <target>Atsiprašome, šis nuolaidos kodas galioja tik pristatymo užsakymams</target>
+            <target>Atsiprašome, šis nuolaidos kodas galioja tik užsakymams su pristatymu</target>
         </trans-unit>
         <trans-unit id="general.coupon.not_active" resname="general.coupon.not_active">
             <source>general.coupon.not_active</source>
