@@ -177,7 +177,7 @@ class OrderService extends ContainerAware
             if (mb_strtolower($discountVar, 'utf8') == 'studentas' && $serviceVar['type'] == "pickup") {
                 throw new ApiException(
                     'Coupon for pickup',
-                    404,
+                    400,
                     array(
                         'error' => 'Coupon only for pickup',
                         'description' => $this->container->get('translator')->trans('general.coupon.only_delivery')
