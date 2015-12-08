@@ -174,7 +174,7 @@ class OrderService extends ContainerAware
                 );
             }
 
-            if (mb_strtolower($discountVar, 'utf8') == 'studentas' && $serviceVar['type'] == "pickup") {
+            if (mb_strtolower($discountVar['code'], 'utf8') == 'studentas' && $serviceVar['type'] == "pickup") {
                 throw new ApiException(
                     'Coupon for pickup',
                     404,
