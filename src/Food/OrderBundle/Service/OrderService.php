@@ -2669,8 +2669,17 @@ class OrderService extends ContainerAware
      */
     public function isTodayWork(PlacePoint $placePoint)
     {
+        $totalH = date("H");
+        $totalM = date("i");
         $wd = date('w');
+
+        if ($totalH < 6) {
+            $totalH = $totalH + 24;
+            $wd = $wd - 1;
+        }
+        if ($wd < 0) $wd = 7 - $wd;
         if ($wd == 0) $wd = 7;
+
         $frm = $placePoint->{'getWd'.$wd.'Start'}();
         $tot = $placePoint->{'getWd'.$wd.'EndLong'}();
         if (empty($tot)) {
@@ -2679,11 +2688,6 @@ class OrderService extends ContainerAware
         $timeFr = str_replace(":", "", $frm);
         $timeTo = str_replace(":", "", $tot);
 
-        $totalH = date("H");
-        $totalM = date("i");
-        if ($totalH < 6) {
-            $totalH = $totalH + 24;
-        }
         $total = $totalH."".$totalM;
 
         if(!strpos($frm, ':')) {
