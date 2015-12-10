@@ -106,8 +106,7 @@ class OrderRepository extends EntityRepository
     public function getOrdersAssigned($city=null)
     {
         $filter = array(
-            'order_status' =>  OrderService::$status_assiged,
-            'deliveryType' => OrderService::$deliveryDeliver,
+            'undelivered' => true,
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
@@ -388,6 +387,15 @@ class OrderRepository extends EntityRepository
                         $filter['problem_excluded_status'] = OrderService::$status_pre;
                         $filter['problem_payment_status'] = array(OrderService::$paymentStatusWait, OrderService::$paymentStatusWaitFunds);
                         $filter['problem_date_time'] = new \DateTime('-5 minute');
+                        break;
+
+                    case 'undelivered':
+                        $qb->andWhere('(o.order_status = :status_assigned AND o.deliveryType = :deliveryDeliver) OR (o.order_status IN (:accepted_statuses) AND o.deliveryType = :deliveryPickup)');
+                        unset($filter['undelivered']);
+                        $filter['status_assigned'] = OrderService::$status_assiged;
+                        $filter['accepted_statuses'] = array(OrderService::$status_accepted, OrderService::$status_finished);
+                        $filter['deliveryDeliver'] = OrderService::$deliveryDeliver;
+                        $filter['deliveryPickup'] = OrderService::$deliveryPickup;
                         break;
 
                     case 'not_solved':

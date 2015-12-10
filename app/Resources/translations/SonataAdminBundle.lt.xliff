@@ -1488,6 +1488,10 @@
                 <source>admin.dispatcher.no_driver_assigned</source>
                 <target>Nepriskirtas joks vairuotojas!!!</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.pickup_order">
+                <source>admin.dispatcher.pickup_order</source>
+                <target>Užsakymas atsiėmimui</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.driver">
                 <source>admin.dispatcher.driver</source>
                 <target>Vairuotojas</target>
