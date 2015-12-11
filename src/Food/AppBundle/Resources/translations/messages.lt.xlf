@@ -436,6 +436,10 @@
         <source>mobile.restourant_place_point_address</source>
         <target>Gamybos taškas</target>
       </trans-unit>
+      <trans-unit id="mobile.restaurant_delivery_price" resname="mobile.restaurant_delivery_price">
+        <source>mobile.restaurant_delivery_price</source>
+        <target>Pristatymas (su PVM)</target>
+      </trans-unit>
       <trans-unit id="c515ebc67239e3c3555e84b329f7eeba" resname="mobile.place_point_phone">
         <source>mobile.place_point_phone</source>
         <target>Gamybos taško telefonas</target>
@@ -1290,6 +1294,14 @@
     <trans-unit id="general.top_contact.phone" resname="general.top_contact.phone">
         <source>general.top_contact.phone</source>
         <target>+370 698 55544</target>
+    </trans-unit>
+    <trans-unit id="general.app_block.header" resname="general.app_block.header">
+        <source>general.app_block.header</source>
+        <target>Foodout.lt tavo kišenėje!</target>
+    </trans-unit>
+    <trans-unit id="general.app_block.promo_text" resname="general.app_block.promo_text">
+        <source>general.app_block.promo_text</source>
+        <target>Užsisakyk maisto į namus ar biurą per iPhone arba Android telefonus. Atsisiųsk nemokamą aplikaciją!.</target>
     </trans-unit>
     <!--<trans-unit id="Please check this box if you want to proceed." resname="Please check this box if you want to proceed.">-->
         <!--<source>Please check this box if you want to proceed.</source>-->

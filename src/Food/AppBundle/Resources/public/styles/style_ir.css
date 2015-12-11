@@ -1,0 +1,946 @@
+/* override css for iran */
+@font-face {
+    font-family: 'IRANSans-web';
+    src: url('/bundles/foodapp/styles/IRANSans-Bold-web.eot');
+
+    src: url('/bundles/foodapp/styles/IRANSans-Bold-web.eot?#iefix') format('eot'),  /* IE6–8 */
+    url('/bundles/foodapp/styles/IRANSans-Bold-web.woff2') format('woff2'),  /* Chrome36+, Opera24+*/
+    url('/bundles/foodapp/styles/IRANSans-Bold-web.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('/bundles/foodapp/styles/IRANSans-Bold-web.ttf') format('ttf');
+    font-weight: bold;
+}
+
+
+@font-face {
+    font-family: 'IRANSans-web';
+    src: url('/bundles/foodapp/styles/IRANSans-Medium-web.eot');
+
+    src: url('/bundles/foodapp/styles/IRANSans-Medium-web.eot?#iefix') format('eot'),  /* IE6–8 */
+    url('/bundles/foodapp/styles/IRANSans-Medium-web.woff2') format('woff2'),  /* Chrome36+, Opera24+*/
+    url('/bundles/foodapp/styles/IRANSans-Medium-web.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('/bundles/foodapp/styles/IRANSans-Medium-web.ttf') format('ttf');
+    font-weight: 500;
+}
+
+
+@font-face {
+    font-family: 'IRANSans-web';
+    src: url('/bundles/foodapp/styles/IRANSans-UltraLight-web.eot');
+
+    src: url('/bundles/foodapp/styles/IRANSans-UltraLight-web.eot?#iefix') format('eot'),  /* IE6–8 */
+    url('/bundles/foodapp/styles/IRANSans-UltraLight-web.woff2') format('woff2'),  /* Chrome36+, Opera24+*/
+    url('/bundles/foodapp/styles/IRANSans-UltraLight-web.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('/bundles/foodapp/styles/IRANSans-UltraLight-web.ttf') format('ttf');
+    font-weight: 200;
+}
+
+
+@font-face {
+    font-family: 'IRANSans-web';
+    src: url('/bundles/foodapp/styles/IRANSans-Light-web.eot');
+
+    src: url('/bundles/foodapp/styles/IRANSans-Light-web.eot?#iefix') format('eot'),  /* IE6–8 */
+    url('/bundles/foodapp/styles/IRANSans-Light-web.woff2') format('woff2'),  /* Chrome36+, Opera24+*/
+    url('/bundles/foodapp/styles/IRANSans-Light-web.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('/bundles/foodapp/styles/IRANSans-Light-web.ttf') format('ttf');
+    font-weight: 300;
+}
+
+
+@font-face {
+    font-family: 'IRANSans-web';
+    src: url('/bundles/foodapp/styles/IRANSans-web.eot');
+
+    src: url('/bundles/foodapp/styles/IRANSans-web.eot?#iefix') format('eot'),  /* IE6–8 */
+    url('/bundles/foodapp/styles/IRANSans-web.woff2') format('woff2'),  /* Chrome36+, Opera24+*/
+    url('/bundles/foodapp/styles/IRANSans-web.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('/bundles/foodapp/styles/IRANSans-web.ttf') format('ttf');
+    font-weight: normal;
+}
+
+.font-1 {font-family: 'IRANSans-web';}
+.font-2 {font-family: 'IRANSans-web'; font-weight: 500;}
+.font-3 {font-family: 'IRANSans-web'; font-weight: bold;}
+
+.site-header h1,
+.search-food-form input[type="submit"],
+.restaurant-menu-item .price,
+.check-block .total-sum,
+.check-block .order-button,
+.dish-size .custom-radio strong,
+.dish-ingredients .custom-checkbox strong,
+.detailed-dish-popup .button-submit,
+.change-location-popup .button-submit,
+.delivery-info-form .submit-button span,
+.coupon_form_popup .button-submit,
+.coupon_form_popup .button-submit span,
+.cupon-page p strong,
+.fb-button,
+.order-history-item .desc strong,
+.delivery-tracking-form button,
+.page-title h1 strong,
+.dish-info .name,
+.login-register-popup input[type="submit"],
+.user-details-form input[type="submit"],
+.dish-ingredients .custom-radio strong {
+    font-family: 'IRANSans-web';
+    font-weight: 500;
+}
+/*Font declarations*/
+button, input, select, textarea,
+body,
+.ui-widget-content,
+.ui-selectmenu-menu li a,
+.ui-selectmenu-status,
+.restaurants-list-top-filters,
+.chosen-container-single .chosen-search input[type="text"] {
+    font-family: 'IRANSans-web';
+    font-weight: normal;
+}
+
+.main-logo {
+    right: 4px;
+    left: auto;
+}
+.top-menu {
+    float: left;
+}
+    .top-menu li {
+        padding-right: 25px;
+    }
+    .top-menu li:last-child {
+        padding-right: 0;
+    }
+    .top-menu .login-ico {
+        padding-right: 25px !important;
+        background-position: right top;
+    }
+.top-contact-block {
+    float: left;
+    margin: 5px 0 0 5px;
+    padding: 0 10px 0 10px;
+}
+    .top-contact-block .work-time,
+    .top-contact-block .phone {
+        text-align: right;
+        direction: ltr;
+    }
+.site-top .separator {
+    float: left;
+    margin: 8px 0 0 15px;
+    border-right: none;
+    border-left: 1px solid #fff;
+    height: 44px;
+}
+.search-food-form {
+    padding: 46px 10px 0 17px;
+}
+    .search-food-form .title {
+        padding: 0 0 15px 63px;
+        direction: ltr;
+    }
+    .search-food-form span a {
+        float: right;
+        text-align: right;
+        padding: 17px 0 23px 16px;
+        border-radius: 0 5px 5px 0 !important;
+    }
+    #index_city-menu,
+    #index_city-menu li {
+        text-align: right;
+    }
+    .search-food-form .twitter-typeahead {
+        float: right;
+    }
+    .search-food-form input[type="text"] {
+        float: right;
+    }
+    .search-food-form input[type="submit"] {
+        float: right;
+        margin-right: 13px;
+        padding: 0 29px 0 55px;
+        background: url("/bundles/foodapp/images/big-button-left.png") no-repeat scroll left top #91c005;
+    }
+    .search-food-form input.input-house[type="text"] {
+        margin-right: 0;
+        border-radius: 5px 0 0 5px;
+        border-left: 1px solid #e1ddd6;
+    }
+    .search-food-form input[type="text"] {
+        text-align: right;
+    }
+    .search-food-form input[type="text"].input-street {
+        border-right: none;
+    }
+    .search-food-form span a {
+        border-radius: 0 5px 5px 0 !important;
+        margin-right: 19px;
+        float: right;
+        text-align: right;
+    }
+    .search-food-form span a span.ui-selectmenu-status {
+        width: 118px !important;
+    }
+    #index_city-menu {
+        border-radius: 0 5px 5px 0 !important;
+    }
+    #index_city-button .ui-selectmenu-icon {
+        right: auto;
+        left: 6px;
+    }
+.newsletter-form {
+    float: right;
+}
+    .newsletter-block h4 {
+        float: right;
+        direction: rtl;
+    }
+    .newsletter-form input[type="text"] {
+        float: right;
+        direction: rtl;
+        margin: 12px 0 0 8px;
+    }
+    .pros-list {
+        float: left;
+    }
+        .pros-list li {
+            direction: rtl;
+            padding: 0 22px 0 0;
+            text-align: right;
+            background-position: right;
+        }
+.app-block > img {
+    left: auto;
+    right: 91px;
+}
+.app-block-inner {
+    float: left;
+    padding: 0 0 0 84px;
+    direction: rtl;
+}
+    .app-block a {
+        margin: 0 0 0 10px;
+    }
+.site-footer .col {
+    direction: rtl;
+    margin: 0 0 0 36px;
+    background-position: left top;
+}
+.site-footer .col-1 {
+    float: right;
+}
+.site-footer .col-3 {
+    float: right;
+    margin: 0;
+    padding: 0 0 0 25px;
+}
+    .site-footer .restoran-rating {
+        float: left;
+    }
+        .restoran-rating img {
+            -moz-transform: scaleX(-1);
+            -o-transform: scaleX(-1);
+            -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
+            filter: FlipH;
+            -ms-filter: "FlipH";
+        }
+    .site-footer .rating-col .name.fl {
+        float: right;
+    }
+.site-footer .col-4 {
+    float: left;
+    margin: 0;
+    text-align: end;
+    direction: rtl;
+}
+    .bottom-social a {
+        margin: 0 21px 0 0;
+    }
+.site-footer .copyrights {
+    right: auto;
+    left: 0;
+}
+.page-title span {
+    float: right;
+    margin: 0 0 0 18px;
+}
+#places-change-location-link {
+    float: right;
+    padding: 0 15px 0 0;
+    background-position: right center;
+}
+.restaurants-list-top-filters {
+    float: left;
+    direction: rtl;
+}
+    .restaurants-list-top-filters .label {
+        float: right;
+        padding: 2px 0 0 5px;
+    }
+    .restaurants-list-top-filters a {
+        float: right;
+        margin: 0 0 0 2px;
+    }
+.content-lefter {
+    float: right;
+}
+    .food-type-filters {
+        padding: 0 20px 9px;
+        text-align: center;
+    }
+    .clear-filter-link {
+        direction: rtl;
+        background-position: 142px center;
+    }
+    .filters-list .custom-checkbox {
+        direction: rtl;
+        text-align: right;
+        padding-right: 23px;
+        padding-left: 20px;
+    }
+        .custom-checkbox .count {
+            left: 3px;
+            right: auto;
+        }
+        .custom-checkbox .icheckbox {
+            left: auto;
+            right: 0;
+            background-position: right top;
+        }
+.content-righter {
+    float: left;
+}
+    .restaurant-item {
+        padding: 15px 15px 0 30px;
+    }
+        .restaurant-item .logo {
+            float: right;
+            margin: 0 0 0 20px;
+        }
+        .restaurant-item .item-center {
+            float: right;
+        }
+        .restaurant-item .restoran-rating {
+            float: right;
+        }
+        .restaurant-item .rating-count {
+            text-align: left;
+        }
+        .restaurant-item .item-righter {
+            float: left;
+        }
+            .item-righter .button span {
+                background: url(/bundles/foodapp/images/button-arrow-3-left.png) no-repeat left center;
+            }
+        .restaurant-item .name span {
+            float: right;
+        }
+        .restaurant-item .name .tag {
+            margin-right: 13px;
+            margin-left: 0;
+        }
+        .restaurant-item .name .notice .description {
+            border-left: 1px solid #FFFFFF;
+            border-right: 0;
+        }
+        .restaurant-item .delivery {
+            background-position: right 2px;
+            margin: 0 0 0 36px;
+            background-image: url(/bundles/foodapp/images/delivery-rtl-ico.png);
+        }
+        .restaurant-item .min-cart-size {
+            float: right;
+            background-position: right 1px;
+        }
+        .restaurant-item .pickup {
+            background-position: right 2px;
+            margin: 0 0 0 36px;
+            padding: 0 13px 0 0;
+        }
+        .restaurant-item .delivery,
+        .restaurant-item .min-cart-size {
+            padding: 0 20px 0 0;
+        }
+            .restaurant-item .delivery span,
+            .restaurant-item .min-cart-size span {
+                padding: 0 0 0 13px;
+            }
+        .time-popup {
+            right: 25px;
+            left: auto;
+            direction: ltr;
+        }
+        /*.time-popup.time-popup2 {*/
+            /*left: auto;*/
+            /*right: 30px;*/
+        /*}*/
+            .time-popup.time-popup2 > div {
+                direction: rtl;
+                text-align: left;
+            }
+                .time-popup.time-popup2 .work-green  {
+                    float: left !important;
+                    margin: 0 13px 0 0 !important;
+                }
+        .time-popup .nip {
+            left: auto;
+            right: -7px;
+            background: url(/bundles/foodapp/images/time-nip-right.png) no-repeat right top;
+        }
+/*.fancybox-close {
+    right: auto;
+    left: -18px;
+}*/
+#change-address .title,
+#places-change-address .title {
+    padding: 0 0 15px 63px;
+}
+.delivery-info-form label {
+    float: right;
+    padding: 9px 0 0 5px;
+    direction: rtl;
+}
+/*
+#address_city-button .ui-selectmenu-status,
+#index_city-button .ui-selectmenu-status {
+    padding: 6px 16px 4px 26px;
+}
+*/
+#address_city-menu li a,
+#index_city-menu li a {
+    padding: 6px 16px 4px 26px;
+    text-align: right;
+}
+#address_city-button .ui-selectmenu-icon,
+#index_city-button .ui-selectmenu-icon {
+    right: auto;
+    left: 6px;
+}
+#places-change-address button {
+    float: left;
+}
+
+/*#boxer .boxer-close {
+    right: auto;
+    left: -18px;
+}*/
+.login_form_wrapper .login-form {
+    float: right;
+}
+.login-register-popup label {
+    direction: rtl;
+    float: right;
+    padding: 9px 0 0 5px;
+}
+.login-register-popup .reset_password_btn {
+    float: left;
+    margin: 0 0 23px;
+}
+.login-register-popup input[type="submit"] {
+    float: left;
+}
+.registration_form_wrapper .register-form {
+    float: left;
+}
+
+.detailed-resturant .ui-tabs-panel > .clearfix {
+    position: relative;
+}
+.fixed_wrapper {
+    position: absolute;
+    right: 0;
+    width: 166px;
+}
+.menu-lefter li a {
+    direction: rtl;
+    text-align: right;
+    padding: 9px 15px 9px 39px;
+}
+.menu-lefter li span {
+    right: auto;
+    left: 10px;
+}
+.menu-lefter {
+    float: right;
+}
+.menu-righter {
+    float: left;
+}
+.menu-title h2 {
+    float: right;
+    direction: rtl;
+}
+.view-type {
+    float: left;
+}
+    .view-type a {
+        float: right;
+    }
+
+.content-lefter-big {
+    float: right;
+}
+.content-righter-small {
+    float: left;
+}
+
+.page-path a {
+    float: right;
+    padding: 0 0 0 10px;
+    margin: 0 0 0 7px;
+    background: url(/bundles/foodapp/images/small-arrow-left.png) no-repeat left center;
+}
+    .image-top .page-path a {
+        background-image: url(/bundles/foodapp/images/small-arrow-left-2.png);
+    }
+.page-title .restoran-rating {
+    direction: rtl;
+    float: right;
+}
+
+.ui-tabs .ui-tabs-nav li {
+    float: right;
+    margin-right: 0;
+    margin-left: 6px;
+}
+
+.restaurant-menu-item {
+    float: right;
+    margin: 0 0 27px 17px;
+}
+.restaurant-menu-item:nth-child(2n) {
+    margin: 0 0 27px 0;
+}
+    .restaurant-menu-item .price {
+        direction: rtl;
+        /*float: right;*/
+        padding-left: 9px;
+        padding-right: 0;
+    }
+    .restaurant-menu-item .add-to-cart {
+        float: left;
+    }
+
+.display-list .restaurant-menu-item .price {
+    float: left;
+    position: initial;
+    width: auto;
+}
+.display-list .restaurant-menu-item .menu-item-bottom .price {
+    display: none;
+}
+
+.display-list .restaurant-menu-item .name {
+    padding-right: 60px;
+}
+.block-list .restaurant-menu-item .price {
+    display: none;
+}
+.block-list .restaurant-menu-item .menu-item-bottom .price {
+    display: inline-block;
+    float: right;
+}
+
+.site-header h1,
+.app-block-inner h3,
+.app-block-inner p,
+.detailed-dish-popup,
+.dish-info .name,
+.dish-info .desc,
+.dish-size,
+.page-path,
+.page-title,
+.alert-danger,
+.alert-warning,
+.alert-info,
+.detailed-dish-popup .theCounter,
+.dish-size .custom-radio,
+.dish-ingredients .custom-checkbox,
+.check-block,
+.static-page,
+.error-page,
+.restaurants-list,
+#address_city-button,
+/*
+#address_city-button,
+#index_city-button,
+*/
+#places-change-address .ui-selectmenu-status,
+.coupon_form_popup .the_text,
+.delivery-info-form-content,
+.delivery-info-form .form-controls .submit-button,
+.delivery-info-form .form-controls .button-back,
+.check-item .edit a,
+.dropdown .button,
+.restoran-name,
+.cupon-name,
+.top-menu a,
+.login-register-popup h3,
+.login-register-popup h4,
+.detailed-restaurant-info,
+.restaurant-menu-item .name,
+.restaurant-menu-item .desc,
+.newsletter-form input[type="submit"],
+.delivery-info-form input[type="text"],
+.coupon_form_popup input[type="text"],
+.login-register-popup input[type="text"],
+.login-register-popup input[type="email"],
+.login-register-popup input[type="password"],
+.user-lefter,
+.user-righter,
+select.neighbourhood_select,
+.user-details-form input[type="submit"],
+.detailed-resturant .detailed-restaurant-review,
+.restoran-item .restoran-rating {
+    direction: rtl;
+}
+    .dish-size .custom-radio,
+    .dish-ingredients .custom-checkbox {
+        float: right;
+        margin: 0 0 15px 15px;
+        padding: 2px 21px 0 0;
+    }
+    .dish-ingredients .custom-checkbox:nth-child(3n) {
+        margin-left: 0;
+    }
+    .dish-size .custom-radio:nth-child(3n) {
+        margin-left: 0
+    }
+        .dish-size .custom-radio .iradio {
+            left: auto;
+            right: 0;
+        }
+
+.detailed-dish-popup .button-submit span,
+.coupon_form_popup .button-submit span {
+    direction: rtl;
+    background: url(/bundles/foodapp/images/button-arrow-left.png) no-repeat left center;
+}
+
+.check-item .count,
+.check-item .extra {
+    float: right;
+}
+.check-item .sum {
+    float: left;
+    text-align: left;
+}
+.check-block .total-sum .fl,
+.check-block .packaging-price .fl,
+.check-block .delivery-price .fl {
+    float: right;
+}
+.check-block .total-sum .fr,
+.check-block .packaging-price .fr,
+.check-block .delivery-price .fr {
+    float: left;
+    text-align: left;
+}
+.cart_delivery_type label {
+    padding: 0 25px 10px 20px;
+}
+.cart_delivery_type .custom-radio .iradio {
+    left: auto;
+    right: 0;
+}
+.check-block .order-button {
+    direction: rtl;
+    padding: 0 20px 0 40px;
+    background: url(/bundles/foodapp/images/big-button-3-left.png) no-repeat left center;
+}
+.check-item:hover .edit {
+    margin: -3px 88px 0 0;
+}
+
+.delivery-info-form-content input[type="text"],
+.delivery-info-form-content input[type="password"],
+.delivery-info-form-content input[type="email"],
+.delivery-info-form-content textarea,
+.delivery-info-form-content a.ui-selectmenu,
+.user-details-form input[type="text"],
+.user-details-form input[type="email"],
+.user-details-form input[type="password"] {
+    float: right;
+}
+.delivery-info-form-content a.ui-selectmenu .ui-selectmenu-status,
+.user-details-form a.ui-selectmenu .ui-selectmenu-status {
+    padding: 6px 16px 4px 26px;
+}
+.delivery-info-form-content a.ui-selectmenu .ui-selectmenu-icon,
+.user-details-form a.ui-selectmenu .ui-selectmenu-icon {
+    right: auto;
+    left: 6px;
+}
+#ui-id-2-menu li a,
+#place-select-menu li a,
+#pre_order_date-menu li a,
+#pre_order_time-menu li a,
+#food_user_profile_address_city-menu li a {
+    padding: 6px 16px 4px 26px;
+    text-align: right;
+}
+
+.delivery-info-form .cart-rules {
+    padding: 0 25px 0 20px;
+}
+.delivery-info-form .cart-rules label {
+    padding: 9px 5px 0 0;
+}
+.delivery-info-form .cart-rules label a.fancy-box {
+    float: right;
+    margin-left: 5px;
+}
+.delivery-info-form .delivery-type-radios,
+.delivery-info-form .order-type-radios,
+.delivery-info-form .order-type-radios .custom-radio,
+.delivery-info-form .delivery-type-radios .custom-radio {
+    float: right;
+}
+.delivery-info-form .delivery-type-radios .custom-radio,
+.delivery-info-form .order-type-radios .custom-radio {
+    margin: 0 0 0 44px;
+    padding: 0 25px 0 5px;
+}
+.delivery-info-form .order-type-radios .custom-radio {
+    margin: 0;
+}
+.delivery-info-form .delivery-type-radios .custom-radio:last-child {
+    margin: 0;
+}
+.delivery-info-form .delivery-type-radios .custom-radio .iradio,
+.delivery-info-form .order-type-radios .custom-radio .iradio {
+    left: auto;
+    right: 0;
+}
+.delivery-info-form .custom-checkbox.checkbox-right .icheckbox {
+    float: right;
+}
+.delivery-info-form .cupon-info {
+    padding: 0 25px 0 0;
+    background-position: right 1px;
+}
+    .delivery-info-form .cupon-info a.fancy-box {
+        float: right;
+        margin-left: 5px;
+    }
+.delivery-info-form .select-payment .custom-radio,
+.delivery-info-form .select-bank .custom-radio {
+    margin: 0 0 0 15px;
+    padding: 0 25px 0 5px;
+}
+    .delivery-info-form .select-payment .custom-radio .iradio,
+    .delivery-info-form .select-bank .custom-radio .iradio {
+        left: auto;
+        right: 0;
+    }
+.delivery-info-form .form-controls .button-back {
+    float: right;
+    padding: 0 17px 0 0;
+    background: url(/bundles/foodapp/images/back-ico-right.png) no-repeat right center;
+}
+.delivery-info-form .form-controls .submit-button {
+    float: left;
+}
+    .delivery-info-form .form-controls .submit-button span {
+        background: url(/bundles/foodapp/images/button-arrow-left.png) no-repeat left center;
+    }
+
+.restaurant-info-lefter {
+    float: right;
+}
+    .restaurant-info-lefter li {
+        padding: 0 21px 0 0;
+        background-position: right top !important;
+    }
+.restaurant-info-righter {
+    float: left;
+}
+    .restaurant-info-righter a.ui-selectmenu .ui-selectmenu-status {
+        padding: 6px 16px 4px 26px;
+    }
+    .restaurant-info-righter a.ui-selectmenu .ui-selectmenu-icon {
+        right: auto;
+        left: 6px;
+    }
+    .restaurant-info-righter .location-work-hours .lefter {
+        float: right;
+    }
+    .restaurant-info-righter .location-work-hours .righter {
+        float: left;
+    }
+
+.user-lefter {
+    float: right;
+    background: url(/bundles/foodapp/images/side-menu-shadow-rtl.png) repeat-y left top;
+}
+    .user-lefter .active-user {
+        padding: 5px 0 29px 20px;
+    }
+    .user-menu {
+        text-align: left;
+    }
+        .user-menu .active {
+            border-radius: 0 4px 4px 0;
+            border: 1px solid #e9e9e9;
+            border-left: none;
+            box-shadow: 1px 0 1px #e9e9e9;
+        }
+            .user-menu .menu-item a,
+            .user-menu .logoff-ico a {
+                padding: 9px 34px 9px 17px;
+                background-position: right 10px;
+                margin-right: 10px;
+            }
+.user-righter {
+    float: left;
+}
+    .user-details-form label {
+        float: right;
+        padding: 9px 0 0 5px;
+    }
+
+.detailed-resturant .detailed-restaurant-review {
+    padding: 15px 15px 15px 19px;
+}
+    .review-title {
+        padding: 11px 145px 23px 0;
+    }
+        .review-title h3,
+        .place-review-popup h3 {
+            float: right;
+        }
+    .place-review-popup label {
+        float: right;
+        padding: 9px 0 0 5px;
+    }
+    .place-review-popup input[type="submit"] {
+        float: left;
+    }
+    .review-person {
+        float: right;
+        padding: 0 12px 0 0;
+    }
+    .review-baloon {
+        float: left;
+    }
+        .review-baloon .nip {
+            left: auto;
+            right: -15px;
+            background: url(/bundles/foodapp/images/white-nip-right.png) no-repeat right top;
+        }
+        .review-baloon .restoran-rating {
+            float: right;
+        }
+        .review-baloon .date {
+            float: left;
+        }
+.paginator {
+    padding: 12px 145px 20px 0;
+}
+    .paginator a {
+        float: right;
+        margin: 0 0 0 6px;
+    }
+    .paginator .prev {
+        background-position: right top;
+    }
+    .paginator .prev:hover {
+        background-position: right bottom;
+    }
+    .paginator .next {
+        background-position: left top;
+    }
+    .paginator .next:hover {
+        background-position: left bottom;
+    }
+
+.chosen-container-single .chosen-single {
+    padding: 17px 8px 0 0;
+}
+.neighbourhood-row .chosen-single,
+.neighbourhood-row-disabled .chosen-single {
+    padding: 7px 8px 0 0;
+}
+    .chosen-container-single .chosen-single span {
+        text-align: right;
+        margin: 0 0 0 26px;
+        direction: rtl;
+    }
+    .chosen-container-single .chosen-single div {
+        right: auto;
+        left: 0;
+    }
+        .chosen-container-single .chosen-single div b,
+        .chosen-container-active.chosen-with-drop .chosen-single div b {
+            background-position: 5px 0;
+        }
+    .chosen-container-single .chosen-search input[type="text"] {
+        padding: 6px 5px 6px 20px;
+        background-position: 3% 11px;
+        background-image: url(/bundles/foodapp/images/search-rtl-ico.png);
+    }
+    .chosen-container .chosen-results li {
+        direction: rtl;
+        text-align: right;
+        padding: 6px 26px 4px 16px;
+    }
+
+.restaurant-info-lefter .ico-kitchen {
+    background-image: url(/bundles/foodapp/images/kitchen-rtl-ico.png);
+}
+.restaurant-info-lefter .ico-pickup {
+    background-image: url(/bundles/foodapp/images/pickup-rtl-ico.png);
+}
+.restaurant-info-lefter .ico-time {
+    background-image: url(/bundles/foodapp/images/time-rtl-ico.png);
+}
+.restaurant-info-lefter .ico-delivery {
+    background-image: url(/bundles/foodapp/images/delivery-rtl-ico.png);
+}
+.restaurant-info-lefter .ico-payments {
+    background-image: url(/bundles/foodapp/images/payment-rtl-ico.png);
+}
+
+.dish-ingredients .custom-radio {
+    padding: 2px 21px 0 0;
+    margin: 0 0 5px 15px;
+}
+    .dish-ingredients .custom-radio .iradio {
+        left: auto;
+        right: 0;
+    }
+
+.restaurant_search_input {
+    display: inline-block;
+    margin: 0 10px 0 0;
+    padding: 0 4px 0 16px;
+    border-radius: 3px;
+    line-height: 18px;
+    width: 110px;
+    background: transparent url(/bundles/foodapp/images/search-rtl-ico.png) 3px 3px no-repeat;
+}
+
+.delivery-info-form {
+    overflow-x: hidden;
+    min-width: 483px;
+    min-height: 430px;
+}
+
+.mob-table,
+.mob-form {
+    direction: rtl;
+}
+.mob-table th {
+    text-align: right;
+}
+.mob-table .mob-site-logo {
+    float: right;
+}
+.mob-table .mob-restaurant-logo {
+    float: left !important;
+}
+
+.cupon-page {
+    padding: 62px 20px 187px;
+}

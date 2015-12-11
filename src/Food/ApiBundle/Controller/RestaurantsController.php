@@ -194,11 +194,15 @@ class RestaurantsController extends Controller
         if (!empty($city) && !empty($address)) {
             $placeData = $this->get('food.googlegis')->getPlaceData($address.",". $city);
             $locationInfo = $this->get('food.googlegis')->groupData($placeData, $address, $city);
-            $searchCrit = array(
-                'city' => $locationInfo['city'],
-                'lat' => $locationInfo['lat'],
-                'lng' => $locationInfo['lng']
-            );
+            if (isset($locationInfo['city'])) {
+                $searchCrit['city'] = $locationInfo['city'];
+            }
+            if (isset($locationInfo['lat'])) {
+                $searchCrit['lat'] = $locationInfo['lat'];
+            }
+            if (isset($locationInfo['lng'])) {
+                $searchCrit['lng'] = $locationInfo['lng'];
+            }
         } elseif (!empty($lat) && !empty($lng)) {
             $data = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
             $searchCrit = array(
@@ -214,9 +218,15 @@ class RestaurantsController extends Controller
             $searchCrit,
             true
         );
+
         if (!empty($pointId)) {
             $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
-            $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, $placePoint, false, $this->get('food.googlegis')->getLocationFromSession());
+            $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
+                $place,
+                $placePoint,
+                false,
+                $this->get('food.googlegis')->getLocationFromSession()
+            );
         } else {
             $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
                 $place->getId(),
@@ -224,7 +234,12 @@ class RestaurantsController extends Controller
             );
             if (!empty($pointId)) {
                 $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
-                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, $placePoint, true, $this->get('food.googlegis')->getLocationFromSession());
+                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
+                    $place,
+                    $placePoint,
+                    false,
+                    $this->get('food.googlegis')->getLocationFromSession()
+                );
             } else {
                 $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, null, true, $this->get('food.googlegis')->getLocationFromSession());
             }

@@ -66,6 +66,8 @@
         "trsteel/ckeditor-bundle": "1.6.x-dev",
         "friendsofsymfony/jsrouting-bundle": "@stable",
         "giggsey/libphonenumber-for-php": "7.*",
+        "zendframework/zend-stdlib": "2.3.*",
+        "zendframework/zend-json": "2.3.*",
         "ob/highcharts-bundle": "1.1.*",
         "pirminis/maybe-monad": "1.2.10",
         "knplabs/knp-snappy-bundle": "dev-master",

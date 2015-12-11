@@ -33,7 +33,7 @@ class SendCommand extends ContainerAwareCommand
 
         $messagingService = $this->getContainer()->get('food.messages');
         $logger = $this->getContainer()->get('logger');
-//        $messagingProviders = $this->getContainer()->getParameter('sms.available_providers');
+        $messagingProviders = $this->getContainer()->getParameter('sms.available_providers');
         $mainProvider = $this->getContainer()->getParameter('sms.main_provider');
 //
         if (empty($mainProvider)) {
@@ -59,10 +59,34 @@ class SendCommand extends ContainerAwareCommand
 
                 if (!empty($unsentMessages) && $unsentMessagesCount > 0) {
                     foreach($unsentMessages as $message) {
+                        $providerChanged = false;
+                        // If we have tried 3 trimes, maby lets change provider as it takes too long now
+                        if ($message->getTimesSent() >= 3) {
+                            if ($message->getSmsc() == 'InfoBip') {
+                                // Pasitikrinam as Silverstreet isvis ijungtas
+                                if (in_array('food.silverstreet', $messagingProviders)) {
+                                    $altProvider = $this->getContainer()->get('food.silverstreet');
+                                } else {
+                                    $altProvider = $this->getContainer()->get('food.infobip');
+                                }
+                            } else {
+                                $altProvider = $this->getContainer()->get('food.infobip');
+                            }
+
+                            $messagingService->setMessagingProvider($altProvider);
+
+                            $providerChanged = true;
+                        }
+
                         $output->writeln(sprintf('<info>Sending message id: %d</info>', $message->getId()));
                         $messagingService->sendMessage($message);
                         $messagingService->saveMessage($message);
                         $count++;
+
+                        // Lets get back to main provider
+                        if ($providerChanged) {
+                            $messagingService->setMessagingProvider($provider);
+                        }
 
                         // Jei uztrukom ilgiau nei 80s - nustojam sukt checkus, nes greit pasileis naujas instance
                         if ((microtime(true) - $this->timeStart) > 80) {

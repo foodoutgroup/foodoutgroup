@@ -124,8 +124,22 @@ class Restaurant extends ContainerAware
             $pickUp = true;
             $delivery = false;
         } elseif ($locationData == null) {
-            $delivery = true;
-            $pickUp = true;
+            $delivery = false;
+            $pickUp = false;
+            foreach ($place->getPoints() as $tempPP) {
+                if (!$tempPP->getActive()) {
+                    continue;
+                }
+                if ($tempPP->getPickUp()) {
+                    $pickUp = true;
+                }
+                if ($tempPP->getDelivery()) {
+                    $delivery = true;
+                }
+                if ($pickUp && $delivery) {
+                    break;
+                }
+            }
         } else {
             $pickUp = (isset($placePoint) && $placePoint->getPickUp() ? true: false);
             $delivery = (isset($placePoint) && $placePoint->getDelivery() ? true: false);

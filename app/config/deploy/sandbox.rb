@@ -1,5 +1,5 @@
 #set :domain,      "192.168.10.113"
-set :domain,      "amazingsales-parado.data.lt"
+set :domain,      "foodout.lt"
 #set :deploy_to,   "/home/foodout/"
 set :deploy_to,   "/home/sandbox.foodout.lt/"
 

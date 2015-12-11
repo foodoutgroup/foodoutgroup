@@ -276,6 +276,14 @@ Vilnius]]></target>
             <source>order.form.errors.customerphone</source>
             <target>Nurodykite mob. telefono numerį</target>
         </trans-unit>
+        <trans-unit id="order.form.errors.dishLimit" resname="order.form.errors.dishLimit">
+            <source>order.form.errors.dishLimit</source>
+            <target>Dėmesio! Šiame restorane galite pasirinkti ne daugiau kaip %text% patiekalus. Prašome sumažinti patiekalų kiekį arba pasirinkti kitą restoraną iš Foodout.lt . Skanaus pasirinkimo!</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.drinkLimit" resname="order.form.errors.drinkLimit">
+            <source>order.form.errors.drinkLimit</source>
+            <target>Dėmesio! Šiame restorane galite pasirinkti ne daugiau kaip %text% gėrimus. Prašome sumažinti gėrimų kiekį arba pasirinkti kitą restoraną iš Foodout.lt . Skanaus pasirinkimo!</target>
+        </trans-unit>
         <trans-unit id="order.form.errors.customerphone_format" resname="order.form.errors.customerphone_format">
             <source>order.form.errors.customerphone_format</source>
             <target>Nurodykite mob. telefono numerį formatu 37061234567</target>
@@ -411,6 +419,10 @@ Vilnius]]></target>
         <trans-unit id="general.coupon.wrong_place_simple" resname="general.coupon.wrong_place_simple">
             <source>general.coupon.wrong_place_simple</source>
             <target>Jūsų pateiktas nuolaidos kuponas šiame restorane negalioja. Pasitikrinkite kupono kodą</target>
+        </trans-unit>
+        <trans-unit id="general.coupon.only_delivery" resname="general.coupon.only_delivery">
+            <source>general.coupon.only_delivery</source>
+            <target>Atsiprašome, šis nuolaidos kodas galioja tik užsakymams su pristatymu</target>
         </trans-unit>
         <trans-unit id="general.coupon.not_active" resname="general.coupon.not_active">
             <source>general.coupon.not_active</source>

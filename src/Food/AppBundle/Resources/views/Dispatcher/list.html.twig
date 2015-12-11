@@ -3,7 +3,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <link href="{{ asset('bundles/foodapp/css/bootstrap-glyphicons.css') }}" rel="stylesheet">
     <script src="{{ asset('bundles/foodapp/js_admin/dispatcher.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -105,21 +105,28 @@
                     </td>
                     <td>
                         {{ order.placeName }}
-                        {% if order.placePoint.internalCode is not empty %} - {{ order.placePoint.internalCode }}{% endif %}
-                        {% set placePointPhones = '+'~order.placePoint.phone %}
-                        {% if order.placePoint.altPhone1 is not empty%}
+                        {% if order.placePoint is not empty and order.placePoint.internalCode is not empty %} - {{ order.placePoint.internalCode }}{% endif %}
+                        {% if order.placePoint is not empty %}{% set placePointPhones = '+'~order.placePoint.phone %}{% else %}{% set placePointPhones = '' %}{% endif %}
+                        {% if order.placePoint is not empty and order.placePoint.altPhone1 is not empty%}
                             {% set placePointPhones = placePointPhones ~ '<br />' ~ '+' ~ order.placePoint.altPhone1 %}
                         {% endif %}
-                        {% if order.placePoint.altPhone2 is not empty%}
+                        {% if order.placePoint is not empty and order.placePoint.altPhone2 is not empty%}
                             {% set placePointPhones = placePointPhones ~ '<br />' ~ '+' ~ order.placePoint.altPhone2 %}
                         {% endif %}
                         <span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ placePointPhones }}"></span>
                     </td>
                 {% if type != 'canceled' %}
-                    <td>{{ order.placePoint.address }}</td>
+                    <td>
+                        {% if order.placePoint is not empty %}
+                            {{ order.placePoint.address }}</td>
+                        {% endif %}
                 {% endif %}
                 {% if type != 'unconfirmed-pickup' %}
-                    <td>{{ order.addressId.address }}</td>
+                    <td>
+                        {% if order.deliveryType != 'pickup' %}
+                            {{ order.addressId.address }}
+                        {% endif %}
+                    </td>
                     <td>{{ order.orderExtra.phone }}</td>
                     <td class="self_delivery">
                         {% if order.placePointSelfDelivery %}
@@ -174,17 +181,21 @@
                     </td>
                     {% if type == 'not_finished' %}
                         <td class="driver">
-                            {% if order.driver is not null and order.driver is not empty and order.isDriverNotDeleted %}
-                                {%
-                                set driverInfo = 'admin.driver.phone'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.phone ~ "<br/>"
-                                ~ 'admin.driver.city'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.city ~ "<br/>"
-                                ~ 'admin.driver.type'|trans({}, 'SonataAdminBundle') ~ ': ' ~ ('admin.driver.type.' ~ order.driver.type)|trans({}, 'SonataAdminBundle') ~ "<br/>"
-                                ~ 'admin.driver.provider'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.provider ~ "<br/>"
-                                ~ 'admin.driver.ext_id'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.extId ~ "<br/>"
-                                %}
-                                {{ order.driver.name }} <span class="driver-info-extended glyphicon glyphicon-info-sign" title="{{ driverInfo }}"></span>
+                            {% if order.deliveryType == 'pickup' %}
+                                <strong>{{ 'admin.dispatcher.pickup_order'|trans({}, 'SonataAdminBundle') }}</strong>
                             {% else %}
-                                <span style="font-weight: bold; color: #FF0000;">{{ 'admin.dispatcher.no_driver_assigned'|trans({}, 'SonataAdminBundle') }}</span>
+                                {% if order.driver is not null and order.driver is not empty and order.isDriverNotDeleted %}
+                                    {%
+                                    set driverInfo = 'admin.driver.phone'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.phone ~ "<br/>"
+                                    ~ 'admin.driver.city'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.city ~ "<br/>"
+                                    ~ 'admin.driver.type'|trans({}, 'SonataAdminBundle') ~ ': ' ~ ('admin.driver.type.' ~ order.driver.type)|trans({}, 'SonataAdminBundle') ~ "<br/>"
+                                    ~ 'admin.driver.provider'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.provider ~ "<br/>"
+                                    ~ 'admin.driver.ext_id'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.extId ~ "<br/>"
+                                    %}
+                                    {{ order.driver.name }} <span class="driver-info-extended glyphicon glyphicon-info-sign" title="{{ driverInfo }}"></span>
+                                {% else %}
+                                    <span style="font-weight: bold; color: #FF0000;">{{ 'admin.dispatcher.no_driver_assigned'|trans({}, 'SonataAdminBundle') }}</span>
+                                {% endif %}
                             {% endif %}
                         </td>
                     {% endif %}

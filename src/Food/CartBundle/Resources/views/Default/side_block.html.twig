@@ -112,6 +112,18 @@
             </div>
         {% endif %}
 
+        {% if basket_errors['foodQuantityError'] %}
+            <div class="alert alert-warning text-center max_cart-items">
+                <span>{{ 'order.form.errors.dishLimit'|trans({'%text%': place.basketLimitFood}) }}</span>
+            </div>
+        {% endif %}
+
+        {% if basket_errors['drinkQuantityError'] %}
+            <div class="alert alert-warning text-center max_cart-items">
+                <span>{{ 'order.form.errors.drinkLimit'|trans({'%text%': place.basketLimitDrinks}) }}</span>
+            </div>
+        {% endif %}
+
         {# Nemokamas pristatymas nuo 25 eur #}
         {% if takeAway == false and enable_free_delivery_for_big_basket %}
             {% if left_sum > 0 and self_delivery == 0 %}

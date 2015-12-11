@@ -272,6 +272,14 @@ LV-1046</target>
         <source>order.form.errors.customerphone_format</source>
         <target>Norādiet mob. tālruņa numuru formātā 37161234567</target>
       </trans-unit>
+        <trans-unit id="order.form.errors.dishLimit" resname="order.form.errors.dishLimit">
+            <source>order.form.errors.dishLimit</source>
+            <target>Uzmanību! Šajā restorānā ir iespējams izvēlēties ne vairāk kā %text% ēdienus vienā pasūtījumā. Lūdzu precizējiet pasūtījumu vai veiciet to no cita Foodout.lv restorāna. Lai garšīga izvēle!</target>
+        </trans-unit>
+        <trans-unit id="order.form.errors.drinkLimit" resname="order.form.errors.drinkLimit">
+            <source>order.form.errors.drinkLimit</source>
+            <target>Uzmanību! Šajā restorānā ir iespējams izvēlēties ne vairāk kā %text% ēdienus vienā pasūtījumā. Lūdzu precizējiet pasūtījumu vai veiciet to no cita Foodout.lv restorāna. Lai garšīga izvēle!</target>
+        </trans-unit>
       <trans-unit id="e025a73731785c22c69a936e639311dc" resname="order.form.errors.customerphone_not_mobile">
         <source>order.form.errors.customerphone_not_mobile</source>
         <target>Norādītais tālruņa numurs nav mobilais</target>
@@ -384,6 +392,10 @@ LV-1046</target>
         <source>general.coupon.wrong_place_simple</source>
         <target>Jūsu iesniegtais atlaides kupons šajā restorānā nav derīgs. Pārbaudiet kupona kodu</target>
       </trans-unit>
+        <trans-unit id="general.coupon.only_delivery" resname="general.coupon.only_delivery">
+            <source>general.coupon.only_delivery</source>
+            <target>Atvainojiet, šis atlaižu kupons ir derīgs tikai pasūtījumiem ar piegādi.</target>
+        </trans-unit>
       <trans-unit id="e5e171e2183ae1de5135cc5b77356dab" resname="general.coupon.not_active">
         <source>general.coupon.not_active</source>
         <target>Jūsu iesniegtais atlaides kupons nav derīgs.</target>

@@ -375,7 +375,7 @@ class NavService extends ContainerAware
         $orderDate = $order->getOrderDate();
         $orderDate->add(new \DateInterval('P0DT0H'));
         $deliveryDate = $order->getDeliveryTime();
-        $deliveryDate->sub(new \DateInterval('P0DT3H'));
+        $deliveryDate->sub(new \DateInterval('P0DT2H'));
         /**
          * This thing is when we move to daytime saving mode.
          * @todo put to the CONFIG or make AUTO
@@ -1206,7 +1206,7 @@ class NavService extends ContainerAware
 
             case 2:
                 // TODO persiuntimas
-                $logger->error('Order #'.$order->getId().' was marked as redirected in Cili Nav');
+                $logger->alert('Order #'.$order->getId().' was marked as redirected in Cili Nav');
                 break;
 
             case 6:

@@ -175,8 +175,8 @@
                     {% if show_apps_download %}
                     <div class="app-block clearfix"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-view.png') }}">
                         <div class="app-block-inner">
-                            <h3>Foodout.lt tavo kišenėje!</h3>
-                            <p>Užsisakyk maisto į namus ar biurą per iPhone arba Android telefonus. Atsisiųsk nemokamą aplikaciją!.</p>
+                            <h3>{% trans %}general.app_block.header{% endtrans %}</h3>
+                            <p>{% trans %}general.app_block.promo_text{% endtrans %}</p>
                             <div><a target="_BLANK" href="https://itunes.apple.com/us/app/foodout/id919992168"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a target="_BLANK" href="https://play.google.com/store/apps/details?id=co.lemonlabs.android.foodout#"><img src="http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/g-store.png') }}"></a></div>
                         </div>
                     </div>
@@ -240,6 +240,9 @@
 {% if site_country == 'LT' %}
     {# Optin monster #}
     <!-- OptinMonster --><div id="om-fyi02zidebhgsg8v-holder"></div><script>var fyi02zidebhgsg8v,fyi02zidebhgsg8v_poll=function(){var r=0;return function(n,l){clearInterval(r),r=setInterval(n,l)}}();!function(e,t,n){if(e.getElementById(n)){fyi02zidebhgsg8v_poll(function(){if(window['om_loaded']){if(!fyi02zidebhgsg8v){fyi02zidebhgsg8v=new OptinMonsterApp();return fyi02zidebhgsg8v.init({u:"11462.218873",staging:0,dev:0});}}},25);return;}var d=false,o=e.createElement(t);o.id=n,o.src="//a.optinmonster.com/app/js/api.min.js",o.onload=o.onreadystatechange=function(){if(!d){if(!this.readyState||this.readyState==="loaded"||this.readyState==="complete"){try{d=om_loaded=true;fyi02zidebhgsg8v=new OptinMonsterApp();fyi02zidebhgsg8v.init({u:"11462.218873",staging:0,dev:0});o.onload=o.onreadystatechange=null;}catch(t){}}}};(document.getElementsByTagName("head")[0]||document.documentElement).appendChild(o)}(document,"script","omapi-script");</script><!-- / OptinMonster -->
+{% elseif site_country =='LV' %}
+    {# Optin monster for LV #}
+    <!-- OptinMonster --><div id="om-uthsh0y0gpo4qpoz-holder"></div><script>var uthsh0y0gpo4qpoz,uthsh0y0gpo4qpoz_poll=function(){var r=0;return function(n,l){clearInterval(r),r=setInterval(n,l)}}();!function(e,t,n){if(e.getElementById(n)){uthsh0y0gpo4qpoz_poll(function(){if(window['om_loaded']){if(!uthsh0y0gpo4qpoz){uthsh0y0gpo4qpoz=new OptinMonsterApp();return uthsh0y0gpo4qpoz.init({u:"11462.236385",staging:0,dev:0});}}},25);return;}var d=false,o=e.createElement(t);o.id=n,o.src="//a.optnmnstr.com/app/js/api.min.js",o.onload=o.onreadystatechange=function(){if(!d){if(!this.readyState||this.readyState==="loaded"||this.readyState==="complete"){try{d=om_loaded=true;uthsh0y0gpo4qpoz=new OptinMonsterApp();uthsh0y0gpo4qpoz.init({u:"11462.236385",staging:0,dev:0});o.onload=o.onreadystatechange=null;}catch(t){}}}};(document.getElementsByTagName("head")[0]||document.documentElement).appendChild(o)}(document,"script","omapi-script");</script><!-- / OptinMonster -->
 {% endif %}
 </body>
 </html>

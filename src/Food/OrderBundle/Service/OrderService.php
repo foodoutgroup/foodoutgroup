@@ -1625,7 +1625,7 @@ class OrderService extends ContainerAware
         }
 
         $hash = md5(
-            $userString.$order->getOrderDate()->getTimestamp().$order->getAddressId()
+            $userString.$order->getOrderDate()->getTimestamp().$order->getAddressId().microtime()
         );
 
         return $hash;
@@ -2669,8 +2669,17 @@ class OrderService extends ContainerAware
      */
     public function isTodayWork(PlacePoint $placePoint)
     {
+        $totalH = date("H");
+        $totalM = date("i");
         $wd = date('w');
+
+        if ($totalH < 6) {
+            $totalH = $totalH + 24;
+            $wd = $wd - 1;
+        }
+        if ($wd < 0) $wd = 7 - $wd;
         if ($wd == 0) $wd = 7;
+
         $frm = $placePoint->{'getWd'.$wd.'Start'}();
         $tot = $placePoint->{'getWd'.$wd.'EndLong'}();
         if (empty($tot)) {
@@ -2679,11 +2688,6 @@ class OrderService extends ContainerAware
         $timeFr = str_replace(":", "", $frm);
         $timeTo = str_replace(":", "", $tot);
 
-        $totalH = date("H");
-        $totalM = date("i");
-        if ($totalH < 6) {
-            $totalH = $totalH + 24;
-        }
         $total = $totalH."".$totalM;
 
         if(!strpos($frm, ':')) {
@@ -2838,6 +2842,51 @@ class OrderService extends ContainerAware
             $this->workTimeErrors($pointRecord, $formErrors);
         }
 
+        // Basket max items limits
+        $basketDrinkLimit = $place->getBasketLimitDrinks();
+        $basketFoodLimit = $place->getBasketLimitFood();
+        if (!empty($basketFoodLimit) && $basketFoodLimit > 0)
+        {
+            $foods = $this->getCartService()->getCartDishes($place);
+            $foodDishCount = 0;
+
+            foreach ($foods as $dish) {
+                $foodCat = $dish->getDishId()->getCategories();
+                if (!$foodCat[0]->getDrinks()) {
+                    $foodDishCount = $foodDishCount + (1 * $dish->getQuantity());
+                }
+
+                if ($foodDishCount > $basketFoodLimit) {
+                    $formErrors[] = array(
+                        'message' => 'order.form.errors.dishLimit',
+                        'text' => $basketFoodLimit
+                    );
+                    break;
+                }
+            }
+        }
+
+        if (!empty($basketDrinkLimit) && $basketDrinkLimit > 0)
+        {
+            $foods = $this->getCartService()->getCartDishes($place);
+            $foodDishCount = 0;
+
+            foreach ($foods as $dish) {
+                $foodCat = $dish->getDishId()->getCategories();
+                if ($foodCat[0]->getDrinks()) {
+                    $foodDishCount = $foodDishCount + (1 * $dish->getQuantity());
+                }
+
+                if ($foodDishCount > $basketDrinkLimit) {
+                    $formErrors[] = array(
+                        'message' => 'order.form.errors.drinkLimit',
+                        'text' => $basketFoodLimit
+                    );
+                    break;
+                }
+            }
+        }
+
         $phone = $request->get('customer-phone');
 
         if (0 === strlen($request->get('customer-firstname'))) {
@@ -2918,6 +2967,16 @@ class OrderService extends ContainerAware
             } else if ($coupon->getPlace() && $coupon->getPlace()->getId() != $place->getId()) {
                 $formErrors[] = 'general.coupon.wrong_place_simple';
             }
+
+            // TODO temporary hack for studentas coupon
+            if ($coupon->getCode() == 'STUDENTAS' && $takeAway) {
+                $formErrors[] = 'general.coupon.only_delivery';
+            }
+        }
+
+        // TODO temporary hack for studentas coupon
+        if (mb_strtolower($request->get('coupon_code'), 'utf8') == 'studentas' && $takeAway) {
+            $formErrors[] = 'general.coupon.only_delivery';
         }
 
         // Validate das phone number :)

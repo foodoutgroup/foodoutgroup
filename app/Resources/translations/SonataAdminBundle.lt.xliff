@@ -372,6 +372,14 @@
                 <source>admin.place.delivery_price</source>
                 <target>Prist. kaina</target>
             </trans-unit>
+            <trans-unit id="admin.place.cart_drink_limit">
+                <source>admin.place.cart_drink_limit</source>
+                <target>Gerimų krepš. limitas</target>
+            </trans-unit>
+            <trans-unit id="admin.place.cart_food_limit">
+                <source>admin.place.cart_food_limit</source>
+                <target>Maisto krepš. limitas</target>
+            </trans-unit>
             <trans-unit id="admin.place.cart_minimum">
                 <source>admin.place.cart_minimum</source>
                 <target>Min. užsakymas</target>
@@ -1479,6 +1487,10 @@
             <trans-unit id="admin.dispatcher.no_driver_assigned">
                 <source>admin.dispatcher.no_driver_assigned</source>
                 <target>Nepriskirtas joks vairuotojas!!!</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.pickup_order">
+                <source>admin.dispatcher.pickup_order</source>
+                <target>Užsakymas atsiėmimui</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.driver">
                 <source>admin.dispatcher.driver</source>
