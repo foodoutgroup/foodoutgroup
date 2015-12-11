@@ -117,9 +117,9 @@
                     </td>
                 {% if type != 'canceled' %}
                     <td>
-                        {% if order.placePoint is not empty %}
+                        {#% if order.placePoint is not empty %}
                             {{ order.placePoint.address }}</td>
-                        {% endif %}
+                        {% endif %#}
                 {% endif %}
                 {% if type != 'unconfirmed-pickup' %}
                     <td>
