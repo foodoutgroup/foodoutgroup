@@ -60,6 +60,10 @@ class GoogleGisService extends ContainerAware
                 // Nieko nekeiciam
             }
         }
+
+        // fix for address like Salaspils 18/1
+        $address = preg_replace('#[\/][a-z\d]+#i', '', $address);
+
         $cnt = $this->container->get('doctrine')->getRepository('FoodAppBundle:GeoCache')
             ->findOneBy(
                 array(
@@ -68,7 +72,7 @@ class GoogleGisService extends ContainerAware
                 )
             );
 
-        if (!$cnt || $cnt == null) {
+        if (!$cnt) {
             $resp = $this->getCli()->get(
                 $this->container->getParameter('google.maps_geocode'),
                 array(
