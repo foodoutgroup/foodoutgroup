@@ -105,21 +105,21 @@
                     </td>
                     <td>
                         {{ order.placeName }}
-                        {#% if order.placePoint is not empty and order.placePoint.internalCode is not empty %} - {{ order.placePoint.internalCode }}{% endif %}
+                        {% if order.placePoint is not empty and order.placePoint.internalCode is not empty %} - {{ order.placePoint.internalCode }}{% endif %}
                         {% if order.placePoint is not empty %}{% set placePointPhones = '+'~order.placePoint.phone %}{% else %}{% set placePointPhones = '' %}{% endif %}
                         {% if order.placePoint is not empty and order.placePoint.altPhone1 is not empty%}
                             {% set placePointPhones = placePointPhones ~ '<br />' ~ '+' ~ order.placePoint.altPhone1 %}
                         {% endif %}
                         {% if order.placePoint is not empty and order.placePoint.altPhone2 is not empty%}
                             {% set placePointPhones = placePointPhones ~ '<br />' ~ '+' ~ order.placePoint.altPhone2 %}
-                        {% endif %#}
+                        {% endif %}
                         <span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ placePointPhones }}"></span>
                     </td>
                 {% if type != 'canceled' %}
                     <td>
-                        {#% if order.placePoint is not empty %}
+                        {% if order.placePoint is not empty %}
                             {{ order.placePoint.address }}</td>
-                        {% endif %#}
+                        {% endif %}
                 {% endif %}
                 {% if type != 'unconfirmed-pickup' %}
                     <td>
