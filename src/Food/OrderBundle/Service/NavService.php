@@ -1206,7 +1206,7 @@ class NavService extends ContainerAware
 
             case 2:
                 // TODO persiuntimas
-                $logger->error('Order #'.$order->getId().' was marked as redirected in Cili Nav');
+                $logger->alert('Order #'.$order->getId().' was marked as redirected in Cili Nav');
                 break;
 
             case 6:

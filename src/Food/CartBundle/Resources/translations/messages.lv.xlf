@@ -388,6 +388,10 @@ LV-1046</target>
         <source>general.coupon.wrong_place_simple</source>
         <target>Jūsu iesniegtais atlaides kupons šajā restorānā nav derīgs. Pārbaudiet kupona kodu</target>
       </trans-unit>
+        <trans-unit id="general.coupon.only_delivery" resname="general.coupon.only_delivery">
+            <source>general.coupon.only_delivery</source>
+            <target>Atvainojiet, šis atlaižu kupons ir derīgs tikai pasūtījumiem ar piegādi.</target>
+        </trans-unit>
       <trans-unit id="e5e171e2183ae1de5135cc5b77356dab" resname="general.coupon.not_active">
         <source>general.coupon.not_active</source>
         <target>Jūsu iesniegtais atlaides kupons nav derīgs.</target>

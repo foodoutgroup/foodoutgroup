@@ -311,44 +311,46 @@ class CartService {
      */
     public function addDish(Dish $dish, DishSize $dishSize, $quantity, $options = array(), $comment = "", $sessionId = null)
     {
-        $maxQuery = $this->getEm()->createQuery('SELECT MAX(c.cart_id) as top FROM FoodCartBundle:Cart c WHERE c.session = :session AND c.place_id= :place');
-        $maxQuery->setParameters(
-            array(
-                'session' => $this->getSessionId(),
-                'place' => $dish->getPlace()
-            )
-        );
-        $itemId = $maxQuery->getSingleScalarResult();
-        if (empty($itemId)) {
-            $itemId = 1;
-        } else {
-            $itemId++;
-        }
+        if ($dish->getActive()) {
+            $maxQuery = $this->getEm()->createQuery('SELECT MAX(c.cart_id) as top FROM FoodCartBundle:Cart c WHERE c.session = :session AND c.place_id= :place');
+            $maxQuery->setParameters(
+                array(
+                    'session' => $this->getSessionId(),
+                    'place' => $dish->getPlace()
+                )
+            );
+            $itemId = $maxQuery->getSingleScalarResult();
+            if (empty($itemId)) {
+                $itemId = 1;
+            } else {
+                $itemId++;
+            }
 
-        $cartItem = new Cart();
-        $cartItem->setPlaceId($dish->getPlace());
-        $cartItem->setDishId($dish);
-        $cartItem->setCartId($itemId);
-        $cartItem->setSession(($sessionId != null ? $sessionId : $this->getSessionId()));
-        $cartItem->setQuantity($quantity);
-        $cartItem->setDishSizeId($dishSize);
-        $cartItem->setComment($comment);
-        $this->getEm()->persist($cartItem);
-        $this->getEm()->flush();
+            $cartItem = new Cart();
+            $cartItem->setPlaceId($dish->getPlace());
+            $cartItem->setDishId($dish);
+            $cartItem->setCartId($itemId);
+            $cartItem->setSession(($sessionId != null ? $sessionId : $this->getSessionId()));
+            $cartItem->setQuantity($quantity);
+            $cartItem->setDishSizeId($dishSize);
+            $cartItem->setComment($comment);
+            $this->getEm()->persist($cartItem);
+            $this->getEm()->flush();
 
-        if (!empty($options)) {
-            foreach ($options as $opt) {
-                $cartOptionItem = new CartOption();
-                $cartOptionItem->setSession(($sessionId != null ? $sessionId : $this->getSessionId()));
-                $cartOptionItem->setDishId($dish);
-                $cartOptionItem->setCartId($itemId);
-                $cartOptionItem->setDishOptionId($opt);
-                $this->getEm()->persist($cartOptionItem);
-                $this->getEm()->flush();
+            if (!empty($options)) {
+                foreach ($options as $opt) {
+                    $cartOptionItem = new CartOption();
+                    $cartOptionItem->setSession(($sessionId != null ? $sessionId : $this->getSessionId()));
+                    $cartOptionItem->setDishId($dish);
+                    $cartOptionItem->setCartId($itemId);
+                    $cartOptionItem->setDishOptionId($opt);
+                    $this->getEm()->persist($cartOptionItem);
+                    $this->getEm()->flush();
+                }
             }
         }
 
-       return $this;
+        return $this;
     }
 
 

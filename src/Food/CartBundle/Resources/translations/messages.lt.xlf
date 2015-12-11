@@ -416,6 +416,10 @@ Vilnius]]></target>
             <source>general.coupon.wrong_place_simple</source>
             <target>Jūsų pateiktas nuolaidos kuponas šiame restorane negalioja. Pasitikrinkite kupono kodą</target>
         </trans-unit>
+        <trans-unit id="general.coupon.only_delivery" resname="general.coupon.only_delivery">
+            <source>general.coupon.only_delivery</source>
+            <target>Atsiprašome, šis nuolaidos kodas galioja tik užsakymams su pristatymu</target>
+        </trans-unit>
         <trans-unit id="general.coupon.not_active" resname="general.coupon.not_active">
             <source>general.coupon.not_active</source>
             <target>Jūsų pateiktas nuolaidos kuponas negalioja</target>

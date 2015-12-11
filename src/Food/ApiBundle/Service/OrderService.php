@@ -107,6 +107,31 @@ class OrderService extends ContainerAware
             );
         }
 
+        $phone = $user->getPhone();
+        if (empty($phone)) {
+            throw new ApiException(
+                'Unauthorized',
+                401,
+                array(
+                    'error' => 'Missing phone number',
+                    'description' => $this->container->get('translator')->trans('api.orders.user_phone_empty')
+                )
+            );
+        }
+
+        $country = $this->container->getParameter('country');
+        $miscUtils = $this->container->get('food.app.utils.misc');
+        if (!$miscUtils->isMobilePhone($phone, $country)) {
+            throw new ApiException(
+                'Unauthorized',
+                401,
+                array(
+                    'error' => 'Invalid phone number',
+                    'description' => $this->container->get('translator')->trans('api.orders.user_phone_invalid')
+                )
+            );
+        }
+
         $em = $this->container->get('doctrine')->getManager();
         $serviceVar = $request->get('service');
         $logger->alert('Service var givven: ');
@@ -145,6 +170,17 @@ class OrderService extends ContainerAware
                     array(
                         'error' => 'Coupon Not found',
                         'description' => $this->container->get('translator')->trans('api.orders.coupon_does_not_exists')
+                    )
+                );
+            }
+
+            if (mb_strtolower($discountVar['code'], 'utf8') == 'studentas' && $serviceVar['type'] == "pickup") {
+                throw new ApiException(
+                    'Coupon for pickup',
+                    404,
+                    array(
+                        'error' => 'Coupon only for pickup',
+                        'description' => $this->container->get('translator')->trans('general.coupon.only_delivery')
                     )
                 );
             }

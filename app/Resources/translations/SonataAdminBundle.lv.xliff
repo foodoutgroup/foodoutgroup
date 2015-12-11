@@ -1481,6 +1481,10 @@
                 <source>admin.dispatcher.no_driver_assigned</source>
                 <target>No driver assigned!!!</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.pickup_order">
+                <source>admin.dispatcher.pickup_order</source>
+                <target>Pick-up order</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.driver">
                 <source>admin.dispatcher.driver</source>
                 <target>Driver</target>
