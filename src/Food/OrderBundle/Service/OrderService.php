@@ -699,7 +699,7 @@ class OrderService extends ContainerAware
         if ($this->getOrder()->getOrderFromNav() == false) {
             $this->sendCompletedMail();
         }
-        
+
         // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
         if ($order->getPlace()->getSendInvoice()
             && !$order->getPlacePointSelfDelivery()
@@ -710,7 +710,7 @@ class OrderService extends ContainerAware
             // Suplanuojam sf siuntima klientui
             $this->container->get('food.invoice')->addInvoiceToSend($order, $mustDoNavDelete);
         }
-        
+
         return $this;
     }
 
@@ -2571,10 +2571,10 @@ class OrderService extends ContainerAware
         $timeFrTs = str_replace(":", "", $placePoint->{'getWd'.$wd.'Start'}());
         $timeTo = $placePoint->{'getWd'.$wd.'End'}();
         $timeToTs =  str_replace(":", "", $placePoint->{'getWd'.$wd.'EndLong'}());
-		$currentTime = date("Hi");
-		if (date("H") < 6) {
-			$currentTime+=2400;
-		}
+        $currentTime = date("Hi");
+        if (date("H") < 6) {
+            $currentTime+=2400;
+        }
         if(!strpos($timeFr, ':')|| !strpos($timeTo, ':')) {
             $errors[] = "order.form.errors.today_no_work";
         } else {
@@ -3062,6 +3062,7 @@ class OrderService extends ContainerAware
                         'text' => $data['errcode']['problem_dish']
                     );
                 } elseif ($data['errcode']['code'] == 8) {
+                    @mail("karolis.m@foodout.lt", "CILI NVB NOT WORKS".date("Y-m-d H:i:s"), print_r($pointRecord->getInternalCode(), true), "FROM: info@foodout.lt");
                     $formErrors[] = 'order.form.errors.nav_restaurant_no_work';
                 } elseif ($data['errcode']['code'] == 6) {
                     $formErrors[] = 'order.form.errors.nav_restaurant_no_setted';
