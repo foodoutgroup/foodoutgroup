@@ -394,12 +394,13 @@ class OrderRepository extends EntityRepository
                         break;
 
                     case 'undelivered':
-                        $qb->andWhere('(o.order_status = :status_assigned AND o.deliveryType = :deliveryDeliver) OR (o.order_status IN (:accepted_statuses) AND o.deliveryType = :deliveryPickup)');
+                        $qb->andWhere('(o.order_status = :status_assigned AND o.deliveryType = :deliveryDeliver) OR (o.order_status IN (:accepted_statuses) AND o.deliveryType = :deliveryPickup AND o.order_date > :order_date_for_pickup)');
                         unset($filter['undelivered']);
                         $filter['status_assigned'] = OrderService::$status_assiged;
                         $filter['accepted_statuses'] = array(OrderService::$status_accepted, OrderService::$status_finished);
                         $filter['deliveryDeliver'] = OrderService::$deliveryDeliver;
                         $filter['deliveryPickup'] = OrderService::$deliveryPickup;
+                        $filter['order_date_for_pickup'] = new \DateTime('-18 hour');
                         break;
 
                     case 'not_solved':
