@@ -106,11 +106,9 @@ class OrderRepository extends EntityRepository
     public function getOrdersAssigned($city=null)
     {
         $filter = array(
-            'order_status' => OrderService::$status_assiged,
-            'deliveryType' => OrderService::$deliveryDeliver,
-            // @TODO enable only after successfull sync between nav otherwise
-            // lot of hanging deliveries without possibility to close
-            //~ 'undelivered' => true,
+//            'order_status' => OrderService::$status_assiged,
+//            'deliveryType' => OrderService::$deliveryDeliver,
+            'undelivered' => true,
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 

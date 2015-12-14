@@ -124,7 +124,9 @@
                 {% if type != 'unconfirmed-pickup' %}
                     <td>
                         {% if order.deliveryType != 'pickup' %}
-                            {{ order.addressId.address }}
+                            {% if order.addressId is not empty %}
+                                {{ order.addressId.address }}
+                            {% endif %}
                         {% endif %}
                     </td>
                     <td>{{ order.orderExtra.phone }}</td>
