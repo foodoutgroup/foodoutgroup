@@ -430,7 +430,11 @@ class OrderService extends ContainerAware
                 if (!$this->getOrder()->getPreorder()) {
                     $miscService = $this->container->get('food.app.utils.misc');
 
-                    $timeShift = $miscService->parseTimeToMinutes($this->getOrder()->getPlacePoint()->getDeliveryTime());
+                    if ($this->getOrder()->getDeliveryType() == self::$deliveryPickup) {
+                        $timeShift = $miscService->parseTimeToMinutes($this->getOrder()->getPlace()->getPickupTime());
+                    } else {
+                        $timeShift = $miscService->parseTimeToMinutes($this->getOrder()->getPlacePoint()->getDeliveryTime());
+                    }
 
                     $this->logOrder($this->getOrder(), 'calculating_delivery_time', 'Setting delivery time with a parsed value of '.$timeShift.' minutes');
                     if (empty($timeShift) || $timeShift <= 0) {
@@ -1006,9 +1010,23 @@ class OrderService extends ContainerAware
         $this->getOrder()->setLocale($locale);
         $this->getOrder()->setUser($user);
 
+        $placeObject = $this->container->get('food.places')->getPlace($place);
+
         if (!empty($orderDate)) {
             $this->getOrder()->setOrderStatus(self::$status_preorder)
                 ->setPreorder(true);
+        } else if (empty($orderDate) && $selfDelivery) {
+            // Lets fix pickup situation
+            $miscService = $this->container->get('food.app.utils.misc');
+
+            $timeShift = $miscService->parseTimeToMinutes($placeObject->getPickupTime());
+
+            if (empty($timeShift) || $timeShift <= 0) {
+                $timeShift = 60;
+            }
+
+            $deliveryTime = new \DateTime("now");
+            $deliveryTime->modify("+".$timeShift." minutes");
         }
 
         $this->saveOrder();
@@ -1034,7 +1052,6 @@ class OrderService extends ContainerAware
 
         $sumTotal = 0;
 
-        $placeObject = $this->container->get('food.places')->getPlace($place);
         $preSum = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
 
         $deliveryPrice = $this->getCartService()->getDeliveryPrice(
