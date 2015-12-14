@@ -781,6 +781,7 @@ class OrderService extends ContainerAware
         // TODO darant LV - sutvarkyti URL ir sablonu ID
         $variables = array(
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
+            'uzsakymo_nr' => $this->getOrder()->getId(),
             'miestas' => $this->getOrder()->getPlacePoint()->getCity(),
             'maisto_review_url' => 'http://www.foodout.lt/lt/'.$slugUtil->getSlugByItem(
                     $this->getOrder()->getPlace()->getId(),
