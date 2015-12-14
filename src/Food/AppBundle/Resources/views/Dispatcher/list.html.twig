@@ -221,7 +221,7 @@
                         {% if order.orderStatusLog|length > 0 %}
                             <span class="glyphicon glyphicon-info-sign status-change-history" title="{{ statusInfo }}"></span>
                         {% endif %}
-                        {% if not order.orderFromNav and type != 'unapproved' %}
+                        {% if (not order.orderFromNav and type != 'unapproved') or (type == 'not_finished' and order.deliveryType == 'pickup') %}
                             <button class="btn btn-lg change_status_button" item-id="{{ order.id }}">
                                 {{ 'admin.dispatcher.button_change'|trans({}, 'SonataAdminBundle') }}
                             </button>
