@@ -1927,7 +1927,6 @@ class Order
                 $deliveryStamp = $this->getDeliveryTime()->format("U");
 
                 $diffMinutes = ceil(($nowStamp - $deliveryStamp) / 60);
-                @mail("karolis.m@foodout.lt", "LATE TIME".date("Y-m-d H:i:s"), 'Order id: '.$this->getId().' NowStamp: '.$nowStamp.' DeliveryStamp: '.$deliveryStamp.' DiffMinutes: '.$diffMinutes, "FROM: info@foodout.lt");
                 break;
 
             case OrderService::$status_unapproved:
@@ -2224,7 +2223,6 @@ class Order
 
             case OrderService::$status_assiged:
                 if ($this->getDeliveryTime()->format('d H:i') < date('d H:i')) {
-                    @mail("karolis.m@foodout.lt", "LATE ".date("Y-m-d H:i:s"), 'Order id: '.$this->getId().' '.$this->getDeliveryTime()->format('d H:i').' < '.date('d H:i'), "FROM: info@foodout.lt");
                     return true;
                 }
                 break;
