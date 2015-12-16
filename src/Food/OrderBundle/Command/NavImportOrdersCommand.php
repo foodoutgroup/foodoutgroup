@@ -178,7 +178,6 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             .$orderData['Contact Pickup Time']->format("H:i:s")
                         );
                     } else {
-                        @mail("karolis.m@foodout.lt", "LATE ".print_r($orderData, true), "FROM: info@foodout.lt");
                         $orderDate = new \DateTime(
                            date("Y-m-d", strtotime($orderData['Date Created']))
                             . ' '
@@ -186,7 +185,9 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                         );
 
                         $deliveryDate = new \DateTime(
-                            date("Y-m-d", strtotime($orderData['Date Created']))
+                            // Date Created changed to Order Date
+                            // because 01-01 23:30 order => delivers on 01-01 00:30 (past time)
+                            date("Y-m-d", strtotime($orderData['Order Date']))
                             .' '
                             .date("H:i:s", strtotime($orderData['Contact Pickup Time']))
                         );
