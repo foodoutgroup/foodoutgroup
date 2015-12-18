@@ -264,6 +264,10 @@
         <source>general.places</source>
         <target>Restorāni</target>
       </trans-unit>
+    <trans-unit id="mobile.order.id" resname="mobile.order.id">
+        <source>mobile.order.id</source>
+        <target>Order no.</target>
+    </trans-unit>
       <trans-unit id="ceb80ce24895534499f2a5a28a707fbb" resname="mobile.order_dish">
         <source>mobile.order_dish</source>
         <target>Ēdiens</target>
