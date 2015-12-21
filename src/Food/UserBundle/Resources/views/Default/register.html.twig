@@ -1,4 +1,4 @@
-<form class="righter register-form" action="{{ url('user_register_create') }}" method="post" novalidate>
+<form class="righter register-form" action="{{ url('user_register_create', {}, true) }}" method="post" novalidate>
     <h3>{% trans %}general.register_title{% endtrans %}</h3>
     <h4>{% trans %}general.register_text{% endtrans %}</h4>
 
