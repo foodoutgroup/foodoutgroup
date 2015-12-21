@@ -3095,6 +3095,9 @@ class OrderService extends ContainerAware
                     );
                     @mail("karolis.m@foodout.lt", "NAVISION ERROR ".date("Y-m-d H:i:s"), $message, "FROM: info@foodout.lt");
                     @mail("zaneta@foodout.lt", "NAVISION ERROR ".date("Y-m-d H:i:s"), $message, "FROM: info@foodout.lt");
+                    $logger = $this->container->get('logger');
+                    $logger->alert('NAVISION ERROR CODE #8: ');
+                    $logger->alert($message);
                     $formErrors[] = 'order.form.errors.nav_restaurant_no_work';
                 } elseif ($data['errcode']['code'] == 6) {
                     $formErrors[] = 'order.form.errors.nav_restaurant_no_setted';
