@@ -490,6 +490,7 @@ class OrderService extends ContainerAware
             default:
                 $deliveryType = 'delivery';
                 $parsedAddress = $miscUtil->parseAddress(
+                    // @TODO check if addressId exists
                     $order->getAddressId()->getAddress()
                 );
                 break;

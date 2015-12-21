@@ -1485,14 +1485,14 @@ class Order
     public function setMobile($mobile)
     {
         $this->mobile = $mobile;
-    
+
         return $this;
     }
 
     /**
      * Get mobile
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getMobile()
     {
@@ -1508,14 +1508,14 @@ class Order
     public function setSfSeries($sfSeries)
     {
         $this->sfSeries = $sfSeries;
-    
+
         return $this;
     }
 
     /**
      * Get sfSeries
      *
-     * @return string 
+     * @return string
      */
     public function getSfSeries()
     {
@@ -1531,7 +1531,7 @@ class Order
     public function setSfNumber($sfNumber)
     {
         $this->sfNumber = $sfNumber;
-    
+
         return $this;
     }
 
@@ -1546,7 +1546,7 @@ class Order
     /**
      * Get sfNumber
      *
-     * @return integer 
+     * @return integer
      */
     public function getSfNumber()
     {
@@ -1562,14 +1562,14 @@ class Order
     public function setNavPriceUpdated($navPriceUpdated)
     {
         $this->navPriceUpdated = $navPriceUpdated;
-    
+
         return $this;
     }
 
     /**
      * Get navPriceUpdated
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getNavPriceUpdated()
     {
@@ -1585,14 +1585,14 @@ class Order
     public function setNavPorcessedOrder($navPorcessedOrder)
     {
         $this->navPorcessedOrder = $navPorcessedOrder;
-    
+
         return $this;
     }
 
     /**
      * Get navPorcessedOrder
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getNavPorcessedOrder()
     {
@@ -1608,14 +1608,14 @@ class Order
     public function setNavDeliveryOrder($navDeliveryOrder)
     {
         $this->navDeliveryOrder = $navDeliveryOrder;
-    
+
         return $this;
     }
 
     /**
      * Get navDeliveryOrder
      *
-     * @return integer 
+     * @return integer
      */
     public function getNavDeliveryOrder()
     {
@@ -1631,7 +1631,7 @@ class Order
     public function setDeliveryPrice($deliveryPrice)
     {
         $this->deliveryPrice = $deliveryPrice;
-    
+
         return $this;
     }
 
@@ -1654,14 +1654,14 @@ class Order
     public function setOrderFromNav($orderFromNav)
     {
         $this->orderFromNav = $orderFromNav;
-    
+
         return $this;
     }
 
     /**
      * Get orderFromNav
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getOrderFromNav()
     {
@@ -1718,14 +1718,14 @@ class Order
     public function setCompany($company)
     {
         $this->company = $company;
-    
+
         return $this;
     }
 
     /**
      * Get company
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getCompany()
     {
@@ -1741,14 +1741,14 @@ class Order
     public function setCompanyName($companyName)
     {
         $this->companyName = $companyName;
-    
+
         return $this;
     }
 
     /**
      * Get companyName
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyName()
     {
@@ -1764,14 +1764,14 @@ class Order
     public function setCompanyCode($companyCode)
     {
         $this->companyCode = $companyCode;
-    
+
         return $this;
     }
 
     /**
      * Get companyCode
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyCode()
     {
@@ -1787,14 +1787,14 @@ class Order
     public function setVatCode($vatCode)
     {
         $this->vatCode = $vatCode;
-    
+
         return $this;
     }
 
     /**
      * Get vatCode
      *
-     * @return string 
+     * @return string
      */
     public function getVatCode()
     {
@@ -1810,14 +1810,14 @@ class Order
     public function setCompanyAddress($companyAddress)
     {
         $this->company_address = $companyAddress;
-    
+
         return $this;
     }
 
     /**
      * Get company_address
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyAddress()
     {
@@ -1833,14 +1833,14 @@ class Order
     public function setNavDriverCode($navDriverCode)
     {
         $this->navDriverCode = $navDriverCode;
-    
+
         return $this;
     }
 
     /**
      * Get navDriverCode
      *
-     * @return string 
+     * @return string
      */
     public function getNavDriverCode()
     {
@@ -1856,14 +1856,14 @@ class Order
     public function setLateOrderInformed($lateOrderInformed)
     {
         $this->lateOrderInformed = $lateOrderInformed;
-    
+
         return $this;
     }
 
     /**
      * Get lateOrderInformed
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getLateOrderInformed()
     {
@@ -1879,14 +1879,14 @@ class Order
     public function setClientContacted($clientContacted)
     {
         $this->clientContacted = $clientContacted;
-    
+
         return $this;
     }
 
     /**
      * Get clientContacted
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getClientContacted()
     {
@@ -1949,7 +1949,7 @@ class Order
     public function addMessage(\Food\SmsBundle\Entity\Message $messages)
     {
         $this->messages[] = $messages;
-    
+
         return $this;
     }
 
@@ -1966,7 +1966,7 @@ class Order
     /**
      * Get messages
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getSmsMessages()
     {
@@ -1982,7 +1982,7 @@ class Order
     public function addOrderMailLog(\Food\OrderBundle\Entity\OrderMailLog $orderMailLog)
     {
         $this->orderMailLog[] = $orderMailLog;
-    
+
         return $this;
     }
 
@@ -1999,7 +1999,7 @@ class Order
     /**
      * Get orderMailLog
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getOrderMailLog()
     {
@@ -2015,7 +2015,7 @@ class Order
     public function addSmsMessage(\Food\SmsBundle\Entity\Message $smsMessages)
     {
         $this->smsMessages[] = $smsMessages;
-    
+
         return $this;
     }
 
@@ -2028,14 +2028,14 @@ class Order
     public function setOrderExtra(\Food\OrderBundle\Entity\OrderExtra $orderExtra = null)
     {
         $this->orderExtra = $orderExtra;
-    
+
         return $this;
     }
 
     /**
      * Get orderExtra
      *
-     * @return \Food\OrderBundle\Entity\OrderExtra 
+     * @return \Food\OrderBundle\Entity\OrderExtra
      */
     public function getOrderExtra()
     {
@@ -2077,14 +2077,14 @@ class Order
     public function setDivisionCode($divisionCode)
     {
         $this->divisionCode = $divisionCode;
-    
+
         return $this;
     }
 
     /**
      * Get divisionCode
      *
-     * @return string 
+     * @return string
      */
     public function getDivisionCode()
     {
@@ -2100,14 +2100,14 @@ class Order
     public function setIsCorporateClient($isCorporateClient)
     {
         $this->isCorporateClient = $isCorporateClient;
-    
+
         return $this;
     }
 
     /**
      * Get isCorporateClient
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsCorporateClient()
     {
@@ -2123,14 +2123,14 @@ class Order
     public function setProblemSolved($problemSolved)
     {
         $this->problemSolved = $problemSolved;
-    
+
         return $this;
     }
 
     /**
      * Get problemSolved
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getProblemSolved()
     {
@@ -2146,14 +2146,14 @@ class Order
     public function setOrderPicked($orderPicked)
     {
         $this->order_picked = $orderPicked;
-    
+
         return $this;
     }
 
     /**
      * Get order_picked
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getOrderPicked()
     {
@@ -2169,7 +2169,7 @@ class Order
     public function addOrderDeliveryLog(\Food\OrderBundle\Entity\OrderDeliveryLog $orderDeliveryLog)
     {
         $this->orderDeliveryLog[] = $orderDeliveryLog;
-    
+
         return $this;
     }
 
@@ -2186,7 +2186,7 @@ class Order
     /**
      * Get orderDeliveryLog
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getOrderDeliveryLog()
     {
@@ -2222,7 +2222,7 @@ class Order
                 break;
 
             case OrderService::$status_assiged:
-                if ($this->getDeliveryTime()->format("d H:i") < date("d H:i")) {
+                if ($this->getDeliveryTime()->format('d H:i') < date('d H:i')) {
                     return true;
                 }
                 break;
@@ -2247,14 +2247,14 @@ class Order
     public function setPreorder($preorder)
     {
         $this->preorder = $preorder;
-    
+
         return $this;
     }
 
     /**
      * Get preorder
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getPreorder()
     {

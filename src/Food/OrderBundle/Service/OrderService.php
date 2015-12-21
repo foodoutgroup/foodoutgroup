@@ -781,6 +781,7 @@ class OrderService extends ContainerAware
         // TODO darant LV - sutvarkyti URL ir sablonu ID
         $variables = array(
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
+            'uzsakymo_nr' => $this->getOrder()->getId(),
             'miestas' => $this->getOrder()->getPlacePoint()->getCity(),
             'maisto_review_url' => 'http://www.foodout.lt/lt/'.$slugUtil->getSlugByItem(
                     $this->getOrder()->getPlace()->getId(),
@@ -3080,7 +3081,20 @@ class OrderService extends ContainerAware
                         'text' => $data['errcode']['problem_dish']
                     );
                 } elseif ($data['errcode']['code'] == 8) {
-                    @mail("karolis.m@foodout.lt", "CILI NVB NOT WORKS".date("Y-m-d H:i:s"), print_r($pointRecord->getInternalCode(), true), "FROM: info@foodout.lt");
+                    $message = sprintf(
+                        "Gamybos taško kodas: %s\n\n",
+                        "Kliento telefono nr.: %s\n\n",
+                        "Atsiims vietoj?: %s\n\n",
+                        "Adreso duomenys: \n%s\n\n",
+                        "Patiekalai: \n%s\n\n",
+                        $pointRecord->getInternalCode(),
+                        $request->get('customer-phone'),
+                        ($takeAway) ? 'taip' : 'ne',
+                        print_r($addrData, true),
+                        print_r($this->container->get('food.cart')->getCartDishes($place), true)
+                    );
+                    @mail("karolis.m@foodout.lt", "NAVISION ERROR ".date("Y-m-d H:i:s"), $message, "FROM: info@foodout.lt");
+                    @mail("zaneta@foodout.lt", "NAVISION ERROR ".date("Y-m-d H:i:s"), $message, "FROM: info@foodout.lt");
                     $formErrors[] = 'order.form.errors.nav_restaurant_no_work';
                 } elseif ($data['errcode']['code'] == 6) {
                     $formErrors[] = 'order.form.errors.nav_restaurant_no_setted';
