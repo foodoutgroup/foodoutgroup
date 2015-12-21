@@ -13,9 +13,6 @@ class OrderRepository extends EntityRepository
      */
     public function getOrdersUnassigned($city = null)
     {
-        $date = new \DateTime();
-        $date->modify("-2 minutes");
-
         $filter = array(
             'order_status' =>  array(
                 OrderService::$status_accepted,
@@ -24,7 +21,7 @@ class OrderRepository extends EntityRepository
                 OrderService::$status_forwarded,
             ),
             'deliveryType' => OrderService::$deliveryDeliver,
-            'order_date_more' => $date,
+            'order_date_more' => new \DateTime(),
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
@@ -46,14 +43,11 @@ class OrderRepository extends EntityRepository
      */
     public function getOrdersUnapproved($city = null)
     {
-        $date = new \DateTime();
-        $date->modify("-2 minutes");
-
         $filter = array(
             'order_status' =>  array(
                 OrderService::$status_unapproved,
             ),
-            'order_date_more' => $date,
+            'order_date_more' => new \DateTime(),
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
         if (!empty($city)) {
