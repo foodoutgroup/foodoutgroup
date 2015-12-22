@@ -56,6 +56,11 @@
         <target>restoranai-pagal-virtuve</target>
       </trans-unit>
 
+      <trans-unit id="admin.upload_size_message" resname="admin.upload_size_message">
+        <source>admin.upload_size_message</source>
+        <target>Failo dydis yra didesnis nei 2MB</target>
+      </trans-unit>
+
       <trans-unit id="1b78b59bfe4159583adb10ffa46bd822" resname="admin.kitchens.list.title">
         <source>admin.kitchens.list.title</source>
         <target>__admin.kitchens.list.title</target>

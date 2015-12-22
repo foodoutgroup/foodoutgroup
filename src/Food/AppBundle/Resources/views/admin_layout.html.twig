@@ -62,6 +62,27 @@
                 changeYear: true
             });
             $.datepicker.setDefaults($.datepicker.regional['lt']);
+
+            // File Input Validation Begin
+            var file_input =  $('input[type="file"]');
+            if (file_input.length) {
+                file_input.on('change', function(e) {
+                    var max_upload_size = 2097152;
+                    var file_size = this.files[0].size;
+                    var file_to_big_message = $('.file_to_big_message');
+                    if (file_to_big_message.length) {
+                        file_to_big_message.remove();
+                    }
+                    $(this).removeClass('file_to_big_input');
+                    if(file_size > max_upload_size) {
+                        if (!file_to_big_message.length) {
+                            $('<span class="file_to_big_message">{% trans %}admin.upload_size_message{% endtrans %}</span>').insertAfter(this);
+                        }
+                        $(this).addClass('file_to_big_input');
+                    }
+                });
+            }
+            // File Input Validation End
         });
     </script>
 {% endblock %}
