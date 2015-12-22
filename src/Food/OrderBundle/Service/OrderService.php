@@ -409,6 +409,7 @@ class OrderService extends ContainerAware
                         ->trans(
                             $translation,
                             array(
+                                'order_id' => $this->getOrder()->getId(),
                                 'restourant_name' => $placeName,
                                 'delivery_time' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $place->getDeliveryTime() : $place->getPickupTime()),
                                 'pre_delivery_time' => ($this->getOrder()->getDeliveryTime()->format('m-d H:i')),
@@ -1847,7 +1848,9 @@ class OrderService extends ContainerAware
                 .$this->container->get('router')
                     ->generate('ordermobile', array('hash' => $order->getOrderHash()));
 
-            $orderSmsTextTranslation = $translator->trans('general.sms.order_reminder');
+            $orderSmsTextTranslation = $translator->trans('general.sms.order_reminder', array(
+                'order_id' => $order->getId()
+            ));
             $orderTextTranslation = $translator->trans('general.email.order_reminder');
         } else {
             // Jei preorder - sms siuncia cronas ir nezino apie esama domena..
@@ -1860,7 +1863,9 @@ class OrderService extends ContainerAware
                     ->generate('ordermobile', array('hash' => $order->getOrderHash()), true);
             }
 
-            $orderSmsTextTranslation = $translator->trans('general.sms.new_order');
+            $orderSmsTextTranslation = $translator->trans('general.sms.new_order', array(
+                'order_id' => $order->getId()
+            ));
             $orderTextTranslation = $translator->trans('general.email.new_order');
         }
 
@@ -2051,7 +2056,7 @@ class OrderService extends ContainerAware
         $orderConfirmRoute = $this->container->get('router')
             ->generate('ordermobile', array('hash' => $order->getOrderHash()), true);
 
-        $orderSmsTextTranslation = $translator->trans('general.sms.canceled_order', array('%order_number%' => $order->getId()));
+        $orderSmsTextTranslation = $translator->trans('general.sms.canceled_order', array('order_id' => $order->getId()));
         $orderTextTranslation = $translator->trans('general.email.canceled_order');
 
         $messageText = $orderSmsTextTranslation
@@ -3312,14 +3317,16 @@ class OrderService extends ContainerAware
         $translator = $this->container->get('translator');
         $domain = $this->container->getParameter('domain');
 
-        $translation = 'general.sms.user_order_delayed';
         if ($this->getOrder()->getDeliveryType() == 'pickup') {
             $translation = 'general.sms.user_order_delayed_pickup';
+        } else {
+            $translation = 'general.sms.user_order_delayed';
         }
 
         $messageText = $translator->trans(
             $translation,
             array(
+                'order_id' => $this->getOrder()->order->getId(),
                 'delay_time' => $diffInMinutes,
                 'delivery_min' => $deliverIn,
                 // TODO rodome nebe restorano, o dispeceriu telefona

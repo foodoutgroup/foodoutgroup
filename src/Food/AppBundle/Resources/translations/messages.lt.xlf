@@ -195,31 +195,31 @@
       </trans-unit>
       <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
         <source>general.sms.user.order_accepted</source>
-        <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista turetume pristatyti per delivery_time! Jei turite klausimu susisiekite telefonu +37069855544!</target>
+        <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista turetume pristatyti per delivery_time! Jei turite klausimu susisiekite telefonu +37069855544!</target>
       </trans-unit>
       <trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
         <source>general.sms.user.order_accepted_preorder</source>
-        <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista turetume pristatyti pre_delivery_time! Jei turite klausimu susisiekite telefonu +37069855544!</target>
+        <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista turetume pristatyti pre_delivery_time! Jei turite klausimu susisiekite telefonu +37069855544!</target>
       </trans-unit>
       <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
         <source>general.sms.user.order_accepted_pickup</source>
-        <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista galesite atsiimti po delivery_time! Jei turite dar klausimu susisiekite telefonu +37069855544!</target>
+        <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista galesite atsiimti po delivery_time! Jei turite dar klausimu susisiekite telefonu +37069855544!</target>
       </trans-unit>
       <trans-unit id="general.sms.user.order_accepted_pickup_preorder" resname="general.sms.user.order_accepted_pickup_preorder">
         <source>general.sms.user.order_accepted_pickup_preorder</source>
-        <target>Sveiki, restourant_name patvirtino jusu uzsakyma. Maista galesite atsiimti pre_delivery_time! Jei turite dar klausimu susisiekite telefonu +37069855544!</target>
+        <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista galesite atsiimti pre_delivery_time! Jei turite dar klausimu susisiekite telefonu +37069855544!</target>
       </trans-unit>
       <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
         <source>general.sms.client.restourant_cancel</source>
-        <target>Atsiprasome, restoranas atsauke Jusu uzsakyma.</target>
+        <target>Atsiprasome, restoranas atsauke Jusu uzsakyma nr. order_id!</target>
       </trans-unit>
       <trans-unit id="30dc3f60ca025a053ed3728a342c566a" resname="general.sms.client.restourant_cancel_banklink">
         <source>general.sms.client.restourant_cancel_banklink</source>
-        <target>Atsiprasome, restoranas atsauke Jusu uzsakyma. Pinigai bus grazinti i Jusu saskaita</target>
+        <target>Atsiprasome, restoranas atsauke Jusu uzsakyma nr. order_id! Pinigai bus grazinti i Jusu saskaita</target>
       </trans-unit>
       <trans-unit id="general.sms.order_to_be_late" resname="general.sms.order_to_be_late">
         <source>general.sms.order_to_be_late</source>
-        <target>Informuojame, Jusu uzsakymas jau kelyje. Pristatysime ji per delivery_in min. Turite klausimu, skambinkite +37069855544.</target>
+        <target>Informuojame, Jusu uzsakymas nr. order_id jau kelyje. Pristatysime ji per delivery_in min. Turite klausimu, skambinkite +37069855544.</target>
       </trans-unit>
       <trans-unit id="74fbe91702c1ee04724c55bde63e654f" resname="general.email.new_order">
         <source>general.email.new_order</source>
@@ -387,19 +387,19 @@
       </trans-unit>
       <trans-unit id="e44e8ff9e4e47e49c926d67bf0112966" resname="general.sms.new_order">
         <source>general.sms.new_order</source>
-        <target>Naujas uzsakymas: </target>
+        <target>Naujas uzsakymas nr. order_id: </target>
       </trans-unit>
       <trans-unit id="general.sms.canceled_order" resname="general.sms.canceled_order">
         <source>general.sms.canceled_order</source>
-        <target>Uzsakymas #%order_number% atsauktas: </target>
+        <target>Uzsakymas nr. order_id atsauktas: </target>
       </trans-unit>
       <trans-unit id="general.sms.order_reminder" resname="general.sms.order_reminder">
         <source>general.sms.order_reminder</source>
-        <target>Primename, kad turite nepatvirtinta uzsakyma: </target>
+        <target>Primename, kad turite nepatvirtinta uzsakyma nr. order_id: </target>
       </trans-unit>
       <trans-unit id="ddd5593d67b30b671c0533a616aa5398" resname="general.sms.new_order_in_mail">
         <source>general.sms.new_order_in_mail</source>
-        <target>Prasome pasitikrinti savo el.pasta, gavote nauja uzsakyma</target>
+        <target>Prasome pasitikrinti savo el.pasta, gavote nauja uzsakyma nr. order_id!</target>
       </trans-unit>
       <trans-unit id="general.email.partialy_completed" resname="general.email.partialy_completed">
         <source>general.email.partialy_completed</source>
@@ -407,15 +407,15 @@
       </trans-unit>
       <trans-unit id="3d6f52993727876649fad3f9e2d5c687" resname="general.sms.driver_assigned_order">
         <source>general.sms.driver_assigned_order</source>
-        <target>Naujas uzsakymas order_id is: restaurant_title i restaurant_address, iki deliver_time </target>
+        <target>Naujas uzsakymas nr. order_id is: restaurant_title i restaurant_address, iki deliver_time </target>
       </trans-unit>
       <trans-unit id="28ecbd185a859ae613493c195207e5e0" resname="general.sms.user_order_delayed">
         <source>general.sms.user_order_delayed</source>
-        <target>Atsiprasome, taciau del didelio uzsakymu srauto Jusu uzsakymas atidedamas delay_time min ir bus pristatytas po delivery_min min. Jei nesutinkate laukti - susisiekite +37069855544</target>
+        <target>Atsiprasome, del didelio uzsakymu srauto Jusu uzsakymas nr. order_id atidedamas delay_time min ir bus pristatytas po delivery_min min. Jei nesutinkate laukti - susisiekite +37069855544</target>
       </trans-unit>
       <trans-unit id="e7bd53e2c7fa9e93ede0c7b307426c5a" resname="general.sms.user_order_delayed_pickup">
         <source>general.sms.user_order_delayed_pickup</source>
-        <target>Atsiprasome, taciau del didelio uzsakymu srauto Jusu uzsakymas atidedamas delay_time min ir bus paruostas po delivery_min min. Jei nesutinkate laukti - susisiekite +37069855544</target>
+        <target>Atsiprasome, del didelio uzsakymu srauto Jusu uzsakymas nr. order_id  atidedamas delay_time min ir bus paruostas po delivery_min min. Jei nesutinkate laukti - susisiekite +37069855544</target>
       </trans-unit>
       <trans-unit id="8036a67ebc0bbfebb10242dfaabceaf3" resname="general.email.user_delayed_subject">
         <source>general.email.user_delayed_subject</source>

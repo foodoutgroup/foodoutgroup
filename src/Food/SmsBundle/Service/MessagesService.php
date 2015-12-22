@@ -438,7 +438,10 @@ class MessagesService {
     public function informLateOrder($order, $toBeDelivered=null)
     {
         $translator = $this->getContainer()->get('translator');
-        $text = $translator->trans('general.sms.order_to_be_late', array('delivery_in' => $toBeDelivered));
+        $text = $translator->trans('general.sms.order_to_be_late', array(
+            'order_id' => $order->getId(),
+            'delivery_in' => $toBeDelivered
+        ));
 
         $message = $this->createMessage(
             $this->getContainer()->getParameter('sms.sender'),
