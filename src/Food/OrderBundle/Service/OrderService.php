@@ -616,6 +616,7 @@ class OrderService extends ContainerAware
                 $this->container->get('translator')->trans(
                     'general.sms.driver_assigned_order',
                     array(
+                        'order_id' => $order->getId(),
                         'restaurant_title' => $restaurant_title,
                         'restaurant_address' => $restaurant_address,
                         'deliver_time' => $order->getDeliveryTime()->format("H:i")
@@ -647,6 +648,7 @@ class OrderService extends ContainerAware
                     $this->container->get('translator')->trans(
                         'general.sms.driver_assigned_order',
                         array(
+                            'order_id' => $order->getId(),
                             'restaurant_title' => $restaurant_title,
                             'restaurant_address' => $restaurant_address,
                             'deliver_time' => $order->getOrderDate()->format("H:i")
