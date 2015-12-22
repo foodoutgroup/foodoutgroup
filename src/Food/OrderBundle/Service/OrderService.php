@@ -5,6 +5,7 @@ namespace Food\OrderBundle\Service;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\OptimisticLockException;
 use Food\AppBundle\Entity\Driver;
+use Food\AppBundle\Service\MailService;
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Dish;
 use Food\DishesBundle\Entity\Place;
@@ -704,7 +705,11 @@ class OrderService extends ContainerAware
         $this->createDiscountCode($order);
 
         if ($this->getOrder()->getOrderFromNav() == false) {
-            $this->sendCompletedMail();
+            $this->container->get('food.mail')->addEmailForSend(
+                $order,
+                MailService::$typeCompleted,
+                new \DateTime('+2 hour')
+            );
         }
 
         // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
@@ -731,7 +736,11 @@ class OrderService extends ContainerAware
     {
         $this->chageOrderStatus(self::$status_partialy_completed, $source, $statusMessage);
 
-        $this->sendCompletedMail(true);
+        $this->container->get('food.mail')->addEmailForSend(
+            $this->getOrder(),
+            MailService::$typePartialyCompleted,
+            new \DateTime('+2 hour')
+        );
 
         // Informuojam buhalterija
         $mailer = $this->container->get('mailer');

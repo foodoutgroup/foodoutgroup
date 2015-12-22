@@ -38,6 +38,11 @@ services:
         calls:
             - [setContainer, [@service_container]]
 
+    food.mail:
+        class: Food\AppBundle\Service\MailService
+        calls:
+           - [setContainer, [@service_container]]
+
     food.mailer:
         class: Food\AppBundle\Service\MailerMessagesService
         arguments: [%mailer_api_key%]
