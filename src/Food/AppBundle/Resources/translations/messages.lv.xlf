@@ -56,6 +56,11 @@
         <target>restorani-ar-virtuvi</target>
       </trans-unit>
 
+      <trans-unit id="admin.upload_size_message" resname="admin.upload_size_message">
+        <source>admin.upload_size_message</source>
+        <target>File size is greater than 2MB</target>
+      </trans-unit>
+
       <trans-unit id="1b78b59bfe4159583adb10ffa46bd822" resname="admin.kitchens.list.title">
         <source>admin.kitchens.list.title</source>
         <target>__admin.kitchens.list.title</target>
