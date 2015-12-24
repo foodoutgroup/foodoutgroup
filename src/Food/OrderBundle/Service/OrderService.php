@@ -3089,16 +3089,14 @@ class OrderService extends ContainerAware
                     );
                 } elseif ($data['errcode']['code'] == 8) {
                     $message = sprintf(
-                        "Gamybos taško kodas: %s\n\n",
-                        "Kliento telefono nr.: %s\n\n",
-                        "Atsiims vietoj?: %s\n\n",
+                        "Gamybos taško kodas: %s\n\n".
+                        "Kliento telefono nr.: %s\n\n".
+                        "Atsiims vietoj?: %s\n\n".
                         "Adreso duomenys: \n%s\n\n",
-                        "Patiekalai: \n%s\n\n",
                         $pointRecord->getInternalCode(),
                         $request->get('customer-phone'),
                         ($takeAway) ? 'taip' : 'ne',
-                        print_r($addrData, true),
-                        print_r($this->container->get('food.cart')->getCartDishes($place), true)
+                        print_r($addrData, true)
                     );
                     @mail("karolis.m@foodout.lt", "NAVISION ERROR ".date("Y-m-d H:i:s"), $message, "FROM: info@foodout.lt");
                     @mail("zaneta@foodout.lt", "NAVISION ERROR ".date("Y-m-d H:i:s"), $message, "FROM: info@foodout.lt");
