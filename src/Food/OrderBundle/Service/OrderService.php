@@ -627,38 +627,15 @@ class OrderService extends ContainerAware
                 false
             );
 
-            $max_len = 160;
-            $all_message_len = mb_strlen($messageText, 'UTF-8');
-            if ($all_message_len > $max_len) {
-                $restaurant_title_len = mb_strlen($restaurant_title, 'UTF-8');
-                $restaurant_address_len = mb_strlen($restaurant_address, 'UTF-8');
-                $too_long_len = ($all_message_len - $max_len);
-
-                if ($restaurant_title_len > 30 && $restaurant_address_len > 30) {
-                    $restaurant_title = mb_strimwidth($restaurant_title, 0, ($restaurant_title_len - $too_long_len / 2), '');
-                    $restaurant_address = mb_strimwidth($restaurant_address, 0, ($restaurant_address_len - $too_long_len / 2), '');
-                } else {
-                    if ($restaurant_title_len > $too_long_len) {
-                        $restaurant_title = mb_strimwidth($restaurant_title, 0, ($restaurant_title_len - $too_long_len), '');
-                    } elseif($restaurant_address_len > $too_long_len) {
-                        $restaurant_address = mb_strimwidth($restaurant_address, 0, ($restaurant_address_len - $too_long_len), '');
-                    }
-                }
-
-                $messageText = $languageUtil->removeChars(
-                    $curr_locale,
-                    $this->container->get('translator')->trans(
-                        'general.sms.driver_assigned_order',
-                        array(
-                            'order_id' => $order->getId(),
-                            'restaurant_title' => $restaurant_title,
-                            'restaurant_address' => $restaurant_address,
-                            'deliver_time' => $order->getOrderDate()->format("H:i")
-                        )
-                    ) . $orderConfirmRoute,
-                    false
-                );
-            }
+            $messageText = $this->fitDriverMessage(
+                $messageText,
+                $order->getId(),
+                $restaurant_title,
+                $restaurant_address,
+                $order->getDeliveryTime()->format("H:i"),
+                $orderConfirmRoute,
+                $curr_locale
+            );
 
             $logger->alert("Sending message for driver about assigned order to number: " . $driver->getPhone() . ' with text "' . $messageText . '"');
 
@@ -676,6 +653,67 @@ class OrderService extends ContainerAware
         $this->chageOrderStatus(self::$status_assiged, $source, $statusMessage);
 
         return $this;
+    }
+
+    /**
+     * Fit driver assign mesage to 160 chars
+     *
+     * @param string $messageText
+     * @param int $orderId
+     * @param string $restaurantTitle
+     * @param string $restaurantAddress
+     * @param string $deliverTime
+     * @param string $orderRoute
+     * @param string $locale
+     * @returnstring
+     * @throws \Exception
+     */
+    public function fitDriverMessage($messageText, $orderId, $restaurantTitle, $restaurantAddress, $deliverTime, $orderRoute, $locale)
+    {
+        $languageUtil = $this->container->get('food.app.utils.language');
+
+        if (strpos($messageText, 'Cili pica Kaunas/Klaipeda') !== false) {
+            $messageText = str_replace('Cili pica Kaunas/Klaipeda', 'Cili pica', $messageText);
+        }
+        if (strpos($messageText, 'Cili Kaimas Kaunas') !== false) {
+            $messageText = str_replace('Cili Kaimas Kaunas', 'Cili Kaimas', $messageText);
+        }
+
+        $max_len = 160;
+        $all_message_len = mb_strlen($messageText, 'UTF-8');
+
+        if ($all_message_len > $max_len) {
+            $restaurant_title_len = mb_strlen($restaurantTitle, 'UTF-8');
+            $restaurant_address_len = mb_strlen($restaurantAddress, 'UTF-8');
+            $too_long_len = ($all_message_len - $max_len);
+
+            if ($restaurant_title_len > 30 && $restaurant_address_len > 30) {
+                $restaurantTitle = mb_strimwidth($restaurantTitle, 0, ($restaurant_title_len - $too_long_len / 2), '');
+                $restaurantAddress = mb_strimwidth($restaurantAddress, 0, ($restaurant_address_len - $too_long_len / 2), '');
+            } else {
+                if ($restaurant_title_len > $too_long_len) {
+                    $restaurantTitle = mb_strimwidth($restaurantTitle, 0, ($restaurant_title_len - $too_long_len), '');
+                } elseif ($restaurant_address_len > $too_long_len) {
+                    $restaurantAddress = mb_strimwidth($restaurantAddress, 0, ($restaurant_address_len - $too_long_len), '');
+                }
+            }
+
+            return $languageUtil->removeChars(
+                $locale,
+                $this->container->get('translator')->trans(
+                    'general.sms.driver_assigned_order',
+                    array(
+                        'order_id' => $orderId,
+                        'restaurant_title' => $restaurantTitle,
+                        'restaurant_address' => $restaurantAddress,
+                        'deliver_time' => $deliverTime
+                    )
+                ) . $orderRoute,
+                false
+            );
+        }
+
+        return $messageText;
     }
 
     /**
