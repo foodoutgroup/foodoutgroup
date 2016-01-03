@@ -297,7 +297,20 @@ class DispatcherAdminController extends Controller
                             break;
 
                         case 'unconfirmed':
-                            if ($repo->hasNewUnconfirmedOrder($city, $recentId)) {
+                            if ($repo->hasNewUnconfirmedOrder($city, $recentId, false)) {
+                                $needUpdate = true;
+                                break 2;
+                            }
+                            break;
+
+                        case 'unconfirmed-pickup':
+                            if ($repo->hasNewUnconfirmedOrder($city, $recentId, true)) {
+                                $needUpdate = true;
+                                break 2;
+                            }
+                            break;
+                        case 'unapproved':
+                            if ($repo->hasNewUnapprovedOrder($city, $recentId)) {
                                 $needUpdate = true;
                                 break 2;
                             }

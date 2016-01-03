@@ -275,11 +275,50 @@ class OrderRepository extends EntityRepository
      * @param int|null $id
      * @return bool
      */
-    public function hasNewUnconfirmedOrder($city=null, $id=null)
+    public function hasNewUnconfirmedOrder($city=null, $id=null, $pickup=null)
     {
         $filter = array(
             'order_status' =>  array(OrderService::$status_new),
             'deliveryType' => OrderService::$deliveryDeliver,
+        );
+        if (!empty($city)) {
+            $filter['place_point_city'] = $city;
+        }
+        if (!empty($pickup)) {
+            if ($pickup) {
+                $filter['deliveryType'] = OrderService::$deliveryPickup;
+            } else {
+                $filter['deliveryType'] = OrderService::$deliveryDeliver;
+            }
+        }
+
+        $order = $this->getOrdersByFilter($filter, 'single');
+
+        if (!$order) {
+            return false;
+        }
+
+        if (empty($id)) {
+            return true;
+        }
+
+        $order = $order[0];
+
+        if ($order->getId() > $id) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param string|null $city
+     * @param int|null $id
+     * @return bool
+     */
+    public function hasNewUnapprovedOrder($city=null, $id=null)
+    {
+        $filter = array(
+            'order_status' =>  array(OrderService::$status_unapproved),
         );
         if (!empty($city)) {
             $filter['place_point_city'] = $city;
