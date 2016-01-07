@@ -273,6 +273,7 @@ class OrderRepository extends EntityRepository
     /**
      * @param string|null $city
      * @param int|null $id
+     * @param bool|null
      * @return bool
      */
     public function hasNewUnconfirmedOrder($city=null, $id=null, $pickup=null)
@@ -284,7 +285,7 @@ class OrderRepository extends EntityRepository
         if (!empty($city)) {
             $filter['place_point_city'] = $city;
         }
-        if (!empty($pickup)) {
+        if ($pickup !== null) {
             if ($pickup) {
                 $filter['deliveryType'] = OrderService::$deliveryPickup;
             } else {
