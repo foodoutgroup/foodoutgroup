@@ -71,8 +71,8 @@ class SendEmailCommand extends ContainerAwareCommand
                         $mailService->markEmailSent($mail);
                         $count++;
 
-                        // Jei uztrukom ilgiau nei 80s - nustojam sukt checkus, nes greit pasileis naujas instance
-                        if ((microtime(true) - $this->timeStart) > 80) {
+                        // Jei uztrukom ilgiau nei 220s - nustojam sukt checkus, nes greit pasileis naujas instance
+                        if ((microtime(true) - $this->timeStart) >= 230) {
                             break(2);
                         }
                     }

@@ -56,7 +56,41 @@ class MailService extends ContainerAware
             ->where('m.sent = 0')
             ->andWhere('m.sendOnDate <= :thisIsTheEnd')
             ->orderBy('m.createdAt', 'ASC')
+            ->setMaxResults(40)
             ->setParameter('thisIsTheEnd', new \DateTime('-1 minute'))
+            ->getQuery()
+            ->getResult();
+
+        if (!$emails) {
+            return array();
+        }
+
+        return $emails;
+    }
+
+    /**
+     * @param \DateTime $from
+     * @param \DateTime $to
+     * @return array|EmailToSend[]
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getUnsentEmailsForRange($from, $to)
+    {
+        if (!$from instanceof \DateTime) {
+            throw new \InvalidArgumentException('No beginning of the range has been given in email selec');
+        }
+        if (!$to instanceof \DateTime) {
+            throw new \InvalidArgumentException('No end of the range has been given in email selec');
+        }
+
+        $repo = $this->container->get('doctrine')->getRepository('FoodAppBundle:EmailToSend');
+
+        $emails = $repo->createQueryBuilder('m')
+            ->where('m.sent = 0')
+            ->andWhere('m.sendOnDate BETWEEN :thisIsTheStart AND :thisIsTheEnd')
+            ->setParameter('thisIsTheStart', $from)
+            ->setParameter('thisIsTheEnd', $to)
             ->getQuery()
             ->getResult();
 

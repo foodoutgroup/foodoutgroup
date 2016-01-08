@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * Food\AppBundle\Entity\EmailToSend
  *
- * @ORM\Table(name="emails_to_send")
+ * @ORM\Table(name="emails_to_send", indexes={@ORM\Index(name="sent_idx", columns={"sent"})})
  * @ORM\Entity
  */
 class EmailToSend
