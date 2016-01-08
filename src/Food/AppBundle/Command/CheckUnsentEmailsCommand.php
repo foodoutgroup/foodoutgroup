@@ -34,7 +34,7 @@ class CheckUnsentEmailsCommand extends ContainerAwareCommand
                     '<error>ERROR: %d unsent email messages! Check Cron if it is working</error>',
                     $messagesCount
                 );
-
+                $critical = true;
             } else {
                 $text = '<info>OK: all emails are sent. What a relief</info>';
             }
