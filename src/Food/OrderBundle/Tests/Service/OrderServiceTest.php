@@ -805,6 +805,35 @@ class OrderServiceTest extends WebTestCase {
         $this->assertEquals($expectedString, $reality);
     }
 
+    public function testMessageFitter()
+    {
+        $orderService = new OrderService();
+        $orderService->setContainer($this->getContainer());
+
+        $expectedString1 = 'Sesios zasys su sesiais zasyciais. Gerve gyrune gyresi gera gira geroj girioj gerai gerusi.';
+        $testData1 = array(
+            'message' => 'Naujas uzsakymas nr. 146983 is: Cili pica Kaunas/Klaipeda - i Vilhelmo-Berbomo g. 11-8 Klaipeda, iki 13:18 http://foodout.lt/d/c8f984d374917d76521c104e988319a2/',
+            'orderId' => 146983,
+            'restaurantTitle' => 'Čili pica Kaunas/Klaipėda',
+            'clientAddress' => 'Vilhelmo-Berbomo g. 11-8 Klaipėda',
+            'deliveryTime' => '13:18',
+            'confirmRoute' => 'http://foodout.lt/d/c8f984d374917d76521c104e988319a2/',
+            'locale' => 'lt'
+        );
+
+        $reality1 = $orderService->fitDriverMessage(
+            $testData1['message'],
+            $testData1['orderId'],
+            $testData1['restaurantTitle'],
+            $testData1['clientAddress'],
+            $testData1['deliveryTime'],
+            $testData1['confirmRoute'],
+            $testData1['locale']
+        );
+
+        $this->assertEquals($expectedString1, $reality1);
+    }
+
     public function testOrdersToBeLate()
     {
         $place = $this->getPlace('O maj gad');
