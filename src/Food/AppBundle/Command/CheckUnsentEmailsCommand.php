@@ -14,6 +14,12 @@ class CheckUnsentEmailsCommand extends ContainerAwareCommand
         $this
             ->setName('email:check:unsent')
             ->setDescription('Check for unsent email messages')
+            ->addOption(
+                'debug',
+                null,
+                InputOption::VALUE_NONE,
+                'If set, debug information will be logged'
+            )
         ;
     }
 
@@ -35,6 +41,19 @@ class CheckUnsentEmailsCommand extends ContainerAwareCommand
                     $messagesCount
                 );
                 $critical = true;
+
+                if ($input->getOption('debug')) {
+                    foreach ($unsentEmails as $email) {
+                        $output->writeln(
+                            sprintf(
+                                '<debug>Unsent message id: %d for order id: %d. Should be sent on: %s</debug>',
+                                $email->getId(),
+                                $email->getOrder()->getId(),
+                                $email->getSendOnDate()->format("Y-m-d H:i:s")
+                            )
+                        );
+                    }
+                }
             } else {
                 $text = '<info>OK: all emails are sent. What a relief</info>';
             }
