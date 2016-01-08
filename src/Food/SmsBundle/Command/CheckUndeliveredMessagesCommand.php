@@ -23,7 +23,7 @@ class CheckUndeliveredMessagesCommand extends ContainerAwareCommand
 
         $critical = false;
         $from = new \DateTime("-1 hours");
-        $to = new \DateTime("-15 minutes");
+        $to = new \DateTime("-5 minutes");
         try {
             $unsentMessages = $messagingService->getUndeliveredMessagesForRange($from, $to);
             $this->getContainer()->get('doctrine')->getConnection()->close();
