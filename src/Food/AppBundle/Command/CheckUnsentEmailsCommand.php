@@ -29,7 +29,7 @@ class CheckUnsentEmailsCommand extends ContainerAwareCommand
 
         $critical = false;
         $from = new \DateTime("-1 hours");
-        $to = new \DateTime("-30 munute");
+        $to = new \DateTime("-30 minute");
         try {
             $unsentEmails = $mailService->getUnsentEmailsForRange($from, $to);
             $this->getContainer()->get('doctrine')->getConnection()->close();
