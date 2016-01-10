@@ -2,6 +2,7 @@
 
 namespace Food\OrderBundle\Entity;
 use Doctrine\ORM\EntityRepository;
+use Food\DishesBundle\Entity\Place;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -64,6 +65,40 @@ class OrderRepository extends EntityRepository
     }
 
     /**
+     * Get even deleted place
+     *
+     * @param Order $order
+     * @return Place
+     * @throws \InvalidArgumentException
+     */
+    public function getPlaceSafe($order)
+    {
+        if (!$order || !$order instanceof Order) {
+            throw new \InvalidArgumentException('No order given - van not get place');
+        }
+
+        $query = "
+            SELECT
+                p.*
+            FROM  place p
+            LEFT JOIN orders o ON o.place_id = p.id
+            WHERE
+              o.id = '".$order->getId()."'
+        ";
+
+        $stmt = $this->getEntityManager()
+            ->getConnection()
+            ->prepare($query);
+
+        $stmt->execute();
+        $places = $stmt->fetchAll();
+
+        $place = $places[0];
+
+        return $place;
+    }
+
+    /**
      * @param string|null $city
      * @param boolean $pickup
      * @param boolean $forceBoth
@@ -100,9 +135,8 @@ class OrderRepository extends EntityRepository
     public function getOrdersAssigned($city=null)
     {
         $filter = array(
-//            'order_status' => OrderService::$status_assiged,
-//            'deliveryType' => OrderService::$deliveryDeliver,
-            'undelivered' => true,
+            'order_status' =>  OrderService::$status_assiged,
+            'deliveryType' => OrderService::$deliveryDeliver,
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
@@ -247,6 +281,7 @@ class OrderRepository extends EntityRepository
                 OrderService::$status_finished
             ),
             'deliveryType' => OrderService::$deliveryDeliver,
+            'paymentStatus' => OrderService::$paymentStatusComplete,
         );
         if (!empty($city)) {
             $filter['place_point_city'] = $city;
@@ -280,7 +315,7 @@ class OrderRepository extends EntityRepository
     {
         $filter = array(
             'order_status' =>  array(OrderService::$status_new),
-            'deliveryType' => OrderService::$deliveryDeliver,
+            'paymentStatus' => OrderService::$paymentStatusComplete,
         );
         if (!empty($city)) {
             $filter['place_point_city'] = $city;
@@ -320,6 +355,7 @@ class OrderRepository extends EntityRepository
     {
         $filter = array(
             'order_status' =>  array(OrderService::$status_unapproved),
+            'paymentStatus' => OrderService::$paymentStatusComplete,
         );
         if (!empty($city)) {
             $filter['place_point_city'] = $city;
@@ -423,16 +459,6 @@ class OrderRepository extends EntityRepository
                         $filter['problem_excluded_status'] = OrderService::$status_pre;
                         $filter['problem_payment_status'] = array(OrderService::$paymentStatusWait, OrderService::$paymentStatusWaitFunds);
                         $filter['problem_date_time'] = new \DateTime('-5 minute');
-                        break;
-
-                    case 'undelivered':
-                        $qb->andWhere('(o.order_status = :status_assigned AND o.deliveryType = :deliveryDeliver) OR (o.order_status IN (:accepted_statuses) AND o.deliveryType = :deliveryPickup AND o.deliveryTime > :order_date_for_pickup)');
-                        unset($filter['undelivered']);
-                        $filter['status_assigned'] = OrderService::$status_assiged;
-                        $filter['accepted_statuses'] = array(OrderService::$status_accepted, OrderService::$status_finished);
-                        $filter['deliveryDeliver'] = OrderService::$deliveryDeliver;
-                        $filter['deliveryPickup'] = OrderService::$deliveryPickup;
-                        $filter['order_date_for_pickup'] = new \DateTime('-4 hour');
                         break;
 
                     case 'not_solved':
@@ -546,11 +572,13 @@ class OrderRepository extends EntityRepository
      * @param \DateTime $dateFrom
      * @param \DateTime $dateTo
      * @param array $placeIds
-     * @param bool $groupMonth
-     *
+     * @param bool|false $groupMonth
+     * @param $registered
+     * @param $accountingCode
      * @return array
+     * @throws \Doctrine\DBAL\DBALException
      */
-    public function getPlacesOrderCountForRange($dateFrom, $dateTo, $placeIds = array(), $groupMonth=false)
+    public function getPlacesOrderCountForRange($dateFrom, $dateTo, $placeIds = array(), $groupMonth=false, $registered=false, $accountingCode=false, $ownershipType=false)
     {
         $orderStatus = OrderService::$status_completed;
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
@@ -568,11 +596,31 @@ class OrderRepository extends EntityRepository
             $groupByMonthOrder = 'DATE_FORMAT(o.order_date, "%Y-%m") DESC, ';
         }
 
+        $registeredFilter = '';
+        if ($registered) {
+            $registeredFilter = " AND p.registered = ".($registered ? 1 : 0);
+        }
+
+        $accountingCodeFilter = '';
+        if ($accountingCode) {
+            $accountingCodeFilter = " AND p.accounting_code = '".$accountingCode."'";
+        }
+
+        $ownershipTypeFilter = '';
+        if ($ownershipType) {
+            $ownershipTypeFilter = " AND p.ownership_type = '".$ownershipType."'";
+        }
+
         $query = "
           SELECT
             o.place_id,
             o.place_name AS place_name,
+            o.vat,
             p.self_delivery AS self_delivery,
+            p.registered AS registered,
+            p.accounting_code AS accounting_code,
+            p.ownership_type AS ownership_type,
+            p.packaging_price AS packaging_price,
             COUNT(o.id) AS order_count,
             SUM(o.total) AS order_sum,
             SUM(
@@ -580,7 +628,8 @@ class OrderRepository extends EntityRepository
             ) AS deliver_count,
             SUM(
               IF(o.delivery_type = 'pickup', 1, 0)
-            ) AS pickup_count
+            ) AS pickup_count,
+            SUM(o.commission) as commission
             {$groupByMonthDate}
           FROM orders o
           LEFT JOIN place p ON p.id = o.place_id
@@ -588,6 +637,9 @@ class OrderRepository extends EntityRepository
             o.order_status = '{$orderStatus}'
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
             {$placesFilter}
+            {$registeredFilter}
+            {$accountingCodeFilter}
+            {$ownershipTypeFilter}
           GROUP BY COALESCE(o.place_id, o.place_name){$groupByMonth}
           ORDER BY {$groupByMonthOrder}order_count DESC
         ";
@@ -776,8 +828,8 @@ class OrderRepository extends EntityRepository
         $deliver = OrderService::$deliveryDeliver;
 
         $dateFrom = new \DateTime("now");
-        $dateToPickup = new \DateTime("-140 minute");
-        $dateToDeliver = new \DateTime("-140 minute");
+        $dateToPickup = new \DateTime("-65 minute");
+        $dateToDeliver = new \DateTime("-90 minute");
 
         $dateFrom1 = $dateFrom->sub(new \DateInterval('PT12H'))->format("Y-m-d H:i:s");
         $dateToPickup = $dateToPickup->format("Y-m-d H:i:s");
@@ -798,8 +850,7 @@ class OrderRepository extends EntityRepository
               )
               OR
               (
-                o.delivery_type = '{$deliver}'
-                AND o.place_point_self_delivery = 1
+               o.delivery_type = '{$deliver}'
                 AND o.delivery_time BETWEEN '{$dateFrom1}' AND '{$dateToDeliver}'
               )
             )
@@ -1064,5 +1115,131 @@ class OrderRepository extends EntityRepository
         $stmt->execute();
         $orders_detail = $stmt->fetchAll();
         return $orders_detail;
+    }
+
+    /**
+     * gets total orders from restaurant in time interval
+     *
+     * @param \Food\DishesBundle\Entity\Place $place
+     * @param string $from
+     * @param string $to
+     *
+     * @return int
+     */
+    public function getRestaurantOrderCountByPeriod(Place $place, $from, $to)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare('SELECT COUNT(o.id) as total_orders FROM orders o WHERE order_status = :order_status AND o.place_id = :restaurant_id AND o.order_date BETWEEN :date_from AND :date_to');
+        $stmt->execute(array(
+            'order_status' => 'completed',
+            'restaurant_id' => $place->getId(),
+            'date_from' => $from,
+            'date_to' => $to
+        ));
+
+        return (int) $stmt->fetchColumn();
+    }
+
+    /**
+     * gets total regular dishes from restaurant in time interval
+     *
+     * @param \Food\DishesBundle\Entity\Place $place
+     * @param string $from
+     * @param string $to
+     *
+     * @return array
+     */
+    public function getRestaurantDishesCountByPeriod(Place $place, $from, $to)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare('SELECT SUM(od.quantity) as count, IF (percent_discount > 1, \'promotional\', \'regular\') as type FROM orders o INNER JOIN order_details od ON o.id = od.order_id WHERE order_status = :order_status AND o.place_id = :restaurant_id AND o.order_date BETWEEN :date_from AND :date_to GROUP BY IF (percent_discount > 1, \'promotional\', \'regular\')');
+        $stmt->execute(array(
+            'order_status' => 'completed',
+            'restaurant_id' => $place->getId(),
+            'date_from' => $from,
+            'date_to' => $to
+        ));
+
+        $result = array(
+            'regular' => 0,
+            'promotional' => 0,
+            'total' => 0
+        );
+
+        foreach ($stmt->fetchAll() as $row) {
+            $result[$row['type']] += $row['count'];
+            $result['total'] += $row['count'];
+        }
+
+        var_dump($result);
+
+        return $result;
+    }
+
+    /**
+     * gets due amount from restaurant in time interval
+     *
+     * @param \Food\DishesBundle\Entity\Place $place
+     * @param string $from
+     * @param string $to
+     *
+     * @return array
+     */
+    public function getRestaurantDueAmountByPeriod(Place $place, $from, $to)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare('SELECT od.*, o.delivery_type, o.place_point_self_delivery, o.payment_method, o.commission, o.total FROM order_details od INNER JOIN orders o ON od.order_id = o.id WHERE order_status = :order_status AND o.place_id = :restaurant_id AND o.order_date BETWEEN :date_from AND :date_to');
+        $stmt->execute(array(
+            'order_status' => 'completed',
+            'restaurant_id' => $place->getId(),
+            'date_from' => $from,
+            'date_to' => $to
+        ));
+
+        $response = array(
+            'regular' => array(
+                'total' => 0,
+                'online' => 0,
+                'cash' => 0,
+                'commission_rate' => null
+            ),
+            'promotional' => array(
+                'total' => 0,
+                'online' => 0,
+                'cash' => 0,
+                'commission_rate' => null
+            ),
+            'total' => 0,
+            'due' => 0
+        );
+
+        foreach ($stmt->fetchAll() as $row) {
+            $type = $row['percent_discount'] > 0 ? 'promotional' : 'regular';
+            $response[$type]['total'] += $row['total'];
+            $response['total'] += $row['total'];
+
+            if (in_array($row['payment_method'], array('local', 'local.card'))
+                && ($row['place_point_self_delivery'] || $row['delivery_type'] == 'pickup')) {
+                $response[$type]['cash'] += $row['total'];
+                $response['due'] += $row['commission'];
+            } else {
+                $response[$type]['online'] += $row['total'];
+                $response['due'] -= ($row['total'] - $row['commission']);
+            }
+
+            if (is_null($response[$type]['commission_rate'])) {
+                $response[$type]['commission_rate'] = $row['commission_rate'];
+            } elseif (!is_bool($response[$type]['commission_rate'])
+                    && $response[$type]['commission_rate'] != $row['commission_rate']) {
+                $response[$type]['commission_rate'] = false;
+            }
+        }
+
+        if ($response['regular']['commission_rate'] === false) {
+            $response['regular']['commission_rate'] = null;
+        }
+
+        if ($response['promotional']['commission_rate'] === false) {
+            $response['promotional']['commission_rate'] = null;
+        }
+
+        return $response;
     }
 }
