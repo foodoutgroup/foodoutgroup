@@ -109,6 +109,7 @@
                         }, 'json');
                     } else {
                         var dangerAlert = popupInner.find('.alert.alert-danger');
+                        $('#coupon_code').val('');
                         if (dangerAlert.length > 0) {
                             dangerAlert.html(resp.data.error);
                         } else {
@@ -419,7 +420,7 @@
                 <form id="coupon_form">
                     <div>
                         <div class="the_text">{% trans %}general.coupon.text{% endtrans %}:</div>
-                        <div class="the_input"><input type="text" name="coupon_code_popup" id="coupon_code_popup" /></div>
+                        <div class="the_input"><input type="text" name="coupon_code_popup" id="coupon_code_popup" value="{% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{{ dataToLoad['coupon_code'] }}{% endif %}" /></div>
                     </div>
                     <div class="popup-controls">
                         <a href="#" class="button-submit"><span>{% trans %}general.coupon.submit_button{% endtrans %}</span></a>

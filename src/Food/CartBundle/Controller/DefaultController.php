@@ -234,13 +234,18 @@ class DefaultController extends Controller
         // TODO refactor this nonsense... if is if is if is bullshit...
         // Validate only if post happened
         if ($request->getMethod() == 'POST') {
+            $couponEnt = null;
+            if ($request->get('coupon_code',false)) {
+                $couponEnt = $this->get('doctrine')->getRepository('FoodOrderBundle:Coupon')->findOneBy(array('code'=>$request->get('coupon_code','')));
+            }
             $this->get('food.order')->validateDaGiantForm(
                 $place,
                 $request,
                 $formHasErrors,
                 $formErrors,
                 ($takeAway ? true : false),
-                ($takeAway ? $request->get('place_point'): null)
+                ($takeAway ? $request->get('place_point'): null),
+                $couponEnt
             );
         }
 
