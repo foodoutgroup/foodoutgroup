@@ -2750,7 +2750,7 @@ class OrderService extends ContainerAware
             $totalH = $totalH + 24;
             $wd = $wd - 1;
         }
-        if ($wd < 0) $wd = 7 - $wd;
+        if ($wd < 0) $wd = 7 + $wd;
         if ($wd == 0) $wd = 7;
 
         $frm = $placePoint->{'getWd'.$wd.'Start'}();
