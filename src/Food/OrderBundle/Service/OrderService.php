@@ -2810,8 +2810,9 @@ class OrderService extends ContainerAware
     public function validateDaGiantForm(Place $place, Request $request, &$formHasErrors, &$formErrors, $takeAway, $placePointId = null, $coupon = null)
     {
         $phonePass = false;
+        $list = $this->getCartService()->getCartDishes($place);
+        $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
         if (!$takeAway) {
-            $list = $this->getCartService()->getCartDishes($place);
             foreach ($list as $itm) {
                 if (!$this->isOrderableByTime($itm->getDishId())) {
                     $formErrors[] = array(
@@ -2820,12 +2821,11 @@ class OrderService extends ContainerAware
                     );
                 }
             }
-            $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
 
             $placePointMap = $this->container->get('session')->get('point_data');
 
             // TODO Trying to catch fatal when searching for PlacePoint
-            if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
+            if (empty($placePointMap[$place->getId()])) {
                 $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 1');
                 // Mapping not found, lets try to remap
                 $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
@@ -2835,34 +2835,35 @@ class OrderService extends ContainerAware
             }
 
             // TODO - if still no PlacePoint info - pick fasterst or cheapest as in earlier solution
-            if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
+            if (empty($placePointMap[$place->getId()])) {
                 $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 2');
                 $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCheapestPlacePoint($place->getId(),$locationData);
                 $placePointMap[$place->getId()] = $placePointId;
                 $this->container->get('session')->set('point_data', $placePointMap);
             }
 
-            /**
-             * @todo Possible problems in the future here :)
-             */
-            $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
-            $cartMinimum = $this->getCartService()->getMinimumCart(
-                $place,
-                $this->container->get('food.googlegis')->getLocationFromSession(),
-                $pointRecord
-            );
+            if (isset($placePointMap[$place->getId()])) {
+                /**
+                 * @todo Possible problems in the future here :)
+                 */
+                $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+                $cartMinimum = $this->getCartService()->getMinimumCart(
+                    $place,
+                    $this->container->get('food.googlegis')->getLocationFromSession(),
+                    $pointRecord
+                );
 
-            if ($total_cart < $cartMinimum) {
-                $formErrors[] = 'order.form.errors.cartlessthanminimum';
-            }
+                if ($total_cart < $cartMinimum) {
+                    $formErrors[] = 'order.form.errors.cartlessthanminimum';
+                }
 
-            $addrData = $this->container->get('food.googlegis')->getLocationFromSession();
-            if (empty($addrData['address_orig'])) {
-                @mail("karolis.m@foodout.lt", "order.form.errors.customeraddr1 ".date("Y-m-d H:i:s"), print_r($addrData, true), "FROM: info@foodout.lt");
-                $formErrors[] = 'order.form.errors.customeraddr';
+                $addrData = $locationService->getLocationFromSession();
+                if (empty($addrData['address_orig'])) {
+                    @mail("karolis.m@foodout.lt", "order.form.errors.customeraddr1 ".date("Y-m-d H:i:s"), print_r($addrData, true), "FROM: info@foodout.lt");
+                    $formErrors[] = 'order.form.errors.customeraddr';
+                }
             }
         } elseif ($place->getMinimalOnSelfDel()) {
-            $list = $this->getCartService()->getCartDishes($place);
             foreach ($list as $itm) {
                 if (!$this->isOrderableByTime($itm->getDishId())) {
                     $formErrors[] = array(
@@ -2871,7 +2872,6 @@ class OrderService extends ContainerAware
                     );
                 }
             }
-            $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
             if ($total_cart < $place->getCartMinimum()) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }
@@ -2907,7 +2907,7 @@ class OrderService extends ContainerAware
                 }
             } else {
                 @mail("karolis.m@foodout.lt", "order.form.errors.customeraddr2 ".date("Y-m-d H:i:s"), 'ppid: '.$placePointId.print_r($placePointMap, true).print_r($place->getId(), true), "FROM: info@foodout.lt");
-                $formErrors[] = 'order.form.errors.customeraddr';
+                $formErrors[] = 'cart.checkout.place_point_not_in_radius';
             }
         } else {
             $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
