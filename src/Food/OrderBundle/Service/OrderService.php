@@ -2858,6 +2858,7 @@ class OrderService extends ContainerAware
 
             $addrData = $this->container->get('food.googlegis')->getLocationFromSession();
             if (empty($addrData['address_orig'])) {
+                @mail("karolis.m@foodout.lt", "order.form.errors.customeraddr1 ".date("Y-m-d H:i:s"), print_r($addrData, true), "FROM: info@foodout.lt");
                 $formErrors[] = 'order.form.errors.customeraddr';
             }
         } elseif ($place->getMinimalOnSelfDel()) {
@@ -2905,6 +2906,7 @@ class OrderService extends ContainerAware
                     }
                 }
             } else {
+                @mail("karolis.m@foodout.lt", "order.form.errors.customeraddr2 ".date("Y-m-d H:i:s"), 'ppid: '.$placePointId.print_r($placePointMap, true).print_r($place->getId(), true), "FROM: info@foodout.lt");
                 $formErrors[] = 'order.form.errors.customeraddr';
             }
         } else {
