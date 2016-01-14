@@ -2857,7 +2857,7 @@ class OrderService extends ContainerAware
                     $formErrors[] = 'order.form.errors.cartlessthanminimum';
                 }
 
-                $addrData = $locationService->getLocationFromSession();
+                $addrData = $this->container->get('food.googlegis')->getLocationFromSession();
                 if (empty($addrData['address_orig'])) {
                     @mail("karolis.m@foodout.lt", "order.form.errors.customeraddr1 ".date("Y-m-d H:i:s"), print_r($addrData, true), "FROM: info@foodout.lt");
                     $formErrors[] = 'order.form.errors.customeraddr';
