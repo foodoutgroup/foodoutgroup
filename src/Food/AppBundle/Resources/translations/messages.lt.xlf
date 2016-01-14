@@ -1312,6 +1312,10 @@
         <source>general.app_block.promo_text</source>
         <target>Užsisakyk maisto į namus ar biurą per iPhone arba Android telefonus. Atsisiųsk nemokamą aplikaciją!.</target>
     </trans-unit>
+    <trans-unit id="general.footer.social" resname="general.footer.social">
+        <source>general.footer.social</source>
+        <target>Foodout yra socialus</target>
+    </trans-unit>
     <!--<trans-unit id="Please check this box if you want to proceed." resname="Please check this box if you want to proceed.">-->
         <!--<source>Please check this box if you want to proceed.</source>-->
         <!--<target>Privalote sutikti, norėdami tęsti</target>-->

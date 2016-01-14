@@ -1285,6 +1285,10 @@
             <source>general.restaurant_page_title</source>
             <target>%restaurant_name% ēdienu piegāde</target>
         </trans-unit>
+        <trans-unit id="general.footer.social" resname="general.footer.social">
+            <source>general.footer.social</source>
+            <target>Foodout ir sabiedrisks</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>
