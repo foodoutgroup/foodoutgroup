@@ -38,6 +38,11 @@ services:
         calls:
             - [setContainer, [@service_container]]
 
+    food.location:
+        class: Food\AppBundle\Service\LocationService
+        calls:
+            - [setContainer, [@service_container]]
+
     food.mail:
         class: Food\AppBundle\Service\MailService
         calls:

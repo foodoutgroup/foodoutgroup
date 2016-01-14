@@ -1108,7 +1108,7 @@ class OrderService extends ContainerAware
 
         $deliveryPrice = $this->getCartService()->getDeliveryPrice(
             $this->getOrder()->getPlace(),
-            $this->container->get('food.googlegis')->getLocationFromSession(),
+            $this->container->get('food.location')->getLocationFromSession(),
             $this->getOrder()->getPlacePoint()
         );
 
@@ -2809,6 +2809,9 @@ class OrderService extends ContainerAware
      */
     public function validateDaGiantForm(Place $place, Request $request, &$formHasErrors, &$formErrors, $takeAway, $placePointId = null, $coupon = null)
     {
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $locationService = $this->container->get('food.location');
+        $loggedIn = true;
         $phonePass = false;
         $list = $this->getCartService()->getCartDishes($place);
         $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
@@ -2824,11 +2827,15 @@ class OrderService extends ContainerAware
 
             $placePointMap = $this->container->get('session')->get('point_data');
 
+            $locationData = $locationService->getLocationFromSession();
+            if (empty($locationData) && $user instanceof User) {
+                $locationData = $locationService->setLocationFromUser($user);
+            }
             // TODO Trying to catch fatal when searching for PlacePoint
             if (empty($placePointMap[$place->getId()])) {
                 $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 1');
                 // Mapping not found, lets try to remap
-                $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
+                $locationData = $locationService->getLocationFromSession();
                 $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(),$locationData);
                 $placePointMap[$place->getId()] = $placePointId;
                 $this->container->get('session')->set('point_data', $placePointMap);
@@ -2849,7 +2856,7 @@ class OrderService extends ContainerAware
                 $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
                 $cartMinimum = $this->getCartService()->getMinimumCart(
                     $place,
-                    $this->container->get('food.googlegis')->getLocationFromSession(),
+                    $locationService->getLocationFromSession(),
                     $pointRecord
                 );
 
@@ -2857,9 +2864,8 @@ class OrderService extends ContainerAware
                     $formErrors[] = 'order.form.errors.cartlessthanminimum';
                 }
 
-                $addrData = $this->container->get('food.googlegis')->getLocationFromSession();
-                if (empty($addrData['address_orig'])) {
-                    @mail("karolis.m@foodout.lt", "order.form.errors.customeraddr1 ".date("Y-m-d H:i:s"), print_r($addrData, true), "FROM: info@foodout.lt");
+                if (empty($locationData['address_orig'])) {
+                    @mail("karolis.m@foodout.lt", "order.form.errors.customeraddr1 ".date("Y-m-d H:i:s"), print_r($locationData, true), "FROM: info@foodout.lt");
                     $formErrors[] = 'order.form.errors.customeraddr';
                 }
             }
@@ -2884,7 +2890,7 @@ class OrderService extends ContainerAware
                 $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
                 if ($pointRecord) {
                     $isWork = $this->isTodayWork($pointRecord);
-                    $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
+                    $locationData = $locationService->getLocationFromSession();
                     if (!$isWork) {
                         $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(),$locationData);
                         $placePointMap[$place->getId()] = $placePointId;
@@ -2996,8 +3002,6 @@ class OrderService extends ContainerAware
         }
 
         // Validate bussines client
-        $user = $this->container->get('security.context')->getToken()->getUser();
-        $loggedIn = true;
 
         if (!$user instanceof User) {
             $loggedIn = false;
