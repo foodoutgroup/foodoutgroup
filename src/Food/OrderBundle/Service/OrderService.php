@@ -3374,7 +3374,7 @@ class OrderService extends ContainerAware
         $messageText = $translator->trans(
             $translation,
             array(
-                'order_id' => $this->getOrder()->order->getId(),
+                'order_id' => $this->getOrder()->getId(),
                 'delay_time' => $diffInMinutes,
                 'delivery_min' => $deliverIn,
                 // TODO rodome nebe restorano, o dispeceriu telefona
