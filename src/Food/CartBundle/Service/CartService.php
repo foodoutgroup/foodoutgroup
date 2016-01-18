@@ -84,9 +84,9 @@ class CartService {
     {
         if (empty($this->newSessionId)) {
             return $this->getContainer()->get('session')->getId();
-        } else {
-            return $this->newSessionId;
         }
+
+        return $this->newSessionId;
     }
 
     public function migrateCartBetweenSessionIds($oldSid, $newSid)
