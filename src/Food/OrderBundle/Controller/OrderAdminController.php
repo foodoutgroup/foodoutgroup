@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Exporter\Source\DoctrineDBALConnectionSourceIterator;
+use Exporter\Source\ArraySourceIterator;
 use Exporter\Handler;
 use Exporter\Writer\XlsWriter;
 use Exporter\Writer\XmlWriter;
@@ -142,7 +142,7 @@ class OrderAdminController extends Controller
 
     /**
      * @param Request $request
-     * @return DoctrineDBALConnectionSourceIterator
+     * @return ArraySourceIterator
      */
     public function getDataSourceIterator(Request $request)
     {
@@ -252,9 +252,21 @@ class OrderAdminController extends Controller
             }
         }
 
-        $conn = $this->get('database_connection');
         $qry = "SELECT * FROM orders o LEFT JOIN order_extra oe ON o.id = oe.order_id WHERE 1 = 1 " . $where;
-
-        return new DoctrineDBALConnectionSourceIterator($conn, $qry);
+        $data = $this->get('database_connection')->fetchAll($qry);
+        $em = $this->container->get('doctrine')->getManager();
+        if ($this->container->getParameter('locale') != 'fa') {
+            foreach ($data as &$row) {
+                $driver_code = null;
+                if (!empty($row['driver_id'])) {
+                    $driver = $em->getRepository('FoodAppBundle:Driver')->find($row['driver_id']);
+                    if ($driver) {
+                        $driver_code = $driver->getExtId();
+                    }
+                }
+                $row['driver_id'] = $driver_code;
+            }
+        }
+        return new ArraySourceIterator($data);
     }
 }
