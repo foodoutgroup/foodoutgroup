@@ -254,7 +254,7 @@ class OrderAdminController extends Controller
 
         $qry = "SELECT * FROM orders o LEFT JOIN order_extra oe ON o.id = oe.order_id WHERE 1 = 1 " . $where;
         $data = $this->get('database_connection')->fetchAll($qry);
-        $em = $this->get('doctrine')->getManager();
+        /*$em = $this->get('doctrine')->getManager();
         if ($this->container->getParameter('locale') != 'fa') {
             foreach ($data as &$row) {
                 $driver_code = null;
@@ -266,7 +266,7 @@ class OrderAdminController extends Controller
                 }
                 $row['driver_id'] = $driver_code;
             }
-        }
+        }*/
         return new ArraySourceIterator($data);
     }
 }
