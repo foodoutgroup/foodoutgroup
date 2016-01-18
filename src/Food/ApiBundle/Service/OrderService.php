@@ -72,11 +72,11 @@ class OrderService extends ContainerAware
                     "flat_number": 2,
                    "city": "Vilnius",
                     "comments": "Duru kodas 1234"
-            },
-            "discount": {
-                "code": "123456"
-            }
-         }
+                },
+                "discount": {
+                    "code": "123456"
+                }
+             }
         <!-- OR -->
             "service": {
                 "type":"pickup",
@@ -189,8 +189,8 @@ class OrderService extends ContainerAware
         $cartService = $this->getCartService();
         $cartService->setNewSessionId($basket->getSession());
         $place = $basket->getPlaceId();
+        $list = $cartService->getCartDishes($basket->getPlaceId());
         if ($serviceVar['type'] != "pickup") {
-            $list = $cartService->getCartDishes($basket->getPlaceId());
             $total_cart = $cartService->getCartTotalApi($list/*, $place*/);
             if ($total_cart < $place->getCartMinimum()) {
                 throw new ApiException(
@@ -251,7 +251,6 @@ class OrderService extends ContainerAware
 
             }
         } elseif ($basket->getPlaceId()->getMinimalOnSelfDel()) {
-            $list = $cartService->getCartDishes($basket->getPlaceId());
             $total_cart = $cartService->getCartTotal($list/*, $place*/);
             if ($total_cart < $place->getCartMinimum()) {
                 throw new ApiException(
@@ -484,6 +483,7 @@ class OrderService extends ContainerAware
                 $parsedAddress = $miscUtil->parseAddress(
                     $order->getPlacePointAddress()
                 );
+                $time = $order->getPlace()->getPickupTime();
                 break;
 
             case FO::$deliveryDeliver:
@@ -493,11 +493,13 @@ class OrderService extends ContainerAware
                     // @TODO check if addressId exists
                     $order->getAddressId()->getAddress()
                 );
+                $time = $order->getPlace()->getDeliveryTime();
                 break;
         }
 
         $returner = array(
             "type" => $deliveryType,
+            "time" => $time,
             "address" => array(
                 "street" => $parsedAddress['street'],
                 "house_number" => $parsedAddress['house'],

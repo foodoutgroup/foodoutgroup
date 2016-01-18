@@ -11,6 +11,9 @@ use Food\ApiBundle\Exceptions\ApiException;
 
 class BasketController extends Controller
 {
+    /*
+     * {"restaurant_id":"170", "items": [{"item_id":11069, "size_id": 14329, "count":1, "additional_info": ""}]}
+     */
     public function createBasketAction(Request $request)
     {
         try {
