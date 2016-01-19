@@ -41,7 +41,7 @@ class DishAdmin extends FoodAdmin
          * @var EntityManager $em
          */
         $em = $this->modelManager->getEntityManager('Food\DishesBundle\Entity\FoodCategory');
-        
+
         /**
          * @var QueryBuilder
          */
@@ -240,6 +240,51 @@ class DishAdmin extends FoodAdmin
     {
         $this->fixRelations($object);
         $this->saveFile($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Dish $object
+     * @return void
+     */
+    public function postPersist($object)
+    {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        foreach ($object->getDates() as $date) {
+            $date->setDish($object);
+            $em->persist($date);
+        }
+
+        $em->flush();
+
+        parent::postPersist($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Dish $object
+     * @return void
+     */
+    public function postUpdate($object)
+    {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        foreach ($object->getDates() as $date) {
+            $date->setDish($object);
+            $em->persist($date);
+        }
+
+        if ($object->getDeletedAt() != null) {
+            // find and soft-delete other stuff
+            $sizes = $object->getSizes();
+            if (count($sizes) > 0) {
+                foreach ($sizes as $size) {
+                    $size->setDeletedAt(new \DateTime('NOW'));
+                    $em->persist($size);
+                }
+                //~ $em->flush();
+            }
+        }
+        $em->flush();
+
+        parent::postUpdate($object);
     }
 
     /**

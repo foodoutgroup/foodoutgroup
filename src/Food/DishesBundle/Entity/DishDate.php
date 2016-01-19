@@ -46,7 +46,7 @@ class DishDate
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -62,14 +62,14 @@ class DishDate
     public function setStart($start)
     {
         $this->start = $start;
-    
+
         return $this;
     }
 
     /**
      * Get start
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getStart()
     {
@@ -85,14 +85,14 @@ class DishDate
     public function setEnd($end)
     {
         $this->end = $end;
-    
+
         return $this;
     }
 
     /**
      * Get end
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEnd()
     {
@@ -108,14 +108,14 @@ class DishDate
     public function setDish(\Food\DishesBundle\Entity\Dish $dish = null)
     {
         $this->dish = $dish;
-    
+
         return $this;
     }
 
     /**
      * Get dish
      *
-     * @return \Food\DishesBundle\Entity\Dish 
+     * @return \Food\DishesBundle\Entity\Dish
      */
     public function getDish()
     {
