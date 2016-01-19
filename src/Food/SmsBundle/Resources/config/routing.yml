@@ -4,6 +4,10 @@ message_send:
     methods:  [GET]
 
 # OMG such hack.. TODO issiaiskinti, kodel meta route not found
+delivery_report_sreet_no_slash:
+    path:     /messaging-delivery/silverstreet
+    defaults: { _controller: FoodSmsBundle:Delivery:index, provider: silverstreet }
+
 delivery_report_sreet:
     path:     /messaging-delivery/silverstreet/
     defaults: { _controller: FoodSmsBundle:Delivery:index, provider: silverstreet }
