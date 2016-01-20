@@ -1903,41 +1903,26 @@ class Order
 
         switch($this->getOrderStatus()) {
             case OrderService::$status_new:
-                $add = new \DateInterval('PT2M');
-                $orderStamp = $this->getOrderDate()->add($add)->format("U");
+            case OrderService::$status_delayed:
+            case OrderService::$status_unapproved:
+                $interval = new \DateInterval('PT58M');
+                $deliveryStamp = $this->getOrderDate()->sub($interval)->format("U");
 
-                $diffMinutes = ceil(($nowStamp - $orderStamp) / 60);
                 break;
 
             case OrderService::$status_accepted:
-                $add = new \DateInterval('PT8M');
-                $orderStamp = $this->getOrderDate()->add($add)->format("U");
+                $interval = new \DateInterval('PT52M');
+                $deliveryStamp = $this->getDeliveryTime()->sub($interval)->format("U");
 
-                $diffMinutes = ceil(($nowStamp - $orderStamp) / 60);
                 break;
-
-            case OrderService::$status_delayed:
-                $add = new \DateInterval('PT2M');
-                $orderStamp = $this->getOrderDate()->add($add)->format("U");
-
-                $diffMinutes = ceil(($nowStamp - $orderStamp) / 60);
-                break;
-
-            case OrderService::$status_assiged:
+            default:
                 $deliveryStamp = $this->getDeliveryTime()->format("U");
-
-                $diffMinutes = ceil(($nowStamp - $deliveryStamp) / 60);
-                break;
-
-            case OrderService::$status_unapproved:
-                $add = new \DateInterval('PT2M');
-                $orderStamp = $this->getOrderDate()->add($add)->format("U");
-
-                $diffMinutes = ceil(($nowStamp - $orderStamp) / 60);
                 break;
         }
 
-        return $diffMinutes;
+        $diffMinutes = ceil(($nowStamp - $deliveryStamp) / 60);
+
+        return ($diffMinutes > 0) ? $diffMinutes : 0;
     }
 
     /**
@@ -2198,44 +2183,7 @@ class Order
      */
     public function isLate()
     {
-        switch($this->getOrderStatus()) {
-            case OrderService::$status_new:
-                $add = new \DateInterval('PT2M');
-                if ($this->getOrderDate()->add($add)->format('d H:i') < date('d H:i')) {
-                    return true;
-                }
-                break;
-
-            case OrderService::$status_accepted:
-                $add = new \DateInterval('PT8M');
-                if ($this->getOrderDate()->add($add)->format('d H:i') < date('d H:i')) {
-                    return true;
-                }
-                break;
-
-            case OrderService::$status_delayed:
-                // TODO other maths to add delay.. but delay is unaceptable
-                $add = new \DateInterval('PT10M');
-                if ($this->getOrderDate()->add($add)->format('d H:i') < date('d H:i')) {
-                    return true;
-                }
-                break;
-
-            case OrderService::$status_assiged:
-                if ($this->getDeliveryTime()->format('d H:i') < date('d H:i')) {
-                    return true;
-                }
-                break;
-
-            case OrderService::$status_unapproved:
-                $add = new \DateInterval('PT2M');
-                if ($this->getOrderDate()->add($add)->format('d H:i') < date('d H:i')) {
-                    return true;
-                }
-                break;
-        }
-
-        return false;
+        return (bool) $this->getLateMinutes();
     }
 
     /**

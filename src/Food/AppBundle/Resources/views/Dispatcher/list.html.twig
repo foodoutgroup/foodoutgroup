@@ -152,11 +152,7 @@
                     </td>
                 {% endif %}
                 <td class="order_date">
-                    {% if order.isLate %}
-                        {{ order.lateMinutes }} min
-                    {% else %}
-                        0 min
-                    {% endif %}
+                    {{ order.lateMinutes }} min
                 </td>
                 {% if type != 'canceled' %}
                     <td class="order_date{% if order.delayed %} delayed-order{% endif %}">
