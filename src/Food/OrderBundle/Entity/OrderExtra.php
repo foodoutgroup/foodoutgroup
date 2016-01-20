@@ -67,7 +67,7 @@ class OrderExtra
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -83,14 +83,14 @@ class OrderExtra
     public function setOrder(\Food\OrderBundle\Entity\Order $order = null)
     {
         $this->order = $order;
-    
+
         return $this;
     }
 
     /**
      * Get order
      *
-     * @return \Food\OrderBundle\Entity\Order 
+     * @return \Food\OrderBundle\Entity\Order
      */
     public function getOrder()
     {
@@ -106,14 +106,14 @@ class OrderExtra
     public function setFirstname($firstname)
     {
         $this->firstname = $firstname;
-    
+
         return $this;
     }
 
     /**
      * Get firstname
      *
-     * @return string 
+     * @return string
      */
     public function getFirstname()
     {
@@ -129,14 +129,14 @@ class OrderExtra
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
-    
+
         return $this;
     }
 
     /**
      * Get lastname
      *
-     * @return string 
+     * @return string
      */
     public function getLastname()
     {
@@ -152,14 +152,14 @@ class OrderExtra
     public function setPhone($phone)
     {
         $this->phone = $phone;
-    
+
         return $this;
     }
 
     /**
      * Get phone
      *
-     * @return string 
+     * @return string
      */
     public function getPhone()
     {
@@ -175,17 +175,44 @@ class OrderExtra
     public function setEmail($email)
     {
         $this->email = $email;
-    
+
         return $this;
     }
 
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContact()
+    {
+        if (!$this->getId()) {
+            return '';
+        }
+
+        $userContactData = $this->getFirstname();
+        $surname = $this->getLastname();
+        $email = $this->getEmail();
+        $phone = $this->getPhone();
+
+        if (!empty($surname)) {
+            $userContactData .= ' '.$surname;
+        }
+        if (!empty($email)) {
+            $userContactData .= ', '.$email;
+        }
+        if (!empty($phone)) {
+            $userContactData .= ', '.$phone;
+        }
+
+        return $userContactData;
     }
 }
