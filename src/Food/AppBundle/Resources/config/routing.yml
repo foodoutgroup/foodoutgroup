@@ -66,6 +66,22 @@ food_game:
     pattern: /test/game/
     defaults: { _controller: FoodAppBundle:Game:index }
 
+food_game_prod_nokey:
+    pattern: /registracija_zaidimui
+    defaults: { _controller: FoodAppBundle:Game:index, key: bot}
+
+food_game_prod_lv_nokey:
+    pattern: /registracija_speli
+    defaults: { _controller: FoodAppBundle:Game:index, key: bot}
+
+food_game_prod_nokey_slash:
+    pattern: /registracija_zaidimui/
+    defaults: { _controller: FoodAppBundle:Game:index, key: bot}
+
+food_game_prod_lv_nokey_slash:
+    pattern: /registracija_speli/
+    defaults: { _controller: FoodAppBundle:Game:index, key: bot}
+
 food_game_prod:
     pattern: /registracija_zaidimui/{key}
     defaults: { _controller: FoodAppBundle:Game:index, key: ~ }
@@ -218,9 +234,29 @@ food_cart:
     resource: "@FoodCartBundle/Resources/config/routing.yml"
     prefix:   /cart
 
+food_cart_locale:
+    pattern: /{redirLocale}/cart/{placeId}
+    defaults: { _controller: FoodCartBundle:Default:index, redirLocale: ~, placeId: ~}
+    requirements:
+        redirLocale:  "[a-z]{2}"
+
+food_cart_action_locale:
+    pattern:  /{redirLocale}/cart/action/{action}/
+    defaults: { _controller: FoodCartBundle:Default:action, redirLocale: ~, action: empty }
+    options:
+        expose: true
+    requirements:
+        redirLocale:  "[a-z]{2}"
+
 food_ajax_dish:
     pattern: /ajax/dish/{dish}
     defaults: { _controller: FoodDishesBundle:Dish:getDish, dish: ~}
+
+food_ajax_dish_locale:
+    pattern: /{redirLocale}/ajax/dish/{dish}
+    defaults: { _controller: FoodDishesBundle:Dish:getDish, redirLocale: ~, dish: ~}
+    requirements:
+        redirLocale:  "[a-z]{2}"
 
 food_ajax_edit_dish:
     pattern: /ajax/edit-dish-in-cart/{dish}/{cartId}
@@ -236,6 +272,13 @@ food_ajax:
     options:
         expose: true
 
+food_ajax_locale:
+    pattern: /{redirLocale}/ajax/{action}/
+    defaults: { _controller: FoodAppBundle:Ajax:ajax, redirLocale: ~, action: ~}
+    options:
+        expose: true
+    requirements:
+        redirLocale:  "[a-z]{2}"
 
 food_place_en:
     resource: "@FoodPlacesBundle/Resources/config/routing_en.yml"
@@ -270,6 +313,20 @@ food_kitchens_filter:
     defaults: { _controller: FoodDishesBundle:Kitchen:kitchenlist }
     options:
         expose: true
+
+food_places_filter_locale:
+    pattern: /{redirLocale}/places/filter/
+    defaults: { _controller: FoodPlacesBundle:Default:list, redirLocale: ~}
+    requirements:
+        redirLocale:  "[a-z]{2}"
+
+food_kitchens_filter_locale:
+    pattern: /{redirLocale}/kitchens/filter/
+    defaults: { _controller: FoodDishesBundle:Kitchen:kitchenlist, redirLocale: ~}
+    options:
+        expose: true
+    requirements:
+        redirLocale:  "[a-z]{2}"
 
 static:
     path:     /static/{id}
