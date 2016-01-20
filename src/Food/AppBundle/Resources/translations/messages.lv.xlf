@@ -195,11 +195,11 @@
       </trans-unit>
       <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
         <source>general.sms.user.order_accepted</source>
-        <target>Sveiki! restourant_name apstiprinaja Jusu pasutijumu. Ediena planotais piegades laiks ir delivery_time! Ja Jums rodas jautajumi, sazinieties pa talruni +37167363663!</target>
+        <target>Sveiki! restourant_name jau steidzas pie Jums! Planotais piegades laiks ir delivery_time! Sazinai: +371 67363663</target>
       </trans-unit>
       <trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
         <source>general.sms.user.order_accepted_preorder</source>
-        <target>Sveiki! restourant_name apstiprinaja Jusu pasutijumu. Ediena planotais piegades laiks ir pre_delivery_time! Ja Jums rodas jautajumi, sazinieties pa talruni +37167363663!</target>
+        <target>Sveiki! restourant_name jau steidzas pie Jums! Planotais piegades laiks ir pre_delivery_time! Sazinai: +371 67363663</target>
       </trans-unit>
       <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
         <source>general.sms.user.order_accepted_pickup</source>
