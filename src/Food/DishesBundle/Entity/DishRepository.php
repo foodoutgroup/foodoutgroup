@@ -18,11 +18,12 @@ class DishRepository extends EntityRepository
             ->leftJoin('d.dates', 'dd', 'WITH', 'dd.dish = d.id')
             ->where('c.id = '.$categoryId)
             ->andWhere('d.active = 1
-                AND ((d.useDateInterval = 1 AND :curr_date >= dd.start AND :curr_date <= dd.end) OR (d.useDateInterval = 0)
-                AND (d.checkEvenOddWeek = 1 AND d.evenWeek = :curr_week) OR (d.checkEvenOddWeek = 0))
+                AND ((d.useDateInterval = 1 AND :curr_date >= dd.start AND :curr_date <= dd.end) OR (d.useDateInterval = 0))
+                AND ((d.checkEvenOddWeek = 1 AND d.evenWeek = :curr_week) OR (d.checkEvenOddWeek = 0))
             ')
             ->setParameter('curr_date', date('Y-m-d'))
             ->setParameter('curr_week', $currentWeek);
+
         return $qb->getQuery()->getResult();
     }
 
