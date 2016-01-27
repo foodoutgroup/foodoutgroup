@@ -261,7 +261,7 @@ class OrderAdminController extends Controller
         $qry = "SELECT o.*, oe.*, d.extId as driver_id
                 FROM orders o
                 LEFT JOIN order_extra oe ON o.id = oe.order_id
-                INNER JOIN drivers d ON o.driver_id = d.id
+                LEFT JOIN drivers d ON o.driver_id = d.id
                 WHERE 1 = 1 " . $where;
         return new DoctrineDBALConnectionSourceIterator($conn, $qry);
     }
