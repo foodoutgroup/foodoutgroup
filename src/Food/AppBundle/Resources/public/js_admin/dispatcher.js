@@ -22,6 +22,19 @@ var Dispatcher = {
     onLoadEvents: function() {
         $('.city_list').tabs();
 
+        $('.city_list .city-tab a').on( "click", function( event ) {
+            var city = $(event.target).parent().attr('data-city');
+            var driversHolder = $('.drivers_list');
+
+            // Wow - such hack.. Very sorry for this
+            if (city.indexOf('Bendoriai') > -1) {
+                city = 'Vilnius';
+            }
+
+            driversHolder.find('.city_drivers').addClass('hidden');
+            driversHolder.find('.city_drivers.driver_'+city).removeClass('hidden');
+        } );
+
         // Visus stripintus tekstus ispiesim tooltipe :)
         $(".spliced-text").tooltip({});
 
@@ -44,6 +57,7 @@ var Dispatcher = {
 
         $(".order_list.unassigned .order_checkbox, .order_list.not_finished .order_checkbox").bind('click', function(){
             Dispatcher.toggleDriverButton($(this));
+            //TODO - enable active drivers list buttons
         });
 
         $(".change_status_button").bind('click', function() {
@@ -64,9 +78,10 @@ var Dispatcher = {
             );
         });
 
+        /* At the moment disabled. TODO - use this function to refresh drivers list
         $(".get_drivers_button ").bind('click', function() {
             Dispatcher.getDriversList($(this));
-        });
+        });*/
 
         $('.drivers_list').delegate('.assign-driver', 'click', function() {
             Dispatcher.assignDriver($(this).attr('item-id'));
@@ -99,13 +114,15 @@ var Dispatcher = {
 
     toggleDriverButton: function(checkbox) {
         var activeList = checkbox.closest(".order_list");
-        var button = activeList.parent().find('.get_drivers_button');
+        // Old button
+        //var button = activeList.parent().find('.get_drivers_button');
+        var buttons = $('.drivers_list .city_drivers:visible').find('button');
         var checkedBoxes = activeList.find('.order_checkbox:checked');
 
         if (checkedBoxes.size() > 0) {
-            button.attr('disabled', false);
+            buttons.attr('disabled', false);
         } else {
-            button.attr('disabled', true);
+            buttons.attr('disabled', true);
         }
     },
 
