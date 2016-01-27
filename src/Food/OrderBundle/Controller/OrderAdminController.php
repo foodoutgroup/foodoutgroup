@@ -201,6 +201,11 @@ class OrderAdminController extends Controller
                                 $where .= " AND o.payment_status = " . $prepare_val($value['value']);
                             }
                             break;
+                        case 'deliveryType':
+                            if (!empty($value['value'])) {
+                                $where .= " AND o.delivery_type = " . $prepare_val($value['value']);
+                            }
+                            break;
                         case 'mobile':
                             if (!empty($value['value']) && $value['value'] != 2) {
                                 $where .= " AND o.mobile = " . $prepare_val($value['value'] == 2 ? null : $value['value']);
@@ -258,7 +263,6 @@ class OrderAdminController extends Controller
                 LEFT JOIN order_extra oe ON o.id = oe.order_id
                 INNER JOIN drivers d ON o.driver_id = d.id
                 WHERE 1 = 1 " . $where;
-
         return new DoctrineDBALConnectionSourceIterator($conn, $qry);
     }
 }
