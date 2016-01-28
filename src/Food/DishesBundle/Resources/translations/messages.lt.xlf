@@ -1,203 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="lt" datatype="plaintext" original="file.ext">
-    <body>
-      <trans-unit id="2c33fa8aaa15d65cb09a1d95fc568389" resname="admin.place.point.weekdays_worktime">
-        <source>admin.place.point.weekdays_worktime</source>
-        <target>__admin.place.point.weekdays_worktime</target>
-      </trans-unit>
-      <trans-unit id="71a90248a7aa53edadd8afb53ded4acf" resname="dish.select_size">
-        <source>dish.select_size</source>
-        <target>Pasirinkite dydį</target>
-      </trans-unit>
-      <trans-unit id="69c86123da06eeee7c5c169db51400cd" resname="dish.select_options">
-        <source>dish.select_options</source>
-        <target>Pasirinkite papildomų priedų</target>
-      </trans-unit>
-      <trans-unit id="88b14861f44ed09bb7f45d4edbc7fa9d" resname="dish.add_to_cart">
-        <source>dish.add_to_cart</source>
-        <target>Pridėti į krepšelį</target>
-      </trans-unit>
-      <trans-unit id="0a951587b898b69f4e5b5cfdf92e7852" resname="places.select_kitchen">
-        <source>places.select_kitchen</source>
-        <target>Virtuvės</target>
-      </trans-unit>
-      <trans-unit id="62b1dc63ada5280847a9887717d0aeb0" resname="places.count">
-        <source>places.count</source>
-        <target>__places.count</target>
-      </trans-unit>
-      <trans-unit id="bd1085bf90cf48967828c550718c86b0" resname="places.show_only">
-        <source>places.show_only</source>
-        <target>Rodyti tik</target>
-      </trans-unit>
-      <trans-unit id="1ddd5e1e2eb721afb9e2ab1ef94a1764" resname="places.discount">
-        <source>places.discount</source>
-        <target>Nuolaidos</target>
-      </trans-unit>
-      <trans-unit id="d4b8bb2c55c7e24d11f7dbc62e9ec22e" resname="places.pickup">
-        <source>places.pickup</source>
-        <target>Atsiimsiu pats</target>
-      </trans-unit>
-      <trans-unit id="7e1496e92a6e24b7dd800661764bdc22" resname="places.prepaid">
-        <source>places.prepaid</source>
-        <target>Apmokėjimas iš anksto</target>
-      </trans-unit>
-      <trans-unit id="897c2eb6c2a84ef4214ff5f5f233e5c3" resname="places.payments.cash">
-        <source>places.payments.cash</source>
-        <target>grynais</target>
-      </trans-unit>
-      <trans-unit id="e9e5aae965e7619098a6803f2ad42df3" resname="places.payments.card">
-        <source>places.payments.card</source>
-        <target>kortele</target>
-      </trans-unit>
-      <trans-unit id="places.payments.online" resname="places.payments.online">
-        <source>places.payments.online</source>
-        <target>pavedimu</target>
-      </trans-unit>
-      <trans-unit id="f2377b3408835a32e98c2b5eb8b21043" resname="places.home">
-        <source>places.home</source>
-        <target>Pradžia</target>
-      </trans-unit>
-      <trans-unit id="acd4bfe53bef0a8ccb990ef6be9f0e38" resname="places.menu">
-        <source>places.menu</source>
-        <target>Valgiaraštis</target>
-      </trans-unit>
-      <trans-unit id="1b039906355efdc4c9eb48ca625c993c" resname="places.reviews">
-        <source>places.reviews</source>
-        <target>Atsiliepimai</target>
-      </trans-unit>
-      <trans-unit id="places.reviews.empty_review" resname="places.reviews.empty_review">
-        <source>places.reviews.empty_review</source>
-        <target>Įveskite atsiliepimą</target>
-      </trans-unit>
-      <trans-unit id="places.reviews.empty_rating" resname="places.reviews.empty_rating">
-        <source>places.reviews.empty_rating</source>
-        <target>Įvertinkite restoraną žvaigždutėmis</target>
-      </trans-unit>
-      <trans-unit id="2a5d4d12eceaf831f2410429e3ca36db" resname="places.information">
-        <source>places.information</source>
-        <target>Kaip rasti restoraną</target>
-      </trans-unit>
-      <trans-unit id="2ad4aed8aed8e7bade514a402f54e857" resname="places.food_categories">
-        <source>places.food_categories</source>
-        <target>Kategorijos</target>
-      </trans-unit>
-      <trans-unit id="places.select_place_point" resname="places.select_place_point">
-        <source>places.select_place_point</source>
-        <target>Restoranas</target>
-      </trans-unit>
-      <trans-unit id="places.work_hours" resname="places.work_hours">
-        <source>places.work_hours</source>
-        <target>Darbo laikas</target>
-      </trans-unit>
-      <trans-unit id="54a568de728392bbf4375dd135a19a2c" resname="%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų">
-        <source>%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų</source>
-        <target>%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų</target>
-      </trans-unit>
-      <trans-unit id="22056c616e95f30e6682641408e22382" resname="places.add_review">
-        <source>places.add_review</source>
-        <target>Pridėk atsiliepimą</target>
-      </trans-unit>
-      <trans-unit id="places.dishes_title" resname="places.dishes_title">
-        <source>places.dishes_title</source>
-        <target>Valgiaraštis</target>
-      </trans-unit>
-      <trans-unit id="488219962375251b4c263e1bf17ecee5" resname="places.about_place">
-        <source>places.about_place</source>
-        <target>Apie restoraną</target>
-      </trans-unit>
-      <trans-unit id="35e48d3ceb5351734231383f33eb146f" resname="places.kitchen">
-        <source>places.kitchen</source>
-        <target>Virtuvė</target>
-      </trans-unit>
-      <trans-unit id="34fcaf590fc5f51af781ec9ad7d2346f" resname="places.delivery_time">
-        <source>places.delivery_time</source>
-        <target>Pristatymo laikas</target>
-      </trans-unit>
-      <trans-unit id="1666919589cd27c8e8760387b73d4cc6" resname="places.delivery_price">
-        <source>places.delivery_price</source>
-        <target>Pristatymo kaina</target>
-      </trans-unit>
-      <trans-unit id="places.card_on_delivery" resname="places.card_on_delivery">
-        <source>places.card_on_delivery</source>
-        <target>Atsiskaitymas kortele pristatymo metu</target>
-      </trans-unit>
-      <trans-unit id="d2985ecde1e05e0634f3e4ff73f3b9e9" resname="places.minimal_cart">
-        <source>places.minimal_cart</source>
-        <target>Minimalus krepšelis</target>
-      </trans-unit>
-      <trans-unit id="c2eb02ecd5b977afcd9bb7debc933580" resname="places.payment_types">
-        <source>places.payment_types</source>
-        <target>Atsiskaitymo būdai</target>
-      </trans-unit>
-      <trans-unit id="2959b64c009ed9401127be790a2ff07c" resname="general.monday">
-        <source>general.monday</source>
-        <target>Pirmadienis</target>
-      </trans-unit>
-      <trans-unit id="2c16213741894b2eb3d52bb0d19f09f8" resname="general.tuesday">
-        <source>general.tuesday</source>
-        <target>Antradienis</target>
-      </trans-unit>
-      <trans-unit id="6fa5c09bc3767c60c28af857d7df4156" resname="general.wednesday">
-        <source>general.wednesday</source>
-        <target>Trečiadienis</target>
-      </trans-unit>
-      <trans-unit id="ef1989a1a305d90280ba3556d15db40b" resname="general.thursday">
-        <source>general.thursday</source>
-        <target>Ketvirtadienis</target>
-      </trans-unit>
-      <trans-unit id="7e2f99db197283f0fdcf1702d38e4764" resname="general.friday">
-        <source>general.friday</source>
-        <target>Penktadienis</target>
-      </trans-unit>
-      <trans-unit id="4cf1687fac2b3ab99b68f14c78fd2e6b" resname="general.saturday">
-        <source>general.saturday</source>
-        <target>Šeštadienis</target>
-      </trans-unit>
-      <trans-unit id="3dd7c317079d0103ba961c6bfc7d0a35" resname="general.sunday">
-        <source>general.sunday</source>
-        <target>Sekmadienis</target>
-      </trans-unit>
-      <trans-unit id="1181d30f3954e89601ce6ba723eb04dc" resname="dish.select_quantity">
-        <source>dish.select_quantity</source>
-        <target>Kiekis</target>
-      </trans-unit>
-      <trans-unit id="dish.remove_from_cart" resname="dish.remove_from_cart">
-          <source>dish.remove_from_cart</source>
-          <target>Pašalinti</target>
-      </trans-unit>
-      <trans-unit id="general.review_title" resname="general.review_title">
-        <source>general.review_title</source>
-        <target>Naujas atsiliepimas</target>
-      </trans-unit>
-      <trans-unit id="general.submit_review" resname="general.submit_review">
-        <source>general.submit_review</source>
-        <target>Sukurti</target>
-      </trans-unit>
-      <trans-unit id="general.review" resname="general.review">
-        <source>general.review</source>
-        <target>Atsiliepimas</target>
-      </trans-unit>
-      <trans-unit id="general.rating" resname="general.rating">
-        <source>general.rating</source>
-        <target>Įvertinimas</target>
-      </trans-unit>
-      <trans-unit id="general.alcohol_confirmation.confirm" resname="general.alcohol_confirmation.confirm">
-        <source>general.alcohol_confirmation.confirm</source>
-        <target>Patvirtinu</target>
-      </trans-unit>
-      <trans-unit id="general.alcohol_confirmation.exit" resname="general.alcohol_confirmation.exit">
-        <source>general.alcohol_confirmation.exit</source>
-        <target>Išeiti</target>
-      </trans-unit>
-      <trans-unit id="yes" resname="yes">
-        <source>yes</source>
-        <target>Taip</target>
-      </trans-unit>
-      <trans-unit id="no" resname="no">
-        <source>no</source>
-        <target>Ne</target>
-      </trans-unit>
-    </body>
-  </file>
+    <file source-language="lt" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="2c33fa8aaa15d65cb09a1d95fc568389" resname="admin.place.point.weekdays_worktime">
+                <source>admin.place.point.weekdays_worktime</source>
+                <target>__admin.place.point.weekdays_worktime</target>
+            </trans-unit>
+            <trans-unit id="71a90248a7aa53edadd8afb53ded4acf" resname="dish.select_size">
+                <source>dish.select_size</source>
+                <target>Pasirinkite dydį</target>
+            </trans-unit>
+            <trans-unit id="69c86123da06eeee7c5c169db51400cd" resname="dish.select_options">
+                <source>dish.select_options</source>
+                <target>Pasirinkite papildomų priedų</target>
+            </trans-unit>
+            <trans-unit id="88b14861f44ed09bb7f45d4edbc7fa9d" resname="dish.add_to_cart">
+                <source>dish.add_to_cart</source>
+                <target>Pridėti į krepšelį</target>
+            </trans-unit>
+            <trans-unit id="0a951587b898b69f4e5b5cfdf92e7852" resname="places.select_kitchen">
+                <source>places.select_kitchen</source>
+                <target>Virtuvės</target>
+            </trans-unit>
+            <trans-unit id="62b1dc63ada5280847a9887717d0aeb0" resname="places.count">
+                <source>places.count</source>
+                <target>__places.count</target>
+            </trans-unit>
+            <trans-unit id="bd1085bf90cf48967828c550718c86b0" resname="places.show_only">
+                <source>places.show_only</source>
+                <target>Rodyti tik</target>
+            </trans-unit>
+            <trans-unit id="1ddd5e1e2eb721afb9e2ab1ef94a1764" resname="places.discount">
+                <source>places.discount</source>
+                <target>Nuolaidos</target>
+            </trans-unit>
+            <trans-unit id="d4b8bb2c55c7e24d11f7dbc62e9ec22e" resname="places.pickup">
+                <source>places.pickup</source>
+                <target>Atsiimsiu pats</target>
+            </trans-unit>
+            <trans-unit id="7e1496e92a6e24b7dd800661764bdc22" resname="places.prepaid">
+                <source>places.prepaid</source>
+                <target>Apmokėjimas iš anksto</target>
+            </trans-unit>
+            <trans-unit id="897c2eb6c2a84ef4214ff5f5f233e5c3" resname="places.payments.cash">
+                <source>places.payments.cash</source>
+                <target>grynais</target>
+            </trans-unit>
+            <trans-unit id="e9e5aae965e7619098a6803f2ad42df3" resname="places.payments.card">
+                <source>places.payments.card</source>
+                <target>kortele</target>
+            </trans-unit>
+            <trans-unit id="places.payments.online" resname="places.payments.online">
+                <source>places.payments.online</source>
+                <target>pavedimu</target>
+            </trans-unit>
+            <trans-unit id="f2377b3408835a32e98c2b5eb8b21043" resname="places.home">
+                <source>places.home</source>
+                <target>Pradžia</target>
+            </trans-unit>
+            <trans-unit id="acd4bfe53bef0a8ccb990ef6be9f0e38" resname="places.menu">
+                <source>places.menu</source>
+                <target>Valgiaraštis</target>
+            </trans-unit>
+            <trans-unit id="1b039906355efdc4c9eb48ca625c993c" resname="places.reviews">
+                <source>places.reviews</source>
+                <target>Atsiliepimai</target>
+            </trans-unit>
+            <trans-unit id="places.reviews.empty_review" resname="places.reviews.empty_review">
+                <source>places.reviews.empty_review</source>
+                <target>Įveskite atsiliepimą</target>
+            </trans-unit>
+            <trans-unit id="places.reviews.empty_rating" resname="places.reviews.empty_rating">
+                <source>places.reviews.empty_rating</source>
+                <target>Įvertinkite restoraną žvaigždutėmis</target>
+            </trans-unit>
+            <trans-unit id="2a5d4d12eceaf831f2410429e3ca36db" resname="places.information">
+                <source>places.information</source>
+                <target>Kaip rasti restoraną</target>
+            </trans-unit>
+            <trans-unit id="2ad4aed8aed8e7bade514a402f54e857" resname="places.food_categories">
+                <source>places.food_categories</source>
+                <target>Kategorijos</target>
+            </trans-unit>
+            <trans-unit id="places.select_place_point" resname="places.select_place_point">
+                <source>places.select_place_point</source>
+                <target>Restoranas</target>
+            </trans-unit>
+            <trans-unit id="places.work_hours" resname="places.work_hours">
+                <source>places.work_hours</source>
+                <target>Darbo laikas</target>
+            </trans-unit>
+            <trans-unit id="54a568de728392bbf4375dd135a19a2c" resname="%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų">
+                <source>%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų</source>
+                <target>%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų</target>
+            </trans-unit>
+            <trans-unit id="22056c616e95f30e6682641408e22382" resname="places.add_review">
+                <source>places.add_review</source>
+                <target>Pridėk atsiliepimą</target>
+            </trans-unit>
+            <trans-unit id="places.dishes_title" resname="places.dishes_title">
+                <source>places.dishes_title</source>
+                <target>Valgiaraštis</target>
+            </trans-unit>
+            <trans-unit id="488219962375251b4c263e1bf17ecee5" resname="places.about_place">
+                <source>places.about_place</source>
+                <target>Apie restoraną</target>
+            </trans-unit>
+            <trans-unit id="35e48d3ceb5351734231383f33eb146f" resname="places.kitchen">
+                <source>places.kitchen</source>
+                <target>Virtuvė</target>
+            </trans-unit>
+            <trans-unit id="34fcaf590fc5f51af781ec9ad7d2346f" resname="places.delivery_time">
+                <source>places.delivery_time</source>
+                <target>Pristatymo laikas</target>
+            </trans-unit>
+            <trans-unit id="1666919589cd27c8e8760387b73d4cc6" resname="places.delivery_price">
+                <source>places.delivery_price</source>
+                <target>Pristatymo kaina</target>
+            </trans-unit>
+            <trans-unit id="places.card_on_delivery" resname="places.card_on_delivery">
+                <source>places.card_on_delivery</source>
+                <target>Atsiskaitymas kortele pristatymo metu</target>
+            </trans-unit>
+            <trans-unit id="d2985ecde1e05e0634f3e4ff73f3b9e9" resname="places.minimal_cart">
+                <source>places.minimal_cart</source>
+                <target>Minimalus krepšelis</target>
+            </trans-unit>
+            <trans-unit id="c2eb02ecd5b977afcd9bb7debc933580" resname="places.payment_types">
+                <source>places.payment_types</source>
+                <target>Atsiskaitymo būdai</target>
+            </trans-unit>
+            <trans-unit id="2959b64c009ed9401127be790a2ff07c" resname="general.monday">
+                <source>general.monday</source>
+                <target>Pirmadienis</target>
+            </trans-unit>
+            <trans-unit id="2c16213741894b2eb3d52bb0d19f09f8" resname="general.tuesday">
+                <source>general.tuesday</source>
+                <target>Antradienis</target>
+            </trans-unit>
+            <trans-unit id="6fa5c09bc3767c60c28af857d7df4156" resname="general.wednesday">
+                <source>general.wednesday</source>
+                <target>Trečiadienis</target>
+            </trans-unit>
+            <trans-unit id="ef1989a1a305d90280ba3556d15db40b" resname="general.thursday">
+                <source>general.thursday</source>
+                <target>Ketvirtadienis</target>
+            </trans-unit>
+            <trans-unit id="7e2f99db197283f0fdcf1702d38e4764" resname="general.friday">
+                <source>general.friday</source>
+                <target>Penktadienis</target>
+            </trans-unit>
+            <trans-unit id="4cf1687fac2b3ab99b68f14c78fd2e6b" resname="general.saturday">
+                <source>general.saturday</source>
+                <target>Šeštadienis</target>
+            </trans-unit>
+            <trans-unit id="3dd7c317079d0103ba961c6bfc7d0a35" resname="general.sunday">
+                <source>general.sunday</source>
+                <target>Sekmadienis</target>
+            </trans-unit>
+            <trans-unit id="1181d30f3954e89601ce6ba723eb04dc" resname="dish.select_quantity">
+                <source>dish.select_quantity</source>
+                <target>Kiekis</target>
+            </trans-unit>
+            <trans-unit id="dish.remove_from_cart" resname="dish.remove_from_cart">
+                <source>dish.remove_from_cart</source>
+                <target>Pašalinti</target>
+            </trans-unit>
+            <trans-unit id="general.review_title" resname="general.review_title">
+                <source>general.review_title</source>
+                <target>Naujas atsiliepimas</target>
+            </trans-unit>
+            <trans-unit id="general.submit_review" resname="general.submit_review">
+                <source>general.submit_review</source>
+                <target>Sukurti</target>
+            </trans-unit>
+            <trans-unit id="general.review" resname="general.review">
+                <source>general.review</source>
+                <target>Atsiliepimas</target>
+            </trans-unit>
+            <trans-unit id="general.rating" resname="general.rating">
+                <source>general.rating</source>
+                <target>Įvertinimas</target>
+            </trans-unit>
+            <trans-unit id="general.alcohol_confirmation.confirm" resname="general.alcohol_confirmation.confirm">
+                <source>general.alcohol_confirmation.confirm</source>
+                <target>Patvirtinu</target>
+            </trans-unit>
+            <trans-unit id="general.alcohol_confirmation.exit" resname="general.alcohol_confirmation.exit">
+                <source>general.alcohol_confirmation.exit</source>
+                <target>Išeiti</target>
+            </trans-unit>
+            <trans-unit id="yes" resname="yes">
+                <source>yes</source>
+                <target>Taip</target>
+            </trans-unit>
+            <trans-unit id="no" resname="no">
+                <source>no</source>
+                <target>Ne</target>
+            </trans-unit>
+        </body>
+    </file>
 </xliff>

@@ -1,1294 +1,1291 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="lv" datatype="plaintext" original="file.ext">
-    <body>
-      <trans-unit id="e50b21cf0f01ec6f209d0f2a68d68001" resname="index.app_title">
-        <source>index.app_title</source>
-        <target>programma</target>
-      </trans-unit>
-      <trans-unit id="e79f0a96a14972d5383cff1e3fc00475" resname="index.newsletter">
-        <source>index.newsletter</source>
-        <target>Jaunumi</target>
-      </trans-unit>
-      <trans-unit id="80ae01ad89a36c878618f64044dd7ae4" resname="index.newsletter_email">
-        <source>index.newsletter_email</source>
-        <target>Tavs e-pasts</target>
-      </trans-unit>
-      <trans-unit id="4687d99df9fae3b62e92c6b2b9b0e4ef" resname="index.newsletter_subscribe">
-        <source>index.newsletter_subscribe</source>
-        <target>Pierakstīties</target>
-      </trans-unit>
-      <trans-unit id="330dab2ab36aa511c007b7b9b0f7beb4" resname="index.get_best_offers">
-        <source>index.get_best_offers</source>
-        <target>Mūsu jaunumi būs Tavā epastā.</target>
-      </trans-unit>
-      <trans-unit id="0f5af6d10500595133a032984ec5dca4" resname="index.get_best_offers2">
-        <source>index.get_best_offers2</source>
-        <target>Tie sola informēt par gardākajām ziņām un īpašiem piedāvājumiem.</target>
-      </trans-unit>
-      <trans-unit id="index.get_this_offer" resname="index.get_this_offer">
-        <source>index.get_this_offer</source>
-        <target>PASŪTI</target>
-      </trans-unit>
-      <trans-unit id="be95147756721360c95dba571491c885" resname="index.city">
-        <source>index.city</source>
-        <target>Izvēlieties pilsētu</target>
-      </trans-unit>
-      <trans-unit id="44f58adead70171ab653c725c9abf0c3" resname="index.street">
-        <source>index.street</source>
-        <target>Adrese (piemēram, Brīvības iela)</target>
-      </trans-unit>
-      <trans-unit id="ae42ec23996ed8336de6d8f13c401db1" resname="index.house">
-        <source>index.house</source>
-        <target>Māja</target>
-      </trans-unit>
-      <trans-unit id="index.flat" resname="index.flat">
-        <source>index.flat</source>
-        <target>Dzīvoklis</target>
-      </trans-unit>
-      <trans-unit id="bb1fb2fdfdba48c2b3d2ec83e968729c" resname="index.findfood">
-        <source>index.findfood</source>
-        <target>Meklēt</target>
-      </trans-unit>
-
-      <trans-unit id="kitchen.filter.slug" resname="kitchen.filter.slug">
-        <source>kitchen.filter.slug</source>
-        <target>restorani-ar-virtuvi</target>
-      </trans-unit>
-
-      <trans-unit id="admin.upload_size_message" resname="admin.upload_size_message">
-        <source>admin.upload_size_message</source>
-        <target>File size is greater than 2MB</target>
-      </trans-unit>
-
-      <trans-unit id="1b78b59bfe4159583adb10ffa46bd822" resname="admin.kitchens.list.title">
-        <source>admin.kitchens.list.title</source>
-        <target>__admin.kitchens.list.title</target>
-      </trans-unit>
-      <trans-unit id="b3351508f66637ec0ac630ec350055e4" resname="admin.kitchens.list.name">
-        <source>admin.kitchens.list.name</source>
-        <target>__admin.kitchens.list.name</target>
-      </trans-unit>
-      <trans-unit id="8e692e1d1e1d412f8e6a1cc4696e5b69" resname="admin.kitchens.list.names">
-        <source>admin.kitchens.list.names</source>
-        <target>__admin.kitchens.list.names</target>
-      </trans-unit>
-      <trans-unit id="d945b749c1a3dbbdeedd263aeb5fadab" resname="admin.kitchens.list.count">
-        <source>admin.kitchens.list.count</source>
-        <target>__admin.kitchens.list.count</target>
-      </trans-unit>
-      <trans-unit id="5b91a93147542303c1c2c89439854708" resname="admin.kitchens.list.logo">
-        <source>admin.kitchens.list.logo</source>
-        <target>__admin.kitchens.list.logo</target>
-      </trans-unit>
-      <trans-unit id="450abc8065b25de909f6b3b51a04ece9" resname="admin.kitchens.list.visible">
-        <source>admin.kitchens.list.visible</source>
-        <target>__admin.kitchens.list.visible</target>
-      </trans-unit>
-      <trans-unit id="e01ccc4c69ee9b9c0037ad68235939d7" resname="admin.kitchens.list.actions">
-        <source>admin.kitchens.list.actions</source>
-        <target>__admin.kitchens.list.actions</target>
-      </trans-unit>
-      <trans-unit id="57043705200df1898f57a4ce31dc0f63" resname="admin.kitchens.list.actions.edit">
-        <source>admin.kitchens.list.actions.edit</source>
-        <target>__admin.kitchens.list.actions.edit</target>
-      </trans-unit>
-      <trans-unit id="78b4d0746d98867ab7995de3f2efaa7d" resname="admin.kitchens.list.actions.hide">
-        <source>admin.kitchens.list.actions.hide</source>
-        <target>__admin.kitchens.list.actions.hide</target>
-      </trans-unit>
-      <trans-unit id="a47a47cbe974b40c660db3a66a319562" resname="admin.kitchens.list.actions.unhide">
-        <source>admin.kitchens.list.actions.unhide</source>
-        <target>__admin.kitchens.list.actions.unhide</target>
-      </trans-unit>
-      <trans-unit id="cb5f3d5170208bd9aa3c07943fb9dd9b" resname="menu.main">
-        <source>menu.main</source>
-        <target>__menu.main</target>
-      </trans-unit>
-      <trans-unit id="63a3cc8df7d7043893e936b3a78f563c" resname="menu.about">
-        <source>menu.about</source>
-        <target>__menu.about</target>
-      </trans-unit>
-      <trans-unit id="7c5e189629698dd56afce1a5d358e831" resname="menu.contacts">
-        <source>menu.contacts</source>
-        <target>__menu.contacts</target>
-      </trans-unit>
-      <trans-unit id="04def2e17dbd7185519d9868066219a9" resname="menu.kitchens">
-        <source>menu.kitchens</source>
-        <target>__menu.kitchens</target>
-      </trans-unit>
-      <trans-unit id="77efd5ab64d10c8229919a263b1b6b68" resname="menu.profile">
-        <source>menu.profile</source>
-        <target>__menu.profile</target>
-      </trans-unit>
-      <trans-unit id="f57a89cbe68f6af28e00257032d944fb" resname="menu.profile.mycart">
-        <source>menu.profile.mycart</source>
-        <target>__menu.profile.mycart</target>
-      </trans-unit>
-      <trans-unit id="2c12928c2b481a0ba22da97349742794" resname="menu.profile.orders">
-        <source>menu.profile.orders</source>
-        <target>__menu.profile.orders</target>
-      </trans-unit>
-      <trans-unit id="5081fc8d0f945c9a8e083b2d21244650" resname="menu.profile.extra">
-        <source>menu.profile.extra</source>
-        <target>__menu.profile.extra</target>
-      </trans-unit>
-      <trans-unit id="ba502d1e2376f12a17d1902204a318d8" resname="menu.profile.settings">
-        <source>menu.profile.settings</source>
-        <target>__menu.profile.settings</target>
-      </trans-unit>
-      <trans-unit id="ab34660b67604dfa9b208a59f94c9a08" resname="menu.profile.logout">
-        <source>menu.profile.logout</source>
-        <target>__menu.profile.logout</target>
-      </trans-unit>
-      <trans-unit id="3a6d739fc186be6ccdf3b67db3879024" resname="admin.places.list.title">
-        <source>admin.places.list.title</source>
-        <target>__admin.places.list.title</target>
-      </trans-unit>
-      <trans-unit id="ef56946c08fa72828e61c1de8e6cd616" resname="admin.places.list.name">
-        <source>admin.places.list.name</source>
-        <target>__admin.places.list.name</target>
-      </trans-unit>
-      <trans-unit id="9ac1d2eb6bba30b4bbdff668c756d7dc" resname="admin.places.list.logo">
-        <source>admin.places.list.logo</source>
-        <target>__admin.places.list.logo</target>
-      </trans-unit>
-      <trans-unit id="47d1294456e7349f13e641a512853509" resname="admin.places.list.active">
-        <source>admin.places.list.active</source>
-        <target>__admin.places.list.active</target>
-      </trans-unit>
-      <trans-unit id="ee2c37575cd299bdbf11641685025c99" resname="admin.places.list.actions">
-        <source>admin.places.list.actions</source>
-        <target>__admin.places.list.actions</target>
-      </trans-unit>
-      <trans-unit id="82f38344a9b8d9d8753e67e3af18fd29" resname="admin.places.list.actions.hide">
-        <source>admin.places.list.actions.hide</source>
-        <target>__admin.places.list.actions.hide</target>
-      </trans-unit>
-      <trans-unit id="ad28d8014ac5520ca250e91a626122c7" resname="admin.places.list.actions.unhide">
-        <source>admin.places.list.actions.unhide</source>
-        <target>__admin.places.list.actions.unhide</target>
-      </trans-unit>
-      <trans-unit id="c9736bcd30d2902aaeb57bea426d0e11" resname="index.newsletter_provide_email">
-        <source>index.newsletter_provide_email</source>
-        <target>Ievadiet savu e-pasta adresi</target>
-      </trans-unit>
-      <trans-unit id="d0ca001986ba80de3d2d4bec67ea4ee5" resname="general.page_name">
-        <source>general.page_name</source>
-        <target>Foodout</target>
-      </trans-unit>
-      <trans-unit id="2b1ab5c52042b1d22f211e5c27e5f9b8" resname="general.top_restaurants">
-        <source>general.top_restaurants</source>
-        <target>TOP restorāni</target>
-      </trans-unit>
-      <trans-unit id="6ed5de5936f5473971d03ec26290dbd5" resname="general.newsletter">
-        <source>general.newsletter</source>
-        <target>Jaunumi</target>
-      </trans-unit>
-      <trans-unit id="2dcd088ae1551425f1d27f0c7c1b597f" resname="general.thank_you">
-        <source>general.thank_you</source>
-        <target>Paldies!</target>
-      </trans-unit>
-      <trans-unit id="7aaffcb3d756c2cd540c10c6feafacfa" resname="general.subscribed_newsletter">
-        <source>general.subscribed_newsletter</source>
-        <target>Jūs esat reģistrējušies jaunumu saņemšanai</target>
-      </trans-unit>
-      <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
-        <source>general.sms.user.order_accepted</source>
-        <target>Sveiki! restourant_name jau steidzas pie Jums! Planotais piegades laiks ir delivery_time! Sazinai: +371 67363663</target>
-      </trans-unit>
-      <trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
-        <source>general.sms.user.order_accepted_preorder</source>
-        <target>Sveiki! restourant_name jau steidzas pie Jums! Planotais piegades laiks ir pre_delivery_time! Sazinai: +371 67363663</target>
-      </trans-unit>
-      <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
-        <source>general.sms.user.order_accepted_pickup</source>
-        <target>Sveiki! restourant_name apstiprinaja Jusu pasutijumu. Edienu varat sanemt delivery_time! Ja Jums rodas jautajumi, sazinieties pa talruni +37167363663!</target>
-      </trans-unit>
-      <trans-unit id="general.sms.user.order_accepted_pickup_preorder" resname="general.sms.user.order_accepted_pickup_preorder">
-        <source>general.sms.user.order_accepted_pickup_preorder</source>
-        <target>Sveiki! restourant_name apstiprinaja Jusu pasutijumu. Edienu varat sanemt pre_delivery_time! Ja Jums rodas jautajumi, sazinieties pa talruni +37167363663!</target>
-      </trans-unit>
-      <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
-        <source>general.sms.client.restourant_cancel</source>
-        <target>Atvainojamies! Restorans ir atcelis Jusu pasutijumu.</target>
-      </trans-unit>
-      <trans-unit id="30dc3f60ca025a053ed3728a342c566a" resname="general.sms.client.restourant_cancel_banklink">
-        <source>general.sms.client.restourant_cancel_banklink</source>
-        <target>Atvainojamies! Restorans ir atcelis Jusu pasutijumu. Nauda tiks parskaitita atpakal uz Jusu kontu.</target>
-      </trans-unit>
-      <trans-unit id="74fbe91702c1ee04724c55bde63e654f" resname="general.email.new_order">
-        <source>general.email.new_order</source>
-        <target>jauns pasūtījums</target>
-      </trans-unit>
-      <trans-unit id="1f7e49e139506394ddc27ebbb528ce14" resname="general.email.canceled_order">
-        <source>general.email.canceled_order</source>
-        <target>atcelts pasūtījums</target>
-      </trans-unit>
-      <trans-unit id="d49bcf9cd21dc6082c4197317d362b84" resname="general.email.order_reminder">
-        <source>general.email.order_reminder</source>
-        <target>atgādinām, ka Jums ir neapstiprināts pasūtījums</target>
-      </trans-unit>
-      <trans-unit id="77c7e784b0de17ca35cb5e6e9b59b207" resname="general.email.accounting_yesterday_report">
-        <source>general.email.accounting_yesterday_report</source>
-        <target>iepriekšējās dienas pasūtījumu atskaite</target>
-      </trans-unit>
-      <trans-unit id="1c97f0a67846cbc305c963eedd2917cf" resname="general.email.driver_monthly_report">
-        <source>general.email.driver_monthly_report</source>
-        <target>iepriekšējā mēneša transp. līdz. vadītāju atskaite</target>
-      </trans-unit>
-      <trans-unit id="19554e921e608df135b269a564c8cf6a" resname="mobile.order_confirm">
-        <source>mobile.order_confirm</source>
-        <target>Apstiprināt pasūtījumu</target>
-      </trans-unit>
-      <trans-unit id="7ebe276de073f58e9744cb5e46760b88" resname="mobile.order_delay">
-        <source>mobile.order_delay</source>
-        <target>Atlikt pasūtījumu</target>
-      </trans-unit>
-      <trans-unit id="e110f798f6661e6e1ac7fbfe1f03e679" resname="mobile.order_finish">
-        <source>mobile.order_finish</source>
-        <target>Pagatavots</target>
-      </trans-unit>
-      <trans-unit id="2b94e2d1c25ddac053ea4bd3eaadd41f" resname="mobile.order_delivered">
-        <source>mobile.order_delivered</source>
-        <target>Piegādāju pasūtījumu</target>
-      </trans-unit>
-      <trans-unit id="mobile.order_picked_up" resname="mobile.order_picked_up">
-        <source>mobile.order_picked_up</source>
-        <target>Es pacēlu rezervēšanu</target>
-      </trans-unit>
-      <trans-unit id="77b3fe8d653be63c58a14017b4ffc9b7" resname="mobile.order_partialy_delivered">
-        <source>mobile.order_partialy_delivered</source>
-        <target>Piegādāju daļu pasūtījuma (klients daļu nepieņem)</target>
-      </trans-unit>
-      <trans-unit id="ebbc16fb3a732d7abe363ef2463397f9" resname="mobile.order_cancel">
-        <source>mobile.order_cancel</source>
-        <target>Atcelt pasūtījumu</target>
-      </trans-unit>
-      <trans-unit id="e9af7214246747e3648fdc0ec367494c" resname="general.places">
-        <source>general.places</source>
-        <target>Restorāni</target>
-      </trans-unit>
-    <trans-unit id="mobile.order.id" resname="mobile.order.id">
-        <source>mobile.order.id</source>
-        <target>Order no.</target>
-    </trans-unit>
-      <trans-unit id="ceb80ce24895534499f2a5a28a707fbb" resname="mobile.order_dish">
-        <source>mobile.order_dish</source>
-        <target>Ēdiens</target>
-      </trans-unit>
-      <trans-unit id="6579716641cda122d1f726af7a28cbb3" resname="mobile.order_quantity">
-        <source>mobile.order_quantity</source>
-        <target>Daudzums</target>
-      </trans-unit>
-      <trans-unit id="9078e7d978c69fa56befc6342d1b1573" resname="mobile.order_toppings">
-        <source>mobile.order_toppings</source>
-        <target>Piedevas</target>
-      </trans-unit>
-      <trans-unit id="d9b61e0a92b29d79db62732c4bb27cbf" resname="mobile.order_unit_name">
-        <source>mobile.order_unit_name</source>
-        <target>Lielums</target>
-      </trans-unit>
-      <trans-unit id="05b48d26335e8a0f936e45abc2360074" resname="mobile.place_finish_message">
-        <source>mobile.place_finish_message</source>
-        <target>Restorāna darbs pabeigts. Tālāk loģistika.</target>
-      </trans-unit>
-      <trans-unit id="3c3315f51972d750f464ae815babdff1" resname="mobile.place_finish_message_self_delivery">
-        <source>mobile.place_finish_message_self_delivery</source>
-        <target>Gatavošana pabeigta. Tālāk piegāde.</target>
-      </trans-unit>
-      <trans-unit id="cb2ecbcd06bc62396f6bb198d438dccf" resname="mobile.order_submit_delay">
-        <source>mobile.order_submit_delay</source>
-        <target>Apstiprināt atlikšanu</target>
-      </trans-unit>
-      <trans-unit id="0350819266b7134804cd4cab11e9762b" resname="mobile.order_cancel_delay">
-        <source>mobile.order_cancel_delay</source>
-        <target>Atcelt atlikšanu</target>
-      </trans-unit>
-      <trans-unit id="9724ea84f06483ca64d1effecaa364d8" resname="mobile.order_delay_reason">
-        <source>mobile.order_delay_reason</source>
-        <target>Atlikšanas iemesls</target>
-      </trans-unit>
-      <trans-unit id="d8d4495d7e138c947ba2bc0cb9f2a5ad" resname="mobile.order_delay_duration">
-        <source>mobile.order_delay_duration</source>
-        <target>Atlikšanas ilgums</target>
-      </trans-unit>
-      <trans-unit id="ad0cfaf6d8907666cb2aee2b0210192e" resname="general.login_title">
-        <source>general.login_title</source>
-        <target>Pieslēdzieties</target>
-      </trans-unit>
-      <trans-unit id="7413f0a4146986cd61378b69b502072c" resname="general.login_text">
-        <source>general.login_text</source>
-        <target>Vai esat reģistrējies? Pieslēdzieties!</target>
-      </trans-unit>
-      <trans-unit id="a4b8e2e9a458e2fc6d8c1246cf907c47" resname="general.login_email">
-        <source>general.login_email</source>
-        <target>E-pasts</target>
-      </trans-unit>
-      <trans-unit id="ffcbcb7d389a2b16555a642c06fde538" resname="general.login_password">
-        <source>general.login_password</source>
-        <target>Parole</target>
-      </trans-unit>
-      <trans-unit id="217fb76f1dceabbd81b98784d0f69d18" resname="general.login_forgot_password">
-        <source>general.login_forgot_password</source>
-        <target>Vai aizmirsāt paroli?</target>
-      </trans-unit>
-      <trans-unit id="c5ed7f556b28c0409324f9a78ebecdcb" resname="general.register_title">
-        <source>general.register_title</source>
-        <target>Jauns lietotājs?</target>
-      </trans-unit>
-      <trans-unit id="bd8607a9fbe59fa1edf1e39eebec8ec7" resname="general.register_text">
-        <source>general.register_text</source>
-        <target>Reģistrējieties – tas ilgs tikai minūti!</target>
-      </trans-unit>
-      <trans-unit id="2b4478e800d24223655f60bfec1dc43f" resname="general.register_name">
-        <source>general.register_name</source>
-        <target>Vārds</target>
-      </trans-unit>
-      <trans-unit id="7e0ced7de42517333f6665b778eb1d01" resname="general.register_surename">
-        <source>general.register_surename</source>
-        <target>Uzvārds</target>
-      </trans-unit>
-      <trans-unit id="bb95960993274fbcd944f650174156b9" resname="general.register_repeat_password">
-        <source>general.register_repeat_password</source>
-        <target>Atkārtojiet paroli</target>
-      </trans-unit>
-      <trans-unit id="672e207a47e2f0c2eb683baece23978e" resname="general.register_register_button">
-        <source>general.register_register_button</source>
-        <target>Reģistrējieties</target>
-      </trans-unit>
-      <trans-unit id="e1743bc18f60072e811d2e99a53c7bc2" resname="general.help_button">
-        <source>general.help_button</source>
-        <target>Palīdzība</target>
-      </trans-unit>
-      <trans-unit id="6c9e9d508e6df307cfed5b371823ecce" resname="general.login_button">
-        <source>general.login_button</source>
-        <target>Pieslēdzies</target>
-      </trans-unit>
-      <trans-unit id="947ad05ca557a6f415c38c8a87ddfc58" resname="general.profile_button">
-        <source>general.profile_button</source>
-        <target>Sveiki, %firstname%!</target>
-      </trans-unit>
-      <trans-unit id="3b71dfc8c61439d9e95d16cc0a177e77" resname="general.login_login_button">
-        <source>general.login_login_button</source>
-        <target>Pieslēdzieties</target>
-      </trans-unit>
-      <trans-unit id="5ad57190264dcf453d3f80908aa924de" resname="general.help_slug">
-        <source>general.help_slug</source>
-        <target>palidziba</target>
-      </trans-unit>
-      <trans-unit id="9e30081c6301c29c22942527d1d900ab" resname="general.close_btn">
-        <source>general.close_btn</source>
-        <target>Aizvērt</target>
-      </trans-unit>
-      <trans-unit id="e44e8ff9e4e47e49c926d67bf0112966" resname="general.sms.new_order">
-        <source>general.sms.new_order</source>
-        <target>Jauns pasutijums:</target>
-      </trans-unit>
-      <trans-unit id="general.sms.dispatcher_order" resname="general.sms.dispatcher_order">
-        <source>general.sms.dispatcher_order</source>
-        <target>New Foodout order for restaurant: place_name. Order #order_id</target>
-      </trans-unit>
-      <trans-unit id="52d751788d1ab704a9990362e53c1852" resname="general.sms.canceled_order">
-        <source>general.sms.canceled_order</source>
-        <target>Pasutijums #%order_number% ir atcelts:</target>
-      </trans-unit>
-      <trans-unit id="6923d196342f158f85d8fbc2903dfbcb" resname="general.sms.order_reminder">
-        <source>general.sms.order_reminder</source>
-        <target>Atgadinam, ka Jums ir neapstiprinats pasutijums:</target>
-      </trans-unit>
-      <trans-unit id="ddd5593d67b30b671c0533a616aa5398" resname="general.sms.new_order_in_mail">
-        <source>general.sms.new_order_in_mail</source>
-        <target>Ludzam parbaudit savu e-pastu, sanamat jaunu pasutijumu</target>
-      </trans-unit>
-      <trans-unit id="047147b3a00263b0c62fd54a32306e95" resname="general.email.partialy_completed">
-        <source>general.email.partialy_completed</source>
-        <target>Piegādāts nepilns pasūtījums</target>
-      </trans-unit>
-      <trans-unit id="3d6f52993727876649fad3f9e2d5c687" resname="general.sms.driver_assigned_order">
-        <source>general.sms.driver_assigned_order</source>
-        <target>Jauns pasutijums no: restaurant_title uz restaurant_address, līdz deliver_time </target>
-      </trans-unit>
-      <trans-unit id="28ecbd185a859ae613493c195207e5e0" resname="general.sms.user_order_delayed">
-        <source>general.sms.user_order_delayed</source>
-        <target>Atvainojamies! Tacu lielas pasutijumu plusmas del Jusu pasutijums tiek atlikts uz delay_time min. un tiks piegadats pec delivery_min min. Ja nepiekritat gaidit – sazinieties pa talr. +37167363663</target>
-      </trans-unit>
-      <trans-unit id="e7bd53e2c7fa9e93ede0c7b307426c5a" resname="general.sms.user_order_delayed_pickup">
-        <source>general.sms.user_order_delayed_pickup</source>
-        <target>Atvainojamies! Tacu lielass pasutijumu plusmas del Jusu pasutijums tiek atlikts uz delay_time min. un tiks sagatavots pec delivery_min min. Ja nepiekritat gaidit – sazinieties pa talr. +37167363663</target>
-      </trans-unit>
-      <trans-unit id="8036a67ebc0bbfebb10242dfaabceaf3" resname="general.email.user_delayed_subject">
-        <source>general.email.user_delayed_subject</source>
-        <target>mainījies piegādes laiks</target>
-      </trans-unit>
-      <trans-unit id="22a63be04fc38361fdf1ee63e1b4d4e0" resname="index.address_not_found">
-        <source>index.address_not_found</source>
-        <target>Adrese nav atrasta vai neeksistē</target>
-      </trans-unit>
-      <trans-unit id="f2e4d344548a4a45a1346062b31496f7" resname="mobile.pickup_type">
-        <source>mobile.pickup_type</source>
-        <target>Piegāde</target>
-      </trans-unit>
-      <trans-unit id="468ce43659556a6f745a233e986ba679" resname="mobile.deliver">
-        <source>mobile.deliver</source>
-        <target>Piegādāt</target>
-      </trans-unit>
-      <trans-unit id="937d1ad95431022c4c1b33b8f83c30f3" resname="mobile.delivery_destination">
-        <source>mobile.delivery_destination</source>
-        <target>Piegādes adrese</target>
-      </trans-unit>
-      <trans-unit id="0144b5f007f80909d118805c288cac04" resname="mobile.place_point_address">
-        <source>mobile.place_point_address</source>
-        <target>Paņemt no</target>
-      </trans-unit>
-      <trans-unit id="34e780a20dd8982964b54edd9425ffe3" resname="mobile.restourant_place_point_address">
-        <source>mobile.restourant_place_point_address</source>
-        <target>Gatavošanas punkts</target>
-      </trans-unit>
-      <trans-unit id="mobile.restaurant_delivery_price" resname="mobile.restaurant_delivery_price">
-        <source>mobile.restaurant_delivery_price</source>
-        <target>Delivery (with VAT)</target>
-      </trans-unit>
-      <trans-unit id="c515ebc67239e3c3555e84b329f7eeba" resname="mobile.place_point_phone">
-        <source>mobile.place_point_phone</source>
-        <target>Restorana tālrunis</target>
-      </trans-unit>
-      <trans-unit id="88456d596941f6ec79d9cd30ae01e8af" resname="mobile.pickup_foodout">
-        <source>mobile.pickup_foodout</source>
-        <target>Ieradīsies “Foodout.lv” kurjers</target>
-      </trans-unit>
-      <trans-unit id="5b47f6677b99741a5b189e0988b90a24" resname="mobile.pickup">
-        <source>mobile.pickup</source>
-        <target>Paņems restorānā</target>
-      </trans-unit>
-      <trans-unit id="84b322bfb942d74b28b61094cee1efab" resname="mobile.comment">
-        <source>mobile.comment</source>
-        <target>Cita informācija</target>
-      </trans-unit>
-      <trans-unit id="978aeeed993d1f914bd3d72a3ddd89f4" resname="mobile.need_invoice">
-        <source>mobile.need_invoice</source>
-        <target>Būs nepieciešams faktūrrēķins</target>
-      </trans-unit>
-      <trans-unit id="cb3d2e5a187b4580d5bf746964116359" resname="mobile.company_name">
-        <source>mobile.company_name</source>
-        <target>Uzņēmums</target>
-      </trans-unit>
-      <trans-unit id="bbbf0c7f05c8bf92129fc55178dd56e7" resname="mobile.company_code">
-        <source>mobile.company_code</source>
-        <target>Uzņ. reģ. kods</target>
-      </trans-unit>
-      <trans-unit id="2c6cb4770b682c5ece4066830310db96" resname="mobile.vat_code">
-        <source>mobile.vat_code</source>
-        <target>PVN maks. kods</target>
-      </trans-unit>
-      <trans-unit id="cfca1191390509f4af7d7344def2d9b6" resname="mobile.company_address">
-        <source>mobile.company_address</source>
-        <target>Adrese</target>
-      </trans-unit>
-      <trans-unit id="ff1fd4e7d3fb885df18c293c9c41a302" resname="mobile.payment">
-        <source>mobile.payment</source>
-        <target>Apmaksa</target>
-      </trans-unit>
-      <trans-unit id="6f33924553f5d8fac62abb6a0c7a685c" resname="mobile.payment.local.card">
-        <source>mobile.payment.local.card</source>
-        <target>Karte, saņemot pasūtījumu</target>
-      </trans-unit>
-      <trans-unit id="975056dcfb485500d01cf7f23d10c891" resname="mobile.payment.local">
-        <source>mobile.payment.local</source>
-        <target>Skaidrā naudā, saņemot pasūtījumu</target>
-      </trans-unit>
-      <trans-unit id="ff990e97a34ed6619f88da89f1555dd1" resname="mobile.payment.paysera">
-        <source>mobile.payment.paysera</source>
-        <target>Apmaksāts internetā</target>
-      </trans-unit>
-      <trans-unit id="71b941af90fb029c96516c2a92eba751" resname="mobile.payment.nordea-banklink">
-        <source>mobile.payment.nordea-banklink</source>
-        <target>Apmaksāts internetā (Nordea)</target>
-      </trans-unit>
-      <trans-unit id="2246ad6a8ec9824f0f6bacaae222fa16" resname="mobile.payment.seb-banklink">
-        <source>mobile.payment.seb-banklink</source>
-        <target>Apmaksāts internetā (SEB)</target>
-      </trans-unit>
-      <trans-unit id="c9ff97727c2cc0f5f39323500c129b7d" resname="mobile.payment.swedbank-credit-card-gateway">
-        <source>mobile.payment.swedbank-credit-card-gateway</source>
-        <target>Apmaksāts internetā (Swed CC)</target>
-      </trans-unit>
-      <trans-unit id="43de157b28c4d6324eb1b6078c3b28ab" resname="mobile.payment.swedbank-gateway">
-        <source>mobile.payment.swedbank-gateway</source>
-        <target>Apmaksāts internetā (Swedbank)</target>
-      </trans-unit>
-      <trans-unit id="ca4d1fefea4fd64c121dbd0e8fa2819c" resname="mobile.order.sum_with_delivery">
-        <source>mobile.order.sum_with_delivery</source>
-        <target>Summa ar piegādi (ar PVN)</target>
-      </trans-unit>
-      <trans-unit id="4049c45b29c8af2dff760dc33d4612ba" resname="mobile.order.coupon_code">
-        <source>mobile.order.coupon_code</source>
-        <target>Atlaižu kods</target>
-      </trans-unit>
-      <trans-unit id="8d899757c0dd13df1bc8d5c370b07727" resname="mobile.order.coupon_used">
-        <source>mobile.order.coupon_used</source>
-        <target>Piemērota atlaide</target>
-      </trans-unit>
-      <trans-unit id="f5461921a81a92142f6a6964102dfedf" resname="mobile.order.coupon_discount_sum">
-        <source>mobile.order.coupon_discount_sum</source>
-        <target>Atlaides summa</target>
-      </trans-unit>
-      <trans-unit id="c4893f3e3a9f9062ea893935c75c4724" resname="mobile.order.sum">
-        <source>mobile.order.sum</source>
-        <target>Summa (ar PVN)</target>
-      </trans-unit>
-      <trans-unit id="e0e188c6f3a31f7c0c241e260d7c442b" resname="mobile.customer_phone">
-        <source>mobile.customer_phone</source>
-        <target>Pasūtītāja tālr.</target>
-      </trans-unit>
-      <trans-unit id="mobile.dispatcher_contact_phone" resname="mobile.dispatcher_contact_phone">
-        <source>mobile.dispatcher_contact_phone</source>
-        <target>Dispečers tālr.</target>
-      </trans-unit>
-      <trans-unit id="6b992ec872e88f6be09ab06f8cceb76e" resname="mobile.order_time">
-        <source>mobile.order_time</source>
-        <target>Pasūtījuma laiks</target>
-      </trans-unit>
-      <trans-unit id="7dc15ebe3ad3e6bdf4ae58cdb2353c9c" resname="mobile.restaurant_order">
-        <source>mobile.restaurant_order</source>
-        <target>Jauns pasūtījums</target>
-      </trans-unit>
-      <trans-unit id="416ee797bc3b010f67367cec0ea0cf11" resname="mobile.driver_order">
-        <source>mobile.driver_order</source>
-        <target>Jauna piegāde</target>
-      </trans-unit>
-      <trans-unit id="0dbbfe8f19d7310a3259363d622cf7ae" resname="mobile.restaurant_invoice">
-        <source>mobile.restaurant_invoice</source>
-        <target>Pieņemšanas nodošanas akts</target>
-      </trans-unit>
-      <trans-unit id="4090ca7ff35db8d3631a005420152ed6" resname="mobile.invoice.date">
-        <source>mobile.invoice.date</source>
-        <target>Datums</target>
-      </trans-unit>
-      <trans-unit id="de728da4e406160a87aa23b86371f725" resname="mobile.invoice.assign_date">
-        <source>mobile.invoice.assign_date</source>
-        <target>Pasūtījuma nosūtīšanas laiks</target>
-      </trans-unit>
-      <trans-unit id="032824c6bcc0a9b0ac9e8385315a5bd5" resname="mobile.invoice.delivery_date">
-        <source>mobile.invoice.delivery_date</source>
-        <target>Pasūtījuma piegādes laiks</target>
-      </trans-unit>
-      <trans-unit id="dda1dd34b8ed6aeefe19435a155fc07a" resname="mobile.invoice.dish_name">
-        <source>mobile.invoice.dish_name</source>
-        <target>Nosaukums</target>
-      </trans-unit>
-      <trans-unit id="e30f6fa56b1646c106ceef7f11fffb70" resname="mobile.invoice.quantity">
-        <source>mobile.invoice.quantity</source>
-        <target>Daudzums</target>
-      </trans-unit>
-      <trans-unit id="bcd6910eed50d4b4ad47ad7c8adbc12f" resname="mobile.invoice.price">
-        <source>mobile.invoice.price</source>
-        <target>Cena</target>
-      </trans-unit>
-      <trans-unit id="8fdcdbfaa2b45c5c1bc432ef94c20243" resname="mobile.invoice.sum">
-        <source>mobile.invoice.sum</source>
-        <target>Summa </target>
-      </trans-unit>
-      <trans-unit id="11a8e22472e0eab53be67fab606dae58" resname="mobile.invoice.customer">
-        <source>mobile.invoice.customer</source>
-        <target>Pasūtītājs</target>
-      </trans-unit>
-      <trans-unit id="6c520917038237f134ad0fd241a8fdf8" resname="mobile.invoice.customer_phone">
-        <source>mobile.invoice.customer_phone</source>
-        <target>Tālr.</target>
-      </trans-unit>
-      <trans-unit id="1de88ddbb94bb197474dcfc54669ba42" resname="mobile.invoice.submitted">
-        <source>mobile.invoice.submitted</source>
-        <target>Nodeva</target>
-      </trans-unit>
-      <trans-unit id="7ac847c965b1ee56487223805dc9c904" resname="mobile.invoice.received">
-        <source>mobile.invoice.received</source>
-        <target>Saņēma</target>
-      </trans-unit>
-      <trans-unit id="39f9b5cc77e17ca280be3bd3a4dd9635" resname="mobile.invoice.vat_code">
-        <source>mobile.invoice.vat_code</source>
-        <target>PVN kods</target>
-      </trans-unit>
-      <trans-unit id="1a971e1e4c395c44347f7fdfaad550c6" resname="mobile.invoice.company_code">
-        <source>mobile.invoice.company_code</source>
-        <target>Uzņ. reģ. kods</target>
-      </trans-unit>
-      <trans-unit id="5ae95cad37ee0316aedc7626a61fa937" resname="mobile.invoice_driver">
-        <source>mobile.invoice_driver</source>
-        <target>Pavadzīme</target>
-      </trans-unit>
-      <trans-unit id="5a8757eec95dabc93144ef38a3f34eb0" resname="mobile.invoice.driver">
-        <source>mobile.invoice.driver</source>
-        <target>Šoferis</target>
-      </trans-unit>
-      <trans-unit id="b4db2e74a666e4a25386b3f68c64e27a" resname="mobile.invoice.car_number">
-        <source>mobile.invoice.car_number</source>
-        <target>Automobiļa Nr.</target>
-      </trans-unit>
-      <trans-unit id="97f1b49f5db8eafedd659da228102ab6" resname="mobile.invoice.sum_no_vat">
-        <source>mobile.invoice.sum_no_vat</source>
-        <target>Summa bez PVN</target>
-      </trans-unit>
-      <trans-unit id="7c5b0e5b63f5243ec75be8eeb31415e5" resname="mobile.invoice.delivery_no_vat">
-        <source>mobile.invoice.delivery_no_vat</source>
-        <target>Piegāde bez PVN</target>
-      </trans-unit>
-      <trans-unit id="ad7ab425c1bb8b6ff7465c9904c4ab7e" resname="mobile.invoice.vat">
-        <source>mobile.invoice.vat</source>
-        <target>PVN</target>
-      </trans-unit>
-      <trans-unit id="3e8dbd3b6c212811e68a1e118164a660" resname="mobile.invoice.total_with_vat">
-        <source>mobile.invoice.total_with_vat</source>
-        <target>Kopā</target>
-      </trans-unit>
-      <trans-unit id="2c812d984008c3c0e4004ee7f39746f8" resname="mobile.invoice.total_with_vat_eur">
-        <source>mobile.invoice.total_with_vat_eur</source>
-        <target>Kopā EUR</target>
-      </trans-unit>
-      <trans-unit id="16e198a6b48257e47d9ce572ab7ce655" resname="mobile.deliver_time">
-        <source>mobile.deliver_time</source>
-        <target>Piegādāt līdz</target>
-      </trans-unit>
-      <trans-unit id="4fb8db91bc66edcad1edbf26d918235c" resname="general.user.firsname.not_blank">
-        <source>general.user.firsname.not_blank</source>
-        <target>Ievadiet savu vārdu</target>
-      </trans-unit>
-      <trans-unit id="c2d3b4fc6b96d87d230d72b1492c354b" resname="general.user.firsname.short">
-        <source>general.user.firsname.short</source>
-        <target>Vārds nedrīkst būt īsāks par 2 simboliem</target>
-      </trans-unit>
-      <trans-unit id="c55240db34347d177c3aec0b93b73389" resname="general.user.firsname.long">
-        <source>general.user.firsname.long</source>
-        <target>Vārds nedrīkst būt garāks par 255 simboliem</target>
-      </trans-unit>
-      <trans-unit id="eac01114b0976e68239dfd36aeacbed0" resname="general.user.lastname.not_blank">
-        <source>general.user.lastname.not_blank</source>
-        <target>Ievadiet savu uzvārdu</target>
-      </trans-unit>
-      <trans-unit id="414f36b3933132261c070fa1179087cb" resname="general.user.lastname.short">
-        <source>general.user.lastname.short</source>
-        <target>Uzvārds nedrīkst būt īsāks par 2 simboliem</target>
-      </trans-unit>
-      <trans-unit id="efe502b0e090904235afb3f5afb3ffc0" resname="general.user.lastname.long">
-        <source>general.user.lastname.long</source>
-        <target>Uzvārds nedrīkst būt garāks par 255 simboliem</target>
-      </trans-unit>
-      <trans-unit id="c1d379b8878916928a9c4c935daa3e14" resname="general.user.email.not_blank">
-        <source>general.user.email.not_blank</source>
-        <target>Ievadiet savu e-pasta adresi</target>
-      </trans-unit>
-      <trans-unit id="36e5d23120269705d139f18a4ee96f4f" resname="general.order">
-        <source>general.order</source>
-        <target>Pasūtījums</target>
-      </trans-unit>
-      <trans-unit id="c5b6d9efee2da625ca3f97b621bbf2db" resname="general.order.delivered">
-        <source>general.order.delivered</source>
-        <target>Piegādāt</target>
-      </trans-unit>
-      <trans-unit id="b8d0b782b8f556f1c6340b3e3eb2888e" resname="general.order.on_delivery">
-        <source>general.order.on_delivery</source>
-        <target>Tiek piegādāti</target>
-      </trans-unit>
-      <trans-unit id="61253403522f312c0970b8f9026d1b45" resname="general.order.in_progress">
-        <source>general.order.in_progress</source>
-        <target>Tiek izpildīts</target>
-      </trans-unit>
-      <trans-unit id="762eed86fc40be6111718945639f0673" resname="general.order.making">
-        <source>general.order.making</source>
-        <target>Tiek gatavoti</target>
-      </trans-unit>
-      <trans-unit id="25d620dbbe37b0506d40fea6e6fdb8e0" resname="general.order.dishes">
-        <source>general.order.dishes</source>
-        <target>ēdieni</target>
-      </trans-unit>
-      <trans-unit id="8540a3f4a2e4a8d25fb8b518ea07d6c2" resname="general.for">
-        <source>general.for</source>
-        <target>par</target>
-      </trans-unit>
-      <trans-unit id="59fb7baae09f0848dc2cc994412415c8" resname="general.to">
-        <source>general.to</source>
-        <target>uz</target>
-      </trans-unit>
-      <trans-unit id="96ca7660e2be7364588f0a6f9f129296" resname="general.from">
-        <source>general.from</source>
-        <target>no</target>
-      </trans-unit>
-      <trans-unit id="2fa7a0040220fdd613af522001776777" resname="general.will_pickup_from">
-        <source>general.will_pickup_from</source>
-        <target>, paņemsiet no</target>
-      </trans-unit>
-      <trans-unit id="1818eb2507853a521faaa319ec9191dc" resname="general.picked_up">
-        <source>general.picked_up</source>
-        <target>Paņemt</target>
-      </trans-unit>
-      <trans-unit id="00b693a37152f5f97b20851212b53429" resname="general.greating">
-        <source>general.greating</source>
-        <target>Sveiki!</target>
-      </trans-unit>
-      <trans-unit id="28a7c7f756114029e6a1ebe7488ca7b4" resname="general.profile.user_data">
-        <source>general.profile.user_data</source>
-        <target>Lietotāja dati</target>
-      </trans-unit>
-      <trans-unit id="5cf69119a26982c1d484cbc8476067e3" resname="general.profile.cart_history">
-        <source>general.profile.cart_history</source>
-        <target>Pasūtījumu vēsture</target>
-      </trans-unit>
-      <trans-unit id="4c0c2aa6ad499bfdd3f6e8edffc6336c" resname="general.profile.logout">
-        <source>general.profile.logout</source>
-        <target>Iziet</target>
-      </trans-unit>
-      <trans-unit id="6defb486341307b289948eb8fa05624f" resname="general.profile.button_save">
-        <source>general.profile.button_save</source>
-        <target>Saglabāt</target>
-      </trans-unit>
-      <trans-unit id="9274e23fa49ef791a605538ff3996088" resname="general.profile.home">
-        <source>general.profile.home</source>
-        <target>Sākums</target>
-      </trans-unit>
-      <trans-unit id="e4209a725a5c0427b4f1f87316e85794" resname="general.profile">
-        <source>general.profile</source>
-        <target>Lietotāja profils</target>
-      </trans-unit>
-      <trans-unit id="a9bc7e139157e0da93261b03e01ac056" resname="general.profile.no_orders">
-        <source>general.profile.no_orders</source>
-        <target>Vēl neko neesat pasūtījuši</target>
-      </trans-unit>
-      <trans-unit id="892229102c7bcdeb4e6dbd72703f707e" resname="general.email.accounting_report.local.card">
-        <source>general.email.accounting_report.local.card</source>
-        <target>Karte, saņemot</target>
-      </trans-unit>
-      <trans-unit id="992360f614ab5f74ccc60fd3b5ff6064" resname="general.email.accounting_report.local">
-        <source>general.email.accounting_report.local</source>
-        <target>Skaidrā naudā</target>
-      </trans-unit>
-      <trans-unit id="6ff5d01a17890ac3a904f3340c591192" resname="general.email.accounting_report.paysera">
-        <source>general.email.accounting_report.paysera</source>
-        <target>Internetā (Paysera)</target>
-      </trans-unit>
-      <trans-unit id="7f603c819e64fcd9a19be93134125e9d" resname="general.email.accounting_report.nordea-banklink">
-        <source>general.email.accounting_report.nordea-banklink</source>
-        <target>Internetā (Nordea)</target>
-      </trans-unit>
-      <trans-unit id="0e11058b6765d18060da9b298407dcfe" resname="general.email.accounting_report.seb-banklink">
-        <source>general.email.accounting_report.seb-banklink</source>
-        <target>Internetā (SEB)</target>
-      </trans-unit>
-      <trans-unit id="78d148b648c8dd083fe42d6097ec1d89" resname="general.email.accounting_report.swedbank-credit-card-gateway">
-        <source>general.email.accounting_report.swedbank-credit-card-gateway</source>
-        <target>Internetā (Swedbank kredītkarte)</target>
-      </trans-unit>
-      <trans-unit id="7dde64e66270dee3285d1ac8248ed321" resname="general.email.accounting_report.swedbank-gateway">
-        <source>general.email.accounting_report.swedbank-gateway</source>
-        <target>Internetā (Swedbank banklink)</target>
-      </trans-unit>
-      <trans-unit id="2a27b06725260bba699dd331a49827d8" resname="index.title_page_header">
-        <source>index.title_page_header</source>
-        <target><![CDATA[Dažādi restorāni vienuviet!]]></target>
-      </trans-unit>
-      <trans-unit id="02e3d3477fa84ee89d7c8f812fe8d4b1" resname="index.search_form_qlue">
-        <source>index.search_form_qlue</source>
-        <target>Ievadiet savu adresi un uzziniet, no kura restorāna iespējams veikt pasūtījumu</target>
-      </trans-unit>
-      <trans-unit id="ac540ec383eda788715ff2caab8ce97e" resname="general.ip_banned">
-        <source>general.ip_banned</source>
-        <target>Jūsu IP adrese ir bloķēta</target>
-      </trans-unit>
-      <trans-unit id="620c7ce4e5b0c3f1f527813491a9152f" resname="general.ip_banned_info">
-        <source>general.ip_banned_info</source>
-        <target><![CDATA[Atvainojamies! Taču Jūsu IP adrese (%ip%) ir bloķēta.<br />IP adreses tiek bloķētas, ja: apmeklētājs veido nepatiesus pasūtījumus; apmelo, aizskar vai ar citām tīšām darbībām traucē citiem apmeklētājiem vai restorāna darbam.<br /><br />Administrācijas norādītais iemesls: "%reason%".<br /><br />Ja uzskatāt, ka tas ir noticis kļūdas dēļ – sazinieties ar mums <strong><a href="mailto:info@foodout.lv">info@foodout.lv</a></strong> vai pa tālruni <strong>+371 67363663</strong>]]></target>
-      </trans-unit>
-      <trans-unit id="7e9bef54e33d4a729ebb1a05ed886696" resname="general.raty.not_rated_yet">
-        <source>general.raty.not_rated_yet</source>
-        <target>Restorāns vēl nav novērtēts</target>
-      </trans-unit>
-      <trans-unit id="0528b2034eeacf50a4186ba64abf7bc3" resname="general.raty.bad">
-        <source>general.raty.bad</source>
-        <target>Ļoti slikts</target>
-      </trans-unit>
-      <trans-unit id="2e3ffd779b24297f288d953d6b1de145" resname="general.raty.poor">
-        <source>general.raty.poor</source>
-        <target>Slikts</target>
-      </trans-unit>
-      <trans-unit id="b833b9eaee6bd8cbf9372e05fef7699e" resname="general.raty.regular">
-        <source>general.raty.regular</source>
-        <target>Vidējs</target>
-      </trans-unit>
-      <trans-unit id="d9920afbffea8130ad937778aa41cacc" resname="general.raty.good">
-        <source>general.raty.good</source>
-        <target>Labs</target>
-      </trans-unit>
-      <trans-unit id="810fd28046cfbd284298dbb990da3454" resname="general.raty.gorgeous">
-        <source>general.raty.gorgeous</source>
-        <target>Brīnišķīgs</target>
-      </trans-unit>
-      <trans-unit id="e7f4814137b269764cca308be5ec7635" resname="general.item_quantity">
-        <source>general.item_quantity</source>
-        <target>gab.</target>
-      </trans-unit>
-      <trans-unit id="1794a5ac72303f545a21a31292d40981" resname="general.cart.success">
-        <source>general.cart.success</source>
-        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
-      </trans-unit>
-      <trans-unit id="general.cart.success_pre" resname="general.cart.success_pre">
-        <source>general.cart.success_pre</source>
-        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams %order_date%. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
-      </trans-unit>
-        <trans-unit id="general.cart.success_title_lv" resname="general.cart.success_title">
-            <source>general.cart.success_title</source>
-            <target>Sveicieni</target>
-        </trans-unit>
-      <trans-unit id="f4c0ca7e7c9982f972d72f90a102c538" resname="general.cart.success_no_place_num">
-        <source>general.cart.success_no_place_num</source>
-        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/> Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong>.]]></target>
-      </trans-unit>
-      <trans-unit id="14f92354734525418e2e676012bdd0f3" resname="general.cart.wait">
-        <source>general.cart.wait</source>
-        <target><![CDATA[Jūsu pasūtījums ir pieņemts un tiks nodots restorānam, tiklīdz pabeigsiet apmaksu. <br/> Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>"Foodout.lv"</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
-      </trans-unit>
-      <trans-unit id="725e9712f4d5c48bf73110fb0d093b68" resname="reporting.monthly.driver_report.title">
-        <source>reporting.monthly.driver_report.title</source>
-        <target>Iepriekšējā mēneša (%reportDate%) tr. līdz. vadītāju vestie pasūtījumi</target>
-      </trans-unit>
-      <trans-unit id="f14db2fedb84ba4ba05f51bf7f093f81" resname="reporting.driver">
-        <source>reporting.driver</source>
-        <target>Tr. līdz. vadītājs</target>
-      </trans-unit>
-      <trans-unit id="9bdd73d05c919658b56bb3334ebd17e0" resname="reporting.orders_total">
-        <source>reporting.orders_total</source>
-        <target>Kopā pasūtījumi</target>
-      </trans-unit>
-      <trans-unit id="21d268000fd471d568bb56ba827125a5" resname="reporting.monthly.driver_report.payment_local">
-        <source>reporting.monthly.driver_report.payment_local</source>
-        <target>Samaksāts uz vietas</target>
-      </trans-unit>
-      <trans-unit id="16ec56686b1910872f85c61f104f9df0" resname="reporting.monthly.driver_report.payment_banklink">
-        <source>reporting.monthly.driver_report.payment_banklink</source>
-        <target>Samaksāts internetā</target>
-      </trans-unit>
-      <trans-unit id="829e34fa959892f038a58858997e20e2" resname="reporting.monthly.driver_report.payment_local_sum">
-        <source>reporting.monthly.driver_report.payment_local_sum</source>
-        <target><![CDATA[Summa, kas ir samaksāta uz vietas<br />(ar PVN)]]></target>
-      </trans-unit>
-      <trans-unit id="9536df9d4481257a41dfe7d0b2b18d8b" resname="reporting.monthly.driver_report.payment_banklink_sum">
-        <source>reporting.monthly.driver_report.payment_banklink_sum</source>
-        <target><![CDATA[Summa, kas ir samaksāta internetā<br />(ar PVN)]]></target>
-      </trans-unit>
-      <trans-unit id="069e3839e99b78d807774b67533bc4b7" resname="reporting.monthly.driver_report.total_order_sum">
-        <source>reporting.monthly.driver_report.total_order_sum</source>
-        <target><![CDATA[Visu pasūtījumu summa<br />(ar PVN)]]></target>
-      </trans-unit>
-      <trans-unit id="ad7013f7b88bdaf3dc8aa7635c028617" resname="reporting.monthly.driver_report.total_drivers">
-        <source>reporting.monthly.driver_report.total_drivers</source>
-        <target>Kopā vedušie tr. līdz. vadītāji</target>
-      </trans-unit>
-      <trans-unit id="fa1e94374c8f0edcb88e3ebd43d7d9cd" resname="reporting.daily.yesterday_orders.title">
-        <source>reporting.daily.yesterday_orders.title</source>
-        <target>Vakardienas (%reportDate%) pasūtījumi</target>
-      </trans-unit>
-      <trans-unit id="254849345ce90eda32575ab682f601cd" resname="reporting.daily.yesterday_orders.our_delivery">
-        <source>reporting.daily.yesterday_orders.our_delivery</source>
-        <target>Pasūtījumi ar mūsu piegādi</target>
-      </trans-unit>
-      <trans-unit id="690f4a7170e5d920018653361c335056" resname="reporting.daily.yesterday_orders.restourant_delivery">
-        <source>reporting.daily.yesterday_orders.restourant_delivery</source>
-        <target>Pasūtījumi, ko piegādāja pats restorāns</target>
-      </trans-unit>
-      <trans-unit id="e1742dfe3467b85f6aaf2e2081c96681" resname="reporting.daily.yesterday_orders.pickup">
-        <source>reporting.daily.yesterday_orders.pickup</source>
-        <target>Restorānā paņemtie pasūtījumi</target>
-      </trans-unit>
-      <trans-unit id="b7cfc40ee412448bbe58db24e7a902ac" resname="reporting.daily.yesterday_orders.time">
-        <source>reporting.daily.yesterday_orders.time</source>
-        <target>Laiks</target>
-      </trans-unit>
-      <trans-unit id="e83369cfd60836f54ffb6faf8e679dd6" resname="reporting.daily.yesterday_orders.place">
-        <source>reporting.daily.yesterday_orders.place</source>
-        <target>Restorāns</target>
-      </trans-unit>
-      <trans-unit id="7aaa6d44e60f1359640bd9344d1d7b86" resname="reporting.daily.yesterday_orders.place_point">
-        <source>reporting.daily.yesterday_orders.place_point</source>
-        <target>Gat. punkts</target>
-      </trans-unit>
-      <trans-unit id="b884667250124a93ecdcacf56d113780" resname="reporting.daily.yesterday_orders.payment_type">
-        <source>reporting.daily.yesterday_orders.payment_type</source>
-        <target>Samaksas veids</target>
-      </trans-unit>
-      <trans-unit id="34db804d1b5af3c722ded453f0ef7a21" resname="reporting.daily.yesterday_orders.delivery_with_vat">
-        <source>reporting.daily.yesterday_orders.delivery_with_vat</source>
-        <target><![CDATA[Pieg.<br />(ar PVN)]]></target>
-      </trans-unit>
-      <trans-unit id="2fc9d7639b2459ee652c223138a828db" resname="reporting.daily.yesterday_orders.delivery_without_vat">
-        <source>reporting.daily.yesterday_orders.delivery_without_vat</source>
-        <target><![CDATA[Pieg.<br />(bez PVN)]]></target>
-      </trans-unit>
-      <trans-unit id="dc79f8f9c6dcdc0e1e6a20793288e1c6" resname="reporting.daily.yesterday_orders.dishes_without_vat">
-        <source>reporting.daily.yesterday_orders.dishes_without_vat</source>
-        <target><![CDATA[Ēdieni<br />(bez PVN)]]></target>
-      </trans-unit>
-      <trans-unit id="d54be52a8afc7ad5e521463647d1adf0" resname="reporting.daily.yesterday_orders.vat">
-        <source>reporting.daily.yesterday_orders.vat</source>
-        <target>PVN</target>
-      </trans-unit>
-      <trans-unit id="a09bac8dec4c1a70e0f5f6f595b7e711" resname="reporting.daily.yesterday_orders.total_with_vat">
-        <source>reporting.daily.yesterday_orders.total_with_vat</source>
-        <target><![CDATA[Kopā<br />(ar PVN)]]></target>
-      </trans-unit>
-      <trans-unit id="3c4fcd7f22d5e1e89fa9149aa7cee859" resname="reporting.daily.yesterday_orders.total_with_vat_no_brake">
-        <source>reporting.daily.yesterday_orders.total_with_vat_no_brake</source>
-        <target>Kopā (ar PVN)</target>
-      </trans-unit>
-      <trans-unit id="reporting.daily.yesterday_orders.preorder" resname="reporting.daily.yesterday_orders.preorder">
-        <source>reporting.daily.yesterday_orders.preorder</source>
-        <target><![CDATA[Preorder<br />(delivery date)]]></target>
-      </trans-unit>
-      <trans-unit id="a0bf255f39b5cbccb042f7dc5f993d00" resname="reporting.daily.yesterday_orders.total_pickup">
-        <source>reporting.daily.yesterday_orders.total_pickup</source>
-        <target>Kopā paņemot (ar PVN)</target>
-      </trans-unit>
-      <trans-unit id="4bad9c3efccedcafc2dc982a14f0ee89" resname="reporting.daily.yesterday_orders.total_banklink">
-        <source>reporting.daily.yesterday_orders.total_banklink</source>
-        <target>Kopā internetā (ar PVN)</target>
-      </trans-unit>
-      <trans-unit id="7f72b3330e263ba2c508529af65fc0ec" resname="reporting.daily.yesterday_orders.no_driver">
-        <source>reporting.daily.yesterday_orders.no_driver</source>
-        <target>Nav norādīts??</target>
-      </trans-unit>
-      <trans-unit id="436bbf20331004cdec50f16e5f912155" resname="reporting.daily.yesterday_orders.coupon_code">
-        <source>reporting.daily.yesterday_orders.coupon_code</source>
-        <target><![CDATA[Atlaides<br />kods]]></target>
-      </trans-unit>
-      <trans-unit id="a7e6412ade881968d75428765919b039" resname="reporting.daily.yesterday_orders.discount_size">
-        <source>reporting.daily.yesterday_orders.discount_size</source>
-        <target><![CDATA[Atlaides<br />lielums (%)]]></target>
-      </trans-unit>
-      <trans-unit id="8ea85eaa2562ca5675e1ac178a4ddfc3" resname="reporting.daily.yesterday_orders.discount_sum">
-        <source>reporting.daily.yesterday_orders.discount_sum</source>
-        <target><![CDATA[Atlaides<br />summa]]></target>
-      </trans-unit>
-      <trans-unit id="0f75cd36eaaa5b4da98cadb8f41681b4" resname="reporting.daily.yesterday_orders.sf_number">
-        <source>reporting.daily.yesterday_orders.sf_number</source>
-        <target>FR numurs</target>
-      </trans-unit>
-      <trans-unit id="1478a61e40ef9691cc957ac92a297e73" resname="general.new_order.title">
-        <source>general.new_order.title</source>
-        <target>Jauns pasūtījums restorānam</target>
-      </trans-unit>
-      <trans-unit id="328f3dbc63eaba2688308ce1f36114d5" resname="general.new_order.selected_place_point">
-        <source>general.new_order.selected_place_point</source>
-        <target>Pasūtījumu gatavos</target>
-      </trans-unit>
-      <trans-unit id="e398e7f3c3c3a822d57418a37187a40d" resname="general.new_order.place_point_phone">
-        <source>general.new_order.place_point_phone</source>
-        <target>Restorana tālrunis</target>
-      </trans-unit>
-      <trans-unit id="8372390cc5f731f2446510354d0f0995" resname="general.new_order.client_name">
-        <source>general.new_order.client_name</source>
-        <target>Pasūtītāja vārds</target>
-      </trans-unit>
-      <trans-unit id="c84d4ffe52510bc799ebb01f45f17c98" resname="general.new_order.client_address">
-        <source>general.new_order.client_address</source>
-        <target>Pasūtītāja adrese</target>
-      </trans-unit>
-      <trans-unit id="366a3a73c4a7f9e284da797495c90649" resname="general.new_order.client_phone">
-        <source>general.new_order.client_phone</source>
-        <target>Pasūtītāja tālrunis</target>
-      </trans-unit>
-      <trans-unit id="c41fd09b8dc07f273c97f7c9ada9e748" resname="general.new_order.client_email">
-        <source>general.new_order.client_email</source>
-        <target>Pasūtītāja e-pasts</target>
-      </trans-unit>
-      <trans-unit id="077703188463c68a98765d9a6101fefc" resname="general.new_order.delivery_type">
-        <source>general.new_order.delivery_type</source>
-        <target>Piegādes veids</target>
-      </trans-unit>
-      <trans-unit id="68065129e68e216a0b667c820beedf54" resname="general.new_order.payment_type">
-        <source>general.new_order.payment_type</source>
-        <target>Apmaksas veids</target>
-      </trans-unit>
-      <trans-unit id="1162d663a7fce05dfc07791238f9ea4b" resname="general.new_order.payment_status">
-        <source>general.new_order.payment_status</source>
-        <target>Apmaksas stāvoklis</target>
-      </trans-unit>
-      <trans-unit id="8cc34b9ae8f8d777916782acbb35e7ca" resname="general.new_order.restaurant_link">
-        <source>general.new_order.restaurant_link</source>
-        <target>Restorānam nosūtīta saite</target>
-      </trans-unit>
-      <trans-unit id="69778cf7acca21917f059c9144fa3c4a" resname="general.new_order.admin_link">
-        <source>general.new_order.admin_link</source>
-        <target>Pasūtījuma admin vadība</target>
-      </trans-unit>
-      <trans-unit id="e3849073980fe32de41a663525d034da" resname="general.new_order.driver_link">
-        <source>general.new_order.driver_link</source>
-        <target>Tr. līdz. vadītājs saņems saiti</target>
-      </trans-unit>
-      <trans-unit id="c7a66700389e0d08fccb348dc8d62e4c" resname="general.canceled_order.title">
-        <source>general.canceled_order.titlepasts.lv</source>
-        <target>Atcelts apmaksātais pasūtījums</target>
-      </trans-unit>
-      <trans-unit id="0c3a2a3eb79b18168cd46e5feaf473ff" resname="general.email.placeholder">
-        <source>general.email.placeholder</source>
-        <target>info@epasts.lv</target>
-      </trans-unit>
-      <trans-unit id="39f0353f53d86358141f42a28840e388" resname="general.name.placeholder">
-        <source>general.name.placeholder</source>
-        <target>Vārds</target>
-      </trans-unit>
-      <trans-unit id="90b8834d0f52b43df48744d6772b2a25" resname="general.lastname.placeholder">
-        <source>general.lastname.placeholder</source>
-        <target>Uzvārds</target>
-      </trans-unit>
-      <trans-unit id="629d6754ded3dc1f2128cf7aa2d0b910" resname="general.homepage.meta_title">
-        <source>general.homepage.meta_title</source>
-        <target>ēdiena piegāde uz mājām un biroju</target>
-      </trans-unit>
-      <trans-unit id="a87ec63b75cd0e9ae50e6b1b6929a5da" resname="payment.swedbank_gateway.cancelled">
-        <source>payment.swedbank_gateway.cancelled</source>
-        <target>Pasūtījums atcelts.</target>
-      </trans-unit>
-      <trans-unit id="b90af9c8ca012061678d6b4e603aac7c" resname="payment.swedbank_gateway.communication_error">
-        <source>payment.swedbank_gateway.communication_error</source>
-        <target>Radās kļūda komunikācijā ar banku. Mēģiniet atjaunot šo lapu pēc dažām minūtēm.</target>
-      </trans-unit>
-      <trans-unit id="19f5e6c35d5fdb60ba01f4fc9c638526" resname="payment.swedbank_gateway.error">
-        <source>payment.swedbank_gateway.error</source>
-        <target>Pasūtījums ir atcelts.</target>
-      </trans-unit>
-      <trans-unit id="041088d38c42a21e82d65a2a82991cd5" resname="payment.swedbank_gateway.order_not_found">
-        <source>payment.swedbank_gateway.order_not_found</source>
-        <target>Pasūtījums nav atrasts.</target>
-      </trans-unit>
-      <trans-unit id="6ea4106550b8fbb108bb40062af399c1" resname="payment.swedbank_gateway.processing">
-        <source>payment.swedbank_gateway.processing</source>
-        <target>Pasūtījums pieņemts bankas apstrādei.</target>
-      </trans-unit>
-      <trans-unit id="6eba4f5899ae72fd67085d69cd3a762e" resname="payment.swedbank_gateway.something_wrong">
-        <source>payment.swedbank_gateway.something_wrong</source>
-        <target>Radās nenoteiktā veida kļūda.</target>
-      </trans-unit>
-      <trans-unit id="9cad08cf3a492701b079805b9bf4220b" resname="payment.swedbank_gateway.success">
-        <source>payment.swedbank_gateway.success</source>
-        <target>Pasūtījums veiksmīgi apmaksāts.</target>
-      </trans-unit>
-      <trans-unit id="8eda8cb9febec665a60db258991d5ea1" resname="payment.nordea.success">
-        <source>payment.nordea.success</source>
-        <target>Pasūtījums veiksmīgi apmaksāts.</target>
-      </trans-unit>
-      <trans-unit id="001136a172d5036ae69f7ce2fbc7a901" resname="payment.nordea.failed">
-        <source>payment.nordea.failed</source>
-        <target>Pasūtījums netika apmaksāts.</target>
-      </trans-unit>
-      <trans-unit id="5f5b40176949bb152ceccb01ba71b6ea" resname="general.successful_user_registration">
-        <source>general.successful_user_registration</source>
-        <target>Jūs veiksmīgi reģistrējāties!</target>
-      </trans-unit>
-      <trans-unit id="e053f8950d7fbb3ccc27b4edf2473876" resname="general.noty.profile_updated">
-        <source>general.noty.profile_updated</source>
-        <target>Dati veiksmīgi atjaunoti.</target>
-      </trans-unit>
-      <trans-unit id="13ae505e93de6b7a44ab0ed8c2486032" resname="general.resetting">
-        <source>general.resetting</source>
-        <target>Paroles atgādināšana</target>
-      </trans-unit>
-      <trans-unit id="4ae871b6962df84750d845408166c0b5" resname="general.resetting.continue">
-        <source>general.resetting.continue</source>
-        <target>Turpināt</target>
-      </trans-unit>
-      <trans-unit id="e8b4b7b99bb575da28b78ae082a08fb1" resname="general.resetting.email_sent">
-        <source>general.resetting.email_sent</source>
-        <target>Jums tika nosūtīta jūsu konta paroles atgādināšanas vēstule. Tajā ir saite, uz kuras nospiežot, varēsiet nomainīt paroli.</target>
-      </trans-unit>
-      <trans-unit id="d132327ba7df86ca9ad924f9a832313d" resname="general.resetting.password_must_match">
-        <source>general.resetting.password_must_match</source>
-        <target>Parolēm ir jāsakrīt.</target>
-      </trans-unit>
-      <trans-unit id="76646e8d2a0760782c5450e0fa473dce" resname="registration.user.exists">
-        <source>registration.user.exists</source>
-        <target>Lietotājs ar šādu e-pastu jau eksistē</target>
-      </trans-unit>
-      <trans-unit id="3f83e39254fa95380788ddc3637abc31" resname="registration.phone.is_empty">
-        <source>registration.phone.is_empty</source>
-        <target>Nav norādīts tālruņa numurs</target>
-      </trans-unit>
-      <trans-unit id="8be00841fa1df71ff455def399c9ab6c" resname="registration.firstname.is_empty">
-        <source>registration.firstname.is_empty</source>
-        <target>Nav norādīts vārds</target>
-      </trans-unit>
-      <trans-unit id="2c99db4e9e6ac1193a9f57e5ea1865c4" resname="registration.email.is_empty">
-        <source>registration.email.is_empty</source>
-        <target>Nav norādīta e-pasta adrese</target>
-      </trans-unit>
-      <trans-unit id="afb766c01e9d839444cde913e1169e47" resname="registration.password.too_short">
-        <source>registration.password.too_short</source>
-        <target>Parole nedrīkst būt īsāka par 6 simboliem</target>
-      </trans-unit>
-      <trans-unit id="0f83c1e2596530bada0cd51b8790c6a6" resname="mobile.change_password.password.is_empty">
-        <source>mobile.change_password.password.is_empty</source>
-        <target>Tukša parole</target>
-      </trans-unit>
-      <trans-unit id="a45f6cefa5a1546e03e73d0ee50bdf47" resname="mobile.change_password.user.id_dont_match">
-        <source>mobile.change_password.user.id_dont_match</source>
-        <target>Nesakrīt pieslēgtais lietotājs un iesniegtais ID</target>
-      </trans-unit>
-      <trans-unit id="1befc0887b9dd0d171879e27a79b8a48" resname="mobile.order_status.order_delayed">
-        <source>mobile.order_status.order_delayed</source>
-        <target>Pasūtījums kavēsies %delayTime% min.</target>
-      </trans-unit>
-      <trans-unit id="e0be451856a12df8e8e31aae24682352" resname="cart.didnt_reach_min_cart">
-        <source>cart.didnt_reach_min_cart</source>
-        <target>Grozā nav minimālās summas</target>
-      </trans-unit>
-      <trans-unit id="cart.go_back_to_place" resname="cart.go_back_to_place">
-          <source>cart.go_back_to_place</source>
-          <target>Pievienot ēdienus</target>
-      </trans-unit>
-      <trans-unit id="cart.left_to_free_delivery" resname="cart.left_to_free_delivery">
-          <source>cart.left_to_free_delivery</source>
-          <target><![CDATA[Iki <b class="red">nemokamo pristatymo</b><br />Jums liko <b>&euro; %left_sum%</b>]]></target>
-      </trans-unit>
-      <trans-unit id="a0c3f145b0a75655c804d2981458aca7" resname="login.username_placeholder">
-        <source>login.username_placeholder</source>
-        <target>vietturis@pasts.lv</target>
-      </trans-unit>
-      <trans-unit id="ef5a08f361ac7673203e6300769b25a9" resname="login.password_placeholder">
-        <source>login.password_placeholder</source>
-        <target>Parole</target>
-      </trans-unit>
-      <trans-unit id="c0a111eb2c11067622fb6b15a466b3ae" resname="registration.firstname_placeholder">
-        <source>registration.firstname_placeholder</source>
-        <target>Vietturis (vārds)</target>
-      </trans-unit>
-      <trans-unit id="f3039abc3fa7510395d9138120c3f7b7" resname="registration.lastname_placeholder">
-        <source>registration.lastname_placeholder</source>
-        <target>Vietturis (uzvārds)</target>
-      </trans-unit>
-      <trans-unit id="bc35538bf1c9367fba9efdb845f93e49" resname="registration.email_placeholder">
-        <source>registration.email_placeholder</source>
-        <target>vietturis@pasts.lv</target>
-      </trans-unit>
-      <trans-unit id="cd8ca8a825ca00722525ae4f12fcc8d8" resname="registration.password_placeholder">
-        <source>registration.password_placeholder</source>
-        <target>Parole</target>
-      </trans-unit>
-      <trans-unit id="2dff984f6e0b6cd002938e54e534457f" resname="registration.repeat_password_placeholder">
-        <source>registration.repeat_password_placeholder</source>
-        <target>Atkārtojiet paroli</target>
-      </trans-unit>
-      <trans-unit id="0954cd2315bdccc8f1ea6c99749bbc82" resname="profile.phone_placeholder">
-        <source>profile.phone_placeholder</source>
-        <target>37160000000</target>
-      </trans-unit>
-      <trans-unit id="fc78b66b287d98d485a88f1107c16908" resname="profile.current_password">
-        <source>profile.current_password</source>
-        <target>Pašreizējā parole</target>
-      </trans-unit>
-      <trans-unit id="97e8424a7a90df015da0181c4451e4c8" resname="profile.new_password">
-        <source>profile.new_password</source>
-        <target>Jaunā parole</target>
-      </trans-unit>
-      <trans-unit id="174f5d849e8dfe234ca290e1bb69bb8e" resname="profile.repeat_new_password">
-        <source>profile.repeat_new_password</source>
-        <target>Atkārtojiet jauno paroli</target>
-      </trans-unit>
-      <trans-unit id="1356e0d24463239b30996f6239c0ff83" resname="general.currency_modals">
-        <source>general.currency_modals</source>
-        <target>eiro|eiro|eiro</target>
-      </trans-unit>
-      <trans-unit id="places.in_riga" resname="places.in_riga">
-        <source>places.in_riga</source>
-        <target>Rīga</target>
-      </trans-unit>
-      <trans-unit id="6663122b040f929c5f977c84b09089d9" resname="general.currency_minor_modals">
-        <source>general.currency_minor_modals</source>
-        <target>cents|centi|centu</target>
-      </trans-unit>
-        <trans-unit id="food.game.firstname" resname="food.game.firstname">
-            <source>food.game.firstname</source>
-            <target>Vārds</target>
-        </trans-unit>
-        <trans-unit id="food.game.lastname" resname="food.game.lastname">
-            <source>food.game.lastname</source>
-            <target>Uzvārds</target>
-        </trans-unit>
-        <trans-unit id="food.game.city" resname="food.game.city">
-            <source>food.game.city</source>
-            <target>Pilsēta</target>
-        </trans-unit>
-        <trans-unit id="food.game.bdate" resname="food.game.bdate">
-            <source>food.game.bdate</source>
-            <target>Dzimšanas d.</target>
-        </trans-unit>
-        <trans-unit id="food.game.phone" resname="food.game.phone">
-            <source>food.game.phone</source>
-            <target>Telefona nr.</target>
-        </trans-unit>
-        <trans-unit id="food.game.phone_placeholder" resname="food.game.phone_placeholder">
-            <source>food.game.phone_placeholder</source>
-            <target>371xxxxxxxx</target>
-        </trans-unit>
-        <trans-unit id="food.game.email" resname="food.game.email">
-            <source>food.game.email</source>
-            <target>E-pasts</target>
-        </trans-unit>
-        <trans-unit id="food.game.register" resname="food.game.register">
-            <source>food.game.register</source>
-            <target>Reģistrēties</target>
-        </trans-unit>
-        <trans-unit id="food.game.empty_field" resname="food.game.empty_field">
-            <source>food.game.empty_field</source>
-            <target>Šis laukums nedrīkst būt tukšs</target>
-        </trans-unit>
-        <trans-unit id="food.game.has_error" resname="food.game.has_error">
-            <source>food.game.has_error</source>
-            <target>Atvainojiet! Jūs esat ievadījis nepareizus datus.</target>
-        </trans-unit>
-        <trans-unit id="food.game.its_success" resname="food.game.its_success">
-            <source>food.game.its_success</source>
-            <target>Paldies, ka reģistrējies!</target>
-        </trans-unit>
-        <trans-unit id="food.game.agree" resname="food.game.agree">
-            <source>food.game.agree</source>
-            <target><![CDATA[Piekrītu lietošanas noteikumiem. <a href="rule_url">Noteikumi</a>]]></target>
-        </trans-unit>
-        <trans-unit id="general.wow_game" resname="general.wow_game">
-            <source>general.wow_game</source>
-            <target>Reģistrēties spēles</target>
-        </trans-unit>
-        <trans-unit id="food.marketing.bad_email" resname="food.marketing.bad_email">
-            <source>food.marketing.bad_email</source>
-            <target>Nepareiza e-pasta adrese</target>
-        </trans-unit>
-        <trans-unit id="general.top_contact.worktime_days" resname="general.top_contact.worktime_days">
-            <source>general.top_contact.worktime_days</source>
-            <target><![CDATA[VII - III,VII<br />IV - VI]]></target>
-        </trans-unit>
-        <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
-            <source>general.top_contact.worktime</source>
-            <target><![CDATA[10 - 02 h.<br />10 - 03 h.]]></target>
-        </trans-unit>
-        <trans-unit id="general.top_contact.phone" resname="general.top_contact.phone">
-            <source>general.top_contact.phone</source>
-            <target>+371 67363663</target>
-        </trans-unit>
-        <trans-unit id="general.app_block.header" resname="general.app_block.header">
-            <source>general.app_block.header</source>
-            <target>Foodout.lv Tavā kabatā!</target>
-        </trans-unit>
-        <trans-unit id="general.app_block.promo_text" resname="general.app_block.promo_text">
-            <source>general.app_block.promo_text</source>
-            <target>Pasūti ēdienu uz mājām vai ofisu no sava iPhone vai Android telefona. Lejupielādē bezmaksas aplikāciju!</target>
-        </trans-unit>
-        <trans-unit id="general.base_page_title" resname="general.base_page_title">
-            <source>general.base_page_title</source>
-            <target>Ēdienu piegāde</target>
-        </trans-unit>
-        <trans-unit id="general.restaurant_page_title" resname="general.restaurant_page_title">
-            <source>general.restaurant_page_title</source>
-            <target>%restaurant_name% ēdienu piegāde</target>
-        </trans-unit>
-        <trans-unit id="general.footer.social" resname="general.footer.social">
-            <source>general.footer.social</source>
-            <target>foodout ir sociāls</target>
-        </trans-unit>
-    </body>
-  </file>
+    <file source-language="lv" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="e50b21cf0f01ec6f209d0f2a68d68001" resname="index.app_title">
+                <source>index.app_title</source>
+                <target>programma</target>
+            </trans-unit>
+            <trans-unit id="e79f0a96a14972d5383cff1e3fc00475" resname="index.newsletter">
+                <source>index.newsletter</source>
+                <target>Jaunumi</target>
+            </trans-unit>
+            <trans-unit id="80ae01ad89a36c878618f64044dd7ae4" resname="index.newsletter_email">
+                <source>index.newsletter_email</source>
+                <target>Tavs e-pasts</target>
+            </trans-unit>
+            <trans-unit id="4687d99df9fae3b62e92c6b2b9b0e4ef" resname="index.newsletter_subscribe">
+                <source>index.newsletter_subscribe</source>
+                <target>Pierakstīties</target>
+            </trans-unit>
+            <trans-unit id="330dab2ab36aa511c007b7b9b0f7beb4" resname="index.get_best_offers">
+                <source>index.get_best_offers</source>
+                <target>Mūsu jaunumi būs Tavā epastā.</target>
+            </trans-unit>
+            <trans-unit id="0f5af6d10500595133a032984ec5dca4" resname="index.get_best_offers2">
+                <source>index.get_best_offers2</source>
+                <target>Tie sola informēt par gardākajām ziņām un īpašiem piedāvājumiem.</target>
+            </trans-unit>
+            <trans-unit id="index.get_this_offer" resname="index.get_this_offer">
+                <source>index.get_this_offer</source>
+                <target>PASŪTI</target>
+            </trans-unit>
+            <trans-unit id="be95147756721360c95dba571491c885" resname="index.city">
+                <source>index.city</source>
+                <target>Izvēlieties pilsētu</target>
+            </trans-unit>
+            <trans-unit id="44f58adead70171ab653c725c9abf0c3" resname="index.street">
+                <source>index.street</source>
+                <target>Adrese (piemēram, Brīvības iela)</target>
+            </trans-unit>
+            <trans-unit id="ae42ec23996ed8336de6d8f13c401db1" resname="index.house">
+                <source>index.house</source>
+                <target>Māja</target>
+            </trans-unit>
+            <trans-unit id="index.flat" resname="index.flat">
+                <source>index.flat</source>
+                <target>Dzīvoklis</target>
+            </trans-unit>
+            <trans-unit id="bb1fb2fdfdba48c2b3d2ec83e968729c" resname="index.findfood">
+                <source>index.findfood</source>
+                <target>Meklēt</target>
+            </trans-unit>
+            <trans-unit id="kitchen.filter.slug" resname="kitchen.filter.slug">
+                <source>kitchen.filter.slug</source>
+                <target>restorani-ar-virtuvi</target>
+            </trans-unit>
+            <trans-unit id="admin.upload_size_message" resname="admin.upload_size_message">
+                <source>admin.upload_size_message</source>
+                <target>File size is greater than 2MB</target>
+            </trans-unit>
+            <trans-unit id="1b78b59bfe4159583adb10ffa46bd822" resname="admin.kitchens.list.title">
+                <source>admin.kitchens.list.title</source>
+                <target>__admin.kitchens.list.title</target>
+            </trans-unit>
+            <trans-unit id="b3351508f66637ec0ac630ec350055e4" resname="admin.kitchens.list.name">
+                <source>admin.kitchens.list.name</source>
+                <target>__admin.kitchens.list.name</target>
+            </trans-unit>
+            <trans-unit id="8e692e1d1e1d412f8e6a1cc4696e5b69" resname="admin.kitchens.list.names">
+                <source>admin.kitchens.list.names</source>
+                <target>__admin.kitchens.list.names</target>
+            </trans-unit>
+            <trans-unit id="d945b749c1a3dbbdeedd263aeb5fadab" resname="admin.kitchens.list.count">
+                <source>admin.kitchens.list.count</source>
+                <target>__admin.kitchens.list.count</target>
+            </trans-unit>
+            <trans-unit id="5b91a93147542303c1c2c89439854708" resname="admin.kitchens.list.logo">
+                <source>admin.kitchens.list.logo</source>
+                <target>__admin.kitchens.list.logo</target>
+            </trans-unit>
+            <trans-unit id="450abc8065b25de909f6b3b51a04ece9" resname="admin.kitchens.list.visible">
+                <source>admin.kitchens.list.visible</source>
+                <target>__admin.kitchens.list.visible</target>
+            </trans-unit>
+            <trans-unit id="e01ccc4c69ee9b9c0037ad68235939d7" resname="admin.kitchens.list.actions">
+                <source>admin.kitchens.list.actions</source>
+                <target>__admin.kitchens.list.actions</target>
+            </trans-unit>
+            <trans-unit id="57043705200df1898f57a4ce31dc0f63" resname="admin.kitchens.list.actions.edit">
+                <source>admin.kitchens.list.actions.edit</source>
+                <target>__admin.kitchens.list.actions.edit</target>
+            </trans-unit>
+            <trans-unit id="78b4d0746d98867ab7995de3f2efaa7d" resname="admin.kitchens.list.actions.hide">
+                <source>admin.kitchens.list.actions.hide</source>
+                <target>__admin.kitchens.list.actions.hide</target>
+            </trans-unit>
+            <trans-unit id="a47a47cbe974b40c660db3a66a319562" resname="admin.kitchens.list.actions.unhide">
+                <source>admin.kitchens.list.actions.unhide</source>
+                <target>__admin.kitchens.list.actions.unhide</target>
+            </trans-unit>
+            <trans-unit id="cb5f3d5170208bd9aa3c07943fb9dd9b" resname="menu.main">
+                <source>menu.main</source>
+                <target>__menu.main</target>
+            </trans-unit>
+            <trans-unit id="63a3cc8df7d7043893e936b3a78f563c" resname="menu.about">
+                <source>menu.about</source>
+                <target>__menu.about</target>
+            </trans-unit>
+            <trans-unit id="7c5e189629698dd56afce1a5d358e831" resname="menu.contacts">
+                <source>menu.contacts</source>
+                <target>__menu.contacts</target>
+            </trans-unit>
+            <trans-unit id="04def2e17dbd7185519d9868066219a9" resname="menu.kitchens">
+                <source>menu.kitchens</source>
+                <target>__menu.kitchens</target>
+            </trans-unit>
+            <trans-unit id="77efd5ab64d10c8229919a263b1b6b68" resname="menu.profile">
+                <source>menu.profile</source>
+                <target>__menu.profile</target>
+            </trans-unit>
+            <trans-unit id="f57a89cbe68f6af28e00257032d944fb" resname="menu.profile.mycart">
+                <source>menu.profile.mycart</source>
+                <target>__menu.profile.mycart</target>
+            </trans-unit>
+            <trans-unit id="2c12928c2b481a0ba22da97349742794" resname="menu.profile.orders">
+                <source>menu.profile.orders</source>
+                <target>__menu.profile.orders</target>
+            </trans-unit>
+            <trans-unit id="5081fc8d0f945c9a8e083b2d21244650" resname="menu.profile.extra">
+                <source>menu.profile.extra</source>
+                <target>__menu.profile.extra</target>
+            </trans-unit>
+            <trans-unit id="ba502d1e2376f12a17d1902204a318d8" resname="menu.profile.settings">
+                <source>menu.profile.settings</source>
+                <target>__menu.profile.settings</target>
+            </trans-unit>
+            <trans-unit id="ab34660b67604dfa9b208a59f94c9a08" resname="menu.profile.logout">
+                <source>menu.profile.logout</source>
+                <target>__menu.profile.logout</target>
+            </trans-unit>
+            <trans-unit id="3a6d739fc186be6ccdf3b67db3879024" resname="admin.places.list.title">
+                <source>admin.places.list.title</source>
+                <target>__admin.places.list.title</target>
+            </trans-unit>
+            <trans-unit id="ef56946c08fa72828e61c1de8e6cd616" resname="admin.places.list.name">
+                <source>admin.places.list.name</source>
+                <target>__admin.places.list.name</target>
+            </trans-unit>
+            <trans-unit id="9ac1d2eb6bba30b4bbdff668c756d7dc" resname="admin.places.list.logo">
+                <source>admin.places.list.logo</source>
+                <target>__admin.places.list.logo</target>
+            </trans-unit>
+            <trans-unit id="47d1294456e7349f13e641a512853509" resname="admin.places.list.active">
+                <source>admin.places.list.active</source>
+                <target>__admin.places.list.active</target>
+            </trans-unit>
+            <trans-unit id="ee2c37575cd299bdbf11641685025c99" resname="admin.places.list.actions">
+                <source>admin.places.list.actions</source>
+                <target>__admin.places.list.actions</target>
+            </trans-unit>
+            <trans-unit id="82f38344a9b8d9d8753e67e3af18fd29" resname="admin.places.list.actions.hide">
+                <source>admin.places.list.actions.hide</source>
+                <target>__admin.places.list.actions.hide</target>
+            </trans-unit>
+            <trans-unit id="ad28d8014ac5520ca250e91a626122c7" resname="admin.places.list.actions.unhide">
+                <source>admin.places.list.actions.unhide</source>
+                <target>__admin.places.list.actions.unhide</target>
+            </trans-unit>
+            <trans-unit id="c9736bcd30d2902aaeb57bea426d0e11" resname="index.newsletter_provide_email">
+                <source>index.newsletter_provide_email</source>
+                <target>Ievadiet savu e-pasta adresi</target>
+            </trans-unit>
+            <trans-unit id="d0ca001986ba80de3d2d4bec67ea4ee5" resname="general.page_name">
+                <source>general.page_name</source>
+                <target>Foodout</target>
+            </trans-unit>
+            <trans-unit id="2b1ab5c52042b1d22f211e5c27e5f9b8" resname="general.top_restaurants">
+                <source>general.top_restaurants</source>
+                <target>TOP restorāni</target>
+            </trans-unit>
+            <trans-unit id="6ed5de5936f5473971d03ec26290dbd5" resname="general.newsletter">
+                <source>general.newsletter</source>
+                <target>Jaunumi</target>
+            </trans-unit>
+            <trans-unit id="2dcd088ae1551425f1d27f0c7c1b597f" resname="general.thank_you">
+                <source>general.thank_you</source>
+                <target>Paldies!</target>
+            </trans-unit>
+            <trans-unit id="7aaffcb3d756c2cd540c10c6feafacfa" resname="general.subscribed_newsletter">
+                <source>general.subscribed_newsletter</source>
+                <target>Jūs esat reģistrējušies jaunumu saņemšanai</target>
+            </trans-unit>
+            <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
+                <source>general.sms.user.order_accepted</source>
+                <target>Sveiki! restourant_name jau steidzas pie Jums! Planotais piegades laiks ir delivery_time! Sazinai: +371 67363663</target>
+            </trans-unit>
+            <trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
+                <source>general.sms.user.order_accepted_preorder</source>
+                <target>Sveiki! restourant_name jau steidzas pie Jums! Planotais piegades laiks ir pre_delivery_time! Sazinai: +371 67363663</target>
+            </trans-unit>
+            <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
+                <source>general.sms.user.order_accepted_pickup</source>
+                <target>Sveiki! restourant_name apstiprinaja Jusu pasutijumu. Edienu varat sanemt delivery_time! Ja Jums rodas jautajumi, sazinieties pa talruni +37167363663!</target>
+            </trans-unit>
+            <trans-unit id="general.sms.user.order_accepted_pickup_preorder" resname="general.sms.user.order_accepted_pickup_preorder">
+                <source>general.sms.user.order_accepted_pickup_preorder</source>
+                <target>Sveiki! restourant_name apstiprinaja Jusu pasutijumu. Edienu varat sanemt pre_delivery_time! Ja Jums rodas jautajumi, sazinieties pa talruni +37167363663!</target>
+            </trans-unit>
+            <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
+                <source>general.sms.client.restourant_cancel</source>
+                <target>Atvainojamies! Restorans ir atcelis Jusu pasutijumu.</target>
+            </trans-unit>
+            <trans-unit id="30dc3f60ca025a053ed3728a342c566a" resname="general.sms.client.restourant_cancel_banklink">
+                <source>general.sms.client.restourant_cancel_banklink</source>
+                <target>Atvainojamies! Restorans ir atcelis Jusu pasutijumu. Nauda tiks parskaitita atpakal uz Jusu kontu.</target>
+            </trans-unit>
+            <trans-unit id="74fbe91702c1ee04724c55bde63e654f" resname="general.email.new_order">
+                <source>general.email.new_order</source>
+                <target>jauns pasūtījums</target>
+            </trans-unit>
+            <trans-unit id="1f7e49e139506394ddc27ebbb528ce14" resname="general.email.canceled_order">
+                <source>general.email.canceled_order</source>
+                <target>atcelts pasūtījums</target>
+            </trans-unit>
+            <trans-unit id="d49bcf9cd21dc6082c4197317d362b84" resname="general.email.order_reminder">
+                <source>general.email.order_reminder</source>
+                <target>atgādinām, ka Jums ir neapstiprināts pasūtījums</target>
+            </trans-unit>
+            <trans-unit id="77c7e784b0de17ca35cb5e6e9b59b207" resname="general.email.accounting_yesterday_report">
+                <source>general.email.accounting_yesterday_report</source>
+                <target>iepriekšējās dienas pasūtījumu atskaite</target>
+            </trans-unit>
+            <trans-unit id="1c97f0a67846cbc305c963eedd2917cf" resname="general.email.driver_monthly_report">
+                <source>general.email.driver_monthly_report</source>
+                <target>iepriekšējā mēneša transp. līdz. vadītāju atskaite</target>
+            </trans-unit>
+            <trans-unit id="19554e921e608df135b269a564c8cf6a" resname="mobile.order_confirm">
+                <source>mobile.order_confirm</source>
+                <target>Apstiprināt pasūtījumu</target>
+            </trans-unit>
+            <trans-unit id="7ebe276de073f58e9744cb5e46760b88" resname="mobile.order_delay">
+                <source>mobile.order_delay</source>
+                <target>Atlikt pasūtījumu</target>
+            </trans-unit>
+            <trans-unit id="e110f798f6661e6e1ac7fbfe1f03e679" resname="mobile.order_finish">
+                <source>mobile.order_finish</source>
+                <target>Pagatavots</target>
+            </trans-unit>
+            <trans-unit id="2b94e2d1c25ddac053ea4bd3eaadd41f" resname="mobile.order_delivered">
+                <source>mobile.order_delivered</source>
+                <target>Piegādāju pasūtījumu</target>
+            </trans-unit>
+            <trans-unit id="mobile.order_picked_up" resname="mobile.order_picked_up">
+                <source>mobile.order_picked_up</source>
+                <target>Es pacēlu rezervēšanu</target>
+            </trans-unit>
+            <trans-unit id="77b3fe8d653be63c58a14017b4ffc9b7" resname="mobile.order_partialy_delivered">
+                <source>mobile.order_partialy_delivered</source>
+                <target>Piegādāju daļu pasūtījuma (klients daļu nepieņem)</target>
+            </trans-unit>
+            <trans-unit id="ebbc16fb3a732d7abe363ef2463397f9" resname="mobile.order_cancel">
+                <source>mobile.order_cancel</source>
+                <target>Atcelt pasūtījumu</target>
+            </trans-unit>
+            <trans-unit id="e9af7214246747e3648fdc0ec367494c" resname="general.places">
+                <source>general.places</source>
+                <target>Restorāni</target>
+            </trans-unit>
+            <trans-unit id="mobile.order.id" resname="mobile.order.id">
+                <source>mobile.order.id</source>
+                <target>Order no.</target>
+            </trans-unit>
+            <trans-unit id="ceb80ce24895534499f2a5a28a707fbb" resname="mobile.order_dish">
+                <source>mobile.order_dish</source>
+                <target>Ēdiens</target>
+            </trans-unit>
+            <trans-unit id="6579716641cda122d1f726af7a28cbb3" resname="mobile.order_quantity">
+                <source>mobile.order_quantity</source>
+                <target>Daudzums</target>
+            </trans-unit>
+            <trans-unit id="9078e7d978c69fa56befc6342d1b1573" resname="mobile.order_toppings">
+                <source>mobile.order_toppings</source>
+                <target>Piedevas</target>
+            </trans-unit>
+            <trans-unit id="d9b61e0a92b29d79db62732c4bb27cbf" resname="mobile.order_unit_name">
+                <source>mobile.order_unit_name</source>
+                <target>Lielums</target>
+            </trans-unit>
+            <trans-unit id="05b48d26335e8a0f936e45abc2360074" resname="mobile.place_finish_message">
+                <source>mobile.place_finish_message</source>
+                <target>Restorāna darbs pabeigts. Tālāk loģistika.</target>
+            </trans-unit>
+            <trans-unit id="3c3315f51972d750f464ae815babdff1" resname="mobile.place_finish_message_self_delivery">
+                <source>mobile.place_finish_message_self_delivery</source>
+                <target>Gatavošana pabeigta. Tālāk piegāde.</target>
+            </trans-unit>
+            <trans-unit id="cb2ecbcd06bc62396f6bb198d438dccf" resname="mobile.order_submit_delay">
+                <source>mobile.order_submit_delay</source>
+                <target>Apstiprināt atlikšanu</target>
+            </trans-unit>
+            <trans-unit id="0350819266b7134804cd4cab11e9762b" resname="mobile.order_cancel_delay">
+                <source>mobile.order_cancel_delay</source>
+                <target>Atcelt atlikšanu</target>
+            </trans-unit>
+            <trans-unit id="9724ea84f06483ca64d1effecaa364d8" resname="mobile.order_delay_reason">
+                <source>mobile.order_delay_reason</source>
+                <target>Atlikšanas iemesls</target>
+            </trans-unit>
+            <trans-unit id="d8d4495d7e138c947ba2bc0cb9f2a5ad" resname="mobile.order_delay_duration">
+                <source>mobile.order_delay_duration</source>
+                <target>Atlikšanas ilgums</target>
+            </trans-unit>
+            <trans-unit id="ad0cfaf6d8907666cb2aee2b0210192e" resname="general.login_title">
+                <source>general.login_title</source>
+                <target>Pieslēdzieties</target>
+            </trans-unit>
+            <trans-unit id="7413f0a4146986cd61378b69b502072c" resname="general.login_text">
+                <source>general.login_text</source>
+                <target>Vai esat reģistrējies? Pieslēdzieties!</target>
+            </trans-unit>
+            <trans-unit id="a4b8e2e9a458e2fc6d8c1246cf907c47" resname="general.login_email">
+                <source>general.login_email</source>
+                <target>E-pasts</target>
+            </trans-unit>
+            <trans-unit id="ffcbcb7d389a2b16555a642c06fde538" resname="general.login_password">
+                <source>general.login_password</source>
+                <target>Parole</target>
+            </trans-unit>
+            <trans-unit id="217fb76f1dceabbd81b98784d0f69d18" resname="general.login_forgot_password">
+                <source>general.login_forgot_password</source>
+                <target>Vai aizmirsāt paroli?</target>
+            </trans-unit>
+            <trans-unit id="c5ed7f556b28c0409324f9a78ebecdcb" resname="general.register_title">
+                <source>general.register_title</source>
+                <target>Jauns lietotājs?</target>
+            </trans-unit>
+            <trans-unit id="bd8607a9fbe59fa1edf1e39eebec8ec7" resname="general.register_text">
+                <source>general.register_text</source>
+                <target>Reģistrējieties – tas ilgs tikai minūti!</target>
+            </trans-unit>
+            <trans-unit id="2b4478e800d24223655f60bfec1dc43f" resname="general.register_name">
+                <source>general.register_name</source>
+                <target>Vārds</target>
+            </trans-unit>
+            <trans-unit id="7e0ced7de42517333f6665b778eb1d01" resname="general.register_surename">
+                <source>general.register_surename</source>
+                <target>Uzvārds</target>
+            </trans-unit>
+            <trans-unit id="bb95960993274fbcd944f650174156b9" resname="general.register_repeat_password">
+                <source>general.register_repeat_password</source>
+                <target>Atkārtojiet paroli</target>
+            </trans-unit>
+            <trans-unit id="672e207a47e2f0c2eb683baece23978e" resname="general.register_register_button">
+                <source>general.register_register_button</source>
+                <target>Reģistrējieties</target>
+            </trans-unit>
+            <trans-unit id="e1743bc18f60072e811d2e99a53c7bc2" resname="general.help_button">
+                <source>general.help_button</source>
+                <target>Palīdzība</target>
+            </trans-unit>
+            <trans-unit id="6c9e9d508e6df307cfed5b371823ecce" resname="general.login_button">
+                <source>general.login_button</source>
+                <target>Pieslēdzies</target>
+            </trans-unit>
+            <trans-unit id="947ad05ca557a6f415c38c8a87ddfc58" resname="general.profile_button">
+                <source>general.profile_button</source>
+                <target>Sveiki, %firstname%!</target>
+            </trans-unit>
+            <trans-unit id="3b71dfc8c61439d9e95d16cc0a177e77" resname="general.login_login_button">
+                <source>general.login_login_button</source>
+                <target>Pieslēdzieties</target>
+            </trans-unit>
+            <trans-unit id="5ad57190264dcf453d3f80908aa924de" resname="general.help_slug">
+                <source>general.help_slug</source>
+                <target>palidziba</target>
+            </trans-unit>
+            <trans-unit id="9e30081c6301c29c22942527d1d900ab" resname="general.close_btn">
+                <source>general.close_btn</source>
+                <target>Aizvērt</target>
+            </trans-unit>
+            <trans-unit id="e44e8ff9e4e47e49c926d67bf0112966" resname="general.sms.new_order">
+                <source>general.sms.new_order</source>
+                <target>Jauns pasutijums:</target>
+            </trans-unit>
+            <trans-unit id="general.sms.dispatcher_order" resname="general.sms.dispatcher_order">
+                <source>general.sms.dispatcher_order</source>
+                <target>New Foodout order for restaurant: place_name. Order #order_id</target>
+            </trans-unit>
+            <trans-unit id="52d751788d1ab704a9990362e53c1852" resname="general.sms.canceled_order">
+                <source>general.sms.canceled_order</source>
+                <target>Pasutijums #%order_number% ir atcelts:</target>
+            </trans-unit>
+            <trans-unit id="6923d196342f158f85d8fbc2903dfbcb" resname="general.sms.order_reminder">
+                <source>general.sms.order_reminder</source>
+                <target>Atgadinam, ka Jums ir neapstiprinats pasutijums:</target>
+            </trans-unit>
+            <trans-unit id="ddd5593d67b30b671c0533a616aa5398" resname="general.sms.new_order_in_mail">
+                <source>general.sms.new_order_in_mail</source>
+                <target>Ludzam parbaudit savu e-pastu, sanamat jaunu pasutijumu</target>
+            </trans-unit>
+            <trans-unit id="047147b3a00263b0c62fd54a32306e95" resname="general.email.partialy_completed">
+                <source>general.email.partialy_completed</source>
+                <target>Piegādāts nepilns pasūtījums</target>
+            </trans-unit>
+            <trans-unit id="3d6f52993727876649fad3f9e2d5c687" resname="general.sms.driver_assigned_order">
+                <source>general.sms.driver_assigned_order</source>
+                <target>Jauns pasutijums no: restaurant_title uz restaurant_address, līdz deliver_time </target>
+            </trans-unit>
+            <trans-unit id="28ecbd185a859ae613493c195207e5e0" resname="general.sms.user_order_delayed">
+                <source>general.sms.user_order_delayed</source>
+                <target>Atvainojamies! Tacu lielas pasutijumu plusmas del Jusu pasutijums tiek atlikts uz delay_time min. un tiks piegadats pec delivery_min min. Ja nepiekritat gaidit – sazinieties pa talr. +37167363663</target>
+            </trans-unit>
+            <trans-unit id="e7bd53e2c7fa9e93ede0c7b307426c5a" resname="general.sms.user_order_delayed_pickup">
+                <source>general.sms.user_order_delayed_pickup</source>
+                <target>Atvainojamies! Tacu lielass pasutijumu plusmas del Jusu pasutijums tiek atlikts uz delay_time min. un tiks sagatavots pec delivery_min min. Ja nepiekritat gaidit – sazinieties pa talr. +37167363663</target>
+            </trans-unit>
+            <trans-unit id="8036a67ebc0bbfebb10242dfaabceaf3" resname="general.email.user_delayed_subject">
+                <source>general.email.user_delayed_subject</source>
+                <target>mainījies piegādes laiks</target>
+            </trans-unit>
+            <trans-unit id="22a63be04fc38361fdf1ee63e1b4d4e0" resname="index.address_not_found">
+                <source>index.address_not_found</source>
+                <target>Adrese nav atrasta vai neeksistē</target>
+            </trans-unit>
+            <trans-unit id="f2e4d344548a4a45a1346062b31496f7" resname="mobile.pickup_type">
+                <source>mobile.pickup_type</source>
+                <target>Piegāde</target>
+            </trans-unit>
+            <trans-unit id="468ce43659556a6f745a233e986ba679" resname="mobile.deliver">
+                <source>mobile.deliver</source>
+                <target>Piegādāt</target>
+            </trans-unit>
+            <trans-unit id="937d1ad95431022c4c1b33b8f83c30f3" resname="mobile.delivery_destination">
+                <source>mobile.delivery_destination</source>
+                <target>Piegādes adrese</target>
+            </trans-unit>
+            <trans-unit id="0144b5f007f80909d118805c288cac04" resname="mobile.place_point_address">
+                <source>mobile.place_point_address</source>
+                <target>Paņemt no</target>
+            </trans-unit>
+            <trans-unit id="34e780a20dd8982964b54edd9425ffe3" resname="mobile.restourant_place_point_address">
+                <source>mobile.restourant_place_point_address</source>
+                <target>Gatavošanas punkts</target>
+            </trans-unit>
+            <trans-unit id="mobile.restaurant_delivery_price" resname="mobile.restaurant_delivery_price">
+                <source>mobile.restaurant_delivery_price</source>
+                <target>Delivery (with VAT)</target>
+            </trans-unit>
+            <trans-unit id="c515ebc67239e3c3555e84b329f7eeba" resname="mobile.place_point_phone">
+                <source>mobile.place_point_phone</source>
+                <target>Restorana tālrunis</target>
+            </trans-unit>
+            <trans-unit id="88456d596941f6ec79d9cd30ae01e8af" resname="mobile.pickup_foodout">
+                <source>mobile.pickup_foodout</source>
+                <target>Ieradīsies “Foodout.lv” kurjers</target>
+            </trans-unit>
+            <trans-unit id="5b47f6677b99741a5b189e0988b90a24" resname="mobile.pickup">
+                <source>mobile.pickup</source>
+                <target>Paņems restorānā</target>
+            </trans-unit>
+            <trans-unit id="84b322bfb942d74b28b61094cee1efab" resname="mobile.comment">
+                <source>mobile.comment</source>
+                <target>Cita informācija</target>
+            </trans-unit>
+            <trans-unit id="978aeeed993d1f914bd3d72a3ddd89f4" resname="mobile.need_invoice">
+                <source>mobile.need_invoice</source>
+                <target>Būs nepieciešams faktūrrēķins</target>
+            </trans-unit>
+            <trans-unit id="cb3d2e5a187b4580d5bf746964116359" resname="mobile.company_name">
+                <source>mobile.company_name</source>
+                <target>Uzņēmums</target>
+            </trans-unit>
+            <trans-unit id="bbbf0c7f05c8bf92129fc55178dd56e7" resname="mobile.company_code">
+                <source>mobile.company_code</source>
+                <target>Uzņ. reģ. kods</target>
+            </trans-unit>
+            <trans-unit id="2c6cb4770b682c5ece4066830310db96" resname="mobile.vat_code">
+                <source>mobile.vat_code</source>
+                <target>PVN maks. kods</target>
+            </trans-unit>
+            <trans-unit id="cfca1191390509f4af7d7344def2d9b6" resname="mobile.company_address">
+                <source>mobile.company_address</source>
+                <target>Adrese</target>
+            </trans-unit>
+            <trans-unit id="ff1fd4e7d3fb885df18c293c9c41a302" resname="mobile.payment">
+                <source>mobile.payment</source>
+                <target>Apmaksa</target>
+            </trans-unit>
+            <trans-unit id="6f33924553f5d8fac62abb6a0c7a685c" resname="mobile.payment.local.card">
+                <source>mobile.payment.local.card</source>
+                <target>Karte, saņemot pasūtījumu</target>
+            </trans-unit>
+            <trans-unit id="975056dcfb485500d01cf7f23d10c891" resname="mobile.payment.local">
+                <source>mobile.payment.local</source>
+                <target>Skaidrā naudā, saņemot pasūtījumu</target>
+            </trans-unit>
+            <trans-unit id="ff990e97a34ed6619f88da89f1555dd1" resname="mobile.payment.paysera">
+                <source>mobile.payment.paysera</source>
+                <target>Apmaksāts internetā</target>
+            </trans-unit>
+            <trans-unit id="71b941af90fb029c96516c2a92eba751" resname="mobile.payment.nordea-banklink">
+                <source>mobile.payment.nordea-banklink</source>
+                <target>Apmaksāts internetā (Nordea)</target>
+            </trans-unit>
+            <trans-unit id="2246ad6a8ec9824f0f6bacaae222fa16" resname="mobile.payment.seb-banklink">
+                <source>mobile.payment.seb-banklink</source>
+                <target>Apmaksāts internetā (SEB)</target>
+            </trans-unit>
+            <trans-unit id="c9ff97727c2cc0f5f39323500c129b7d" resname="mobile.payment.swedbank-credit-card-gateway">
+                <source>mobile.payment.swedbank-credit-card-gateway</source>
+                <target>Apmaksāts internetā (Swed CC)</target>
+            </trans-unit>
+            <trans-unit id="43de157b28c4d6324eb1b6078c3b28ab" resname="mobile.payment.swedbank-gateway">
+                <source>mobile.payment.swedbank-gateway</source>
+                <target>Apmaksāts internetā (Swedbank)</target>
+            </trans-unit>
+            <trans-unit id="ca4d1fefea4fd64c121dbd0e8fa2819c" resname="mobile.order.sum_with_delivery">
+                <source>mobile.order.sum_with_delivery</source>
+                <target>Summa ar piegādi (ar PVN)</target>
+            </trans-unit>
+            <trans-unit id="4049c45b29c8af2dff760dc33d4612ba" resname="mobile.order.coupon_code">
+                <source>mobile.order.coupon_code</source>
+                <target>Atlaižu kods</target>
+            </trans-unit>
+            <trans-unit id="8d899757c0dd13df1bc8d5c370b07727" resname="mobile.order.coupon_used">
+                <source>mobile.order.coupon_used</source>
+                <target>Piemērota atlaide</target>
+            </trans-unit>
+            <trans-unit id="f5461921a81a92142f6a6964102dfedf" resname="mobile.order.coupon_discount_sum">
+                <source>mobile.order.coupon_discount_sum</source>
+                <target>Atlaides summa</target>
+            </trans-unit>
+            <trans-unit id="c4893f3e3a9f9062ea893935c75c4724" resname="mobile.order.sum">
+                <source>mobile.order.sum</source>
+                <target>Summa (ar PVN)</target>
+            </trans-unit>
+            <trans-unit id="e0e188c6f3a31f7c0c241e260d7c442b" resname="mobile.customer_phone">
+                <source>mobile.customer_phone</source>
+                <target>Pasūtītāja tālr.</target>
+            </trans-unit>
+            <trans-unit id="mobile.dispatcher_contact_phone" resname="mobile.dispatcher_contact_phone">
+                <source>mobile.dispatcher_contact_phone</source>
+                <target>Dispečers tālr.</target>
+            </trans-unit>
+            <trans-unit id="6b992ec872e88f6be09ab06f8cceb76e" resname="mobile.order_time">
+                <source>mobile.order_time</source>
+                <target>Pasūtījuma laiks</target>
+            </trans-unit>
+            <trans-unit id="7dc15ebe3ad3e6bdf4ae58cdb2353c9c" resname="mobile.restaurant_order">
+                <source>mobile.restaurant_order</source>
+                <target>Jauns pasūtījums</target>
+            </trans-unit>
+            <trans-unit id="416ee797bc3b010f67367cec0ea0cf11" resname="mobile.driver_order">
+                <source>mobile.driver_order</source>
+                <target>Jauna piegāde</target>
+            </trans-unit>
+            <trans-unit id="0dbbfe8f19d7310a3259363d622cf7ae" resname="mobile.restaurant_invoice">
+                <source>mobile.restaurant_invoice</source>
+                <target>Pieņemšanas nodošanas akts</target>
+            </trans-unit>
+            <trans-unit id="4090ca7ff35db8d3631a005420152ed6" resname="mobile.invoice.date">
+                <source>mobile.invoice.date</source>
+                <target>Datums</target>
+            </trans-unit>
+            <trans-unit id="de728da4e406160a87aa23b86371f725" resname="mobile.invoice.assign_date">
+                <source>mobile.invoice.assign_date</source>
+                <target>Pasūtījuma nosūtīšanas laiks</target>
+            </trans-unit>
+            <trans-unit id="032824c6bcc0a9b0ac9e8385315a5bd5" resname="mobile.invoice.delivery_date">
+                <source>mobile.invoice.delivery_date</source>
+                <target>Pasūtījuma piegādes laiks</target>
+            </trans-unit>
+            <trans-unit id="dda1dd34b8ed6aeefe19435a155fc07a" resname="mobile.invoice.dish_name">
+                <source>mobile.invoice.dish_name</source>
+                <target>Nosaukums</target>
+            </trans-unit>
+            <trans-unit id="e30f6fa56b1646c106ceef7f11fffb70" resname="mobile.invoice.quantity">
+                <source>mobile.invoice.quantity</source>
+                <target>Daudzums</target>
+            </trans-unit>
+            <trans-unit id="bcd6910eed50d4b4ad47ad7c8adbc12f" resname="mobile.invoice.price">
+                <source>mobile.invoice.price</source>
+                <target>Cena</target>
+            </trans-unit>
+            <trans-unit id="8fdcdbfaa2b45c5c1bc432ef94c20243" resname="mobile.invoice.sum">
+                <source>mobile.invoice.sum</source>
+                <target>Summa </target>
+            </trans-unit>
+            <trans-unit id="11a8e22472e0eab53be67fab606dae58" resname="mobile.invoice.customer">
+                <source>mobile.invoice.customer</source>
+                <target>Pasūtītājs</target>
+            </trans-unit>
+            <trans-unit id="6c520917038237f134ad0fd241a8fdf8" resname="mobile.invoice.customer_phone">
+                <source>mobile.invoice.customer_phone</source>
+                <target>Tālr.</target>
+            </trans-unit>
+            <trans-unit id="1de88ddbb94bb197474dcfc54669ba42" resname="mobile.invoice.submitted">
+                <source>mobile.invoice.submitted</source>
+                <target>Nodeva</target>
+            </trans-unit>
+            <trans-unit id="7ac847c965b1ee56487223805dc9c904" resname="mobile.invoice.received">
+                <source>mobile.invoice.received</source>
+                <target>Saņēma</target>
+            </trans-unit>
+            <trans-unit id="39f9b5cc77e17ca280be3bd3a4dd9635" resname="mobile.invoice.vat_code">
+                <source>mobile.invoice.vat_code</source>
+                <target>PVN kods</target>
+            </trans-unit>
+            <trans-unit id="1a971e1e4c395c44347f7fdfaad550c6" resname="mobile.invoice.company_code">
+                <source>mobile.invoice.company_code</source>
+                <target>Uzņ. reģ. kods</target>
+            </trans-unit>
+            <trans-unit id="5ae95cad37ee0316aedc7626a61fa937" resname="mobile.invoice_driver">
+                <source>mobile.invoice_driver</source>
+                <target>Pavadzīme</target>
+            </trans-unit>
+            <trans-unit id="5a8757eec95dabc93144ef38a3f34eb0" resname="mobile.invoice.driver">
+                <source>mobile.invoice.driver</source>
+                <target>Šoferis</target>
+            </trans-unit>
+            <trans-unit id="b4db2e74a666e4a25386b3f68c64e27a" resname="mobile.invoice.car_number">
+                <source>mobile.invoice.car_number</source>
+                <target>Automobiļa Nr.</target>
+            </trans-unit>
+            <trans-unit id="97f1b49f5db8eafedd659da228102ab6" resname="mobile.invoice.sum_no_vat">
+                <source>mobile.invoice.sum_no_vat</source>
+                <target>Summa bez PVN</target>
+            </trans-unit>
+            <trans-unit id="7c5b0e5b63f5243ec75be8eeb31415e5" resname="mobile.invoice.delivery_no_vat">
+                <source>mobile.invoice.delivery_no_vat</source>
+                <target>Piegāde bez PVN</target>
+            </trans-unit>
+            <trans-unit id="ad7ab425c1bb8b6ff7465c9904c4ab7e" resname="mobile.invoice.vat">
+                <source>mobile.invoice.vat</source>
+                <target>PVN</target>
+            </trans-unit>
+            <trans-unit id="3e8dbd3b6c212811e68a1e118164a660" resname="mobile.invoice.total_with_vat">
+                <source>mobile.invoice.total_with_vat</source>
+                <target>Kopā</target>
+            </trans-unit>
+            <trans-unit id="2c812d984008c3c0e4004ee7f39746f8" resname="mobile.invoice.total_with_vat_eur">
+                <source>mobile.invoice.total_with_vat_eur</source>
+                <target>Kopā EUR</target>
+            </trans-unit>
+            <trans-unit id="16e198a6b48257e47d9ce572ab7ce655" resname="mobile.deliver_time">
+                <source>mobile.deliver_time</source>
+                <target>Piegādāt līdz</target>
+            </trans-unit>
+            <trans-unit id="4fb8db91bc66edcad1edbf26d918235c" resname="general.user.firsname.not_blank">
+                <source>general.user.firsname.not_blank</source>
+                <target>Ievadiet savu vārdu</target>
+            </trans-unit>
+            <trans-unit id="c2d3b4fc6b96d87d230d72b1492c354b" resname="general.user.firsname.short">
+                <source>general.user.firsname.short</source>
+                <target>Vārds nedrīkst būt īsāks par 2 simboliem</target>
+            </trans-unit>
+            <trans-unit id="c55240db34347d177c3aec0b93b73389" resname="general.user.firsname.long">
+                <source>general.user.firsname.long</source>
+                <target>Vārds nedrīkst būt garāks par 255 simboliem</target>
+            </trans-unit>
+            <trans-unit id="eac01114b0976e68239dfd36aeacbed0" resname="general.user.lastname.not_blank">
+                <source>general.user.lastname.not_blank</source>
+                <target>Ievadiet savu uzvārdu</target>
+            </trans-unit>
+            <trans-unit id="414f36b3933132261c070fa1179087cb" resname="general.user.lastname.short">
+                <source>general.user.lastname.short</source>
+                <target>Uzvārds nedrīkst būt īsāks par 2 simboliem</target>
+            </trans-unit>
+            <trans-unit id="efe502b0e090904235afb3f5afb3ffc0" resname="general.user.lastname.long">
+                <source>general.user.lastname.long</source>
+                <target>Uzvārds nedrīkst būt garāks par 255 simboliem</target>
+            </trans-unit>
+            <trans-unit id="c1d379b8878916928a9c4c935daa3e14" resname="general.user.email.not_blank">
+                <source>general.user.email.not_blank</source>
+                <target>Ievadiet savu e-pasta adresi</target>
+            </trans-unit>
+            <trans-unit id="36e5d23120269705d139f18a4ee96f4f" resname="general.order">
+                <source>general.order</source>
+                <target>Pasūtījums</target>
+            </trans-unit>
+            <trans-unit id="c5b6d9efee2da625ca3f97b621bbf2db" resname="general.order.delivered">
+                <source>general.order.delivered</source>
+                <target>Piegādāt</target>
+            </trans-unit>
+            <trans-unit id="b8d0b782b8f556f1c6340b3e3eb2888e" resname="general.order.on_delivery">
+                <source>general.order.on_delivery</source>
+                <target>Tiek piegādāti</target>
+            </trans-unit>
+            <trans-unit id="61253403522f312c0970b8f9026d1b45" resname="general.order.in_progress">
+                <source>general.order.in_progress</source>
+                <target>Tiek izpildīts</target>
+            </trans-unit>
+            <trans-unit id="762eed86fc40be6111718945639f0673" resname="general.order.making">
+                <source>general.order.making</source>
+                <target>Tiek gatavoti</target>
+            </trans-unit>
+            <trans-unit id="25d620dbbe37b0506d40fea6e6fdb8e0" resname="general.order.dishes">
+                <source>general.order.dishes</source>
+                <target>ēdieni</target>
+            </trans-unit>
+            <trans-unit id="8540a3f4a2e4a8d25fb8b518ea07d6c2" resname="general.for">
+                <source>general.for</source>
+                <target>par</target>
+            </trans-unit>
+            <trans-unit id="59fb7baae09f0848dc2cc994412415c8" resname="general.to">
+                <source>general.to</source>
+                <target>uz</target>
+            </trans-unit>
+            <trans-unit id="96ca7660e2be7364588f0a6f9f129296" resname="general.from">
+                <source>general.from</source>
+                <target>no</target>
+            </trans-unit>
+            <trans-unit id="2fa7a0040220fdd613af522001776777" resname="general.will_pickup_from">
+                <source>general.will_pickup_from</source>
+                <target>, paņemsiet no</target>
+            </trans-unit>
+            <trans-unit id="1818eb2507853a521faaa319ec9191dc" resname="general.picked_up">
+                <source>general.picked_up</source>
+                <target>Paņemt</target>
+            </trans-unit>
+            <trans-unit id="00b693a37152f5f97b20851212b53429" resname="general.greating">
+                <source>general.greating</source>
+                <target>Sveiki!</target>
+            </trans-unit>
+            <trans-unit id="28a7c7f756114029e6a1ebe7488ca7b4" resname="general.profile.user_data">
+                <source>general.profile.user_data</source>
+                <target>Lietotāja dati</target>
+            </trans-unit>
+            <trans-unit id="5cf69119a26982c1d484cbc8476067e3" resname="general.profile.cart_history">
+                <source>general.profile.cart_history</source>
+                <target>Pasūtījumu vēsture</target>
+            </trans-unit>
+            <trans-unit id="4c0c2aa6ad499bfdd3f6e8edffc6336c" resname="general.profile.logout">
+                <source>general.profile.logout</source>
+                <target>Iziet</target>
+            </trans-unit>
+            <trans-unit id="6defb486341307b289948eb8fa05624f" resname="general.profile.button_save">
+                <source>general.profile.button_save</source>
+                <target>Saglabāt</target>
+            </trans-unit>
+            <trans-unit id="9274e23fa49ef791a605538ff3996088" resname="general.profile.home">
+                <source>general.profile.home</source>
+                <target>Sākums</target>
+            </trans-unit>
+            <trans-unit id="e4209a725a5c0427b4f1f87316e85794" resname="general.profile">
+                <source>general.profile</source>
+                <target>Lietotāja profils</target>
+            </trans-unit>
+            <trans-unit id="a9bc7e139157e0da93261b03e01ac056" resname="general.profile.no_orders">
+                <source>general.profile.no_orders</source>
+                <target>Vēl neko neesat pasūtījuši</target>
+            </trans-unit>
+            <trans-unit id="892229102c7bcdeb4e6dbd72703f707e" resname="general.email.accounting_report.local.card">
+                <source>general.email.accounting_report.local.card</source>
+                <target>Karte, saņemot</target>
+            </trans-unit>
+            <trans-unit id="992360f614ab5f74ccc60fd3b5ff6064" resname="general.email.accounting_report.local">
+                <source>general.email.accounting_report.local</source>
+                <target>Skaidrā naudā</target>
+            </trans-unit>
+            <trans-unit id="6ff5d01a17890ac3a904f3340c591192" resname="general.email.accounting_report.paysera">
+                <source>general.email.accounting_report.paysera</source>
+                <target>Internetā (Paysera)</target>
+            </trans-unit>
+            <trans-unit id="7f603c819e64fcd9a19be93134125e9d" resname="general.email.accounting_report.nordea-banklink">
+                <source>general.email.accounting_report.nordea-banklink</source>
+                <target>Internetā (Nordea)</target>
+            </trans-unit>
+            <trans-unit id="0e11058b6765d18060da9b298407dcfe" resname="general.email.accounting_report.seb-banklink">
+                <source>general.email.accounting_report.seb-banklink</source>
+                <target>Internetā (SEB)</target>
+            </trans-unit>
+            <trans-unit id="78d148b648c8dd083fe42d6097ec1d89" resname="general.email.accounting_report.swedbank-credit-card-gateway">
+                <source>general.email.accounting_report.swedbank-credit-card-gateway</source>
+                <target>Internetā (Swedbank kredītkarte)</target>
+            </trans-unit>
+            <trans-unit id="7dde64e66270dee3285d1ac8248ed321" resname="general.email.accounting_report.swedbank-gateway">
+                <source>general.email.accounting_report.swedbank-gateway</source>
+                <target>Internetā (Swedbank banklink)</target>
+            </trans-unit>
+            <trans-unit id="2a27b06725260bba699dd331a49827d8" resname="index.title_page_header">
+                <source>index.title_page_header</source>
+                <target><![CDATA[Dažādi restorāni vienuviet!]]></target>
+            </trans-unit>
+            <trans-unit id="02e3d3477fa84ee89d7c8f812fe8d4b1" resname="index.search_form_qlue">
+                <source>index.search_form_qlue</source>
+                <target>Ievadiet savu adresi un uzziniet, no kura restorāna iespējams veikt pasūtījumu</target>
+            </trans-unit>
+            <trans-unit id="ac540ec383eda788715ff2caab8ce97e" resname="general.ip_banned">
+                <source>general.ip_banned</source>
+                <target>Jūsu IP adrese ir bloķēta</target>
+            </trans-unit>
+            <trans-unit id="620c7ce4e5b0c3f1f527813491a9152f" resname="general.ip_banned_info">
+                <source>general.ip_banned_info</source>
+                <target><![CDATA[Atvainojamies! Taču Jūsu IP adrese (%ip%) ir bloķēta.<br />IP adreses tiek bloķētas, ja: apmeklētājs veido nepatiesus pasūtījumus; apmelo, aizskar vai ar citām tīšām darbībām traucē citiem apmeklētājiem vai restorāna darbam.<br /><br />Administrācijas norādītais iemesls: "%reason%".<br /><br />Ja uzskatāt, ka tas ir noticis kļūdas dēļ – sazinieties ar mums <strong><a href="mailto:info@foodout.lv">info@foodout.lv</a></strong> vai pa tālruni <strong>+371 67363663</strong>]]></target>
+            </trans-unit>
+            <trans-unit id="7e9bef54e33d4a729ebb1a05ed886696" resname="general.raty.not_rated_yet">
+                <source>general.raty.not_rated_yet</source>
+                <target>Restorāns vēl nav novērtēts</target>
+            </trans-unit>
+            <trans-unit id="0528b2034eeacf50a4186ba64abf7bc3" resname="general.raty.bad">
+                <source>general.raty.bad</source>
+                <target>Ļoti slikts</target>
+            </trans-unit>
+            <trans-unit id="2e3ffd779b24297f288d953d6b1de145" resname="general.raty.poor">
+                <source>general.raty.poor</source>
+                <target>Slikts</target>
+            </trans-unit>
+            <trans-unit id="b833b9eaee6bd8cbf9372e05fef7699e" resname="general.raty.regular">
+                <source>general.raty.regular</source>
+                <target>Vidējs</target>
+            </trans-unit>
+            <trans-unit id="d9920afbffea8130ad937778aa41cacc" resname="general.raty.good">
+                <source>general.raty.good</source>
+                <target>Labs</target>
+            </trans-unit>
+            <trans-unit id="810fd28046cfbd284298dbb990da3454" resname="general.raty.gorgeous">
+                <source>general.raty.gorgeous</source>
+                <target>Brīnišķīgs</target>
+            </trans-unit>
+            <trans-unit id="e7f4814137b269764cca308be5ec7635" resname="general.item_quantity">
+                <source>general.item_quantity</source>
+                <target>gab.</target>
+            </trans-unit>
+            <trans-unit id="1794a5ac72303f545a21a31292d40981" resname="general.cart.success">
+                <source>general.cart.success</source>
+                <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
+            </trans-unit>
+            <trans-unit id="general.cart.success_pre" resname="general.cart.success_pre">
+                <source>general.cart.success_pre</source>
+                <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams %order_date%. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
+            </trans-unit>
+            <trans-unit id="general.cart.success_title_lv" resname="general.cart.success_title">
+                <source>general.cart.success_title</source>
+                <target>Sveicieni</target>
+            </trans-unit>
+            <trans-unit id="f4c0ca7e7c9982f972d72f90a102c538" resname="general.cart.success_no_place_num">
+                <source>general.cart.success_no_place_num</source>
+                <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/> Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong>.]]></target>
+            </trans-unit>
+            <trans-unit id="14f92354734525418e2e676012bdd0f3" resname="general.cart.wait">
+                <source>general.cart.wait</source>
+                <target><![CDATA[Jūsu pasūtījums ir pieņemts un tiks nodots restorānam, tiklīdz pabeigsiet apmaksu. <br/> Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>"Foodout.lv"</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
+            </trans-unit>
+            <trans-unit id="725e9712f4d5c48bf73110fb0d093b68" resname="reporting.monthly.driver_report.title">
+                <source>reporting.monthly.driver_report.title</source>
+                <target>Iepriekšējā mēneša (%reportDate%) tr. līdz. vadītāju vestie pasūtījumi</target>
+            </trans-unit>
+            <trans-unit id="f14db2fedb84ba4ba05f51bf7f093f81" resname="reporting.driver">
+                <source>reporting.driver</source>
+                <target>Tr. līdz. vadītājs</target>
+            </trans-unit>
+            <trans-unit id="9bdd73d05c919658b56bb3334ebd17e0" resname="reporting.orders_total">
+                <source>reporting.orders_total</source>
+                <target>Kopā pasūtījumi</target>
+            </trans-unit>
+            <trans-unit id="21d268000fd471d568bb56ba827125a5" resname="reporting.monthly.driver_report.payment_local">
+                <source>reporting.monthly.driver_report.payment_local</source>
+                <target>Samaksāts uz vietas</target>
+            </trans-unit>
+            <trans-unit id="16ec56686b1910872f85c61f104f9df0" resname="reporting.monthly.driver_report.payment_banklink">
+                <source>reporting.monthly.driver_report.payment_banklink</source>
+                <target>Samaksāts internetā</target>
+            </trans-unit>
+            <trans-unit id="829e34fa959892f038a58858997e20e2" resname="reporting.monthly.driver_report.payment_local_sum">
+                <source>reporting.monthly.driver_report.payment_local_sum</source>
+                <target><![CDATA[Summa, kas ir samaksāta uz vietas<br />(ar PVN)]]></target>
+            </trans-unit>
+            <trans-unit id="9536df9d4481257a41dfe7d0b2b18d8b" resname="reporting.monthly.driver_report.payment_banklink_sum">
+                <source>reporting.monthly.driver_report.payment_banklink_sum</source>
+                <target><![CDATA[Summa, kas ir samaksāta internetā<br />(ar PVN)]]></target>
+            </trans-unit>
+            <trans-unit id="069e3839e99b78d807774b67533bc4b7" resname="reporting.monthly.driver_report.total_order_sum">
+                <source>reporting.monthly.driver_report.total_order_sum</source>
+                <target><![CDATA[Visu pasūtījumu summa<br />(ar PVN)]]></target>
+            </trans-unit>
+            <trans-unit id="ad7013f7b88bdaf3dc8aa7635c028617" resname="reporting.monthly.driver_report.total_drivers">
+                <source>reporting.monthly.driver_report.total_drivers</source>
+                <target>Kopā vedušie tr. līdz. vadītāji</target>
+            </trans-unit>
+            <trans-unit id="fa1e94374c8f0edcb88e3ebd43d7d9cd" resname="reporting.daily.yesterday_orders.title">
+                <source>reporting.daily.yesterday_orders.title</source>
+                <target>Vakardienas (%reportDate%) pasūtījumi</target>
+            </trans-unit>
+            <trans-unit id="254849345ce90eda32575ab682f601cd" resname="reporting.daily.yesterday_orders.our_delivery">
+                <source>reporting.daily.yesterday_orders.our_delivery</source>
+                <target>Pasūtījumi ar mūsu piegādi</target>
+            </trans-unit>
+            <trans-unit id="690f4a7170e5d920018653361c335056" resname="reporting.daily.yesterday_orders.restourant_delivery">
+                <source>reporting.daily.yesterday_orders.restourant_delivery</source>
+                <target>Pasūtījumi, ko piegādāja pats restorāns</target>
+            </trans-unit>
+            <trans-unit id="e1742dfe3467b85f6aaf2e2081c96681" resname="reporting.daily.yesterday_orders.pickup">
+                <source>reporting.daily.yesterday_orders.pickup</source>
+                <target>Restorānā paņemtie pasūtījumi</target>
+            </trans-unit>
+            <trans-unit id="b7cfc40ee412448bbe58db24e7a902ac" resname="reporting.daily.yesterday_orders.time">
+                <source>reporting.daily.yesterday_orders.time</source>
+                <target>Laiks</target>
+            </trans-unit>
+            <trans-unit id="e83369cfd60836f54ffb6faf8e679dd6" resname="reporting.daily.yesterday_orders.place">
+                <source>reporting.daily.yesterday_orders.place</source>
+                <target>Restorāns</target>
+            </trans-unit>
+            <trans-unit id="7aaa6d44e60f1359640bd9344d1d7b86" resname="reporting.daily.yesterday_orders.place_point">
+                <source>reporting.daily.yesterday_orders.place_point</source>
+                <target>Gat. punkts</target>
+            </trans-unit>
+            <trans-unit id="b884667250124a93ecdcacf56d113780" resname="reporting.daily.yesterday_orders.payment_type">
+                <source>reporting.daily.yesterday_orders.payment_type</source>
+                <target>Samaksas veids</target>
+            </trans-unit>
+            <trans-unit id="34db804d1b5af3c722ded453f0ef7a21" resname="reporting.daily.yesterday_orders.delivery_with_vat">
+                <source>reporting.daily.yesterday_orders.delivery_with_vat</source>
+                <target><![CDATA[Pieg.<br />(ar PVN)]]></target>
+            </trans-unit>
+            <trans-unit id="2fc9d7639b2459ee652c223138a828db" resname="reporting.daily.yesterday_orders.delivery_without_vat">
+                <source>reporting.daily.yesterday_orders.delivery_without_vat</source>
+                <target><![CDATA[Pieg.<br />(bez PVN)]]></target>
+            </trans-unit>
+            <trans-unit id="dc79f8f9c6dcdc0e1e6a20793288e1c6" resname="reporting.daily.yesterday_orders.dishes_without_vat">
+                <source>reporting.daily.yesterday_orders.dishes_without_vat</source>
+                <target><![CDATA[Ēdieni<br />(bez PVN)]]></target>
+            </trans-unit>
+            <trans-unit id="d54be52a8afc7ad5e521463647d1adf0" resname="reporting.daily.yesterday_orders.vat">
+                <source>reporting.daily.yesterday_orders.vat</source>
+                <target>PVN</target>
+            </trans-unit>
+            <trans-unit id="a09bac8dec4c1a70e0f5f6f595b7e711" resname="reporting.daily.yesterday_orders.total_with_vat">
+                <source>reporting.daily.yesterday_orders.total_with_vat</source>
+                <target><![CDATA[Kopā<br />(ar PVN)]]></target>
+            </trans-unit>
+            <trans-unit id="3c4fcd7f22d5e1e89fa9149aa7cee859" resname="reporting.daily.yesterday_orders.total_with_vat_no_brake">
+                <source>reporting.daily.yesterday_orders.total_with_vat_no_brake</source>
+                <target>Kopā (ar PVN)</target>
+            </trans-unit>
+            <trans-unit id="reporting.daily.yesterday_orders.preorder" resname="reporting.daily.yesterday_orders.preorder">
+                <source>reporting.daily.yesterday_orders.preorder</source>
+                <target><![CDATA[Preorder<br />(delivery date)]]></target>
+            </trans-unit>
+            <trans-unit id="a0bf255f39b5cbccb042f7dc5f993d00" resname="reporting.daily.yesterday_orders.total_pickup">
+                <source>reporting.daily.yesterday_orders.total_pickup</source>
+                <target>Kopā paņemot (ar PVN)</target>
+            </trans-unit>
+            <trans-unit id="4bad9c3efccedcafc2dc982a14f0ee89" resname="reporting.daily.yesterday_orders.total_banklink">
+                <source>reporting.daily.yesterday_orders.total_banklink</source>
+                <target>Kopā internetā (ar PVN)</target>
+            </trans-unit>
+            <trans-unit id="7f72b3330e263ba2c508529af65fc0ec" resname="reporting.daily.yesterday_orders.no_driver">
+                <source>reporting.daily.yesterday_orders.no_driver</source>
+                <target>Nav norādīts??</target>
+            </trans-unit>
+            <trans-unit id="436bbf20331004cdec50f16e5f912155" resname="reporting.daily.yesterday_orders.coupon_code">
+                <source>reporting.daily.yesterday_orders.coupon_code</source>
+                <target><![CDATA[Atlaides<br />kods]]></target>
+            </trans-unit>
+            <trans-unit id="a7e6412ade881968d75428765919b039" resname="reporting.daily.yesterday_orders.discount_size">
+                <source>reporting.daily.yesterday_orders.discount_size</source>
+                <target><![CDATA[Atlaides<br />lielums (%)]]></target>
+            </trans-unit>
+            <trans-unit id="8ea85eaa2562ca5675e1ac178a4ddfc3" resname="reporting.daily.yesterday_orders.discount_sum">
+                <source>reporting.daily.yesterday_orders.discount_sum</source>
+                <target><![CDATA[Atlaides<br />summa]]></target>
+            </trans-unit>
+            <trans-unit id="0f75cd36eaaa5b4da98cadb8f41681b4" resname="reporting.daily.yesterday_orders.sf_number">
+                <source>reporting.daily.yesterday_orders.sf_number</source>
+                <target>FR numurs</target>
+            </trans-unit>
+            <trans-unit id="1478a61e40ef9691cc957ac92a297e73" resname="general.new_order.title">
+                <source>general.new_order.title</source>
+                <target>Jauns pasūtījums restorānam</target>
+            </trans-unit>
+            <trans-unit id="328f3dbc63eaba2688308ce1f36114d5" resname="general.new_order.selected_place_point">
+                <source>general.new_order.selected_place_point</source>
+                <target>Pasūtījumu gatavos</target>
+            </trans-unit>
+            <trans-unit id="e398e7f3c3c3a822d57418a37187a40d" resname="general.new_order.place_point_phone">
+                <source>general.new_order.place_point_phone</source>
+                <target>Restorana tālrunis</target>
+            </trans-unit>
+            <trans-unit id="8372390cc5f731f2446510354d0f0995" resname="general.new_order.client_name">
+                <source>general.new_order.client_name</source>
+                <target>Pasūtītāja vārds</target>
+            </trans-unit>
+            <trans-unit id="c84d4ffe52510bc799ebb01f45f17c98" resname="general.new_order.client_address">
+                <source>general.new_order.client_address</source>
+                <target>Pasūtītāja adrese</target>
+            </trans-unit>
+            <trans-unit id="366a3a73c4a7f9e284da797495c90649" resname="general.new_order.client_phone">
+                <source>general.new_order.client_phone</source>
+                <target>Pasūtītāja tālrunis</target>
+            </trans-unit>
+            <trans-unit id="c41fd09b8dc07f273c97f7c9ada9e748" resname="general.new_order.client_email">
+                <source>general.new_order.client_email</source>
+                <target>Pasūtītāja e-pasts</target>
+            </trans-unit>
+            <trans-unit id="077703188463c68a98765d9a6101fefc" resname="general.new_order.delivery_type">
+                <source>general.new_order.delivery_type</source>
+                <target>Piegādes veids</target>
+            </trans-unit>
+            <trans-unit id="68065129e68e216a0b667c820beedf54" resname="general.new_order.payment_type">
+                <source>general.new_order.payment_type</source>
+                <target>Apmaksas veids</target>
+            </trans-unit>
+            <trans-unit id="1162d663a7fce05dfc07791238f9ea4b" resname="general.new_order.payment_status">
+                <source>general.new_order.payment_status</source>
+                <target>Apmaksas stāvoklis</target>
+            </trans-unit>
+            <trans-unit id="8cc34b9ae8f8d777916782acbb35e7ca" resname="general.new_order.restaurant_link">
+                <source>general.new_order.restaurant_link</source>
+                <target>Restorānam nosūtīta saite</target>
+            </trans-unit>
+            <trans-unit id="69778cf7acca21917f059c9144fa3c4a" resname="general.new_order.admin_link">
+                <source>general.new_order.admin_link</source>
+                <target>Pasūtījuma admin vadība</target>
+            </trans-unit>
+            <trans-unit id="e3849073980fe32de41a663525d034da" resname="general.new_order.driver_link">
+                <source>general.new_order.driver_link</source>
+                <target>Tr. līdz. vadītājs saņems saiti</target>
+            </trans-unit>
+            <trans-unit id="c7a66700389e0d08fccb348dc8d62e4c" resname="general.canceled_order.title">
+                <source>general.canceled_order.titlepasts.lv</source>
+                <target>Atcelts apmaksātais pasūtījums</target>
+            </trans-unit>
+            <trans-unit id="0c3a2a3eb79b18168cd46e5feaf473ff" resname="general.email.placeholder">
+                <source>general.email.placeholder</source>
+                <target>info@epasts.lv</target>
+            </trans-unit>
+            <trans-unit id="39f0353f53d86358141f42a28840e388" resname="general.name.placeholder">
+                <source>general.name.placeholder</source>
+                <target>Vārds</target>
+            </trans-unit>
+            <trans-unit id="90b8834d0f52b43df48744d6772b2a25" resname="general.lastname.placeholder">
+                <source>general.lastname.placeholder</source>
+                <target>Uzvārds</target>
+            </trans-unit>
+            <trans-unit id="629d6754ded3dc1f2128cf7aa2d0b910" resname="general.homepage.meta_title">
+                <source>general.homepage.meta_title</source>
+                <target>ēdiena piegāde uz mājām un biroju</target>
+            </trans-unit>
+            <trans-unit id="a87ec63b75cd0e9ae50e6b1b6929a5da" resname="payment.swedbank_gateway.cancelled">
+                <source>payment.swedbank_gateway.cancelled</source>
+                <target>Pasūtījums atcelts.</target>
+            </trans-unit>
+            <trans-unit id="b90af9c8ca012061678d6b4e603aac7c" resname="payment.swedbank_gateway.communication_error">
+                <source>payment.swedbank_gateway.communication_error</source>
+                <target>Radās kļūda komunikācijā ar banku. Mēģiniet atjaunot šo lapu pēc dažām minūtēm.</target>
+            </trans-unit>
+            <trans-unit id="19f5e6c35d5fdb60ba01f4fc9c638526" resname="payment.swedbank_gateway.error">
+                <source>payment.swedbank_gateway.error</source>
+                <target>Pasūtījums ir atcelts.</target>
+            </trans-unit>
+            <trans-unit id="041088d38c42a21e82d65a2a82991cd5" resname="payment.swedbank_gateway.order_not_found">
+                <source>payment.swedbank_gateway.order_not_found</source>
+                <target>Pasūtījums nav atrasts.</target>
+            </trans-unit>
+            <trans-unit id="6ea4106550b8fbb108bb40062af399c1" resname="payment.swedbank_gateway.processing">
+                <source>payment.swedbank_gateway.processing</source>
+                <target>Pasūtījums pieņemts bankas apstrādei.</target>
+            </trans-unit>
+            <trans-unit id="6eba4f5899ae72fd67085d69cd3a762e" resname="payment.swedbank_gateway.something_wrong">
+                <source>payment.swedbank_gateway.something_wrong</source>
+                <target>Radās nenoteiktā veida kļūda.</target>
+            </trans-unit>
+            <trans-unit id="9cad08cf3a492701b079805b9bf4220b" resname="payment.swedbank_gateway.success">
+                <source>payment.swedbank_gateway.success</source>
+                <target>Pasūtījums veiksmīgi apmaksāts.</target>
+            </trans-unit>
+            <trans-unit id="8eda8cb9febec665a60db258991d5ea1" resname="payment.nordea.success">
+                <source>payment.nordea.success</source>
+                <target>Pasūtījums veiksmīgi apmaksāts.</target>
+            </trans-unit>
+            <trans-unit id="001136a172d5036ae69f7ce2fbc7a901" resname="payment.nordea.failed">
+                <source>payment.nordea.failed</source>
+                <target>Pasūtījums netika apmaksāts.</target>
+            </trans-unit>
+            <trans-unit id="5f5b40176949bb152ceccb01ba71b6ea" resname="general.successful_user_registration">
+                <source>general.successful_user_registration</source>
+                <target>Jūs veiksmīgi reģistrējāties!</target>
+            </trans-unit>
+            <trans-unit id="e053f8950d7fbb3ccc27b4edf2473876" resname="general.noty.profile_updated">
+                <source>general.noty.profile_updated</source>
+                <target>Dati veiksmīgi atjaunoti.</target>
+            </trans-unit>
+            <trans-unit id="13ae505e93de6b7a44ab0ed8c2486032" resname="general.resetting">
+                <source>general.resetting</source>
+                <target>Paroles atgādināšana</target>
+            </trans-unit>
+            <trans-unit id="4ae871b6962df84750d845408166c0b5" resname="general.resetting.continue">
+                <source>general.resetting.continue</source>
+                <target>Turpināt</target>
+            </trans-unit>
+            <trans-unit id="e8b4b7b99bb575da28b78ae082a08fb1" resname="general.resetting.email_sent">
+                <source>general.resetting.email_sent</source>
+                <target>Jums tika nosūtīta jūsu konta paroles atgādināšanas vēstule. Tajā ir saite, uz kuras nospiežot, varēsiet nomainīt paroli.</target>
+            </trans-unit>
+            <trans-unit id="d132327ba7df86ca9ad924f9a832313d" resname="general.resetting.password_must_match">
+                <source>general.resetting.password_must_match</source>
+                <target>Parolēm ir jāsakrīt.</target>
+            </trans-unit>
+            <trans-unit id="76646e8d2a0760782c5450e0fa473dce" resname="registration.user.exists">
+                <source>registration.user.exists</source>
+                <target>Lietotājs ar šādu e-pastu jau eksistē</target>
+            </trans-unit>
+            <trans-unit id="3f83e39254fa95380788ddc3637abc31" resname="registration.phone.is_empty">
+                <source>registration.phone.is_empty</source>
+                <target>Nav norādīts tālruņa numurs</target>
+            </trans-unit>
+            <trans-unit id="8be00841fa1df71ff455def399c9ab6c" resname="registration.firstname.is_empty">
+                <source>registration.firstname.is_empty</source>
+                <target>Nav norādīts vārds</target>
+            </trans-unit>
+            <trans-unit id="2c99db4e9e6ac1193a9f57e5ea1865c4" resname="registration.email.is_empty">
+                <source>registration.email.is_empty</source>
+                <target>Nav norādīta e-pasta adrese</target>
+            </trans-unit>
+            <trans-unit id="afb766c01e9d839444cde913e1169e47" resname="registration.password.too_short">
+                <source>registration.password.too_short</source>
+                <target>Parole nedrīkst būt īsāka par 6 simboliem</target>
+            </trans-unit>
+            <trans-unit id="0f83c1e2596530bada0cd51b8790c6a6" resname="mobile.change_password.password.is_empty">
+                <source>mobile.change_password.password.is_empty</source>
+                <target>Tukša parole</target>
+            </trans-unit>
+            <trans-unit id="a45f6cefa5a1546e03e73d0ee50bdf47" resname="mobile.change_password.user.id_dont_match">
+                <source>mobile.change_password.user.id_dont_match</source>
+                <target>Nesakrīt pieslēgtais lietotājs un iesniegtais ID</target>
+            </trans-unit>
+            <trans-unit id="1befc0887b9dd0d171879e27a79b8a48" resname="mobile.order_status.order_delayed">
+                <source>mobile.order_status.order_delayed</source>
+                <target>Pasūtījums kavēsies %delayTime% min.</target>
+            </trans-unit>
+            <trans-unit id="e0be451856a12df8e8e31aae24682352" resname="cart.didnt_reach_min_cart">
+                <source>cart.didnt_reach_min_cart</source>
+                <target>Grozā nav minimālās summas</target>
+            </trans-unit>
+            <trans-unit id="cart.go_back_to_place" resname="cart.go_back_to_place">
+                <source>cart.go_back_to_place</source>
+                <target>Pievienot ēdienus</target>
+            </trans-unit>
+            <trans-unit id="cart.left_to_free_delivery" resname="cart.left_to_free_delivery">
+                <source>cart.left_to_free_delivery</source>
+                <target><![CDATA[Iki <b class="red">nemokamo pristatymo</b><br />Jums liko <b>&euro; %left_sum%</b>]]></target>
+            </trans-unit>
+            <trans-unit id="a0c3f145b0a75655c804d2981458aca7" resname="login.username_placeholder">
+                <source>login.username_placeholder</source>
+                <target>vietturis@pasts.lv</target>
+            </trans-unit>
+            <trans-unit id="ef5a08f361ac7673203e6300769b25a9" resname="login.password_placeholder">
+                <source>login.password_placeholder</source>
+                <target>Parole</target>
+            </trans-unit>
+            <trans-unit id="c0a111eb2c11067622fb6b15a466b3ae" resname="registration.firstname_placeholder">
+                <source>registration.firstname_placeholder</source>
+                <target>Vietturis (vārds)</target>
+            </trans-unit>
+            <trans-unit id="f3039abc3fa7510395d9138120c3f7b7" resname="registration.lastname_placeholder">
+                <source>registration.lastname_placeholder</source>
+                <target>Vietturis (uzvārds)</target>
+            </trans-unit>
+            <trans-unit id="bc35538bf1c9367fba9efdb845f93e49" resname="registration.email_placeholder">
+                <source>registration.email_placeholder</source>
+                <target>vietturis@pasts.lv</target>
+            </trans-unit>
+            <trans-unit id="cd8ca8a825ca00722525ae4f12fcc8d8" resname="registration.password_placeholder">
+                <source>registration.password_placeholder</source>
+                <target>Parole</target>
+            </trans-unit>
+            <trans-unit id="2dff984f6e0b6cd002938e54e534457f" resname="registration.repeat_password_placeholder">
+                <source>registration.repeat_password_placeholder</source>
+                <target>Atkārtojiet paroli</target>
+            </trans-unit>
+            <trans-unit id="0954cd2315bdccc8f1ea6c99749bbc82" resname="profile.phone_placeholder">
+                <source>profile.phone_placeholder</source>
+                <target>37160000000</target>
+            </trans-unit>
+            <trans-unit id="fc78b66b287d98d485a88f1107c16908" resname="profile.current_password">
+                <source>profile.current_password</source>
+                <target>Pašreizējā parole</target>
+            </trans-unit>
+            <trans-unit id="97e8424a7a90df015da0181c4451e4c8" resname="profile.new_password">
+                <source>profile.new_password</source>
+                <target>Jaunā parole</target>
+            </trans-unit>
+            <trans-unit id="174f5d849e8dfe234ca290e1bb69bb8e" resname="profile.repeat_new_password">
+                <source>profile.repeat_new_password</source>
+                <target>Atkārtojiet jauno paroli</target>
+            </trans-unit>
+            <trans-unit id="1356e0d24463239b30996f6239c0ff83" resname="general.currency_modals">
+                <source>general.currency_modals</source>
+                <target>eiro|eiro|eiro</target>
+            </trans-unit>
+            <trans-unit id="places.in_riga" resname="places.in_riga">
+                <source>places.in_riga</source>
+                <target>Rīga</target>
+            </trans-unit>
+            <trans-unit id="6663122b040f929c5f977c84b09089d9" resname="general.currency_minor_modals">
+                <source>general.currency_minor_modals</source>
+                <target>cents|centi|centu</target>
+            </trans-unit>
+            <trans-unit id="food.game.firstname" resname="food.game.firstname">
+                <source>food.game.firstname</source>
+                <target>Vārds</target>
+            </trans-unit>
+            <trans-unit id="food.game.lastname" resname="food.game.lastname">
+                <source>food.game.lastname</source>
+                <target>Uzvārds</target>
+            </trans-unit>
+            <trans-unit id="food.game.city" resname="food.game.city">
+                <source>food.game.city</source>
+                <target>Pilsēta</target>
+            </trans-unit>
+            <trans-unit id="food.game.bdate" resname="food.game.bdate">
+                <source>food.game.bdate</source>
+                <target>Dzimšanas d.</target>
+            </trans-unit>
+            <trans-unit id="food.game.phone" resname="food.game.phone">
+                <source>food.game.phone</source>
+                <target>Telefona nr.</target>
+            </trans-unit>
+            <trans-unit id="food.game.phone_placeholder" resname="food.game.phone_placeholder">
+                <source>food.game.phone_placeholder</source>
+                <target>371xxxxxxxx</target>
+            </trans-unit>
+            <trans-unit id="food.game.email" resname="food.game.email">
+                <source>food.game.email</source>
+                <target>E-pasts</target>
+            </trans-unit>
+            <trans-unit id="food.game.register" resname="food.game.register">
+                <source>food.game.register</source>
+                <target>Reģistrēties</target>
+            </trans-unit>
+            <trans-unit id="food.game.empty_field" resname="food.game.empty_field">
+                <source>food.game.empty_field</source>
+                <target>Šis laukums nedrīkst būt tukšs</target>
+            </trans-unit>
+            <trans-unit id="food.game.has_error" resname="food.game.has_error">
+                <source>food.game.has_error</source>
+                <target>Atvainojiet! Jūs esat ievadījis nepareizus datus.</target>
+            </trans-unit>
+            <trans-unit id="food.game.its_success" resname="food.game.its_success">
+                <source>food.game.its_success</source>
+                <target>Paldies, ka reģistrējies!</target>
+            </trans-unit>
+            <trans-unit id="food.game.agree" resname="food.game.agree">
+                <source>food.game.agree</source>
+                <target><![CDATA[Piekrītu lietošanas noteikumiem. <a href="rule_url">Noteikumi</a>]]></target>
+            </trans-unit>
+            <trans-unit id="general.wow_game" resname="general.wow_game">
+                <source>general.wow_game</source>
+                <target>Reģistrēties spēles</target>
+            </trans-unit>
+            <trans-unit id="food.marketing.bad_email" resname="food.marketing.bad_email">
+                <source>food.marketing.bad_email</source>
+                <target>Nepareiza e-pasta adrese</target>
+            </trans-unit>
+            <trans-unit id="general.top_contact.worktime_days" resname="general.top_contact.worktime_days">
+                <source>general.top_contact.worktime_days</source>
+                <target><![CDATA[VII - III,VII<br />IV - VI]]></target>
+            </trans-unit>
+            <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
+                <source>general.top_contact.worktime</source>
+                <target><![CDATA[10 - 02 h.<br />10 - 03 h.]]></target>
+            </trans-unit>
+            <trans-unit id="general.top_contact.phone" resname="general.top_contact.phone">
+                <source>general.top_contact.phone</source>
+                <target>+371 67363663</target>
+            </trans-unit>
+            <trans-unit id="general.app_block.header" resname="general.app_block.header">
+                <source>general.app_block.header</source>
+                <target>Foodout.lv Tavā kabatā!</target>
+            </trans-unit>
+            <trans-unit id="general.app_block.promo_text" resname="general.app_block.promo_text">
+                <source>general.app_block.promo_text</source>
+                <target>Pasūti ēdienu uz mājām vai ofisu no sava iPhone vai Android telefona. Lejupielādē bezmaksas aplikāciju!</target>
+            </trans-unit>
+            <trans-unit id="general.base_page_title" resname="general.base_page_title">
+                <source>general.base_page_title</source>
+                <target>Ēdienu piegāde</target>
+            </trans-unit>
+            <trans-unit id="general.restaurant_page_title" resname="general.restaurant_page_title">
+                <source>general.restaurant_page_title</source>
+                <target>%restaurant_name% ēdienu piegāde</target>
+            </trans-unit>
+            <trans-unit id="general.footer.social" resname="general.footer.social">
+                <source>general.footer.social</source>
+                <target>foodout ir sociāls</target>
+            </trans-unit>
+        </body>
+    </file>
 </xliff>

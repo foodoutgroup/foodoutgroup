@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="lt" datatype="plaintext" original="SonataAdminBundle.lt.xliff" >
+    <file source-language="lt" datatype="plaintext" original="SonataAdminBundle.lt.xliff">
         <body>
             <!-- General -->
             <trans-unit id="admin.visible">
@@ -71,7 +71,6 @@
                 <source>admin.system</source>
                 <target>Sistema</target>
             </trans-unit>
-
             <!-- Kitchen -->
             <trans-unit id="admin.kitchens.list.title">
                 <source>admin.kitchens.list.title</source>
@@ -137,8 +136,6 @@
                 <source>admin.kitchen.name</source>
                 <target>Pavadinimas</target>
             </trans-unit>
-
-
             <!-- Food category-->
             <trans-unit id="admin.food_category.name">
                 <source>admin.food_category.name</source>
@@ -168,7 +165,6 @@
                 <source>admin.food_category.texts_only</source>
                 <target>Tekstai</target>
             </trans-unit>
-
             <!-- Dish -->
             <trans-unit id="dish">
                 <source>Dish</source>
@@ -206,7 +202,6 @@
                 <source>admin.dish.active_list</source>
                 <target>Aktyv.</target>
             </trans-unit>
-
             <trans-unit id="admin.dish.check_even_odd_week">
                 <source>admin.dish.check_even_odd_week</source>
                 <target>Aktyvus lyginėmis / nelyginėmis savaitėmis</target>
@@ -223,7 +218,6 @@
                 <source>admin.dish.use_date_interval</source>
                 <target>Rodymas pagal datas</target>
             </trans-unit>
-
             <trans-unit id="admin.dishes.sizes">
                 <source>admin.dishes.sizes</source>
                 <target>Dydžiai/porcijos</target>
@@ -236,13 +230,11 @@
                 <source>admin.dishes.time_to</source>
                 <target>Gamyba iki</target>
             </trans-unit>
-
             <!-- Rodymo datos -->
             <trans-unit id="admin.dish_date">
                 <source>admin.dish_date</source>
                 <target>Rodymo datos</target>
             </trans-unit>
-
             <!-- Dish options -->
             <trans-unit id="admin.dish_options">
                 <source>admin.dish_options</source>
@@ -284,7 +276,6 @@
                 <source>Dish Option List</source>
                 <target>Patiekalų priedai</target>
             </trans-unit>
-
             <!-- Dish units -->
             <trans-unit id="dish-unit-list">
                 <source>Dish Unit List</source>
@@ -310,7 +301,6 @@
                 <source>Unit</source>
                 <target>Matas</target>
             </trans-unit>
-
             <!-- Best offers -->
             <trans-unit id="admin.best_offers.title">
                 <source>admin.best_offers.title</source>
@@ -352,7 +342,6 @@
                 <source>admin.best_offers.place</source>
                 <target>Restaurant</target>
             </trans-unit>
-
             <!-- Place -->
             <trans-unit id="admin.menu.places">
                 <source>admin.menu.places</source>
@@ -510,7 +499,6 @@
                 <source>admin.place.internal_code</source>
                 <target>Padalinio kodas</target>
             </trans-unit>
-
             <!-- Place points -->
             <trans-unit id="place-point-list">
                 <source>Place Point List</source>
@@ -620,7 +608,6 @@
                 <source>admin.point.use_external_logistics</source>
                 <target>Siųsti į Metrikas (logistika)</target>
             </trans-unit>
-
             <!-- Place reviews -->
             <trans-unit id="place-reviews-list">
                 <source>Place Reviews List</source>
@@ -634,7 +621,6 @@
                 <source>admin.menu.places.reports</source>
                 <target>Vietų ataskaitos</target>
             </trans-unit>
-
             <!-- Users -->
             <trans-unit id="user-list">
                 <source>User List</source>
@@ -752,7 +738,6 @@
                 <source>admin.users_dision_code.division</source>
                 <target>Padalinys</target>
             </trans-unit>
-
             <!-- Static content -->
             <trans-unit id="admin.static">
                 <source>admin.static</source>
@@ -794,7 +779,6 @@
                 <source>admin.point.devtime</source>
                 <target>Pristatymo trukmė</target>
             </trans-unit>
-
             <trans-unit id="admin.point.pickup">
                 <source>admin.point.pickup</source>
                 <target>Atsiimti vietoje</target>
@@ -831,7 +815,6 @@
                 <source>admin.group.first</source>
                 <target>Pirmi žingsniai</target>
             </trans-unit>
-
             <!-- Place reviews -->
             <trans-unit id="admin.support">
                 <source>admin.support</source>
@@ -841,12 +824,10 @@
                 <source>admin.order.support</source>
                 <target>Užsakymai</target>
             </trans-unit>
-
             <trans-unit id="places.watch_menu">
                 <source>places.watch_menu</source>
                 <target>Žiūrėti meniu</target>
             </trans-unit>
-
             <!-- Subscribers content -->
             <trans-unit id="admin.users.subscribers">
                 <source>admin.users.subscribers</source>
@@ -868,7 +849,6 @@
                 <source>admin.subscribers.created_at</source>
                 <target>Užsiprenumeravo</target>
             </trans-unit>
-
             <!-- Orders list -->
             <trans-unit id="admin.group.orders">
                 <source>admin.group.orders</source>
@@ -1262,7 +1242,6 @@
                 <source>admin.order.corporate_client_name</source>
                 <target>Užsakovas</target>
             </trans-unit>
-
             <!-- Order logas pas sonata admina -->
             <trans-unit id="admin.order.order_log">
                 <source>admin.order.order_log</source>
@@ -1336,7 +1315,6 @@
                 <source>admin.order.mail.params</source>
                 <target>Parametrai</target>
             </trans-unit>
-
             <!-- Dispatcher window -->
             <trans-unit id="admin.order.dispatcher">
                 <source>admin.order.dispatcher</source>
@@ -1546,7 +1524,6 @@
                 <source>admin.dispatcher.status</source>
                 <target>Būklė</target>
             </trans-unit>
-
             <!-- Status historis -->
             <trans-unit id="admin.order.log.date">
                 <source>admin.order.log.date</source>
@@ -1564,8 +1541,6 @@
                 <source>admin.order.log.message</source>
                 <target>Žinutė</target>
             </trans-unit>
-
-
             <!-- Drivers listas -->
             <trans-unit id="admin.drivers">
                 <source>admin.drivers</source>
@@ -1631,7 +1606,6 @@
                 <source>admin.driver.has_orders</source>
                 <target>Užsak.</target>
             </trans-unit>
-
             <!-- Banned IP listas -->
             <trans-unit id="admin.banned_ips">
                 <source>admin.banned_ips</source>
@@ -1661,7 +1635,6 @@
                 <source>admin.banned_ip.id</source>
                 <target>ID</target>
             </trans-unit>
-
             <!-- Unused SF numbers -->
             <trans-unit id="admin.unused_sf_numbers">
                 <source>admin.unused_sf_numbers</source>
@@ -1683,7 +1656,6 @@
                 <source>admin.unused_sf_numbers.id</source>
                 <target>ID</target>
             </trans-unit>
-
             <!-- Coupons generator -->
             <trans-unit id="admin.coupons.generator">
                 <source>admin.coupons.generator</source>
@@ -1693,7 +1665,6 @@
                 <source>Coupon Generator List</source>
                 <target>Kuponų generatorius</target>
             </trans-unit>
-
             <!-- Street admin -->
             <trans-unit id="admin.street">
                 <source>admin.street</source>
@@ -1719,7 +1690,6 @@
                 <source>admin.street.street_placeholder</source>
                 <target>Laisvės pr.</target>
             </trans-unit>
-
             <!-- Kuponu listas -->
             <trans-unit id="Coupon List">
                 <source>Coupon List</source>
@@ -1765,7 +1735,6 @@
                 <source>admin.coupon.code</source>
                 <target>Kodas</target>
             </trans-unit>
-
             <!-- Cover photo admin -->
             <trans-unit id="admin.place_cover_photo">
                 <source>admin.place_cover_photo</source>
@@ -1783,7 +1752,6 @@
                 <source>admin.place_cover_photo.photo</source>
                 <target>Nuotrauka</target>
             </trans-unit>
-
             <!-- Reports -->
             <trans-unit id="admin.reports">
                 <source>admin.reports</source>
@@ -1841,7 +1809,6 @@
                 <source>admin.reports.date_range</source>
                 <target>Laikotarpis (nuo - iki)</target>
             </trans-unit>
-
             <!-- Places Reports -->
             <trans-unit id="admin.reports.orderid">
                 <source>admin.reports.orderid</source>
@@ -1887,7 +1854,6 @@
                 <source>admin.reports.order_basket</source>
                 <target>Krepšelis</target>
             </trans-unit>
-
             <!-- Latency report -->
             <trans-unit id="admin.report.latency_report">
                 <source>admin.report.latency_report</source>
@@ -1941,7 +1907,6 @@
                 <source>admin.reports.latency.slow_five</source>
                 <target>TOP5</target>
             </trans-unit>
-
             <!-- Driver Latency report -->
             <trans-unit id="admin.reports.driver_latency.driver">
                 <source>admin.reports.driver_latency.driver</source>
@@ -1963,7 +1928,6 @@
                 <source>admin.reports.driver_latency.average_latency</source>
                 <target>Vidutinis vėlavimas</target>
             </trans-unit>
-
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
                 <target>Administration</target>
@@ -2100,39 +2064,39 @@
                 <source>all_elements</source>
                 <target>All elements</target>
             </trans-unit>
-            <trans-unit id='flash_batch_empty'>
+            <trans-unit id="flash_batch_empty">
                 <source>flash_batch_empty</source>
                 <target>Action aborted. No items were selected.</target>
             </trans-unit>
-            <trans-unit id='flash_create_success'>
+            <trans-unit id="flash_create_success">
                 <source>flash_create_success</source>
                 <target>Item "%name%" has been successfully created.</target>
             </trans-unit>
-            <trans-unit id='flash_create_error'>
+            <trans-unit id="flash_create_error">
                 <source>flash_create_error</source>
                 <target>An error has occurred during the creation of item "%name%".</target>
             </trans-unit>
-            <trans-unit id='flash_edit_success'>
+            <trans-unit id="flash_edit_success">
                 <source>flash_edit_success</source>
                 <target>Item "%name%" has been successfully updated.</target>
             </trans-unit>
-            <trans-unit id='flash_edit_error'>
+            <trans-unit id="flash_edit_error">
                 <source>flash_edit_error</source>
                 <target>An error has occurred during update of item "%name%".</target>
             </trans-unit>
-            <trans-unit id='flash_batch_delete_success'>
+            <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Selected items have been successfully deleted.</target>
             </trans-unit>
-            <trans-unit id='flash_batch_delete_error'>
+            <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
                 <target>An Error has occurred during selected items deletion.</target>
             </trans-unit>
-            <trans-unit id='flash_delete_error'>
+            <trans-unit id="flash_delete_error">
                 <source>flash_delete_error</source>
                 <target>An Error has occurred during deletion of item "%name%".</target>
             </trans-unit>
-            <trans-unit id='flash_delete_success'>
+            <trans-unit id="flash_delete_success">
                 <source>flash_delete_success</source>
                 <target>Item "%name%" has been deleted successfully.</target>
             </trans-unit>
@@ -2380,7 +2344,6 @@
                 <source>link_filters</source>
                 <target>Filters</target>
             </trans-unit>
-
             <!-- Params listas -->
             <trans-unit id="admin.params">
                 <source>admin.params</source>
@@ -2402,7 +2365,6 @@
                 <source>admin.param.value</source>
                 <target>Reikšmė</target>
             </trans-unit>
-
             <!-- SEO -->
             <trans-unit id="admin.seorecord">
                 <source>admin.seorecord</source>
