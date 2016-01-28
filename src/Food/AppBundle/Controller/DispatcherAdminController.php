@@ -14,6 +14,7 @@ class DispatcherAdminController extends Controller
     {
         $repo = $this->get('doctrine')->getRepository('FoodOrderBundle:Order');
         $placeService = $this->get('food.places');
+        $logisticsService = $this->get('food.logistics');
 
         $cityOrders = array();
         $availableCities = $placeService->getAvailableCities();
@@ -26,19 +27,23 @@ class DispatcherAdminController extends Controller
         $canceled = $repo->getOrdersCanceled();
         $navProblems = $repo->getOrdersProblems();
 
+        $driversList = $logisticsService->getAllActiveDrivers();
+
         // Preload city data
         foreach($availableCities as $city) {
-                $cityOrders[$city] = array(
-                    'unapproved' => array(),
-                    'unassigned' => array(),
-                    'unconfirmed' => array(
-                        'deliver' => array(),
-                        'pickup' => array(),
-                    ),
-                    'not_finished' => array(),
-                    'canceled' => array(),
-                    'nav_problems' => array(),
-                );
+            $cityOrders[$city] = array(
+                'unapproved' => array(),
+                'unassigned' => array(),
+                'unconfirmed' => array(
+                    'deliver' => array(),
+                    'pickup' => array(),
+                ),
+                'not_finished' => array(),
+                'canceled' => array(),
+                'nav_problems' => array(),
+            );
+
+            $drivers[$city] = array();
         }
 
         foreach($unapproved as $order) {
@@ -69,6 +74,11 @@ class DispatcherAdminController extends Controller
             $cityOrders[$order->getPlacePointCity()]['nav_problems'][] = $order;
         }
 
+        foreach($driversList as $driver) {
+            $city = ucfirst($driver['city']);
+            $drivers[$city][] = $driver;
+        }
+
         // Old slow code
 //        foreach ($availableCities as $city) {
 //            $cityOrders[$city] = array(
@@ -89,6 +99,7 @@ class DispatcherAdminController extends Controller
             array(
                 'cities' => $availableCities,
                 'cityOrders' => $cityOrders,
+                'drivers' => $drivers,
             )
         );
     }

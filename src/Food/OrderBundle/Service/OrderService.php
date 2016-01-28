@@ -637,7 +637,14 @@ class OrderService extends ContainerAware
                 $curr_locale
             );
 
-            $logger->alert("Sending message for driver about assigned order to number: " . $driver->getPhone() . ' with text "' . $messageText . '"');
+            $logMessage = sprintf(
+                'Sending message for driver about assigned order #%d to number: %s with text "%s". Used address Id: %d',
+                $order->getId(),
+                $driver->getPhone(),
+                $messageText,
+                $order->getAddressId()->getId()
+            );
+            $logger->alert($logMessage);
 
             $message = $messagingService->createMessage(
                 $this->container->getParameter('sms.sender'),
@@ -665,7 +672,7 @@ class OrderService extends ContainerAware
      * @param string $deliverTime
      * @param string $orderRoute
      * @param string $locale
-     * @returnstring
+     * @returns string
      * @throws \Exception
      */
     public function fitDriverMessage($messageText, $orderId, $restaurantTitle, $restaurantAddress, $deliverTime, $orderRoute, $locale)

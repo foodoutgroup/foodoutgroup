@@ -24,14 +24,15 @@
 {% block list_table %}
     {# type gali buti 'unapproved', 'unassigned', 'unconfirmed', 'not_finished', 'canceled', 'nav_problems' ;) Just in case you need that #}
     {% macro order_table(order_list, type, cityName) %}
+        {# Drivers are show all the time
         {% if type == 'unassigned' or type == 'not_finished' %}
         <div class="driver_button">
             <button class="get_drivers_button btn btn-lg" disabled="disabled">
-                {#<span class="icon_steering_wheel"></span>#}
+                #}{#<span class="icon_steering_wheel"></span>#}{#
                 {{ 'admin.dispatcher.get_drivers'|trans({}, 'SonataAdminBundle') }}
             </button>
         </div>
-        {% endif %}
+        {% endif %}#}
         <table class="order_list {{ type }}" list-type="{{ type }}">
             <tr>
                 <th></th>
@@ -264,7 +265,7 @@
                 {% set cityCanceled = cityOrders[city].canceled|length %}
                 {% set cityNavProblems = cityOrders[city].nav_problems|length %}
                 {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unapprovedCount': cityUnassigned, 'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished, 'canceledCount': cityCanceled, 'navProblemsCount': cityNavProblems}, 'SonataAdminBundle') %}
-                <li class="city-tab city_tabik-{{ loop.index }}">
+                <li class="city-tab city_tabik-{{ loop.index }}" data-city="{{ city }}">
                     <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} ({{ cityUnapproved }}:{{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }}:{{ cityCanceled }}:{{ cityNavProblems }})</a>
                 </li>
             {% endfor %}
@@ -376,7 +377,32 @@
         {% endfor %}
     </div>
     <div class="drivers_list">
-        {# TODO such hack. Wow, drivers. Much respect #}
+        {% for city in cities %}
+            {% set driverList = drivers[city] %}
+            {# TODO autorefresh every city list to have a most common order count once in a while #}
+            <div class="city_drivers driver_{{ city }} {% if loop.index > 1 %}hidden{% endif %}" data-city="{{ city }}">
+                <table class="drivers_table">
+                    <tr>
+                        <th>{{ 'admin.driver.name'|trans({}, 'SonataAdminBundle') }}</th>
+                        <th>{{ 'admin.driver.phone'|trans({}, 'SonataAdminBundle') }}</th>
+                        {#<th>{{ 'admin.driver.type'|trans({}, 'SonataAdminBundle') }}</th>#}
+                        {#<th>{{ 'admin.driver.provider'|trans({}, 'SonataAdminBundle') }}</th>#}
+                        <th>{{ 'admin.driver.has_orders'|trans({}, 'SonataAdminBundle') }}</th>
+                        <th></th>
+                    </tr>
+                    {% for driver in driverList %}
+                        <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">
+                            <td>{{ driver['name'] }}</td>
+                            <td>{{ driver['phone'] }}</td>
+                            {#<td>{{ ('admin.driver.type.' ~ driver.type)|trans({}, 'SonataAdminBundle') }}</td>#}
+                            {#<td>{{ driver.provider }}</td>#}
+                            <td>{{ driver['order_count'] }}</td>
+                            <td><button class="assign-driver btn btn-lg" item-id="{{ driver['id'] }}" disabled="disabled">{{ 'admin.dispatcher.assign'|trans({}, 'SonataAdminBundle') }}</button></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
 

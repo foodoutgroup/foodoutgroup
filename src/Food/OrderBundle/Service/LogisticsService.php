@@ -147,6 +147,35 @@ class LogisticsService extends ContainerAware
     }
 
     /**
+     * Get all active drivers
+     *
+     * @return array
+     */
+    public function getAllActiveDrivers()
+    {
+        $em = $this->container->get('doctrine')->getManager();
+        $drivers = $em->getRepository('Food\AppBundle\Entity\Driver')
+            ->createQueryBuilder('d')
+            ->select('d.id, d.name, d.phone, d.city, COUNT(o.id) AS order_count')
+            ->leftJoin('FoodOrderBundle:Order', 'o', 'WITH', 'o.driver = d.id AND o.order_status IN (:order_statuses)')
+            ->where('d.active = 1')
+            ->setParameter('order_statuses', array(OrderService::$status_assiged))
+            ->groupBy('d.id')
+            ->orderBy('order_count', 'ASC')
+            ->addOrderBy('d.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+//        $this->container->get('logger')->alert()
+
+        if (!$drivers) {
+            return array();
+        }
+
+        return $drivers;
+    }
+
+    /**
      * Get drivers from external system
      *
      * @param float $lat

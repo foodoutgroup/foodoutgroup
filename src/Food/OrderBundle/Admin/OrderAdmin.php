@@ -95,6 +95,12 @@ class OrderAdmin extends FoodAdmin
 //            ->add('companyCode', null, array('label' => 'admin.order.companyCode'))
             ->add('total', null, array('label' => 'admin.order.total'))
             ->add('couponCode', null, array('label' => 'admin.order.coupon_code'))
+            ->add('deliveryType',null, array('label' => 'admin.order.delivery_type'), 'choice', array(
+                'choices' => array(
+                    OrderService::$deliveryDeliver => OrderService::$deliveryDeliver,
+                    OrderService::$deliveryPickup => OrderService::$deliveryPickup
+                )
+            ))
             ->add('mobile', null, array('label' => 'admin.order.ismobile_full'))
             ->add('navDeliveryOrder', null, array('label' => 'admin.order.nav_delivery_order'))
             ->add('sfNumber', null, array('label' => 'admin.order.sf_line'))
