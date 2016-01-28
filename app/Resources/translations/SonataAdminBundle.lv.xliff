@@ -206,6 +206,24 @@
                 <source>admin.dish.active_list</source>
                 <target>Actv.</target>
             </trans-unit>
+
+            <trans-unit id="admin.dish.check_even_odd_week">
+                <source>admin.dish.check_even_odd_week</source>
+                <target>Active Even / Odd weeks</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.even_week">
+                <source>admin.dish.even_week</source>
+                <target>[x] Even / [ ] Odd weeks</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.check_even_odd_week_list">
+                <source>admin.dish.check_even_odd_week_list</source>
+                <target>Actv.E/O.Week</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.use_date_interval">
+                <source>admin.dish.use_date_interval</source>
+                <target>Use date interval</target>
+            </trans-unit>
+
             <trans-unit id="admin.dishes.sizes">
                 <source>admin.dishes.sizes</source>
                 <target>Sizes</target>
@@ -218,6 +236,13 @@
                 <source>admin.dishes.time_to</source>
                 <target>Time to</target>
             </trans-unit>
+
+            <!-- Rodymo datos -->
+            <trans-unit id="admin.dish_date">
+                <source>admin.dish_date</source>
+                <target>Show at dates</target>
+            </trans-unit>
+
             <!-- Dish options -->
             <trans-unit id="admin.dish_options">
                 <source>admin.dish_options</source>
@@ -291,6 +316,10 @@
                 <source>admin.best_offers.title</source>
                 <target>Title</target>
             </trans-unit>
+            <trans-unit id="admin.best_offers.city">
+                <source>admin.best_offers.city</source>
+                <target>City</target>
+            </trans-unit>
             <trans-unit id="admin.best_offers.link">
                 <source>admin.best_offers.link</source>
                 <target>Link</target>
@@ -318,6 +347,10 @@
             <trans-unit id="best-offer-list">
                 <source>Best Offer List</source>
                 <target>Best offers</target>
+            </trans-unit>
+            <trans-unit id="admin.best_offers.place">
+                <source>admin.best_offers.place</source>
+                <target>Restaurant</target>
             </trans-unit>
 
             <!-- Place -->
@@ -993,6 +1026,10 @@
                 <source>admin.order.total</source>
                 <target>Total (with VAT)</target>
             </trans-unit>
+            <trans-unit id="admin.order.delivery_price">
+                <source>admin.order.delivery_price</source>
+                <target>Delivery Price (with VAT)</target>
+            </trans-unit>
             <trans-unit id="admin.order.coupon_code">
                 <source>admin.order.coupon_code</source>
                 <target>Discount coupon code</target>
@@ -1141,6 +1178,10 @@
                 <source>admin.order.status.source.cili_nav_update_price</source>
                 <target>Cili Navision update prices</target>
             </trans-unit>
+            <trans-unit id="admin.order.status.source.repostToNavOnMissingInNav">
+                <source>admin.order.status.source.repostToNavOnMissingInNav</source>
+                <target>Čili Navision repost order on fatal error</target>
+            </trans-unit>
             <trans-unit id="admin.order.delivery_log.event">
                 <source>admin.order.delivery_log.event</source>
                 <target>Event</target>
@@ -1161,14 +1202,6 @@
                 <source>admin.order.order_from_nav</source>
                 <target>From NAV</target>
             </trans-unit>
-            <trans-unit id="admin.order.nav_delivery_order">
-                <source>admin.order.nav_delivery_order</source>
-                <target>Bill of landing no</target>
-            </trans-unit>
-            <trans-unit id="admin.order.client_contacted">
-                <source>admin.order.client_contacted</source>
-                <target>Client contacted</target>
-            </trans-unit>
             <trans-unit id="admin.order.hash">
                 <source>admin.order.hash</source>
                 <target>Order hash</target>
@@ -1176,6 +1209,22 @@
             <trans-unit id="admin.order.send_invoice">
                 <source>admin.order.send_invoice</source>
                 <target>Send invoice</target>
+            </trans-unit>
+            <trans-unit id="admin.order.edit_send_invoice">
+                <source>admin.order.edit_send_invoice</source>
+                <target>Edit</target>
+            </trans-unit>
+            <trans-unit id="admin.order.download_invoice">
+                <source>admin.order.download_invoice</source>
+                <target>Download SF</target>
+            </trans-unit>
+            <trans-unit id="admin.order.nav_delivery_order">
+                <source>admin.order.nav_delivery_order</source>
+                <target>Bill of landing no</target>
+            </trans-unit>
+            <trans-unit id="admin.order.client_contacted">
+                <source>admin.order.client_contacted</source>
+                <target>Client contacted</target>
             </trans-unit>
             <trans-unit id="admin.order.invoice_added_for_send">
                 <source>admin.order.invoice_added_for_send</source>
