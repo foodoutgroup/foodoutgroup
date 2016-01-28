@@ -49,6 +49,7 @@ parameters:
     currency_iso: EUR
     display_currency_alternative:  Lt
     currency_alternative: false
+    invoice.series: FLV
     show_best_offers: true
     show_game: true
     show_apps_download: true
