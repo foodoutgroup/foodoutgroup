@@ -290,7 +290,11 @@ class InvoiceService extends ContainerAware
         $logger = $this->container->get('logger');
 
         $fileName = $this->getInvoiceFilename($order);
-        $file = 'https://s3-eu-west-1.amazonaws.com/foodout-invoice/pdf/'.$fileName;
+        if ($this->container->getParameter() == 'lv') {
+            $file = 'https://s3-eu-west-1.amazonaws.com/foodout-lv-invoice/pdf/'.$fileName;
+        } else {
+            $file = 'https://s3-eu-west-1.amazonaws.com/foodout-invoice/pdf/'.$fileName;
+        }
 
         $variables = array(
             'uzsakymo_data' => $order->getOrderDate()->format("Y-m-d H:i"),
@@ -377,7 +381,11 @@ class InvoiceService extends ContainerAware
         $logger = $this->container->get('logger');
 
         $fileName = $this->getInvoiceFilename($order);
-        $file = 'https://s3-eu-west-1.amazonaws.com/foodout-invoice/pdf/'.$fileName;
+        if ($this->container->getParameter() == 'lv') {
+            $file = 'https://s3-eu-west-1.amazonaws.com/foodout-lv-invoice/pdf/'.$fileName;
+        } else {
+            $file = 'https://s3-eu-west-1.amazonaws.com/foodout-invoice/pdf/'.$fileName;
+        }
 
         $variables = array(
             'uzsakymo_data' => $order->getOrderDate()->format("Y-m"),
