@@ -257,11 +257,7 @@ var Place = {
         this.cartObj = $("#cartmnu");
         this.cartOffset = this.cartObj.offset();
         this.cartHeight = this.cartObj.height();
-        if ($('.check-item').length <= 4 && $(window).height() >= 750) {
-            this.cartObj.removeClass('overflow_auto');
-        } else {
-            this.cartObj.addClass('overflow_auto');
-        }
+        this.cartObj.addClass('overflow_auto');
     },
     moveBlocks: function(init) {
         var windowTop = $(window).scrollTop();
@@ -276,6 +272,26 @@ var Place = {
         } else {
             this.cartObj.removeClass('sticky');
         }
+
+        this.adjustCartMenuHeight();
+    },
+    adjustCartMenuHeight: function() {
+        if($(window).scrollTop() + $(window).height() > $(document).height() - $('.site-footer').outerHeight() - 100) {
+            this.setCartMenuHeight(true);
+        } else {
+            this.setCartMenuHeight(false);
+        }
+    },
+    setCartMenuHeight: function(with_footer) {
+        var top_margin = 45;
+        var w_height = 0;
+        if (with_footer) {
+            w_height = $(window).height() - $('.site-footer').outerHeight();
+        } else {
+            w_height = $(window).height();
+        }
+        var new_height = (w_height >= top_margin ? w_height - top_margin : w_height);
+        $("#cartmnu").height(new_height);
     }
 }
 

@@ -161,7 +161,7 @@ class Misc
 
         $numbers = $this->floatToInts($sum);
 
-        $nf = new \NumberFormatter('lt', \NumberFormatter::SPELLOUT);
+        $nf = new \NumberFormatter($this->getContainer()->getParameter('locale'), \NumberFormatter::SPELLOUT);
 
         if ($numbers['minorPart'] > 0) {
             return sprintf(

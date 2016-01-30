@@ -249,12 +249,13 @@ class DishAdmin extends FoodAdmin
     public function postPersist($object)
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
-        foreach ($object->getDates() as $date) {
-            $date->setDish($object);
-            $em->persist($date);
+        if ($object->getDates()) {
+            foreach ($object->getDates() as $date) {
+                $date->setDish($object);
+                $em->persist($date);
+            }
+            $em->flush();
         }
-
-        $em->flush();
 
         parent::postPersist($object);
     }

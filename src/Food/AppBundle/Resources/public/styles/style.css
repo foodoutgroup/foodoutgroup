@@ -660,9 +660,11 @@ input.button {}
     width: 154px;
     background: #fff;
     border-radius: 4px;
-    max-height: 925px;
-    max-height: 95vh !important;
+    min-height: 170px !important;
+    /*max-height: 925px;
+    max-height: 95vh !important;*/
     z-index: 10;
+    resize: vertical;
 }
 .check-block.overflow_auto {
     overflow-x: hidden;
@@ -677,6 +679,10 @@ input.button {}
 }
 .check-block.sticky {
     top: 10px;
+    -webkit-transition: height 0.1s ease-in-out;
+    -moz-transition: height 0.1s ease-in-out;
+    -o-transition: height 0.1s ease-in-out;
+    transition: height 0.1s ease-in-out;
 }
 .check-block::-webkit-scrollbar {
     -webkit-appearance: none;
@@ -712,7 +718,7 @@ input.button {}
 .check-bottom .fr {width: 49%;}
 .check-bottom .fr {text-align: right;}
 .check-block .total-sum {font-size: 14px;}
-.check-block .order-button {display: block; height: 46px; background: url(/bundles/foodapp/images/big-button-3.png) no-repeat right center; padding-left: 20px; padding-right: 40px; border-radius: 5px; box-shadow: 0 1px 2px #b3afad; border: none; color: #fff; font-size: 18px; text-transform: uppercase; padding-top: 0px; padding-bottom: 0px; text-shadow: 0 1px 0 #74932b; line-height: 48px; letter-spacing: 1px; border: 1px solid #85b005;}
+.check-block .order-button {display: block; height: 46px; background: #90C200 url(/bundles/foodapp/images/big-button-3.png) no-repeat right center; padding-left: 20px; padding-right: 40px; border-radius: 5px; box-shadow: 0 1px 2px #b3afad; border: none; color: #fff; font-size: 18px; text-transform: uppercase; padding-top: 0px; padding-bottom: 0px; text-shadow: 0 1px 0 #74932b; line-height: 48px; letter-spacing: 1px; border: 1px solid #85b005;}
 .check-block .delivery-time {padding-top: 12px; padding-bottom: 12px; color: #bea2a6;}
 .check-block .min-cart-message, .check-block .max_cart-items {
     color: red;

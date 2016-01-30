@@ -227,7 +227,7 @@ class BasketService extends ContainerAware
             array(
                 'amount' => $total,
                 'discount' => $discount,
-                'currency' => 'EUR'
+                'currency' => $this->container->getParameter('currency_iso')
             )
         );
         $basket->set('items', $items);

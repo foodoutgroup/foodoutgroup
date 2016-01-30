@@ -13,7 +13,7 @@ class OrdersController extends Controller
     /**
      * @param $request
      */
-    private function _theJudge($request)
+    private function _theJudge(Request $request)
     {
         $miscUtils = $this->get('food.app.utils.misc');
         // Check if user is not banned

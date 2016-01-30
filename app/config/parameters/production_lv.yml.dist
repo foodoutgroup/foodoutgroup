@@ -14,7 +14,7 @@ parameters:
     aws_key: AKIAJN3454YNXAUSJIRA
     aws_secret: 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
     aws_region: eu-west-1
-    s3_bucket: foodout-invoice
+    s3_bucket: foodout-lv-invoice
 
     locale: lv
     locales: ["lv", "en", "ru"]
@@ -49,6 +49,7 @@ parameters:
     currency_iso: EUR
     display_currency_alternative:  Lt
     currency_alternative: false
+    invoice.series: FLV
     show_best_offers: true
     show_game: true
     show_apps_download: true

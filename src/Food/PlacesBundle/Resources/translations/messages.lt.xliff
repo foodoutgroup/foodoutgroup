@@ -127,7 +127,6 @@
                 <source>admin.static.seo_description</source>
                 <target>SEO Description</target>
             </trans-unit>
-
             <!-- Bendri puslapio -->
             <trans-unit id="404 Not Found">
                 <source>404 Not Found</source>
@@ -157,7 +156,6 @@
                 <source>label_type_no</source>
                 <target>Ne</target>
             </trans-unit>
-
             <!-- Vartotojai -->
             <trans-unit id="ROLE_ADMIN: ROLE_MODERATOR">
                 <source>ROLE_ADMIN: ROLE_MODERATOR</source>
