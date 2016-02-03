@@ -1934,171 +1934,171 @@
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
-                <target>Delete</target>
+                <target>Trinti</target>
             </trans-unit>
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
-                <target>OK</target>
+                <target>Gerai</target>
             </trans-unit>
             <trans-unit id="btn_create">
                 <source>btn_create</source>
-                <target>Create</target>
+                <target>Kurti</target>
             </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
-                <target>Create</target>
+                <target>Kurti</target>
             </trans-unit>
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
-                <target>Create and add another</target>
+                <target>Kurti ir pridėti naują</target>
             </trans-unit>
             <trans-unit id="btn_create_and_return_to_list">
                 <source>btn_create_and_return_to_list</source>
-                <target>Create and return to list</target>
+                <target>Kurti ir grįži į sąrašą</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
-                <target>Filter</target>
+                <target>Filtruoti</target>
             </trans-unit>
             <trans-unit id="btn_update">
                 <source>btn_update</source>
-                <target>Update</target>
+                <target>Atnaujinti</target>
             </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
-                <target>Update</target>
+                <target>Atnaujinti</target>
             </trans-unit>
             <trans-unit id="btn_update_and_return_to_list">
                 <source>btn_update_and_return_to_list</source>
-                <target>Update and close</target>
+                <target>Atnaujinti ir uždaryti</target>
             </trans-unit>
             <trans-unit id="link_delete">
                 <source>link_delete</source>
-                <target>Delete</target>
+                <target>Trinti</target>
             </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
-                <target>Add new</target>
+                <target>Pridėti naują</target>
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
-                <target>Return to list</target>
+                <target>Grįžti į sąrašą</target>
             </trans-unit>
             <trans-unit id="link_action_show">
                 <source>link_action_show</source>
-                <target>Show</target>
+                <target>Rodyti</target>
             </trans-unit>
             <trans-unit id="link_action_edit">
                 <source>link_action_edit</source>
-                <target>Edit</target>
+                <target>Redaguoti</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
-                <target>Add new</target>
+                <target>Pridėti naują</target>
             </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
-                <target>List</target>
+                <target>Sąrašas</target>
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Reset</target>
+                <target>Atstatyti</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
-                <target>Create</target>
+                <target>Kurti</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
-                <target>Dashboard</target>
+                <target>Valdymo skydas</target>
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>Edit "%name%"</target>
+                <target>Redaguoti "%name%"</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
-                <target>List</target>
+                <target>Sąrašas</target>
             </trans-unit>
             <trans-unit id="link_next_pager">
                 <source>link_next_pager</source>
-                <target>Next</target>
+                <target>Sekantis</target>
             </trans-unit>
             <trans-unit id="link_previous_pager">
                 <source>link_previous_pager</source>
-                <target>Previous</target>
+                <target>Praeitas</target>
             </trans-unit>
             <trans-unit id="link_first_pager">
                 <source>link_first_pager</source>
-                <target>First</target>
+                <target>Pirmas</target>
             </trans-unit>
             <trans-unit id="link_last_pager">
                 <source>link_last_pager</source>
-                <target>Last</target>
+                <target>Paskutinis</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
-                <target>Admin</target>
+                <target>Administratorius</target>
             </trans-unit>
             <trans-unit id="link_expand">
                 <source>link_expand</source>
-                <target>expand/collapse</target>
+                <target>išskleisti/suskleisti</target>
             </trans-unit>
             <trans-unit id="no_result">
                 <source>no_result</source>
-                <target>No result</target>
+                <target>Nėra rezultatų</target>
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
-                <target>Are you sure ?</target>
+                <target>Ar tu tikras ?</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
-                <target>Edit</target>
+                <target>Redaguoti</target>
             </trans-unit>
             <trans-unit id="action_show">
                 <source>action_show</source>
-                <target>Show</target>
+                <target>Rodyti</target>
             </trans-unit>
             <trans-unit id="all_elements">
                 <source>all_elements</source>
-                <target>All elements</target>
+                <target>Visi elementai</target>
             </trans-unit>
             <trans-unit id="flash_batch_empty">
                 <source>flash_batch_empty</source>
-                <target>Action aborted. No items were selected.</target>
+                <target>Veiksmas atšauktas. Nėra pažymėtų įrašų.</target>
             </trans-unit>
             <trans-unit id="flash_create_success">
                 <source>flash_create_success</source>
-                <target>Item "%name%" has been successfully created.</target>
+                <target>Įrašas "%name%" buvo sėkmingai sukurtas.</target>
             </trans-unit>
             <trans-unit id="flash_create_error">
                 <source>flash_create_error</source>
-                <target>An error has occurred during the creation of item "%name%".</target>
+                <target>Įvyko klaida kuriant "%name%" įrašą.</target>
             </trans-unit>
             <trans-unit id="flash_edit_success">
                 <source>flash_edit_success</source>
-                <target>Item "%name%" has been successfully updated.</target>
+                <target>Įrašas "%name%" buvo sėkmingai atnaujintas.</target>
             </trans-unit>
             <trans-unit id="flash_edit_error">
                 <source>flash_edit_error</source>
-                <target>An error has occurred during update of item "%name%".</target>
+                <target>Įvyko klaida atnaujinant "%name%" įrašą.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
-                <target>Selected items have been successfully deleted.</target>
+                <target>Pažymėti įrašai buvo sėkmingai ištrinti.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
-                <target>An Error has occurred during selected items deletion.</target>
+                <target>Įvyko klaida trinant pažymėtus įrašus.</target>
             </trans-unit>
             <trans-unit id="flash_delete_error">
                 <source>flash_delete_error</source>
-                <target>An Error has occurred during deletion of item "%name%".</target>
+                <target>Įvyko klaida trinant "%name%" įrašą.</target>
             </trans-unit>
             <trans-unit id="flash_delete_success">
                 <source>flash_delete_success</source>
-                <target>Item "%name%" has been deleted successfully.</target>
+                <target>Įrašas "%name%" buvo sėkmingai ištrintas.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -2106,55 +2106,55 @@
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
-                <target>Confirm deletion</target>
+                <target>Trinimo patvirtinimas</target>
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>Are you sure you want to delete the selected "%object%" element?</target>
+                <target>Ar tu tikras, kad nori ištrinti "%object%" elementą?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
-                <target>Yes, delete</target>
+                <target>Taip, trinti</target>
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
-                <target>Confirm batch action '%action%'</target>
+                <target>Veiksmo '%action%' patvirtinimas</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Are you sure you want to confirm this action and execute it for the selected element?|Are you sure you want to confirm this action and execute it for the %count% selected elements?</target>
+                <target>Ar tu tikras, kad nori vykdyti ši veiksmą šiems elementams?|Ar tu tikras, kad vykdyti šį veiksmą %count% kiekiui elementų?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
-                <target>Are you sure you want to confirm this action and execute it for all the elements?</target>
+                <target>Ar tu tikras, kad nori vykdyti šį veiksmą visiems elementams?</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
-                <target>Yes, execute</target>
+                <target>Taip, vykdyti</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
                 <source>label_type_yes</source>
-                <target>yes</target>
+                <target>taip</target>
             </trans-unit>
             <trans-unit id="label_type_no">
                 <source>label_type_no</source>
-                <target>no</target>
+                <target>ne</target>
             </trans-unit>
             <trans-unit id="label_type_contains">
                 <source>label_type_contains</source>
-                <target>contains</target>
+                <target>turi</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
                 <source>label_type_not_contains</source>
-                <target>does not contain</target>
+                <target>neturi</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
                 <source>label_type_equals</source>
-                <target>is equal to</target>
+                <target>yra lygus</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
                 <source>label_type_not_equals</source>
-                <target>is not equal to</target>
+                <target>nėra lygus</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
                 <source>label_type_equal</source>
@@ -2198,111 +2198,111 @@
             </trans-unit>
             <trans-unit id="label_date_type_null">
                 <source>label_date_type_null</source>
-                <target>is empty</target>
+                <target>yra tuščias</target>
             </trans-unit>
             <trans-unit id="label_date_type_not_null">
                 <source>label_date_type_not_null</source>
-                <target>is not empty</target>
+                <target>nėra tuščias</target>
             </trans-unit>
             <trans-unit id="label_date_type_between">
                 <source>label_date_type_between</source>
-                <target>between</target>
+                <target>tarp</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
                 <source>label_date_type_not_between</source>
-                <target>not between</target>
+                <target>nėra tarp</target>
             </trans-unit>
             <trans-unit id="label_filters">
                 <source>label_filters</source>
-                <target>Filters</target>
+                <target>Filtrai</target>
             </trans-unit>
             <trans-unit id="delete_or">
                 <source>delete_or</source>
-                <target>or</target>
+                <target>ar</target>
             </trans-unit>
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
-                <target>Revisions</target>
+                <target>Įrašai</target>
             </trans-unit>
             <trans-unit id="td_action">
                 <source>td_action</source>
-                <target>Action</target>
+                <target>Veiksmas</target>
             </trans-unit>
             <trans-unit id="td_compare">
                 <source>td_compare</source>
-                <target>Compare</target>
+                <target>Palyginti</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
-                <target>Revisions</target>
+                <target>Įrašas</target>
             </trans-unit>
             <trans-unit id="td_timestamp">
                 <source>td_timestamp</source>
-                <target>Date</target>
+                <target>Data</target>
             </trans-unit>
             <trans-unit id="td_username">
                 <source>td_username</source>
-                <target>Author</target>
+                <target>Autorius</target>
             </trans-unit>
             <trans-unit id="td_role">
                 <source>td_role</source>
-                <target>Role</target>
+                <target>Rolė</target>
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
-                <target>View Revision</target>
+                <target>Peržiūrėti įrašą</target>
             </trans-unit>
             <trans-unit id="label_compare_revision">
                 <source>label_compare_revision</source>
-                <target>Compare revision</target>
+                <target>Palyginti įrašus</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>1 result| %count% results | %count% results</target>
+                <target>1 rezultatas| %count% rezultatai | %count% rezultatai</target>
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Download</target>
+                <target>Atsisiųsti</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
-                <target>Loading information…</target>
+                <target>Kraunama informacija…</target>
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
-                <target>Preview</target>
+                <target>Peržiūrėti</target>
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
-                <target>Approve</target>
+                <target>Patvirtinti</target>
             </trans-unit>
             <trans-unit id="btn_preview_decline">
                 <source>btn_preview_decline</source>
-                <target>Decline</target>
+                <target>Atšaukti</target>
             </trans-unit>
             <trans-unit id="label_per_page">
                 <source>label_per_page</source>
-                <target>Per page</target>
+                <target>Per puslapį</target>
             </trans-unit>
             <trans-unit id="list_select">
                 <source>list_select</source>
-                <target>Select</target>
+                <target>Pasirinkti</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
-                <target>You have unsaved changes.</target>
+                <target>Turi neišsaugotų pakeitimų.</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
                 <source>link_edit_acl</source>
-                <target>Edit ACL</target>
+                <target>Redaguoti ACL</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
                 <source>btn_update_acl</source>
-                <target>Update ACL</target>
+                <target>Atnaujinti ACL</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
-                <target>ACL has been successfuly updated.</target>
+                <target>ACL buvo sėkmingai atnaujintas.</target>
             </trans-unit>
             <trans-unit id="link_action_acl">
                 <source>link_action_acl</source>
@@ -2310,39 +2310,39 @@
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
                 <source>short_object_description_placeholder</source>
-                <target>No selection</target>
+                <target>Nėra pasirinkimo</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>
-                <target>Search results: %query%</target>
+                <target>Paieškos rezultatai: %query%</target>
             </trans-unit>
             <trans-unit id="search_placeholder">
                 <source>search_placeholder</source>
-                <target>Search</target>
+                <target>Paieška</target>
             </trans-unit>
             <trans-unit id="no_results_found">
                 <source>no_results_found</source>
-                <target>no result found</target>
+                <target>rezultatų nerasta</target>
             </trans-unit>
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
-                <target>add new entry</target>
+                <target>pridėti naują įrašą</target>
             </trans-unit>
             <trans-unit id="link_actions">
                 <source>link_actions</source>
-                <target>Actions</target>
+                <target>Veiksmai</target>
             </trans-unit>
             <trans-unit id="noscript_warning">
                 <source>noscript_warning</source>
-                <target>Javascript is disabled in your web browser. Some features will not work properly.</target>
+                <target>Javascript yra išjungtas jūsų naršyklėje. Kai kurie patogumai gali veikti netvarkingai.</target>
             </trans-unit>
             <trans-unit id="message_form_group_empty">
                 <source>message_form_group_empty</source>
-                <target>No fields available.</target>
+                <target>Nėra jokių laukelių.</target>
             </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
-                <target>Filters</target>
+                <target>Filtrai</target>
             </trans-unit>
             <!-- Params listas -->
             <trans-unit id="admin.params">
