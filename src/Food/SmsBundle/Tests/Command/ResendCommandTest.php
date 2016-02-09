@@ -56,6 +56,14 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $unsentMessages = array();
 
         $application = new Application();
@@ -87,6 +95,18 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
         $messagingService->expects($this->never())
             ->method('saveMessage');
 
+        $container->expects($this->at(2))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connection));
+
+        $connection->expects($this->once())
+            ->method('close');
+
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             array('command' => $command->getName())
@@ -110,6 +130,14 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
         );
 
         $message = $this->getMockBuilder('\Food\SmsBundle\Entity\Message')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -162,6 +190,18 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
             ->method('saveMessage')
             ->with($message);
 
+        $container->expects($this->at(3))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connection));
+
+        $connection->expects($this->once())
+            ->method('close');
+
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             array('command' => $command->getName())
@@ -188,6 +228,14 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
         );
 
         $message = $this->getMockBuilder('\Food\SmsBundle\Entity\Message')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -252,6 +300,18 @@ class ResendCommandTest extends \PHPUnit_Framework_TestCase
         $messagingService->expects($this->exactly(2))
             ->method('saveMessage')
             ->with($message);
+
+        $container->expects($this->at(4))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connection));
+
+        $connection->expects($this->once())
+            ->method('close');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(

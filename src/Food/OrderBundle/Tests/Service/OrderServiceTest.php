@@ -1,6 +1,7 @@
 <?php
 namespace Food\OrderBundle\Tests\Service;
 
+use Food\AppBundle\Utils\Misc;
 use Food\CartBundle\Service\CartService;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\LocalBiller;
@@ -300,6 +301,9 @@ class OrderServiceTest extends WebTestCase {
     {
         $placeId = 5;
 
+        $miscService = new Misc();
+//        $miscService->setContainer($this->getContainer());
+
         $container = $this->getMock(
             'Symfony\Component\DependencyInjection\Container',
             array('get', 'getParameter')
@@ -380,6 +384,11 @@ class OrderServiceTest extends WebTestCase {
             ->method('getAddress')
             ->will($this->returnValue('Laisves pr. 77'));
 
+        $container->expects($this->at(2))
+            ->method('get')
+            ->with('food.app.utils.misc')
+            ->will($this->returnValue($miscService));
+
         $container->expects($this->any())
             ->method('getParameter')
             ->with('vat')
@@ -389,7 +398,7 @@ class OrderServiceTest extends WebTestCase {
             ->method('getId')
             ->will($this->returnValue(1254));
 
-        $container->expects($this->at(3))
+        $container->expects($this->at(4))
             ->method('get')
             ->with('request')
             ->will($this->returnValue($request));

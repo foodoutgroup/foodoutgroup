@@ -29,7 +29,7 @@ class CheckUndeliveredMessagesCommand extends ContainerAwareCommand
             $this->getContainer()->get('doctrine')->getConnection()->close();
             $messagesCount = count($unsentMessages);
 
-            if ($messagesCount > 7) {
+            if ($messagesCount > 9) {
                 $critical = true;
                 $text = sprintf(
                     '<error>ERROR: %d undelivered messages!</error>',

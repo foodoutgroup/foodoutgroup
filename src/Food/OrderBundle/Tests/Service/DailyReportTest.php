@@ -152,6 +152,7 @@ class DailyReportTest extends WebTestCase
     public function testGetDailyMailTitle()
     {
         $dailyReport = new DailyReport();
+        $dailyReport->setContainer($this->getContainer());
 
         $result = $dailyReport->getDailyMailTitle();
 

@@ -270,7 +270,8 @@ class UsersControllerTest extends WebTestCase
             'phone' => $this->user->getPhone(),
             'name' => $this->user->getFullName(),
             'email' => $this->user->getEmail(),
-            'refresh_token' => ''
+            'refresh_token' => '',
+            'isRealEmailSet' => true
         );
 
         $this->client->request(
@@ -330,6 +331,7 @@ class UsersControllerTest extends WebTestCase
             "name" => "Testas testuoklis",
             "email" => "api_tester@foodout.lt",
             "refresh_token" => '',
+            'isRealEmailSet' => true
         );
         $userData = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertTrue(!empty($userData['session_token']));
@@ -344,6 +346,7 @@ class UsersControllerTest extends WebTestCase
             "name" => "Testas testuoklis",
             "email" => "api_register@foodout.lt",
             "refresh_token" => '',
+            'isRealEmailSet' => true
         );
 
         $this->client->request(
@@ -418,6 +421,7 @@ class UsersControllerTest extends WebTestCase
             "name" => "Testas testuoklis2",
             "email" => "api_register2@foodout.lt",
             "refresh_token" => '',
+            'isRealEmailSet' => true
         );
 
         $this->client->request(

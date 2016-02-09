@@ -152,6 +152,7 @@ class WeeklyReportTest extends WebTestCase
     public function testGetWeeklyMailTitle()
     {
         $weeklyReport = new WeeklyReport();
+        $weeklyReport->setContainer($this->getContainer());
 
         $result = $weeklyReport->getWeeklyMailTitle();
 

@@ -146,7 +146,7 @@ class OrdersControllerTest extends WebTestCase
             'discount' => null,
             'state' => array(
                 'title' => 'accepted',
-                'info_number' => '+37061004970',
+                'info_number' => '+37069855544',
                 'message' => ''
             ),
             'details' => array(
@@ -167,6 +167,7 @@ class OrdersControllerTest extends WebTestCase
                     "city" => 'Vilnius',
                     "comments" => ''
                 ),
+                'time' => '30 min',
             )
         );
 
@@ -205,7 +206,7 @@ class OrdersControllerTest extends WebTestCase
             'discount' => null,
             'state' => array(
                 'title' => 'accepted',
-                'info_number' => '+37061004970',
+                'info_number' => '+37069855544',
                 'message' => ''
             ),
             'details' => array(
@@ -226,8 +227,9 @@ class OrdersControllerTest extends WebTestCase
                     "city" => 'Vilnius',
                     "comments" => ''
                 ),
+                'time' => '1 val.',
                 'price' => array(
-                    'amount' => 500,
+                    'amount' => 0,
                     'currency' => 'EUR',
                 ),
             )

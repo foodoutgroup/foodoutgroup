@@ -15,6 +15,14 @@ class CheckUndeliveredMessagesCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $application = new Application();
         $application->add(new CheckUndeliveredMessagesCommand());
 
@@ -33,6 +41,18 @@ class CheckUndeliveredMessagesCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getUndeliveredMessagesForRange')
             ->with($this->isInstanceOf('\DateTime'), $this->isInstanceOf('\DateTime'))
             ->will($this->returnValue(array()));
+
+        $container->expects($this->at(1))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connection));
+
+        $connection->expects($this->once())
+            ->method('close');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
@@ -96,6 +116,14 @@ class CheckUndeliveredMessagesCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         // Testable vars
         $phone = '37060000000';
         $sender = 'niamniamas.info monitoring';
@@ -124,6 +152,18 @@ class CheckUndeliveredMessagesCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getUndeliveredMessagesForRange')
             ->with($this->isInstanceOf('\DateTime'), $this->isInstanceOf('\DateTime'))
             ->will($this->returnValue($messages));
+
+        $container->expects($this->at(1))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connection));
+
+        $connection->expects($this->once())
+            ->method('close');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(

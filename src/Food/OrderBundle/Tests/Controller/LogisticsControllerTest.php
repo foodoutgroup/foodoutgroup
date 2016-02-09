@@ -41,6 +41,16 @@ class LogisticsControllerTest extends WebTestCase
         $order3 = $this->getOrder($place, $placePoint, OrderService::$status_assiged);
         $driver = $this->getDriver('Vairuotojas1');
         $driver2 = $this->getDriver('Vairuotojas2');
+        $user = $this->getUser();
+        $address = $this->getAddress($user);
+
+        $order->setAddressId($address);
+        $order2->setAddressId($address);
+        $order3->setAddressId($address);
+
+        $order->setDeliveryTime(new \DateTime('2014-07-02 11:43'));
+        $order2->setDeliveryTime(new \DateTime('2014-07-02 11:44'));
+        $order3->setDeliveryTime(new \DateTime('2014-07-02 11:46'));
 
         $order2->setDriver($driver);
         $order3->setDriver($driver2);
