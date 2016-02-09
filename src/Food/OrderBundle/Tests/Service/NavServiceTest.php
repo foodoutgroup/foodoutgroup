@@ -8,17 +8,17 @@ use Food\AppBundle\Test\WebTestCase;
 
 class NavServiceTest extends WebTestCase {
 
-    public function testNoTestTablesShouldBeLeft()
+    public function testNoRealTablesShouldBeTested()
     {
-        $expectedDeliveryOrderTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery Order]';
-        $expectedPosTransactionTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$POS Trans_ Line]';
-        $expectedHeaderTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Header]';
-        $expectedLineTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web ORDER Lines]';
-        $expectedOrderTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$FoodOut Order]';
-        $expectedMessagesTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Web Order Messages]';
-        $expectedItemsTable = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Item]';
-        $expectedDeliveryOrderStatus = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Delivery order status]';
-        $expectedPostedDeliveryOrders = '[skamb_centras].[dbo].[Čilija Skambučių Centras$Posted Delivery Orders]';
+        $expectedDeliveryOrderTable = '[skamb_centras].[dbo].[PROTOTIPAS Skambuciu Centras$Delivery Order]';
+        $expectedPosTransactionTable = '[skamb_centras].[dbo].[PROTOTIPAS Skambuciu Centras$POS Trans_ Line]';
+        $expectedHeaderTable = '[skamb_centras].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Header]';
+        $expectedLineTable = '[skamb_centras].[dbo].[PROTOTIPAS Skambuciu Centras$Web ORDER Lines]';
+        $expectedOrderTable = '[skamb_centras].[dbo].[PROTOTIPAS Skambuciu Centras$FoodOut Order]';
+        $expectedMessagesTable = '[skamb_centras].[dbo].[PROTOTIPAS Skambuciu Centras$Web Order Messages]';
+        $expectedItemsTable = '[skamb_centras].[dbo].[PROTOTIPAS Skambuciu Centras$Item]';
+        $expectedDeliveryOrderStatus = '[skamb_centras].[dbo].[PROTOTIPAS Skambuciu Centras$Delivery order status]';
+        $expectedPostedDeliveryOrders = '[skamb_centras].[dbo].[PROTOTIPAS Skambuciu Centras$Posted Delivery Orders]';
 
         $navService = $this->getContainer()->get('food.nav');
 

@@ -384,8 +384,6 @@ class PlacesServiceTest extends WebTestCase {
         $sundayGraph = $placeService->getFullRangeWorkTimes($place, $placePoint, $sundayShift." day");
 
         $expectedMondayGraph = array(
-            '09:00',
-            '09:30',
             '10:00',
             '10:30',
             '11:00',
@@ -410,8 +408,6 @@ class PlacesServiceTest extends WebTestCase {
         );
 
         $expectedFridayGraph = array(
-            '10:00',
-            '10:30',
             '11:00',
             '11:30',
             '12:00',
@@ -472,8 +468,6 @@ class PlacesServiceTest extends WebTestCase {
         $mondayGraph = $placeService->getFullRangeWorkTimes($place, null, $mondayShift." day");
 
         $expectedMondayGraph = array(
-            '08:00',
-            '08:30',
             '09:00',
             '09:30',
             '10:00',
