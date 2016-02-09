@@ -865,6 +865,8 @@ class OrderServiceTest extends WebTestCase {
             $testData2['locale']
         );
 
+        $this->assertEquals($expectedString2, $reality2);
+
         // Cili Kaimas - analogiskas ankstesniam
         $expectedString3 = 'Naujas uzsakymas nr. 106123 is: Cili Kaimas - i Laisves al. 22-4 Kaunas, iki 21:16 http://foodout.lt/d/123454d374917d76521c104e9883a912/';
         $testData3 = array(
