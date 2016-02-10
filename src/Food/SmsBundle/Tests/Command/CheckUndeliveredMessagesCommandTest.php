@@ -175,5 +175,6 @@ class CheckUndeliveredMessagesCommandTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertRegExp('/'.$errorMessage.'/', $commandTester->getDisplay());
+        $this->assertEquals(2, $commandTester->getStatusCode());
     }
 }

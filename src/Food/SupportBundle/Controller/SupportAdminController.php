@@ -6,6 +6,11 @@ use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
 class SupportAdminController extends Controller
 {
+    /**
+     * @inheritdoc
+     *
+     * @codeCoverageIgnore
+     */
     public function listAction()
     {
         die('AJAJA negrai puola');
