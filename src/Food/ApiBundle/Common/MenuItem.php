@@ -117,11 +117,22 @@ class MenuItem extends ContainerAware
 
         $discountText = "";
         if ($showDiscount) {
-            $diff = ($ds->getLargestDishDiscountPrice($dish->getId()) / $ds->getLargestDishPrice($dish->getId())) * 100 - 100;
-            $discountText = round($diff)."%";
+            /** Surandam didziausia nuolaida **/
+            $dishSizeDiscounts = $ds->getOneOrAllDishDiscountPrice($dish->getId(), true);
+            if (count($dishSizeDiscounts)) {
+                $b = 0;
+                foreach ($dishSizeDiscounts as $dishSize) {
+                    $diff = ($dishSize['discount'] / $dishSize['price']) * 100 - 100;
+                    $pos_diff = (round($diff) * -1);
+                    if ($pos_diff > $b) {
+                        $b = $pos_diff;
+                        $discountText = round($diff) . "%";
+                    }
+                }
+            }
         }
         if ($minimum == $minOld && $maximum == $maxOld) {
-            $theDishInfo = $ds->getOneDishDiscountPrice($dish->getId());
+            $theDishInfo = $ds->getOneOrAllDishDiscountPrice($dish->getId());
             if ($theDishInfo) {
                 $diff = ($theDishInfo['discount'] / $theDishInfo['price']) * 100 - 100;
                 $discountText = round($diff)."%";
