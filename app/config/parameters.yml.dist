@@ -1,12 +1,15 @@
 parameters:
+    locale: lt
+    locales: [lt, en, ru]
+
     database_driver: pdo_mysql
-    database_host: 127.0.0.1
-    database_port: null
-    database_name: sandbox1
-    database_user: root
-    database_password: null
+    database_host: localhost
+    database_port: 3306
+    database_name: skanu_lt
+    database_user: skanu_lt
+    database_password:
     mailer_transport: smtp
-    mailer_host: null
+    mailer_host: 127.0.0.1
     mailer_user: null
     mailer_password: null
     secret: f6180a0fb30e99a1da1e364412f96c3f98cbaa1f
@@ -25,12 +28,12 @@ parameters:
     cloudfront_url: images.foodout.lt
     time_zone: "Europe/Vilnius"
     sms.sender: "Foodout.lt"
-    admin.emails: [mantas@foodout.lt]
+    admin.emails: [paulius@foodout.lt]
     admin.phones: [37061514333]
     order.notify_emails: []
     order.city_coordinators:
         vilnius: []
-        kaunas: [zaneta@foodout.lt]
+        kaunas: []
         klaipėda: [jurgita@foodout.lt]
         ryga: [paulius@foodout.lt]
     order.accept_notify_emails: []
@@ -46,7 +49,7 @@ parameters:
     currency_display: '&euro;'
     currency_iso: EUR
     display_currency_alternative:  Lt
-    currency_alternative: true
+    currency_alternative: false
     invoice.series: FOO
     show_best_offers: true
     show_game: true
@@ -80,5 +83,15 @@ parameters:
     default_self_delivey_distance: 10
     dispatcher_phones: []
     send_sms_on_cancel: false
-    dispatcher_contact_phone: "37069855544"
+    dispatcher_contact_phone: "37061004970"
     call_centre_phone: "37052195281"
+    week_layout: 1
+    hide_online_payments: false
+    number_format:
+        decimal_places: 2
+        decimal_separator: ','
+        thousands_separator: ' '
+    show_invoice_option: true
+    place_slug_manual: false
+    alcohol_allowed: true
+    place_with_neighbourhood: false

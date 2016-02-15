@@ -5,18 +5,22 @@ namespace Food\DishesBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
+use Food\AppBundle\Entity\Uploadable;
+
+use Doctrine\ORM\EntityManager;
 
 
 /**
- * Dish
+ * Kitchen
  *
- * @ORM\Table(name="size")
+ * @ORM\Table(name="combo_discount", indexes={@ORM\Index(name="active_idx", columns={"active"})})
  * @ORM\Entity
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\SizeLocalized")
  */
-class Size implements Translatable
+class ComboDiscount
 {
+
+    const OPT_COMBO_TYPE_DISCOUNT = "discount";
+    const OPT_COMBO_TYPE_FREE = "free";
 
     /**
      * @var integer
@@ -27,27 +31,72 @@ class Size implements Translatable
      */
     private $id;
 
+
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=45)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
+
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="hidden", type="boolean")
+     * @ORM\Column(name="active", type="boolean")
      */
-    private $hidden = false;
+    private $active = true;
+
 
     /**
      * @var \Food\DishesBundle\Entity\Place
      *
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="combo")
      * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
      */
     private $place;
+
+
+    /**
+     * @var \Food\DishesBundle\Entity\FoodCategory
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\FoodCategory", inversedBy="combo")
+     * @ORM\JoinColumn(name="dish_category", referencedColumnName="id")
+     */
+    private $dishCategory;
+
+
+    /**
+     * @var \Food\DishesBundle\Entity\DishUnit
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishUnit")
+     * @ORM\JoinColumn(name="dish_unit", referencedColumnName="id")
+     */
+    private $dishUnit;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="discount_type", type="string", length=30)
+     */
+    private $discountType;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="discount_size", type="integer", length=3)
+     */
+    private $discountSize;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="amount", type="integer", length=3)
+     */
+    private $amount;
+
 
     /**
      * @var string
@@ -56,6 +105,7 @@ class Size implements Translatable
      */
     private $createdAt;
 
+
     /**
      * @var string|null
      *
@@ -63,12 +113,14 @@ class Size implements Translatable
      */
     private $editedAt;
 
+
     /**
      * @var string|null
      *
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
     private $deletedAt;
+
 
     /**
      * @var \Food\UserBundle\Entity\User
@@ -78,6 +130,7 @@ class Size implements Translatable
      **/
     private $createdBy;
 
+
     /**
      * @var \Food\UserBundle\Entity\User
      *
@@ -85,6 +138,7 @@ class Size implements Translatable
      * @ORM\JoinColumn(name="edited_by", referencedColumnName="id")
      */
     private $editedBy;
+
 
     /**
      * @var \Food\UserBundle\Entity\User
@@ -94,8 +148,9 @@ class Size implements Translatable
      */
     private $deletedBy;
 
+
     /**
-     * Returns the name
+     * Convert object to string
      *
      * @return string
      */
@@ -106,6 +161,9 @@ class Size implements Translatable
         }
         return $this->getName();
     }
+
+
+
 
     /**
      * Get id
@@ -121,12 +179,12 @@ class Size implements Translatable
      * Set name
      *
      * @param string $name
-     * @return Size
+     * @return ComboDiscount
      */
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
@@ -141,38 +199,107 @@ class Size implements Translatable
     }
 
     /**
-     * Set hidden
+     * Set active
      *
-     * @param boolean $hidden
-     * @return Size
+     * @param boolean $active
+     * @return ComboDiscount
      */
-    public function setHidden($hidden)
+    public function setActive($active)
     {
-        $this->hidden = $hidden;
-    
+        $this->active = $active;
+
         return $this;
     }
 
     /**
-     * Get hidden
+     * Get active
      *
      * @return boolean 
      */
-    public function getHidden()
+    public function getActive()
     {
-        return $this->hidden;
+        return $this->active;
+    }
+
+    /**
+     * Set discountType
+     *
+     * @param string $discountType
+     * @return ComboDiscount
+     */
+    public function setDiscountType($discountType)
+    {
+        $this->discountType = $discountType;
+
+        return $this;
+    }
+
+    /**
+     * Get discountType
+     *
+     * @return string 
+     */
+    public function getDiscountType()
+    {
+        return $this->discountType;
+    }
+
+    /**
+     * Set discountSize
+     *
+     * @param integer $discountSize
+     * @return ComboDiscount
+     */
+    public function setDiscountSize($discountSize)
+    {
+        $this->discountSize = $discountSize;
+
+        return $this;
+    }
+
+    /**
+     * Get discountSize
+     *
+     * @return integer 
+     */
+    public function getDiscountSize()
+    {
+        return $this->discountSize;
+    }
+
+    /**
+     * Set amount
+     *
+     * @param integer $amount
+     * @return ComboDiscount
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    /**
+     * Get amount
+     *
+     * @return integer 
+     */
+    public function getAmount()
+    {
+        return $this->amount;
     }
 
     /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return Size
+     * @return ComboDiscount
      */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
@@ -190,12 +317,12 @@ class Size implements Translatable
      * Set editedAt
      *
      * @param \DateTime $editedAt
-     * @return Size
+     * @return ComboDiscount
      */
     public function setEditedAt($editedAt)
     {
         $this->editedAt = $editedAt;
-    
+
         return $this;
     }
 
@@ -213,12 +340,12 @@ class Size implements Translatable
      * Set deletedAt
      *
      * @param \DateTime $deletedAt
-     * @return Size
+     * @return ComboDiscount
      */
     public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
-    
+
         return $this;
     }
 
@@ -236,12 +363,12 @@ class Size implements Translatable
      * Set place
      *
      * @param \Food\DishesBundle\Entity\Place $place
-     * @return Size
+     * @return ComboDiscount
      */
     public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
     {
         $this->place = $place;
-    
+
         return $this;
     }
 
@@ -256,15 +383,61 @@ class Size implements Translatable
     }
 
     /**
+     * Set dishCategory
+     *
+     * @param \Food\DishesBundle\Entity\FoodCategory $dishCategory
+     * @return ComboDiscount
+     */
+    public function setDishCategory(\Food\DishesBundle\Entity\FoodCategory $dishCategory = null)
+    {
+        $this->dishCategory = $dishCategory;
+
+        return $this;
+    }
+
+    /**
+     * Get dishCategory
+     *
+     * @return \Food\DishesBundle\Entity\FoodCategory 
+     */
+    public function getDishCategory()
+    {
+        return $this->dishCategory;
+    }
+
+    /**
+     * Set dishUnit
+     *
+     * @param \Food\DishesBundle\Entity\DishUnit $dishUnit
+     * @return ComboDiscount
+     */
+    public function setDishUnit(\Food\DishesBundle\Entity\DishUnit $dishUnit = null)
+    {
+        $this->dishUnit = $dishUnit;
+
+        return $this;
+    }
+
+    /**
+     * Get dishUnit
+     *
+     * @return \Food\DishesBundle\Entity\DishUnit 
+     */
+    public function getDishUnit()
+    {
+        return $this->dishUnit;
+    }
+
+    /**
      * Set createdBy
      *
      * @param \Food\UserBundle\Entity\User $createdBy
-     * @return Size
+     * @return ComboDiscount
      */
     public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
     {
         $this->createdBy = $createdBy;
-    
+
         return $this;
     }
 
@@ -282,12 +455,12 @@ class Size implements Translatable
      * Set editedBy
      *
      * @param \Food\UserBundle\Entity\User $editedBy
-     * @return Size
+     * @return ComboDiscount
      */
     public function setEditedBy(\Food\UserBundle\Entity\User $editedBy = null)
     {
         $this->editedBy = $editedBy;
-    
+
         return $this;
     }
 
@@ -305,12 +478,12 @@ class Size implements Translatable
      * Set deletedBy
      *
      * @param \Food\UserBundle\Entity\User $deletedBy
-     * @return Size
+     * @return ComboDiscount
      */
     public function setDeletedBy(\Food\UserBundle\Entity\User $deletedBy = null)
     {
         $this->deletedBy = $deletedBy;
-    
+
         return $this;
     }
 
