@@ -65,7 +65,7 @@ class SendEmailCommand extends ContainerAwareCommand
 
                             default:
                                 // do nothing - unknown type. Let support handle this
-                                $logger->error('Unknown email type found in mailing cron. Mail ID:'.$mail->getId().' type: "'.$mail->getType().'"');
+                                $logger->error('Unknown email type found in mailing cron. Mail ID: '.$mail->getId().' type: "'.$mail->getType().'"');
                         }
 
                         $mailService->markEmailSent($mail);
