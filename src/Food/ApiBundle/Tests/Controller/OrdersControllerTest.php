@@ -146,7 +146,7 @@ class OrdersControllerTest extends WebTestCase
             'discount' => null,
             'state' => array(
                 'title' => 'accepted',
-                'info_number' => '+37069855544',
+                'info_number' => '+'.$this->getContainer()->getParameter('dispatcher_contact_phone'),
                 'message' => ''
             ),
             'details' => array(
@@ -206,7 +206,7 @@ class OrdersControllerTest extends WebTestCase
             'discount' => null,
             'state' => array(
                 'title' => 'accepted',
-                'info_number' => '+37069855544',
+                'info_number' => '+'.$this->getContainer()->getParameter('dispatcher_contact_phone'),
                 'message' => ''
             ),
             'details' => array(
