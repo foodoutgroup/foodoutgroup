@@ -429,4 +429,124 @@ class SendEmailCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/Sending message id: 16 of type: "order_partialy_completed" for order id: 222/', $commandTester->getDisplay());
         $this->assertRegExp('/1 emails sent in [0-9\.]{1,5}/', $commandTester->getDisplay());
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage iAreInvalidError
+     */
+    public function testInvalidArgumentException()
+    {
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('getParameter', 'get')
+        );
+        $mailService = $this->getMockBuilder('\Food\AppBundle\Service\MailService')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $logger = $this->getMockBuilder('Monolog\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $orderService = $this->getMockBuilder('\Food\OrderBundle\Service\OrderService')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $application = new Application();
+        $application->add(new SendEmailCommand());
+
+        /**
+         * @var SendEmailCommand $command
+         */
+        $command = $application->find('email:send');
+        $command->setContainer($container);
+        $command->setMaxChecks(1);
+
+        $container->expects($this->at(0))
+            ->method('get')
+            ->with('food.mail')
+            ->will($this->returnValue($mailService));
+
+        $container->expects($this->at(1))
+            ->method('get')
+            ->with('logger')
+            ->will($this->returnValue($logger));
+
+        $container->expects($this->at(2))
+            ->method('get')
+            ->with('food.order')
+            ->will($this->returnValue($orderService));
+
+        $mailService->expects($this->once())
+            ->method('getEmailsToSend')
+            ->will($this->throwException(new \InvalidArgumentException('iAreInvalidError')));
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+            array('command' => $command->getName())
+        );
+
+        $this->assertRegExp('/Sorry, lazy programmer left a bug/', $commandTester->getDisplay());
+        $this->assertRegExp('/Error: iAreInvalidError/', $commandTester->getDisplay());
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage criticalError
+     */
+    public function testMajorException()
+    {
+        $container = $this->getMock(
+            'Symfony\Component\DependencyInjection\Container',
+            array('getParameter', 'get')
+        );
+        $mailService = $this->getMockBuilder('\Food\AppBundle\Service\MailService')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $logger = $this->getMockBuilder('Monolog\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $orderService = $this->getMockBuilder('\Food\OrderBundle\Service\OrderService')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $application = new Application();
+        $application->add(new SendEmailCommand());
+
+        /**
+         * @var SendEmailCommand $command
+         */
+        $command = $application->find('email:send');
+        $command->setContainer($container);
+        $command->setMaxChecks(1);
+
+        $container->expects($this->at(0))
+            ->method('get')
+            ->with('food.mail')
+            ->will($this->returnValue($mailService));
+
+        $container->expects($this->at(1))
+            ->method('get')
+            ->with('logger')
+            ->will($this->returnValue($logger));
+
+        $container->expects($this->at(2))
+            ->method('get')
+            ->with('food.order')
+            ->will($this->returnValue($orderService));
+
+        $mailService->expects($this->once())
+            ->method('getEmailsToSend')
+            ->will($this->throwException(new \Exception('criticalError')));
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+            array('command' => $command->getName())
+        );
+
+        $this->assertRegExp('/Mayday mayday, an error knocked the process down/', $commandTester->getDisplay());
+        $this->assertRegExp('/Error: criticalError/', $commandTester->getDisplay());
+    }
 }
