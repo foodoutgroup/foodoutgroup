@@ -1256,7 +1256,7 @@
             </trans-unit>
             <trans-unit id="general.top_contact.worktime_days" resname="general.top_contact.worktime_days">
                 <source>general.top_contact.worktime_days</source>
-                <target><![CDATA[VII - III,VII<br />IV - VI]]></target>
+                <target><![CDATA[I - VI,VII<br />V - VI]]></target>
             </trans-unit>
             <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
                 <source>general.top_contact.worktime</source>
