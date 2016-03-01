@@ -216,7 +216,7 @@
                             {% set statusInfo = statusInfo ~ '</div>' %}
                         {% endif %}
 
-                        {% if type != 'canceled' %}
+                        {% if type != 'canceled' and type != 'not_finished' %}
                             {{ ('admin.dispatcher.order_status.' ~ order.orderStatus)|trans({}, 'SonataAdminBundle') }}
                         {% endif %}
                         {% if order.orderStatusLog|length > 0 %}
