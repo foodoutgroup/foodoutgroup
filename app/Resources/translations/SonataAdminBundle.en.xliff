@@ -1500,6 +1500,22 @@
                 <source>admin.dispatcher.approve</source>
                 <target>Approve</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.sms_button">
+                <source>admin.dispatcher.sms_button</source>
+                <target>SMS</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.send_sms_title">
+                <source>admin.dispatcher.send_sms_title</source>
+                <target>SMS message for order recipient</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.button_send">
+                <source>admin.dispatcher.button_send</source>
+                <target>Send</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.sms_text">
+                <source>admin.dispatcher.sms_text</source>
+                <target>SMS text</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.button_cancel">
                 <source>admin.dispatcher.button_cancel</source>
                 <target>Cancel</target>

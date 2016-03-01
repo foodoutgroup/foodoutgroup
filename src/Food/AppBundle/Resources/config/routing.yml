@@ -188,6 +188,12 @@ food_admin_get_driver_list:
     options:
         expose: true
 
+food_admin_send_message:
+    pattern: /admin/dispatcher/send-message/{orderId}/{message}
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:sendOrderMessage}
+    options:
+        expose: true
+
 food_admin_assign_driver:
     pattern: /admin/dispatcher/assign-driver/
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:assignDriver}

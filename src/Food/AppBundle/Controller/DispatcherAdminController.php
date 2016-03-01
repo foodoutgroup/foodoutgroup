@@ -202,6 +202,31 @@ class DispatcherAdminController extends Controller
         return new Response('OK');
     }
 
+    public function sendOrderMessageAction($orderId, $message)
+    {
+        $orderService = $this->get('food.order');
+        $messagingService = $this->get('food.messages');
+        $sender = $this->container->getParameter('sms.sender');
+
+        try {
+            if (!empty($message)) {
+                $orderService->getOrderById($orderId);
+                $messagingService->addMessageToSend(
+                    $sender,
+                    $orderService->getOrder()->getOrderExtra()->getPhone(),
+                    $message,
+                    $orderService->getOrder()
+                );
+            }
+        } catch (\Exception $e) {
+            // TODO normalus error return ir ispiesimas popupe
+            $this->get('logger')->error('Error happened sending dispatcher sms message: '.$e->getMessage());
+            return new Response('Error: error occured');
+        }
+
+        return new Response('OK');
+    }
+
     public function getDriverListAction($orders)
     {
         $orderService = $this->get('food.order');

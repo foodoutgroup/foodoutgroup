@@ -64,6 +64,10 @@ var Dispatcher = {
             Dispatcher.showStatusPopup($(this));
         });
 
+        $(".sms_button").bind('click', function() {
+            Dispatcher.showSmsPopup($(this));
+        });
+
         $(".approve_button").bind('click', function() {
             $('.sonata-ba-list').mask();
             var orderId = $(this).attr('item-id');
@@ -166,6 +170,41 @@ var Dispatcher = {
                 }).dialog('open');
             }
         });
+    },
+
+    showSmsPopup: function(button) {
+        var orderId = button.attr('item-id');
+        var tag = $("<div></div>");
+        var data = $(".sms_message_popup").html();
+        var statusButtons = {};
+
+        statusButtons[Dispatcher.getTranslation('button_send')] = function() {
+            $('.sonata-ba-list').mask();
+            var message = $(this).find('.order_message').val();
+            var url = Routing.generate('food_admin_send_message', { '_locale': Dispatcher._locale, 'orderId': orderId, 'message': message, _sonata_admin: 'sonata.admin.dish' });
+            $.get(
+                url,
+                function(data) {
+                    location.reload();
+                }
+            );
+
+            // TODO refresh the page!!!!
+            $( this ).dialog( "close" );
+            $( this ).dialog( "destroy" );
+        };
+
+        statusButtons[Dispatcher.getTranslation('button_cancel')] = function() {
+            $( this ).dialog( "close" );
+            $( this ).dialog( "destroy" );
+        };
+
+        tag.html(data).dialog({
+            title: Dispatcher.getTranslation('send_sms_title'),
+            resizable: false,
+            modal: true,
+            buttons: statusButtons
+        }).dialog('open');
     },
 
     getDriversList: function(button) {

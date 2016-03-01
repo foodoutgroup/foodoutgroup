@@ -11,8 +11,10 @@
             Dispatcher.onLoadEvents();
 
             Dispatcher.setTranslation('change_status_title', '{{ 'admin.dispatcher.order_status_title'|trans({}, 'SonataAdminBundle') }}');
+            Dispatcher.setTranslation('send_sms_title', '{{ 'admin.dispatcher.send_sms_title'|trans({}, 'SonataAdminBundle') }}');
             Dispatcher.setTranslation('button_change', '{{ 'admin.dispatcher.button_change'|trans({}, 'SonataAdminBundle') }}');
             Dispatcher.setTranslation('button_cancel', '{{ 'admin.dispatcher.button_cancel'|trans({}, 'SonataAdminBundle') }}');
+            Dispatcher.setTranslation('button_send', '{{ 'admin.dispatcher.button_send'|trans({}, 'SonataAdminBundle') }}');
         });
     </script>
 {% endblock %}
@@ -230,6 +232,9 @@
                                 {{ 'admin.dispatcher.approve'|trans({}, 'SonataAdminBundle') }}
                             </button>
                         {% endif %}
+                        <button class="btn btn-lg sms_button" item-id="{{ order.id }}">
+                            {{ 'admin.dispatcher.sms_button'|trans({}, 'SonataAdminBundle') }}
+                        </button>
                     </td>
                     {% if type == 'canceled' %}
                     <td class="client_contacted_check">
@@ -403,6 +408,12 @@
                 </table>
             </div>
         {% endfor %}
+    </div>
+    <div class="hidden sms_message_popup">
+        <div>{{ 'admin.dispatcher.sms_text'|trans({}, 'SonataAdminBundle') }}</div>
+        <div>
+            <textarea class="order_message" rows="3" style="width: 260px; margin-top: 5px;"></textarea>
+        </div>
     </div>
 {% endblock %}
 
