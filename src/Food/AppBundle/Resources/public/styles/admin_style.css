@@ -151,3 +151,13 @@ button.late_orders {
     font-weight: bold;
     margin: 0 15px;
 }
+
+.delay_duration_holder {
+    display: none;
+}
+.order_status_label {
+    cursor: pointer;
+}
+.order_status_label input.order_status {
+    margin-top: 0;
+}

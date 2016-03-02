@@ -1,8 +1,20 @@
 <div>
     {% for status in orderStatuses %}
     <div>
-        <input type="radio" name="order_status" class="order_status" value="{{ status }}" {% if currentStatus == status %}checked="checked"{% endif %} />
-        {{ ('admin.dispatcher.order_status.' ~ status)|trans({}, 'SonataAdminBundle') }}
+        <label class="order_status_label">
+            <input type="radio" name="order_status" class="order_status" value="{{ status }}" {% if currentStatus == status %}checked="checked"{% endif %} />
+            {{ ('admin.dispatcher.order_status.' ~ status)|trans({}, 'SonataAdminBundle') }}
+        </label>
+        {% if status == 'delayed' %}
+            <div class="delay_duration_holder">
+                <label for="delay_duration" class="control-label">{% trans %}mobile.order_delay_duration{% endtrans %} {% trans %}admin.dispatcher.delayed_minutes{% endtrans %}.</label>
+                <select name="delay_duration" id="delay_duration" class="form-control">
+                    {% for delayDuration in delayDurations %}
+                        <option value="{{ delayDuration }}"{% if delayDuration == currentDelayDuration %} selected{% endif %}>{{ delayDuration }} {% trans %}admin.dispatcher.delayed_minutes{% endtrans %}.</option>
+                    {% endfor %}
+                </select>
+            </div>
+        {% endif %}
     </div>
     {% endfor %}
 </div>

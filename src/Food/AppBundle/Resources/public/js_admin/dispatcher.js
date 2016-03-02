@@ -133,14 +133,26 @@ var Dispatcher = {
     showStatusPopup: function(button) {
         $('.sonata-ba-list').mask();
         var orderId = button.attr('item-id');
-        var url = Routing.generate('food_admin_get_order_status_popup', { '_locale': Dispatcher._locale, 'orderId': orderId, _sonata_admin: 'sonata.admin.dish' });
+        var url = Routing.generate('food_admin_get_order_status_popup', {
+            '_locale': Dispatcher._locale,
+            'orderId': orderId,
+            _sonata_admin: 'sonata.admin.dish'
+        });
         var tag = $("<div></div>");
 
         var statusButtons = {};
+        var createEvent = {};
 
         statusButtons[Dispatcher.getTranslation('button_change')] = function() {
             var newStatus = $(this).find('.order_status:checked').val();
-            var url = Routing.generate('food_admin_set_order_status', { '_locale': Dispatcher._locale, 'orderId': orderId, 'status': newStatus, _sonata_admin: 'sonata.admin.dish' });
+            var delayDuration = (newStatus == 'delayed' ? $(this).find('select#delay_duration').val() : null);
+            var url = Routing.generate('food_admin_set_order_status', {
+                '_locale': Dispatcher._locale,
+                'orderId': orderId,
+                'status': newStatus,
+                'delayDuration': delayDuration,
+                _sonata_admin: 'sonata.admin.dish'
+            });
             $.get(
                 url,
                 function(data) {
@@ -158,6 +170,27 @@ var Dispatcher = {
             $( this ).dialog( "destroy" );
         };
 
+        createEvent = function(event, ui) {
+            var fieldsHolder = $(this);
+            var delayedFieldHolder = fieldsHolder.find('.delay_duration_holder');
+            var statusFields = fieldsHolder.find('input[type="radio"].order_status');
+            var delayedField = fieldsHolder.find('input[value="delayed"].order_status');
+            var delayedStatus = (delayedField.prop('checked') ? true : false);
+
+            var toggle_delayedFieldHolder = function(delayedStatus) {
+                if (delayedStatus){
+                    delayedFieldHolder.show();
+                } else {
+                    delayedFieldHolder.hide();
+                }
+            };
+
+            toggle_delayedFieldHolder(delayedStatus);
+            $(statusFields).on("click", function(event) {
+                toggle_delayedFieldHolder(($(this).prop('checked') && $(this).val() == 'delayed' ? true : false));
+            });
+        };
+
         $.ajax({
             url: url,
             success: function(data) {
@@ -166,7 +199,8 @@ var Dispatcher = {
                     title: Dispatcher.getTranslation('change_status_title'),
                     resizable: false,
                     modal: true,
-                    buttons: statusButtons
+                    buttons: statusButtons,
+                    create: createEvent
                 }).dialog('open');
             }
         });

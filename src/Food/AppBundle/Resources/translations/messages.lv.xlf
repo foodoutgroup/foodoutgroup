@@ -1286,6 +1286,10 @@
                 <source>general.footer.social</source>
                 <target>foodout ir sociāls</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.delayed_minutes" resname="admin.dispatcher.delayed_minutes">
+                <source>admin.dispatcher.delayed_minutes</source>
+                <target>min</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
