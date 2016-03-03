@@ -9,7 +9,10 @@ class StaticController extends Controller
 {
     public function indexAction($id)
     {
-        $staticPage = $this->get('food.static')->getPage($id);
+        $staticService = $this->get('food.static');
+        $staticPage = $staticService->getPage($id);
+        $cities = $staticService->getPlacesWithOurLogistic(true);
+        $places = $staticService->getPlacesWithOurLogistic();
 
         if (!$staticPage) {
             throw new NotFoundHttpException('Sorry not existing!');
@@ -21,7 +24,11 @@ class StaticController extends Controller
         $staticPage->setContent($cont);
         return $this->render(
             'FoodAppBundle:Static:index.html.twig',
-            array('staticPage' => $staticPage)
+            array(
+                'staticPage' => $staticPage,
+                'cities' => $cities,
+                'places' => $places,
+            )
         );
     }
 }
