@@ -54,6 +54,7 @@ class MailService extends ContainerAware
 
         $emails = $repo->createQueryBuilder('m')
             ->where('m.sent = 0')
+            ->andWhere('m.error is NULL')
             ->andWhere('m.sendOnDate <= :thisIsTheEnd')
             ->orderBy('m.createdAt', 'ASC')
             ->setMaxResults(40)
@@ -116,6 +117,27 @@ class MailService extends ContainerAware
 
         $emailToSend->setSent(true)
             ->setSentAt(new \DateTime('now'));
+
+        $em->persist($emailToSend);
+        $em->flush();
+    }
+
+    /**
+     * @param EmailToSend $emailToSend
+     * @param string $error
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function markAsError($emailToSend, $error)
+    {
+        if (!$emailToSend instanceof EmailToSend) {
+            throw new \InvalidArgumentException('Can not mark email sent - no email object given');
+        }
+
+        $em = $this->container->get('doctrine')->getManager();
+
+        $emailToSend->setSent(false)
+            ->setError($error);
 
         $em->persist($emailToSend);
         $em->flush();
