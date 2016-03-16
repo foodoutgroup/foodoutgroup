@@ -93,9 +93,11 @@
                                         </button>
                                         <ul class="dropdown-menu scrollable-menu menu" aria-labelledby="dLabel">
                                             {% for category in placeCategories %}
-                                                <li {# {% if category.id == selectedCategory.id %} class="active"{% endif %} #}>
-                                                    <a href="#{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}<span>{{ category.activeDishesCount }}</span></a>
-                                                </li>
+                                                {% if category.dishes and dishService.activeDishesByCategory(category.id)|length > 0 %}
+                                                    <li {# {% if category.id == selectedCategory.id %} class="active"{% endif %} #}>
+                                                        <a href="#{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}<span>{{ category.activeDishesCount }}</span></a>
+                                                    </li>
+                                                {% endif %}
                                             {% endfor %}
                                         </ul>
                                     </div>
@@ -135,7 +137,9 @@
                                             <select class="dish_category_select" data-placeholder="{% trans %}places.dish_category_select{% endtrans %}">
                                                 <option value=""></option>
                                                 {% for dishCategory in placeCategories %}
-                                                    {% if dishCategory.dishes %}<option value="{{ dishCategory.id }}">{{ dishCategory.name }}</option>{% endif %}
+                                                    {% if dishCategory.dishes and dishService.activeDishesByCategory(dishCategory.id)|length > 0 %}
+                                                        <option value="{{ dishCategory.id }}">{{ dishCategory.name }}</option>
+                                                    {% endif %}
                                                 {% endfor %}
                                             </select>
                                             <input type="text" class="dish_search_input" value="" placeholder="{% trans %}places.dish_search_input{% endtrans %}" />
