@@ -19,6 +19,12 @@
     <meta name="viewport" content="width=1000">
     <meta name="msapplication-config" content="none"/>
 
+    {# Chosen CSS Begin #}
+    {% stylesheets '@FoodAppBundle/Resources/public/scripts/chosen/chosen.min.css' filter="cssrewrite" %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    {% endstylesheets %}
+    {# Chosen CSS End #}
+
     {% stylesheets 'bundles/foodapp/scripts/jquery-ui/custom-theme/jquery-ui-1.10.3.custom.min.css' filter="cssrewrite" %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
     {% endstylesheets %}
@@ -70,6 +76,12 @@
         {% stylesheets '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.css' %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
         {% endstylesheets %}
+
+        {# Chosen JS Begin #}
+        {% javascripts '@FoodAppBundle/Resources/public/scripts/chosen/chosen.jquery.min.js' %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        {# Chosen JS End #}
 
     {% endblock %}
     {# Facebook retargeting script for Inspired #}

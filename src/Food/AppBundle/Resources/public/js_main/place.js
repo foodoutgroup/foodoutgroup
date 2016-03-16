@@ -19,6 +19,85 @@ $(document).ready(function() {
     if (typeof scrollable_menu != "undefined" && scrollable_menu.length) {
         scrollable_menu.css('max-height', $(window.top).height() - 365);
     }
+
+    // Dish Search Begin
+    $('.dish_category_select').chosen({
+        width: "100%"
+    });
+
+    $('.dish_category_select').change(function(){
+        var category_id = $(this).find('option:selected').val();
+        $(".category_name").each(function(){
+            if ($(this).data('category') == category_id) {
+                $(this).show();
+                $('.restaurant-menu[data-category="' + $(this).data('category') + '"]').show();
+            } else if (category_id == '') {
+                $('.category_name').show();
+                $('.restaurant-menu').show();
+            } else {
+                $(this).hide();
+                $('.restaurant-menu[data-category="' + $(this).data('category') + '"]').hide();
+            }
+        });
+    });
+
+    var do_search_in_dishes = function(dish, filter, find_in, found_in_categories) {
+        var dish_name = do_filter_string(dish.find(find_in).text());
+        var filtered = do_filter_string(filter);
+        if (dish_name.search(new RegExp(filtered, "i")) < 0) {
+            dish.fadeOut();
+        } else {
+            dish.show();
+            found_in_categories.push(dish.data('category'));
+        }
+    };
+
+    var do_filter_string = function(string) {
+        var alphabet = {
+            'Ą': 'A', 'ą': 'a',
+            'Č': 'C', 'č': 'c',
+            'Ę': 'E', 'ę': 'e',
+            'Ė': 'E', 'ė': 'e',
+            'Į': 'I', 'į': 'i',
+            'Š': 'S', 'š': 's',
+            'Ų': 'U', 'ų': 'u',
+            'Ū': 'U', 'ū': 'u',
+            'Ž': 'Z', 'ž': 'z'
+        };
+        return string.replace(new RegExp("(" + Object.keys(alphabet).map(function(i){
+            return i.replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&")
+        }).join("|") + ")", "g"), function(s){
+            return alphabet[s]
+        });
+    };
+
+    $(".dish_search_input").keyup(function(){
+        var filter = $(this).val();
+        var found_in_categories = [];
+        var category_id = $('.dish_category_select').find('option:selected').val();
+        $(".restaurant-menu-item").each(function(){
+            if (category_id != '') {
+                if (category_id == $(this).data('category')) {
+                    console.log('Searching in ' + $(this).data('category') + ' category');
+                    do_search_in_dishes($(this), filter, '.name:visible', found_in_categories);
+                }
+            } else {
+                console.log('Searching in all categories');
+                do_search_in_dishes($(this), filter, '.name', found_in_categories);
+            }
+        });
+        if (found_in_categories.length) {
+            $('.category_name').hide();
+            $.each(found_in_categories, function(index, value){
+                $('.category_name').each(function(){
+                    if ($(this).data('category') == value) {
+                        $(this).show();
+                    }
+                });
+            });
+        }
+    });
+    // Dish Search End
 });
 
 var Place = {
