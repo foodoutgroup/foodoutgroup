@@ -82,6 +82,14 @@
                 <source>places.food_categories</source>
                 <target>Kategorijas</target>
             </trans-unit>
+            <trans-unit id="places.dish_category_select" resname="places.dish_category_select">
+                <source>places.dish_category_select</source>
+                <target>Kategorija</target>
+            </trans-unit>
+            <trans-unit id="places.dish_search_input" resname="places.dish_search_input">
+                <source>places.dish_search_input</source>
+                <target>Trauku nosaukums</target>
+            </trans-unit>
             <trans-unit id="places.select_place_point" resname="places.select_place_point">
                 <source>places.select_place_point</source>
                 <target>Restorāns</target>

@@ -129,6 +129,19 @@
                                                 });
                                             </Script>
                                         {% endif %}
+
+                                        {# Dish Search Begin #}
+                                        <div class="dish_search_block">
+                                            <select class="dish_category_select" data-placeholder="{% trans %}places.dish_category_select{% endtrans %}">
+                                                <option value=""></option>
+                                                {% for dishCategory in placeCategories %}
+                                                    {% if dishCategory.dishes %}<option value="{{ dishCategory.id }}">{{ dishCategory.name }}</option>{% endif %}
+                                                {% endfor %}
+                                            </select>
+                                            <input type="text" class="dish_search_input" value="" placeholder="{% trans %}places.dish_search_input{% endtrans %}" />
+                                        </div>
+                                        {# Dish Search End #}
+
                                         <h2 class="fl">{% trans %}places.dishes_title{% endtrans %}{# {{ selectedCategory.name }} #}</h2>
                                         <div class="view-type clearfix">
                                             {% if listType == 'thumbs' %}

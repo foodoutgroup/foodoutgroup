@@ -3,7 +3,7 @@
     font-family: 'IRANSans-web';
     src: url('/bundles/foodapp/styles/IRANSans-Bold-web.eot');
 
-    src: url('/bundles/foodapp/styles/IRANSans-Bold-web.eot?#iefix') format('eot'),  /* IE6–8 */
+    src: url('/bundles/foodapp/styles/IRANSans-Bold-web.eot?#iefix') format('eot'),  /* IE6ï¿½8 */
     url('/bundles/foodapp/styles/IRANSans-Bold-web.woff2') format('woff2'),  /* Chrome36+, Opera24+*/
     url('/bundles/foodapp/styles/IRANSans-Bold-web.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
     url('/bundles/foodapp/styles/IRANSans-Bold-web.ttf') format('ttf');
@@ -15,7 +15,7 @@
     font-family: 'IRANSans-web';
     src: url('/bundles/foodapp/styles/IRANSans-Medium-web.eot');
 
-    src: url('/bundles/foodapp/styles/IRANSans-Medium-web.eot?#iefix') format('eot'),  /* IE6–8 */
+    src: url('/bundles/foodapp/styles/IRANSans-Medium-web.eot?#iefix') format('eot'),  /* IE6ï¿½8 */
     url('/bundles/foodapp/styles/IRANSans-Medium-web.woff2') format('woff2'),  /* Chrome36+, Opera24+*/
     url('/bundles/foodapp/styles/IRANSans-Medium-web.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
     url('/bundles/foodapp/styles/IRANSans-Medium-web.ttf') format('ttf');
@@ -27,7 +27,7 @@
     font-family: 'IRANSans-web';
     src: url('/bundles/foodapp/styles/IRANSans-UltraLight-web.eot');
 
-    src: url('/bundles/foodapp/styles/IRANSans-UltraLight-web.eot?#iefix') format('eot'),  /* IE6–8 */
+    src: url('/bundles/foodapp/styles/IRANSans-UltraLight-web.eot?#iefix') format('eot'),  /* IE6ï¿½8 */
     url('/bundles/foodapp/styles/IRANSans-UltraLight-web.woff2') format('woff2'),  /* Chrome36+, Opera24+*/
     url('/bundles/foodapp/styles/IRANSans-UltraLight-web.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
     url('/bundles/foodapp/styles/IRANSans-UltraLight-web.ttf') format('ttf');
@@ -39,7 +39,7 @@
     font-family: 'IRANSans-web';
     src: url('/bundles/foodapp/styles/IRANSans-Light-web.eot');
 
-    src: url('/bundles/foodapp/styles/IRANSans-Light-web.eot?#iefix') format('eot'),  /* IE6–8 */
+    src: url('/bundles/foodapp/styles/IRANSans-Light-web.eot?#iefix') format('eot'),  /* IE6ï¿½8 */
     url('/bundles/foodapp/styles/IRANSans-Light-web.woff2') format('woff2'),  /* Chrome36+, Opera24+*/
     url('/bundles/foodapp/styles/IRANSans-Light-web.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
     url('/bundles/foodapp/styles/IRANSans-Light-web.ttf') format('ttf');
@@ -51,7 +51,7 @@
     font-family: 'IRANSans-web';
     src: url('/bundles/foodapp/styles/IRANSans-web.eot');
 
-    src: url('/bundles/foodapp/styles/IRANSans-web.eot?#iefix') format('eot'),  /* IE6–8 */
+    src: url('/bundles/foodapp/styles/IRANSans-web.eot?#iefix') format('eot'),  /* IE6ï¿½8 */
     url('/bundles/foodapp/styles/IRANSans-web.woff2') format('woff2'),  /* Chrome36+, Opera24+*/
     url('/bundles/foodapp/styles/IRANSans-web.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
     url('/bundles/foodapp/styles/IRANSans-web.ttf') format('ttf');
@@ -943,4 +943,20 @@ select.neighbourhood_select,
 
 .cupon-page {
     padding: 62px 20px 187px;
+}
+
+.dish_search_block .chosen-container-single .chosen-single span {
+    margin: 0 4px 0 18px;
+}
+.dish_search_block .chosen-container-single .chosen-search input[type="text"] {
+    direction: rtl;
+}
+.dish_search_block input.dish_search_input {
+    vertical-align: top;
+    width: 44.5%;
+    background: transparent url(/bundles/foodapp/images/search-rtl-ico.png) 3px 4px no-repeat;
+}
+.dish_search_block .chosen-container {
+    width: 48% !important;
+    float: right;
 }

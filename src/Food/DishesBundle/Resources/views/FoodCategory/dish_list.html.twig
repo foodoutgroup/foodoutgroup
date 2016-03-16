@@ -3,8 +3,8 @@
 {% else %}
     {% set priceClass = "" %}
 {% endif %}
-<div class="menu-title clearfix"><h2 class="fl clearfix" id="{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}</h2></div>
-<div class="clearfix restaurant-menu{% if listType == 'list' %} display-list{% endif %}">
+<div class="menu-title clearfix{% if dishes %} category_name{% endif %}"{% if dishes %} data-category="{{ category.id }}"{% endif %}><h2 class="fl clearfix" id="{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}</h2></div>
+<div class="clearfix restaurant-menu{% if listType == 'list' %} display-list{% endif %}"{% if dishes %} data-category="{{ category.id }}"{% endif %}>
 {% for dish in dishes %}
     {% if dish.showPublicPrice %}
         {% set smallestPrice = dish_service.smallestDishPublicPrice(dish.id) %}
@@ -14,7 +14,7 @@
         {% set largestPrice = dish_service.largestDishPrice(dish.id) %}
     {% endif %}
     {% set showByHours = order_service.isOrderableByTime(dish) %}
-    <div class="restaurant-menu-item {% if showByHours == false %}disabled_dish{% endif %}" id="dish{{ dish.id }}">
+    <div class="restaurant-menu-item {% if showByHours == false %}disabled_dish{% endif %}" id="dish{{ dish.id }}" data-category="{{ category.id }}">
         {% if dish.getWebPathThumb('type1') is not empty %}
             {% if listType == 'thumbs' %}
                 {% set largeImgClass = '' %}
