@@ -62,7 +62,15 @@ $(document).ready(function() {
             'Š': 'S', 'š': 's',
             'Ų': 'U', 'ų': 'u',
             'Ū': 'U', 'ū': 'u',
-            'Ž': 'Z', 'ž': 'z'
+            'Ž': 'Z', 'ž': 'z',
+            'Ā': 'A', 'ā': 'a',
+            'Ē': 'E', 'ē': 'e',
+            'Ģ': 'G', 'ģ': 'g',
+            'Ī': 'I', 'ī': 'i',
+            'Ķ': 'K', 'ķ': 'k',
+            'Ļ': 'L', 'ļ': 'l',
+            'Ņ': 'N', 'ņ': 'n'
+
         };
         return string.replace(new RegExp("(" + Object.keys(alphabet).map(function(i){
             return i.replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&")
