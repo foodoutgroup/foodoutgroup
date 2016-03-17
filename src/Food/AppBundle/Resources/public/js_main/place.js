@@ -22,7 +22,8 @@ $(document).ready(function() {
 
     // Dish Search Begin
     $('.dish_category_select').chosen({
-        width: "100%"
+        width: "100%",
+        allow_single_deselect: true
     });
 
     $('.dish_category_select').change(function(){
@@ -86,11 +87,9 @@ $(document).ready(function() {
         $(".restaurant-menu-item").each(function(){
             if (category_id != '') {
                 if (category_id == $(this).data('category')) {
-                    console.log('Searching in ' + $(this).data('category') + ' category');
                     do_search_in_dishes($(this), filter, '.name:visible', found_in_categories);
                 }
             } else {
-                console.log('Searching in all categories');
                 do_search_in_dishes($(this), filter, '.name', found_in_categories);
             }
         });
@@ -103,6 +102,7 @@ $(document).ready(function() {
                     }
                 });
             });
+            $(".restaurant-menu-item:visible:nth-child(2n)").css({'margin-right': 0});
         }
     });
     // Dish Search End

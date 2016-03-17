@@ -2347,3 +2347,6 @@ div.coupon_form_popup {
     vertical-align: top;
     width: 48% !important;
 }
+.dish_search_block .chosen-container-single .chosen-single abbr {
+    top: 4px;
+}
