@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Place
  *
- * @ORM\Table(name="place_reviews")
+ * @ORM\Table(name="place_reviews", indexes={@ORM\Index(name="deleted_at_idx", columns={"deleted_at"}),@ORM\Index(name="place_reviews_idx", columns={"place_id","deleted_at"})})
  * @ORM\Entity
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */

@@ -12,7 +12,7 @@ use Symfony\Component\Validator\ExecutionContextInterface;
 /**
  * Dish
  *
- * @ORM\Table(name="dish", indexes={@ORM\Index(name="active_idx", columns={"active"})})
+ * @ORM\Table(name="dish", indexes={@ORM\Index(name="active_idx", columns={"active"}),@ORM\Index(name="visible_idx", columns={"active","deleted_at"}),@ORM\Index(name="recomended_idx", columns={"recomended"})})
  * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\DishRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\DishLocalized")

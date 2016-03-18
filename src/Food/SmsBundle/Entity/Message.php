@@ -8,7 +8,7 @@ use Food\OrderBundle\Entity\Order;
 /**
  * Food category
  *
- * @ORM\Table(name="sms_message", indexes={@ORM\Index(name="recipient_idx", columns={"recipient"}), @ORM\Index(name="sent_idx", columns={"sent"})})
+ * @ORM\Table(name="sms_message", indexes={@ORM\Index(name="recipient_idx", columns={"recipient"}), @ORM\Index(name="sent_idx", columns={"sent"}), @ORM\Index(name="ext_id_idx", columns={"ext_id"}), @ORM\Index(name="second_ext_id_idx", columns={"secondary_ext_id"})})
  * @ORM\Entity(repositoryClass="Food\SmsBundle\Entity\MessageRepository")
  */
 class Message
