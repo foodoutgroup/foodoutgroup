@@ -22,6 +22,9 @@ class ComboDiscount
     const OPT_COMBO_TYPE_DISCOUNT = "discount";
     const OPT_COMBO_TYPE_FREE = "free";
 
+    const OPT_COMBO_APPLY_UNIT = "unit";
+    const OPT_COMBO_APPLY_CATEGORY = "category";
+
     /**
      * @var integer
      *
@@ -61,7 +64,7 @@ class ComboDiscount
      * @var \Food\DishesBundle\Entity\FoodCategory
      *
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\FoodCategory", inversedBy="combo")
-     * @ORM\JoinColumn(name="dish_category", referencedColumnName="id")
+     * @ORM\JoinColumn(name="dish_category", referencedColumnName="id", nullable=true)
      */
     private $dishCategory;
 
@@ -70,10 +73,16 @@ class ComboDiscount
      * @var \Food\DishesBundle\Entity\DishUnit
      *
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishUnit")
-     * @ORM\JoinColumn(name="dish_unit", referencedColumnName="id")
+     * @ORM\JoinColumn(name="dish_unit", referencedColumnName="id", nullable=true)
      */
-    private $dishUnit;
+    private $dishUnit = null;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="apply_by", type="string", length=30)
+     */
+    private $applyBy = null;
 
     /**
      * @var string
@@ -147,6 +156,11 @@ class ComboDiscount
      * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;
+
+    function __construct()
+    {
+        $this->dishCategory = null;
+    }
 
 
     /**
@@ -495,5 +509,28 @@ class ComboDiscount
     public function getDeletedBy()
     {
         return $this->deletedBy;
+    }
+
+    /**
+     * Set applyBy
+     *
+     * @param string $applyBy
+     * @return ComboDiscount
+     */
+    public function setApplyBy($applyBy)
+    {
+        $this->applyBy = $applyBy;
+
+        return $this;
+    }
+
+    /**
+     * Get applyBy
+     *
+     * @return string 
+     */
+    public function getApplyBy()
+    {
+        return $this->applyBy;
     }
 }

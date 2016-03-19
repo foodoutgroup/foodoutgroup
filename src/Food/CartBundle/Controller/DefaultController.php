@@ -3,6 +3,7 @@
 namespace Food\CartBundle\Controller;
 
 use Food\CartBundle\Service\CartService;
+use Food\DishesBundle\Admin\DishSizeAdmin;
 use Food\DishesBundle\Entity\Place;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
@@ -113,6 +114,28 @@ class DefaultController extends Controller
                 $request->get('option')
             );
         }
+        $this->_recountBundles($request);
+    }
+
+    /**
+     * @param Request $request
+     */
+    private function _recountBundles($request)
+    {
+        // $request->get('dish-size'), - adding
+        // $request->get('place') removing
+        $place = $request->get('place', null);
+        if (empty($place)) {
+            $dishSize = $this->container->get('doctrine')
+                ->getRepository('FoodDishesBundle:DishSize')
+                ->findBy((int) $request->get('dish-size'));
+            $place = $dishSize->getDish()->getPlace()->getId();
+        }
+        if (empty($place)) {
+            return;
+        }
+        $this->getCartService()->recalculateBundles($place);
+        return;
     }
 
     /**
@@ -126,6 +149,7 @@ class DefaultController extends Controller
             $request->get('cart_id'),
             $request->get('place')
         );
+        $this->_recountBundles($request);
     }
 
     /**
@@ -656,5 +680,10 @@ class DefaultController extends Controller
             'FoodCartBundle:Default:payment_wait.html.twig',
             array('order' => $order)
         );
+    }
+
+    public function debugAction()
+    {
+        return new Response('Smooth end');
     }
 }

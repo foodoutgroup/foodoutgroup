@@ -146,6 +146,12 @@ food_order_nav_update_prices:
     defaults: { _controller: FoodOrderBundle:Default:updatePricesNav }
 
 
+food_admin_get_place_units:
+    pattern: /admin/place/get-units/{placeId}
+    defaults: {_controller: FoodDishesBundle:DishAdmin:getDishUnitsFromPlace}
+    options:
+        expose: true
+
 food_admin_get_place_categories:
     pattern: /admin/place/get-categories/{placeId}
     defaults: {_controller: FoodDishesBundle:DishAdmin:getCategoryOptionsFromPlace}

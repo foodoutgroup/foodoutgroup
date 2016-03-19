@@ -17,17 +17,24 @@ class ComboDiscountAdmin extends FoodAdmin
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $this->setTemplate('edit','FoodDishesBundle:Dish:admin_combo_discount_edit.html.twig');
 
         $comboChoices = array(
             ComboDiscount::OPT_COMBO_TYPE_FREE,
-            ComboDiscount::OPT_COMBO_TYPE_DISCOUNT
+            //ComboDiscount::OPT_COMBO_TYPE_DISCOUNT
         );
+
+        $combyApplyBy = array(
+            ComboDiscount::OPT_COMBO_APPLY_UNIT
+        );
+
         $formMapper->add('place', null, array('required' => true))
             ->add('name', null, array('required' => true))
             ->add('active')
             ->add('amount')
+            ->add('applyBy', 'choice', array('required' =>  true, 'choices' => $combyApplyBy))
             ->add('dishCategory')
-            ->add('dishUnit')
+            ->add('dishUnit', null, array('required' => false))
             ->add('discountType', 'choice', array('required' =>  true, 'choices' => $comboChoices))
             ->add('discountSize')
         ;
@@ -45,7 +52,6 @@ class ComboDiscountAdmin extends FoodAdmin
         $listMapper
             ->addIdentifier('name', 'string')
             ->add('place')
-            ->a
             ->add('active', null, array( 'editable' => true))
             //->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s'))
@@ -73,7 +79,7 @@ class ComboDiscountAdmin extends FoodAdmin
         $object->setCreatedBy($user);
         $object->setCreatedAt(new \DateTime('NOW'));
         $em = $this->getContainer()->get('doctrine')->getManager();
-        $em->persis($object);
+        $em->persist($object);
         $em->flush();
     }
 
@@ -87,7 +93,7 @@ class ComboDiscountAdmin extends FoodAdmin
         $object->setEditedBy($user);
         $object->setEditedAt(new \DateTime('NOW'));
         $em = $this->getContainer()->get('doctrine')->getManager();
-        $em->persis($object);
+        $em->persist($object);
         $em->flush();
 
         parent::postUpdate($object);

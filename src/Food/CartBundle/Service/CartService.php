@@ -2,6 +2,7 @@
 
 namespace Food\CartBundle\Service;
 
+use Food\DishesBundle\Entity\ComboDiscount;
 use Food\DishesBundle\Entity\Dish;
 use Food\CartBundle\Entity\Cart;
 use Food\CartBundle\Entity\CartOption;
@@ -634,5 +635,53 @@ class CartService {
         }
         $deliveryTotal = sprintf("%01.2f", $deliveryTotal);
         return $deliveryTotal;
+    }
+
+    public function recalculateBundles($placeId)
+    {
+        $place = $this->getContainer()->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+        $cartItems = $this->getCartDishes($place);
+        $dishUnits = array();
+        $amounts = array();
+        foreach ($cartItems as $item) {
+            $dishUnits[$item->getDishSizeId()->getId()][] = $item;
+            $amounts[$item->getCartId()] = $item->getQuantity();
+        }
+        $dishUnitsIds = array_keys($dishUnits);
+        $activeBundles = $this->_getActiveBundles($place);
+        $activeBundlesForThisCart = array();
+        foreach ($activeBundles as $bund) {
+            if ($bund->getApplyBy() == ComboDiscount::OPT_COMBO_APPLY_CATEGORY) {
+                if (in_array($bund->getDishCategory()->getId(), $dishUnitsIds)) {
+                    //$activeBundlesForThisCart[] = $bund;
+                    $this->_applyCategoryBundles($bund, $dishUnits[$bund->getDishCategory()->getId()]);
+                }
+            }
+            if ($bund->getApplyBy() == ComboDiscount::OPT_COMBO_APPLY_CATEGORY) {
+                @mail("paulius@foodout.lt",  "OPT_COMBO_APPLY_CATEGORY not implemented", "OPT_COMBO_APPLY_CATEGORY not implemented", "FROM: info@foodout.lt");
+            }
+        }
+    }
+
+    /**
+     * @param ComboDiscount $bundle
+     * @param Cart[] $items
+     */
+    private function _applyCategoryBundles($bundle, $dishes)
+    {
+        $amount = $bundle->getAmount();
+        $splits = 0;
+    }
+
+    private function _getActiveBundles(Place $place)
+    {
+        return $this->getContainer()->get('doctrine')
+            ->getRepository('FoodDishesBundle:ComboDiscount')
+            ->findBy(
+                array(
+                    'place' => $place,
+                    'active' => 1
+                )
+            );
     }
 }

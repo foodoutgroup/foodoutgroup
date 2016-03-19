@@ -30,7 +30,6 @@ class DishAdmin extends FoodAdmin
         return 'FoodDishesBundle:Dish:base_edit.html.twig';
     }
 
-
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
