@@ -684,6 +684,22 @@ class DefaultController extends Controller
 
     public function debugAction()
     {
+        $pimPirim[1] = array("key"=>1, "data" => "2");
+        $pimPirim[2] = array("key"=>2, "data" =>"3");
+        $pimPirim[3] = array("key"=>3, "data" =>"1");
+        $pimPirim[4] = array("key"=>4, "data" =>"6");
+        $pimPirim[5] = array("key"=>5, "data" =>"4");
+        $keys = array();
+        $values = array();
+        foreach($pimPirim as $key=>$value) {
+            $keys[] = $value['key'];
+            $values[] = $value['data'];
+
+        }
+        echo "<pre>";
+        var_dump($pimPirim);
+        array_multisort($values, SORT_ASC, $pimPirim);
+        var_dump($pimPirim);
         return new Response('Smooth end');
     }
 }
