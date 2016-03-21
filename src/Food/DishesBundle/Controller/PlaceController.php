@@ -38,6 +38,7 @@ class PlaceController extends Controller
         $placePoints = $this->get('food.places')->getPublicPoints($place);
         $placePointsAll = $this->get('food.places')->getAllPoints($place);
 //        $categoryRepo = $this->getDoctrine()->getRepository('FoodDishesBundle:FoodCategory');
+        $dishService = $this->get('food.dishes');
 
         $listType = 'thumbs';
         $cookies = $request->cookies;
@@ -62,6 +63,7 @@ class PlaceController extends Controller
                 'wasHere' => $wasHere,
                 'alreadyWrote' => $alreadyWrote,
                 'placeCategories' => $categoryList,
+                'dishService' => $dishService,
                 // 'selectedCategory' => $activeCategory,
                 'placePoints' => $placePoints,
                 'placePointsAll' => $placePointsAll,

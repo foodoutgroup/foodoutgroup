@@ -35,6 +35,10 @@ class MonthlyDriverReportCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $application = new Application();
         $application->add(new \Food\OrderBundle\Command\MonthlyDriverReportCommand());
 
@@ -62,6 +66,13 @@ class MonthlyDriverReportCommandTest extends \PHPUnit_Framework_TestCase
         $orderRepository->expects($this->once())
             ->method('getDriversMonthlyOrderCount')
             ->will($this->returnValue($orders));
+
+        $doctrine->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connection));
+
+        $connection->expects($this->once())
+            ->method('close');
 
         $container->expects($this->at(2))
             ->method('get')

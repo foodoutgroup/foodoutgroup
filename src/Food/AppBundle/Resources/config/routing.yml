@@ -183,14 +183,22 @@ food_admin_approve_order:
         expose: true
 
 food_admin_set_order_status:
-    pattern: /admin/dispatcher/set-order-status/{orderId}/{status}
-    defaults: {_controller: FoodAppBundle:DispatcherAdmin:setOrderStatus}
+    pattern: /admin/dispatcher/set-order-status/{orderId}/{status}/{delayDuration}
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:setOrderStatus, delayDuration: null }
+    requirements:
+        delayDuration:  "\d+"
     options:
         expose: true
 
 food_admin_get_driver_list:
     pattern: /admin/dispatcher/get-driver-list/{orders}
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:getDriverList}
+    options:
+        expose: true
+
+food_admin_send_message:
+    pattern: /admin/dispatcher/send-message/{orderId}/{message}
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:sendOrderMessage}
     options:
         expose: true
 

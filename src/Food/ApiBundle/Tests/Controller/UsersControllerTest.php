@@ -64,7 +64,7 @@ class UsersControllerTest extends WebTestCase
 
         $this->assertEquals('Food\ApiBundle\Controller\UsersController::registerAction', $this->client->getRequest()->attributes->get('_controller'));
         $this->assertEquals(400 , $this->client->getResponse()->getStatusCode());
-        $this->assertTrue((strpos($this->client->getResponse()->getContent(), 'Firstname empty') !== false));
+        $this->assertTrue((strpos($this->client->getResponse()->getContent(), 'Nenurodytas el.pa\u0161to adresas') !== false));
 
         // Test 3
         $this->client->request(
@@ -238,7 +238,7 @@ class UsersControllerTest extends WebTestCase
 
         $this->assertEquals('Food\ApiBundle\Controller\UsersController::loginAction', $this->client->getRequest()->attributes->get('_controller'));
         $this->assertEquals(400 , $this->client->getResponse()->getStatusCode());
-        $this->assertTrue((strpos($this->client->getResponse()->getContent(), 'User not found') !== false));
+        $this->assertTrue((strpos($this->client->getResponse()->getContent(), 'Wrong password') !== false));
 
         // Test wrong password
         $this->client->request(
@@ -270,7 +270,8 @@ class UsersControllerTest extends WebTestCase
             'phone' => $this->user->getPhone(),
             'name' => $this->user->getFullName(),
             'email' => $this->user->getEmail(),
-            'refresh_token' => ''
+            'refresh_token' => '',
+            'isRealEmailSet' => true
         );
 
         $this->client->request(
@@ -330,6 +331,7 @@ class UsersControllerTest extends WebTestCase
             "name" => "Testas testuoklis",
             "email" => "api_tester@foodout.lt",
             "refresh_token" => '',
+            'isRealEmailSet' => true
         );
         $userData = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertTrue(!empty($userData['session_token']));
@@ -344,6 +346,7 @@ class UsersControllerTest extends WebTestCase
             "name" => "Testas testuoklis",
             "email" => "api_register@foodout.lt",
             "refresh_token" => '',
+            'isRealEmailSet' => true
         );
 
         $this->client->request(
@@ -418,6 +421,7 @@ class UsersControllerTest extends WebTestCase
             "name" => "Testas testuoklis2",
             "email" => "api_register2@foodout.lt",
             "refresh_token" => '',
+            'isRealEmailSet' => true
         );
 
         $this->client->request(

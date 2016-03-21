@@ -33,7 +33,12 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->with('food.messages')
             ->will($this->returnValue($messagingService));
 
-        $container->expects($this->once())
+        $container->expects($this->at(2))
+            ->method('getParameter')
+            ->with('sms.available_providers')
+            ->will($this->returnValue(array()));
+
+        $container->expects($this->at(3))
             ->method('getParameter')
             ->with('sms.main_provider')
             ->will($this->returnValue(array()));
@@ -64,6 +69,14 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $unsentMessages = array();
 
         $sendCommand = new SendCommand();
@@ -87,15 +100,20 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->with('logger')
             ->will($this->returnValue($logger));
 
-        $container->expects($this->at(3))
-            ->method('get')
-            ->with('food.infobip')
-            ->will($this->returnValue($infobipProvider));
+        $container->expects($this->at(2))
+            ->method('getParameter')
+            ->with('sms.available_providers')
+            ->will($this->returnValue(array('food.infobip', 'food.silverstreet')));
 
-        $container->expects($this->once())
+        $container->expects($this->at(3))
             ->method('getParameter')
             ->with('sms.main_provider')
             ->will($this->returnValue('food.infobip'));
+
+        $container->expects($this->at(4))
+            ->method('get')
+            ->with('food.infobip')
+            ->will($this->returnValue($infobipProvider));
 
         $infobipProvider->expects($this->never())
             ->method('setDebugEnabled');
@@ -116,6 +134,18 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $logger->expects($this->once())
             ->method('alert');
+
+        $container->expects($this->at(5))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connection));
+
+        $connection->expects($this->once())
+            ->method('close');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
@@ -142,6 +172,14 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $unsentMessages = array();
 
         $sendCommand = new SendCommand();
@@ -165,15 +203,20 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->with('logger')
             ->will($this->returnValue($logger));
 
-        $container->expects($this->at(3))
-            ->method('get')
-            ->with('food.infobip')
-            ->will($this->returnValue($infobipProvider));
+        $container->expects($this->at(2))
+            ->method('getParameter')
+            ->with('sms.available_providers')
+            ->will($this->returnValue(array('food.infobip', 'food.silverstreet')));
 
-        $container->expects($this->once())
+        $container->expects($this->at(3))
             ->method('getParameter')
             ->with('sms.main_provider')
             ->will($this->returnValue('food.infobip'));
+
+        $container->expects($this->at(4))
+            ->method('get')
+            ->with('food.infobip')
+            ->will($this->returnValue($infobipProvider));
 
         $infobipProvider->expects($this->once())
             ->method('setDebugEnabled')
@@ -195,6 +238,18 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $logger->expects($this->once())
             ->method('alert');
+
+        $container->expects($this->at(5))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connection));
+
+        $connection->expects($this->once())
+            ->method('close');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
@@ -226,6 +281,14 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $unsentMessages = array($message);
 
         $sendCommand = new SendCommand();
@@ -249,15 +312,20 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->with('logger')
             ->will($this->returnValue($logger));
 
-        $container->expects($this->at(3))
-            ->method('get')
-            ->with('food.infobip')
-            ->will($this->returnValue($infobipProvider));
+        $container->expects($this->at(2))
+            ->method('getParameter')
+            ->with('sms.available_providers')
+            ->will($this->returnValue(array('food.infobip', 'food.silverstreet')));
 
-        $container->expects($this->once())
+        $container->expects($this->at(3))
             ->method('getParameter')
             ->with('sms.main_provider')
             ->will($this->returnValue('food.infobip'));
+
+        $container->expects($this->at(4))
+            ->method('get')
+            ->with('food.infobip')
+            ->will($this->returnValue($infobipProvider));
 
         $infobipProvider->expects($this->never())
             ->method('setDebugEnabled');
@@ -284,6 +352,18 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $logger->expects($this->once())
             ->method('alert');
+
+        $container->expects($this->at(5))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connection));
+
+        $connection->expects($this->once())
+            ->method('close');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
@@ -316,6 +396,14 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $unsentMessages = array($message, $message);
 
         $sendCommand = new SendCommand();
@@ -339,15 +427,21 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->with('logger')
             ->will($this->returnValue($logger));
 
-        $container->expects($this->at(3))
-            ->method('get')
-            ->with('food.infobip')
-            ->will($this->returnValue($infobipProvider));
 
-        $container->expects($this->once())
+        $container->expects($this->at(2))
+            ->method('getParameter')
+            ->with('sms.available_providers')
+            ->will($this->returnValue(array('food.infobip', 'food.silverstreet')));
+
+        $container->expects($this->at(3))
             ->method('getParameter')
             ->with('sms.main_provider')
             ->will($this->returnValue('food.infobip'));
+
+        $container->expects($this->at(4))
+            ->method('get')
+            ->with('food.infobip')
+            ->will($this->returnValue($infobipProvider));
 
         $infobipProvider->expects($this->never())
             ->method('setDebugEnabled');
@@ -360,11 +454,11 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getUnsentMessages')
             ->will($this->returnValue($unsentMessages));
 
-        $message->expects($this->at(0))
+        $message->expects($this->at(1))
             ->method('getId')
             ->will($this->returnValue(5));
 
-        $message->expects($this->at(1))
+        $message->expects($this->at(3))
             ->method('getId')
             ->will($this->returnValue(9));
 
@@ -378,6 +472,18 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
 
         $logger->expects($this->once())
             ->method('alert');
+
+        $container->expects($this->at(5))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connection));
+
+        $connection->expects($this->once())
+            ->method('close');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
@@ -438,15 +544,21 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->with('logger')
             ->will($this->returnValue($logger));
 
-        $container->expects($this->at(3))
-            ->method('get')
-            ->with('food.infobip')
-            ->will($this->returnValue($infobipProvider));
 
-        $container->expects($this->once())
+        $container->expects($this->at(2))
+            ->method('getParameter')
+            ->with('sms.available_providers')
+            ->will($this->returnValue(array('food.infobip', 'food.silverstreet')));
+
+        $container->expects($this->at(3))
             ->method('getParameter')
             ->with('sms.main_provider')
             ->will($this->returnValue('food.infobip'));
+
+        $container->expects($this->at(4))
+            ->method('get')
+            ->with('food.infobip')
+            ->will($this->returnValue($infobipProvider));
 
         $infobipProvider->expects($this->never())
             ->method('setDebugEnabled');
@@ -530,15 +642,21 @@ class SendCommandTest extends \PHPUnit_Framework_TestCase
             ->with('logger')
             ->will($this->returnValue($logger));
 
-        $container->expects($this->at(3))
-            ->method('get')
-            ->with('food.infobip')
-            ->will($this->returnValue($infobipProvider));
 
-        $container->expects($this->once())
+        $container->expects($this->at(2))
+            ->method('getParameter')
+            ->with('sms.available_providers')
+            ->will($this->returnValue(array('food.infobip', 'food.silverstreet')));
+
+        $container->expects($this->at(3))
             ->method('getParameter')
             ->with('sms.main_provider')
             ->will($this->returnValue('food.infobip'));
+
+        $container->expects($this->at(4))
+            ->method('get')
+            ->with('food.infobip')
+            ->will($this->returnValue($infobipProvider));
 
         $infobipProvider->expects($this->never())
             ->method('setDebugEnabled');

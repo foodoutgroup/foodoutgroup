@@ -1317,6 +1317,10 @@
             <!--<source>Please fill out this field.</source>-->
             <!--<target>Privalote sutikti, norėdami tęsti</target>-->
             <!--</trans-unit>-->
+            <trans-unit id="admin.dispatcher.delayed_minutes" resname="admin.dispatcher.delayed_minutes">
+                <source>admin.dispatcher.delayed_minutes</source>
+                <target>min</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

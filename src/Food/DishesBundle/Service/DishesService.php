@@ -98,17 +98,33 @@ class DishesService extends ContainerAware {
         return null;
     }
 
-    public function getOneDishDiscountPrice($dishId)
+    /**
+     * @param $dishId
+     * @param bool $returnAll
+     * @return mixed
+     */
+    public function getOneOrAllDishDiscountPrice($dishId, $returnAll = false)
     {
-        $query = "SELECT ds.discount_price as discount, ds.price, du.short_name FROM dish_size ds, dish_unit du WHERE ds.unit_id = du.id AND ds.deleted_at IS NULL AND ds.discount_price > 0 AND ds.dish_id=".intval($dishId)." ORDER BY (ds.discount_price/ds.price) DESC ";
+        $query = "
+            SELECT ds.discount_price AS discount, ds.price, du.short_name
+            FROM dish_size ds, dish_unit du
+            WHERE ds.unit_id = du.id
+            AND ds.deleted_at IS NULL
+            AND ds.discount_price > 0
+            AND ds.dish_id = " . intval($dishId) . "
+            ORDER BY (ds.discount_price/ds.price) DESC
+        ";
         $stmt = $this->em()->getConnection()->prepare($query);
         $stmt->execute();
+        if ($returnAll) {
+            return $stmt->fetchAll();
+        }
         return $stmt->fetch();
     }
 
     public function getDiscountString($dishId)
     {
-        $data = $this->getOneDishDiscountPrice($dishId);
+        $data = $this->getOneOrAllDishDiscountPrice($dishId);
         if (!empty($data)) {
             if (!empty($data['short_name'])) {
                 $proc = round(100 - (($data['discount'] / $data['price']) * 100));

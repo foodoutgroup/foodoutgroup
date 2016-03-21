@@ -9,7 +9,7 @@ h4.padded {
 
 .city_list {
     display: inline-block;
-    width: 1275px;
+    width: 1325px;
     vertical-align: top;
 }
 
@@ -52,6 +52,12 @@ h4.padded {
 .order_list td.order_status {
     text-align: center;
     white-space: nowrap;
+}
+
+.order_list td.order_status button {
+    width: 52px;
+    padding-left: 7px;
+    padding-right: 7px;
 }
 
 .order_list td.driver {
@@ -144,4 +150,14 @@ button.late_orders {
     color: red;
     font-weight: bold;
     margin: 0 15px;
+}
+
+.delay_duration_holder {
+    display: none;
+}
+.order_status_label {
+    cursor: pointer;
+}
+.order_status_label input.order_status {
+    margin-top: 0;
 }

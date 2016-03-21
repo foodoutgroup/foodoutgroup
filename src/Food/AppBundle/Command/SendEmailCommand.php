@@ -2,6 +2,7 @@
 namespace Food\AppBundle\Command;
 
 use Food\AppBundle\Service\MailService;
+use Food\DishesBundle\Entity\Place;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -45,31 +46,44 @@ class SendEmailCommand extends ContainerAwareCommand
 
                 if (!empty($unsentMails) && $unsentMailsCount > 0) {
                     foreach($unsentMails as $mail) {
-                        $output->writeln(sprintf(
-                            '<info>Sending message id: %d of type: "%s" for order id: %d</info>',
-                            $mail->getId(),
-                            $mail->getType(),
-                            $mail->getOrder()->getId()
-                        ));
+                        try {
+                            $output->writeln(sprintf(
+                                '<info>Sending message id: %d of type: "%s" for order id: %d</info>',
+                                $mail->getId(),
+                                $mail->getType(),
+                                $mail->getOrder()->getId()
+                            ));
 
-                        switch($mail->getType()) {
-                            case MailService::$typeCompleted:
-                                $orderService->setOrder($mail->getOrder());
-                                $orderService->sendCompletedMail();
-                                break;
+                            // Doubled and damaged email check.. Those emails prevent cron from running
+                            if (
+                                (!$mail->getOrder()->getPlace() instanceof Place)
+                                || (!$mail->getOrder()->getPlace()->getId())
+                            ) {
+                                throw new \Exception('Damaged order in email sending found. Order ID: '.$mail->getOrder()->getId());
+                            }
 
-                            case MailService::$typePartialyCompleted:
-                                $orderService->setOrder($mail->getOrder());
-                                $orderService->sendCompletedMail(true);
-                                break;
+                            switch ($mail->getType()) {
+                                case MailService::$typeCompleted:
+                                    $orderService->setOrder($mail->getOrder());
+                                    $orderService->sendCompletedMail();
+                                    break;
 
-                            default:
-                                // do nothing - unknown type. Let support handle this
-                                $logger->error('Unknown email type found in mailing cron. Mail ID:'.$mail->getId().' type: "'.$mail->getType().'"');
+                                case MailService::$typePartialyCompleted:
+                                    $orderService->setOrder($mail->getOrder());
+                                    $orderService->sendCompletedMail(true);
+                                    break;
+
+                                default:
+                                    // do nothing - unknown type. Let support handle this
+                                    $logger->error('Unknown email type found in mailing cron. Mail ID: ' . $mail->getId() . ' type: "' . $mail->getType() . '"');
+                            }
+
+                            $mailService->markEmailSent($mail);
+                            $count++;
+                        } catch (\Exception $e) {
+                            $logger->error('Error while sending an email. Mail ID: ' . $mail->getId() . ' type: "' . $mail->getType() . '". Error: '.$e->getMessage());
+                            $mailService->markAsError($mail, $e->getMessage());
                         }
-
-                        $mailService->markEmailSent($mail);
-                        $count++;
 
                         // Jei uztrukom ilgiau nei 220s - nustojam sukt checkus, nes greit pasileis naujas instance
                         if ((microtime(true) - $this->timeStart) >= 230) {

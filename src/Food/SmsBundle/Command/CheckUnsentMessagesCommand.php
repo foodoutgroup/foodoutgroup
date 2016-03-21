@@ -34,7 +34,7 @@ class CheckUnsentMessagesCommand extends ContainerAwareCommand
                     '<error>ERROR: %d unsent messages!</error>',
                     $messagesCount
                 );
-
+                $critical = true;
             } else {
                 $text = '<info>OK: all messages sent. Have a nice day</info>';
             }

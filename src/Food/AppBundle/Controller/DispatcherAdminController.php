@@ -108,6 +108,7 @@ class DispatcherAdminController extends Controller
     {
         $orderService = $this->get('food.order');
         $order = $orderService->getOrderById($orderId);
+        $delayDurations = array(30, 45, 60, 90, 120);
 
         switch ($order->getOrderStatus()) {
             case $orderService::$status_new:
@@ -137,6 +138,8 @@ class DispatcherAdminController extends Controller
             array(
                 'orderStatuses' => $orderStatuses,
                 'currentStatus' => $order->getOrderStatus(),
+                'delayDurations' => $delayDurations,
+                'currentDelayDuration' => $order->getDelayDuration(),
             )
         );
     }
@@ -166,36 +169,66 @@ class DispatcherAdminController extends Controller
         }
     }
 
-    public function setOrderStatusAction($orderId, $status)
+    public function setOrderStatusAction($orderId, $status, $delayDuration = false)
     {
         $orderService = $this->get('food.order');
-
-        try {
+        $setOrderStatus = function ($orderId, $status, $delayDuration) use (&$orderService) {
             $orderService->getOrderById($orderId);
-
             $method = 'status' . ucfirst($status);
             if (method_exists($orderService, $method)) {
                 $orderService->$method('dispatcher');
-
+                $orderDelayed = $orderService->getOrder()->getDelayed();
+                if ($method == 'statusDelayed' && !empty($delayDuration)) {
+                    $orderService->statusDelayed('dispatcher', 'delay duration: ' . $delayDuration);
+                    $orderService->getOrder()->setDelayed(true);
+                    $orderService->getOrder()->setDelayReason('Delayed');
+                    $orderService->getOrder()->setDelayDuration($delayDuration);
+                    $orderService->saveDelay();
+                } else if ($orderDelayed) {
+                    $orderService->getOrder()->setDelayed(false);
+                    $orderService->getOrder()->setDelayReason(null);
+                    $orderService->getOrder()->setDelayDuration(null);
+                }
                 if ($method == 'statusCanceled') {
                     $orderService->informPlaceCancelAction();
                 }
             }
             $orderService->saveOrder();
+        };
+
+        try {
+            $setOrderStatus($orderId, $status, $delayDuration);
         } catch (OptimisticLockException $e) {
             // Retry
-            $orderService->getOrderById($orderId);
-            if (method_exists($orderService, $method)) {
-                $orderService->$method('dispatcher');
-
-                if ($method == 'statusCanceled') {
-                    $orderService->informPlaceCancelAction();
-                }
-            }
-            $orderService->saveOrder();
+            $setOrderStatus($orderId, $status, $delayDuration);
         } catch (\Exception $e) {
             // TODO normalus error return ir ispiesimas popupe
             $this->get('logger')->error('Error happened setting status: '.$e->getMessage());
+            return new Response('Error: error occured');
+        }
+
+        return new Response('OK');
+    }
+
+    public function sendOrderMessageAction($orderId, $message)
+    {
+        $orderService = $this->get('food.order');
+        $messagingService = $this->get('food.messages');
+        $sender = $this->container->getParameter('sms.sender');
+
+        try {
+            if (!empty($message)) {
+                $orderService->getOrderById($orderId);
+                $messagingService->addMessageToSend(
+                    $sender,
+                    $orderService->getOrder()->getOrderExtra()->getPhone(),
+                    $message,
+                    $orderService->getOrder()
+                );
+            }
+        } catch (\Exception $e) {
+            // TODO normalus error return ir ispiesimas popupe
+            $this->get('logger')->error('Error happened sending dispatcher sms message: '.$e->getMessage());
             return new Response('Error: error occured');
         }
 

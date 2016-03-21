@@ -46,6 +46,13 @@ class EmailToSend
     private $sent = false;
 
     /**
+     * @var null|string
+     *
+     * @ORM\Column(name="error", type="string", length=160, nullable=true)
+     */
+    private $error = null;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -185,6 +192,26 @@ class EmailToSend
     public function getSent()
     {
         return $this->sent;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    /**
+     * @param string|null $error
+     *
+     * @return EmailToSend
+     */
+    public function setError($error)
+    {
+        $this->error = $error;
+
+        return $this;
     }
 
     /**

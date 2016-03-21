@@ -34,7 +34,7 @@ parameters:
     order.city_coordinators:
         vilnius: []
         kaunas: []
-        klaipėda: [jurgita@foodout.lt]
+        klaipėda: []
         ryga: [paulius@foodout.lt]
     order.accept_notify_emails: []
     accounting_email: "buhalterija@foodout.lt"

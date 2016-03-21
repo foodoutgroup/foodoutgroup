@@ -1,6 +1,7 @@
 <?php
 namespace Food\OrderBundle\Tests\Service;
 
+use Food\AppBundle\Utils\Misc;
 use Food\CartBundle\Service\CartService;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\LocalBiller;
@@ -300,6 +301,9 @@ class OrderServiceTest extends WebTestCase {
     {
         $placeId = 5;
 
+        $miscService = new Misc();
+//        $miscService->setContainer($this->getContainer());
+
         $container = $this->getMock(
             'Symfony\Component\DependencyInjection\Container',
             array('get', 'getParameter')
@@ -380,6 +384,11 @@ class OrderServiceTest extends WebTestCase {
             ->method('getAddress')
             ->will($this->returnValue('Laisves pr. 77'));
 
+        $container->expects($this->at(2))
+            ->method('get')
+            ->with('food.app.utils.misc')
+            ->will($this->returnValue($miscService));
+
         $container->expects($this->any())
             ->method('getParameter')
             ->with('vat')
@@ -389,7 +398,7 @@ class OrderServiceTest extends WebTestCase {
             ->method('getId')
             ->will($this->returnValue(1254));
 
-        $container->expects($this->at(3))
+        $container->expects($this->at(4))
             ->method('get')
             ->with('request')
             ->will($this->returnValue($request));
@@ -810,14 +819,15 @@ class OrderServiceTest extends WebTestCase {
         $orderService = new OrderService();
         $orderService->setContainer($this->getContainer());
 
-        $expectedString1 = 'Sesios zasys su sesiais zasyciais. Gerve gyrune gyresi gera gira geroj girioj gerai gerusi.';
+        // This message is proper lenght and should not be touched
+        $expectedString1 = 'Naujas uzsakymas nr. 26975 is: Soya - i H. Manto g. 5 Klaipeda, iki 19:04 http://foodout.lt/d/c8f984dabcd17d76521c104e98831123/';
         $testData1 = array(
-            'message' => 'Naujas uzsakymas nr. 146983 is: Cili pica Kaunas/Klaipeda - i Vilhelmo-Berbomo g. 11-8 Klaipeda, iki 13:18 http://foodout.lt/d/c8f984d374917d76521c104e988319a2/',
-            'orderId' => 146983,
-            'restaurantTitle' => 'Čili pica Kaunas/Klaipėda',
-            'clientAddress' => 'Vilhelmo-Berbomo g. 11-8 Klaipėda',
-            'deliveryTime' => '13:18',
-            'confirmRoute' => 'http://foodout.lt/d/c8f984d374917d76521c104e988319a2/',
+            'message' => 'Naujas uzsakymas nr. 26975 is: Soya - i H. Manto g. 5 Klaipeda, iki 19:04 http://foodout.lt/d/c8f984dabcd17d76521c104e98831123/',
+            'orderId' => 26975,
+            'restaurantTitle' => 'Soya',
+            'clientAddress' => 'H. Manto g. 5 Klaipėda',
+            'deliveryTime' => '19:04',
+            'confirmRoute' => 'http://foodout.lt/d/c8f984dabcd17d76521c104e98831123/',
             'locale' => 'lt'
         );
 
@@ -832,6 +842,54 @@ class OrderServiceTest extends WebTestCase {
         );
 
         $this->assertEquals($expectedString1, $reality1);
+
+        // Cili turi skirtingus restoranus kituose miestuose ir pavadinimai kilometro ilgio... Trumpinsim
+        $expectedString2 = 'Naujas uzsakymas nr. 146983 is: Cili pica - i Vilhelmo-Berbomo g. 11-8 Klaipeda, iki 13:18 http://foodout.lt/d/c8f984d374917d76521c104e988319a2/';
+        $testData2 = array(
+            'message' => 'Naujas uzsakymas nr. 146983 is: Cili pica Kaunas/Klaipeda - i Vilhelmo-Berbomo g. 11-8 Klaipeda, iki 13:18 http://foodout.lt/d/c8f984d374917d76521c104e988319a2/',
+            'orderId' => 146983,
+            'restaurantTitle' => 'Čili pica Kaunas/Klaipėda',
+            'clientAddress' => 'Vilhelmo-Berbomo g. 11-8 Klaipėda',
+            'deliveryTime' => '13:18',
+            'confirmRoute' => 'http://foodout.lt/d/c8f984d374917d76521c104e988319a2/',
+            'locale' => 'lt'
+        );
+
+        $reality2 = $orderService->fitDriverMessage(
+            $testData2['message'],
+            $testData2['orderId'],
+            $testData2['restaurantTitle'],
+            $testData2['clientAddress'],
+            $testData2['deliveryTime'],
+            $testData2['confirmRoute'],
+            $testData2['locale']
+        );
+
+        $this->assertEquals($expectedString2, $reality2);
+
+        // Cili Kaimas - analogiskas ankstesniam
+        $expectedString3 = 'Naujas uzsakymas nr. 106123 is: Cili Kaimas - i Laisves al. 22-4 Kaunas, iki 21:16 http://foodout.lt/d/123454d374917d76521c104e9883a912/';
+        $testData3 = array(
+            'message' => 'Naujas uzsakymas nr. 106123 is: Cili Kaimas Kaunas - i Laisves al. 22-4 Kaunas, iki 21:16 http://foodout.lt/d/123454d374917d76521c104e9883a912/',
+            'orderId' => 106123,
+            'restaurantTitle' => 'Čili Kaimas Kaunas',
+            'clientAddress' => 'Laisvės al. 22-4 Kaunas',
+            'deliveryTime' => '21:16',
+            'confirmRoute' => 'http://foodout.lt/d/123454d374917d76521c104e9883a912/',
+            'locale' => 'lt'
+        );
+
+        $reality3 = $orderService->fitDriverMessage(
+            $testData3['message'],
+            $testData3['orderId'],
+            $testData3['restaurantTitle'],
+            $testData3['clientAddress'],
+            $testData3['deliveryTime'],
+            $testData3['confirmRoute'],
+            $testData3['locale']
+        );
+
+        $this->assertEquals($expectedString3, $reality3);
     }
 
     public function testOrdersToBeLate()

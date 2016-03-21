@@ -10,7 +10,7 @@ class UncompleteOrdersCommandTest extends \PHPUnit_Framework_TestCase
 
         $orders = array();
         $fromDate = new \DateTime(
-            date("Y-m-d 00:00:01", strtotime("-3 day"))
+            date("Y-m-d 00:00:01", strtotime("-4 day"))
         );
         $toDate = new \DateTime(
             date("Y-m-d 23:59:59", strtotime("-1 day"))
@@ -20,6 +20,15 @@ class UncompleteOrdersCommandTest extends \PHPUnit_Framework_TestCase
             'Symfony\Component\DependencyInjection\Container',
             array('getParameter', 'get')
         );
+
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $monitoringService = $this->getMockBuilder('\Food\MonitoringBundle\Service\MonitoringService')
             ->disableOriginalConstructor()
             ->getMock();
@@ -43,6 +52,17 @@ class UncompleteOrdersCommandTest extends \PHPUnit_Framework_TestCase
             ->with($fromDate, $toDate)
             ->will($this->returnValue($orders));
 
+        $container->expects($this->at(1))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connection));
+
+        $connection->expects($this->once())
+            ->method('close');
 
         $commandTester = new CommandTester($command);
         $gotReturn = $commandTester->execute(
@@ -63,7 +83,7 @@ class UncompleteOrdersCommandTest extends \PHPUnit_Framework_TestCase
         $orders = array($order);
 
         $fromDate = new \DateTime(
-            date("Y-m-d 00:00:01", strtotime("-3 day"))
+            date("Y-m-d 00:00:01", strtotime("-4 day"))
         );
         $toDate = new \DateTime(
             date("Y-m-d 23:59:59", strtotime("-1 day"))
@@ -73,6 +93,15 @@ class UncompleteOrdersCommandTest extends \PHPUnit_Framework_TestCase
             'Symfony\Component\DependencyInjection\Container',
             array('getParameter', 'get')
         );
+
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $monitoringService = $this->getMockBuilder('\Food\MonitoringBundle\Service\MonitoringService')
             ->disableOriginalConstructor()
             ->getMock();
@@ -95,6 +124,18 @@ class UncompleteOrdersCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getUnfinishedOrdersForRange')
             ->with($fromDate, $toDate)
             ->will($this->returnValue($orders));
+
+        $container->expects($this->at(1))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connection));
+
+        $connection->expects($this->once())
+            ->method('close');
 
         $order->expects($this->once())
             ->method('getId')
@@ -119,7 +160,7 @@ class UncompleteOrdersCommandTest extends \PHPUnit_Framework_TestCase
         $orders = array($order, $order, $order);
 
         $fromDate = new \DateTime(
-            date("Y-m-d 00:00:01", strtotime("-3 day"))
+            date("Y-m-d 00:00:01", strtotime("-4 day"))
         );
         $toDate = new \DateTime(
             date("Y-m-d 23:59:59", strtotime("-1 day"))
@@ -129,6 +170,15 @@ class UncompleteOrdersCommandTest extends \PHPUnit_Framework_TestCase
             'Symfony\Component\DependencyInjection\Container',
             array('getParameter', 'get')
         );
+
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $connection = $this->getMockBuilder('\Doctrine\DBAL\Connection')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $monitoringService = $this->getMockBuilder('\Food\MonitoringBundle\Service\MonitoringService')
             ->disableOriginalConstructor()
             ->getMock();
@@ -151,6 +201,18 @@ class UncompleteOrdersCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getUnfinishedOrdersForRange')
             ->with($fromDate, $toDate)
             ->will($this->returnValue($orders));
+
+        $container->expects($this->at(1))
+            ->method('get')
+            ->with('doctrine')
+            ->will($this->returnValue($doctrine));
+
+        $doctrine->expects($this->once())
+            ->method('getConnection')
+            ->will($this->returnValue($connection));
+
+        $connection->expects($this->once())
+            ->method('close');
 
         $order->expects($this->at(0))
             ->method('getId')
@@ -182,7 +244,7 @@ class UncompleteOrdersCommandTest extends \PHPUnit_Framework_TestCase
         $expectedReturn = 2;
 
         $fromDate = new \DateTime(
-            date("Y-m-d 00:00:01", strtotime("-3 day"))
+            date("Y-m-d 00:00:01", strtotime("-4 day"))
         );
         $toDate = new \DateTime(
             date("Y-m-d 23:59:59", strtotime("-1 day"))
