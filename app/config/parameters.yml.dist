@@ -25,7 +25,7 @@ parameters:
     cloudfront_url: images.foodout.lt
     time_zone: "Europe/Vilnius"
     sms.sender: "Foodout.lt"
-    admin.emails: [mantas@foodout.lt]
+    admin.emails: [paulius@foodout.lt]
     admin.phones: [37061514333]
     order.notify_emails: []
     order.city_coordinators:

@@ -2,6 +2,7 @@
 namespace Food\AppBundle\Command;
 
 use Food\AppBundle\Service\MailService;
+use Food\DishesBundle\Entity\Place;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -52,6 +53,14 @@ class SendEmailCommand extends ContainerAwareCommand
                                 $mail->getType(),
                                 $mail->getOrder()->getId()
                             ));
+
+                            // Doubled and damaged email check.. Those emails prevent cron from running
+                            if (
+                                (!$mail->getOrder()->getPlace() instanceof Place)
+                                || (!$mail->getOrder()->getPlace()->getId())
+                            ) {
+                                throw new \Exception('Damaged order in email sending found. Order ID: '.$mail->getOrder()->getId());
+                            }
 
                             switch ($mail->getType()) {
                                 case MailService::$typeCompleted:
