@@ -58,6 +58,11 @@ class Cart
      */
     private $comment;
 
+    /**
+     * @var string
+     * @ORM\Column(name="is_free", type="boolean", nullable=true)
+     */
+    private $isFree = null;
 
     /**
      * Set quantity
@@ -271,5 +276,28 @@ class Cart
     public function getComment()
     {
         return $this->comment;
+    }
+
+    /**
+     * Set isFree
+     *
+     * @param boolean $isFree
+     * @return Cart
+     */
+    public function setIsFree($isFree)
+    {
+        $this->isFree = $isFree;
+
+        return $this;
+    }
+
+    /**
+     * Get isFree
+     *
+     * @return boolean 
+     */
+    public function getIsFree()
+    {
+        return $this->isFree;
     }
 }

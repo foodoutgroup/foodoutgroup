@@ -1164,31 +1164,38 @@ class OrderService extends ContainerAware
             $price = $cartDish->getDishSizeId()->getCurrentPrice();
             $origPrice = $cartDish->getDishSizeId()->getPrice();
             $discountPercentForInsert = 0;
-            if ($origPrice == $price && $discountPercent > 0) {
-                $price = round($origPrice * ((100 - $discountPercent)/100), 2);
-                $discountPercentForInsert = $discountPercent;
-            } elseif ($discountSumLeft > 0) {
-                /**
-                 * Uz toki graba ash degsiu pragare.... :/
-                 */
-                $priceForInsert = $price;
-                $discountPart = (float)round($price * $cartDish->getQuantity() * $relationPart * 100, 2) / 100;
-                if ($discountPart < $discountSumLeft) {
-                    $discountSum = $discountPart;
-                } else {
-                    if ($discountUsed + $discountPart > $discountSumTotal) {
-                        $discountSum = $discountSumTotal - $discountUsed;
+            if ($cartDish->getIsFree()) {
+                $price = 0;
+                $origPrice = $cartDish->getDishSizeId()->getCurrentPrice();
+            } else {
+                if ($origPrice == $price && $discountPercent > 0) {
+                    $price = round($origPrice * ((100 - $discountPercent)/100), 2);
+                    $discountPercentForInsert = $discountPercent;
+                } elseif ($discountSumLeft > 0) {
+                    /**
+                     * Uz toki graba ash degsiu pragare.... :/
+                     */
+                    $priceForInsert = $price;
+                    $discountPart = (float)round($price * $cartDish->getQuantity() * $relationPart * 100, 2) / 100;
+                    if ($discountPart < $discountSumLeft) {
+                        $discountSum = $discountPart;
                     } else {
-                        $discountSum = $discountSumLeft;
+                        if ($discountUsed + $discountPart > $discountSumTotal) {
+                            $discountSum = $discountSumTotal - $discountUsed;
+                        } else {
+                            $discountSum = $discountSumLeft;
+                        }
                     }
+                    $discountSum = (float)round($discountSum / $cartDish->getQuantity() * 100, 2) / 100;
+                    $priceForInsert = $price - $discountSum;
+                    $discountSumLeft = $discountSumLeft - $discountSum;
+                    $discountUsed = $discountUsed + $discountSum;
+                    $price = $priceForInsert;
                 }
-                $discountSum = (float)round($discountSum / $cartDish->getQuantity() * 100, 2) / 100;
-                $priceForInsert = $price - $discountSum;
-                $discountSumLeft = $discountSumLeft - $discountSum;
-                $discountUsed = $discountUsed + $discountSum;
-                $price = $priceForInsert;
             }
+
             $dish = new OrderDetails();
+
             $dish->setDishId($cartDish->getDishId())
                 ->setOrderId($this->getOrder())
                 ->setQuantity($cartDish->getQuantity())
@@ -1200,6 +1207,7 @@ class OrderService extends ContainerAware
                 ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
                 ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
                 ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
+                ->setIsFree($cartDish->getIsFree())
             ;
             $this->getEm()->persist($dish);
             $this->getEm()->flush();

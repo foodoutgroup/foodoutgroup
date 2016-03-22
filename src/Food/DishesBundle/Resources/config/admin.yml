@@ -311,6 +311,17 @@ services:
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.combo_discounts:
+                class: Food\DishesBundle\Admin\ComboDiscountAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "Combo discounts" }
+                arguments:
+                    - ~
+                    - Food\DishesBundle\Entity\ComboDiscount
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]
+
     sonata.admin.restaurant_orders:
                 class: Food\ReportBundle\Admin\RestaurantOrdersAdmin
                 tags:

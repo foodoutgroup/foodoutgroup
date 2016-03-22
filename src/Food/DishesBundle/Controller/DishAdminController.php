@@ -25,6 +25,24 @@ class DishAdminController extends Controller
         return new Response($html, 200);
     }
 
+    public function getDishUnitsFromPlaceAction($placeId)
+    {
+        $html = ""; // HTML as response
+        $place = $this->getDoctrine()
+            ->getRepository('FoodDishesBundle:Place')
+            ->find($placeId);
+
+        $units = $this->getDoctrine()
+                ->getRepository('FoodDishesBundle:DishUnit')
+                ->findBy(array('place' => $place));
+
+        foreach($units as $unit){
+            $html .= '<option value="'.$unit->getId().'" >'.$unit->getName().'</option>';
+        }
+
+        return new Response($html, 200);
+    }
+
     public function getPointsFromPlaceAction($placeId)
     {
         $html = ""; // HTML as response

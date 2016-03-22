@@ -3,6 +3,7 @@
 namespace Food\CartBundle\Controller;
 
 use Food\CartBundle\Service\CartService;
+use Food\DishesBundle\Admin\DishSizeAdmin;
 use Food\DishesBundle\Entity\Place;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
@@ -113,6 +114,28 @@ class DefaultController extends Controller
                 $request->get('option')
             );
         }
+        $this->_recountBundles($request);
+    }
+
+    /**
+     * @param Request $request
+     */
+    private function _recountBundles($request)
+    {
+        // $request->get('dish-size'), - adding
+        // $request->get('place') removing
+        $place = $request->get('place', null);
+        if (empty($place)) {
+            $dishSize = $this->container->get('doctrine')
+                ->getRepository('FoodDishesBundle:DishSize')
+                ->findBy((int) $request->get('dish-size'));
+            $place = $dishSize->getDish()->getPlace()->getId();
+        }
+        if (empty($place)) {
+            return;
+        }
+        $this->getCartService()->recalculateBundles($place);
+        return;
     }
 
     /**
@@ -126,6 +149,7 @@ class DefaultController extends Controller
             $request->get('cart_id'),
             $request->get('place')
         );
+        $this->_recountBundles($request);
     }
 
     /**
@@ -656,5 +680,26 @@ class DefaultController extends Controller
             'FoodCartBundle:Default:payment_wait.html.twig',
             array('order' => $order)
         );
+    }
+
+    public function debugAction()
+    {
+        $pimPirim[1] = array("key"=>1, "data" => "2");
+        $pimPirim[2] = array("key"=>2, "data" =>"3");
+        $pimPirim[3] = array("key"=>3, "data" =>"1");
+        $pimPirim[4] = array("key"=>4, "data" =>"6");
+        $pimPirim[5] = array("key"=>5, "data" =>"4");
+        $keys = array();
+        $values = array();
+        foreach($pimPirim as $key=>$value) {
+            $keys[] = $value['key'];
+            $values[] = $value['data'];
+
+        }
+        echo "<pre>";
+        var_dump($pimPirim);
+        array_multisort($values, SORT_ASC, $pimPirim);
+        var_dump($pimPirim);
+        return new Response('Smooth end');
     }
 }

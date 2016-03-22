@@ -305,6 +305,7 @@ sonata_admin:
                       #- sonata.admin.dish.unit.category
                       - sonata.admin.coupon
                       - sonata.admin.coupon_generator
+                      - sonata.admin.combo_discounts
                   roles: [ ROLE_DISPATCHER ]
               acme.admin.group.formanagers:
                   label: admin.group.formanagers

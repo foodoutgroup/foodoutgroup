@@ -80,6 +80,11 @@ class OrderDetails
      */
     private $options;
 
+    /**
+     * @var string
+     * @ORM\Column(name="is_free", type="boolean", nullable=true)
+     */
+    private $isFree = null;
 
     /**
      * Set dish_name
@@ -359,5 +364,28 @@ class OrderDetails
     public function getPercentDiscount()
     {
         return $this->percentDiscount;
+    }
+
+    /**
+     * Set isFree
+     *
+     * @param boolean $isFree
+     * @return OrderDetails
+     */
+    public function setIsFree($isFree)
+    {
+        $this->isFree = $isFree;
+
+        return $this;
+    }
+
+    /**
+     * Get isFree
+     *
+     * @return boolean 
+     */
+    public function getIsFree()
+    {
+        return $this->isFree;
     }
 }

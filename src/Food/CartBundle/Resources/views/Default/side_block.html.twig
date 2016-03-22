@@ -15,11 +15,13 @@
                 <div class="clearfix pad">
                     <div class="count item">{{ dish.quantity }} {% trans %}general.item_quantity{% endtrans %}</div>
                     {% set showDiscount = false %}
+                    {% set isFree = dish.isFree %}
                     {% if dish.dishId.showDiscount and dish.dishSizeId.discountPrice %}
                         {% set showDiscount = true and dish.dishSizeId.discountPrice != 0 %}
                     {% endif %}
+
                     {% if dish.dishId.showPublicPrice %}
-                        <div class="sum item {% if showDiscount %}discounted{% endif %}">x {{ currency_display|raw }}{{ dish.dishSizeId.publicPrice|number_format(2, ',', ' ') }}
+                        <div class="sum item {% if showDiscount or isFree %}discounted{% endif %}">x {{ currency_display|raw }}{{ dish.dishSizeId.publicPrice|number_format(2, ',', ' ') }}
                             {% if currency_alternative %}
                                 <span class="euro">
                                     /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.publicPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}
@@ -27,7 +29,7 @@
                             {% endif %}
                         </div>
                     {% else %}
-                        <div class="sum item {% if showDiscount %}discounted{% endif %}">x {{ currency_display|raw }}{{ dish.dishSizeId.price|number_format(2, ',', ' ') }}
+                        <div class="sum item {% if showDiscount or isFree %}discounted{% endif %}">x {{ currency_display|raw }}{{ dish.dishSizeId.price|number_format(2, ',', ' ') }}
                             {% if currency_alternative %}
                                 <span class="euro">
                                     /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.price)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}
@@ -35,7 +37,16 @@
                             {% endif %}
                         </div>
                     {% endif %}
-                    {% if showDiscount %}
+
+                    {% if isFree %}
+                        <div class="sum item discount">x {{ currency_display|raw }}{{ '0'|number_format(2, ',', ' ') }}
+                            {% if currency_alternative %}
+                            <span class="euro">
+                                /&nbsp;{{ misc_utils.getLitas(0)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}
+                                {% endif %}
+                            </span>
+                        </div>
+                    {% elseif showDiscount %}
                         <div class="sum item discount">x {{ currency_display|raw }}{{ dish.dishSizeId.discountPrice|number_format(2, ',', ' ') }}
                             {% if currency_alternative %}
                                 <span class="euro">

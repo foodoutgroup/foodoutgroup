@@ -12,7 +12,9 @@ food_cart_wait:
     pattern:  /wait/{orderHash}
     defaults: { _controller: FoodCartBundle:Default:wait }
 
-
+food_cart_debug:
+    pattern: /debug
+    defaults: { _controller: FoodCartBundle:Default:debug }
 
 
 food_cart_drop_csvs:
