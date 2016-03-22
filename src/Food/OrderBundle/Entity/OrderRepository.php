@@ -736,8 +736,8 @@ class OrderRepository extends EntityRepository
         $deliver = OrderService::$deliveryDeliver;
 
         $dateFrom = new \DateTime("now");
-        $dateToPickup = new \DateTime("-65 minute");
-        $dateToDeliver = new \DateTime("-90 minute");
+        $dateToPickup = new \DateTime("-140 minute");
+        $dateToDeliver = new \DateTime("-140 minute");
 
         $dateFrom1 = $dateFrom->sub(new \DateInterval('PT12H'))->format("Y-m-d H:i:s");
         $dateToPickup = $dateToPickup->format("Y-m-d H:i:s");
@@ -758,7 +758,8 @@ class OrderRepository extends EntityRepository
               )
               OR
               (
-               o.delivery_type = '{$deliver}'
+                o.delivery_type = '{$deliver}'
+                AND o.place_point_self_delivery = 1
                 AND o.delivery_time BETWEEN '{$dateFrom1}' AND '{$dateToDeliver}'
               )
             )

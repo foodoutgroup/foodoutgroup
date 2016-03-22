@@ -74,25 +74,25 @@ class SendEmailCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getId')
             ->will($this->returnValue(15));
 
-        $emailToSend->expects($this->exactly(3))
+        $emailToSend->expects($this->exactly(2))
             ->method('getType')
             ->will($this->returnValue('omgUnknownType'));
 
-        $emailToSend->expects($this->once())
+        $emailToSend->expects($this->exactly(3))
             ->method('getOrder')
             ->will($this->returnValue($order));
 
-        $order->expects($this->once())
+        $order->expects($this->exactly(2))
             ->method('getId')
             ->will($this->returnValue(123));
 
         $logger->expects($this->once())
             ->method('error')
-            ->with('Unknown email type found in mailing cron. Mail ID: 15 type: "omgUnknownType"');
+            ->with('Error while sending an email. Mail ID: 15 type: "omgUnknownType". Error: Damaged order in email sending found. Order ID: 123');
 
-        $mailService->expects($this->once())
-            ->method('markEmailSent')
-            ->with($emailToSend);
+//        $mailService->expects($this->once())
+//            ->method('markEmailSent')
+//            ->with($emailToSend);
 
         $logger->expects($this->once())
             ->method('alert');
@@ -116,7 +116,7 @@ class SendEmailCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->assertRegExp('/1 unsent emails found/', $commandTester->getDisplay());
         $this->assertRegExp('/Sending message id: 15 of type: "omgUnknownType" for order id: 123/', $commandTester->getDisplay());
-        $this->assertRegExp('/1 emails sent in [0-9\.]{1,5}/', $commandTester->getDisplay());
+        $this->assertRegExp('/0 emails sent in [0-9\.]{1,5}/', $commandTester->getDisplay());
     }
 
     public function testNoEmailsToSend()
