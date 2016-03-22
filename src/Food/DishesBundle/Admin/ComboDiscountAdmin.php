@@ -20,12 +20,12 @@ class ComboDiscountAdmin extends FoodAdmin
         $this->setTemplate('edit','FoodDishesBundle:Dish:admin_combo_discount_edit.html.twig');
 
         $comboChoices = array(
-            ComboDiscount::OPT_COMBO_TYPE_FREE,
+            ComboDiscount::OPT_COMBO_TYPE_FREE => ComboDiscount::OPT_COMBO_TYPE_FREE
             //ComboDiscount::OPT_COMBO_TYPE_DISCOUNT
         );
 
         $combyApplyBy = array(
-            ComboDiscount::OPT_COMBO_APPLY_UNIT
+            ComboDiscount::OPT_COMBO_APPLY_UNIT => ComboDiscount::OPT_COMBO_APPLY_UNIT
         );
 
         $formMapper->add('place', null, array('required' => true))
