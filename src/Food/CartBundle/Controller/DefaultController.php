@@ -626,6 +626,12 @@ class DefaultController extends Controller
             }
         }
 
+        $noMinimumCart = false;
+        $current_user = $this->container->get('security.context')->getToken()->getUser();
+        if (!empty($current_user) && is_object($current_user)) {
+            $noMinimumCart = $current_user->getNoMinimumCart();
+        }
+
         $params = array(
             'list'  => $list,
             'place' => $place,
@@ -639,6 +645,7 @@ class DefaultController extends Controller
             'discountSize' => $discountSize,
             'discountInSum' => $discountInSum,
             'discountSum' => $discountSum,
+            'noMinimumCart' => $noMinimumCart,
             'cart_from_min' => sprintf('%.2f',$cartFromMin),
             'cart_from_max' => $cartFromMax,
             'display_cart_interval' => $displayCartInterval,

@@ -762,10 +762,13 @@ class OrderService extends ContainerAware
             && !$order->getPlacePointSelfDelivery()
             && $order->getDeliveryType() == OrderService::$deliveryDeliver
             && !$order->getIsCorporateClient()) {
-            $mustDoNavDelete = $this->setInvoiceDataForOrder();
+            // Patikrinam ar sitam useriui reikia generuoti sf
+            if (!$order->getUser()->getNoInvoice()) {
+                $mustDoNavDelete = $this->setInvoiceDataForOrder();
 
-            // Suplanuojam sf siuntima klientui
-            $this->container->get('food.invoice')->addInvoiceToSend($order, $mustDoNavDelete);
+                // Suplanuojam sf siuntima klientui
+                $this->container->get('food.invoice')->addInvoiceToSend($order, $mustDoNavDelete);
+            }
         }
 
         return $this;
@@ -2825,6 +2828,7 @@ class OrderService extends ContainerAware
     public function validateDaGiantForm(Place $place, Request $request, &$formHasErrors, &$formErrors, $takeAway, $placePointId = null, $coupon = null)
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
+        $noMinimumCart = ($user instanceof User ? $user->getNoMinimumCart() : false);
         $locationService = $this->container->get('food.location');
         $loggedIn = true;
         $phonePass = false;
@@ -2875,7 +2879,7 @@ class OrderService extends ContainerAware
                     $pointRecord
                 );
 
-                if ($total_cart < $cartMinimum) {
+                if ($total_cart < $cartMinimum && $noMinimumCart == false) {
                     $formErrors[] = 'order.form.errors.cartlessthanminimum';
                 }
 
@@ -2893,7 +2897,7 @@ class OrderService extends ContainerAware
                     );
                 }
             }
-            if ($total_cart < $place->getCartMinimum()) {
+            if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }
         }

@@ -702,6 +702,18 @@
                 <source>admin.users.bussines_management</source>
                 <target>Verslo klientų valdymas</target>
             </trans-unit>
+            <trans-unit id="admin.users.other">
+                <source>admin.users.other</source>
+                <target>Kita</target>
+            </trans-unit>
+            <trans-unit id="admin.users.no_invoice">
+                <source>admin.users.no_invoice</source>
+                <target>Negeneruoti SF</target>
+            </trans-unit>
+            <trans-unit id="admin.users.no_minimum_cart">
+                <source>admin.users.no_minimum_cart</source>
+                <target>Negalioja minimalus krepšelis</target>
+            </trans-unit>
             <trans-unit id="admin.users.bussines_client">
                 <source>admin.users.bussines_client</source>
                 <target>Verslo klientas</target>
@@ -1077,6 +1089,10 @@
             <trans-unit id="admin.order.order_status.log">
                 <source>admin.order.order_status.log</source>
                 <target>Būkles istorija</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log">
+                <source>admin.order.delivery_log</source>
+                <target>Pristatymo istorija</target>
             </trans-unit>
             <trans-unit id="admin.order.status.date">
                 <source>admin.order.status.date</source>

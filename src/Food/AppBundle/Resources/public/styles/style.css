@@ -38,6 +38,127 @@
 
 }
 
+@-webkit-keyframes logo_scale {
+    0% {
+        -webkit-transform: scale(1);
+    } 20% {
+        -webkit-transform: scale(1.05);
+    } 40% {
+        -webkit-transform: scale(1.08);
+    } 60% {
+        -webkit-transform: scale(1.1);
+    } 80% {
+        -webkit-transform: scale(1.05);
+    } 100% {
+        -webkit-transform: scale(1);
+    }
+}
+@-moz-keyframes logo_scale {
+    0% {
+        -moz-transform: scale(1);
+    } 20% {
+        -moz-transform: scale(1.05);
+    } 40% {
+        -moz-transform: scale(1.08);
+    } 60% {
+        -moz-transform: scale(1.1);
+    } 80% {
+        -moz-transform: scale(1.05);
+    } 100% {
+        -moz-transform: scale(1);
+    }
+}
+@-o-keyframes logo_scale {
+    0% {
+        -o-transform: scale(1);
+    } 20% {
+        -o-transform: scale(1.05);
+    } 40% {
+        -o-transform: scale(1.08);
+    } 60% {
+        -o-transform: scale(1.1);
+    } 80% {
+        -o-transform: scale(1.05);
+    } 100% {
+        -o-transform: scale(1);
+    }
+}
+@keyframes logo_scale {
+    0% {
+        transform: scale(1);
+    } 20% {
+        transform: scale(1.05);
+    } 40% {
+        transform: scale(1.08);
+    } 60% {
+        transform: scale(1.1);
+    } 80% {
+        transform: scale(1.05);
+    } 100% {
+        transform: scale(1);
+    }
+}
+@-webkit-keyframes logo {
+    0% {
+        -webkit-transform: translateX(0);
+    } 20% {
+        -webkit-transform: translateX(-3px);
+    } 40% {
+        -webkit-transform: translateX(3px);
+    } 60% {
+        -webkit-transform: translateX(-3px);
+    } 80% {
+        -webkit-transform: translateX(3px);
+    } 100% {
+        -webkit-transform: translateX(0);
+    }
+}
+@-moz-keyframes logo {
+    0% {
+        -moz-transform: translateX(0);
+    } 20% {
+        -moz-transform: translateX(-3px);
+    } 40% {
+        -moz-transform: translateX(3px);
+    } 60% {
+        -moz-transform: translateX(-3px);
+    } 80% {
+        -moz-transform: translateX(3px);
+    } 100% {
+        -moz-transform: translateX(0);
+    }
+}
+@-o-keyframes logo {
+    0% {
+        -o-transform: translateX(0);
+    } 20% {
+        -o-transform: translateX(-3px);
+    } 40% {
+        -o-transform: translateX(3px);
+    } 60% {
+        -o-transform: translateX(-3px);
+    } 80% {
+        -o-transform: translateX(3px);
+    } 100% {
+        -o-transform: translateX(0);
+    }
+}
+@keyframes logo {
+    0% {
+        transform: translateX(0);
+    } 20% {
+        transform: translateX(-3px);
+    } 40% {
+        transform: translateX(3px);
+    } 60% {
+        transform: translateX(-3px);
+    } 80% {
+        transform: translateX(3px);
+    } 100% {
+        transform: translateX(0);
+    }
+}
+
 .font-1, .font-2, .font-3 {font-size: 50px; font-weight: 200;}
 
 
@@ -368,6 +489,20 @@ input.button {}
 .site-top .site-block {height: 60px; position: relative;}
 .main-logo {position: absolute; left: -4px; top: 11px; z-index: 10;}
 .main-logo img {height: 40px;}
+.main-logo:hover {
+    color: #fff;
+    -webkit-animation: logo_scale .5s ease-in-out;
+    -moz-animation: logo_scale .5s ease-in-out;
+    -o-animation: logo_scale .5s ease-in-out;
+    animation: logo_scale .5s ease-in-out;
+}
+.main-logo:hover img {
+    color: #fff;
+    -webkit-animation: logo .5s ease-in-out 2s;
+    -moz-animation: logo .5s ease-in-out 2s;
+    -o-animation: logo .5s ease-in-out 2s;
+    animation: logo .5s ease-in-out 2s;
+}
 .site-top .separator {
     float: right;
     margin-right: 15px;
@@ -384,15 +519,30 @@ input.button {}
 .top-menu li { padding-left: 25px; margin-right: 0px; font-size: 11px; margin-top: 5px;}
 .top-menu li:last-child {margin-right: 0;}
 .top-menu .login-ico {padding-left: 25px; background: url(/bundles/foodapp/images/login-ico.png) no-repeat left top;}
+.top-menu .login-ico:hover,
+.top-menu .login-ico:focus {
+    background-image: url(/bundles/foodapp/images/login-hover-ico.png);
+}
 .top-menu a {display: inline-block; text-transform: uppercase; color: #fff; font-size: 12px; text-transform: uppercase;}
 .top-menu span {display: inline-block; padding-bottom: 2px; border-bottom: 1px solid #fff;}
-.top-menu a:hover {color: #f1b3b3;}
-.top-menu a:hover span {border-bottom: 1px solid #cd1d36;}
+.top-menu .login-ico:hover a,
+.top-menu .login-ico:focus a,
+.top-menu a:hover,
+.top-menu a:focus {
+    color: #f1b3b3;
+}
+.top-menu .login-ico:hover a span,
+.top-menu .login-ico:focus a span,
+.top-menu a:hover span,
+.top-menu a:focus span {
+    border-bottom: 1px solid #cd1d36;
+}
 
 .top-contact-block { float: right; margin-right: 5px; margin-top: 5px; padding-right: 10px; padding-left: 10px; }
 .top-contact-block span {display: inline-block; }
 .top-contact-block .work-time {text-align: left; margin-top: 6px;}
 .top-contact-block .phone {font-size: 24px; font-weight: bold; margin-top: 10px; margin-left: 5px; vertical-align: bottom; }
+.top-contact-block .phone a {color: #fff;}
 
 /*Header ------------------------------------------*/
 .site-header {}
@@ -558,8 +708,27 @@ input.button {}
 }
 
 /*Cupons list*/
-.cupom-item {text-align: center; margin-bottom: 5px; display: inline-block;}
-.cupon-top {background: #fff; border-bottom: 1px dashed #e0d6cc; height: 249px; letter-spacing: 0.5px; border-radius: 3px 3px 0 0; box-shadow: 0 0px 3px #e3ded9;}
+.cupom-item {
+    display: inline-block;
+    text-align: center;
+    margin-bottom: 5px;
+    -webkit-transition: margin 0.1s ease-in-out;
+    -moz-transition: margin 0.1s ease-in-out;
+    -o-transition: margin 0.1s ease-in-out;
+    transition: margin 0.1s ease-in-out;
+}
+.cupon-top {
+    background: #fff;
+    border-bottom: 1px dashed #e0d6cc;
+    min-height: 250px;
+    letter-spacing: 0.5px;
+    border-radius: 3px 3px 0 0;
+    box-shadow: 0 0px 3px #e3ded9;
+    -webkit-transition: margin 0.1s ease-in-out;
+    -moz-transition: margin 0.1s ease-in-out;
+    -o-transition: margin 0.1s ease-in-out;
+    transition: margin 0.1s ease-in-out;
+}
 .cupon-top img {border-radius: 3px 3px 0 0;}
 .cupon-bottom {text-transform: uppercase; background: #fff; padding: 4px 10px; letter-spacing: 1.6px; border-radius: 0 0 3px 3px; box-shadow: 0 0px 3px #e3ded9;}
 .cupon-bottom .button {line-height: 28px;color: #b39196; text-align: center; font-size: 10px; display: block;}
@@ -570,7 +739,17 @@ input.button {}
 .cupom-item:hover .cupon-top {margin-top: -5px; margin-bottom: 10px;}
 
 /*Restaurant list*/
-.restoran-item {display: block; background: #fff; text-align: center; padding-bottom: 15px; border-radius: 3px;}
+.restoran-item {
+    display: block;
+    background-color: #fff;
+    text-align: center;
+    padding-bottom: 15px;
+    border-radius: 3px;
+    -webkit-transition: -webkit-box-shadow 0.1s ease-in-out;
+    -moz-transition: -moz-box-shadow 0.1s ease-in-out;
+    -o-transition: box-shadow 0.1s ease-in-out;
+    transition: box-shadow 0.1s ease-in-out;
+}
 .restoran-item:hover {box-shadow: 0 0px 5px #e3ded9;}
 .restoran-item-top {width: 180px; height: 126px; display: table-cell; vertical-align: middle;}
 .restoran-name {font-size: 15px; color: #513d28; margin: 0; padding-bottom: 3px;}
@@ -845,7 +1024,15 @@ input.button {}
 }
 .newsletter-block p {color: #543f42; line-height: 17px; font-size: 12px; margin-top: 9px; margin-bottom: 19px;}
 
-.newsletter-outer-block { margin-bottom: 40px; }
+.newsletter-outer-block {
+    margin-bottom: 40px;
+    -webkit-box-shadow: 0 1px 7px 0 #909090;
+    -moz-box-shadow: 0 1px 7px 0 #909090;
+    box-shadow: 0 1px 7px 0 #909090;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
 
 .newsletter-form { }
 .newsletter-form input[type="text"] {float: left; float: left; border: 1px solid #e1ddd6; background: #fff; padding: 8px 16px; line-height: 18px; height: 18px; width: 180px; font-size: 15px; border-radius: 3px; margin-right: 8px; margin-top: 12px;}
@@ -1031,7 +1218,16 @@ input.button {}
 .site-footer .col-4 {width: 220px; float: right; margin-right: 0px; text-align: right; background: none;}
 
 .site-footer li {line-height: 29px;}
-.site-footer a {color: #faafbb;}
+.site-footer a {
+    color: #faafbb;
+    -webkit-transition: color 0.1s ease-in-out;
+    -moz-transition: color 0.1s ease-in-out;
+    -o-transition: color 0.1s ease-in-out;
+    transition: color 0.1s ease-in-out;
+}
+.site-footer a:hover {
+    color: #fddfe3;
+}
 
 .site-footer .restoran-rating {margin-top: -1px;}
 

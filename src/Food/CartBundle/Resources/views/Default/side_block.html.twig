@@ -116,7 +116,7 @@
             {% endif %}
         </div>
         {# Cart minimum sum #}
-        {% if hide_delivery == false and ((discountInSum and total_cart + discountSum < cart_from_min) or (total_cart < cart_from_min)) %}
+        {% if hide_delivery == false and ((discountInSum and total_cart + discountSum < cart_from_min) or (total_cart < cart_from_min)) and noMinimumCart == false %}
             <div class="alert alert-warning text-center min-cart-message">
                 <span>{{ 'cart.didnt_reach_min_cart'|trans }}</span>
                 <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button">{{ 'cart.go_back_to_place'|trans }}</a>

@@ -17,6 +17,8 @@ class UserAdmin extends SonataUserAdmin {
             ->add('place', 'text', array('label' => 'admin.users.place'))
             ->add('enabled', null, array('editable' => true, 'label' => 'admin.users.enabled'))
             ->add('locked', null, array('editable' => true, 'label' => 'admin.users.locked'))
+            ->add('noInvoice', null, array('editable' => true, 'label' => 'admin.users.no_invoice'))
+            ->add('noMinimumCart', null, array('editable' => true, 'label' => 'admin.users.no_minimum_cart'))
             ->add('isBussinesClient', null, array('editable' => true, 'label' => 'admin.users.bussines_client'))
             ->add('lastLogin', null, array('format' => 'Y-m-d H:i:s', 'label' => 'admin.users.last_login'))
             ->add('_action', 'actions', array(
@@ -42,6 +44,8 @@ class UserAdmin extends SonataUserAdmin {
             ->add('email', null, array('label' => 'admin.users.email'))
             ->add('phone', null, array('label' => 'admin.users.phone'))
             ->add('place')
+            ->add('noInvoice', null, array('label' => 'admin.users.no_invoice'))
+            ->add('noMinimumCart', null, array('label' => 'admin.users.no_minimum_cart'))
             ->add('isBussinesClient', null, array('label' => 'admin.users.bussines_client'))
             ->add('companyName', null, array('label' => 'admin.users.company_name'))
         ;
@@ -135,6 +139,10 @@ class UserAdmin extends SonataUserAdmin {
 //                        'template' => 'FoodDishesBundle:Default:point_inline_edit.html.twig'
                     )
                 )
+                ->end()
+                ->with('admin.users.other')
+                ->add('noInvoice', null, array('required' => false, 'label' => 'admin.users.no_invoice'))
+                ->add('noMinimumCart', null, array('required' => false, 'label' => 'admin.users.no_minimum_cart'))
                 ->end()
             ;
         }

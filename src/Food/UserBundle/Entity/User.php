@@ -92,6 +92,20 @@ class User extends BaseUser
     private $isBussinesClient = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="no_invoice", type="boolean", nullable=true)
+     */
+    private $noInvoice = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="no_minimum_cart", type="boolean", nullable=true)
+     */
+    private $noMinimumCart = false;
+
+    /**
      * @var string
      * @ORM\Column(name="company_name", type="string", length=160, nullable=true)
      */
@@ -685,5 +699,51 @@ class User extends BaseUser
     public function getFacebookId()
     {
         return $this->facebook_id;
+    }
+
+    /**
+     * Set noInvoice
+     *
+     * @param boolean $noInvoice
+     * @return User
+     */
+    public function setNoInvoice($noInvoice)
+    {
+        $this->noInvoice = $noInvoice;
+
+        return $this;
+    }
+
+    /**
+     * Get noInvoice
+     *
+     * @return boolean
+     */
+    public function getNoInvoice()
+    {
+        return $this->noInvoice;
+    }
+
+    /**
+     * Set noMinimumCart
+     *
+     * @param boolean $noMinimumCart
+     * @return User
+     */
+    public function setNoMinimumCart($noMinimumCart)
+    {
+        $this->noMinimumCart = $noMinimumCart;
+
+        return $this;
+    }
+
+    /**
+     * Get noMinimumCart
+     *
+     * @return boolean
+     */
+    public function getNoMinimumCart()
+    {
+        return $this->noMinimumCart;
     }
 }
