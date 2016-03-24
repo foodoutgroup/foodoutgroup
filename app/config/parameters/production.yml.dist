@@ -56,7 +56,7 @@ parameters:
     show_apps_download: true
     show_is_social: true
     show_delfi_banner: false
-    track_conversions: true
+    track_conversions: false
     # naudojam telefonu validacijoms
     country: LT
     country_full: Lithuania

@@ -220,7 +220,9 @@
     ga('require', 'linker');
     ga('send', 'pageview');
     ga('require', 'ec');
-    ga('linker:autoLink', ['{{ publicdomain }}', '1000receptu.lt']);
+    {# ga('linker:autoLink', ['{{ publicdomain }}', '1000receptu.lt']); #}
+    var dimensionValue = new Date().getTime() + '.' + Math.random().toString(36).substring(5);
+    ga('set', 'dimension1', dimensionValue);
 
     {% block ga_js_code %}{% endblock %}
 

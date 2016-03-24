@@ -4,22 +4,24 @@
 {% block seo_description %}{{ place.getSEO('Description') }}{% endblock %}
 
 {% block adnet_retargeting %}
-    <!-- Adform Tracking Code BEGIN -->
-    <script type="text/javascript">
-        var _adftrack = {
-            pm: 314127,
-            divider: encodeURIComponent('|'),
-            pagename: encodeURIComponent('Foodout.lt|{% trans %}general.places{% endtrans %}|{{ place.name }}')
-        };
-        (function () { var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = 'https://track.adform.net/serving/scripts/trackpoint/async/'; var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x); })();
+    {% if track_conversions %}
+        <!-- Adform Tracking Code BEGIN -->
+        <script type="text/javascript">
+            var _adftrack = {
+                pm: 314127,
+                divider: encodeURIComponent('|'),
+                pagename: encodeURIComponent('Foodout.lt|{% trans %}general.places{% endtrans %}|{{ place.name }}')
+            };
+            (function () { var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = 'https://track.adform.net/serving/scripts/trackpoint/async/'; var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x); })();
 
-    </script>
-    <noscript>
-        <p style="margin:0;padding:0;border:0;">
-            <img src="https://track.adform.net/Serving/TrackPoint/?pm=314127&ADFPageName=Foodout.lt|{% trans %}general.places{% endtrans %}|{{ place.name }}&ADFdivider=|" width="1" height="1" alt="" />
-        </p>
-    </noscript>
-    <!-- Adform Tracking Code END -->
+        </script>
+        <noscript>
+            <p style="margin:0;padding:0;border:0;">
+                <img src="https://track.adform.net/Serving/TrackPoint/?pm=314127&ADFPageName=Foodout.lt|{% trans %}general.places{% endtrans %}|{{ place.name }}&ADFdivider=|" width="1" height="1" alt="" />
+            </p>
+        </noscript>
+        <!-- Adform Tracking Code END -->
+    {% endif %}
 {% endblock %}
 
 {% block ga_js_code %}

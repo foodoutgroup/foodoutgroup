@@ -5,17 +5,59 @@
         window.location.href = whereToGo;
     } else {
         var page = "/lightbox";
+        {% if randomizer!=0 %}
+            page+="/{{ randomizer }}";
+        {% endif %}
         ga('send', 'pageview', page);
     }
 </script>
+<style>
+    .name.style0 {
+        color: #55422E !important;
+    }
+    .button-submit.add-to-cart.style0 {
+        background-color: #55422e;
+        background-repeat: no-repeat;
+        background-image: none;
+    }
+    .name.style1,
+    .name.style3,
+    .name.style5,
+    .name.style7 {
+        color: #cd1d36 !important;
+    }
+    .button-submit.add-to-cart.style1,
+    .button-submit.add-to-cart.style3,
+    .button-submit.add-to-cart.style5,
+    .button-submit.add-to-cart.style7 {
+        background-color: #cd1d36;
+        background-repeat: no-repeat;
+        background-image: none;
+    }
 
+    .name.style2,
+    .name.style4,
+    .name.style6,
+    .name.style8 {
+        color: #90c200 !important;
+    }
+    .button-submit.add-to-cart.style2,
+    .button-submit.add-to-cart.style4,
+    .button-submit.add-to-cart.style6,
+    .button-submit.add-to-cart.style8 {
+        background-color: #90c200;
+        background-repeat: no-repeat;
+        background-image: none;
+    }
+
+</style>
 <div id="detailed-dish-popup">
     <form class="popup detailed-dish-popup">
         {% if dish.getWebPathThumb('type3') is not empty %}
             <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type3') }}" class="popup-header" />
         {% endif %}
         <div class="dish-info">
-            <p class="name">{{ dish.name }}</p>
+            <p class="name {% if locale == 'lt' %}style{{ randomizer }}{% endif %}">{{ dish.name }}</p>
             <p class="desc">{{ dish.description|nl2br }}</p>
         </div>
         <div class="dish-size">
@@ -104,12 +146,48 @@
                 {{ dish.place.alcoholRules|nl2br }}
             </div>
         </div>
-        <div class="popup-controls"><a href="#" class="button-submit add-to-cart"><span>{% trans %}dish.add_to_cart{% endtrans %}</span></a></div>
+        {% if locale == "lt" %}
+            {% if randomizer != "0" %}
+                <div class="dish-info">
+                    <p class="name {% if locale == 'lt' %}style{{ randomizer }}{% endif %} message">
+                        {{ extraMessages[randomizer].message }}
+                    </p>
+                </div>
+            {% endif %}
+        {% endif %}
+        <div class="popup-controls"><a href="#" class="button-submit add-to-cart {% if locale == 'lt' %}style{{ randomizer }}{% endif %}"><span>{% trans %}dish.add_to_cart{% endtrans %}</span></a></div>
     </form>
 </div>
 <script>
     if(!window.jQuery)
     {
         document.getElementById('detailed-dish-popup').setAttribute('style', 'display: none');
+    } else {
+        {% if  (randomizer == '1' or randomizer == '2') %}
+            var countdown =  {{ countdown }};
+            var currentcount = {{ currentcount }};
+            var someRealCounter = 0;
+            var theMessage = '{{ extraMessages[randomizer].message }}';
+            setTimeout("recounter()", 1000);
+            function recounter()
+            {
+                currentcount = currentcount + 1;
+                var reacounted = countdown - currentcount;
+                if (reacounted < 0) {
+                    reacounted = 0;
+                }
+                var mind = reacounted % (60 * 60);
+                var minutes = Math.floor(mind / 60);
+
+                var secd = mind % 60;
+                var seconds = Math.ceil(secd);
+                if (seconds <= 9) {
+                    seconds = '0' + seconds;
+                }
+                theNewMessage = theMessage.replace('{countdown}', minutes + ':' + seconds);
+                $('.name.message').text(theNewMessage);
+                setTimeout("recounter()", 1000);
+            }
+        {% endif %}
     }
 </script>
