@@ -375,7 +375,7 @@ class NavService extends ContainerAware
         $orderDate = $order->getOrderDate();
         $orderDate->add(new \DateInterval('P0DT0H'));
         $deliveryDate = $order->getDeliveryTime();
-        $deliveryDate->sub(new \DateInterval('P0DT2H'));
+        $deliveryDate->sub(new \DateInterval('P0DT3H'));
         /**
          * This thing is when we move to daytime saving mode.
          * @todo put to the CONFIG or make AUTO
