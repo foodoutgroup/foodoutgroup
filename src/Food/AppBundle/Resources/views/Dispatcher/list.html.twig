@@ -132,7 +132,7 @@
                             {% endif %}
                         {% endif %}
                     </td>
-                    <td>{{ order.orderExtra.phone }}</td>
+                    <td><a href="tel:{{ order.orderExtra.phone }}">{{ order.orderExtra.phone }}</a></td>
                     <td class="self_delivery">
                         {% if order.placePointSelfDelivery %}
                             <span class="glyphicon glyphicon-ok"></span>
@@ -398,7 +398,7 @@
                     {% for driver in driverList %}
                         <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">
                             <td>{{ driver['name'] }}</td>
-                            <td>{{ driver['phone'] }}</td>
+                            <td><a href="tel:{{ driver['phone'] }}">{{ driver['phone'] }}</a></td>
                             {#<td>{{ ('admin.driver.type.' ~ driver.type)|trans({}, 'SonataAdminBundle') }}</td>#}
                             {#<td>{{ driver.provider }}</td>#}
                             <td>{{ driver['order_count'] }}</td>
