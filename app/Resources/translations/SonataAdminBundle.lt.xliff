@@ -1378,11 +1378,11 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.unassigned_selfdeliver">
                 <source>admin.dispatcher.unassigned_selfdeliver</source>
-                <target>Nepriskirti, kuriuos pristatys patys</target>
+                <target>Su sava logistika</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.unassigned_pickup">
                 <source>admin.dispatcher.unassigned_pickup</source>
-                <target>Nepriskirti atsiėmimai restorane</target>
+                <target>Atsiėmimai restorane</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.unapproved">
                 <source>admin.dispatcher.unapproved</source>
@@ -1390,11 +1390,11 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.unapproved_selfdeliver">
                 <source>admin.dispatcher.unapproved_selfdeliver</source>
-                <target>Nepatikrinti, kuriuos pristatys patys</target>
+                <target>Su sava logistika</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.unapproved_pickup">
                 <source>admin.dispatcher.unapproved_pickup</source>
-                <target>Nepatikrinti atsiėmimai restorane</target>
+                <target>Atsiėmimai restorane</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.undelivered">
                 <source>admin.dispatcher.undelivered</source>
@@ -1402,11 +1402,11 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.undelivered_selfdeliver">
                 <source>admin.dispatcher.undelivered_selfdeliver</source>
-                <target>Nepristatyti, kuriuos pristatys patys</target>
+                <target>Su sava logistika</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.undelivered_pickup">
                 <source>admin.dispatcher.undelivered_pickup</source>
-                <target>Nepristatyti atsiėmimai restorane</target>
+                <target>Atsiėmimai restorane</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.canceled">
                 <source>admin.dispatcher.canceled</source>
@@ -1414,11 +1414,11 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.canceled_selfdeliver">
                 <source>admin.dispatcher.canceled_selfdeliver</source>
-                <target>Atšaukti, kuriuos pristatys patys</target>
+                <target>Su sava logistika</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.canceled_pickup">
                 <source>admin.dispatcher.canceled_pickup</source>
-                <target>Atšaukti atsiėmimai restorane</target>
+                <target>Atsiėmimai restorane</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.nav_problems">
                 <source>admin.dispatcher.nav_problems</source>
@@ -1426,11 +1426,11 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.nav_problems_selfdeliver">
                 <source>admin.dispatcher.nav_problems_selfdeliver</source>
-                <target>Probleminiai, kuriuos pristatys patys</target>
+                <target>Su sava logistika</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.nav_problems_pickup">
                 <source>admin.dispatcher.nav_problems_pickup</source>
-                <target>Probleminiai atsiėmimai restorane</target>
+                <target>Atsiėmimai restorane</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.client_phone">
                 <source>admin.dispatcher.client_phone</source>
@@ -1466,11 +1466,11 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.unconfirmed_pickup">
                 <source>admin.dispatcher.unconfirmed_pickup</source>
-                <target>Nepatvirtinti atsiėmimai restorane</target>
+                <target>Atsiėmimai restorane</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.unconfirmed_selfdeliver">
                 <source>admin.dispatcher.unconfirmed_selfdeliver</source>
-                <target>Nepatvirtinti, kuriuos pristatys patys</target>
+                <target>Su sava logistika</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.unconfirmed">
                 <source>admin.dispatcher.unconfirmed</source>
