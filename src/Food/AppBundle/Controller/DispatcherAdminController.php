@@ -32,46 +32,99 @@ class DispatcherAdminController extends Controller
         // Preload city data
         foreach($availableCities as $city) {
             $cityOrders[$city] = array(
-                'unapproved' => array(),
-                'unassigned' => array(),
-                'unconfirmed' => array(
-                    'deliver' => array(),
+                'unapproved' => array(
                     'pickup' => array(),
+                    'selfdeliver' => array(),
+                    'deliver' => array(),
                 ),
-                'not_finished' => array(),
-                'canceled' => array(),
-                'nav_problems' => array(),
+                'unassigned' => array(
+                    'pickup' => array(),
+                    'selfdeliver' => array(),
+                    'deliver' => array(),
+                ),
+                'unconfirmed' => array(
+                    'pickup' => array(),
+                    'selfdeliver' => array(),
+                    'deliver' => array(),
+                ),
+                'not_finished' => array(
+                    'pickup' => array(),
+                    'selfdeliver' => array(),
+                    'deliver' => array(),
+                ),
+                'canceled' => array(
+                    'pickup' => array(),
+                    'selfdeliver' => array(),
+                    'deliver' => array(),
+                ),
+                'nav_problems' => array(
+                    'pickup' => array(),
+                    'selfdeliver' => array(),
+                    'deliver' => array(),
+                ),
             );
 
             $drivers[$city] = array();
         }
 
         foreach($unapproved as $order) {
-            $cityOrders[$order->getPlacePointCity()]['unapproved'][] = $order;
+            if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
+                $cityOrders[$order->getPlacePointCity()]['unapproved']['pickup'][] = $order;
+            } elseif ($order->getPlacePointSelfDelivery()) {
+                $cityOrders[$order->getPlacePointCity()]['unapproved']['selfdeliver'][] = $order;
+            } else {
+                $cityOrders[$order->getPlacePointCity()]['unapproved']['deliver'][] = $order;
+            }
         }
 
         foreach($unassigned as $order) {
-            $cityOrders[$order->getPlacePointCity()]['unassigned'][] = $order;
+            if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
+                $cityOrders[$order->getPlacePointCity()]['unassigned']['pickup'][] = $order;
+            } elseif ($order->getPlacePointSelfDelivery()) {
+                $cityOrders[$order->getPlacePointCity()]['unassigned']['selfdeliver'][] = $order;
+            } else {
+                $cityOrders[$order->getPlacePointCity()]['unassigned']['deliver'][] = $order;
+            }
         }
 
         foreach($unconfirmed as $order) {
-            if ($order->getDeliveryType() == OrderService::$deliveryDeliver) {
-                $cityOrders[$order->getPlacePointCity()]['unconfirmed']['deliver'][] = $order;
-            } else {
+            if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
                 $cityOrders[$order->getPlacePointCity()]['unconfirmed']['pickup'][] = $order;
+            } elseif ($order->getPlacePointSelfDelivery()) {
+                $cityOrders[$order->getPlacePointCity()]['unconfirmed']['selfdeliver'][] = $order;
+            } else {
+                $cityOrders[$order->getPlacePointCity()]['unconfirmed']['deliver'][] = $order;
             }
         }
 
         foreach($notFinished as $order) {
-            $cityOrders[$order->getPlacePointCity()]['not_finished'][] = $order;
+            if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
+                $cityOrders[$order->getPlacePointCity()]['not_finished']['pickup'][] = $order;
+            } elseif ($order->getPlacePointSelfDelivery()) {
+                $cityOrders[$order->getPlacePointCity()]['not_finished']['selfdeliver'][] = $order;
+            } else {
+                $cityOrders[$order->getPlacePointCity()]['not_finished']['deliver'][] = $order;
+            }
         }
 
         foreach($canceled as $order) {
-            $cityOrders[$order->getPlacePointCity()]['canceled'][] = $order;
+            if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
+                $cityOrders[$order->getPlacePointCity()]['canceled']['pickup'][] = $order;
+            } elseif ($order->getPlacePointSelfDelivery()) {
+                $cityOrders[$order->getPlacePointCity()]['canceled']['selfdeliver'][] = $order;
+            } else {
+                $cityOrders[$order->getPlacePointCity()]['canceled']['deliver'][] = $order;
+            }
         }
 
         foreach($navProblems as $order) {
-            $cityOrders[$order->getPlacePointCity()]['nav_problems'][] = $order;
+            if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
+                $cityOrders[$order->getPlacePointCity()]['nav_problems']['pickup'][] = $order;
+            } elseif ($order->getPlacePointSelfDelivery()) {
+                $cityOrders[$order->getPlacePointCity()]['nav_problems']['selfdeliver'][] = $order;
+            } else {
+                $cityOrders[$order->getPlacePointCity()]['nav_problems']['deliver'][] = $order;
+            }
         }
 
         foreach($driversList as $driver) {

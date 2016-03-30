@@ -47,7 +47,6 @@
             {% if type != 'unconfirmed-pickup' %}
                 <th>{{ 'admin.dispatcher.client_address'|trans({}, 'SonataAdminBundle') }}</th>
                 <th class="self_delivery">{{ 'admin.dispatcher.client_phone'|trans({}, 'SonataAdminBundle') }}</th>
-                <th class="self_delivery">{{ 'admin.dispatcher.self_delivery'|trans({}, 'SonataAdminBundle') }}</th>
             {% endif %}
                 <th class="order_date">{{ 'admin.dispatcher.order_date'|trans({}, 'SonataAdminBundle') }}</th>
             {% if type != 'canceled' %}
@@ -133,13 +132,6 @@
                         {% endif %}
                     </td>
                     <td><a href="tel:{{ order.orderExtra.phone }}">{{ order.orderExtra.phone }}</a></td>
-                    <td class="self_delivery">
-                        {% if order.placePointSelfDelivery %}
-                            <span class="glyphicon glyphicon-ok"></span>
-                        {% else %}
-                            <span class="glyphicon glyphicon-remove"></span>
-                        {% endif %}
-                    </td>
                 {% endif %}
                     <td class="order_date" title="{{ order.orderDate|date("Y-m-d") }}">{{ order.orderDate|date("H:i") }}</td>
                 {% if type != 'canceled' %}
@@ -263,12 +255,12 @@
     <div class="city_list todo_nieks_nezino_klases">
         <ul>
             {% for city in cities %}
-                {% set cityUnapproved = cityOrders[city].unapproved|length %}
-                {% set cityUnassigned = cityOrders[city].unassigned|length %}
-                {% set cityUnconfirmed = (cityOrders[city].unconfirmed.deliver|length + cityOrders[city].unconfirmed.pickup|length) %}
-                {% set cityNotFinished = cityOrders[city].not_finished|length %}
-                {% set cityCanceled = cityOrders[city].canceled|length %}
-                {% set cityNavProblems = cityOrders[city].nav_problems|length %}
+                {% set cityUnapproved = (cityOrders[city].unapproved.deliver|length + cityOrders[city].unapproved.selfdeliver|length + cityOrders[city].unapproved.pickup|length) %}
+                {% set cityUnassigned = (cityOrders[city].unassigned.deliver|length + cityOrders[city].unassigned.selfdeliver|length + cityOrders[city].unassigned.pickup|length) %}
+                {% set cityUnconfirmed = (cityOrders[city].unconfirmed.deliver|length + cityOrders[city].unconfirmed.selfdeliver|length + cityOrders[city].unconfirmed.pickup|length) %}
+                {% set cityNotFinished = (cityOrders[city].not_finished.deliver|length + cityOrders[city].not_finished.selfdeliver|length + cityOrders[city].not_finished.pickup|length) %}
+                {% set cityCanceled = (cityOrders[city].canceled.deliver|length + cityOrders[city].canceled.selfdeliver|length + cityOrders[city].canceled.pickup|length) %}
+                {% set cityNavProblems = (cityOrders[city].nav_problems.deliver|length + cityOrders[city].nav_problems.selfdeliver|length + cityOrders[city].nav_problems.pickup|length) %}
                 {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unapprovedCount': cityUnassigned, 'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished, 'canceledCount': cityCanceled, 'navProblemsCount': cityNavProblems}, 'SonataAdminBundle') %}
                 <li class="city-tab city_tabik-{{ loop.index }}" data-city="{{ city }}">
                     <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} ({{ cityUnapproved }}:{{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }}:{{ cityCanceled }}:{{ cityNavProblems }})</a>
@@ -280,58 +272,171 @@
                 <ul>
                     <li class="city-{{ loop.index }}-unapproved-tab">
                         <a href="#city-{{ loop.index }}-unapproved">
-                            {{ 'admin.dispatcher.unapproved'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.unapproved|length }})</span>
+                            {{ 'admin.dispatcher.unapproved'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unapproved.deliver|length + city.unapproved.selfdeliver|length + city.unapproved.pickup|length) }})</span>
                         </a>
                     </li>
                     <li class="city-{{ loop.index }}-unassigned-tab">
                         <a href="#city-{{ loop.index }}-unassigned">
-                            {{ 'admin.dispatcher.unassigned'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.unassigned|length }})</span>
+                            {{ 'admin.dispatcher.unassigned'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unassigned.deliver|length + city.unassigned.selfdeliver|length + city.unassigned.pickup|length) }})</span>
                         </a>
                     </li>
                     <li class="city-{{ loop.index }}-unconfirmed-tab">
                         <a href="#city-{{ loop.index }}-unconfirmed">
-                            {{ 'admin.dispatcher.unconfirmed'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unconfirmed.deliver|length + city.unconfirmed.pickup|length) }})</span>
+                            {{ 'admin.dispatcher.unconfirmed'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unconfirmed.deliver|length + city.unconfirmed.selfdeliver|length + city.unconfirmed.pickup|length) }})</span>
                         </a>
                     </li>
                     <li>
                         <a href="#city-{{ loop.index }}-undelivered">
-                            {{ 'admin.dispatcher.undelivered'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.not_finished|length }})</span>
+                            {{ 'admin.dispatcher.undelivered'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.not_finished.deliver|length + city.not_finished.selfdeliver|length + city.not_finished.pickup|length) }})</span>
                         </a>
                     </li>
                     <li>
                         <a href="#city-{{ loop.index }}-canceled">
-                            {{ 'admin.dispatcher.canceled'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.canceled|length }})</span>
+                            {{ 'admin.dispatcher.canceled'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.canceled.deliver|length + city.canceled.selfdeliver|length + city.canceled.pickup|length) }})</span>
                         </a>
                     </li>
                     <li>
                         <a href="#city-{{ loop.index }}-navproblems">
-                            {{ 'admin.dispatcher.nav_problems'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ city.nav_problems|length }})</span>
+                            {{ 'admin.dispatcher.nav_problems'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.nav_problems.deliver|length + city.nav_problems.selfdeliver|length + city.nav_problems.pickup|length) }})</span>
                         </a>
                     </li>
                 </ul>
+                {# unapproved / nepatikrinti #}
                 <div id="city-{{ loop.index }}-unapproved">
-                    {{ table.order_table(city.unapproved, 'unapproved', cityName) }}
+                    {{ table.order_table(city.unapproved.deliver, 'unapproved', cityName) }}
+
+                    {% if city.unapproved.selfdeliver|length %}
+                    <div style="text-align: center;">
+                        <br />
+                        <br />
+                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unapproved_selfdeliver{% endtrans %}:</h4>
+                    </div>
+                    {{ table.order_table(city.unapproved.selfdeliver, 'unapproved-selfdeliver', cityName) }}
+                    {% endif %}
+
+                    {% if city.unapproved.pickup|length %}
+                    <div style="text-align: center;">
+                        <br />
+                        <br />
+                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unapproved_pickup{% endtrans %}:</h4>
+                    </div>
+                    {{ table.order_table(city.unapproved.pickup, 'unapproved-pickup', cityName) }}
+                    {% endif %}
                 </div>
+
+                {# unassigned / nepriskirti #}
                 <div id="city-{{ loop.index }}-unassigned">
-                    {{ table.order_table(city.unassigned, 'unassigned', cityName) }}
+                    {{ table.order_table(city.unassigned.deliver, 'unassigned', cityName) }}
+
+                    {% if city.unassigned.selfdeliver|length %}
+                    <div style="text-align: center;">
+                        <br />
+                        <br />
+                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_selfdeliver{% endtrans %}:</h4>
+                    </div>
+                    {{ table.order_table(city.unassigned.selfdeliver, 'unassigned-selfdeliver', cityName) }}
+                    {% endif %}
+
+                    {% if city.unassigned.pickup|length %}
+                    <div style="text-align: center;">
+                        <br />
+                        <br />
+                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pickup{% endtrans %}:</h4>
+                    </div>
+                    {{ table.order_table(city.unassigned.pickup, 'unassigned-pickup', cityName) }}
+                    {% endif %}
                 </div>
+
+                {# unconfirmed / nepatvirtinti rest. #}
                 <div id="city-{{ loop.index }}-unconfirmed">
                     {{ table.order_table(city.unconfirmed.deliver, 'unconfirmed', cityName) }}
+
+                    {% if city.unconfirmed.selfdeliver|length %}
+                    <div style="text-align: center;">
+                        <br />
+                        <br />
+                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unconfirmed_selfdeliver{% endtrans %}:</h4>
+                    </div>
+                    {{ table.order_table(city.unconfirmed.selfdeliver, 'unconfirmed-selfdeliver', cityName) }}
+                    {% endif %}
+
+                    {% if city.unconfirmed.pickup|length %}
                     <div style="text-align: center;">
                         <br />
                         <br />
                         <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unconfirmed_pickup{% endtrans %}:</h4>
                     </div>
                     {{ table.order_table(city.unconfirmed.pickup, 'unconfirmed-pickup', cityName) }}
+                    {% endif %}
                 </div>
+
+                {# not_finished / nepristatyti #}
                 <div id="city-{{ loop.index }}-undelivered">
-                    {{ table.order_table(city.not_finished, 'not_finished', cityName) }}
+                    {{ table.order_table(city.not_finished.deliver, 'not_finished', cityName) }}
+
+                    {% if city.not_finished.selfdeliver|length %}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.not_finished_selfdeliver{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.not_finished.selfdeliver, 'not_finished-selfdeliver', cityName) }}
+                    {% endif %}
+
+                    {% if city.not_finished.pickup|length %}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.not_finished_pickup{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.not_finished.pickup, 'not_finished-pickup', cityName) }}
+                    {% endif %}
                 </div>
+
+                {# canceled / atšaukti #}
                 <div id="city-{{ loop.index }}-canceled">
-                    {{ table.order_table(city.canceled, 'canceled', cityName) }}
+                    {{ table.order_table(city.canceled.deliver, 'canceled', cityName) }}
+
+                    {% if city.canceled.selfdeliver|length %}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.canceled_selfdeliver{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.canceled.selfdeliver, 'canceled-selfdeliver', cityName) }}
+                    {% endif %}
+
+                    {% if city.canceled.pickup|length %}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.canceled_pickup{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.canceled.pickup, 'canceled-pickup', cityName) }}
+                    {% endif %}
                 </div>
+
+                {# nav_problems / probleminiai #}
                 <div id="city-{{ loop.index }}-navproblems">
-                    {{ table.order_table(city.nav_problems, 'nav_problems', cityName) }}
+                    {{ table.order_table(city.nav_problems.deliver, 'nav_problems', cityName) }}
+
+                    {% if city.nav_problems.selfdeliver|length %}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.nav_problems_selfdeliver{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.nav_problems.selfdeliver, 'nav_problems-selfdeliver', cityName) }}
+                    {% endif %}
+
+                    {% if city.nav_problems.pickup|length %}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.nav_problems_pickup{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.nav_problems.pickup, 'nav_problems-pickup', cityName) }}
+                    {% endif %}
                 </div>
             </div>
             <script type="text/javascript">
