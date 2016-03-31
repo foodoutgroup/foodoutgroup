@@ -108,14 +108,15 @@
                     <td>
                         {{ order.placeName }}
                         {% if order.placePoint is not empty and order.placePoint.internalCode is not empty %} - {{ order.placePoint.internalCode }}{% endif %}
-                        {% if order.placePoint is not empty %}{% set placePointPhones = '+'~order.placePoint.phone %}{% else %}{% set placePointPhones = '' %}{% endif %}
+                        {% if order.placePoint is not empty %}
+                            <a href="tel:{{ order.placePoint.phone }}"><span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ order.placePoint.phone }}"></span></a>
+                        {% endif %}
                         {% if order.placePoint is not empty and order.placePoint.altPhone1 is not empty%}
-                            {% set placePointPhones = placePointPhones ~ '<br />' ~ '+' ~ order.placePoint.altPhone1 %}
+                            <a href="tel:{{ order.placePoint.altPhone1 }}"><span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ order.placePoint.altPhone1 }}"></span></a>
                         {% endif %}
                         {% if order.placePoint is not empty and order.placePoint.altPhone2 is not empty%}
-                            {% set placePointPhones = placePointPhones ~ '<br />' ~ '+' ~ order.placePoint.altPhone2 %}
+                            <a href="tel:{{ order.placePoint.altPhone2 }}"><span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ order.placePoint.altPhone2 }}"></span></a>
                         {% endif %}
-                        <span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ placePointPhones }}"></span>
                     </td>
                 {% if type != 'canceled' %}
                     <td>
@@ -131,7 +132,8 @@
                             {% endif %}
                         {% endif %}
                     </td>
-                    <td><a href="tel:{{ order.orderExtra.phone }}">{{ order.orderExtra.phone }}</a></td>
+                    <td style="white-space: nowrap"><a href="tel:{{ order.orderExtra.phone }}"><span class="glyphicon glyphicon-phone-alt restourant-phones"></span></a>{{ order.orderExtra.phone }}
+                    </td>
                 {% endif %}
                     <td class="order_date" title="{{ order.orderDate|date("Y-m-d") }}">{{ order.orderDate|date("H:i") }}</td>
                 {% if type != 'canceled' %}
@@ -185,7 +187,7 @@
                                     ~ 'admin.driver.provider'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.provider ~ "<br/>"
                                     ~ 'admin.driver.ext_id'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.extId ~ "<br/>"
                                     %}
-                                    {{ order.driver.name }} <span class="driver-info-extended glyphicon glyphicon-info-sign" title="{{ driverInfo }}"></span>
+                                    {{ order.driver.name }} <span class="driver-info-extended glyphicon glyphicon-info-sign" title="{{ driverInfo }}"></span> <a href="tel:{{ order.driver.phone }}"><span class="glyphicon glyphicon-phone-alt restourant-phones"></span></a>
                                 {% else %}
                                     <span style="font-weight: bold; color: #FF0000;">{{ 'admin.dispatcher.no_driver_assigned'|trans({}, 'SonataAdminBundle') }}</span>
                                 {% endif %}
