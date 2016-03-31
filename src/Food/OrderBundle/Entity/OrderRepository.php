@@ -596,31 +596,12 @@ class OrderRepository extends EntityRepository
             $groupByMonthOrder = 'DATE_FORMAT(o.order_date, "%Y-%m") DESC, ';
         }
 
-        $registeredFilter = '';
-        if ($registered) {
-            $registeredFilter = " AND p.registered = ".($registered ? 1 : 0);
-        }
-
-        $accountingCodeFilter = '';
-        if ($accountingCode) {
-            $accountingCodeFilter = " AND p.accounting_code = '".$accountingCode."'";
-        }
-
-        $ownershipTypeFilter = '';
-        if ($ownershipType) {
-            $ownershipTypeFilter = " AND p.ownership_type = '".$ownershipType."'";
-        }
-
         $query = "
           SELECT
             o.place_id,
             o.place_name AS place_name,
             o.vat,
             p.self_delivery AS self_delivery,
-            p.registered AS registered,
-            p.accounting_code AS accounting_code,
-            p.ownership_type AS ownership_type,
-            p.packaging_price AS packaging_price,
             COUNT(o.id) AS order_count,
             SUM(o.total) AS order_sum,
             SUM(
@@ -628,8 +609,7 @@ class OrderRepository extends EntityRepository
             ) AS deliver_count,
             SUM(
               IF(o.delivery_type = 'pickup', 1, 0)
-            ) AS pickup_count,
-            SUM(o.commission) as commission
+            ) AS pickup_count
             {$groupByMonthDate}
           FROM orders o
           LEFT JOIN place p ON p.id = o.place_id
@@ -637,9 +617,6 @@ class OrderRepository extends EntityRepository
             o.order_status = '{$orderStatus}'
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
             {$placesFilter}
-            {$registeredFilter}
-            {$accountingCodeFilter}
-            {$ownershipTypeFilter}
           GROUP BY COALESCE(o.place_id, o.place_name){$groupByMonth}
           ORDER BY {$groupByMonthOrder}order_count DESC
         ";
