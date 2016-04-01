@@ -82,8 +82,12 @@ h4.padded {
     text-align: left;
 }
 
-tr.late_warning {
+tr.late_warning.odd {
     background-color: #ff7f65 !important;
+}
+
+tr.late_warning.even {
+    background-color: #e76750 !important;
 }
 
 td.no-wrap {
