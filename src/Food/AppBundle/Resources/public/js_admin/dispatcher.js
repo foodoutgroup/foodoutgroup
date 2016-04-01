@@ -55,20 +55,20 @@ var Dispatcher = {
 
         $(".city-tab a").tooltip({placement: 'bottom'});
 
-        $(".order_list.unassigned .order_checkbox, .order_list.not_finished .order_checkbox").bind('click', function(){
+        $(".todo_nieks_nezino_klases .unassigned, .todo_nieks_nezino_klases .not_finished").on('click', '.order_checkbox', function(){
             Dispatcher.toggleDriverButton($(this));
             //TODO - enable active drivers list buttons
         });
 
-        $(".change_status_button").bind('click', function() {
+        $(".todo_nieks_nezino_klases").on('click', '.change_status_button', function() {
             Dispatcher.showStatusPopup($(this));
         });
 
-        $(".sms_button").bind('click', function() {
+        $(".todo_nieks_nezino_klases").on('click', '.sms_button', function() {
             Dispatcher.showSmsPopup($(this));
         });
 
-        $(".approve_button").bind('click', function() {
+        $(".todo_nieks_nezino_klases").on('click', '.approve_button', function() {
             $('.sonata-ba-list').mask();
             var orderId = $(this).attr('item-id');
 
@@ -292,8 +292,8 @@ var Dispatcher = {
         setTimeout(
             function() {
                 Dispatcher.checkForNewOrders();
-            },
-            61000
+            }, 10000
+            // 61000
         );
     },
 
@@ -307,7 +307,40 @@ var Dispatcher = {
                 if (data == "YES") {
                     // play a sound for new order
                     ion.sound.play("door_bell");
-                    location.reload();
+                    $('.sonata-ba-list').mask();
+                    $.get(
+                        window.location.href,
+                        null,
+                        function (data) {
+                            $('#city-1-unapproved').html($(data).find('#city-1-unapproved').html());
+                            $('#city-1-unassigned').html($(data).find('#city-1-unassigned').html());
+                            $('#city-1-unconfirmed').html($(data).find('#city-1-unconfirmed').html());
+                            $('#city-1-undelivered').html($(data).find('#city-1-undelivered').html());
+                            $('#city-1-canceled').html($(data).find('#city-1-canceled').html());
+                            $('#city-1-navproblems').html($(data).find('#city-1-navproblems').html());
+                            $('#city-2-unapproved').html($(data).find('#city-2-unapproved').html());
+                            $('#city-2-unassigned').html($(data).find('#city-2-unassigned').html());
+                            $('#city-2-unconfirmed').html($(data).find('#city-2-unconfirmed').html());
+                            $('#city-2-undelivered').html($(data).find('#city-2-undelivered').html());
+                            $('#city-2-canceled').html($(data).find('#city-2-canceled').html());
+                            $('#city-2-navproblems').html($(data).find('#city-2-navproblems').html());
+                            $('#city-3-unapproved').html($(data).find('#city-3-unapproved').html());
+                            $('#city-3-unassigned').html($(data).find('#city-3-unassigned').html());
+                            $('#city-3-unconfirmed').html($(data).find('#city-3-unconfirmed').html());
+                            $('#city-3-undelivered').html($(data).find('#city-3-undelivered').html());
+                            $('#city-3-canceled').html($(data).find('#city-3-canceled').html());
+                            $('#city-3-navproblems').html($(data).find('#city-3-navproblems').html());
+                            $('#city-4-unapproved').html($(data).find('#city-4-unapproved').html());
+                            $('#city-4-unassigned').html($(data).find('#city-4-unassigned').html());
+                            $('#city-4-unconfirmed').html($(data).find('#city-4-unconfirmed').html());
+                            $('#city-4-undelivered').html($(data).find('#city-4-undelivered').html());
+                            $('#city-4-canceled').html($(data).find('#city-4-canceled').html());
+                            $('#city-4-navproblems').html($(data).find('#city-4-navproblems').html());
+                            $('.drivers_list').html($(data).find('.drivers_list').html());
+                            $('.sonata-ba-list').unmask();
+                        }
+                    )
+                    // location.reload();
                 }
 
                 Dispatcher.subscribeForNewOrders();
