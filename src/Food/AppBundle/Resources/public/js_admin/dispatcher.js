@@ -306,7 +306,7 @@ var Dispatcher = {
             function(data) {
                 if (data == "YES") {
                     // play a sound for new order
-                    ion.sound.play("door_bell");
+                    // ion.sound.play("door_bell");
                     $('.sonata-ba-list').mask();
                     $.get(
                         window.location.href,
