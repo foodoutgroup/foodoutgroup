@@ -486,7 +486,7 @@ class OrderRepository extends EntityRepository
             }
 
             $qb->setParameters($filter)
-                ->orderBy('o.order_date', 'ASC');
+                ->orderBy('o.deliveryTime', 'ASC');
 
             $orders = $qb->getQuery()
                 ->getResult();

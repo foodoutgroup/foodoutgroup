@@ -48,6 +48,9 @@ h4.padded {
 .order_list td.order_date {
     text-align: center;
 }
+.order_list td.order_date {
+    white-space: nowrap;
+}
 
 .order_list td.order_status {
     text-align: center;
@@ -79,8 +82,12 @@ h4.padded {
     text-align: left;
 }
 
-tr.late_warning {
+tr.late_warning.odd {
     background-color: #ff7f65 !important;
+}
+
+tr.late_warning.even {
+    background-color: #e76750 !important;
 }
 
 td.no-wrap {

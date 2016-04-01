@@ -4,7 +4,6 @@ namespace Food\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Food\AppBundle\Entity\Driver;
-use Food\OrderBundle\Service\OrderService;
 
 /**
  * @ORM\Table(name="orders", indexes={@ORM\Index(name="nav_delivery_order_idx", columns={"nav_delivery_order"}),@ORM\Index(name="oder_status_idx", columns={"order_status"}),@ORM\Index(name="payment_status_idx", columns={"payment_status"}),@ORM\Index(name="place_point_city_idx", columns={"place_point_city"}),@ORM\Index(name="delivery_type_idx", columns={"delivery_type"}),@ORM\Index(name="has_user_completed_orders_idx", columns={"place_id","user_id","order_status"})})
@@ -1894,38 +1893,6 @@ class Order
     }
 
     /**
-     * Calculates how long delivery is late in minutes
-     * @return int
-     */
-    public function getLateMinutes()
-    {
-        $nowStamp = date("U");
-
-        switch($this->getOrderStatus()) {
-            case OrderService::$status_new:
-            case OrderService::$status_delayed:
-            case OrderService::$status_unapproved:
-                $interval = new \DateInterval('PT58M');
-                $deliveryStamp = $this->getOrderDate()->sub($interval)->format("U");
-
-                break;
-
-            case OrderService::$status_accepted:
-                $interval = new \DateInterval('PT52M');
-                $deliveryStamp = $this->getDeliveryTime()->sub($interval)->format("U");
-
-                break;
-            default:
-                $deliveryStamp = $this->getDeliveryTime()->format("U");
-                break;
-        }
-
-        $diffMinutes = ceil(($nowStamp - $deliveryStamp) / 60);
-
-        return ($diffMinutes > 0) ? $diffMinutes : 0;
-    }
-
-    /**
      * Add messages
      *
      * @param \Food\SmsBundle\Entity\Message $messages
@@ -2176,14 +2143,6 @@ class Order
     public function getOrderDeliveryLog()
     {
         return $this->orderDeliveryLog;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isLate()
-    {
-        return (bool) $this->getLateMinutes();
     }
 
     /**
