@@ -223,7 +223,7 @@
                                 {{ 'admin.dispatcher.button_change'|trans({}, 'SonataAdminBundle') }}
                             </button>
                         {% endif %}
-                        {% if type == 'unapproved' %}
+                        {% if type starts with 'unapproved' %}
                             <button class="btn btn-lg approve_button" item-id="{{ order.id }}">
                                 {{ 'admin.dispatcher.approve'|trans({}, 'SonataAdminBundle') }}
                             </button>
