@@ -48,6 +48,9 @@ h4.padded {
 .order_list td.order_date {
     text-align: center;
 }
+.order_list td.order_date {
+    white-space: nowrap;
+}
 
 .order_list td.order_status {
     text-align: center;

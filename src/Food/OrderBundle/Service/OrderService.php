@@ -309,6 +309,66 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * Counts order late time at current status
+     * @param Order $order
+     * @return bool|\DateInterval
+     */
+    public function getLateDiff(Order $order)
+    {
+        switch($order->getOrderStatus()) {
+            // 5 minutes from order create
+            case OrderService::$status_unapproved:
+                $date = clone $order->getOrderDate();
+                $date->modify('+ 5 minutes');
+                break;
+
+            // 5 minutes from order start
+            case OrderService::$status_new:
+                $date = clone $order->getDeliveryTime();
+                $date->modify('-'.$this->getDuration($order).' minutes');
+                $date->modify('+ 5 minutes');
+                break;
+
+            // 15 minutes from order start
+            case OrderService::$status_accepted:
+                $date = clone $order->getDeliveryTime();
+                $date->modify('-'.$this->getDuration($order).' minutes');
+                $date->modify('+ 15 minutes');
+                break;
+
+            default:
+                $date = clone $order->getDeliveryTime();
+                break;
+        }
+
+        return $date->diff(new \DateTime());
+    }
+
+    /**
+     * Checks is order is late at current status
+     * @param Order $order
+     * @return bool
+     */
+    public function isLate(Order $order)
+    {
+        switch($order->getOrderStatus()) {
+            case OrderService::$status_unapproved:
+            case OrderService::$status_assiged:
+            case OrderService::$status_finished:
+            case OrderService::$status_new:
+                return !$this->getLateDiff($order)->invert;
+
+            case OrderService::$status_accepted:
+                if ($order->getDeliveryType() != 'pickup' && !$order->getPlacePointSelfDelivery()) {
+                    return !$this->getLateDiff($order)->invert;
+                }
+            break;
+        }
+
+        return false;
+    }
+
+    /**
      * @param string $status
      * @param string|null $source
      * @param string|null $message
@@ -3659,5 +3719,24 @@ class OrderService extends ContainerAware
         $em->flush();
 
         return $theCode;
+    }
+
+    /**
+     * Counts duration from start to delivery
+     * @param Order $order
+     * @return int
+     */
+    public function getDuration(Order $order)
+    {
+        $miscService = $this->container->get('food.app.utils.misc');
+        if ($order->getPlacePoint()) {
+            $timeShift = $miscService->parseTimeToMinutes($order->getPlacePoint()->getDeliveryTime());
+        }
+
+        if (empty($timeShift) || $timeShift <= 0) {
+            $timeShift = 60;
+        }
+
+        return $timeShift;
     }
 }
