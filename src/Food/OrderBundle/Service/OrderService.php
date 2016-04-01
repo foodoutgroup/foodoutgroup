@@ -324,6 +324,7 @@ class OrderService extends ContainerAware
 
             // 5 minutes from order start
             case OrderService::$status_new:
+            case OrderService::$status_preorder:
                 $date = clone $order->getDeliveryTime();
                 $date->modify('-'.$this->getDuration($order).' minutes');
                 $date->modify('+ 5 minutes');
@@ -331,6 +332,7 @@ class OrderService extends ContainerAware
 
             // 15 minutes from order start
             case OrderService::$status_accepted:
+            case OrderService::$status_finished:
                 $date = clone $order->getDeliveryTime();
                 $date->modify('-'.$this->getDuration($order).' minutes');
                 $date->modify('+ 15 minutes');
@@ -354,11 +356,12 @@ class OrderService extends ContainerAware
         switch($order->getOrderStatus()) {
             case OrderService::$status_unapproved:
             case OrderService::$status_assiged:
-            case OrderService::$status_finished:
             case OrderService::$status_new:
+            case OrderService::$status_preorder:
                 return !$this->getLateDiff($order)->invert;
 
             case OrderService::$status_accepted:
+            case OrderService::$status_finished:
                 if ($order->getDeliveryType() != 'pickup' && !$order->getPlacePointSelfDelivery()) {
                     return !$this->getLateDiff($order)->invert;
                 }
