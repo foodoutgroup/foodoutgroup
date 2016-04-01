@@ -232,7 +232,7 @@
                             {{ 'admin.dispatcher.sms_button'|trans({}, 'SonataAdminBundle') }}
                         </button>
                     </td>
-                    {% if type == 'canceled' %}
+                    {% if type starts with 'canceled' %}
                     <td class="client_contacted_check">
                         <input type="checkbox" id="client_contacted_{{ order.id }}" class="client_contacted" item-id="{{ order.id }}" {% if order.clientContacted == 1 %}checked="checked" {% endif %}/>
                     </td>
