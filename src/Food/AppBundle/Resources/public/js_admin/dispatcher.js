@@ -292,7 +292,7 @@ var Dispatcher = {
         setTimeout(
             function() {
                 Dispatcher.checkForNewOrders();
-            }, 10000
+            }, 60000
             // 61000
         );
     },
