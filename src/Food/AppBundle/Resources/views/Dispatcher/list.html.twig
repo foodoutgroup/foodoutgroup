@@ -39,7 +39,6 @@
             <tr>
                 <th></th>
                 <th>{{ 'admin.dispatcher.order_id'|trans({}, 'SonataAdminBundle') }}</th>
-                <th>{{ 'admin.dispatcher.from_nav'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.dispatcher.place'|trans({}, 'SonataAdminBundle') }}</th>
             {% if type != 'canceled' %}
                 <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
@@ -63,9 +62,9 @@
             {% endif %}
                 <th class="narrow_col">{{ 'admin.dispatcher.payment'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.dispatcher.comment'|trans({}, 'SonataAdminBundle') }}</th>
-                {% if type == 'not_finished' %}
-                    <th>{{ 'admin.dispatcher.driver'|trans({}, 'SonataAdminBundle') }}</th>
-                {% endif %}
+            {% if type == 'not_finished' %}
+                <th>{{ 'admin.dispatcher.driver'|trans({}, 'SonataAdminBundle') }}</th>
+            {% endif %}
                 <th>{{ 'admin.dispatcher.status'|trans({}, 'SonataAdminBundle') }}</th>
             {% if type == 'canceled' %}
                 <th class="client_contacted_check">{{ 'admin.dispatcher.client_contacted'|trans({}, 'SonataAdminBundle') }}</th>
@@ -100,13 +99,11 @@
                         {% if order.preorder %}
                             <span class="glyphicon glyphicon-time"></span>
                         {% endif %}
-                    </td>
-                    <td><a href="{{ path('admin_food_order_order_show', {'id': order.id}) }}" target="_blank">{{ order.id }}</a></td>
-                    <td class="from_nav_ico">
                         {% if order.orderFromNav %}
-                            <span class="glyphicon glyphicon-ok"></span>
+                            <strong title="NAVISION">N</strong>
                         {% endif %}
                     </td>
+                    <td><a href="{{ path('admin_food_order_order_show', {'id': order.id}) }}" target="_blank">{{ order.id }}</a></td>
                     <td>
                         {{ order.placeName }}
                         {% if order.placePoint is not empty and order.placePoint.internalCode is not empty %} - {{ order.placePoint.internalCode }}{% endif %}
