@@ -809,6 +809,7 @@ class OrderService extends ContainerAware
         $order = $this->getOrder();
         $this->logDeliveryEvent($this->getOrder(), 'order_completed');
         $this->chageOrderStatus(self::$status_completed, $source, $statusMessage);
+        $this->getOrder()->setCompletedTime(new \DateTime());
 
         $this->createDiscountCode($order);
 
