@@ -81,3 +81,4 @@ parameters:
     send_sms_on_cancel: false
     dispatcher_contact_phone: "37069855544"
     call_centre_phone: "37052195281"
+    dispatcher_bell: false

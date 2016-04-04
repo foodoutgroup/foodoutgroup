@@ -2,6 +2,7 @@ var Dispatcher = {
     _locale: 'lt',
     _translations: {},
     recentOrders: {},
+    bell: false,
 
     setLocale: function(locale) {
         Dispatcher._locale = locale;
@@ -306,7 +307,9 @@ var Dispatcher = {
             function(data) {
                 if (data == "YES") {
                     // play a sound for new order
-                    // ion.sound.play("door_bell");
+                    if (Dispatcher.bell) {
+                        ion.sound.play("door_bell");
+                    }
                     $('.sonata-ba-list').mask();
                     $.get(
                         window.location.href,

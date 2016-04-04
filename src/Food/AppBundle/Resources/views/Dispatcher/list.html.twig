@@ -15,6 +15,7 @@
             Dispatcher.setTranslation('button_change', '{{ 'admin.dispatcher.button_change'|trans({}, 'SonataAdminBundle') }}');
             Dispatcher.setTranslation('button_cancel', '{{ 'admin.dispatcher.button_cancel'|trans({}, 'SonataAdminBundle') }}');
             Dispatcher.setTranslation('button_send', '{{ 'admin.dispatcher.button_send'|trans({}, 'SonataAdminBundle') }}');
+            Dispatcher.bell = {% if dispatcher_bell %}true{% else %}false{% endif %}
         });
     </script>
 {% endblock %}

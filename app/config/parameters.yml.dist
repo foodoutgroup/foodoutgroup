@@ -95,3 +95,4 @@ parameters:
     place_slug_manual: false
     alcohol_allowed: true
     place_with_neighbourhood: false
+    dispatcher_bell: false
