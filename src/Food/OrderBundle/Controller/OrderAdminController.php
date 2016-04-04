@@ -266,12 +266,28 @@ class OrderAdminController extends Controller
         $data = $this->get('database_connection')->fetchAll($qry);
 
         foreach ($data as &$row) {
-            $row['diff_between_completed'] = null;
+            $row['diff_delivery_completed'] = null;
             if ($row['delivery_time'] && $row['completed_time']) {
                 $deliveryTime = new \DateTime($row['delivery_time']);
                 $completedTime = new \DateTime($row['completed_time']);
                 $diff = $deliveryTime->diff($completedTime);
                 $row['diff_between_completed'] = $diff->format('%R').sprintf('%02d:%02d', $diff->d*24+$diff->h, $diff->i);
+            }
+
+            $row['approved_completed'] = null;
+            if ($row['accept_time'] && $row['completed_time']) {
+                $acceptTime = new \DateTime($row['accept_time']);
+                $completedTime = new \DateTime($row['completed_time']);
+                $diff = $acceptTime->diff($completedTime);
+                $row['approved_completed'] = sprintf('%02d:%02d', $diff->d*24+$diff->h, $diff->i);
+            }
+
+            $row['started_completed'] = null;
+            if ($row['order_date'] && $row['completed_time']) {
+                $orderDate = new \DateTime($row['order_date']);
+                $completedTime = new \DateTime($row['completed_time']);
+                $diff = $orderDate->diff($completedTime);
+                $row['started_completed'] = sprintf('%02d:%02d', $diff->d*24+$diff->h, $diff->i);
             }
         }
 
