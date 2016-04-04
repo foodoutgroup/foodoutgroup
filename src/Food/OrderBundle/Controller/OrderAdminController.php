@@ -271,7 +271,7 @@ class OrderAdminController extends Controller
                 $deliveryTime = new \DateTime($row['delivery_time']);
                 $completedTime = new \DateTime($row['completed_time']);
                 $diff = $deliveryTime->diff($completedTime);
-                $row['diff_between_completed'] = $diff->format('%R').sprintf('%02d:%02d', $diff->d*24+$diff->h, $diff->i);
+                $row['diff_delivery_completed'] = $diff->format('%R').sprintf('%02d:%02d', $diff->d*24+$diff->h, $diff->i);
             }
 
             $row['approved_completed'] = null;
