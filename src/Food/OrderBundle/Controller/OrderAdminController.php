@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Exporter\Source\DoctrineDBALConnectionSourceIterator;
+use Exporter\Source\ArraySourceIterator;
 use Exporter\Handler;
 use Exporter\Writer\XlsWriter;
 use Exporter\Writer\XmlWriter;
@@ -257,12 +257,24 @@ class OrderAdminController extends Controller
             }
         }
 
-        $conn = $this->get('database_connection');
         $qry = "SELECT o.*, oe.*, d.extId as driver_id
                 FROM orders o
                 LEFT JOIN order_extra oe ON o.id = oe.order_id
                 LEFT JOIN drivers d ON o.driver_id = d.id
-                WHERE 1 = 1 " . $where;
-        return new DoctrineDBALConnectionSourceIterator($conn, $qry);
+                WHERE 1 = 1 $where";
+
+        $data = $this->get('database_connection')->fetchAll($qry);
+
+        foreach ($data as &$row) {
+            $row['diff_between_completed'] = null;
+            if ($row['delivery_time'] && $row['completed_time']) {
+                $deliveryTime = new \DateTime($row['delivery_time']);
+                $completedTime = new \DateTime($row['completed_time']);
+                $diff = $deliveryTime->diff($completedTime);
+                $row['diff_between_completed'] = $diff->format('%R%dd %H:%i:%s');
+            }
+        }
+
+        return new ArraySourceIterator($data);
     }
 }

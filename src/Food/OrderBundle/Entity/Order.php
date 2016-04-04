@@ -254,6 +254,11 @@ class Order
      * @ORM\Column(name="delivery_time", type="datetime", nullable=true)
      */
     private $deliveryTime;
+    /**
+     * @var
+     * @ORM\Column(name="completed_time", type="datetime", nullable=true)
+     */
+    private $completedTime;
 
     /**
      * @var bool
@@ -2166,5 +2171,28 @@ class Order
     public function getPreorder()
     {
         return $this->preorder;
+    }
+
+    /**
+     * Set completedTime
+     *
+     * @param \DateTime $completedTime
+     * @return Order
+     */
+    public function setCompletedTime($completedTime)
+    {
+        $this->completedTime = $completedTime;
+    
+        return $this;
+    }
+
+    /**
+     * Get completedTime
+     *
+     * @return \DateTime 
+     */
+    public function getCompletedTime()
+    {
+        return $this->completedTime;
     }
 }
