@@ -13,6 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Coupon
 {
+    const TYPE_BOTH = 'both';
+    const TYPE_API = 'api';
+    const TYPE_WEB = 'web';
+
     /**
      * @var integer
      *
@@ -89,6 +93,12 @@ class Coupon
      */
     private $noSelfDelivery = false;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", length=4, options={"fixed" = true, "default" = "both"})
+     */
+    private $type = self::TYPE_BOTH;
 
     /**
      * @var bool
@@ -718,5 +728,52 @@ class Coupon
     public function getFullOrderCovers()
     {
         return $this->fullOrderCovers;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return Coupon
+     */
+    public function setType($type)
+    {
+        if (!in_array($type, array(self::TYPE_BOTH, self::TYPE_API, self::TYPE_WEB))) {
+            throw new \InvalidArgumentException('Wrong type defined');
+        }
+
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Checks is this cupon is allowed in api
+     *
+     * @return mixed
+     */
+    public function isAllowedForApi()
+    {
+        return in_array($this->getType(), array(self::TYPE_BOTH, self::TYPE_API));
+    }
+
+    /**
+     * Checks is this cupon is allowed in web
+     *
+     * @return mixed
+     */
+    public function isAllowedForWeb()
+    {
+        return in_array($this->getType(), array(self::TYPE_BOTH, self::TYPE_WEB));
     }
 }

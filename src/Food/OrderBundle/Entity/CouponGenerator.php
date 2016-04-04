@@ -100,6 +100,13 @@ class CouponGenerator
     private $noSelfDelivery = false;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", length=4, options={"fixed" = true, "default" = "both"})
+     */
+    private $type = Coupon::TYPE_BOTH;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="single_use", type="boolean")
@@ -743,5 +750,32 @@ class CouponGenerator
     public function getTemplateCode()
     {
         return $this->templateCode;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return CouponGenerator
+     */
+    public function setType($type)
+    {
+        if (!in_array($type, array(Coupon::TYPE_BOTH, Coupon::TYPE_API, Coupon::TYPE_WEB))) {
+            throw new \InvalidArgumentException('Wrong type defined');
+        }
+
+        $this->type = $type;
+    
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

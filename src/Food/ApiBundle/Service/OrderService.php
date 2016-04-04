@@ -173,6 +173,17 @@ class OrderService extends ContainerAware
                     )
                 );
             }
+            
+            if (!$coupon->isAllowedForApi()) {
+                throw new ApiException(
+                    'Coupon for web',
+                    404,
+                    array(
+                        'error' => 'Coupon for web',
+                        'description' => $this->container->get('translator')->trans('general.coupon.only_web')
+                    )
+                );
+            }
 
             if (mb_strtolower($discountVar['code'], 'utf8') == 'studentas' && $serviceVar['type'] == "pickup") {
                 throw new ApiException(
