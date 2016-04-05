@@ -220,6 +220,9 @@ class AjaxController extends Controller
         if (!$coupon) {
             $cont['status'] = false;
             $cont['data']['error'] = $trans->trans('general.coupon.not_active');
+        } elseif (!$coupon->isAllowedForWeb()) {
+            $cont['status'] = false;
+            $cont['data']['error'] = $trans->trans('general.coupon.only_api');
         } else if (!empty($places) && count($places) > 0) {
             $found = false;
             foreach ($places as $cPlace) {

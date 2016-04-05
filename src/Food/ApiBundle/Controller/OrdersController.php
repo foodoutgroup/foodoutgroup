@@ -294,6 +294,16 @@ class OrdersController extends Controller
                             );
                         }
                     }
+                    if (!$coupon->isAllowedForApi()) {
+                        throw new ApiException(
+                            'Coupon for web',
+                            404,
+                            array(
+                                'error' => 'Coupon for web',
+                                'description' => $this->get('translator')->trans('general.coupon.only_web')
+                            )
+                        );
+                    }
                     // Coupon is still valid End
 
                     $arr_places = array();

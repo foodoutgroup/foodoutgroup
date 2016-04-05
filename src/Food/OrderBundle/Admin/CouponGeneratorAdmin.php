@@ -2,6 +2,7 @@
 namespace Food\OrderBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
+use Food\OrderBundle\Entity\Coupon;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -28,6 +29,11 @@ class CouponGeneratorAdmin extends FoodAdmin
             ->add('places', null, array('label' => 'admin.coupon.place',))
             ->add('onlyNav', 'checkbox', array('label' => 'admin.coupon.only_nav', 'required' => false))
             ->add('noSelfDelivery','checkbox', array('required' => false))
+            ->add('type', 'choice', array('choices' => array(
+                Coupon::TYPE_BOTH => 'BOTH',
+                Coupon::TYPE_API => 'API',
+                Coupon::TYPE_WEB => 'WEB'
+            ), 'required' => true))
             ->add('singleUse', 'checkbox', array('label' => 'admin.coupon.single_use', 'required' => false))
             ->add('validFrom', 'datetime', array('required' => false))
             ->add('validTo', 'datetime', array('required' => false))

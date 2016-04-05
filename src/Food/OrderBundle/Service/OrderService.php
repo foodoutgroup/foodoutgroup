@@ -3128,6 +3128,8 @@ class OrderService extends ContainerAware
                 $formErrors[] = 'general.coupon.not_active';
             } else if ($coupon->getPlace() && $coupon->getPlace()->getId() != $place->getId()) {
                 $formErrors[] = 'general.coupon.wrong_place_simple';
+            } elseif (!$coupon->isAllowedForWeb()) {
+                $formErrors[] = 'general.coupon.only_api';
             }
 
             // TODO temporary hack for studentas coupon
@@ -3652,6 +3654,7 @@ class OrderService extends ContainerAware
                         ->setDiscount( $generator->getDiscount() )
                         ->setDiscountSum( $generator->getDiscountSum() )
                         ->setOnlyNav( $generator->getOnlyNav() )
+                        ->setType($generator->getType())
                         ->setEnableValidateDate( true )
                         ->setFreeDelivery( $generator->getFreeDelivery() )
                         ->setSingleUse( $generator->getSingleUse() )
