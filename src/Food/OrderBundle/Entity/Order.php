@@ -330,9 +330,9 @@ class Order
 
     /**
      * @var bool
-     * @ORM\Column(name="reminded", type="boolean", nullable=true)
+     * @ORM\Column(name="reminded", type="datetime", nullable=true)
      */
-    private $reminded = false;
+    private $reminded = null;
 
     /**
      * @var string
@@ -1284,29 +1284,6 @@ class Order
     }
 
     /**
-     * Set reminded
-     *
-     * @param boolean $reminded
-     * @return Order
-     */
-    public function setReminded($reminded)
-    {
-        $this->reminded = $reminded;
-
-        return $this;
-    }
-
-    /**
-     * Get reminded
-     *
-     * @return boolean
-     */
-    public function getReminded()
-    {
-        return $this->reminded;
-    }
-
-    /**
      * Set couponCode
      *
      * @param string $couponCode
@@ -2194,5 +2171,28 @@ class Order
     public function getCompletedTime()
     {
         return $this->completedTime;
+    }
+
+    /**
+     * Set reminded
+     *
+     * @param \DateTime $reminded
+     * @return Order
+     */
+    public function setReminded($reminded)
+    {
+        $this->reminded = $reminded;
+    
+        return $this;
+    }
+
+    /**
+     * Get reminded
+     *
+     * @return \DateTime 
+     */
+    public function getReminded()
+    {
+        return $this->reminded;
     }
 }
