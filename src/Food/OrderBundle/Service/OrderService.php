@@ -3778,7 +3778,7 @@ class OrderService extends ContainerAware
 
         // Rules if order is forgotten
         // 1. order is not self delivery & passed 15-30 min from beginning
-        // 2. order is self delivery & passed 10, 15, 20 min from beginning
+        // 2. order is self delivery & passed 10 minutes from beginning and remind 5 times every 5 minutes
         if (!$order->getPlacePointSelfDelivery()) {
             $from = clone $date;
             $from->modify('+15 minutes');
@@ -3789,7 +3789,7 @@ class OrderService extends ContainerAware
             }
         } else {
             $to = clone $date;
-            $to->modify('+25 minutes');
+            $to->modify('+35 minutes');
             // if no reminded, then 10 - <25 minutes
             if ($order->getReminded() < $order->getOrderDate()) {
                 $from = clone $date;
