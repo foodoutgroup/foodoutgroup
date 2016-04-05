@@ -26,7 +26,7 @@ class OrderReminderCommand extends ContainerAwareCommand
                 $order->setReminded(new \DateTime());
                 $orderService->saveOrder();
 
-                //$orderService->informPlace(true);
+                $orderService->informPlace(true);
 
                 $output->writeln('Reminder message sent to: ' . $order->getPlaceName() . ' for order #' . $order->getId());
             }
