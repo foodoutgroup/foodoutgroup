@@ -20,21 +20,17 @@ class OrderReminderCommand extends ContainerAwareCommand
     {
         try {
             $orderService = $this->getContainer()->get('food.order');
-            $repo = $this->getContainer()->get('doctrine')->getRepository('FoodOrderBundle:Order');
 
-            $orders = $repo->getForgottenOrders();
+            foreach($orderService->getForgottenOrders() as $order) {
+                $orderService->setOrder($order);
+                $order->setReminded(new \DateTime());
+                $orderService->saveOrder();
 
-            if ($orders) {
-                foreach($orders as $forgottenOrder) {
-                    $order = $orderService->getOrderById($forgottenOrder['id']);
-                    $order->setReminded(true);
-                    $orderService->saveOrder();
+                $orderService->informPlace(true);
 
-                    $orderService->informPlace(true);
-
-                    $output->writeln('Reminder message sent to: '.$order->getPlaceName().' for order #'.$order->getId());
-                }
+                $output->writeln('Reminder message sent to: ' . $order->getPlaceName() . ' for order #' . $order->getId());
             }
+
             // Close DB connection. Dont leave crap
             $this->getContainer()->get('doctrine')->getConnection()->close();
         } catch (\Exception $e) {

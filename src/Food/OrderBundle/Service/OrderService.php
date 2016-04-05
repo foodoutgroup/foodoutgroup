@@ -3746,4 +3746,69 @@ class OrderService extends ContainerAware
 
         return $timeShift;
     }
+
+    /**
+     * @return array
+     */
+    public function getForgottenOrders()
+    {
+        $repo = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order');
+
+        $result = $repo->getFutureUnacceptedOrders();
+
+        $orders = array();
+
+        foreach ($result as $key => $row) {
+            $order = $this->getOrderById($row['id']);
+            if ($this->isForgotten($order)) {
+                $orders[] = $order;
+            }
+        }
+
+        return $orders;
+    }
+
+    /**
+     * @param Order $order
+     * @return bool
+     */
+    public function isForgotten(Order $order)
+    {
+        // order begin time
+        $date = clone $order->getDeliveryTime();
+        $date->modify('-'.$this->getDuration($order).' minutes');
+        $nowDate = new \DateTime();
+
+        // Rules if order is forgotten
+        // 1. order is not self delivery & passed 15-30 min from beginning
+        // 2. order is self delivery & passed 10 minutes from beginning and remind 5 times every 5 minutes
+        if (!$order->getPlacePointSelfDelivery()) {
+            $from = clone $date;
+            $from->modify('+15 minutes');
+            $to = clone $date;
+            $to->modify('+30 minutes');
+            if ($order->getReminded() < $order->getOrderDate() && $from <= $nowDate && $nowDate <= $to) {
+                return true;
+            }
+        } else {
+            $to = clone $date;
+            $to->modify('+35 minutes');
+            // if no reminded, then 10 - <25 minutes
+            if ($order->getReminded() < $order->getOrderDate()) {
+                $from = clone $date;
+                $from->modify('+10 minutes');
+                if ($from <= $nowDate && $nowDate < $to) {
+                    return true;
+                }
+            // if reminded then 5 minutes later than last remind - <25 minutes
+            } else {
+                $needToRemindTime = clone $order->getReminded();
+                $needToRemindTime->modify('+5 minutes');
+                if ($needToRemindTime <= $nowDate && $nowDate < $to) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
