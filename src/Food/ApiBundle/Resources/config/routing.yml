@@ -189,3 +189,8 @@ food_api_get_static_content:
     pattern: /staticcontent/{id}
     defaults: { _controller: FoodApiBundle:StaticContent:process}
     methods: [GET]
+
+food_api_get_show_popup:
+    pattern: /showRating
+    defaults: { _controller: FoodApiBundle:Params:showRating}
+    methods: [GET]
