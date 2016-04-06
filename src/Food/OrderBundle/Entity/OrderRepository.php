@@ -506,21 +506,18 @@ class OrderRepository extends EntityRepository
     /**
      * @return array
      */
-    public function getForgottenOrders()
+    public function getFutureUnacceptedOrders()
     {
-        $dateFrom = date("Y-m-d H:i:00", strtotime('-30 minute'));
-        $dateTo = date("Y-m-d H:i:00", strtotime('-16 minute'));
+        $dateFrom = date("Y-m-d H:i:s");
 
         $query = "
             SELECT
                 `id`
             FROM  `orders`
             WHERE
-              `order_date` >= '{$dateFrom}'
-              AND `order_date` <=  '{$dateTo}'
+              `delivery_time` >= '{$dateFrom}'
               AND `order_status` =  '".OrderService::$status_new."'
               AND `payment_status` = '".OrderService::$paymentStatusComplete."'
-              AND (`reminded` != 1 OR `reminded` IS NULL)
         ";
 
         $stmt = $this->getEntityManager()
