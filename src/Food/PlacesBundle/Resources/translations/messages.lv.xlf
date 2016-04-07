@@ -278,6 +278,10 @@
                 <source>places.header_main_part</source>
                 <target>Ēdienu piegāde</target>
             </trans-unit>
+            <trans-unit id="general.restaurant" resname="general.restaurant">
+                <source>general.restaurant</source>
+                <target>Restorāns</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

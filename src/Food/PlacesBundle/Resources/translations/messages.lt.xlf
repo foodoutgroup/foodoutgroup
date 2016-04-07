@@ -274,6 +274,10 @@
                 <source>places.header_main_part</source>
                 <target>Maistas į namus</target>
             </trans-unit>
+            <trans-unit id="general.restaurant" resname="general.restaurant">
+                <source>general.restaurant</source>
+                <target>Restoranas</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

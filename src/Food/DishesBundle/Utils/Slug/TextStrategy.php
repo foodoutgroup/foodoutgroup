@@ -148,6 +148,14 @@ class TextStrategy extends AbstractStrategy
      */
     private function makeSlug($lang, $text)
     {
+        if (is_numeric($text) && mb_strlen($text, 'UTF-8') <= 4) {
+            switch ($this->type) {
+                case Slug::TYPE_PLACE:
+                    $text .= '-'.$this->container()->get('translator')->trans('general.restaurant', array(), null, $lang);
+                    break;
+                // @TODO: Other types
+            }
+        }
         $slugUtil = $this->service('food.dishes.utils.slug');
         $languageUtil = $this->service('food.app.utils.language');
         return $slugUtil->stringToSlug(
