@@ -132,7 +132,7 @@ twig:
         google_maps_api: "%google.maps_api%"
         cloudfront_url: "%cloudfront_url%"
         invoice_series: "%invoice.series%"
-        dispatcher_bell: "%%dispatcher_bell%"
+        dispatcher_bell: "%dispatcher_bell%"
 #       Services
         slug_util:    "@food.dishes.utils.slug"
         places_service: "@food.places"
