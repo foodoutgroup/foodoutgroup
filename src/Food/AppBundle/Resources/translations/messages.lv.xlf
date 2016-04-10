@@ -388,7 +388,7 @@
             </trans-unit>
             <trans-unit id="52d751788d1ab704a9990362e53c1852" resname="general.sms.canceled_order">
                 <source>general.sms.canceled_order</source>
-                <target>Pasutijums #%order_number% ir atcelts:</target>
+                <target>Pasutijums #order_id ir atcelts:</target>
             </trans-unit>
             <trans-unit id="6923d196342f158f85d8fbc2903dfbcb" resname="general.sms.order_reminder">
                 <source>general.sms.order_reminder</source>
