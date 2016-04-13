@@ -281,8 +281,7 @@ var Dispatcher = {
         setTimeout(
             function() {
                 Dispatcher.checkForNewOrders();
-            }, 5000
-            // 61000
+            }, 30000
         );
     },
 
