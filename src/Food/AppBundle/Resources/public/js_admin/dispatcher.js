@@ -414,15 +414,12 @@ var Dispatcher = {
 
             var orderTypeTotal = $orderTypeTabList.length;
 
-            $currentCityTab.find('a').attr('title', $data_currentCityTab.find('a').attr('title'));
-
-            $($('.city-tab')[cityTabIndex]).find('.theCount').text($($(data).find('.city-tab')[cityTabIndex]).find('.theCount').text());
-
             for (var orderTypeIndex = 0; orderTypeIndex < orderTypeTotal; ++orderTypeIndex) {
-
+                // refreshing order type tab count of orders
                 $($orderTypeTabList[orderTypeIndex]).find('.theCount').text($($data_orderTypeTabList[orderTypeIndex]).find('.theCount').text());
                 $($orderTypeContentList[orderTypeIndex]).html($($data_orderTypeContentList[orderTypeIndex]).html());
 
+                // refreshing order type tab exclamation signs
                 if ($($data_orderTypeTabList[orderTypeIndex]).find('.glyphicon-exclamation-sign').length) {
                     if (!$($orderTypeTabList[orderTypeIndex]).find('.glyphicon-exclamation-sign').length) {
                         $($orderTypeTabList[orderTypeIndex]).append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
@@ -432,6 +429,13 @@ var Dispatcher = {
                 }
             }
 
+            // refreshing city tab tooltip info
+            $currentCityTab.find('a').attr('title', $data_currentCityTab.find('a').attr('title'));
+
+            // refreshing city tab count of orders
+            $($('.city-tab')[cityTabIndex]).find('.theCount').text($($(data).find('.city-tab')[cityTabIndex]).find('.theCount').text());
+
+            // refreshing city tab exclamation signs
             if ($data_currentCityTab.find('.glyphicon-exclamation-sign').length) {
                 if (!$currentCityTab.find('.glyphicon-exclamation-sign').length) {
                     $currentCityTab.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
