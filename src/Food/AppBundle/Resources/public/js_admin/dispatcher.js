@@ -444,6 +444,8 @@ var Dispatcher = {
                 $currentCityTab.find('.glyphicon-exclamation-sign').remove();
             }
         }
+
+        $('.drivers_list').html($(data).find('.drivers_list').html());
         $(".city-tab a").tooltip({placement: 'bottom'});
     }
 };
