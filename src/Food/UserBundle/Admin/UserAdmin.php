@@ -107,7 +107,7 @@ class UserAdmin extends SonataUserAdmin {
                 ->with('admin.users.management')
                 ->add(
                     'roles',
-                    'sonata_security_roles',
+                    'choice',
                     array(
                         'expanded' => true,
                         'multiple' => true,
