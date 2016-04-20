@@ -504,6 +504,34 @@ class OrderRepository extends EntityRepository
     }
 
     /**
+     * @param $timestamp
+     * @return bool
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function hasNewerOrdersThan($timestamp)
+    {
+        $dateFrom = date("Y-m-d H:i:s", $timestamp);
+
+        $query = "
+            SELECT
+                count(*) as total
+            FROM  `orders`
+            WHERE
+              `order_date` >= '{$dateFrom}'
+              OR `last_updated` >= '{$dateFrom}'
+        ";
+
+        $stmt = $this->getEntityManager()
+            ->getConnection()
+            ->prepare($query);
+
+        $stmt->execute();
+        $total = $stmt->fetchColumn();
+
+        return (bool) $total;
+    }
+
+    /**
      * @return array
      */
     public function getFutureUnacceptedOrders()

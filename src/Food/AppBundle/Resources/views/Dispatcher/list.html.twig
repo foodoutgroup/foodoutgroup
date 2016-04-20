@@ -8,6 +8,7 @@
     <script type="text/javascript">
         $(document).ready(function(){
             Dispatcher.setLocale('{{ app.request.get('_locale') }}');
+            Dispatcher.lastCheck = '{{  'now'|date('U') }}';
             Dispatcher.onLoadEvents();
 
             Dispatcher.setTranslation('change_status_title', '{{ 'admin.dispatcher.order_status_title'|trans({}, 'SonataAdminBundle') }}');
@@ -76,14 +77,14 @@
             {% endif %}
             </tr>
             {% for order in order_list %}
-                {% if loop.last %}
-                    <script type="text/javascript">
-                        if (typeof Dispatcher.recentOrders['{{ cityName }}'] == "undefined") {
-                            Dispatcher.recentOrders['{{ cityName }}'] = {};
-                        }
-                        Dispatcher.recentOrders['{{ cityName }}']['{{ type }}'] = {{ order.id }};
-                    </script>
-                {% endif %}
+                {#{% if loop.last %}#}
+                    {#<script type="text/javascript">#}
+                        {#if (typeof Dispatcher.recentOrders['{{ cityName }}'] == "undefined") {#}
+                            {#Dispatcher.recentOrders['{{ cityName }}'] = {};#}
+                        {#}#}
+                        {#Dispatcher.recentOrders['{{ cityName }}']['{{ type }}'] = {{ order.id }};#}
+                    {#</script>#}
+                {#{% endif %}#}
                 {% if order_service.isLate(order) %}
                     {% set additional_class = 'late_warning' %}
                 {% else %}
@@ -266,34 +267,49 @@
                 {% set cityNotFinished = (cityOrders[city].not_finished.deliver|length + cityOrders[city].not_finished.selfdeliver|length + cityOrders[city].not_finished.pickup|length) %}
                 {% set cityCanceled = (cityOrders[city].canceled.deliver|length + cityOrders[city].canceled.selfdeliver|length + cityOrders[city].canceled.pickup|length) %}
                 {% set cityNavProblems = (cityOrders[city].nav_problems.deliver|length + cityOrders[city].nav_problems.selfdeliver|length + cityOrders[city].nav_problems.pickup|length) %}
-                {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unapprovedCount': cityUnassigned, 'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished, 'canceledCount': cityCanceled, 'navProblemsCount': cityNavProblems}, 'SonataAdminBundle') %}
-                <li class="city-tab city_tabik-{{ loop.index }}" data-city="{{ city }}">
-                    <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} ({{ cityUnapproved }}:{{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }}:{{ cityCanceled }}:{{ cityNavProblems }})</a>
+                {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unapprovedCount': cityUnapproved, 'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished, 'canceledCount': cityCanceled, 'navProblemsCount': cityNavProblems}, 'SonataAdminBundle') %}
+                <li class="city-tab" data-city="{{ city }}">
+                    <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} <span class="theCount">({{ cityUnapproved }}:{{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }}:{{ cityCanceled }}:{{ cityNavProblems }})<span></a>
+                    {% if cityOrders[city].unapproved.late > 0 or cityOrders[city].unassigned.late > 0 or cityOrders[city].unconfirmed.late > 0 or cityOrders[city].not_finished.late > 0 %}
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>
         {% for cityName,city in cityOrders %}
             <div id="city_list-{{ loop.index }}">
-                <ul>
+                <ul class="orderTypeTabList">
                     <li class="city-{{ loop.index }}-unapproved-tab">
                         <a href="#city-{{ loop.index }}-unapproved">
                             {{ 'admin.dispatcher.unapproved'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unapproved.deliver|length + city.unapproved.selfdeliver|length + city.unapproved.pickup|length) }})</span>
                         </a>
+                        {% if city.unapproved.late > 0 %}
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        {% endif %}
                     </li>
                     <li class="city-{{ loop.index }}-unassigned-tab">
                         <a href="#city-{{ loop.index }}-unassigned">
                             {{ 'admin.dispatcher.unassigned'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unassigned.deliver|length + city.unassigned.selfdeliver|length + city.unassigned.pickup|length) }})</span>
                         </a>
+                        {% if city.unassigned.late > 0 %}
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        {% endif %}
                     </li>
                     <li class="city-{{ loop.index }}-unconfirmed-tab">
                         <a href="#city-{{ loop.index }}-unconfirmed">
                             {{ 'admin.dispatcher.unconfirmed'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unconfirmed.deliver|length + city.unconfirmed.selfdeliver|length + city.unconfirmed.pickup|length) }})</span>
                         </a>
+                        {% if city.unconfirmed.late > 0 %}
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        {% endif %}
                     </li>
                     <li>
                         <a href="#city-{{ loop.index }}-undelivered">
                             {{ 'admin.dispatcher.undelivered'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.not_finished.deliver|length + city.not_finished.selfdeliver|length + city.not_finished.pickup|length) }})</span>
                         </a>
+                        {% if city.not_finished.late > 0 %}
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        {% endif %}
                     </li>
                     <li>
                         <a href="#city-{{ loop.index }}-canceled">
@@ -444,51 +460,6 @@
                     {% endif %}
                 </div>
             </div>
-            <script type="text/javascript">
-                $(document).ready(function(){
-                    $('#city_list-{{ loop.index }}').tabs();
-
-                    if ($('#city_list-{{ loop.index }} span.glyphicon-exclamation-sign').length > 0) {
-                        var tabikText = $('.city_tabik-{{ loop.index }}');
-
-                        if (tabikText.find('span.glyphicon-exclamation-sign').length < 1) {
-                            tabikText.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
-                        }
-
-                        if ($('#city-{{ loop.index }}-unassigned span.glyphicon-exclamation-sign').length > 0) {
-                            var smallTabikText = $('.city-{{ loop.index }}-unassigned-tab');
-
-                            if (smallTabikText.find('span.glyphicon-exclamation-sign').length < 1) {
-                                smallTabikText.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
-                            }
-                        }
-
-                        if ($('#city-{{ loop.index }}-canceled span.glyphicon-exclamation-sign').length > 0) {
-                            var smallTabikText = $('.city-{{ loop.index }}-canceled-tab');
-
-                            if (smallTabikText.find('span.glyphicon-exclamation-sign').length < 1) {
-                                smallTabikText.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
-                            }
-                        }
-
-                        if ($('#city-{{ loop.index }}-navproblems span.glyphicon-exclamation-sign').length > 0) {
-                            var smallTabikText = $('.city-{{ loop.index }}-navproblems-tab');
-
-                            if (smallTabikText.find('span.glyphicon-exclamation-sign').length < 1) {
-                                smallTabikText.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
-                            }
-                        }
-
-                        if ($('#city-{{ loop.index }}-unconfirmed span.glyphicon-exclamation-sign').length > 0) {
-                            var smallTabikText = $('.city-{{ loop.index }}-unconfirmed-tab');
-
-                            if (smallTabikText.find('span.glyphicon-exclamation-sign').length < 1) {
-                                smallTabikText.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
-                            }
-                        }
-                    }
-                });
-            </script>
         {% endfor %}
     </div>
     <div class="drivers_list">

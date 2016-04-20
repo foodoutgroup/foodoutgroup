@@ -7,12 +7,14 @@ use Food\OrderBundle\Service\OrderService;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DispatcherAdminController extends Controller
 {
     public function listAction()
     {
         $repo = $this->get('doctrine')->getRepository('FoodOrderBundle:Order');
+        $orderService = $this->get('food.order');
         $placeService = $this->get('food.places');
         $logisticsService = $this->get('food.logistics');
 
@@ -36,21 +38,25 @@ class DispatcherAdminController extends Controller
                     'pickup' => array(),
                     'selfdeliver' => array(),
                     'deliver' => array(),
+                    'late' => 0
                 ),
                 'unassigned' => array(
                     'pickup' => array(),
                     'selfdeliver' => array(),
                     'deliver' => array(),
+                    'late' => 0
                 ),
                 'unconfirmed' => array(
                     'pickup' => array(),
                     'selfdeliver' => array(),
                     'deliver' => array(),
+                    'late' => 0
                 ),
                 'not_finished' => array(
                     'pickup' => array(),
                     'selfdeliver' => array(),
                     'deliver' => array(),
+                    'late' => 0
                 ),
                 'canceled' => array(
                     'pickup' => array(),
@@ -75,6 +81,10 @@ class DispatcherAdminController extends Controller
             } else {
                 $cityOrders[$order->getPlacePointCity()]['unapproved']['deliver'][] = $order;
             }
+
+            if ($orderService->isLate($order)) {
+                ++$cityOrders[$order->getPlacePointCity()]['unapproved']['late'];
+            }
         }
 
         foreach($unassigned as $order) {
@@ -84,6 +94,10 @@ class DispatcherAdminController extends Controller
                 $cityOrders[$order->getPlacePointCity()]['unassigned']['selfdeliver'][] = $order;
             } else {
                 $cityOrders[$order->getPlacePointCity()]['unassigned']['deliver'][] = $order;
+            }
+
+            if ($orderService->isLate($order)) {
+                ++$cityOrders[$order->getPlacePointCity()]['unassigned']['late'];
             }
         }
 
@@ -95,6 +109,10 @@ class DispatcherAdminController extends Controller
             } else {
                 $cityOrders[$order->getPlacePointCity()]['unconfirmed']['deliver'][] = $order;
             }
+
+            if ($orderService->isLate($order)) {
+                ++$cityOrders[$order->getPlacePointCity()]['unconfirmed']['late'];
+            }
         }
 
         foreach($notFinished as $order) {
@@ -104,6 +122,10 @@ class DispatcherAdminController extends Controller
                 $cityOrders[$order->getPlacePointCity()]['not_finished']['selfdeliver'][] = $order;
             } else {
                 $cityOrders[$order->getPlacePointCity()]['not_finished']['deliver'][] = $order;
+            }
+
+            if ($orderService->isLate($order)) {
+                ++$cityOrders[$order->getPlacePointCity()]['not_finished']['late'];
             }
         }
 
@@ -335,56 +357,63 @@ class DispatcherAdminController extends Controller
     {
         $repo = $this->get('doctrine')->getManager()->getRepository('FoodOrderBundle:Order');
 
-        $orders = $request->get('orders');
-        $needUpdate = false;
+        $lastCheck = $request->get('lastCheck');
 
-        if (!empty($orders)) {
-            foreach($orders as $city => $orderData) {
-                foreach ($orderData as $type => $recentId) {
-                    switch($type) {
-                        case 'unassigned':
-                            if ($repo->hasNewUnassignedOrder($city, $recentId)) {
-                                $needUpdate = true;
-                                break 2;
-                            }
-                            break;
-
-                        case 'unconfirmed':
-                            if ($repo->hasNewUnconfirmedOrder($city, $recentId, false)) {
-                                $needUpdate = true;
-                                break 2;
-                            }
-                            break;
-
-                        case 'unconfirmed-pickup':
-                            if ($repo->hasNewUnconfirmedOrder($city, $recentId, true)) {
-                                $needUpdate = true;
-                                break 2;
-                            }
-                            break;
-                        case 'unapproved':
-                            if ($repo->hasNewUnapprovedOrder($city, $recentId)) {
-                                $needUpdate = true;
-                                break 2;
-                            }
-                            break;
-                    }
-                }
-            }
+        if (!empty($lastCheck)) {
+            $needUpdate = $repo->hasNewerOrdersThan($lastCheck);;
         } else {
-            if ($repo->hasNewUnassignedOrder()) {
-                $needUpdate = true;
-            }
-            if ($repo->hasNewUnconfirmedOrder()) {
-                $needUpdate = true;
-            }
+            $needUpdate = true;
         }
+
+//        $orders = $request->get('orders');
+
+//        if (!empty($orders)) {
+//            foreach($orders as $city => $orderData) {
+//                foreach ($orderData as $type => $recentId) {
+//                    switch($type) {
+//                        case 'unassigned':
+//                            if ($repo->hasNewUnassignedOrder($city, $recentId)) {
+//                                $needUpdate = true;
+//                                break 2;
+//                            }
+//                            break;
+//
+//                        case 'unconfirmed':
+//                            if ($repo->hasNewUnconfirmedOrder($city, $recentId, false)) {
+//                                $needUpdate = true;
+//                                break 2;
+//                            }
+//                            break;
+//
+//                        case 'unconfirmed-pickup':
+//                            if ($repo->hasNewUnconfirmedOrder($city, $recentId, true)) {
+//                                $needUpdate = true;
+//                                break 2;
+//                            }
+//                            break;
+//                        case 'unapproved':
+//                            if ($repo->hasNewUnapprovedOrder($city, $recentId)) {
+//                                $needUpdate = true;
+//                                break 2;
+//                            }
+//                            break;
+//                    }
+//                }
+//            }
+//        } else {
+//            if ($repo->hasNewUnassignedOrder()) {
+//                $needUpdate = true;
+//            }
+//            if ($repo->hasNewUnconfirmedOrder()) {
+//                $needUpdate = true;
+//            }
+//        }
 
         if ($needUpdate) {
-            return new Response('YES');
+            return new JsonResponse(array('lastCheck' => date('U'), 'needUpdate' => 'YES'));
         }
 
-        return new Response('NO');
+        return new JsonResponse(array('lastCheck' => date('U'), 'needUpdate' => 'NO'));
     }
 
     public function markOrderContactedAction(Request $request)
