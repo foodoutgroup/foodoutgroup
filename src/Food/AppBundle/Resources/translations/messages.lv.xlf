@@ -1276,7 +1276,11 @@
             </trans-unit>
             <trans-unit id="general.base_page_title" resname="general.base_page_title">
                 <source>general.base_page_title</source>
-                <target>Ēdienu piegāde</target>
+                <target>Ātra ēdienu piegāde uz mājām vai biroju Rīgā!</target>
+            </trans-unit>
+            <trans-unit id="general.base_page_description" resname="general.base_page_description">
+                <source>general.base_page_description</source>
+                <target>Plaša izvēle - Ātra piegāde! Vairāk nekā 40 restorānu ēdienu piedāvājums. Apskati ēdienkarti, izvēlies to, kas garšo un pasūti jau tagad!</target>
             </trans-unit>
             <trans-unit id="general.restaurant_page_title" resname="general.restaurant_page_title">
                 <source>general.restaurant_page_title</source>

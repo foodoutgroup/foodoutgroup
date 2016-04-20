@@ -76,6 +76,7 @@
     {% endblock %}
 
 {% block title %}{% trans %}general.base_page_title{% endtrans %} | {{ page_title }}{% endblock %}
+{% block seo_description %}{% trans %}general.base_page_description{% endtrans %}{% endblock %}
 
 {% block delfi_js %}
     {% if show_delfi_banner %}
