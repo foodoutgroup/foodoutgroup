@@ -362,7 +362,7 @@ sonata_admin:
                       - sonata.admin.newsletter_subscribers
                       - sonata.admin.unused_sf_numbers
                       - sonata.admin.seorecords
-                  roles: [ ROLE_EDITOR, ROLE_MARKETING ]
+                  roles: [ ROLE_EDITOR, ROLE_MARKETING, ROLE_ADMIN ]
               admin.editor:
                   label: admin.group.editor
                   label_catalogue: SonataAdminBundle
@@ -372,7 +372,7 @@ sonata_admin:
                       - sonata.admin.banned_ips
                       - sonata.admin.street
                       - sonata.admin.params
-                  roles: [ ROLE_EDITOR ]
+                  roles: [ ROLE_EDITOR, ROLE_ADMIN ]
               admin.marketing:
                   label: admin.group.marketing
                   label_catalogue: SonataAdminBundle
@@ -385,7 +385,7 @@ sonata_admin:
                       - sonata.admin.latency
                       - sonata.admin.driver_latency
                       - sonata.admin.restaurant_orders_report
-                  roles: [ ROLE_MARKETING ]
+                  roles: [ ROLE_MARKETING, ROLE_ADMIN ]
               admin.reports:
                   items: ~
                   item_adds:
