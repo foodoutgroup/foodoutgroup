@@ -9,6 +9,9 @@
             page+="/{{ randomizer }}";
         {% endif %}
         ga('send', 'pageview', page);
+        {# Facebook ViewContent Begin #}
+        fbq('track', 'ViewContent');
+        {# Facebook ViewContent End #}
     }
 </script>
 <style>
