@@ -61,14 +61,12 @@ class DishController extends Controller
         $shifter = $miscService->parseTimeToMinutes($dishEnt->getPlace()->getDeliveryTime());
         $extraTestStuff = array(
             '0' => array(),
-            '1' => array('message' => 'Užsisakyk patiekalą per {countdown} ir pristatysime iki '.date("H:i", strtotime("+".$shifter." minutes")).'!', 'counter' => true),
-            '2' => array('message' => 'Užsisakyk patiekalą per {countdown} ir pristatysime iki '.date("H:i", strtotime("+".$shifter." minutes")).'!', 'counter' => true),
-            '3' => array('message' => 'Šį patiekalą pristatėme jau 100+ klientų! Užsisakyk ir tu!', 'counter' => false),
-            '4' => array('message' => 'Šį patiekalą pristatėme jau 100+ klientų! Užsisakyk ir tu!', 'counter' => false),
-            '5' => array('message' => 'Patiekalas jau rezervuotas! Nepraleisk progos ir užsisakyk!', 'counter' => false),
-            '6' => array('message' => 'Patiekalas jau rezervuotas! Nepraleisk progos ir užsisakyk!', 'counter' => false),
-            '7' => array('message' => 'Greičiau užsakysi – greičiau gausi!', 'counter' => false),
-            '8' => array('message' => 'Greičiau užsakysi – greičiau gausi!', 'counter' => false),
+            '1' => array('message' => 'Šį patiekalą pristatėme jau 100+ klientų! Užsisakyk ir tu!', 'counter' => false),
+            '2' => array('message' => 'Šį patiekalą pristatėme jau 100+ klientų! Užsisakyk ir tu!', 'counter' => false),
+            '3' => array('message' => 'Patiekalas jau rezervuotas! Nepraleisk progos ir užsisakyk!', 'counter' => false),
+            '4' => array('message' => 'Patiekalas jau rezervuotas! Nepraleisk progos ir užsisakyk!', 'counter' => false),
+            '5' => array('message' => 'Greičiau užsakysi – greičiau gausi!', 'counter' => false),
+            '6' => array('message' => 'Greičiau užsakysi – greičiau gausi!', 'counter' => false),
 
         );
         return $this->render(

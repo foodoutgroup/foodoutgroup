@@ -162,32 +162,5 @@
     if(!window.jQuery)
     {
         document.getElementById('detailed-dish-popup').setAttribute('style', 'display: none');
-    } else {
-        {% if  (randomizer == '1' or randomizer == '2') %}
-            var countdown =  {{ countdown }};
-            var currentcount = {{ currentcount }};
-            var someRealCounter = 0;
-            var theMessage = '{{ extraMessages[randomizer].message }}';
-            setTimeout("recounter()", 1000);
-            function recounter()
-            {
-                currentcount = currentcount + 1;
-                var reacounted = countdown - currentcount;
-                if (reacounted < 0) {
-                    reacounted = 0;
-                }
-                var mind = reacounted % (60 * 60);
-                var minutes = Math.floor(mind / 60);
-
-                var secd = mind % 60;
-                var seconds = Math.ceil(secd);
-                if (seconds <= 9) {
-                    seconds = '0' + seconds;
-                }
-                theNewMessage = theMessage.replace('{countdown}', minutes + ':' + seconds);
-                $('.name.message').text(theNewMessage);
-                setTimeout("recounter()", 1000);
-            }
-        {% endif %}
     }
 </script>
