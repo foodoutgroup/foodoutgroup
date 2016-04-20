@@ -404,6 +404,10 @@ LV-1046</target>
                 <source>general.coupon.only_delivery</source>
                 <target>Atvainojiet, šis atlaižu kupons ir derīgs tikai pasūtījumiem ar piegādi.</target>
             </trans-unit>
+            <trans-unit id="general.coupon.only_pickup" resname="general.coupon.only_pickup">
+                <source>general.coupon.only_pickup</source>
+                <target>Sorry, this coupon is only for pickup.</target>
+            </trans-unit>
             <trans-unit id="e5e171e2183ae1de5135cc5b77356dab" resname="general.coupon.not_active">
                 <source>general.coupon.not_active</source>
                 <target>Jūsu iesniegtais atlaides kupons nav derīgs.</target>

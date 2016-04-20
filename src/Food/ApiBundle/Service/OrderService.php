@@ -185,13 +185,22 @@ class OrderService extends ContainerAware
                 );
             }
 
-            if (mb_strtolower($discountVar['code'], 'utf8') == 'studentas' && $serviceVar['type'] == "pickup") {
+            if ($serviceVar['type'] == "pickup" && !$coupon->isAllowedForPickup()) {
+                throw new ApiException(
+                    'Coupon for delivery',
+                    404,
+                    array(
+                        'error' => 'Coupon only for delivery',
+                        'description' => $this->container->get('translator')->trans('general.coupon.only_delivery')
+                    )
+                );
+            } elseif ($serviceVar['type'] != "pickup" && !$coupon->isAllowedForDelivery()) {
                 throw new ApiException(
                     'Coupon for pickup',
                     404,
                     array(
                         'error' => 'Coupon only for pickup',
-                        'description' => $this->container->get('translator')->trans('general.coupon.only_delivery')
+                        'description' => $this->container->get('translator')->trans('general.coupon.only_pickup')
                     )
                 );
             }

@@ -34,6 +34,11 @@ class CouponGeneratorAdmin extends FoodAdmin
                 Coupon::TYPE_API => 'API',
                 Coupon::TYPE_WEB => 'WEB'
             ), 'required' => true))
+            ->add('method', 'choice', array('choices' => array(
+                Coupon::METHOD_BOTH => 'BOTH',
+                Coupon::METHOD_DELIVERY => 'DELIVERY',
+                Coupon::METHOD_PICKUP => 'PICKUP'
+            ), 'required' => true))
             ->add('singleUse', 'checkbox', array('label' => 'admin.coupon.single_use', 'required' => false))
             ->add('validFrom', 'datetime', array('required' => false))
             ->add('validTo', 'datetime', array('required' => false))

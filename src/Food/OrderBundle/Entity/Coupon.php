@@ -17,6 +17,10 @@ class Coupon
     const TYPE_API = 'api';
     const TYPE_WEB = 'web';
 
+    const METHOD_BOTH = 'both';
+    const METHOD_DELIVERY = 'delivery';
+    const METHOD_PICKUP = 'pickup';
+
     /**
      * @var integer
      *
@@ -99,6 +103,13 @@ class Coupon
      * @ORM\Column(name="type", type="string", length=4, options={"fixed" = true, "default" = "both"})
      */
     private $type = self::TYPE_BOTH;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="method", type="string", length=8, options={"default" = "both"})
+     */
+    private $method = self::METHOD_BOTH;
 
     /**
      * @var bool
@@ -775,5 +786,52 @@ class Coupon
     public function isAllowedForWeb()
     {
         return in_array($this->getType(), array(self::TYPE_BOTH, self::TYPE_WEB));
+    }
+
+    /**
+     * Set method
+     *
+     * @param string $method
+     * @return Coupon
+     */
+    public function setMethod($method)
+    {
+        if (!in_array($method, array(self::METHOD_BOTH, self::METHOD_DELIVERY, self::METHOD_PICKUP))) {
+            throw new \InvalidArgumentException('Wrong method defined');
+        }
+
+        $this->method = $method;
+
+        return $this;
+    }
+
+    /**
+     * Get method
+     *
+     * @return string
+     */
+    public function getMethod()
+    {
+        return $this->method;
+    }
+
+    /**
+     * Checks is this coupon is allowed when delivery
+     *
+     * @return mixed
+     */
+    public function isAllowedForDelivery()
+    {
+        return in_array($this->getMethod(), array(self::METHOD_BOTH, self::METHOD_BOTH));
+    }
+
+    /**
+     * Checks is this coupon is allowed when pickup
+     *
+     * @return mixed
+     */
+    public function isAllowedForPickup()
+    {
+        return in_array($this->getMethod(), array(self::METHOD_BOTH, self::METHOD_PICKUP));
     }
 }

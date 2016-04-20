@@ -107,6 +107,13 @@ class CouponGenerator
     private $type = Coupon::TYPE_BOTH;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="method", type="string", length=8, options={"default" = "both"})
+     */
+    private $method = Coupon::METHOD_BOTH;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="single_use", type="boolean")
@@ -777,5 +784,32 @@ class CouponGenerator
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set method
+     *
+     * @param string $method
+     * @return CouponGenerator
+     */
+    public function setMethod($method)
+    {
+        if (!in_array($method, array(Coupon::METHOD_BOTH, Coupon::METHOD_DELIVERY, Coupon::METHOD_PICKUP))) {
+            throw new \InvalidArgumentException('Wrong method defined');
+        }
+        
+        $this->method = $method;
+
+        return $this;
+    }
+
+    /**
+     * Get method
+     *
+     * @return string 
+     */
+    public function getMethod()
+    {
+        return $this->method;
     }
 }

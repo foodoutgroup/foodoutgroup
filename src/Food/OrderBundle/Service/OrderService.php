@@ -3130,17 +3130,11 @@ class OrderService extends ContainerAware
                 $formErrors[] = 'general.coupon.wrong_place_simple';
             } elseif (!$coupon->isAllowedForWeb()) {
                 $formErrors[] = 'general.coupon.only_api';
-            }
-
-            // TODO temporary hack for studentas coupon
-            if ($coupon->getCode() == 'STUDENTAS' && $takeAway) {
+            } elseif (!$takeAway && !$coupon->isAllowedForDelivery()) {
+                $formErrors[] = 'general.coupon.only_pickup';
+            } elseif ($takeAway && !$coupon->isAllowedForPickup()) {
                 $formErrors[] = 'general.coupon.only_delivery';
             }
-        }
-
-        // TODO temporary hack for studentas coupon
-        if (mb_strtolower($request->get('coupon_code'), 'utf8') == 'studentas' && $takeAway) {
-            $formErrors[] = 'general.coupon.only_delivery';
         }
 
         // Validate das phone number :)
@@ -3655,6 +3649,7 @@ class OrderService extends ContainerAware
                         ->setDiscountSum( $generator->getDiscountSum() )
                         ->setOnlyNav( $generator->getOnlyNav() )
                         ->setType($generator->getType())
+                        ->setMethod($generator->getMethod())
                         ->setEnableValidateDate( true )
                         ->setFreeDelivery( $generator->getFreeDelivery() )
                         ->setSingleUse( $generator->getSingleUse() )
