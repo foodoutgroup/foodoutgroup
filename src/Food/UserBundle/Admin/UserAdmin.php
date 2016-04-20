@@ -119,6 +119,8 @@ class UserAdmin extends SonataUserAdmin {
                             'ROLE_SUPPORT' => 'ROLE_SUPPORT',
                             'ROLE_DISPATCHER' => 'ROLE_DISPATCHER',
                             'ROLE_USER' => 'ROLE_USER',
+                            'ROLE_MARKETING' => 'ROLE_MARKETING',
+                            'ROLE_EDITOR' => 'ROLE_EDITOR',
                         )
                     )
                 )
@@ -158,11 +160,10 @@ class UserAdmin extends SonataUserAdmin {
         return $this->getConfigurationPool()->getContainer()->get('fos_user.user_manager');
     }
 
-
     /**
      * If user is a moderator - set place, as he can not choose it. Chuck Norris protection is active
      *
-     * @param \Food\DishesBundle\Entity\Dish $object
+     * @param \Food\UserBundle\Entity\User $object
      * @return void
      */
     public function prePersist($object)
@@ -173,16 +174,18 @@ class UserAdmin extends SonataUserAdmin {
     }
 
     /**
-     * @param \Food\DishesBundle\Entity\Dish $object
+     * @param \Food\UserBundle\Entity\User $object
      * @return void
      */
     public function preUpdate($object)
     {
         $this->fixRelations($object);
+        $this->getUserManager()->updateCanonicalFields($object);
+        $this->getUserManager()->updatePassword($object);
     }
 
     /**
-     * @param \Food\DishesBundle\Entity\Dish $object
+     * @param \Food\UserBundle\Entity\User $object
      */
     private function fixRelations($object)
     {
