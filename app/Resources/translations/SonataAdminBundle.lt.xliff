@@ -694,6 +694,14 @@
                 <source>ROLE_DISPATCHER</source>
                 <target>Dispečerė</target>
             </trans-unit>
+            <trans-unit id="ROLE_MARKETING">
+                <source>ROLE_MARKETING</source>
+                <target>Marketing</target>
+            </trans-unit>
+            <trans-unit id="ROLE_EDITOR">
+                <source>ROLE_EDITOR</source>
+                <target>Editor</target>
+            </trans-unit>
             <trans-unit id="ROLE_SUPPORT">
                 <source>ROLE_SUPPORT</source>
                 <target>Pagalba</target>
@@ -861,6 +869,19 @@
                 <source>admin.subscribers.created_at</source>
                 <target>Užsiprenumeravo</target>
             </trans-unit>
+
+            <!-- Editor list -->
+            <trans-unit id="admin.group.editor">
+                <source>admin.group.editor</source>
+                <target>Editor</target>
+            </trans-unit>
+
+            <!-- Marketing list -->
+            <trans-unit id="admin.group.marketing">
+                <source>admin.group.marketing</source>
+                <target>Marketing</target>
+            </trans-unit>
+
             <!-- Orders list -->
             <trans-unit id="admin.group.orders">
                 <source>admin.group.orders</source>

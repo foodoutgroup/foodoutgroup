@@ -65,7 +65,11 @@ class PlaceFilter
             }
 
             // Admins are allowed to view all
-            if ($this->getSecurityContext()->isGranted('ROLE_ADMIN') || $this->getSecurityContext()->isGranted('ROLE_DISPATCHER')) {
+            if ($this->getSecurityContext()->isGranted('ROLE_ADMIN')
+                || $this->getSecurityContext()->isGranted('ROLE_DISPATCHER')
+                || $this->getSecurityContext()->isGranted('ROLE_EDITOR')
+                || $this->getSecurityContext()->isGranted('ROLE_MARKETING')
+            ) {
                 return;
             }
 

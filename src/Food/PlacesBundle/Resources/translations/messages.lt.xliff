@@ -169,6 +169,14 @@
                 <source>ROLE_USER</source>
                 <target>Lankytojas</target>
             </trans-unit>
+            <trans-unit id="ROLE_MARKETING">
+                <source>ROLE_MARKETING</source>
+                <target>Marketing</target>
+            </trans-unit>
+            <trans-unit id="ROLE_EDITOR">
+                <source>ROLE_EDITOR</source>
+                <target>Editor</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

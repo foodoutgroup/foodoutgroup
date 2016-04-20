@@ -25,6 +25,9 @@
 
 {% endblock %}
 {% block body %}
+    {# Facebook Lead Begin #}
+    <script>fbq('track', 'Lead');</script>
+    {# Facebook Lead End #}
     {% javascripts '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.pack.js'
     '@FoodAppBundle/Resources/public/scripts/fancy/helpers/jquery.fancybox-media.js' %}
     <script src="{{ asset_url }}"></script>

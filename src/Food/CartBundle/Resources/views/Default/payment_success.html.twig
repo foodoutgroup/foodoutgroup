@@ -75,6 +75,9 @@
         };
     </script>
     <!-- mailersoft end -->
+    {# Facebook Purchase Begin #}
+    <script>fbq('track', 'Purchase', {value: '{{ order.total }}', currency:'{{ currency_iso }}'});</script>
+    {# Facebook Purchase End #}
     {% javascripts '@FoodAppBundle/Resources/public/js_main/order.js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

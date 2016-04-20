@@ -146,6 +146,14 @@
                 <source>ROLE_DISPATCHER</source>
                 <target>Dispečere</target>
             </trans-unit>
+            <trans-unit id="ROLE_MARKETING">
+                <source>ROLE_MARKETING</source>
+                <target>Marketing</target>
+            </trans-unit>
+            <trans-unit id="ROLE_EDITOR">
+                <source>ROLE_EDITOR</source>
+                <target>Editor</target>
+            </trans-unit>
             <trans-unit id="1871dbe4ffdad6ba92dba845efaa6fa7" resname="ROLE_USER">
                 <source>ROLE_USER</source>
                 <target>Apmeklētājs</target>

@@ -1,7 +1,8 @@
 var Dispatcher = {
     _locale: 'lt',
     _translations: {},
-    recentOrders: {},
+    // recentOrders: {},
+    lastCheck: '',
     bell: false,
 
     setLocale: function(locale) {
@@ -21,42 +22,11 @@ var Dispatcher = {
     },
 
     onLoadEvents: function() {
-        $('.city_list').tabs();
+        Dispatcher.initTabs();
 
-        $('.city_list .city-tab a').on( "click", function( event ) {
-            var city = $(event.target).parent().attr('data-city');
-            var driversHolder = $('.drivers_list');
+        Dispatcher.initTooltips();
 
-            // Wow - such hack.. Very sorry for this
-            if (city.indexOf('Bendoriai') > -1) {
-                city = 'Vilnius';
-            }
-
-            driversHolder.find('.city_drivers').addClass('hidden');
-            driversHolder.find('.city_drivers.driver_'+city).removeClass('hidden');
-        } );
-
-        // Visus stripintus tekstus ispiesim tooltipe :)
-        $(".spliced-text").tooltip({});
-
-        // Vairuotojo papildoma info :)
-        $(".driver-info-extended").tooltip({
-            tooltipClass: 'driver-tooltip'
-        });
-
-        // Vairuotojo papildoma info :)
-        $(".status-change-history").tooltip({
-            placement: 'right'
-        });
-
-        // Vairuotojo papildoma info :)
-        $(".restourant-phones").tooltip({
-            placement: 'right'
-        });
-
-        $(".city-tab a").tooltip({placement: 'bottom'});
-
-        $(".todo_nieks_nezino_klases .unassigned, .todo_nieks_nezino_klases .not_finished").on('click', '.order_checkbox', function(){
+        $(".todo_nieks_nezino_klases").on('click', ' .unassigned .order_checkbox,.not_finished .order_checkbox', function(){
             Dispatcher.toggleDriverButton($(this));
             //TODO - enable active drivers list buttons
         });
@@ -293,8 +263,7 @@ var Dispatcher = {
         setTimeout(
             function() {
                 Dispatcher.checkForNewOrders();
-            }, 60000
-            // 61000
+            }, 30000
         );
     },
 
@@ -303,9 +272,10 @@ var Dispatcher = {
         var url = Routing.generate('food_admin_check_new_orders', { '_locale': Dispatcher._locale, _sonata_admin: 'sonata.admin.dish' });
         $.get(
             url,
-            { 'orders': Dispatcher.recentOrders},
+            { 'lastCheck': Dispatcher.lastCheck},
             function(data) {
-                if (data == "YES") {
+                Dispatcher.lastCheck = data.lastCheck;
+                if (data.needUpdate == "YES") {
                     // play a sound for new order
                     if (Dispatcher.bell) {
                         ion.sound.play("door_bell");
@@ -315,40 +285,17 @@ var Dispatcher = {
                         window.location.href,
                         null,
                         function (data) {
-                            $('#city-1-unapproved').html($(data).find('#city-1-unapproved').html());
-                            $('#city-1-unassigned').html($(data).find('#city-1-unassigned').html());
-                            $('#city-1-unconfirmed').html($(data).find('#city-1-unconfirmed').html());
-                            $('#city-1-undelivered').html($(data).find('#city-1-undelivered').html());
-                            $('#city-1-canceled').html($(data).find('#city-1-canceled').html());
-                            $('#city-1-navproblems').html($(data).find('#city-1-navproblems').html());
-                            $('#city-2-unapproved').html($(data).find('#city-2-unapproved').html());
-                            $('#city-2-unassigned').html($(data).find('#city-2-unassigned').html());
-                            $('#city-2-unconfirmed').html($(data).find('#city-2-unconfirmed').html());
-                            $('#city-2-undelivered').html($(data).find('#city-2-undelivered').html());
-                            $('#city-2-canceled').html($(data).find('#city-2-canceled').html());
-                            $('#city-2-navproblems').html($(data).find('#city-2-navproblems').html());
-                            $('#city-3-unapproved').html($(data).find('#city-3-unapproved').html());
-                            $('#city-3-unassigned').html($(data).find('#city-3-unassigned').html());
-                            $('#city-3-unconfirmed').html($(data).find('#city-3-unconfirmed').html());
-                            $('#city-3-undelivered').html($(data).find('#city-3-undelivered').html());
-                            $('#city-3-canceled').html($(data).find('#city-3-canceled').html());
-                            $('#city-3-navproblems').html($(data).find('#city-3-navproblems').html());
-                            $('#city-4-unapproved').html($(data).find('#city-4-unapproved').html());
-                            $('#city-4-unassigned').html($(data).find('#city-4-unassigned').html());
-                            $('#city-4-unconfirmed').html($(data).find('#city-4-unconfirmed').html());
-                            $('#city-4-undelivered').html($(data).find('#city-4-undelivered').html());
-                            $('#city-4-canceled').html($(data).find('#city-4-canceled').html());
-                            $('#city-4-navproblems').html($(data).find('#city-4-navproblems').html());
-                            $('.drivers_list').html($(data).find('.drivers_list').html());
+                            Dispatcher.refreshFromData(data);
                             $('.sonata-ba-list').unmask();
                         }
                     )
                     // location.reload();
                 }
-
-                Dispatcher.subscribeForNewOrders();
             }
-        );
+        )
+            .always(function(){
+                Dispatcher.subscribeForNewOrders();
+            });
     },
 
     /**
@@ -397,5 +344,114 @@ var Dispatcher = {
                 }
             }
         );
+    },
+    
+    initTabs: function() {
+        $('.city_list').tabs();
+
+        $('.city_list .city-tab a').on( "click", function( event ) {
+            var city = $(event.target).closest('.city-tab').attr('data-city');
+            var driversHolder = $('.drivers_list');
+
+            // Wow - such hack.. Very sorry for this
+            if (city.indexOf('Bendoriai') > -1) {
+                city = 'Vilnius';
+            }
+
+            driversHolder.find('.city_drivers').addClass('hidden');
+            driversHolder.find('.city_drivers.driver_'+city).removeClass('hidden');
+        } );
+
+        var total = $('.city-tab').length;
+
+        for (i = 1; i <= total; ++i) {
+            $('#city_list-' + i).tabs();
+        }
+
+
+    },
+
+    refreshFromData: function(data) {
+        $(".city-tab a").tooltip("destroy");
+        var cityTabTotal = $('.city-tab').length;
+
+        for (var cityTabIndex = 0; cityTabIndex < cityTabTotal; ++cityTabIndex) {
+            // Current city tab
+            var $currentCityTab = $($('.city-tab')[cityTabIndex]);
+
+            // Current city tab content
+            var $tabContent = $('#city_list-'+(cityTabIndex+1));
+
+            // Inner tab list of current city
+            var $orderTypeTabList = $tabContent.find('.orderTypeTabList li');
+
+            // Tab content list of current city
+            var $orderTypeContentList = $tabContent.find('div');
+
+            // Same as above, just from ajax
+            var $data_currentCityTab = $($(data).find('.city-tab')[cityTabIndex]);
+            var $data_tabContent = $(data).find('#city_list-'+(cityTabIndex+1));
+            var $data_orderTypeTabList = $data_tabContent.find('.orderTypeTabList li');
+            var $data_orderTypeContentList = $data_tabContent.find('div');
+
+            var orderTypeTotal = $orderTypeTabList.length;
+
+            for (var orderTypeIndex = 0; orderTypeIndex < orderTypeTotal; ++orderTypeIndex) {
+                // refreshing order type tab count of orders
+                $($orderTypeTabList[orderTypeIndex]).find('.theCount').text($($data_orderTypeTabList[orderTypeIndex]).find('.theCount').text());
+
+                // refreshing tab content
+                $($orderTypeContentList[orderTypeIndex]).html($($data_orderTypeContentList[orderTypeIndex]).html());
+
+                // refreshing order type tab exclamation signs
+                if ($($data_orderTypeTabList[orderTypeIndex]).find('.glyphicon-exclamation-sign').length) {
+                    if (!$($orderTypeTabList[orderTypeIndex]).find('.glyphicon-exclamation-sign').length) {
+                        $($orderTypeTabList[orderTypeIndex]).append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+                    }
+                } else if ($($orderTypeTabList[orderTypeIndex]).find('.glyphicon-exclamation-sign').length) {
+                    $($orderTypeTabList[orderTypeIndex]).find('.glyphicon-exclamation-sign').remove();
+                }
+            }
+
+            // refreshing city tab tooltip info
+            $currentCityTab.find('a').attr('title', $data_currentCityTab.find('a').attr('title'));
+
+            // refreshing city tab count of orders
+            $($('.city-tab')[cityTabIndex]).find('.theCount').text($($(data).find('.city-tab')[cityTabIndex]).find('.theCount').text());
+
+            // refreshing city tab exclamation signs
+            if ($data_currentCityTab.find('.glyphicon-exclamation-sign').length) {
+                if (!$currentCityTab.find('.glyphicon-exclamation-sign').length) {
+                    $currentCityTab.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+                }
+            } else if ($currentCityTab.find('.glyphicon-exclamation-sign').length) {
+                $currentCityTab.find('.glyphicon-exclamation-sign').remove();
+            }
+        }
+
+        $('.drivers_list').html($(data).find('.drivers_list').html());
+        Dispatcher.initTooltips();
+    },
+
+    initTooltips: function() {
+        // Visus stripintus tekstus ispiesim tooltipe :)
+        $(".spliced-text").tooltip({});
+
+        // Vairuotojo papildoma info :)
+        $(".driver-info-extended").tooltip({
+            tooltipClass: 'driver-tooltip'
+        });
+
+        // Vairuotojo papildoma info :)
+        $(".status-change-history").tooltip({
+            placement: 'right'
+        });
+
+        // Vairuotojo papildoma info :)
+        $(".restourant-phones").tooltip({
+            placement: 'right'
+        });
+
+        $(".city-tab a").tooltip({placement: 'bottom'});
     }
 };

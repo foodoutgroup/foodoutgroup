@@ -118,6 +118,9 @@
                                     $.post(addToCartUrl, $('.popup.detailed-dish-popup').serialize(), function(resp) {
                                         if (typeof(resp.block) != "undefined") {
                                             $('.check-block').replaceWith(resp.block);
+                                            {# Facebook AddToCart Begin #}
+                                            fbq('track', 'AddToCart');
+                                            {# Facebook AddToCart End #}
                                         }
                                         dishBlock.unmask();
                                         $.fancybox.close();
@@ -142,6 +145,9 @@
                 $.post(addToCartUrl, $('.popup.detailed-dish-popup').serialize(), function(resp) {
                     if (typeof(resp.block) != "undefined") {
                         $('.check-block').replaceWith(resp.block);
+                        {# Facebook AddToCart Begin #}
+                        fbq('track', 'AddToCart');
+                        {# Facebook AddToCart End #}
                     }
                     dishBlock.unmask();
                     $.fancybox.close();
@@ -151,6 +157,9 @@
             }
             var page = "/lightbox/addtocart";
             ga('send', 'pageview', page);
+            {# Facebook ViewContent Begin #}
+            fbq('track', 'ViewContent');
+            {# Facebook ViewContent End #}
         }
     }
 </script>

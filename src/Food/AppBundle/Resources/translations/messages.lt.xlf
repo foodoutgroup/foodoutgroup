@@ -832,7 +832,11 @@
             </trans-unit>
             <trans-unit id="general.base_page_title" resname="general.base_page_title">
                 <source>general.base_page_title</source>
-                <target>Maistas į namus</target>
+                <target>Maisto pristatymas į namus, biurą ir ne tik!</target>
+            </trans-unit>
+            <trans-unit id="general.base_page_description" resname="general.base_page_description">
+                <source>general.base_page_description</source>
+                <target>Greitas pristatymas + didžiausia restoranų įvairovė Vilniuje, Kaune ir Klaipėdoje. Apžiūrėk savo mėgstamiausių ir populiariausių vietų MENIU, išsirink ir užsisakyk jau DABAR!</target>
             </trans-unit>
             <trans-unit id="general.restaurant_page_title" resname="general.restaurant_page_title">
                 <source>general.restaurant_page_title</source>

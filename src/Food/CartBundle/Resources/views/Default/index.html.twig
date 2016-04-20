@@ -213,6 +213,9 @@
     );
 {% endblock %}
 {% block body %}
+    {# Facebook InitiateCheckout Begin #}
+    <script>fbq('track', 'InitiateCheckout');</script>
+    {# Facebook InitiateCheckout End #}
     {% include 'FoodDishesBundle:Place:dish_cart_partial.html.twig' %}
 
     {% javascripts '@FoodAppBundle/Resources/public/js_main/order.js' %}

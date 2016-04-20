@@ -36,6 +36,9 @@
 {% endblock %}
 
 {% block body %}
+    {# Facebook ViewContent Begin #}
+    <script>fbq('track', 'ViewContent');</script>
+    {# Facebook ViewContent End #}
     {% javascripts '@FoodAppBundle/Resources/public/js_main/place.js' %}
     <script src="{{ asset_url }}"></script>
     <script type="application/javascript">
