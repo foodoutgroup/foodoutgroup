@@ -24,25 +24,7 @@ var Dispatcher = {
     onLoadEvents: function() {
         Dispatcher.initTabs();
 
-        // Visus stripintus tekstus ispiesim tooltipe :)
-        $(".spliced-text").tooltip({});
-
-        // Vairuotojo papildoma info :)
-        $(".driver-info-extended").tooltip({
-            tooltipClass: 'driver-tooltip'
-        });
-
-        // Vairuotojo papildoma info :)
-        $(".status-change-history").tooltip({
-            placement: 'right'
-        });
-
-        // Vairuotojo papildoma info :)
-        $(".restourant-phones").tooltip({
-            placement: 'right'
-        });
-
-        $(".city-tab a").tooltip({placement: 'bottom'});
+        Dispatcher.initTooltips();
 
         $(".todo_nieks_nezino_klases").on('click', ' .unassigned .order_checkbox,.not_finished .order_checkbox', function(){
             Dispatcher.toggleDriverButton($(this));
@@ -417,6 +399,8 @@ var Dispatcher = {
             for (var orderTypeIndex = 0; orderTypeIndex < orderTypeTotal; ++orderTypeIndex) {
                 // refreshing order type tab count of orders
                 $($orderTypeTabList[orderTypeIndex]).find('.theCount').text($($data_orderTypeTabList[orderTypeIndex]).find('.theCount').text());
+
+                // refreshing tab content
                 $($orderTypeContentList[orderTypeIndex]).html($($data_orderTypeContentList[orderTypeIndex]).html());
 
                 // refreshing order type tab exclamation signs
@@ -446,6 +430,28 @@ var Dispatcher = {
         }
 
         $('.drivers_list').html($(data).find('.drivers_list').html());
+        Dispatcher.initTooltips();
+    },
+
+    initTooltips: function() {
+        // Visus stripintus tekstus ispiesim tooltipe :)
+        $(".spliced-text").tooltip({});
+
+        // Vairuotojo papildoma info :)
+        $(".driver-info-extended").tooltip({
+            tooltipClass: 'driver-tooltip'
+        });
+
+        // Vairuotojo papildoma info :)
+        $(".status-change-history").tooltip({
+            placement: 'right'
+        });
+
+        // Vairuotojo papildoma info :)
+        $(".restourant-phones").tooltip({
+            placement: 'right'
+        });
+
         $(".city-tab a").tooltip({placement: 'bottom'});
     }
 };
