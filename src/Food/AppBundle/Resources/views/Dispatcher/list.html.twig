@@ -477,6 +477,12 @@
                         <th></th>
                     </tr>
                     {% for driver in driverList %}
+                        {% if loop.first %}
+                            {% set type = driver['type'] %}
+                        {% elseif type != driver['type'] %}
+                            {% set type = driver['type'] %}
+                            <tr><td colspan="4"><hr/></td></tr>
+                        {% endif %}
                         <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">
                             <td>{{ driver['name'] }}</td>
                             <td><a href="tel:{{ driver['phone'] }}">{{ driver['phone'] }}</a></td>
