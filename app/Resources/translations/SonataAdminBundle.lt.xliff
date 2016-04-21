@@ -746,6 +746,26 @@
                 <source>admin.users.company_address</source>
                 <target>Įmonės adresas</target>
             </trans-unit>
+            <trans-unit id="admin.users.checking_account">
+                <source>admin.users.checking_account</source>
+                <target>Atsiskaitomoji sąskaita</target>
+            </trans-unit>
+            <trans-unit id="admin.users.workers_count">
+                <source>admin.users.workers_count</source>
+                <target>Darbuotojų skaičius</target>
+            </trans-unit>
+            <trans-unit id="admin.users.director_first_name">
+                <source>admin.users.director_first_name</source>
+                <target>Vadovo vardas</target>
+            </trans-unit>
+            <trans-unit id="admin.users.director_last_name">
+                <source>admin.users.director_last_name</source>
+                <target>Pavardė</target>
+            </trans-unit>
+            <trans-unit id="admin.users.discount">
+                <source>admin.users.discount</source>
+                <target>Nuolaida</target>
+            </trans-unit>
             <trans-unit id="admin.users_dision_code.id">
                 <source>admin.users_dision_code.id</source>
                 <target>ID</target>
@@ -1788,6 +1808,22 @@
                 <target>Laisvės pr.</target>
             </trans-unit>
             <!-- Kuponu listas -->
+            <trans-unit id="admin.company_discount_level">
+                <source>admin.company_discount_level</source>
+                <target>Įmonės nuolaidų lygiai</target>
+            </trans-unit>
+            <trans-unit id="admin.discount_level.range_start">
+                <source>admin.discount_level.range_start</source>
+                <target>Nuo</target>
+            </trans-unit>
+            <trans-unit id="admin.discount_level.range_end">
+                <source>admin.discount_level.range_end</source>
+                <target>Iki</target>
+            </trans-unit>
+            <trans-unit id="admin.discount_level.discount">
+                <source>admin.discount_level.discount</source>
+                <target>Nuolaida</target>
+            </trans-unit>
             <trans-unit id="Coupon List">
                 <source>Coupon List</source>
                 <target>Nuolaidos kuponai</target>

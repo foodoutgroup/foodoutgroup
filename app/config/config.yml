@@ -378,6 +378,7 @@ sonata_admin:
                   label_catalogue: SonataAdminBundle
                   items: ~
                   item_adds:
+                      - sonata.admin.company_discount_level
                       - sonata.admin.coupon
                       - sonata.admin.coupon_generator
                       - sonata.admin.combo_discounts
