@@ -760,7 +760,7 @@
             </trans-unit>
             <trans-unit id="admin.users.director_last_name">
                 <source>admin.users.director_last_name</source>
-                <target>Pavardė</target>
+                <target>Vadovo pavardė</target>
             </trans-unit>
             <trans-unit id="admin.users.discount">
                 <source>admin.users.discount</source>
