@@ -160,6 +160,18 @@ class User extends BaseUser
     private $discount;
 
     /**
+     * @var boolean
+     * @ORM\Column(name="allow_delay_payment", type="boolean")
+     */
+    private $allowDelayPayment = false;
+
+    /**
+     * @var boolean
+     * @ORM\Column(name="required_division", type="boolean")
+     */
+    private $requiredDivision = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="UserDivisionCode", mappedBy="user", cascade={"persist", "remove"})
      **/
     private $divisionCodes;
@@ -890,5 +902,51 @@ class User extends BaseUser
     public function getDiscount()
     {
         return $this->discount;
+    }
+
+    /**
+     * Set allowDelayPayment
+     *
+     * @param boolean $allowDelayPayment
+     * @return User
+     */
+    public function setAllowDelayPayment($allowDelayPayment)
+    {
+        $this->allowDelayPayment = $allowDelayPayment;
+    
+        return $this;
+    }
+
+    /**
+     * Get allowDelayPayment
+     *
+     * @return boolean 
+     */
+    public function getAllowDelayPayment()
+    {
+        return $this->allowDelayPayment;
+    }
+
+    /**
+     * Set requiredDivision
+     *
+     * @param boolean $requiredDivision
+     * @return User
+     */
+    public function setRequiredDivision($requiredDivision)
+    {
+        $this->requiredDivision = $requiredDivision;
+    
+        return $this;
+    }
+
+    /**
+     * Get requiredDivision
+     *
+     * @return boolean 
+     */
+    public function getRequiredDivision()
+    {
+        return $this->requiredDivision;
     }
 }

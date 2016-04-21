@@ -569,11 +569,28 @@ class DefaultController extends Controller
             }
         }
 
-        // If coupon in use
+
+        $noMinimumCart = false;
+        $current_user = $this->container->get('security.context')->getToken()->getUser();
+        if (!empty($current_user) && is_object($current_user)) {
+            $noMinimumCart = $current_user->getNoMinimumCart();
+            $this->getDoctrine()->getRepository('FoodUserBundle:User')->getDiscount($current_user);
+        }
+
         $applyDiscount = $freeDelivery = $discountInSum = false;
         $discountSize = null;
         $discountSum = null;
-        if (!empty($couponCode)) {
+
+        // Business client discount
+        if (!empty($current_user) && is_object($current_user) && $current_user->getIsBussinesClient()) {
+            $applyDiscount = true;
+            $discountSize = $this->getDoctrine()->getRepository('FoodUserBundle:User')->getDiscount($current_user);
+            $discountSum = $this->getCartService()->getTotalDiscount($list, $discountSize);
+
+            $total_cart -= $discountSum;
+        }
+        // If coupon in use
+        elseif (!empty($couponCode)) {
             $coupon = $this->get('food.order')->getCouponByCode($couponCode);
 
             if ($coupon) {
@@ -629,12 +646,6 @@ class DefaultController extends Controller
                     $deliveryTotal = 0;
                 }
             }
-        }
-
-        $noMinimumCart = false;
-        $current_user = $this->container->get('security.context')->getToken()->getUser();
-        if (!empty($current_user) && is_object($current_user)) {
-            $noMinimumCart = $current_user->getNoMinimumCart();
         }
 
         $params = array(

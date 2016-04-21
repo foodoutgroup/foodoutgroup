@@ -766,6 +766,14 @@
                 <source>admin.users.discount</source>
                 <target>Nuolaida</target>
             </trans-unit>
+            <trans-unit id="admin.users.allow_delay_payment">
+                <source>admin.users.allow_delay_payment</source>
+                <target>Leisti atidėtą mokėjimą</target>
+            </trans-unit>
+            <trans-unit id="admin.users.required_division">
+                <source>admin.users.required_division</source>
+                <target>Privalomas padalinys</target>
+            </trans-unit>
             <trans-unit id="admin.users_dision_code.id">
                 <source>admin.users_dision_code.id</source>
                 <target>ID</target>

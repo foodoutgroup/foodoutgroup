@@ -766,6 +766,14 @@
                 <source>admin.users.discount</source>
                 <target>Discount</target>
             </trans-unit>
+            <trans-unit id="admin.users.allow_delay_payment">
+                <source>admin.users.allow_delay_payment</source>
+                <target>Allow delayed payment</target>
+            </trans-unit>
+            <trans-unit id="admin.users.required_division">
+                <source>admin.users.required_division</source>
+                <target>Division is required</target>
+            </trans-unit>
             <trans-unit id="admin.users_dision_code.id">
                 <source>admin.users_dision_code.id</source>
                 <target>ID</target>
