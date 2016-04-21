@@ -31,9 +31,21 @@ class DishController extends Controller
                 'FoodDishesBundle:Dish:no_dish.html.twig'
             );
         }
+
+        $extraTestStuff = array(
+            '0' => array(),
+            '1' => array('message' => 'Šį patiekalą pristatėme jau 100+ klientų! Užsisakyk ir tu!', 'counter' => false),
+            '2' => array('message' => 'Šį patiekalą pristatėme jau 100+ klientų! Užsisakyk ir tu!', 'counter' => false),
+            '3' => array('message' => 'Patiekalas jau rezervuotas! Nepraleisk progos ir užsisakyk!', 'counter' => false),
+            '4' => array('message' => 'Patiekalas jau rezervuotas! Nepraleisk progos ir užsisakyk!', 'counter' => false),
+            '5' => array('message' => 'Greičiau užsakysi – greičiau gausi!', 'counter' => false),
+            '6' => array('message' => 'Greičiau užsakysi – greičiau gausi!', 'counter' => false),
+
+        );
+
         $randomized = $this->get('session')->get('randomizer', false);
         if (!$randomized) {
-            $randomized = rand(0, 8);
+            $randomized = rand(0, count($extraTestStuff));
             $this->get('session')->set('randomizer', $randomized);
         }
         if (isset($_GET['randomizer'])) {
@@ -59,16 +71,7 @@ class DishController extends Controller
         }
         $miscService = $this->get('food.app.utils.misc');
         $shifter = $miscService->parseTimeToMinutes($dishEnt->getPlace()->getDeliveryTime());
-        $extraTestStuff = array(
-            '0' => array(),
-            '1' => array('message' => 'Šį patiekalą pristatėme jau 100+ klientų! Užsisakyk ir tu!', 'counter' => false),
-            '2' => array('message' => 'Šį patiekalą pristatėme jau 100+ klientų! Užsisakyk ir tu!', 'counter' => false),
-            '3' => array('message' => 'Patiekalas jau rezervuotas! Nepraleisk progos ir užsisakyk!', 'counter' => false),
-            '4' => array('message' => 'Patiekalas jau rezervuotas! Nepraleisk progos ir užsisakyk!', 'counter' => false),
-            '5' => array('message' => 'Greičiau užsakysi – greičiau gausi!', 'counter' => false),
-            '6' => array('message' => 'Greičiau užsakysi – greičiau gausi!', 'counter' => false),
 
-        );
         return $this->render(
             'FoodDishesBundle:Dish:dish.html.twig',
             array(
