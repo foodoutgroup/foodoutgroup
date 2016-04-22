@@ -658,7 +658,7 @@ class OrderService extends ContainerAware
         // Inform poor user, that his order was accepted
         $order = $this->getOrder();
         $driver = $order->getDriver();
-        if ($driver->getType() == 'local') {
+//        if ($driver->getType() == 'local') {
             $messagingService = $this->container->get('food.messages');
             $logger = $this->container->get('logger');
 
@@ -716,7 +716,7 @@ class OrderService extends ContainerAware
                 $order
             );
             $messagingService->saveMessage($message);
-        }
+//        }
 
         $this->logDeliveryEvent($this->getOrder(), 'order_assigned');
 
