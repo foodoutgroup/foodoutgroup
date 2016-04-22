@@ -386,13 +386,13 @@ var Dispatcher = {
             var $orderTypeTabList = $tabContent.find('.orderTypeTabList li');
 
             // Tab content list of current city
-            var $orderTypeContentList = $tabContent.find('div');
+            var $orderTypeContentList = $tabContent.children('div');
 
             // Same as above, just from ajax
             var $data_currentCityTab = $($(data).find('.city-tab')[cityTabIndex]);
             var $data_tabContent = $(data).find('#city_list-'+(cityTabIndex+1));
             var $data_orderTypeTabList = $data_tabContent.find('.orderTypeTabList li');
-            var $data_orderTypeContentList = $data_tabContent.find('div');
+            var $data_orderTypeContentList = $data_tabContent.children('div');
 
             var orderTypeTotal = $orderTypeTabList.length;
 
@@ -429,7 +429,13 @@ var Dispatcher = {
             }
         }
 
-        $('.drivers_list').html($(data).find('.drivers_list').html());
+        totalDrivers = $('.drivers_list').find('.city_drivers').length;
+        $cityDrivers = $('.drivers_list').find('.city_drivers');
+        $data_cityDrivers = $(data).find('.drivers_list').find('.city_drivers');
+        for(driverIndex = 0; driverIndex < totalDrivers; ++driverIndex) {
+            $($cityDrivers[driverIndex]).html($($data_cityDrivers[driverIndex]).html());
+        }
+
         Dispatcher.initTooltips();
     },
 
