@@ -279,7 +279,7 @@
                                             <input type="radio" name="delivery-type" value="deliver"{% if ((order is not null and order.deliveryType == 'deliver') or order is null) and takeAway == false %} checked="checked"{% endif %}>
                                         </label>
                                     {% endif %}
-                                    {% if (place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'pickup') and not app.user.isBussinesClient|default(false) %}
+                                    {% if (place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'pickup') %}
                                         <label class="custom-radio">{% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
                                             <input type="radio" name="delivery-type" value="pickup"{% if (order is not null and order.deliveryType == 'pickup') or takeAway == true %} checked="checked"{% endif %}>
                                         </label>
@@ -410,7 +410,7 @@
                     </form>
                 </div>
                 <div class="content-righter-small">
-                    {% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{% set couponCode = dataToLoad['coupon_code'] %}{% else %}{% set couponCode = null %}{% endif %}
+                    {% if not app.user.isBussinesClient|default(false) and (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{% set couponCode = dataToLoad['coupon_code'] %}{% else %}{% set couponCode = null %}{% endif %}
                     {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': true, 'order': order, 'takeAway': takeAway, 'couponCode': couponCode })) }}
                 </div>
             </div>

@@ -583,11 +583,13 @@ class DefaultController extends Controller
 
         // Business client discount
         if (!empty($current_user) && is_object($current_user) && $current_user->getIsBussinesClient()) {
-            $applyDiscount = true;
-            $discountSize = $this->getDoctrine()->getRepository('FoodUserBundle:User')->getDiscount($current_user);
-            $discountSum = $this->getCartService()->getTotalDiscount($list, $discountSize);
+            if (!$takeAway && !$place->getSelfDelivery()) {
+                $applyDiscount = true;
+                $discountSize = $this->getDoctrine()->getRepository('FoodUserBundle:User')->getDiscount($current_user);
+                $discountSum = $this->getCartService()->getTotalDiscount($list, $discountSize);
 
-            $total_cart -= $discountSum;
+                $total_cart -= $discountSum;
+            }
         }
         // If coupon in use
         elseif (!empty($couponCode)) {
