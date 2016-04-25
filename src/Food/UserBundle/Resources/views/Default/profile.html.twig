@@ -195,10 +195,12 @@
                             &#123;&#35; <div class="progress-image-wrap"><img src="{{ asset('bundle/foodap/images/delivery-progress.jpg') }}"></div> &#35;&#125;
                         </form>
                     </div>#}
+                    {% if user.isBussinesClient %}
                     <div class="user-righter content-item discount">
                         <h2>{% trans %}general.profile.discount{% endtrans %}</h2>
                         <div>{{ "general.profile.current_discount"|trans({'%discount%': discount}) }}</div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
 

@@ -1569,7 +1569,8 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
 /** end title search change **/
 
 .user-page .user-righter.content-item.cart,
-.user-page .user-righter.content-item.delivery {
+.user-page .user-righter.content-item.delivery,
+.user-page .user-righter.content-item.discount {
     display: none;
 }
 
