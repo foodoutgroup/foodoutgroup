@@ -201,10 +201,14 @@ class InvoiceService extends ContainerAware
 
         $orderByDivision = array();
         foreach ($orders as $order) {
-            if (!isset($orderByDivision[$order->getDivisionCode()])) {
-                $orderByDivision[$order->getDivisionCode()] = array($order);
+            if ($user->getRequiredDivision()) {
+                if (!isset($orderByDivision[$order->getDivisionCode()])) {
+                    $orderByDivision[$order->getDivisionCode()] = array($order);
+                } else {
+                    $orderByDivision[$order->getDivisionCode()][] = $order;
+                }
             } else {
-                $orderByDivision[$order->getDivisionCode()][] = $order;
+                $orderByDivision['division'][] = $order;
             }
         }
 
