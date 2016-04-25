@@ -23,26 +23,27 @@ class ChangePasswordToCorporateSendCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        try {
-            $em = $this->getContainer()->get('doctrine')->getManager();
-            $userManager = $this->getContainer()->get('fos_user.user_manager');
-
-            $userCollection = $em->getRepository('FoodUserBundle:User')->findBy(array('isBussinesClient' => 1));
-
-            foreach ($userCollection as $user) {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $userManager = $this->getContainer()->get('fos_user.user_manager');
+        $userCollection = $em->getRepository('FoodUserBundle:User')->findBy(array('isBussinesClient' => 1));
+        $logger = $this->getContainer()->get('logger');
+        foreach ($userCollection as $user) {
+            try {
                 $newPassword = $this->generateNewPassword();
 
                 $user->setPlainPassword($newPassword);
                 $userManager->updatePassword($user);
 
-                $this->sendNewPasswordToUser($user, $newPassword);
-            }
+                $em->persist($user);
+                $em->flush();
 
-        } catch (\Exception $e) {
-            $output->writeln('[!] Error when sending new password to corporate user');
-            $output->writeln('[!] Error: '.$e->getMessage());
-            $output->writeln('[!] Trace: '."\n".$e->getTraceAsString());
-            throw $e;
+                $this->sendNewPasswordToUser($user, $newPassword);
+            } catch (\Exception $e) {
+                $output->writeln('[!] Error when sending new password to corporate user');
+                $output->writeln('[!] Error: '.$e->getMessage());
+                $output->writeln('[!] Trace: '."\n".$e->getTraceAsString());
+                $logger->addError('Error when sending new password to corporate user: '. $user->getId());
+            }
         }
     }
 
