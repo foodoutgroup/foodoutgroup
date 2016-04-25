@@ -31,6 +31,7 @@ class ChangePasswordToCorporateSendCommand extends ContainerAwareCommand
 
             foreach ($userCollection as $user) {
                 $newPassword = $this->generateNewPassword();
+                var_dump($newPassword);
 
                 $user->setPlainPassword($newPassword);
                 $userManager->updatePassword($user);
@@ -53,23 +54,27 @@ class ChangePasswordToCorporateSendCommand extends ContainerAwareCommand
      */
     public function generateNewPassword()
     {
-        $lowerCaseChars = 'qwertyupasdfghjkzxcvbnm';
-        $upperCaseChars = 'QWERTYUPASDFGHJKLZXCVBNM';
+        $lowerCaseChars = 'abcdefghjkmnopqrstuvwxyz';
+        $lowerCaseLength = strlen($lowerCaseChars) - 1;
+        $upperCaseChars = 'ABCDEFGHJKLMNOPQRSTUVWXYZ';
+        $upperCaseLength = strlen($upperCaseChars) - 1;
         $digitChars = '23456789';
+        $digitLength = strlen($digitChars) - 1;
         $extraSymbols = '!@#$%^&*{}[];:,.';
+        $extraLength = strlen($extraSymbols) - 1;
 
         $length = rand(9, 12);
         $newPassword = '';
         for ($i = 1; $i <= $length; ++$i) {
             $symbol = rand(1, 10);
             if ($symbol == 1) {
-                $newPassword .= $extraSymbols[rand(0, strlen($extraSymbols) - 1)];
+                $newPassword .= $extraSymbols[rand(0, $extraLength)];
             } elseif ($symbol > 1 && $symbol <= 3) {
-                $newPassword .= $digitChars[rand(0, strlen($digitChars) - 1)];
+                $newPassword .= $digitChars[rand(0, $digitLength)];
             } elseif ($symbol > 3 && $symbol <= 6) {
-                $newPassword .= $lowerCaseChars[rand(0, strlen($lowerCaseChars) - 1)];
+                $newPassword .= $lowerCaseChars[rand(0, $lowerCaseLength)];
             } else {
-                $newPassword .= $upperCaseChars[rand(0, strlen($upperCaseChars) - 1)];
+                $newPassword .= $upperCaseChars[rand(0, $upperCaseLength)];
             }
         }
 
