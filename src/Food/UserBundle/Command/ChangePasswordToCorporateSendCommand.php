@@ -31,7 +31,6 @@ class ChangePasswordToCorporateSendCommand extends ContainerAwareCommand
 
             foreach ($userCollection as $user) {
                 $newPassword = $this->generateNewPassword();
-                var_dump($newPassword);
 
                 $user->setPlainPassword($newPassword);
                 $userManager->updatePassword($user);
