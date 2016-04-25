@@ -734,9 +734,17 @@
                 <source>general.profile.cart_history</source>
                 <target>Užsakymų istorija</target>
             </trans-unit>
+            <trans-unit id="general.profile.discount">
+                <source>general.profile.discount</source>
+                <target>Nuolaida</target>
+            </trans-unit>
             <trans-unit id="4c0c2aa6ad499bfdd3f6e8edffc6336c" resname="general.profile.logout">
                 <source>general.profile.logout</source>
                 <target>Atsijungti</target>
+            </trans-unit>
+            <trans-unit id="general.profile.current_discount">
+                <source>general.profile.current_discount</source>
+                <target>Šiuo metu jums taikoma nuolaida: %discount% %</target>
             </trans-unit>
             <trans-unit id="6defb486341307b289948eb8fa05624f" resname="general.profile.button_save">
                 <source>general.profile.button_save</source>
