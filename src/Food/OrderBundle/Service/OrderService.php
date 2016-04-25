@@ -2975,13 +2975,13 @@ class OrderService extends ContainerAware
                 $formErrors[] = 'general.coupon.only_delivery';
             } elseif (!empty($user) && is_object($user) && $user->getIsBussinesClient()) {
                 $formErrors[] = 'general.coupon.not_for_business';
-            }
-
-            $discountSize = $coupon->getDiscount();
-            if (!empty($discountSize)) {
-                $total_cart -= $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($place), $discountSize);
-            } elseif (!$coupon->getFullOrderCovers()) {
-                $total_cart -= $coupon->getDiscountSum();
+            } else {
+                $discountSize = $coupon->getDiscount();
+                if (!empty($discountSize)) {
+                    $total_cart -= $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($place), $discountSize);
+                } elseif (!$coupon->getFullOrderCovers()) {
+                    $total_cart -= $coupon->getDiscountSum();
+                }
             }
         }
 
