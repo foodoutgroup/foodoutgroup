@@ -292,7 +292,7 @@
             </trans-unit>
             <trans-unit id="places.discount_not_for_business_clients" resname="places.discount_not_for_business_clients">
                 <source>places.discount_not_for_business_clients</source>
-                <target>Sorry, you cannot apply corporate discount for this restaurant</target>
+                <target>Atvainojiet, Jūs nevarat izmantot biznesa klienta atlaidi šajā restorānā</target>
             </trans-unit>
         </body>
     </file>
