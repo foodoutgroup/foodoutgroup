@@ -114,6 +114,10 @@
                 <source>cart.checkout.cart_rules</source>
                 <target><![CDATA[Susipažinau ir sutinku su <a href="#rules" name="order_rules" class="fancy-box">taisyklėmis</a>]]></target>
             </trans-unit>
+            <trans-unit id="cart.checkout.newsletter_subscribe" resname="cart.checkout.newsletter_subscribe">
+                <source>cart.checkout.newsletter_subscribe</source>
+                <target><![CDATA[Sutinku gauti skaniausias Foodout.lt <a href="#privacy" name="newsletter_subscribe" class="fancy-box">naujienas</a>]]></target>
+            </trans-unit>
             <trans-unit id="58234b47f3f611cffbbd19bbaaa7dd73" resname="cart.checkout.delivery_comment_placeholder">
                 <source>cart.checkout.delivery_comment_placeholder</source>
                 <target>Įveskite laiptinės kodą, aukštą ir kitą kurjeriui naudingą informaciją...</target>

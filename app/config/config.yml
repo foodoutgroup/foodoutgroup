@@ -133,6 +133,7 @@ twig:
         cloudfront_url: "%cloudfront_url%"
         invoice_series: "%invoice.series%"
         dispatcher_bell: "%dispatcher_bell%"
+        static_page_privacy_policy: "%static_page_privacy_policy%"
 #       Services
         slug_util:    "@food.dishes.utils.slug"
         places_service: "@food.places"

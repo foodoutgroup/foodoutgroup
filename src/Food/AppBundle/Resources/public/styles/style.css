@@ -1714,25 +1714,29 @@ ul.dish-holder {
         text-decoration: underline;
     }
 
-.delivery-info-form .cart-rules {
+.delivery-info-form .cart-rules,
+.delivery-info-form .newsletter_subscribe{
     margin-top: 20px;
     /*float: right;*/
     margin-left: 175px;
 }
 
-.delivery-info-form .cart-rules label {
+.delivery-info-form .cart-rules label,
+.delivery-info-form .newsletter_subscribe label{
     width: auto;
     margin-top: -8px;
     padding-bottom: 5px;
 }
 
-div.cart_rules_content {
+div.cart_rules_content,
+div.privacy_content {
     display: block;
     padding: 5px;
     width: 700px;
 }
 
-.cart_rules_content .cart_rules_inner {
+.cart_rules_content .cart_rules_inner,
+.privacy_content .privacy_inner {
     height: 590px;
     padding-right: 5px;
     overflow-x: scroll;
