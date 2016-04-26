@@ -180,7 +180,6 @@ class OrdersController extends Controller
             $this->get('food.order')->statusNew('api');
             $this->get('food.order')->saveOrder();
             $this->get('food.order')->billOrder();
-            $this->get('food.order')->informPlace();
 
             // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
             $this->container->get('food.order')->setOrder($order);
