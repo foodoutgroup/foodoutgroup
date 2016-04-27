@@ -114,6 +114,10 @@
                 <source>cart.checkout.cart_rules</source>
                 <target><![CDATA[Iepazinos un piekrītu <a href="#rules" name="order_rules" class="fancy-box">noteikumiem</a>]]></target>
             </trans-unit>
+            <trans-unit id="cart.checkout.newsletter_subscribe" resname="cart.checkout.newsletter_subscribe">
+                <source>cart.checkout.newsletter_subscribe</source>
+                <target><![CDATA[Es vēlos saņemt visgaršīgākās Foodout.lv <a href="#privacy" name="newsletter_subscribe" class="fancy-box">ziņas</a>]]></target>
+            </trans-unit>
             <trans-unit id="58234b47f3f611cffbbd19bbaaa7dd73" resname="cart.checkout.delivery_comment_placeholder">
                 <source>cart.checkout.delivery_comment_placeholder</source>
                 <target>Ievadiet kāpņutelpas kodu, stāvu un citu kurjeram noderīgo informāciju…</target>

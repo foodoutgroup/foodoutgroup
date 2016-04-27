@@ -85,4 +85,16 @@ parameters:
     send_sms_on_cancel: false
     dispatcher_contact_phone: "37126110079"
     call_centre_phone: "37126110079"
+    week_layout: 1
+    hide_online_payments: false
+    number_format:
+        decimal_places: 2
+        decimal_separator: ','
+        thousands_separator: ' '
+    show_invoice_option: true
+    place_slug_manual: false
+    alcohol_allowed: true
+    place_with_neighbourhood: false
     dispatcher_bell: true
+    static_page_privacy_policy: 5
+    newsletter_subscribe_tick_by_default: true

@@ -97,3 +97,5 @@ parameters:
     alcohol_allowed: true
     place_with_neighbourhood: false
     dispatcher_bell: false
+    static_page_privacy_policy: 8
+    newsletter_subscribe_tick_by_default: false
