@@ -826,7 +826,7 @@ class OrderService extends ContainerAware
         if ($order->getPlace()->getSendInvoice()
             && !$order->getPlacePointSelfDelivery()
             && $order->getDeliveryType() == OrderService::$deliveryDeliver
-            && !$order->getIsCorporateClient()) {
+            && $order->getPaymentMethod() != 'postpaid') {
             // Patikrinam ar sitam useriui reikia generuoti sf
             if (!$order->getUser()->getNoInvoice()) {
                 $mustDoNavDelete = $this->setInvoiceDataForOrder();
