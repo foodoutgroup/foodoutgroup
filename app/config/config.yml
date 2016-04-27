@@ -135,6 +135,7 @@ twig:
         dispatcher_bell: "%dispatcher_bell%"
         static_page_privacy_policy: "%static_page_privacy_policy%"
         newsletter_subscribe_tick_by_default: "%newsletter_subscribe_tick_by_default%"
+        show_making_time_deadline: "%show_making_time_deadline%"
 #       Services
         slug_util:    "@food.dishes.utils.slug"
         places_service: "@food.places"
