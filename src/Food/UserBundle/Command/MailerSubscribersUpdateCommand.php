@@ -16,6 +16,7 @@ class MailerSubscribersUpdateCommand extends ContainerAwareCommand
             ->setDescription('Update subscribers list for mailer.lt')
             ->setHelp('You must specify a list ID --list_id option. Ex.: 2023873 (more at: foodout.mailer.lt/groups/)')
             ->addOption('list_id', null, InputOption::VALUE_REQUIRED, 'Specify a list ID, for example: --list_id 2023873')
+            ->addOption('full', null, InputOption::VALUE_NONE, 'Full import')
         ;
     }
 
@@ -29,7 +30,7 @@ class MailerSubscribersUpdateCommand extends ContainerAwareCommand
             $em = $this->getContainer()->get('doctrine')->getManager();
 
             // 1. pirkusius userius
-            $users_by_orders = $this->getUsersByOrders();
+            $users_by_orders = $this->getUsersByOrders($input->getOption('full'));
             $this->importUsersToServer('Orders', $users_by_orders, $list_id, $output);
 
             // 2. tuos, kurie uzsisako naujienlaiskio prenumerata
@@ -57,18 +58,22 @@ class MailerSubscribersUpdateCommand extends ContainerAwareCommand
         return $services;
     }
 
-    protected function getUsersByOrders()
+    protected function getUsersByOrders($full = false)
     {
         $qb = $this->getServices()->em->createQueryBuilder();
-        $result = $qb->select('distinct u')
+        $qb->select('distinct u')
             ->from('FoodOrderBundle:Order', 'o')
             ->innerJoin('FoodUserBundle:User', 'u', 'WITH', 'o.user = u.id')
             ->where("o.order_status = 'completed'")
+            ->andWhere('o.newsletterSubscribe = 1')
             ->andWhere('u.enabled = 1')
             ->andWhere('u.expired = 0')
-            ->andWhere('u.locked = 0')
-            ->andWhere('u.fully_registered = 1')
-            ->getQuery()
+            ->andWhere('u.locked = 0');
+        if (!$full) {
+            $qb->andWhere('o.order_date >= \''.date('Y-m-d H:i:s', strtotime('-7 day')).'\'');
+        }
+
+        $result = $qb->getQuery()
             ->getResult();
         return $result;
     }

@@ -45,7 +45,7 @@ class DishController extends Controller
 
         $randomized = $this->get('session')->get('randomizer', false);
         if (!$randomized) {
-            $randomized = rand(0, count($extraTestStuff));
+            $randomized = rand(0, count($extraTestStuff) - 1);
             $this->get('session')->set('randomizer', $randomized);
         }
         if (isset($_GET['randomizer'])) {

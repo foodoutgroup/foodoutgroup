@@ -83,3 +83,4 @@ parameters:
     dispatcher_contact_phone: "37061514333"
     call_centre_phone: "37052195281"
     dispatcher_bell: false
+    static_page_privacy_policy: 8

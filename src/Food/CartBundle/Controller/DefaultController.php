@@ -444,6 +444,9 @@ class DefaultController extends Controller
                     $user->addAddress($address);
                 }
             }
+
+            $orderService->getOrder()->setNewsletterSubscribe((boolean)$request->get('newsletter_subscribe'));
+
             $orderService->saveOrder();
 
             $billingUrl = $orderService->billOrder();
