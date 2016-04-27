@@ -86,3 +86,4 @@ parameters:
     call_centre_phone: "37126110079"
     dispatcher_bell: true
     static_page_privacy_policy: 5
+    newsletter_subscribe_tick_by_default: true
