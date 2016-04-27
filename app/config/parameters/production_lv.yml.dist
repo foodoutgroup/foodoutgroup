@@ -85,4 +85,5 @@ parameters:
     dispatcher_contact_phone: "37126110079"
     call_centre_phone: "37126110079"
     dispatcher_bell: true
+    static_page_privacy_policy: 5
     show_making_time_deadline: true

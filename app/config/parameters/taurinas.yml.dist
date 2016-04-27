@@ -86,4 +86,5 @@ parameters:
     dispatcher_contact_phone: "37069855544"
     call_centre_phone: "37052195281"
     dispatcher_bell: false
+    static_page_privacy_policy: 8
     show_making_time_deadline: false

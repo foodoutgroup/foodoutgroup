@@ -96,4 +96,5 @@ parameters:
     alcohol_allowed: true
     place_with_neighbourhood: false
     dispatcher_bell: false
+    static_page_privacy_policy: 8
     show_making_time_deadline: false

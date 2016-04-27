@@ -418,6 +418,12 @@ class Order
     private $order_picked = false;
 
     /**
+     * @var bool
+     * @ORM\Column(name="newsletter_subscribe", type="boolean", options={"default"=true})
+     */
+    private $newsletterSubscribe = false;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -2194,5 +2200,28 @@ class Order
     public function getReminded()
     {
         return $this->reminded;
+    }
+
+    /**
+     * Set newsletterSubscribe
+     *
+     * @param boolean $newsletterSubscribe
+     * @return Order
+     */
+    public function setNewsletterSubscribe($newsletterSubscribe)
+    {
+        $this->newsletterSubscribe = $newsletterSubscribe;
+    
+        return $this;
+    }
+
+    /**
+     * Get newsletterSubscribe
+     *
+     * @return boolean 
+     */
+    public function getNewsletterSubscribe()
+    {
+        return $this->newsletterSubscribe;
     }
 }
