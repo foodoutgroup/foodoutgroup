@@ -38,6 +38,7 @@ parameters:
     payment.methods:
         - local
         - local.card
+        - postpaid
         - paysera
         - swedbank-gateway
         - swedbank-credit-card-gateway

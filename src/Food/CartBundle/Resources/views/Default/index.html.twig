@@ -349,7 +349,7 @@
                             <h2 class="section-2">2. {% trans %}cart.checkout.block_title_secure_payment{% endtrans %}</h2>
                             <div class="select-payment clearfix">
                                 {% if app.user.isBussinesClient|default(false) and app.user.allowDelayPayment|default(false) %}<label class="custom-radio">{% trans %}cart.checkout.corporate_pay{% endtrans %}
-                                    <input type="radio" name="payment-type" value="delayed"{% if (order is not null and order.paymentMethod == 'delayed') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'delayed') or (dataToLoad is empty) %} checked="checked"{% endif %}>
+                                    <input type="radio" name="payment-type" value="postpaid"{% if (order is not null and order.paymentMethod == 'postpaid') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'postpaid') or (dataToLoad is empty) %} checked="checked"{% endif %}>
                                 </label>
                                 {% endif %}
                                 <label class="custom-radio">{% trans %}cart.checkout.cash_on_delivery{% endtrans %}

@@ -74,7 +74,9 @@ class InvoiceToSendCommand extends ContainerAwareCommand
 
                         $invoiceService->storeUserInvoice($order);
 
-                        $emails = $invoiceService->sendUserInvoice($order, $forcedEmail);
+                        if ($forcedEmail || !$order->getPaymentMethod() != 'postpaid') {
+                            $emails = $invoiceService->sendUserInvoice($order, $forcedEmail);
+                        }
 
                         $orderToSend->setDateSent(new \DateTime('now'))
                                     ->markSent();

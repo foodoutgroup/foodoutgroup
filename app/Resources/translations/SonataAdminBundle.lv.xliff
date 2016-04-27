@@ -1417,9 +1417,9 @@
                 <source>admin.dispatcher.payement.local_card</source>
                 <target>Card on delivery</target>
             </trans-unit>
-            <trans-unit id="admin.dispatcher.payement.delayed">
-                <source>admin.dispatcher.payement.delayed</source>
-                <target>Delayed</target>
+            <trans-unit id="admin.dispatcher.payement.postpaid">
+                <source>admin.dispatcher.payement.postpaid</source>
+                <target>Post paid</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.payement.bank_link">
                 <source>admin.dispatcher.payement.bank_link</source>

@@ -66,7 +66,7 @@ class OrderService extends ContainerAware
     private $paymentSystemByMethod = array(
         'local' => 'food.local_biller',
         'local.card' => 'food.local_biller',
-        'delayed' => 'food.local_biller',
+        'postpaid' => 'food.local_biller',
         'paysera' => 'food.paysera_biller',
         'swedbank-gateway' => 'food.swedbank_gateway_biller',
         'swedbank-credit-card-gateway' => 'food.swedbank_credit_card_gateway_biller',
@@ -2958,7 +2958,7 @@ class OrderService extends ContainerAware
         $paymentType = $request->get('payment-type');
         if (0 === strlen($paymentType)) {
             $formErrors[] = 'order.form.errors.payment_type';
-        } elseif ($paymentType == 'delayed' && (!($user instanceof User) || $user->getIsBussinesClient() && !$user->getAllowDelayPayment()) ) {
+        } elseif ($paymentType == 'postpaid' && (!($user instanceof User) || $user->getIsBussinesClient() && !$user->getAllowDelayPayment()) ) {
             $formErrors[] = 'order.form.errors.payment_type';
         }
 

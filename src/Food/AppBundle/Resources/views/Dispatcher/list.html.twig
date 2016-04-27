@@ -167,8 +167,8 @@
                             {{ 'admin.dispatcher.payement.local'|trans({}, 'SonataAdminBundle') }}
                         {% elseif order.paymentMethod == 'local.card'%}
                             {{ 'admin.dispatcher.payement.local_card'|trans({}, 'SonataAdminBundle') }}
-                        {% elseif order.paymentMethod == 'delayed'%}
-                            {{ 'admin.dispatcher.payement.delayed'|trans({}, 'SonataAdminBundle') }}
+                        {% elseif order.paymentMethod == 'postpaid'%}
+                            {{ 'admin.dispatcher.payement.postpaid'|trans({}, 'SonataAdminBundle') }}
                         {% else %}
                             {{ 'admin.dispatcher.payement.bank_link'|trans({}, 'SonataAdminBundle') }}
                         {% endif %}
