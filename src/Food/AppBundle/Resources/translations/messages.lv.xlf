@@ -268,7 +268,7 @@
             </trans-unit>
             <trans-unit id="mobile.order.id" resname="mobile.order.id">
                 <source>mobile.order.id</source>
-                <target>Order no.</target>
+                <target>Pasūtījuma Nr.</target>
             </trans-unit>
             <trans-unit id="ceb80ce24895534499f2a5a28a707fbb" resname="mobile.order_dish">
                 <source>mobile.order_dish</source>
@@ -444,7 +444,7 @@
             </trans-unit>
             <trans-unit id="mobile.restaurant_delivery_price" resname="mobile.restaurant_delivery_price">
                 <source>mobile.restaurant_delivery_price</source>
-                <target>Delivery (with VAT)</target>
+                <target>Piegāde (ar PVN)</target>
             </trans-unit>
             <trans-unit id="c515ebc67239e3c3555e84b329f7eeba" resname="mobile.place_point_phone">
                 <source>mobile.place_point_phone</source>
@@ -517,6 +517,10 @@
             <trans-unit id="ca4d1fefea4fd64c121dbd0e8fa2819c" resname="mobile.order.sum_with_delivery">
                 <source>mobile.order.sum_with_delivery</source>
                 <target>Summa ar piegādi (ar PVN)</target>
+            </trans-unit>
+            <trans-unit id="mobile.order.sum">
+                <source>mobile.order.sum_without_delivery</source>
+                <target>Summa bez piegādes maksas (ar PVN)</target>
             </trans-unit>
             <trans-unit id="4049c45b29c8af2dff760dc33d4612ba" resname="mobile.order.coupon_code">
                 <source>mobile.order.coupon_code</source>

@@ -71,6 +71,9 @@
         </tr>
         {% if order.deliveryType == 'deliver' %}
             <tr>
+                <td colspan="5"><b>{% trans %}mobile.order.sum_without_delivery{% endtrans %}:</b> {{ order.total - order.deliveryPrice }} {{ currency_display|raw }}</td>
+            </tr>
+            <tr>
                 <td colspan="5"><b>{% trans %}mobile.restaurant_delivery_price{% endtrans %}:</b> {{ order.deliveryPrice }} {{ currency_display|raw }}</td>
             </tr>
         {% endif %}

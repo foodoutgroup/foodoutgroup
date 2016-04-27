@@ -518,6 +518,10 @@
                 <source>mobile.order.sum_with_delivery</source>
                 <target>Suma su pristatymu (su PVM)</target>
             </trans-unit>
+            <trans-unit id="mobile.order.sum">
+                <source>mobile.order.sum_without_delivery</source>
+                <target>Suma be pristatymo (su PVM)</target>
+            </trans-unit>
             <trans-unit id="mobile.order.coupon_code" resname="mobile.order.coupon_code">
                 <source>mobile.order.coupon_code</source>
                 <target>Nuolaidos kodas</target>
