@@ -83,4 +83,5 @@ parameters:
     call_centre_phone: "37052195281"
     dispatcher_bell: false
     static_page_privacy_policy: 8
+    newsletter_subscribe_tick_by_default: false
     show_making_time_deadline: false

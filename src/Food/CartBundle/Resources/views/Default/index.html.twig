@@ -335,7 +335,7 @@
                             </div>
                             <div class="form-row custom-checkbox newsletter_subscribe">
                                 <label>{% trans %}cart.checkout.newsletter_subscribe{% endtrans %}</label>
-                                <input type="checkbox" name="newsletter_subscribe" {% if (dataToLoad['newsletter_subscribe'] is defined and dataToLoad['newsletter_subscribe'] is not empty) %}checked="checked"{% endif %} />
+                                <input type="checkbox" name="newsletter_subscribe" {% if (dataToLoad['newsletter_subscribe'] is defined and dataToLoad['newsletter_subscribe'] is not empty) or newsletter_subscribe_tick_by_default %}checked="checked"{% endif %} />
                             </div>
                             <div class="clearfix"></div>
                             <div class="cupon-info">
