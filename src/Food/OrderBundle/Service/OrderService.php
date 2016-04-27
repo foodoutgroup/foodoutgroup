@@ -1999,8 +1999,7 @@ class OrderService extends ContainerAware
             $orderTextTranslation = $translator->trans('general.email.new_order');
         }
 
-        $messageText = $orderSmsTextTranslation
-            .$orderConfirmRoute;
+        $messageText = $orderSmsTextTranslation.' '.$orderConfirmRoute;
 
         // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
         if (!empty($placePointEmail)) {
@@ -2189,8 +2188,7 @@ class OrderService extends ContainerAware
         $orderSmsTextTranslation = $translator->trans('general.sms.canceled_order', array('order_id' => $order->getId()));
         $orderTextTranslation = $translator->trans('general.email.canceled_order');
 
-        $messageText = $orderSmsTextTranslation
-            .$orderConfirmRoute;
+        $messageText = $orderSmsTextTranslation.' '.$orderConfirmRoute;
 
         // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
         if (!empty($placePointEmail)) {
@@ -3822,5 +3820,11 @@ class OrderService extends ContainerAware
             }
         }
         return false;
+    }
+
+    public function getMakingTime(Order $order)
+    {
+        $makingTime = clone $order->getDeliveryTime();
+        return $makingTime->modify('-30 minutes');
     }
 }
