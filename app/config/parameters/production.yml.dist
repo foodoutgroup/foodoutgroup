@@ -96,3 +96,4 @@ parameters:
     alcohol_allowed: true
     place_with_neighbourhood: false
     dispatcher_bell: false
+    show_making_time_deadline: false

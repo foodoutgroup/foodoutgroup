@@ -3804,4 +3804,10 @@ class OrderService extends ContainerAware
         }
         return false;
     }
+
+    public function getMakingTime(Order $order)
+    {
+        $makingTime = clone $order->getDeliveryTime();
+        return $makingTime->modify('-30 minutes');
+    }
 }

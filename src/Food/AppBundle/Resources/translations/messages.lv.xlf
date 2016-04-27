@@ -646,6 +646,10 @@
                 <source>mobile.invoice.total_with_vat_eur</source>
                 <target>Kopā EUR</target>
             </trans-unit>
+            <trans-unit id="mobile.making_time">
+                <source>mobile.making_time</source>
+                <target>Pagaminti iki</target>
+            </trans-unit>
             <trans-unit id="16e198a6b48257e47d9ce572ab7ce655" resname="mobile.deliver_time">
                 <source>mobile.deliver_time</source>
                 <target>Piegādāt līdz</target>
