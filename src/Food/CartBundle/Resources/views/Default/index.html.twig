@@ -312,10 +312,10 @@
                                 <div class="form-row form-row-required">
                                     <label>{% trans %}cart.checkout.place_point{% endtrans %}: <span class="checkout-pickup-place-tooltip" title="{% trans %}cart.checkout.pickup_tooltip{% endtrans %}">&nbsp;</span></label>
                                     <select class="custom-select" name="place_point">
-                                        {% for point in place.points %}
-                                            {% if point.active and point.public and point.pickUp %}
+                                        {% for point in places_service.getPublicPoints(place) %}
+                                            {% if point.pickUp %}
                                                 <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}</option>
-                                            {% endif %}
+                                        {% endif %}
                                         {% endfor %}
                                     </select>
                                 </div>
