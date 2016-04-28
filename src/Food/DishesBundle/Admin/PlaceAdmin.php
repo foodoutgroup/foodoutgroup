@@ -135,6 +135,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('name', null, array('label' => 'admin.place.name'))
             ->add('discountPricesEnabled', null, array('label' => 'admin.place.discount_prices_enabled'))
             ->add('active', null, array('label' => 'admin.active'))
+            ->add('selfDelivery', null, array('label' => 'admin.place.self_delivery'))
             ->add('recommended', null, array('label' => 'admin.place.recommended'))
         ;
     }
@@ -152,6 +153,7 @@ class PlaceAdmin extends FoodAdmin
                 'template' => 'FoodDishesBundle:Default:list_image.html.twig',
                 'label' => 'admin.place.logo'
             ))
+            ->add('selfDelivery', null, array('label' => 'admin.place.self_delivery'))
             ->add('active', null, array('label' => 'admin.active', 'editable' => true))
             ->add('new', null, array('label' => 'admin.is_new', 'editable' => true))
             ->add('recommended', null, array('label' => 'admin.place.recommended', 'editable' => true))
