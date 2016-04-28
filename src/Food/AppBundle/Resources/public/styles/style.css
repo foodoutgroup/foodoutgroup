@@ -159,6 +159,140 @@
     }
 }
 
+/* Order Status Begin */
+@keyframes loading {
+    0% {
+        transform-origin: 100% 100%;
+        transform: rotate(0deg);
+    }
+    100% {
+        transform-origin: 100% 100%;
+        transform: rotate(360deg);
+    }
+}
+.loading {
+    box-sizing: border-box;
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    display: block;
+    z-index: 13;
+    width: 410px;
+    height: 410px;
+    border: 5px solid transparent;
+    border-radius: 50%;
+    background-color: transparent;
+}
+.loading:before {
+    position: absolute;
+    display: block;
+    content: '';
+    z-index: 12;
+    top: 9px;
+    left: 9px;
+    width: 382px;
+    height: 382px;
+    border-radius: 50%;
+    background-color: #fff;
+}
+.loading:after {
+    position: absolute;
+    display: block;
+    content: '';
+    z-index: 11;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    border-radius: 200px 0 0 0;
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0) 0%, #e6e6e6 50%, #e6e6e6 100%);
+    animation: loading 1.8s linear infinite;
+}
+.progress-pie-chart {
+    display: block;
+    margin: 0 auto;
+    width: 460px;
+    height: 460px;
+    border-radius: 50%;
+    background-color: #e6e6e6;
+    position: relative;
+}
+.progress-pie-chart.gt-50 {
+    background-color: #91c201;
+}
+.progress-pie-chart.canceled,
+.progress-pie-chart.canceled .ppc-progress .ppc-progress-fill {
+    background-color: #cf1e37;
+}
+.ppc-progress {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    left: calc(50% - 230px);
+    top: calc(50% - 230px);
+    width: 460px;
+    height: 460px;
+    clip: rect(0, 460px, 460px, 230px);
+}
+.ppc-progress .ppc-progress-fill {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    left: calc(50% - 230px);
+    top: calc(50% - 230px);
+    width: 460px;
+    height: 460px;
+    clip: rect(0, 230px, 460px, 0);
+    background: #91c201;
+    transform: rotate(0deg);
+}
+.gt-50 .ppc-progress {
+    clip: rect(0, 230px, 460px, 0);
+}
+.gt-50 .ppc-progress .ppc-progress-fill {
+    clip: rect(0, 460px, 460px, 230px);
+    background: #e6e6e6;
+}
+.ppc-percents {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    left: calc(50% - 405.82608px/2);
+    top: calc(50% - 405.82608px/2);
+    width: 405.82608px;
+    height: 405.82608px;
+    background: #fff;
+    text-align: center;
+    display: table;
+}
+.pcc-percents-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+    position: relative;
+}
+.ppc-percents span {
+    display: block;
+    font-size: 2.6em;
+    font-weight: bold;
+    color: #91c201;
+    position: absolute;
+    z-index: 555;
+    left: 0;
+    right: 0;
+    top: 35%;
+    padding: 0 20px;
+}
+.ppc-percents span i {
+    display: block;
+    font-style: normal;
+    color: #a1a1a1;
+}
+.ppc-percents span b {
+    display: block;
+    color: #000;
+}
+/* Order Status End */
+
 .font-1, .font-2, .font-3 {font-size: 50px; font-weight: 200;}
 
 

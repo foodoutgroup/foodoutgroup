@@ -1302,6 +1302,32 @@
                 <source>admin.dispatcher.delayed_minutes</source>
                 <target>min</target>
             </trans-unit>
+            <!-- Order Tracking Begin -->
+            <trans-unit id="general.tracking_page_title" resname="general.tracking_page_title">
+                <source>general.tracking_page_title</source>
+                <target>Jūsu pasūtījuma statuss</target>
+            </trans-unit>
+            <trans-unit id="general.tracking_step1" resname="general.tracking_step1">
+                <source>general.tracking_step1</source>
+                <target>Jūsu pasūtījums gaida restorāna apstiprinājumu!</target>
+            </trans-unit>
+            <trans-unit id="general.tracking_step2" resname="general.tracking_step2">
+                <source>general.tracking_step2</source>
+                <target>Jūsu pasūtījums ir apstiprināts un pašlaik tiek gatavots!</target>
+            </trans-unit>
+            <trans-unit id="general.tracking_step3" resname="general.tracking_step3">
+                <source>general.tracking_step3</source>
+                <target>Jūsu pasūtījums tiek piegādāts!</target>
+            </trans-unit>
+            <trans-unit id="general.tracking_step4" resname="general.tracking_step4">
+                <source>general.tracking_step4</source>
+                <target>Jūsu pasūtījums ir gatavs uzņemt.</target>
+            </trans-unit>
+            <trans-unit id="general.tracking_canceled" resname="general.tracking_canceled">
+                <source>general.tracking_canceled</source>
+                <target>Jūsu pasūtījums ir atcelts</target>
+            </trans-unit>
+            <!-- Order Tracking End -->
         </body>
     </file>
 </xliff>
