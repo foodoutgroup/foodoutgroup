@@ -1,0 +1,141 @@
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+{% block title %}{% trans %}general.tracking_page_title{% endtrans %} | {{ page_title }}{% endblock %}
+{% block seo_description %}{% trans %}general.base_page_title{% endtrans %}{% endblock %}
+
+{% block body %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var progressbar = $('#progress_bar');
+            var max = progressbar.prop('max');
+            var time = (1000 / max);
+            var value = progressbar.val();
+
+            var loading = function(value, max, time, canceled) {
+                var animate = setInterval(function() {
+                    value += 1;
+                    progressbar.val(value);
+
+                    var $ppc = $('.progress-pie-chart');
+                    var deg = 360 * value / 100;
+
+                    $ppc.prop('data-percent', value);
+
+                    if (value > 50) {
+                        $ppc.addClass('gt-50');
+                    }
+
+                    if (canceled) {
+                        $ppc.addClass('canceled');
+                    }
+
+                    $('.ppc-progress-fill').css('transform', 'rotate(' + deg + 'deg)');
+                    var ppc_caption = $('.ppc-percents span i');
+                    var ppc_text = $('.ppc-percents span b');
+
+                    switch(value) {
+                        {# Step1 #}
+                        case 25:
+                            if (!canceled) {
+                                ppc_caption.html('1/4');
+                                ppc_text.html('{% trans %}general.tracking_step1{% endtrans %}');
+                            }
+                            break;
+                        {# Step2 #}
+                        case 50:
+                            if (!canceled) {
+                                ppc_caption.html('2/4');
+                                ppc_text.html('{% trans %}general.tracking_step2{% endtrans %}');
+                            }
+                            break;
+                        {# Step3 #}
+                        case 75:
+                            if (!canceled) {
+                                ppc_caption.html('3/4');
+                                ppc_text.html('{% trans %}general.tracking_step3{% endtrans %}');
+                            }
+                            break;
+                        {# Step4 #}
+                        case 100:
+                            if (canceled) {
+                                ppc_caption.html('&nbsp;');
+                                ppc_text.html('{% trans %}general.tracking_canceled{% endtrans %}');
+                            } else {
+                                ppc_caption.html('4/4');
+                                {% if order.getDeliveryType == 'pickup' %}
+                                    ppc_text.html('{% trans %}general.tracking_step4_pickup{% endtrans %}');
+                                {% else %}
+                                    ppc_text.html('{% trans %}general.tracking_step4{% endtrans %}');
+                                {% endif %}
+                            }
+                            break;
+                    }
+
+                    if (value == max) {
+                        clearInterval(animate);
+                    }
+
+                    if (value == 100) {
+                        $('.loading').fadeOut('fast');
+                        clearInterval(check_timer);
+                    }
+                }, time);
+            };
+
+            {# preload order status #}
+            {% if OrderTrackingStatus %}
+                {% for key, value in OrderTrackingStatus %}
+                    loading(value, {{ key }}, time, {{ value }});
+                {% endfor %}
+            {% endif %}
+
+            {# check order status every 1min #}
+            var checkOrderStatus = function () {
+                $.get('{{ path('food_order_status_check') }}', {'hash': '{{ order.orderHash }}'}, function(resp) {
+                    if (resp) {
+                        $.each(resp, function(resp_key, resp_value) {
+                            loading(value, resp_key, time, resp_value);
+                        });
+                    }
+                });
+            };
+            var check_timer = setInterval(checkOrderStatus, 60000);
+
+        });
+    </script>
+    <div class="site-center">
+        <div class="site-block">
+            <div class="middle-content">
+                <div class="static-page">
+                    <h1>{% trans %}general.tracking_page_title{% endtrans %}</h1>
+                    <div class="static-page-content">
+                        {# Order Status Begin #}
+                        <div class="order_progress">
+                            <br />
+                            <div class="bar_container">
+                                <div id="main_container">
+                                    <div id="pbar" class="progress-pie-chart" data-percent="0">
+                                        <i class="loading"></i>
+                                        <div class="ppc-progress">
+                                            <div class="ppc-progress-fill"></div>
+                                        </div>
+                                        <div class="ppc-percents">
+                                            <div class="pcc-percents-wrapper">
+                                                <span>
+                                                    <i>0/4</i>
+                                                    <b></b>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <progress style="display: none;" id="progress_bar" value="0" max="100"></progress>
+                                </div>
+                            </div>
+                        </div>
+                        {# Order Status End #}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
