@@ -1321,7 +1321,7 @@
             </trans-unit>
             <trans-unit id="general.tracking_step4" resname="general.tracking_step4">
                 <source>general.tracking_step4</source>
-                <target>Jūsu pasūtījums ir gatavs uzņemt.</target>
+                <target>Jūsu pasūtījums ir gatavs saņemšanai.</target>
             </trans-unit>
             <trans-unit id="general.tracking_canceled" resname="general.tracking_canceled">
                 <source>general.tracking_canceled</source>
