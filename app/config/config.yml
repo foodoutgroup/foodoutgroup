@@ -133,6 +133,9 @@ twig:
         cloudfront_url: "%cloudfront_url%"
         invoice_series: "%invoice.series%"
         dispatcher_bell: "%dispatcher_bell%"
+        static_page_privacy_policy: "%static_page_privacy_policy%"
+        newsletter_subscribe_tick_by_default: "%newsletter_subscribe_tick_by_default%"
+        show_making_time_deadline: "%show_making_time_deadline%"
 #       Services
         slug_util:    "@food.dishes.utils.slug"
         places_service: "@food.places"
@@ -378,6 +381,7 @@ sonata_admin:
                   label_catalogue: SonataAdminBundle
                   items: ~
                   item_adds:
+                      - sonata.admin.company_discount_level
                       - sonata.admin.coupon
                       - sonata.admin.coupon_generator
                       - sonata.admin.combo_discounts

@@ -281,6 +281,7 @@ class OrderAdmin extends FoodAdmin
             ->add('orderFromNav', null, array('label' => 'admin.order.order_from_nav'))
             ->add('navDeliveryOrder', null, array('label' => 'admin.order.nav_delivery_order'))
             ->add('clientContacted', null, array('label' => 'admin.order.client_contacted'))
+            ->add('newsletterSubscribe', null, array('label' => 'admin.order.newsletter_subscribe'))
         ;
 
         // Remove Fields For Restaurant User (Moderator)

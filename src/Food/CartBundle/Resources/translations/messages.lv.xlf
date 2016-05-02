@@ -114,6 +114,10 @@
                 <source>cart.checkout.cart_rules</source>
                 <target><![CDATA[Iepazinos un piekrītu <a href="#rules" name="order_rules" class="fancy-box">noteikumiem</a>]]></target>
             </trans-unit>
+            <trans-unit id="cart.checkout.newsletter_subscribe" resname="cart.checkout.newsletter_subscribe">
+                <source>cart.checkout.newsletter_subscribe</source>
+                <target><![CDATA[Es vēlos saņemt visgaršīgākās Foodout.lv <a href="#privacy" name="newsletter_subscribe" class="fancy-box">ziņas</a>]]></target>
+            </trans-unit>
             <trans-unit id="58234b47f3f611cffbbd19bbaaa7dd73" resname="cart.checkout.delivery_comment_placeholder">
                 <source>cart.checkout.delivery_comment_placeholder</source>
                 <target>Ievadiet kāpņutelpas kodu, stāvu un citu kurjeram noderīgo informāciju…</target>
@@ -403,6 +407,10 @@ LV-1046</target>
             <trans-unit id="general.coupon.only_delivery" resname="general.coupon.only_delivery">
                 <source>general.coupon.only_delivery</source>
                 <target>Atvainojiet, šis atlaižu kupons ir derīgs tikai pasūtījumiem ar piegādi.</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.not_for_business" resname="general.coupon.not_for_business">
+                <source>general.coupon.not_for_business</source>
+                <target>Atvainojiet, biznesa klienti nevar izmantot atlaižu kuponus</target>
             </trans-unit>
             <trans-unit id="general.coupon.only_pickup" resname="general.coupon.only_pickup">
                 <source>general.coupon.only_pickup</source>

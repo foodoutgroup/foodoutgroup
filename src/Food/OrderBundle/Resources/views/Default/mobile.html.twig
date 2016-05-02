@@ -71,6 +71,9 @@
         </tr>
         {% if order.deliveryType == 'deliver' %}
             <tr>
+                <td colspan="5"><b>{% trans %}mobile.order.sum_without_delivery{% endtrans %}:</b> {{ order.total - order.deliveryPrice }} {{ currency_display|raw }}</td>
+            </tr>
+            <tr>
                 <td colspan="5"><b>{% trans %}mobile.restaurant_delivery_price{% endtrans %}:</b> {{ order.deliveryPrice }} {{ currency_display|raw }}</td>
             </tr>
         {% endif %}
@@ -144,6 +147,14 @@
         <tr>
             <td colspan="5">{{ order.orderDate|date("H:i") }}</td>
         </tr>
+        {% if show_making_time_deadline %}
+        <tr>
+            <th colspan="5">{% trans %}mobile.making_time{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ order_service.getMakingTime(order)|date("H:i") }}</td>
+        </tr>
+        {% endif %}
         <tr>
             <th colspan="5">{% trans %}mobile.deliver_time{% endtrans %}</th>
         </tr>

@@ -327,7 +327,8 @@ class Misc
         if (!$user instanceof User) {
             throw new \InvalidArgumentException('GetDivision name called without user');
         }
-        if (empty($code)) {
+
+        if (empty($code) && $user->getRequiredDivision()) {
             throw new \InvalidArgumentException('GetDivision name called without code');
         }
 

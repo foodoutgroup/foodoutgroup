@@ -518,6 +518,10 @@
                 <source>mobile.order.sum_with_delivery</source>
                 <target>Suma su pristatymu (su PVM)</target>
             </trans-unit>
+            <trans-unit id="mobile.order.sum">
+                <source>mobile.order.sum_without_delivery</source>
+                <target>Suma be pristatymo (su PVM)</target>
+            </trans-unit>
             <trans-unit id="mobile.order.coupon_code" resname="mobile.order.coupon_code">
                 <source>mobile.order.coupon_code</source>
                 <target>Nuolaidos kodas</target>
@@ -646,6 +650,10 @@
                 <source>mobile.invoice.total_with_vat_ltl</source>
                 <target>Viso LTL</target>
             </trans-unit>
+            <trans-unit id="mobile.making_time">
+                <source>mobile.making_time</source>
+                <target>Pagaminti iki</target>
+            </trans-unit>
             <trans-unit id="16e198a6b48257e47d9ce572ab7ce655" resname="mobile.deliver_time">
                 <source>mobile.deliver_time</source>
                 <target>Pristatyti iki</target>
@@ -734,9 +742,17 @@
                 <source>general.profile.cart_history</source>
                 <target>Užsakymų istorija</target>
             </trans-unit>
+            <trans-unit id="general.profile.discount">
+                <source>general.profile.discount</source>
+                <target>Nuolaida</target>
+            </trans-unit>
             <trans-unit id="4c0c2aa6ad499bfdd3f6e8edffc6336c" resname="general.profile.logout">
                 <source>general.profile.logout</source>
                 <target>Atsijungti</target>
+            </trans-unit>
+            <trans-unit id="general.profile.current_discount">
+                <source>general.profile.current_discount</source>
+                <target>Šiuo metu jums taikoma nuolaida: %discount% %</target>
             </trans-unit>
             <trans-unit id="6defb486341307b289948eb8fa05624f" resname="general.profile.button_save">
                 <source>general.profile.button_save</source>

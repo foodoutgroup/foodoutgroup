@@ -186,6 +186,11 @@ class OrderAdminController extends Controller
                                 $where .= " AND o.place_point_city LIKE " . $prepare_val("%" . $value['value'] . "%");
                             }
                             break;
+                        case 'place_name':
+                            if (!empty($value['value'])) {
+                                $where .= " AND o.place_name LIKE " . $prepare_val("%" . $value['value'] . "%");
+                            }
+                            break;
                         case 'address':
                             if (!empty($value['value'])) {
                                 $where .= " AND o.place_point_address LIKE " . $prepare_val("%" . $value['value'] . "%");

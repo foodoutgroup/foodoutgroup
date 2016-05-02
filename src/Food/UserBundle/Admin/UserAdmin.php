@@ -133,6 +133,13 @@ class UserAdmin extends SonataUserAdmin {
                 ->add('companyCode', null, array('required' => false, 'label' => 'admin.users.company_code'))
                 ->add('vatCode', null, array('required' => false, 'label' => 'admin.users.vat_code'))
                 ->add('company_address', null, array('required' => false, 'label' => 'admin.users.company_address'))
+                ->add('checkingAccount', null, array('required' => false, 'label' => 'admin.users.checking_account'))
+                ->add('workersCount', null, array('required' => false, 'label' => 'admin.users.workers_count'))
+                ->add('directorFirstName', null, array('required' => false, 'label' => 'admin.users.director_first_name'))
+                ->add('directorLastName', null, array('required' => false, 'label' => 'admin.users.director_last_name'))
+                ->add('discount', null, array('required' => false, 'label' => 'admin.users.discount'))
+                ->add('allowDelayPayment', null, array('required' => false, 'label' => 'admin.users.allow_delay_payment'))
+                ->add('requiredDivision', null, array('required' => false, 'label' => 'admin.users.required_division'))
                 ->add('divisionCodes', 'sonata_type_collection',
                     array('required' => false, 'label' => 'admin.users.division_codes'),
                     array(

@@ -66,6 +66,7 @@ class OrderService extends ContainerAware
     private $paymentSystemByMethod = array(
         'local' => 'food.local_biller',
         'local.card' => 'food.local_biller',
+        'postpaid' => 'food.local_biller',
         'paysera' => 'food.paysera_biller',
         'swedbank-gateway' => 'food.swedbank_gateway_biller',
         'swedbank-credit-card-gateway' => 'food.swedbank_credit_card_gateway_biller',
@@ -658,7 +659,7 @@ class OrderService extends ContainerAware
         // Inform poor user, that his order was accepted
         $order = $this->getOrder();
         $driver = $order->getDriver();
-        if ($driver->getType() == 'local') {
+//        if ($driver->getType() == 'local') {
             $messagingService = $this->container->get('food.messages');
             $logger = $this->container->get('logger');
 
@@ -716,7 +717,7 @@ class OrderService extends ContainerAware
                 $order
             );
             $messagingService->saveMessage($message);
-        }
+//        }
 
         $this->logDeliveryEvent($this->getOrder(), 'order_assigned');
 
@@ -825,7 +826,7 @@ class OrderService extends ContainerAware
         if ($order->getPlace()->getSendInvoice()
             && !$order->getPlacePointSelfDelivery()
             && $order->getDeliveryType() == OrderService::$deliveryDeliver
-            && !$order->getIsCorporateClient()) {
+            && $order->getPaymentMethod() != 'postpaid') {
             // Patikrinam ar sitam useriui reikia generuoti sf
             if (!$order->getUser()->getNoInvoice()) {
                 $mustDoNavDelete = $this->setInvoiceDataForOrder();
@@ -1998,8 +1999,7 @@ class OrderService extends ContainerAware
             $orderTextTranslation = $translator->trans('general.email.new_order');
         }
 
-        $messageText = $orderSmsTextTranslation
-            .$orderConfirmRoute;
+        $messageText = $orderSmsTextTranslation.' '.$orderConfirmRoute;
 
         // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
         if (!empty($placePointEmail)) {
@@ -2188,8 +2188,7 @@ class OrderService extends ContainerAware
         $orderSmsTextTranslation = $translator->trans('general.sms.canceled_order', array('order_id' => $order->getId()));
         $orderTextTranslation = $translator->trans('general.email.canceled_order');
 
-        $messageText = $orderSmsTextTranslation
-            .$orderConfirmRoute;
+        $messageText = $orderSmsTextTranslation.' '.$orderConfirmRoute;
 
         // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
         if (!empty($placePointEmail)) {
@@ -2898,6 +2897,93 @@ class OrderService extends ContainerAware
         $phonePass = false;
         $list = $this->getCartService()->getCartDishes($place);
         $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
+
+        $customerEmail = $request->get('customer-email');
+        if (0 === strlen($customerEmail)) {
+            $formErrors[] = 'order.form.errors.customeremail';
+        } else {
+            $emailConstraint = new EmailConstraint();
+            $emailConstraint->message = 'Email invalid';
+
+            $emailErrors = $this->container->get('validator')->validateValue(
+                $customerEmail,
+                $emailConstraint
+            );
+
+            if ($emailErrors->count() > 0) {
+                $formErrors[] = 'order.form.errors.customeremail_invalid';
+            }
+        }
+
+        // Validate bussines client
+        if (!$user instanceof User) {
+            $loggedIn = false;
+            $user = $this->container->get('fos_user.user_manager')->findUserByEmail($customerEmail);
+        }
+        if ($user instanceof User) {
+            if ($user->getIsBussinesClient()) {
+                // Bussines client must be logged in
+                if (!$loggedIn) {
+                    $formErrors[] = 'order.form.errors.bussines_client_not_loggedin';
+                } elseif ($user->getRequiredDivision()) {
+                    // Bussines client must enter correct division code
+                    $givenDivisionCode = $request->get('company_division_code', '');
+                    if (!empty($givenDivisionCode)) {
+                        $correctDivisionCodes = $user->getDivisionCodes();
+                        $codeCorrect = false;
+
+                        foreach ($correctDivisionCodes as $divisionCode) {
+                            if ($divisionCode == $givenDivisionCode) {
+                                $codeCorrect = true;
+                                break;
+                            }
+                        }
+
+                        if (!$codeCorrect) {
+                            $formErrors[] = 'order.form.errors.division_code_incorrect';
+                        }
+                    } else {
+                        $formErrors[] = 'order.form.errors.empty_division_code';
+                    }
+                }
+                if (!$takeAway && !$place->getSelfDelivery()) {
+                    $discountSize = $this->container->get('doctrine')->getRepository('FoodUserBundle:User')->getDiscount($user);
+                    $total_cart -= $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($place), $discountSize);
+                }
+            }
+        }
+
+        $paymentType = $request->get('payment-type');
+        if (0 === strlen($paymentType)) {
+            $formErrors[] = 'order.form.errors.payment_type';
+        } elseif ($paymentType == 'postpaid' && (!($user instanceof User) || $user->getIsBussinesClient() && !$user->getAllowDelayPayment()) ) {
+            $formErrors[] = 'order.form.errors.payment_type';
+        }
+
+        if (!empty($coupon) && $coupon instanceof Coupon) {
+            if ($coupon->getActive() == false) {
+                $formErrors[] = 'general.coupon.not_active';
+            } else if ($coupon->getPlace() && $coupon->getPlace()->getId() != $place->getId()) {
+                $formErrors[] = 'general.coupon.wrong_place_simple';
+            } elseif (!$coupon->isAllowedForWeb()) {
+                $formErrors[] = 'general.coupon.only_api';
+            } elseif (!$takeAway && !$coupon->isAllowedForDelivery()) {
+                $formErrors[] = 'general.coupon.only_pickup';
+            } elseif ($takeAway && !$coupon->isAllowedForPickup()) {
+                $formErrors[] = 'general.coupon.only_delivery';
+            } elseif (!empty($user) && is_object($user) && $user->getIsBussinesClient()) {
+                $formErrors[] = 'general.coupon.not_for_business';
+            } else {
+                $discountSize = $coupon->getDiscount();
+                if (!empty($discountSize)) {
+                    $total_cart -= $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($place), $discountSize);
+                } elseif (!$coupon->getFullOrderCovers()) {
+                    $total_cart -= $coupon->getDiscountSum();
+                }
+            }
+        }
+
+
         if (!$takeAway) {
             foreach ($list as $itm) {
                 if (!$this->isOrderableByTime($itm->getDishId())) {
@@ -3067,76 +3153,6 @@ class OrderService extends ContainerAware
             // UX improvement. Dejom skersa ant commentaro.
         }
 
-        $customerEmail = $request->get('customer-email');
-        if (0 === strlen($customerEmail)) {
-            $formErrors[] = 'order.form.errors.customeremail';
-        } else {
-            $emailConstraint = new EmailConstraint();
-            $emailConstraint->message = 'Email invalid';
-
-            $emailErrors = $this->container->get('validator')->validateValue(
-                $customerEmail,
-                $emailConstraint
-            );
-
-            if ($emailErrors->count() > 0) {
-                $formErrors[] = 'order.form.errors.customeremail_invalid';
-            }
-        }
-
-        // Validate bussines client
-
-        if (!$user instanceof User) {
-            $loggedIn = false;
-            $user = $this->container->get('fos_user.user_manager')->findUserByEmail($customerEmail);
-        }
-        if ($user instanceof User) {
-            if ($user->getIsBussinesClient()) {
-                // Bussines client must be logged in
-                if (!$loggedIn) {
-                    $formErrors[] = 'order.form.errors.bussines_client_not_loggedin';
-                } else {
-                    // Bussines client must enter correct division code
-                    $givenDivisionCode = $request->get('company_division_code', '');
-                    if (!empty($givenDivisionCode)) {
-                        $correctDivisionCodes = $user->getDivisionCodes();
-                        $codeCorrect = false;
-
-                        foreach ($correctDivisionCodes as $divisionCode) {
-                            if ($divisionCode == $givenDivisionCode) {
-                                $codeCorrect = true;
-                                break;
-                            }
-                        }
-
-                        if (!$codeCorrect) {
-                            $formErrors[] = 'order.form.errors.division_code_incorrect';
-                        }
-                    } else {
-                        $formErrors[] = 'order.form.errors.empty_division_code';
-                    }
-                }
-            }
-        }
-
-        if (0 === strlen($request->get('payment-type'))) {
-            $formErrors[] = 'order.form.errors.payment_type';
-        }
-
-        if (!empty($coupon) && $coupon instanceof Coupon) {
-            if ($coupon->getActive() == false) {
-                $formErrors[] = 'general.coupon.not_active';
-            } else if ($coupon->getPlace() && $coupon->getPlace()->getId() != $place->getId()) {
-                $formErrors[] = 'general.coupon.wrong_place_simple';
-            } elseif (!$coupon->isAllowedForWeb()) {
-                $formErrors[] = 'general.coupon.only_api';
-            } elseif (!$takeAway && !$coupon->isAllowedForDelivery()) {
-                $formErrors[] = 'general.coupon.only_pickup';
-            } elseif ($takeAway && !$coupon->isAllowedForPickup()) {
-                $formErrors[] = 'general.coupon.only_delivery';
-            }
-        }
-
         // Validate das phone number :)
         if (0 != strlen($phone)) {
             $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
@@ -3231,7 +3247,6 @@ class OrderService extends ContainerAware
                         print_r($addrData, true)
                     );
                     @mail("karolis.m@foodout.lt", "NAVISION ERROR ".date("Y-m-d H:i:s"), $message, "FROM: info@foodout.lt");
-                    @mail("zaneta@foodout.lt", "NAVISION ERROR ".date("Y-m-d H:i:s"), $message, "FROM: info@foodout.lt");
                     $formErrors[] = 'order.form.errors.nav_restaurant_no_work';
                 } elseif ($data['errcode']['code'] == 6) {
                     $formErrors[] = 'order.form.errors.nav_restaurant_no_setted';
@@ -3805,5 +3820,11 @@ class OrderService extends ContainerAware
             }
         }
         return false;
+    }
+
+    public function getMakingTime(Order $order)
+    {
+        $makingTime = clone $order->getDeliveryTime();
+        return $makingTime->modify('-30 minutes');
     }
 }

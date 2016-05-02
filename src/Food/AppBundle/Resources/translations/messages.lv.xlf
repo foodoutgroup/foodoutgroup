@@ -268,7 +268,7 @@
             </trans-unit>
             <trans-unit id="mobile.order.id" resname="mobile.order.id">
                 <source>mobile.order.id</source>
-                <target>Order no.</target>
+                <target>Pasūtījuma Nr.</target>
             </trans-unit>
             <trans-unit id="ceb80ce24895534499f2a5a28a707fbb" resname="mobile.order_dish">
                 <source>mobile.order_dish</source>
@@ -444,7 +444,7 @@
             </trans-unit>
             <trans-unit id="mobile.restaurant_delivery_price" resname="mobile.restaurant_delivery_price">
                 <source>mobile.restaurant_delivery_price</source>
-                <target>Delivery (with VAT)</target>
+                <target>Piegāde (ar PVN)</target>
             </trans-unit>
             <trans-unit id="c515ebc67239e3c3555e84b329f7eeba" resname="mobile.place_point_phone">
                 <source>mobile.place_point_phone</source>
@@ -517,6 +517,10 @@
             <trans-unit id="ca4d1fefea4fd64c121dbd0e8fa2819c" resname="mobile.order.sum_with_delivery">
                 <source>mobile.order.sum_with_delivery</source>
                 <target>Summa ar piegādi (ar PVN)</target>
+            </trans-unit>
+            <trans-unit id="mobile.order.sum">
+                <source>mobile.order.sum_without_delivery</source>
+                <target>Summa bez piegādes maksas (ar PVN)</target>
             </trans-unit>
             <trans-unit id="4049c45b29c8af2dff760dc33d4612ba" resname="mobile.order.coupon_code">
                 <source>mobile.order.coupon_code</source>
@@ -642,6 +646,10 @@
                 <source>mobile.invoice.total_with_vat_eur</source>
                 <target>Kopā EUR</target>
             </trans-unit>
+            <trans-unit id="mobile.making_time">
+                <source>mobile.making_time</source>
+                <target>Izgatavot līdz</target>
+            </trans-unit>
             <trans-unit id="16e198a6b48257e47d9ce572ab7ce655" resname="mobile.deliver_time">
                 <source>mobile.deliver_time</source>
                 <target>Piegādāt līdz</target>
@@ -730,9 +738,17 @@
                 <source>general.profile.cart_history</source>
                 <target>Pasūtījumu vēsture</target>
             </trans-unit>
+            <trans-unit id="general.profile.discount">
+                <source>general.profile.discount</source>
+                <target>Atlaide</target>
+            </trans-unit>
             <trans-unit id="4c0c2aa6ad499bfdd3f6e8edffc6336c" resname="general.profile.logout">
                 <source>general.profile.logout</source>
                 <target>Iziet</target>
+            </trans-unit>
+            <trans-unit id="general.profile.current_discount">
+                <source>general.profile.current_discount</source>
+                <target>Jūsu atlaide ir: %discount% %</target>
             </trans-unit>
             <trans-unit id="6defb486341307b289948eb8fa05624f" resname="general.profile.button_save">
                 <source>general.profile.button_save</source>

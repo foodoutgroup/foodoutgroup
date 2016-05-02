@@ -76,9 +76,11 @@
     {% set delivery_total = 0 %}
 
     {% for key, divOrders in orders %}
+        {% if user.requiredDivision %}
         <tr>
             <td colspan="4">{{ misc_utils.divisionName(mainOrder.user, key) }} padalinys:</td>
         </tr>
+        {% endif %}
         {% for order in divOrders %}
             <tr class="no-border-line">
                 <td class="narrow_col">{{ loop.index }}</td>

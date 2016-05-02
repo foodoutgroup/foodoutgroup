@@ -822,7 +822,7 @@ class Coupon
      */
     public function isAllowedForDelivery()
     {
-        return in_array($this->getMethod(), array(self::METHOD_BOTH, self::METHOD_BOTH));
+        return in_array($this->getMethod(), array(self::METHOD_BOTH, self::METHOD_DELIVERY));
     }
 
     /**
