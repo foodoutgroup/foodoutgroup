@@ -2685,3 +2685,40 @@ div.coupon_form_popup {
 .dish_search_block .chosen-container-single .chosen-single abbr {
     top: 4px;
 }
+
+/** register form **/
+.register-form button.button {
+    border-radius: 4px;
+    box-shadow: 0 1px 1px #c0c0c0;
+    border: none;
+    letter-spacing: 1px;
+
+    background-image: none;
+    background-color: #999999;
+
+    background-size: 68px 22px;
+    font-size: 11px;
+    color: #fff;
+    text-shadow: 0 1px 0 #6d9104;
+    text-transform: uppercase;
+    weight: bold;
+}
+.register-form button.button.selected {
+    background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x left center;
+}
+.register-form.not-righter {
+    float: left;
+}
+.register-form.not-righter.extended {
+    width: 792px !important;
+}
+
+.login-register-popup label {
+    width: 180px;
+}
+.custom-checkbox.company-agreement {
+    font-size: 15px;
+    padding-top: 0px;
+    color: #000000;
+    width: 179px;
+}
