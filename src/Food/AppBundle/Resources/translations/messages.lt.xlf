@@ -1345,6 +1345,36 @@
                 <source>form.company_workers</source>
                 <target>Darbuotojai</target>
             </trans-unit>
+            <!-- Order Tracking Begin -->
+            <trans-unit id="general.tracking_page_title" resname="general.tracking_page_title">
+                <source>general.tracking_page_title</source>
+                <target>Tavo užsakymo būklė</target>
+            </trans-unit>
+            <trans-unit id="general.tracking_step1" resname="general.tracking_step1">
+                <source>general.tracking_step1</source>
+                <target>Tavo užsakymas laukia restorano patvirtinimo!</target>
+            </trans-unit>
+            <trans-unit id="general.tracking_step2" resname="general.tracking_step2">
+                <source>general.tracking_step2</source>
+                <target>Tavo užsakymas patvirtintas ir gaminamas!</target>
+            </trans-unit>
+            <trans-unit id="general.tracking_step3" resname="general.tracking_step3">
+                <source>general.tracking_step3</source>
+                <target>Tavo užsakymas yra vežamas!</target>
+            </trans-unit>
+            <trans-unit id="general.tracking_step4" resname="general.tracking_step4">
+                <source>general.tracking_step4</source>
+                <target>Tavo užsakymas pristatytas.</target>
+            </trans-unit>
+            <trans-unit id="general.tracking_step4_pickup" resname="general.tracking_step4_pickup">
+                <source>general.tracking_step4_pickup</source>
+                <target>Tavo užsakymas pagamintas.</target>
+            </trans-unit>
+            <trans-unit id="general.tracking_canceled" resname="general.tracking_canceled">
+                <source>general.tracking_canceled</source>
+                <target>Tavo užsakymas atšauktas</target>
+            </trans-unit>
+            <!-- Order Tracking End -->
         </body>
     </file>
 </xliff>

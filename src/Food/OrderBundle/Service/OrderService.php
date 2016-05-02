@@ -595,6 +595,7 @@ class OrderService extends ContainerAware
                     'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
                     'maisto_ruosejas' => $this->getOrder()->getPlacePoint()->getAddress(),
                     'uzsakymas' => $ordersText,
+                    'order_hash' => $this->getOrder()->getOrderHash(),
                     'adresas' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->getAddress().", ".$this->getOrder()->getAddressId()->getCity() : "--"),
                     'pristatymo_data' => $this->getOrder()->getDeliveryTime()->format('Y-m-d H:i:s')
                 );
@@ -611,6 +612,7 @@ class OrderService extends ContainerAware
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
             'maisto_ruosejas' => $this->getOrder()->getPlacePoint()->getAddress(),
             'uzsakymas' => $this->getOrder()->getId(),
+            'order_hash' => $this->getOrder()->getOrderHash(),
             'adresas' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->getAddress() . ", " . $this->getOrder()->getAddressId()->getCity() : "--"),
             'pristatymo_data' => $this->getOrder()->getPlace()->getDeliveryTime(),
             'total_sum' => $this->getOrder()->getTotal(),
@@ -907,6 +909,7 @@ class OrderService extends ContainerAware
         $variables = array(
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
             'uzsakymo_nr' => $this->getOrder()->getId(),
+            'order_hash' => $this->getOrder()->getOrderHash(),
             'miestas' => $this->getOrder()->getPlacePoint()->getCity(),
             'maisto_review_url' => 'http://www.foodout.lt/lt/'.$slugUtil->getSlugByItem(
                     $this->getOrder()->getPlace()->getId(),

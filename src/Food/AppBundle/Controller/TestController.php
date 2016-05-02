@@ -28,6 +28,7 @@ class TestController extends Controller
             'maisto_gamintojas' => 'FitFood',
             'maisto_ruosejas' => 'FitFood',
             'uzsakymas' => '1 butelis Šaltupio. 2 buteliai Krantų. 3 buteliai Smigio',
+            'order_hash' => 'bbca285316560602a55bc8f5766085fd',
             'adresas' => 'Laisves 77c-58',
             'pristatymo_data' => 'Vakar',
         );
