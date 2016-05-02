@@ -67,8 +67,13 @@
             {{ form_widget(form.workersCount, {'attr': {'placeholder': placeholder}}) }}
         </div>
         <div class="form-row {% if submitted and errors.businessAgreement is not empty %}error{% endif %}">
-            {{ form_widget(form.businessAgreement,{ 'attr': {'title': errors.businessAgreement, 'class': 'no-icheck fl business_agreement', 'data-placement': 'bottom'}}) }}
+            <label class="custom-checkbox company-agreement">
+                {% trans %}form.businessAgreement{% endtrans %}
+                {{ form_widget(form.businessAgreement,{ 'attr': {'title': errors.businessAgreement, 'classz': 'no-icheck fl business_agreement', 'data-placement': 'bottom'}}) }}
+            </label>
+            {#
             {{ form_label(form.businessAgreement) }}
+            #}
         </div>
         <div class="hidden">
         {{ form_widget(form.isBussinesClient,{ 'attr': {'class': 'no-icheck'}}) }}
@@ -106,9 +111,13 @@
     .login-register-popup label {
         width: 180px;
     }
-    .form-row .business_agreement {
-        margin-top: 10px;
+    .custom-checkbox.company-agreement {
+        font-size: 15px;
+        padding-top: 0px;
+        color: #000000;
+        width: 179px;
     }
+
 </style>
 
 <Script>
@@ -141,5 +150,8 @@
             return false;
         }
     };
+    $(document).ready(function() {
+        $("input:not('.no-icheck')").iCheck();
+    });
 
 </Script>
