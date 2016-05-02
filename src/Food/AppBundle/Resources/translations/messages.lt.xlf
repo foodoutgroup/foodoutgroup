@@ -1379,7 +1379,7 @@
             </trans-unit>
             <trans-unit id="registration.companyAddress_placeholder">
                 <source>registration.companyAddress_placeholder</source>
-                <target>Gedimino pr. 000, Vilnius</target>
+                <target>Gedimino pr. 0, Vilnius</target>
             </trans-unit>
             <trans-unit id="form.checking_account">
                 <source>form.checking_account</source>
@@ -1402,7 +1402,7 @@
                 <target>Sutinku su taisyklėmis</target>
             </trans-unit>
             <trans-unit id="errors.businessAgreement">
-                <source>ferrors.businessAgreement</source>
+                <source>errors.businessAgreement</source>
                 <target>Būtina sutikti su taisyklėmis</target>
             </trans-unit>
             <!-- Order Tracking Begin -->

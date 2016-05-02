@@ -1,6 +1,5 @@
 <form class="righter register-form {% if isBussinesClient %}not-righter extended{% endif %}" action="{{ url('user_register_create', {}, true) }}" method="post" novalidate>
     <div style="float: left; width: 300px">
-        {{ form_errors(form) }}
         <h3>{% trans %}general.register_title{% endtrans %}</h3>
         <h4>{% trans %}general.register_text{% endtrans %}</h4>
         <button class="button private {% if not  isBussinesClient %}selected{% endif %}" onclick="return registrationForm.showPrivate(this);">{% trans %}general.private{% endtrans %}</button>
@@ -68,8 +67,8 @@
             {{ form_widget(form.workersCount, {'attr': {'placeholder': placeholder}}) }}
         </div>
         <div class="form-row {% if submitted and errors.businessAgreement is not empty %}error{% endif %}">
+            {{ form_widget(form.businessAgreement,{ 'attr': {'title': errors.businessAgreement, 'class': 'no-icheck fl business_agreement', 'data-placement': 'bottom'}}) }}
             {{ form_label(form.businessAgreement) }}
-            {{ form_widget(form.businessAgreement,{ 'attr': {'class': 'no-icheck'}}) }}
         </div>
         <div class="hidden">
         {{ form_widget(form.isBussinesClient,{ 'attr': {'class': 'no-icheck'}}) }}
@@ -103,6 +102,13 @@
     .register-form.not-righter.extended {
         width: 792px !important;
     }
+
+    .login-register-popup label {
+        width: 180px;
+    }
+    .form-row .business_agreement {
+        margin-top: 10px;
+    }
 </style>
 
 <Script>
@@ -114,7 +120,7 @@
             theBox.find('.button.company').removeClass('selected');
             var lefter = theBox.find('.lefter.login-form');
             theBox.find('.register-form.righter').removeClass('not-righter').removeClass('extended');
-            theBox.find('#fos_user_registration_form_isBussinesClient').attr('checked', '');
+            theBox.find('#fos_user_registration_form_isBussinesClient').prop('checked', '');
             theBox.find('.inner-righter.righter.company').addClass('hidden');
             theBox.find('.tooltip').remove();
             theBox.find('.form-row.error').removeClass('error');
@@ -127,7 +133,7 @@
             theBox.find('.button.company').addClass('selected');
             var lefter = theBox.find('.lefter.login-form');
             theBox.find('.register-form.righter').addClass('not-righter').addClass('extended');
-            theBox.find('#fos_user_registration_form_isBussinesClient').attr('checked', 'checked');
+            theBox.find('#fos_user_registration_form_isBussinesClient').prop('checked', 'checked');
             theBox.find('.inner-righter.righter.company').removeClass('hidden');
             theBox.find('.tooltip').remove();
             theBox.find('.form-row.error').removeClass('error');
