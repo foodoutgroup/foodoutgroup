@@ -1313,7 +1313,7 @@
             <!-- Business client begin -->
             <trans-unit id="form.company_name">
                 <source>form.company_name</source>
-                <target>Įmonės pavadinimas</target>
+                <target>Kompānijas nosaukums</target>
             </trans-unit>
             <trans-unit id="registration.companyName_placeholder">
                 <source>registration.companyName_placeholder</source>
@@ -1321,7 +1321,7 @@
             </trans-unit>
             <trans-unit id="form.company_code">
                 <source>form.company_code</source>
-                <target>Įmonės kodas</target>
+                <target>Kompānijas kods</target>
             </trans-unit>
             <trans-unit id="registration.companyCode_placeholder">
                 <source>registration.companyCode_placeholder</source>
@@ -1329,7 +1329,7 @@
             </trans-unit>
             <trans-unit id="form.vat_code">
                 <source>form.vat_code</source>
-                <target>PVM kodas</target>
+                <target>PVN reģ.numurs</target>
             </trans-unit>
             <trans-unit id="registration.vatCode_placeholder">
                 <source>registration.vatCode_placeholder</source>
@@ -1337,7 +1337,7 @@
             </trans-unit>
             <trans-unit id="form.company_address">
                 <source>form.company_address</source>
-                <target>Įmonės adresas</target>
+                <target>Kompānijas adrese</target>
             </trans-unit>
             <trans-unit id="registration.companyAddress_placeholder">
                 <source>registration.companyAddress_placeholder</source>
@@ -1345,7 +1345,7 @@
             </trans-unit>
             <trans-unit id="form.checking_account">
                 <source>form.checking_account</source>
-                <target>Atsiskaitomoji sąskaita</target>
+                <target>Bankas konta numurs</target>
             </trans-unit>
             <trans-unit id="registration.checkingAccount_placeholder">
                 <source>registration.checkingAccount_placeholder</source>
@@ -1353,7 +1353,7 @@
             </trans-unit>
             <trans-unit id="form.workers_count">
                 <source>form.workers_count</source>
-                <target>Darbuotojų skaičius</target>
+                <target>Darbinieku skaits</target>
             </trans-unit>
             <trans-unit id="registration.workersCount_placeholder">
                 <source>registration.workersCount_placeholder</source>
@@ -1361,15 +1361,15 @@
             </trans-unit>
             <trans-unit id="form.businessAgreement">
                 <source>form.businessAgreement</source>
-                <target>Sutinku su taisyklėmis</target>
+                <target><![CDATA[Piekrītu <a href="#business_rules" name="business_rules" class="fancy-box">noteikumiem</a>]]></target>
             </trans-unit>
             <trans-unit id="errors.businessAgreement">
                 <source>errors.businessAgreement</source>
-                <target>Būtina sutikti su taisyklėmis</target>
+                <target>Noteikumu lauks ir obligāti jāaizpilda</target>
             </trans-unit>
             <trans-unit id="general.company.note_text">
                 <source>general.company.note_text</source>
-                <target><![CDATA[<a href="#login-register-popup" class="boxer">Registruokitės</a> ir gaukite nuolaidą!]]></target>
+                <target><![CDATA[Vai Jūs veicat pasūtījumu kompānijas vārdā? <a href="#login-register-popup" class="boxer">Reģistrējieties</a>, lai saņemtu īpašas atlaides!]]></target>
             </trans-unit>
             <!-- Business client end -->
             <!-- Order Tracking Begin -->
