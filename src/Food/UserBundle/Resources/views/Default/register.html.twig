@@ -35,7 +35,7 @@
     </div>
 
 
-    <div class="inner-righter righter" style="float: right; width: 300px;">
+    <div class="inner-righter righter company hidden" style="float: right; width: 300px;">
         <div class="form-row">
             {% set placeholder = 'registration.companyName_placeholder'|trans %}
             {{ form_label(form.companyName) }}
@@ -110,6 +110,7 @@
             var lefter = theBox.find('.lefter.login-form');
             theBox.find('.register-form.righter').removeClass('not-righter').removeClass('extended');
             theBox.find('#fos_user_registration_form_isBussinesClient').attr('checked', '');
+            theBox.find('.inner-righter.righter.company').addClass('hidden');
             lefter.show();
             return false;
         },
@@ -120,6 +121,7 @@
             var lefter = theBox.find('.lefter.login-form');
             theBox.find('.register-form.righter').addClass('not-righter').addClass('extended');
             theBox.find('#fos_user_registration_form_isBussinesClient').attr('checked', 'checked');
+            theBox.find('.inner-righter.righter.company').removeClass('hidden');
             lefter.hide();
             return false;
         }
