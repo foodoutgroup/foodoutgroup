@@ -2,6 +2,8 @@
 
 namespace Food\UserBundle\Entity;
 
+use Food\DishesBundle\Entity\Place;
+use Food\UserBundle\Entity\UserAddress;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -128,20 +130,6 @@ class User extends BaseUser
      * @ORM\Column(name="company_address", type="text", nullable=true)
      */
     private $company_address;
-
-
-    /**
-     * @var string
-     * @ORM\Column(name="company_account", type="text", nullable=true)
-     */
-    private $company_account;
-
-    /**
-     * @var string
-     * @ORM\Column(name="company_workers", type="smallint", nullable=true)
-     */
-    private $company_workers;
-
 
     /**
      * @var string
@@ -270,9 +258,9 @@ class User extends BaseUser
     /**
      * Remove places
      *
-     * @param \Food\DishesBundle\Entity\Place $places
+     * @param Place $places
      */
-    public function removePlace(\Food\DishesBundle\Entity\Place $places)
+    public function removePlace(Place $places)
     {
         $this->places->removeElement($places);
     }
@@ -292,10 +280,10 @@ class User extends BaseUser
     /**
      * Set place
      *
-     * @param \Food\DishesBundle\Entity\Place $place
+     * @param Place $place
      * @return User
      */
-    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
+    public function setPlace(Place $place = null)
     {
         $this->place = $place;
     
@@ -305,7 +293,7 @@ class User extends BaseUser
     /**
      * Get place
      *
-     * @return \Food\DishesBundle\Entity\Place 
+     * @return Place
      */
     public function getPlace()
     {
@@ -361,10 +349,10 @@ class User extends BaseUser
     /**
      * Add address
      *
-     * @param \Food\UserBundle\Entity\UserAddress $address
+     * @param UserAddress $address
      * @return User
      */
-    public function addAddress(\Food\UserBundle\Entity\UserAddress $address)
+    public function addAddress(UserAddress $address)
     {
         $this->address[] = $address;
     
@@ -374,9 +362,9 @@ class User extends BaseUser
     /**
      * Remove address
      *
-     * @param \Food\UserBundle\Entity\UserAddress $address
+     * @param UserAddress $address
      */
-    public function removeAddress(\Food\UserBundle\Entity\UserAddress $address)
+    public function removeAddress(UserAddress $address)
     {
         $this->address->removeElement($address);
     }
@@ -414,10 +402,10 @@ class User extends BaseUser
     /**
      * Add address
      *
-     * @param \Food\UserBundle\Entity\UserAddress $address
+     * @param UserAddress $address
      * @return User
      */
-    public function addAddres(\Food\UserBundle\Entity\UserAddress $address)
+    public function addAddres(UserAddress $address)
     {
         $this->address[] = $address;
     
@@ -427,9 +415,9 @@ class User extends BaseUser
     /**
      * Remove address
      *
-     * @param \Food\UserBundle\Entity\UserAddress $address
+     * @param UserAddress $address
      */
-    public function removeAddres(\Food\UserBundle\Entity\UserAddress $address)
+    public function removeAddres(UserAddress $address)
     {
         $this->address->removeElement($address);
     }

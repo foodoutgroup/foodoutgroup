@@ -2,8 +2,12 @@
 
 namespace Food\UserBundle\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class RegistrationFormType extends BaseType
@@ -74,6 +78,15 @@ class RegistrationFormType extends BaseType
                     'error_bubbling' => false
                 )
             )
+            ->add('businessAgreement',
+                'checkbox',
+                array(
+                    'label' => 'form.businessAgreement',
+                    'error_bubbling' => false,
+                    'mapped' => false,
+                    'attr' => $attributes
+                )
+            )
             ->add('companyName',
                 'text',
                 array(
@@ -102,18 +115,18 @@ class RegistrationFormType extends BaseType
                     'label' => 'form.company_address'
                 )
             )
-            ->add('companyAccount',
+            ->add('checkingAccount',
                 'text',
                 array(
                     'error_bubbling' => false,
-                    'label' => 'form.company_account'
+                    'label' => 'form.checking_account'
                 )
             )
-            ->add('companyWorkers',
+            ->add('workersCount',
                 'text',
                 array(
                     'error_bubbling' => false,
-                    'label' => 'form.company_workers'
+                    'label' => 'form.workers_count'
                 )
             )
             ->add('plainPassword',
@@ -127,5 +140,18 @@ class RegistrationFormType extends BaseType
             ->remove('username')
             ->remove('phone')
         ;
+
+        $businessValidator = function (FormEvent $event) {
+            $form = $event->getForm();
+            if ($form->get('isBussinesClient')->getData()) {
+                $businessAgreementField = $form->get('businessAgreement')->getData();
+                if (empty($businessAgreementField)) {
+                    $form['businessAgreement']->addError(new FormError("errors.businessAgreement"));
+                }
+            }
+        };
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $businessValidator);
+
     }
 }
