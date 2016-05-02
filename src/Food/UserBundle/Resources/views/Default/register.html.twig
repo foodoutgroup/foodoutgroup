@@ -1,10 +1,10 @@
-<form class="righter register-form" action="{{ url('user_register_create', {}, true) }}" method="post" novalidate>
+<form class="righter register-form {% if isBussinesClient %}not-righter extended{% endif %}" action="{{ url('user_register_create', {}, true) }}" method="post" novalidate>
     <div style="float: left; width: 300px">
         {{ form_errors(form) }}
         <h3>{% trans %}general.register_title{% endtrans %}</h3>
         <h4>{% trans %}general.register_text{% endtrans %}</h4>
-        <button class="button private selected" onclick="return registrationForm.showPrivate(this);">{% trans %}general.private{% endtrans %}</button>
-        <button class="button company" onclick="return registrationForm.showCompany(this);">{% trans %}general.company{% endtrans %}</button>
+        <button class="button private {% if not  isBussinesClient %}selected{% endif %}" onclick="return registrationForm.showPrivate(this);">{% trans %}general.private{% endtrans %}</button>
+        <button class="button company {% if isBussinesClient %}selected{% endif %}" onclick="return registrationForm.showCompany(this);">{% trans %}general.company{% endtrans %}</button>
         <div class="form-row {% if submitted and errors.firstname is not empty %}error{% endif %}">
             {% set placeholder = 'registration.firstname_placeholder'|trans %}
             {{ form_label(form.firstname) }}
@@ -36,7 +36,7 @@
     </div>
 
 
-    <div class="inner-righter righter company hidden" style="float: right; width: 300px;">
+    <div class="inner-righter righter company {% if not isBussinesClient %}hidden{% endif %}" style="float: right; width: 300px;">
         <div class="form-row">
             {% set placeholder = 'registration.companyName_placeholder'|trans %}
             {{ form_label(form.companyName) }}
@@ -116,6 +116,8 @@
             theBox.find('.register-form.righter').removeClass('not-righter').removeClass('extended');
             theBox.find('#fos_user_registration_form_isBussinesClient').attr('checked', '');
             theBox.find('.inner-righter.righter.company').addClass('hidden');
+            theBox.find('.tooltip').remove();
+            theBox.find('.form-row.error').removeClass('error');
             lefter.show();
             return false;
         },
@@ -127,6 +129,8 @@
             theBox.find('.register-form.righter').addClass('not-righter').addClass('extended');
             theBox.find('#fos_user_registration_form_isBussinesClient').attr('checked', 'checked');
             theBox.find('.inner-righter.righter.company').removeClass('hidden');
+            theBox.find('.tooltip').remove();
+            theBox.find('.form-row.error').removeClass('error');
             lefter.hide();
             return false;
         }

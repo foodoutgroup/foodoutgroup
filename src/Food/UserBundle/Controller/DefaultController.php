@@ -54,7 +54,8 @@ class DefaultController extends Controller
             [
                 'form' => $form->createView(),
                 'errors' => $this->formErrors($form),
-                'submitted' => $form->isSubmitted()
+                'submitted' => $form->isSubmitted(),
+                'isBussinesClient' => $form->get('isBussinesClient')->getData()
             ]
         );
     }
@@ -72,7 +73,8 @@ class DefaultController extends Controller
             [
                 'form' => $form->createView(),
                 'errors' => $this->formErrors($form),
-                'submitted' => $form->isSubmitted()
+                'submitted' => $form->isSubmitted(),
+                'isBussinesClient' => $form->get('isBussinesClient')->getData()
             ]
         );
     }
