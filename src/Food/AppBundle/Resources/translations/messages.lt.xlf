@@ -1400,7 +1400,7 @@
             </trans-unit>
             <trans-unit id="form.businessAgreement">
                 <source>form.businessAgreement</source>
-                <target>Sutinku su taisyklėmis</target>
+                <target><![CDATA[Sutinku su <a href="#business_rules" name="business_rules" class="fancy-box">taisyklėmis</a>]]></target>
             </trans-unit>
             <trans-unit id="errors.businessAgreement">
                 <source>errors.businessAgreement</source>
@@ -1408,7 +1408,7 @@
             </trans-unit>
             <trans-unit id="general.company.note_text">
                 <source>general.company.note_text</source>
-                <target><![CDATA[<a href="#login-register-popup" class="boxer">Registruokitės</a> ir gaukite nuolaidą!]]></target>
+                <target><![CDATA[Užsakymas įmonei? <a href="#login-register-popup" class="boxer">Sudarykite maisto tiekimo sutartį</a> ir mėgaukitės išskirtinėmis sąlygomis maisto pristatymui į savo darbovietę!]]></target>
             </trans-unit>
             <!-- Business client end -->
 

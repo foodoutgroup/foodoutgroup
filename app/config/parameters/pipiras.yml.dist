@@ -99,5 +99,6 @@ parameters:
     place_with_neighbourhood: false
     dispatcher_bell: false
     static_page_privacy_policy: 8
+    static_page_b2b_rules: 29
     newsletter_subscribe_tick_by_default: false
     show_making_time_deadline: false

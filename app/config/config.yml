@@ -134,6 +134,7 @@ twig:
         invoice_series: "%invoice.series%"
         dispatcher_bell: "%dispatcher_bell%"
         static_page_privacy_policy: "%static_page_privacy_policy%"
+        static_page_b2b_rules: "%static_page_b2b_rules%"
         newsletter_subscribe_tick_by_default: "%newsletter_subscribe_tick_by_default%"
         show_making_time_deadline: "%show_making_time_deadline%"
 #       Services
