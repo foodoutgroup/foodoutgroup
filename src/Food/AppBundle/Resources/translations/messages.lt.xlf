@@ -1325,6 +1325,10 @@
                 <source>admin.dispatcher.delayed_minutes</source>
                 <target>min</target>
             </trans-unit>
+            <trans-unit id="form.company_workers" resname="form.company_workers">
+                <source>form.company_workers</source>
+                <target>Darbuotojai</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

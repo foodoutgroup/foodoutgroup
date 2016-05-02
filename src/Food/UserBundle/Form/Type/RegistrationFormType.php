@@ -68,6 +68,54 @@ class RegistrationFormType extends BaseType
                         'label' => 'form.username',
                         'translation_domain' => 'FOSUserBundle',
                         'attr' => $attributes))
+            ->add('isBussinesClient',
+                'checkbox',
+                array(
+                    'error_bubbling' => false
+                )
+            )
+            ->add('companyName',
+                'text',
+                array(
+                    'error_bubbling' => false,
+                    'label' => 'form.company_name'
+                )
+            )
+            ->add('companyCode',
+                'text',
+                array(
+                    'error_bubbling' => false,
+                    'label' => 'form.company_code'
+                )
+            )
+            ->add('vatCode',
+                'text',
+                array(
+                    'error_bubbling' => false,
+                    'label' => 'form.vat_code'
+                )
+            )
+            ->add('companyAddress',
+                'text',
+                array(
+                    'error_bubbling' => false,
+                    'label' => 'form.company_address'
+                )
+            )
+            ->add('companyAccount',
+                'text',
+                array(
+                    'error_bubbling' => false,
+                    'label' => 'form.company_account'
+                )
+            )
+            ->add('companyWorkers',
+                'text',
+                array(
+                    'error_bubbling' => false,
+                    'label' => 'form.company_workers'
+                )
+            )
             ->add('plainPassword',
                   'repeated',
                   array('error_bubbling' => false,

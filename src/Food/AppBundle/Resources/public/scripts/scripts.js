@@ -22,12 +22,12 @@
 
         bind_custom_select();
 
-        $("input").iCheck();
+        $("input:not(.no-icheck)").iCheck();
 
 
         $(".boxer").boxer({
             callback: function(){
-                $("input").iCheck();
+                $("input:not(.no-icheck)").iCheck();
                 $('form.login-form input[name=_username]').focus();
             }
         });

@@ -1,33 +1,128 @@
 <form class="righter register-form" action="{{ url('user_register_create', {}, true) }}" method="post" novalidate>
-    <h3>{% trans %}general.register_title{% endtrans %}</h3>
-    <h4>{% trans %}general.register_text{% endtrans %}</h4>
+    <div style="float: left; width: 300px">
+        <h3>{% trans %}general.register_title{% endtrans %}</h3>
+        <h4>{% trans %}general.register_text{% endtrans %}</h4>
+        <button class="button private selected" onclick="return registrationForm.showPrivate(this);">{% trans %}Private{% endtrans %}</button>
+        <button class="button company" onclick="return registrationForm.showCompany(this);">{% trans %}Company{% endtrans %}</button>
+        <div class="form-row {% if submitted and errors.firstname is not empty %}error{% endif %}">
+            {% set placeholder = 'registration.firstname_placeholder'|trans %}
+            {{ form_label(form.firstname) }}
+            {{ form_widget(form.firstname, {'attr': {'title': errors.firstname, 'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row {% if submitted and errors.lastname is not empty %}error{% endif %}">
+            {% set placeholder = 'registration.lastname_placeholder'|trans %}
+            {{ form_label(form.lastname) }}
+            {{ form_widget(form.lastname, {'attr': {'title': errors.lastname, 'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row {% if submitted and errors.email is not empty %}error{% endif %}">
+            {% set placeholder = 'registration.email_placeholder'|trans %}
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email, {'attr': {'title': errors.email, 'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row {% if submitted and errors.plainPassword is not empty %}error{% endif %}">
+            {% set placeholder = 'registration.password_placeholder'|trans %}
+            {{ form_label(form.plainPassword.first) }}
+            {{ form_widget(form.plainPassword.first, {'attr': {'title': errors.plainPassword, 'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row {% if submitted and errors.plainPassword is not empty %}error{% endif %}">
+            {% set placeholder = 'registration.repeat_password_placeholder'|trans %}
+            {{ form_label(form.plainPassword.second) }}
+            {{ form_widget(form.plainPassword.second, {'attr': {'title': errors.plainPassword, 'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-controls clearfix">
+            <input type="submit" value="{% trans %}general.register_register_button{% endtrans %}" class="fr">
+        </div>
+    </div>
 
-    <div class="form-row {% if submitted and errors.firstname is not empty %}error{% endif %}">
-        {% set placeholder = 'registration.firstname_placeholder'|trans %}
-        {{ form_label(form.firstname) }}
-        {{ form_widget(form.firstname, {'attr': {'title': errors.firstname, 'placeholder': placeholder}}) }}
-    </div>
-    <div class="form-row {% if submitted and errors.lastname is not empty %}error{% endif %}">
-        {% set placeholder = 'registration.lastname_placeholder'|trans %}
-        {{ form_label(form.lastname) }}
-        {{ form_widget(form.lastname, {'attr': {'title': errors.lastname, 'placeholder': placeholder}}) }}
-    </div>
-    <div class="form-row {% if submitted and errors.email is not empty %}error{% endif %}">
-        {% set placeholder = 'registration.email_placeholder'|trans %}
-        {{ form_label(form.email) }}
-        {{ form_widget(form.email, {'attr': {'title': errors.email, 'placeholder': placeholder}}) }}
-    </div>
-    <div class="form-row {% if submitted and errors.plainPassword is not empty %}error{% endif %}">
-        {% set placeholder = 'registration.password_placeholder'|trans %}
-        {{ form_label(form.plainPassword.first) }}
-        {{ form_widget(form.plainPassword.first, {'attr': {'title': errors.plainPassword, 'placeholder': placeholder}}) }}
-    </div>
-    <div class="form-row {% if submitted and errors.plainPassword is not empty %}error{% endif %}">
-        {% set placeholder = 'registration.repeat_password_placeholder'|trans %}
-        {{ form_label(form.plainPassword.second) }}
-        {{ form_widget(form.plainPassword.second, {'attr': {'title': errors.plainPassword, 'placeholder': placeholder}}) }}
-    </div>
-    <div class="form-controls clearfix">
-        <input type="submit" value="{% trans %}general.register_register_button{% endtrans %}" class="fr">
+
+    <div class="inner-righter righter" style="float: right; width: 300px;">
+        <div class="form-row">
+            {% set placeholder = 'registration.companyName_placeholder'|trans %}
+            {{ form_label(form.companyName) }}
+            {{ form_widget(form.companyName, {'attr': {'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row">
+            {% set placeholder = 'registration.companyCode_placeholder'|trans %}
+            {{ form_label(form.companyCode) }}
+            {{ form_widget(form.companyCode, {'attr': {'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row">
+            {% set placeholder = 'registration.vatCode_placeholder'|trans %}
+            {{ form_label(form.vatCode) }}
+            {{ form_widget(form.vatCode, {'attr': {'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row">
+            {% set placeholder = 'registration.companyAddress_placeholder'|trans %}
+            {{ form_label(form.companyAddress) }}
+            {{ form_widget(form.companyAddress, {'attr': {'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row">
+            {% set placeholder = 'registration.companyAccount_placeholder'|trans %}
+            {{ form_label(form.companyAccount) }}
+            {{ form_widget(form.companyAccount, {'attr': {'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row">
+            {% set placeholder = 'registration.companyWorkers_placeholder'|trans %}
+            {{ form_label(form.companyWorkers) }}
+            {{ form_widget(form.companyWorkers, {'attr': {'placeholder': placeholder}}) }}
+        </div>
+        <div class="hidden">
+        {{ form_widget(form.isBussinesClient,{ 'attr': {'class': 'no-icheck'}}) }}
+        </div>
     </div>
 </form>
+
+<style>
+    .register-form button.button {
+        border-radius: 4px;
+        box-shadow: 0 1px 1px #c0c0c0;
+        border: none;
+        letter-spacing: 1px;
+
+        background-image: none;
+        background-color: #999999;
+
+        background-size: 68px 22px;
+        font-size: 11px;
+        color: #fff;
+        text-shadow: 0 1px 0 #6d9104;
+        text-transform: uppercase;
+        weight: bold;
+    }
+    .register-form button.button.selected {
+        background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x left center;
+    }
+    .register-form.not-righter {
+        float: left;
+    }
+    .register-form.not-righter.extended {
+        width: 792px !important;
+    }
+</style>
+
+<Script>
+
+    var registrationForm = {
+        showPrivate: function(element) {
+            var theBox = $(element).closest('.popup');
+            theBox.find('.button.private').addClass('selected');
+            theBox.find('.button.company').removeClass('selected');
+            var lefter = theBox.find('.lefter.login-form');
+            theBox.find('.register-form.righter').removeClass('not-righter').removeClass('extended');
+            theBox.find('#fos_user_registration_form_isBussinesClient').attr('checked', '');
+            lefter.show();
+            return false;
+        },
+        showCompany: function(element) {
+            var theBox = $(element).closest('.popup');
+            theBox.find('.button.private').removeClass('selected');
+            theBox.find('.button.company').addClass('selected');
+            var lefter = theBox.find('.lefter.login-form');
+            theBox.find('.register-form.righter').addClass('not-righter').addClass('extended');
+            theBox.find('#fos_user_registration_form_isBussinesClient').attr('checked', 'checked');
+            lefter.hide();
+            return false;
+        }
+    };
+
+</Script>

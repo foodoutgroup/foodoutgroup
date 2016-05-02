@@ -129,6 +129,20 @@ class User extends BaseUser
      */
     private $company_address;
 
+
+    /**
+     * @var string
+     * @ORM\Column(name="company_account", type="text", nullable=true)
+     */
+    private $company_account;
+
+    /**
+     * @var string
+     * @ORM\Column(name="company_workers", type="smallint", nullable=true)
+     */
+    private $company_workers;
+
+
     /**
      * @ORM\OneToMany(targetEntity="UserDivisionCode", mappedBy="user", cascade={"persist", "remove"})
      **/
