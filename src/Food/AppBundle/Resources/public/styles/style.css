@@ -2718,7 +2718,8 @@ div.coupon_form_popup {
 .login-register-popup label {
     width: 180px;
 }
-.custom-checkbox.company-agreement {
+.custom-checkbox.company-agreement,
+.custom-checkbox.company-agreement a {
     font-size: 15px;
     padding-top: 0px;
     color: #000000;
