@@ -1317,7 +1317,7 @@
             </trans-unit>
             <trans-unit id="registration.companyName_placeholder">
                 <source>registration.companyName_placeholder</source>
-                <target>UAB "įmonė"</target>
+                <target>SIA Kompānija</target>
             </trans-unit>
             <trans-unit id="form.company_code">
                 <source>form.company_code</source>
@@ -1325,7 +1325,7 @@
             </trans-unit>
             <trans-unit id="registration.companyCode_placeholder">
                 <source>registration.companyCode_placeholder</source>
-                <target>312345678</target>
+                <target>LV400000000</target>
             </trans-unit>
             <trans-unit id="form.vat_code">
                 <source>form.vat_code</source>
@@ -1333,7 +1333,7 @@
             </trans-unit>
             <trans-unit id="registration.vatCode_placeholder">
                 <source>registration.vatCode_placeholder</source>
-                <target>LT100001234567</target>
+                <target>LV400000000</target>
             </trans-unit>
             <trans-unit id="form.company_address">
                 <source>form.company_address</source>
@@ -1341,7 +1341,7 @@
             </trans-unit>
             <trans-unit id="registration.companyAddress_placeholder">
                 <source>registration.companyAddress_placeholder</source>
-                <target>Laisvės pr. 123, LT-01234, Vilnius</target>
+                <target>Brīvības iela 54-5, LV-1090</target>
             </trans-unit>
             <trans-unit id="form.checking_account">
                 <source>form.checking_account</source>
@@ -1349,7 +1349,7 @@
             </trans-unit>
             <trans-unit id="registration.checkingAccount_placeholder">
                 <source>registration.checkingAccount_placeholder</source>
-                <target>LT000000000000000000</target>
+                <target>LV000000000000</target>
             </trans-unit>
             <trans-unit id="form.workers_count">
                 <source>form.workers_count</source>
@@ -1357,7 +1357,7 @@
             </trans-unit>
             <trans-unit id="registration.workersCount_placeholder">
                 <source>registration.workersCount_placeholder</source>
-                <target>10</target>
+                <target>5</target>
             </trans-unit>
             <trans-unit id="form.businessAgreement">
                 <source>form.businessAgreement</source>
