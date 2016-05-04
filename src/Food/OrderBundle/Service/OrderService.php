@@ -2202,7 +2202,7 @@ class OrderService extends ContainerAware
             $mailer = $this->container->get('mailer');
 
             $message = \Swift_Message::newInstance()
-                ->setSubject($this->container->getParameter('title').': '.$translator->trans('general.sms.new_order'))
+                ->setSubject($this->container->getParameter('title').': '.$translator->trans('general.sms.canceled_order', array('order_id' => $order->getId())))
                 ->setFrom('info@'.$domain)
             ;
 

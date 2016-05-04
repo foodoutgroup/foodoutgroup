@@ -17,11 +17,17 @@ class UserService extends ContainerAware {
     public function getDiscount(User $user)
     {
         if (is_null($this->_discount)) {
-            $userCreatedPlusMonth = clone $user->getCreatedAt();
-            $userCreatedPlusMonth->modify('+1 month');
-            $em = $this->container->get('doctrine.orm.entity_manager');
-            $userRepo = $em->getRepository('FoodUserBundle:User');
-            $firstMonthDiscount = $this->container->getParameter('b2b_first_month_discount');
+            // jei naudotojo registracija egzistuoja
+            if ($user->getCreatedAt() instanceof \DateTime) {
+                $userCreatedPlusMonth = clone $user->getCreatedAt();
+                $userCreatedPlusMonth->modify('+1 month');
+                $firstMonthDiscount = $this->container->getParameter('b2b_first_month_discount');
+            } else {
+                $userCreatedPlusMonth = new \DateTime();
+                $firstMonthDiscount = false;
+            }
+
+            $userRepo = $this->container->get('doctrine')->getRepository('FoodUserBundle:User');
 
             // jei prie customer yra nurodyta nuolaida
             if ($user->getDiscount() > 0) {
