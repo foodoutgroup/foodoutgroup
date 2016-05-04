@@ -3676,6 +3676,8 @@ class OrderService extends ContainerAware
                 }
             }
         }
+
+        $this->_freeDeliveryDiscount();
     }
 
     /**
@@ -3812,5 +3814,53 @@ class OrderService extends ContainerAware
     {
         $makingTime = clone $order->getDeliveryTime();
         return $makingTime->modify('-30 minutes');
+    }
+
+    private function _freeDeliveryDiscount()
+    {
+        $start = date('Y-m-01 00:00:00');
+        $end = date('Y-m-01 00:00:00', strtotime('+1 month'));
+        $query = 'SELECT count(*) 
+                  FROM `orders` 
+                  WHERE `order_date` BETWEEN '.$start.' AND '.$end.'
+                  AND `order_status` = '.static::$status_completed.'
+        ';
+
+        $stmt = $this->container->get('doctrine')->getConnection()->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchColumn();
+        if ($result % 4 == 3) {
+            $order = $this->getOrder();
+            $theCode = "CM".strrev($order->getId()).($order->getId() % 10);
+            $newCode = new Coupon;
+            $newCode->setActive(true)
+                ->setCode( $theCode )
+                ->setName( "CM - #".$order->getId() )
+                ->setDiscount( 0 )
+                ->setDiscountSum( 0 )
+                ->setOnlyNav( 0 )
+                ->setType(Coupon::TYPE_BOTH)
+                ->setMethod(Coupon::METHOD_DELIVERY)
+                ->setFreeDelivery( 1 )
+                ->setSingleUse( 1 )
+                ->setCreatedAt(new \DateTime('NOW'));
+
+            $this->container->get('food.mailer')
+                ->setVariable('code', $theCode )
+                ->setRecipient( $order->getOrderExtra()->getEmail() )
+                ->setId( $this->container->getParameter('mailer_send_free_delivery_discount') )
+                ->send();
+
+            $this->logMailSent(
+                $order,
+                'create_free_delivery_discount_code',
+                $this->container->getParameter('mailer_send_free_delivery_discount'),
+                array('code' => $theCode)
+            );
+
+            $this->container->get('doctrine')->getManager()->persist($newCode);
+            $this->container->get('doctrine')->getManager()->flush();
+
+        }
     }
 }
