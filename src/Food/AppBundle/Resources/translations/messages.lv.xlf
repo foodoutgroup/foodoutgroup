@@ -378,6 +378,14 @@
                 <source>general.close_btn</source>
                 <target>Aizvērt</target>
             </trans-unit>
+            <trans-unit id="general.private">
+                <source>general.private</source>
+                <target>Privāts</target>
+            </trans-unit>
+            <trans-unit id="general.company">
+                <source>general.company</source>
+                <target>Bizness</target>
+            </trans-unit>
             <trans-unit id="e44e8ff9e4e47e49c926d67bf0112966" resname="general.sms.new_order">
                 <source>general.sms.new_order</source>
                 <target>Jauns pasutijums:</target>
