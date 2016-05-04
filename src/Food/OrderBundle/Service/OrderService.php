@@ -2950,7 +2950,7 @@ class OrderService extends ContainerAware
                     }
                 }
                 if (!$takeAway && !$place->getSelfDelivery()) {
-                    $discountSize = $this->container->get('doctrine')->getRepository('FoodUserBundle:User')->getDiscount($user);
+                    $discountSize = $this->container->get('food.user')->getDiscount($user);
                     $total_cart -= $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($place), $discountSize);
                 }
             }

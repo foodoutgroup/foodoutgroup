@@ -86,5 +86,7 @@ parameters:
     dispatcher_bell: false
     static_page_privacy_policy: 8
     static_page_b2b_rules: 29
+    b2b_first_month_discount: true
+    b2b_first_month_discount_percent: 10
     newsletter_subscribe_tick_by_default: false
     show_making_time_deadline: false

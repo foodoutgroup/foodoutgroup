@@ -10,15 +10,9 @@ use Food\OrderBundle\Service\OrderService;
  */
 class UserRepository extends EntityRepository
 {
-    private $_discount = null;
-
-    public function getDiscount(User $user)
+    public function getDiscountByRange(User $user, $firstMonthDiscount, \DateTime $userCreatedPlusMonth)
     {
-        if (is_null($this->_discount)) {
-            if ($user->getDiscount() > 0) {
-                $this->_discount = $user->getDiscount();
-            } else {
-                $query = 'SELECT dl.discount 
+        $query = 'SELECT dl.discount 
                         FROM (
                           SELECT sum(o.total) total 
                           FROM orders o 
@@ -30,25 +24,22 @@ class UserRepository extends EntityRepository
                             OR dl.range_start IS NULL AND (o.total < dl.range_end or o.total IS NULL) 
                             OR dl.range_end IS NULL AND o.total > dl.range_start';
 
-                $stmt = $this->getEntityManager()
-                    ->getConnection()
-                    ->prepare($query);
+        $stmt = $this->getEntityManager()
+            ->getConnection()
+            ->prepare($query);
 
-                $stmt->bindValue("date", date('Y-m-01 00:00:00'));
-                $stmt->bindValue("status", OrderService::$status_completed);
-                $stmt->bindValue("userId", $user->getId());
-
-                $stmt->execute();
-                $discount = $stmt->fetchColumn();
-
-                if (!$discount) {
-                    $discount = 0;
-                }
-
-                $this->_discount = $discount;
-            }
+        // jei galioja pirmo mėnesion nuolaida ir dabar yra sekantis mėnuo po registracijos,
+        // tada užsakymus skaičiuojame nuo registracija+mėnuo
+        if ($firstMonthDiscount && $userCreatedPlusMonth->format('m') == date('m')) {
+            $dateFrom = $userCreatedPlusMonth->format('Y-m-d H:i:s');
+        } else {
+            $dateFrom = date('Y-m-01 00:00:00');
         }
+        $stmt->bindValue("date", $dateFrom);
+        $stmt->bindValue("status", OrderService::$status_completed);
+        $stmt->bindValue("userId", $user->getId());
 
-        return $this->_discount;
+        $stmt->execute();
+        return $stmt->fetchColumn();
     }
 }

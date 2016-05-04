@@ -228,7 +228,7 @@ class DefaultController extends Controller
             'submitted' => $form->isSubmitted(),
             'profile_updated' => $flashbag->get('profile_updated'),
             'user' => $this->user(),
-            'discount' => $this->getDoctrine()->getRepository('FoodUserBundle:User')->getDiscount($this->user())
+            'discount' => $this->get('food.user')->getDiscount($this->user())
         ];
     }
 

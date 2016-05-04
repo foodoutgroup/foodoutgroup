@@ -21,6 +21,13 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     */
+    private $createdAt;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Food\DishesBundle\Entity\Place", inversedBy="users")
      * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
      **/
@@ -180,6 +187,8 @@ class User extends BaseUser
 
     public function __construct()
     {
+        $this->setCreatedAt(new \DateTime('now'));
+
         parent::__construct();
     }
 
@@ -950,5 +959,28 @@ class User extends BaseUser
     public function getRequiredDivision()
     {
         return $this->requiredDivision;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return User
+     */
+    public function setCreatedAt(\DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 }

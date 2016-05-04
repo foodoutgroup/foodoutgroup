@@ -577,7 +577,7 @@ class DefaultController extends Controller
         $current_user = $this->container->get('security.context')->getToken()->getUser();
         if (!empty($current_user) && is_object($current_user)) {
             $noMinimumCart = $current_user->getNoMinimumCart();
-            $this->getDoctrine()->getRepository('FoodUserBundle:User')->getDiscount($current_user);
+            $this->get('food.user')->getDiscount($current_user);
         }
 
         $applyDiscount = $freeDelivery = $discountInSum = false;
@@ -588,7 +588,7 @@ class DefaultController extends Controller
         if (!empty($current_user) && is_object($current_user) && $current_user->getIsBussinesClient()) {
             if (!$takeAway && !$place->getSelfDelivery()) {
                 $applyDiscount = true;
-                $discountSize = $this->getDoctrine()->getRepository('FoodUserBundle:User')->getDiscount($current_user);
+                $discountSize = $this->get('food.user')->getDiscount($current_user);
                 $discountSum = $this->getCartService()->getTotalDiscount($list, $discountSize);
 
                 $total_cart -= $discountSum;
