@@ -184,6 +184,11 @@ class InvoiceService extends ContainerAware
         $file = $this->getInvoiceFilename($orders[0]);
         $filename = $this->getInvoicePath().$file;
 
+        $user = $orders[0]->getUser();
+        if (!$user instanceof User) {
+            throw new \InvalidArgumentException('Cannot generate invoice without user');
+        }
+
         $this->container->get('logger')->alert(
             sprintf(
                 'Generating user invoice for Corportate Orders by user #%d | with SF data: %s | Filename: %s | Filepath: %s',
@@ -196,10 +201,14 @@ class InvoiceService extends ContainerAware
 
         $orderByDivision = array();
         foreach ($orders as $order) {
-            if (!isset($orderByDivision[$order->getDivisionCode()])) {
-                $orderByDivision[$order->getDivisionCode()] = array($order);
+            if ($user->getRequiredDivision()) {
+                if (!isset($orderByDivision[$order->getDivisionCode()])) {
+                    $orderByDivision[$order->getDivisionCode()] = array($order);
+                } else {
+                    $orderByDivision[$order->getDivisionCode()][] = $order;
+                }
             } else {
-                $orderByDivision[$order->getDivisionCode()][] = $order;
+                $orderByDivision['division'][] = $order;
             }
         }
 
@@ -214,6 +223,7 @@ class InvoiceService extends ContainerAware
                 array(
                     'orders'  => $orderByDivision,
                     'mainOrder' => $orders[0],
+                    'user' => $user
                 )
             ),
             $filename

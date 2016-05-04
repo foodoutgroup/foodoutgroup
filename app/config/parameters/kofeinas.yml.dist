@@ -38,6 +38,7 @@ parameters:
     payment.methods:
         - local
         - local.card
+        - postpaid
         - paysera
         - swedbank-gateway
         - swedbank-credit-card-gateway
@@ -74,6 +75,7 @@ parameters:
     mailer_rate_your_food: 30009271
     mailer_send_invoice: 30019657
     mailer_send_corporate_invoice: 41585359
+    mailer_send_corporate_changed_password: 41611093
     yt_video: https://www.youtube.com/v/3zFW6hnuvJY?fs=1&amp;autoplay=
     yt_embeded: //www.youtube-nocookie.com/embed/3zFW6hnuvJY
     default_delivery_distance: 7
@@ -84,5 +86,6 @@ parameters:
     call_centre_phone: "37052195281"
     dispatcher_bell: false
     static_page_privacy_policy: 8
+    static_page_b2b_rules: 29
     newsletter_subscribe_tick_by_default: false
     show_making_time_deadline: false

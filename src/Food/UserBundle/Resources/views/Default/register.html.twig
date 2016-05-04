@@ -1,33 +1,88 @@
-<form class="righter register-form" action="{{ url('user_register_create', {}, true) }}" method="post" novalidate>
-    <h3>{% trans %}general.register_title{% endtrans %}</h3>
-    <h4>{% trans %}general.register_text{% endtrans %}</h4>
+<form class="righter register-form {% if isBussinesClient %}not-righter extended{% endif %}" action="{{ url('user_register_create', {}, true) }}" method="post" novalidate>
+    <div style="float: left; width: 300px">
+        <h3>{% trans %}general.register_title{% endtrans %}</h3>
+        <h4>{% trans %}general.register_text{% endtrans %}</h4>
+        <button class="button private {% if not  isBussinesClient %}selected{% endif %}" onclick="return registrationForm.showPrivate(this);">{% trans %}general.private{% endtrans %}</button>
+        <button class="button company {% if isBussinesClient %}selected{% endif %}" onclick="return registrationForm.showCompany(this);">{% trans %}general.company{% endtrans %}</button>
+        <div class="form-row {% if submitted and errors.firstname is not empty %}error{% endif %}">
+            {% set placeholder = 'registration.firstname_placeholder'|trans %}
+            {{ form_label(form.firstname) }}
+            {{ form_widget(form.firstname, {'attr': {'title': errors.firstname, 'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row {% if submitted and errors.lastname is not empty %}error{% endif %}">
+            {% set placeholder = 'registration.lastname_placeholder'|trans %}
+            {{ form_label(form.lastname) }}
+            {{ form_widget(form.lastname, {'attr': {'title': errors.lastname, 'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row {% if submitted and errors.email is not empty %}error{% endif %}">
+            {% set placeholder = 'registration.email_placeholder'|trans %}
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email, {'attr': {'title': errors.email, 'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row {% if submitted and errors.plainPassword is not empty %}error{% endif %}">
+            {% set placeholder = 'registration.password_placeholder'|trans %}
+            {{ form_label(form.plainPassword.first) }}
+            {{ form_widget(form.plainPassword.first, {'attr': {'title': errors.plainPassword, 'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row {% if submitted and errors.plainPassword is not empty %}error{% endif %}">
+            {% set placeholder = 'registration.repeat_password_placeholder'|trans %}
+            {{ form_label(form.plainPassword.second) }}
+            {{ form_widget(form.plainPassword.second, {'attr': {'title': errors.plainPassword, 'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-controls clearfix">
+            <input type="submit" value="{% trans %}general.register_register_button{% endtrans %}" class="fr">
+        </div>
+    </div>
 
-    <div class="form-row {% if submitted and errors.firstname is not empty %}error{% endif %}">
-        {% set placeholder = 'registration.firstname_placeholder'|trans %}
-        {{ form_label(form.firstname) }}
-        {{ form_widget(form.firstname, {'attr': {'title': errors.firstname, 'placeholder': placeholder}}) }}
-    </div>
-    <div class="form-row {% if submitted and errors.lastname is not empty %}error{% endif %}">
-        {% set placeholder = 'registration.lastname_placeholder'|trans %}
-        {{ form_label(form.lastname) }}
-        {{ form_widget(form.lastname, {'attr': {'title': errors.lastname, 'placeholder': placeholder}}) }}
-    </div>
-    <div class="form-row {% if submitted and errors.email is not empty %}error{% endif %}">
-        {% set placeholder = 'registration.email_placeholder'|trans %}
-        {{ form_label(form.email) }}
-        {{ form_widget(form.email, {'attr': {'title': errors.email, 'placeholder': placeholder}}) }}
-    </div>
-    <div class="form-row {% if submitted and errors.plainPassword is not empty %}error{% endif %}">
-        {% set placeholder = 'registration.password_placeholder'|trans %}
-        {{ form_label(form.plainPassword.first) }}
-        {{ form_widget(form.plainPassword.first, {'attr': {'title': errors.plainPassword, 'placeholder': placeholder}}) }}
-    </div>
-    <div class="form-row {% if submitted and errors.plainPassword is not empty %}error{% endif %}">
-        {% set placeholder = 'registration.repeat_password_placeholder'|trans %}
-        {{ form_label(form.plainPassword.second) }}
-        {{ form_widget(form.plainPassword.second, {'attr': {'title': errors.plainPassword, 'placeholder': placeholder}}) }}
-    </div>
-    <div class="form-controls clearfix">
-        <input type="submit" value="{% trans %}general.register_register_button{% endtrans %}" class="fr">
+
+    <div class="inner-righter righter company {% if not isBussinesClient %}hidden{% endif %}" style="float: right; width: 300px;">
+        <div class="form-row">
+            {% set placeholder = 'registration.companyName_placeholder'|trans %}
+            {{ form_label(form.companyName) }}
+            {{ form_widget(form.companyName, {'attr': {'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row">
+            {% set placeholder = 'registration.companyCode_placeholder'|trans %}
+            {{ form_label(form.companyCode) }}
+            {{ form_widget(form.companyCode, {'attr': {'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row">
+            {% set placeholder = 'registration.vatCode_placeholder'|trans %}
+            {{ form_label(form.vatCode) }}
+            {{ form_widget(form.vatCode, {'attr': {'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row">
+            {% set placeholder = 'registration.companyAddress_placeholder'|trans %}
+            {{ form_label(form.companyAddress) }}
+            {{ form_widget(form.companyAddress, {'attr': {'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row">
+            {% set placeholder = 'registration.checkingAccount_placeholder'|trans %}
+            {{ form_label(form.checkingAccount) }}
+            {{ form_widget(form.checkingAccount, {'attr': {'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row">
+            {% set placeholder = 'registration.workersCount_placeholder'|trans %}
+            {{ form_label(form.workersCount) }}
+            {{ form_widget(form.workersCount, {'attr': {'placeholder': placeholder}}) }}
+        </div>
+        <div class="form-row {% if submitted and errors.businessAgreement is not empty %}error{% endif %}">
+            <label class="custom-checkbox company-agreement">
+                {% trans %}form.businessAgreement{% endtrans %}
+                {{ form_widget(form.businessAgreement,{ 'attr': {'title': errors.businessAgreement, 'classz': 'no-icheck fl business_agreement', 'data-placement': 'bottom'}}) }}
+            </label>
+            {#
+            {{ form_label(form.businessAgreement) }}
+            #}
+        </div>
+        <div class="hidden">
+        {{ form_widget(form.isBussinesClient,{ 'attr': {'class': 'no-icheck'}}) }}
+        </div>
     </div>
 </form>
+
+<div class="hidden">
+    <div id="business_rules" class="business_rules_content">
+        <div class="business_rules_inner">{{ static_service.getPage(static_page_b2b_rules).content|raw }}</div>
+    </div>
+</div>
