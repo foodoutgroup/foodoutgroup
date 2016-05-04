@@ -2,11 +2,13 @@
 
 namespace Food\UserBundle\Entity;
 
+use Food\DishesBundle\Entity\Place;
+use Food\UserBundle\Entity\UserAddress;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="UserRepository")
  * @ORM\Table(name="fos_user")
  */
 class User extends BaseUser
@@ -17,6 +19,13 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     */
+    private $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="Food\DishesBundle\Entity\Place", inversedBy="users")
@@ -130,12 +139,56 @@ class User extends BaseUser
     private $company_address;
 
     /**
+     * @var string
+     * @ORM\Column(name="checking_account", type="string", length=24, nullable=true)
+     */
+    private $checkingAccount;
+
+    /**
+     * @var integer
+     * @ORM\Column(name="workers_count", type="integer", nullable=true)
+     */
+    private $workersCount;
+
+    /**
+     * @var string
+     * @ORM\Column(name="director_first_name", type="string", length=60, nullable=true)
+     */
+    private $directorFirstName;
+
+    /**
+     * @var string
+     * @ORM\Column(name="director_last_name", type="string", length=60, nullable=true)
+     */
+    private $directorLastName;
+
+    /**
+     * @var float
+     * @ORM\Column(name="discount", type="decimal", precision=5, scale=2, nullable=true)
+     */
+    private $discount;
+
+    /**
+     * @var boolean
+     * @ORM\Column(name="allow_delay_payment", type="boolean", nullable=true)
+     */
+    private $allowDelayPayment = false;
+
+    /**
+     * @var boolean
+     * @ORM\Column(name="required_division", type="boolean", nullable=true)
+     */
+    private $requiredDivision = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="UserDivisionCode", mappedBy="user", cascade={"persist", "remove"})
      **/
     private $divisionCodes;
 
     public function __construct()
     {
+        $this->setCreatedAt(new \DateTime('now'));
+
         parent::__construct();
     }
 
@@ -214,9 +267,9 @@ class User extends BaseUser
     /**
      * Remove places
      *
-     * @param \Food\DishesBundle\Entity\Place $places
+     * @param Place $places
      */
-    public function removePlace(\Food\DishesBundle\Entity\Place $places)
+    public function removePlace(Place $places)
     {
         $this->places->removeElement($places);
     }
@@ -236,10 +289,10 @@ class User extends BaseUser
     /**
      * Set place
      *
-     * @param \Food\DishesBundle\Entity\Place $place
+     * @param Place $place
      * @return User
      */
-    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
+    public function setPlace(Place $place = null)
     {
         $this->place = $place;
     
@@ -249,7 +302,7 @@ class User extends BaseUser
     /**
      * Get place
      *
-     * @return \Food\DishesBundle\Entity\Place 
+     * @return Place
      */
     public function getPlace()
     {
@@ -305,10 +358,10 @@ class User extends BaseUser
     /**
      * Add address
      *
-     * @param \Food\UserBundle\Entity\UserAddress $address
+     * @param UserAddress $address
      * @return User
      */
-    public function addAddress(\Food\UserBundle\Entity\UserAddress $address)
+    public function addAddress(UserAddress $address)
     {
         $this->address[] = $address;
     
@@ -318,9 +371,9 @@ class User extends BaseUser
     /**
      * Remove address
      *
-     * @param \Food\UserBundle\Entity\UserAddress $address
+     * @param UserAddress $address
      */
-    public function removeAddress(\Food\UserBundle\Entity\UserAddress $address)
+    public function removeAddress(UserAddress $address)
     {
         $this->address->removeElement($address);
     }
@@ -358,10 +411,10 @@ class User extends BaseUser
     /**
      * Add address
      *
-     * @param \Food\UserBundle\Entity\UserAddress $address
+     * @param UserAddress $address
      * @return User
      */
-    public function addAddres(\Food\UserBundle\Entity\UserAddress $address)
+    public function addAddres(UserAddress $address)
     {
         $this->address[] = $address;
     
@@ -371,9 +424,9 @@ class User extends BaseUser
     /**
      * Remove address
      *
-     * @param \Food\UserBundle\Entity\UserAddress $address
+     * @param UserAddress $address
      */
-    public function removeAddres(\Food\UserBundle\Entity\UserAddress $address)
+    public function removeAddres(UserAddress $address)
     {
         $this->address->removeElement($address);
     }
@@ -745,5 +798,189 @@ class User extends BaseUser
     public function getNoMinimumCart()
     {
         return $this->noMinimumCart;
+    }
+
+    /**
+     * Set checkingAccount
+     *
+     * @param string $checkingAccount
+     * @return User
+     */
+    public function setCheckingAccount($checkingAccount)
+    {
+        $this->checkingAccount = $checkingAccount;
+    
+        return $this;
+    }
+
+    /**
+     * Get checkingAccount
+     *
+     * @return string 
+     */
+    public function getCheckingAccount()
+    {
+        return $this->checkingAccount;
+    }
+
+    /**
+     * Set workersCount
+     *
+     * @param integer $workersCount
+     * @return User
+     */
+    public function setWorkersCount($workersCount)
+    {
+        $this->workersCount = $workersCount;
+    
+        return $this;
+    }
+
+    /**
+     * Get workersCount
+     *
+     * @return integer 
+     */
+    public function getWorkersCount()
+    {
+        return $this->workersCount;
+    }
+
+    /**
+     * Set directorFirstName
+     *
+     * @param string $directorFirstName
+     * @return User
+     */
+    public function setDirectorFirstName($directorFirstName)
+    {
+        $this->directorFirstName = $directorFirstName;
+    
+        return $this;
+    }
+
+    /**
+     * Get directorFirstName
+     *
+     * @return string 
+     */
+    public function getDirectorFirstName()
+    {
+        return $this->directorFirstName;
+    }
+
+    /**
+     * Set directorLastName
+     *
+     * @param string $directorLastName
+     * @return User
+     */
+    public function setDirectorLastName($directorLastName)
+    {
+        $this->directorLastName = $directorLastName;
+    
+        return $this;
+    }
+
+    /**
+     * Get directorLastName
+     *
+     * @return string 
+     */
+    public function getDirectorLastName()
+    {
+        return $this->directorLastName;
+    }
+
+    /**
+     * Set discount
+     *
+     * @param string $discount
+     * @return User
+     */
+    public function setDiscount($discount)
+    {
+        $this->discount = $discount;
+    
+        return $this;
+    }
+
+    /**
+     * Get discount
+     *
+     * @return string 
+     */
+    public function getDiscount()
+    {
+        return $this->discount;
+    }
+
+    /**
+     * Set allowDelayPayment
+     *
+     * @param boolean $allowDelayPayment
+     * @return User
+     */
+    public function setAllowDelayPayment($allowDelayPayment)
+    {
+        $this->allowDelayPayment = $allowDelayPayment;
+    
+        return $this;
+    }
+
+    /**
+     * Get allowDelayPayment
+     *
+     * @return boolean 
+     */
+    public function getAllowDelayPayment()
+    {
+        return $this->allowDelayPayment;
+    }
+
+    /**
+     * Set requiredDivision
+     *
+     * @param boolean $requiredDivision
+     * @return User
+     */
+    public function setRequiredDivision($requiredDivision)
+    {
+        $this->requiredDivision = $requiredDivision;
+    
+        return $this;
+    }
+
+    /**
+     * Get requiredDivision
+     *
+     * @return boolean 
+     */
+    public function getRequiredDivision()
+    {
+        return $this->requiredDivision;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return User
+     */
+    public function setCreatedAt(\DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 }

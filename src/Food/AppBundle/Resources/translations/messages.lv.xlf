@@ -738,9 +738,17 @@
                 <source>general.profile.cart_history</source>
                 <target>Pasūtījumu vēsture</target>
             </trans-unit>
+            <trans-unit id="general.profile.discount">
+                <source>general.profile.discount</source>
+                <target>Atlaide</target>
+            </trans-unit>
             <trans-unit id="4c0c2aa6ad499bfdd3f6e8edffc6336c" resname="general.profile.logout">
                 <source>general.profile.logout</source>
                 <target>Iziet</target>
+            </trans-unit>
+            <trans-unit id="general.profile.current_discount">
+                <source>general.profile.current_discount</source>
+                <target>Jūsu atlaide ir: %discount% %</target>
             </trans-unit>
             <trans-unit id="6defb486341307b289948eb8fa05624f" resname="general.profile.button_save">
                 <source>general.profile.button_save</source>
@@ -1302,6 +1310,68 @@
                 <source>admin.dispatcher.delayed_minutes</source>
                 <target>min</target>
             </trans-unit>
+            <!-- Business client begin -->
+            <trans-unit id="form.company_name">
+                <source>form.company_name</source>
+                <target>Kompānijas nosaukums</target>
+            </trans-unit>
+            <trans-unit id="registration.companyName_placeholder">
+                <source>registration.companyName_placeholder</source>
+                <target>SIA Kompānija</target>
+            </trans-unit>
+            <trans-unit id="form.company_code">
+                <source>form.company_code</source>
+                <target>Kompānijas kods</target>
+            </trans-unit>
+            <trans-unit id="registration.companyCode_placeholder">
+                <source>registration.companyCode_placeholder</source>
+                <target>LV400000000</target>
+            </trans-unit>
+            <trans-unit id="form.vat_code">
+                <source>form.vat_code</source>
+                <target>PVN reģ.numurs</target>
+            </trans-unit>
+            <trans-unit id="registration.vatCode_placeholder">
+                <source>registration.vatCode_placeholder</source>
+                <target>LV400000000</target>
+            </trans-unit>
+            <trans-unit id="form.company_address">
+                <source>form.company_address</source>
+                <target>Kompānijas adrese</target>
+            </trans-unit>
+            <trans-unit id="registration.companyAddress_placeholder">
+                <source>registration.companyAddress_placeholder</source>
+                <target>Brīvības iela 54-5, LV-1090</target>
+            </trans-unit>
+            <trans-unit id="form.checking_account">
+                <source>form.checking_account</source>
+                <target>Bankas konta numurs</target>
+            </trans-unit>
+            <trans-unit id="registration.checkingAccount_placeholder">
+                <source>registration.checkingAccount_placeholder</source>
+                <target>LV000000000000</target>
+            </trans-unit>
+            <trans-unit id="form.workers_count">
+                <source>form.workers_count</source>
+                <target>Darbinieku skaits</target>
+            </trans-unit>
+            <trans-unit id="registration.workersCount_placeholder">
+                <source>registration.workersCount_placeholder</source>
+                <target>5</target>
+            </trans-unit>
+            <trans-unit id="form.businessAgreement">
+                <source>form.businessAgreement</source>
+                <target><![CDATA[Piekrītu <a href="#business_rules" name="business_rules" class="fancy-box">noteikumiem</a>]]></target>
+            </trans-unit>
+            <trans-unit id="errors.businessAgreement">
+                <source>errors.businessAgreement</source>
+                <target>Noteikumu lauks ir obligāti jāaizpilda</target>
+            </trans-unit>
+            <trans-unit id="general.company.note_text">
+                <source>general.company.note_text</source>
+                <target><![CDATA[Vai Jūs veicat pasūtījumu kompānijas vārdā? <a href="#login-register-popup" class="boxer">Reģistrējieties</a>, lai saņemtu īpašas atlaides!]]></target>
+            </trans-unit>
+            <!-- Business client end -->
             <!-- Order Tracking Begin -->
             <trans-unit id="general.tracking_page_title" resname="general.tracking_page_title">
                 <source>general.tracking_page_title</source>

@@ -167,6 +167,8 @@
                             {{ 'admin.dispatcher.payement.local'|trans({}, 'SonataAdminBundle') }}
                         {% elseif order.paymentMethod == 'local.card'%}
                             {{ 'admin.dispatcher.payement.local_card'|trans({}, 'SonataAdminBundle') }}
+                        {% elseif order.paymentMethod == 'postpaid'%}
+                            {{ 'admin.dispatcher.payement.postpaid'|trans({}, 'SonataAdminBundle') }}
                         {% else %}
                             {{ 'admin.dispatcher.payement.bank_link'|trans({}, 'SonataAdminBundle') }}
                         {% endif %}
@@ -269,7 +271,7 @@
                 {% set cityNavProblems = (cityOrders[city].nav_problems.deliver|length + cityOrders[city].nav_problems.selfdeliver|length + cityOrders[city].nav_problems.pickup|length) %}
                 {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unapprovedCount': cityUnapproved, 'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished, 'canceledCount': cityCanceled, 'navProblemsCount': cityNavProblems}, 'SonataAdminBundle') %}
                 <li class="city-tab" data-city="{{ city }}">
-                    <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} <span class="theCount">({{ cityUnapproved }}:{{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }}:{{ cityCanceled }}:{{ cityNavProblems }})<span></a>
+                    <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} <span class="theCount">({{ cityUnapproved }}:{{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }}:{{ cityCanceled }}:{{ cityNavProblems }})</span></a>
                     {% if cityOrders[city].unapproved.late > 0 or cityOrders[city].unassigned.late > 0 or cityOrders[city].unconfirmed.late > 0 or cityOrders[city].not_finished.late > 0 %}
                     <span class="glyphicon glyphicon-exclamation-sign"></span>
                     {% endif %}

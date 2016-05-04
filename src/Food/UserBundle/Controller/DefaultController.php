@@ -54,7 +54,8 @@ class DefaultController extends Controller
             [
                 'form' => $form->createView(),
                 'errors' => $this->formErrors($form),
-                'submitted' => $form->isSubmitted()
+                'submitted' => $form->isSubmitted(),
+                'isBussinesClient' => $form->get('isBussinesClient')->getData()
             ]
         );
     }
@@ -72,7 +73,8 @@ class DefaultController extends Controller
             [
                 'form' => $form->createView(),
                 'errors' => $this->formErrors($form),
-                'submitted' => $form->isSubmitted()
+                'submitted' => $form->isSubmitted(),
+                'isBussinesClient' => $form->get('isBussinesClient')->getData()
             ]
         );
     }
@@ -225,7 +227,8 @@ class DefaultController extends Controller
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => $form->isSubmitted(),
             'profile_updated' => $flashbag->get('profile_updated'),
-            'user' => $this->user()
+            'user' => $this->user(),
+            'discount' => $this->get('food.user')->getDiscount($this->user())
         ];
     }
 

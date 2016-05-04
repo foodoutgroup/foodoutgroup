@@ -288,6 +288,16 @@ services:
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.company_discount_level:
+                class: Food\UserBundle\Admin\DiscountLevelAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.company_discount_level" }
+                arguments:
+                    - ~
+                    - Food\UserBundle\Entity\DiscountLevel
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]
     sonata.admin.coupon:
                 class: Food\OrderBundle\Admin\CouponAdmin
                 tags:

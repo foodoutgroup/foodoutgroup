@@ -183,7 +183,7 @@ class DispatcherAdminController extends Controller
     {
         $orderService = $this->get('food.order');
         $order = $orderService->getOrderById($orderId);
-        $delayDurations = array(30, 45, 60, 90, 120);
+        $delayDurations = array(15, 30, 45, 60, 90, 120);
 
         switch ($order->getOrderStatus()) {
             case $orderService::$status_new:

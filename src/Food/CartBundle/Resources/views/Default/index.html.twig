@@ -279,7 +279,7 @@
                                             <input type="radio" name="delivery-type" value="deliver"{% if ((order is not null and order.deliveryType == 'deliver') or order is null) and takeAway == false %} checked="checked"{% endif %}>
                                         </label>
                                     {% endif %}
-                                    {% if (place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'pickup') and not app.user.isBussinesClient|default(false) %}
+                                    {% if (place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'pickup') %}
                                         <label class="custom-radio">{% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
                                             <input type="radio" name="delivery-type" value="pickup"{% if (order is not null and order.deliveryType == 'pickup') or takeAway == true %} checked="checked"{% endif %}>
                                         </label>
@@ -338,15 +338,21 @@
                                 <input type="checkbox" name="newsletter_subscribe" {% if (dataToLoad['newsletter_subscribe'] is defined and dataToLoad['newsletter_subscribe'] is not empty) or newsletter_subscribe_tick_by_default %}checked="checked"{% endif %} />
                             </div>
                             <div class="clearfix"></div>
+                            {% if not app.user.isBussinesClient|default(false) %}
                             <div class="cupon-info">
                                 {% trans %}general.coupon.popup_link{% endtrans %}
                                 <input type="hidden" name="coupon_code" id="coupon_code" value="{% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{{ dataToLoad['coupon_code'] }}{% endif %}" />
                                 <br /><br />
                                 <div class="alert alert-info">{% trans %}general.coupon.note_text{% endtrans %}</div>
                             </div>
+                            {% endif %}
                             <h2 class="section-2">2. {% trans %}cart.checkout.block_title_secure_payment{% endtrans %}</h2>
                             <div class="select-payment clearfix">
-                                <label class="custom-radio">{% if app.user.isBussinesClient|default(false) %}{% trans %}cart.checkout.corporate_pay{% endtrans %}{% else %}{% trans %}cart.checkout.cash_on_delivery{% endtrans %}{% endif %}
+                                {% if app.user.isBussinesClient|default(false) and app.user.allowDelayPayment|default(false) %}<label class="custom-radio">{% trans %}cart.checkout.corporate_pay{% endtrans %}
+                                    <input type="radio" name="payment-type" value="postpaid"{% if (order is not null and order.paymentMethod == 'postpaid') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'postpaid') or (dataToLoad is empty) %} checked="checked"{% endif %}>
+                                </label>
+                                {% endif %}
+                                <label class="custom-radio">{% trans %}cart.checkout.cash_on_delivery{% endtrans %}
                                     <input type="radio" name="payment-type" value="local"{% if (order is not null and order.paymentMethod == 'local') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local') or (dataToLoad is empty) %} checked="checked"{% endif %}>
                                 </label>
                                 {% if takeAway != true and place.cardOnDelivery and not app.user.isBussinesClient|default(false) %}
@@ -356,7 +362,7 @@
                                 {% endif %}
                             </div>
 
-                            {% if not place.disabledOnlinePayment and not app.user.isBussinesClient|default(false)%}
+                            {% if not place.disabledOnlinePayment %}
                             {# TODO kolkas viskas rodo i Paysera#}
                             <div class="for_hiding">
                                 <div class="select-payment clearfix">
@@ -408,7 +414,7 @@
                     </form>
                 </div>
                 <div class="content-righter-small">
-                    {% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{% set couponCode = dataToLoad['coupon_code'] %}{% else %}{% set couponCode = null %}{% endif %}
+                    {% if not app.user.isBussinesClient|default(false) and (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{% set couponCode = dataToLoad['coupon_code'] %}{% else %}{% set couponCode = null %}{% endif %}
                     {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': true, 'order': order, 'takeAway': takeAway, 'couponCode': couponCode })) }}
                 </div>
             </div>
@@ -422,6 +428,7 @@
         <div id="privacy" class="privacy_content">
             <div class="privacy_inner">{{ static_service.getPage(static_page_privacy_policy).content|raw }}</div>
         </div>
+        {% if not app.user.isBussinesClient|default(false) %}
         <div id="coupon" class="coupon_form_popup">
             <div class="coupon_inner">
                 <form id="coupon_form">
@@ -435,5 +442,6 @@
                 </form>
             </div>
         </div>
+        {% endif %}
     </div>
 {% endblock %}

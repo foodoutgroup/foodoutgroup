@@ -125,6 +125,11 @@
                                             </div>
                                         {% endif %}
                                     {% endif %}
+                                    {% if place.selfDelivery and app.user.isBussinesClient %}
+                                        <div class="alert alert-danger">
+                                            {% trans %}places.discount_not_for_business_clients{% endtrans %}
+                                        </div>
+                                    {% endif %}
                                     <div class="menu-title clearfix">
                                         {% if place.showNotification %}
                                             <div class="alert alert-danger" id="notificationNotice">

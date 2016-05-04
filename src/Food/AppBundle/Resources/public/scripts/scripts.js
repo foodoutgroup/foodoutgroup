@@ -22,12 +22,12 @@
 
         bind_custom_select();
 
-        $("input").iCheck();
+        $("input:not(.no-icheck)").iCheck();
 
 
         $(".boxer").boxer({
             callback: function(){
-                $("input").iCheck();
+                $("input:not(.no-icheck)").iCheck();
                 $('form.login-form input[name=_username]').focus();
             }
         });
@@ -59,6 +59,7 @@
         bind_show_password_resetting_form();
         bind_password_resetting_form();
     });
+
 })(jQuery, window);
 
 bind_custom_select = function() {
@@ -94,6 +95,9 @@ bind_registration_form = function() {
             if (response.length > 0) {
                 $('.registration_form_wrapper:visible').html(response);
                 form.unmask();
+
+                var checkboxs = $('.register-form:visible .form-row input[type="checkbox"]');
+                checkboxs.iCheck();
 
                 var inputs = $('.register-form:visible .form-row input');
                 inputs.tooltip('show');
@@ -382,3 +386,36 @@ initStreetHouseSearch = function(){
         source: streets.ttAdapter()
     });
 }
+
+
+var registrationForm = {
+    showPrivate: function(element) {
+        var theBox = $(element).closest('.popup');
+        theBox.find('.button.private').addClass('selected');
+        theBox.find('.button.company').removeClass('selected');
+        var lefter = theBox.find('.lefter.login-form');
+        theBox.find('.register-form.righter').removeClass('not-righter').removeClass('extended');
+        theBox.find('#fos_user_registration_form_isBussinesClient').prop('checked', '');
+        theBox.find('.inner-righter.righter.company').addClass('hidden');
+        theBox.find('.tooltip').remove();
+        theBox.find('.form-row.error').removeClass('error');
+        lefter.show();
+        return false;
+    },
+    showCompany: function(element) {
+        var theBox = $(element).closest('.popup');
+        theBox.find('.button.private').removeClass('selected');
+        theBox.find('.button.company').addClass('selected');
+        var lefter = theBox.find('.lefter.login-form');
+        theBox.find('.register-form.righter').addClass('not-righter').addClass('extended');
+        theBox.find('#fos_user_registration_form_isBussinesClient').prop('checked', 'checked');
+        theBox.find('.inner-righter.righter.company').removeClass('hidden');
+        theBox.find('.tooltip').remove();
+        theBox.find('.form-row.error').removeClass('error');
+        lefter.hide();
+        return false;
+    }
+};
+$(document).ready(function() {
+    $("input:not('.no-icheck')").iCheck();
+});

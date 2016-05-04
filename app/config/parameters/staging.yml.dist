@@ -34,13 +34,14 @@ parameters:
     order.city_coordinators:
         vilnius: []
         kaunas: []
-        klaipėda: [jurgita@foodout.lt]
+        klaipėda: []
         ryga: [paulius@foodout.lt]
     order.accept_notify_emails: []
     accounting_email: "buhalterija@foodout.lt"
     payment.methods:
         - local
         - local.card
+        - postpaid
         - paysera
         - swedbank-gateway
         - swedbank-credit-card-gateway
@@ -56,7 +57,7 @@ parameters:
     show_apps_download: true
     show_is_social: true
     show_delfi_banner: false
-    track_conversions: true
+    track_conversions: false
     # naudojam telefonu validacijoms
     country: LT
     country_full: Lithuania
@@ -77,6 +78,7 @@ parameters:
     mailer_rate_your_food: 30009271
     mailer_send_invoice: 30019657
     mailer_send_corporate_invoice: 41585359
+    mailer_send_corporate_changed_password: 41611093
     mailer_send_free_delivery_discount: 41611735
     yt_video: https://www.youtube.com/v/3zFW6hnuvJY?fs=1&amp;autoplay=
     yt_embeded: //www.youtube-nocookie.com/embed/3zFW6hnuvJY
@@ -86,7 +88,20 @@ parameters:
     send_sms_on_cancel: false
     dispatcher_contact_phone: "37069855544"
     call_centre_phone: "37052195281"
+    week_layout: 1
+    hide_online_payments: false
+    number_format:
+        decimal_places: 2
+        decimal_separator: ','
+        thousands_separator: ' '
+    show_invoice_option: true
+    place_slug_manual: false
+    alcohol_allowed: true
+    place_with_neighbourhood: false
     dispatcher_bell: false
     static_page_privacy_policy: 8
+    static_page_b2b_rules: 29
+    b2b_first_month_discount: true
+    b2b_first_month_discount_percent: 10
     newsletter_subscribe_tick_by_default: false
     show_making_time_deadline: false

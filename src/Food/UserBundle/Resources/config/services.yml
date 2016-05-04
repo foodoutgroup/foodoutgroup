@@ -35,3 +35,7 @@ services:
             - @food.mailer
             - @router
             - @food.cart
+    food.user:
+        class: Food\UserBundle\Service\UserService
+        calls:
+            - [setContainer, [@service_container]]
