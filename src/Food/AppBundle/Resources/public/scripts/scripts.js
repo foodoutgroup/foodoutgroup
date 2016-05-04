@@ -96,6 +96,9 @@ bind_registration_form = function() {
                 $('.registration_form_wrapper:visible').html(response);
                 form.unmask();
 
+                var checkboxs = $('.register-form:visible .form-row input[type="checkbox"]');
+                checkboxs.iCheck();
+
                 var inputs = $('.register-form:visible .form-row input');
                 inputs.tooltip('show');
             } else {
