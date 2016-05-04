@@ -3857,18 +3857,19 @@ class OrderService extends ContainerAware
     {
         if (!$order->getIsCorporateClient()) {
             $start = date('Y-m-01 00:00:00');
-            $end = date('Y-m-01 00:00:00', strtotime('+1 month'));
             $query = 'SELECT count(*) 
-                      FROM `orders` 
-                      WHERE `order_date` BETWEEN '.$start.' AND '.$end.'
+                      FROM `orders`
+                      LEFT JOIN `coupons` ON `orders`.`coupon` = `coupons`.`id`
+                      WHERE `order_date` > \''.$start.'\'
                         AND `delivery_price` > 0
-                        AND `order_status` = '.static::$status_completed.'
+                        AND `order_status` = \''.static::$status_completed.'\'
+                        AND (`coupons`.`id` IS NULL OR `coupons`.`free_delivery` = 0)
             ';
 
             $stmt = $this->container->get('doctrine')->getConnection()->prepare($query);
             $stmt->execute();
             $result = $stmt->fetchColumn();
-            if ($result % 4 == 3) {
+            if ($result % 3 == 0) {
                 $templateId = $this->container->getParameter('mailer_send_free_delivery_discount');
                 $theCode = "CM".strrev($order->getId()).($order->getId() % 10);
                 $newCode = new Coupon;
@@ -3885,7 +3886,7 @@ class OrderService extends ContainerAware
                     ->setCreatedAt(new \DateTime('NOW'));
 
                 $this->container->get('food.mailer')
-                    ->setVariable('code', $theCode )
+                    ->setVariable('combo_code', $theCode )
                     ->setRecipient( $order->getOrderExtra()->getEmail() )
                     ->setId( $templateId )
                     ->send();
