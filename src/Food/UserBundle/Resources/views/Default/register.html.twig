@@ -36,30 +36,30 @@
 
 
     <div class="inner-righter righter company {% if not isBussinesClient %}hidden{% endif %}" style="float: right; width: 300px;">
-        <div class="form-row">
+        <div class="form-row {% if submitted and errors.checkingAccount is not empty %}error{% endif %}">
             {% set placeholder = 'registration.companyName_placeholder'|trans %}
             {{ form_label(form.companyName) }}
-            {{ form_widget(form.companyName, {'attr': {'placeholder': placeholder}}) }}
+            {{ form_widget(form.companyName, {'attr': {'title': errors.companyName, 'placeholder': placeholder}}) }}
         </div>
-        <div class="form-row">
+        <div class="form-row {% if submitted and errors.checkingAccount is not empty %}error{% endif %}">
             {% set placeholder = 'registration.companyCode_placeholder'|trans %}
             {{ form_label(form.companyCode) }}
-            {{ form_widget(form.companyCode, {'attr': {'placeholder': placeholder}}) }}
+            {{ form_widget(form.companyCode, {'attr': {'title': errors.companyCode, 'placeholder': placeholder}}) }}
         </div>
         <div class="form-row">
             {% set placeholder = 'registration.vatCode_placeholder'|trans %}
             {{ form_label(form.vatCode) }}
             {{ form_widget(form.vatCode, {'attr': {'placeholder': placeholder}}) }}
         </div>
-        <div class="form-row">
+        <div class="form-row {% if submitted and errors.checkingAccount is not empty %}error{% endif %}">
             {% set placeholder = 'registration.companyAddress_placeholder'|trans %}
             {{ form_label(form.companyAddress) }}
-            {{ form_widget(form.companyAddress, {'attr': {'placeholder': placeholder}}) }}
+            {{ form_widget(form.companyAddress, {'attr': {'title': errors.companyAddress, 'placeholder': placeholder}}) }}
         </div>
-        <div class="form-row">
+        <div class="form-row {% if submitted and errors.checkingAccount is not empty %}error{% endif %}">
             {% set placeholder = 'registration.checkingAccount_placeholder'|trans %}
             {{ form_label(form.checkingAccount) }}
-            {{ form_widget(form.checkingAccount, {'attr': {'placeholder': placeholder}}) }}
+            {{ form_widget(form.checkingAccount, {'attr': {'title': errors.checkingAccount, 'placeholder': placeholder}}) }}
         </div>
         <div class="form-row">
             {% set placeholder = 'registration.workersCount_placeholder'|trans %}
@@ -71,9 +71,6 @@
                 {{ 'form.businessAgreement'|trans({'%link%': path('food_slug', {'slug': slug_util.slugByItem(static_page_b2b_rules, 'text')}) })|raw }}
                 {{ form_widget(form.businessAgreement,{ 'attr': {'title': errors.businessAgreement, 'classz': 'no-icheck fl business_agreement', 'data-placement': 'bottom'}}) }}
             </label>
-            {#
-            {{ form_label(form.businessAgreement) }}
-            #}
         </div>
         <div class="hidden">
         {{ form_widget(form.isBussinesClient,{ 'attr': {'class': 'no-icheck'}}) }}

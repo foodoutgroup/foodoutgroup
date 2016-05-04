@@ -760,7 +760,7 @@
             </trans-unit>
             <trans-unit id="general.profile.current_discount">
                 <source>general.profile.current_discount</source>
-                <target>Šiuo metu jums taikoma nuolaida: %discount% %</target>
+                <target><![CDATA[Šiuo metu jums taikoma nuolaida: <strong> %discount% </strong> %]]></target>
             </trans-unit>
             <trans-unit id="6defb486341307b289948eb8fa05624f" resname="general.profile.button_save">
                 <source>general.profile.button_save</source>
@@ -1401,6 +1401,22 @@
             <trans-unit id="form.businessAgreement">
                 <source>form.businessAgreement</source>
                 <target><![CDATA[Sutinku su <a href="%link%" target="_blank">taisyklėmis</a>]]></target>
+            </trans-unit>
+            <trans-unit id="errors.companyName">
+                <source>errors.companyName</source>
+                <target>Šis laukas yra privalomas</target>
+            </trans-unit>
+            <trans-unit id="errors.companyCode">
+                <source>errors.companyCode</source>
+                <target>Šis laukas yra privalomas</target>
+            </trans-unit>
+            <trans-unit id="errors.companyAddress">
+                <source>errors.companyAddress</source>
+                <target>Šis laukas yra privalomas</target>
+            </trans-unit>
+            <trans-unit id="errors.checkingAccount">
+                <source>errors.checkingAccount</source>
+                <target>Šis laukas yra privalomas</target>
             </trans-unit>
             <trans-unit id="errors.businessAgreement">
                 <source>errors.businessAgreement</source>

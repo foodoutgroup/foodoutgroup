@@ -10,6 +10,10 @@ class UserService extends ContainerAware {
 
     private $_discount = null;
 
+    /**
+     * @param User $user
+     * @return int|mixed|null|string
+     */
     public function getDiscount(User $user)
     {
         if (is_null($this->_discount)) {
@@ -30,6 +34,10 @@ class UserService extends ContainerAware {
             // jei menuo praejo, gaunam nuolaida is range, jei range nera, tada 0
             } else {
                 $this->_discount = $userRepo->getDiscountByRange($user, $firstMonthDiscount, $userCreatedPlusMonth) ?: 0;
+            }
+
+            if ($this->_discount * 10 % 10 == 0) {
+                $this->_discount = (int) $this->_discount;
             }
         }
 

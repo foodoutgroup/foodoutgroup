@@ -91,14 +91,16 @@ class RegistrationFormType extends BaseType
                 'text',
                 array(
                     'error_bubbling' => false,
-                    'label' => 'form.company_name'
+                    'label' => 'form.company_name',
+                    'attr' => $attributes
                 )
             )
             ->add('companyCode',
                 'text',
                 array(
                     'error_bubbling' => false,
-                    'label' => 'form.company_code'
+                    'label' => 'form.company_code',
+                    'attr' => $attributes
                 )
             )
             ->add('vatCode',
@@ -112,14 +114,16 @@ class RegistrationFormType extends BaseType
                 'text',
                 array(
                     'error_bubbling' => false,
-                    'label' => 'form.company_address'
+                    'label' => 'form.company_address',
+                    'attr' => $attributes
                 )
             )
             ->add('checkingAccount',
                 'text',
                 array(
                     'error_bubbling' => false,
-                    'label' => 'form.checking_account'
+                    'label' => 'form.checking_account',
+                    'attr' => $attributes
                 )
             )
             ->add('workersCount',
@@ -144,6 +148,22 @@ class RegistrationFormType extends BaseType
         $businessValidator = function (FormEvent $event) {
             $form = $event->getForm();
             if ($form->get('isBussinesClient')->getData()) {
+                $companyNameField = $form->get('companyName')->getData();
+                if (empty($companyNameField) || mb_strlen($companyNameField, 'UTF-8') < 3) {
+                    $form['companyName']->addError(new FormError("errors.companyName"));
+                }
+                $companyCodeField = $form->get('companyCode')->getData();
+                if (empty($companyCodeField) || mb_strlen($companyCodeField, 'UTF-8') < 3) {
+                    $form['companyCode']->addError(new FormError("errors.companyCode"));
+                }
+                $companyAddressField = $form->get('companyAddress')->getData();
+                if (empty($companyAddressField) || mb_strlen($companyAddressField, 'UTF-8') < 3) {
+                    $form['companyAddress']->addError(new FormError("errors.companyAddress"));
+                }
+                $checkingAccountField = $form->get('checkingAccount')->getData();
+                if (empty($checkingAccountField) || mb_strlen($checkingAccountField, 'UTF-8') < 3) {
+                    $form['checkingAccount']->addError(new FormError("errors.checkingAccount"));
+                }
                 $businessAgreementField = $form->get('businessAgreement')->getData();
                 if (empty($businessAgreementField)) {
                     $form['businessAgreement']->addError(new FormError("errors.businessAgreement"));
