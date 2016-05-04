@@ -34,7 +34,7 @@ parameters:
     order.city_coordinators:
         vilnius: []
         kaunas: []
-        klaipėda: [jurgita@foodout.lt]
+        klaipėda: []
         ryga: [paulius@foodout.lt]
     order.accept_notify_emails: []
     accounting_email: "buhalterija@foodout.lt"
@@ -57,7 +57,7 @@ parameters:
     show_apps_download: true
     show_is_social: true
     show_delfi_banner: false
-    track_conversions: true
+    track_conversions: false
     # naudojam telefonu validacijoms
     country: LT
     country_full: Lithuania
@@ -87,6 +87,16 @@ parameters:
     send_sms_on_cancel: false
     dispatcher_contact_phone: "37069855544"
     call_centre_phone: "37052195281"
+    week_layout: 1
+    hide_online_payments: false
+    number_format:
+        decimal_places: 2
+        decimal_separator: ','
+        thousands_separator: ' '
+    show_invoice_option: true
+    place_slug_manual: false
+    alcohol_allowed: true
+    place_with_neighbourhood: false
     dispatcher_bell: false
     static_page_privacy_policy: 8
     static_page_b2b_rules: 29
