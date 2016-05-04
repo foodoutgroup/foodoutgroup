@@ -68,7 +68,7 @@
         </div>
         <div class="form-row {% if submitted and errors.businessAgreement is not empty %}error{% endif %}">
             <label class="custom-checkbox company-agreement">
-                {% trans %}form.businessAgreement{% endtrans %}
+                {{ 'form.businessAgreement'|trans({'%link%': path('food_slug', {'slug': slug_util.slugByItem(static_page_b2b_rules, 'text')}) })|raw }}
                 {{ form_widget(form.businessAgreement,{ 'attr': {'title': errors.businessAgreement, 'classz': 'no-icheck fl business_agreement', 'data-placement': 'bottom'}}) }}
             </label>
             {#
@@ -80,9 +80,3 @@
         </div>
     </div>
 </form>
-
-<div class="hidden">
-    <div id="business_rules" class="business_rules_content">
-        <div class="business_rules_inner">{{ static_service.getPage(static_page_b2b_rules).content|raw }}</div>
-    </div>
-</div>

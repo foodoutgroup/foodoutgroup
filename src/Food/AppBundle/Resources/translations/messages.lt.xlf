@@ -1400,7 +1400,7 @@
             </trans-unit>
             <trans-unit id="form.businessAgreement">
                 <source>form.businessAgreement</source>
-                <target><![CDATA[Sutinku su <a href="#business_rules" name="business_rules" class="fancy-box">taisyklėmis</a>]]></target>
+                <target><![CDATA[Sutinku su <a href="%link%" target="_blank">taisyklėmis</a>]]></target>
             </trans-unit>
             <trans-unit id="errors.businessAgreement">
                 <source>errors.businessAgreement</source>
