@@ -1750,6 +1750,53 @@
                 <source>Coupon Generator List</source>
                 <target>Coupon generator</target>
             </trans-unit>
+
+            <!-- Coupons Range -->
+            <trans-unit id="admin.coupons_range">
+                <source>admin.coupons_range</source>
+                <target>Coupon Range</target>
+            </trans-unit>
+            <trans-unit id="admin.order.download_coupons">
+                <source>admin.order.download_coupons</source>
+                <target>Download Coupons</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.prefix">
+                <source>admin.coupon.prefix</source>
+                <target>Prefix</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.suffix">
+                <source>admin.coupon.suffix</source>
+                <target>Suffix</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.coupons_qty">
+                <source>admin.coupon.coupons_qty</source>
+                <target>How Many Coupons</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.cart_amount">
+                <source>admin.coupon.cart_amount</source>
+                <target>Cart Amount</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.discount_sum">
+                <source>admin.coupon.discount_sum</source>
+                <target>Discount Sum</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.full_order_cover">
+                <source>admin.coupon.full_order_cover</source>
+                <target>Full Order Cover</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.coupons_not_found">
+                <source>admin.coupon.coupons_not_found</source>
+                <target>There was nothing to export.</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.valid_from">
+                <source>admin.coupon.valid_from</source>
+                <target>Valid From</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.valid_to">
+                <source>admin.coupon.valid_to</source>
+                <target>Valid To</target>
+            </trans-unit>
+
             <!-- Street admin -->
             <trans-unit id="admin.street">
                 <source>admin.street</source>

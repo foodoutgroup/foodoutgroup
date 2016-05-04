@@ -385,6 +385,7 @@ sonata_admin:
                       - sonata.admin.company_discount_level
                       - sonata.admin.coupon
                       - sonata.admin.coupon_generator
+                      - sonata.admin.coupon_range
                       - sonata.admin.combo_discounts
                       - sonata.admin.restaurant_orders
                       - sonata.admin.latency
