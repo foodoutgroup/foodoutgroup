@@ -1429,6 +1429,10 @@
                 <source>admin.dispatcher.unassigned</source>
                 <target>Unassigned</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.unassigned_selfdeliver">
+                <source>admin.dispatcher.unassigned_selfdeliver</source>
+                <target>Unassigned Self-deliver</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.unapproved">
                 <source>admin.dispatcher.unapproved</source>
                 <target>Unapproved</target>
