@@ -163,13 +163,13 @@ class User extends BaseUser
 
     /**
      * @var boolean
-     * @ORM\Column(name="allow_delay_payment", type="boolean")
+     * @ORM\Column(name="allow_delay_payment", type="boolean", nullable=true)
      */
     private $allowDelayPayment = false;
 
     /**
      * @var boolean
-     * @ORM\Column(name="required_division", type="boolean")
+     * @ORM\Column(name="required_division", type="boolean", nullable=true)
      */
     private $requiredDivision = false;
 
