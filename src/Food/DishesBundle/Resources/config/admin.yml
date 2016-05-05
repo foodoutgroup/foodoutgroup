@@ -309,6 +309,16 @@ services:
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.coupon_range:
+                class: Food\OrderBundle\Admin\CouponRangeAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.coupons_range" }
+                arguments:
+                    - ~
+                    - Food\OrderBundle\Entity\CouponRange
+                    - 'FoodOrderBundle:CouponRangeAdmin'
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]
 
     sonata.admin.coupon_generator:
                 class: Food\OrderBundle\Admin\CouponGeneratorAdmin

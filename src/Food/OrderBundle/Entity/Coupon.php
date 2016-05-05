@@ -40,15 +40,23 @@ class Coupon
     /**
      * @var int
      *
-     * @ORM\Column(name="discount", type="integer",  nullable=true)
+     * @ORM\Column(name="discount", type="integer", nullable=true)
      */
     private $discount;
 
     /**
      * @var int
-     * @ORM\Column(name="discount_sum", type="integer",  nullable=true)
+     * @ORM\Column(name="discount_sum", type="integer", nullable=true)
      */
     private $discountSum;
+
+    /**
+     * @var CouponRange
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\OrderBundle\Entity\CouponRange", inversedBy="coupons", cascade={"persist"})
+     * @ORM\JoinColumn(name="coupon_range", referencedColumnName="id")
+     */
+    private $couponRange;
 
     /**
      * @var bool
@@ -833,5 +841,28 @@ class Coupon
     public function isAllowedForPickup()
     {
         return in_array($this->getMethod(), array(self::METHOD_BOTH, self::METHOD_PICKUP));
+    }
+
+
+    /**
+     * Set couponRange
+     *
+     * @param \Food\OrderBundle\Entity\CouponRange $couponRange
+     * @return Coupon
+     */
+    public function setCouponRange(\Food\OrderBundle\Entity\CouponRange $couponRange = null)
+    {
+        $this->couponRange = $couponRange;
+        return $this;
+    }
+
+    /**
+     * Get couponRange
+     *
+     * @return \Food\OrderBundle\Entity\CouponRange
+     */
+    public function getCouponRange()
+    {
+        return $this->couponRange;
     }
 }
