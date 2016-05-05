@@ -193,7 +193,7 @@ class OrderAdminController extends Controller
                             break;
                         case 'address':
                             if (!empty($value['value'])) {
-                                $where .= " AND o.place_point_address LIKE " . $prepare_val("%" . $value['value'] . "%");
+                                $where .= " AND ua.address LIKE " . $prepare_val("%" . $value['value'] . "%");
                             }
                             break;
                         case 'phone':
@@ -262,8 +262,9 @@ class OrderAdminController extends Controller
             }
         }
 
-        $qry = "SELECT o.*, oe.*, d.extId as driver_id
+        $qry = "SELECT o.*, oe.*, ua.*, d.extId as driver_id
                 FROM orders o
+                LEFT JOIN user_address ua ON o.address_id = ua.id
                 LEFT JOIN order_extra oe ON o.id = oe.order_id
                 LEFT JOIN drivers d ON o.driver_id = d.id
                 WHERE 1 = 1 $where";
