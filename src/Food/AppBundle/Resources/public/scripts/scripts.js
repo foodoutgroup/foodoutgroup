@@ -387,7 +387,6 @@ initStreetHouseSearch = function(){
     });
 }
 
-
 var registrationForm = {
     showPrivate: function(element) {
         var theBox = $(element).closest('.popup');
@@ -416,6 +415,3 @@ var registrationForm = {
         return false;
     }
 };
-$(document).ready(function() {
-    $("input:not('.no-icheck')").iCheck();
-});
