@@ -20,6 +20,7 @@ class UserAdmin extends SonataUserAdmin {
             ->add('noInvoice', null, array('editable' => true, 'label' => 'admin.users.no_invoice'))
             ->add('noMinimumCart', null, array('editable' => true, 'label' => 'admin.users.no_minimum_cart'))
             ->add('isBussinesClient', null, array('editable' => true, 'label' => 'admin.users.bussines_client'))
+            ->add('companyName', null, array('label' => 'admin.users.company_name'))
             ->add('lastLogin', null, array('format' => 'Y-m-d H:i:s', 'label' => 'admin.users.last_login'))
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -61,20 +62,28 @@ class UserAdmin extends SonataUserAdmin {
         $showMapper
             ->remove('groups')
             ->remove('dateOfBirth')
-            ->remove('firstname')
-            ->remove('lastname')
             ->remove('website')
             ->remove('biography')
             ->remove('gender')
             ->remove('locale')
             ->remove('timezone')
-            ->remove('phone')
             ->remove('facebookUid')
             ->remove('facebookName')
             ->remove('twitterUid')
             ->remove('twitterName')
             ->remove('gplusUid')
             ->remove('gplusName')
+            ->add('isBussinesClient')
+            ->add('companyName')
+            ->add('companyCode')
+            ->add('vatCode')
+            ->add('company_address')
+            ->add('checkingAccount')
+            ->add('workersCount')
+            ->add('directorFirstName')
+            ->add('directorLastName')
+            ->add('discount')
+            ->add('allowDelayPayment')
         ;
     }
 
