@@ -73,6 +73,7 @@ class UserAdmin extends SonataUserAdmin {
             ->remove('twitterName')
             ->remove('gplusUid')
             ->remove('gplusName')
+            ->with('Business')
             ->add('isBussinesClient')
             ->add('companyName')
             ->add('companyCode')
@@ -85,6 +86,12 @@ class UserAdmin extends SonataUserAdmin {
             ->add('discount')
             ->add('allowDelayPayment')
         ;
+
+        $groups = $showMapper->getAdmin()->getShowGroups();
+        unset($groups['Social']);
+        unset($groups['Security']);
+        unset($groups['Groups']);
+        $showMapper->getAdmin()->setShowGroups($groups);
     }
 
     /**
