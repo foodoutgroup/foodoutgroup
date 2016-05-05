@@ -94,11 +94,12 @@ class LocationService extends ContainerAware
         $locationData['street_found'] = false;
         $locationData['address_found'] = false;
         $locationData['city_only'] = false;
-        $locationData['city'] = $userAddress->getCity();
         $locationData['address_found'] = true;
-        $locationData['address'] = $userAddress->getAddress();
-        $locationData['address_orig'] = $userAddress->getAddress();
-
+        if ($userAddress) {
+            $locationData['city'] = $userAddress->getCity();
+            $locationData['address'] = $userAddress->getAddress();
+            $locationData['address_orig'] = $userAddress->getAddress();
+        }
 
         $this->setLocationToSession($locationData);
         return $locationData;

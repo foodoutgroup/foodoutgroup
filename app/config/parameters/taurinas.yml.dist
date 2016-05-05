@@ -79,6 +79,7 @@ parameters:
     mailer_send_invoice: 30019657
     mailer_send_corporate_invoice: 41585359
     mailer_send_corporate_changed_password: 41611093
+    mailer_send_free_delivery_discount: 41611735
     yt_video: https://www.youtube.com/v/3zFW6hnuvJY?fs=1&amp;autoplay=
     yt_embeded: //www.youtube-nocookie.com/embed/3zFW6hnuvJY
     default_delivery_distance: 7
