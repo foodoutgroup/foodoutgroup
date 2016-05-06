@@ -399,6 +399,7 @@ sonata_admin:
                       - sonata.admin.latency
                       - sonata.admin.driver_latency
                       - sonata.admin.marketing_user
+                      - sonata.admin.rfm
                   roles: [ ROLE_ADMIN ]
               admin.restaurant:
                   items: ~

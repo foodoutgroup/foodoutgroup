@@ -2120,6 +2120,58 @@
                 <source>admin.reports.driver_latency.average_latency</source>
                 <target>Vidutinis vėlavimas</target>
             </trans-unit>
+            <trans-unit id="admin.reports.user_id">
+                <source>admin.reports.user_id</source>
+                <target>Naudotojo nr.</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.email">
+                <source>admin.reports.email</source>
+                <target>El. paštas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.phone">
+                <source>admin.reports.phone</source>
+                <target>Telefonas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.firstname">
+                <source>admin.reports.firstname</source>
+                <target>Vardas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.lastname">
+                <source>admin.reports.lastname</source>
+                <target>Pavardė</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.is_business_client">
+                <source>admin.reports.is_business_client</source>
+                <target>Verslo klientas</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.company_name">
+                <source>admin.reports.company_name</source>
+                <target>Įmonės pav.</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.first_order_date">
+                <source>admin.reports.first_order_date</source>
+                <target>Pirmo užsak. data</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.last_order_date">
+                <source>admin.reports.last_order_date</source>
+                <target>Paskut. užsak. data</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.recency_score">
+                <source>admin.reports.recency_score</source>
+                <target>Naujumo tašk.</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.frequency_score">
+                <source>admin.reports.frequency_score</source>
+                <target>Pasikartojimo tašk.</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.monetary_score">
+                <source>admin.reports.monetary_score</source>
+                <target>Monetizavimo tašk.</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.total_rfm_score">
+                <source>admin.reports.total_rfm_score</source>
+                <target>Bendri RFM taškai</target>
+            </trans-unit>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
                 <target>Administration</target>

@@ -2076,6 +2076,58 @@
                 <source>admin.reports.driver_latency.average_latency</source>
                 <target>Average latency</target>
             </trans-unit>
+            <trans-unit id="admin.reports.user_id">
+                <source>admin.reports.user_id</source>
+                <target>User id</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.email">
+                <source>admin.reports.email</source>
+                <target>Email</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.phone">
+                <source>admin.reports.phone</source>
+                <target>Phone</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.firstname">
+                <source>admin.reports.firstname</source>
+                <target>Firstname</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.lastname">
+                <source>admin.reports.lastname</source>
+                <target>Lastname</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.is_business_client">
+                <source>admin.reports.is_business_client</source>
+                <target>Business client</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.company_name">
+                <source>admin.reports.company_name</source>
+                <target>Company name</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.first_order_date">
+                <source>admin.reports.first_order_date</source>
+                <target>First order date</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.last_order_date">
+                <source>admin.reports.last_order_date</source>
+                <target>Last order date</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.recency_score">
+                <source>admin.reports.recency_score</source>
+                <target>Recency score</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.frequency_score">
+                <source>admin.reports.frequency_score</source>
+                <target>Frequency score</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.monetary_score">
+                <source>admin.reports.monetary_score</source>
+                <target>Monetary score</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.total_rfm_score">
+                <source>admin.reports.total_rfm_score</source>
+                <target>Total RFM score</target>
+            </trans-unit>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
                 <target>Administration</target>
