@@ -34,6 +34,7 @@ class UserService extends ContainerAware {
                 $this->_discount = $user->getDiscount();
 
             // jei galioja pirmo men nuolaida ir menuo nepraejo
+            // @TODO apriboti iki menesio
             } elseif ($firstMonthDiscount && $userCreatedPlusMonth > new \DateTime()) {
                 $this->_discount = $this->container->getParameter('b2b_first_month_discount_percent');
 

@@ -591,6 +591,9 @@ class User extends BaseUser
      */
     public function setIsBussinesClient($isBussinesClient)
     {
+        if ($isBussinesClient && !$this->getIsBussinesClient()) {
+            $this->setCreatedAt(new \DateTime());
+        }
         $this->isBussinesClient = $isBussinesClient;
     
         return $this;
