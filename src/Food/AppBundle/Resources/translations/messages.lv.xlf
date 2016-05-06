@@ -380,11 +380,11 @@
             </trans-unit>
             <trans-unit id="general.private">
                 <source>general.private</source>
-                <target>Privāts</target>
+                <target>Privātiem klientiem</target>
             </trans-unit>
             <trans-unit id="general.company">
                 <source>general.company</source>
-                <target>Bizness</target>
+                <target>Korporatīvajiem klientiem</target>
             </trans-unit>
             <trans-unit id="e44e8ff9e4e47e49c926d67bf0112966" resname="general.sms.new_order">
                 <source>general.sms.new_order</source>
@@ -1370,6 +1370,22 @@
             <trans-unit id="form.businessAgreement">
                 <source>form.businessAgreement</source>
                 <target><![CDATA[Piekrītu <a href="#business_rules" name="business_rules" class="fancy-box">noteikumiem</a>]]></target>
+            </trans-unit>
+            <trans-unit id="errors.companyName">
+                <source>errors.companyName</source>
+                <target>Šis lauks ir obligāts</target>
+            </trans-unit>
+            <trans-unit id="errors.companyCode">
+                <source>errors.companyCode</source>
+                <target>Šis lauks ir obligāts</target>
+            </trans-unit>
+            <trans-unit id="errors.companyAddress">
+                <source>errors.companyAddress</source>
+                <target>Šis lauks ir obligāts</target>
+            </trans-unit>
+            <trans-unit id="errors.checkingAccount">
+                <source>errors.checkingAccount</source>
+                <target>Šis lauks ir obligāts</target>
             </trans-unit>
             <trans-unit id="errors.businessAgreement">
                 <source>errors.businessAgreement</source>
