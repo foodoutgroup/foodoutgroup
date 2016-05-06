@@ -146,6 +146,7 @@ twig:
         language_utils: "@food.app.utils.language"
         notifications: "@food.app.utils.notifications"
         misc_utils: "@food.app.utils.misc"
+        user_service: "@food.user"
 
 
 

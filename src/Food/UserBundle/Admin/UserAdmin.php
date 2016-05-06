@@ -60,6 +60,8 @@ class UserAdmin extends SonataUserAdmin {
         parent::configureShowFields($showMapper);
 
         $showMapper
+            ->with('General')
+            ->add('createdAt', null, array('label' => 'admin.users.created_at'))
             ->remove('groups')
             ->remove('dateOfBirth')
             ->remove('website')
@@ -74,17 +76,23 @@ class UserAdmin extends SonataUserAdmin {
             ->remove('gplusUid')
             ->remove('gplusName')
             ->with('Business')
-            ->add('isBussinesClient')
-            ->add('companyName')
-            ->add('companyCode')
-            ->add('vatCode')
-            ->add('company_address')
-            ->add('checkingAccount')
-            ->add('workersCount')
-            ->add('directorFirstName')
-            ->add('directorLastName')
-            ->add('discount')
-            ->add('allowDelayPayment')
+            ->add('isBussinesClient', null, array('label' => 'admin.users.bussines_client'))
+            ->add('companyName', null, array('label' => 'admin.users.company_name'))
+            ->add('companyCode', null, array('label' => 'admin.users.company_code'))
+            ->add('vatCode', null, array('label' => 'admin.users.vat_code'))
+            ->add('company_address', null, array('label' => 'admin.users.company_address'))
+            ->add('checkingAccount', null, array('label' => 'admin.users.checking_account'))
+            ->add('workersCount', null, array('label' => 'admin.users.workers_count'))
+            ->add('directorFirstName', null, array('label' => 'admin.users.director_first_name'))
+            ->add('directorLastName', null, array('label' => 'admin.users.director_last_name'))
+            ->add('discount', null, array('label' => 'admin.users.discount'))
+            ->add('allowDelayPayment', null, array('label' => 'admin.users.allow_delay_payment'))
+            ->add('currentDiscount', 'sonata_type_collection',
+                array(
+                    'label' => 'admin.users.current_discount',
+                    'template' => 'FoodUserBundle:Admin:current_discount.html.twig'
+                )
+            )
         ;
 
         $groups = $showMapper->getAdmin()->getShowGroups();

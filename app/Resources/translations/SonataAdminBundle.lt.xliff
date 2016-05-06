@@ -706,6 +706,10 @@
                 <source>ROLE_SUPPORT</source>
                 <target>Pagalba</target>
             </trans-unit>
+            <trans-unit id="admin.users.created_at">
+                <source>admin.users.created_at</source>
+                <target>Registracijos data</target>
+            </trans-unit>
             <trans-unit id="admin.users.bussines_management">
                 <source>admin.users.bussines_management</source>
                 <target>Verslo klientų valdymas</target>
@@ -773,6 +777,10 @@
             <trans-unit id="admin.users.required_division">
                 <source>admin.users.required_division</source>
                 <target>Privalomas padalinys</target>
+            </trans-unit>
+            <trans-unit id="admin.users.current_discount">
+                <source>admin.users.current_discount</source>
+                <target>Dabartinė nuolaida</target>
             </trans-unit>
             <trans-unit id="admin.users_dision_code.id">
                 <source>admin.users_dision_code.id</source>
