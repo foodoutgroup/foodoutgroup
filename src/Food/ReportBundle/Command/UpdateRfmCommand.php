@@ -42,7 +42,7 @@ class UpdateRfmCommand extends ContainerAwareCommand
                   SELECT fu.id, fu.email, fu.phone, fu.firstname, fu.lastname, fu.is_bussines_client, 
                          fu.company_name, MIN(o.order_date), MAX(o.order_date), 
                          ".$recencyQ.", 
-                         ".$frequencyQ.", c
+                         ".$frequencyQ.",
                          ".$monetaryQ.", 
                          ".$recencyQ." + ".$frequencyQ." + ".$monetaryQ." 
                     FROM fos_user fu
@@ -52,19 +52,18 @@ class UpdateRfmCommand extends ContainerAwareCommand
         try {
             $connection->executeUpdate("TRUNCATE report_rfm");
 
-            $connection->executeUpdate($query);
+            $stmt = $connection->prepare($query);
+            $stmt->execute();
 
-
-            
-//            $timeSpent = microtime(true) - $this->_timeStart;
-//            $output->writeln(sprintf('<info>%d messages sent in %0.2f seconds</info>', $count, $timeSpent));
+            $timeSpent = microtime(true) - $this->_timeStart;
+            $output->writeln(sprintf('<info>%d inserted in %0.2f seconds</info>', $stmt->rowCount(), $timeSpent));
             // Log performance data
-//            $logger->alert(sprintf(
-//                '[Performance] %s %d in %0.2f seconds',
-//                $this->getDescription(),
-//                $count,
-//                $timeSpent
-//            ));
+            $logger->alert(sprintf(
+                '[Performance] %s %d inserted in %0.2f seconds',
+                $this->getDescription(),
+                $stmt->rowCount(),
+                $timeSpent
+            ));
         } catch (\InvalidArgumentException $e) {
             $output->writeln('<error>Sorry, lazy programmer left a bug :(</error>');
             $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
