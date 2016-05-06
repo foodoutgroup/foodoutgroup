@@ -188,6 +188,17 @@ services:
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.rfm:
+        class: Food\ReportBundle\Admin\RfmAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "RFM" }
+        arguments:
+            - ~
+            - Food\ReportBundle\Entity\Rfm
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
 
     sonata.admin.dish.unit.category:
             class: Food\DishesBundle\Admin\DishUnitCategoryAdmin
