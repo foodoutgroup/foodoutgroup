@@ -424,6 +424,12 @@ class Order
     private $newsletterSubscribe = false;
 
     /**
+     * @var integer
+     * @ORM\Column(name="assign_late", type="integer", nullable=true)
+     */
+    private $assignLate;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -2223,5 +2229,28 @@ class Order
     public function getNewsletterSubscribe()
     {
         return $this->newsletterSubscribe;
+    }
+
+    /**
+     * Set assignLate
+     *
+     * @param integer $assignLate
+     * @return Order
+     */
+    public function setAssignLate($assignLate)
+    {
+        $this->assignLate = $assignLate;
+    
+        return $this;
+    }
+
+    /**
+     * Get assignLate
+     *
+     * @return integer 
+     */
+    public function getAssignLate()
+    {
+        return $this->assignLate;
     }
 }

@@ -723,6 +723,10 @@ class OrderService extends ContainerAware
 
         $this->logDeliveryEvent($this->getOrder(), 'order_assigned');
 
+        if ($this->isLate($order)) {
+            $late = $this->getLateDiff($order);
+            $order->setAssignLate($late->d*1440 + $late->h * 60 + $late->i);
+        }
         $this->chageOrderStatus(self::$status_assiged, $source, $statusMessage);
 
         return $this;
