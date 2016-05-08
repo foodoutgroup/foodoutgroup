@@ -133,6 +133,11 @@ food_slug_locale_slug2:
     requirements:
         redirLocale:  "[a-z]{2}"
 
+# landing pages
+food_landing_b2b_client:
+    path: /b2b-klientams/
+    defaults: { _controller: FoodAppBundle:Landing:b2bClient }
+
 food_slug:
     pattern:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
