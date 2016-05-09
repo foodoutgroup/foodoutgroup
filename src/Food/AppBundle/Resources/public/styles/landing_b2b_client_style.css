@@ -7,6 +7,7 @@
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  outline: 0;
 }
 
 body {
@@ -92,6 +93,10 @@ ul li {
   -moz-box-shadow: 3px 2px 16.02px 1.98px rgba(12, 11, 9, 0.14);
   -webkit-box-shadow: 3px 2px 16.02px 1.98px rgba(12, 11, 9, 0.14);
   box-shadow: 3px 2px 16.02px 1.98px rgba(12, 11, 9, 0.14);
+}
+
+.restaurants img {
+  height: 45px;
 }
 
 .bg-white {
