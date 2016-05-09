@@ -262,7 +262,7 @@ class OrderAdminController extends Controller
             }
         }
 
-        $qry = "SELECT o.*, oe.*, ua.*, d.extId as driver_id
+        $qry = "SELECT o.*, oe.*, ua.city, ua.address, ua.lat, ua.lon, d.extId as driver_id
                 FROM orders o
                 LEFT JOIN user_address ua ON o.address_id = ua.id
                 LEFT JOIN order_extra oe ON o.id = oe.order_id
