@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-xs-12">
+        <input type="text" class="form-control" id="dishes_filter" placeholder="{{ 'callcenter.places_form.filter_placeholder'|trans }}" />
+    </div>
+    <div class="col-xs-12">
+        <table class="table table-hover table-condensed nicer-font">
+            <thead>
+                <tr>
+                    <th>Patiekalas</th>
+                    <th>Kaina ({{ currency_display|raw }})</th>
+                    <th>Veiksmai</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    {% if item.active == 1 %}
+                        {% set smallestPrice = dish_service.smallestDishPrice(item.id) %}
+                        {% set largestPrice = dish_service.largestDishPrice(item.id) %}
+
+                        {% set hasDiscount = false %}
+                        {% if item.discountPricesEnabled and item.place.discountPricesEnabled %}
+                            {% if dish_service.hasDiscountPrice(item.id) %}
+                                {% set hasDiscount = true %}
+                            {% endif %}
+                        {% endif %}
+
+                        <tr class="searchable">
+                            <td>{{ item.name }}</td>
+                            <td>
+                                {% if smallestPrice == largestPrice %}
+                                    {{ currency_display|raw }}{{ smallestPrice|replace({'.': ','}) }}
+                                {% else %}
+                                    {{ currency_display|raw }}{{ smallestPrice|replace({'.': ','}) }} - {{ largestPrice|replace({'.': ','}) }}
+                                {% endif %}
+
+                                {% if hasDiscount %}
+                                    {% set smallestDiscountPrice = dish_service.smallestDishDiscountPrice(item.id) %}
+                                    {% set largestDiscountPrice = dish_service.largestDishDiscountPrice(item.id) %}
+
+                                    {% if smallestDiscountPrice == largestDiscountPrice %}
+                                        (<strong>{{ currency_display|raw }}{{ smallestDiscountPrice|replace({'.': ','}) }}</strong>)
+                                    {% else %}
+                                        (<strong>{{ currency_display|raw }}{{ smallestDiscountPrice|replace({'.': ','}) }} - {{ largestDiscountPrice|replace({'.': ','}) }}</strong>)
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('food_ajax_dish', {'dish': item.id }) }}"
+                                   href2="#detailed-dish-popup"
+                                   class="fancybox.ajax add-to-cart fancy-box btn btn-success">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            <tbody>
+        </table>
+    </div>
+</div>

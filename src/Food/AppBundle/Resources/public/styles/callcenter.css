@@ -1,0 +1,34 @@
+#checkout,
+#success_panel,
+#back_to_dishes,
+#main_panel,
+#cart_panel,
+#place_select_panel,
+#location_error,
+#location_panel,
+#delivery_impossible {
+    display: none;
+}
+
+.pull-right {
+    float: right;
+}
+.clear-pull-right {
+    clear: both;
+}
+
+.form-row input {
+    padding: 18px 12px !important;
+}
+
+.hidden-rules {
+    display: none;
+}
+
+.nicer-font * {
+    font-size: 16px;
+}
+
+#cartmnu {
+    width: auto !important;
+}

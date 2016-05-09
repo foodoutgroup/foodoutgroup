@@ -182,6 +182,9 @@ class DefaultController extends Controller
 
     public function indexAction($placeId, $takeAway = null, Request $request)
     {
+        // for now this is relevant for callcenter functionality
+        $isCallcenter = $request->isXmlHttpRequest();
+
         $orderService = $this->get('food.order');
         $placeService = $this->get('food.places');
         $miscUtils = $this->get('food.app.utils.misc');
@@ -245,7 +248,8 @@ class DefaultController extends Controller
                 $formErrors,
                 ($takeAway ? true : false),
                 ($takeAway ? $request->get('place_point'): null),
-                $couponEnt
+                $couponEnt,
+                $isCallcenter
             );
         }
 
@@ -456,23 +460,34 @@ class DefaultController extends Controller
             // TODO Crap happened?
         }
 
+        $data = array(
+            'order' => $order,
+            'formHasErrors' => $formHasErrors,
+            'formErrors' => $formErrors,
+            'place' => $place,
+            'takeAway' => ($takeAway ? true : false),
+            'location' => $this->get('food.googlegis')->getLocationFromSession(),
+            'dataToLoad' => $dataToLoad,
+            'userAddress' => $address,
+            'userAllAddress' => $placeService->getCurrentUserAddresses(),
+            'submitted' => $request->isMethod('POST'),
+            'testNordea' => $request->query->get('test_nordea'),
+            'workingHoursForInterval' => $workingHoursForInterval,
+            'workingDaysCount' => $workingDaysCount,
+            'isCallcenter' => false,
+        );
+
+
+        // callcenter functionality
+        if ($isCallcenter) {
+            $data['isCallcenter'] = true;
+
+            return $this->render('FoodCartBundle:Default:form.html.twig', $data);
+        }
+
         return $this->render(
             'FoodCartBundle:Default:index.html.twig',
-            array(
-                'order' => $order,
-                'formHasErrors' => $formHasErrors,
-                'formErrors' => $formErrors,
-                'place' => $place,
-                'takeAway' => ($takeAway ? true : false),
-                'location' => $this->get('food.googlegis')->getLocationFromSession(),
-                'dataToLoad' => $dataToLoad,
-                'userAddress' => $address,
-                'userAllAddress' => $placeService->getCurrentUserAddresses(),
-                'submitted' => $request->isMethod('POST'),
-                'testNordea' => $request->query->get('test_nordea'),
-                'workingHoursForInterval' => $workingHoursForInterval,
-                'workingDaysCount' => $workingDaysCount
-            )
+            $data
         );
     }
 

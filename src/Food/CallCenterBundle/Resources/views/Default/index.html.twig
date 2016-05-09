@@ -1,0 +1,185 @@
+{% extends 'CallCenterBundle:Default:layout.html.twig' %}
+
+{% block body %}
+{{ parent() }}
+
+<div class="row">
+    <div class="col-xs-9">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title">{{ 'callcenter.location_form.title'|trans }}</div>
+            </div>
+            <div class="panel-body">
+                <form id="location_form" method="GET">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                {{ form_widget(location_form.city) }}
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                {{ form_widget(location_form.street, {attr: {placeholder: 'callcenter.location_form.street'|trans}}) }}
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                {{ form_widget(location_form.house, {attr: {placeholder: 'callcenter.location_form.house'|trans}}) }}
+                            </div>
+                        </div>
+                        <div class="col-xs-2">
+                            <button class="btn btn-primary" type="submit" tabindex="100" id="location_submit_button">
+                                {{ 'callcenter.location_form.submit'|trans }}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="alert alert-danger" id="location_error"></div>
+                            <div class="alert alert-danger" id="delivery_impossible">
+                                {{ 'callcenter.location_panel.error'|trans }}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-3" id="location_panel">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title">{{ 'callcenter.location_panel.title'|trans }}</div>
+            </div>
+            <div class="panel-body">
+                <h4 id="location_content"></h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" id="place_select_panel">
+    <div class="col-xs-9">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title">{{ 'callcenter.places_form.place'|trans }}</div>
+            </div>
+            <div class="panel-body">
+                <form id="place_select_form">
+                    <div class="row">
+                        <div class="col-xs-4">{{ form_widget(place_form.place) }}</div>
+                        <div class="col-xs-8">
+                            <div class="pull-right">
+                                <a href="#"
+                                   class="btn btn-warning"
+                                   id="back_to_dishes">
+                                    <i class="fa fa-long-arrow-left"></i>
+                                    <strong>{{ 'callcenter.places_form.back_to_menu'|trans }}</strong>
+                                </a>
+                                <a href="{{ path('food_callcenter_reset') }}"
+                                   class="btn btn-danger"
+                                   style="display: none;"
+                                   id="reset_cart">
+                                    <i class="fa fa-times"></i>
+                                    <strong>{{ 'callcenter.places_form.reset'|trans }}</strong>
+                                </a>
+                            </div>
+                            <div class="clear-pull-right"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-xs-9">
+        <div class="panel panel-primary" id="main_panel">
+            <div class="panel-heading">
+                <div class="panel-title">{{ 'callcenter.places_form.dishes'|trans }}</div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div id="no_dishes">{{ 'callcenter.places_form.no_dishes'|trans }}</div>
+                        <form class="form-horizontal" id="callcenter_form">
+                            <fieldset>
+                                <div id="dishes"></div>
+                            </fieldset>
+                        </form>
+                        <div id="checkout"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-3">
+        <div class="panel panel-primary" id="cart_panel">
+            <div class="panel-heading">
+                <div class="panel-title">{{ 'callcenter.places_form.cart'|trans }}</div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        {% include 'FoodCartBundle:Default:side_block.html.twig' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" id="success_panel">
+    <div class="col-xs-9">
+        <div>
+            <div class="alert alert-success">
+                {{ 'callcenter.places_form.success'|trans }}
+                <i class="fa fa-check"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'change-address', hideQlu: false, usr_address: userAllAddress} %}
+<div class="hidden">
+    <div id="rules" class="cart_rules_content">
+        <div class="cart_rules_inner">{{ static_service.getPage(slug_util.oneByName('ordering_rules', locale).itemId).content|raw }}</div>
+    </div>
+    <div id="coupon" class="coupon_form_popup">
+        <div class="coupon_inner">
+            <form id="coupon_form">
+                <div>
+                    <div class="the_text">{% trans %}general.coupon.text{% endtrans %}:</div>
+                    <div class="the_input"><input type="text" name="coupon_code_popup" id="coupon_code_popup" /></div>
+                </div>
+                <div class="popup-controls">
+                    <a href="#" class="button-submit"><span>{% trans %}general.coupon.submit_button{% endtrans %}</span></a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{# we rely heavily on using AJAX, so we need some variables that we could access or change for JavaScript #}
+<span id="place_id" data="{% if place is not empty%}{{ place.id }}{% endif %}"></span>
+<span id="check_coupon_url" data="{{ url('food_ajax', {'action': 'check-coupon'}) }}"></span>
+<span id="cart_refresh_url" data="{{ url('food_cart_action', {'action' : 'refresh'}) }}"></span>
+<span id="change_translation" data="{{ 'cart.checkout.address_change_change'|trans }}"></span>
+<span id="cancel_translation" data="{{ 'cart.checkout.address_change_cancel'|trans }}"></span>
+<span id="find_address_and_recount_url" data="{{ url('food_ajax', {action: 'find-address-and-recount'}) }}"></span>
+<span id="take_translation" data="{{ 'cart.checkout.i_will_take_it'|trans }}"></span>
+<span id="show_places_translation" data="{{ 'cart.checkout.show_me_places'|trans }}"></span>
+<span id="place_url" data=""></span>
+<span id="places_url" data="{{ url('food_places_lt_main') }}"></span>
+
+<script type="text/javascript">
+// <![CDATA[
+$(window).load(function() {
+    {% if location_data is not empty and not location_data.not_found %}
+        $('#location_form').submit();
+    {% endif %}
+});
+// ]]>
+</script>
+{% endblock %}

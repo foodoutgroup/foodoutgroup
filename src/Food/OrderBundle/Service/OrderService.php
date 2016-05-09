@@ -2894,8 +2894,9 @@ class OrderService extends ContainerAware
      * @param $takeAway
      * @param null|int $placePointId
      * @param Coupon|null $coupon
+     * @param $isCallcenter
      */
-    public function validateDaGiantForm(Place $place, Request $request, &$formHasErrors, &$formErrors, $takeAway, $placePointId = null, $coupon = null)
+    public function validateDaGiantForm(Place $place, Request $request, &$formHasErrors, &$formErrors, $takeAway, $placePointId = null, $coupon = null, $isCallcenter = false)
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
         $noMinimumCart = ($user instanceof User ? $user->getNoMinimumCart() : false);
@@ -2906,19 +2907,22 @@ class OrderService extends ContainerAware
         $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
 
         $customerEmail = $request->get('customer-email');
-        if (0 === strlen($customerEmail)) {
-            $formErrors[] = 'order.form.errors.customeremail';
-        } else {
-            $emailConstraint = new EmailConstraint();
-            $emailConstraint->message = 'Email invalid';
 
-            $emailErrors = $this->container->get('validator')->validateValue(
-                $customerEmail,
-                $emailConstraint
-            );
+        if (!$isCallcenter) {
+            if (0 === strlen($customerEmail)) {
+                $formErrors[] = 'order.form.errors.customeremail';
+            } else {
+                $emailConstraint = new EmailConstraint();
+                $emailConstraint->message = 'Email invalid';
 
-            if ($emailErrors->count() > 0) {
-                $formErrors[] = 'order.form.errors.customeremail_invalid';
+                $emailErrors = $this->container->get('validator')->validateValue(
+                    $customerEmail,
+                    $emailConstraint
+                );
+
+                if ($emailErrors->count() > 0) {
+                    $formErrors[] = 'order.form.errors.customeremail_invalid';
+                }
             }
         }
 
