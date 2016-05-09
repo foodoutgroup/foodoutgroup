@@ -32,3 +32,6 @@
 #cartmnu {
     width: auto !important;
 }
+body {
+    font-family: 'avenirbook','Helvetica Neue',Helvetica,Arial,sans-serif !important;
+}
