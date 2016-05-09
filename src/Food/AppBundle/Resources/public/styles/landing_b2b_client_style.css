@@ -68,10 +68,10 @@ ul {
 ul li:before{
   content: '';
   display: inline-block;
-  height: 10px;
+  height: 12px;
   width: 12px;
   background: url("/bundles/foodapp/images/landing/b2bclient/dot-small.png") center center no-repeat;
-  background-size: 6px 8px;
+  background-size: 5px 7px;
 }
 
 .container {
