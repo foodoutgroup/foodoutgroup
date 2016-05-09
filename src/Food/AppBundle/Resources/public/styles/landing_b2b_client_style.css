@@ -15,7 +15,7 @@ body {
   font-family: "myriadpro";
   line-height: 23px;
   background: url(/bundles/foodapp/images/landing/b2bclient/bg.jpg) no-repeat center top;
-  background-size: cover;
+  /*background-size: cover;*/
   margin: 0;
   padding: 0;
   color: #202020;
