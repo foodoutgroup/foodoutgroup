@@ -65,8 +65,13 @@ ul {
   margin: 0 0 10px 0;
   padding: 0 0 0 30px;
 }
-ul li {
-  list-style-image: url("/bundles/foodapp/images/landing/b2bclient/dot-small.png");
+ul li:before{
+  content: '';
+  display: inline-block;
+  height: 10px;
+  width: 12px;
+  background: url("/bundles/foodapp/images/landing/b2bclient/dot-small.png") center center no-repeat;
+  background-size: 6px 8px;
 }
 
 .container {
@@ -124,7 +129,6 @@ ul li {
 }
 
 .col-half {
-  width: 487.5px;
   float: left;
   padding: 25px 30px;
 }
@@ -143,16 +147,20 @@ ul li {
 .whs-nw {
   white-space: nowrap;
 }
-
-.align-items {
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  -webkit-flex-wrap: nowrap;
-  flex-wrap: nowrap;
-  -webkit-align-items: stretch;
-  align-items: stretch;
+@media screen and (min-width: 980px) {
+  .align-items {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-align-items: stretch;
+    align-items: stretch;
+  }
+  .col-half {
+    width: 487.5px;
+  }
 }
 
 .color-red {
@@ -168,4 +176,51 @@ ul li {
   bottom: 30px;
   left: 30px;
   font-size: 14px;
+}
+
+@media screen and (max-width: 980px) {
+  .container, .col-1, .col-2, .col-center, .col-half {
+    width: 100%;
+  }
+  .col-half:first-child {
+    margin-bottom: 5px;
+    margin-right: 0;
+  }
+  .pos-a {
+    position: static;
+  }
+}
+@media screen and (max-width: 980px) {
+  .partners td:nth-child(7) {
+    display: none;
+  }
+  .restaurants td:nth-child(11) {
+    display: none;
+  }
+}
+@media screen and (max-width: 880px) {
+  .partners td:nth-child(6) {
+    display: none;
+  }
+  .restaurants td:nth-child(10) {
+    display: none;
+  }
+}
+@media screen and (max-width: 780px) {
+  .partners td:nth-child(5) {
+    display: none;
+  }
+  .restaurants td:nth-child(9),
+  .restaurants td:nth-child(8) {
+    display: none;
+  }
+}
+@media screen and (max-width: 680px) {
+  .partners td:nth-child(4) {
+    display: none;
+  }
+  .restaurants td:nth-child(7),
+  .restaurants td:nth-child(6) {
+    display: none;
+  }
 }
