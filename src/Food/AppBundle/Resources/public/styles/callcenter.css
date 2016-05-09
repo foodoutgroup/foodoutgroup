@@ -32,6 +32,6 @@
 #cartmnu {
     width: auto !important;
 }
-body {
+button, input, select, textarea, body, .ui-widget-content, .ui-selectmenu-menu li a, .ui-selectmenu-status {
     font-family: 'avenirbook','Helvetica Neue',Helvetica,Arial,sans-serif !important;
 }
