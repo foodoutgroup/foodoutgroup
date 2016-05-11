@@ -116,6 +116,12 @@ class User extends BaseUser
 
     /**
      * @var string
+     * @ORM\Column(name="user_group", type="string", length=160, nullable=true)
+     */
+    private $group;
+
+    /**
+     * @var string
      * @ORM\Column(name="company_name", type="string", length=160, nullable=true)
      */
     private $companyName;
@@ -985,5 +991,28 @@ class User extends BaseUser
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * Set group
+     *
+     * @param string $group
+     * @return User
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+    
+        return $this;
+    }
+
+    /**
+     * Get group
+     *
+     * @return string 
+     */
+    public function getGroup()
+    {
+        return $this->group;
     }
 }

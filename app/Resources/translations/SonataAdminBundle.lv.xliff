@@ -198,6 +198,10 @@
                 <source>admin.dish.active</source>
                 <target>Active</target>
             </trans-unit>
+            <trans-unit id="admin.dish.group">
+                <source>admin.users.group</source>
+                <target>Group</target>
+            </trans-unit>
             <trans-unit id="admin.dish.active_list">
                 <source>admin.dish.active_list</source>
                 <target>Actv.</target>
@@ -709,6 +713,10 @@
             <trans-unit id="admin.users.created_at">
                 <source>admin.users.created_at</source>
                 <target>Registration date</target>
+            </trans-unit>
+            <trans-unit id="admin.users.group">
+                <source>admin.users.group</source>
+                <target>Group</target>
             </trans-unit>
             <trans-unit id="admin.users.bussines_management">
                 <source>admin.users.bussines_management</source>

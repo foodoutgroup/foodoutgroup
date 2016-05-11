@@ -116,6 +116,7 @@ class DishAdmin extends FoodAdmin
             ->add('options', null, array('query_builder' => $optionsQuery,'expanded' => true, 'multiple' => true, 'required' => false))
             ->add('recomended', 'checkbox', array('label' => 'admin.dish.recomended', 'required' => false,))
             ->add('active', 'checkbox', array('label' => 'admin.dish.active', 'required' => false,))
+            ->add('group', null, array('label' => 'admin.dish.group'))
             ->add('checkEvenOddWeek', 'checkbox', array('label' => 'admin.dish.check_even_odd_week', 'required' => false,))
             ->add('evenWeek', 'checkbox', array('label' => 'admin.dish.even_week', 'required' => false,))
             ->add('useDateInterval', 'checkbox', array('label' => 'admin.dish.use_date_interval', 'required' => false,))
