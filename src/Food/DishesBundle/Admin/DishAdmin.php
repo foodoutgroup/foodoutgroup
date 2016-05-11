@@ -9,6 +9,7 @@ use Food\AppBundle\Filter\PlaceFilter;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Validator\ErrorElement;
 use Food\DishesBundle\Entity\Place;
 
 class DishAdmin extends FoodAdmin
@@ -68,11 +69,13 @@ class DishAdmin extends FoodAdmin
         }
 
         $formMapper
+            //->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
             ->add(
                 'categories',
                 'sonata_type_model',
                 array(
                     //'query_builder' => $optionsQuery,
+                    'choices' => array(),
                     'btn_add' => false,
                     'multiple' => true,
                     'required' => false
@@ -82,7 +85,7 @@ class DishAdmin extends FoodAdmin
             ->add('timeTo', null, array('label' => 'admin.dish.time_to', 'required' => false,))
             ->add('file', 'file', $options)
             ->add('sizes', 'sonata_type_collection', array(
-                    'required' => false,
+                    'required' => true,
                     'by_reference' => false,
                     'label' => 'admin.dishes.sizes'
                     'btn_add' => $this->getContainer()->get('translator')->trans('link_action_create_override', array(), 'SonataAdminBundle')
@@ -249,6 +252,14 @@ class DishAdmin extends FoodAdmin
             $em->flush();
         }
 
+        if ($object->getWeekdays()) {
+            foreach ($object->getWeekdays() as $weekday) {
+                $weekday->setDish($object);
+                $em->persist($weekday);
+            }
+            $em->flush();
+        }
+
         parent::postPersist($object);
     }
 
@@ -262,6 +273,11 @@ class DishAdmin extends FoodAdmin
         foreach ($object->getDates() as $date) {
             $date->setDish($object);
             $em->persist($date);
+        }
+
+        foreach ($object->getWeekdays() as $weekday) {
+            $weekday->setDish($object);
+            $em->persist($weekday);
         }
 
         if ($object->getDeletedAt() != null) {
