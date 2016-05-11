@@ -146,6 +146,7 @@ class OrderService extends ContainerAware
         }
 
         $basket = $em->getRepository('FoodApiBundle:ShoppingBasketRelation')->find($request->get('basket_id'));
+        $place = $basket->getPlaceId();
 
         if (!$basket) {
             throw new ApiException(
@@ -203,12 +204,22 @@ class OrderService extends ContainerAware
                         'description' => $this->container->get('translator')->trans('general.coupon.only_pickup')
                     )
                 );
+            } elseif ($coupon->getNoSelfDelivery()) {
+                if ($place->getSelfDelivery()) {
+                    throw new ApiException(
+                        'Coupon not for self delivery',
+                        404,
+                        array(
+                            'error' => 'Coupon not for self delivery',
+                            'description' => $this->container->get('translator')->trans('general.coupon.wrong_place')
+                        )
+                    );
+                }
             }
         }
 
         $cartService = $this->getCartService();
         $cartService->setNewSessionId($basket->getSession());
-        $place = $basket->getPlaceId();
         $list = $cartService->getCartDishes($basket->getPlaceId());
         if ($serviceVar['type'] != "pickup") {
             $total_cart = $cartService->getCartTotalApi($list/*, $place*/);
