@@ -199,8 +199,16 @@
                 <target>Aktyvus</target>
             </trans-unit>
             <trans-unit id="admin.dish.group">
-                <source>admin.users.group</source>
+                <source>admin.dish.group</source>
                 <target>Grupė</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.time_from">
+                <source>admin.dish.time_from</source>
+                <target>Patiekalo laikas nuo</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.time_to">
+                <source>admin.dish.time_to</source>
+                <target>Patiekalo laikas iki</target>
             </trans-unit>
             <trans-unit id="admin.dish.active_list">
                 <source>admin.dish.active_list</source>
