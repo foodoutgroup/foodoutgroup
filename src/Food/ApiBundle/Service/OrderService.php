@@ -204,17 +204,15 @@ class OrderService extends ContainerAware
                         'description' => $this->container->get('translator')->trans('general.coupon.only_pickup')
                     )
                 );
-            } elseif ($coupon->getNoSelfDelivery()) {
-                if ($place->getSelfDelivery()) {
-                    throw new ApiException(
-                        'Coupon not for self delivery',
-                        404,
-                        array(
-                            'error' => 'Coupon not for self delivery',
-                            'description' => $this->container->get('translator')->trans('general.coupon.wrong_place')
-                        )
-                    );
-                }
+            } elseif ($coupon->getNoSelfDelivery() && $place->getSelfDelivery()) {
+                throw new ApiException(
+                    'Coupon not for self delivery',
+                    404,
+                    array(
+                        'error' => 'Coupon not for self delivery',
+                        'description' => $this->container->get('translator')->trans('general.coupon.wrong_place')
+                    )
+                );
             }
         }
 
