@@ -11,6 +11,8 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Validator\ErrorElement;
 use Food\DishesBundle\Entity\Place;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class DishAdmin extends FoodAdmin
 {
@@ -42,6 +44,51 @@ class DishAdmin extends FoodAdmin
     {
         // Override edit template by our magic one with ajax
         $this->setTemplate('edit', 'FoodDishesBundle:Dish:admin_dish_edit.html.twig');
+        $subject = $this->getSubject();
+
+        $formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT,
+            function (FormEvent $event) use ($formMapper, $subject) {
+                $form = $event->getForm();
+
+                if ($form->has('categories')) {
+                    $form->remove('categories');
+                }
+                if ($form->has('options')) {
+                    $form->remove('options');
+                }
+                $place = $form->get('place')->getData();
+
+                /**
+                 * @var EntityManager $em
+                 */
+                $em = $this->modelManager->getEntityManager('Food\DishesBundle\Entity\FoodCategory');
+
+                /**
+                 * @var QueryBuilder
+                 */
+                $categoryQuery = $em->createQueryBuilder('c')
+                    ->select('c')
+                    ->from('Food\DishesBundle\Entity\FoodCategory', 'c')
+                ;
+
+                /**
+                 * @var QueryBuilder
+                 */
+                $optionsQuery = $em->createQueryBuilder('o')
+                    ->select('o')
+                    ->from('Food\DishesBundle\Entity\DishOption', 'o')
+                ;
+
+                $categoryQuery->where('c.active = 1')
+                    ->andWhere('c.place = :place')
+                    ->setParameter('place', $place);
+                $optionsQuery->where('o.hidden = 0')
+                    ->andWhere('o.place = :place')
+                    ->setParameter('place', $place);
+
+                $form->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
+                    ->add('options', null, array('query_builder' => $optionsQuery, 'expanded' => true, 'multiple' => true, 'required' => false));
+        });
 
         $formMapper->add(
             'translations',
