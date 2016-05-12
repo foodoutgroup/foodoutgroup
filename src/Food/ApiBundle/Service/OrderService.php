@@ -172,7 +172,7 @@ class OrderService extends ContainerAware
         $discountVar = $request->get('discount');
         if (!empty($discountVar) && !empty($discountVar['code'])) {
             $coupon = $os->getCouponByCode($discountVar['code']);
-            if (empty($coupon)) {
+            if (empty($coupon) || !$coupon instanceof Coupon) {
                 throw new ApiException(
                     'Coupon Not found',
                     404,
@@ -223,7 +223,7 @@ class OrderService extends ContainerAware
                     404,
                     array(
                         'error' => 'Coupon Wrong Place',
-                        'description' => $this->get('translator')->trans('general.coupon.wrong_place')
+                        'description' => $this->container->get('translator')->trans('general.coupon.wrong_place')
                     )
                 );
             }
@@ -236,7 +236,7 @@ class OrderService extends ContainerAware
                         404,
                         array(
                             'error' => 'Coupon Not Valid Yet',
-                            'description' => $this->get('translator')->trans('api.orders.coupon_too_early')
+                            'description' => $this->container->get('translator')->trans('api.orders.coupon_too_early')
                         )
                     );
                 }
@@ -246,7 +246,7 @@ class OrderService extends ContainerAware
                         404,
                         array(
                             'error' => 'Coupon Expired',
-                            'description' => $this->get('translator')->trans('api.orders.coupon_expired')
+                            'description' => $this->container->get('translator')->trans('api.orders.coupon_expired')
                         )
                     );
                 }
@@ -266,7 +266,7 @@ class OrderService extends ContainerAware
                     404,
                     array(
                         'error' => 'Not for business',
-                        'description' => $this->get('translator')->trans('general.coupon.not_for_business')
+                        'description' => $this->container->get('translator')->trans('general.coupon.not_for_business')
                     )
                 );
             }
