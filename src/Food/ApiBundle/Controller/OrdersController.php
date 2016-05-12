@@ -310,10 +310,10 @@ class OrdersController extends Controller
                         || $coupon->getOnlyNav() && !$place->getNavision()
                         || $coupon->getNoSelfDelivery() && $place->getSelfDelivery()) {
                         throw new ApiException(
-                            'Coupon Not found',
+                            'Coupon Wrong Place',
                             404,
                             array(
-                                'error' => 'Coupon Not found',
+                                'error' => 'Coupon Wrong Place',
                                 'description' => $this->get('translator')->trans('general.coupon.wrong_place')
                             )
                         );
