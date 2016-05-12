@@ -80,12 +80,6 @@ class Coupon
     private $code;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place")
-     * @ORM\JoinColumn(name="place", referencedColumnName="id", nullable=true)
-     */
-    private $place;
-
-    /**
      * @ORM\ManyToMany(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="places")
      */
     private $places;
@@ -203,12 +197,16 @@ class Coupon
     public function __toString()
     {
         if ($this->getId()) {
-            if ($this->getPlace() && $this->getPlace() instanceof Place) {
-                $place = $this->getPlace()->getName();
+            $places = $this->getPlaces();
+            $placeNames = array();
+            if (count($places)) {
+                foreach ($places as $place) {
+                    $placeNames[] = $place->getName();
+                }
             } else {
-                $place = 'global';
+                $placeNames[] = 'global';
             }
-            return $this->getId().'-'.$this->getName().'-'.$place;
+            return $this->getId().'-'.$this->getName().'-'.implode('-', $placeNames);
         }
 
         return '';
@@ -220,15 +218,18 @@ class Coupon
     public function __toArray()
     {
         if ($this->getId()) {
-            $placeId = null;
-            if ($this->getPlace()) {
-                $placeId = $this->getPlace()->getId();
+            $placeIds = array();
+            $places = $this->getPlaces();
+            if (count($places)) {
+                foreach ($places as $place) {
+                    $placeIds[] = $place->getId();
+                }
             }
 
             return array(
                 'id' => $this->getId(),
                 'code' => $this->getCode(),
-                'place_id' => $placeId,
+                'place_ids' => $placeIds,
                 'discount' => $this->getDiscount(),
                 'discount_sum' => $this->getDiscountSum(),
                 'active' => $this->getActive(),
@@ -362,29 +363,6 @@ class Coupon
     public function getDeletedAt()
     {
         return $this->deletedAt;
-    }
-
-    /**
-     * Set place
-     *
-     * @param \Food\DishesBundle\Entity\Place $place
-     * @return Coupon
-     */
-    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
-    {
-        $this->place = $place;
-    
-        return $this;
-    }
-
-    /**
-     * Get place
-     *
-     * @return \Food\DishesBundle\Entity\Place 
-     */
-    public function getPlace()
-    {
-        return $this->place;
     }
 
     /**
