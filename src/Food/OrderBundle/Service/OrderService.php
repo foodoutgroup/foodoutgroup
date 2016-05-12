@@ -2971,7 +2971,7 @@ class OrderService extends ContainerAware
             $coupon = $this->getCouponByCode($couponCode);
             if (empty($coupon) || !$coupon instanceof Coupon) {
                 $formErrors[] = 'general.coupon.not_active';
-            } elseif ($this->validateCouponForPlace($coupon, $place)
+            } elseif (!$this->validateCouponForPlace($coupon, $place)
                 || $coupon->getOnlyNav() && !$place->getNavision()
                 || $coupon->getNoSelfDelivery() && $place->getSelfDelivery()) {
                 $formErrors[] = 'general.coupon.wrong_place_simple';
