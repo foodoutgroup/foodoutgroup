@@ -3655,7 +3655,7 @@ class OrderService extends ContainerAware
      */
     public function createDiscountCode(Order $order)
     {
-        $this->_codeGenerator($order);
+        $this->codeGenerator($order);
 
         $this->_freeDeliveryDiscount($order);
     }
@@ -3801,70 +3801,76 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @private
      * @param Order $order
+     * @return boolean
      */
-    private function _codeGenerator(Order $order)
+    public function codeGenerator(Order $order)
     {
-        $generator = $this->container->get('doctrine')->getRepository('FoodOrderBundle:CouponGenerator')->findOneBy(array('active'=>1));
-        if ($generator && ($order->getTotal() - $order->getDeliveryPrice() >= $generator->getCartAmount())) {
-            $nowTime = new \DateTime('NOW');
-            $proceed = true;
-            if ($generator->getGenerateFrom() <= $nowTime && $generator->getGenerateTo() >= $nowTime) {
-                $places = $generator->getPlaces();
-                if (!empty($places) && sizeof($places)) {
-                    $proceed = false;
-                    foreach ($places as $place) {
-                        if ($place->getId() == $order->getPlace()->getId()) {
-                            $proceed = true;
+        $proceed = false;
+        $generators = $this->container->get('doctrine')->getRepository('FoodOrderBundle:CouponGenerator')->findBy(array('active'=>1));
+        foreach ($generators as $generator) {
+            if ($generator && ($order->getTotal() - $order->getDeliveryPrice() >= $generator->getCartAmount())) {
+                $nowTime = new \DateTime('NOW');
+                if ($generator->getGenerateFrom() <= $nowTime && $generator->getGenerateTo() >= $nowTime) {
+                    $proceed = true;
+                    $places = $generator->getPlaces();
+                    if (!empty($places) && sizeof($places)) {
+                        $proceed = false;
+                        foreach ($places as $place) {
+                            if ($place->getId() == $order->getPlace()->getId()) {
+                                $proceed = true;
+                            }
                         }
                     }
-                }
-                if ($generator->getNoSelfDelivery()) {
-                    if ($order->getPlace()->getSelfDelivery()) {
-                        $proceed = false;
+                    if ($generator->getNoSelfDelivery()) {
+                        if ($order->getPlace()->getSelfDelivery()) {
+                            $proceed = false;
+                        }
                     }
-                }
-                if ($proceed) {
-                    $theCode = $generator->getCode();
-                    if ($generator->getRandomize()) {
-                        $randomStuff = array("niam", "niamniam", "skanu", "foodout");
-                        $theCode = strtoupper($randomStuff[array_rand($randomStuff)]).$order->getId();
+                    if ($proceed) {
+                        $theCode = $generator->getCode();
+                        if ($generator->getRandomize()) {
+                            $randomStuff = array("niam", "niamniam", "skanu", "foodout");
+                            $theCode = strtoupper($randomStuff[array_rand($randomStuff)]) . $order->getId();
+                        }
+                        $newCode = new Coupon;
+                        $newCode->setActive(true)
+                            ->setCode($theCode)
+                            ->setName($generator->getName() . " - #" . $order->getId())
+                            ->setDiscount($generator->getDiscount())
+                            ->setDiscountSum($generator->getDiscountSum())
+                            ->setOnlyNav($generator->getOnlyNav())
+                            ->setType($generator->getType())
+                            ->setMethod($generator->getMethod())
+                            ->setEnableValidateDate(true)
+                            ->setFreeDelivery($generator->getFreeDelivery())
+                            ->setSingleUse($generator->getSingleUse())
+                            ->setValidFrom($generator->getValidFrom())
+                            ->setValidTo($generator->getValidTo())
+                            ->setCreatedAt(new \DateTime('NOW'));
+
+                        $this->container->get('food.mailer')
+                            ->setVariable('code', $theCode)
+                            ->setRecipient($order->getOrderExtra()->getEmail())
+                            ->setId($generator->getTemplateCode())
+                            ->send();
+
+                        $this->logMailSent(
+                            $order,
+                            'create_discount_code',
+                            $generator->getTemplateCode(),
+                            array('code' => $theCode)
+                        );
+
+                        $this->container->get('doctrine')->getManager()->persist($newCode);
+                        $this->container->get('doctrine')->getManager()->flush();
+                        break;
                     }
-                    $newCode = new Coupon;
-                    $newCode->setActive(true)
-                        ->setCode( $theCode )
-                        ->setName( $generator->getName()." - #".$order->getId() )
-                        ->setDiscount( $generator->getDiscount() )
-                        ->setDiscountSum( $generator->getDiscountSum() )
-                        ->setOnlyNav( $generator->getOnlyNav() )
-                        ->setType($generator->getType())
-                        ->setMethod($generator->getMethod())
-                        ->setEnableValidateDate( true )
-                        ->setFreeDelivery( $generator->getFreeDelivery() )
-                        ->setSingleUse( $generator->getSingleUse() )
-                        ->setValidFrom( $generator->getValidFrom() )
-                        ->setValidTo( $generator->getValidTo() )
-                        ->setCreatedAt(new \DateTime('NOW'));
-
-                    $this->container->get('food.mailer')
-                        ->setVariable('code', $theCode )
-                        ->setRecipient( $order->getOrderExtra()->getEmail() )
-                        ->setId( $generator->getTemplateCode() )
-                        ->send();
-
-                    $this->logMailSent(
-                        $order,
-                        'create_discount_code',
-                        $generator->getTemplateCode(),
-                        array('code' => $theCode)
-                    );
-
-                    $this->container->get('doctrine')->getManager()->persist($newCode);
-                    $this->container->get('doctrine')->getManager()->flush();
                 }
             }
         }
+
+        return $proceed;
     }
 
     /**

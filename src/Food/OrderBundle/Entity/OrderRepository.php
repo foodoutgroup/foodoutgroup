@@ -1244,4 +1244,20 @@ class OrderRepository extends EntityRepository
 
         return $response;
     }
+
+    /**
+     * @param $from
+     * @param $to
+     * @return array
+     */
+    public function getOrdersInRange($from, $to)
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT o
+                FROM FoodOrderBundle:Order o
+                WHERE o.id  BETWEEN :from AND :to'
+        )->setParameters(array('from' => $from, 'to' => $to));
+
+        return $query->getResult();
+    }
 }
