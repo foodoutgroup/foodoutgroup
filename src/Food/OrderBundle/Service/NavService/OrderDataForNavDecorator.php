@@ -126,6 +126,8 @@ trait OrderDataForNavDecorator
         $data->totalAmount = (double) $orderAccData->getTotalAmount();
         $data->totalAmountEUR = (double) $orderAccData->getTotalAmountEur();
         $data->sFNumber = $order->getSfSeries()."".$order->getSfNumber();
+        $data->productionPointAddress = $orderAccData->getRestaurantAddress();
+        $data->productionPointCode = $order->getPlacePoint()->getCompanyCode();
 
         return $data;
     }
@@ -338,7 +340,9 @@ trait OrderDataForNavDecorator
                 'Discount Percent',
                 'Total Amount',
                 'Total Amount EUR',
-                'SF number'
+                'SF number',
+                'Production Point Address',
+                'Production Point Code'
         ];
     }
 
@@ -381,7 +385,10 @@ trait OrderDataForNavDecorator
                    $data->discountPercent,
                    $data->totalAmount,
                    $data->totalAmountEUR,
-                   $data->sFNumber
+                   $data->sFNumber,
+                   $data->productionPointAddress,
+                   $data->productionPointCode
+
         ];
         return $this->escapeSingleQuotes($result);
     }
