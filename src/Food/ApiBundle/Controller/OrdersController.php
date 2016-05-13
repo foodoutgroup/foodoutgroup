@@ -261,83 +261,112 @@ class OrdersController extends Controller
     {
         $this->_theJudge($request);
         try {
-            $coupon = null;
+            $place = null;
             $now = date('Y-m-d H:i:s');
             $requestJson = new JsonRequest($request);
             $code = $requestJson->get('code');
+            $orderService = $this->get('food.order');
+            if ($basketId = $requestJson->get('basket_id')) {
+                $basket = $this->getDoctrine()->getRepository('FoodApiBundle:ShoppingBasketRelation')->find($request->get('basket_id'));
+                $place = $basket->getPlaceId();
+            }
+            // uncomment after new APP release
+//            else {
+//                throw new ApiException(
+//                    'Update APP',
+//                    404,
+//                    array(
+//                        'error' => 'Update APP',
+//                        'description' => $this->get('translator')->trans('api.orders.update_app')
+//                    )
+//                );
+//            }
             $this->logActionParams('getCoupon action', $code);
 
             if (!empty($code)) {
-                $coupon = $this->get('food.order')->getCouponByCode($code);
-                if (!empty($coupon)) {
-                    // Coupon is still valid Begin
-                    if ($coupon->getEnableValidateDate()) {
-                        if ($coupon->getValidFrom()->format('Y-m-d H:i:s') > $now) {
-                            throw new ApiException(
-                                'Coupon Not Valid Yet',
-                                404,
-                                array(
-                                    'error' => 'Coupon Not Valid Yet',
-                                    'description' => $this->get('translator')->trans('api.orders.coupon_too_early')
-                                )
-                            );
-                        }
-                        if ($coupon->getValidTo()->format('Y-m-d H:i:s') < $now) {
-                            throw new ApiException(
-                                'Coupon Expired',
-                                404,
-                                array(
-                                    'error' => 'Coupon Expired',
-                                    'description' => $this->get('translator')->trans('api.orders.coupon_expired')
-                                )
-                            );
-                        }
-                    }
-                    if (!$coupon->isAllowedForApi()) {
-                        throw new ApiException(
-                            'Coupon for web',
-                            404,
-                            array(
-                                'error' => 'Coupon for web',
-                                'description' => $this->get('translator')->trans('general.coupon.only_web')
-                            )
-                        );
-                    }
-                    // Coupon is still valid End
-
-                    $arr_places = array();
-                    $places = $coupon->getPlaces();
-                    if (!empty($places) && count($places) > 0) {
-                        foreach ($places as $place) {
-                            $arr_places[$place->getId()] = $place->getName();
-                        }
-                    }
-
-                    $response = array(
-                        'id' => $coupon->getId(),
-                        'name' => $coupon->getName(),
-                        'code' => $coupon->getCode(),
-                        'discount' => $coupon->getDiscount(),
-                        'discount_sum' => $coupon->getDiscountSum() * 100,
-                        'free_delivery' => $coupon->getFreeDelivery(),
-                        'single_use' => $coupon->getSingleUse(),
-                        'no_self_delivery' => $coupon->getNoSelfDelivery(), // Only for non self delivery restaurants
-                        'enable_validate_date' => $coupon->getEnableValidateDate(),
-                        'valid_from' => ($coupon->getValidFrom() != null ? $coupon->getValidFrom()->format('Y-m-d H:i:s') : null),
-                        'valid_to' => ($coupon->getValidTo() != null ? $coupon->getValidTo()->format('Y-m-d H:i:s') : null),
-                        'places' => $arr_places,
-                    );
-                    return new JsonResponse($response);
-                } else {
+                $coupon = $orderService->getCouponByCode($code);
+                if (empty($coupon)) {
                     throw new ApiException(
                         'Coupon Not found',
                         404,
                         array(
                             'error' => 'Coupon Not found',
-                            'description' => $this->get('translator')->trans('api.orders.coupon_does_not_exists')
+                            'description' => $this->container->get('translator')->trans('api.orders.coupon_does_not_exists')
                         )
                     );
                 }
+                if (!$coupon->isAllowedForApi()) {
+                    throw new ApiException(
+                        'Coupon for web',
+                        404,
+                        array(
+                            'error' => 'Coupon for web',
+                            'description' => $this->container->get('translator')->trans('general.coupon.only_web')
+                        )
+                    );
+                }
+                if ($place) {
+                    if (!$orderService->validateCouponForPlace($coupon, $place)
+                        || $coupon->getOnlyNav() && !$place->getNavision()
+                        || $coupon->getNoSelfDelivery() && $place->getSelfDelivery()) {
+                        throw new ApiException(
+                            'Coupon Wrong Place',
+                            404,
+                            array(
+                                'error' => 'Coupon Wrong Place',
+                                'description' => $this->get('translator')->trans('general.coupon.wrong_place')
+                            )
+                        );
+                    }
+                }
+                // Coupon is still valid Begin
+                if ($coupon->getEnableValidateDate()) {
+                    if ($coupon->getValidFrom()->format('Y-m-d H:i:s') > $now) {
+                        throw new ApiException(
+                            'Coupon Not Valid Yet',
+                            404,
+                            array(
+                                'error' => 'Coupon Not Valid Yet',
+                                'description' => $this->get('translator')->trans('api.orders.coupon_too_early')
+                            )
+                        );
+                    }
+                    if ($coupon->getValidTo()->format('Y-m-d H:i:s') < $now) {
+                        throw new ApiException(
+                            'Coupon Expired',
+                            404,
+                            array(
+                                'error' => 'Coupon Expired',
+                                'description' => $this->get('translator')->trans('api.orders.coupon_expired')
+                            )
+                        );
+                    }
+                }
+                // Coupon is still valid End
+
+                $arr_places = array();
+                $places = $coupon->getPlaces();
+                if (!empty($places) && count($places) > 0) {
+                    foreach ($places as $place) {
+                        $arr_places[$place->getId()] = $place->getName();
+                    }
+                }
+
+                $response = array(
+                    'id' => $coupon->getId(),
+                    'name' => $coupon->getName(),
+                    'code' => $coupon->getCode(),
+                    'discount' => $coupon->getDiscount(),
+                    'discount_sum' => $coupon->getDiscountSum() * 100,
+                    'free_delivery' => $coupon->getFreeDelivery(),
+                    'single_use' => $coupon->getSingleUse(),
+                    'no_self_delivery' => $coupon->getNoSelfDelivery(), // Only for non self delivery restaurants
+                    'enable_validate_date' => $coupon->getEnableValidateDate(),
+                    'valid_from' => ($coupon->getValidFrom() != null ? $coupon->getValidFrom()->format('Y-m-d H:i:s') : null),
+                    'valid_to' => ($coupon->getValidTo() != null ? $coupon->getValidTo()->format('Y-m-d H:i:s') : null),
+                    'places' => $arr_places,
+                );
+                return new JsonResponse($response);
             } else {
                 throw new ApiException(
                     'Coupon Code Is Empty',

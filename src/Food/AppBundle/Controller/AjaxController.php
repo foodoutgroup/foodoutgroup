@@ -2,6 +2,7 @@
 
 namespace Food\AppBundle\Controller;
 
+use Food\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -211,11 +212,10 @@ class AjaxController extends Controller
             'data' => array()
         );
 
-        $coupon = $this->get('food.order')->getCouponByCode($couponCode);
-        $places = array();
-        if ($coupon) {
-            $places = $coupon->getPlaces();
-        }
+        $orderService = $this->get('food.order');
+
+        $coupon = $orderService->getCouponByCode($couponCode);
+        $place = $this->container->get('food.places')->getPlace($placeId);
 
         if (!$coupon) {
             $cont['status'] = false;
@@ -223,47 +223,30 @@ class AjaxController extends Controller
         } elseif (!$coupon->isAllowedForWeb()) {
             $cont['status'] = false;
             $cont['data']['error'] = $trans->trans('general.coupon.only_api');
-        } else if (!empty($places) && count($places) > 0) {
-            $found = false;
-            foreach ($places as $cPlace) {
-                if ($cPlace->getId() == $placeId) {
-                    $found = true;
-                }
-            }
-
-            if (!$found) {
-                $cont['status'] = false;
-                $cont['data']['error'] = $trans->trans(
-                    'general.coupon.wrong_place'
-                );
-            }
+        } else if (!$orderService->validateCouponForPlace($coupon, $place)) {
+            $cont['status'] = false;
+            $cont['data']['error'] = $trans->trans(
+                'general.coupon.wrong_place'
+            );
         }
 
         // If everything is ok - do additional tests
         if ($cont['status'] == true) {
             // Only for navision restaurants
-            if ($coupon->getOnlyNav()) {
-                $place = $this->container->get('food.places')->getPlace($placeId);
-
-                if (!$place->getNavision()) {
-                    $cont['status'] = false;
-                    $cont['data']['error'] = $trans->trans('general.coupon.only_cili');
-                }
+            if ($coupon->getOnlyNav() && !$place->getNavision()) {
+                $cont['status'] = false;
+                $cont['data']['error'] = $trans->trans('general.coupon.only_cili');
             }
 
             // Only for non self delivery restaurants
-            if ($coupon->getNoSelfDelivery()) {
-                $place = $this->container->get('food.places')->getPlace($placeId);
-
-                if ($place->getSelfDelivery()) {
-                    $cont['status'] = false;
-                    $cont['data']['error'] = $trans->trans('general.coupon.wrong_place');
-                }
+            if ($coupon->getNoSelfDelivery() && $place->getSelfDelivery()) {
+                $cont['status'] = false;
+                $cont['data']['error'] = $trans->trans('general.coupon.wrong_place');
             }
 
             // Coupon is still valid
-            $now = date('Y-m-d H:i:s');
             if ($coupon->getEnableValidateDate()) {
+                $now = date('Y-m-d H:i:s');
                 if ($coupon->getValidFrom()->format('Y-m-d H:i:s') > $now) {
                     $cont['status'] = false;
                     $cont['data']['error'] = $trans->trans('general.coupon.coupon_too_early');
@@ -273,6 +256,12 @@ class AjaxController extends Controller
                     $cont['status'] = false;
                     $cont['data']['error'] = $trans->trans('general.coupon.coupon_expired');
                 }
+            }
+            $user = $this->container->get('security.context')->getToken()->getUser();
+
+            if ($user instanceof User && $user->getIsBussinesClient()) {
+                $cont['status'] = false;
+                $cont['data']['error'] = $trans->trans('general.coupon.not_for_business');
             }
         }
 

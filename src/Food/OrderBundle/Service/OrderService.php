@@ -2895,7 +2895,7 @@ class OrderService extends ContainerAware
      * @param null|int $placePointId
      * @param Coupon|null $coupon
      */
-    public function validateDaGiantForm(Place $place, Request $request, &$formHasErrors, &$formErrors, $takeAway, $placePointId = null, $coupon = null)
+    public function validateDaGiantForm(Place $place, Request $request, &$formHasErrors, &$formErrors, $takeAway, $placePointId = null)
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
         $noMinimumCart = ($user instanceof User ? $user->getNoMinimumCart() : false);
@@ -2967,10 +2967,13 @@ class OrderService extends ContainerAware
             $formErrors[] = 'order.form.errors.payment_type';
         }
 
-        if (!empty($coupon) && $coupon instanceof Coupon) {
-            if ($coupon->getActive() == false) {
+        if ($couponCode = $request->get('coupon_code', false)) {
+            $coupon = $this->getCouponByCode($couponCode);
+            if (empty($coupon) || !$coupon instanceof Coupon) {
                 $formErrors[] = 'general.coupon.not_active';
-            } else if ($coupon->getPlace() && $coupon->getPlace()->getId() != $place->getId()) {
+            } elseif (!$this->validateCouponForPlace($coupon, $place)
+                || $coupon->getOnlyNav() && !$place->getNavision()
+                || $coupon->getNoSelfDelivery() && $place->getSelfDelivery()) {
                 $formErrors[] = 'general.coupon.wrong_place_simple';
             } elseif (!$coupon->isAllowedForWeb()) {
                 $formErrors[] = 'general.coupon.only_api';
@@ -2978,7 +2981,7 @@ class OrderService extends ContainerAware
                 $formErrors[] = 'general.coupon.only_pickup';
             } elseif ($takeAway && !$coupon->isAllowedForPickup()) {
                 $formErrors[] = 'general.coupon.only_delivery';
-            } elseif (!empty($user) && is_object($user) && $user->getIsBussinesClient()) {
+            } elseif (!empty($user) && $user instanceof User && $user->getIsBussinesClient()) {
                 $formErrors[] = 'general.coupon.not_for_business';
             } else {
                 $discountSize = $coupon->getDiscount();
@@ -2986,6 +2989,17 @@ class OrderService extends ContainerAware
                     $total_cart -= $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($place), $discountSize);
                 } elseif (!$coupon->getFullOrderCovers()) {
                     $total_cart -= $coupon->getDiscountSum();
+                }
+            }
+
+            if ($coupon->getEnableValidateDate()) {
+                $now = date('Y-m-d H:i:s');
+                if ($coupon->getValidFrom()->format('Y-m-d H:i:s') > $now) {
+                    $formErrors[] = 'general.coupon.coupon_too_early';
+                }
+
+                if ($coupon->getValidTo()->format('Y-m-d H:i:s') < $now) {
+                    $formErrors[] = 'general.coupon.coupon_expired';
                 }
             }
         }
@@ -3907,5 +3921,26 @@ class OrderService extends ContainerAware
 
             }
         }
+    }
+
+    /**
+     * @param Coupon $coupon
+     * @param Place $place
+     * @return bool
+     */
+    public function validateCouponForPlace(Coupon $coupon, Place $place)
+    {
+        $couponPlaces = $coupon->getPlaces();
+        if (count($couponPlaces)) {
+            foreach ($couponPlaces as $couponPlace) {
+                if ($couponPlace->getId() == $place->getId()) {
+                    return true;
+                }
+            }
+        } else {
+            return true;
+        }
+
+        return false;
     }
 }
