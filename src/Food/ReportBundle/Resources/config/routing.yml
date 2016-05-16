@@ -1,0 +1,3 @@
+cancan_report:
+    path:  /cancan
+    defaults: { _controller: FoodReportBundle:Custom:cancan }
