@@ -79,12 +79,15 @@ class DishAdmin extends FoodAdmin
                     ->from('Food\DishesBundle\Entity\DishOption', 'o')
                 ;
 
-                $categoryQuery->where('c.active = 1')
-                    ->andWhere('c.place = :place')
-                    ->setParameter('place', $place);
-                $optionsQuery->where('o.hidden = 0')
-                    ->andWhere('o.place = :place')
-                    ->setParameter('place', $place);
+                $categoryQuery->where('c.active = 1');
+                $optionsQuery->where('o.hidden = 0');
+
+                if (!empty($place) && $place instanceof Place) {
+                    $categoryQuery->andWhere('c.place = :place')
+                        ->setParameter('place', $place);
+                    $optionsQuery->andWhere('o.place = :place')
+                        ->setParameter('place', $place);
+                }
 
                 $form->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
                     ->add('options', null, array('query_builder' => $optionsQuery, 'expanded' => true, 'multiple' => true, 'required' => false));
