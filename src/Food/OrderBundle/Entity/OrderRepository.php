@@ -1260,4 +1260,28 @@ class OrderRepository extends EntityRepository
 
         return $query->getResult();
     }
+    /**
+     * @param $from
+     * @param $to
+     * @param $placeIds
+     * @return array
+     */
+    public function getCompletedOrdersInDateRangeByPlaceId($from, $to, array $placeIds)
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT o
+                FROM FoodOrderBundle:Order o
+                WHERE o.order_date  BETWEEN :from AND :to
+                    AND o.place IN (:places)
+                    AND o.order_status = :status
+                ORDER BY o.order_date DESC'
+        )->setParameters(array(
+            'from' => $from,
+            'to' => $to,
+            'places' => $placeIds,
+            'status' => OrderService::$status_completed
+        ));
+
+        return $query->getResult();
+    }
 }

@@ -17,3 +17,5 @@ Disallow: /ru/cart/
 Disallow: /lt/ajax/
 Disallow: /en/ajax/
 Disallow: /ru/ajax/
+
+Disallow: /custom/
