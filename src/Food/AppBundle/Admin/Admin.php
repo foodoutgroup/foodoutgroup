@@ -245,4 +245,21 @@ class Admin extends SonataAdmin
 
         return $query;
     }
+
+    // TODO - remove this after Sonata update.. This is a fix for error: (An exception has been thrown during the rendering of a template ("Parameter "id" for route)
+    public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = false)
+    {
+//        $parameters['id'] = $this->getUrlsafeIdentifier($object);
+        $parameters['id'] = $object->getId();
+        return $this->generateUrl($name, $parameters, $absolute);
+    }
+
+    /**
+     * TODO remove after hackers are gone
+     * @return bool
+     */
+    public function getExportFormats()
+    {
+        return false;
+    }
 }
