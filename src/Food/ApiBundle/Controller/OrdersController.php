@@ -267,7 +267,17 @@ class OrdersController extends Controller
             $code = $requestJson->get('code');
             $orderService = $this->get('food.order');
             if ($basketId = $requestJson->get('basket_id')) {
-                $basket = $this->getDoctrine()->getRepository('FoodApiBundle:ShoppingBasketRelation')->find($request->get('basket_id'));
+                $basket = $this->getDoctrine()->getRepository('FoodApiBundle:ShoppingBasketRelation')->find($basketId);
+                if (empty($basket)) {
+                    throw new ApiException(
+                        'Basket Not found',
+                        404,
+                        array(
+                            'error' => 'Basket Not found',
+                            'description' => $this->container->get('translator')->trans('api.orders.basket_does_not_exists')
+                        )
+                    );
+                }
                 $place = $basket->getPlaceId();
             }
             // uncomment after new APP release
