@@ -312,7 +312,7 @@ class CartService {
      */
     public function addDish(Dish $dish, DishSize $dishSize, $quantity, $options = array(), $comment = "", $sessionId = null, $isFree = false)
     {
-        if ($dish->getActive()) {
+        if ($this->getContainer()->get('food.dishes')->isDishAvailable($dish)) {
             $maxQuery = $this->getEm()->createQuery('SELECT MAX(c.cart_id) as top FROM FoodCartBundle:Cart c WHERE c.session = :session AND c.place_id= :place');
             $maxQuery->setParameters(
                 array(

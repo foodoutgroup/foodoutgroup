@@ -194,6 +194,7 @@ class PlaceAdmin extends FoodAdmin
      */
     public function preUpdate($object)
     {
+        $object->setEditedAt(new \DateTime());
         $container = $this->getConfigurationPool()->getContainer();
         $securityContext = $container->get('security.context');
         $this->_fixPoints($object, $securityContext->getToken()->getUser());

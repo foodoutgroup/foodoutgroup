@@ -2,6 +2,7 @@
 namespace Food\DishesBundle\Service;
 
 use Food\UserBundle\Entity\User;
+use Food\DishesBundle\Entity\Dish;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\AppBundle\Traits;
 
@@ -152,5 +153,48 @@ class DishesService extends ContainerAware {
     {
         $hasAnyDiscountPrice = $this->em()->getRepository('FoodDishesBundle:Dish')->hasDiscountPrice($dishId);
         return $hasAnyDiscountPrice;
+    }
+
+    public function isDishAvailable(Dish $dish)
+    {
+        if (!$dish->getActive()) {
+            return false;
+        }
+        if ($dish->getTimeFrom() && $dish->getTimeFrom() > date('H:i')) {
+            return false;
+        }
+        if ($dish->getTimeTo() && $dish->getTimeTo() < date('H:i')) {
+            return false;
+        }
+        if ($dish->getCheckEvenOddWeek() && ((date('W') + 1) % 2) != $dish->getEvenWeek()) {
+            return false;
+        }
+        if ($dish->getUseDateInterval()) {
+            $return = false;
+            foreach ($dish->getDates() as $date) {
+                if ($date->getStart() <= new \DateTime() && $date->getEnd() >= new \DateTime()) {
+                    $return = true;
+                    break;
+                }
+            }
+            if (!$return) {
+                return false;
+            }
+        }
+        if ($dish->getShowByWeekDays()) {
+            $return = false;
+            foreach ($dish->getWeekdays() as $weekday) {
+                if ($weekday->getWeekday() == date('N')) {
+                    $return = true;
+                    break;
+                }
+            }
+
+            if (!$return) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

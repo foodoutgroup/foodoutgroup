@@ -238,6 +238,7 @@ class DishAdmin extends FoodAdmin
      */
     public function preUpdate($object)
     {
+        $object->setEditedAt(new \DateTime());
         $this->fixRelations($object);
         $this->saveFile($object);
     }

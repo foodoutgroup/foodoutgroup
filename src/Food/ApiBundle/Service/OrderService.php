@@ -390,6 +390,21 @@ class OrderService extends ContainerAware
 
         $os->getCartService()->setNewSessionId($cartService->getSessionId());
 
+        $dishesService = $this->container->get('food.dishes');
+        foreach ($cartService->getCartDishes($basket->getPlaceId()) as $item) {
+            $dish = $item->getDishId();
+            if (!$dishesService->isDishAvailable($dish)) {
+                throw new ApiException(
+                    'Dish not available',
+                    0,
+                    array(
+                        'error' => 'Dish not available',
+                        'description' => $this->container->get('translator')->trans('dishes.no_production')
+                    )
+                );
+            }
+        }
+
         $os->createOrderFromCart(
             $basket->getPlaceId()->getId(),
             $requestOrig->getLocale(),

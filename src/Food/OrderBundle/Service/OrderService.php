@@ -3089,6 +3089,13 @@ class OrderService extends ContainerAware
             }
         }
 
+        if (!$dishesService->isDishAvailable($dish)) {
+            $formErrors[] = array(
+                'message' => 'dishes.no_production',
+                'text' => $dish->getName()
+            );
+        }
+
         $pointRecord = null;
         if (empty($placePointId)) {
             $placePointMap = $this->container->get('session')->get('point_data');
@@ -3118,7 +3125,6 @@ class OrderService extends ContainerAware
                     }
                 }
             } else {
-                @mail("karolis.m@foodout.lt", "order.form.errors.customeraddr2 ".date("Y-m-d H:i:s"), 'ppid: '.$placePointId.print_r($placePointMap, true).print_r($place->getId(), true), "FROM: info@foodout.lt");
                 $formErrors[] = 'cart.checkout.place_point_not_in_radius';
             }
         } else {
