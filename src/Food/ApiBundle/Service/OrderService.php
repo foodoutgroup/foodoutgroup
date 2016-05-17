@@ -261,15 +261,36 @@ class OrderService extends ContainerAware
                         )
                     );
                 }
+            }
 
-                $discountSize = $coupon->getDiscount();
-                if (!empty($discountSize)) {
-                    $total_cart -= $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($place), $discountSize);
-                } elseif (!$coupon->getFullOrderCovers()) {
-                    $total_cart -= $coupon->getDiscountSum();
-                }
+            if ($coupon->getValidHourlyFrom() && $coupon->getValidHourlyFrom() > new \DateTime()) {
+                throw new ApiException(
+                    'Coupon Not Valid Yet',
+                    404,
+                    array(
+                        'error' => 'Coupon Not Valid Yet',
+                        'description' => $this->container->get('translator')->trans('api.orders.coupon_too_early')
+                    )
+                );
+            }
+            if ($coupon->getValidHourlyTo() && $coupon->getValidHourlyTo() < new \DateTime()) {
+                throw new ApiException(
+                    'Coupon Expired',
+                    404,
+                    array(
+                        'error' => 'Coupon Expired',
+                        'description' => $this->container->get('translator')->trans('api.orders.coupon_expired')
+                    )
+                );
             }
             // Coupon is still valid End
+
+            $discountSize = $coupon->getDiscount();
+            if (!empty($discountSize)) {
+                $total_cart -= $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($place), $discountSize);
+            } elseif (!$coupon->getFullOrderCovers()) {
+                $total_cart -= $coupon->getDiscountSum();
+            }
 
             if ($user->getIsBussinesClient()) {
                 throw new ApiException(

@@ -3011,6 +3011,13 @@ class OrderService extends ContainerAware
                     $formErrors[] = 'general.coupon.coupon_expired';
                 }
             }
+
+            if ($coupon->getValidHourlyFrom() && $coupon->getValidHourlyFrom() > new \DateTime()) {
+                $formErrors[] = 'general.coupon.coupon_too_early';
+            }
+            if ($coupon->getValidHourlyTo() && $coupon->getValidHourlyTo() < new \DateTime()) {
+                $formErrors[] = 'general.coupon.coupon_expired';
+            }
         }
 
 
@@ -3858,6 +3865,8 @@ class OrderService extends ContainerAware
                             ->setOnlinePaymentsOnly($generator->getOnlinePaymentsOnly())
                             ->setValidFrom($generator->getValidFrom())
                             ->setValidTo($generator->getValidTo())
+                            ->setValidHourlyFrom($generator->getValidHourlyFrom())
+                            ->setValidHourlyTo($generator->getValidHourlyTo())
                             ->setCreatedAt(new \DateTime('NOW'));
 
                         $this->container->get('food.mailer')

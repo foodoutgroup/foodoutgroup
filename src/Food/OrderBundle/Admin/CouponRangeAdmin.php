@@ -35,6 +35,8 @@ class CouponRangeAdmin extends FoodAdmin
             ->add('enableValidateDate', 'checkbox', array('required' => false))
             ->add('validFrom', 'datetime', array('label' => 'admin.coupon.valid_from', 'required' => false))
             ->add('validTo', 'datetime', array('label' => 'admin.coupon.valid_to', 'required' => false))
+            ->add('validHourlyFrom', 'time', array('required' => false))
+            ->add('validHourlyTo', 'time', array('required' => false))
             ->add('active', 'checkbox', array('label' => 'admin.coupon.active', 'required' => false))
         ;
         if ($this->getContainer()->getParameter('country') == "LT"
@@ -205,7 +207,6 @@ class CouponRangeAdmin extends FoodAdmin
                 $coupon = new Coupon();
                 $coupon->setCouponRange($obj);
                 $coupon->setActive($obj->getActive());
-                $coupon->setValidTo($obj->getValidTo());
                 $coupon->setDiscount($obj->getDiscount());
                 $coupon->setEditedAt($obj->getEditedAt());
                 $coupon->setEditedBy($obj->getEditedBy());
@@ -217,6 +218,9 @@ class CouponRangeAdmin extends FoodAdmin
                 $coupon->setSingleUsePerPerson($obj->getSingleUsePerPerson());
                 $coupon->setOnlinePaymentsOnly($obj->getOnlinePaymentsOnly());
                 $coupon->setValidFrom($obj->getValidFrom());
+                $coupon->setValidTo($obj->getValidTo());
+                $coupon->setValidHourlyFrom($obj->getValidHourlyFrom());
+                $coupon->setValidHourlyTo($obj->getValidHourlyTo());
                 $coupon->setDiscountSum($obj->getDiscountSum());
                 $coupon->setFreeDelivery($obj->getFreeDelivery());
                 $coupon->setNoSelfDelivery($obj->getNoSelfDelivery());

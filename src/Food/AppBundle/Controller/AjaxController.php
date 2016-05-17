@@ -257,6 +257,16 @@ class AjaxController extends Controller
                     $cont['data']['error'] = $trans->trans('general.coupon.coupon_expired');
                 }
             }
+
+            if ($coupon->getValidHourlyFrom() && $coupon->getValidHourlyFrom() > new \DateTime()) {
+                $cont['status'] = false;
+                $cont['data']['error'] = $trans->trans('general.coupon.coupon_too_early');
+            }
+            if ($coupon->getValidHourlyTo() && $coupon->getValidHourlyTo() < new \DateTime()) {
+                $cont['status'] = false;
+                $cont['data']['error'] = $trans->trans('general.coupon.coupon_expired');
+            }
+
             $user = $this->container->get('security.context')->getToken()->getUser();
 
             if ($user instanceof User && $user->getIsBussinesClient()) {

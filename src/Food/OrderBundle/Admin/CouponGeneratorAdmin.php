@@ -44,6 +44,8 @@ class CouponGeneratorAdmin extends FoodAdmin
             ->add('onlinePaymentsOnly', 'checkbox', array('label' => 'admin.coupon.online_payments_only', 'required' => false))
             ->add('validFrom', 'datetime', array('required' => false))
             ->add('validTo', 'datetime', array('required' => false))
+            ->add('validHourlyFrom', 'time', array('required' => false))
+            ->add('validHourlyTo', 'time', array('required' => false))
             ->add('active', 'checkbox', array('label' => 'admin.coupon.active', 'required' => false))
             ->add('templateCode')
             ->add('generateFrom', 'datetime', array('required' => false))

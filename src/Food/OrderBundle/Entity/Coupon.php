@@ -172,6 +172,20 @@ class Coupon
     /**
      * @var \DateTime
      *
+     * @ORM\Column(name="valid_hourly_from", type="time", nullable=true)
+     */
+    private $validHourlyFrom;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="valid_hourly_to", type="time", nullable=true)
+     */
+    private $validHourlyTo;
+
+    /**
+     * @var \DateTime
+     *
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
@@ -908,5 +922,84 @@ class Coupon
     public function getOnlinePaymentsOnly()
     {
         return $this->onlinePaymentsOnly;
+    }
+
+    /**
+     * Set validHourlyFrom
+     *
+     * @param \DateTime $validHourlyFrom
+     * @return Coupon
+     */
+    public function setValidHourlyFrom($validHourlyFrom)
+    {
+        $this->validHourlyFrom = $validHourlyFrom;
+    
+        return $this;
+    }
+
+    /**
+     * Get validHourlyFrom
+     *
+     * @return \DateTime 
+     */
+    public function getValidHourlyFrom()
+    {
+        return $this->validHourlyFrom;
+    }
+
+    /**
+     * Set validHourlyTo
+     *
+     * @param \DateTime $validHourlyTo
+     * @return Coupon
+     */
+    public function setValidHourlyTo($validHourlyTo)
+    {
+        $this->validHourlyTo = $validHourlyTo;
+    
+        return $this;
+    }
+
+    /**
+     * Get validHourlyTo
+     *
+     * @return \DateTime 
+     */
+    public function getValidHourlyTo()
+    {
+        return $this->validHourlyTo;
+    }
+
+    /**
+     * Add couponUsers
+     *
+     * @param \Food\OrderBundle\Entity\CouponUser $couponUsers
+     * @return Coupon
+     */
+    public function addCouponUser(\Food\OrderBundle\Entity\CouponUser $couponUsers)
+    {
+        $this->couponUsers[] = $couponUsers;
+    
+        return $this;
+    }
+
+    /**
+     * Remove couponUsers
+     *
+     * @param \Food\OrderBundle\Entity\CouponUser $couponUsers
+     */
+    public function removeCouponUser(\Food\OrderBundle\Entity\CouponUser $couponUsers)
+    {
+        $this->couponUsers->removeElement($couponUsers);
+    }
+
+    /**
+     * Get couponUsers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCouponUsers()
+    {
+        return $this->couponUsers;
     }
 }

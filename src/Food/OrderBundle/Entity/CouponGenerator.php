@@ -158,6 +158,20 @@ class CouponGenerator
     /**
      * @var \DateTime
      *
+     * @ORM\Column(name="valid_hourly_from", type="time", nullable=true)
+     */
+    private $validHourlyFrom;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="valid_hourly_to", type="time", nullable=true)
+     */
+    private $validHourlyTo;
+
+    /**
+     * @var \DateTime
+     *
      * @ORM\Column(name="generate_from", type="datetime", nullable=true)
      */
     private $generateFrom;
@@ -871,5 +885,51 @@ class CouponGenerator
     public function getOnlinePaymentsOnly()
     {
         return $this->onlinePaymentsOnly;
+    }
+
+    /**
+     * Set validHourlyFrom
+     *
+     * @param \DateTime $validHourlyFrom
+     * @return CouponGenerator
+     */
+    public function setValidHourlyFrom($validHourlyFrom)
+    {
+        $this->validHourlyFrom = $validHourlyFrom;
+    
+        return $this;
+    }
+
+    /**
+     * Get validHourlyFrom
+     *
+     * @return \DateTime 
+     */
+    public function getValidHourlyFrom()
+    {
+        return $this->validHourlyFrom;
+    }
+
+    /**
+     * Set validHourlyTo
+     *
+     * @param \DateTime $validHourlyTo
+     * @return CouponGenerator
+     */
+    public function setValidHourlyTo($validHourlyTo)
+    {
+        $this->validHourlyTo = $validHourlyTo;
+    
+        return $this;
+    }
+
+    /**
+     * Get validHourlyTo
+     *
+     * @return \DateTime 
+     */
+    public function getValidHourlyTo()
+    {
+        return $this->validHourlyTo;
     }
 }

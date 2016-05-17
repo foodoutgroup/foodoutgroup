@@ -365,6 +365,27 @@ class OrdersController extends Controller
                 }
                 // Coupon is still valid End
 
+                if ($coupon->getValidHourlyFrom() && $coupon->getValidHourlyFrom() > new \DateTime()) {
+                    throw new ApiException(
+                        'Coupon Not Valid Yet',
+                        404,
+                        array(
+                            'error' => 'Coupon Not Valid Yet',
+                            'description' => $this->get('translator')->trans('api.orders.coupon_too_early')
+                        )
+                    );
+                }
+                if ($coupon->getValidHourlyTo() && $coupon->getValidHourlyTo() < new \DateTime()) {
+                    throw new ApiException(
+                        'Coupon Expired',
+                        404,
+                        array(
+                            'error' => 'Coupon Expired',
+                            'description' => $this->get('translator')->trans('api.orders.coupon_expired')
+                        )
+                    );
+                }
+
                 $arr_places = array();
                 $places = $coupon->getPlaces();
                 if (!empty($places) && count($places) > 0) {
