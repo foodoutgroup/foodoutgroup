@@ -11,6 +11,7 @@ use Food\DishesBundle\Entity\Dish;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Coupon;
+use Food\OrderBundle\Entity\CouponUser;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDeliveryLog;
 use Food\OrderBundle\Entity\OrderDetails;
@@ -72,6 +73,10 @@ class OrderService extends ContainerAware
         'swedbank-credit-card-gateway' => 'food.swedbank_credit_card_gateway_biller',
         'seb-banklink' => 'food.seb_banklink_biller',
         'nordea-banklink' => 'food.nordea_banklink_biller'
+    );
+
+    private $onlinePayments = array(
+        'paysera', 'swedbank-gateway', 'swedbank-credit-card-gateway', 'seb-banklink', 'nordea-banklink'
     );
 
     public static $deliveryTrans = array(
@@ -2983,6 +2988,10 @@ class OrderService extends ContainerAware
                 $formErrors[] = 'general.coupon.only_delivery';
             } elseif (!empty($user) && $user instanceof User && $user->getIsBussinesClient()) {
                 $formErrors[] = 'general.coupon.not_for_business';
+            } elseif ($coupon->getSingleUsePerPerson() && !empty($user) && $user instanceof User && $this->isCouponUsed($coupon, $user)) {
+                $formErrors[] = 'general.coupon.not_active';
+            } elseif ($coupon->getOnlinePaymentsOnly() && !$this->isOnlinePayment($paymentType)) {
+                $formErrors[] = 'general.coupon.online_payments_only';
             } else {
                 $discountSize = $coupon->getDiscount();
                 if (!empty($discountSize)) {
@@ -3001,6 +3010,13 @@ class OrderService extends ContainerAware
                 if ($coupon->getValidTo()->format('Y-m-d H:i:s') < $now) {
                     $formErrors[] = 'general.coupon.coupon_expired';
                 }
+            }
+
+            if ($coupon->getValidHourlyFrom() && $coupon->getValidHourlyFrom() > new \DateTime()) {
+                $formErrors[] = 'general.coupon.coupon_too_early';
+            }
+            if ($coupon->getValidHourlyTo() && $coupon->getValidHourlyTo() < new \DateTime()) {
+                $formErrors[] = 'general.coupon.coupon_expired';
             }
         }
 
@@ -3257,17 +3273,6 @@ class OrderService extends ContainerAware
                         'text' => $data['errcode']['problem_dish']
                     );
                 } elseif ($data['errcode']['code'] == 8) {
-                    $message = sprintf(
-                        "Gamybos taško kodas: %s\n\n".
-                        "Kliento telefono nr.: %s\n\n".
-                        "Atsiims vietoj?: %s\n\n".
-                        "Adreso duomenys: \n%s\n\n",
-                        $pointRecord->getInternalCode(),
-                        $request->get('customer-phone'),
-                        ($takeAway) ? 'taip' : 'ne',
-                        print_r($addrData, true)
-                    );
-                    @mail("karolis.m@foodout.lt", "NAVISION ERROR ".date("Y-m-d H:i:s"), $message, "FROM: info@foodout.lt");
                     $formErrors[] = 'order.form.errors.nav_restaurant_no_work';
                 } elseif ($data['errcode']['code'] == 6) {
                     $formErrors[] = 'order.form.errors.nav_restaurant_no_setted';
@@ -3614,6 +3619,17 @@ class OrderService extends ContainerAware
             $coupon->setActive(false);
             $this->saveCoupon($coupon);
         }
+
+        if ($coupon && $coupon instanceof Coupon && $coupon->getSingleUsePerPerson())
+        {
+            $couponUser = new CouponUser();
+            $couponUser->setCoupon($coupon)
+                ->setUser($this->getOrder()->getUser())
+                ->setUsedAt(new \Datetime);
+
+            $this->getEm()->persist($couponUser);
+            $this->getEm()->flush();
+        }
     }
 
     /**
@@ -3845,8 +3861,12 @@ class OrderService extends ContainerAware
                             ->setEnableValidateDate(true)
                             ->setFreeDelivery($generator->getFreeDelivery())
                             ->setSingleUse($generator->getSingleUse())
+                            ->setSingleUsePerPerson($generator->getSingleUsePerPerson())
+                            ->setOnlinePaymentsOnly($generator->getOnlinePaymentsOnly())
                             ->setValidFrom($generator->getValidFrom())
                             ->setValidTo($generator->getValidTo())
+                            ->setValidHourlyFrom($generator->getValidHourlyFrom())
+                            ->setValidHourlyTo($generator->getValidHourlyTo())
                             ->setCreatedAt(new \DateTime('NOW'));
 
                         $this->container->get('food.mailer')
@@ -3948,5 +3968,27 @@ class OrderService extends ContainerAware
         }
 
         return false;
+    }
+
+    /**
+     * @param $paymentType
+     * @return bool
+     */
+    public function isOnlinePayment($paymentType)
+    {
+        return in_array($paymentType, $this->onlinePayments);
+    }
+
+    /**
+     * @param Coupon $coupon
+     * @param User $user
+     * @return bool
+     */
+    public function isCouponUsed(Coupon $coupon, User $user)
+    {
+        return (boolean) $this->getEm()->getRepository('FoodOrderBundle:CouponUser')->findOneBy(array(
+            'coupon' => $coupon,
+            'user' => $user
+        ));
     }
 }

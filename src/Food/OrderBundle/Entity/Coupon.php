@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Entity;
 
 use Food\DishesBundle\Entity\Place;
+use Food\UserBundle\Entity\User;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -80,7 +81,7 @@ class Coupon
     private $code;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="places")
+     * @ORM\ManyToMany(targetEntity="\Food\DishesBundle\Entity\Place")
      */
     private $places;
 
@@ -127,6 +128,25 @@ class Coupon
      */
     private $singleUse = false;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="single_use_per_person", type="boolean", nullable=true)
+     */
+    private $singleUsePerPerson = false;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Food\OrderBundle\Entity\CouponUser", mappedBy="coupon")
+     */
+    private $couponUsers;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="online_payments_only", type="boolean", nullable=true)
+     */
+    private $onlinePaymentsOnly = false;
+
 
     /**
      * @var bool
@@ -148,6 +168,20 @@ class Coupon
      * @ORM\Column(name="valid_to", type="datetime", nullable=true)
      */
     private $validTo;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="valid_hourly_from", type="time", nullable=true)
+     */
+    private $validHourlyFrom;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="valid_hourly_to", type="time", nullable=true)
+     */
+    private $validHourlyTo;
 
     /**
      * @var \DateTime
@@ -842,5 +876,130 @@ class Coupon
     public function getCouponRange()
     {
         return $this->couponRange;
+    }
+
+    /**
+     * Set singleUsePerPerson
+     *
+     * @param boolean $singleUsePerPerson
+     * @return Coupon
+     */
+    public function setSingleUsePerPerson($singleUsePerPerson)
+    {
+        $this->singleUsePerPerson = $singleUsePerPerson;
+    
+        return $this;
+    }
+
+    /**
+     * Get singleUsePerPerson
+     *
+     * @return boolean 
+     */
+    public function getSingleUsePerPerson()
+    {
+        return $this->singleUsePerPerson;
+    }
+
+    /**
+     * Set onlinePaymentsOnly
+     *
+     * @param boolean $onlinePaymentsOnly
+     * @return Coupon
+     */
+    public function setOnlinePaymentsOnly($onlinePaymentsOnly)
+    {
+        $this->onlinePaymentsOnly = $onlinePaymentsOnly;
+    
+        return $this;
+    }
+
+    /**
+     * Get onlinePaymentsOnly
+     *
+     * @return boolean 
+     */
+    public function getOnlinePaymentsOnly()
+    {
+        return $this->onlinePaymentsOnly;
+    }
+
+    /**
+     * Set validHourlyFrom
+     *
+     * @param \DateTime $validHourlyFrom
+     * @return Coupon
+     */
+    public function setValidHourlyFrom($validHourlyFrom)
+    {
+        $this->validHourlyFrom = $validHourlyFrom;
+    
+        return $this;
+    }
+
+    /**
+     * Get validHourlyFrom
+     *
+     * @return \DateTime 
+     */
+    public function getValidHourlyFrom()
+    {
+        return $this->validHourlyFrom;
+    }
+
+    /**
+     * Set validHourlyTo
+     *
+     * @param \DateTime $validHourlyTo
+     * @return Coupon
+     */
+    public function setValidHourlyTo($validHourlyTo)
+    {
+        $this->validHourlyTo = $validHourlyTo;
+    
+        return $this;
+    }
+
+    /**
+     * Get validHourlyTo
+     *
+     * @return \DateTime 
+     */
+    public function getValidHourlyTo()
+    {
+        return $this->validHourlyTo;
+    }
+
+    /**
+     * Add couponUsers
+     *
+     * @param \Food\OrderBundle\Entity\CouponUser $couponUsers
+     * @return Coupon
+     */
+    public function addCouponUser(\Food\OrderBundle\Entity\CouponUser $couponUsers)
+    {
+        $this->couponUsers[] = $couponUsers;
+    
+        return $this;
+    }
+
+    /**
+     * Remove couponUsers
+     *
+     * @param \Food\OrderBundle\Entity\CouponUser $couponUsers
+     */
+    public function removeCouponUser(\Food\OrderBundle\Entity\CouponUser $couponUsers)
+    {
+        $this->couponUsers->removeElement($couponUsers);
+    }
+
+    /**
+     * Get couponUsers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCouponUsers()
+    {
+        return $this->couponUsers;
     }
 }
