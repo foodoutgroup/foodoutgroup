@@ -263,6 +263,11 @@ class AjaxController extends Controller
                 $cont['status'] = false;
                 $cont['data']['error'] = $trans->trans('general.coupon.not_for_business');
             }
+
+            if ($user instanceof User && $orderService->isCouponUsed($coupon, $user)) {
+                $cont['status'] = false;
+                $cont['data']['error'] = $trans->trans('general.coupon.not_active');
+            }
         }
 
         if ($cont['status'] == true) {

@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Entity;
 
 use Food\DishesBundle\Entity\Place;
+use Food\UserBundle\Entity\User;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -80,7 +81,7 @@ class Coupon
     private $code;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="places")
+     * @ORM\ManyToMany(targetEntity="\Food\DishesBundle\Entity\Place")
      */
     private $places;
 
@@ -126,6 +127,25 @@ class Coupon
      * @ORM\Column(name="single_use", type="boolean")
      */
     private $singleUse = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="single_use_per_person", type="boolean", nullable=true)
+     */
+    private $singleUsePerPerson = false;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Food\OrderBundle\Entity\CouponUser", mappedBy="coupon")
+     */
+    private $couponUsers;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="online_payments_only", type="boolean", nullable=true)
+     */
+    private $onlinePaymentsOnly = false;
 
 
     /**
@@ -842,5 +862,51 @@ class Coupon
     public function getCouponRange()
     {
         return $this->couponRange;
+    }
+
+    /**
+     * Set singleUsePerPerson
+     *
+     * @param boolean $singleUsePerPerson
+     * @return Coupon
+     */
+    public function setSingleUsePerPerson($singleUsePerPerson)
+    {
+        $this->singleUsePerPerson = $singleUsePerPerson;
+    
+        return $this;
+    }
+
+    /**
+     * Get singleUsePerPerson
+     *
+     * @return boolean 
+     */
+    public function getSingleUsePerPerson()
+    {
+        return $this->singleUsePerPerson;
+    }
+
+    /**
+     * Set onlinePaymentsOnly
+     *
+     * @param boolean $onlinePaymentsOnly
+     * @return Coupon
+     */
+    public function setOnlinePaymentsOnly($onlinePaymentsOnly)
+    {
+        $this->onlinePaymentsOnly = $onlinePaymentsOnly;
+    
+        return $this;
+    }
+
+    /**
+     * Get onlinePaymentsOnly
+     *
+     * @return boolean 
+     */
+    public function getOnlinePaymentsOnly()
+    {
+        return $this->onlinePaymentsOnly;
     }
 }

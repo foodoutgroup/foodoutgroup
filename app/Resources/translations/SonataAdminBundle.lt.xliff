@@ -1947,6 +1947,14 @@
                 <source>admin.coupon.single_use</source>
                 <target>Vienkartinis</target>
             </trans-unit>
+            <trans-unit id="admin.coupon.single_use_per_person">
+                <source>admin.coupon.single_use_per_person</source>
+                <target>Vienkartinis vienam žmogui</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.online_payments_only">
+                <source>admin.coupon.online_payments_only</source>
+                <target>Tik internetiniams mokėjimams</target>
+            </trans-unit>
             <trans-unit id="admin.coupon.code">
                 <source>admin.coupon.code</source>
                 <target>Kodas</target>

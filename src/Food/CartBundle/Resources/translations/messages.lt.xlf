@@ -424,6 +424,10 @@ Vilnius]]></target>
                 <source>general.coupon.wrong_place_simple</source>
                 <target>Jūsų pateiktas nuolaidos kuponas šiame restorane negalioja. Pasitikrinkite kupono kodą</target>
             </trans-unit>
+            <trans-unit id="general.coupon.online_payments_only">
+                <source>general.coupon.online_payments_only</source>
+                <target>Atsiprašome, šis nuolaidos kodas galioja tik mokant pavedimu</target>
+            </trans-unit>
             <trans-unit id="general.coupon.only_web" resname="general.coupon.only_web">
                 <source>general.coupon.only_web</source>
                 <target>Atsiprašome, šis nuolaidos kodas galioja tik užsakymams per internetinę naršyklę</target>

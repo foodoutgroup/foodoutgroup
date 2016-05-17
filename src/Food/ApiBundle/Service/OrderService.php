@@ -227,6 +227,17 @@ class OrderService extends ContainerAware
                     )
                 );
             }
+            // online payment coupons disallowed in app until online payments will be made
+            if ($coupon->getOnlinePaymentsOnly()) {
+                throw new ApiException(
+                    'Coupon Online Payments Only',
+                    404,
+                    array(
+                        'error' => 'Coupon Online Payments Only',
+                        'description' => $this->container->get('translator')->trans('general.coupon.only_web')
+                    )
+                );
+            }
             // Coupon is still valid Begin
             if ($coupon->getEnableValidateDate()) {
                 $now = date('Y-m-d H:i:s');
@@ -267,6 +278,17 @@ class OrderService extends ContainerAware
                     array(
                         'error' => 'Not for business',
                         'description' => $this->container->get('translator')->trans('general.coupon.not_for_business')
+                    )
+                );
+            }
+
+            if ($os->isCouponUsed($coupon, $user)) {
+                throw new ApiException(
+                    'Not active',
+                    404,
+                    array(
+                        'error' => 'Not active',
+                        'description' => $this->container->get('translator')->trans('general.coupon.not_active')
                     )
                 );
             }

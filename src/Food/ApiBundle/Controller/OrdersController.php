@@ -329,6 +329,17 @@ class OrdersController extends Controller
                         );
                     }
                 }
+                // online payment coupons disallowed in app until online payments will be made
+                if ($coupon->getOnlinePaymentsOnly()) {
+                    throw new ApiException(
+                        'Coupon Online Payments Only',
+                        404,
+                        array(
+                            'error' => 'Coupon Online Payments Only',
+                            'description' => $this->get('translator')->trans('general.coupon.only_web')
+                        )
+                    );
+                }
                 // Coupon is still valid Begin
                 if ($coupon->getEnableValidateDate()) {
                     if ($coupon->getValidFrom()->format('Y-m-d H:i:s') > $now) {

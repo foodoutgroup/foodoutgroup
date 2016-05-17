@@ -1903,6 +1903,14 @@
                 <source>admin.coupon.single_use</source>
                 <target>Single use</target>
             </trans-unit>
+            <trans-unit id="admin.coupon.single_use_per_person">
+                <source>admin.coupon.single_use_per_person</source>
+                <target>Single use per person</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.online_payments_only">
+                <source>admin.coupon.online_payments_only</source>
+                <target>Online payments only</target>
+            </trans-unit>
             <trans-unit id="admin.coupon.code">
                 <source>admin.coupon.code</source>
                 <target>Code</target>
