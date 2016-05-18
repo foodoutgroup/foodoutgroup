@@ -181,7 +181,8 @@ class DishesService extends ContainerAware {
                 return false;
             }
         }
-        if ($dish->getShowByWeekDays()) {
+        // TODO uncoment when this is fixed! BLET!
+        /*if ($dish->getShowByWeekDays()) {
             $return = false;
             foreach ($dish->getWeekdays() as $weekday) {
                 if ($weekday->getWeekday() == date('N')) {
@@ -193,7 +194,7 @@ class DishesService extends ContainerAware {
             if (!$return) {
                 return false;
             }
-        }
+        }*/
 
         return true;
     }
