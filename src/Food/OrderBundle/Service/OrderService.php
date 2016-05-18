@@ -473,6 +473,12 @@ class OrderService extends ContainerAware
                     $placeName = $this->container->get('food.app.utils.language')
                         ->removeChars('lt', $this->getOrder()->getPlaceName(), false, false);
                     $placeName = ucfirst($placeName);
+                    // Hack for too long restaurant names in LT :) Sorry mates, had to do this for whale :D
+                    // Add others if needed
+                    if ($placeName == 'Cili GREITA (tik issinesimui)') {
+                        $placeName = 'Cili GREITA';
+                    }
+
                     $place = $this->getOrder()->getPlace();
 
                     $text = $this->container->get('translator')
