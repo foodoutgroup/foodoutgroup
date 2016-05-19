@@ -3095,12 +3095,13 @@ class OrderService extends ContainerAware
             }
         }
 
-        if (!$dishesService->isDishAvailable($dish)) {
+        // TODO FIX THIS. Dafuq is this? Single dish validate in whole cart? No "for" loop?
+        /*if (!$dishesService->isDishAvailable($dish)) {
             $formErrors[] = array(
                 'message' => 'dishes.no_production',
                 'text' => $dish->getName()
             );
-        }
+        }*/
 
         $pointRecord = null;
         if (empty($placePointId)) {
