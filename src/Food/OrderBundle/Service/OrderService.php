@@ -3918,7 +3918,9 @@ class OrderService extends ContainerAware
                       FROM `orders`
                       LEFT JOIN `coupons` ON `orders`.`coupon` = `coupons`.`id`
                       WHERE `order_date` > \''.$start.'\'
+                        AND `orders`.`user_id` = '.$order->getUser()->getId().'
                         AND `delivery_price` > 0
+                        AND `orders`.`delivery_type` = \'deliver\'
                         AND `order_status` = \''.static::$status_completed.'\'
                         AND (`coupons`.`id` IS NULL OR `coupons`.`free_delivery` = 0)
             ';
@@ -3940,6 +3942,7 @@ class OrderService extends ContainerAware
                     ->setMethod(Coupon::METHOD_DELIVERY)
                     ->setFreeDelivery( 1 )
                     ->setSingleUse( 1 )
+                    ->setNoSelfDelivery(1)
                     ->setCreatedAt(new \DateTime('NOW'));
 
                 $this->container->get('food.mailer')
