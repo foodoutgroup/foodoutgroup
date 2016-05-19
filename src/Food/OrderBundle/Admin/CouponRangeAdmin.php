@@ -1,4 +1,8 @@
 <?php
+
+@ini_set('memory_limit', '2048M');
+@ini_set('max_execution_time', 300);
+
 namespace Food\OrderBundle\Admin;
 use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Food\OrderBundle\Entity\Coupon;
