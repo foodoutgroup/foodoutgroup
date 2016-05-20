@@ -3931,7 +3931,7 @@ class OrderService extends ContainerAware
             $stmt = $this->container->get('doctrine')->getConnection()->prepare($query);
             $stmt->execute();
             $result = $stmt->fetchColumn();
-            if ($result % 3 == 0) {
+            if ($result > 0 && $result % 3 == 0) {
                 $templateId = $this->container->getParameter('mailer_send_free_delivery_discount');
                 $theCode = "CM".strrev($order->getId()).($order->getId() % 10);
                 $newCode = new Coupon;
