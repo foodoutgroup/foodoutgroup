@@ -262,6 +262,14 @@ class Place extends Uploadable implements Translatable
      * @ORM\Column(name="disabled_online_payment", type="boolean")
      */
     private $disabledOnlinePayment = false;
+    
+    /**
+     * This place does not accet online payments
+     * @var bool
+     *
+     * @ORM\Column(name="disabled_payment_on_delivery", type="boolean", nullable=true)
+     */
+    private $disabledPaymentOnDelivery = false;
 
     /**
      * @var string
@@ -1864,5 +1872,28 @@ class Place extends Uploadable implements Translatable
     public function getBasketLimitDrinks()
     {
         return $this->basketLimitDrinks;
+    }
+
+    /**
+     * Set disabledPaymentOnDelivery
+     *
+     * @param boolean $disabledPaymentOnDelivery
+     * @return Place
+     */
+    public function setDisabledPaymentOnDelivery($disabledPaymentOnDelivery)
+    {
+        $this->disabledPaymentOnDelivery = $disabledPaymentOnDelivery;
+
+        return $this;
+    }
+
+    /**
+     * Get disabledPaymentOnDelivery
+     *
+     * @return boolean 
+     */
+    public function getDisabledPaymentOnDelivery()
+    {
+        return $this->disabledPaymentOnDelivery;
     }
 }

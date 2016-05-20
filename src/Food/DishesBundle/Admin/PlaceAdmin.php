@@ -80,6 +80,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('minimalOnSelfDel', 'checkbox', array('label' => 'admin.place.minimal_on_self_delivery', 'required' => false))
             ->add('cardOnDelivery', 'checkbox', array('label' => 'admin.place.card_on_delivery', 'required' => false))
             ->add('disabledOnlinePayment', 'checkbox', array('label' => 'admin.place.disabled_online_payment', 'required' => false))
+            ->add('disabledPaymentOnDelivery', 'checkbox', array('label' => 'admin.place.disabled_payment_on_delivery', 'required' => false))
             ->add('priority', null, array('label' => 'admin.place.priority', 'required' => true))
 
             ->add('file', 'file', $options)
