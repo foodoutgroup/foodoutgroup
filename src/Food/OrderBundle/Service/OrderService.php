@@ -2911,6 +2911,7 @@ class OrderService extends ContainerAware
         $user = $this->container->get('security.context')->getToken()->getUser();
         $noMinimumCart = ($user instanceof User ? $user->getNoMinimumCart() : false);
         $locationService = $this->container->get('food.location');
+        $dishesService = $this->container->get('food.dishes');
         $loggedIn = true;
         $phonePass = false;
         $list = $this->getCartService()->getCartDishes($place);
@@ -3095,13 +3096,15 @@ class OrderService extends ContainerAware
             }
         }
 
-        // TODO FIX THIS. Dafuq is this? Single dish validate in whole cart? No "for" loop?
-        /*if (!$dishesService->isDishAvailable($dish)) {
-            $formErrors[] = array(
-                'message' => 'dishes.no_production',
-                'text' => $dish->getName()
-            );
-        }*/
+        foreach ($this->getCartService()->getCartDishes($place) as $item) {
+            $dish = $item->getDishId();
+            if (!$dishesService->isDishAvailable($dish)) {
+                $formErrors[] = array(
+                    'message' => 'dishes.no_production',
+                    'text' => $dish->getName()
+                );
+            }
+        }
 
         $pointRecord = null;
         if (empty($placePointId)) {
