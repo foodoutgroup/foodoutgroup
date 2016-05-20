@@ -3943,7 +3943,10 @@ class OrderService extends ContainerAware
                     ->setFreeDelivery( 1 )
                     ->setSingleUse( 1 )
                     ->setNoSelfDelivery(1)
-                    ->setCreatedAt(new \DateTime('NOW'));
+                    ->setEnableValidateDate(true)
+                    ->setValidFrom(new \DateTime())
+                    ->setValidTo(new \DateTime('+2 week'))
+                    ->setCreatedAt(new \DateTime());
 
                 $this->container->get('food.mailer')
                     ->setVariable('combo_code', $theCode )
