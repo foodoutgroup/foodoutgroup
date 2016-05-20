@@ -164,7 +164,7 @@ class OrderRepository extends EntityRepository
             'deliveryType' => OrderService::$deliveryDeliver,
             'paymentStatus' => OrderService::$paymentStatusComplete,
             'order_date_between_with_preorder' => array(
-                'from' => new \DateTime('-4 hour'),
+                'from' => new \DateTime('-8 hour'),
                 'to' => new \DateTime('now'),
             ),
         );
