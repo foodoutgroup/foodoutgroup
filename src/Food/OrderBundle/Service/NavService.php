@@ -1758,7 +1758,9 @@ class NavService extends ContainerAware
                 : $this->convertPaymentType($o->getPaymentMethod()->val('')),
             'Food Amount With VAT' => $o->getTotal()->val(0.0) - $o->getDeliveryPrice()->val(0.0),
             'Alcohol Amount With VAT' => 0.0,
-            'Delivery Amount With VAT' => $o->getDeliveryPrice()->val('')
+            'Delivery Amount With VAT' => $o->getDeliveryPrice()->val(''),
+            'Production Point Address' => $o->getPlacePointAddress()->val(''),
+            'Production Point Code' => $o->getPlacePoint()->getAddress()->val('')
         ];
 
         $result = [
