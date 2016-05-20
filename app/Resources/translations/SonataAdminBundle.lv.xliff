@@ -483,6 +483,10 @@
                 <source>admin.place.disabled_online_payment</source>
                 <target>Disable online payment</target>
             </trans-unit>
+            <trans-unit id="admin.place.disabled_payment_on_delivery">
+                <source>admin.place.disabled_payment_on_delivery</source>
+                <target>Disable payment on delivery</target>
+            </trans-unit>
             <trans-unit id="admin.place.priority">
                 <source>admin.place.priority</source>
                 <target>Priority</target>
