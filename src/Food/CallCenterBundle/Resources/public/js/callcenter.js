@@ -202,24 +202,26 @@ bind_reset_cart = function() {
 };
 
 bind_order_button = function(placeId) {
-    var subject, checkout_url, options;
+    var subject;
 
     subject = '.order-button';
+
+    $('body').on('click', subject, get_checkout_form_callback);
+};
+
+get_checkout_form_callback = function() {
+    var checkout_url, options;
     checkout_url = Routing.generate('food_callcenter_checkout');
 
-    callback = function() {
-        options = {
-            type: 'GET',
-            url: checkout_url,
-            success: checkout_callback
-        };
-
-        $.ajax(options);
-
-        return false;
+    options = {
+        type: 'GET',
+        url: checkout_url,
+        success: checkout_callback
     };
 
-    $('body').on('click', subject, callback);
+    $.ajax(options);
+
+    return false;
 };
 
 bind_location_submit_form = function() {
@@ -313,7 +315,12 @@ bind_order_submit_form = function() {
                 success = true;
             }
 
-            CheckoutContent.setHtml(response);
+            if (success) {
+                CheckoutContent.setHtml(response);
+            } else {
+                CheckoutContent.removeAlert();
+                CheckoutContent.alert(response);
+            }
             $('html, body').animate({scrollTop: $('#main_panel').offset().top});
 
             // success
@@ -383,30 +390,30 @@ checkout_callback = function(response) {
 
     bind_coupon_submit_button(PlaceId.get(), $('#check_coupon_url').attr('data'), $('cart_refresh_url').attr('data'));
 
-    bind_address_change(PlaceId.get(),
-                        $('#change_translation').attr('data'),
-                        $('#cancel_translation').attr('data'),
-                        $('#find_address_and_recount_url').attr('data'),
-                        $('#take_translation').attr('data'),
-                        $('#show_places_translation').attr('data'),
-                        $('#place_url').attr('data'),
-                        $('#places_url').attr('data'),
-                        function() {
-                            var options, success_callback;
-
-                            success_callback = function(response) {
-                                $('.address-change select').val(response.city);
-                                $('#address').val(response.address_orig);
-                            };
-
-                            options = {
-                                url: Routing.generate('food_callcenter_retrieve_location'),
-                                dataType: 'json',
-                                success: success_callback
-                            };
-
-                            $.ajax(options);
-                        });
+    // bind_address_change(PlaceId.get(),
+    //                     $('#change_translation').attr('data'),
+    //                     $('#cancel_translation').attr('data'),
+    //                     $('#find_address_and_recount_url').attr('data'),
+    //                     $('#take_translation').attr('data'),
+    //                     $('#show_places_translation').attr('data'),
+    //                     $('#place_url').attr('data'),
+    //                     $('#places_url').attr('data'),
+    //                     function() {
+    //                         var options, success_callback;
+    //
+    //                         success_callback = function(response) {
+    //                             $('.address-change select').val(response.city);
+    //                             $('#address').val(response.address_orig);
+    //                         };
+    //
+    //                         options = {
+    //                             url: Routing.generate('food_callcenter_retrieve_location'),
+    //                             dataType: 'json',
+    //                             success: success_callback
+    //                         };
+    //
+    //                         $.ajax(options);
+    //                     });
 
     // do stuff from checkout page
     Cart.placeId = PlaceId.get();
@@ -541,12 +548,21 @@ CheckoutContent = {
         return this;
     },
 
+    alert: function(content) {
+        $(this.selector).prepend(content);
+        return this;
+    },
+
     show: function() {
         $(this.selector).show();
     },
 
     hide: function() {
         $(this.selector).hide();
+    },
+
+    removeAlert: function() {
+        $(this.selector).find('.alert').remove();
     }
 };
 
@@ -675,7 +691,7 @@ PlaceId = {
 
 var bind_address_search_by_phone = {
     init: function() {
-        $("#top-phone-search").click(function() {
+        $("#top-phone-search").on('submit', function() {
             var check_url, route_name, route_options;
             route_name = 'food_callcenter_get_address_by_phone';
             route_options = {'phone':  $("#top-phone-input").val()};
@@ -687,6 +703,8 @@ var bind_address_search_by_phone = {
                     open: bind_address_search_by_phone.bindInternals
                 });
             });
+
+            return false;
         });
     },
     bindInternals: function() {
@@ -697,6 +715,23 @@ var bind_address_search_by_phone = {
             $('#form_street').val(theTr.find('.adrow-street').text());
             $('#form_house').val(theTr.find('.adrow-house').text());
             theDialog.dialog('close');
+            bind_address_search_by_phone.setUser(theTr.find('.adrow-userId').val());
+            bind_address_search_by_phone.setAddress(theTr.find('.adrow-addressId').val());
+            $("#location_form").submit();
         });
+    },
+    setUser: function(userId) {
+        var set_url, route_name, route_options;
+        route_name = 'food_callcenter_set_user';
+        route_options = {'userId':  userId};
+        set_url = Routing.generate(route_name, route_options);
+        $.ajax(set_url);
+    },
+    setAddress: function(addressId) {
+        var set_url, route_name, route_options;
+        route_name = 'food_callcenter_set_address';
+        route_options = {'addressId':  addressId};
+        set_url = Routing.generate(route_name, route_options);
+        $.ajax(set_url);
     }
 };

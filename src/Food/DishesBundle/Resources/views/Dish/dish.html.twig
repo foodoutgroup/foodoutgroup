@@ -8,9 +8,13 @@
         {% if randomizer!=0 %}
             page+="/{{ randomizer }}";
         {% endif %}
-        ga('send', 'pageview', page);
+        if (typeof ga !== 'undefined') {
+            ga('send', 'pageview', page);
+        }
         {# Facebook ViewContent Begin #}
-        fbq('track', 'ViewContent');
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'ViewContent');
+        }
         {# Facebook ViewContent End #}
     }
 </script>

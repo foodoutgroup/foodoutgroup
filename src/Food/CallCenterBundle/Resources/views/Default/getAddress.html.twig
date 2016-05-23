@@ -10,6 +10,8 @@
     <tbody>
         {% for adrRow in addresses %}
             <tr>
+                <input class="adrow-userId" type="hidden" name="userId" value="{{ adrRow.userId }}" />
+                <input class="adrow-addressId" type="hidden" name="addressId" value="{{ adrRow.addressId }}" />
                 <td class="adrow-city">{{ adrRow.city }}</td>
                 <td class="adrow-street">{{ adrRow.street }}</td>
                 <td class="adrow-house">{{ adrRow.house }}</td>

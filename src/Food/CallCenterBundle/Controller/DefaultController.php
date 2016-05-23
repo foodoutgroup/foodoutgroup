@@ -2,6 +2,7 @@
 
 namespace Food\CallCenterBundle\Controller;
 
+use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,12 +18,19 @@ use Food\CallCenterBundle\Controller\Decorators\DefaultDecorator;
 class DefaultController extends Controller
 {
     const SESSION_CALLCENTER_PLACE = 'callcenter_place';
+    const SESSION_CALLCENTER_USER = 'callcenter_user';
+    const SESSION_CALLCENTER_ADDRESS = 'callcenter_address';
 
     protected $cities = ['Vilnius' => 'Vilnius',
                          'Kaunas' => 'Kaunas',
                          'Klaipėda' => 'Klaipėda'];
 
     use DefaultDecorator;
+
+    /**
+     * @var CartServiceworkingHoursToday
+     */
+    private $cartService;
 
     /**
      * @Route("/", name="food_callcenter")
@@ -33,11 +41,137 @@ class DefaultController extends Controller
         $placeService = $this->get('food.places');
         $userPlace = $this->getUserPlace();
         $place = $userPlace->is_some() ? $userPlace->val() : $this->getPlaceById($this->getPlaceFromSession());
+        $miscService = $this->get('food.app.utils.misc');
         $inCart = false;
-        $hideDelivery = false;
-        $applyDiscount = false;
-        $discountSize = 0.0;
-        $discountSum = 0.0;
+        $hideDelivery = $takeAway = $enable_free_delivery_for_big_basket = $displayCartInterval = false;
+        $deliveryTotal = $total_cart = $cartFromMin = $cartFromMax = $left_sum = 0;
+        $basketErrors = array(
+            'foodQuantityError' => false,
+            'drinkQuantityError' => false,
+        );
+
+        if ($place) {
+            $list = $this->getCartService()->getCartDishes($place);
+            $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
+            $cartFromMin = $this->get('food.places')->getMinCartPrice($place->getId());
+            $cartFromMax = $this->get('food.places')->getMaxCartPrice($place->getId());
+            $enable_free_delivery_for_big_basket = $miscService->getParam('enable_free_delivery_for_big_basket');
+            $left_sum = 0;
+
+            $takeAway = ($this->container->get('session')->get('delivery_type', false) == OrderService::$deliveryPickup);
+
+            if ($takeAway) {
+                $displayCartInterval = false;
+            } else {
+                $placePointMap = $this->container->get('session')->get('point_data');
+
+                $gis = $this->get('food.googlegis')->getLocationFromSession();
+
+                if (empty($placePointMap) || !isset($placePointMap[$place->getId()])) {
+                    $deliveryTotal = $place->getDeliveryPrice();
+                } elseif (!$gis['not_found']) {
+                    // TODO Trying to catch fatal when searching for PlacePoint
+                    if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
+                        $this->container->get('logger')->error('Trying to find PlacePoint without ID in CartBundle Default controller - sideBlockAction');
+                    }
+                    $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+                    $deliveryTotal = $this->getCartService()->getDeliveryPrice(
+                        $place,
+                        $gis,
+                        $pointRecord
+                    );
+                    $displayCartInterval = false;
+                    $cartFromMin = $this->getCartService()->getMinimumCart(
+                        $place,
+                        $gis,
+                        $pointRecord
+                    );
+                }
+
+                // Check cart limits
+                $basketDrinkLimit = $place->getBasketLimitDrinks();
+                $basketFoodLimit = $place->getBasketLimitFood();
+                if (!empty($basketFoodLimit) && $basketFoodLimit > 0) {
+                    $foodDishCount = 0;
+
+                    foreach ($list as $dish) {
+                        $foodCat = $dish->getDishId()->getCategories();
+                        if (!$foodCat[0]->getDrinks()) {
+                            $foodDishCount = $foodDishCount + (1 * $dish->getQuantity());
+                        }
+
+                        if ($foodDishCount > $basketFoodLimit) {
+                            $basketErrors['foodQuantityError'] = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!empty($basketDrinkLimit) && $basketDrinkLimit > 0) {
+                    $foodDishCount = 0;
+
+                    foreach ($list as $dish) {
+                        $foodCat = $dish->getDishId()->getCategories();
+                        if ($foodCat[0]->getDrinks()) {
+                            $foodDishCount = $foodDishCount + (1 * $dish->getQuantity());
+                        }
+
+                        if ($foodDishCount > $basketDrinkLimit) {
+                            $basketErrors['drinkQuantityError'] = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        $applyDiscount = $freeDelivery = $discountInSum = false;
+        $discountSize = null;
+        $discountSum = null;
+
+        $current_user = $this->getUserFromSession(true);
+
+        // Business client discount
+        if (!empty($current_user) && is_object($current_user) && $current_user->getIsBussinesClient()) {
+            if (!$takeAway && !$place->getSelfDelivery()) {
+                $applyDiscount = true;
+                $discountSize = $this->get('food.user')->getDiscount($current_user);
+                $discountSum = $this->getCartService()->getTotalDiscount($list, $discountSize);
+
+                $total_cart -= $discountSum;
+            }
+        }
+        // If coupon in use
+        elseif (!empty($couponCode)) {
+            $coupon = $this->get('food.order')->getCouponByCode($couponCode);
+
+            if ($coupon) {
+                $applyDiscount = true;
+                $freeDelivery = $coupon->getFreeDelivery();
+
+                if (!$freeDelivery) {
+                    $discountSize = $coupon->getDiscount();
+                    if (!empty($discountSize)) {
+                        $discountSum = $this->getCartService()->getTotalDiscount($list,$coupon->getDiscount());
+                    } else {
+                        $discountSize = null;
+                        $discountInSum = true;
+                        $discountSum = $coupon->getDiscountSum();
+                    }
+
+                    $total_cart = $total_cart - $discountSum;
+                    if ($total_cart < 0) {
+                        if ($coupon->getFullOrderCovers()) {
+                            $deliveryTotal = $deliveryTotal + $total_cart;
+                            if ($deliveryTotal < 0) {
+                                $deliveryTotal = 0;
+                            }
+                        }
+                        $total_cart = 0;
+                    }
+                }
+            }
+        }
 
         $locData = $this->get('food.googlegis')->getLocationFromSession();
         $places = $userPlace->is_none() ? $this->getPlaces($locData, []) : [$userPlace->val()];
@@ -82,12 +216,22 @@ class DefaultController extends Controller
             'discountSize' => $discountSize,
             'discountSum' => $discountSum,
             'total_cart' => $totalCart,
-            'total_with_delivery' => $totalCart + \Maybe($place)->getDeliveryPrice()->val(0),
+            'total_with_delivery' => ($freeDelivery ? $total_cart : ($total_cart + $deliveryTotal)),
             'selected_place' => $this->getPlaceFromSession() ? true : false,
             'location' => $this->get('food.googlegis')->getLocationFromSession(),
             'isCallcenter' => true,
             'location_data' => $locData,
             'userAllAddress' => $placeService->getCurrentUserAddresses(),
+            'freeDelivery' => false,
+            'total_delivery' => $deliveryTotal,
+            'discountInSum' => false,
+            'cart_from_min' => sprintf('%.2f',$cartFromMin),
+            'cart_from_max' => $cartFromMax,
+            'basket_errors' => $basketErrors,
+            'takeAway' => $takeAway,
+            'enable_free_delivery_for_big_basket' => $enable_free_delivery_for_big_basket,
+            'left_sum' => $left_sum,
+            'display_cart_interval' => $displayCartInterval
         ];
     }
 
@@ -126,6 +270,8 @@ class DefaultController extends Controller
      */
     public function checkoutAction()
     {
+        $user = $this->getUserFromSession(true);
+        $address = $this->getAddressFromSession(true);
         $placeId = $this->getPlaceFromSession();
 
         if (!$placeId) return new Response('');
@@ -138,7 +284,9 @@ class DefaultController extends Controller
             'location' => $this->get('food.googlegis')->getLocationFromSession(),
             'dataToLoad' => [],
             'isCallcenter' => true,
-            'submitted' => false
+            'submitted' => false,
+            'user' => $user,
+            'address' => $address
         ];
     }
 
@@ -212,41 +360,83 @@ class DefaultController extends Controller
      */
     public function getAddressAction($phone)
     {
-        $userByPhone = $this->container->get('doctrine')->getRepository('FoodUserBundle:User')->findOneBy(array('phone' => $phone));
+        $usersByPhone = $this->container->get('doctrine')->getRepository('FoodUserBundle:User')->findByPhone($phone);
         $addresses = array();
 
-        if ($userByPhone) {
-            $addressesEnts = $this->container->get('doctrine')->getRepository('FoodUserBundle:UserAddress')->findBy(array('user' => $userByPhone));
-            foreach ($addressesEnts as $addrRow) {
-                $addr = $addrRow->getAddress();
-                $streetAddr = "";
-                $houseNumber = "";
-                if (preg_match("/(\d+\w*\s*-\s*\d+)/i", $addr, $matches)) {
-                    $addressSplt = explode("-", $matches[1]);
-                    $tmp = $addressSplt[0];
-                    if ($tmp == intval($tmp)) {
-                        $streetAddr = strstr($addr, $matches[1], true);
-                        $houseNumber = $tmp;
+        if (count($usersByPhone)) {
+            foreach ($usersByPhone as $userByPhone) {
+                foreach ($userByPhone->getAddress() as $addrRow) {
+                    $addr = $addrRow->getAddress();
+                    $streetAddr = "";
+                    $houseNumber = "";
+                    if (preg_match("/(\d+\w*\s*-\s*\d+)/i", $addr, $matches)) {
+                        $addressSplt = explode("-", $matches[1]);
+                        $tmp = $addressSplt[0];
+                        if ($tmp == intval($tmp)) {
+                            $streetAddr = strstr($addr, $matches[1], true);
+                            $houseNumber = $tmp;
+                        }
+                    } else {
+                        $addressSplt = explode(" ", $addr);
+                        $houseNumber = end($addressSplt);
+                        unset($addressSplt[sizeof($addressSplt) - 1]);
+                        $streetAddr = implode(" ", $addressSplt);
                     }
-                } else {
-                    $addressSplt = explode(" ", $addr);
-                    $houseNumber = end($addressSplt);
-                    unset($addressSplt[sizeof($addressSplt)-1]);
-                    $streetAddr = implode(" ", $addressSplt);
+                    $addresses[trim($addrRow->getCity().$streetAddr.$houseNumber)] = array(
+                        'userId' => $addrRow->getUser()->getId(),
+                        'addressId' => $addrRow->getId(),
+                        'city' => $addrRow->getCity(),
+                        'address' => $addrRow->getAddress(),
+                        'street' => $streetAddr,
+                        'house' => $houseNumber
+                    );
                 }
-                $addresses[] = array(
-                    'city' => $addrRow->getCity(),
-                    'address' => $addrRow->getAddress(),
-                    'street' => $streetAddr,
-                    'house' => $houseNumber
-                );
             }
         }
 
         return array(
-            'user_found' => ($userByPhone ? true: false),
-            'user' => $userByPhone,
+            'user_found' => (boolean) count($usersByPhone),
             'addresses' => $addresses
         );
+    }
+
+    /**
+     * @Route("/set-user/{userId}", name="food_callcenter_set_user", options={"expose"=true})
+     */
+    public function setUserAction($userId)
+    {
+        $this->putUserIntoSession($userId);
+        return new JsonResponse(array(
+            'success' => true
+        ));
+    }
+    /**
+     * @Route("/set-address/{addressId}", name="food_callcenter_set_address", options={"expose"=true})
+     */
+    public function setAddressAction($addressId)
+    {
+        $this->putAddressIntoSession($addressId);
+        return new JsonResponse(array(
+            'success' => true
+        ));
+    }
+
+    /**
+     * @param \Food\CartBundle\Service\CartService $cartService
+     */
+    public function setCartService($cartService)
+    {
+        $this->cartService = $cartService;
+    }
+
+    /**
+     * @return \Food\CartBundle\Service\CartService
+     */
+    public function getCartService()
+    {
+        if (empty($this->cartService)) {
+            $this->setCartService($this->get('food.cart'));
+        }
+        return $this->cartService;
     }
 }

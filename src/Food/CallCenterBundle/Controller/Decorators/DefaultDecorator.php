@@ -2,6 +2,8 @@
 
 namespace Food\CallCenterBundle\Controller\Decorators;
 
+use Food\UserBundle\Entity\User;
+
 trait DefaultDecorator
 {
     protected function getLocationForm()
@@ -34,7 +36,7 @@ trait DefaultDecorator
         $this->get('food.places')->saveRelationPlaceToPoint($places);
         $places = $this->get('food.places')->placesPlacePointsWorkInformation($places);
 
-        if (empty($location)) {
+        if (empty($location) || $location['not_found']) {
             return $places;
         }
 
@@ -122,6 +124,60 @@ trait DefaultDecorator
         }
     }
 
+    protected function putUserIntoSession($userId)
+    {
+        $this->get('session')->set(static::SESSION_CALLCENTER_USER, $userId);
+
+        return $this;
+    }
+
+    protected function getUserFromSession($entity = false)
+    {
+        $userId = $this->get('session')->get(static::SESSION_CALLCENTER_USER, 0);
+        if ($entity) {
+            return $this->get('doctrine')->getRepository('FoodUserBundle:User')->find($userId);
+        }
+
+        return $userId;
+    }
+
+    protected function removeUserFromSession()
+    {
+        $session = $this->get('session');
+        if ($session->has(static::SESSION_CALLCENTER_USER)) {
+            $session->remove(static::SESSION_CALLCENTER_USER);
+        }
+
+        return $this;
+    }
+    
+    protected function putAddressIntoSession($addressId)
+    {
+        $this->get('session')->set(static::SESSION_CALLCENTER_ADDRESS, $addressId);
+
+        return $this;
+    }
+
+    protected function getAddressFromSession($entity = false)
+    {
+        $addressId = $this->get('session')->get(static::SESSION_CALLCENTER_ADDRESS, 0);
+        if ($entity) {
+            return $this->get('doctrine')->getRepository('FoodUserBundle:UserAddress')->find($addressId);
+        }
+
+        return $addressId;
+    }
+
+    protected function removeAddressFromSession()
+    {
+        $session = $this->get('session');
+        if ($session->has(static::SESSION_CALLCENTER_ADDRESS)) {
+            $session->remove(static::SESSION_CALLCENTER_ADDRESS);
+        }
+
+        return $this;
+    }
+
     protected function reset()
     {
         $place = $this->getPlaceById($this->getPlaceFromSession());
@@ -131,6 +187,9 @@ trait DefaultDecorator
             $this->removePlaceFromSession();
             // $this->get('food.googlegis')->removeLocationFromSession();
         }
+
+        $this->removeUserFromSession();
+        $this->removeAddressFromSession();
     }
 
     protected function getCityChoices()

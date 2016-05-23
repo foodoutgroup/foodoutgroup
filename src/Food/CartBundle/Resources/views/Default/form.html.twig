@@ -72,7 +72,7 @@
             <input type="text"
                    name="customer-firstname"
                    {% if isCallcenter and not submitted %}
-                       value=""
+                       value="{% if user is defined %}{{ user.firstname|default('') }}{% endif %}"
                    {% else %}
                        value="{% if (dataToLoad is not empty and dataToLoad['customer-firstname'] is not empty) %}{{ dataToLoad['customer-firstname'] }}{% else %}{{ app.user.firstname|default('') }}{% endif %}"
                    {% endif %}
@@ -83,7 +83,7 @@
             <input type="text"
                    name="customer-lastname"
                    {% if isCallcenter and not submitted %}
-                       value=""
+                       value="{% if user is defined %}{{ user.lastname|default('') }}{% endif %}"
                    {% else %}
                        value="{% if (dataToLoad is not empty and dataToLoad['customer-lastname'] is not empty) %}{{ dataToLoad['customer-lastname'] }}{% else %}{{ app.user.lastname|default('') }}{% endif %}"
                    {% endif %}
@@ -95,7 +95,7 @@
                 <input type="text"
                        name="customer-email"
                        {% if isCallcenter and not submitted %}
-                           value=""
+                           value="{% if user is defined %}{{ user.email|default('') }}{% endif %}"
                        {% else %}
                            value="{% if (dataToLoad is not empty and dataToLoad['customer-email'] is not empty) %}{{ dataToLoad['customer-email'] }}{% else %}{{ app.user.email|default('') }}{% endif %}"
                        {% endif %}
@@ -108,7 +108,7 @@
                    name="customer-phone"
                    placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}"
                    {% if isCallcenter and not submitted %}
-                       value=""
+                       value="{% if user is defined %}{{ user.phone|default('') }}{% endif %}"
                    {% else %}
                        value="{% if (dataToLoad is not empty and dataToLoad['customer-phone'] is not empty) %}{{ dataToLoad['customer-phone'] }}{% else %}{{ app.user.phone|default('') }}{% endif %}"
                    {% endif %}
@@ -126,7 +126,7 @@
         #}
         <div class="form-row form-row-required">
             <label>{% trans %}cart.checkout.delivery_comment{% endtrans %}:</label>
-            <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['customer-comment'] is not empty) %}{{ dataToLoad['customer-comment'] }}{% endif %}</textarea>
+            <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['customer-comment'] is not empty) %}{{ dataToLoad['customer-comment'] }}{% elseif address is defined %}{{ address.comment|default('') }}{% endif %}</textarea>
         </div>
         <div class="form-row form-row-required custom-checkbox cart-rules {% if isCallcenter %}hidden-rules{% endif %}">
             <label>{% trans %}cart.checkout.cart_rules{% endtrans %}</label>
