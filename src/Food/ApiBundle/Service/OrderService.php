@@ -5,6 +5,7 @@ namespace Food\ApiBundle\Service;
 use Food\ApiBundle\Common\JsonRequest;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\Coupon;
+use Food\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
 use Food\OrderBundle\Service\OrderService as FO;
@@ -61,6 +62,8 @@ class OrderService extends ContainerAware
         $logger = $this->container->get('logger');
         $logger->alert("=================");
         $logger->alert("orderService->createOrder called");
+
+        $os = $this->container->get('food.order');
         /**
          * {
             "basket_id": 1,
@@ -96,7 +99,7 @@ class OrderService extends ContainerAware
         $this->container->get('food_api.api')->loginByHash($token);
         $security = $this->container->get('security.context');
         $user = $security->getToken()->getUser();
-        if (!$user) {
+        if (!$user || !$user instanceof User) {
             throw new ApiException(
                 'Unauthorized',
                 401,
@@ -146,6 +149,7 @@ class OrderService extends ContainerAware
         }
 
         $basket = $em->getRepository('FoodApiBundle:ShoppingBasketRelation')->find($request->get('basket_id'));
+        $place = $basket->getPlaceId();
 
         if (!$basket) {
             throw new ApiException(
@@ -158,12 +162,17 @@ class OrderService extends ContainerAware
             );
         }
 
+        $cartService = $this->getCartService();
+        $cartService->setNewSessionId($basket->getSession());
+        $list = $cartService->getCartDishes($basket->getPlaceId());
+        $total_cart = $cartService->getCartTotalApi($list/*, $place*/);
+
         // Discount code validation
         $coupon = null;
         $discountVar = $request->get('discount');
         if (!empty($discountVar) && !empty($discountVar['code'])) {
-            $coupon = $this->container->get('food.order')->getCouponByCode($discountVar['code']);
-            if (empty($coupon)) {
+            $coupon = $os->getCouponByCode($discountVar['code']);
+            if (empty($coupon) || !$coupon instanceof Coupon) {
                 throw new ApiException(
                     'Coupon Not found',
                     404,
@@ -173,7 +182,7 @@ class OrderService extends ContainerAware
                     )
                 );
             }
-            
+
             if (!$coupon->isAllowedForApi()) {
                 throw new ApiException(
                     'Coupon for web',
@@ -194,7 +203,8 @@ class OrderService extends ContainerAware
                         'description' => $this->container->get('translator')->trans('general.coupon.only_delivery')
                     )
                 );
-            } elseif ($serviceVar['type'] != "pickup" && !$coupon->isAllowedForDelivery()) {
+            }
+            if ($serviceVar['type'] != "pickup" && !$coupon->isAllowedForDelivery()) {
                 throw new ApiException(
                     'Coupon for pickup',
                     404,
@@ -204,14 +214,108 @@ class OrderService extends ContainerAware
                     )
                 );
             }
+
+            if (!$os->validateCouponForPlace($coupon, $place)
+                || $coupon->getOnlyNav() && !$place->getNavision()
+                || $coupon->getNoSelfDelivery() && $place->getSelfDelivery()) {
+                throw new ApiException(
+                    'Coupon Wrong Place',
+                    404,
+                    array(
+                        'error' => 'Coupon Wrong Place',
+                        'description' => $this->container->get('translator')->trans('general.coupon.wrong_place')
+                    )
+                );
+            }
+            // online payment coupons disallowed in app until online payments will be made
+            if ($coupon->getOnlinePaymentsOnly()) {
+                throw new ApiException(
+                    'Coupon Online Payments Only',
+                    404,
+                    array(
+                        'error' => 'Coupon Online Payments Only',
+                        'description' => $this->container->get('translator')->trans('general.coupon.only_web')
+                    )
+                );
+            }
+            // Coupon is still valid Begin
+            if ($coupon->getEnableValidateDate()) {
+                $now = date('Y-m-d H:i:s');
+                if ($coupon->getValidFrom()->format('Y-m-d H:i:s') > $now) {
+                    throw new ApiException(
+                        'Coupon Not Valid Yet',
+                        404,
+                        array(
+                            'error' => 'Coupon Not Valid Yet',
+                            'description' => $this->container->get('translator')->trans('api.orders.coupon_too_early')
+                        )
+                    );
+                }
+                if ($coupon->getValidTo()->format('Y-m-d H:i:s') < $now) {
+                    throw new ApiException(
+                        'Coupon Expired',
+                        404,
+                        array(
+                            'error' => 'Coupon Expired',
+                            'description' => $this->container->get('translator')->trans('api.orders.coupon_expired')
+                        )
+                    );
+                }
+            }
+
+            if ($coupon->getValidHourlyFrom() && $coupon->getValidHourlyFrom() > new \DateTime()) {
+                throw new ApiException(
+                    'Coupon Not Valid Yet',
+                    404,
+                    array(
+                        'error' => 'Coupon Not Valid Yet',
+                        'description' => $this->container->get('translator')->trans('api.orders.coupon_too_early')
+                    )
+                );
+            }
+            if ($coupon->getValidHourlyTo() && $coupon->getValidHourlyTo() < new \DateTime()) {
+                throw new ApiException(
+                    'Coupon Expired',
+                    404,
+                    array(
+                        'error' => 'Coupon Expired',
+                        'description' => $this->container->get('translator')->trans('api.orders.coupon_expired')
+                    )
+                );
+            }
+            // Coupon is still valid End
+
+            $discountSize = $coupon->getDiscount();
+            if (!empty($discountSize)) {
+                $total_cart -= $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($place), $discountSize);
+            } elseif (!$coupon->getFullOrderCovers()) {
+                $total_cart -= $coupon->getDiscountSum();
+            }
+
+            if ($user->getIsBussinesClient()) {
+                throw new ApiException(
+                    'Not for business',
+                    404,
+                    array(
+                        'error' => 'Not for business',
+                        'description' => $this->container->get('translator')->trans('general.coupon.not_for_business')
+                    )
+                );
+            }
+
+            if ($os->isCouponUsed($coupon, $user)) {
+                throw new ApiException(
+                    'Not active',
+                    404,
+                    array(
+                        'error' => 'Not active',
+                        'description' => $this->container->get('translator')->trans('general.coupon.not_active')
+                    )
+                );
+            }
         }
 
-        $cartService = $this->getCartService();
-        $cartService->setNewSessionId($basket->getSession());
-        $place = $basket->getPlaceId();
-        $list = $cartService->getCartDishes($basket->getPlaceId());
         if ($serviceVar['type'] != "pickup") {
-            $total_cart = $cartService->getCartTotalApi($list/*, $place*/);
             if ($total_cart < $place->getCartMinimum()) {
                 throw new ApiException(
                     'Order Too Small',
@@ -284,8 +388,22 @@ class OrderService extends ContainerAware
             }
         }
 
-        $os = $this->container->get('food.order');
         $os->getCartService()->setNewSessionId($cartService->getSessionId());
+
+        $dishesService = $this->container->get('food.dishes');
+        foreach ($cartService->getCartDishes($basket->getPlaceId()) as $item) {
+            $dish = $item->getDishId();
+            if (!$dishesService->isDishAvailable($dish)) {
+                throw new ApiException(
+                    'Dish not available',
+                    0,
+                    array(
+                        'error' => 'Dish not available',
+                        'description' => $this->container->get('translator')->trans('dishes.no_production')
+                    )
+                );
+            }
+        }
 
         $os->createOrderFromCart(
             $basket->getPlaceId()->getId(),

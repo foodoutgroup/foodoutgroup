@@ -14,7 +14,7 @@ body {
   font-size: 19px;
   font-family: "myriadpro";
   line-height: 23px;
-  background: url(/bundles/foodapp/images/landing/b2bclient/bg.jpg) no-repeat center top;
+  background: #eacbaf url(/bundles/foodapp/images/landing/b2bclient/bg.jpg) no-repeat center top;
   /*background-size: cover;*/
   margin: 0;
   padding: 0;
@@ -68,10 +68,10 @@ ul {
 ul li:before{
   content: '';
   display: inline-block;
-  height: 10px;
+  height: 12px;
   width: 12px;
   background: url("/bundles/foodapp/images/landing/b2bclient/dot-small.png") center center no-repeat;
-  background-size: 6px 8px;
+  background-size: 5px 7px;
 }
 
 .container {
@@ -222,5 +222,23 @@ ul li:before{
   .restaurants td:nth-child(7),
   .restaurants td:nth-child(6) {
     display: none;
+  }
+}
+@media screen and (max-width: 420px) {
+  .partners td:nth-child(3) {
+    display: none;
+  }
+  .restaurants td:nth-child(5),
+  .restaurants td:nth-child(4) {
+    display: none;
+  }
+  .sm-hide {
+    display: none;
+  }
+  .sm-wrap {
+    display: block;
+  }
+  .logo img, .slogan img{
+    max-width: 100%;
   }
 }

@@ -1,6 +1,8 @@
 <?php
 namespace Food\DishesBundle\Service;
 
+use Food\UserBundle\Entity\User;
+use Food\DishesBundle\Entity\Dish;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\AppBundle\Traits;
 
@@ -18,7 +20,16 @@ class DishesService extends ContainerAware {
      */
     public function getActiveDishesByCategory($categoryId)
     {
-        return $this->em()->getRepository('FoodDishesBundle:Dish')->getCategoryActiveDishes($categoryId);
+        $group = null;
+
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        if ($user == 'anon.') {
+            $user = null;
+        }
+        if (!empty($user) && $user instanceof User) {
+            $group = $user->getGroup();
+        }
+        return $this->em()->getRepository('FoodDishesBundle:Dish')->getCategoryActiveDishes($categoryId, $group);
     }
 
     public function getSmallestDishPrice($dishId)
@@ -142,5 +153,35 @@ class DishesService extends ContainerAware {
     {
         $hasAnyDiscountPrice = $this->em()->getRepository('FoodDishesBundle:Dish')->hasDiscountPrice($dishId);
         return $hasAnyDiscountPrice;
+    }
+
+    public function isDishAvailable(Dish $dish)
+    {
+        if (!$dish->getActive()) {
+            return false;
+        }
+        if ($dish->getTimeFrom() && $dish->getTimeFrom() > date('H:i')) {
+            return false;
+        }
+        if ($dish->getTimeTo() && $dish->getTimeTo() < date('H:i')) {
+            return false;
+        }
+        if ($dish->getCheckEvenOddWeek() && ((date('W') + 1) % 2) != $dish->getEvenWeek()) {
+            return false;
+        }
+        if ($dish->getUseDateInterval()) {
+            $return = false;
+            foreach ($dish->getDates() as $date) {
+                if ($date->getStart() <= new \DateTime() && $date->getEnd() >= new \DateTime()) {
+                    $return = true;
+                    break;
+                }
+            }
+            if (!$return) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

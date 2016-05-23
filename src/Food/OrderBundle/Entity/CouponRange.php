@@ -95,6 +95,20 @@ class CouponRange
     private $singleUse = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="single_use_per_person", type="boolean", nullable=true)
+     */
+    private $singleUsePerPerson = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="online_payments_only", type="boolean", nullable=true)
+     */
+    private $onlinePaymentsOnly = false;
+
+    /**
      * @var Coupon[]
      *
      * @ORM\OneToMany(targetEntity="Food\OrderBundle\Entity\Coupon", mappedBy="couponRange", cascade={"persist", "remove"}, orphanRemoval=true)
@@ -124,6 +138,20 @@ class CouponRange
      * @ORM\Column(name="valid_to", type="datetime", nullable=true)
      */
     private $validTo;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="valid_hourly_from", type="time", nullable=true)
+     */
+    private $validHourlyFrom;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="valid_hourly_to", type="time", nullable=true)
+     */
+    private $validHourlyTo;
     /**
      * @var \DateTime
      *
@@ -692,5 +720,97 @@ class CouponRange
     public function getCoupons()
     {
         return $this->coupons;
+    }
+
+    /**
+     * Set singleUsePerPerson
+     *
+     * @param boolean $singleUsePerPerson
+     * @return CouponRange
+     */
+    public function setSingleUsePerPerson($singleUsePerPerson)
+    {
+        $this->singleUsePerPerson = $singleUsePerPerson;
+    
+        return $this;
+    }
+
+    /**
+     * Get singleUsePerPerson
+     *
+     * @return boolean 
+     */
+    public function getSingleUsePerPerson()
+    {
+        return $this->singleUsePerPerson;
+    }
+
+    /**
+     * Set onlinePaymentsOnly
+     *
+     * @param boolean $onlinePaymentsOnly
+     * @return CouponRange
+     */
+    public function setOnlinePaymentsOnly($onlinePaymentsOnly)
+    {
+        $this->onlinePaymentsOnly = $onlinePaymentsOnly;
+    
+        return $this;
+    }
+
+    /**
+     * Get onlinePaymentsOnly
+     *
+     * @return boolean 
+     */
+    public function getOnlinePaymentsOnly()
+    {
+        return $this->onlinePaymentsOnly;
+    }
+
+    /**
+     * Set validHourlyFrom
+     *
+     * @param \DateTime $validHourlyFrom
+     * @return CouponRange
+     */
+    public function setValidHourlyFrom($validHourlyFrom)
+    {
+        $this->validHourlyFrom = $validHourlyFrom;
+    
+        return $this;
+    }
+
+    /**
+     * Get validHourlyFrom
+     *
+     * @return \DateTime 
+     */
+    public function getValidHourlyFrom()
+    {
+        return $this->validHourlyFrom;
+    }
+
+    /**
+     * Set validHourlyTo
+     *
+     * @param \DateTime $validHourlyTo
+     * @return CouponRange
+     */
+    public function setValidHourlyTo($validHourlyTo)
+    {
+        $this->validHourlyTo = $validHourlyTo;
+    
+        return $this;
+    }
+
+    /**
+     * Get validHourlyTo
+     *
+     * @return \DateTime 
+     */
+    public function getValidHourlyTo()
+    {
+        return $this->validHourlyTo;
     }
 }

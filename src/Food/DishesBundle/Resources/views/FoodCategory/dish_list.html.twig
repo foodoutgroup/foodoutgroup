@@ -24,10 +24,17 @@
                     {% set largeImgClass = ' hidden' %}
                     {% set smallImgClass = '' %}
                 {% endif %}
-            <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" href2="#detailed-dish-popup" class="fancybox.ajax fancy-box">
-                <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}">
-                <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
-            </a>
+                {% if showByHours %}
+                    <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" href2="#detailed-dish-popup" class="fancybox.ajax fancy-box">
+                        <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}">
+                        <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
+                    </a>
+                {% else %}
+                    <span class="got-title disabled" title="{% trans %}dishes.no_production{% endtrans %}">
+                        <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}">
+                        <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
+                    </span>
+                {% endif %}
             {% endif %}
             <h3 class="name">{{ loop.index }}. {{ dish.name }}</h3>
             <p class="desc">{{ dish.description|nl2br }}</p>

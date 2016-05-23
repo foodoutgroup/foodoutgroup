@@ -125,7 +125,7 @@
                                             </div>
                                         {% endif %}
                                     {% endif %}
-                                    {% if place.selfDelivery and app.user.isBussinesClient %}
+                                    {% if place.selfDelivery and app.user is not empty and app.user.isBussinesClient %}
                                         <div class="alert alert-danger">
                                             {% trans %}places.discount_not_for_business_clients{% endtrans %}
                                         </div>

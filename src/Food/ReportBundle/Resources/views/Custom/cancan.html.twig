@@ -1,0 +1,48 @@
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+{% block body %}
+<div class="site-center">
+    <div class="site-block">
+        <div class="middle-content">
+            <form method="get">
+                <input class="datepicker" type="text" name="from" placeholder="yyyy-mm-dd" value="{{ from }}" />
+                <input class="datepicker" type="text" name="to" placeholder="yyyy-mm-dd" value="{{ to }}" />
+                <button>Filtruoti</button>
+            </form>
+            <table style="width: 100%; text-align: center;">
+                <tr>
+                    <th>ID</th>
+                    <th>Data</th>
+                    <th>Gamybos taško adresas</th>
+                    <th>Suma</th>
+                    <th>Pristatymo kaina</th>
+                    <th>Can Can užsakymas</th>
+                </tr>
+                {% for order in orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.orderDate.format('Y-m-d H:i:s') }}</td>
+                        <td>{{ order.placePointAddress }}</td>
+                        <td>{{ order.total }}</td>
+                        <td>{{ order.deliveryPrice }}</td>
+                        <td>{% if order.orderExtra.email in cancanEmails %}1{% else %}0{% endif %}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+    <style>
+        table td{
+            border-left: 1px solid #666;
+            border-right: 1px solid #666;
+        }
+    </style>
+    <script>
+    $(function() {
+        $('.datepicker').datepicker({
+            'dateFormat': 'yy-mm-dd'
+        });
+    });
+    </script>
+{% endblock %}

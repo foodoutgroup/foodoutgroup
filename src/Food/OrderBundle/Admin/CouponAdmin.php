@@ -39,9 +39,13 @@ class CouponAdmin extends FoodAdmin
                 Coupon::METHOD_PICKUP => 'PICKUP'
             ), 'required' => true))
             ->add('singleUse', 'checkbox', array('label' => 'admin.coupon.single_use', 'required' => false))
+            ->add('singleUsePerPerson', 'checkbox', array('label' => 'admin.coupon.single_use_per_person', 'required' => false))
+            ->add('onlinePaymentsOnly', 'checkbox', array('label' => 'admin.coupon.online_payments_only', 'required' => false))
             ->add('enableValidateDate', 'checkbox', array('required' => false))
             ->add('validFrom', 'datetime', array('required' => false))
             ->add('validTo', 'datetime', array('required' => false))
+            ->add('validHourlyFrom', 'time', array('required' => false))
+            ->add('validHourlyTo', 'time', array('required' => false))
             ->add('active', 'checkbox', array('label' => 'admin.coupon.active', 'required' => false));
         ;
     }

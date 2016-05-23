@@ -198,6 +198,18 @@
                 <source>admin.dish.active</source>
                 <target>Aktyvus</target>
             </trans-unit>
+            <trans-unit id="admin.dish.group">
+                <source>admin.dish.group</source>
+                <target>Grupė</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.time_from">
+                <source>admin.dish.time_from</source>
+                <target>Patiekalo laikas nuo</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.time_to">
+                <source>admin.dish.time_to</source>
+                <target>Patiekalo laikas iki</target>
+            </trans-unit>
             <trans-unit id="admin.dish.active_list">
                 <source>admin.dish.active_list</source>
                 <target>Aktyv.</target>
@@ -471,6 +483,10 @@
                 <source>admin.place.disabled_online_payment</source>
                 <target>Neleisti atsiskaityti internetu</target>
             </trans-unit>
+            <trans-unit id="admin.place.disabled_payment_on_delivery">
+                <source>admin.place.disabled_payment_on_delivery</source>
+                <target>Neleisti atsiskaitymų atsiimant</target>
+            </trans-unit>
             <trans-unit id="admin.place.priority">
                 <source>admin.place.priority</source>
                 <target>Prioritetas</target>
@@ -709,6 +725,10 @@
             <trans-unit id="admin.users.created_at">
                 <source>admin.users.created_at</source>
                 <target>Registracijos data</target>
+            </trans-unit>
+            <trans-unit id="admin.users.group">
+                <source>admin.users.group</source>
+                <target>Grupė</target>
             </trans-unit>
             <trans-unit id="admin.users.bussines_management">
                 <source>admin.users.bussines_management</source>
@@ -1930,6 +1950,14 @@
             <trans-unit id="admin.coupon.single_use">
                 <source>admin.coupon.single_use</source>
                 <target>Vienkartinis</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.single_use_per_person">
+                <source>admin.coupon.single_use_per_person</source>
+                <target>Vienkartinis vienam žmogui</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.online_payments_only">
+                <source>admin.coupon.online_payments_only</source>
+                <target>Tik internetiniams mokėjimams</target>
             </trans-unit>
             <trans-unit id="admin.coupon.code">
                 <source>admin.coupon.code</source>

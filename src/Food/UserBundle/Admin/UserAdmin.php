@@ -49,6 +49,7 @@ class UserAdmin extends SonataUserAdmin {
             ->add('noMinimumCart', null, array('label' => 'admin.users.no_minimum_cart'))
             ->add('isBussinesClient', null, array('label' => 'admin.users.bussines_client'))
             ->add('companyName', null, array('label' => 'admin.users.company_name'))
+            ->add('group', null, array('label' => 'admin.users.group'))
         ;
     }
 
@@ -62,6 +63,7 @@ class UserAdmin extends SonataUserAdmin {
         $showMapper
             ->with('General')
             ->add('createdAt', null, array('label' => 'admin.users.created_at'))
+            ->add('group', null, array('label' => 'admin.users.group'))
             ->remove('groups')
             ->remove('dateOfBirth')
             ->remove('website')
@@ -117,6 +119,7 @@ class UserAdmin extends SonataUserAdmin {
                   array('label' => 'admin.users.phone',
                         'attr' => array('placeholder' => '+370xxxxxxx'),
                         'required' => false))
+            ->add('group', null, array('label' => 'admin.users.group'))
             ->add('place', 'entity', array(
                 'class' => 'Food\DishesBundle\Entity\Place',
                 'multiple' => false,

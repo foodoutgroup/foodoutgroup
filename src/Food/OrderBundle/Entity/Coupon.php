@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Entity;
 
 use Food\DishesBundle\Entity\Place;
+use Food\UserBundle\Entity\User;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -80,13 +81,7 @@ class Coupon
     private $code;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place")
-     * @ORM\JoinColumn(name="place", referencedColumnName="id", nullable=true)
-     */
-    private $place;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="places")
+     * @ORM\ManyToMany(targetEntity="\Food\DishesBundle\Entity\Place")
      */
     private $places;
 
@@ -133,6 +128,25 @@ class Coupon
      */
     private $singleUse = false;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="single_use_per_person", type="boolean", nullable=true)
+     */
+    private $singleUsePerPerson = false;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Food\OrderBundle\Entity\CouponUser", mappedBy="coupon")
+     */
+    private $couponUsers;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="online_payments_only", type="boolean", nullable=true)
+     */
+    private $onlinePaymentsOnly = false;
+
 
     /**
      * @var bool
@@ -154,6 +168,20 @@ class Coupon
      * @ORM\Column(name="valid_to", type="datetime", nullable=true)
      */
     private $validTo;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="valid_hourly_from", type="time", nullable=true)
+     */
+    private $validHourlyFrom;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="valid_hourly_to", type="time", nullable=true)
+     */
+    private $validHourlyTo;
 
     /**
      * @var \DateTime
@@ -203,12 +231,16 @@ class Coupon
     public function __toString()
     {
         if ($this->getId()) {
-            if ($this->getPlace() && $this->getPlace() instanceof Place) {
-                $place = $this->getPlace()->getName();
+            $places = $this->getPlaces();
+            $placeNames = array();
+            if (count($places)) {
+                foreach ($places as $place) {
+                    $placeNames[] = $place->getName();
+                }
             } else {
-                $place = 'global';
+                $placeNames[] = 'global';
             }
-            return $this->getId().'-'.$this->getName().'-'.$place;
+            return $this->getId().'-'.$this->getName().'-'.implode('-', $placeNames);
         }
 
         return '';
@@ -220,15 +252,18 @@ class Coupon
     public function __toArray()
     {
         if ($this->getId()) {
-            $placeId = null;
-            if ($this->getPlace()) {
-                $placeId = $this->getPlace()->getId();
+            $placeIds = array();
+            $places = $this->getPlaces();
+            if (count($places)) {
+                foreach ($places as $place) {
+                    $placeIds[] = $place->getId();
+                }
             }
 
             return array(
                 'id' => $this->getId(),
                 'code' => $this->getCode(),
-                'place_id' => $placeId,
+                'place_ids' => $placeIds,
                 'discount' => $this->getDiscount(),
                 'discount_sum' => $this->getDiscountSum(),
                 'active' => $this->getActive(),
@@ -362,29 +397,6 @@ class Coupon
     public function getDeletedAt()
     {
         return $this->deletedAt;
-    }
-
-    /**
-     * Set place
-     *
-     * @param \Food\DishesBundle\Entity\Place $place
-     * @return Coupon
-     */
-    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
-    {
-        $this->place = $place;
-    
-        return $this;
-    }
-
-    /**
-     * Get place
-     *
-     * @return \Food\DishesBundle\Entity\Place 
-     */
-    public function getPlace()
-    {
-        return $this->place;
     }
 
     /**
@@ -864,5 +876,130 @@ class Coupon
     public function getCouponRange()
     {
         return $this->couponRange;
+    }
+
+    /**
+     * Set singleUsePerPerson
+     *
+     * @param boolean $singleUsePerPerson
+     * @return Coupon
+     */
+    public function setSingleUsePerPerson($singleUsePerPerson)
+    {
+        $this->singleUsePerPerson = $singleUsePerPerson;
+    
+        return $this;
+    }
+
+    /**
+     * Get singleUsePerPerson
+     *
+     * @return boolean 
+     */
+    public function getSingleUsePerPerson()
+    {
+        return $this->singleUsePerPerson;
+    }
+
+    /**
+     * Set onlinePaymentsOnly
+     *
+     * @param boolean $onlinePaymentsOnly
+     * @return Coupon
+     */
+    public function setOnlinePaymentsOnly($onlinePaymentsOnly)
+    {
+        $this->onlinePaymentsOnly = $onlinePaymentsOnly;
+    
+        return $this;
+    }
+
+    /**
+     * Get onlinePaymentsOnly
+     *
+     * @return boolean 
+     */
+    public function getOnlinePaymentsOnly()
+    {
+        return $this->onlinePaymentsOnly;
+    }
+
+    /**
+     * Set validHourlyFrom
+     *
+     * @param \DateTime $validHourlyFrom
+     * @return Coupon
+     */
+    public function setValidHourlyFrom($validHourlyFrom)
+    {
+        $this->validHourlyFrom = $validHourlyFrom;
+    
+        return $this;
+    }
+
+    /**
+     * Get validHourlyFrom
+     *
+     * @return \DateTime 
+     */
+    public function getValidHourlyFrom()
+    {
+        return $this->validHourlyFrom;
+    }
+
+    /**
+     * Set validHourlyTo
+     *
+     * @param \DateTime $validHourlyTo
+     * @return Coupon
+     */
+    public function setValidHourlyTo($validHourlyTo)
+    {
+        $this->validHourlyTo = $validHourlyTo;
+    
+        return $this;
+    }
+
+    /**
+     * Get validHourlyTo
+     *
+     * @return \DateTime 
+     */
+    public function getValidHourlyTo()
+    {
+        return $this->validHourlyTo;
+    }
+
+    /**
+     * Add couponUsers
+     *
+     * @param \Food\OrderBundle\Entity\CouponUser $couponUsers
+     * @return Coupon
+     */
+    public function addCouponUser(\Food\OrderBundle\Entity\CouponUser $couponUsers)
+    {
+        $this->couponUsers[] = $couponUsers;
+    
+        return $this;
+    }
+
+    /**
+     * Remove couponUsers
+     *
+     * @param \Food\OrderBundle\Entity\CouponUser $couponUsers
+     */
+    public function removeCouponUser(\Food\OrderBundle\Entity\CouponUser $couponUsers)
+    {
+        $this->couponUsers->removeElement($couponUsers);
+    }
+
+    /**
+     * Get couponUsers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCouponUsers()
+    {
+        return $this->couponUsers;
     }
 }

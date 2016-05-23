@@ -191,6 +191,12 @@ class Dish extends Uploadable implements Translatable
      */
     private $active = true;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="dish_group", type="string", length=160, nullable=true)
+     */
+    private $group;
 
     /**
      * @var object
@@ -1014,5 +1020,28 @@ class Dish extends Uploadable implements Translatable
     public function getUseDateInterval()
     {
         return $this->useDateInterval;
+    }
+
+    /**
+     * Set group
+     *
+     * @param string $group
+     * @return Dish
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+    
+        return $this;
+    }
+
+    /**
+     * Get group
+     *
+     * @return string 
+     */
+    public function getGroup()
+    {
+        return $this->group;
     }
 }

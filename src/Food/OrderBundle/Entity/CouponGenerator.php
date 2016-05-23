@@ -44,7 +44,7 @@ class CouponGenerator
     private $templateCode;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="places")
+     * @ORM\ManyToMany(targetEntity="\Food\DishesBundle\Entity\Place")
      */
     private $places;
 
@@ -123,6 +123,20 @@ class CouponGenerator
     /**
      * @var bool
      *
+     * @ORM\Column(name="single_use_per_person", type="boolean", nullable=true)
+     */
+    private $singleUsePerPerson = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="online_payments_only", type="boolean", nullable=true)
+     */
+    private $onlinePaymentsOnly = false;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="active", type="boolean")
      */
     private $active = false;
@@ -140,6 +154,20 @@ class CouponGenerator
      * @ORM\Column(name="valid_to", type="datetime", nullable=true)
      */
     private $validTo;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="valid_hourly_from", type="time", nullable=true)
+     */
+    private $validHourlyFrom;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="valid_hourly_to", type="time", nullable=true)
+     */
+    private $validHourlyTo;
 
     /**
      * @var \DateTime
@@ -811,5 +839,97 @@ class CouponGenerator
     public function getMethod()
     {
         return $this->method;
+    }
+
+    /**
+     * Set singleUsePerPerson
+     *
+     * @param boolean $singleUsePerPerson
+     * @return CouponGenerator
+     */
+    public function setSingleUsePerPerson($singleUsePerPerson)
+    {
+        $this->singleUsePerPerson = $singleUsePerPerson;
+    
+        return $this;
+    }
+
+    /**
+     * Get singleUsePerPerson
+     *
+     * @return boolean 
+     */
+    public function getSingleUsePerPerson()
+    {
+        return $this->singleUsePerPerson;
+    }
+
+    /**
+     * Set onlinePaymentsOnly
+     *
+     * @param boolean $onlinePaymentsOnly
+     * @return CouponGenerator
+     */
+    public function setOnlinePaymentsOnly($onlinePaymentsOnly)
+    {
+        $this->onlinePaymentsOnly = $onlinePaymentsOnly;
+    
+        return $this;
+    }
+
+    /**
+     * Get onlinePaymentsOnly
+     *
+     * @return boolean 
+     */
+    public function getOnlinePaymentsOnly()
+    {
+        return $this->onlinePaymentsOnly;
+    }
+
+    /**
+     * Set validHourlyFrom
+     *
+     * @param \DateTime $validHourlyFrom
+     * @return CouponGenerator
+     */
+    public function setValidHourlyFrom($validHourlyFrom)
+    {
+        $this->validHourlyFrom = $validHourlyFrom;
+    
+        return $this;
+    }
+
+    /**
+     * Get validHourlyFrom
+     *
+     * @return \DateTime 
+     */
+    public function getValidHourlyFrom()
+    {
+        return $this->validHourlyFrom;
+    }
+
+    /**
+     * Set validHourlyTo
+     *
+     * @param \DateTime $validHourlyTo
+     * @return CouponGenerator
+     */
+    public function setValidHourlyTo($validHourlyTo)
+    {
+        $this->validHourlyTo = $validHourlyTo;
+    
+        return $this;
+    }
+
+    /**
+     * Get validHourlyTo
+     *
+     * @return \DateTime 
+     */
+    public function getValidHourlyTo()
+    {
+        return $this->validHourlyTo;
     }
 }

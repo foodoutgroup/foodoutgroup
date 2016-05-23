@@ -1,5 +1,9 @@
 <?php
 namespace Food\OrderBundle\Admin;
+
+@ini_set('memory_limit', '2048M');
+@ini_set('max_execution_time', 300);
+
 use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Food\OrderBundle\Entity\Coupon;
 use Food\OrderBundle\Entity\CouponRange;
@@ -30,9 +34,13 @@ class CouponRangeAdmin extends FoodAdmin
             ->add('places', null, array('label' => 'admin.coupon.place', 'required' => false))
             ->add('noSelfDelivery','checkbox', array('required' => false))
             ->add('singleUse', 'checkbox', array('label' => 'admin.coupon.single_use', 'required' => false))
+            ->add('singleUsePerPerson', 'checkbox', array('label' => 'admin.coupon.single_use_per_person', 'required' => false))
+            ->add('onlinePaymentsOnly', 'checkbox', array('label' => 'admin.coupon.online_payments_only', 'required' => false))
             ->add('enableValidateDate', 'checkbox', array('required' => false))
             ->add('validFrom', 'datetime', array('label' => 'admin.coupon.valid_from', 'required' => false))
             ->add('validTo', 'datetime', array('label' => 'admin.coupon.valid_to', 'required' => false))
+            ->add('validHourlyFrom', 'time', array('required' => false))
+            ->add('validHourlyTo', 'time', array('required' => false))
             ->add('active', 'checkbox', array('label' => 'admin.coupon.active', 'required' => false))
         ;
         if ($this->getContainer()->getParameter('country') == "LT"
@@ -203,7 +211,6 @@ class CouponRangeAdmin extends FoodAdmin
                 $coupon = new Coupon();
                 $coupon->setCouponRange($obj);
                 $coupon->setActive($obj->getActive());
-                $coupon->setValidTo($obj->getValidTo());
                 $coupon->setDiscount($obj->getDiscount());
                 $coupon->setEditedAt($obj->getEditedAt());
                 $coupon->setEditedBy($obj->getEditedBy());
@@ -212,7 +219,12 @@ class CouponRangeAdmin extends FoodAdmin
                 $coupon->setDeletedAt($obj->getDeletedAt());
                 $coupon->setDeletedBy($obj->getDeletedBy());
                 $coupon->setSingleUse($obj->getSingleUse());
+                $coupon->setSingleUsePerPerson($obj->getSingleUsePerPerson());
+                $coupon->setOnlinePaymentsOnly($obj->getOnlinePaymentsOnly());
                 $coupon->setValidFrom($obj->getValidFrom());
+                $coupon->setValidTo($obj->getValidTo());
+                $coupon->setValidHourlyFrom($obj->getValidHourlyFrom());
+                $coupon->setValidHourlyTo($obj->getValidHourlyTo());
                 $coupon->setDiscountSum($obj->getDiscountSum());
                 $coupon->setFreeDelivery($obj->getFreeDelivery());
                 $coupon->setNoSelfDelivery($obj->getNoSelfDelivery());

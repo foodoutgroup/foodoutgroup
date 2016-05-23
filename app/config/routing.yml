@@ -213,6 +213,11 @@ nordea_banklink:
     resource: "@FoodOrderBundle/Resources/config/nordea_routing.yml"
     prefix: /payments/nordea/banklink
 
+# Custom report
+custom_report:
+    resource: "@FoodReportBundle/Resources/config/routing.yml"
+    prefix: /custom/report
+
 # other
 food_sitemap:
     pattern: /sitemap.xml

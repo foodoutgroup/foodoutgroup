@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 class DishRepository extends EntityRepository
 {
 
-    public function getCategoryActiveDishes($categoryId)
+    public function getCategoryActiveDishes($categoryId, $group = null)
     {
         $currentWeek = date('W') % 2 == 1; # 1 - odd 0 - even
         $currentWeek = $currentWeek ? 0 : 1;
@@ -21,6 +21,7 @@ class DishRepository extends EntityRepository
                 AND ((d.useDateInterval = 1 AND :curr_date >= dd.start AND :curr_date <= dd.end) OR (d.useDateInterval = 0))
                 AND ((d.checkEvenOddWeek = 1 AND d.evenWeek = :curr_week) OR (d.checkEvenOddWeek = 0))
             ')
+            ->andWhere('(d.group IS NULL '. ($group ? ' OR d.group = \''.$group.'\'' : '').')')
             ->setParameter('curr_date', date('Y-m-d'))
             ->setParameter('curr_week', $currentWeek);
 
