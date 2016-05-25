@@ -261,7 +261,8 @@ class PlaceAdmin extends FoodAdmin
      */
     public function synchDaPlacePoints($object)
     {
-        if ($object->getId() == 63) {
+        // sinchronizavimo nereikia - copyright Ramune Ablinge
+        if (0 && $object->getId() == 63) {
             $dc = $this->getContainer()->get('doctrine');
             $clone = $dc->getRepository('FoodDishesBundle:Place')->find(142);
 
