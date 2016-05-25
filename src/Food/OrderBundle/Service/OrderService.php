@@ -1209,7 +1209,15 @@ class OrderService extends ContainerAware
         $discountPercent = 0;
         $discountSum = 0;
 
-        if (!empty($coupon) && $coupon instanceof Coupon) {
+        if ($user->getIsBussinesClient()) {
+            $discountSize = $this->container->get('food.user')->getDiscount($user);
+            $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
+            $discountPercent = $discountSize;
+            $this->getOrder()
+                ->setDiscountSize($discountSize)
+                ->setDiscountSum($discountSum)
+            ;
+        } elseif (!empty($coupon) && $coupon instanceof Coupon) {
             $order = $this->getOrder();
             $order->setCoupon($coupon)
                 ->setCouponCode($coupon->getCode());
