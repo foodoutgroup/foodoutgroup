@@ -138,7 +138,7 @@ class DishAdmin extends FoodAdmin
                     'required' => true,
                     'by_reference' => false,
                     'label' => 'admin.dishes.sizes',
-                    'btn_add' => $this->getContainer()->get('translator')->trans('link_action_create_override', array(), 'SonataAdminBundle')
+//                    'btn_add' => $this->getContainer()->get('translator')->trans('link_action_create_override', array(), 'SonataAdminBundle')
                 ), array(
                     'edit' => 'inline',
                     'inline' => 'table'
