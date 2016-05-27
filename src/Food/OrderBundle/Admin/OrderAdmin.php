@@ -44,6 +44,7 @@ class OrderAdmin extends FoodAdmin
 //        if ($order->getOrderFromNav()) {
         $formMapper->add('total', null, array('label' => 'admin.order.total'));
         $formMapper->add('delivery_price', 'number', array('label' => 'admin.order.delivery_price'));
+        $formMapper->add('orderExtra.changeReason', 'text', array('label' => 'admin.order.change_reason', 'required' => true));
         /*} else {
             // Non Nav order should not let edit total
             $formMapper->add('total', null, array('label' => 'admin.order.total', 'disabled' => true));
@@ -295,6 +296,7 @@ class OrderAdmin extends FoodAdmin
             ->add('navDeliveryOrder', null, array('label' => 'admin.order.nav_delivery_order'))
             ->add('clientContacted', null, array('label' => 'admin.order.client_contacted'))
             ->add('newsletterSubscribe', null, array('label' => 'admin.order.newsletter_subscribe'))
+            ->add('orderExtra.changeReason', null, array('label' => 'admin.order.change_reason'))
         ;
 
         // Remove Fields For Restaurant User (Moderator)

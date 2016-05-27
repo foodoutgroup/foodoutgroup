@@ -69,6 +69,13 @@ class OrderExtra
      */
     private $cancelReasonComment = null;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="change_reason", type="text", nullable=true)
+     */
+    private $changeReason = null;
+
     public function __toString()
     {
         if (!$this->getId()) {
@@ -274,5 +281,28 @@ class OrderExtra
     public function getCancelReasonComment()
     {
         return $this->cancelReasonComment;
+    }
+
+    /**
+     * Set changeReason
+     *
+     * @param string $changeReason
+     * @return OrderExtra
+     */
+    public function setChangeReason($changeReason)
+    {
+        $this->changeReason = $changeReason;
+    
+        return $this;
+    }
+
+    /**
+     * Get changeReason
+     *
+     * @return string 
+     */
+    public function getChangeReason()
+    {
+        return $this->changeReason;
     }
 }

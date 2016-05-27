@@ -1099,6 +1099,10 @@
                 <source>admin.order.delivery_price</source>
                 <target>Delivery Price (with VAT)</target>
             </trans-unit>
+            <trans-unit id="admin.order.change_reason">
+                <source>admin.order.change_reason</source>
+                <target>Change reason</target>
+            </trans-unit>
             <trans-unit id="admin.order.coupon_code">
                 <source>admin.order.coupon_code</source>
                 <target>Discount coupon code</target>
