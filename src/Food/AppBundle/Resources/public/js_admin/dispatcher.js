@@ -117,11 +117,25 @@ var Dispatcher = {
         statusButtons[Dispatcher.getTranslation('button_change')] = function() {
             var newStatus = $(this).find('.order_status:checked').val();
             var delayDuration = (newStatus == 'delayed' ? $(this).find('select#delay_duration').val() : null);
+
+            if (newStatus == 'canceled') {
+                var reason_comment = $(this).find('#cancel_reason_comment').val();
+                if (reason_comment.trim() == '') {
+                    $(this).find('#cancel_reason_comment').addClass('red-border').bind('focus', function (e) {
+                        $(this).removeClass('red-border');
+                    });
+                    return;
+                }
+            }
+            var cancelReason = (newStatus == 'canceled' ? $(this).find('#cancel_reason').val() : null);
+            var cancelReasonComment = (newStatus == 'canceled' ? $(this).find('#cancel_reason_comment').val() : null);
             var url = Routing.generate('food_admin_set_order_status', {
                 '_locale': Dispatcher._locale,
                 'orderId': orderId,
                 'status': newStatus,
                 'delayDuration': delayDuration,
+                'cancelReason': cancelReason,
+                'cancelReasonComment': cancelReasonComment,
                 _sonata_admin: 'sonata.admin.dish'
             });
             $.get(
@@ -147,6 +161,9 @@ var Dispatcher = {
             var statusFields = fieldsHolder.find('input[type="radio"].order_status');
             var delayedField = fieldsHolder.find('input[value="delayed"].order_status');
             var delayedStatus = (delayedField.prop('checked') ? true : false);
+            var canceledFieldHolder = fieldsHolder.find('.canceled_reason_holder');
+            var canceledField = fieldsHolder.find('input[value="canceled"].order_status');
+            var canceledStatus = (canceledField.prop('checked') ? true : false);
 
             var toggle_delayedFieldHolder = function(delayedStatus) {
                 if (delayedStatus){
@@ -156,9 +173,19 @@ var Dispatcher = {
                 }
             };
 
+            var toggle_canceledFieldHolder = function(canceledStatus) {
+                if (canceledStatus){
+                    canceledFieldHolder.show();
+                } else {
+                    canceledFieldHolder.hide();
+                }
+            };
+
             toggle_delayedFieldHolder(delayedStatus);
+            toggle_canceledFieldHolder(canceledStatus);
             $(statusFields).on("click", function(event) {
                 toggle_delayedFieldHolder(($(this).prop('checked') && $(this).val() == 'delayed' ? true : false));
+                toggle_canceledFieldHolder(($(this).prop('checked') && $(this).val() == 'canceled' ? true : false));
             });
         };
 

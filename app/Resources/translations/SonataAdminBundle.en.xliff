@@ -1637,6 +1637,34 @@
                 <source>admin.dispatcher.status</source>
                 <target>Status</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.cancel_reason">
+                <source>admin.dispatcher.cancel_reason</source>
+                <target>Cancel reason</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.cancel_reason.client_changed_his_mind">
+                <source>admin.dispatcher.cancel_reason.client_changed_his_mind</source>
+                <target>Client changed his mind</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.cancel_reason.restaurant_dont_works">
+                <source>admin.dispatcher.cancel_reason.restaurant_dont_works</source>
+                <target>Restaurant dont works</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.cancel_reason.restaurant_has_no_dishes">
+                <source>admin.dispatcher.cancel_reason.restaurant_has_no_dishes</source>
+                <target>Restaurant has no dishes</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.cancel_reason.too_long_production_time">
+                <source>admin.dispatcher.cancel_reason.too_long_production_time</source>
+                <target>Too long production time</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.cancel_reason_comment">
+                <source>admin.dispatcher.cancel_reason_comment</source>
+                <target>Cancel reason comment</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.cancel_reason_comment_placeholder">
+                <source>admin.dispatcher.cancel_reason_comment_placeholder</source>
+                <target>Enter the comment</target>
+            </trans-unit>
             <!-- Status historis -->
             <trans-unit id="admin.order.log.date">
                 <source>admin.order.log.date</source>

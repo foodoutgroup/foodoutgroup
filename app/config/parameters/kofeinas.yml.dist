@@ -34,6 +34,7 @@ parameters:
         klaipėda: []
         ryga: []
     order.accept_notify_emails: []
+    order.cancel_notify_emails: []
     accounting_email: "mantas@foodout.lt"
     payment.methods:
         - local

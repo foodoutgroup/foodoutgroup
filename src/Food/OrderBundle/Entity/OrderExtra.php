@@ -55,6 +55,20 @@ class OrderExtra
      */
     private $email = null;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cancel_reason", type="string", length=255, nullable=true)
+     */
+    private $cancelReason = null;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cancel_reason_comment", type="text", nullable=true)
+     */
+    private $cancelReasonComment = null;
+
     public function __toString()
     {
         if (!$this->getId()) {
@@ -214,5 +228,51 @@ class OrderExtra
         }
 
         return $userContactData;
+    }
+
+    /**
+     * Set cancelReason
+     *
+     * @param string $cancelReason
+     * @return OrderExtra
+     */
+    public function setCancelReason($cancelReason)
+    {
+        $this->cancelReason = $cancelReason;
+    
+        return $this;
+    }
+
+    /**
+     * Get cancelReason
+     *
+     * @return string 
+     */
+    public function getCancelReason()
+    {
+        return $this->cancelReason;
+    }
+
+    /**
+     * Set cancelReasonComment
+     *
+     * @param string $cancelReasonComment
+     * @return OrderExtra
+     */
+    public function setCancelReasonComment($cancelReasonComment)
+    {
+        $this->cancelReasonComment = $cancelReasonComment;
+    
+        return $this;
+    }
+
+    /**
+     * Get cancelReasonComment
+     *
+     * @return string 
+     */
+    public function getCancelReasonComment()
+    {
+        return $this->cancelReasonComment;
     }
 }
