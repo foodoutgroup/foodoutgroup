@@ -5,62 +5,20 @@
         window.location.href = whereToGo;
     } else {
         var page = "/lightbox";
-        {% if randomizer!=0 %}
-            page+="/{{ randomizer }}";
-        {% endif %}
         ga('send', 'pageview', page);
         {# Facebook ViewContent Begin #}
         fbq('track', 'ViewContent');
         {# Facebook ViewContent End #}
     }
 </script>
-<style>
-    .name.style0 {
-        color: #55422E !important;
-    }
-    .button-submit.add-to-cart.style0 {
-        background-color: #55422e;
-        background-repeat: no-repeat;
-        background-image: none;
-    }
-    .name.style1,
-    .name.style3,
-    .name.style5,
-    .name.style7 {
-        color: #cd1d36 !important;
-    }
-    .button-submit.add-to-cart.style1,
-    .button-submit.add-to-cart.style3,
-    .button-submit.add-to-cart.style5,
-    .button-submit.add-to-cart.style7 {
-        background-color: #cd1d36;
-        background-repeat: no-repeat;
-        background-image: none;
-    }
 
-    .name.style2,
-    .name.style4,
-    .name.style6,
-    .name.style8 {
-        color: #90c200 !important;
-    }
-    .button-submit.add-to-cart.style2,
-    .button-submit.add-to-cart.style4,
-    .button-submit.add-to-cart.style6,
-    .button-submit.add-to-cart.style8 {
-        background-color: #90c200;
-        background-repeat: no-repeat;
-        background-image: none;
-    }
-
-</style>
 <div id="detailed-dish-popup">
     <form class="popup detailed-dish-popup">
         {% if dish.getWebPathThumb('type3') is not empty %}
             <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type3') }}" class="popup-header" />
         {% endif %}
         <div class="dish-info">
-            <p class="name {% if locale == 'lt' %}style{{ randomizer }}{% endif %}">{{ dish.name }}</p>
+            <p class="name {% if locale == 'lt' %}style{% endif %}">{{ dish.name }}</p>
             <p class="desc">{{ dish.description|nl2br }}</p>
         </div>
         <div class="dish-size">
@@ -149,16 +107,8 @@
                 {{ dish.place.alcoholRules|nl2br }}
             </div>
         </div>
-        {% if locale == "lt" %}
-            {% if randomizer != "0" %}
-                <div class="dish-info">
-                    <p class="name {% if locale == 'lt' %}style{{ randomizer }}{% endif %} message">
-                        {{ extraMessages[randomizer].message }}
-                    </p>
-                </div>
-            {% endif %}
-        {% endif %}
-        <div class="popup-controls"><a href="#" class="button-submit add-to-cart {% if locale == 'lt' %}style{{ randomizer }}{% endif %}"><span>{% trans %}dish.add_to_cart{% endtrans %}</span></a></div>
+
+        <div class="popup-controls"><a href="#" class="button-submit add-to-cart {% if locale == 'lt' %}style{% endif %}"><span>{% trans %}dish.add_to_cart{% endtrans %}</span></a></div>
     </form>
 </div>
 <script>

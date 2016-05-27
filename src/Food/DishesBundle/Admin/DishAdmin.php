@@ -2,12 +2,17 @@
 namespace Food\DishesBundle\Admin;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Food\AppBundle\Filter\PlaceFilter;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Validator\ErrorElement;
 use Food\DishesBundle\Entity\Place;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class DishAdmin extends FoodAdmin
 {
@@ -22,6 +27,10 @@ class DishAdmin extends FoodAdmin
         '_sort_by' => 'id' // name of the ordered field (default = the model id field, if any)
     );
 
+    protected $formOptions = array(
+        'cascade_validation' => true
+     );
+
     /**
      * @return string
      */
@@ -35,27 +44,54 @@ class DishAdmin extends FoodAdmin
     {
         // Override edit template by our magic one with ajax
         $this->setTemplate('edit', 'FoodDishesBundle:Dish:admin_dish_edit.html.twig');
+        $subject = $this->getSubject();
 
-        /**
-         * @var EntityManager $em
-         */
-        $em = $this->modelManager->getEntityManager('Food\DishesBundle\Entity\FoodCategory');
+        $formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT,
+            function (FormEvent $event) use ($formMapper, $subject) {
+                $form = $event->getForm();
 
-        /**
-         * @var QueryBuilder
-         */
-        $categoryQuery = $em->createQueryBuilder('c')
-            ->select('c')
-            ->from('Food\DishesBundle\Entity\FoodCategory', 'c')
-        ;
+                if ($form->has('categories')) {
+                    $form->remove('categories');
+                }
+                if ($form->has('options')) {
+                    $form->remove('options');
+                }
+                $place = $form->get('place')->getData();
 
-        /**
-         * @var QueryBuilder
-         */
-        $optionsQuery = $em->createQueryBuilder('o')
-            ->select('o')
-            ->from('Food\DishesBundle\Entity\DishOption', 'o')
-        ;
+                /**
+                 * @var EntityManager $em
+                 */
+                $em = $this->modelManager->getEntityManager('Food\DishesBundle\Entity\FoodCategory');
+
+                /**
+                 * @var QueryBuilder
+                 */
+                $categoryQuery = $em->createQueryBuilder('c')
+                    ->select('c')
+                    ->from('Food\DishesBundle\Entity\FoodCategory', 'c')
+                ;
+
+                /**
+                 * @var QueryBuilder
+                 */
+                $optionsQuery = $em->createQueryBuilder('o')
+                    ->select('o')
+                    ->from('Food\DishesBundle\Entity\DishOption', 'o')
+                ;
+
+                $categoryQuery->where('c.active = 1');
+                $optionsQuery->where('o.hidden = 0');
+
+                if (!empty($place) && $place instanceof Place) {
+                    $categoryQuery->andWhere('c.place = :place')
+                        ->setParameter('place', $place);
+                    $optionsQuery->andWhere('o.place = :place')
+                        ->setParameter('place', $place);
+                }
+
+                $form->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
+                    ->add('options', null, array('query_builder' => $optionsQuery, 'expanded' => true, 'multiple' => true, 'required' => false));
+        });
 
         $formMapper->add(
             'translations',
@@ -75,20 +111,6 @@ class DishAdmin extends FoodAdmin
         // If user is admin - he can screw Your place. But if user is a moderator - we will set the place ir prePersist!
         if ($this->isAdmin()) {
             $formMapper->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
-
-            // Filter out inactive, hidden field options
-            $categoryQuery->where('c.active = 1');
-            $optionsQuery->where('o.hidden = 0');
-        } else {
-            // If user is a moderator - he is assigned to a place (unless he is Chuck or Cekuolis)
-            $userPlaceId = $this->getUser()->getPlace()->getId();
-
-            // Filter out inactive, hidden field options
-            $categoryQuery->where('c.active = 1 AND c.place = :place')
-                ->setParameter('place', $userPlaceId);
-
-            $optionsQuery->where('o.hidden = 0 AND o.place = :place')
-                ->setParameter('place', $userPlaceId);
         }
 
         $options = array('required' => false, 'label' => 'admin.dish.photo');
@@ -97,14 +119,26 @@ class DishAdmin extends FoodAdmin
         }
 
         $formMapper
-            ->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
+            //->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
+            ->add(
+                'categories',
+                'sonata_type_model',
+                array(
+                    //'query_builder' => $optionsQuery,
+                    'choices' => array(),
+                    'btn_add' => false,
+                    'multiple' => true,
+                    'required' => false
+                )
+            )
             ->add('timeFrom', null, array('label' => 'admin.dish.time_from', 'required' => false,))
             ->add('timeTo', null, array('label' => 'admin.dish.time_to', 'required' => false,))
             ->add('file', 'file', $options)
             ->add('sizes', 'sonata_type_collection', array(
-                    'required' => false,
+                    'required' => true,
                     'by_reference' => false,
-                    'label' => 'admin.dishes.sizes'
+                    'label' => 'admin.dishes.sizes',
+//                    'btn_add' => $this->getContainer()->get('translator')->trans('link_action_create_override', array(), 'SonataAdminBundle')
                 ), array(
                     'edit' => 'inline',
                     'inline' => 'table'
@@ -113,7 +147,18 @@ class DishAdmin extends FoodAdmin
             ->add('discountPricesEnabled', 'checkbox', array('label' => 'admin.dish.discount_prices_enabled', 'required' => false,))
             ->add('noDiscounts', 'checkbox', array('label' => 'No discounts', 'required' => false,))
             ->add('showPublicPrice', 'checkbox', array('label' => 'Public price', 'required' => false,))
-            ->add('options', null, array('query_builder' => $optionsQuery,'expanded' => true, 'multiple' => true, 'required' => false))
+            ->add(
+                'options',
+                'sonata_type_model',
+                array(
+                    //'query_builder' => $optionsQuery,
+                    'choices' =>  array(),
+                    'btn_add' => false,
+                    'expanded' => true,
+                    'multiple' => true,
+                    'required' => false
+                )
+            )
             ->add('recomended', 'checkbox', array('label' => 'admin.dish.recomended', 'required' => false,))
             ->add('active', 'checkbox', array('label' => 'admin.dish.active', 'required' => false,))
             ->add('group', null, array('label' => 'admin.dish.group'))
@@ -184,7 +229,7 @@ class DishAdmin extends FoodAdmin
     {
         $listMapper
             ->addIdentifier('name', 'string', array('label' => 'admin.dish.name'))
-            ->add('place')
+            ->add('placeName')
             ->add('categories')
             ->add('image', 'string', array(
                 'template' => 'FoodDishesBundle:Default:list_image.html.twig',

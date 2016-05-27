@@ -625,7 +625,10 @@ class OrderService extends ContainerAware
         // TODO temp Beta.lt code
         $betaCode = '';
         if ($this->container->get('food.app.utils.misc')->getParam('beta_code_on', true) == 'on') {
-            $betaCode = $this->getBetaCode();
+            // TODO Kavos akcija tik mobilkom
+            if ($this->getOrder()->getMobile()) {
+                $betaCode = $this->getBetaCode();
+            }
         }
 
         $variables = array(
@@ -639,7 +642,7 @@ class OrderService extends ContainerAware
             'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
             'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
             'invoice' => $invoice,
-            'beta.lt_kodas' => $betaCode,
+            'beta_kodas' => $betaCode,
         );
 
 
