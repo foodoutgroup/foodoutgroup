@@ -152,6 +152,7 @@ class DishAdmin extends FoodAdmin
                 'sonata_type_model',
                 array(
                     //'query_builder' => $optionsQuery,
+                    'choices' =>  array(),
                     'btn_add' => false,
                     'expanded' => true,
                     'multiple' => true,
