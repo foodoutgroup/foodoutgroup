@@ -79,6 +79,7 @@ class OrderAdmin extends FoodAdmin
             ->add('city', 'doctrine_orm_callback', array('callback'   => array($this, 'userCityFilter'), 'field_type' => 'text'))
             ->add('address', 'doctrine_orm_callback', array('callback'   => array($this, 'userAddressFilter'), 'field_type' => 'text'))
             ->add('phone', 'doctrine_orm_callback', array('callback'   => array($this, 'userPhoneFilter'), 'field_type' => 'text'))
+            ->add('email', 'doctrine_orm_callback', array('callback'   => array($this, 'userEmailFilter'), 'field_type' => 'text'))
             ->add('userIp', null, array('label' => 'admin.order.user_ip'))
             ->add('order_status',null, array('label' => 'admin.order.order_status'), 'choice', array(
                 'choices' => $statusChoices
@@ -151,6 +152,18 @@ class OrderAdmin extends FoodAdmin
         $queryBuilder->join(sprintf('%s.orderExtra', $alias), 'oe');
         $queryBuilder->andWhere("oe.phone LIKE :thephone");
         $queryBuilder->setParameter('thephone', '%'.str_replace("+", "", $value['value']).'%');
+
+        return true;
+    }
+    public function userEmailFilter($queryBuilder, $alias, $field, $value)
+    {
+        if (!$value || empty($value['value'])) {
+            return;
+        }
+
+        $queryBuilder->join(sprintf('%s.orderExtra', $alias), 'oe');
+        $queryBuilder->andWhere("oe.email LIKE :theemail");
+        $queryBuilder->setParameter('theemail', '%'.$value['value'].'%');
 
         return true;
     }
