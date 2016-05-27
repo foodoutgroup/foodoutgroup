@@ -87,6 +87,8 @@
                 {#{% endif %}#}
                 {% if order_service.isLate(order) %}
                     {% set additional_class = 'late_warning' %}
+                {% elseif order_service.isBigDaddyOrder(order) %}
+                    {% set additional_class = 'big_daddy_order' %}
                 {% else %}
                     {% set additional_class = '' %}
                 {% endif %}

@@ -378,6 +378,15 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param Order $order
+     * @return bool
+     */
+    public function isBigDaddyOrder(Order $order)
+    {
+        return $order->getTotal() >= 40;
+    }
+
+    /**
      * @param string $status
      * @param string|null $source
      * @param string|null $message
