@@ -254,12 +254,4 @@ class Admin extends SonataAdmin
         return $this->generateUrl($name, $parameters, $absolute);
     }
 
-    /**
-     * TODO remove after hackers are gone
-     * @return bool
-     */
-    public function getExportFormats()
-    {
-        return false;
-    }
 }
