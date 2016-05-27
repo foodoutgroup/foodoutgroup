@@ -89,6 +89,12 @@ tr.late_warning.odd {
 tr.late_warning.even {
     background-color: #e76750 !important;
 }
+tr.big_daddy_order.odd {
+    background-color: #8fff75 !important;
+}
+tr.big_daddy_order.even {
+    background-color: #7fff65 !important;
+}
 
 td.no-wrap {
     white-space: nowrap;

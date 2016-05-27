@@ -378,6 +378,15 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param Order $order
+     * @return bool
+     */
+    public function isBigDaddyOrder(Order $order)
+    {
+        return $order->getTotal() >= 40;
+    }
+
+    /**
      * @param string $status
      * @param string|null $source
      * @param string|null $message
@@ -842,8 +851,7 @@ class OrderService extends ContainerAware
         // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
         if ($order->getPlace()->getSendInvoice()
             && !$order->getPlacePointSelfDelivery()
-            && $order->getDeliveryType() == OrderService::$deliveryDeliver
-            && $order->getPaymentMethod() != 'postpaid') {
+            && $order->getDeliveryType() == OrderService::$deliveryDeliver) {
             // Patikrinam ar sitam useriui reikia generuoti sf
             if (!$order->getUser()->getNoInvoice()) {
                 $mustDoNavDelete = $this->setInvoiceDataForOrder();
@@ -1209,7 +1217,15 @@ class OrderService extends ContainerAware
         $discountPercent = 0;
         $discountSum = 0;
 
-        if (!empty($coupon) && $coupon instanceof Coupon) {
+        if ($user->getIsBussinesClient()) {
+            $discountSize = $this->container->get('food.user')->getDiscount($user);
+            $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
+            $discountPercent = $discountSize;
+            $this->getOrder()
+                ->setDiscountSize($discountSize)
+                ->setDiscountSum($discountSum)
+            ;
+        } elseif (!empty($coupon) && $coupon instanceof Coupon) {
             $order = $this->getOrder();
             $order->setCoupon($coupon)
                 ->setCouponCode($coupon->getCode());
