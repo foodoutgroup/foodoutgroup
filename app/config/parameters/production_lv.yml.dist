@@ -36,6 +36,7 @@ parameters:
         riga: [paulius@foodout.lt]
         rīga: [paulius@foodout.lt]
     order.accept_notify_emails: []
+    order.cancel_notify_emails: []
     accounting_email: "jolanta@foodout.lv"
     payment.methods:
         - local

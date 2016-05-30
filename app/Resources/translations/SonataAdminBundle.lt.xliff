@@ -1099,6 +1099,10 @@
                 <source>admin.order.delivery_price</source>
                 <target>Pristatymo kaina (su PVM)</target>
             </trans-unit>
+            <trans-unit id="admin.order.change_reason">
+                <source>admin.order.change_reason</source>
+                <target>Keitimo priežastis</target>
+            </trans-unit>
             <trans-unit id="admin.order.coupon_code">
                 <source>admin.order.coupon_code</source>
                 <target>Nuolaidos kupono kodas</target>
@@ -1680,6 +1684,34 @@
             <trans-unit id="admin.dispatcher.status">
                 <source>admin.dispatcher.status</source>
                 <target>Būklė</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.cancel_reason">
+                <source>admin.dispatcher.cancel_reason</source>
+                <target>Atšaukimo priežastis</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.cancel_reason.client_changed_his_mind">
+                <source>admin.dispatcher.cancel_reason.client_changed_his_mind</source>
+                <target>Klientas apsigalvojo</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.cancel_reason.restaurant_dont_works">
+                <source>admin.dispatcher.cancel_reason.restaurant_dont_works</source>
+                <target>Restoranas nedirba</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.cancel_reason.restaurant_has_no_dishes">
+                <source>admin.dispatcher.cancel_reason.restaurant_has_no_dishes</source>
+                <target>Restoranas neturi patiekalų</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.cancel_reason.too_long_production_time">
+                <source>admin.dispatcher.cancel_reason.too_long_production_time</source>
+                <target>Per ilgas gamybos laikas</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.cancel_reason_comment">
+                <source>admin.dispatcher.cancel_reason_comment</source>
+                <target>Atšaukimo priežasties komentaras</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.cancel_reason_comment_placeholder">
+                <source>admin.dispatcher.cancel_reason_comment_placeholder</source>
+                <target>Įveskite komentarą</target>
             </trans-unit>
             <!-- Status historis -->
             <trans-unit id="admin.order.log.date">

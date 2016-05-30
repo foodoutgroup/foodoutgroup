@@ -165,8 +165,12 @@ button.late_orders {
     margin: 0 15px;
 }
 
-.delay_duration_holder {
+.delay_duration_holder, .canceled_reason_holder {
     display: none;
+}
+.red-border {
+    border-color: #e9322d !important;
+    box-shadow: 0 0 6px #f8b9b7 !important;
 }
 .order_status_label {
     cursor: pointer;

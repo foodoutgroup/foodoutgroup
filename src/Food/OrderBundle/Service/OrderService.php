@@ -4032,4 +4032,32 @@ class OrderService extends ContainerAware
             'user' => $user
         ));
     }
+    
+    public function informAdminAboutCancelation()
+    {
+        $cancelEmails = $this->container->getParameter('order.cancel_notify_emails');
+        if (is_array($cancelEmails)) {
+            $mailer = $this->container->get('mailer');
+            $user = $this->container->get('security.context')->getToken()->getUser();
+            $domain = $this->container->getParameter('domain');
+            $order = $this->getOrder();
+
+            $message = \Swift_Message::newInstance()
+                ->setSubject($this->container->getParameter('title').': #'.$order->getId().' order cancel')
+                ->setFrom('info@'.$domain)
+                ->setContentType('text/html')
+            ;
+
+            $messageTxt  = 'Order ID: '.$order->getId()."<br />";
+            $messageTxt .= 'Order status: '.$order->getOrderStatus()."<br />";
+            $messageTxt .= 'Order cancel reason: '.$order->getOrderExtra()->getCancelReason()."<br />";
+            $messageTxt .= 'Order cancel reason comment: '.$order->getOrderExtra()->getCancelReasonComment()."<br />";
+            $messageTxt .= 'User: '.$user->getFirstname();
+
+            $this->addEmailsToMessage($message, $cancelEmails);
+
+            $message->setBody($messageTxt);
+            $mailer->send($message);
+        }
+    }
 }

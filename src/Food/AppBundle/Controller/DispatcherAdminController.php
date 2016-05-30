@@ -215,6 +215,7 @@ class DispatcherAdminController extends Controller
                 'currentStatus' => $order->getOrderStatus(),
                 'delayDurations' => $delayDurations,
                 'currentDelayDuration' => $order->getDelayDuration(),
+                'cancelReasons' => $this->_getCancelReasons()
             )
         );
     }
@@ -244,11 +245,15 @@ class DispatcherAdminController extends Controller
         }
     }
 
-    public function setOrderStatusAction($orderId, $status, $delayDuration = false)
+    public function setOrderStatusAction($orderId, $status, $delayDuration = false, Request $request)
     {
+        $cancelReason = $request->get('cancelReason');
+        $cancelReasonComment = $request->get('cancelReasonComment');
+
         $orderService = $this->get('food.order');
-        $setOrderStatus = function ($orderId, $status, $delayDuration) use (&$orderService) {
+        $setOrderStatus = function ($orderId, $status, $delayDuration, $cancelReason, $cancelReasonComment) use (&$orderService) {
             $orderService->getOrderById($orderId);
+            $oldStatus = $orderService->getOrder()->getOrderStatus();
             $method = 'status' . ucfirst($status);
             if (method_exists($orderService, $method)) {
                 $orderService->$method('dispatcher');
@@ -265,17 +270,27 @@ class DispatcherAdminController extends Controller
                     $orderService->getOrder()->setDelayDuration(null);
                 }
                 if ($method == 'statusCanceled') {
-                    $orderService->informPlaceCancelAction();
+                    if (OrderService::$status_canceled != $oldStatus) {
+                        $orderService->informPlaceCancelAction();
+                    }
+
+                    $orderExtra = $orderService->getOrder()
+                        ->getOrderExtra();
+                    $orderExtra->setCancelReason($cancelReason)
+                        ->setCancelReasonComment($cancelReasonComment);
+                    $orderService->getEm()->persist($orderExtra);
+
+                    $orderService->informAdminAboutCancelation();
                 }
             }
             $orderService->saveOrder();
         };
 
         try {
-            $setOrderStatus($orderId, $status, $delayDuration);
+            $setOrderStatus($orderId, $status, $delayDuration, $cancelReason, $cancelReasonComment);
         } catch (OptimisticLockException $e) {
             // Retry
-            $setOrderStatus($orderId, $status, $delayDuration);
+            $setOrderStatus($orderId, $status, $delayDuration, $cancelReason, $cancelReasonComment);
         } catch (\Exception $e) {
             // TODO normalus error return ir ispiesimas popupe
             $this->get('logger')->error('Error happened setting status: '.$e->getMessage());
@@ -472,5 +487,19 @@ class DispatcherAdminController extends Controller
         }
 
         return new Response('YES');
+    }
+
+    /**
+     * @return array
+     */
+    private function _getCancelReasons()
+    {
+        $trans = $this->get('translator');
+        return array(
+            $trans->trans('admin.dispatcher.cancel_reason.client_changed_his_mind', array(), 'SonataAdminBundle'),
+            $trans->trans('admin.dispatcher.cancel_reason.restaurant_dont_works', array(), 'SonataAdminBundle'),
+            $trans->trans('admin.dispatcher.cancel_reason.restaurant_has_no_dishes', array(), 'SonataAdminBundle'),
+            $trans->trans('admin.dispatcher.cancel_reason.too_long_production_time', array(), 'SonataAdminBundle')
+        );
     }
 }

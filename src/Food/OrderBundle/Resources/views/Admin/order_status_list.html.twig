@@ -1,6 +1,10 @@
 {# Uzsakymo statuso ir statuso istorijos ispiesimas prie sonatos order show formos #}
 <td colspan="2">
     <b>{{ field_description.options.label|trans({}, 'SonataAdminBundle') }}:</b> {{ ( 'admin.dispatcher.order_status.' ~ object.orderStatus)|trans({}, 'SonataAdminBundle') }}
+    {% if object.orderStatus == 'canceled' %}
+    <br /><b>{{ 'admin.dispatcher.cancel_reason'|trans({}, 'SonataAdminBundle') }}:</b> {{ object.orderExtra.cancelReason }}
+    <br /><b>{{ 'admin.dispatcher.cancel_reason_comment'|trans({}, 'SonataAdminBundle') }}:</b> {{ object.orderExtra.cancelReasonComment }}
+    {% endif %}
     <br />
     <br />
     <div class="collapsable">
