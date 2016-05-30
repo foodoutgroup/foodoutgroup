@@ -491,7 +491,7 @@ var Dispatcher = {
     },
 
     initDriverFilter: function() {
-        $(".drivers_table").on('mouseover', 'tr.odd,tr.even', function() {
+        $(".content").on('mouseover', '.drivers_table tr.odd,.drivers_table tr.even', function() {
             var driverId = $(this).data('driverId');
             $('.order_list.not_finished').find('tr.odd,tr.even').find('.driver').each(function() {
                 if (!$(this).hasClass('driver'+driverId)) {
@@ -499,7 +499,7 @@ var Dispatcher = {
                 }
             });
         });
-        $(".drivers_table").on('mouseout', 'tr.odd,tr.even', function() {
+        $(".content").on('mouseout', '.drivers_table tr.odd,.drivers_table tr.even', function() {
             $('.order_list.not_finished').find('tr').css('opacity', 1);
         });
     }
