@@ -26,6 +26,8 @@ var Dispatcher = {
 
         Dispatcher.initTooltips();
 
+        Dispatcher.initDriverFilter();
+
         $(".todo_nieks_nezino_klases").on('click', ' .unassigned .order_checkbox,.not_finished .order_checkbox', function(){
             Dispatcher.toggleDriverButton($(this));
             //TODO - enable active drivers list buttons
@@ -486,5 +488,19 @@ var Dispatcher = {
         });
 
         $(".city-tab a").tooltip({placement: 'bottom'});
+    },
+
+    initDriverFilter: function() {
+        $(".drivers_table").on('mouseover', 'tr.odd,tr.even', function() {
+            var driverId = $(this).data('driverId');
+            $('.order_list.not_finished').find('tr.odd,tr.even').find('.driver').each(function() {
+                if (!$(this).hasClass('driver'+driverId)) {
+                    $(this).closest('tr').css('opacity', 0.5);
+                }
+            });
+        });
+        $(".drivers_table").on('mouseout', 'tr.odd,tr.even', function() {
+            $('.order_list.not_finished').find('tr').css('opacity', 1);
+        });
     }
 };
