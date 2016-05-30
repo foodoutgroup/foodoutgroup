@@ -201,6 +201,11 @@ class OrderAdminController extends Controller
                                 $where .= " AND oe.phone LIKE " . $prepare_val("%" . str_replace("+", "", $value['value']) . "%");
                             }
                             break;
+                        case 'email':
+                            if (!empty($value['value'])) {
+                                $where .= " AND oe.email LIKE " . $prepare_val("%" . $value['value'] . "%");
+                            }
+                            break;
                         case 'paymentStatus':
                             if (!empty($value['value'])) {
                                 $where .= " AND o.payment_status = " . $prepare_val($value['value']);

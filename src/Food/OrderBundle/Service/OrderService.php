@@ -378,6 +378,15 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param Order $order
+     * @return bool
+     */
+    public function isBigDaddyOrder(Order $order)
+    {
+        return $order->getTotal() >= 40;
+    }
+
+    /**
      * @param string $status
      * @param string|null $source
      * @param string|null $message
@@ -616,7 +625,10 @@ class OrderService extends ContainerAware
         // TODO temp Beta.lt code
         $betaCode = '';
         if ($this->container->get('food.app.utils.misc')->getParam('beta_code_on', true) == 'on') {
-            $betaCode = $this->getBetaCode();
+            // TODO Kavos akcija tik mobilkom
+            if ($this->getOrder()->getMobile()) {
+                $betaCode = $this->getBetaCode();
+            }
         }
 
         $variables = array(
@@ -630,7 +642,7 @@ class OrderService extends ContainerAware
             'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
             'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
             'invoice' => $invoice,
-            'beta.lt_kodas' => $betaCode,
+            'beta_kodas' => $betaCode,
         );
 
 
@@ -842,8 +854,7 @@ class OrderService extends ContainerAware
         // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
         if ($order->getPlace()->getSendInvoice()
             && !$order->getPlacePointSelfDelivery()
-            && $order->getDeliveryType() == OrderService::$deliveryDeliver
-            && $order->getPaymentMethod() != 'postpaid') {
+            && $order->getDeliveryType() == OrderService::$deliveryDeliver) {
             // Patikrinam ar sitam useriui reikia generuoti sf
             if (!$order->getUser()->getNoInvoice()) {
                 $mustDoNavDelete = $this->setInvoiceDataForOrder();
@@ -4024,5 +4035,33 @@ class OrderService extends ContainerAware
             'coupon' => $coupon,
             'user' => $user
         ));
+    }
+    
+    public function informAdminAboutCancelation()
+    {
+        $cancelEmails = $this->container->getParameter('order.cancel_notify_emails');
+        if (is_array($cancelEmails)) {
+            $mailer = $this->container->get('mailer');
+            $user = $this->container->get('security.context')->getToken()->getUser();
+            $domain = $this->container->getParameter('domain');
+            $order = $this->getOrder();
+
+            $message = \Swift_Message::newInstance()
+                ->setSubject($this->container->getParameter('title').': #'.$order->getId().' order cancel')
+                ->setFrom('info@'.$domain)
+                ->setContentType('text/html')
+            ;
+
+            $messageTxt  = 'Order ID: '.$order->getId()."<br />";
+            $messageTxt .= 'Order status: '.$order->getOrderStatus()."<br />";
+            $messageTxt .= 'Order cancel reason: '.$order->getOrderExtra()->getCancelReason()."<br />";
+            $messageTxt .= 'Order cancel reason comment: '.$order->getOrderExtra()->getCancelReasonComment()."<br />";
+            $messageTxt .= 'User: '.$user->getFirstname();
+
+            $this->addEmailsToMessage($message, $cancelEmails);
+
+            $message->setBody($messageTxt);
+            $mailer->send($message);
+        }
     }
 }

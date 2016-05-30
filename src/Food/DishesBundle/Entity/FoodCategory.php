@@ -9,7 +9,7 @@ use Gedmo\Translatable\Translatable;
 /**
  * Food category
  *
- * @ORM\Table(name="food_category")
+ * @ORM\Table(name="food_category", indexes={@ORM\Index(name="active_idx", columns={"active"}), @ORM\Index(name="active_deleted_idx", columns={"active", "deleted_at"})})
  * @ORM\Entity
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\FoodCategoryLocalized")

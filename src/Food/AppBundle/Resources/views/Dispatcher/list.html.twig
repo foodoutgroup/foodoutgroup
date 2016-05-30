@@ -87,6 +87,8 @@
                 {#{% endif %}#}
                 {% if order_service.isLate(order) %}
                     {% set additional_class = 'late_warning' %}
+                {% elseif order_service.isBigDaddyOrder(order) %}
+                    {% set additional_class = 'big_daddy_order' %}
                 {% else %}
                     {% set additional_class = '' %}
                 {% endif %}
@@ -181,7 +183,7 @@
                         {% endif %}
                     </td>
                     {% if type == 'not_finished' %}
-                        <td class="driver">
+                        <td class="driver{% if order.driver is not null and order.driver is not empty and order.isDriverNotDeleted %} driver{{ order.driver.id }}{% endif %}">
                             {% if order.deliveryType == 'pickup' %}
                                 <strong>{{ 'admin.dispatcher.pickup_order'|trans({}, 'SonataAdminBundle') }}</strong>
                             {% else %}
@@ -485,7 +487,7 @@
                             {% set type = driver['type'] %}
                             <tr><td colspan="4"><hr/></td></tr>
                         {% endif %}
-                        <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">
+                        <tr class="{{ loop.index%2 ? 'odd' : 'even' }}" data-driver-id="{{ driver.id }}">
                             <td>{{ driver['name'] }}</td>
                             <td><a href="tel:{{ driver['phone'] }}">{{ driver['phone'] }}</a></td>
                             {#<td>{{ ('admin.driver.type.' ~ driver.type)|trans({}, 'SonataAdminBundle') }}</td>#}

@@ -37,6 +37,7 @@ parameters:
         klaipėda: [jurgita@foodout.lt]
         ryga: [paulius@foodout.lt]
     order.accept_notify_emails: []
+    order.cancel_notify_emails: []
     accounting_email: "buhalterija@foodout.lt"
     payment.methods:
         - local

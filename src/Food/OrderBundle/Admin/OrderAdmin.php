@@ -44,6 +44,7 @@ class OrderAdmin extends FoodAdmin
 //        if ($order->getOrderFromNav()) {
         $formMapper->add('total', null, array('label' => 'admin.order.total'));
         $formMapper->add('delivery_price', 'number', array('label' => 'admin.order.delivery_price'));
+        $formMapper->add('orderExtra.changeReason', 'text', array('label' => 'admin.order.change_reason', 'required' => true));
         /*} else {
             // Non Nav order should not let edit total
             $formMapper->add('total', null, array('label' => 'admin.order.total', 'disabled' => true));
@@ -79,6 +80,7 @@ class OrderAdmin extends FoodAdmin
             ->add('city', 'doctrine_orm_callback', array('callback'   => array($this, 'userCityFilter'), 'field_type' => 'text'))
             ->add('address', 'doctrine_orm_callback', array('callback'   => array($this, 'userAddressFilter'), 'field_type' => 'text'))
             ->add('phone', 'doctrine_orm_callback', array('callback'   => array($this, 'userPhoneFilter'), 'field_type' => 'text'))
+            ->add('email', 'doctrine_orm_callback', array('callback'   => array($this, 'userEmailFilter'), 'field_type' => 'text'))
             ->add('userIp', null, array('label' => 'admin.order.user_ip'))
             ->add('order_status',null, array('label' => 'admin.order.order_status'), 'choice', array(
                 'choices' => $statusChoices
@@ -151,6 +153,18 @@ class OrderAdmin extends FoodAdmin
         $queryBuilder->join(sprintf('%s.orderExtra', $alias), 'oe');
         $queryBuilder->andWhere("oe.phone LIKE :thephone");
         $queryBuilder->setParameter('thephone', '%'.str_replace("+", "", $value['value']).'%');
+
+        return true;
+    }
+    public function userEmailFilter($queryBuilder, $alias, $field, $value)
+    {
+        if (!$value || empty($value['value'])) {
+            return;
+        }
+
+        $queryBuilder->join(sprintf('%s.orderExtra', $alias), 'oe');
+        $queryBuilder->andWhere("oe.email LIKE :theemail");
+        $queryBuilder->setParameter('theemail', '%'.$value['value'].'%');
 
         return true;
     }
@@ -282,6 +296,7 @@ class OrderAdmin extends FoodAdmin
             ->add('navDeliveryOrder', null, array('label' => 'admin.order.nav_delivery_order'))
             ->add('clientContacted', null, array('label' => 'admin.order.client_contacted'))
             ->add('newsletterSubscribe', null, array('label' => 'admin.order.newsletter_subscribe'))
+            ->add('orderExtra.changeReason', null, array('label' => 'admin.order.change_reason'))
         ;
 
         // Remove Fields For Restaurant User (Moderator)
