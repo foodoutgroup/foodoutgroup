@@ -499,7 +499,8 @@ class DispatcherAdminController extends Controller
             $trans->trans('admin.dispatcher.cancel_reason.client_changed_his_mind', array(), 'SonataAdminBundle'),
             $trans->trans('admin.dispatcher.cancel_reason.restaurant_dont_works', array(), 'SonataAdminBundle'),
             $trans->trans('admin.dispatcher.cancel_reason.restaurant_has_no_dishes', array(), 'SonataAdminBundle'),
-            $trans->trans('admin.dispatcher.cancel_reason.too_long_production_time', array(), 'SonataAdminBundle')
+            $trans->trans('admin.dispatcher.cancel_reason.too_long_production_time', array(), 'SonataAdminBundle'),
+            $trans->trans('admin.dispatcher.cancel_reason.software_error', array(), 'SonataAdminBundle')
         );
     }
 }
