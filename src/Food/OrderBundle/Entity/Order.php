@@ -2253,4 +2253,32 @@ class Order
     {
         return $this->assignLate;
     }
+
+    public function getTotalWithoutVat()
+    {
+        if ($this->getVat()) {
+            return round($this->getTotal() / (1 + $this->getVat() / 100), 2);
+        }
+
+        return $this->getTotal();
+    }
+
+    public function getVatSize()
+    {
+        return $this->getTotal() - $this->getTotalWithoutVat();
+    }
+
+    public function getDeliveryWithoutVat()
+    {
+        if ($this->getVat()) {
+            return round($this->getDeliveryPrice() / (1 + $this->getVat() / 100), 2);
+        }
+
+        return $this->getDeliveryPrice();
+    }
+
+    public function getDishesWithoutVat()
+    {
+        return $this->getTotalWithoutVat() - $this->getDeliveryWithoutVat();
+    }
 }
