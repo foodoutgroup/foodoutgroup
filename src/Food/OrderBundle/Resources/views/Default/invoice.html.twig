@@ -90,8 +90,8 @@
             <td>{{ 'order.invoice.food_from1822'|trans() }}</td>
             <td></td>
             <td class="narrow_col">1</td>
-            <td class="sum_col">{{ order.total - order.deliveryPrice }}</td>
-            <td class="sum_col">{{ order.total - order.deliveryPrice }}</td>
+            <td class="sum_col">{{ order.dishesWithoutVat|number_format(2, ',', ' ') }}</td>
+            <td class="sum_col">{{ order.dishesWithoutVat|number_format(2, ',', ' ') }}</td>
             {% if currency_alternative %}<td class="no-border sum_col"></td>{% endif %}
         </tr>
     {#{% else %}
@@ -107,18 +107,15 @@
             </tr>
         {% endfor %}
     {% endif %}#}
-
-    {% set sum_no_vat = ((order.total - order.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
-
-    {% if order.deliveryType == 'deliver' %}
-        {% set sum_no_vat = ((order.total - order.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
-        {% set delivery_no_vat =  (order.deliveryPrice / (( vat_size / 100 ) + 1))|round(2) %}
-    {% else %}
-        {% set sum_no_vat = ((order.total) / (( vat_size / 100 ) + 1))|round(2) %}
-        {% set delivery_no_vat =  0 %}
-    {% endif %}
-
-    {% set vat_sum = order.total - sum_no_vat - delivery_no_vat %}
+    <tr class="no-border-line">
+        <td class="narrow_col">2</td>
+        <td>{{ 'order.invoice.delivery'|trans() }}</td>
+        <td></td>
+        <td class="narrow_col">1</td>
+        <td class="sum_col">{{ order.deliveryWithoutVat|number_format(2, ',', ' ') }}</td>
+        <td class="sum_col">{{ order.deliveryWithoutVat|number_format(2, ',', ' ') }}</td>
+        {% if currency_alternative %}<td class="no-border sum_col"></td>{% endif %}
+    </tr>
 
     <tr class="no-border-line"><td colspan="7">&nbsp;</td></tr>
     <tr class="no-border-line">
@@ -127,20 +124,9 @@
         <td></td>
         <td></td>
         <td class="no-wrap">{% trans %}order.invoice.sum_no_vat{% endtrans %}:</td>
-        <td class="sum_col">{{ sum_no_vat|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
-        {% if currency_alternative %}<td class="sum_col">{{ misc_utils.getLitas(sum_no_vat) }} {{ display_currency_alternative }}</td>{% endif %}
+        <td class="sum_col">{{ order.totalWithoutVat|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
+        {% if currency_alternative %}<td class="sum_col">{{ misc_utils.getLitas(order.totalWithoutVat) }} {{ display_currency_alternative }}</td>{% endif %}
     </tr>
-    {% if order.deliveryType == 'deliver' %}
-        <tr class="no-border-line">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td class="no-wrap" style="white-space: nowrap;">{% trans %}order.invoice.delivery{% endtrans %}</td>
-            <td class="sum_col">{{ delivery_no_vat|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
-            {% if currency_alternative %}<td class="sum_col">{{ misc_utils.getLitas(order.deliveryPrice) }} {{ display_currency_alternative }}</td>{% endif %}
-        </tr>
-    {% endif %}
 
     <tr class="no-border-line">
         <td></td>
@@ -148,8 +134,8 @@
         <td></td>
         <td></td>
         <td class="no-wrap" style="white-space: nowrap;">{% trans %}order.invoice.vat{% endtrans %} {{ vat_size }}%</td>
-        <td class="sum_col">{{ vat_sum|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
-        {% if currency_alternative %}<td class="sum_col">{{ misc_utils.getLitas(vat_sum) }} {{ display_currency_alternative }}</td>{% endif %}
+        <td class="sum_col">{{ order.vatSize|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
+        {% if currency_alternative %}<td class="sum_col">{{ misc_utils.getLitas(order.vatSize) }} {{ display_currency_alternative }}</td>{% endif %}
     </tr>
     <tr class="no-border-line">
         <td></td>
