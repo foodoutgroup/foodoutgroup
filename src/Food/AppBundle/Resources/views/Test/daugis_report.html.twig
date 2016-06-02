@@ -1,0 +1,46 @@
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block content_header '' %}
+
+{% block body %}
+    <div class="site-center">
+        <div class="site-block">
+            <div class="middle-content">
+                <div class="static-page">
+                    <h1>No cookie for you</h1>
+                    <div class="static-page-content">
+
+                        <table>
+                            <Tr>
+                                <th></th>
+                                {% for key in keys %}
+                                    <td>{{ key }}</td>
+                                {% endfor %}
+                            </Tr>
+                            <Tr>
+                                <th>Min once</th>
+                                {% for key in keys %}
+                                    <td>{{ activeMembers1[key] }}</td>
+                                {% endfor %}
+                            </Tr>
+                            <Tr>
+                                <th>More than once</th>
+                                {% for key in keys %}
+                                    <td>{{ activeMembers2[key] }}</td>
+                                {% endfor %}
+                            </Tr>
+                            <Tr>
+                                <th>New placePoints</th>
+                                {% for key in keys %}
+                                    <td>{{ newPlacePoints[key] }}</td>
+                                {% endfor %}
+                            </Tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

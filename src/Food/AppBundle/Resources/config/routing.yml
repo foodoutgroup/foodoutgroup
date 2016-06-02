@@ -436,3 +436,8 @@ food_city_riga_slash_filter:
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga, slug_filter: ~}
     requirements:
         slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
+
+food_test_report:
+    pattern: /test/where/the/magic/happens/but/we/dont/know/anything
+    defaults: { _controller: FoodAppBundle:Test:magicReportForDaugis }
