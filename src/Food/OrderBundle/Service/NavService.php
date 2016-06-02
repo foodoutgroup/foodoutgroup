@@ -1938,4 +1938,43 @@ class NavService extends ContainerAware
 
         return true;
     }
+
+    public function getOrdersWithoutPlacePointData()
+    {
+        $query = "select [Order ID] from ".$this->getInvoiceTable()." WHERE [Production Point Address] = '' AND ([Order Date] = '".date("Y-m-d")."' OR [Order Date] = '".date("Y-m-d", strtotime('-1 day'))."') ";
+        $sqlSS = $this->initSqlConn()->query($query);
+        $returner = array();
+        if ($sqlSS) {
+            while($row = $this->container->get('food.mssql')->fetchArray($sqlSS)) {
+                $returner[] = $row['Order ID'];
+            }
+        }
+        return $returner;
+    }
+
+    /**
+     * @param $orderId
+     */
+    public function updateOrderPlacePointInfo($orderId, $exceute = false)
+    {
+        $order = $this->getContainer()->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($orderId);
+        if ($order instanceof Order) {
+            $query = "UPDATE ".$this->getInvoiceTable()."
+                SET
+                    [Production Point Address]='".$order->getPlacePoint()->getAddress()."',
+                    [Production Point Code]='".$order->getPlacePoint()->getInternalCode()."',
+                    [ReplicationCounter] = (SELECT ISNULL(MAX(ReplicationCounter),0) FROM ".$this->getInvoiceTable().") + 1',
+                WHERE [Order No_] = ".$orderId;
+            if (!$exceute) {
+                echo $query."\n";
+            } else {
+                $sqlSS = $this->initSqlConn()->query($query);
+                if ($sqlSS) {
+                    echo $orderId." - success";
+                } else {
+                    echo $orderId." - fail";
+                }
+            }
+        }
+    }
 }
