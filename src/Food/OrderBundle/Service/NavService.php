@@ -1963,7 +1963,7 @@ class NavService extends ContainerAware
                 SET
                     [Production Point Address]='".$order->getPlacePoint()->getAddress()."',
                     [Production Point Code]='".$order->getPlacePoint()->getInternalCode()."',
-                    [ReplicationCounter] = (SELECT ISNULL(MAX(ReplicationCounter),0) FROM ".$this->getInvoiceTable().") + 1',
+                    [ReplicationCounter] = (SELECT ISNULL(MAX(ReplicationCounter),0) FROM ".$this->getInvoiceTable().") + 1
                 WHERE [Order No_] = ".$orderId;
             if (!$exceute) {
                 echo $query."\n";
