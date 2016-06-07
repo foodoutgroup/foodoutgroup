@@ -21,6 +21,7 @@ class FixerController extends Controller
         $stmt = $conn->prepare($query);
         $stmt->execute();
         $result =  $stmt->fetchAll();
+        $oser = $this->container->get('food.order');
         echo "<pre>";
         foreach ($result as $res) {
             $order = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($res['id']);
@@ -30,7 +31,8 @@ class FixerController extends Controller
                 && $order->getDeliveryType() == OrderService::$deliveryDeliver) {
                 // Patikrinam ar sitam useriui reikia generuoti sf
                 if (!$order->getUser()->getNoInvoice()) {
-                    $mustDoNavDelete = $this->get('food.order')->setInvoiceDataForOrder();
+                    $oser->setOrder($order);
+                    $mustDoNavDelete = $oser->setInvoiceDataForOrder();
 
                     // Suplanuojam sf siuntima klientui
                     $this->container->get('food.invoice')->addInvoiceToSend($order, $mustDoNavDelete);
