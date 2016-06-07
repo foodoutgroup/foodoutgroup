@@ -2,6 +2,9 @@
 
 namespace Food\OrderBundle\Controller;
 
+@ini_set('memory_limit', '2048M');
+@ini_set('max_execution_time', 600);
+
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
