@@ -30,7 +30,7 @@ class FixerController extends Controller
                 && $order->getDeliveryType() == OrderService::$deliveryDeliver) {
                 // Patikrinam ar sitam useriui reikia generuoti sf
                 if (!$order->getUser()->getNoInvoice()) {
-                    $mustDoNavDelete = $this->setInvoiceDataForOrder();
+                    $mustDoNavDelete = $this->get('food.order')->setInvoiceDataForOrder();
 
                     // Suplanuojam sf siuntima klientui
                     $this->container->get('food.invoice')->addInvoiceToSend($order, $mustDoNavDelete);
