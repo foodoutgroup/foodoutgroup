@@ -587,12 +587,16 @@ class NavService extends ContainerAware
         $placeDiscountPriceEnabled = $detail->getOrderId()->getPlace()->getDiscountPricesEnabled();
         $detailPercentDiscount = $detail->getPercentDiscount();
 
-        if (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && empty($detailPercentDiscount) && $discountInOrder > 0) {
-            $discountAmount = $paymentAmount - round($paymentAmount * ((100 - intval($discountInOrder))/100), 2);
-        } elseif (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && !empty($detailPercentDiscount)) {
-            $discountAmount = ($detail->getOrigPrice() - $detail->getPrice()) * $detail->getQuantity();
-        } elseif ($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) {
-            $discountAmount = ($detail->getOrigPrice() - $detail->getPrice()) * $detail->getQuantity();
+        if ($detail->getIsFree()) {
+            $discountAmount = $amountForInsert;
+        } else {
+            if (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && empty($detailPercentDiscount) && $discountInOrder > 0) {
+                $discountAmount = $paymentAmount - round($paymentAmount * ((100 - intval($discountInOrder))/100), 2);
+            } elseif (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && !empty($detailPercentDiscount)) {
+                $discountAmount = ($detail->getOrigPrice() - $detail->getPrice()) * $detail->getQuantity();
+            } elseif ($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) {
+                $discountAmount = ($detail->getOrigPrice() - $detail->getPrice()) * $detail->getQuantity();
+            }
         }
         /**
          * Some freaky ugly magic for havin Cart discount
