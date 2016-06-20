@@ -25,6 +25,12 @@ class OrderSyncPlacePointCommand extends ContainerAwareCommand
                 InputOption::VALUE_NONE,
                 'No statuses data will be updated'
             )
+            ->addOption(
+                'days-back',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'How many days back'
+            )
         ;
     }
 
@@ -37,7 +43,8 @@ class OrderSyncPlacePointCommand extends ContainerAwareCommand
         try {
             $em = $this->getContainer()->get('doctrine')->getManager();
             $navService = $this->getContainer()->get('food.nav');
-            $ordersWithoutData = $navService->getOrdersWithoutPlacePointData();
+            $daysBack = $input->getOption('days-back');
+            $ordersWithoutData = $navService->getOrdersWithoutPlacePointData($daysBack);
             foreach ($ordersWithoutData as $orderId) {
                 $navService->updateOrderPlacePointInfo($orderId, !$dryRun);
             }
