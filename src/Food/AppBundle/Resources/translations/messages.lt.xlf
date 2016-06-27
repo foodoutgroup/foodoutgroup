@@ -192,19 +192,39 @@
             </trans-unit>
             <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
                 <source>general.sms.user.order_accepted</source>
-                <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista turetume pristatyti per delivery_time! Jei turite klausimu susisiekite telefonu +37069855544!</target>
+                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Pristatysime per ~delivery_time.! Tavo alkis – musu misija!</target>
             </trans-unit>
+            <!--<trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
+                <source>general.sms.user.order_accepted</source>
+                <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista turetume pristatyti per delivery_time! Jei turite klausimu susisiekite telefonu +37069855544!</target>
+            </trans-unit>-->
             <trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
                 <source>general.sms.user.order_accepted_preorder</source>
-                <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista turetume pristatyti pre_delivery_time! Jei turite klausimu susisiekite telefonu +37069855544!</target>
+                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Pristatysime ~pre_delivery_time.! Tavo alkis – musu misija!</target>
             </trans-unit>
-            <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
+            <!--<trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
+                <source>general.sms.user.order_accepted_preorder</source>
+                <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista turetume pristatyti pre_delivery_time! Jei turite klausimu susisiekite telefonu +37069855544!</target>
+            </trans-unit>-->
+            <!--<trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
                 <source>general.sms.user.order_accepted_pickup</source>
                 <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista galesite atsiimti po delivery_time! Jei turite dar klausimu susisiekite telefonu +37069855544!</target>
+            </trans-unit>-->
+            <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
+                <source>general.sms.user.order_accepted_pickup</source>
+                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Atsiimti galesite po ~delivery_time.! Tavo alkis – musu misija!</target>
             </trans-unit>
             <trans-unit id="general.sms.user.order_accepted_pickup_preorder" resname="general.sms.user.order_accepted_pickup_preorder">
                 <source>general.sms.user.order_accepted_pickup_preorder</source>
+                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Atsiimti galesite ~pre_delivery_time.! Tavo alkis – musu misija!</target>
+            </trans-unit>
+            <!--<trans-unit id="general.sms.user.order_accepted_pickup_preorder" resname="general.sms.user.order_accepted_pickup_preorder">
+                <source>general.sms.user.order_accepted_pickup_preorder</source>
                 <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista galesite atsiimti pre_delivery_time! Jei turite dar klausimu susisiekite telefonu +37069855544!</target>
+            </trans-unit>-->
+            <trans-unit id="general.sms.client.driver_picked_up" resname="general.sms.client.driver_picked_up">
+                <source>general.sms.client.driver_picked_up</source>
+                <target>Psst, Tavo uzsakymas jau foodoutmobilyje! Maista pristatysime  netrukus! Ar jauti, kaip tavo alkis dreba is baimes? ;)</target>
             </trans-unit>
             <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
                 <source>general.sms.client.restourant_cancel</source>
@@ -416,12 +436,20 @@
             </trans-unit>
             <trans-unit id="28ecbd185a859ae613493c195207e5e0" resname="general.sms.user_order_delayed">
                 <source>general.sms.user_order_delayed</source>
+                <target>Atsiprasome - del didelio uzsakymu srauto delay_time min veluosime pristatyti tavo uzsakyma nr. order_id. :( Jei nesutinki laukti - paskambink mums 869855544</target>
+            </trans-unit>
+            <trans-unit id="e7bd53e2c7fa9e93ede0c7b307426c5a" resname="general.sms.user_order_delayed_pickup">
+                <source>general.sms.user_order_delayed_pickup</source>
+                <target>Atsiprasome - del didelio uzsakymu srauto delay_time min veluosime paruosti tavo uzsakyma nr. order_id. :( Jei nesutinki laukti - paskambink mums 869855544</target>
+            </trans-unit>
+            <!--<trans-unit id="28ecbd185a859ae613493c195207e5e0" resname="general.sms.user_order_delayed">
+                <source>general.sms.user_order_delayed</source>
                 <target>Atsiprasome, del didelio uzsakymu srauto Jusu uzsakymas nr. order_id atidedamas delay_time min ir bus pristatytas po delivery_min min. Jei nesutinkate laukti - susisiekite +37069855544</target>
             </trans-unit>
             <trans-unit id="e7bd53e2c7fa9e93ede0c7b307426c5a" resname="general.sms.user_order_delayed_pickup">
                 <source>general.sms.user_order_delayed_pickup</source>
                 <target>Atsiprasome, del didelio uzsakymu srauto Jusu uzsakymas nr. order_id  atidedamas delay_time min ir bus paruostas po delivery_min min. Jei nesutinkate laukti - susisiekite +37069855544</target>
-            </trans-unit>
+            </trans-unit>-->
             <trans-unit id="8036a67ebc0bbfebb10242dfaabceaf3" resname="general.email.user_delayed_subject">
                 <source>general.email.user_delayed_subject</source>
                 <target>pasikeites pristatymo laikas</target>

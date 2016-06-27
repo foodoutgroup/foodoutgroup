@@ -336,12 +336,12 @@ class OrderService extends ContainerAware
                 $date->modify('+ 5 minutes');
                 break;
 
-            // 15 minutes from order start
+            // 5 minutes from order start
             case OrderService::$status_accepted:
             case OrderService::$status_finished:
                 $date = clone $order->getDeliveryTime();
                 $date->modify('-'.$this->getDuration($order).' minutes');
-                $date->modify('+ 15 minutes');
+                $date->modify('+ 5 minutes');
                 break;
 
             default:
@@ -4058,6 +4058,55 @@ class OrderService extends ContainerAware
 
             $message->setBody($messageTxt);
             $mailer->send($message);
+        }
+    }
+
+    public function sendOrderPickedMessage()
+    {
+        if (!$this->getOrder() instanceof Order) {
+            throw new \InvalidArgumentException('No order is set');
+        }
+
+        $recipient = $this->getOrder()->getOrderExtra()->getPhone();
+
+        // SMS siunciam tik tuo atveju jei orderis ne is callcentro
+        if ($this->getOrder()->getOrderFromNav() == false) {
+            if (!empty($recipient)) {
+                $smsService = $this->container->get('food.messages');
+
+                $sender = $this->container->getParameter('sms.sender');
+
+                $text = $this->container->get('translator')
+                    ->trans(
+                        'general.sms.client.driver_picked_up',
+                        array(),
+                        null,
+                        $this->getOrder()->getLocale()
+                    );
+
+                $message = $smsService->createMessage($sender, $recipient, $text, $this->getOrder());
+                $smsService->saveMessage($message);
+            }
+        }
+    }
+
+    /**
+     * @param Order $order
+     * @return string
+     */
+    public function getPickedUpTime($order)
+    {
+        $deliveryLogRepo = $this->container->get('doctrine')->getRepository('FoodOrderBundle:OrderDeliveryLog');
+
+        $pickedUpEntry = $deliveryLogRepo->findOneBy(array(
+            'order' => $order,
+            'event' => 'order_pickedup'
+        ));
+
+        if (!empty($pickedUpEntry) && $pickedUpEntry instanceof OrderDeliveryLog) {
+            return $pickedUpEntry->getEventDate()->format('Y-m-d H:i');
+        } else {
+            return '';
         }
     }
 }

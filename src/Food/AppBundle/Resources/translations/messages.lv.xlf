@@ -206,6 +206,10 @@
                 <source>general.sms.user.order_accepted_pickup_preorder</source>
                 <target>Sveiki! restourant_name apstiprinaja Jusu pasutijumu. Edienu varat sanemt pre_delivery_time! Ja Jums rodas jautajumi, sazinieties pa talruni +37167363663!</target>
             </trans-unit>
+            <trans-unit id="general.sms.client.driver_picked_up" resname="general.sms.client.driver_picked_up">
+                <source>general.sms.client.driver_picked_up</source>
+                <target>Psst, Jusu pasutijums ir foodout auto! Partika ir Drizuma! Vai jus jutaties ka jusu bada drebet bailes? ;)</target>
+            </trans-unit>
             <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
                 <source>general.sms.client.restourant_cancel</source>
                 <target>Atvainojamies! Restorans ir atcelis Jusu pasutijumu.</target>

@@ -487,6 +487,10 @@ var Dispatcher = {
             placement: 'right'
         });
 
+        $(".picked-up-tooltip").tooltip({
+            placement: 'right'
+        });
+
         $(".city-tab a").tooltip({placement: 'bottom'});
     },
 

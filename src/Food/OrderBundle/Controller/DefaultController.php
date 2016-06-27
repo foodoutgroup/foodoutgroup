@@ -161,6 +161,7 @@ class DefaultController extends Controller
                     case 'picked-up':
                         $orderService->logDeliveryEvent($orderService->getOrder(), 'order_pickedup');
                         $orderService->getOrder()->setOrderPicked(true);
+                        $orderService->sendOrderPickedMessage();
                     break;
 
                     case 'partialy_completed':
