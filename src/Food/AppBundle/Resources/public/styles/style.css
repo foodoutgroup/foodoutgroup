@@ -1388,7 +1388,7 @@ input.button {}
 #boxer .boxer-close {background: url(/bundles/foodapp/images/close-popup.png) no-repeat left top; top: -18px; right: -18px; border-radius: none; box-shadow: none; width: 45px; height: 45px;}
 
 .detailed-dish-popup {width: 550px; border-radius: 10px; background: #fff;}
-.detailed-dish-popup img {border-radius: 10px 10px 0 0;}
+.detailed-dish-popup img {border-radius: 4px 4px 0 0; display: block; margin: 0 auto;}
 
 .change-location-popup {width: 380px; border-radius: 10px; background: #fff;}
 .change-location-popup img {border-radius: 10px 10px 0 0;}

@@ -13,6 +13,15 @@
             padding : 0,
             scrolling: 'visible',
             fitToView : false,
+            beforeShow: function(e) {
+                // to make smoother auto resize
+                fitDishFancyToWindow();
+            },
+            afterLoad: function() {
+                fitDishFancyToWindow();
+                $.fancybox.update();
+                $.fancybox.reposition();
+            },
             afterShow: function(e) {
                 dishBlock = $('#detailed-dish-popup');
                 if (dishBlock.length > 0) {
@@ -41,6 +50,13 @@
                         groupElements[i].closest('.iradio').addClass('checked');
                     }
                 }
+                $(window).on('resize', fitDishFancyToWindow);
+                fitDishFancyToWindow();
+                $('img.popup-header').on('load', function(){
+                    $.fancybox.update();
+                    $.fancybox.reposition();
+                    fitDishFancyToWindow();
+                });
             },
             helpers: {
                 overlay: {
@@ -70,6 +86,32 @@
     $(document).ready(function(){
         bindFancyBox();
     });
+
+    // @TODO: test on low end computer
+    var fitDishFancyToWindow = function() {
+        var i = 0;
+        var $dishPopup = $('#detailed-dish-popup');
+        $dishPopup.find('img.popup-header').removeAttr('style');
+        $dishPopup.find('label.custom-radio').removeAttr('style');
+        $dishPopup.find('div.dish-size').removeAttr('style');
+        $dishPopup.find('div.dish-ingredients').removeAttr('style');
+        while ($dishPopup.innerHeight() > $(window).innerHeight() - 40) {
+            $dishPopup.find('img.popup-header')
+                    .css('height', $dishPopup.find('img.popup-header').height() - 20)
+                    .css('border-radius', '0 0 0 0');
+            if (i > 5) {
+                $dishPopup.find('label.custom-radio')
+                        .css('margin-bottom', parseInt($dishPopup.find('label.custom-radio').css('margin-bottom')) - 1);
+                $dishPopup.find('div.dish-size')
+                        .css('padding-top', parseInt($dishPopup.find('div.dish-size').css('padding-top')) - 1);
+                $dishPopup.find('div.dish-ingredients')
+                        .css('padding-top', parseInt($dishPopup.find('div.dish-ingredients').css('padding-top')) - 1);
+            }
+            if (++i > 15) {
+                break;
+            }
+        }
+    };
 
     function removeFromCart()
     {
