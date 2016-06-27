@@ -1946,7 +1946,7 @@ class NavService extends ContainerAware
     public function getOrdersWithoutPlacePointData($daysBack)
     {
         $daysBack = intval($daysBack);
-        $query = "select [Order ID] from ".$this->getInvoiceTable()." WHERE [Production Point Address] = '' AND ([Order Date] = '".date("Y-m-d", strtotime('-'.$daysBack.' day'))."' OR [Order Date] = '".date("Y-m-d", strtotime('-'.($daysBack + 1).' day'))."') ";
+        $query = "select [Order ID] from ".$this->getInvoiceTable()." WHERE [Production Point Address] = '' AND ([Order Date] = '".date("Y-m-d", strtotime('-'.$daysBack.' day'))."' OR [Order Date] = '".date("Y-m-d", strtotime('-'.($daysBack + 7).' day'))."') ";
         $sqlSS = $this->initSqlConn()->query($query);
         $returner = array();
         if ($sqlSS) {

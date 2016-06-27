@@ -1219,15 +1219,18 @@ class OrderService extends ContainerAware
         // Pritaikom nuolaida
         $discountPercent = 0;
         $discountSum = 0;
+        $self_delivery = $this->getOrder()->getPlace()->getSelfDelivery();
 
         if ($user->getIsBussinesClient()) {
-            $discountSize = $this->container->get('food.user')->getDiscount($user);
-            $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
-            $discountPercent = $discountSize;
-            $this->getOrder()
-                ->setDiscountSize($discountSize)
-                ->setDiscountSum($discountSum)
-            ;
+            // Jeigu musu logistika, tada taikom fiksuota nuolaida
+            if ($self_delivery == 0) {
+                $discountSize = $this->container->get('food.user')->getDiscount($user);
+                $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
+                $discountPercent = $discountSize;
+                $this->getOrder()
+                    ->setDiscountSize($discountSize)
+                    ->setDiscountSum($discountSum);
+            }
         } elseif (!empty($coupon) && $coupon instanceof Coupon) {
             $order = $this->getOrder();
             $order->setCoupon($coupon)
