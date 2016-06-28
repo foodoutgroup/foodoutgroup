@@ -1389,7 +1389,7 @@ input.button {}
 
 .detailed-dish-popup {width: 920px; border-radius: 10px; background: #fff;}
 
-.detailed-dish-popup img {border-radius: 4px 4px 0 0; display: block; margin: 0 auto;}
+.detailed-dish-popup img {border-radius: 4px 4px 0 0; display: block; margin: 0 auto; max-width: 465px;}
 
 .detailed-dish-popup .dish-popup-column1 { width: 450px; float: left; }
 .detailed-dish-popup .dish-popup-column2 { width: 450px; float: right; }
