@@ -256,7 +256,7 @@
             </trans-unit>
             <trans-unit id="mobile.order_picked_up" resname="mobile.order_picked_up">
                 <source>mobile.order_picked_up</source>
-                <target>Es pacēlu rezervēšanu</target>
+                <target>Saņemts no restorāna</target>
             </trans-unit>
             <trans-unit id="77b3fe8d653be63c58a14017b4ffc9b7" resname="mobile.order_partialy_delivered">
                 <source>mobile.order_partialy_delivered</source>
