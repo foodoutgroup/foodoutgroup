@@ -14,100 +14,106 @@
 
 <div id="detailed-dish-popup">
     <form class="popup detailed-dish-popup">
-        {% if dish.getWebPathThumb('type3') is not empty %}
-            <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type3') }}" class="popup-header" />
-        {% endif %}
-        <div class="dish-info">
-            <p class="name {% if locale == 'lt' %}style{% endif %}">{{ dish.name }}</p>
-            <p class="desc">{{ dish.description|nl2br }}</p>
+        <div class="dish-popup-column1">
+            {% if dish.getWebPathThumb('type3') is not empty %}
+                <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type3') }}" class="popup-header" />
+            {% endif %}
+            <div class="dish-info">
+                <p class="name {% if locale == 'lt' %}style{% endif %}">{{ dish.name }}</p>
+                <p class="desc">{{ dish.description|nl2br }}</p>
+            </div>
         </div>
-        <div class="dish-size">
-            <div class="title">{% trans %}dish.select_size{% endtrans %}</div>
-            <div class="clearfix">
-                {% for size in dish.sizes %}
-                    <label class="custom-radio">{{ size.unit.name }}
-                        {% set showDiscount = false %}
-                        {% if dish.showDiscount and size.discountPrice != 0 %}
-                            {% set showDiscount = true %}
-                        {% endif %}
-                        {% if dish.showPublicPrice %}
-                            {% set zePrice = size.publicPrice %}
-                        {% else %}
-                            {% set zePrice = size.price %}
-                        {% endif %}
-                        <strong class="price {% if showDiscount %}discounted{% endif %}">
-                            {{ currency_display|raw }}{{ zePrice }}
 
-                            {% if currency_alternative %}
-                                <span class="euro">/&nbsp;{{  misc_utils.getLitas(zePrice)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
+        <div class="dish-popup-column2">
+            <div class="dish-size">
+                <div class="title">{% trans %}dish.select_size{% endtrans %}</div>
+                <div class="clearfix">
+                    {% for size in dish.sizes %}
+                        <label class="custom-radio">{{ size.unit.name }}
+                            {% set showDiscount = false %}
+                            {% if dish.showDiscount and size.discountPrice != 0 %}
+                                {% set showDiscount = true %}
                             {% endif %}
-                        </strong>
-                        {% if showDiscount %}
-                            <strong class="price {% if showDiscount %}discount{% endif %}">
-                                {{ currency_display|raw }}{{ size.discountPrice }}
+                            {% if dish.showPublicPrice %}
+                                {% set zePrice = size.publicPrice %}
+                            {% else %}
+                                {% set zePrice = size.price %}
+                            {% endif %}
+                            <strong class="price {% if showDiscount %}discounted{% endif %}">
+                                {{ currency_display|raw }}{{ zePrice }}
+
                                 {% if currency_alternative %}
-                                    <span class="euro">/&nbsp;{{  misc_utils.getLitas(size.discountPrice)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
+                                    <span class="euro">/&nbsp;{{  misc_utils.getLitas(zePrice)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
                                 {% endif %}
                             </strong>
-                        {% endif %}
-                        <input type="radio" {% if loop.index == selectedSize %}checked{% endif %} value="{{ size.id }}" class="dish-size" name="dish-size">
-                    </label>
-                {% endfor %}
-            </div>
-        </div>
-        {% if dish.options|length > 0 %}
-            <div class="dish-ingredients">
-                <div class="title">{% trans %}dish.select_options{% endtrans %}</div>
-                <div class="clearfix">
-                {% set groupName = "" %}
-                {% set optCounter = 0 %}
-                {% for option in dish.options %}
-                    {% if groupName != option.groupName and optCounter != 0 %}
-                        <br clear="all" />
-                        <br clear="all" />
-                    {% endif %}
-
-                    {% set groupName = option.groupName %}
-                    {% set optCounter = optCounter+1 %}
-
-                    {% if option.singleSelect == true %}
-                        <label class="custom-radio">{{ option.name }}{% if option.price != 0 and dish.showPublicPrice == false %}<strong class="price">+{{ currency_display|raw }}
-                                {{ option.priceLocalized }}
-                                {% if currency_alternative %}
-                                    <span class="euro">/&nbsp;{{  misc_utils.getLitas(option.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
-                                {% endif %}
-
-                                </strong>{% endif %}
-                            <input type="radio" name="option[{{ option.groupName }}]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
-                        </label>
-                    {% endif %}
-                {% endfor %}
-                {% for option in dish.options %}
-                    {% if option.singleSelect == false %}
-                        <label class="custom-checkbox">{{ option.name }}{% if option.price != 0 and dish.showPublicPrice==false %}
-                                <strong class="price">+{{ currency_display|raw }} {{ option.priceLocalized }}
-                                    {%  if currency_alternative %}<span class="euro">/&nbsp;{{  misc_utils.getLitas(option.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>{% endif %}
+                            {% if showDiscount %}
+                                <strong class="price {% if showDiscount %}discount{% endif %}">
+                                    {{ currency_display|raw }}{{ size.discountPrice }}
+                                    {% if currency_alternative %}
+                                        <span class="euro">/&nbsp;{{  misc_utils.getLitas(size.discountPrice)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
+                                    {% endif %}
                                 </strong>
                             {% endif %}
-                            <input type="checkbox" name="options[]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
+                            <input type="radio" {% if loop.index == selectedSize %}checked{% endif %} value="{{ size.id }}" class="dish-size" name="dish-size">
                         </label>
-                    {% endif %}
-                {% endfor %}
+                    {% endfor %}
                 </div>
             </div>
-        {% endif %}
-        <div class="dish-size">
-            <div class="title">{% trans %}dish.select_quantity{% endtrans %} <input class="counter" name="counter" value="{% if cart %}{{ cart.quantity }}{% else %}1{% endif %}" /></div>
-        </div>
-        <input type="hidden" name="place" value="{{ dish.place.id }}" />
-        <input type="hidden" name="isAlcohol" value="{% if dish.isAlcohol %}1{% else %}0{% endif %}" />
+            {% if dish.options|length > 0 %}
+                <div class="dish-ingredients">
+                    <div class="title">{% trans %}dish.select_options{% endtrans %}</div>
+                    <div class="clearfix">
+                    {% set groupName = "" %}
+                    {% set optCounter = 0 %}
+                    {% for option in dish.options %}
+                        {% if groupName != option.groupName and optCounter != 0 %}
+                            {#
+                                <br clear="all" />
+                            #}
+                        {% endif %}
 
-        <div class="hidden alcoholRules">
-            <div>
-                {{ dish.place.alcoholRules|nl2br }}
+                        {% set groupName = option.groupName %}
+                        {% set optCounter = optCounter+1 %}
+
+                        {% if option.singleSelect == true %}
+                            <label class="custom-radio">{{ option.name }}{% if option.price != 0 and dish.showPublicPrice == false %}<strong class="price">+{{ currency_display|raw }}
+                                    {{ option.priceLocalized }}
+                                    {% if currency_alternative %}
+                                        <span class="euro">/&nbsp;{{  misc_utils.getLitas(option.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>
+                                    {% endif %}
+
+                                    </strong>{% endif %}
+                                <input type="radio" name="option[{{ option.groupName }}]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
+                            </label>
+                        {% endif %}
+                    {% endfor %}
+                    {% for option in dish.options %}
+                        {% if option.singleSelect == false %}
+                            <label class="custom-checkbox">{{ option.name }}{% if option.price != 0 and dish.showPublicPrice==false %}
+                                    <strong class="price">+{{ currency_display|raw }} {{ option.priceLocalized }}
+                                        {%  if currency_alternative %}<span class="euro">/&nbsp;{{  misc_utils.getLitas(option.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</span>{% endif %}
+                                    </strong>
+                                {% endif %}
+                                <input type="checkbox" name="options[]" value="{{ option.id }}"  {% if cart!=null and option.id in cart.optionsIds %}checked{% endif %}>
+                            </label>
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+            <div class="dish-size">
+                <div class="title">{% trans %}dish.select_quantity{% endtrans %} <input class="counter" name="counter" value="{% if cart %}{{ cart.quantity }}{% else %}1{% endif %}" /></div>
+            </div>
+            <input type="hidden" name="place" value="{{ dish.place.id }}" />
+            <input type="hidden" name="isAlcohol" value="{% if dish.isAlcohol %}1{% else %}0{% endif %}" />
+
+            <div class="hidden alcoholRules">
+                <div>
+                    {{ dish.place.alcoholRules|nl2br }}
+                </div>
             </div>
         </div>
-
+        <br clear="all" />
         <div class="popup-controls"><a href="#" class="button-submit add-to-cart {% if locale == 'lt' %}style{% endif %}"><span>{% trans %}dish.add_to_cart{% endtrans %}</span></a></div>
     </form>
 </div>
