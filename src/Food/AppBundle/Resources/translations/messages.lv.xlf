@@ -208,7 +208,7 @@
             </trans-unit>
             <trans-unit id="general.sms.client.driver_picked_up" resname="general.sms.client.driver_picked_up">
                 <source>general.sms.client.driver_picked_up</source>
-                <target>Psst, Jusu pasutijums ir foodout auto! Partika ir Drizuma! Vai jus jutaties ka jusu bada drebet bailes? ;)</target>
+                <target>Hei! Informējam, ka Tavs Foodout.lv pasutijums ir jau cela un driz bus klat!</target>
             </trans-unit>
             <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
                 <source>general.sms.client.restourant_cancel</source>
