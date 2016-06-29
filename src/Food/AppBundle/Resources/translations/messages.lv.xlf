@@ -208,7 +208,7 @@
             </trans-unit>
             <trans-unit id="general.sms.client.driver_picked_up" resname="general.sms.client.driver_picked_up">
                 <source>general.sms.client.driver_picked_up</source>
-                <target>Psst, Jusu pasutijums ir foodout auto! Partika ir Drizuma! Vai jus jutaties ka jusu bada drebet bailes? ;)</target>
+                <target>Hei! Informējam, ka Tavs Foodout.lv pasutijums ir jau cela un driz bus klat!</target>
             </trans-unit>
             <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
                 <source>general.sms.client.restourant_cancel</source>
@@ -256,7 +256,7 @@
             </trans-unit>
             <trans-unit id="mobile.order_picked_up" resname="mobile.order_picked_up">
                 <source>mobile.order_picked_up</source>
-                <target>Es pacēlu rezervēšanu</target>
+                <target>Saņemts no restorāna</target>
             </trans-unit>
             <trans-unit id="77b3fe8d653be63c58a14017b4ffc9b7" resname="mobile.order_partialy_delivered">
                 <source>mobile.order_partialy_delivered</source>
