@@ -108,6 +108,18 @@ class ShoppingBasketItem extends ContainerAware
         if ($cartItem->getDishId()->getShowPublicPrice()) {
             $amountOld = 0;
         }
+        $pricePart = array(
+            'amount' => $amount,
+            'amount_old' => $amountOld,
+            'currency' => $this->container->getParameter('currency_iso')
+        );
+        if ($cartItem->getIsFree()) {
+            $pricePart = array(
+                'amount' => 0,
+                'amount_old' => $amount,
+                'currency' => $this->container->getParameter('currency_iso')
+            );
+        }
         $this->set('basket_item_id', $cartItem->getCartId()) // @todo - ar tikrai ?? :)
             ->set('item_id', $cartItem->getDishId()->getId())
             ->set('count', $cartItem->getQuantity())
@@ -116,11 +128,7 @@ class ShoppingBasketItem extends ContainerAware
             ->set('additional_info', ($cartItem->getComment() == null ? "" : $cartItem->getComment()))
             ->set(
                 'price',
-                array(
-                    'amount' => $amount,
-                    'amount_old' => $amountOld,
-                    'currency' => $this->container->getParameter('currency_iso')
-                )
+                $pricePart
             );
         return $this->data;
     }

@@ -86,8 +86,9 @@ class BasketService extends ContainerAware
                     $options[] = $dc->getRepository('FoodDishesBundle:DishOption')->find($opt['option_id']);
                 }
             }
+            $dish = $dc->getRepository('FoodDishesBundle:Dish')->find(intval($item['item_id']));
             $cartService->addDish(
-                $dc->getRepository('FoodDishesBundle:Dish')->find(intval($item['item_id'])),
+                $dish,
                 $dc->getRepository('FoodDishesBundle:DishSize')->find(intval($item['size_id'])),
                 $item['count'],
                 $options,//$item['options'] // @todo,
@@ -95,6 +96,9 @@ class BasketService extends ContainerAware
                 $basket->getSession()
             );
         }
+
+        $cartService->recalculateBundles($dish->getPlace()->getId());
+
         return $this->getBasket($id);
     }
 
