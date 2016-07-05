@@ -113,11 +113,23 @@
                 <td colspan="5">{% trans %}mobile.pickup{% endtrans %}</td>
             </tr>
         {% endif %}
+
         <tr>
             <th colspan="5">{% trans %}mobile.customer_phone{% endtrans %}</th>
         </tr>
         <tr>
-            <td colspan="5">{{ order.orderExtra.phone }}</td>
+            <td colspan="5">
+                {{ order.orderExtra.phone }}
+                {% if order.place.onlyAlcohol %}
+                    <br />
+                            {{ order.user.fullName }}
+                            {% if order.deliveryType == 'deliver' %}
+                                <br />
+                                {{ order.addressId.address }}, {{ order.addressId.city }}
+                            {% endif %}
+
+                {% endif %}
+            </td>
         </tr>
         <tr>
             <th colspan="5">{% trans %}mobile.comment{% endtrans %}</th>

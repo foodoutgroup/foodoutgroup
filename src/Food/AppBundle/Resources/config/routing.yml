@@ -160,6 +160,9 @@ food_order_nav_update_prices:
     pattern: /order/update_prices/{id}
     defaults: { _controller: FoodOrderBundle:Default:updatePricesNav }
 
+food_order_cnt:
+    resource: "@FoodOrderBundle/Resources/config/routing.yml"
+    prefix:   /order
 
 food_admin_get_place_units:
     pattern: /admin/place/get-units/{placeId}
@@ -436,3 +439,8 @@ food_city_riga_slash_filter:
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga, slug_filter: ~}
     requirements:
         slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
+
+food_test_report:
+    pattern: /test/where/the/magic/happens/but/we/dont/know/anything
+    defaults: { _controller: FoodAppBundle:Test:magicReportForDaugis }

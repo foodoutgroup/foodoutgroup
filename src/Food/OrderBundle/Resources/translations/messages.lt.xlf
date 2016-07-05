@@ -76,7 +76,7 @@
             </trans-unit>
             <trans-unit id="order.invoice.sum_no_vat" resname="order.invoice.sum_no_vat">
                 <source>order.invoice.sum_no_vat</source>
-                <target>Iš viso</target>
+                <target>Iš viso be PVM</target>
             </trans-unit>
             <trans-unit id="order.invoice.delivery" resname="order.invoice.delivery">
                 <source>order.invoice.delivery</source>
@@ -88,7 +88,7 @@
             </trans-unit>
             <trans-unit id="order.invoice.sum_total" resname="order.invoice.sum_total">
                 <source>order.invoice.sum_total</source>
-                <target>Mokėti viso</target>
+                <target>Viso</target>
             </trans-unit>
             <trans-unit id="order.invoice.sum_words" resname="order.invoice.sum_words">
                 <source>order.invoice.sum_words</source>

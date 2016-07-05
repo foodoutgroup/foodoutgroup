@@ -13,6 +13,10 @@
             padding : 0,
             scrolling: 'visible',
             fitToView : false,
+            afterLoad: function() {
+                $.fancybox.update();
+                $.fancybox.reposition();
+            },
             afterShow: function(e) {
                 dishBlock = $('#detailed-dish-popup');
                 if (dishBlock.length > 0) {
@@ -41,6 +45,10 @@
                         groupElements[i].closest('.iradio').addClass('checked');
                     }
                 }
+                $('img.popup-header').on('load', function(){
+                    $.fancybox.update();
+                    $.fancybox.reposition();
+                });
             },
             helpers: {
                 overlay: {

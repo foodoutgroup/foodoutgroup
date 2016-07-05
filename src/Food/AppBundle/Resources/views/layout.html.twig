@@ -262,6 +262,14 @@
     {% endif %}
 
 </script>
+{# Google Tag Manager Begin #}
+{% if site_country == 'LV' %}
+    <!-- Google Tag Manager -->
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-M8KG3X" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-M8KG3X');</script>
+    <!-- End Google Tag Manager -->
+{% endif %}
+{# Google Tag Manager End #}
 {# OptinMonster Begin #}
 {% if site_country == 'LT' %}
     <div id="om-gmssbdmvmkpglj50-holder"></div><script>var gmssbdmvmkpglj50,gmssbdmvmkpglj50_poll=function(){var r=0;return function(n,l){clearInterval(r),r=setInterval(n,l)}}();!function(e,t,n){if(e.getElementById(n)){gmssbdmvmkpglj50_poll(function(){if(window['om_loaded']){if(!gmssbdmvmkpglj50){gmssbdmvmkpglj50=new OptinMonsterApp();return gmssbdmvmkpglj50.init({u:"11462.303554",staging:0,dev:0});}}},25);return;}var d=false,o=e.createElement(t);o.id=n,o.src="//a.optnmnstr.com/app/js/api.min.js",o.onload=o.onreadystatechange=function(){if(!d){if(!this.readyState||this.readyState==="loaded"||this.readyState==="complete"){try{d=om_loaded=true;gmssbdmvmkpglj50=new OptinMonsterApp();gmssbdmvmkpglj50.init({u:"11462.303554",staging:0,dev:0});o.onload=o.onreadystatechange=null;}catch(t){}}}};(document.getElementsByTagName("head")[0]||document.documentElement).appendChild(o)}(document,"script","omapi-script");</script>

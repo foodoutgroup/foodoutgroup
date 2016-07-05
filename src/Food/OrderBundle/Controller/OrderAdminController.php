@@ -267,16 +267,16 @@ class OrderAdminController extends Controller
             }
         }
 
-        $qry = "SELECT o.*, oe.*, ua.city, ua.address, ua.lat, ua.lon, d.extId as driver_id
+        $qry = "SELECT o.id AS order_id, o.*, oe.*, ua.city, ua.address, ua.lat, ua.lon, d.extId as driver_id
                 FROM orders o
                 LEFT JOIN user_address ua ON o.address_id = ua.id
                 LEFT JOIN order_extra oe ON o.id = oe.order_id
                 LEFT JOIN drivers d ON o.driver_id = d.id
-                WHERE 1 = 1 $where";
-
+                WHERE 1 = 1 $where ORDER BY o.id DESC";
         $data = $this->get('database_connection')->fetchAll($qry);
 
         foreach ($data as &$row) {
+            unset($row['id']);
             $row['diff_delivery_completed'] = null;
             if ($row['delivery_time'] && $row['completed_time']) {
                 $deliveryTime = new \DateTime($row['delivery_time']);

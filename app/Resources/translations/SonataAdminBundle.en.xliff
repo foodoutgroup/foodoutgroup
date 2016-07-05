@@ -1661,6 +1661,10 @@
                 <source>admin.dispatcher.cancel_reason.too_long_production_time</source>
                 <target>Too long production time</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.cancel_reason.software_error">
+                <source>admin.dispatcher.cancel_reason.software_error</source>
+                <target>Software error</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.cancel_reason_comment">
                 <source>admin.dispatcher.cancel_reason_comment</source>
                 <target>Cancel reason comment</target>

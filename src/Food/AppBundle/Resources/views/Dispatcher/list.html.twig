@@ -145,7 +145,7 @@
                 {% if type == "not_finished" %}
                     <td class="order_date">
                         {% if order.orderPicked %}
-                            <span class="glyphicon glyphicon-ok"></span>
+                            <span class="glyphicon glyphicon-ok picked-up-tooltip" title="{{ order_service.pickedUpTime(order) }}"></span>
                         {% else %}
                             <span class="glyphicon glyphicon-remove"></span>
                         {% endif %}

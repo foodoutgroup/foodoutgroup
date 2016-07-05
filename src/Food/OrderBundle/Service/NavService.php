@@ -587,12 +587,16 @@ class NavService extends ContainerAware
         $placeDiscountPriceEnabled = $detail->getOrderId()->getPlace()->getDiscountPricesEnabled();
         $detailPercentDiscount = $detail->getPercentDiscount();
 
-        if (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && empty($detailPercentDiscount) && $discountInOrder > 0) {
-            $discountAmount = $paymentAmount - round($paymentAmount * ((100 - intval($discountInOrder))/100), 2);
-        } elseif (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && !empty($detailPercentDiscount)) {
-            $discountAmount = ($detail->getOrigPrice() - $detail->getPrice()) * $detail->getQuantity();
-        } elseif ($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) {
-            $discountAmount = ($detail->getOrigPrice() - $detail->getPrice()) * $detail->getQuantity();
+        if ($detail->getIsFree()) {
+            $discountAmount = $amountForInsert;
+        } else {
+            if (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && empty($detailPercentDiscount) && $discountInOrder > 0) {
+                $discountAmount = $paymentAmount - round($paymentAmount * ((100 - intval($discountInOrder))/100), 2);
+            } elseif (!($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) && !empty($detailPercentDiscount)) {
+                $discountAmount = ($detail->getOrigPrice() - $detail->getPrice()) * $detail->getQuantity();
+            } elseif ($dp!=$dop && $discPrcEnabled && $placeDiscountPriceEnabled) {
+                $discountAmount = ($detail->getOrigPrice() - $detail->getPrice()) * $detail->getQuantity();
+            }
         }
         /**
          * Some freaky ugly magic for havin Cart discount
@@ -1937,5 +1941,45 @@ class NavService extends ContainerAware
         }
 
         return true;
+    }
+
+    public function getOrdersWithoutPlacePointData($daysBack)
+    {
+        $daysBack = intval($daysBack);
+        $query = "select [Order ID] from ".$this->getInvoiceTable()." WHERE [Production Point Address] = '' AND ([Order Date] = '".date("Y-m-d", strtotime('-'.$daysBack.' day'))."' OR [Order Date] = '".date("Y-m-d", strtotime('-'.($daysBack + 7).' day'))."') ";
+        $sqlSS = $this->initSqlConn()->query($query);
+        $returner = array();
+        if ($sqlSS) {
+            while($row = $this->container->get('food.mssql')->fetchArray($sqlSS)) {
+                $returner[] = $row['Order ID'];
+            }
+        }
+        return $returner;
+    }
+
+    /**
+     * @param $orderId
+     */
+    public function updateOrderPlacePointInfo($orderId, $exceute = false)
+    {
+        $order = $this->getContainer()->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($orderId);
+        if ($order instanceof Order) {
+            $query = "UPDATE ".$this->getInvoiceTable()."
+                SET
+                    [Production Point Address]='".$order->getPlacePoint()->getAddress()."',
+                    [Production Point Code]='".$order->getPlacePoint()->getInternalCode()."',
+                    [ReplicationCounter] = (SELECT ISNULL(MAX(ReplicationCounter),0) FROM ".$this->getInvoiceTable().") + 1
+                WHERE [Order ID] = ".$orderId;
+            if (!$exceute) {
+                echo $query."\n";
+            } else {
+                $sqlSS = $this->initSqlConn()->query($query);
+                if ($sqlSS) {
+                    echo $orderId." - success";
+                } else {
+                    echo $orderId." - fail";
+                }
+            }
+        }
     }
 }
