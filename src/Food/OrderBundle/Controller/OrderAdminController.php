@@ -276,6 +276,7 @@ class OrderAdminController extends Controller
         $data = $this->get('database_connection')->fetchAll($qry);
 
         foreach ($data as &$row) {
+            unset($row['id']);
             $row['diff_delivery_completed'] = null;
             if ($row['delivery_time'] && $row['completed_time']) {
                 $deliveryTime = new \DateTime($row['delivery_time']);
