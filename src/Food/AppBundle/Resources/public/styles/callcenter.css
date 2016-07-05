@@ -35,3 +35,9 @@
 button, input, select, textarea, body, .ui-widget-content, .ui-selectmenu-menu li a, .ui-selectmenu-status {
     font-family: 'avenirbook','Helvetica Neue',Helvetica,Arial,sans-serif !important;
 }
+#cart_panel .check-block .min-cart-message a {
+    width: auto;
+}
+#cart_panel .check-block .order-button {
+    text-align: center;
+}

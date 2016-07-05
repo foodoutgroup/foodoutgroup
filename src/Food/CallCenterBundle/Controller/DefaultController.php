@@ -125,6 +125,13 @@ class DefaultController extends Controller
             }
         }
 
+        $noMinimumCart = false;
+        $current_user = $this->container->get('security.context')->getToken()->getUser();
+        if (!empty($current_user) && is_object($current_user)) {
+            $noMinimumCart = $current_user->getNoMinimumCart();
+            $this->get('food.user')->getDiscount($current_user);
+        }
+
         $applyDiscount = $freeDelivery = $discountInSum = false;
         $discountSize = null;
         $discountSum = null;
@@ -225,6 +232,7 @@ class DefaultController extends Controller
             'freeDelivery' => false,
             'total_delivery' => $deliveryTotal,
             'discountInSum' => false,
+            'noMinimumCart' => $noMinimumCart,
             'cart_from_min' => sprintf('%.2f',$cartFromMin),
             'cart_from_max' => $cartFromMax,
             'basket_errors' => $basketErrors,
