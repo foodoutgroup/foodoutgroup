@@ -172,7 +172,7 @@ class NavService extends ContainerAware
     public function getConnection()
     {
         if ($this->conn == null) {
-            $serverName = "213.190.40.38, 5566"; //serverName\instanceName, portNumber (default is 1433)
+            $serverName = "213.197.176.247, 5566"; //serverName\instanceName, portNumber (default is 1433)
             //$connectionInfo = array( "Database"=>"prototipas6", "UID"=>"fo_order", "PWD"=>"peH=waGe?zoOs69");
             //$connectionInfo = array( "Database"=>"prototipas6", "UID"=>"nas", "PWD"=>"c1l1j@");
             $connectionInfo = array( "Database"=>"prototipas6", "UID"=>"CILIJA\Neotest", "PWD"=>"NewNeo@123");
@@ -193,7 +193,7 @@ class NavService extends ContainerAware
         $sqlSS = $this->container->get('food.mssql');
 
         $isConnected = $sqlSS->init(
-            '213.190.40.38',
+            '213.197.176.247',
             5566,
             'skamb_centras',
             'Neotest',
@@ -215,7 +215,7 @@ class NavService extends ContainerAware
         $sqlSS = $this->container->get('food.mssql');
 
         $isConnected = $sqlSS->init(
-            '213.190.40.38',
+            '213.197.176.247',
             5566,
             'prototipas6',
             'Neotest',
@@ -701,9 +701,9 @@ class NavService extends ContainerAware
     public function getWSConnection()
     {
 
-        $clientUrl = "http://213.190.40.38:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
+        $clientUrl = "http://213.197.176.247:7059/DynamicsNAV/WS/Codeunit/WEB_Service2?wsdl";
         // $clientUrl2 = "http://213.190.40.38:7059/DynamicsNAV/WS/PROTOTIPAS%20Skambuciu%20Centras/Codeunit/WEB_Service2";
-        $clientUrl2 = sprintf('http://213.190.40.38:7055/DynamicsNAV/WS/%1$s/Codeunit/WEB_Service2', str_replace(" ", "%20", $this->container->getParameter('nav_ws_prefix')));
+        $clientUrl2 = sprintf('http://213.197.176.247:7055/DynamicsNAV/WS/%1$s/Codeunit/WEB_Service2', str_replace(" ", "%20", $this->container->getParameter('nav_ws_prefix')));
 
         stream_wrapper_unregister('http');
         stream_wrapper_register('http', '\Food\OrderBundle\Common\FoNTLMStream') or die("Failed to register protocol");

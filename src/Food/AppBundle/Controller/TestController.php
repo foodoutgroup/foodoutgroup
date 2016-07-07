@@ -54,7 +54,7 @@ class TestController extends Controller
     public function mssqlAction()
     {
         echo "<pre>";
-        $link = mssql_pconnect('213.190.40.38:5566', 'fo_order', 'peH=waGe?zoOs69');
+        $link = mssql_pconnect('213.197.176.247:5566', 'fo_order', 'peH=waGe?zoOs69');
         if (!$link) {
             echo mssql_get_last_message();
             die();

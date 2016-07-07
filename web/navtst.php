@@ -1,6 +1,6 @@
 <?php
 
-$serverName = "213.190.40.38, 5566"; //serverName\instanceName, portNumber (default is 1433)
+$serverName = "213.197.176.247, 5566"; //serverName\instanceName, portNumber (default is 1433)
 $connectionInfo = array( "Database"=>"prototipas6", "UID"=>"fo_order", "PWD"=>"peH=waGe?zoOs69");
 $conn = sqlsrv_connect( $serverName, $connectionInfo);
 
