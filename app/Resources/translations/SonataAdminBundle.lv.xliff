@@ -1605,6 +1605,10 @@
                 <source>admin.dispatcher.approve</source>
                 <target>Approve</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.assign_dispatcher">
+                <source>admin.dispatcher.assign_dispatcher</source>
+                <target>Take</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.sms_button">
                 <source>admin.dispatcher.sms_button</source>
                 <target>SMS</target>

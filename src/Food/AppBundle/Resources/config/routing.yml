@@ -228,6 +228,14 @@ food_admin_assign_driver:
     requirements:
           _method:  POST
 
+food_admin_assign_dispatcher:
+    path: /admin/dispatcher/assign-dispacher/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:assignDispatcher}
+    options:
+        expose: true
+    requirements:
+          _method:  POST
+
 food_admin_check_new_orders:
     pattern: /admin/dispatcher/check-new-orders/
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:checkNewOrders}

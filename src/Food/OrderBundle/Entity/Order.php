@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Food\AppBundle\Entity\Driver;
 
 /**
- * @ORM\Table(name="orders", indexes={@ORM\Index(name="nav_delivery_order_idx", columns={"nav_delivery_order"}),@ORM\Index(name="oder_status_idx", columns={"order_status"}),@ORM\Index(name="payment_status_idx", columns={"payment_status"}),@ORM\Index(name="place_point_city_idx", columns={"place_point_city"}),@ORM\Index(name="delivery_type_idx", columns={"delivery_type"}),@ORM\Index(name="has_user_completed_orders_idx", columns={"place_id","user_id","order_status"})})
+ * @ORM\Table(name="orders", indexes={@ORM\Index(name="nav_delivery_order_idx", columns={"nav_delivery_order"}),@ORM\Index(name="oder_status_idx", columns={"order_status"}),@ORM\Index(name="payment_status_idx", columns={"payment_status"}),@ORM\Index(name="place_point_city_idx", columns={"place_point_city"}),@ORM\Index(name="delivery_type_idx", columns={"delivery_type"}),@ORM\Index(name="has_user_completed_orders_idx", columns={"place_id","user_id","dispatcher_id","order_status"})})
  * @ORM\Entity(repositoryClass="Food\OrderBundle\Entity\OrderRepository")
  */
 class Order
@@ -67,6 +67,12 @@ class Order
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
     private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="dispatcher_id", referencedColumnName="id")
+     **/
+    private $dispatcher_id;
 
     /**
      * @var string
@@ -2280,5 +2286,28 @@ class Order
     public function getDishesWithoutVat()
     {
         return $this->getTotalWithoutVat() - $this->getDeliveryWithoutVat();
+    }
+
+    /**
+     * Set dispatcher_id
+     *
+     * @param \Food\UserBundle\Entity\User $dispatcherId
+     * @return Order
+     */
+    public function setDispatcherId(\Food\UserBundle\Entity\User $dispatcherId = null)
+    {
+        $this->dispatcher_id = $dispatcherId;
+    
+        return $this;
+    }
+
+    /**
+     * Get dispatcher_id
+     *
+     * @return \Food\UserBundle\Entity\User 
+     */
+    public function getDispatcherId()
+    {
+        return $this->dispatcher_id;
     }
 }

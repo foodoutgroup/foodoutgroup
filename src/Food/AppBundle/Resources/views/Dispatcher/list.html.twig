@@ -237,6 +237,11 @@
                         <button class="btn btn-lg sms_button" item-id="{{ order.id }}">
                             {{ 'admin.dispatcher.sms_button'|trans({}, 'SonataAdminBundle') }}
                         </button>
+                        {% if order.dispatcherId is empty %}
+                            <button class="btn btn-lg assign_dispatcher_button" item-id="{{ order.id }}">
+                                {{ 'admin.dispatcher.assign_dispatcher'|trans({}, 'SonataAdminBundle') }}
+                            </button>
+                        {% endif %}
                     </td>
                     {% if type starts with 'canceled' %}
                     <td class="client_contacted_check">

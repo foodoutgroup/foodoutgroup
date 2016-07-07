@@ -64,6 +64,9 @@ var Dispatcher = {
             Dispatcher.assignDriver($(this).attr('item-id'));
         });
 
+        $('.order_list .order_status').delegate('.assign_dispatcher_button', 'click', function() {
+            Dispatcher.assignDispatcher($(this).attr('item-id'));
+        });
 
         $(".order_list .client_contacted_check .client_contacted").bind('click', function(){
             Dispatcher.toggleClientContacted($(this));
@@ -280,6 +283,22 @@ var Dispatcher = {
             {
                 driverId: driverId,
                 orderIds: orderIds
+            },
+            function (data) {
+//                console.log('-- succeeded');
+                location.reload();
+            }
+        );
+    },
+
+    assignDispatcher: function(orderId) {
+        $('.sonata-ba-list').mask();
+
+        var url = Routing.generate('food_admin_assign_dispatcher', { '_locale': Dispatcher._locale, _sonata_admin: 'sonata.admin.dish' });
+        $.post(
+            url,
+            {
+                orderId: orderId
             },
             function (data) {
 //                console.log('-- succeeded');

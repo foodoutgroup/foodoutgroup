@@ -368,6 +368,36 @@ class DispatcherAdminController extends Controller
         return new Response('OK');
     }
 
+    public function assignDispatcherAction(Request $request)
+    {
+        $orderId = $request->get('orderId');
+        $orderService = $this->get('food.order');
+        $orderService->getOrderById($orderId);
+        $currentUserId = $this->user()->getId();
+
+        try {
+            $orderService->getOrder()->setDispatcherId($currentUserId);
+            $orderService->saveOrder();
+        } catch (\Exception $e) {
+            // TODO normalus error return ir ispiesimas popupe
+            $this->get('logger')->error('Error happened assigning a dispatcher: '.$e->getMessage());
+            return new Response('Error: error occured');
+        }
+
+        return new Response('OK');
+    }
+
+    private function user()
+    {
+        $sc = $this->get('security.context');
+
+        if (!$sc->isGranted('ROLE_USER')) {
+            return null;
+        }
+
+        return $sc->getToken()->getUser();
+    }
+
     public function checkNewOrdersAction(Request $request)
     {
         $repo = $this->get('doctrine')->getManager()->getRepository('FoodOrderBundle:Order');
