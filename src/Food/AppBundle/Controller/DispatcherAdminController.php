@@ -373,10 +373,10 @@ class DispatcherAdminController extends Controller
         $orderId = $request->get('orderId');
         $orderService = $this->get('food.order');
         $orderService->getOrderById($orderId);
-        $currentUserId = $this->user()->getId();
+        $currentUser = $this->user();
 
         try {
-            $orderService->getOrder()->setDispatcherId($currentUserId);
+            $orderService->getOrder()->setDispatcherId($currentUser);
             $orderService->saveOrder();
         } catch (\Exception $e) {
             // TODO normalus error return ir ispiesimas popupe
