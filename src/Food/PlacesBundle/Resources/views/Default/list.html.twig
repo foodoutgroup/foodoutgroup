@@ -88,9 +88,9 @@
                             {% set minPrc = places_service.minDeliveryPrice(place.place.id) %}
                             {% set maxPrc = places_service.maxDeliveryPrice(place.place.id) %}
                             {% if minPrc == maxPrc %}
-                                {{ currency_display|raw }}{{ minPrc }} / {{ place.place.deliveryTime }}
+                                {#{{ currency_display|raw }}{{ minPrc }} / #}{{ place.place.deliveryTime }}
                             {% else %}
-                                {{ currency_display|raw }}{{ minPrc }}-{{ maxPrc }} / {{ place.place.deliveryTime }}
+                                {#{{ currency_display|raw }}{{ minPrc }}-{{ maxPrc }} / #}{{ place.place.deliveryTime }}
                             {% endif %}
                             {% if place.place.deliveryTimeInfo is not empty %}
                                 <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.place.deliveryTimeInfo }}"></span>
