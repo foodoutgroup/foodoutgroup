@@ -4,7 +4,7 @@ parameters:
     database_port: 3306
     database_name: foodout_ee
     database_user: foodout_ee
-    database_password: HMNI9AAPKO230CH
+    database_password: Ohquothah8Xu
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null
