@@ -696,15 +696,15 @@
             </trans-unit>
             <trans-unit id="4fb8db91bc66edcad1edbf26d918235c" resname="general.user.firsname.not_blank">
                 <source>general.user.firsname.not_blank</source>
-                <target>Įveskite savo vardą</target>
+                <target>Enter Your name</target>
             </trans-unit>
             <trans-unit id="c2d3b4fc6b96d87d230d72b1492c354b" resname="general.user.firsname.short">
                 <source>general.user.firsname.short</source>
-                <target>Vardas negali būti trumpesnis nei 2 simboliai</target>
+                <target>Name can not be shorter then 2 symbols</target>
             </trans-unit>
             <trans-unit id="c55240db34347d177c3aec0b93b73389" resname="general.user.firsname.long">
                 <source>general.user.firsname.long</source>
-                <target>Vardas negali būti ilgesnis nei 255 simboliai</target>
+                <target>Name can not be longer then 255 symbols</target>
             </trans-unit>
             <trans-unit id="eac01114b0976e68239dfd36aeacbed0" resname="general.user.lastname.not_blank">
                 <source>general.user.lastname.not_blank</source>
@@ -724,27 +724,27 @@
             </trans-unit>
             <trans-unit id="36e5d23120269705d139f18a4ee96f4f" resname="general.order">
                 <source>general.order</source>
-                <target>Užsakymas</target>
+                <target>Order</target>
             </trans-unit>
             <trans-unit id="c5b6d9efee2da625ca3f97b621bbf2db" resname="general.order.delivered">
                 <source>general.order.delivered</source>
-                <target>Pristatyti</target>
+                <target>Deliver</target>
             </trans-unit>
             <trans-unit id="b8d0b782b8f556f1c6340b3e3eb2888e" resname="general.order.on_delivery">
                 <source>general.order.on_delivery</source>
-                <target>Pristatomi</target>
+                <target>On delivery</target>
             </trans-unit>
             <trans-unit id="61253403522f312c0970b8f9026d1b45" resname="general.order.in_progress">
                 <source>general.order.in_progress</source>
-                <target>Vykdomas</target>
+                <target>In progress</target>
             </trans-unit>
             <trans-unit id="762eed86fc40be6111718945639f0673" resname="general.order.making">
                 <source>general.order.making</source>
-                <target>Gaminami</target>
+                <target>In production</target>
             </trans-unit>
             <trans-unit id="25d620dbbe37b0506d40fea6e6fdb8e0" resname="general.order.dishes">
                 <source>general.order.dishes</source>
-                <target>patiekalai</target>
+                <target>dishes</target>
             </trans-unit>
             <trans-unit id="8540a3f4a2e4a8d25fb8b518ea07d6c2" resname="general.for">
                 <source>general.for</source>
@@ -764,27 +764,27 @@
             </trans-unit>
             <trans-unit id="general.picked_up" resname="general.picked_up">
                 <source>general.picked_up</source>
-                <target>Atsiimti</target>
+                <target>Pick up</target>
             </trans-unit>
             <trans-unit id="00b693a37152f5f97b20851212b53429" resname="general.greating">
                 <source>general.greating</source>
-                <target>Sveiki</target>
+                <target>Hi</target>
             </trans-unit>
             <trans-unit id="28a7c7f756114029e6a1ebe7488ca7b4" resname="general.profile.user_data">
                 <source>general.profile.user_data</source>
-                <target>Vartotojo duomenys</target>
+                <target>Profile</target>
             </trans-unit>
             <trans-unit id="5cf69119a26982c1d484cbc8476067e3" resname="general.profile.cart_history">
                 <source>general.profile.cart_history</source>
-                <target>Užsakymų istorija</target>
+                <target>Order history</target>
             </trans-unit>
             <trans-unit id="general.profile.discount">
                 <source>general.profile.discount</source>
-                <target>Nuolaida</target>
+                <target>Discount</target>
             </trans-unit>
             <trans-unit id="4c0c2aa6ad499bfdd3f6e8edffc6336c" resname="general.profile.logout">
                 <source>general.profile.logout</source>
-                <target>Atsijungti</target>
+                <target>Logout</target>
             </trans-unit>
             <trans-unit id="general.profile.current_discount">
                 <source>general.profile.current_discount</source>
@@ -792,27 +792,27 @@
             </trans-unit>
             <trans-unit id="6defb486341307b289948eb8fa05624f" resname="general.profile.button_save">
                 <source>general.profile.button_save</source>
-                <target>Išsaugoti</target>
+                <target>Save</target>
             </trans-unit>
             <trans-unit id="9274e23fa49ef791a605538ff3996088" resname="general.profile.home">
                 <source>general.profile.home</source>
-                <target>Pradžia</target>
+                <target>Home</target>
             </trans-unit>
             <trans-unit id="e4209a725a5c0427b4f1f87316e85794" resname="general.profile">
                 <source>general.profile</source>
-                <target>Vartotojo profilis</target>
+                <target>Profile</target>
             </trans-unit>
             <trans-unit id="a9bc7e139157e0da93261b03e01ac056" resname="general.profile.no_orders">
                 <source>general.profile.no_orders</source>
-                <target>Dar nieko neužsisakėte</target>
+                <target>You have no orders</target>
             </trans-unit>
             <trans-unit id="892229102c7bcdeb4e6dbd72703f707e" resname="general.email.accounting_report.local.card">
                 <source>general.email.accounting_report.local.card</source>
-                <target>Kortele, atsiimant</target>
+                <target>Card on delivery</target>
             </trans-unit>
             <trans-unit id="992360f614ab5f74ccc60fd3b5ff6064" resname="general.email.accounting_report.local">
                 <source>general.email.accounting_report.local</source>
-                <target>Grynaisiais</target>
+                <target>Cash on delivery</target>
             </trans-unit>
             <trans-unit id="6ff5d01a17890ac3a904f3340c591192" resname="general.email.accounting_report.paysera">
                 <source>general.email.accounting_report.paysera</source>
@@ -840,51 +840,51 @@
             </trans-unit>
             <trans-unit id="02e3d3477fa84ee89d7c8f812fe8d4b1" resname="index.search_form_qlue">
                 <source>index.search_form_qlue</source>
-                <target>Įveskite savo adresą ir sužinokite, iš kurių restoranų galite užsisakyti</target>
+                <target>Enter Your address and find out from what restaurants You can order</target>
             </trans-unit>
             <trans-unit id="general.ip_banned" resname="general.ip_banned">
                 <source>general.ip_banned</source>
-                <target>Jūsų IP adresas užblokuotas</target>
+                <target>Your IP is banned</target>
             </trans-unit>
             <trans-unit id="general.ip_banned_info" resname="general.ip_banned_info">
                 <source>general.ip_banned_info</source>
-                <target><![CDATA[Atsiprašome, tačiau Jūsų IP adresas (%ip%) yra užblokuotas.<br />IP adresai blokuojami, jei: lankytojas kuria melagingus užsakymus; smeižia, įžeidžia ar kita tyčine veikla trikdo kitų lankytojų ar restoranų darbą.<br /><br />Administracijos nurodyta priežastis: "%reason%".<br /><br />Jeigu manote, jog tai įvyko per klaidą - susisiekite su mumis <strong><a href="mailto:info@foodout.lt">info@foodout.lt</a></strong> arba telefonu <strong>+370 698 55544</strong>]]></target>
+                <target><![CDATA[Sorry, Your IP (%ip%) is banned.<br />IP address is banned if: visitor is creating fake orders; interrupt restaurant work on purpouse.<br /><br />Reason of ban: "%reason%".<br /><br />Please, contact us if You think Your IP is blocked incorrectly <strong><a href="mailto:info@foodout.lt">info@foodout.lt</a></strong> or by phone <strong>+370 698 55544</strong>]]></target>
             </trans-unit>
             <trans-unit id="general.raty.not_rated_yet" resname="general.raty.not_rated_yet">
                 <source>general.raty.not_rated_yet</source>
-                <target>Restoranas dar neįvertintas</target>
+                <target>Not rated yet</target>
             </trans-unit>
             <trans-unit id="general.raty.bad" resname="general.raty.bad">
                 <source>general.raty.bad</source>
-                <target>Blogas</target>
+                <target>Bad</target>
             </trans-unit>
             <trans-unit id="general.raty.poor" resname="general.raty.poor">
                 <source>general.raty.poor</source>
-                <target>Prastas</target>
+                <target>Poor</target>
             </trans-unit>
             <trans-unit id="general.raty.regular" resname="general.raty.regular">
                 <source>general.raty.regular</source>
-                <target>Vidutiniškas</target>
+                <target>Average</target>
             </trans-unit>
             <trans-unit id="general.raty.good" resname="general.raty.good">
                 <source>general.raty.good</source>
-                <target>Geras</target>
+                <target>Good</target>
             </trans-unit>
             <trans-unit id="general.raty.gorgeous" resname="general.raty.gorgeous">
                 <source>general.raty.gorgeous</source>
-                <target>Nuostabus</target>
+                <target>Gorgeous</target>
             </trans-unit>
             <trans-unit id="general.item_quantity" resname="general.item_quantity">
                 <source>general.item_quantity</source>
-                <target>vnt.</target>
+                <target>pcs.</target>
             </trans-unit>
             <trans-unit id="general.restaurant_logo_alt" resname="general.restaurant_logo_alt">
                 <source>general.restaurant_logo_alt</source>
-                <target>Maistas į namus %restaurant_name%</target>
+                <target>Food to Your home %restaurant_name%</target>
             </trans-unit>
             <trans-unit id="general.base_page_title" resname="general.base_page_title">
                 <source>general.base_page_title</source>
-                <target>Maisto pristatymas į namus, biurą ir ne tik!</target>
+                <target>Food delivery to Your home, office and more!</target>
             </trans-unit>
             <trans-unit id="general.base_page_description" resname="general.base_page_description">
                 <source>general.base_page_description</source>
@@ -892,7 +892,7 @@
             </trans-unit>
             <trans-unit id="general.restaurant_page_title" resname="general.restaurant_page_title">
                 <source>general.restaurant_page_title</source>
-                <target>%restaurant_name% maistas į namus</target>
+                <target>%restaurant_name% food to Your home</target>
             </trans-unit>
             <trans-unit id="general.cart.success" resname="general.cart.success">
                 <source>general.cart.success</source>
@@ -1102,19 +1102,19 @@
             <!-- End of debug emails on new order -->
             <trans-unit id="general.email.placeholder" resname="general.email.placeholder">
                 <source>general.email.placeholder</source>
-                <target>vardenis@pastas.lt</target>
+                <target>john@post.com</target>
             </trans-unit>
             <trans-unit id="general.name.placeholder" resname="general.name.placeholder">
                 <source>general.name.placeholder</source>
-                <target>Vardenis</target>
+                <target>John</target>
             </trans-unit>
             <trans-unit id="general.lastname.placeholder" resname="general.lastname.placeholder">
                 <source>general.lastname.placeholder</source>
-                <target>Pavardenis</target>
+                <target>Johnson</target>
             </trans-unit>
             <trans-unit id="general.homepage.meta_title" resname="general.homepage.meta_title">
                 <source>general.homepage.meta_title</source>
-                <target>maisto pristatymas į namus ir biurą</target>
+                <target>food delivery to home, office and more</target>
             </trans-unit>
             <!-- Swedbank gateway payments -->
             <trans-unit id="payment.swedbank_gateway.cancelled" resname="payment.swedbank_gateway.cancelled">
@@ -1211,11 +1211,11 @@
             </trans-unit>
             <trans-unit id="cart.didnt_reach_min_cart" resname="cart.didnt_reach_min_cart">
                 <source>cart.didnt_reach_min_cart</source>
-                <target>Krepšelis nesiekia minimalios sumos</target>
+                <target>Cart does not reach minimum amount</target>
             </trans-unit>
             <trans-unit id="cart.go_back_to_place" resname="cart.go_back_to_place">
                 <source>cart.go_back_to_place</source>
-                <target>Pridėti patiekalų</target>
+                <target>Add dishes</target>
             </trans-unit>
             <trans-unit id="cart.left_to_free_delivery" resname="cart.left_to_free_delivery">
                 <source>cart.left_to_free_delivery</source>
@@ -1223,31 +1223,31 @@
             </trans-unit>
             <trans-unit id="login.username_placeholder" resname="login.username_placeholder">
                 <source>login.username_placeholder</source>
-                <target>vardenis@pastas.lt</target>
+                <target>john@post.com</target>
             </trans-unit>
             <trans-unit id="login.password_placeholder" resname="login.password_placeholder">
                 <source>login.password_placeholder</source>
-                <target>Slaptažodis</target>
+                <target>Password</target>
             </trans-unit>
             <trans-unit id="registration.firstname_placeholder" resname="registration.firstname_placeholder">
                 <source>registration.firstname_placeholder</source>
-                <target>Vardenis</target>
+                <target>John</target>
             </trans-unit>
             <trans-unit id="registration.lastname_placeholder" resname="registration.lastname_placeholder">
                 <source>registration.lastname_placeholder</source>
-                <target>Pavardenis</target>
+                <target>Johnson</target>
             </trans-unit>
             <trans-unit id="registration.email_placeholder" resname="registration.email_placeholder">
                 <source>registration.email_placeholder</source>
-                <target>vardenis@pastas.lt</target>
+                <target>john@post.com</target>
             </trans-unit>
             <trans-unit id="registration.password_placeholder" resname="registration.password_placeholder">
                 <source>registration.password_placeholder</source>
-                <target>Slaptažodis</target>
+                <target>Password</target>
             </trans-unit>
             <trans-unit id="registration.repeat_password_placeholder" resname="registration.repeat_password_placeholder">
                 <source>registration.repeat_password_placeholder</source>
-                <target>Pakartokite slaptažodį</target>
+                <target>Repeat password</target>
             </trans-unit>
             <trans-unit id="profile.phone_placeholder" resname="profile.phone_placeholder">
                 <source>profile.phone_placeholder</source>
@@ -1255,23 +1255,23 @@
             </trans-unit>
             <trans-unit id="profile.current_password" resname="profile.current_password">
                 <source>profile.current_password</source>
-                <target>Dabartinis slaptažodis</target>
+                <target>Current password</target>
             </trans-unit>
             <trans-unit id="profile.new_password" resname="profile.new_password">
                 <source>profile.new_password</source>
-                <target>Naujas slaptažodis</target>
+                <target>New password</target>
             </trans-unit>
             <trans-unit id="profile.repeat_new_password" resname="profile.repeat_new_password">
                 <source>profile.repeat_new_password</source>
-                <target>Pakartokite naują slaptažodis</target>
+                <target>Repeat new password</target>
             </trans-unit>
             <trans-unit id="general.currency_modals" resname="general.currency_modals">
                 <source>general.currency_modals</source>
-                <target>euras|eurai|eurų</target>
+                <target>euro|euro|euro</target>
             </trans-unit>
             <trans-unit id="general.currency_minor_modals" resname="general.currency_minor_modals">
                 <source>general.currency_minor_modals</source>
-                <target>centas|centai|centų</target>
+                <target>cents|cents|cents</target>
             </trans-unit>
             <trans-unit id="places.in_vilnius" resname="places.in_vilnius">
                 <source>places.in_vilnius</source>
@@ -1347,7 +1347,7 @@
             </trans-unit>
             <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
                 <source>general.top_contact.worktime</source>
-                <target><![CDATA[10 - 23 val.<br />10 - 01 val.]]></target>
+                <target><![CDATA[10 - 23 h.<br />10 - 01 h.]]></target>
             </trans-unit>
             <trans-unit id="general.top_contact.phone" resname="general.top_contact.phone">
                 <source>general.top_contact.phone</source>
@@ -1355,15 +1355,15 @@
             </trans-unit>
             <trans-unit id="general.app_block.header" resname="general.app_block.header">
                 <source>general.app_block.header</source>
-                <target>Foodout.lt tavo kišenėje!</target>
+                <target>Foodout.lt in Your pocket!</target>
             </trans-unit>
             <trans-unit id="general.app_block.promo_text" resname="general.app_block.promo_text">
                 <source>general.app_block.promo_text</source>
-                <target>Užsisakyk maisto į namus ar biurą per iPhone arba Android telefonus. Atsisiųsk nemokamą aplikaciją!.</target>
+                <target>Order food to Your home or office using an app for iPhone or Android phone. Download for free!.</target>
             </trans-unit>
             <trans-unit id="general.footer.social" resname="general.footer.social">
                 <source>general.footer.social</source>
-                <target>Foodout yra socialus</target>
+                <target>Foodout is social</target>
             </trans-unit>
             <!--<trans-unit id="Please check this box if you want to proceed." resname="Please check this box if you want to proceed.">-->
             <!--<source>Please check this box if you want to proceed.</source>-->
