@@ -241,6 +241,8 @@
                             <button class="btn btn-lg assign_dispatcher_button" item-id="{{ order.id }}">
                                 {{ 'admin.dispatcher.assign_dispatcher'|trans({}, 'SonataAdminBundle') }}
                             </button>
+                        {% else %}
+                            <span class="glyphicon glyphicon-user">{{ order.dispatcherId.Firstname }}</span>
                         {% endif %}
                     </td>
                     {% if type starts with 'canceled' %}
