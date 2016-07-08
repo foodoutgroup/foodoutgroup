@@ -66,11 +66,11 @@ parameters:
     publicdomain: "foodout.lt"
     google_analytics_uid: "UA-50355577-1"
     google.analytics.view_id: "85237075"
-    nav_table_prefix: 'PROTOTIPAS Čilija Skambučių Centras'
-    nav_ws_prefix: 'PROTOTIPAS Čilija Skambučių Centras'
+    nav_table_prefix: 'Čilija Skambučių Centras'
+    nav_ws_prefix: 'Čilija Skambučių Centras'
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
     mailer_notify_on_accept: 30010811
-    mailer_notify_pickup_on_accept: 30010811
+    mailer_notify_pickup_on_accept: 41582385
     mailer_notify_new_user: 30009253
     mailer_user_reset: 30013949
     mailer_partialy_deliverer: 30021995
@@ -85,12 +85,22 @@ parameters:
     default_self_delivey_distance: 10
     dispatcher_phones: []
     send_sms_on_cancel: false
-    dispatcher_contact_phone: "37061514333"
+    dispatcher_contact_phone: "37061004970"
     call_centre_phone: "37052195281"
+    week_layout: 1
+    hide_online_payments: false
+    number_format:
+        decimal_places: 2
+        decimal_separator: ','
+        thousands_separator: ' '
+    show_invoice_option: true
+    place_slug_manual: false
+    alcohol_allowed: true
+    place_with_neighbourhood: false
     dispatcher_bell: false
     static_page_privacy_policy: 8
     static_page_b2b_rules: 29
     b2b_first_month_discount: true
     b2b_first_month_discount_percent: 10
-    newsletter_subscribe_tick_by_default: false
+    newsletter_subscribe_tick_by_default: true
     show_making_time_deadline: false
