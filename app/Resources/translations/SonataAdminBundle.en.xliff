@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="lt" datatype="plaintext" original="SonataAdminBundle.en.xliff">
+    <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
             <!-- General -->
             <trans-unit id="admin.visible">
@@ -45,7 +45,7 @@
             </trans-unit>
             <trans-unit id="options">
                 <source>Options</source>
-                <target>Priedai</target>
+                <target>Options</target>
             </trans-unit>
             <trans-unit id="categories">
                 <source>Categories</source>
@@ -136,6 +136,11 @@
                 <source>admin.kitchen.name</source>
                 <target>Name</target>
             </trans-unit>
+            <trans-unit id="admin.kitchen.alias">
+                <source>admin.kitchen.alias</source>
+                <target>Alias</target>
+            </trans-unit>
+
             <!-- Food category-->
             <trans-unit id="admin.food_category.name">
                 <source>admin.food_category.name</source>
@@ -214,9 +219,42 @@
                 <source>admin.dish.active_list</source>
                 <target>Actv.</target>
             </trans-unit>
+            <trans-unit id="admin.dish.keywords">
+                <source>admin.dish.keywords</source>
+                <target>Keywords</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.action_activate">
+                <source>admin.dish.action_activate</source>
+                <target>Activate</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.action_deactivate">
+                <source>admin.dish.action_deactivate</source>
+                <target>DeActivate</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.flash_batch_no_targets">
+                <source>admin.dish.flash_batch_no_targets</source>
+                <target>Please select at least one dish</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.flash_batch_activate_error">
+                <source>admin.dish.flash_batch_activate_error</source>
+                <target>Error. Cannot complete dish activation action</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.flash_batch_activate_success">
+                <source>admin.dish.flash_batch_activate_success</source>
+                <target>Dish activation action was completed successfully</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.flash_batch_deactivate_error">
+                <source>admin.dish.flash_batch_deactivate_error</source>
+                <target>Error. Cannot complete dish deactivation action</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.flash_batch_deactivate_success">
+                <source>admin.dish.flash_batch_deactivate_success</source>
+                <target>Dish deactivation action was completed successfully</target>
+            </trans-unit>
+
             <trans-unit id="admin.dish.check_even_odd_week">
                 <source>admin.dish.check_even_odd_week</source>
-                <target>Active Even / Odd weeks</target>
+                <target>Active even / odd weeks</target>
             </trans-unit>
             <trans-unit id="admin.dish.even_week">
                 <source>admin.dish.even_week</source>
@@ -228,8 +266,9 @@
             </trans-unit>
             <trans-unit id="admin.dish.use_date_interval">
                 <source>admin.dish.use_date_interval</source>
-                <target>Use date interval</target>
+                <target>Enable Date Interval</target>
             </trans-unit>
+
             <trans-unit id="admin.dishes.sizes">
                 <source>admin.dishes.sizes</source>
                 <target>Sizes</target>
@@ -242,11 +281,35 @@
                 <source>admin.dishes.time_to</source>
                 <target>Time to</target>
             </trans-unit>
+            <trans-unit id="admin.error.please_add_sizes">
+                <source>admin.error.please_add_sizes</source>
+                <target>Please add sizes</target>
+            </trans-unit>
+            <trans-unit id="admin.error.please_enter_price'">
+                <source>admin.error.please_enter_price'</source>
+                <target>Please add enter price</target>
+            </trans-unit>
+
             <!-- Rodymo datos -->
             <trans-unit id="admin.dish_date">
                 <source>admin.dish_date</source>
                 <target>Show at dates</target>
             </trans-unit>
+
+            <!-- Rodymo savaites dienos -->
+            <trans-unit id="admin.dish.show_by_weekdays">
+                <source>admin.dish.show_by_weekdays</source>
+                <target>Show by weekdays</target>
+            </trans-unit>
+            <trans-unit id="admin.dish_weekday">
+                <source>admin.dish_weekday</source>
+                <target>Show weekdays</target>
+            </trans-unit>
+            <trans-unit id="admin.dish_weekday.weekday">
+                <source>admin.dish_weekday.weekday</source>
+                <target>Weekday</target>
+            </trans-unit>
+
             <!-- Dish options -->
             <trans-unit id="admin.dish_options">
                 <source>admin.dish_options</source>
@@ -288,6 +351,11 @@
                 <source>Dish Option List</source>
                 <target>Dish options</target>
             </trans-unit>
+            <trans-unit id="Sizes">
+                <source>Sizes</source>
+                <target>Sizes</target>
+            </trans-unit>
+
             <!-- Dish units -->
             <trans-unit id="dish-unit-list">
                 <source>Dish Unit List</source>
@@ -313,6 +381,7 @@
                 <source>Unit</source>
                 <target>Unit</target>
             </trans-unit>
+
             <!-- Best offers -->
             <trans-unit id="admin.best_offers.title">
                 <source>admin.best_offers.title</source>
@@ -354,6 +423,33 @@
                 <source>admin.best_offers.place</source>
                 <target>Restaurant</target>
             </trans-unit>
+
+            <!-- Home banners -->
+            <trans-unit id="admin.home_banners.title">
+                <source>admin.home_banners.title</source>
+                <target>Title</target>
+            </trans-unit>
+            <trans-unit id="admin.home_banners.link">
+                <source>admin.home_banners.link</source>
+                <target>Link</target>
+            </trans-unit>
+            <trans-unit id="admin.home_banners.image">
+                <source>admin.home_banners.image</source>
+                <target>Image</target>
+            </trans-unit>
+            <trans-unit id="admin.home_banners.active">
+                <source>admin.home_banners.active</source>
+                <target>Active</target>
+            </trans-unit>
+            <trans-unit id="admin.home_banners.use_url">
+                <source>admin.home_banners.use_url</source>
+                <target>Use url</target>
+            </trans-unit>
+            <trans-unit id="admin.home_banners.home_banners">
+                <source>admin.home_banners.home_banners</source>
+                <target>Home banners</target>
+            </trans-unit>
+
             <!-- Place -->
             <trans-unit id="admin.menu.places">
                 <source>admin.menu.places</source>
@@ -399,6 +495,22 @@
                 <source>admin.place.name</source>
                 <target>Place name</target>
             </trans-unit>
+            <trans-unit id="admin.place.show_notification">
+                <source>admin.place.show_notification</source>
+                <target>Show notification</target>
+            </trans-unit>
+            <trans-unit id="admin.place.keep_notification">
+                <source>admin.place.keep_notification</source>
+                <target>Keep notification</target>
+            </trans-unit>
+            <trans-unit id="admin.place.registered">
+                <source>admin.place.registered</source>
+                <target>Registered</target>
+            </trans-unit>
+            <trans-unit id="admin.place.notification_content">
+                <source>admin.place.notification_content</source>
+                <target>Notification content</target>
+            </trans-unit>
             <trans-unit id="admin.place.delivery_time">
                 <source>admin.place.delivery_time</source>
                 <target>Deliv. time</target>
@@ -410,6 +522,10 @@
             <trans-unit id="admin.place.delivery_time_info">
                 <source>admin.place.delivery_time_info</source>
                 <target>Extra.deliv.info</target>
+            </trans-unit>
+            <trans-unit id="admin.place.packaging_price">
+                <source>admin.place.packaging_price</source>
+                <target>Packaging price</target>
             </trans-unit>
             <trans-unit id="admin.place.delivery_price">
                 <source>admin.place.delivery_price</source>
@@ -426,6 +542,14 @@
             <trans-unit id="admin.place.cart_minimum">
                 <source>admin.place.cart_minimum</source>
                 <target>Min. cart</target>
+            </trans-unit>
+            <trans-unit id="admin.place.vat">
+                <source>admin.place.vat</source>
+                <target>VAT</target>
+            </trans-unit>
+            <trans-unit id="admin.place.commission_rate">
+                <source>admin.place.commission_rate</source>
+                <target>Commission Rate</target>
             </trans-unit>
             <trans-unit id="admin.place.self_delivery">
                 <source>admin.place.self_delivery</source>
@@ -495,6 +619,10 @@
                 <source>admin.place.delivery_options</source>
                 <target>Delivery options.</target>
             </trans-unit>
+            <trans-unit id="admin.place.ownership_type">
+                <source>admin.place.ownership_type</source>
+                <target>Ownership Type</target>
+            </trans-unit>
             <trans-unit id="admin.place.navision" resname="admin.place.navision">
                 <source>admin.place.navision</source>
                 <target>Navision sync.</target>
@@ -511,10 +639,23 @@
                 <source>admin.place.chain</source>
                 <target>Chain</target>
             </trans-unit>
+            <trans-unit id="admin.place.accounting_code" resname="admin.place.accounting_code">
+                <source>admin.place.accounting_code</source>
+                <target>Accounting Code</target>
+            </trans-unit>
             <trans-unit id="admin.place.internal_code" resname="admin.place.internal_code">
                 <source>admin.place.internal_code</source>
                 <target>Internal code</target>
             </trans-unit>
+            <trans-unit id="admin.place.phone_placeholder" resname="admin.place.phone_placeholder">
+                <source>admin.place.phone_placeholder</source>
+                <target>3706xxxxxxxx</target>
+            </trans-unit>
+            <trans-unit id="admin.place.phone_placeholder_code" resname="admin.place.phone_placeholder_code">
+                <source>admin.place.phone_placeholder_code</source>
+                <target>370xxxxxxxxx</target>
+            </trans-unit>
+
             <!-- Place points -->
             <trans-unit id="place-point-list">
                 <source>Place Point List</source>
@@ -566,7 +707,7 @@
             </trans-unit>
             <trans-unit id="admin.point.company_code">
                 <source>admin.point.company_code</source>
-                <target>Com. Code</target>
+                <target>Comp. Code</target>
             </trans-unit>
             <trans-unit id="admin.point.phone">
                 <source>admin.point.phone</source>
@@ -624,6 +765,27 @@
                 <source>admin.point.use_external_logistics</source>
                 <target>Send to Metrics (logistics)</target>
             </trans-unit>
+            <trans-unit id="admin.point.neighbourhood">
+                <source>admin.point.neighbourhood</source>
+                <target>Neighbourhood</target>
+            </trans-unit>
+            <trans-unit id="admin.point.district">
+                <source>admin.point.district</source>
+                <target>District</target>
+            </trans-unit>
+            <trans-unit id="admin.neighbourhood_to_deliver">
+                <source>admin.neighbourhood_to_deliver</source>
+                <target>Neighbourhood to deliver</target>
+            </trans-unit>
+            <trans-unit id="admin.error.please_add_point_of_sales">
+                <source>admin.error.please_add_point_of_sales</source>
+                <target>Please add point of sales</target>
+            </trans-unit>
+            <trans-unit id="admin.error.please_add_neighbourhood_to_deliver">
+                <source>admin.error.please_add_neighbourhood_to_deliver</source>
+                <target>Please add neighbourhood to deliver</target>
+            </trans-unit>
+
             <!-- Place reviews -->
             <trans-unit id="place-reviews-list">
                 <source>Place Reviews List</source>
@@ -665,6 +827,10 @@
             <trans-unit id="admin.users.phone">
                 <source>admin.users.phone</source>
                 <target>Phone</target>
+            </trans-unit>
+            <trans-unit id="admin.users.cellphone">
+                <source>admin.users.cellphone</source>
+                <target>Cellphone</target>
             </trans-unit>
             <trans-unit id="admin.users.enabled">
                 <source>admin.users.enabled</source>
@@ -750,6 +916,10 @@
                 <source>admin.users.bussines_client</source>
                 <target>Bussines client</target>
             </trans-unit>
+            <trans-unit id="admin.users.newsletter">
+                <source>admin.users.newsletter</source>
+                <target>Newsletter</target>
+            </trans-unit>
             <trans-unit id="admin.users.division_codes">
                 <source>admin.users.division_codes</source>
                 <target>Division codes</target>
@@ -814,6 +984,141 @@
                 <source>admin.users_dision_code.division</source>
                 <target>Division</target>
             </trans-unit>
+            <trans-unit id="admin.users.profile">
+                <source>admin.users.profile</source>
+                <target>Profile</target>
+            </trans-unit>
+            <trans-unit id="admin.users.id">
+                <source>admin.users.id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="admin.users.fullname">
+                <source>admin.users.fullname</source>
+                <target>Full name</target>
+            </trans-unit>
+
+            <!-- Wallet part -->
+            <trans-unit id="admin.users.account">
+                <source>admin.users.account</source>
+                <target>Account</target>
+            </trans-unit>
+            <trans-unit id="admin.users.balance">
+                <source>admin.users.balance</source>
+                <target>Balance</target>
+            </trans-unit>
+            <trans-unit id="admin.users.add_credit">
+                <source>admin.users.add_credit</source>
+                <target>Add credit</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.add_money">
+                <source>admin.users.wallet.add_money</source>
+                <target>Add</target>
+            </trans-unit>
+            <trans-unit id="admin.users.deduct_credit">
+                <source>admin.users.deduct_credit</source>
+                <target>Deduct credit</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.deduct_money">
+                <source>admin.users.wallet.deduct_money</source>
+                <target>Deduct</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.transaction_list">
+                <source>admin.users.wallet.transaction_list</source>
+                <target>Transaction list</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.trans_id">
+                <source>admin.users.wallet.trans_id</source>
+                <target>Trans. ID</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.date">
+                <source>admin.users.wallet.date</source>
+                <target>Date</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.order">
+                <source>admin.users.wallet.order</source>
+                <target>Order</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.amount">
+                <source>admin.users.wallet.amount</source>
+                <target>Amount</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.money_type">
+                <source>admin.users.wallet.money_type</source>
+                <target>Money type</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.type">
+                <source>admin.users.wallet.type</source>
+                <target>Trans. type</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.comment">
+                <source>admin.users.wallet.comment</source>
+                <target>Comment</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.note">
+                <source>admin.users.wallet.note</source>
+                <target>Note</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.comment_placeholder">
+                <source>admin.users.wallet.comment_placeholder</source>
+                <target>Comments for User</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.note_placeholder">
+                <source>admin.users.wallet.note_placeholder</source>
+                <target>Note for Admin</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.money_type.real">
+                <source>admin.users.wallet.money_type.real</source>
+                <target>Real</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.money_type.virtual">
+                <source>admin.users.wallet.money_type.virtual</source>
+                <target>Virtual</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.transfer_type.topup">
+                <source>admin.users.wallet.transfer_type.topup</source>
+                <target>Client topup</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.transfer_type.order">
+                <source>admin.users.wallet.transfer_type.order</source>
+                <target>Order</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.transfer_type.voucher">
+                <source>admin.users.wallet.transfer_type.voucher</source>
+                <target>Voucher</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.transfer_type.admin_add">
+                <source>admin.users.wallet.transfer_type.admin_add</source>
+                <target>Admin add</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.transfer_type.canceled_return">
+                <source>admin.users.wallet.transfer_type.canceled_return</source>
+                <target>Canceled return</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.transfer_type.admin_deduct">
+                <source>admin.users.wallet.transfer_type.admin_deduct</source>
+                <target>Admin deducted</target>
+            </trans-unit>
+            <trans-unit id="admin.users.wallet.transfer_type.order_pay_online">
+                <source>admin.users.wallet.transfer_type.order_pay_online</source>
+                <target>Order paid online (cc, bank)</target>
+            </trans-unit>
+            <trans-unit id="admin.wallet.money_added">
+                <source>admin.wallet.money_added</source>
+                <target>Money added to wallet</target>
+            </trans-unit>
+            <trans-unit id="admin.wallet.money_deducted">
+                <source>admin.wallet.money_deducted</source>
+                <target>Money deducted from wallet</target>
+            </trans-unit>
+            <trans-unit id="admin.wallet.sms_money_added">
+                <source>admin.wallet.sms_money_added</source>
+                <target>مبلغ {{ added_value }} بابت {{ comment }} به حساب شما افزوده شد. موجودی فعلی شما: {{ current_balance }} تومان</target>
+            </trans-unit>
+            <trans-unit id="admin.wallet.sms_money_deducted">
+                <source>admin.wallet.sms_money_deducted</source>
+                <target>مبلغ {{ deducted_value }} بابت {{ comment }} از حساب شما کاسته شد. موجودی فعلی شما: {{ current_balance }} تومان</target>
+            </trans-unit>
+
             <!-- Static content -->
             <trans-unit id="admin.static">
                 <source>admin.static</source>
@@ -917,6 +1222,10 @@
                 <source>admin.subscribers.email</source>
                 <target>Email</target>
             </trans-unit>
+            <trans-unit id="admin.subscribers.city">
+                <source>admin.subscribers.city</source>
+                <target>City</target>
+            </trans-unit>
             <trans-unit id="admin.subscribers.locale">
                 <source>admin.subscribers.locale</source>
                 <target>Language</target>
@@ -958,6 +1267,10 @@
             <trans-unit id="admin.order.id">
                 <source>admin.order.id</source>
                 <target>Id</target>
+            </trans-unit>
+            <trans-unit id="admin.order.view_id">
+                <source>admin.order.view_id</source>
+                <target>View Id</target>
             </trans-unit>
             <trans-unit id="admin.order.order_date">
                 <source>admin.order.order_date</source>
@@ -1127,6 +1440,18 @@
                 <source>admin.order.place_comment</source>
                 <target>Restaurant comment</target>
             </trans-unit>
+            <trans-unit id="admin.order.note">
+                <source>admin.order.note</source>
+                <target>Note</target>
+            </trans-unit>
+            <trans-unit id="admin.order.save">
+                <source>admin.order.save</source>
+                <target>Save</target>
+            </trans-unit>
+            <trans-unit id="admin.order.noteSavedSuccessfully">
+                <source>admin.order.noteSavedSuccessfully</source>
+                <target>Note saved successfully</target>
+            </trans-unit>
             <trans-unit id="admin.order.details.dish_name">
                 <source>admin.order.details.dish_name</source>
                 <target>Dish</target>
@@ -1134,6 +1459,10 @@
             <trans-unit id="admin.order.details.price">
                 <source>admin.order.details.price</source>
                 <target>Price</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.price_for_commission">
+                <source>admin.order.details.price_for_commission</source>
+                <target>Price for comm.</target>
             </trans-unit>
             <trans-unit id="aadmin.order.details.dish_unit">
                 <source>admin.order.details.dish_unit</source>
@@ -1259,6 +1588,10 @@
                 <source>admin.order.status.source.repostToNavOnMissingInNav</source>
                 <target>Čili Navision repost order on fatal error</target>
             </trans-unit>
+            <trans-unit id="admin.order.delivery_log.order_accepted">
+                <source>admin.order.delivery_log.order_accepted</source>
+                <target>Order Accepted</target>
+            </trans-unit>
             <trans-unit id="admin.order.delivery_log.event">
                 <source>admin.order.delivery_log.event</source>
                 <target>Event</target>
@@ -1294,6 +1627,10 @@
             <trans-unit id="admin.order.download_invoice">
                 <source>admin.order.download_invoice</source>
                 <target>Download SF</target>
+            </trans-unit>
+            <trans-unit id="admin.order.edit_prices">
+                <source>admin.order.edit_prices</source>
+                <target>Edit prices</target>
             </trans-unit>
             <trans-unit id="admin.order.nav_delivery_order">
                 <source>admin.order.nav_delivery_order</source>
@@ -1339,6 +1676,23 @@
                 <source>admin.order.corporate_client_name</source>
                 <target>Order taker</target>
             </trans-unit>
+            <trans-unit id="admin.order.city">
+                <source>admin.order.city</source>
+                <target>City</target>
+            </trans-unit>
+            <trans-unit id="admin.order.phone">
+                <source>admin.order.phone</source>
+                <target>Phone</target>
+            </trans-unit>
+            <trans-unit id="Start">
+                <source>Start</source>
+                <target>Start</target>
+            </trans-unit>
+            <trans-unit id="End">
+                <source>End</source>
+                <target>End</target>
+            </trans-unit>
+
             <!-- Order logas pas sonata admina -->
             <trans-unit id="admin.order.order_log">
                 <source>admin.order.order_log</source>
@@ -1425,6 +1779,10 @@
                 <source>admin.dispatcher.order_id</source>
                 <target>ID</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.order_view_id">
+                <source>admin.dispatcher.order_view_id</source>
+                <target>View ID</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.from_nav">
                 <source>admin.dispatcher.from_nav</source>
                 <target>From NAV</target>
@@ -1492,6 +1850,10 @@
             <trans-unit id="admin.dispatcher.client_contacted">
                 <source>admin.dispatcher.client_contacted</source>
                 <target>Client contacted</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.restaurant_contacted">
+                <source>admin.dispatcher.restaurant_contacted</source>
+                <target>Restaurant contacted</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.problem_solved">
                 <source>admin.dispatcher.problem_solved</source>
@@ -1759,6 +2121,83 @@
                 <source>admin.driver.has_orders</source>
                 <target>Order</target>
             </trans-unit>
+
+            <!-- Marketing user -->
+            <trans-unit id="admin.marketing_user">
+                <source>admin.marketing_user</source>
+                <target>Marketing User</target>
+            </trans-unit>
+            <trans-unit id="Marketing User List">
+                <source>Marketing User List</source>
+                <target>Marketing User List</target>
+            </trans-unit>
+            <trans-unit id="admin.marketing_user.first_name">
+                <source>admin.marketing_user.first_name</source>
+                <target>First name</target>
+            </trans-unit>
+            <trans-unit id="admin.marketing_user.last_name">
+                <source>admin.marketing_user.last_name</source>
+                <target>Last name</target>
+            </trans-unit>
+            <trans-unit id="admin.marketing_user.city">
+                <source>admin.marketing_user.city</source>
+                <target>City</target>
+            </trans-unit>
+            <trans-unit id="admin.marketing_user.phone">
+                <source>admin.marketing_user.phone</source>
+                <target>Phone</target>
+            </trans-unit>
+            <trans-unit id="admin.marketing_user.email">
+                <source>admin.marketing_user.email</source>
+                <target>Email</target>
+            </trans-unit>
+            <trans-unit id="admin.marketing_user.birthday">
+                <source>admin.marketing_user.birthday</source>
+                <target>B-day</target>
+            </trans-unit>
+            <trans-unit id="admin.marketing_user.entry_key">
+                <source>admin.marketing_user.entry_key</source>
+                <target>Entry Key</target>
+            </trans-unit>
+
+            <!-- Delivery Zones -->
+            <trans-unit id="admin.delivery_zones">
+                <source>admin.delivery_zones</source>
+                <target>Delivery Zones</target>
+            </trans-unit>
+            <trans-unit id="Place Point Delivery Zones List">
+                <source>Place Point Delivery Zones List</source>
+                <target>Delivery Zones List</target>
+            </trans-unit>
+            <trans-unit id="admin.delivery_zones.distance">
+                <source>admin.delivery_zones.distance</source>
+                <target>Distance</target>
+            </trans-unit>
+            <trans-unit id="admin.delivery_zones.place_point">
+                <source>admin.delivery_zones.place_point</source>
+                <target>Place point</target>
+            </trans-unit>
+            <trans-unit id="admin.delivery_zones.price">
+                <source>admin.delivery_zones.price</source>
+                <target>Price</target>
+            </trans-unit>
+            <trans-unit id="admin.delivery_zones.cart_size">
+                <source>admin.delivery_zones.cart_size</source>
+                <target>Cart size</target>
+            </trans-unit>
+            <trans-unit id="admin.delivery_zones.time_from">
+                <source>admin.delivery_zones.time_from</source>
+                <target>Time from</target>
+            </trans-unit>
+            <trans-unit id="admin.delivery_zones.time_to">
+                <source>admin.delivery_zones.time_to</source>
+                <target>Time to</target>
+            </trans-unit>
+            <trans-unit id="admin.delivery_zones.active">
+                <source>admin.delivery_zones.active</source>
+                <target>Active</target>
+            </trans-unit>
+
             <!-- Banned IP listas -->
             <trans-unit id="admin.banned_ips">
                 <source>admin.banned_ips</source>
@@ -2131,83 +2570,15 @@
                 <source>admin.reports.latency.slow_five</source>
                 <target>Slowest</target>
             </trans-unit>
-            <!-- Driver Latency report -->
-            <trans-unit id="admin.reports.driver_latency.driver">
-                <source>admin.reports.driver_latency.driver</source>
-                <target>Driver</target>
+            <trans-unit id="admin.report.billing">
+                <source>admin.report.billing</source>
+                <target>Billing Report</target>
             </trans-unit>
-            <trans-unit id="admin.reports.driver_latency.total_orders">
-                <source>admin.reports.driver_latency.total_orders</source>
-                <target>Total orders</target>
+            <trans-unit id="admin.report.billing.download">
+                <source>admin.report.billing.download</source>
+                <target>Download billing report</target>
             </trans-unit>
-            <trans-unit id="admin.reports.driver_latency.late_orders">
-                <source>admin.reports.driver_latency.late_orders</source>
-                <target>Late orders</target>
-            </trans-unit>
-            <trans-unit id="admin.reports.driver_latency.late_orders_percent">
-                <source>admin.reports.driver_latency.late_orders_percent</source>
-                <target>Late orders %</target>
-            </trans-unit>
-            <trans-unit id="admin.reports.driver_latency.average_latency">
-                <source>admin.reports.driver_latency.average_latency</source>
-                <target>Average latency</target>
-            </trans-unit>
-            <trans-unit id="admin.reports.user_id">
-                <source>admin.reports.user_id</source>
-                <target>User id</target>
-            </trans-unit>
-            <trans-unit id="admin.reports.email">
-                <source>admin.reports.email</source>
-                <target>Email</target>
-            </trans-unit>
-            <trans-unit id="admin.reports.phone">
-                <source>admin.reports.phone</source>
-                <target>Phone</target>
-            </trans-unit>
-            <trans-unit id="admin.reports.firstname">
-                <source>admin.reports.firstname</source>
-                <target>Firstname</target>
-            </trans-unit>
-            <trans-unit id="admin.reports.lastname">
-                <source>admin.reports.lastname</source>
-                <target>Lastname</target>
-            </trans-unit>
-            <trans-unit id="admin.reports.is_business_client">
-                <source>admin.reports.is_business_client</source>
-                <target>Business client</target>
-            </trans-unit>
-            <trans-unit id="admin.reports.company_name">
-                <source>admin.reports.company_name</source>
-                <target>Company name</target>
-            </trans-unit>
-            <trans-unit id="admin.reports.first_order_date">
-                <source>admin.reports.first_order_date</source>
-                <target>First order date</target>
-            </trans-unit>
-            <trans-unit id="admin.reports.last_order_date">
-                <source>admin.reports.last_order_date</source>
-                <target>Last order date</target>
-            </trans-unit>
-            <trans-unit id="admin.reports.recency_score">
-                <source>admin.reports.recency_score</source>
-                <target>Recency score</target>
-            </trans-unit>
-            <trans-unit id="admin.reports.frequency_score">
-                <source>admin.reports.frequency_score</source>
-                <target>Frequency score</target>
-            </trans-unit>
-            <trans-unit id="admin.reports.monetary_score">
-                <source>admin.reports.monetary_score</source>
-                <target>Monetary score</target>
-            </trans-unit>
-            <trans-unit id="admin.reports.total_rfm_score">
-                <source>admin.reports.total_rfm_score</source>
-                <target>Total RFM score</target>
-            </trans-unit>
-            <trans-unit id="sonata_administration">
-                <source>sonata_administration</source>
-                <target>Administration</target>
-            </trans-unit>
+
             <trans-unit id="action_delete">
                 <source>action_delete</source>
                 <target>Delete</target>
@@ -2340,39 +2711,39 @@
                 <source>all_elements</source>
                 <target>All elements</target>
             </trans-unit>
-            <trans-unit id="flash_batch_empty">
+            <trans-unit id='flash_batch_empty'>
                 <source>flash_batch_empty</source>
                 <target>Action aborted. No items were selected.</target>
             </trans-unit>
-            <trans-unit id="flash_create_success">
+            <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
                 <target>Item "%name%" has been successfully created.</target>
             </trans-unit>
-            <trans-unit id="flash_create_error">
+            <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
                 <target>An error has occurred during the creation of item "%name%".</target>
             </trans-unit>
-            <trans-unit id="flash_edit_success">
+            <trans-unit id='flash_edit_success'>
                 <source>flash_edit_success</source>
                 <target>Item "%name%" has been successfully updated.</target>
             </trans-unit>
-            <trans-unit id="flash_edit_error">
+            <trans-unit id='flash_edit_error'>
                 <source>flash_edit_error</source>
                 <target>An error has occurred during update of item "%name%".</target>
             </trans-unit>
-            <trans-unit id="flash_batch_delete_success">
+            <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
                 <target>Selected items have been successfully deleted.</target>
             </trans-unit>
-            <trans-unit id="flash_batch_delete_error">
+            <trans-unit id='flash_batch_delete_error'>
                 <source>flash_batch_delete_error</source>
                 <target>An Error has occurred during selected items deletion.</target>
             </trans-unit>
-            <trans-unit id="flash_delete_error">
+            <trans-unit id='flash_delete_error'>
                 <source>flash_delete_error</source>
                 <target>An Error has occurred during deletion of item "%name%".</target>
             </trans-unit>
-            <trans-unit id="flash_delete_success">
+            <trans-unit id='flash_delete_success'>
                 <source>flash_delete_success</source>
                 <target>Item "%name%" has been deleted successfully.</target>
             </trans-unit>
@@ -2619,6 +2990,84 @@
             <trans-unit id="link_filters">
                 <source>link_filters</source>
                 <target>Filters</target>
+            </trans-unit>
+
+            <!-- Driver Latency report -->
+            <trans-unit id="admin.reports.driver_latency.driver">
+                <source>admin.reports.driver_latency.driver</source>
+                <target>Driver</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.driver_latency.total_orders">
+                <source>admin.reports.driver_latency.total_orders</source>
+                <target>Total orders</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.driver_latency.late_orders">
+                <source>admin.reports.driver_latency.late_orders</source>
+                <target>Late orders</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.driver_latency.late_orders_percent">
+                <source>admin.reports.driver_latency.late_orders_percent</source>
+                <target>Late orders %</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.driver_latency.average_latency">
+                <source>admin.reports.driver_latency.average_latency</source>
+                <target>Average latency</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.user_id">
+                <source>admin.reports.user_id</source>
+                <target>User id</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.email">
+                <source>admin.reports.email</source>
+                <target>Email</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.phone">
+                <source>admin.reports.phone</source>
+                <target>Phone</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.firstname">
+                <source>admin.reports.firstname</source>
+                <target>Firstname</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.lastname">
+                <source>admin.reports.lastname</source>
+                <target>Lastname</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.is_business_client">
+                <source>admin.reports.is_business_client</source>
+                <target>Business client</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.company_name">
+                <source>admin.reports.company_name</source>
+                <target>Company name</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.first_order_date">
+                <source>admin.reports.first_order_date</source>
+                <target>First order date</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.last_order_date">
+                <source>admin.reports.last_order_date</source>
+                <target>Last order date</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.recency_score">
+                <source>admin.reports.recency_score</source>
+                <target>Recency score</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.frequency_score">
+                <source>admin.reports.frequency_score</source>
+                <target>Frequency score</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.monetary_score">
+                <source>admin.reports.monetary_score</source>
+                <target>Monetary score</target>
+            </trans-unit>
+            <trans-unit id="admin.reports.total_rfm_score">
+                <source>admin.reports.total_rfm_score</source>
+                <target>Total RFM score</target>
+            </trans-unit>
+            <trans-unit id="sonata_administration">
+                <source>sonata_administration</source>
+                <target>Administration</target>
             </trans-unit>
             <!-- Params listas -->
             <trans-unit id="admin.params">
