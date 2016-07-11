@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="lt" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="cart.checkout.main_titlelt" resname="cart.checkout.main_title">
+                <source>cart.checkout.main_title</source>
+                <target>Order</target>
+            </trans-unit>
+            <trans-unit id="c9f932900c061295799f8eee2ba492c6" resname="cart.block.your_order">
+                <source>cart.block.your_order</source>
+                <target>Your Order</target>
+            </trans-unit>
+            <trans-unit id="ef66c3099bc075bfc93b091b1b012ac5" resname="cart.block.delivery_price">
+                <source>cart.block.delivery_price</source>
+                <target>Delivery</target>
+            </trans-unit>
+            <trans-unit id="cart.block.delivery_type" resname="cart.block.delivery_type">
+                <source>cart.block.delivery_type</source>
+                <target>Delivery method:</target>
+            </trans-unit>
+            <trans-unit id="cart.block.delivery_type.tooltip" resname="cart.block.delivery_type.tooltip">
+                <source>cart.block.delivery_type.tooltip</source>
+                <target>Delivery / pickup place to select the next step</target>
+            </trans-unit>
+            <trans-unit id="cart.block.delivery_time.tooltip" resname="cart.block.delivery_time.tooltip">
+                <source>cart.block.delivery_time.tooltip</source>
+                <target>The exact amount of your order you can find out by entering the delivery address</target>
+            </trans-unit>
+            <trans-unit id="ace667964c9c1c5c29134999deae92c0" resname="cart.block.total">
+                <source>cart.block.total</source>
+                <target>Total</target>
+            </trans-unit>
+            <trans-unit id="cdb14f28caaf6c3aef4236ac7972219b" resname="cart.block.delivery_time">
+                <source>cart.block.delivery_time</source>
+                <target>Delivery time</target>
+            </trans-unit>
+            <trans-unit id="426a1f73799f95d0ba9bd1a78adbdf79" resname="cart.block.your_order_empty">
+                <source>cart.block.your_order_empty</source>
+                <target>Choose dishes</target>
+            </trans-unit>
+            <trans-unit id="c1774d38928cffe44ff5fecf48ca395a" resname="cart.block.edit_row">
+                <source>cart.block.edit_row</source>
+                <target>Edit</target>
+            </trans-unit>
+            <trans-unit id="da8a8494c54d8801c5e01d138431577d" resname="cart.block.order_btn">
+                <source>cart.block.order_btn</source>
+                <target>Order</target>
+            </trans-unit>
+            <trans-unit id="b8c9a22a673a26c53288e0d2cdb7c327" resname="cart.checkout.block_title_delivery">
+                <source>cart.checkout.block_title_delivery</source>
+                <target>Delivery</target>
+            </trans-unit>
+            <trans-unit id="ab9dbc0e8b931d30795a4bcbeee01531" resname="cart.checkout.delivery_to_home">
+                <source>cart.checkout.delivery_to_home</source>
+                <target>Home delivery</target>
+            </trans-unit>
+            <trans-unit id="5934b3ea4d66d942ef9715da9d6fca1d" resname="cart.checkout.delivery_i_pickup">
+                <source>cart.checkout.delivery_i_pickup</source>
+                <target>Local pick up</target>
+            </trans-unit>
+            <trans-unit id="91a531cac53e76cf23ca76d224b23c27new" resname="cart.checkout.enter_address">
+                <source>cart.checkout.enter_address</source>
+                <target>Enter your address</target>
+            </trans-unit>
+            <trans-unit id="91a531cac53e76cf23ca76d224b23c27" resname="cart.checkout.city">
+                <source>cart.checkout.city</source>
+                <target>City</target>
+            </trans-unit>
+            <trans-unit id="5559d6cd38328adde3eba8dcb958f91b" resname="cart.checkout.address">
+                <source>cart.checkout.address</source>
+                <target>Address</target>
+            </trans-unit>
+            <trans-unit id="6238d9b3ece11579e33552e5ae583d8c" resname="cart.checkout.firstname">
+                <source>cart.checkout.firstname</source>
+                <target>First Name</target>
+            </trans-unit>
+            <trans-unit id="287f18ef4dab2171b43253d3bb3e9b5c" resname="cart.checkout.lastname">
+                <source>cart.checkout.lastname</source>
+                <target>Lastname</target>
+            </trans-unit>
+            <trans-unit id="6f5a03e2e6bd05aeb7121ccd70d3ac72" resname="cart.checkout.email">
+                <source>cart.checkout.email</source>
+                <target>E-mail</target>
+            </trans-unit>
+            <trans-unit id="6c62969aa8128ea121c45f3fb049bec3" resname="cart.checkout.phone">
+                <source>cart.checkout.phone</source>
+                <target>Phone</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.delivery_date" resname="cart.checkout.delivery_date">
+                <source>cart.checkout.delivery_date</source>
+                <target>Delivery date</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.delivery_time" resname="cart.checkout.delivery_time">
+                <source>cart.checkout.delivery_time</source>
+                <target>Delivery time</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.order_now" resname="cart.checkout.order_now">
+                <source>cart.checkout.order_now</source>
+                <target>Order Now</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.order_later" resname="cart.checkout.order_later">
+                <source>cart.checkout.order_later</source>
+                <target>Order Later</target>
+            </trans-unit>
+            <trans-unit id="72ac47fdc9d8610d13cc86b4dd35e24f" resname="cart.checkout.phone_placeholder">
+                <source>cart.checkout.phone_placeholder</source>
+                <target>37060000000</target>
+            </trans-unit>
+            <trans-unit id="bc8439664f3800919e17d58ad5eaff4b" resname="cart.checkout.delivery_comment">
+                <source>cart.checkout.delivery_comment</source>
+                <target>Additional info</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.cart_rules" resname="cart.checkout.cart_rules">
+                <source>cart.checkout.cart_rules</source>
+                <target><![CDATA[I have read and agree to the <a href="#rules" name="order_rules" class="fancy-box">rules</a>]]></target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.newsletter_subscribe" resname="cart.checkout.newsletter_subscribe">
+                <source>cart.checkout.newsletter_subscribe</source>
+                <target><![CDATA[I want to get the most delicious Foodout.ee <a href="#privacy" name="newsletter_subscribe" class="fancy-box">news</a>]]></target>
+            </trans-unit>
+            <trans-unit id="58234b47f3f611cffbbd19bbaaa7dd73" resname="cart.checkout.delivery_comment_placeholder">
+                <source>cart.checkout.delivery_comment_placeholder</source>
+                <target>Enter the door code, floor and another courier useful information...</target>
+            </trans-unit>
+            <trans-unit id="dff708f5d1b6a869b2c01aca17e8d7b0" resname="cart.checkout.block_title_secure_payment">
+                <source>cart.checkout.block_title_secure_payment</source>
+                <target>Secure Payment</target>
+            </trans-unit>
+            <trans-unit id="51401b79dc9570ffe18190d54b163466" resname="cart.checkout.cash_on_delivery">
+                <source>cart.checkout.cash_on_delivery</source>
+                <target>Cash on delivery</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.corporate_pay" resname="cart.checkout.corporate_pay">
+                <source>cart.checkout.corporate_pay</source>
+                <target>Bank transfer at the end of the month</target>
+            </trans-unit>
+            <trans-unit id="9330627cdb5d1c945003084cf89374b6" resname="cart.checkout.card_on_delivery">
+                <source>cart.checkout.card_on_delivery</source>
+                <target>The credit card after delivery</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.classic_seb" resname="cart.checkout.classic_seb">
+                <source>cart.checkout.classic_seb</source>
+                <target>SEB bank-link</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.classic_nordea" resname="cart.checkout.classic_nordea">
+                <source>cart.checkout.classic_nordea</source>
+                <target>Nordea bank-link</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.gateway_cc" resname="cart.checkout.gateway_cc">
+                <source>cart.checkout.gateway_cc</source>
+                <target>Card through the Internet</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.gateway_banklink" resname="cart.checkout.gateway_banklink">
+                <source>cart.checkout.gateway_banklink</source>
+                <target>Swedbank bank-link</target>
+            </trans-unit>
+            <trans-unit id="e03c0471e61e194d66faffb54af1ce45" resname="cart.checkout.button_get_back">
+                <source>cart.checkout.button_get_back</source>
+                <target>GO BACK</target>
+            </trans-unit>
+            <trans-unit id="ee13b89787248624f1722ac29170fc85" resname="cart.checkout.button_order">
+                <source>cart.checkout.button_order</source>
+                <target>Order</target>
+            </trans-unit>
+            <trans-unit id="e03b2e3719dfe3a72bcc59d62ae09bde" resname="cart.block.remove_row">
+                <source>cart.block.remove_row</source>
+                <target>Remove</target>
+            </trans-unit>
+            <trans-unit id="28435c7899c2cd41b83b8d15c05cb370" resname="cart.checkout.address_change_change">
+                <source>cart.checkout.address_change_change</source>
+                <target>Edit</target>
+            </trans-unit>
+            <trans-unit id="fd022aa10e027747c7660b3503777e00" resname="cart.checkout.address_change_cancel">
+                <source>cart.checkout.address_change_cancel</source>
+                <target>Cancel</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.address_not_found" resname="cart.checkout.address_not_found">
+                <source>cart.checkout.address_not_found</source>
+                <target>Address not found or does not exist</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.place_point_not_in_radius" resname="cart.checkout.place_point_not_in_radius">
+                <source>cart.checkout.place_point_not_in_radius</source>
+                <target>Restaurant can not deliver your order to your address.</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.pickup_tooltip" resname="cart.checkout.pickup_tooltip">
+                <source>cart.checkout.pickup_tooltip</source>
+                <target>Select the nearest restaurant from which to pick up your order</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.no_delivery_choose_what_to_do" resname="cart.checkout.no_delivery_choose_what_to_do">
+                <source>cart.checkout.no_delivery_choose_what_to_do</source>
+                <target>Your address is a greater distance than the deliveries. Please choose "Pickup", or choose from other restaurants who can deliver you food.</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.i_will_take_it" resname="cart.checkout.i_will_take_it">
+                <source>cart.checkout.i_will_take_it</source>
+                <target>I will take it</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.show_me_places" resname="cart.checkout.show_me_places">
+                <source>cart.checkout.show_me_places</source>
+                <target>Show restaurants</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.phone_tooltip" resname="cart.checkout.phone_tooltip">
+                <source>cart.checkout.phone_tooltip</source>
+                <target>Enter the mobile phone number in format 3706xxxxxxxx</target>
+            </trans-unit>
+            <trans-unit id="2d4e402558401b20f0603da2554047c1" resname="cart.checkout.place_point">
+                <source>cart.checkout.place_point</source>
+                <target>Pickup from</target>
+            </trans-unit>
+            <trans-unit id="cart.block.order_sum_minimum" resname="cart.block.order_sum_minimum">
+                <source>cart.block.order_sum_minimum</source>
+                <target>Minimum cart:</target>
+            </trans-unit>
+            <trans-unit id="cart.block.total_cart" resname="cart.block.total_cart">
+                <source>cart.block.total_cart</source>
+                <target>Cart</target>
+            </trans-unit>
+            <trans-unit id="cart.block.order_sum_minimum_take_myself" resname="cart.block.order_sum_minimum_take_myself">
+                <source>cart.block.order_sum_minimum_take_myself</source>
+                <target>Not apply if you pickup</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.company" resname="cart.checkout.company">
+                <source>cart.checkout.company</source>
+                <target>You will need an invoice</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.company_name" resname="cart.checkout.company_name">
+                <source>cart.checkout.company_name</source>
+                <target>Company</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.company_name_placeholder" resname="cart.checkout.company_name_placeholder">
+                <source>cart.checkout.company_name_placeholder</source>
+                <target><![CDATA[&quot;Company Name&quot;]]></target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.company_code" resname="cart.checkout.company_code">
+                <source>cart.checkout.company_code</source>
+                <target>Company code</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.company_code_placeholder" resname="cart.checkout.company_code_placeholder">
+                <source>cart.checkout.company_code_placeholder</source>
+                <target>312345678</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.vat_code" resname="cart.checkout.vat_code">
+                <source>cart.checkout.vat_code</source>
+                <target>VAT code</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.vat_code_placeholder" resname="cart.checkout.vat_code_placeholder">
+                <source>cart.checkout.vat_code_placeholder</source>
+                <target>EE100001234567</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.company_address" resname="cart.checkout.company_address">
+                <source>cart.checkout.company_address</source>
+                <target>Address</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.company_address_placeholder" resname="cart.checkout.company_address_placeholder">
+                <source>cart.checkout.company_address_placeholder</source>
+                <target><![CDATA[Videviku 30,
+13417,
+Tallinn]]></target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.company_division_code" resname="cart.checkout.company_division_code">
+                <source>cart.checkout.company_division_code</source>
+                <target>Division code</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.company_division_code_placeholder" resname="cart.checkout.company_division_code_placeholder">
+                <source>cart.checkout.company_division_code_placeholder</source>
+                <target>FOODBUHALT</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.no_restaurant_to_deliver" resname="order.form.errors.no_restaurant_to_deliver">
+                <source>order.form.errors.no_restaurant_to_deliver</source>
+                <target>Currently, a restaurant can no longer serve your order.</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.wrong_point_for_address" resname="order.form.errors.wrong_point_for_address">
+                <source>order.form.errors.wrong_point_for_address</source>
+                <target>Sorry, restaurant can not handle your order.</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.customerfirstname" resname="order.form.errors.customerfirstname">
+                <source>order.form.errors.customerfirstname</source>
+                <target>Enter your firstname</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.customerphone" resname="order.form.errors.customerphone">
+                <source>order.form.errors.customerphone</source>
+                <target>Enter your mobile phone number</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.dishLimit" resname="order.form.errors.dishLimit">
+                <source>order.form.errors.dishLimit</source>
+                <target>Attention! In this restaurant, you can select a maximum of %text% dishes. Please reduce the amount of dishes, or choose a different restaurant from Foodout.ee . Enjoy the selection!</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.drinkLimit" resname="order.form.errors.drinkLimit">
+                <source>order.form.errors.drinkLimit</source>
+                <target>Attention! In this restaurant, you can select a maximum of %text% drinks. Please reduce the amount of drinks or choose a different restaurant from Foodout.ee . Enjoy the selection!</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.customerphone_format" resname="order.form.errors.customerphone_format">
+                <source>order.form.errors.customerphone_format</source>
+                <target>Enter mobile phone number in format 37061234567</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.customerphone_not_mobile" resname="order.form.errors.customerphone_not_mobile">
+                <source>order.form.errors.customerphone_not_mobile</source>
+                <target>Not specified mobile phone number</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.customercomment" resname="order.form.errors.customercomment">
+                <source>order.form.errors.customercomment</source>
+                <target>Enter a comment</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.customeremail" resname="order.form.errors.customeremail">
+                <source>order.form.errors.customeremail</source>
+                <target>Not entered E-mail address</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.customeremail_invalid" resname="order.form.errors.customeremail_invalid">
+                <source>order.form.errors.customeremail_invalid</source>
+                <target>Invalid E-mail address. Enter your E-mail in format: yourname@mail.ee</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.customeraddr" resname="order.form.errors.customeraddr">
+                <source>order.form.errors.customeraddr</source>
+                <target>Please enter your address</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.cartlessthanminimum" resname="order.form.errors.cartlessthanminimum">
+                <source>order.form.errors.cartlessthanminimum</source>
+                <target><![CDATA[<b>Your order amount is below the minimum cart amount.</b>]]></target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.cartlessthanminimum_on_pickup" resname="order.form.errors.cartlessthanminimum_on_pickup">
+                <source>order.form.errors.cartlessthanminimum_on_pickup</source>
+                <target><![CDATA[<b>Your order amount is below the minimum cart amount.</b>]]></target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.dont_make_item" resname="order.form.errors.dont_make_item">
+                <source>order.form.errors.cartlessthanminimum_on_pickup</source>
+                <target><![CDATA[The dish is currently not producing: %text%]]></target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.emptycart" resname="order.form.errors.emptycart">
+                <source>order.form.errors.emptycart</source>
+                <target>Your cart is empty. Choose dishes from the menu</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.today_no_work" resname="order.form.errors.today_no_work">
+                <source>order.form.errors.today_no_work</source>
+                <target>Unfortunately, the restaurant is closed.</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.isnt_open" resname="order.form.errors.isnt_open">
+                <source>order.form.errors.isnt_open</source>
+                <target>Sorry, the restaurant still closed</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.is_already_close" resname="order.form.errors.is_already_close">
+                <source>order.form.errors.is_already_close</source>
+                <target>Sorry, restaurant no longer work.</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.cart_rules" resname="order.form.errors.cart_rules">
+                <source>order.form.errors.cart_rules</source>
+                <target>You must agree to the site's rules</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.problems_with_dish" resname="order.form.errors.problems_with_dish">
+                <source>order.form.errors.problems_with_dish</source>
+                <target><![CDATA[At the moment we can not produce a dish - <b>%text%</b>. Please remove it, or select other dish from the menu.]]></target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.nav_restaurant_no_work" resname="order.form.errors.nav_restaurant_no_work">
+                <source>order.form.errors.nav_restaurant_no_work</source>
+                <target><![CDATA[<b>Restaurant is currently unable to accept your order.</b>]]></target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.nav_restaurant_no_setted" resname="order.form.errors.nav_restaurant_no_setted">
+                <source>order.form.errors.nav_restaurant_no_setted</source>
+                <target><![CDATA[<b>Restaurant is not currently available.</b>]]></target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.nav_empty_cart" resname="order.form.errors.nav_empty_cart">
+                <source>order.form.errors.nav_empty_cart</source>
+                <target><![CDATA[<b>Cart has no dishes.</b>]]></target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.empty_company" resname="order.form.errors.empty_company">
+                <source>order.form.errors.empty_company</source>
+                <target>Enter the company that you want to receive an invoice</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.empty_company_code" resname="order.form.errors.empty_company_code">
+                <source>order.form.errors.empty_company_code</source>
+                <target>Enter Company Code</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.empty_vat_code" resname="order.form.errors.empty_vat_code">
+                <source>order.form.errors.empty_vat_code</source>
+                <target>Enter VAT Code</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.empty_company_address" resname="order.form.errors.empty_company_address">
+                <source>order.form.errors.empty_company_address</source>
+                <target>Enter Company Address</target>
+            </trans-unit>
+            <trans-unit id="general.cart_rules_slug" resname="general.cart_rules_slug">
+                <source>general.cart_rules_slug</source>
+                <target>ordering_rules</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.payment_type" resname="order.form.errors.payment_type">
+                <source>order.form.errors.payment_type</source>
+                <target>Select a payment method</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.back_in_time_preorder" resname="order.form.errors.back_in_time_preorder">
+                <source>order.form.errors.back_in_time_preorder</source>
+                <target>Check Delivery Time</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.back_in_feature_preorder" resname="order.form.errors.back_in_feature_preorder">
+                <source>order.form.errors.back_in_feature_preorder</source>
+                <target>Please choose the delivery date from provided dates</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.not_a_date" resname="order.form.errors.not_a_date">
+                <source>order.form.errors.not_a_date</source>
+                <target>You have entered the wrong date of delivery</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.division_code_incorrect" resname="order.form.errors.division_code_incorrect">
+                <source>order.form.errors.division_code_incorrect</source>
+                <target>You have entered the wrong division code</target>
+            </trans-unit>
+            <trans-unit id="order.form.errors.bussines_client_not_loggedin" resname="order.form.errors.bussines_client_not_loggedin">
+                <source>order.form.errors.bussines_client_not_loggedin</source>
+                <target>You are a business customer. Please login</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.text" resname="general.coupon.text">
+                <source>general.coupon.text</source>
+                <target>Enter discount coupon code</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.submit_button" resname="general.coupon.submit_button">
+                <source>general.coupon.submit_button</source>
+                <target>Apply a discount</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.wrong_place" resname="general.coupon.wrong_place">
+                <source>general.coupon.wrong_place</source>
+                <target>Your discount coupon is not valid in this restaurant</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.only_cili" resname="general.coupon.only_cili">
+                <source>general.coupon.only_cili</source>
+                <target>Your discount coupon is only valid for Čili pica, Soya, Forest restaurants</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.wrong_place_simple" resname="general.coupon.wrong_place_simple">
+                <source>general.coupon.wrong_place_simple</source>
+                <target>Your discount coupon is not valid in this restaurant. Please check your coupon code.</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.online_payments_only">
+                <source>general.coupon.online_payments_only</source>
+                <target>Sorry, this discount code is valid only for the transfer payments</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.only_web" resname="general.coupon.only_web">
+                <source>general.coupon.only_web</source>
+                <target>Sorry, the discount code is only valid for orders via the web browser</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.only_api" resname="general.coupon.only_api">
+                <source>general.coupon.only_api</source>
+                <target>Sorry, this discount is valid only for orders through the mobile application</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.only_delivery" resname="general.coupon.only_delivery">
+                <source>general.coupon.only_delivery</source>
+                <target>Sorry, this discount is valid only for orders with delivery</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.not_for_business" resname="general.coupon.not_for_business">
+                <source>general.coupon.not_for_business</source>
+                <target>Sorry, business customers discount coupons can not be used</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.only_pickup" resname="general.coupon.only_pickup">
+                <source>general.coupon.only_pickup</source>
+                <target>Sorry, this discount is valid only for pickup</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.not_active" resname="general.coupon.not_active">
+                <source>general.coupon.not_active</source>
+                <target>Your discount coupon is not valid</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.popup_link" resname="general.coupon.popup_link">
+                <source>general.coupon.popup_link</source>
+                <target><![CDATA[If you have a discount coupon, <a href="#coupon" class="fancy-box">enter here</a>]]></target>
+            </trans-unit>
+            <trans-unit id="general.coupon.note_text" resname="general.coupon.note_text">
+                <source>general.coupon.note_text</source>
+                <target>* The discount code does not apply for discount dishes and alcoholic beverages (discounts can not be combined). It is not apply for a discount coupons, which can cover the entire amount of the order.</target>
+            </trans-unit>
+            <trans-unit id="cart.block.discount_sum" resname="cart.block.discount_sum">
+                <source>cart.block.discount_sum</source>
+                <target>Discount</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.phone.prefill_phone_lt" resname="cart.checkout.phone.prefill_phone">
+                <source>cart.checkout.phone.prefill_phone</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="general.coupon.coupon_too_early" resname="general.coupon.coupon_too_early">
+                <source>general.coupon.coupon_too_early</source>
+                <target>Discount coupon is not yet operational</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.coupon_expired" resname="general.coupon.coupon_expired">
+                <source>general.coupon.coupon_expired</source>
+                <target>Discount coupon has expired</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
