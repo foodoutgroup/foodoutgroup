@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-    <file source-language="lt" datatype="plaintext" original="file.ext">
+    <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
             <trans-unit id="2c33fa8aaa15d65cb09a1d95fc568389" resname="admin.place.point.weekdays_worktime">
                 <source>admin.place.point.weekdays_worktime</source>
