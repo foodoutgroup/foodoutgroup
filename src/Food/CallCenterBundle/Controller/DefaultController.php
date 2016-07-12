@@ -256,6 +256,7 @@ class DefaultController extends Controller
         $this->putPlaceIntoSession($placeId);
 
         return [
+            'place' => $place,
             'items' => $dishes,
             'isCallcenter' => true
         ];

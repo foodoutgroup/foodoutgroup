@@ -47,7 +47,7 @@
                             <td>
                                 <a href="{{ path('food_ajax_dish', {'dish': item.id }) }}"
                                    href2="#detailed-dish-popup"
-                                   class="fancybox.ajax add-to-cart fancy-box btn btn-success">
+                                   class="focus_button fancybox.ajax add-to-cart fancy-box btn btn-success">
                                     <i class="fa fa-plus"></i>
                                 </a>
                             </td>
@@ -56,5 +56,8 @@
                 {% endfor %}
             <tbody>
         </table>
+        <span id="restaurant_link" data="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"></span>
+        <span id="restaurant_image" data="http://{{ cloudfront_url }}/{{place.getWebPathThumb}}"></span>
+        <span id="restaurant_image_alt" data="{% trans with {'%restaurant_name%': place.name} %}general.restaurant_logo_alt{% endtrans %}"></span>
     </div>
 </div>

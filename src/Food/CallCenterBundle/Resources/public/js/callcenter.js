@@ -5,17 +5,31 @@ $(function() {
     bind_reset_cart();
     bind_order_submit_form();
     bind_back_to_dishes();
+    focus_table_row();
 });
 
 $(window).load(function() {
     bind_location_select();
     bind_address_search_by_phone.init();
+    focus_table_row();
 });
+
+var focus_table_row = function() {
+    var focus_button = $('.focus_button');
+
+    focus_button.on('focus', function() {
+        $(this).parent().parent().addClass('highlightedRow');
+    });
+
+    focus_button.on('blur', function() {
+        $(this).parent().parent().removeClass('highlightedRow');
+    });
+};
 
 bind_location_select = function() {
     var focus_street;
 
-    focus_street = function() { $(LocationInputs.stree).focus().focus(); };
+    focus_street = function() { $(LocationInputs.street).focus().focus(); };
 
     $(LocationInputs.city).change(function() {
         focus_street();
@@ -64,7 +78,9 @@ bind_callcenter_place_select = function() {
 
                 selected_place_id = $(PlaceSelect.selector).val();
 
-                DishesContent.setHtml(response).show();
+                DishesContent.setHtml(response).show("fast", function() {
+                    $('#dishes_filter').focus().focus();
+                });
                 ResetCartButton.show();
                 NoDishesContent.hide();
                 SuccessPanel.hide();
@@ -77,12 +93,22 @@ bind_callcenter_place_select = function() {
                 // don't forget to turn loader off
                 $(PlaceSelect.selector).isLoading('hide');
 
-                // focus our glorious filter
-                $('#dishes_filter').focus().focus();
+                // init focus color
+                focus_table_row();
 
                 // set DOM variables
                 $(PlaceId.selector).attr('data', selected_place_id);
                 $(place_url).attr('data', Routing.generate('food_cart', { placeId: selected_place_id, takeAway: 1, _locale: 'lt' }));
+
+                var data = $($.parseHTML(response));
+
+                $('.restaurant_link').attr('href', data.find('#restaurant_link').attr('data'))
+                    .attr('title', data.find('#restaurant_image_alt').attr('data'));
+                $('.restaurant_image').attr('src', data.find('#restaurant_image').attr('data'))
+                    .attr('alt', data.find('#restaurant_image_alt').attr('data'));
+
+                // focus our glorious filter
+                $('#dishes_filter').focus().focus();
             }
         };
 

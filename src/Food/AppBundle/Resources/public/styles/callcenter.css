@@ -41,3 +41,10 @@ button, input, select, textarea, body, .ui-widget-content, .ui-selectmenu-menu l
 #cart_panel .check-block .order-button {
     text-align: center;
 }
+
+.table-hover > tbody > tr.highlightedRow:hover > td,
+.table-hover > tbody > tr.highlightedRow:hover > th,
+.highlightedRow {
+    background-color: #CEE0F2;
+    font-weight: bold;
+}
