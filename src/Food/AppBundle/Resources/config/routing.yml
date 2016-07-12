@@ -134,8 +134,17 @@ food_slug_locale_slug2:
         redirLocale:  "[a-z]{2}"
 
 # landing pages
-food_landing_b2b_client:
+food_landing_b2b_client_lt:
+    path: /b2b-klientams
+    defaults: { _controller: FoodAppBundle:Landing:b2bClient }
+food_landing_b2b_client_lt_slash:
     path: /b2b-klientams/
+    defaults: { _controller: FoodAppBundle:Landing:b2bClient }
+food_landing_b2b_client_lv:
+    path: /b2b-klients
+    defaults: { _controller: FoodAppBundle:Landing:b2bClient }
+food_landing_b2b_client_lv_slash:
+    path: /b2b-klients/
     defaults: { _controller: FoodAppBundle:Landing:b2bClient }
 
 food_slug:
