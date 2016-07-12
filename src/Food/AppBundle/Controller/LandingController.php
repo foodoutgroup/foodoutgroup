@@ -12,6 +12,7 @@ class LandingController extends Controller
      */
     public function b2bClientAction()
     {
-        return $this->render('FoodAppBundle:Landing:b2b_client.html.twig');
+        $locale = $this->container->getParameter('locale');
+        return $this->render('FoodAppBundle:Landing:b2b_client_' . $locale . '.html.twig');
     }
 }
