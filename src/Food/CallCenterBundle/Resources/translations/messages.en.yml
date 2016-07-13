@@ -1,0 +1,19 @@
+callcenter:
+    title: Call Center
+    location_panel:
+        title: Selected Address
+        error: Can not deliver to this address
+    location_form:
+        title: Address
+        street: Street, exp., Hope
+        house: House no., exp., 77
+        submit: Next
+    places_form:
+        place: Restaurant
+        dishes: Dishes
+        no_dishes: Dishes not found
+        filter_placeholder: Search by the name of the dish
+        reset: Cancel Order
+        success: Order successfully created
+        back_to_menu: Go Back To Menu
+        cart: Cart
