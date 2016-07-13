@@ -1,0 +1,84 @@
+{% extends 'FoodAppBundle::mobilelayout.html.twig' %}
+
+{% block title %}{{ 'callcenter.title'|trans}} - {{ page_title }}{% endblock %}
+{% block head_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api }}&sensor=false"></script>
+
+    <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/select2/select2.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/select2/select2_locale_lt.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/jquery.cycle2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/jquery-ui/jquery-ui-1.10.3.custom.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/jquery.ui.selectmenu.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/jquery.raty.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/boxer/jquery.fs.boxer.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/jquery.placeholder.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/jquery.loadmask.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/jquery.typeahead.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/fancy/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/fancy/helpers/jquery.fancybox-media.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/isloading/jquery.isloading.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/common.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/scripts.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/cart.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/js_main/place.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/callcenter/js/callcenter.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/js_main/order.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/checkout.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/foodapp/scripts/icheck/jquery.icheck.min.js') }}"></script>
+    {# Chosen JS Begin #}
+    {% javascripts '@FoodAppBundle/Resources/public/scripts/chosen/chosen.jquery.min.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {# Chosen JS End #}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets 'bundles/foodapp/styles/preload.css'
+                   'bundles/foodapp/scripts/select2/select2.css'
+                   'bundles/foodapp/scripts/select2/select2-bootstrap.css'
+                   'bundles/foodapp/styles/jquery.loadmask.css'
+                   'bundles/foodapp/scripts/jquery-ui/custom-theme/jquery-ui-1.10.3.custom.min.css'
+                   'bundles/foodapp/scripts/boxer/jquery.fs.boxer.css'
+                   'bundles/foodapp/scripts/font-awesome-4.2.0/css/font-awesome.min.css'
+                   'bundles/foodapp/scripts/fancy/jquery.fancybox.css'
+                   'bundles/foodapp/styles/style.css'
+                   'bundles/foodapp/styles/callcenter.css'
+                   filter="cssrewrite" %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    {% endstylesheets %}
+
+    {# Chosen CSS Begin #}
+    {% stylesheets '@FoodAppBundle/Resources/public/scripts/chosen/chosen.min.css' filter="cssrewrite" %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    {% endstylesheets %}
+    {# Chosen CSS End #}
+{% endblock %}
+{% block body %}
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="">{{ 'callcenter.title'|trans }}</a>
+            </div>
+            <div class="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
+                <form id="top-phone-search" class="navbar-form navbar-left" method="post" action="#" role="search">
+                    <input type="text" value="370" id="top-phone-input" class="form-control" placeholder="3706000000" style="width: 150px;" />
+                    <button type="submit" class="btn btn-default">Adresas pagal telefona</button>
+                </form>
+                <form class="navbar-form navbar-left" action="{{ path('fos_user_security_logout') }}" role="logout">
+                    &nbsp;&nbsp;
+                    <button type="submit" class="btn btn-default">Atsijungti</button>
+                </form>
+            </div>
+            <div class="clear-pull-right"></div>
+        </div>
+    </nav>
+    {# preload images #}
+    <div class="images-for-preload">
+        <span class="fa fa-cog fa-spin"></span>
+    </div>
+{% endblock %}

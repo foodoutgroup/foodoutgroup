@@ -1,0 +1,207 @@
+<form class="delivery-info-form" method="post" action="" data-delivery-action="{{ url('food_cart', {placeId: place.id}) }}" data-pickup-action="{{ url('food_cart', {placeId: place.id, takeAway: 1})}}">
+    <div class="delivery-info-form-content">
+        {% if not isCallcenter %}
+            <h2>1. {% trans %}cart.checkout.block_title_delivery{% endtrans %}</h2>
+        {% endif %}
+
+        {% if formHasErrors %}
+        <div class="form-row">
+            <div class="alert alert-warning">
+                {% for err in formErrors %}
+                    {% if err is iterable %}
+                        <li>{{ err.message|trans({'%text%': err.text})|raw }}</li>
+                    {% else %}
+                        <li>{{ err|trans|raw }}</li>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        <div class="form-row">
+            <label><br></label>
+            <div class="delivery-type-radios clearfix">
+                {% if place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'delivery' %}
+                    <label class="custom-radio">{% trans %}cart.checkout.delivery_to_home{% endtrans %}
+                        <input type="radio" name="delivery-type" value="deliver"{% if ((order is not null and order.deliveryType == 'deliver') or order is null) and takeAway == false %} checked="checked"{% endif %}>
+                    </label>
+                {% endif %}
+                {% if place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'pickup' %}
+                    <label class="custom-radio">{% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
+                        <input type="radio" name="delivery-type" value="pickup"{% if (order is not null and order.deliveryType == 'pickup') or takeAway == true %} checked="checked"{% endif %}>
+                    </label>
+                {% endif %}
+            </div>
+        </div>
+        {# Pristatysime i namus - duodam susitvarkyti adresus #}
+        {#% if takeAway == false %#}
+        <div class="takeaway-not {% if takeAway == true %}hide{% endif %}">
+            <div class="form-row form-row-required address-change">
+                <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
+                <select class="custom-select" disabled="true">
+                    <option {% if location and location.city is defined and location.city == 'Vilnius' %}#}selected{% endif %} value="Vilnius">Vilnius</option>
+                    <option {% if location and location.city is defined and location.city == 'Kaunas' %}selected{% endif %} value="Kaunas">Kaunas</option>
+                    <option {% if location and location.city is defined and (location.city == 'Klaipėda' or location.city == 'Klaipeda') %}selected{% endif %} value="Klaipėda">Klaipėda</option>
+                </select>
+            </div>
+            <div class="form-row form-row-required address-change">
+                <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
+                <input type="text"
+                       id="address"
+                       value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% endif %}"
+                       placeholder="{{ 'index.street'|trans }}"
+                       readonly>
+            </div>
+        </div>
+        {# Atsiims pats - leidziame pasirinkti padalini #}
+        {#% else %#}
+        <div class="takeaway-yep {% if takeAway == true %}show{% endif %}">
+            <div class="form-row form-row-required">
+                <label>{% trans %}cart.checkout.place_point{% endtrans %}:</label>
+                <select class="custom-select" name="place_point">
+                    {% for point in place.points %}
+                        {% if point.active and point.public and point.pickUp %}
+                            <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        {#% endif %#}
+        <div class="form-row form-row-required">
+            <label>{% trans %}cart.checkout.firstname{% endtrans %}:</label>
+            <input type="text"
+                   name="customer-firstname"
+                   {% if isCallcenter and not submitted %}
+                       value="{% if user is defined %}{{ user.firstname|default('') }}{% endif %}"
+                   {% else %}
+                       value="{% if (dataToLoad is not empty and dataToLoad['customer-firstname'] is not empty) %}{{ dataToLoad['customer-firstname'] }}{% else %}{{ app.user.firstname|default('') }}{% endif %}"
+                   {% endif %}
+                   placeholder="{% trans %}general.name.placeholder{% endtrans %}" />
+        </div>
+        <div class="form-row">
+            <label>{% trans %}cart.checkout.lastname{% endtrans %}:</label>
+            <input type="text"
+                   name="customer-lastname"
+                   {% if isCallcenter and not submitted %}
+                       value="{% if user is defined %}{{ user.lastname|default('') }}{% endif %}"
+                   {% else %}
+                       value="{% if (dataToLoad is not empty and dataToLoad['customer-lastname'] is not empty) %}{{ dataToLoad['customer-lastname'] }}{% else %}{{ app.user.lastname|default('') }}{% endif %}"
+                   {% endif %}
+                   placeholder="{% trans %}general.lastname.placeholder{% endtrans %}" />
+        </div>
+        {% if not isCallcenter %}
+            <div class="form-row form-row-required">
+                <label>{% trans %}cart.checkout.email{% endtrans %}:</label>
+                <input type="text"
+                       name="customer-email"
+                       {% if isCallcenter and not submitted %}
+                           value="{% if user is defined %}{{ user.email|default('') }}{% endif %}"
+                       {% else %}
+                           value="{% if (dataToLoad is not empty and dataToLoad['customer-email'] is not empty) %}{{ dataToLoad['customer-email'] }}{% else %}{{ app.user.email|default('') }}{% endif %}"
+                       {% endif %}
+                       placeholder="{% trans %}general.email.placeholder{% endtrans %}" />
+            </div>
+        {% endif %}
+        <div class="form-row form-row-required">
+            <label>{% trans %}cart.checkout.phone{% endtrans %}: <span title="{% trans %}cart.checkout.phone_tooltip{% endtrans %}" class="tooltip tooltip-icon ui-icon ui-icon-info"></span></label>
+            <input type="text"
+                   name="customer-phone"
+                   placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}"
+                   {% if isCallcenter and not submitted %}
+                       value="{% if user is defined %}{{ user.phone|default('') }}{% endif %}"
+                   {% else %}
+                       value="{% if (dataToLoad is not empty and dataToLoad['customer-phone'] is not empty) %}{{ dataToLoad['customer-phone'] }}{% else %}{{ app.user.phone|default('') }}{% endif %}"
+                   {% endif %}
+                   />
+        </div>
+
+        {#
+        <div class="form-row">
+            <label>Pristatymo laikas:</label>
+            <select class="custom-select">
+                <option>18:45</option>
+                <option>19:45</option>
+            </select>
+        </div>
+        #}
+        <div class="form-row form-row-required">
+            <label>{% trans %}cart.checkout.delivery_comment{% endtrans %}:</label>
+            <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['customer-comment'] is not empty) %}{{ dataToLoad['customer-comment'] }}{% elseif address is defined %}{{ address.comment|default('') }}{% endif %}</textarea>
+        </div>
+        <div class="form-row form-row-required custom-checkbox cart-rules {% if isCallcenter %}hidden-rules{% endif %}">
+            <label>{% trans %}cart.checkout.cart_rules{% endtrans %}</label>
+            <input type="checkbox" name="cart_rules" {% if (dataToLoad is not empty and dataToLoad['cart_rules'] is defined and dataToLoad['cart_rules'] is not empty) or isCallcenter %}checked="checked"{% endif %} />
+        </div>
+        <div class="clearfix"></div>
+        <div class="cupon-info">
+            {% trans %}general.coupon.popup_link{% endtrans %}
+            <input type="hidden" name="coupon_code" id="coupon_code" value="{% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{{ dataToLoad['coupon_code'] }}{% endif %}" />
+        </div>
+
+        {% if not isCallcenter %}
+            <h2 class="section-2">2. {% trans %}cart.checkout.block_title_secure_payment{% endtrans %}</h2>
+        {% endif %}
+
+        <div class="select-payment clearfix">
+            <label class="custom-radio">{% trans %}cart.checkout.cash_on_delivery{% endtrans %}
+                <input type="radio" name="payment-type" value="local"{% if (order is not null and order.paymentMethod == 'local') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local') or (dataToLoad is empty) %} checked="checked"{% endif %}>
+            </label>
+            {% if takeAway != true and place.cardOnDelivery %}
+            <label class="custom-radio">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
+                <input type="radio" name="payment-type" value="local.card"{% if (order is not null and order.paymentMethod == 'local.card') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local.card') %} checked="checked"{% endif %}>
+            </label>
+            {% endif %}
+        </div>
+
+        {% if not place.disabledOnlinePayment %}
+            {% if not isCallcenter %}
+                {# TODO kolkas viskas rodo i Paysera#}
+                <div class="select-payment clearfix">
+                    <label class="custom-radio">
+                        <img src="/bundles/foodapp/images/nordea-small.png">
+                        <input type="radio" name="payment-type" value="nordea-banklink"/>
+                    </label>
+                </div>
+                <div class="select-payment clearfix">
+                    <label class="custom-radio wider-radio">
+                        {{ 'cart.checkout.gateway_cc'|trans }}:
+                        <img src="/bundles/foodapp/images/master-card-small.png">
+                        <img src="/bundles/foodapp/images/visa-small.png">
+                        <img src="/bundles/foodapp/images/maestro-small.png">
+                        <img src="/bundles/foodapp/images/visa-electron-small.png">
+                        <input type="radio" name="payment-type" value="swedbank-credit-card-gateway"/>
+                    </label>
+                </div>
+                <div class="select-bank clearfix">
+                    <label class="custom-radio"><img src="/bundles/foodapp/images/bank-sb.png">
+                        <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                    </label>
+                    <label class="custom-radio"><img src="/bundles/foodapp/images/bank-seb.png">
+                        <input type="radio" name="payment-type" value="seb-banklink"/>
+                    </label>
+                    <label class="custom-radio"><img src="/bundles/foodapp/images/bank-db.png">
+                        <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                    </label>
+                    <label class="custom-radio"><img src="/bundles/foodapp/images/bank-mb.png">
+                        <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                    </label>
+                    <label class="custom-radio"><img src="/bundles/foodapp/images/bank-swb.png">
+                        <input type="radio" name="payment-type" value="swedbank-gateway"/>
+                    </label>
+                    <label class="custom-radio"><img src="/bundles/foodapp/images/bank-dnb.png">
+                        <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                    </label>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <div class="form-controls clearfix">
+        {% if not isCallcenter %}
+            <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button-back">{% trans %}cart.checkout.button_get_back{% endtrans %}</a>
+        {% endif %}
+        <a href="#" class="submit-button">
+            <span>{% trans %}cart.checkout.button_order{% endtrans %}</span>
+        </a>
+    </div>
+</form>

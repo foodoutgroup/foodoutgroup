@@ -62,6 +62,7 @@ class AppKernel extends Kernel
             new Food\ReportBundle\FoodReportBundle(),
             new Ob\HighchartsBundle\ObHighchartsBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
+            new Food\CallCenterBundle\CallCenterBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

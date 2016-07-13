@@ -45,6 +45,11 @@ food_dishes:
     type:     annotation
     prefix:   /
 
+food_call_center:
+    resource: "@CallCenterBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 

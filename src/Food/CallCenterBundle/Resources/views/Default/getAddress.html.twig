@@ -1,0 +1,22 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>City</th>
+            <th>Street</th>
+            <th>House</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for adrRow in addresses %}
+            <tr>
+                <input class="adrow-userId" type="hidden" name="userId" value="{{ adrRow.userId }}" />
+                <input class="adrow-addressId" type="hidden" name="addressId" value="{{ adrRow.addressId }}" />
+                <td class="adrow-city">{{ adrRow.city }}</td>
+                <td class="adrow-street">{{ adrRow.street }}</td>
+                <td class="adrow-house">{{ adrRow.house }}</td>
+                <td><button class="btn btn-mini set-address" type="button">>></button></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

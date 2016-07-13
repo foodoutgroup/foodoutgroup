@@ -182,6 +182,9 @@ class DefaultController extends Controller
 
     public function indexAction($placeId, $takeAway = null, Request $request)
     {
+        // for now this is relevant for callcenter functionality
+        $isCallcenter = $request->isXmlHttpRequest();
+
         $orderService = $this->get('food.order');
         $placeService = $this->get('food.places');
         $miscUtils = $this->get('food.app.utils.misc');
@@ -234,13 +237,19 @@ class DefaultController extends Controller
         // TODO refactor this nonsense... if is if is if is bullshit...
         // Validate only if post happened
         if ($request->getMethod() == 'POST') {
+            $couponEnt = null;
+            if ($request->get('coupon_code',false)) {
+                $couponEnt = $this->get('doctrine')->getRepository('FoodOrderBundle:Coupon')->findOneBy(array('code'=>$request->get('coupon_code','')));
+            }
             $this->get('food.order')->validateDaGiantForm(
                 $place,
                 $request,
                 $formHasErrors,
                 $formErrors,
                 ($takeAway ? true : false),
-                ($takeAway ? $request->get('place_point'): null)
+                ($takeAway ? $request->get('place_point'): null),
+                $couponEnt,
+                $isCallcenter
             );
         }
 
@@ -451,23 +460,34 @@ class DefaultController extends Controller
             // TODO Crap happened?
         }
 
+        $data = array(
+            'order' => $order,
+            'formHasErrors' => $formHasErrors,
+            'formErrors' => $formErrors,
+            'place' => $place,
+            'takeAway' => ($takeAway ? true : false),
+            'location' => $this->get('food.googlegis')->getLocationFromSession(),
+            'dataToLoad' => $dataToLoad,
+            'userAddress' => $address,
+            'userAllAddress' => $placeService->getCurrentUserAddresses(),
+            'submitted' => $request->isMethod('POST'),
+            'testNordea' => $request->query->get('test_nordea'),
+            'workingHoursForInterval' => $workingHoursForInterval,
+            'workingDaysCount' => $workingDaysCount,
+            'isCallcenter' => false,
+        );
+
+
+        // callcenter functionality
+        if ($isCallcenter) {
+            $data['isCallcenter'] = true;
+
+            return $this->render('FoodCartBundle:Default:form.html.twig', $data);
+        }
+
         return $this->render(
             'FoodCartBundle:Default:index.html.twig',
-            array(
-                'order' => $order,
-                'formHasErrors' => $formHasErrors,
-                'formErrors' => $formErrors,
-                'place' => $place,
-                'takeAway' => ($takeAway ? true : false),
-                'location' => $this->get('food.googlegis')->getLocationFromSession(),
-                'dataToLoad' => $dataToLoad,
-                'userAddress' => $address,
-                'userAllAddress' => $placeService->getCurrentUserAddresses(),
-                'submitted' => $request->isMethod('POST'),
-                'testNordea' => $request->query->get('test_nordea'),
-                'workingHoursForInterval' => $workingHoursForInterval,
-                'workingDaysCount' => $workingDaysCount
-            )
+            $data
         );
     }
 
