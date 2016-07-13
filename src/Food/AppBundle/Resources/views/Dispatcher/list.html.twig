@@ -21,8 +21,141 @@
     </script>
 {% endblock %}
 
-{% block actions %}{% endblock %}
+{# CRM Block Begin #}
+{% block notice %}
+    {{ parent() }}
+    <div class="row-fluid crm_block">
+        <div class="row-fluid">
+            <div class="span12 offset0">
+                <form id="crm-phone-search" class="navbar-form navbar-left form-inline" method="post" action="#" role="search">
+                    <input type="text" value="" id="crm-phone-input" class="form-control" placeholder="{{ 'admin.dispatcher.crm_search_placeholder'|trans({}, 'SonataAdminBundle') }}" />
+                    <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i> {{ 'admin.dispatcher.crm_search_button'|trans({}, 'SonataAdminBundle') }}</button>
+                    <button class="btn btn-default show_details pull-right" data-toggle="collapse" data-target="#crm_content"><i class="glyphicon glyphicon-align-justify"></i></button>
+                </form>
+            </div>
+        </div>
+        <div id="crm_content" class="row-fluid crm_content collapse">
+            {% if false %}
+                <div class="span3 offset0">
+                    <table class="table table-bordered table-sm table-responsive">
+                        <thead>
+                        <tr class="sonata-ba-view-title navbar-inner">
+                            <th colspan="2">{{ 'admin.dispatcher.crm_client_title'|trans({}, 'SonataAdminBundle') }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="sonata-ba-view-container">
+                                <th colspan="2" class="new_client">{{ 'admin.dispatcher.crm_new_client_title'|trans({}, 'SonataAdminBundle') }}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="span3 offset0">
+                    <table class="table table-bordered table-sm table-responsive">
+                        <thead>
+                            <tr class="sonata-ba-view-title navbar-inner">
+                                <th colspan="2">{{ 'admin.dispatcher.crm_client_title'|trans({}, 'SonataAdminBundle') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="sonata-ba-view-container">
+                                <th>{{ 'admin.dispatcher.crm_client_status'|trans({}, 'SonataAdminBundle') }}</th>
+                                <td>Naujas</td>
+                            </tr>
+                            <tr class="sonata-ba-view-container">
+                                <th>{{ 'admin.users.firstname'|trans({}, 'SonataAdminBundle') }}</th>
+                                <td>Petras</td>
+                            </tr>
+                            <tr class="sonata-ba-view-container">
+                                <th>{{ 'admin.users.lastname'|trans({}, 'SonataAdminBundle') }}</th>
+                                <td>Metrusevičius</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="span3 offset0">
+                    <table class="table table-bordered table-sm table-responsive">
+                        <thead>
+                            <tr class="sonata-ba-view-title navbar-inner">
+                                <th colspan="2">{{ 'admin.dispatcher.crm_contact_information'|trans({}, 'SonataAdminBundle') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="sonata-ba-view-container">
+                                <th>{{ 'admin.driver.phone'|trans({}, 'SonataAdminBundle') }}</th>
+                                <td><a href="tel:+37068521547" title="{{ 'admin.dispatcher.crm_call_client'|trans({}, 'SonataAdminBundle') }}: +37068521547">+37068521547</a></td>
+                            </tr>
+                            <tr class="sonata-ba-view-container">
+                                <th>{{ 'admin.dispatcher.crm_client_email'|trans({}, 'SonataAdminBundle') }}</th>
+                                <td><a href="mailto:petras.metru@gmail.com" title="{{ 'admin.dispatcher.crm_write_client_email'|trans({}, 'SonataAdminBundle') }}: petras.metru@gmail.com">petras.metru@gmail.com</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="span3 offset0">
+                    <table class="table table-bordered table-sm table-responsive">
+                        <thead>
+                            <tr class="sonata-ba-view-title navbar-inner">
+                                <th colspan="2">{{ 'admin.dispatcher.crm_client_last_addresses'|trans({}, 'SonataAdminBundle') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="sonata-ba-view-container">
+                                <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
+                                <td><a itemprop="address" href="https://maps.google.com?saddr=Current+Location&daddr=Algirdo g. 51a, Vilnius" title="{{ 'admin.dispatcher.crm_show_in_map'|trans({}, 'SonataAdminBundle') }}: Algirdo g. 51a, Vilnius">Algirdo g. 51a, Vilnius</a></td>
+                            </tr>
+                            <tr class="sonata-ba-view-container">
+                                <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
+                                <td><a itemprop="address" href="https://maps.google.com?saddr=Current+Location&daddr=Laisvės prospektas 77c-58, Vilnius" title="{{ 'admin.dispatcher.crm_show_in_map'|trans({}, 'SonataAdminBundle') }}: Laisvės prospektas 77c-58, Vilnius">Laisvės prospektas 77c-58, Vilnius</a></td>
+                            </tr>
+                            <tr class="sonata-ba-view-container">
+                                <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
+                                <td><a itemprop="address" href="https://maps.google.com?saddr=Current+Location&daddr=Žirmūnų g. 90-64, Vilnius" title="{{ 'admin.dispatcher.crm_show_in_map'|trans({}, 'SonataAdminBundle') }}: Žirmūnų g. 90-64, Vilnius">Žirmūnų g. 90-64, Vilnius</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="span3 offset0">
+                    <table class="table table-bordered table-sm table-responsive">
+                        <thead>
+                            <tr class="sonata-ba-view-title navbar-inner">
+                                <th colspan="2">{{ 'admin.dispatcher.crm_other_information'|trans({}, 'SonataAdminBundle') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="sonata-ba-view-container">
+                                <th>{{ 'admin.dispatcher.crm_b2b_client'|trans({}, 'SonataAdminBundle') }}</th>
+                                <td>
+                                    <i class="icon-ban-circle"></i>{{ 'admin.dispatcher.crm_status_no'|trans({}, 'SonataAdminBundle') }}
+                                    {#<i class="icon-ok-circle"></i>{{ 'admin.dispatcher.crm_status_yes'|trans({}, 'SonataAdminBundle') }}#}
+                                </td>
+                            </tr>
+                            <tr class="sonata-ba-view-container">
+                                <th>{{ 'admin.users.bussines_client'|trans({}, 'SonataAdminBundle') }}</th>
+                                <td>
+                                    <i class="icon-ban-circle"></i>{{ 'admin.dispatcher.crm_status_no'|trans({}, 'SonataAdminBundle') }}
+                                    {#<i class="icon-ok-circle"></i>{{ 'admin.dispatcher.crm_status_yes'|trans({}, 'SonataAdminBundle') }}#}
+                                </td>
+                            </tr>
+                            <tr class="sonata-ba-view-container">
+                                <th>{{ 'admin.dispatcher.crm_finished_orders_sum'|trans({}, 'SonataAdminBundle') }}</th>
+                                <td>18</td>
+                            </tr>
+                            <tr class="sonata-ba-view-container">
+                                <th>{{ 'admin.dispatcher.crm_finished_completed_orders_count'|trans({}, 'SonataAdminBundle') }}</th>
+                                <td>15 / 30</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+{# CRM Block End #}
 
+{% block actions %}{% endblock %}
 {% block side_menu %}{% endblock %}
 
 {% block list_table %}

@@ -2666,6 +2666,75 @@
                 <source>admin.seorecord.places</source>
                 <target>Places</target>
             </trans-unit>
+            <!-- CRM -->
+            <trans-unit id="admin.dispatcher.crm_search_button">
+                <source>admin.dispatcher.crm_search_button</source>
+                <target>Search</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.crm_search_placeholder">
+                <source>admin.dispatcher.crm_search_placeholder</source>
+                <target>Phone number</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.crm_client_title">
+                <source>admin.dispatcher.crm_client_title</source>
+                <target>Client</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.crm_new_client_title">
+                <source>admin.dispatcher.crm_new_client_title</source>
+                <target>NEW</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.crm_client_status">
+                <source>admin.dispatcher.crm_client_status</source>
+                <target>Status</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.crm_contact_information">
+                <source>admin.dispatcher.crm_contact_information</source>
+                <target>Contact Information</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.crm_call_client">
+                <source>admin.dispatcher.crm_call_client</source>
+                <target>Call</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.crm_client_email">
+                <source>admin.dispatcher.crm_client_email</source>
+                <target>Email</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.crm_client_last_addresses">
+                <source>admin.dispatcher.crm_client_last_addresses</source>
+                <target>Last Used Addresses</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.crm_show_in_map">
+                <source>admin.dispatcher.crm_show_in_map</source>
+                <target>Show In Map</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.crm_other_information">
+                <source>admin.dispatcher.crm_other_information</source>
+                <target>Other Information</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.crm_b2b_client">
+                <source>admin.dispatcher.crm_b2b_client</source>
+                <target>B2B Client</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.crm_status_yes">
+                <source>admin.dispatcher.crm_status_yes</source>
+                <target>yes</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.crm_status_no">
+                <source>admin.dispatcher.crm_status_no</source>
+                <target>no</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.crm_finished_orders_sum">
+                <source>admin.dispatcher.crm_finished_orders_sum</source>
+                <target>Finished Orders Sum</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.crm_finished_completed_orders_count">
+                <source>admin.dispatcher.crm_finished_completed_orders_count</source>
+                <target>Finished / Completed Orders Count</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.crm_write_client_email">
+                <source>admin.dispatcher.crm_write_client_email</source>
+                <target>Write</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
