@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class LandingController extends Controller
 {
     /**
-     * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function b2bClientAction()
