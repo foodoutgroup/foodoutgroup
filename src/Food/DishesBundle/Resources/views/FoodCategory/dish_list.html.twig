@@ -111,7 +111,7 @@
                 {% if showByHours %}
                     <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" href2="#detailed-dish-popup" class="fancybox.ajax add-to-cart fancy-box"></a>
                 {% else %}
-                    <span class="add-to-cart got-title disabled" title="Šiuo metu negaminamas."></span>
+                    <span class="add-to-cart got-title disabled" title="{% trans %}dishes.no_production{% endtrans %}"></span>
                 {% endif %}
             </div>
         </div>

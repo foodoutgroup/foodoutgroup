@@ -321,7 +321,7 @@ Vilnius]]></target>
                 <target><![CDATA[<b>Užsakymas nesiekia minimalios krepšelio sumos.</b>]]></target>
             </trans-unit>
             <trans-unit id="order.form.errors.dont_make_item" resname="order.form.errors.dont_make_item">
-                <source>order.form.errors.cartlessthanminimum_on_pickup</source>
+                <source>order.form.errors.dont_make_item</source>
                 <target><![CDATA[Patiekalas šiuo metu negaminamas: %text%]]></target>
             </trans-unit>
             <trans-unit id="order.form.errors.emptycart" resname="order.form.errors.emptycart">
