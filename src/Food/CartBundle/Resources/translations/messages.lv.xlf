@@ -312,7 +312,7 @@ LV-1046</target>
                 <source>order.form.errors.cartlessthanminimum_on_pickup</source>
                 <target><![CDATA[<b>Pasūtījums nav sasniedzis minimālo groza summu.<b>]]></target>
             </trans-unit>
-            <trans-unit id="c791cb38d8b0d23ea1179beedf9f97a3" resname="order.form.errors.dont_make_item">
+            <trans-unit id="order.form.errors.dont_make_item" resname="order.form.errors.dont_make_item">
                 <source>order.form.errors.dont_make_item</source>
                 <target>Ēdiens šobrīd netiek gatavots: %text%</target>
             </trans-unit>

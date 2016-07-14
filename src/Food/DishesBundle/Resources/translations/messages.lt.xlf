@@ -206,6 +206,10 @@
                 <source>no</source>
                 <target>Ne</target>
             </trans-unit>
+            <trans-unit id="dishes.no_production" resname="dishes.no_production">
+                <source>dishes.no_production</source>
+                <target><![CDATA[Patiekalas šiuo metu negaminamas]]></target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
