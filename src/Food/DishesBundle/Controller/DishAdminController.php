@@ -16,6 +16,7 @@ class DishAdminController extends Controller
 
         $categories = $place->getCategories();
 
+        $html .= '<option value=""></option>';
         foreach($categories as $category){
             if ($category->getActive()) {
                 $html .= '<option value="'.$category->getId().'" >'.$category->getName().'</option>';

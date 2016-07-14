@@ -662,10 +662,14 @@ class CartService {
             foreach ($activeBundles as $comboDiscount) {
                 if ($comboDiscount->getApplyBy() == ComboDiscount::OPT_COMBO_APPLY_UNIT) {
                     if ($comboDiscount->getDishUnit()->getId() == $item->getDishSizeId()->getUnit()->getId()) {
-                        foreach ($dishCategories as $dishCategory) {
-                            if ($comboDiscount->getDishCategory()->getId() == $dishCategory->getId()) {
-                                $dishUnits[$item->getDishSizeId()->getUnit()->getId()][] = $item;
+                        if (!empty($comboDiscount->getDishCategory())) {
+                            foreach ($dishCategories as $dishCategory) {
+                                if ($comboDiscount->getDishCategory()->getId() == $dishCategory->getId()) {
+                                    $dishUnits[$item->getDishSizeId()->getUnit()->getId()][] = $item;
+                                }
                             }
+                        } else {
+                            $dishUnits[$item->getDishSizeId()->getUnit()->getId()][] = $item;
                         }
                     }
                 }
