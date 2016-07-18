@@ -200,7 +200,7 @@
             </trans-unit>-->
             <trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
                 <source>general.sms.user.order_accepted_preorder</source>
-                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Pristatysime ~pre_delivery_time.! Tavo alkis – musu misija!</target>
+                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Pristatysime ~pre_delivery_time.! Tavo alkis - musu misija!</target>
             </trans-unit>
             <!--<trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
                 <source>general.sms.user.order_accepted_preorder</source>
@@ -212,11 +212,11 @@
             </trans-unit>-->
             <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
                 <source>general.sms.user.order_accepted_pickup</source>
-                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Atsiimti galesite po ~delivery_time.! Tavo alkis – musu misija!</target>
+                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Atsiimti galesite po ~delivery_time.! Tavo alkis - musu misija!</target>
             </trans-unit>
             <trans-unit id="general.sms.user.order_accepted_pickup_preorder" resname="general.sms.user.order_accepted_pickup_preorder">
                 <source>general.sms.user.order_accepted_pickup_preorder</source>
-                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Atsiimti galesite ~pre_delivery_time.! Tavo alkis – musu misija!</target>
+                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Atsiimti galesite ~pre_delivery_time.! Tavo alkis - musu misija!</target>
             </trans-unit>
             <!--<trans-unit id="general.sms.user.order_accepted_pickup_preorder" resname="general.sms.user.order_accepted_pickup_preorder">
                 <source>general.sms.user.order_accepted_pickup_preorder</source>
