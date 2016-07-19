@@ -17,8 +17,9 @@ class DispatcherAdminController extends Controller
         $orderService = $this->get('food.order');
         $placeService = $this->get('food.places');
         $logisticsService = $this->get('food.logistics');
+        $drivers = [];
 
-        $cityOrders = array();
+        $cityOrders = [];
         $availableCities = $placeService->getAvailableCities();
 
         // TODO This is first stage optimization - 3/4 times less querys, more php work. Next stage - one query??
@@ -32,48 +33,48 @@ class DispatcherAdminController extends Controller
         $driversList = $logisticsService->getAllActiveDrivers();
 
         // Preload city data
-        foreach($availableCities as $city) {
-            $cityOrders[$city] = array(
-                'unapproved' => array(
-                    'pickup' => array(),
-                    'selfdeliver' => array(),
-                    'deliver' => array(),
-                    'late' => 0
-                ),
-                'unassigned' => array(
-                    'pickup' => array(),
-                    'selfdeliver' => array(),
-                    'deliver' => array(),
-                    'late' => 0
-                ),
-                'unconfirmed' => array(
-                    'pickup' => array(),
-                    'selfdeliver' => array(),
-                    'deliver' => array(),
-                    'late' => 0
-                ),
-                'not_finished' => array(
-                    'pickup' => array(),
-                    'selfdeliver' => array(),
-                    'deliver' => array(),
-                    'late' => 0
-                ),
-                'canceled' => array(
-                    'pickup' => array(),
-                    'selfdeliver' => array(),
-                    'deliver' => array(),
-                ),
-                'nav_problems' => array(
-                    'pickup' => array(),
-                    'selfdeliver' => array(),
-                    'deliver' => array(),
-                ),
-            );
+        foreach ($availableCities as $city) {
+            $cityOrders[$city] = [
+                'unapproved'   => [
+                    'pickup'      => [],
+                    'selfdeliver' => [],
+                    'deliver'     => [],
+                    'late'        => 0
+                ],
+                'unassigned'   => [
+                    'pickup'      => [],
+                    'selfdeliver' => [],
+                    'deliver'     => [],
+                    'late'        => 0
+                ],
+                'unconfirmed'  => [
+                    'pickup'      => [],
+                    'selfdeliver' => [],
+                    'deliver'     => [],
+                    'late'        => 0
+                ],
+                'not_finished' => [
+                    'pickup'      => [],
+                    'selfdeliver' => [],
+                    'deliver'     => [],
+                    'late'        => 0
+                ],
+                'canceled'     => [
+                    'pickup'      => [],
+                    'selfdeliver' => [],
+                    'deliver'     => [],
+                ],
+                'nav_problems' => [
+                    'pickup'      => [],
+                    'selfdeliver' => [],
+                    'deliver'     => [],
+                ],
+            ];
 
-            $drivers[$city] = array();
+            $drivers[$city] = [];
         }
 
-        foreach($unapproved as $order) {
+        foreach ($unapproved as $order) {
             if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
                 $cityOrders[$order->getPlacePointCity()]['unapproved']['pickup'][] = $order;
             } elseif ($order->getPlacePointSelfDelivery()) {
@@ -87,7 +88,7 @@ class DispatcherAdminController extends Controller
             }
         }
 
-        foreach($unassigned as $order) {
+        foreach ($unassigned as $order) {
             if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
                 $cityOrders[$order->getPlacePointCity()]['unassigned']['pickup'][] = $order;
             } elseif ($order->getPlacePointSelfDelivery()) {
@@ -101,7 +102,7 @@ class DispatcherAdminController extends Controller
             }
         }
 
-        foreach($unconfirmed as $order) {
+        foreach ($unconfirmed as $order) {
             if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
                 $cityOrders[$order->getPlacePointCity()]['unconfirmed']['pickup'][] = $order;
             } elseif ($order->getPlacePointSelfDelivery()) {
@@ -115,7 +116,7 @@ class DispatcherAdminController extends Controller
             }
         }
 
-        foreach($notFinished as $order) {
+        foreach ($notFinished as $order) {
             if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
                 $cityOrders[$order->getPlacePointCity()]['not_finished']['pickup'][] = $order;
             } elseif ($order->getPlacePointSelfDelivery()) {
@@ -129,7 +130,7 @@ class DispatcherAdminController extends Controller
             }
         }
 
-        foreach($canceled as $order) {
+        foreach ($canceled as $order) {
             if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
                 $cityOrders[$order->getPlacePointCity()]['canceled']['pickup'][] = $order;
             } elseif ($order->getPlacePointSelfDelivery()) {
@@ -139,7 +140,7 @@ class DispatcherAdminController extends Controller
             }
         }
 
-        foreach($navProblems as $order) {
+        foreach ($navProblems as $order) {
             if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
                 $cityOrders[$order->getPlacePointCity()]['nav_problems']['pickup'][] = $order;
             } elseif ($order->getPlacePointSelfDelivery()) {
@@ -149,7 +150,7 @@ class DispatcherAdminController extends Controller
             }
         }
 
-        foreach($driversList as $driver) {
+        foreach ($driversList as $driver) {
             $city = ucfirst($driver['city']);
             $drivers[$city][] = $driver;
         }
@@ -171,11 +172,11 @@ class DispatcherAdminController extends Controller
 
         return $this->render(
             'FoodAppBundle:Dispatcher:list.html.twig',
-            array(
-                'cities' => $availableCities,
+            [
+                'cities'     => $availableCities,
                 'cityOrders' => $cityOrders,
-                'drivers' => $drivers,
-            )
+                'drivers'    => $drivers,
+            ]
         );
     }
 
@@ -183,14 +184,14 @@ class DispatcherAdminController extends Controller
     {
         $orderService = $this->get('food.order');
         $order = $orderService->getOrderById($orderId);
-        $delayDurations = array(15, 30, 45, 60, 90, 120);
+        $delayDurations = [15, 30, 45, 60, 90, 120];
 
         switch ($order->getOrderStatus()) {
             case $orderService::$status_new:
-                $orderStatuses = array(
+                $orderStatuses = [
                     $orderService::$status_accepted,
                     $orderService::$status_canceled,
-                );
+                ];
                 break;
 
             case $orderService::$status_accepted:
@@ -210,13 +211,13 @@ class DispatcherAdminController extends Controller
 
         return $this->render(
             'FoodAppBundle:Dispatcher:status_popup.html.twig',
-            array(
-                'orderStatuses' => $orderStatuses,
-                'currentStatus' => $order->getOrderStatus(),
-                'delayDurations' => $delayDurations,
+            [
+                'orderStatuses'        => $orderStatuses,
+                'currentStatus'        => $order->getOrderStatus(),
+                'delayDurations'       => $delayDurations,
                 'currentDelayDuration' => $order->getDelayDuration(),
-                'cancelReasons' => $this->_getCancelReasons()
-            )
+                'cancelReasons'        => $this->_getCancelReasons()
+            ]
         );
     }
 
@@ -240,7 +241,8 @@ class DispatcherAdminController extends Controller
 
             return new Response('OK');
         } catch (\Exception $e) {
-            $this->container->get('logger')->error('Error while approving order: #'.$orderId.' error:'.$e->getMessage());
+            $this->container->get('logger')->error('Error while approving order: #' . $orderId . ' error:' . $e->getMessage());
+
             return new Response('Error');
         }
     }
@@ -275,9 +277,11 @@ class DispatcherAdminController extends Controller
                     }
 
                     $orderExtra = $orderService->getOrder()
-                        ->getOrderExtra();
+                        ->getOrderExtra()
+                    ;
                     $orderExtra->setCancelReason($cancelReason)
-                        ->setCancelReasonComment($cancelReasonComment);
+                        ->setCancelReasonComment($cancelReasonComment)
+                    ;
                     $orderService->getEm()->persist($orderExtra);
 
                     $orderService->informAdminAboutCancelation();
@@ -293,7 +297,8 @@ class DispatcherAdminController extends Controller
             $setOrderStatus($orderId, $status, $delayDuration, $cancelReason, $cancelReasonComment);
         } catch (\Exception $e) {
             // TODO normalus error return ir ispiesimas popupe
-            $this->get('logger')->error('Error happened setting status: '.$e->getMessage());
+            $this->get('logger')->error('Error happened setting status: ' . $e->getMessage());
+
             return new Response('Error: error occured');
         }
 
@@ -318,7 +323,8 @@ class DispatcherAdminController extends Controller
             }
         } catch (\Exception $e) {
             // TODO normalus error return ir ispiesimas popupe
-            $this->get('logger')->error('Error happened sending dispatcher sms message: '.$e->getMessage());
+            $this->get('logger')->error('Error happened sending dispatcher sms message: ' . $e->getMessage());
+
             return new Response('Error: error occured');
         }
 
@@ -344,9 +350,9 @@ class DispatcherAdminController extends Controller
 
         return $this->render(
             'FoodAppBundle:Dispatcher:driver_list.html.twig',
-            array(
+            [
                 'drivers' => $drivers,
-            )
+            ]
         );
     }
 
@@ -361,7 +367,8 @@ class DispatcherAdminController extends Controller
             $logisticsService->assignDriver($driverId, $ordersIds);
         } catch (\Exception $e) {
             // TODO normalus error return ir ispiesimas popupe
-            $this->get('logger')->error('Error happened assigning a driver: '.$e->getMessage());
+            $this->get('logger')->error('Error happened assigning a driver: ' . $e->getMessage());
+
             return new Response('Error: error occured');
         }
 
@@ -380,7 +387,8 @@ class DispatcherAdminController extends Controller
             $orderService->saveOrder();
         } catch (\Exception $e) {
             // TODO normalus error return ir ispiesimas popupe
-            $this->get('logger')->error('Error happened assigning a dispatcher: '.$e->getMessage());
+            $this->get('logger')->error('Error happened assigning a dispatcher: ' . $e->getMessage());
+
             return new Response('Error: error occured');
         }
 
@@ -455,10 +463,10 @@ class DispatcherAdminController extends Controller
 //        }
 
         if ($needUpdate) {
-            return new JsonResponse(array('lastCheck' => date('U'), 'needUpdate' => 'YES'));
+            return new JsonResponse(['lastCheck' => date('U'), 'needUpdate' => 'YES']);
         }
 
-        return new JsonResponse(array('lastCheck' => date('U'), 'needUpdate' => 'NO'));
+        return new JsonResponse(['lastCheck' => date('U'), 'needUpdate' => 'NO']);
     }
 
     public function markOrderContactedAction(Request $request)
@@ -474,15 +482,15 @@ class DispatcherAdminController extends Controller
             $order->setClientContacted((bool)$status);
             $orderService->saveOrder();
 
-            $message = 'Order #'.$order->getId();
+            $message = 'Order #' . $order->getId();
             if ($status) {
                 $message .= ' client was contacted about cancel';
             } else {
                 $message .= ' client was not contacted about cancel';
             }
             $orderService->logOrder($order, 'client_contacted', $message);
-        } catch (Exception $e) {
-            $this->get('logger')->error('Error occured while marking order as contacted. Error: '.$e->getMessage());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Error occured while marking order as contacted. Error: ' . $e->getMessage());
 
             return new Response('NO');
         }
@@ -503,20 +511,83 @@ class DispatcherAdminController extends Controller
             $order->setProblemSolved((bool)$status);
             $orderService->saveOrder();
 
-            $message = 'Order #'.$order->getId();
+            $message = 'Order #' . $order->getId();
             if ($status) {
                 $message .= ' problem marked solved';
             } else {
                 $message .= ' problem marked not solved';
             }
             $orderService->logOrder($order, 'problem_solved', $message);
-        } catch (Exception $e) {
-            $this->get('logger')->error('Error occured while marking order as problem solved. Error: '.$e->getMessage());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Error occured while marking order as problem solved. Error: ' . $e->getMessage());
 
             return new Response('NO');
         }
 
         return new Response('YES');
+    }
+
+    public function getUserInfoByPhoneAction(Request $request)
+    {
+        $info = [];
+        $phone = $request->get('phone', '');
+        $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+
+        if (mb_strlen($phone, 'UTF-8') > 5) {
+            $phone = $phoneUtil->parse($phone, strtoupper($this->container->getParameter('locale')));
+            $orderExtraCollection = $this->getDoctrine()->getRepository('FoodOrderBundle:OrderExtra')->getUserByPhone($phone->getNationalNumber());
+
+            $info['totalOrders'] = count($orderExtraCollection);
+            $first = true;
+            $addresses = [];
+            foreach ($orderExtraCollection as $orderExtra) {
+                $address = $orderExtra->getOrder()->getAddressId();
+                if ($first) {
+                    $first = false;
+                    $user = $orderExtra->getOrder()->getUser();
+                    $rfm = $this->getDoctrine()->getRepository('FoodReportBundle:Rfm')->findOneBy(['userId' => $user->getId()]);
+                    $status = $this->getDoctrine()->getRepository('FoodReportBundle:RfmStatus')->getStatusByRfm($rfm ? $rfm->getTotalRfmScore() : 0);
+                    if (!$status) {
+                        $status = $rfm ? $rfm->getTotalRfmScore() : 0;
+                    }
+
+                    $info['user']['userId'] = $user->getId();
+                    $info['user']['rfm'] = $status;
+                    $info['user']['firstname'] = $orderExtra->getFirstname();
+                    $info['user']['lastname'] = $orderExtra->getLastname();
+                    $info['user']['phone'] = $orderExtra->getPhone();
+                    $info['user']['email'] = $orderExtra->getEmail();
+                    $info['user']['b2b'] = $user->getIsBussinesClient();
+                    $info['order']['completed'] = 0;
+                    $info['order']['canceled'] = 0;
+
+                    foreach ($user->getOrder() as $order) {
+                        switch ($order->getOrderStatus()) {
+                            case OrderService::$status_completed:
+                            case OrderService::$status_finished:
+                                ++$info['order']['completed'];
+                                break;
+                            case OrderService::$status_canceled:
+                            case OrderService::$status_failed:
+                                ++$info['order']['canceled'];
+                                break;
+                        }
+                    }
+                }
+
+                if (count($addresses) < 3 && $address && !in_array($address->getId(), $addresses)) {
+                    $addresses[] = $address->getId();
+                    $info['address'][] = $address->getAddress() . ', ' . $address->getCity();
+                }
+
+                if (count($addresses) > 2) {
+                    break;
+                }
+            }
+
+        }
+
+        return new JsonResponse(['status' => 'ok', 'info' => $info]);
     }
 
     /**
@@ -525,12 +596,13 @@ class DispatcherAdminController extends Controller
     private function _getCancelReasons()
     {
         $trans = $this->get('translator');
-        return array(
-            $trans->trans('admin.dispatcher.cancel_reason.client_changed_his_mind', array(), 'SonataAdminBundle'),
-            $trans->trans('admin.dispatcher.cancel_reason.restaurant_dont_works', array(), 'SonataAdminBundle'),
-            $trans->trans('admin.dispatcher.cancel_reason.restaurant_has_no_dishes', array(), 'SonataAdminBundle'),
-            $trans->trans('admin.dispatcher.cancel_reason.too_long_production_time', array(), 'SonataAdminBundle'),
-            $trans->trans('admin.dispatcher.cancel_reason.software_error', array(), 'SonataAdminBundle')
-        );
+
+        return [
+            $trans->trans('admin.dispatcher.cancel_reason.client_changed_his_mind', [], 'SonataAdminBundle'),
+            $trans->trans('admin.dispatcher.cancel_reason.restaurant_dont_works', [], 'SonataAdminBundle'),
+            $trans->trans('admin.dispatcher.cancel_reason.restaurant_has_no_dishes', [], 'SonataAdminBundle'),
+            $trans->trans('admin.dispatcher.cancel_reason.too_long_production_time', [], 'SonataAdminBundle'),
+            $trans->trans('admin.dispatcher.cancel_reason.software_error', [], 'SonataAdminBundle')
+        ];
     }
 }

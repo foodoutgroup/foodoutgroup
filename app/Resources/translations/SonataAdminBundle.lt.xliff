@@ -2763,17 +2763,33 @@
                 <source>admin.dispatcher.crm_status_no</source>
                 <target>ne</target>
             </trans-unit>
-            <trans-unit id="admin.dispatcher.crm_finished_orders_sum">
-                <source>admin.dispatcher.crm_finished_orders_sum</source>
+            <trans-unit id="admin.dispatcher.crm_completed_sum">
+                <source>admin.dispatcher.crm_completed_sum</source>
                 <target>Baigtų užsakymų suma</target>
             </trans-unit>
-            <trans-unit id="admin.dispatcher.crm_finished_completed_orders_count">
-                <source>admin.dispatcher.crm_finished_completed_orders_count</source>
-                <target>Baigtų / Užbaigtų užsakymų kiekis</target>
+            <trans-unit id="admin.dispatcher.crm_canceled_sum">
+                <source>admin.dispatcher.crm_canceled_sum</source>
+                <target>Atšauktų užsakymų suma</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.crm_write_client_email">
                 <source>admin.dispatcher.crm_write_client_email</source>
                 <target>Rašyti</target>
+            </trans-unit>
+            <trans-unit id="admin.rfm_status">
+                <source>admin.rfm_status</source>
+                <target>RFM būsenos</target>
+            </trans-unit>
+            <trans-unit id="admin.rfm_status.from">
+                <source>admin.rfm_status.from</source>
+                <target>Nuo</target>
+            </trans-unit>
+            <trans-unit id="admin.rfm_status.to">
+                <source>admin.rfm_status.to</source>
+                <target>Iki</target>
+            </trans-unit>
+            <trans-unit id="admin.rfm_status.title">
+                <source>admin.rfm_status.title</source>
+                <target>Pavadinimas</target>
             </trans-unit>
         </body>
     </file>

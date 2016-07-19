@@ -26,7 +26,8 @@ class UserRepository extends EntityRepository
 
         $stmt = $this->getEntityManager()
             ->getConnection()
-            ->prepare($query);
+            ->prepare($query)
+        ;
 
         // jei galioja pirmo mėnesion nuolaida ir dabar yra sekantis mėnuo po registracijos,
         // tada užsakymus skaičiuojame nuo registracija+mėnuo
@@ -40,6 +41,7 @@ class UserRepository extends EntityRepository
         $stmt->bindValue("userId", $user->getId());
 
         $stmt->execute();
+
         return $stmt->fetchColumn();
     }
 }
