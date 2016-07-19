@@ -6,6 +6,10 @@ food_places_lt_recommended:
     pattern: /rekomenduojama/
     defaults: { _controller: FoodPlacesBundle:Default:index, recommended: 1}
 
+food_places_lt_zaval:
+    pattern: /greita/
+    defaults: { _controller: FoodPlacesBundle:Default:index, zaval: 1}
+
 food_change_location:
     pattern: /keisti
     defaults: { _controller: FoodPlacesBundle:Default:changeLocation }

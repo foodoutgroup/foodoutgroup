@@ -82,25 +82,53 @@
                     {% endfor %}
                 </p>
                 <div class="details">
-                    {% if place.place.deliveryOptions != 'pickup' and delivery_type_filter == 'deliver' %}
-                    <span class="delivery">{% trans %}place.delivery_info{% endtrans %}:
-                        <span>
-                            {% set minPrc = places_service.minDeliveryPrice(place.place.id) %}
-                            {% set maxPrc = places_service.maxDeliveryPrice(place.place.id) %}
-                            {% if minPrc == maxPrc %}
-                                {#{{ currency_display|raw }}{{ minPrc }} / #}{{ place.place.deliveryTime }}
-                            {% else %}
-                                {#{{ currency_display|raw }}{{ minPrc }}-{{ maxPrc }} / #}{{ place.place.deliveryTime }}
-                            {% endif %}
-                            {% if place.place.deliveryTimeInfo is not empty %}
-                                <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.place.deliveryTimeInfo }}"></span>
-                            {% endif %}
+                    {% if place.place.deliveryOptions == 'delivery' %}
+                        <span class="delivery">{% trans %}place.delivery_info{% endtrans %}:
+                            <span>
+                                {% set minPrc = places_service.minDeliveryPrice(place.place.id) %}
+                                {% set maxPrc = places_service.maxDeliveryPrice(place.place.id) %}
+
+                                {% if places_service.getZavalTime(place.place) %}
+                                    {{ places_service.getZavalTime(place.place) }} val.
+                                {% else %}
+                                    {% if minPrc == maxPrc %}
+                                        {#{{ currency_display|raw }}{{ minPrc }} / #}{{ place.place.deliveryTime }}
+                                    {% else %}
+                                        {#{{ currency_display|raw }}{{ minPrc }}-{{ maxPrc }} / #}{{ place.place.deliveryTime }}
+                                    {% endif %}
+                                    {% if place.place.deliveryTimeInfo is not empty %}
+                                        <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.place.deliveryTimeInfo }}"></span>
+                                    {% endif %}
+                                {% endif %}
+                            </span>
                         </span>
-                    </span>
-                    {% else %}
-                    <span class="pickup">{% trans %}place.pickup_info{% endtrans %}: {{ place.place.pickupTime }}
-                        <span></span>
-                    </span>
+                    {% elseif place.place.deliveryOptions == 'pickup' %}
+                        <span class="pickup">{% trans %}place.pickup_info{% endtrans %}: {{ place.place.pickupTime }}
+                            <span></span>
+                        </span>
+                    {% elseif place.place.deliveryOptions == 'delivery_and_pickup' %}
+                        <span class="pickup">{% trans %}place.pickup_info{% endtrans %}: {{ place.place.pickupTime }}
+                            <span></span>
+                        </span>
+                        <span class="delivery">{% trans %}place.delivery_info{% endtrans %}:
+                            <span>
+                                {% set minPrc = places_service.minDeliveryPrice(place.place.id) %}
+                                {% set maxPrc = places_service.maxDeliveryPrice(place.place.id) %}
+
+                                {% if places_service.getZavalTime(place.place) %}
+                                    {{ places_service.getZavalTime(place.place) }} val.
+                                {% else %}
+                                    {% if minPrc == maxPrc %}
+                                        {#{{ currency_display|raw }}{{ minPrc }} / #}{{ place.place.deliveryTime }}
+                                    {% else %}
+                                        {#{{ currency_display|raw }}{{ minPrc }}-{{ maxPrc }} / #}{{ place.place.deliveryTime }}
+                                    {% endif %}
+                                    {% if place.place.deliveryTimeInfo is not empty %}
+                                        <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.place.deliveryTimeInfo }}"></span>
+                                    {% endif %}
+                                {% endif %}
+                            </span>
+                        </span>
                     {% endif %}
 
                     {% if (delivery_type_filter != 'deliver' and place.place.minimalOnSelfDel) or (delivery_type_filter == 'deliver' and place.place.deliveryOptions != 'pickup') or (place.place.deliveryOptions == 'pickup' and place.place.minimalOnSelfDel) %}

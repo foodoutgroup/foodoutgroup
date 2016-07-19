@@ -266,13 +266,18 @@ class PlacesService extends ContainerAware {
      * @param $recommended
      * @param $request
      * @param $slug_filter
+     * @param $zaval
      * @return mixed
      */
-    public function getPlacesForList($recommended, $request, $slug_filter = false)
+    public function getPlacesForList($recommended, $request, $slug_filter = false, $zaval = false)
     {
         $kitchens = $request->get('kitchens', "");
         $filters = $request->get('filters');
-        $deliveryType = $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver);
+        if ($zaval) {
+            $deliveryType = '';
+        } else {
+            $deliveryType = $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver);
+        }
 
         if (empty($kitchens)) {
             $kitchens = array();
@@ -307,8 +312,55 @@ class PlacesService extends ContainerAware {
             $recommended,
             $this->container->get('food.googlegis')->getLocationFromSession()
         );
+
         $this->container->get('food.places')->saveRelationPlaceToPoint($places);
-        return $this->container->get('food.places')->placesPlacePointsWorkInformation($places);
+        $places = $this->container->get('food.places')->placesPlacePointsWorkInformation($places);
+
+        if ($zaval) {
+            $places = $this->container->get('food.places')->zavalPlaces($places);
+        }
+
+        return $places;
+    }
+
+    public function zavalPlaces($places)
+    {
+        $sortTop = array();
+        $sortArr = array();
+        $sortArrPrio = array();
+        foreach ($places as &$place) {
+            $place['show_top'] = 0;
+            # Mes Vezam P & 0
+            if ($place['place']->getDeliveryOptions() == 'pickup' && empty($place['place']->getSelfDelivery())) {
+                $place['show_top'] = 4;
+                $place['priority'] = 8000;
+            }
+
+            # Kiti veza P&D & 1
+            if ($place['place']->getDeliveryOptions() == 'delivery_and_pickup' && $place['place']->getSelfDelivery() == 1) {
+                $place['show_top'] = 3;
+                $place['priority'] = 5000;
+            }
+
+            # Kiti veza D & 1
+            if ($place['place']->getDeliveryOptions() == 'delivery' && $place['place']->getSelfDelivery() == 1) {
+                $place['show_top'] = 2;
+                $place['priority'] = 3000;
+            }
+
+            # Kiti veza P & 1
+            if ($place['place']->getDeliveryOptions() == 'pickup' && $place['place']->getSelfDelivery() == 1) {
+                $place['show_top'] = 1;
+                $place['priority'] = 2000;
+            }
+
+            $sortTop[] = $place['show_top'];
+            $sortArr[] = $place['is_work'];
+            $sortArrPrio[] = intval($place['priority']);
+        }
+
+        array_multisort($sortTop, SORT_NUMERIC, SORT_DESC, $sortArr, SORT_NUMERIC, SORT_ASC, $sortArrPrio, SORT_NUMERIC, SORT_DESC, $places);
+        return $places;
     }
 
     public function getMinDeliveryPrice($placeId)
@@ -493,5 +545,32 @@ class PlacesService extends ContainerAware {
         }
 
         return true;
+    }
+
+    /**
+     * @param Place $place
+     *
+     * @return bool|string
+     * @throws \Exception
+     */
+    public function getZavalTime(Place $place)
+    {
+        if ($place->getSelfDelivery()) {
+            return false;
+        }
+
+        if ($place->getDeliveryOptions() == 'pickup') {
+            return false;
+        }
+
+        $miscService = $this->container->get('food.app.utils.misc');
+        $zaval_on = $miscService->getParam('zaval_on');
+        $zaval_time = $miscService->getParam('zaval_time');
+
+        if ($zaval_on > 0 && $zaval_time > 0) {
+            return date('G,i', mktime(0, $zaval_time));
+        }
+
+        return false;
     }
 }
