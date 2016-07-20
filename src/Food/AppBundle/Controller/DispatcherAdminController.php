@@ -542,7 +542,7 @@ class DispatcherAdminController extends Controller
             $phoneUtil = PhoneNumberUtil::getInstance();
             $phone = $phoneUtil->parse($phone, strtoupper($this->container->getParameter('locale')));
             $orderExtraCollection = $this->getDoctrine()->getRepository('FoodOrderBundle:OrderExtra')->getUserByPhone($phone->getNationalNumber());
-            $info = $this->get('food.user')->getInfoForCrm($orderExtraCollection);
+            $info = $this->get('food.user')->getInfoForCrm($orderExtraCollection, $info);
         }
 
         return new JsonResponse(['status' => 'ok', 'info' => $info]);
