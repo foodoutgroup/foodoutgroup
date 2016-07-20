@@ -4,6 +4,7 @@ namespace Food\AppBundle\Controller;
 
 use Doctrine\ORM\OptimisticLockException;
 use Food\OrderBundle\Service\OrderService;
+use libphonenumber\PhoneNumberUtil;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -527,64 +528,21 @@ class DispatcherAdminController extends Controller
         return new Response('YES');
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function getUserInfoByPhoneAction(Request $request)
     {
         $info = [];
         $phone = $request->get('phone', '');
-        $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
 
         if (mb_strlen($phone, 'UTF-8') > 5) {
+            $phoneUtil = PhoneNumberUtil::getInstance();
             $phone = $phoneUtil->parse($phone, strtoupper($this->container->getParameter('locale')));
             $orderExtraCollection = $this->getDoctrine()->getRepository('FoodOrderBundle:OrderExtra')->getUserByPhone($phone->getNationalNumber());
-
-            $info['totalOrders'] = count($orderExtraCollection);
-            $first = true;
-            $addresses = [];
-            foreach ($orderExtraCollection as $orderExtra) {
-                $address = $orderExtra->getOrder()->getAddressId();
-                if ($first) {
-                    $first = false;
-                    $user = $orderExtra->getOrder()->getUser();
-                    $rfm = $this->getDoctrine()->getRepository('FoodReportBundle:Rfm')->findOneBy(['userId' => $user->getId()]);
-                    $status = $this->getDoctrine()->getRepository('FoodReportBundle:RfmStatus')->getStatusByRfm($rfm ? $rfm->getTotalRfmScore() : 0);
-                    if (!$status) {
-                        $status = $rfm ? $rfm->getTotalRfmScore() : 0;
-                    }
-
-                    $info['user']['userId'] = $user->getId();
-                    $info['user']['rfm'] = $status;
-                    $info['user']['firstname'] = $orderExtra->getFirstname();
-                    $info['user']['lastname'] = $orderExtra->getLastname();
-                    $info['user']['phone'] = $orderExtra->getPhone();
-                    $info['user']['email'] = $orderExtra->getEmail();
-                    $info['user']['b2b'] = $user->getIsBussinesClient();
-                    $info['order']['completed'] = 0;
-                    $info['order']['canceled'] = 0;
-
-                    foreach ($user->getOrder() as $order) {
-                        switch ($order->getOrderStatus()) {
-                            case OrderService::$status_completed:
-                            case OrderService::$status_finished:
-                                ++$info['order']['completed'];
-                                break;
-                            case OrderService::$status_canceled:
-                            case OrderService::$status_failed:
-                                ++$info['order']['canceled'];
-                                break;
-                        }
-                    }
-                }
-
-                if (count($addresses) < 3 && $address && !in_array($address->getId(), $addresses)) {
-                    $addresses[] = $address->getId();
-                    $info['address'][] = $address->getAddress() . ', ' . $address->getCity();
-                }
-
-                if (count($addresses) > 2) {
-                    break;
-                }
-            }
-
+            $info = $this->get('food.user')->getInfoForCrm($orderExtraCollection);
         }
 
         return new JsonResponse(['status' => 'ok', 'info' => $info]);

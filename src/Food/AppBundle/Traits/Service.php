@@ -2,6 +2,7 @@
 
 namespace Food\AppBundle\Traits;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 trait Service
@@ -43,5 +44,13 @@ trait Service
     public function repo($entity)
     {
         return $this->em()->getRepository($entity);
+    }
+
+    /**
+     * @return Registry
+     */
+    public function getDoctrine()
+    {
+        return $this->service('doctrine');
     }
 }
