@@ -1993,13 +1993,6 @@ class OrderService extends ContainerAware
             return;
         }
 
-        // Jeigu zavalas "on" dispecerineje nepaspaustas mygtukas: "inform", skipinam siuntima
-        $placeService = $this->container->get('food.places');
-        $zavalTime = $placeService->getZavalTime($order->getPlace());
-        if ($zavalTime && !$order->getPlaceInformed()) {
-            return;
-        }
-
         // Inform by email about create and if Nav - send it to Nav
         if (!$isReminder) {
             $this->notifyOrderCreate();
@@ -2134,6 +2127,9 @@ class OrderService extends ContainerAware
                 $messagingService->addMultipleMessagesToSend($messagesToSend);
             }
         }
+
+        $this->getOrder()->setPlaceInformed(true);
+        $this->saveOrder();
     }
 
     /**

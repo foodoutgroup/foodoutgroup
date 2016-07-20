@@ -571,9 +571,9 @@ class DispatcherAdminController extends Controller
         $orderService->getOrderById($orderId);
 
         try {
-            $orderService->getOrder()->setPlaceInformed(true);
-            $orderService->saveOrder();
-            $orderService->informPlace(false);
+            if (!$orderService->getOrder()->getPlaceInformed()) {
+                $orderService->informPlace(false);
+            }
         } catch (\Exception $e) {
             $this->get('logger')->error('Error happened assigning a place informed: '.$e->getMessage());
             return new Response('Error: error occured');
