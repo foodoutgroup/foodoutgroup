@@ -3,7 +3,7 @@
 namespace Food\UserBundle\Entity;
 
 use Food\DishesBundle\Entity\Place;
-use Food\UserBundle\Entity\UserAddress;
+use Food\OrderBundle\Entity\Order;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -196,6 +196,12 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="UserDivisionCode", mappedBy="user", cascade={"persist", "remove"})
      **/
     private $divisionCodes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\Order", mappedBy="user")
+     * @ORM\JoinColumn(name="id", referencedColumnName="user_id")
+     **/
+    private $order;
 
     public function __construct()
     {
@@ -1023,6 +1029,7 @@ class User extends BaseUser
     }
 
     /**
+
      * Set regeneratePassword
      *
      * @param boolean $regeneratePassword
@@ -1031,7 +1038,16 @@ class User extends BaseUser
     public function setRegeneratePassword($regeneratePassword)
     {
         $this->regeneratePassword = $regeneratePassword;
-    
+    }
+    /**
+     * Add order
+     *
+     * @param \Food\OrderBundle\Entity\Order $order
+     * @return User
+     */
+    public function addOrder(\Food\OrderBundle\Entity\Order $order)
+    {
+        $this->order[] = $order;
         return $this;
     }
 
@@ -1043,5 +1059,25 @@ class User extends BaseUser
     public function getRegeneratePassword()
     {
         return $this->regeneratePassword;
+    }
+
+    /**
+     * Remove order
+     *
+     * @param \Food\OrderBundle\Entity\Order $order
+     */
+    public function removeOrder(\Food\OrderBundle\Entity\Order $order)
+    {
+        $this->order->removeElement($order);
+    }
+
+    /**
+     * Get order
+     *
+     * @return \Food\OrderBundle\Entity\Order[]
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 }

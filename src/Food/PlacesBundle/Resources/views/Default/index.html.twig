@@ -201,7 +201,7 @@
             });
         // ]]>
     </script>
-    <div class="restaurants-list-top-filters">
+    <div class="restaurants-list-top-filters"{% if zaval %} style="display:none;"{% endif %}>
         <div class="delivery-type-filter">
             <div class="label">{% trans %}places.filter_by_delivery{% endtrans %}:</div>
             <a href="#" data-type="delivery" {% if delivery_type_filter == 'deliver' %}class="selected"{% endif %}>{% trans %}places.filter_delivery{% endtrans %}</a>
@@ -210,7 +210,11 @@
     </div>
     <div class="clearfix">
         <div class="content-lefter">
-            {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended, 'slug_filter': slug_filter})) }}
+            {% if zaval %}
+                {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended, 'slug_filter': slug_filter, 'zaval': true})) }}
+            {% else %}
+                {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended, 'slug_filter': slug_filter})) }}
+            {% endif %}
             {{ render(controller('FoodDishesBundle:Place:filtersList')) }}
 
             <div class="banners">
@@ -273,7 +277,11 @@
                     <a href="#">{% trans %}places.sort_by_distance{% endtrans %}</a>
                 </div>
             </div>#}
-            {{ render(controller('FoodPlacesBundle:Default:list', {'recommended': recommended, 'slug_filter': slug_filter})) }}
+            {% if zaval %}
+                {{ render(controller('FoodPlacesBundle:Default:list', {'recommended': recommended, 'slug_filter': slug_filter, 'zaval': true})) }}
+            {% else %}
+                {{ render(controller('FoodPlacesBundle:Default:list', {'recommended': recommended, 'slug_filter': slug_filter})) }}
+            {% endif %}
         </div>
     </div>
 

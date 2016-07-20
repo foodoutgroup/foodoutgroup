@@ -1,5 +1,7 @@
 callcenter:
     title: Skambučių centras
+    phone_search_button: Adresas pagal telefona
+    logout_button: Atsijungti
     location_panel:
         title: Parinktas adresas
         error: Šiuo adresu maisto nepristatome

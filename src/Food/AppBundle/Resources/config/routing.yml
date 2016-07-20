@@ -245,6 +245,14 @@ food_admin_assign_dispatcher:
     requirements:
           _method:  POST
 
+food_admin_assign_placeinformed:
+    path: /admin/dispatcher/assign-placeinformed/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:assignPlaceInformed}
+    options:
+        expose: true
+    requirements:
+          _method:  POST
+
 food_admin_check_new_orders:
     pattern: /admin/dispatcher/check-new-orders/
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:checkNewOrders}
@@ -268,6 +276,12 @@ food_admin_mark_order_problem_solved:
         expose: true
     requirements:
           _method:  POST
+
+food_admin_get_user_info_by_phone:
+    pattern: /admin/dispatcher/user-info/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:getUserInfoByPhone}
+    options:
+        expose: true
 
 food_admin_get_place_unit_categories:
     pattern: /admin/place/get-unit-categories/{placeId}

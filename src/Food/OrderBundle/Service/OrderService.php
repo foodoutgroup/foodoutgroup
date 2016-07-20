@@ -2127,6 +2127,9 @@ class OrderService extends ContainerAware
                 $messagingService->addMultipleMessagesToSend($messagesToSend);
             }
         }
+
+        $this->getOrder()->setPlaceInformed(true);
+        $this->saveOrder();
     }
 
     /**

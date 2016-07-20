@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * OrderAccData
  *
  * @ORM\Table(name="order_extra")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="OrderExtraRepository")
  */
 class OrderExtra
 {

@@ -309,6 +309,17 @@ services:
                     - ~
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.rfm_status:
+                class: Food\ReportBundle\Admin\RfmStatusAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.rfm_status" }
+                arguments:
+                    - ~
+                    - Food\ReportBundle\Entity\RfmStatus
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]
     sonata.admin.coupon:
                 class: Food\OrderBundle\Admin\CouponAdmin
                 tags:
