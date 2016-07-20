@@ -221,34 +221,38 @@
                                             <strong>{% trans %}place.pickup_info{% endtrans %}:</strong>{{ place.pickupTime }}
                                         </li>
                                         {% if place.deliveryOptions != 'pickup' %}
-                                        <li class="ico-time">
-                                            <strong>{% trans %}places.delivery_time{% endtrans %}:</strong>{{ place.deliveryTime }}
-                                            {% if place.deliveryTimeInfo is not empty %}
-                                                <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
-                                            {% endif %}
-                                        </li>
-                                        <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>
-                                            {% set minPrc = places_service.minDeliveryPrice(place.id) %}
-                                            {% set maxPrc = places_service.maxDeliveryPrice(place.id) %}
-                                            {% if minPrc == maxPrc %}
-                                                {{ currency_display|raw }}{{ minPrc }}
-                                            {% else %}
-                                                {{ currency_display|raw }}{{ minPrc }}-{{ maxPrc }}
-                                            {% endif %}
-                                        </li>
-                                        <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>
-                                            {% set minCart = places_service.minCartPrice(place.id) %}
-                                            {% set maxCart = places_service.maxCartPrice(place.id) %}
-                                            {% if minCart == maxCart %}
-                                                {{ currency_display|raw }}{{ minCart }}
-                                            {% else %}
-                                                {{ currency_display|raw }}{{ minCart }}-{{ maxCart }}
-                                            {% endif %}
-                                        </li>
+                                            <li class="ico-time">
+                                                {% if places_service.getZavalTime(place) %}
+                                                    <strong>{% trans %}places.delivery_time{% endtrans %}:</strong>{{ places_service.getZavalTime(place) }} val.
+                                                {% else %}
+                                                    <strong>{% trans %}places.delivery_time{% endtrans %}:</strong>{{ place.deliveryTime }}
+                                                    {% if place.deliveryTimeInfo is not empty %}
+                                                        <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </li>
+                                            <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>
+                                                {% set minPrc = places_service.minDeliveryPrice(place.id) %}
+                                                {% set maxPrc = places_service.maxDeliveryPrice(place.id) %}
+                                                {% if minPrc == maxPrc %}
+                                                    {{ currency_display|raw }}{{ minPrc }}
+                                                {% else %}
+                                                    {{ currency_display|raw }}{{ minPrc }}-{{ maxPrc }}
+                                                {% endif %}
+                                            </li>
+                                            <li class="ico-cart"><strong>{% trans %}places.minimal_cart{% endtrans %}:</strong>
+                                                {% set minCart = places_service.minCartPrice(place.id) %}
+                                                {% set maxCart = places_service.maxCartPrice(place.id) %}
+                                                {% if minCart == maxCart %}
+                                                    {{ currency_display|raw }}{{ minCart }}
+                                                {% else %}
+                                                    {{ currency_display|raw }}{{ minCart }}-{{ maxCart }}
+                                                {% endif %}
+                                            </li>
                                         {% endif %}
                                         <li class="ico-payments hidden"><strong>{% trans %}places.payment_types{% endtrans %}:</strong><span class="payments-data"></span></li>
                                         {% if place.deliveryOptions != 'pickup' %}
-                                        <li class="ico-delivery"><strong>{% trans %}places.card_on_delivery{% endtrans %}:</strong>{% if place.cardOnDelivery == 1 %}{{ 'yes'|trans }}{% else %}{{ 'no'|trans }}{% endif %}</li>
+                                            <li class="ico-delivery"><strong>{% trans %}places.card_on_delivery{% endtrans %}:</strong>{% if place.cardOnDelivery == 1 %}{{ 'yes'|trans }}{% else %}{{ 'no'|trans }}{% endif %}</li>
                                         {% endif %}
                                     </ul>
                                 </div>
@@ -315,4 +319,17 @@
             Place.initWindowScroll();
         });
     </script>
+    {# Zavalas Popup Begin #}
+    {% if places_service.getZavalTime(place) %}
+        {% if site_country == 'LT' %}
+            <!-- This site is converting visitors into subscribers and customers with OptinMonster - http://optinmonster.com :: Campaign Title: [LT] Zavalas -->
+            <div id="om-nkcu3qstsjxkdv12-holder"></div><script>var nkcu3qstsjxkdv12,nkcu3qstsjxkdv12_poll=function(){var r=0;return function(n,l){clearInterval(r),r=setInterval(n,l)}}();!function(e,t,n){if(e.getElementById(n)){nkcu3qstsjxkdv12_poll(function(){if(window['om_loaded']){if(!nkcu3qstsjxkdv12){nkcu3qstsjxkdv12=new OptinMonsterApp();return nkcu3qstsjxkdv12.init({"u":"11462.367922","staging":0,"dev":0,"beta":0});}}},25);return;}var d=false,o=e.createElement(t);o.id=n,o.src="//a.optnmnstr.com/app/js/api.min.js",o.onload=o.onreadystatechange=function(){if(!d){if(!this.readyState||this.readyState==="loaded"||this.readyState==="complete"){try{d=om_loaded=true;nkcu3qstsjxkdv12=new OptinMonsterApp();nkcu3qstsjxkdv12.init({"u":"11462.367922","staging":0,"dev":0,"beta":0});o.onload=o.onreadystatechange=null;}catch(t){}}}};(document.getElementsByTagName("head")[0]||document.documentElement).appendChild(o)}(document,"script","omapi-script");</script>
+            <!-- / OptinMonster -->
+        {% elseif site_country == 'LV' %}
+            <!-- This site is converting visitors into subscribers and customers with OptinMonster - http://optinmonster.com :: Campaign Title: [LV] Zavalas -->
+            <div id="om-xx1z1otqbssjrm1t-holder"></div><script>var xx1z1otqbssjrm1t,xx1z1otqbssjrm1t_poll=function(){var r=0;return function(n,l){clearInterval(r),r=setInterval(n,l)}}();!function(e,t,n){if(e.getElementById(n)){xx1z1otqbssjrm1t_poll(function(){if(window['om_loaded']){if(!xx1z1otqbssjrm1t){xx1z1otqbssjrm1t=new OptinMonsterApp();return xx1z1otqbssjrm1t.init({"u":"11462.367923","staging":0,"dev":0,"beta":0});}}},25);return;}var d=false,o=e.createElement(t);o.id=n,o.src="//a.optnmnstr.com/app/js/api.min.js",o.onload=o.onreadystatechange=function(){if(!d){if(!this.readyState||this.readyState==="loaded"||this.readyState==="complete"){try{d=om_loaded=true;xx1z1otqbssjrm1t=new OptinMonsterApp();xx1z1otqbssjrm1t.init({"u":"11462.367923","staging":0,"dev":0,"beta":0});o.onload=o.onreadystatechange=null;}catch(t){}}}};(document.getElementsByTagName("head")[0]||document.documentElement).appendChild(o)}(document,"script","omapi-script");</script>
+            <!-- / OptinMonster -->
+        {% endif %}
+    {% endif %}
+    {# Zavalas Popup End #}
 {% endblock %}

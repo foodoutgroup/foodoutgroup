@@ -112,9 +112,9 @@ class PlaceRepository extends EntityRepository
                     case 'delivery_type':
                         if (!empty($filterValue)) {
                             switch($filterValue) {
-//                                case 'delivery_and_pickup':
-//                                    $placeFilter .= ' AND p.delivery_options = "delivery_and_pickup"';
-//                                    break;
+                                case 'delivery_and_pickup':
+                                    $placeFilter .= ' AND p.delivery_options = "delivery_and_pickup"';
+                                    break;
                                 case 'delivery':
                                     $placeFilter .= ' AND p.delivery_options IN ("delivery_and_pickup", "delivery")';
                                     break;

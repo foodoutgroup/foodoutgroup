@@ -178,6 +178,9 @@ button.late_orders {
 .order_status_label input.order_status {
     margin-top: 0;
 }
+.order_list td.order_status button.assign_placeinformed_button {
+    width: 30px;
+}
 
 /* CRM Block Begin */
 .crm_content {

@@ -436,6 +436,12 @@ class Order
     private $assignLate;
 
     /**
+     * @var bool
+     * @ORM\Column(name="place_informed", type="boolean")
+     */
+    private $place_informed = false;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -2309,5 +2315,28 @@ class Order
     public function getDispatcherId()
     {
         return $this->dispatcher_id;
+    }
+
+    /**
+     * Set place_informed
+     *
+     * @param boolean $placeInformed
+     * @return Order
+     */
+    public function setPlaceInformed($placeInformed)
+    {
+        $this->place_informed = $placeInformed;
+    
+        return $this;
+    }
+
+    /**
+     * Get place_informed
+     *
+     * @return boolean 
+     */
+    public function getPlaceInformed()
+    {
+        return $this->place_informed;
     }
 }

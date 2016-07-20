@@ -6,6 +6,10 @@ food_places_lv_recommended:
     pattern: /ieteicama/
     defaults: { _controller: FoodPlacesBundle:Default:index, recommended: 1}
 
+food_places_lv_zaval:
+    pattern: /atrs/
+    defaults: { _controller: FoodPlacesBundle:Default:index, zaval: 1}
+
 food_change_location:
     pattern: /maina
     defaults: { _controller: FoodPlacesBundle:Default:changeLocation }
