@@ -167,6 +167,7 @@ class UserAdmin extends SonataUserAdmin {
                 ->add('discount', null, array('required' => false, 'label' => 'admin.users.discount'))
                 ->add('allowDelayPayment', null, array('required' => false, 'label' => 'admin.users.allow_delay_payment'))
                 ->add('requiredDivision', null, array('required' => false, 'label' => 'admin.users.required_division'))
+                ->add('regeneratePassword', null, array('required' => false, 'label' => 'admin.users.regenerate_password'))
                 ->add('divisionCodes', 'sonata_type_collection',
                     array('required' => false, 'label' => 'admin.users.division_codes'),
                     array(

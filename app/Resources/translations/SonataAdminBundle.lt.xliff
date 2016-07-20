@@ -2706,6 +2706,10 @@
                 <source>admin.seorecord.places</source>
                 <target>Vietos</target>
             </trans-unit>
+            <trans-unit id="admin.users.regenerate_password">
+                <source>admin.users.regenerate_password</source>
+                <target>Automatiškai pergeneruoti slaptažodį</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

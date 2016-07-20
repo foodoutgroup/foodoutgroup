@@ -28,6 +28,9 @@ class ChangePasswordToCorporateSendCommand extends ContainerAwareCommand
         $userCollection = $em->getRepository('FoodUserBundle:User')->findBy(array('isBussinesClient' => 1));
         $logger = $this->getContainer()->get('logger');
         foreach ($userCollection as $user) {
+            if(!$user->getRegeneratePassword()){
+                continue;
+            }
             try {
                 $newPassword = $this->generateNewPassword();
 

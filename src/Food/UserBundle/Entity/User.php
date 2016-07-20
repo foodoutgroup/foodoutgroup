@@ -187,6 +187,12 @@ class User extends BaseUser
     private $requiredDivision = false;
 
     /**
+     * @var boolean
+     * @ORM\Column(name="regenerate_password", type="boolean", nullable=true)
+     */
+    private $regeneratePassword = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="UserDivisionCode", mappedBy="user", cascade={"persist", "remove"})
      **/
     private $divisionCodes;
@@ -1014,5 +1020,28 @@ class User extends BaseUser
     public function getGroup()
     {
         return $this->group;
+    }
+
+    /**
+     * Set regeneratePassword
+     *
+     * @param boolean $regeneratePassword
+     * @return User
+     */
+    public function setRegeneratePassword($regeneratePassword)
+    {
+        $this->regeneratePassword = $regeneratePassword;
+    
+        return $this;
+    }
+
+    /**
+     * Get regeneratePassword
+     *
+     * @return boolean 
+     */
+    public function getRegeneratePassword()
+    {
+        return $this->regeneratePassword;
     }
 }

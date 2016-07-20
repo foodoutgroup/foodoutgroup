@@ -2666,6 +2666,10 @@
                 <source>admin.seorecord.places</source>
                 <target>Places</target>
             </trans-unit>
+            <trans-unit id="admin.users.regenerate_password">
+                 <source>admin.users.regenerate_password</source>
+                 <target>Automātiski ģenerēta parole</target>
+             </trans-unit>
         </body>
     </file>
 </xliff>
