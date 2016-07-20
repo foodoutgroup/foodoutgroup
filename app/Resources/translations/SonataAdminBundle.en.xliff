@@ -3118,6 +3118,7 @@
             <trans-unit id="admin.users.regenerate_password">
                 <source>admin.users.regenerate_password</source>
                 <target>Automatically regenerate password</target>
+            </trans-unit>
             <!-- CRM -->
             <trans-unit id="admin.dispatcher.crm_search_button">
                 <source>admin.dispatcher.crm_search_button</source>
