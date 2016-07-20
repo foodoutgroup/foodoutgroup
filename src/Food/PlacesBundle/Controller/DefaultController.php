@@ -18,16 +18,20 @@ class DefaultController extends Controller
         'Rīga' => 'places.in_riga'
     ];
 
-    public function indexAction($recommended = false)
+    public function indexAction($recommended = false, $zaval = false)
     {
         if ($recommended) {
             $recommended = true;
         }
+        if ($zaval) {
+            $zaval = true;
+        }
+
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
         $placeService = $this->get('food.places');
         $availableCitiesSlugs = $this->container->getParameter('available_cities_slugs');
 
-        if (!empty($locData['city']) && in_array(mb_strtolower($locData['city']), $availableCitiesSlugs)) {echo 1;
+        if (!empty($locData['city']) && in_array(mb_strtolower($locData['city']), $availableCitiesSlugs)) {
             $city_url = $this->generateUrl('food_city_' . lcfirst($locData['city']), [], true);
         } else {
             $city_name = lcfirst(reset($availableCitiesSlugs));
@@ -38,6 +42,7 @@ class DefaultController extends Controller
             'FoodPlacesBundle:Default:index.html.twig',
             array(
                 'recommended' => $recommended,
+                'zaval' => $zaval,
                 'location' => $locData,
                 'city_translations' => $this->cityTranslations,
                 'default_city' => 'Vilnius',
@@ -74,6 +79,7 @@ class DefaultController extends Controller
             'FoodPlacesBundle:Default:index.html.twig',
             array(
                 'recommended' => false,
+                'zaval' => false,
                 'location' => $locData,
                 'city_translations' => $this->cityTranslations,
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
@@ -85,11 +91,15 @@ class DefaultController extends Controller
         );
     }
 
-    public function listAction($recommended = false, $slug_filter = false, Request $request)
+    public function listAction($recommended = false, $slug_filter = false, $zaval = false, Request $request)
     {
         if ($recommended) {
             $recommended = true;
         }
+        if ($zaval) {
+            $zaval = true;
+        }
+
         $recommendedFromRequest = $request->get('recommended', null);
         if ($recommendedFromRequest !== null) {
             $recommended = (bool)$recommendedFromRequest;
@@ -107,7 +117,12 @@ class DefaultController extends Controller
             }
         }
 
-        $places = $this->get('food.places')->getPlacesForList($recommended, $request, $slug_filter);
+        if ($zaval) {
+            $places = $this->get('food.places')->getPlacesForList($recommended, $request, $slug_filter, $zaval);
+        } else {
+            $places = $this->get('food.places')->getPlacesForList($recommended, $request, $slug_filter);
+        }
+        
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
 
         return $this->render(

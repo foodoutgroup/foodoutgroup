@@ -7,7 +7,8 @@ use Food\OrderBundle\Service\OrderService;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\AppBundle\Traits;
 
-class PlacesService extends ContainerAware {
+class PlacesService extends ContainerAware
+{
     use Traits\Service;
 
     public function __construct()
@@ -30,17 +31,20 @@ class PlacesService extends ContainerAware {
 
     /**
      * @param int $placeId
+     *
      * @return \Food\DishesBundle\Entity\Place
      *
      * @throws \InvalidArgumentException
      */
-    public function getPlace($placeId) {
+    public function getPlace($placeId)
+    {
         if (empty($placeId)) {
             throw new \InvalidArgumentException('Cant search a place without and id. How can you find a house without address?');
         }
 
         return $this->em()->getRepository('FoodDishesBundle:Place')
-            ->find($placeId);
+            ->find($placeId)
+            ;
     }
 
     public function savePlace($place)
@@ -64,11 +68,13 @@ class PlacesService extends ContainerAware {
         foreach ($cities as &$city) {
             $city = $city['city'];
         }
+
         return $cities;
     }
 
     /**
      * @param int $categoryId
+     *
      * @return \Food\DishesBundle\Entity\Place|false
      */
     public function getPlaceByCategory($categoryId)
@@ -84,55 +90,62 @@ class PlacesService extends ContainerAware {
 
     /**
      * @param \Food\DishesBundle\Entity\Place $place
+     *
      * @return array|\Food\DishesBundle\Entity\FoodCategory[]
      */
     public function getActiveCategories($place)
     {
         return $this->em()->getRepository('FoodDishesBundle:FoodCategory')
             ->findBy(
-                array(
-                    'place' => $place->getId(),
+                [
+                    'place'  => $place->getId(),
                     'active' => 1,
-                ),
-                array(
+                ],
+                [
                     'lineup' => 'DESC'
-                )
-            );
+                ]
+            )
+            ;
     }
 
     /**
      * @param \Food\DishesBundle\Entity\Place $place
+     *
      * @return array|\Food\DishesBundle\Entity\PlacePoint[]
      */
     public function getPublicPoints($place)
     {
         return $this->em()->getRepository('FoodDishesBundle:PlacePoint')
-            ->findBy(array(
-                    'place' => $place->getId(),
-                    'public' => 1,
-                    'active' => 1,
-                ),
-                array(
-                    'city' => 'DESC',
+            ->findBy([
+                'place'  => $place->getId(),
+                'public' => 1,
+                'active' => 1,
+            ],
+                [
+                    'city'    => 'DESC',
                     'address' => 'ASC'
-                )
-            );
+                ]
+            )
+            ;
     }
 
     /**
      * @param \Food\DishesBundle\Entity\Place $place
+     *
      * @return array|\Food\DishesBundle\Entity\PlacePoint[]
      */
     public function getAllPoints($place)
     {
         return $this->em()->getRepository('FoodDishesBundle:PlacePoint')
-            ->findBy(array(
+            ->findBy([
                 'place' => $place->getId()
-            ));
+            ])
+            ;
     }
 
     /**
      * @param $pointId
+     *
      * @return \Food\DishesBundle\Entity\PlacePoint
      */
     public function getPlacePointData($pointId)
@@ -141,6 +154,7 @@ class PlacesService extends ContainerAware {
         if (empty($pointId)) {
             $this->getContainer()->get('logger')->error('Trying to find PlacePoint without ID in PlacesService - getPlacePointData');
         }
+
         return $this->em()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
     }
 
@@ -149,7 +163,7 @@ class PlacesService extends ContainerAware {
      */
     public function saveRelationPlaceToPoint($data)
     {
-        $rel = array();
+        $rel = [];
         foreach ($data as $row) {
             $rel[$row['place_id']] = $row['point_id'];
         }
@@ -164,7 +178,7 @@ class PlacesService extends ContainerAware {
     {
         $sessionData = $this->getSession()->get('point_data');
         if (empty($sessionData)) {
-            $sessionData = array();
+            $sessionData = [];
         }
         $sessionData[$placeId] = $pointId;
 
@@ -173,9 +187,10 @@ class PlacesService extends ContainerAware {
 
     /**
      * @param int $limit
+     *
      * @return array|\Food\DishesBundle\Entity\Place[]
      */
-    public function getTopRatedPlaces($limit=10)
+    public function getTopRatedPlaces($limit = 10)
     {
         $placesQuery = $this->em()->getRepository('FoodDishesBundle:Place')
             ->createQueryBuilder('p')
@@ -183,33 +198,35 @@ class PlacesService extends ContainerAware {
             ->orderBy('p.averageRating', 'DESC')
             ->addOrderBy('p.reviewCount', 'DESC')
             ->setMaxResults($limit)
-            ->getQuery();
+            ->getQuery()
+        ;
 
         return $placesQuery->getResult();
     }
 
     /**
      * @param Place $place
+     *
      * @return mixed
      */
     public function calculateAverageRating($place)
     {
         $em = $this->em();
         $con = $em->getConnection();
-        $rating = $con->fetchColumn("SELECT AVG( rate ) FROM  place_reviews WHERE place_id = ".$place->getId());
+        $rating = $con->fetchColumn("SELECT AVG( rate ) FROM  place_reviews WHERE place_id = " . $place->getId());
 
         return $rating;
     }
 
     public function placesPlacePointsWorkInformation($places)
     {
-        $sortArrPrio = array();
-        $sortArr = array();
-        $sortTop = array();
+        $sortArrPrio = [];
+        $sortArr = [];
+        $sortTop = [];
         foreach ($places as &$place) {
             $place['show_top'] = 0;
             if ($place['pp_count'] == 1) {
-                $place['is_work'] = ($this->container->get('food.order')->isTodayWork($place['point']) ? 1:9);
+                $place['is_work'] = ($this->container->get('food.order')->isTodayWork($place['point']) ? 1 : 9);
             } else {
                 if ($this->container->get('food.order')->isTodayWorkDayForAll($place['place'])) {
                     $place['is_work'] = 1;
@@ -230,35 +247,41 @@ class PlacesService extends ContainerAware {
             $sortTop[] = $place['show_top'];
         }
 
-        array_multisort($sortTop,SORT_NUMERIC, SORT_DESC, $sortArr, SORT_NUMERIC, SORT_ASC, $sortArrPrio, SORT_NUMERIC, SORT_DESC, $places);
+        array_multisort($sortTop, SORT_NUMERIC, SORT_DESC, $sortArr, SORT_NUMERIC, SORT_ASC, $sortArrPrio, SORT_NUMERIC, SORT_DESC, $places);
+
         return $places;
     }
 
     /**
-     * @param string $slug_filter
-     * @param $request
+     * @param string     $slug_filter
+     * @param            $request
      * @param bool|false $names
+     *
      * @return array
      */
-    public function getKitchensFromSlug($slug_filter = '', $request, $names = false) {
-        $kitchens = array();
+    public function getKitchensFromSlug($slug_filter = '', $request, $names = false)
+    {
+        $kitchens = [];
         $slugs = explode("/", $slug_filter);
-        foreach ($slugs as $skey=> &$slug) {
+        foreach ($slugs as $skey => &$slug) {
             $item_by_slug = $this->container->get('doctrine')->getManager()
                 ->getRepository('FoodAppBundle:Slug')
-                ->findOneBy(array('name' => str_replace('#', '', trim($slug)), 'type' => 'kitchen', 'lang_id' => $request->getLocale()));
+                ->findOneBy(['name' => str_replace('#', '', trim($slug)), 'type' => 'kitchen', 'lang_id' => $request->getLocale()])
+            ;
             if (!empty($item_by_slug)) {
                 if ($names == false) {
                     $kitchens[] = $item_by_slug->getItemId();
                 } else {
                     $kitchen = $this->container->get('doctrine')
-                        ->getRepository('FoodDishesBundle:Kitchen')->find($item_by_slug->getItemId());
+                        ->getRepository('FoodDishesBundle:Kitchen')->find($item_by_slug->getItemId())
+                    ;
                     if (!empty($kitchen)) {
                         $kitchens[] = $kitchen->getName();
                     }
                 }
             }
         }
+
         return $kitchens;
     }
 
@@ -266,16 +289,22 @@ class PlacesService extends ContainerAware {
      * @param $recommended
      * @param $request
      * @param $slug_filter
+     * @param $zaval
+     *
      * @return mixed
      */
-    public function getPlacesForList($recommended, $request, $slug_filter = false)
+    public function getPlacesForList($recommended, $request, $slug_filter = false, $zaval = false)
     {
         $kitchens = $request->get('kitchens', "");
         $filters = $request->get('filters');
-        $deliveryType = $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver);
+        if ($zaval) {
+            $deliveryType = '';
+        } else {
+            $deliveryType = $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver);
+        }
 
         if (empty($kitchens)) {
-            $kitchens = array();
+            $kitchens = [];
         } else {
             $kitchens = explode(",", $kitchens);
         }
@@ -286,7 +315,7 @@ class PlacesService extends ContainerAware {
 
         // TODO lets debug this strange scenario :(
         if (is_array($filters)) {
-            $this->getContainer()->get('logger')->error('getPlacesForList filters param got array -cant be. Array contents: '.var_export($filters, true));
+            $this->getContainer()->get('logger')->error('getPlacesForList filters param got array -cant be. Array contents: ' . var_export($filters, true));
         }
 
         $filters = explode(",", $filters);
@@ -294,10 +323,10 @@ class PlacesService extends ContainerAware {
             $filters['delivery_type'] = $deliveryType;
         }
 
-        foreach ($kitchens as $kkey=> &$kitchen) {
+        foreach ($kitchens as $kkey => &$kitchen) {
             $kitchen = intval($kitchen);
         }
-        foreach ($filters as $fkey=> &$filter) {
+        foreach ($filters as $fkey => &$filter) {
             $filter = trim($filter);
         }
 
@@ -306,9 +335,65 @@ class PlacesService extends ContainerAware {
             $filters,
             $recommended,
             $this->container->get('food.googlegis')->getLocationFromSession()
-        );
+        )
+        ;
+
         $this->container->get('food.places')->saveRelationPlaceToPoint($places);
-        return $this->container->get('food.places')->placesPlacePointsWorkInformation($places);
+        $places = $this->container->get('food.places')->placesPlacePointsWorkInformation($places);
+
+        if ($zaval) {
+            $places = $this->container->get('food.places')->zavalPlaces($places);
+        }
+
+        return $places;
+    }
+
+    /**
+     * @param $places
+     *
+     * @return mixed
+     */
+    public function zavalPlaces(array $places)
+    {
+        $sortTop = [];
+        $sortArr = [];
+        $sortArrPrio = [];
+        foreach ($places as &$place) {
+            $place['show_top'] = 0;
+            $deliveryOption = $place['place']->getDeliveryOptions();
+            $selfDelivery = $place['place']->getSelfDelivery();
+            # Mes Vezam P & 0
+            if ($deliveryOption == 'pickup' && !$selfDelivery) {
+                $place['show_top'] = 4;
+                $place['priority'] = 8000;
+            }
+
+            # Kiti veza P&D & 1
+            elseif ($deliveryOption == 'delivery_and_pickup' && $selfDelivery) {
+                $place['show_top'] = 3;
+                $place['priority'] = 5000;
+            }
+
+            # Kiti veza D & 1
+            elseif ($deliveryOption == 'delivery' && $selfDelivery) {
+                $place['show_top'] = 2;
+                $place['priority'] = 3000;
+            }
+
+            # Kiti veza P & 1
+            elseif ($deliveryOption == 'pickup' && $selfDelivery) {
+                $place['show_top'] = 1;
+                $place['priority'] = 2000;
+            }
+
+            $sortTop[] = $place['show_top'];
+            $sortArr[] = $place['is_work'];
+            $sortArrPrio[] = intval($place['priority']);
+        }
+
+        array_multisort($sortTop, SORT_NUMERIC, SORT_DESC, $sortArr, SORT_NUMERIC, SORT_ASC, $sortArrPrio, SORT_NUMERIC, SORT_DESC, $places);
+
+        return $places;
     }
 
     public function getMinDeliveryPrice($placeId)
@@ -317,11 +402,12 @@ class PlacesService extends ContainerAware {
         if (!$place->getSelfDelivery()) {
             return 0;
         }
-        
+
         $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMinDeliveryPrice($placeId);
         if (empty($sum)) {
             return $place->getDeliveryPrice();
         }
+
         return $sum;
     }
 
@@ -330,8 +416,10 @@ class PlacesService extends ContainerAware {
         $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMaxDeliveryPrice($placeId);
         if (empty($sum)) {
             $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+
             return $place->getDeliveryPrice();
         }
+
         return $sum;
     }
 
@@ -340,8 +428,10 @@ class PlacesService extends ContainerAware {
         $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMinCartSize($placeId);
         if (empty($sum)) {
             $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+
             return $place->getCartMinimum();
         }
+
         return $sum;
     }
 
@@ -350,44 +440,53 @@ class PlacesService extends ContainerAware {
         $sum = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getMaxCartSize($placeId);
         if (empty($sum)) {
             $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+
             return $place->getCartMinimum();
         }
+
         return $sum;
     }
 
-    public function getCurrentUserAddresses() {
+    public function getCurrentUserAddresses()
+    {
         $current_user = $this->container->get('security.context')->getToken()->getUser();
-        $all_user_address = array();
+        $all_user_address = [];
         if (!empty($current_user) && is_object($current_user)) {
             $all_user_address = $this->container->get('doctrine')->getRepository('FoodUserBundle:UserAddress')
-                ->findBy(array(
+                ->findBy([
                     'user' => $current_user,
-                ));
+                ])
+            ;
         }
+
         return $all_user_address;
     }
 
-    public function getCurrentUserAddress($city, $address) {
+    public function getCurrentUserAddress($city, $address)
+    {
         $current_user = $this->container->get('security.context')->getToken()->getUser();
-        $user_address = array();
+        $user_address = [];
         if (!empty($current_user) && is_object($current_user) && !empty($city) && !empty($address)) {
             $user_address = $this->container->get('doctrine')->getRepository('FoodUserBundle:UserAddress')
-                ->findOneBy(array(
-                    'user' => $current_user,
-                    'city' => $city,
+                ->findOneBy([
+                    'user'    => $current_user,
+                    'city'    => $city,
                     'address' => $address,
-                ));
+                ])
+            ;
         }
+
         return $user_address;
     }
 
     /**
-     * @param Place $place
+     * @param Place           $place
      * @param PlacePoint|null $placePoint
-     * @param string|null $dateShift
+     * @param string|null     $dateShift
+     *
      * @return array
      */
-    public function getFullRangeWorkTimes($place, $placePoint=null, $dateShift=null)
+    public function getFullRangeWorkTimes($place, $placePoint = null, $dateShift = null)
     {
         if (empty($dateShift)) {
             $day = date("w");
@@ -402,42 +501,42 @@ class PlacesService extends ContainerAware {
             $placePoint = $placePoints[0];
         }
 
-        $from = $placePoint->{'getWd'.$day.'Start'}();
-        $to = $placePoint->{'getWd'.$day.'EndLong'}();
+        $from = $placePoint->{'getWd' . $day . 'Start'}();
+        $to = $placePoint->{'getWd' . $day . 'EndLong'}();
         if (empty($to)) {
-            $to = $placePoint->{'getWd'.$day.'End'}();
+            $to = $placePoint->{'getWd' . $day . 'End'}();
         }
 
         if (strpos($from, ':') === false) {
-            return array();
+            return [];
         }
 
         $from = str_replace(':', '', $from);
         $to = str_replace(':', '', $to);
-        $graph = array();
+        $graph = [];
 
         if (($to < '0500' && $to >= '0000') || $to > '2400') {
             $to = '2400';
         }
 
         // +100 nes duodam restoranui atsidaryt, negali gi pristatyt ta pacia valanda, kai atsidare restoranas :D
-        $from = intval($from)+100;
+        $from = intval($from) + 100;
         $to = intval($to);
 
         // jei restoranas jau dirba ilgiau nei valanda - nuo dabar duodam užsakyt tik po valandos, jei kalbam apie siandien
         if ($dateShift == 0 && $from <= date("Hi", strtotime('+30 minute'))) {
-            $from = intval(date('H').'00') + 100;
+            $from = intval(date('H') . '00') + 100;
             if (date('i') > 0 && date('i') <= 30) {
                 $from = $from + 30;
             } else if (date('i') > 30) {
-                $from = $from +100;
+                $from = $from + 100;
             }
         }
 
         // If restaurant starts at a dumbt time, that is not our wanted 00 or 30 - fix dat crap
-        $minutes = $from%100;
+        $minutes = $from % 100;
         if ($minutes != 0 && $minutes != 30) {
-            $hour = ($from - ($from%100))/100;
+            $hour = ($from - ($from % 100)) / 100;
 
             if ($minutes < 30) {
                 $minutes = '30';
@@ -446,31 +545,31 @@ class PlacesService extends ContainerAware {
                 $hour++;
             }
             if ($hour < 10) {
-                $hour = '0'.$hour;
+                $hour = '0' . $hour;
             }
-            $from = $hour.$minutes;
+            $from = $hour . $minutes;
         }
 
         $i = $from;
 
-        while($i <= $to) {
-            if ($i%100 == 60) {
-                $i = $i+40;
+        while ($i <= $to) {
+            if ($i % 100 == 60) {
+                $i = $i + 40;
             }
 
-            $hour = ($i - ($i%100))/100;
+            $hour = ($i - ($i % 100)) / 100;
             if ($hour < 10) {
-                $hour = '0'.$hour;
+                $hour = '0' . $hour;
             }
-            $minutes = $i%100;
+            $minutes = $i % 100;
             if ($minutes == 0) {
                 $minutes = '00';
             } elseif ($minutes < 10) {
-                $minutes = '0'.$minutes;
+                $minutes = '0' . $minutes;
             }
-            $graph[] = $hour.':'.$minutes;
+            $graph[] = $hour . ':' . $minutes;
 
-            $i = $i+30;
+            $i = $i + 30;
         }
 
         return $graph;
@@ -478,6 +577,7 @@ class PlacesService extends ContainerAware {
 
     /**
      * @param Place $place
+     *
      * @return bool
      */
     public function getAllowOnlinePayment(Place $place)
@@ -488,10 +588,37 @@ class PlacesService extends ContainerAware {
 
         $day_of_week = date('w');
         $current_hour = date('H');
-        if (in_array($day_of_week, [0,1,2,3,4]) && $current_hour == 22 || in_array($day_of_week, [0,6]) && $current_hour == 0) {
+        if (in_array($day_of_week, [0, 1, 2, 3, 4]) && $current_hour == 22 || in_array($day_of_week, [0, 6]) && $current_hour == 0) {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * @param Place $place
+     *
+     * @return bool|string
+     * @throws \Exception
+     */
+    public function getZavalTime(Place $place)
+    {
+        if ($place->getSelfDelivery()) {
+            return false;
+        }
+
+        if ($place->getDeliveryOptions() == 'pickup') {
+            return false;
+        }
+
+        $miscService = $this->container->get('food.app.utils.misc');
+        $zaval_on = $miscService->getParam('zaval_on');
+        $zaval_time = $miscService->getParam('zaval_time');
+
+        if ($zaval_on > 0 && $zaval_time > 0) {
+            return date('G,i', mktime(0, $zaval_time));
+        }
+
+        return false;
     }
 }

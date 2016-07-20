@@ -533,4 +533,22 @@ class DispatcherAdminController extends Controller
             $trans->trans('admin.dispatcher.cancel_reason.software_error', array(), 'SonataAdminBundle')
         );
     }
+
+    public function assignPlaceInformedAction(Request $request)
+    {
+        $orderId = $request->get('orderId');
+        $orderService = $this->get('food.order');
+        $orderService->getOrderById($orderId);
+
+        try {
+            $orderService->getOrder()->setPlaceInformed(true);
+            $orderService->saveOrder();
+            $orderService->informPlace(false);
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Error happened assigning a place informed: '.$e->getMessage());
+            return new Response('Error: error occured');
+        }
+
+        return new Response('OK');
+    }
 }

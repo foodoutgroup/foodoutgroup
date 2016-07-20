@@ -22,7 +22,7 @@ class KitchenController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function kitchenlistAction($recommended = false, $slug_filter = false, Request $request)
+    public function kitchenlistAction($recommended = false, $slug_filter = false, Request $request, $zaval = false)
     {
         if ($recommended) {
             $recommended = true;
@@ -42,7 +42,14 @@ class KitchenController extends Controller
                 case 'pickup':
                     $this->container->get('session')->set('delivery_type', OrderService::$deliveryPickup);
                     break;
+                case 'delivery_and_pickup':
+                    $this->container->get('session')->set('delivery_type', 'delivery_and_pickup');
+                    break;
             }
+        }
+
+        if ($zaval) {
+            $this->container->get('session')->set('delivery_type', '');
         }
 
         $selectedKitchens = $request->get('selected_kitchens', '');
