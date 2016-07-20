@@ -1,3 +1,4 @@
+/app/config/kpi.yml
 /web/bundles/
 /app/bootstrap*
 /app/cache/*
@@ -32,3 +33,5 @@
 
 # other
 .ruby-version
+app/var/
+bin/
