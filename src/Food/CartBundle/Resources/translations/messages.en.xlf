@@ -321,7 +321,7 @@ Tallinn]]></target>
                 <target><![CDATA[<b>Your order amount is below the minimum cart amount.</b>]]></target>
             </trans-unit>
             <trans-unit id="order.form.errors.dont_make_item" resname="order.form.errors.dont_make_item">
-                <source>order.form.errors.cartlessthanminimum_on_pickup</source>
+                <source>order.form.errors.dont_make_item</source>
                 <target><![CDATA[The dish is currently not producing: %text%]]></target>
             </trans-unit>
             <trans-unit id="order.form.errors.emptycart" resname="order.form.errors.emptycart">

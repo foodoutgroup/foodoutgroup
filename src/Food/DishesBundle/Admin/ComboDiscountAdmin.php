@@ -12,8 +12,6 @@ use Food\DishesBundle\Entity\Place;
 
 class ComboDiscountAdmin extends FoodAdmin
 {
-
-
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -33,7 +31,7 @@ class ComboDiscountAdmin extends FoodAdmin
             ->add('active')
             ->add('amount')
             ->add('applyBy', 'choice', array('required' =>  true, 'choices' => $combyApplyBy))
-            ->add('dishCategory')
+            ->add('dishCategory', null, array('required' => false))
             ->add('dishUnit', null, array('required' => false))
             ->add('discountType', 'choice', array('required' =>  true, 'choices' => $comboChoices))
             ->add('discountSize')

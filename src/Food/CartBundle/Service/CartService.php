@@ -650,15 +650,35 @@ class CartService {
         $cartItems = $this->getCartDishes($place);
         $dishUnits = array();
         $amounts = array();
+        $activeBundles = $this->_getActiveBundles($place);
+
         foreach ($cartItems as $item) {
             $item->setIsFree(false);
             $this->getEm()->persist($item);
             $this->getEm()->flush();
-            $dishUnits[$item->getDishSizeId()->getUnit()->getId()][] = $item;
             $amounts[$item->getCartId()] = $item->getQuantity();
+            $dishCategories = $item->getDishId()->getCategories();
+
+            foreach ($activeBundles as $comboDiscount) {
+                if ($comboDiscount->getApplyBy() == ComboDiscount::OPT_COMBO_APPLY_UNIT) {
+                    if ($comboDiscount->getDishUnit()->getId() == $item->getDishSizeId()->getUnit()->getId()) {
+                        $comboDishCategory = $comboDiscount->getDishCategory();
+                        if (!empty($comboDishCategory)) {
+                            foreach ($dishCategories as $dishCategory) {
+                                if ($comboDishCategory->getId() == $dishCategory->getId()) {
+                                    $dishUnits[$item->getDishSizeId()->getUnit()->getId()][] = $item;
+                                }
+                            }
+                        } else {
+                            $dishUnits[$item->getDishSizeId()->getUnit()->getId()][] = $item;
+                        }
+                    }
+                }
+            }
         }
+
         $dishUnitsIds = array_keys($dishUnits);
-        $activeBundles = $this->_getActiveBundles($place);
+
         foreach ($activeBundles as $bund) {
             if ($bund->getApplyBy() == ComboDiscount::OPT_COMBO_APPLY_UNIT) {
                 if (in_array($bund->getDishUnit()->getId(), $dishUnitsIds)) {

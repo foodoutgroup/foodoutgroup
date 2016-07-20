@@ -475,4 +475,23 @@ class PlacesService extends ContainerAware {
 
         return $graph;
     }
+
+    /**
+     * @param Place $place
+     * @return bool
+     */
+    public function getAllowOnlinePayment(Place $place)
+    {
+        if ($place->getDisabledOnlinePayment()) {
+            return false;
+        }
+
+        $day_of_week = date('w');
+        $current_hour = date('H');
+        if (in_array($day_of_week, [0,1,2,3,4]) && $current_hour == 22 || in_array($day_of_week, [0,6]) && $current_hour == 0) {
+            return false;
+        }
+
+        return true;
+    }
 }

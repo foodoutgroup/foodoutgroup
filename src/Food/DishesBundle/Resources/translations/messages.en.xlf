@@ -206,6 +206,10 @@
                 <source>no</source>
                 <target>No</target>
             </trans-unit>
+            <trans-unit id="dishes.no_production" resname="dishes.no_production">
+                <source>dishes.no_production</source>
+                <target><![CDATA[The dish is currently not producing]]></target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

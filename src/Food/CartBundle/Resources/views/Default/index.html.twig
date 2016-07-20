@@ -364,7 +364,7 @@
                                 {% endif %}
                             </div>
 
-                            {% if not place.disabledOnlinePayment %}
+                            {% if places_service.getAllowOnlinePayment(place) %}
                             {# TODO kolkas viskas rodo i Paysera#}
                             <div class="for_hiding">
                                 <div class="select-payment clearfix">
