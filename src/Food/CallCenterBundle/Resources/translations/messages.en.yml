@@ -1,5 +1,7 @@
 callcenter:
     title: Call Center
+    phone_search_button: Find Address By Phone
+    logout_button: Logout
     location_panel:
         title: Selected Address
         error: Can not deliver to this address

@@ -181,3 +181,36 @@ button.late_orders {
 .order_list td.order_status button.assign_placeinformed_button {
     width: 30px;
 }
+
+/* CRM Block Begin */
+.crm_content {
+    margin: 15px 0 25px 0;
+    border-bottom: 1px solid #dfdfdf;
+}
+.crm_content .sonata-ba-view-title {
+    font-size: 13px;
+}
+.crm_content .sonata-ba-view-title th {
+    text-align: center;
+}
+.crm_content .table th,
+.crm_content .table td {
+    padding: 4px;
+    line-height: 18px;
+}
+.crm_content tbody th,
+.crm_content tbody td {
+    font-size: 12px;
+}
+.crm_content tbody th.new_client {
+    text-align: center;
+    line-height: 25px;
+    font-size: 16px;
+    color: green;
+}
+#crm-phone-input {
+    width: 185px;
+    height: 30px;
+    margin-top: 1px;
+}
+/* CRM Block End */

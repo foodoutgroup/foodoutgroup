@@ -5,15 +5,15 @@ var Dispatcher = {
     lastCheck: '',
     bell: false,
 
-    setLocale: function(locale) {
+    setLocale: function (locale) {
         Dispatcher._locale = locale;
     },
 
-    setTranslation: function(key, value) {
+    setTranslation: function (key, value) {
         Dispatcher._translations[key] = value;
     },
 
-    getTranslation: function(key) {
+    getTranslation: function (key) {
         if (typeof Dispatcher._translations[key] == "undefined") {
             return key;
         }
@@ -21,34 +21,38 @@ var Dispatcher = {
         return Dispatcher._translations[key];
     },
 
-    onLoadEvents: function() {
+    onLoadEvents: function () {
         Dispatcher.initTabs();
 
         Dispatcher.initTooltips();
 
         Dispatcher.initDriverFilter();
 
-        $(".todo_nieks_nezino_klases").on('click', ' .unassigned .order_checkbox,.not_finished .order_checkbox', function(){
+        $(".todo_nieks_nezino_klases").on('click', ' .unassigned .order_checkbox,.not_finished .order_checkbox', function () {
             Dispatcher.toggleDriverButton($(this));
             //TODO - enable active drivers list buttons
         });
 
-        $(".todo_nieks_nezino_klases").on('click', '.change_status_button', function() {
+        $(".todo_nieks_nezino_klases").on('click', '.change_status_button', function () {
             Dispatcher.showStatusPopup($(this));
         });
 
-        $(".todo_nieks_nezino_klases").on('click', '.sms_button', function() {
+        $(".todo_nieks_nezino_klases").on('click', '.sms_button', function () {
             Dispatcher.showSmsPopup($(this));
         });
 
-        $(".todo_nieks_nezino_klases").on('click', '.approve_button', function() {
+        $(".todo_nieks_nezino_klases").on('click', '.approve_button', function () {
             $('.sonata-ba-list').mask();
             var orderId = $(this).attr('item-id');
 
-            var url = Routing.generate('food_admin_approve_order', { '_locale': Dispatcher._locale, 'orderId': orderId, _sonata_admin: 'sonata.admin.dish' });
+            var url = Routing.generate('food_admin_approve_order', {
+                '_locale': Dispatcher._locale,
+                'orderId': orderId,
+                _sonata_admin: 'sonata.admin.dish'
+            });
             $.get(
                 url,
-                function(data) {
+                function (data) {
                     $('.sonata-ba-list').unmask();
                     location.reload();
                 }
@@ -56,15 +60,15 @@ var Dispatcher = {
         });
 
         /* At the moment disabled. TODO - use this function to refresh drivers list
-        $(".get_drivers_button ").bind('click', function() {
-            Dispatcher.getDriversList($(this));
-        });*/
+         $(".get_drivers_button ").bind('click', function() {
+         Dispatcher.getDriversList($(this));
+         });*/
 
-        $('.drivers_list').delegate('.assign-driver', 'click', function() {
+        $('.drivers_list').delegate('.assign-driver', 'click', function () {
             Dispatcher.assignDriver($(this).attr('item-id'));
         });
 
-        $('.order_list .order_status').delegate('.assign_dispatcher_button', 'click', function() {
+        $('.order_list .order_status').delegate('.assign_dispatcher_button', 'click', function () {
             Dispatcher.assignDispatcher($(this).attr('item-id'));
         });
 
@@ -76,8 +80,18 @@ var Dispatcher = {
             Dispatcher.toggleClientContacted($(this));
         });
 
-        $(".order_list .problem_solved_check .problem_solved").bind('click', function(){
+        $(".order_list .problem_solved_check .problem_solved").bind('click', function () {
             Dispatcher.toggleProblemSolved($(this));
+        });
+
+        $('#crm-phone-search').submit(function () {
+            Dispatcher.getUserInfo($(this));
+            return false;
+        });
+
+        $('.crm-close').click(function(){
+            Dispatcher.crmClose();
+            return false;
         });
 
         Dispatcher.subscribeForNewOrders();
@@ -96,7 +110,7 @@ var Dispatcher = {
         });
     },
 
-    toggleDriverButton: function(checkbox) {
+    toggleDriverButton: function (checkbox) {
         var activeList = checkbox.closest(".order_list");
         // Old button
         //var button = activeList.parent().find('.get_drivers_button');
@@ -110,7 +124,7 @@ var Dispatcher = {
         }
     },
 
-    showStatusPopup: function(button) {
+    showStatusPopup: function (button) {
         $('.sonata-ba-list').mask();
         var orderId = button.attr('item-id');
         var url = Routing.generate('food_admin_get_order_status_popup', {
@@ -123,7 +137,7 @@ var Dispatcher = {
         var statusButtons = {};
         var createEvent = {};
 
-        statusButtons[Dispatcher.getTranslation('button_change')] = function() {
+        statusButtons[Dispatcher.getTranslation('button_change')] = function () {
             var newStatus = $(this).find('.order_status:checked').val();
             var delayDuration = (newStatus == 'delayed' ? $(this).find('select#delay_duration').val() : null);
 
@@ -149,22 +163,22 @@ var Dispatcher = {
             });
             $.get(
                 url,
-                function(data) {
+                function (data) {
                     location.reload();
                 }
             );
 
             // TODO refresh the page!!!!
-            $( this ).dialog( "close" );
-            $( this ).dialog( "destroy" );
+            $(this).dialog("close");
+            $(this).dialog("destroy");
         };
 
-        statusButtons[Dispatcher.getTranslation('button_cancel')] = function() {
-            $( this ).dialog( "close" );
-            $( this ).dialog( "destroy" );
+        statusButtons[Dispatcher.getTranslation('button_cancel')] = function () {
+            $(this).dialog("close");
+            $(this).dialog("destroy");
         };
 
-        createEvent = function(event, ui) {
+        createEvent = function (event, ui) {
             var fieldsHolder = $(this);
             var delayedFieldHolder = fieldsHolder.find('.delay_duration_holder');
             var statusFields = fieldsHolder.find('input[type="radio"].order_status');
@@ -174,16 +188,16 @@ var Dispatcher = {
             var canceledField = fieldsHolder.find('input[value="canceled"].order_status');
             var canceledStatus = (canceledField.prop('checked') ? true : false);
 
-            var toggle_delayedFieldHolder = function(delayedStatus) {
-                if (delayedStatus){
+            var toggle_delayedFieldHolder = function (delayedStatus) {
+                if (delayedStatus) {
                     delayedFieldHolder.show();
                 } else {
                     delayedFieldHolder.hide();
                 }
             };
 
-            var toggle_canceledFieldHolder = function(canceledStatus) {
-                if (canceledStatus){
+            var toggle_canceledFieldHolder = function (canceledStatus) {
+                if (canceledStatus) {
                     canceledFieldHolder.show();
                 } else {
                     canceledFieldHolder.hide();
@@ -192,7 +206,7 @@ var Dispatcher = {
 
             toggle_delayedFieldHolder(delayedStatus);
             toggle_canceledFieldHolder(canceledStatus);
-            $(statusFields).on("click", function(event) {
+            $(statusFields).on("click", function (event) {
                 toggle_delayedFieldHolder(($(this).prop('checked') && $(this).val() == 'delayed' ? true : false));
                 toggle_canceledFieldHolder(($(this).prop('checked') && $(this).val() == 'canceled' ? true : false));
             });
@@ -200,7 +214,7 @@ var Dispatcher = {
 
         $.ajax({
             url: url,
-            success: function(data) {
+            success: function (data) {
                 $('.sonata-ba-list').unmask();
                 tag.html(data).dialog({
                     title: Dispatcher.getTranslation('change_status_title'),
@@ -213,31 +227,36 @@ var Dispatcher = {
         });
     },
 
-    showSmsPopup: function(button) {
+    showSmsPopup: function (button) {
         var orderId = button.attr('item-id');
         var tag = $("<div></div>");
         var data = $(".sms_message_popup").html();
         var statusButtons = {};
 
-        statusButtons[Dispatcher.getTranslation('button_send')] = function() {
+        statusButtons[Dispatcher.getTranslation('button_send')] = function () {
             $('.sonata-ba-list').mask();
             var message = $(this).find('.order_message').val();
-            var url = Routing.generate('food_admin_send_message', { '_locale': Dispatcher._locale, 'orderId': orderId, 'message': message, _sonata_admin: 'sonata.admin.dish' });
+            var url = Routing.generate('food_admin_send_message', {
+                '_locale': Dispatcher._locale,
+                'orderId': orderId,
+                'message': message,
+                _sonata_admin: 'sonata.admin.dish'
+            });
             $.get(
                 url,
-                function(data) {
+                function (data) {
                     location.reload();
                 }
             );
 
             // TODO refresh the page!!!!
-            $( this ).dialog( "close" );
-            $( this ).dialog( "destroy" );
+            $(this).dialog("close");
+            $(this).dialog("destroy");
         };
 
-        statusButtons[Dispatcher.getTranslation('button_cancel')] = function() {
-            $( this ).dialog( "close" );
-            $( this ).dialog( "destroy" );
+        statusButtons[Dispatcher.getTranslation('button_cancel')] = function () {
+            $(this).dialog("close");
+            $(this).dialog("destroy");
         };
 
         tag.html(data).dialog({
@@ -248,40 +267,47 @@ var Dispatcher = {
         }).dialog('open');
     },
 
-    getDriversList: function(button) {
+    getDriversList: function (button) {
         $('.city_list').mask();
 
-        var activePanel =  button.closest('.ui-tabs-panel');
+        var activePanel = button.closest('.ui-tabs-panel');
         var activeList = activePanel.find(".order_list");
         var checkedBoxes = activeList.find('.order_checkbox:checked');
         var orderIds = [];
 
-        checkedBoxes.each(function(key, value){
+        checkedBoxes.each(function (key, value) {
             orderIds.push($(value).val());
         });
 
-        var url = Routing.generate('food_admin_get_driver_list', { '_locale': Dispatcher._locale, 'orders': orderIds, _sonata_admin: 'sonata.admin.dish' });
+        var url = Routing.generate('food_admin_get_driver_list', {
+            '_locale': Dispatcher._locale,
+            'orders': orderIds,
+            _sonata_admin: 'sonata.admin.dish'
+        });
 
         $.get(
             url,
-            function(data) {
+            function (data) {
                 $('.drivers_list').html(data);
                 $('.city_list').unmask();
             }
         );
     },
 
-    assignDriver: function(driverId) {
+    assignDriver: function (driverId) {
         $('.sonata-ba-list').mask();
         var activeList = $('.order_list:visible');
         var checkedBoxes = activeList.find('.order_checkbox:checked');
         var orderIds = [];
 
-        checkedBoxes.each(function(key, value){
+        checkedBoxes.each(function (key, value) {
             orderIds.push($(value).val());
         });
 
-        var url = Routing.generate('food_admin_assign_driver', { '_locale': Dispatcher._locale, _sonata_admin: 'sonata.admin.dish' });
+        var url = Routing.generate('food_admin_assign_driver', {
+            '_locale': Dispatcher._locale,
+            _sonata_admin: 'sonata.admin.dish'
+        });
         $.post(
             url,
             {
@@ -295,10 +321,13 @@ var Dispatcher = {
         );
     },
 
-    assignDispatcher: function(orderId) {
+    assignDispatcher: function (orderId) {
         $('.sonata-ba-list').mask();
 
-        var url = Routing.generate('food_admin_assign_dispatcher', { '_locale': Dispatcher._locale, _sonata_admin: 'sonata.admin.dish' });
+        var url = Routing.generate('food_admin_assign_dispatcher', {
+            '_locale': Dispatcher._locale,
+            _sonata_admin: 'sonata.admin.dish'
+        });
         $.post(
             url,
             {
@@ -327,21 +356,24 @@ var Dispatcher = {
         );
     },
 
-    subscribeForNewOrders: function() {
+    subscribeForNewOrders: function () {
         setTimeout(
-            function() {
+            function () {
                 Dispatcher.checkForNewOrders();
             }, 30000
         );
     },
 
-    checkForNewOrders: function() {
+    checkForNewOrders: function () {
 //        var activeList = $('.order_list:visible').attr('list-type');
-        var url = Routing.generate('food_admin_check_new_orders', { '_locale': Dispatcher._locale, _sonata_admin: 'sonata.admin.dish' });
+        var url = Routing.generate('food_admin_check_new_orders', {
+            '_locale': Dispatcher._locale,
+            _sonata_admin: 'sonata.admin.dish'
+        });
         $.get(
             url,
-            { 'lastCheck': Dispatcher.lastCheck},
-            function(data) {
+            {'lastCheck': Dispatcher.lastCheck},
+            function (data) {
                 Dispatcher.lastCheck = data.lastCheck;
                 if (data.needUpdate == "YES") {
                     // play a sound for new order
@@ -361,7 +393,7 @@ var Dispatcher = {
                 }
             }
         )
-            .always(function(){
+            .always(function () {
                 Dispatcher.subscribeForNewOrders();
             });
     },
@@ -369,8 +401,11 @@ var Dispatcher = {
     /**
      * Mark order as contacted with client after cancelation
      */
-    toggleClientContacted: function(checkbox) {
-        var url = Routing.generate('food_admin_mark_order_contacted', { '_locale': Dispatcher._locale, _sonata_admin: 'sonata.admin.dish' });
+    toggleClientContacted: function (checkbox) {
+        var url = Routing.generate('food_admin_mark_order_contacted', {
+            '_locale': Dispatcher._locale,
+            _sonata_admin: 'sonata.admin.dish'
+        });
         var contactedStatus = 0;
         if (checkbox.is(":checked")) {
             contactedStatus = 1;
@@ -382,7 +417,7 @@ var Dispatcher = {
                 'order': checkbox.attr('item-id'),
                 'status': contactedStatus
             },
-            function(data) {
+            function (data) {
                 if (data == "YES") {
                     location.reload();
                 }
@@ -393,8 +428,11 @@ var Dispatcher = {
     /**
      * Mark order problem as solved
      */
-    toggleProblemSolved: function(checkbox) {
-        var url = Routing.generate('food_admin_mark_order_problem_solved', { '_locale': Dispatcher._locale, _sonata_admin: 'sonata.admin.dish' });
+    toggleProblemSolved: function (checkbox) {
+        var url = Routing.generate('food_admin_mark_order_problem_solved', {
+            '_locale': Dispatcher._locale,
+            _sonata_admin: 'sonata.admin.dish'
+        });
         var solvedStatus = 0;
         if (checkbox.is(":checked")) {
             solvedStatus = 1;
@@ -406,18 +444,18 @@ var Dispatcher = {
                 'order': checkbox.attr('item-id'),
                 'status': solvedStatus
             },
-            function(data) {
+            function (data) {
                 if (data == "YES") {
                     location.reload();
                 }
             }
         );
     },
-    
-    initTabs: function() {
+
+    initTabs: function () {
         $('.city_list').tabs();
 
-        $('.city_list .city-tab a').on( "click", function( event ) {
+        $('.city_list .city-tab a').on("click", function (event) {
             var city = $(event.target).closest('.city-tab').attr('data-city');
             var driversHolder = $('.drivers_list');
 
@@ -427,8 +465,8 @@ var Dispatcher = {
             }
 
             driversHolder.find('.city_drivers').addClass('hidden');
-            driversHolder.find('.city_drivers.driver_'+city).removeClass('hidden');
-        } );
+            driversHolder.find('.city_drivers.driver_' + city).removeClass('hidden');
+        });
 
         var total = $('.city-tab').length;
 
@@ -439,7 +477,7 @@ var Dispatcher = {
 
     },
 
-    refreshFromData: function(data) {
+    refreshFromData: function (data) {
         $(".city-tab a").tooltip("destroy");
         var cityTabTotal = $('.city-tab').length;
 
@@ -448,7 +486,7 @@ var Dispatcher = {
             var $currentCityTab = $($('.city-tab')[cityTabIndex]);
 
             // Current city tab content
-            var $tabContent = $('#city_list-'+(cityTabIndex+1));
+            var $tabContent = $('#city_list-' + (cityTabIndex + 1));
 
             // Inner tab list of current city
             var $orderTypeTabList = $tabContent.find('.orderTypeTabList li');
@@ -458,7 +496,7 @@ var Dispatcher = {
 
             // Same as above, just from ajax
             var $data_currentCityTab = $($(data).find('.city-tab')[cityTabIndex]);
-            var $data_tabContent = $(data).find('#city_list-'+(cityTabIndex+1));
+            var $data_tabContent = $(data).find('#city_list-' + (cityTabIndex + 1));
             var $data_orderTypeTabList = $data_tabContent.find('.orderTypeTabList li');
             var $data_orderTypeContentList = $data_tabContent.children('div');
 
@@ -500,14 +538,14 @@ var Dispatcher = {
         totalDrivers = $('.drivers_list').find('.city_drivers').length;
         $cityDrivers = $('.drivers_list').find('.city_drivers');
         $data_cityDrivers = $(data).find('.drivers_list').find('.city_drivers');
-        for(driverIndex = 0; driverIndex < totalDrivers; ++driverIndex) {
+        for (driverIndex = 0; driverIndex < totalDrivers; ++driverIndex) {
             $($cityDrivers[driverIndex]).html($($data_cityDrivers[driverIndex]).html());
         }
 
         Dispatcher.initTooltips();
     },
 
-    initTooltips: function() {
+    initTooltips: function () {
         // Visus stripintus tekstus ispiesim tooltipe :)
         $(".spliced-text").tooltip({});
 
@@ -533,17 +571,84 @@ var Dispatcher = {
         $(".city-tab a").tooltip({placement: 'bottom'});
     },
 
-    initDriverFilter: function() {
-        $(".content").on('mouseover', '.drivers_table tr.odd,.drivers_table tr.even', function() {
+    initDriverFilter: function () {
+        $(".content").on('mouseover', '.drivers_table tr.odd,.drivers_table tr.even', function () {
             var driverId = $(this).data('driverId');
-            $('.order_list.not_finished').find('tr.odd,tr.even').find('.driver').each(function() {
-                if (!$(this).hasClass('driver'+driverId)) {
+            $('.order_list.not_finished').find('tr.odd,tr.even').find('.driver').each(function () {
+                if (!$(this).hasClass('driver' + driverId)) {
                     $(this).closest('tr').css('opacity', 0.5);
                 }
             });
         });
-        $(".content").on('mouseout', '.drivers_table tr.odd,.drivers_table tr.even', function() {
+        $(".content").on('mouseout', '.drivers_table tr.odd,.drivers_table tr.even', function () {
             $('.order_list.not_finished').find('tr').css('opacity', 1);
         });
+    },
+
+    getUserInfo: function ($form) {
+        var $input = $('#crm-phone-input');
+        var $newUserContent = $('.new-user-content');
+        var $oldUserContent = $('.old-user-content');
+        if ($newUserContent.hasClass('hidden')) {
+            $newUserContent.removeClass('hidden').hide();
+        }
+        if ($oldUserContent.hasClass('hidden')) {
+            $oldUserContent.removeClass('hidden').hide();
+        }
+
+        var phone = $input.val();
+
+        if (phone.length > 5) {
+            var url = Routing.generate('food_admin_get_user_info_by_phone', {
+                '_locale': Dispatcher._locale,
+                'phone': phone,
+                _sonata_admin: 'sonata.admin.dish'
+            });
+            $oldUserContent.find('.crm-user-address a').closest('tr').hide();
+            $oldUserContent.find('.crm-user-b2b > span').addClass('hidden');
+            Dispatcher.crmClose();
+            $.get(
+                url
+            ).done(function (data) {
+                if (data.info.totalOrders > 1) {
+                    $oldUserContent.find('.crm-user-status').text(data.info.user.rfm);
+                    $oldUserContent.find('.crm-user-firstname').text(data.info.user.firstname);
+                    $oldUserContent.find('.crm-user-lastname').text(data.info.user.lastname);
+
+                    $oldUserContent.find('.crm-user-phone a').attr('href', 'tel:'+data.info.user.phone).text(data.info.user.phone);
+                    $oldUserContent.find('.crm-user-email a').attr('href', 'mailto:'+data.info.user.email).text(data.info.user.email);
+
+                    var $addresses = $oldUserContent.find('.crm-user-address a');
+
+                    $.each(data.info.address, function(i, e){
+                        $($addresses[i]).attr('href', 'https://maps.google.com?saddr=Current+Location&daddr='+e).text(e).closest('tr').show();
+                    });
+
+                    if (data.info.user.b2b) {
+                        $oldUserContent.find('.crm-user-b2b .yes').removeClass('hidden');
+                    } else {
+                        $oldUserContent.find('.crm-user-b2b .no').removeClass('hidden');
+                    }
+
+                    $oldUserContent.find('.crm-user-completed').text(data.info.order.completed);
+                    $oldUserContent.find('.crm-user-canceled').text(data.info.order.canceled);
+
+                    Dispatcher.crmOpen($oldUserContent);
+                } else {
+                    Dispatcher.crmOpen($newUserContent);
+                }
+            });
+        }
+    },
+
+    crmClose: function () {
+        $('.crm-close').addClass('hidden');
+        $('.new-user-content').slideUp();
+        $('.old-user-content').slideUp();
+    },
+
+    crmOpen: function(list) {
+        $('.crm-close').removeClass('hidden');
+        list.slideDown();
     }
 };
