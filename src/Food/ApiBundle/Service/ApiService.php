@@ -54,6 +54,19 @@ class ApiService extends ContainerAware
                 $menuItem = new MenuItem(null, $this->container);
                 if ($dish->getActive()) {
                     // Is even check on and this is even week?
+
+                    $timeFrom = $dish->getTimeFrom();
+                    $timeTo = $dish->getTimeTo();
+
+                    if (!is_null($timeFrom) && !is_null($timeTo)) {
+                        $timeFrom = \DateTime::createFromFormat('H:i', $timeFrom);
+                        $timeTo = \DateTime::createFromFormat('H:i', $timeTo);
+                        $currentTime = \DateTime::createFromFormat('H:i', date("H:i"));
+                        if ($currentTime < $timeFrom || $currentTime > $timeTo) {
+                           continue;
+                        }
+                    }
+
                     if ($dish->getCheckEvenOddWeek()) {
                         if (($dish->getEvenWeek() && $currentWeek) || (!$dish->getEvenWeek() && !$currentWeek)) {
                             // Skip this dish as it is wrong wee
