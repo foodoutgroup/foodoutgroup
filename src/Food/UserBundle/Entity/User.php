@@ -190,7 +190,7 @@ class User extends BaseUser
      * @var boolean
      * @ORM\Column(name="regenerate_password", type="boolean", nullable=true)
      */
-    private $regeneratePassword = false;
+    private $regeneratePassword = true;
 
     /**
      * @ORM\OneToMany(targetEntity="UserDivisionCode", mappedBy="user", cascade={"persist", "remove"})
