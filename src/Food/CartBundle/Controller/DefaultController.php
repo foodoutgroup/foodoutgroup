@@ -613,6 +613,11 @@ class DefaultController extends Controller
         elseif (!empty($couponCode)) {
             $coupon = $this->get('food.order')->getCouponByCode($couponCode);
 
+            if ($coupon->getIgnoreCartPrice())
+            {
+                $noMinimumCart = true;
+            }
+
             if ($coupon) {
                 $applyDiscount = true;
                 $freeDelivery = $coupon->getFreeDelivery();
@@ -668,6 +673,8 @@ class DefaultController extends Controller
             }
         }
 
+
+
         $params = array(
             'list'  => $list,
             'place' => $place,
@@ -693,6 +700,7 @@ class DefaultController extends Controller
             'enable_free_delivery_for_big_basket' => $enable_free_delivery_for_big_basket,
             'basket_errors' => $basketErrors
         );
+
         if ($renderView) {
             return $this->renderView('FoodCartBundle:Default:side_block.html.twig', $params);
         }
@@ -720,7 +728,7 @@ class DefaultController extends Controller
         $order = $this->get('food.order')->getOrderByHash($orderHash);
 
         return $this->render(
-            'FoodCartBundle:Default:payment_wait.html.twig',
+            'lFoodCartBundle:Default:payment_wait.html.twig',
             array('order' => $order)
         );
     }

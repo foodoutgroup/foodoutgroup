@@ -3102,6 +3102,10 @@ class OrderService extends ContainerAware
                     $pointRecord
                 );
 
+                if($coupon && $coupon->getIgnoreCartPrice()) {
+                    $noMinimumCart = true;
+                }
+
                 if ($total_cart < $cartMinimum && $noMinimumCart == false) {
                     $formErrors[] = 'order.form.errors.cartlessthanminimum';
                 }
@@ -3120,6 +3124,10 @@ class OrderService extends ContainerAware
                     );
                 }
             }
+            if($coupon && $coupon->getIgnoreCartPrice()) {
+                $noMinimumCart = true;
+            }
+
             if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }

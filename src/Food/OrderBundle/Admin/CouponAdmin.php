@@ -46,7 +46,8 @@ class CouponAdmin extends FoodAdmin
             ->add('validTo', 'datetime', array('required' => false))
             ->add('validHourlyFrom', 'time', array('required' => false))
             ->add('validHourlyTo', 'time', array('required' => false))
-            ->add('active', 'checkbox', array('label' => 'admin.coupon.active', 'required' => false));
+            ->add('active', 'checkbox', array('label' => 'admin.coupon.active', 'required' => false))
+            ->add('ignoreCartPrice')
         ;
     }
 
