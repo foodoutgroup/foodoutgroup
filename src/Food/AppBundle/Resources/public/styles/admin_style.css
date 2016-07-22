@@ -96,6 +96,15 @@ tr.big_daddy_order.even {
     background-color: #7fff65 !important;
 }
 
+tr.delivery_coming_noti.odd {
+    background-color: #ffe575 !important;
+}
+tr.delivery_coming_noti.even {
+    background-color: #ffe565 !important;
+}
+
+
+
 td.no-wrap {
     white-space: nowrap;
 }

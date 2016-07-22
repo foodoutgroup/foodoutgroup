@@ -212,13 +212,20 @@
                         {#Dispatcher.recentOrders['{{ cityName }}']['{{ type }}'] = {{ order.id }};#}
                     {#</script>#}
                 {#{% endif %}#}
+
+
                 {% if order_service.isLate(order) %}
                     {% set additional_class = 'late_warning' %}
                 {% elseif order_service.isBigDaddyOrder(order) %}
                     {% set additional_class = 'big_daddy_order' %}
+                {% elseif order_service.deliveryComing(order) %}
+                    {% set additional_class = 'delivery_coming_noti' %} %}
                 {% else %}
                     {% set additional_class = '' %}
                 {% endif %}
+
+
+
                 <tr class="{{ loop.index%2 ? 'odd' : 'even' }} {{ additional_class }}">
                     <td class="no-wrap">
                         {% if not order.placePointSelfDelivery %}

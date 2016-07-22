@@ -387,6 +387,27 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * this method is checking that
+     * @param Order $order
+     * @return bool
+     */
+    public function deliveryComing(Order $order)
+    {
+        if($order->getOrderStatus() != OrderService::$status_assiged) {
+            return false;
+        }
+        $deliveryTime = strtotime($order->getDeliveryTime()->format("Y-m-d H:i:s"));
+        $currentTime  = time();
+        $currentFutureTime = $currentTime + 600; // + 10 min
+
+        if  ($deliveryTime < $currentFutureTime && $deliveryTime > $currentTime) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @param string $status
      * @param string|null $source
      * @param string|null $message
