@@ -50,6 +50,7 @@ class CouponGeneratorAdmin extends FoodAdmin
             ->add('templateCode')
             ->add('generateFrom', 'datetime', array('required' => false))
             ->add('generateTo', 'datetime', array('required' => false))
+            ->add('ignoreCartPrice')
         ;
     }
 

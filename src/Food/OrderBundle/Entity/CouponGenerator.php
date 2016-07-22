@@ -229,6 +229,12 @@ class CouponGenerator
      */
     private $deletedBy;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="ignore_cart_price", type="boolean", nullable=true)
+     */
+    private $ignoreCartPrice = false;
+
 
     /**
      * Constructor
@@ -931,5 +937,28 @@ class CouponGenerator
     public function getValidHourlyTo()
     {
         return $this->validHourlyTo;
+    }
+
+    /**
+     * Set ignoreCartPrice
+     *
+     * @param boolean $ignoreCartPrice
+     * @return CouponGenerator
+     */
+    public function setIgnoreCartPrice($ignoreCartPrice)
+    {
+        $this->ignoreCartPrice = $ignoreCartPrice;
+
+        return $this;
+    }
+
+    /**
+     * Get ignoreCartPrice
+     *
+     * @return boolean
+     */
+    public function getIgnoreCartPrice()
+    {
+        return $this->ignoreCartPrice;
     }
 }
