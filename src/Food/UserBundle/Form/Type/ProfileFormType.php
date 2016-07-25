@@ -67,12 +67,19 @@ class ProfileFormType extends BaseType
                         'disabled' => true,
                         'attr' => $attributes))
             ->add('phone',
-                  null,
-                  array('required' => true,
-                        'error_bubbling' => false,
-                        'label' => 'form.phone',
-                        'translation_domain' => 'FOSUserBundle',
-                        'attr' => array_merge(array('placeholder' => '3706xxxxxxx'), $attributes)))
+                null,
+                array('required' => true,
+                    'error_bubbling' => false,
+                    'label' => 'form.phone',
+                    'translation_domain' => 'FOSUserBundle',
+                    'attr' => array_merge(array('placeholder' => '3706xxxxxxx'), $attributes))) // FIXME:
+            ->add('regeneratePassword',
+                null,
+                array('required' => false,
+                    'error_bubbling' => false,
+                    'label' => 'form.regenerate_password',
+                    'translation_domain' => 'FOSUserBundle',
+                    'attr' => $attributes))
         ;
     }
 }

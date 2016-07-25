@@ -212,13 +212,20 @@
                         {#Dispatcher.recentOrders['{{ cityName }}']['{{ type }}'] = {{ order.id }};#}
                     {#</script>#}
                 {#{% endif %}#}
+
+
                 {% if order_service.isLate(order) %}
                     {% set additional_class = 'late_warning' %}
                 {% elseif order_service.isBigDaddyOrder(order) %}
                     {% set additional_class = 'big_daddy_order' %}
+                {% elseif order_service.deliveryComing(order) %}
+                    {% set additional_class = 'delivery_coming_noti' %}
                 {% else %}
                     {% set additional_class = '' %}
                 {% endif %}
+
+
+
                 <tr class="{{ loop.index%2 ? 'odd' : 'even' }} {{ additional_class }}">
                     <td class="no-wrap">
                         {% if not order.placePointSelfDelivery %}
@@ -371,7 +378,7 @@
                         {% else %}
                             <span class="glyphicon glyphicon-user">{{ order.dispatcherId.Firstname }}</span>
                         {% endif %}
-                        {% if order.placeInformed is empty and order.deliveryType != 'pickup' and order.preorder is empty %}
+                        {% if order.placeInformed is empty and order.deliveryType != 'pickup' and order.preorder is empty and not order.getPlace().getNavision() %}
                             <button class="btn btn-lg assign_placeinformed_button" item-id="{{ order.id }}" title="{{ 'admin.dispatcher.assign_placeinform'|trans({}, 'SonataAdminBundle') }}">
                                 <span class="glyphicon glyphicon-info-sign status-change-history"></span>
                             </button>

@@ -440,6 +440,10 @@ LV-1046</target>
                 <source>cart.checkout.phone.prefill_phone</source>
                 <target>371</target>
             </trans-unit>
+             <trans-unit id="general.coupon.coupon_expired" resname="general.coupon.coupon_expired">
+                <source>general.coupon.coupon_expired</source>
+                <target>Atvainojiet, kupona kods vairs nav derīgs.</target>
+             </trans-unit>
         </body>
     </file>
 </xliff>

@@ -2710,6 +2710,10 @@
                 <source>admin.seorecord.places</source>
                 <target>Vietos</target>
             </trans-unit>
+            <trans-unit id="admin.users.regenerate_password">
+                <source>admin.users.regenerate_password</source>
+                <target>Automatiškai pergeneruoti slaptažodį</target>
+            </trans-unit>
             <!-- CRM -->
             <trans-unit id="admin.dispatcher.crm_search_button">
                 <source>admin.dispatcher.crm_search_button</source>

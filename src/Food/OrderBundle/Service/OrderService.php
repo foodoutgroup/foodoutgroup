@@ -387,6 +387,27 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * this method is checking that
+     * @param Order $order
+     * @return bool
+     */
+    public function deliveryComing(Order $order)
+    {
+        if($order->getOrderStatus() != OrderService::$status_assiged) {
+            return false;
+        }
+        $deliveryTime = strtotime($order->getDeliveryTime()->format("Y-m-d H:i:s"));
+        $currentTime  = time();
+        $currentFutureTime = $currentTime + 600; // + 10 min
+
+        if  ($deliveryTime < $currentFutureTime && $deliveryTime > $currentTime) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @param string $status
      * @param string|null $source
      * @param string|null $message
@@ -3102,6 +3123,10 @@ class OrderService extends ContainerAware
                     $pointRecord
                 );
 
+                if($coupon && $coupon->getIgnoreCartPrice()) {
+                    $noMinimumCart = true;
+                }
+
                 if ($total_cart < $cartMinimum && $noMinimumCart == false) {
                     $formErrors[] = 'order.form.errors.cartlessthanminimum';
                 }
@@ -3120,6 +3145,10 @@ class OrderService extends ContainerAware
                     );
                 }
             }
+            if($coupon && $coupon->getIgnoreCartPrice()) {
+                $noMinimumCart = true;
+            }
+
             if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }

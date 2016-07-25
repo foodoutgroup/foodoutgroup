@@ -11,6 +11,11 @@
                         </a>
                     </li>
                 {% endfor %}
+                <li>
+                    <a href="{{ path('food_landing_b2b_client_' ~ locale) }}">
+                        {% trans %}general.b2b_clients{% endtrans %}
+                    </a>
+                </li>
             </ul>
         </div>
         {# TODO Kolkas neturime tiek nuorodu #}

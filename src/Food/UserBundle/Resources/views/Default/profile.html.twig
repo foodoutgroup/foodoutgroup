@@ -111,6 +111,10 @@
                             {% include 'FoodUserBundle:Default:profile/address.html.twig' %}
                             {% include 'FoodUserBundle:Default:profile/change_password.html.twig' %}
 
+                            {% if not user.getIsBussinesClient() %} <div class="hidden"> {% endif %}
+                                    {% include 'FoodUserBundle:Default:profile/regenerate_password.html.twig' %}
+                            {% if not user.getIsBussinesClient() %} </div> {% endif %}
+
                             {{ form_rest(form) }}
 
                             <div class="form-controls">

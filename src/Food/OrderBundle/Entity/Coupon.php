@@ -228,6 +228,13 @@ class Coupon
      */
     private $deletedBy;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="ignore_cart_price", type="boolean", nullable=true)
+     */
+    private $ignoreCartPrice = false;
+
     public function __toString()
     {
         if ($this->getId()) {
@@ -1001,5 +1008,28 @@ class Coupon
     public function getCouponUsers()
     {
         return $this->couponUsers;
+    }
+
+    /**
+     * Set ignoreCartPrice
+     *
+     * @param boolean $ignoreCartPrice
+     * @return Coupon
+     */
+    public function setIgnoreCartPrice($ignoreCartPrice)
+    {
+        $this->ignoreCartPrice = $ignoreCartPrice;
+    
+        return $this;
+    }
+
+    /**
+     * Get ignoreCartPrice
+     *
+     * @return boolean 
+     */
+    public function getIgnoreCartPrice()
+    {
+        return $this->ignoreCartPrice;
     }
 }
