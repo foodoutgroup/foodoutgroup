@@ -378,7 +378,7 @@
                         {% else %}
                             <span class="glyphicon glyphicon-user">{{ order.dispatcherId.Firstname }}</span>
                         {% endif %}
-                        {% if order.placeInformed is empty and order.deliveryType != 'pickup' and order.preorder is empty %}
+                        {% if order.placeInformed is empty and order.deliveryType != 'pickup' and order.preorder is empty and not order.getPlace().getNavision() %}
                             <button class="btn btn-lg assign_placeinformed_button" item-id="{{ order.id }}" title="{{ 'admin.dispatcher.assign_placeinform'|trans({}, 'SonataAdminBundle') }}">
                                 <span class="glyphicon glyphicon-info-sign status-change-history"></span>
                             </button>
