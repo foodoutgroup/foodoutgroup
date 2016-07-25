@@ -345,6 +345,9 @@ class CartService {
                     $cartOptionItem->setSession(($sessionId != null ? $sessionId : $this->getSessionId()));
                     $cartOptionItem->setDishId($dish);
                     $cartOptionItem->setCartId($itemId);
+                    if (!$opt instanceof \Food\DishesBundle\Entity\DishOption) {
+                        $this->container->get('logger')->error(print_r(debug_backtrace(2), true));
+                    }
                     $cartOptionItem->setDishOptionId($opt);
                     $this->getEm()->persist($cartOptionItem);
                     $this->getEm()->flush();

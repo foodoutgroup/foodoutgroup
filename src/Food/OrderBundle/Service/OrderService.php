@@ -3739,6 +3739,9 @@ class OrderService extends ContainerAware
      */
     public function getBetaCode()
     {
+        // disabling
+        return '';
+
         $repo = $this->container->get('doctrine')->getRepository('FoodOrderBundle:BetaCoupon');
         $em = $this->container->get('doctrine')->getEntityManager();
 
@@ -3946,7 +3949,7 @@ class OrderService extends ContainerAware
     {
         if (!$order->getIsCorporateClient()) {
             $start = date('Y-m-01 00:00:00');
-            $query = 'SELECT count(*) 
+            $query = 'SELECT count(*)
                       FROM `orders`
                       LEFT JOIN `coupons` ON `orders`.`coupon` = `coupons`.`id`
                       WHERE `order_date` > \''.$start.'\'
@@ -4042,7 +4045,7 @@ class OrderService extends ContainerAware
             'user' => $user
         ));
     }
-    
+
     public function informAdminAboutCancelation()
     {
         $cancelEmails = $this->container->getParameter('order.cancel_notify_emails');
