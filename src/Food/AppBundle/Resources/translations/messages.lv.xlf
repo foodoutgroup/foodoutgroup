@@ -1426,6 +1426,10 @@
                 <target>Jūsu pasūtījums ir atcelts</target>
             </trans-unit>
             <!-- Order Tracking End -->
+            <trans-unit id="0e65a51883c91778501ba45f41022bbd" resname="general.b2b_clients">
+                <source>general.b2b_clients</source>
+                <target>Biznesa klientiem</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
