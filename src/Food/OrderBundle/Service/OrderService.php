@@ -564,6 +564,7 @@ class OrderService extends ContainerAware
 
             // Kitais atvejais tik keiciam statusa, nes gal taip reikia
         } else {
+            $this->getOrder()->setAcceptTime(new \DateTime("now"));
             $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
         }
 
