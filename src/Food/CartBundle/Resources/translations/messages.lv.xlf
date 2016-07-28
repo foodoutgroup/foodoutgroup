@@ -414,7 +414,11 @@ LV-1046</target>
             </trans-unit>
             <trans-unit id="general.coupon.not_for_business" resname="general.coupon.not_for_business">
                 <source>general.coupon.not_for_business</source>
-                <target>Atvainojiet, biznesa klienti nevar izmantot atlaižu kuponus</target>
+                <target>Sorry, this discount is not for business customers</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.only_for_business" resname="general.coupon.only_for_business">
+                <source>general.coupon.only_for_business</source>
+                <target>Sorry, this discount is valid only for business customers</target>
             </trans-unit>
             <trans-unit id="general.coupon.only_pickup" resname="general.coupon.only_pickup">
                 <source>general.coupon.only_pickup</source>
