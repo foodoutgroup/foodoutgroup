@@ -2,6 +2,7 @@
 
 namespace Food\AppBundle\Controller;
 
+use Food\OrderBundle\Entity\Coupon;
 use Food\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -269,9 +270,14 @@ class AjaxController extends Controller
 
             $user = $this->container->get('security.context')->getToken()->getUser();
 
-            if ($user instanceof User && $user->getIsBussinesClient()) {
+            if ($user instanceof User && $user->getIsBussinesClient() && $coupon->getB2b() == Coupon::B2B_NO) {
                 $cont['status'] = false;
                 $cont['data']['error'] = $trans->trans('general.coupon.not_for_business');
+            }
+
+            if ($user instanceof User && !$user->getIsBussinesClient() && $coupon->getB2b() == Coupon::B2B_YES) {
+                $cont['status'] = false;
+                $cont['data']['error'] = $trans->trans('general.coupon.only_for_business');
             }
 
             if ($user instanceof User && $orderService->isCouponUsed($coupon, $user)) {
