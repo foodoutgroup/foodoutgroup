@@ -1284,18 +1284,7 @@ class OrderService extends ContainerAware
         $discountSum = 0;
         $self_delivery = $this->getOrder()->getPlace()->getSelfDelivery();
 
-        if ($user->getIsBussinesClient()) {
-            // Jeigu musu logistika, tada taikom fiksuota nuolaida
-            if ($self_delivery == 0) {
-                $discountSize = $this->container->get('food.user')->getDiscount($user);
-                $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
-                $discountPercent = $discountSize;
-                $this->getOrder()
-                    ->setDiscountSize($discountSize)
-                    ->setDiscountSum($discountSum)
-                ;
-            }
-        } elseif (!empty($coupon) && $coupon instanceof Coupon) {
+        if (!empty($coupon) && $coupon instanceof Coupon) {
             $order = $this->getOrder();
             $order->setCoupon($coupon)
                 ->setCouponCode($coupon->getCode())
@@ -1318,6 +1307,17 @@ class OrderService extends ContainerAware
                 if ($order->getDiscountSum() == '') {
                     $order->setDiscountSum(0);
                 }
+            }
+        } elseif ($user->getIsBussinesClient()) {
+            // Jeigu musu logistika, tada taikom fiksuota nuolaida
+            if ($self_delivery == 0) {
+                $discountSize = $this->container->get('food.user')->getDiscount($user);
+                $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
+                $discountPercent = $discountSize;
+                $this->getOrder()
+                    ->setDiscountSize($discountSize)
+                    ->setDiscountSum($discountSum)
+                ;
             }
         }
         /**
