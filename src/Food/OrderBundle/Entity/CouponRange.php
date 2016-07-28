@@ -1,8 +1,10 @@
 <?php
 namespace Food\OrderBundle\Entity;
+
 use Food\DishesBundle\Entity\Place;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Table(name="coupons_range")
  * @ORM\Entity
@@ -111,7 +113,8 @@ class CouponRange
     /**
      * @var Coupon[]
      *
-     * @ORM\OneToMany(targetEntity="Food\OrderBundle\Entity\Coupon", mappedBy="couponRange", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Food\OrderBundle\Entity\Coupon", mappedBy="couponRange", cascade={"persist",
+     *     "remove"}, orphanRemoval=true)
      */
     private $coupons;
     /**
@@ -152,6 +155,14 @@ class CouponRange
      * @ORM\Column(name="valid_hourly_to", type="time", nullable=true)
      */
     private $validHourlyTo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="b2b", type="string", length=4, options={"default" = "both"})
+     */
+    private $b2b = Coupon::B2B_BOTH;
+
     /**
      * @var \DateTime
      *
@@ -191,6 +202,7 @@ class CouponRange
      * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;
+
     /**
      * Constructor
      */
@@ -198,14 +210,17 @@ class CouponRange
     {
         $this->places = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
     public function __toString()
     {
         $name = $this->getName();
         if (!empty($name)) {
             return $name;
         }
+
         return 'Untitled List - ' . date('Y-m-d');
     }
+
     /**
      * Get id
      *
@@ -215,17 +230,21 @@ class CouponRange
     {
         return $this->id;
     }
+
     /**
      * Set name
      *
      * @param string $name
+     *
      * @return CouponRange
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
+
     /**
      * Get name
      *
@@ -235,17 +254,21 @@ class CouponRange
     {
         return $this->name;
     }
+
     /**
      * Set discount
      *
      * @param integer $discount
+     *
      * @return CouponRange
      */
     public function setDiscount($discount)
     {
         $this->discount = $discount;
+
         return $this;
     }
+
     /**
      * Get discount
      *
@@ -255,17 +278,21 @@ class CouponRange
     {
         return $this->discount;
     }
+
     /**
      * Set discountSum
      *
      * @param integer $discountSum
+     *
      * @return CouponRange
      */
     public function setDiscountSum($discountSum)
     {
         $this->discountSum = $discountSum;
+
         return $this;
     }
+
     /**
      * Get discountSum
      *
@@ -275,17 +302,21 @@ class CouponRange
     {
         return $this->discountSum;
     }
+
     /**
      * Set freeDelivery
      *
      * @param boolean $freeDelivery
+     *
      * @return CouponRange
      */
     public function setFreeDelivery($freeDelivery)
     {
         $this->freeDelivery = $freeDelivery;
+
         return $this;
     }
+
     /**
      * Get freeDelivery
      *
@@ -295,17 +326,21 @@ class CouponRange
     {
         return $this->freeDelivery;
     }
+
     /**
      * Set active
      *
      * @param boolean $active
+     *
      * @return CouponRange
      */
     public function setActive($active)
     {
         $this->active = $active;
+
         return $this;
     }
+
     /**
      * Get active
      *
@@ -315,17 +350,21 @@ class CouponRange
     {
         return $this->active;
     }
+
     /**
      * Set validFrom
      *
      * @param \DateTime $validFrom
+     *
      * @return CouponRange
      */
     public function setValidFrom($validFrom)
     {
         $this->validFrom = $validFrom;
+
         return $this;
     }
+
     /**
      * Get validFrom
      *
@@ -335,17 +374,21 @@ class CouponRange
     {
         return $this->validFrom;
     }
+
     /**
      * Set validTo
      *
      * @param \DateTime $validTo
+     *
      * @return CouponRange
      */
     public function setValidTo($validTo)
     {
         $this->validTo = $validTo;
+
         return $this;
     }
+
     /**
      * Get validTo
      *
@@ -355,17 +398,21 @@ class CouponRange
     {
         return $this->validTo;
     }
+
     /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
+     *
      * @return CouponRange
      */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
+
     /**
      * Get createdAt
      *
@@ -375,17 +422,21 @@ class CouponRange
     {
         return $this->createdAt;
     }
+
     /**
      * Set editedAt
      *
      * @param \DateTime $editedAt
+     *
      * @return CouponRange
      */
     public function setEditedAt($editedAt)
     {
         $this->editedAt = $editedAt;
+
         return $this;
     }
+
     /**
      * Get editedAt
      *
@@ -395,17 +446,21 @@ class CouponRange
     {
         return $this->editedAt;
     }
+
     /**
      * Set deletedAt
      *
      * @param \DateTime $deletedAt
+     *
      * @return CouponRange
      */
     public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
+
         return $this;
     }
+
     /**
      * Get deletedAt
      *
@@ -415,17 +470,21 @@ class CouponRange
     {
         return $this->deletedAt;
     }
+
     /**
      * Add places
      *
      * @param \Food\DishesBundle\Entity\Place $places
+     *
      * @return CouponRange
      */
     public function addPlace(\Food\DishesBundle\Entity\Place $places)
     {
         $this->places[] = $places;
+
         return $this;
     }
+
     /**
      * Remove places
      *
@@ -435,6 +494,7 @@ class CouponRange
     {
         $this->places->removeElement($places);
     }
+
     /**
      * Get places
      *
@@ -444,17 +504,21 @@ class CouponRange
     {
         return $this->places;
     }
+
     /**
      * Set createdBy
      *
      * @param \Food\UserBundle\Entity\User $createdBy
+     *
      * @return CouponRange
      */
     public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
     {
         $this->createdBy = $createdBy;
+
         return $this;
     }
+
     /**
      * Get createdBy
      *
@@ -464,17 +528,21 @@ class CouponRange
     {
         return $this->createdBy;
     }
+
     /**
      * Set editedBy
      *
      * @param \Food\UserBundle\Entity\User $editedBy
+     *
      * @return CouponRange
      */
     public function setEditedBy(\Food\UserBundle\Entity\User $editedBy = null)
     {
         $this->editedBy = $editedBy;
+
         return $this;
     }
+
     /**
      * Get editedBy
      *
@@ -484,17 +552,21 @@ class CouponRange
     {
         return $this->editedBy;
     }
+
     /**
      * Set deletedBy
      *
      * @param \Food\UserBundle\Entity\User $deletedBy
+     *
      * @return CouponRange
      */
     public function setDeletedBy(\Food\UserBundle\Entity\User $deletedBy = null)
     {
         $this->deletedBy = $deletedBy;
+
         return $this;
     }
+
     /**
      * Get deletedBy
      *
@@ -504,17 +576,21 @@ class CouponRange
     {
         return $this->deletedBy;
     }
+
     /**
      * Set cartAmount
      *
      * @param integer $cartAmount
+     *
      * @return CouponRange
      */
     public function setCartAmount($cartAmount)
     {
         $this->cartAmount = $cartAmount;
+
         return $this;
     }
+
     /**
      * Get cartAmount
      *
@@ -524,17 +600,21 @@ class CouponRange
     {
         return $this->cartAmount;
     }
+
     /**
      * Set onlyNav
      *
      * @param boolean $onlyNav
+     *
      * @return CouponRange
      */
     public function setOnlyNav($onlyNav)
     {
         $this->onlyNav = $onlyNav;
+
         return $this;
     }
+
     /**
      * Get onlyNav
      *
@@ -544,17 +624,21 @@ class CouponRange
     {
         return $this->onlyNav;
     }
+
     /**
      * Set noSelfDelivery
      *
      * @param boolean $noSelfDelivery
+     *
      * @return CouponRange
      */
     public function setNoSelfDelivery($noSelfDelivery)
     {
         $this->noSelfDelivery = $noSelfDelivery;
+
         return $this;
     }
+
     /**
      * Get noSelfDelivery
      *
@@ -564,17 +648,21 @@ class CouponRange
     {
         return $this->noSelfDelivery;
     }
+
     /**
      * Set singleUse
      *
      * @param boolean $singleUse
+     *
      * @return CouponRange
      */
     public function setSingleUse($singleUse)
     {
         $this->singleUse = $singleUse;
+
         return $this;
     }
+
     /**
      * Get singleUse
      *
@@ -589,6 +677,7 @@ class CouponRange
      * Set enableValidateDate
      *
      * @param boolean $enableValidateDate
+     *
      * @return CouponRange
      */
     public function setEnableValidateDate($enableValidateDate)
@@ -597,6 +686,7 @@ class CouponRange
 
         return $this;
     }
+
     /**
      * Get enableValidateDate
      *
@@ -611,6 +701,7 @@ class CouponRange
      * Set prefix
      *
      * @param string $prefix
+     *
      * @return CouponRange
      */
     public function setPrefix($prefix)
@@ -619,6 +710,7 @@ class CouponRange
 
         return $this;
     }
+
     /**
      * Get prefix
      *
@@ -628,10 +720,12 @@ class CouponRange
     {
         return $this->prefix;
     }
+
     /**
      * Set suffix
      *
      * @param string $suffix
+     *
      * @return CouponRange
      */
     public function setSuffix($suffix)
@@ -640,6 +734,7 @@ class CouponRange
 
         return $this;
     }
+
     /**
      * Get suffix
      *
@@ -649,10 +744,12 @@ class CouponRange
     {
         return $this->suffix;
     }
+
     /**
      * Set couponsQty
      *
      * @param integer $couponsQty
+     *
      * @return CouponRange
      */
     public function setCouponsQty($couponsQty)
@@ -661,6 +758,7 @@ class CouponRange
 
         return $this;
     }
+
     /**
      * Get couponsQty
      *
@@ -670,10 +768,12 @@ class CouponRange
     {
         return $this->couponsQty;
     }
+
     /**
      * Set fullOrderCovers
      *
      * @param boolean $fullOrderCovers
+     *
      * @return CouponRange
      */
     public function setFullOrderCovers($fullOrderCovers)
@@ -682,6 +782,7 @@ class CouponRange
 
         return $this;
     }
+
     /**
      * Get fullOrderCovers
      *
@@ -691,10 +792,12 @@ class CouponRange
     {
         return $this->fullOrderCovers;
     }
+
     /**
      * Add coupons
      *
      * @param \Food\OrderBundle\Entity\Coupon $coupons
+     *
      * @return CouponRange
      */
     public function addCoupon(\Food\OrderBundle\Entity\Coupon $coupons)
@@ -703,6 +806,7 @@ class CouponRange
 
         return $this;
     }
+
     /**
      * Remove coupons
      *
@@ -712,6 +816,7 @@ class CouponRange
     {
         $this->coupons->removeElement($coupons);
     }
+
     /**
      * Get coupons
      *
@@ -726,19 +831,20 @@ class CouponRange
      * Set singleUsePerPerson
      *
      * @param boolean $singleUsePerPerson
+     *
      * @return CouponRange
      */
     public function setSingleUsePerPerson($singleUsePerPerson)
     {
         $this->singleUsePerPerson = $singleUsePerPerson;
-    
+
         return $this;
     }
 
     /**
      * Get singleUsePerPerson
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getSingleUsePerPerson()
     {
@@ -749,19 +855,20 @@ class CouponRange
      * Set onlinePaymentsOnly
      *
      * @param boolean $onlinePaymentsOnly
+     *
      * @return CouponRange
      */
     public function setOnlinePaymentsOnly($onlinePaymentsOnly)
     {
         $this->onlinePaymentsOnly = $onlinePaymentsOnly;
-    
+
         return $this;
     }
 
     /**
      * Get onlinePaymentsOnly
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getOnlinePaymentsOnly()
     {
@@ -772,19 +879,20 @@ class CouponRange
      * Set validHourlyFrom
      *
      * @param \DateTime $validHourlyFrom
+     *
      * @return CouponRange
      */
     public function setValidHourlyFrom($validHourlyFrom)
     {
         $this->validHourlyFrom = $validHourlyFrom;
-    
+
         return $this;
     }
 
     /**
      * Get validHourlyFrom
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getValidHourlyFrom()
     {
@@ -795,22 +903,51 @@ class CouponRange
      * Set validHourlyTo
      *
      * @param \DateTime $validHourlyTo
+     *
      * @return CouponRange
      */
     public function setValidHourlyTo($validHourlyTo)
     {
         $this->validHourlyTo = $validHourlyTo;
-    
+
         return $this;
     }
 
     /**
      * Get validHourlyTo
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getValidHourlyTo()
     {
         return $this->validHourlyTo;
+    }
+
+
+    /**
+     * Set b2b
+     *
+     * @param string $b2b
+     *
+     * @return CouponRange
+     */
+    public function setB2b($b2b)
+    {
+        if (!in_array($b2b, [Coupon::B2B_BOTH, Coupon::B2B_YES, Coupon::B2B_NO])) {
+            throw new \InvalidArgumentException('Wrong method defined');
+        }
+        $this->b2b = $b2b;
+
+        return $this;
+    }
+
+    /**
+     * Get b2b
+     *
+     * @return string
+     */
+    public function getB2b()
+    {
+        return $this->b2b;
     }
 }

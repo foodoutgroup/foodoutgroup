@@ -39,6 +39,11 @@ class CouponGeneratorAdmin extends FoodAdmin
                 Coupon::METHOD_DELIVERY => 'DELIVERY',
                 Coupon::METHOD_PICKUP => 'PICKUP'
             ), 'required' => true))
+            ->add('b2b', 'choice', array('choices' => array(
+                Coupon::B2B_BOTH => 'BOTH',
+                Coupon::B2B_YES => 'ONLY B2B',
+                Coupon::B2B_NO => 'NOT B2B'
+            ), 'required' => true))
             ->add('singleUse', 'checkbox', array('label' => 'admin.coupon.single_use', 'required' => false))
             ->add('singleUsePerPerson', 'checkbox', array('label' => 'admin.coupon.single_use_per_person', 'required' => false))
             ->add('onlinePaymentsOnly', 'checkbox', array('label' => 'admin.coupon.online_payments_only', 'required' => false))

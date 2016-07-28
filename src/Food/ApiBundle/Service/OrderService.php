@@ -292,13 +292,24 @@ class OrderService extends ContainerAware
                 $total_cart -= $coupon->getDiscountSum();
             }
 
-            if ($user->getIsBussinesClient()) {
+            if ($user->getIsBussinesClient() && $coupon->getB2b() == Coupon::B2B_NO) {
                 throw new ApiException(
                     'Not for business',
                     404,
                     array(
                         'error' => 'Not for business',
                         'description' => $this->container->get('translator')->trans('general.coupon.not_for_business')
+                    )
+                );
+            }
+
+            if (!$user->getIsBussinesClient() && $coupon->getB2b() == Coupon::B2B_YES) {
+                throw new ApiException(
+                    'Only for business',
+                    404,
+                    array(
+                        'error' => 'Only for business',
+                        'description' => $this->container->get('translator')->trans('general.coupon.only_for_business')
                     )
                 );
             }

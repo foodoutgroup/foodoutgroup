@@ -338,14 +338,12 @@
                                 <input type="checkbox" name="newsletter_subscribe" {% if (dataToLoad['newsletter_subscribe'] is defined and dataToLoad['newsletter_subscribe'] is not empty) or newsletter_subscribe_tick_by_default %}checked="checked"{% endif %} />
                             </div>
                             <div class="clearfix"></div>
-                            {% if not app.user.isBussinesClient|default(false) %}
                             <div class="cupon-info">
                                 {% trans %}general.coupon.popup_link{% endtrans %}
                                 <input type="hidden" name="coupon_code" id="coupon_code" value="{% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{{ dataToLoad['coupon_code'] }}{% endif %}" />
                                 <br /><br />
                                 <div class="alert alert-info">{% trans %}general.coupon.note_text{% endtrans %}</div>
                             </div>
-                            {% endif %}
                             <h2 class="section-2">2. {% trans %}cart.checkout.block_title_secure_payment{% endtrans %}</h2>
                             <div class="select-payment clearfix">
                                 {% if app.user.isBussinesClient|default(false) and app.user.allowDelayPayment|default(false) %}<label class="custom-radio">{% trans %}cart.checkout.corporate_pay{% endtrans %}
@@ -430,7 +428,6 @@
         <div id="privacy" class="privacy_content">
             <div class="privacy_inner">{{ static_service.getPage(static_page_privacy_policy).content|raw }}</div>
         </div>
-        {% if not app.user.isBussinesClient|default(false) %}
         <div id="coupon" class="coupon_form_popup">
             <div class="coupon_inner">
                 <form id="coupon_form">
@@ -444,6 +441,5 @@
                 </form>
             </div>
         </div>
-        {% endif %}
     </div>
 {% endblock %}
