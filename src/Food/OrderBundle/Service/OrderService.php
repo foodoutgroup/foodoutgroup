@@ -3127,9 +3127,11 @@ class OrderService extends ContainerAware
                 $formErrors[] = 'general.coupon.only_pickup';
             } elseif ($takeAway && !$coupon->isAllowedForPickup()) {
                 $formErrors[] = 'general.coupon.only_delivery';
-            } elseif (!empty($user) && $user instanceof User && $user->getIsBussinesClient() && !$coupon->getB2b()) {
+            } elseif (!empty($user) && $user instanceof User && $user->getIsBussinesClient() && !$coupon->getB2b() == Coupon::B2B_NO) {
                 $formErrors[] = 'general.coupon.not_for_business';
-            } elseif (!empty($user) && $user instanceof User && !$user->getIsBussinesClient() && $coupon->getB2b()) {
+            } elseif ($coupon->getB2b() == Coupon::B2B_YES
+                && (empty($user) || !empty($user) && $user instanceof User && !$user->getIsBussinesClient())
+            ) {
                 $formErrors[] = 'general.coupon.only_for_business';
             } elseif ($coupon->getSingleUsePerPerson() && !empty($user) && $user instanceof User && $this->isCouponUsed($coupon, $user)) {
                 $formErrors[] = 'general.coupon.not_active';
