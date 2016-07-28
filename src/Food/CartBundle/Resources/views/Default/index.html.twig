@@ -428,7 +428,6 @@
         <div id="privacy" class="privacy_content">
             <div class="privacy_inner">{{ static_service.getPage(static_page_privacy_policy).content|raw }}</div>
         </div>
-        {% if not app.user.isBussinesClient|default(false) %}
         <div id="coupon" class="coupon_form_popup">
             <div class="coupon_inner">
                 <form id="coupon_form">
@@ -442,6 +441,5 @@
                 </form>
             </div>
         </div>
-        {% endif %}
     </div>
 {% endblock %}
