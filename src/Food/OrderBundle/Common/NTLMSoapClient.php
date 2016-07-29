@@ -3,6 +3,9 @@
 namespace Food\OrderBundle\Common;
 
 use SoapClient;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 /**
  * Soap Client using Microsoft's NTLM Authentication
  *
@@ -41,6 +44,28 @@ class NTLMSoapClient extends SoapClient {
      * @var boolean
      */
     protected $validate = false;
+
+    private $container;
+
+    /**
+     * @param ContainerInterface $container
+     *
+     * @return $this
+     */
+    public function setContainer(ContainerInterface $container)
+    {
+        $this->container = $container;
+
+        return $this;
+    }
+
+    /**
+     * @return ContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
 
     private static $classmap = array(
         'SidAndAttributesType' => 'SidAndAttributesType',
@@ -477,7 +502,8 @@ class NTLMSoapClient extends SoapClient {
         // @epic-fail
         // @omg-hack
         // @todo Fix shita geeeda. Manau geriau kad WSDL'a susitvarkytu NVB
-        @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQ1 ".date("Y-m-d H:i:s"), print_r($request, true), "FROM: info@foodout.lt");
+        $this->getContainer()->get('logger')->debug('CILI NVB VALIDATE REQ1');
+        $this->getContainer()->get('logger')->debug(print_r($request, true));
         $request = str_replace("ns1:", "", $request);
         $request = str_replace("pInt>", "ns1:pInt>", $request);
         @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQ2 ".date("Y-m-d H:i:s"), print_r($request, true), "FROM: info@foodout.lt");
