@@ -295,15 +295,15 @@ class NavService extends ContainerAware
             'Order with Alcohol' => '0'
         ];
         $queryPart = $this->generateQueryPart($dataToPut);
-        var_dump('INSERT INTO ' . $this->getHeaderTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')');
+        $this->getContainer()->get('logger')->debug('INSERT INTO ' . $this->getHeaderTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')');
         $rez = sqlsrv_query($this->getConnection(), 'INSERT INTO ' . $this->getHeaderTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')');
 
         if ($rez === false) {
-            echo "<pre>";
+            $this->getContainer()->get('logger')->debug(print_r(sqlsrv_errors(), true));
             die(print_r(sqlsrv_errors(), true));
         }
 
-        var_dump($queryPart);
+        print_r($queryPart);
     }
 
     private function generateQueryPart($data)
@@ -330,15 +330,9 @@ class NavService extends ContainerAware
 
     public function putTheOrderToTheNAV(Order $order)
     {
-
-
         $dbgEmail = date("Y-m-d H:i:s") . "\n\n\n" . print_r($_SERVER, true) . "\n\n\n" . print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 0), true);
-        @mail(
-            "paulius@foodout.lt",
-            "putTheOrderToTheNAV backtrace #" . $order->getId(),
-            $dbgEmail,
-            "FROM: info@foodout.lt"
-        );
+        $this->getContainer()->get('logger')->debug("putTheOrderToTheNAV backtrace #" . $order->getId());
+        $this->getContainer()->get('logger')->debug($dbgEmail);
 
         $orderNewId = $this->getNavOrderId($order);
 
@@ -432,7 +426,8 @@ class NavService extends ContainerAware
         ];
         $queryPart = $this->generateQueryPart($dataToPut);
         $query = 'INSERT INTO ' . $this->getHeaderTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-        @mail("paulius@foodout.lt", '#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#HEADER', $query, "FROM: info@foodout.lt");
+        $this->getContainer()->get('logger')->debug('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#HEADER');
+        $this->getContainer()->get('logger')->debug($query);
         $sqlSS = $this->initSqlConn()->query($query);
 
         $this->_processLines($order, $orderNewId);
@@ -484,7 +479,8 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-        @mail("paulius@foodout.lt", '#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#PREPAID', $query, "FROM: info@foodout.lt");
+        $this->getContainer()->get('logger')->debug('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#PREPAID');
+        $this->getContainer()->get('logger')->debug($query);
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
@@ -520,7 +516,8 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-        @mail("paulius@foodout.lt", '#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#DELIVERY', $query, "FROM: info@foodout.lt");
+        $this->getContainer()->get('logger')->debug('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#DELIVERY');
+        $this->getContainer()->get('logger')->debug($query);
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
@@ -647,8 +644,9 @@ class NavService extends ContainerAware
         ];
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
+        $this->getContainer()->get('logger')->debug('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#' . $key);
+        $this->getContainer()->get('logger')->debug($query);
 
-        @mail("paulius@foodout.lt", '#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#' . $key, $query, "FROM: info@foodout.lt");
         $sqlSS = $this->initSqlConn()->query($query);
 
         $okeyCounter = $key;
@@ -677,7 +675,8 @@ class NavService extends ContainerAware
                 ];
                 $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
                 $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-                @mail("paulius@foodout.lt", '#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query SUBQ]#' . $key . "-" . $okey, $query, "FROM: info@foodout.lt");
+                $this->getContainer()->get('logger')->debug('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query SUBQ]#' . $key . "-" . $okey);
+                $this->getContainer()->get('logger')->debug($query);
                 $sqlSS = $this->initSqlConn()->query($query);
             }
         }
