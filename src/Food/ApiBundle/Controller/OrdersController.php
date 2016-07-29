@@ -42,8 +42,8 @@ class OrdersController extends Controller
             $errBody.= "\n\n\n";
             $errBody.= $e->getTraceAsString();
 
-            $this->container->get('logger')->warning('GET ORDERS ERROR');
-            $this->container->get('logger')->warning($errBody);
+            $this->get('logger')->warning('GET ORDERS ERROR');
+            $this->get('logger')->warning($errBody);
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
