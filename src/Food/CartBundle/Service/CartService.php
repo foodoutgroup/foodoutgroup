@@ -653,6 +653,9 @@ class CartService {
         $cartItems = $this->getCartDishes($place);
         $dishUnits = array();
         $amounts = array();
+        /**
+         * @var ComboDiscount[] $activeBundles
+         */
         $activeBundles = $this->_getActiveBundles($place);
 
         foreach ($cartItems as $item) {
@@ -689,7 +692,7 @@ class CartService {
                 }
             }
             if ($bund->getApplyBy() == ComboDiscount::OPT_COMBO_APPLY_CATEGORY) {
-                @mail("paulius@foodout.lt",  "OPT_COMBO_APPLY_CATEGORY not implemented", "OPT_COMBO_APPLY_CATEGORY not implemented", "FROM: info@foodout.lt");
+                $this->getContainer()->get('logger')->debug('OPT_COMBO_APPLY_CATEGORY not implemented');
             }
         }
     }
