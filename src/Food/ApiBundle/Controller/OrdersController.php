@@ -20,7 +20,7 @@ class OrdersController extends Controller
         $ip = $request->getClientIp();
         // Dude is banned - hit him
         if ($miscUtils->isIpBanned($ip)) {
-            @mail("paulius@foodout.lt", "GOT BAN", $ip, "FROM: test@foodout.lt");
+            $this->get('logger')->warning('GOT BAN: '.$ip);
             die('{error: "Piktybinis", description: null}');
         }
     }
@@ -41,7 +41,9 @@ class OrdersController extends Controller
             $errBody = $e->getMessage();
             $errBody.= "\n\n\n";
             $errBody.= $e->getTraceAsString();
-            @mail("paulius@foodout.lt", "GET ORDERS ERROR ".date("Y-m-d H:i:s"), $errBody, "FROM: info@foodout.lt");
+
+            $this->get('logger')->warning('GET ORDERS ERROR');
+            $this->get('logger')->warning($errBody);
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
