@@ -1593,6 +1593,10 @@
                 <source>admin.dispatcher.order_status.nav_problems</source>
                 <target>Navision problems</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.canceled_produced">
+                <source>admin.dispatcher.order_status.canceled_produced</source>
+                <target>Canceled produced</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.order_status_title">
                 <source>admin.dispatcher.order_status_title</source>
                 <target>Order status</target>
