@@ -630,7 +630,6 @@ class DefaultController extends Controller
 
                 $freeDelivery = $coupon->getFreeDelivery();
 
-
                 $discountSize = $coupon->getDiscount();
                 if (!empty($discountSize)) {
                     $discountSum = $this->getCartService()->getTotalDiscount($list,$coupon->getDiscount());
@@ -659,6 +658,19 @@ class DefaultController extends Controller
                         $deliveryTotal = 0;
                         $freeDelivery = true;
                     }
+                    $total_cart = 0;
+                }
+
+                $cartSumTotal = $total_cart;
+                if ($coupon->getFullOrderCovers() || $coupon->getIncludeDelivery()) {
+                    $deliveryTotal = $deliveryTotal + $total_cart;
+                    if ($deliveryTotal < 0) {
+                        $deliveryTotal = 0;
+                        $freeDelivery = true;
+                    }
+                }
+                if ($total_cart < 0) {
+                    $total_cart = 0;
                 }
                 if ($total_cart < 0) {
                     $total_cart = 0;
@@ -712,12 +724,9 @@ class DefaultController extends Controller
             }
         }
 
-
-
-
         $totalWIthDelivery = $freeDelivery ? $total_cart : ($total_cart + $deliveryTotal);
 
-        $params = array(
+        $params = [
             'list'  => $list,
             'place' => $place,
             'total_cart' => sprintf('%.2f',$total_cart),
