@@ -1285,28 +1285,48 @@ class OrderService extends ContainerAware
         $self_delivery = $this->getOrder()->getPlace()->getSelfDelivery();
 
         if (!empty($coupon) && $coupon instanceof Coupon) {
+            $IncludeDelivery = false;
+        if(!$coupon->getIncludeDelivery()) {
+            $IncludeDelivery = true;
+        }
+
+        if ($user->getIsBussinesClient()) {
+            // Jeigu musu logistika, tada taikom fiksuota nuolaida
+            if ($self_delivery == 0) {
+                $discountSize = $this->container->get('food.user')->getDiscount($user);
+                $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
+                $discountPercent = $discountSize;
+                $this->getOrder()
+                    ->setDiscountSize($discountSize)
+                    ->setDiscountSum($discountSum)
+                ;
+            }
+        } elseif (!empty($coupon) && $coupon instanceof Coupon) {
             $order = $this->getOrder();
             $order->setCoupon($coupon)
                 ->setCouponCode($coupon->getCode())
             ;
 
-            if (!$coupon->getFreeDelivery()) {
-                $discountSize = $coupon->getDiscount();
-                if (!empty($discountSize)) {
-                    $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
-                    $discountPercent = $discountSize;
-                } else {
-                    $discountSum = $coupon->getDiscountSum();
-                }
-                $order->setDiscountSize($discountSize)
-                    ->setDiscountSum($discountSum)
-                ;
-            } else {
-                $deliveryPrice = 0;
+            $discountSize = $coupon->getDiscount();
 
-                if ($order->getDiscountSum() == '') {
-                    $order->setDiscountSum(0);
-                }
+            if (!empty($discountSize)) {
+                $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
+                $discountPercent = $discountSize;
+            } else {
+                $discountSum = $coupon->getDiscountSum();
+            }
+
+            $order->setDiscountSize($discountSize)
+                ->setDiscountSum($discountSum)
+            ;
+
+            if ($coupon->getFreeDelivery()) {
+                $deliveryPrice = 0;
+            }
+
+
+            if($coupon->getIgnoreCartPrice() && !$coupon->getFreeDelivery()) {
+                $IncludeDelivery = true;
             }
         } elseif ($user->getIsBussinesClient()) {
             // Jeigu musu logistika, tada taikom fiksuota nuolaida
@@ -1319,6 +1339,11 @@ class OrderService extends ContainerAware
                     ->setDiscountSum($discountSum)
                 ;
             }
+
+            if($coupon->getIncludeDelivery()) {
+                $IncludeDelivery = false;
+            }
+
         }
         /**
          * Na daugiau kintamuju jau nebesugalvojau :/
@@ -1425,10 +1450,13 @@ class OrderService extends ContainerAware
             }
         }
 
-        if ($discountOverTotal > 0) {
-            $deliveryPrice = $deliveryPrice - $discountOverTotal;
-            if ($deliveryPrice < 0) {
-                $deliveryPrice = 0;
+        // jei ignoruoti pristatymo min krepseli bet yra pristatymas mokamas
+        if(!$IncludeDelivery) {
+            if ($discountOverTotal > 0) {
+                $deliveryPrice = $deliveryPrice - $discountOverTotal;
+                if ($deliveryPrice < 0) {
+                    $deliveryPrice = 0;
+                }
             }
         }
 
@@ -3165,6 +3193,10 @@ class OrderService extends ContainerAware
             }
         }
 
+        if ($coupon && $coupon->getIgnoreCartPrice()) {
+            $noMinimumCart = true;
+        }
+
 
         if (!$takeAway) {
             foreach ($list as $itm) {
@@ -3212,10 +3244,6 @@ class OrderService extends ContainerAware
                 )
                 ;
 
-                if ($coupon && $coupon->getIgnoreCartPrice()) {
-                    $noMinimumCart = true;
-                }
-
                 if ($total_cart < $cartMinimum && $noMinimumCart == false) {
                     $formErrors[] = 'order.form.errors.cartlessthanminimum';
                 }
@@ -3233,9 +3261,6 @@ class OrderService extends ContainerAware
                         'text'    => $itm->getDishId()->getName()
                     ];
                 }
-            }
-            if ($coupon && $coupon->getIgnoreCartPrice()) {
-                $noMinimumCart = true;
             }
 
             if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false) {

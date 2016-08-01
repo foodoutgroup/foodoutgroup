@@ -246,6 +246,17 @@ class Coupon
      */
     private $ignoreCartPrice = false;
 
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="include_delivery", type="boolean", nullable=true)
+     */
+    private $includeDelivery = false;
+
+
+
+
     public function __toString()
     {
         if ($this->getId()) {
@@ -1102,5 +1113,28 @@ class Coupon
     public function getB2b()
     {
         return $this->b2b;
+    }
+
+    /**
+     * Set includeDelivery
+     *
+     * @param boolean $includeDelivery
+     * @return Coupon
+     */
+    public function setIncludeDelivery($includeDelivery)
+    {
+        $this->includeDelivery = $includeDelivery;
+    
+        return $this;
+    }
+
+    /**
+     * Get includeDelivery
+     *
+     * @return boolean 
+     */
+    public function getIncludeDelivery()
+    {
+        return $this->includeDelivery;
     }
 }
