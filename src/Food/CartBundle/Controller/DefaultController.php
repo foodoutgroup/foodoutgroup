@@ -651,27 +651,6 @@ class DefaultController extends Controller
                     $total_cart = 0;
                 }
 
-                $cartSumTotal = $total_cart;
-                if ($coupon->getFullOrderCovers() || $coupon->getIncludeDelivery()) {
-                    $deliveryTotal = $deliveryTotal + $total_cart;
-                    if ($deliveryTotal < 0) {
-                        $deliveryTotal = 0;
-                        $freeDelivery = true;
-                    }
-                    $total_cart = 0;
-                }
-
-                $cartSumTotal = $total_cart;
-                if ($coupon->getFullOrderCovers() || $coupon->getIncludeDelivery()) {
-                    $deliveryTotal = $deliveryTotal + $total_cart;
-                    if ($deliveryTotal < 0) {
-                        $deliveryTotal = 0;
-                        $freeDelivery = true;
-                    }
-                }
-                if ($total_cart < 0) {
-                    $total_cart = 0;
-                }
                 if ($total_cart < 0) {
                     $total_cart = 0;
                 }
@@ -686,7 +665,7 @@ class DefaultController extends Controller
                 $total_cart -= $discountSum;
             }
         }
-
+        $cartSumTotal = $total_cart;
         // Jei restorane galima tik atsiimti arba, jei zmogus rinkosi, kad jis atsiimas, arba jei yra uzsakymas ir fiksuotas atsiemimas vietoje - neskaiciuojam pristatymo
         if ($place->getDeliveryOptions() == Place::OPT_ONLY_PICKUP ||
             ($order != null && $order->getDeliveryType() == 'pickup')
