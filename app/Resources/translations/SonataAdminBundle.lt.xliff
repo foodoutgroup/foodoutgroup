@@ -1259,6 +1259,38 @@
                 <source>admin.order.status.source.repostToNavOnMissingInNav</source>
                 <target>Čili Navision repost order on fatal error</target>
             </trans-unit>
+            <trans-unit id="admin.order.delivery_log.order_accepted">
+                <source>admin.order.delivery_log.order_accepted</source>
+                <target>Priimtas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.order_assigned">
+                <source>admin.order.delivery_log.order_assigned</source>
+                <target>Paskirtas vairuotojui</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.order_delayed">
+                <source>admin.order.delivery_log.order_delayed</source>
+                <target>Atidėtas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.order_finished">
+                <source>admin.order.delivery_log.order_finished</source>
+                <target>Pagamintas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.order_pickedup">
+                <source>admin.order.delivery_log.order_pickedup</source>
+                <target>Paiimtas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.order_completed">
+                <source>admin.order.delivery_log.order_completed</source>
+                <target>Pristatytas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.order_canceled">
+                <source>admin.order.delivery_log.order_canceled</source>
+                <target>Atšauktas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.order_canceled_produced">
+                <source>admin.order.delivery_log.order_canceled_produced</source>
+                <target>Atšauktas pagamintas</target>
+            </trans-unit>
             <trans-unit id="admin.order.delivery_log.event">
                 <source>admin.order.delivery_log.event</source>
                 <target>Įvykis</target>
