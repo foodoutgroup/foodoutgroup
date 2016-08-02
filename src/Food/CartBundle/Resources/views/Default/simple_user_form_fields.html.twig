@@ -2,7 +2,7 @@
     <label>{% trans %}cart.checkout.firstname{% endtrans %}:</label>
     <input type="text" name="customer-firstname" value="{% if (dataToLoad is not empty and dataToLoad['customer-firstname'] is not empty) %}{{ dataToLoad['customer-firstname'] }}{% else %}{{ app.user.firstname|default('') }}{% endif %}" placeholder="{% trans %}general.name.placeholder{% endtrans %}" />
 </div>
-<div class="form-row">
+<div class="form-row{% if require_lastname %} form-row-required{% endif %}">
     <label>{% trans %}cart.checkout.lastname{% endtrans %}:</label>
     <input type="text" name="customer-lastname" value="{% if (dataToLoad is not empty and dataToLoad['customer-lastname'] is not empty) %}{{ dataToLoad['customer-lastname'] }}{% else %}{{ app.user.lastname|default('') }}{% endif %}" placeholder="{% trans %}general.lastname.placeholder{% endtrans %}" />
 </div>
