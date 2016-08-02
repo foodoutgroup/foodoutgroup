@@ -24,6 +24,7 @@
         <table class="reports_list">
             <tr>
                 <th>{{ 'admin.reports.place'|trans({}, 'SonataAdminBundle') }}</th>
+                <th>{{ 'admin.reports.place_code'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.reports.self_delivery'|trans({}, 'SonataAdminBundle') }}</th>
                 {% if groupMonth == true %}
                     <th>{{ 'admin.reports.month'|trans({}, 'SonataAdminBundle') }}</th>
@@ -36,6 +37,7 @@
             {% for place in stats %}
                 <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">
                     <td>{{ place.place_name }}</td>
+                    <td>{{ place.company_code }}</td>
                     <td>
                         {% if place.self_delivery %}
                             {{ 'label_type_yes'|trans({}, 'SonataAdminBundle') }}
@@ -80,6 +82,11 @@
                     <div class="clearfix">
                         {{ 'admin.reports.group_by_month'|trans({}, 'SonataAdminBundle') }}
                         <input type="checkbox" name="group_month"{% if groupMonth == true %}checked="checked"{% endif %} />
+                        <br /><br />
+                    </div>
+                    <div class="clearfix">
+                        {{ 'admin.reports.place_code'|trans({}, 'SonataAdminBundle') }}
+                        <input type="text" name="company_code" value="{{ companyCode }}" />
                         <br /><br />
                     </div>
                     <div class="clearfix"></div>
