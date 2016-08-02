@@ -2536,6 +2536,10 @@
                 <source>admin.reports.delivery_type</source>
                 <target>Delivery Type</target>
             </trans-unit>
+            <trans-unit id="admin.order.client.b2b">
+                <source>admin.order.client.b2b</source>
+                <target>B2B clients</target>
+            </trans-unit>
             <trans-unit id="admin.reports.accept_time">
                 <source>admin.reports.accept_time</source>
                 <target>Restaurant Acceptance Time</target>
