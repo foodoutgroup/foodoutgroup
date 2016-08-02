@@ -761,4 +761,24 @@ class CartService {
                 )
             );
     }
+
+    /**
+     * @param \Food\CartBundle\Entity\Cart[] $dishes
+     * @return bool
+     */
+    public function isAlcoholInCart($dishes)
+    {
+        if (count($dishes)) {
+            foreach ($dishes as $dish) {
+                $dishCategories = $dish->getDishId()->getCategories();
+                foreach ($dishCategories as $dishCategory) {
+                    $isAlcohol = $dishCategory->getAlcohol();
+                    if ($isAlcohol) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }

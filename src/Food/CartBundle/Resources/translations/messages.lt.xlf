@@ -276,6 +276,10 @@ Vilnius]]></target>
                 <source>order.form.errors.customerfirstname</source>
                 <target>Įveskite savo vardą</target>
             </trans-unit>
+            <trans-unit id="order.form.errors.customerlastname" resname="order.form.errors.customerlastname">
+                <source>order.form.errors.customerlastname</source>
+                <target>Įveskite savo pavardę</target>
+            </trans-unit>
             <trans-unit id="order.form.errors.customerphone" resname="order.form.errors.customerphone">
                 <source>order.form.errors.customerphone</source>
                 <target>Nurodykite mob. telefono numerį</target>

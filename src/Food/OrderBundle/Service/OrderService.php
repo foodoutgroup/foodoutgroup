@@ -3345,6 +3345,14 @@ class OrderService extends ContainerAware
             $formErrors[] = 'order.form.errors.customerfirstname';
         }
 
+        // search for alco inside the basket
+        $foods = $this->getCartService()->getCartDishes($place);
+        $require_lastname = $this->getCartService()->isAlcoholInCart($foods);
+        if ($require_lastname) {
+            if (0 === strlen($request->get('customer-lastname'))) {
+                $formErrors[] = 'order.form.errors.customerlastname';
+            }
+        }
 
         if (0 === strlen($phone)) {
             $formErrors[] = 'order.form.errors.customerphone';
