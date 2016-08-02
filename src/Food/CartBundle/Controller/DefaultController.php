@@ -208,6 +208,7 @@ class DefaultController extends Controller
 
         $orderHash = $request->get('hash');
         $order = null;
+        $require_lastname = false;
 
         if (!empty($orderHash)) {
             $order = $orderService->getOrderByHash($orderHash);
@@ -273,6 +274,9 @@ class DefaultController extends Controller
         if (count($dishes) < 1) {
             $formErrors[] = 'order.form.errors.emptycart';
             $formHasErrors = true;
+        } else {
+            // search for alco inside the basket
+            $require_lastname = $this->getCartService()->isAlcoholInCart($dishes);
         }
 
         if ($formHasErrors) {
@@ -488,6 +492,7 @@ class DefaultController extends Controller
             'workingHoursForInterval' => $workingHoursForInterval,
             'workingDaysCount'        => $workingDaysCount,
             'isCallcenter'            => false,
+            'require_lastname'        => $require_lastname,
         ];
 
 

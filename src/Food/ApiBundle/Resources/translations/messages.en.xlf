@@ -58,6 +58,14 @@
     </file>
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
+            <trans-unit id="api.orders.user_lastname_empty" resname="api.orders.user_lastname_empty">
+                <source>api.orders.user_lastname_empty</source>
+                <target>User lastname is empty</target>
+            </trans-unit>
+        </body>
+    </file>
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
             <trans-unit id="api.orders.user_phone_invalid" resname="api.orders.user_phone_invalid">
                 <source>api.orders.user_phone_invalid</source>
                 <target>User phone is invalid</target>
