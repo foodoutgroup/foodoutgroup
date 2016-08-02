@@ -11,7 +11,7 @@ set :branch, "master"
 # multi-stage environment
 set :stages,        %w(production staging sandbox taurinas kofeinas pipiras production_lv production_ee dev)
 # isijungiam kada reik :)
-set :default_stage, "staging"
+set :default_stage, "taurinas"
 set :stage_dir,     "app/config/deploy"
 require 'capistrano/ext/multistage'
 
@@ -134,4 +134,5 @@ task :upload_robots do
     end
 end
 
-after 'deploy:setup', 'upload_parameters', 'upload_kpi', 'upload_robots'
+after 'deploy:setup', 'upload_parameters', 'upload_kpi'
+after 'deploy:finalize_update', 'upload_robots'
