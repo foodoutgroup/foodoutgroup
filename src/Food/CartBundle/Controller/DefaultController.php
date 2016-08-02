@@ -759,7 +759,7 @@ class DefaultController extends Controller
         $order = $this->get('food.order')->getOrderByHash($orderHash);
 
         return $this->render(
-            'lFoodCartBundle:Default:payment_wait.html.twig',
+            'FoodCartBundle:Default:payment_wait.html.twig',
             ['order' => $order]
         );
     }
