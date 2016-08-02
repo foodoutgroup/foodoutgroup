@@ -603,7 +603,7 @@ class OrderRepository extends EntityRepository
      * @return array
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function getPlacesOrderCountForRange($dateFrom, $dateTo, $placeIds = array(), $groupMonth=false, $registered=false, $accountingCode=false, $ownershipType=false)
+    public function getPlacesOrderCountForRange($dateFrom, $dateTo, $placeIds = array(), $companyCode = null,  $groupMonth=false, $registered=false, $accountingCode=false, $ownershipType=false)
     {
         $orderStatus = OrderService::$status_completed;
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
@@ -612,6 +612,11 @@ class OrderRepository extends EntityRepository
         $placesFilter = '';
         if (!empty($placeIds)) {
             $placesFilter = ' AND o.place_id IN ('.implode(', ', $placeIds).')';
+        }
+
+        $companyCodeFilter = '';
+        if (!empty($companyCode)) {
+            $companyCodeFilter = ' AND pp.company_code LIKE \'%'.$companyCode.'%\'';
         }
 
         $groupByMonthDate = $groupByMonth = $groupByMonthOrder = '';
@@ -627,6 +632,7 @@ class OrderRepository extends EntityRepository
             o.place_name AS place_name,
             o.vat,
             p.self_delivery AS self_delivery,
+            pp.company_code AS company_code,
             COUNT(o.id) AS order_count,
             SUM(o.total) AS order_sum,
             SUM(
@@ -638,10 +644,11 @@ class OrderRepository extends EntityRepository
             {$groupByMonthDate}
           FROM orders o
           LEFT JOIN place p ON p.id = o.place_id
+          LEFT JOIN place_point pp ON o.place_id = pp.place
           WHERE
             o.order_status = '{$orderStatus}'
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
-            {$placesFilter}
+            {$placesFilter}{$companyCodeFilter}
           GROUP BY COALESCE(o.place_id, o.place_name){$groupByMonth}
           ORDER BY {$groupByMonthOrder}order_count DESC
         ";
