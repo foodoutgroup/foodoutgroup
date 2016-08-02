@@ -21,3 +21,4 @@ role :db,         domain, :primary => true       # This is where Symfony2 migrat
 # parameters file
 set :parameters_file, "production_lv.yml.dist"
 set :kpi_file, "kpi_production_lv.yml.dist"
+set :robots_file, "robots.prod.txt.dist"
